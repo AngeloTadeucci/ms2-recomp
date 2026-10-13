@@ -472,8 +472,10 @@ def compare_funcinfo(obj, fs, fo, exe, xfi, fstart, fsec, va, eend, rep, verbose
                 xt, xa = struct.unpack_from("<iI", exe.img, x[2] + 8 * k)
                 if ot != xt:
                     rep.bad(f"unwind map[{k}].toState: obj {ot} exe {xt}")
+                act = obj_rva_target(obj, us, uo + 8 * k + 4)
+                if act and xa:
+                    FUNCLET_PAIRS[act[0]] = xa + exe.base
                 if verbose:
-                    act = obj_rva_target(obj, us, uo + 8 * k + 4)
                     rep.info(f"  unwind[{k}] toState {xt} action exe 0x{xa + exe.base:x}  obj {act[0] if act else '-'}")
     # try blocks: tryLow, tryHigh, catchHigh, nCatches, (handlerArray)
     if o[3] == x[3] and o[3] > 0:
@@ -549,6 +551,7 @@ SYMBOLS_TSV = os.path.join(ROOT, "progress", "symbols.tsv")
 SYMBOLS = {}          # name -> va
 HARVEST = {}          # name -> va (this run)
 CONFLICTS = []
+FUNCLET_PAIRS = {}  # unwind-map action funclet symbol (?dtor$N@...) -> exe VA, from every compared FuncInfo
 LAST_TARGETS = {}  # every symbol -> exe target of the last match_one call (statics included; empty on mismatch)
 LOCAL_KNOWN = {}   # name -> va pairs of the current unit (statics included), checked like SYMBOLS
 # Statically linked runtime (CRT startup/helpers, import stubs) at the end of .text: never mapped - the hook DLL

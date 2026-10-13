@@ -31,7 +31,7 @@ public:
     virtual CString vfunc_1();                                              //  1 0x14135aaf0
     virtual int vfunc_13();                                                 // 13 0x14135af90
     virtual void OnLoadComplete();                                          // 22 0x14135af20
-    virtual void vfunc_41();                                                // 41 0x14135b0a0
+    virtual void vfunc_41(const Scaleform::GFx::Value& root);              // 41 0x14135b0a0
     virtual int vfunc_48();                                                 // 48 0x14135b420
     virtual int vfunc_52(const CString& strPath, float fVolume);            // 52 0x14135ab40 play
     virtual int vfunc_53();                                                 // 53 0x14135ad10 stop
@@ -40,7 +40,7 @@ public:
 protected:
     MS2_LAYOUT_FRIEND;
     float m_68;                         // +0x68 volume (2nd argument of vfunc_52)
-    char m_pad_6c[4];
+    int m_pad_6c;
     CString m_strPath;                  // +0x70 video path (1st argument of vfunc_52)
 };
 MS2_CHECK_SIZE(UIVideoContents, 0x78);

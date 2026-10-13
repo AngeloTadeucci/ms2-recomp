@@ -20,17 +20,34 @@
 template <class T>
 class MS2Ptr
 {
+    template <class U> friend class MS2Ptr;
+
 public:
     MS2Ptr();
-    ~MS2Ptr();
+    MS2Ptr(int nNull);                  // `MS2Ptr<T> p(0)`: m_p = NULL (0x140c74e10 for T = AScript)
+    MS2Ptr(T* p);                       // m_p = p; AddRef() (0x140f9c100 for T = UISwfEntity)
+    MS2Ptr(const MS2Ptr& o);            // 0x1409b9940 for T = AScript
+    ~MS2Ptr();                          // 0x1409b9a00 for T = AScript
+    // Converting assignment (U derives from T). Inline: its COMDAT is in the first unit that assigns (0x1422dca80 for
+    // T = AScript, U = ASDisplayObject, in uiswfentity.cpp).
+    template <class U> MS2Ptr& operator=(const MS2Ptr<U>& o)
+    {
+        o.AddRef();
+        Release();
+        m_p = o.m_p;
+        return *this;
+    }
     MS2Ptr& operator=(int nNull);       // `p = NULL` (int parameter: the callee homes edx as a dword)
-    T* get() const;                     // tested for null: `if (p)` is written `if (p.get())`
-    operator T*() const;                // `if (MS2Ptr<T> p = ...)` (0x14135b3c0 for T = Unk_ASVideoPlayer)
+    T* get() const;                     // tested for null: `if (p)` is written `if (p.get())` (0x1409ee240 for AScript)
+    operator T*() const;                // `if (MS2Ptr<T> p = ...)`, `dynamic_cast<X*>((T*)p)` (AScript: 0x140ba7c60)
     T* operator->() const;
     bool IsNull() const;                // `p.get() == 0` as a bool
     bool operator==(T* p) const;
 
 private:
+    void AddRef() const;                // if (m_p) <add a reference> (0x140d03270 for T = ASDisplayObject)
+    void Release();                     // if (m_p) { <drop the reference>; m_p = NULL; } (0x1409b9e00 for T = AScript)
+
     void* m_unk_00;
     T* m_p;                             // +0x08
 };
@@ -38,6 +55,7 @@ private:
 class AScript : public CPtred
 {
 public:
+    Scaleform::GFx::Value& FUN_1422bb870();                                                  // m_value
     Scaleform::GFx::Value Invoke(const char* szMethod);                                     // 0x1422bb330
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2);                      // 0x140acd070
     Scaleform::GFx::Value Invoke(const char* szMethod, CString a1);                          // 0x1409b46e0

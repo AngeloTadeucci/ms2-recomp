@@ -25,6 +25,12 @@ Outputs (committed):
                          tools/ms2symobj.py for the hook DLL link)
   progress/summary.txt   per unit and overall: functions and bytes matched
 Cache: build/progress/ (objs, /showIncludes deps, per-unit results keyed by obj mtime).
+
+Parallel agents (docs/RECOVERY.md section 12): `--agent NAME` or MS2_AGENT=NAME selects a private cache
+build/progress-NAME/ and REPORT MODE: progress/* is never written. status.tsv / summary.txt go to the agent dir, and
+build/progress-NAME/symbols.tsv = committed progress/symbols.tsv + the harvest of the units in the agent's cache (the
+symbol table of the agent's hook build, tools/unit-check.sh). `--report` gives report mode without an agent name
+(cache build/progress-report/). Only the merge step (no agent, no --report) writes progress/*.
 """
 import argparse
 import bisect
@@ -33,6 +39,7 @@ import io
 import json
 import os
 import re
+import shutil
 import struct
 import subprocess
 import sys
@@ -323,7 +330,8 @@ def short_name(dem):
 
 
 INITS = ("??__E", "??__F")    # dynamic initializers and their atexit thunks
-GENERATED = ("??_G", "??_E", "??__E", "??__F", "??__J", "??_H", "??_I", "??_L", "??_M")
+GENERATED = ("??_G", "??_E", "??__E", "??__F", "??__J", "??_H", "??_I", "??_L", "??_M",
+             "?__empty_global_delete@")    # the last: compiler-emitted at end of file, carries the last line
 
 
 def process_unit(u, exe, starts, finfo, bases, vft, verbose):
@@ -368,6 +376,8 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
     for va, names in sorted(by_tag.items()):
         if len(names) > 1:
             names = [n for n in names if not n.startswith(GENERATED)] or names
+        if len(names) > 1:      # MS2_REPLACE* thunks sit right after short functions, inside their tag window
+            names = [n for n in names if "@ms2_thunk_" not in n] or names
         if len(names) > 1:
             names = [n for n in names if trial(n, va)] or names
         if len(names) != 1:
@@ -445,6 +455,16 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         # selectany COMDATs are emitted sorted by mangled name
         return (1, si_of[name], "") if name.startswith(INITS) else (0, 0, name)
 
+    # references from tagged functions decide look-alikes as well (a function-local static's atexit thunk is named
+    # only by the `lea rcx, ??__F...` inside the function that owns the static)
+    for name, va in sorted(known.items(), key=lambda kv: kv[1]):
+        for n2, v2 in refs(name, va).items():
+            if n2 in hits and n2 not in known and v2 not in used and v2 in hits[n2] and trial(n2, v2):
+                known[n2] = v2
+                how[n2] = "auto-ref"
+                used.add(v2)
+    hits = {n: h for n, h in hits.items() if n not in known}
+
     ok_hits = {}
     while hits:
         good = {}
@@ -498,9 +518,19 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             res["notes"].append(f"ambiguous: {len(names)} look-alike functions for {len(vas)} exe candidates: "
                                 + ", ".join(names[:3]))
     # 3. match everything paired (harvests the symbol map)
+    funclets = {}
     for name, va in sorted(known.items(), key=lambda kv: kv[1]):
+        bm.FUNCLET_PAIRS.clear()
         ok, text = quiet_match(obj, name, va, exe, verbose)
         res["pairs"][name] = {"va": va, "how": how[name], "ok": ok, "report": "" if ok else text}
+        if ok:
+            funclets.update(bm.FUNCLET_PAIRS)
+    # unwind funclets of matched functions (?dtor$N@...: not in the unit ranges, not counted) are matched only to
+    # harvest their callees: a destructor reached only on the exception path is otherwise missing from the symbol map
+    for name, va in sorted(funclets.items(), key=lambda kv: kv[1]):
+        ok, _ = quiet_match(obj, name, va, exe, False)
+        if not ok:
+            res["notes"].append(f"funclet {name} @0x{va:x} does not match")
     # 4. vftables (paired via RTTI, every slot checked against the pairs and the symbol map)
     for si, (name, value, secnum, typ, sclass) in obj.syms.items():
         if secnum > 0 and name.startswith("??_7") and sclass == 2:
@@ -521,7 +551,20 @@ def main():
     ap.add_argument("--force", action="store_true", help="recompile and re-match everything")
     ap.add_argument("-j", type=int, default=4, help="parallel compiles (default 4)")
     ap.add_argument("-v", "--verbose", action="store_true", help="print bytematch reports of non-matching functions")
+    ap.add_argument("--agent", default=os.environ.get("MS2_AGENT") or None,
+                    help="private cache build/progress-AGENT/, report mode (default: $MS2_AGENT)")
+    ap.add_argument("--report", action="store_true", help="report mode: never write progress/* (implied by --agent)")
+    ap.add_argument("--check", action="store_true",
+                    help="exit 1 unless every selected unit compiles and is 100%% matched with all vftables OK")
     a = ap.parse_args()
+
+    global CACHE, OUT
+    if a.agent and not re.fullmatch(r"[A-Za-z0-9_.-]+", a.agent):
+        sys.exit(f"bad agent name {a.agent!r}")
+    if a.agent or a.report:
+        CACHE = os.path.join(ROOT, "build", "progress-" + (a.agent or "report"))
+        OUT = CACHE
+    symbols_out = os.path.join(OUT, "symbols.tsv")
 
     t0 = time.time()
     os.makedirs(CACHE, exist_ok=True)
@@ -582,7 +625,12 @@ def main():
                 if prev is not None and prev != va:
                     bm.CONFLICTS.append((n, prev, va))
                 bm.HARVEST[n] = va
-    added = bm.write_harvest(bm.SYMBOLS_TSV, exe)
+    if symbols_out != bm.SYMBOLS_TSV:
+        # report mode: the committed table plus this cache's harvest (rebuilt every run, nothing stale survives)
+        os.makedirs(OUT, exist_ok=True)
+        shutil.copyfile(bm.SYMBOLS_TSV, symbols_out + ".tmp")
+        os.replace(symbols_out + ".tmp", symbols_out)
+    added = bm.write_harvest(symbols_out, exe)
 
     # status rows
     unit_by_rel = {u.rel: u for u in all_units}
@@ -667,7 +715,24 @@ def main():
                 print(f"note {rel}: {nline}")
     for n, x, y in bm.CONFLICTS:
         print(f"CONFLICT symbol {n}: 0x{x:x} vs 0x{y:x}")
-    print(f"symbols.tsv: {added} new; {time.time() - t0:.1f}s")
+    bad = []
+    if a.check:
+        sel = {u.name for u in units}
+        for name, n, m, f, b, bmt, nv, vok, fail in summary:
+            if name in sel and (fail or n == 0 or m != n or vok != nv):
+                bad.append(f"{name}: " + ("COMPILE FAILED" if fail else
+                                          f"{m}/{n} functions matched ({f} functional, {n - m - f} stub), "
+                                          f"vftables {vok}/{nv}"))
+        if not units:
+            bad.append("no unit matches " + " ".join(a.filters))
+    where = os.path.relpath(OUT, ROOT)
+    print(f"{where}/symbols.tsv: {added} new; {where}/status.tsv, summary.txt written; {time.time() - t0:.1f}s")
+    if a.check:
+        for line in bad:
+            print("CHECK FAILED " + line)
+        if bad or bm.CONFLICTS:
+            sys.exit(1)
+        print("CHECK OK: " + ", ".join(u.name for u in units))
 
 
 if __name__ == "__main__":
