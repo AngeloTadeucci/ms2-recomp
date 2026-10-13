@@ -6,9 +6,13 @@
 //       Redirect the original function at `va` (KMS2_DEV x64 VA, ImageBase 0x140000000) to `function`
 //       (free function or static member). Namespace scope, directly after the definition.
 //   MS2_REPLACE_METHOD(va, Class, Method, guardLen, guardHash)
-//       Same for a (virtual or non-virtual) member function. A thunk `R(Class* self, args...)` that calls
-//       `self->Class::Method(args...)` non-virtually is generated, so virtual methods work too.
-//       Method must not be overloaded.
+//       Same for a (virtual or non-virtual) member function. A member-function thunk with Method's exact
+//       signature that calls `this->Class::Method(args...)` non-virtually is generated, so virtual methods work
+//       too, and the member ABI is kept (a class returned by value: hidden return pointer after `this`).
+//       Method must not be overloaded and must be accessible from a derived class.
+//   MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, guardLen, guardHash)
+//       Override of a virtual of a secondary base `Base` (the exe function receives `this` = the Base subobject,
+//       e.g. UICutSceneMovie::OnMessage via IMessageListener at +0x18): the thunk derives from Base and adjusts.
 //   MS2_REPLACE_OVERLOAD(va, Signature, function, guardLen, guardHash)
 //       MS2_REPLACE for an overloaded free function / static member: Signature picks the overload,
 //       e.g. MS2_REPLACE_OVERLOAD(0x140696e00, CString(BYTE*, UINT), CMD5Checksum::GetMD5, 190, 0x...).
@@ -42,6 +46,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <cstring>
 #include <new>
 #include <type_traits>
 #include <utility>
@@ -89,6 +94,22 @@ template <class T> struct MethodSig;
 template <class C, class R, class... A> struct MethodSig<R (C::*)(A...)> { using Free = R (*)(C*, A...); };
 template <class C, class R, class... A> struct MethodSig<R (C::*)(A...) const> { using Free = R (*)(const C*, A...); };
 template <class F> inline void* FnToVoid(F f) { return reinterpret_cast<void*>(f); }
+inline void* FnToVoid(void* p) { return p; }
+// Code address of a pointer to a non-virtual member function of the thunk itself (MS ABI: the first pointer-size
+// bytes; multiple-inheritance PMFs append a this-adjustment, which is 0 for a function of the most derived class).
+template <class F> inline void* MemberToVoid(F f) {
+    static_assert(sizeof(F) >= sizeof(void*), "member function pointer");
+    void* p;
+    std::memcpy(&p, &f, sizeof p);
+    return p;
+}
+template <class Thunk, class Sig> struct MemberThunk;
+template <class Thunk, class C, class R, class... A> struct MemberThunk<Thunk, R (C::*)(A...)> {
+    static void* Get() { R (Thunk::*p)(A...) = &Thunk::template Call<R, A...>; return MemberToVoid(p); }
+};
+template <class Thunk, class C, class R, class... A> struct MemberThunk<Thunk, R (C::*)(A...) const> {
+    static void* Get() { R (Thunk::*p)(A...) const = &Thunk::template CallC<R, A...>; return MemberToVoid(p); }
+};
 }  // namespace detail
 }  // namespace hook
 
@@ -122,12 +143,20 @@ template <uintptr_t VA, class T> struct Global {
 
 #define MS2_REPLACE(va, function, glen, ghash) MS2_REPLACE_IMPL(va, &function, #function, glen, ghash)
 
-#define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash)                                                  \
+#define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) MS2_REPLACE_METHOD_VIA(va, Class, Class, Method, glen, ghash)
+
+#define MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, glen, ghash)                                        \
+    struct MS2_CAT(ms2_thunk_, __LINE__) : Base {                                                           \
+        template <class R, class... A> R Call(A... a) {                                                     \
+            return static_cast<Class*>(static_cast<Base*>(this))->Class::Method(std::forward<A>(a)...);     \
+        }                                                                                                   \
+        template <class R, class... A> R CallC(A... a) const {                                              \
+            return static_cast<const Class*>(static_cast<const Base*>(this))->Class::Method(                \
+                std::forward<A>(a)...);                                                                     \
+        }                                                                                                   \
+    };                                                                                                      \
     MS2_REPLACE_IMPL(va,                                                                                    \
-        static_cast<::ms2::hook::detail::MethodSig<decltype(&Class::Method)>::Free>(                        \
-            [](auto* self, auto... a) -> decltype(auto) {                                                   \
-                return self->Class::Method(std::forward<decltype(a)>(a)...);                                \
-            }),                                                                                             \
+        (::ms2::hook::detail::MemberThunk<MS2_CAT(ms2_thunk_, __LINE__), decltype(&Class::Method)>::Get()), \
         #Class "::" #Method, glen, ghash)
 
 #define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash)                                                \
@@ -156,6 +185,7 @@ template <uintptr_t VA, class T> struct Global {
 
 #define MS2_REPLACE(va, function, glen, ghash) static_assert(true, "")
 #define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, glen, ghash) static_assert(true, "")
 #define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash) static_assert(true, "")
 #define MS2_REPLACE_CTOR(va, Class, glen, ghash) static_assert(true, "")
 #define MS2_REPLACE_DTOR(va, Class, glen, ghash) static_assert(true, "")

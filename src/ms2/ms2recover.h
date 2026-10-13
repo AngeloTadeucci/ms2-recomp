@@ -10,7 +10,7 @@
 //                        _wassert call (3rd argument).
 //   MS2_LINE(line)       an original __LINE__ value used outside assert (logging/exception macros).
 //   MS2_CHECK_SIZE(T, n) / MS2_CHECK_OFFSET(T, member, off)
-//                        layout pins for recovered and placeholder classes (static_assert, no code).
+//                        layout pins (ms2layout.h, which headers include directly).
 //   MS2_EMIT_CRT_MEMMOVE_S()
 //                        ~45% of the original objs contain an unreferenced copy of the CRT's static-inline memmove_s
 //                        (271 bytes, sorted last in the obj's COMDAT tail). Its referrer was a discarded COMDAT whose
@@ -20,6 +20,8 @@
 
 #include <assert.h>
 #include <stddef.h>
+
+#include "ms2/ms2layout.h"
 
 #ifndef MS2_THIS_FILE
 #error "define MS2_THIS_FILE (the original __FILE__ string) before including ms2recover.h"
@@ -33,8 +35,6 @@ extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const
 
 #define MS2_LINE(line) (line)
 
-#define MS2_CHECK_SIZE(T, n) static_assert(sizeof(T) == (n), "sizeof(" #T ") != " #n)
-#define MS2_CHECK_OFFSET(T, member, off) static_assert(offsetof(T, member) == (off), "offsetof(" #T ", " #member ") != " #off)
 
 #define MS2_EMIT_CRT_MEMMOVE_S()                                                                          \
     __declspec(selectany) extern void(__cdecl* const ms2_pfnCheckedMemmoveS)(void*, size_t, const void*, size_t) = \

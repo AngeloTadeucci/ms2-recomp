@@ -43,6 +43,26 @@ from capstone import x86
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EXE = os.path.join(ROOT, "Game Versions", "KMS2_DEV", "x64", "MapleStory2.exe")
 FUNCS = os.path.join(ROOT, "work", "map", "functions.tsv")
+# import libraries that resolve the exe's by-ordinal imports (mfc140.dll exports everything by ordinal)
+ORDINAL_LIBS = [os.path.join(ROOT, "third_party", "msvc", "VC", "Tools", "MSVC", "14.16.27023", "atlmfc", "lib", "x64",
+                             "mfc140.lib")]
+
+
+def import_lib_ordinals(path):
+    """{(dll lower, ordinal): symbol} from the short import members of an import library (by-ordinal entries)."""
+    out = {}
+    data = open(path, "rb").read()
+    o = 8
+    while o + 60 <= len(data):
+        size = int(data[o + 48:o + 58].decode().strip())
+        m = data[o + 60:o + 60 + size]
+        if len(m) >= 20 and m[:4] == b"\0\0\xff\xff":
+            hint, flags = struct.unpack_from("<HH", m, 16)
+            sym, dll = m[20:].split(b"\0")[:2]
+            if (flags >> 2) & 7 == 0:                      # IMPORT_OBJECT_ORDINAL
+                out[(dll.decode().lower(), hint)] = sym.decode("latin1")
+        o += 60 + size + (size & 1)
+    return out
 
 # IMAGE_REL_AMD64_*
 REL_ADDR64, REL_ADDR32, REL_ADDR32NB, REL_REL32 = 1, 2, 3, 4
@@ -304,10 +324,22 @@ class Exe:
             self.starts.sort()
         self.iat = {}
         self.pe.parse_data_directories(directories=[pefile.DIRECTORY_ENTRY["IMAGE_DIRECTORY_ENTRY_IMPORT"]])
+        ords = {}
+        for lib in ORDINAL_LIBS:
+            if os.path.exists(lib):
+                ords.update(import_lib_ordinals(lib))
+        self.imp = {}                                       # IAT slot va -> imported symbol name
         for e in getattr(self.pe, "DIRECTORY_ENTRY_IMPORT", []):
             for imp in e.imports:
                 if imp.name:
-                    self.iat[imp.address] = e.dll.decode() + "!" + imp.name.decode()
+                    sym = imp.name.decode()
+                else:
+                    sym = ords.get((e.dll.decode().lower(), imp.ordinal))
+                if sym:
+                    self.imp[imp.address] = sym
+                    self.iat[imp.address] = e.dll.decode() + "!" + sym
+                else:
+                    self.iat[imp.address] = f"{e.dll.decode()}!#{imp.ordinal}"
 
     def read(self, va, n):
         o = va - self.base
@@ -517,6 +549,7 @@ SYMBOLS_TSV = os.path.join(ROOT, "progress", "symbols.tsv")
 SYMBOLS = {}          # name -> va
 HARVEST = {}          # name -> va (this run)
 CONFLICTS = []
+LAST_TARGETS = {}  # every symbol -> exe target of the last match_one call (statics included; empty on mismatch)
 LOCAL_KNOWN = {}   # name -> va pairs of the current unit (statics included), checked like SYMBOLS
 # Statically linked runtime (CRT startup/helpers, import stubs) at the end of .text: never mapped - the hook DLL
 # links its own CRT/MFC. Gamebryo resumes at 0x1427b6c90 (NOTES "Binary map").
@@ -677,11 +710,16 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
     ndiff = sum(1 for k in range(min(n, len(xbytes))) if not omask[k] and data[k] != xbytes[k])
     if ndiff:
         rep.bad(f"{ndiff} unmasked byte(s) differ")
+    for sname, tgt in targets.items():                      # imports: __imp_X must be the exe's IAT slot for X
+        if sname.startswith("__imp_") and tgt in exe.imp and exe.imp[tgt] != sname[6:]:
+            rep.bad(f"{sname} is the import {exe.imp[tgt]} in the exe")
     for sname, tgt in targets.items():                      # pairs known by the caller (tools/progress.py)
         want = LOCAL_KNOWN.get(sname)
         if want is not None and want != tgt:
             rep.bad(f"{sname} is paired with 0x{want:x}, exe calls/uses 0x{tgt:x}")
+    LAST_TARGETS.clear()
     if obj is not None and rep.ok:                             # targets are only meaningful if the code matches
+        LAST_TARGETS.update(targets)
         for sname, tgt in targets.items():
             tsi = tsyms.get(sname)
             if tsi is not None and obj.is_external(tsi):

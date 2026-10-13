@@ -322,6 +322,7 @@ def short_name(dem):
     return s.strip()
 
 
+INITS = ("??__E", "??__F")    # dynamic initializers and their atexit thunks
 GENERATED = ("??_G", "??_E", "??__E", "??__F", "??__J", "??_H", "??_I", "??_L", "??_M")
 
 
@@ -343,6 +344,17 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         bm.HARVEST.update(snap)
         del bm.CONFLICTS[nconf:]
         return ok
+
+    def refs(name, va):
+        """{obj symbol: exe va} referenced by `name` paired with `va` (empty unless it matches)."""
+        snap, nconf = dict(bm.HARVEST), len(bm.CONFLICTS)
+        with contextlib.redirect_stdout(io.StringIO()):
+            bm.match_one(obj, name, va, exe, verbose=False, check_unwind=False, quiet=True)
+        out = dict(bm.LAST_TARGETS)
+        bm.HARVEST.clear()
+        bm.HARVEST.update(snap)
+        del bm.CONFLICTS[nconf:]
+        return out
 
     # 1. tags (authoritative). Compiler-generated functions (??_G, ??__E ...) inherit the line of the declaration they
     # belong to, so a tag claimed by several symbols goes to the non-generated one, else to the one that matches.
@@ -413,7 +425,7 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         return next((r for r in u.ranges if r[0] <= va < r[1]), None)
 
     def order_ok(name, va):
-        if obj.own(si_of[name]):
+        if obj.own(si_of[name]) or name.startswith(INITS):
             return True
         r = range_of(va)
         lo = hi = None
@@ -427,6 +439,11 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             if v2 > va and (hi is None or v2 < hi[1]):
                 hi = (n2, v2)
         return (lo is None or lo[0] < name) and (hi is None or name < hi[0])
+
+    def order_key(name):
+        # initializers/atexit thunks (static symbols, COMDATs under /Gy) follow definition order = obj section order;
+        # selectany COMDATs are emitted sorted by mangled name
+        return (1, si_of[name], "") if name.startswith(INITS) else (0, 0, name)
 
     ok_hits = {}
     while hits:
@@ -458,6 +475,14 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             known[name] = va
             how[name] = "auto"
             used.add(va)
+        # references from accepted functions to look-alike candidates decide those (an initializer's
+        # `lea rcx, ??__F<static>` names its atexit thunk; a ctor names its vftable's functions)
+        for name, va in accepted:
+            for n2, v2 in refs(name, va).items():
+                if n2 in hits and n2 not in known and v2 not in used and v2 in hits[n2] and trial(n2, v2):
+                    known[n2] = v2
+                    how[n2] = "auto-ref"
+                    used.add(v2)
         hits = {n: h for n, h in hits.items() if n not in known and n in good}
     # identical functions left over (same bytes, unknown callees): COMDAT tail order = sorted by mangled name
     groups = {}
@@ -465,7 +490,7 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         groups.setdefault(tuple(va for va in ok_hits.get(name, []) if va not in used), []).append(name)
     for vas, names in groups.items():
         if vas and len(vas) == len(names):
-            for name, va in zip(sorted(names), sorted(vas)):
+            for name, va in zip(sorted(names, key=order_key), sorted(vas)):
                 known[name] = va
                 how[name] = "auto-order"
                 used.add(va)
