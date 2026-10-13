@@ -1,0 +1,17 @@
+# Recovered game code (src/ms2/**.cpp) as an OBJECT library: every object is linked into the hook DLL (no static
+# library, which would drop objects whose only content is MS2_REPLACE registrations).
+# Under cl 19.16 it is compiled with Nexon's game-code flags (cmake/ms2-game-flags.cmake) so the functions can
+# byte-match the exe; this directory's per-config flags are cleared so no /O2 /Ob1 /DNDEBUG of the build type leak in.
+# clang-cl keeps the normal project flags (it can never byte-match).
+include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/ms2-game-flags.cmake")
+
+if(MSVC AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    foreach(cfg DEBUG RELEASE RELWITHDEBINFO MINSIZEREL)
+        set(CMAKE_CXX_FLAGS_${cfg} "/Zi")
+    endforeach()
+endif()
+
+file(GLOB_RECURSE MS2_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
+add_library(ms2game OBJECT ${MS2_GAME_SOURCES})
+target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook")
+ms2_game_flags(ms2game)

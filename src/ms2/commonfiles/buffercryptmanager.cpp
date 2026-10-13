@@ -1,5 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). See buffercryptmanager.h for the CU name evidence.
-// The original was compiled without optimization (/Od: locals on the stack, std::swap not inlined).
+// The original was compiled without optimization (/Od: locals on the stack, swap not inlined). Under cl 19.16 with
+// cmake/ms2-game-flags.cmake every function here byte-matches the exe (tools/bytematch.py).
 #include "buffercryptmanager.h"
 
 #include <utility>
@@ -57,17 +58,28 @@ void CRearrangeCrypter::Init()   // 0x1401cd910, 6 bytes: not worth a hook
 {
 }
 
+// The exe's swap<unsigned char> (0x1401cdb50, COMDAT) is not VS2017's std::swap (3 std::move calls): it calls
+// one identity function (std::forward<unsigned char&>) four times. Name unknown; this reproduces it byte for byte.
+template <class T> void SwapT(T& a, T& b)
+{
+    T t = std::forward<T&>(a);
+    std::forward<T&>(a) = std::forward<T&>(b);
+    std::forward<T&>(b) = t;
+}
+
 void CRearrangeCrypter::Encrypt(BYTE* pBuffer, UINT nSize, void* /*pReserved*/)
 {
-    for (UINT i = 0; i < nSize / 2; ++i)
-        std::swap(pBuffer[i], pBuffer[nSize / 2 + i]);
+    UINT nHalf = nSize / 2;
+    for (UINT i = 0; i < nHalf; ++i)
+        SwapT(pBuffer[i], pBuffer[nHalf + i]);
 }
 MS2_REPLACE_METHOD(0x1401CD920, CRearrangeCrypter, Encrypt, 126, 0x566F6F41);
 
 BOOL CRearrangeCrypter::Decrypt(BYTE* pBuffer, UINT nSize, void* /*pReserved*/)
 {
-    for (UINT i = 0; i < nSize / 2; ++i)
-        std::swap(pBuffer[i], pBuffer[nSize / 2 + i]);
+    UINT nHalf = nSize / 2;
+    for (UINT i = 0; i < nHalf; ++i)
+        SwapT(pBuffer[i], pBuffer[nHalf + i]);
     return TRUE;
 }
 MS2_REPLACE_METHOD(0x1401CD9B0, CRearrangeCrypter, Decrypt, 131, 0x8AE4685C);

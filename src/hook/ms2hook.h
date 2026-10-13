@@ -29,7 +29,8 @@
 // MS2_REPLACE* then expand to nothing and any remaining MS2_EXTERN / MS2_GLOBAL is a compile error
 // (= an unrecovered dependency).
 //
-// Only standard C++17 + MSVC extensions: must build with cl 19.16 and clang-cl.
+// Only standard C++ + MSVC extensions: must build with cl 19.16 and clang-cl. Keep it C++14: under cl 19.16 the game
+// sources (src/ms2) compile with /std:c++14 (Nexon's flags, cmake/ms2-game-flags.cmake); the hook runtime uses C++17.
 #pragma once
 
 #include <cstddef>

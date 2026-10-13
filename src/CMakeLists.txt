@@ -21,9 +21,10 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     add_compile_options(-Wno-microsoft-cast -Wno-unused-command-line-argument)
 endif()
 
-# Recovered game code is compiled straight into the DLL (never via a static library: the linker would drop objects
-# whose only content is MS2_REPLACE registrations, since nothing references them).
-file(GLOB_RECURSE MS2_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/ms2/*.cpp")
+# Recovered game code: OBJECT library `ms2game` (src/ms2/CMakeLists.txt), compiled with Nexon's game-code flags under
+# cl 19.16 (cmake/ms2-game-flags.cmake; NOTES "Game-code compiler flags (byte-matching)") and linked object by object
+# into the DLL (never via a static library: the linker would drop objects whose only content is MS2_REPLACE
+# registrations, since nothing references them).
 file(GLOB_RECURSE MS2_DIFFTEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/hook/difftest/*.cpp")
 file(GLOB_RECURSE MS2_COMPAT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/hook/compat/*.cpp")
 
@@ -36,7 +37,8 @@ add_library(dinput8 SHARED
     hook/hook_runtime.cpp
     hook/difftest.cpp)
 if(MS2HOOK_WITH_GAME)
-    target_sources(dinput8 PRIVATE ${MS2_GAME_SOURCES} ${MS2_DIFFTEST_SOURCES})
+    add_subdirectory(ms2)
+    target_sources(dinput8 PRIVATE $<TARGET_OBJECTS:ms2game> ${MS2_DIFFTEST_SOURCES})
 endif()
 if(MS2HOOK_WITH_COMPAT)
     target_sources(dinput8 PRIVATE ${MS2_COMPAT_SOURCES})
