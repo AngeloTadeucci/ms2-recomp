@@ -1,0 +1,1 @@
+Vendored from https://github.com/microsoft/Detours commit 1dbd4ea281d73d478aa8d09a8b83fbd265f715f7 (2026-09-29), src/{detours,disasm,modules}.cpp + detours.h/detver.h, unmodified. MIT license (LICENSE.md).
