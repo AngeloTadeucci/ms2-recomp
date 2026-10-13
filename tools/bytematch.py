@@ -103,6 +103,12 @@ class Obj:
             secnum, = struct.unpack_from(secnum_fmt, d, o + 12)
             typ, sclass, naux = struct.unpack_from("<HBB", d, o + symsz - 4)
             self.syms[i] = (name, value, secnum, typ, sclass)
+            if sclass == 3 and naux and value == 0 and 0 < secnum <= nsec and name == self.sections[secnum - 1]["name"]:
+                ao = o + symsz                                 # section definition aux: COMDAT selection
+                num, sel = struct.unpack_from("<HB", d, ao + 12)
+                if secnum_fmt == "<i":
+                    num |= struct.unpack_from("<H", d, ao + 16)[0] << 16
+                self.sections[secnum - 1]["comdat"] = (sel, num)
             i += 1 + naux
         self.by_name = {}
         for idx, s in self.syms.items():
@@ -171,6 +177,11 @@ class Obj:
             return exact[0]
         sys.exit(f"{pat}: ambiguous in {self.path}: " + ", ".join(self.syms[i][0] for i in hits[:10]))
 
+    def find_any(self, pat):
+        if pat in self.by_name and self.syms[self.by_name[pat]][2] > 0:
+            return self.by_name[pat]
+        return self.find(pat)
+
     def function(self, symidx):
         """(bytes, [(off, len, symname, rtype, target)], unwind_loc or None).
 
@@ -198,8 +209,31 @@ class Obj:
                     add = struct.unpack_from("<I", sec["data"], va)[0]
                     if value <= tval + add < end:
                         inner = tval + add - value
-                fields.append((va - value, ln, tname, ty, inner))
+                fields.append((va - value, ln, tname, ty, inner, si))
         return data, fields, unwind
+
+    def is_code(self, symidx):
+        sn = self.syms[symidx][2]
+        return sn > 0 and bool(self.sec(sn)["chars"] & 0x20)
+
+    def own(self, symidx):
+        """Not a discardable duplicate: plain section or COMDAT NODUPLICATES (the unit's own functions), as opposed
+        to selectany/largest COMDATs (inline/template functions, kept once exe-wide in whichever unit came first)."""
+        sec = self.sec(self.syms[symidx][2])
+        if not sec["chars"] & 0x1000:                          # IMAGE_SCN_LNK_COMDAT
+            return True
+        sel, num = sec.get("comdat", (0, 0))
+        for _ in range(8):
+            if sel != 5 or not num:                            # ASSOCIATIVE: selection of the parent section
+                break
+            sel, num = self.sections[num - 1].get("comdat", (0, 0))
+        return sel == 1
+
+    def is_external(self, symidx):
+        return self.syms[symidx][4] == 2
+
+    def defined(self, symidx):
+        return self.syms[symidx][2] > 0
 
 
 # ----------------------------------------------------------------------------------------------------------------
@@ -238,10 +272,10 @@ def heuristic_fields(data):
         for op in i.operands:
             if op.type == x86.X86_OP_MEM and op.mem.base == x86.X86_REG_RIP:
                 doff = i.disp_offset
-                fields.append((i.address + doff, 4, "<rip>", REL_REL32, None))
+                fields.append((i.address + doff, 4, "<rip>", REL_REL32, None, None))
             elif op.type == x86.X86_OP_IMM and i.mnemonic in ("call", "jmp") and i.imm_size == 4:
                 if not (0 <= op.imm < len(data)):
-                    fields.append((i.address + i.imm_offset, 4, "<rel32>", REL_REL32, None))
+                    fields.append((i.address + i.imm_offset, 4, "<rel32>", REL_REL32, None, None))
     return fields
 
 
@@ -474,7 +508,129 @@ def side_by_side(obytes, omask, xbytes, xmask, va):
     return rows
 
 
+# ----------------------------------------------------------------------------------------------------------------
+# Symbol map (progress/symbols.tsv): mangled external symbol -> exe VA, harvested from matched functions/vtables.
+# Used (a) to check that a call/reference goes to the right exe address (not just a consistent one) and (b) by
+# tools/ms2symobj.py to resolve references from recovered code to not-yet-recovered exe code/data in the hook DLL.
+
+SYMBOLS_TSV = os.path.join(ROOT, "progress", "symbols.tsv")
+SYMBOLS = {}          # name -> va
+HARVEST = {}          # name -> va (this run)
+CONFLICTS = []
+LOCAL_KNOWN = {}   # name -> va pairs of the current unit (statics included), checked like SYMBOLS
+# Statically linked runtime (CRT startup/helpers, import stubs) at the end of .text: never mapped - the hook DLL
+# links its own CRT/MFC. Gamebryo resumes at 0x1427b6c90 (NOTES "Binary map").
+RUNTIME_RANGES = [(0x142748000, 0x1427b6c90)]
+NO_HARVEST_PREFIXES = ("__imp_", "??_C@", "__real@", "__xmm@", "__mask@", "__ymm@", "$", ".", "??_R", "__security_",
+                       "_tls_", "__GSHandler", "__CxxFrameHandler", "_CxxThrowException", "__chkstk", "_fltused",
+                       "_RTC_", "__std_", "_Init_thread_", "_Thrd_", "__acrt_", "__vcrt_", "__report_")
+
+
+def load_symbols(path=SYMBOLS_TSV):
+    SYMBOLS.clear()
+    if path and os.path.exists(path):
+        for line in open(path):
+            if line.startswith("#") or not line.strip():
+                continue
+            p = line.rstrip("\n").split("\t")
+            SYMBOLS[p[0]] = int(p[1], 16)
+
+
+def harvestable(name, va):
+    if name.startswith(NO_HARVEST_PREFIXES) or name in ("memset", "memcpy", "memmove", "memcmp", "strlen", "atexit"):
+        return False
+    return not any(a <= va < b for a, b in RUNTIME_RANGES)
+
+
+def note_symbol(name, va, rep):
+    """Check name -> va against the symbol map; remember it for --harvest."""
+    if not harvestable(name, va):
+        return
+    want = SYMBOLS.get(name)
+    if want is not None and want != va:
+        rep.bad(f"symbol {name} is 0x{want:x} in {os.path.relpath(SYMBOLS_TSV, ROOT)}, exe uses 0x{va:x} "
+                f"(wrong callee/global?)")
+        return
+    prev = HARVEST.get(name)
+    if prev is not None and prev != va:
+        CONFLICTS.append((name, prev, va))
+        return
+    HARVEST[name] = va
+
+
+def write_harvest(path, exe):
+    """Merge HARVEST into the symbol TSV (sym, va, kind). Existing entries win; conflicts are reported."""
+    cur = {}
+    if os.path.exists(path):
+        for line in open(path):
+            if line.startswith("#") or not line.strip():
+                continue
+            p = line.rstrip("\n").split("\t")
+            cur[p[0]] = (int(p[1], 16), p[2] if len(p) > 2 else "")
+    text_lo = exe.base + exe.pe.sections[0].VirtualAddress
+    text_hi = text_lo + exe.pe.sections[0].Misc_VirtualSize
+    added = 0
+    for n, va in HARVEST.items():
+        if n in cur:
+            if cur[n][0] != va:
+                CONFLICTS.append((n, cur[n][0], va))
+            continue
+        cur[n] = (va, "func" if text_lo <= va < text_hi else "data")
+        added += 1
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+    with open(path, "w") as f:
+        f.write("#symbol\tva\tkind\n")
+        for n, (va, k) in sorted(cur.items(), key=lambda kv: (kv[1][0], kv[0])):
+            f.write(f"{n}\t{va:x}\t{k}\n")
+    return added
+
+
+def match_data(obj, si, va, exe, verbose, quiet=False):
+    """Data symbol (vftable, constant table): unrelocated bytes equal, ADDR64 slots resolved against the exe."""
+    rep = Report()
+    name, value, secnum = obj.syms[si][0], obj.syms[si][1], obj.syms[si][2]
+    sec = obj.sec(secnum)
+    nxt = [v for (n, v, sn, t, c) in obj.syms.values() if sn == secnum and v > value]
+    end = min(nxt) if nxt else sec["size"]
+    data = sec["data"][value:end]
+    xb = exe.read(va, len(data))
+    mask = bytearray(len(data))
+    nslot = 0
+    for rva_, rsi, ty in sec["relocs"]:
+        if not value <= rva_ < end:
+            continue
+        off = rva_ - value
+        ln = RELOC_LEN.get(ty, 4)
+        for k in range(off, min(off + ln, len(data))):
+            mask[k] = 1
+        if ty == REL_ADDR64 and off + 8 <= len(data):
+            tgt = struct.unpack_from("<Q", xb, off)[0] - struct.unpack_from("<q", data, off)[0]
+            tname = obj.syms[rsi][0]
+            nslot += 1
+            if verbose:
+                rep.info(f"[+0x{off:x}] {tname} -> 0x{tgt:x} {exe.name(tgt)}")
+            want = LOCAL_KNOWN.get(tname)
+            if want is not None and want != tgt:
+                rep.bad(f"[+0x{off:x}] {tname} is paired with 0x{want:x}, exe slot holds 0x{tgt:x}")
+            elif obj.is_external(rsi) or obj.defined(rsi):
+                note_symbol(tname, tgt, rep)
+    ndiff = sum(1 for k in range(len(data)) if not mask[k] and data[k] != xb[k])
+    if ndiff:
+        rep.bad(f"{ndiff} unrelocated byte(s) differ")
+    status = "MATCH" if rep.ok else "DIFF"
+    print(f"{status:5} {name}  @0x{va:x}  (data, {len(data)} bytes, {nslot} pointer slots)")
+    for l in rep.lines:
+        print(l)
+    if rep.ok and obj.is_external(si):
+        note_symbol(name, va, rep)
+    return rep.ok
+
+
 def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
+    if isinstance(obj_or_cod, Obj):
+        si = obj_or_cod.find_any(sym)
+        if not obj_or_cod.is_code(si):
+            return match_data(obj_or_cod, si, va, exe, verbose, quiet)
     rep = Report()
     if isinstance(obj_or_cod, Obj):
         obj = obj_or_cod
@@ -496,7 +652,8 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
     omask = bytearray(n)
     xmask = bytearray(len(xbytes))
     targets = {}
-    for off, ln, sname, ty, inner in fields:
+    tsyms = {}
+    for off, ln, sname, ty, inner, tsi in fields:
         if inner is not None and off + 4 <= len(xbytes):       # jump-table entry: must point at the same offset
             xv = struct.unpack_from("<I", xbytes, off)[0]
             if xv != rva + inner:
@@ -516,9 +673,21 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
             if prev is not None and prev != tgt:
                 rep.bad(f"symbol {sname} resolves to two different exe targets 0x{prev:x} / 0x{tgt:x}")
             targets[sname] = tgt
+            tsyms[sname] = tsi
     ndiff = sum(1 for k in range(min(n, len(xbytes))) if not omask[k] and data[k] != xbytes[k])
     if ndiff:
         rep.bad(f"{ndiff} unmasked byte(s) differ")
+    for sname, tgt in targets.items():                      # pairs known by the caller (tools/progress.py)
+        want = LOCAL_KNOWN.get(sname)
+        if want is not None and want != tgt:
+            rep.bad(f"{sname} is paired with 0x{want:x}, exe calls/uses 0x{tgt:x}")
+    if obj is not None and rep.ok:                             # targets are only meaningful if the code matches
+        for sname, tgt in targets.items():
+            tsi = tsyms.get(sname)
+            if tsi is not None and obj.is_external(tsi):
+                note_symbol(sname, tgt, rep)
+        if rep.ok and obj.is_external(obj.find_any(sym)):
+            note_symbol(name, va, rep)
     if obj is not None and check_unwind:
         compare_unwind(obj, unw, exe, va, value, secnum, rep, verbose)
     status = "MATCH" if rep.ok else "DIFF"
@@ -540,7 +709,7 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
     return rep.ok
 
 
-def search(obj, pats, exe):
+def search(obj, pats, exe, full=False):
     bylen = {}
     for rva, (end, _) in exe.rf.items():
         bylen.setdefault(end - rva, []).append(rva)
@@ -560,7 +729,7 @@ def search(obj, pats, exe):
             if bytes(x[k] for k in keep) == want:
                 hits.append(rva + exe.base)
         hits.sort()
-        hs = " ".join(f"0x{h:x}" for h in hits[:8]) + (f" ... (+{len(hits) - 8})" if len(hits) > 8 else "")
+        hs = " ".join(f"0x{h:x}" for h in (hits if full else hits[:8])) + (f" ... (+{len(hits) - 8})" if len(hits) > 8 and not full else "")
         print(f"{len(hits):5} hits  {len(data):5}B  {name}  {hs}")
 
 
@@ -577,7 +746,12 @@ def main():
                          "with the same length and identical bytes outside the reloc fields")
     ap.add_argument("-q", "--quiet", action="store_true", help="status lines only (no side-by-side)")
     ap.add_argument("--exe", default=EXE)
+    ap.add_argument("--symbols", default=SYMBOLS_TSV,
+                    help="symbol map to check references against (default progress/symbols.tsv; '' = none)")
+    ap.add_argument("--harvest", nargs="?", const=SYMBOLS_TSV, default=None,
+                    help="merge symbol->VA pairs of matched functions/vtables into this TSV (default progress/symbols.tsv)")
     a = ap.parse_args()
+    load_symbols(a.symbols)
     src = Obj(a.file) if not a.file.lower().endswith(".cod") else a.file
     if a.list:
         if not isinstance(src, Obj):
@@ -591,7 +765,7 @@ def main():
         if not isinstance(src, Obj):
             sys.exit("--search needs an .obj")
         exe = Exe(a.exe)
-        search(src, a.pairs, exe)
+        search(src, a.pairs, exe, a.verbose)
         return
     pairs = list(a.pairs)
     if a.map:
@@ -607,6 +781,11 @@ def main():
         nok += match_one(src, pairs[k], int(pairs[k + 1], 16), exe, a.verbose, not a.no_unwind, a.quiet)
     if len(pairs) > 2:
         print(f"{nok}/{len(pairs) // 2} matched")
+    if a.harvest:
+        added = write_harvest(a.harvest, exe)
+        print(f"harvest: {added} new symbol(s) -> {a.harvest}")
+    for n, x, y in CONFLICTS:
+        print(f"CONFLICT {n}: 0x{x:x} vs 0x{y:x}")
     sys.exit(0 if nok == len(pairs) // 2 else 1)
 
 

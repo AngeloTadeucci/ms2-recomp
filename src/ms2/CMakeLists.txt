@@ -11,6 +11,15 @@ if(MSVC AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     endforeach()
 endif()
 
+# Game code sees Nexon's preprocessor environment, not the hook project's (no WIN32_LEAN_AND_MEAN / NOMINMAX:
+# MFC and the original headers need the full windows.h and the min/max macros; no /utf-8: literals stay bytes).
+set_directory_properties(PROPERTIES COMPILE_DEFINITIONS "" COMPILE_OPTIONS "")
+add_compile_options(/W3 /EHsc)
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    add_compile_options(-Wno-microsoft-cast -Wno-unused-command-line-argument -Wno-invalid-offsetof
+                        -Wno-unused-private-field -Wno-inconsistent-missing-override)
+endif()
+
 file(GLOB_RECURSE MS2_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp")
 add_library(ms2game OBJECT ${MS2_GAME_SOURCES})
 target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook")

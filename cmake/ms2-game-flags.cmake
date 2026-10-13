@@ -11,6 +11,7 @@
 #   /MD           release DLL CRT/MFC (imports VCRUNTIME140 / MSVCP140 / mfc140.dll), no _DEBUG
 #   no NDEBUG     asserts are live (751 game functions call _wassert, e.g. 0x1408e7930)
 #   _MBCS         narrow Win32 API (MessageBoxA, CreateFileA), MBCS MFC (mfc140.dll, not mfc140u.dll)
+#   _AFXDLL       MFC as a shared DLL (required by afx.h with /MD; CString methods are mfc140.dll imports)
 #   also on       /GR /Gy (COMDAT per function) /Zc:wchar_t /Zc:threadSafeInit /Zc:sizedDealloc; no /permissive-
 #   absent        /RTC* /JMC /sdl /guard:cf /arch:AVX* /Qspectre /J (each tested: breaks matches); no /GL (no LTCG)
 #   untestable    /Zi vs /Z7, /permissive-, /hotpatch: no codegen difference
@@ -18,16 +19,20 @@
 # _ITERATOR_DEBUG_LEVEL is 0, which is the /MD release default (no define needed).
 
 set(MS2_GAME_COMPILE_OPTIONS /Od /Ob0 /Oi /EHsc /GS /GR /Gy /fp:fast /Zc:wchar_t /Zc:threadSafeInit)
-set(MS2_GAME_COMPILE_DEFINITIONS _MBCS)
+set(MS2_GAME_COMPILE_DEFINITIONS _MBCS _AFXDLL)
 set(MS2_GAME_CXX_STANDARD 14)
 
 # Command line for a standalone experiment (tools/bytematch.py workflow):
-#   cl /nologo /c /Od /Oi /EHsc /MD /Z7 /fp:fast /D_MBCS /Fofoo.obj /FAsc /Fafoo.cod foo.cpp
-set(MS2_GAME_CL_FLAGS "/Od /Oi /EHsc /MD /Z7 /fp:fast /D_MBCS")
+#   cl /nologo /c /Od /Oi /EHsc /MD /Z7 /fp:fast /D_MBCS /D_AFXDLL /Fofoo.obj /FAsc /Fafoo.cod foo.cpp
+# (tools/progress.py uses the same list: keep MS2_GAME_COMPILE_OPTIONS / _DEFINITIONS in sync with GAME_FLAGS there.)
+set(MS2_GAME_CL_FLAGS "/Od /Oi /EHsc /MD /Z7 /fp:fast /D_MBCS /D_AFXDLL")
 
 # Apply the game flags to `target` (an OBJECT library of game sources). Under MSVC the caller's directory must not
 # add optimization / NDEBUG flags of its own (src/ms2/CMakeLists.txt clears CMAKE_CXX_FLAGS_<CONFIG>).
 function(ms2_game_flags target)
+    # Both compilers: the game's preprocessor environment (MBCS + MFC DLL); see also src/ms2/CMakeLists.txt, which
+    # drops the hook project's WIN32_LEAN_AND_MEAN/NOMINMAX/_CRT_SECURE_NO_WARNINGS and /utf-8 for game code.
+    target_compile_definitions(${target} PRIVATE _MBCS _AFXDLL)
     if(MSVC AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_compile_options(${target} PRIVATE ${MS2_GAME_COMPILE_OPTIONS})
         target_compile_definitions(${target} PRIVATE ${MS2_GAME_COMPILE_DEFINITIONS})

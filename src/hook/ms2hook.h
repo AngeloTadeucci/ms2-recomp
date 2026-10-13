@@ -9,6 +9,13 @@
 //       Same for a (virtual or non-virtual) member function. A thunk `R(Class* self, args...)` that calls
 //       `self->Class::Method(args...)` non-virtually is generated, so virtual methods work too.
 //       Method must not be overloaded.
+//   MS2_REPLACE_OVERLOAD(va, Signature, function, guardLen, guardHash)
+//       MS2_REPLACE for an overloaded free function / static member: Signature picks the overload,
+//       e.g. MS2_REPLACE_OVERLOAD(0x140696e00, CString(BYTE*, UINT), CMD5Checksum::GetMD5, 190, 0x...).
+//   MS2_REPLACE_CTOR(va, Class, guardLen, guardHash) / MS2_REPLACE_DTOR(va, Class, guardLen, guardHash)
+//       Default constructor / destructor (thunks `Class* R(Class*)` doing placement-new resp. a qualified,
+//       non-virtual `self->Class::~Class()`). A replaced constructor installs the DLL's vftable: only do this when
+//       the vftable check (tools/progress.py) passes, i.e. every slot resolves to the exe's slot target.
 //   guardLen/guardHash: FNV-1a-32 of the first guardLen bytes of the original function (normally the whole
 //       function). Generate with `tools/ms2hook_sig.py <va>...`. The hook is refused (and logged) if the bytes in
 //       memory differ, i.e. the exe is not the one the code was recovered from. guardLen 0 = unguarded (logged).
@@ -35,6 +42,8 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <new>
+#include <type_traits>
 #include <utility>
 
 #define MS2_CAT2(a, b) a##b
@@ -121,6 +130,19 @@ template <uintptr_t VA, class T> struct Global {
             }),                                                                                             \
         #Class "::" #Method, glen, ghash)
 
+#define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash)                                                \
+    MS2_REPLACE_IMPL(va, static_cast<::std::add_pointer_t<Sig>>(&function), #function, glen, ghash)
+
+#define MS2_REPLACE_CTOR(va, Class, glen, ghash)                                                            \
+    MS2_REPLACE_IMPL(va,                                                                                    \
+        static_cast<Class* (*)(Class*)>(                                                                    \
+            [](Class* self) -> Class* { return ::new (static_cast<void*>(self)) Class(); }),                \
+        #Class "::" #Class, glen, ghash)
+
+#define MS2_REPLACE_DTOR(va, Class, glen, ghash)                                                            \
+    MS2_REPLACE_IMPL(va, static_cast<void (*)(Class*)>([](Class* self) { self->Class::~Class(); }),          \
+        #Class "::~" #Class, glen, ghash)
+
 #define MS2_EXTERN(va, Sig, name) static constexpr ::ms2::Extern<(va), Sig> name {}
 #define MS2_GLOBAL(va, Type, name) static constexpr ::ms2::Global<(va), Type> name {}
 
@@ -134,6 +156,9 @@ template <uintptr_t VA, class T> struct Global {
 
 #define MS2_REPLACE(va, function, glen, ghash) static_assert(true, "")
 #define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_CTOR(va, Class, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_DTOR(va, Class, glen, ghash) static_assert(true, "")
 #define MS2_EXTERN(va, Sig, name) static_assert(false, "unrecovered function " #va " (" #name ")")
 #define MS2_GLOBAL(va, Type, name) static_assert(false, "unrecovered global " #va " (" #name ")")
 #define MS2_ORIGINAL(va, Sig) static_assert(false, "MS2_ORIGINAL is hook-DLL only")

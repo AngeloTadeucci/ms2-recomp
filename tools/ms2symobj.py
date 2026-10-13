@@ -1,0 +1,182 @@
+#!/usr/bin/env python3
+"""Generate the link-time symbol object for the hook DLL: every not-yet-recovered exe function/global becomes linkable
+under its real (mangled) name, so recovered code calls unrecovered code through plain declarations.
+
+    .venv/bin/python tools/ms2symobj.py [-o build/.../ms2sym.obj] [progress/symbols.tsv ...]
+
+Input: progress/symbols.tsv (symbol, va, kind; written by tools/progress.py / bytematch --harvest) and the optional
+hand-written progress/symbols-manual.tsv (same format, for names no matched function references yet).
+Output: a COFF (bigobj) object with
+  func  __ms2fn_<va>: a 14-byte thunk `jmp qword ptr [rip+0]; dq <va>` in its own COMDAT (unreferenced ones are
+        dropped by /OPT:REF);
+  data  __ms2va_<va>: an absolute symbol whose value is the exe VA minus the DLL base (0x100000000): the linker
+        treats absolute symbols as image-relative for REL32 (RIP-relative) fixups, so `mov eax, [g_x]` reaches the
+        exe's global (|distance| < 2 GB because the DLL is linked /FIXED at 0x100000000, the exe sits at 0x140000000);
+  .drectve /alternatename:<symbol>=__ms2fn_<va> / __ms2va_<va> for every symbol: the alternate is used only when
+        nothing else defines <symbol> (no object, no library member), so a recovered definition always wins.
+Limits (docs/RECOVERY.md): data may only be referenced RIP-relatively (no `&g_x` in a static initializer = ADDR64;
+the linker would store VA - 0x100000000; the post-link step `tools/ms2symobj.py --check <dll>` fails the build), and the exe's statically linked
+runtime (CRT, import stubs; 0x142748000-0x1427b6c90) is never mapped: the DLL uses its own CRT/MFC.
+"""
+import argparse
+import os
+import struct
+import sys
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DLL_BASE = 0x100000000
+RUNTIME_RANGES = [(0x142748000, 0x1427b6c90)]
+DEFAULT_INPUTS = [os.path.join(ROOT, "progress", "symbols.tsv"), os.path.join(ROOT, "progress", "symbols-manual.tsv")]
+
+IMAGE_SCN_CNT_CODE = 0x20
+IMAGE_SCN_LNK_INFO = 0x200
+IMAGE_SCN_LNK_REMOVE = 0x800
+IMAGE_SCN_LNK_COMDAT = 0x1000
+IMAGE_SCN_ALIGN_1BYTES = 0x100000
+IMAGE_SCN_ALIGN_2BYTES = 0x200000
+IMAGE_SCN_MEM_EXECUTE = 0x20000000
+IMAGE_SCN_MEM_READ = 0x40000000
+BIGOBJ_CLASSID = bytes.fromhex("c7a1bad1eebaa94baf20faf66aa4dcb8")
+
+
+def load(paths):
+    syms = {}
+    for p in paths:
+        if not os.path.exists(p):
+            continue
+        for line in open(p):
+            if line.startswith("#") or not line.strip():
+                continue
+            f = line.rstrip("\n").split("\t")
+            name, va, kind = f[0], int(f[1], 16), (f[2] if len(f) > 2 else "func")
+            if any(a <= va < b for a, b in RUNTIME_RANGES):
+                continue
+            syms[name] = (va, kind)
+    return syms
+
+
+def build(syms):
+    vas = {}
+    for name, (va, kind) in syms.items():
+        vas.setdefault((va, kind), []).append(name)
+    funcs = sorted(va for va, k in vas if k == "func")
+    datas = sorted(va for va, k in vas if k != "func")
+    directives = []
+    for (va, kind), names in sorted(vas.items()):
+        target = f"__ms2fn_{va:x}" if kind == "func" else f"__ms2va_{va:x}"
+        for n in sorted(names):
+            directives.append(f"/alternatename:{n}={target}")
+    drectve = (" " + " ".join(directives) + " ").encode("latin1")
+
+    # sections: 1 = .drectve, 2.. = one COMDAT .text$ms2 per function thunk
+    sections = [(".drectve", IMAGE_SCN_LNK_INFO | IMAGE_SCN_LNK_REMOVE | IMAGE_SCN_ALIGN_1BYTES, drectve)]
+    for va in funcs:
+        sections.append((".text$ms2", IMAGE_SCN_CNT_CODE | IMAGE_SCN_LNK_COMDAT | IMAGE_SCN_ALIGN_2BYTES |
+                         IMAGE_SCN_MEM_EXECUTE | IMAGE_SCN_MEM_READ, b"\xff\x25\x00\x00\x00\x00" + struct.pack("<Q", va)))
+
+    strtab = bytearray(4)
+
+    def name_field(n):
+        b = n.encode("latin1")
+        if len(b) <= 8:
+            return b.ljust(8, b"\0")
+        off = len(strtab)
+        strtab.extend(b + b"\0")
+        return struct.pack("<II", 0, off)
+
+    # bigobj symbol records are 20 bytes: name[8] value(4) secnum(4) type(2) sclass(1) naux(1)
+    symtab = bytearray()
+    nsyms = 0
+
+    def sym(n, value, secnum, typ, sclass, aux=None):
+        nonlocal nsyms
+        symtab.extend(name_field(n) + struct.pack("<IiHBB", value, secnum, typ, sclass, 1 if aux else 0))
+        nsyms += 1
+        if aux:
+            symtab.extend(aux.ljust(20, b"\0"))
+            nsyms += 1
+
+    for i, (sname, chars, data) in enumerate(sections, 1):
+        if not chars & IMAGE_SCN_LNK_COMDAT:
+            continue
+        va = funcs[i - 2]
+        # section symbol + aux (length, nrelocs, nlines, checksum, number lo, selection=NODUPLICATES, -, number hi)
+        sym(sname, 0, i, 0, 3, struct.pack("<IHHIHBBH", len(data), 0, 0, 0, 0, 1, 0, 0))
+        sym(f"__ms2fn_{va:x}", 0, i, 0x20, 2)
+    for va in datas:
+        rel = va - DLL_BASE
+        if not 0 <= rel < 1 << 32:
+            sys.exit(f"data VA 0x{va:x} out of the absolute-symbol range")
+        sym(f"__ms2va_{va:x}", rel, -1, 0, 2)              # IMAGE_SYM_ABSOLUTE
+
+    sec_names = {}
+    for sname, _, _ in sections:
+        if len(sname) > 8 and sname not in sec_names:
+            sec_names[sname] = f"/{len(strtab)}".encode().ljust(8, b"\0")
+            strtab.extend(sname.encode() + b"\0")
+    nsec = len(sections)
+    hdr_size = 56
+    sec_hdr = hdr_size
+    raw = sec_hdr + 40 * nsec
+    out_sec = bytearray()
+    body = bytearray()
+    for sname, chars, data in sections:
+        if len(sname) <= 8:
+            out_sec.extend(sname.encode().ljust(8, b"\0"))
+        else:
+            out_sec.extend(sec_names[sname])
+        out_sec.extend(struct.pack("<IIIIIIHHI", 0, 0, len(data), raw + len(body), 0, 0, 0, 0, chars))
+        body.extend(data)
+        while len(body) % 4:
+            body.append(0)
+    symoff = raw + len(body)
+    struct.pack_into("<I", strtab, 0, len(strtab))
+    header = struct.pack("<HHHHI16sIIIIIII", 0, 0xFFFF, 2, 0x8664, 0, BIGOBJ_CLASSID, 0, 0, 0, 0, nsec, symoff,
+                         nsyms)
+    assert len(header) == hdr_size
+    return header + bytes(out_sec) + bytes(body) + bytes(symtab) + bytes(strtab), len(funcs), len(datas), len(syms)
+
+
+def check(dll, inputs):
+    """Post-link check: ImageBase must be DLL_BASE, and no data section may hold an ADDR64 fixup against a __ms2va_
+    symbol (the linker stores the raw absolute value VA - DLL_BASE there, a wild pointer at run time)."""
+    import pefile
+    pe = pefile.PE(dll, fast_load=True)
+    bad = 0
+    if pe.OPTIONAL_HEADER.ImageBase != DLL_BASE:
+        print(f"{dll}: ImageBase 0x{pe.OPTIONAL_HEADER.ImageBase:x}, expected 0x{DLL_BASE:x} (/BASE /FIXED)")
+        bad += 1
+    rel = {va - DLL_BASE: name for name, (va, kind) in load(inputs).items() if kind != "func"}
+    for sec in pe.sections:
+        if sec.Characteristics & IMAGE_SCN_CNT_CODE:
+            continue
+        data = sec.get_data()
+        for off in range(0, len(data) - 7, 8):
+            v = struct.unpack_from("<Q", data, off)[0]
+            if v in rel:
+                print(f"{dll}: {sec.Name.rstrip(bytes(1)).decode()}+0x{off:x} holds 0x{v:x} = address of {rel[v]} "
+                      f"taken in static data (ADDR64 against an exe global is unsupported: take it at run time)")
+                bad += 1
+    if bad:
+        sys.exit(1)
+    print(f"{dll}: ok (base 0x{DLL_BASE:x}, no static pointers to exe globals)")
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("inputs", nargs="*", default=DEFAULT_INPUTS)
+    ap.add_argument("-o", "--output", default=os.path.join(ROOT, "build", "ms2sym.obj"))
+    ap.add_argument("--check", metavar="DLL", help="post-link check of the DLL (base, no ADDR64 to exe globals)")
+    a = ap.parse_args()
+    if a.check:
+        return check(a.check, a.inputs)
+    data, nf, nd, ns = build(load(a.inputs))
+    os.makedirs(os.path.dirname(os.path.abspath(a.output)), exist_ok=True)
+    tmp = a.output + ".tmp"
+    open(tmp, "wb").write(data)
+    os.replace(tmp, a.output)
+    print(f"{a.output}: {ns} symbols -> {nf} function thunks, {nd} data addresses")
+
+
+if __name__ == "__main__":
+    main()

@@ -39,6 +39,29 @@ add_library(dinput8 SHARED
 if(MS2HOOK_WITH_GAME)
     add_subdirectory(ms2)
     target_sources(dinput8 PRIVATE $<TARGET_OBJECTS:ms2game> ${MS2_DIFFTEST_SOURCES})
+    # Unrecovered exe functions/globals by their real names (docs/RECOVERY.md "Calling unrecovered code"):
+    # tools/ms2symobj.py turns progress/symbols.tsv (+ symbols-manual.tsv) into thunks / absolute symbols that are
+    # used only when no recovered definition exists (/alternatename). Needs the fixed DLL base below.
+    get_filename_component(MS2_ROOT "${CMAKE_CURRENT_SOURCE_DIR}/.." ABSOLUTE)
+    if(EXISTS "${MS2_ROOT}/.venv/bin/python")
+        set(MS2_PYTHON "${MS2_ROOT}/.venv/bin/python")
+    else()
+        find_package(Python3 REQUIRED COMPONENTS Interpreter)
+        set(MS2_PYTHON "${Python3_EXECUTABLE}")
+    endif()
+    set(MS2_SYMBOL_TABLES "${MS2_ROOT}/progress/symbols.tsv")
+    if(EXISTS "${MS2_ROOT}/progress/symbols-manual.tsv")
+        list(APPEND MS2_SYMBOL_TABLES "${MS2_ROOT}/progress/symbols-manual.tsv")
+    endif()
+    set(MS2_SYMOBJ "${CMAKE_CURRENT_BINARY_DIR}/ms2sym.obj")
+    add_custom_command(OUTPUT "${MS2_SYMOBJ}"
+        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES}
+        DEPENDS "${MS2_ROOT}/tools/ms2symobj.py" ${MS2_SYMBOL_TABLES}
+        COMMENT "Generating ms2sym.obj (exe symbol map)")
+    set_source_files_properties("${MS2_SYMOBJ}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
+    target_sources(dinput8 PRIVATE "${MS2_SYMOBJ}")
+    add_custom_command(TARGET dinput8 POST_BUILD
+        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" --check "$<TARGET_FILE:dinput8>" ${MS2_SYMBOL_TABLES})
 endif()
 if(MS2HOOK_WITH_COMPAT)
     target_sources(dinput8 PRIVATE ${MS2_COMPAT_SOURCES})
@@ -46,4 +69,7 @@ endif()
 target_include_directories(dinput8 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/hook")
 target_link_libraries(dinput8 PRIVATE detours)
 set_target_properties(dinput8 PROPERTIES OUTPUT_NAME dinput8 PREFIX "")
-target_link_options(dinput8 PRIVATE /DEBUG /OPT:REF /OPT:ICF)
+# Fixed base 0x100000000, below the (non-relocatable) exe at 0x140000000: keeps every exe address within REL32 range
+# of the DLL's code, which the absolute data symbols of ms2sym.obj rely on. A fixed DLL cannot be relocated: if the
+# range is taken the DLL (and with it the process) fails to load instead of misbehaving.
+target_link_options(dinput8 PRIVATE /DEBUG /OPT:REF /OPT:ICF /BASE:0x100000000 /DYNAMICBASE:NO /FIXED)
