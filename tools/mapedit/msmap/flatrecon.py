@@ -252,6 +252,25 @@ class Recon:
         m.extradata = [(n, t, list(e)) for n, t, e in f.extradata]
         return m
 
+    def defined_props(self, name):
+        """Property names the *regenerated* source chain of `name` defines.  A library model's flat is consistent with
+        its generated .model (validated); a preset defines nothing itself, so it has its base's.  Preset flats are
+        snapshots of the base at export time, so a preset whose base is another preset may mention properties that
+        the base preset's own (older) flat has but the real definition chain has lost -- Toolbench drops such
+        overrides on load ("was removed because it is no longer defined in a parent model")."""
+        d = self.__dict__.setdefault('_defined', {})
+        r = d.get(name)
+        if r is None:
+            f = self.flats.get(name)
+            if f is None:
+                r = set()
+            elif f.cat[0] == 'presets':
+                r = self.defined_props(f.mixins[0][0]) if f.mixins else set()
+            else:
+                r = {p.name for p in f.props}
+            d[name] = r
+        return r
+
     def build_preset(self, name):
         """Presets: single mixin = first mixin of the flat; overrides vs. that model's flat."""
         f = self.flats[name]
@@ -267,9 +286,10 @@ class Recon:
             self.warn.append('%s: preset base %s has no flat' % (name, base))
             return m
         bp = bf.pmap
+        defined = self.defined_props(base)
         for p in f.props:
             ip = bp.get(p.name)
-            if ip is None:
+            if ip is None or p.name not in defined:
                 self.warn.append('%s: preset property %s not in base model %s' % (name, p.name, base))
                 continue
             if p.sets != ip.sets or sorted(p.traits) != sorted(ip.traits):

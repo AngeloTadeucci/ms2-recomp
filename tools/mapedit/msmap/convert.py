@@ -6,7 +6,7 @@ import uuid
 
 from . import values as V
 from .block import Block, BEntity, Layer, write_block, read_block
-from .xblock import Entity, Prop, read_xblock, write_xblock, detect_dialect
+from .xblock import Entity, Prop, read_xblock, write_xblock, detect_dialect, ms2_prop_order
 
 LIST_ENTITYREF = 'AssocEntityRef'
 ENTITYREF = 'EntityRef'
@@ -160,7 +160,26 @@ def _entity_to_xblock(be, index, model_ids_rev=None, drop_dangling=False):
     return Entity(undashed(be.id), be.model, be.name, be.iterations, props)
 
 
-def block_to_xblocks(block, index, dirpath, outdir, dialect='tab', sort_properties=False):
+def _order_props(xe, index, order):
+    """order: 'block' (as stored in the .block), 'ms2' (MS2's shipped xblocks: case-insensitive, Name last) or
+    'toolbench' (what the stock exporter writes: the model's flat property order, Name last)."""
+    if order == 'block':
+        return
+    names = [p.name for p in xe.props]
+    if order == 'ms2':
+        want = ms2_prop_order(names)
+    elif order == 'toolbench':
+        m = index.get(xe.model)
+        pos = {p['name']: i for i, p in enumerate(m['props'])} if m else {}
+        want = sorted((n for n in names if n != 'Name'), key=lambda n: pos.get(n, 1 << 30)) + \
+            (['Name'] if 'Name' in names else [])
+    else:
+        raise ValueError(order)
+    rank = {n: i for i, n in enumerate(want)}
+    xe.props.sort(key=lambda p: rank[p.name])
+
+
+def block_to_xblocks(block, index, dirpath, outdir, dialect='tab', order='block'):
     """Re-implementation of XmlBlockExporter.ProcessDocuments. Returns list of written files."""
     written = []
 
@@ -179,8 +198,7 @@ def block_to_xblocks(block, index, dirpath, outdir, dialect='tab', sort_properti
         out = []
         for e in acc.values():
             xe = _entity_to_xblock(e, index)
-            if sort_properties:
-                xe.props.sort(key=lambda p: p.name)
+            _order_props(xe, index, order)
             out.append(xe)
         out.sort(key=lambda x: x.id)           # orderby PersistentID (hex order matches shipped files)
         fn = os.path.join(outdir, os.path.splitext(os.path.basename(path or name))[0] + '.xblock')

@@ -185,6 +185,7 @@ def build(root, extracted='work/maps/extracted', jobs=3, log=print, only_library
         if f.cat[0] == 'presets':
             cats[f.cat[1]].append(n)
     pdir = os.path.join(lib, 'Presets')
+    preset_label = {n: cat_label(('presets', f.cat[1])) for n, f in flats.items() if f.cat[0] == 'presets'}
     for cat, names in sorted(cats.items()):
         label = cat_label(('presets', cat))
         sub = label.split('_', 1)[-1] if '_' in label else label
@@ -195,7 +196,10 @@ def build(root, extracted='work/maps/extracted', jobs=3, log=print, only_library
             files.append(sub + '\\' + n + '.preset')
             base = m.mixins[0][1] if m.mixins else None
             ld = lib_of_name.get(base)
-            if ld:
+            if base in preset_label:       # preset of a preset: reference the project holding the base preset
+                if preset_label[base] != label:
+                    refs.add(preset_label[base] + '.emtproj')
+            elif ld:
                 refs.add('..\\' + os.path.dirname(LIB_EMTPROJ[ld]).replace('/', '\\') + '\\' +
                          os.path.basename(LIB_EMTPROJ[ld]))
             else:

@@ -85,3 +85,37 @@ def write_xblock(entities, path, dialect='tab'):
     data = xblock_text(entities, dialect)
     with open(path, 'wb') as f:
         f.write(data.encode('utf-8'))
+
+
+def ms2_prop_key(name):
+    return name.lower()
+
+
+def ms2_prop_order(names):
+    """Property order of MS2's shipped xblocks (15,151 of 15,186 tria entities; the rest are unsorted leftovers):
+    case-insensitive by name, the synthetic 'Name' property last.  (Stock Toolbench writes the model's flat order,
+    i.e. MixinProperties order: own properties first, then the mixins', 'Name' last.)"""
+    rest = sorted((n for n in names if n != 'Name'), key=ms2_prop_key)
+    return rest + (['Name'] if 'Name' in names else [])
+
+
+def reorder_props(entities, mode='ms2', original=None):
+    """Reorder each entity's properties in place.  mode 'ms2' = ms2_prop_order; 'keep' = untouched.
+    `original` {entity id: [property names]}: when an entity exists there with the same property-name set, its
+    order wins (reproduces the shipped file exactly, including the unsorted leftovers)."""
+    for e in entities:
+        if mode == 'keep' and original is None:
+            continue
+        names = [p.name for p in e.props]
+        o = original.get(e.id) if original else None
+        if o is not None and sorted(o) == sorted(names):
+            order = o
+        elif mode == 'ms2':
+            order = ms2_prop_order(names)
+        else:
+            continue
+        pos = {}
+        for i, n in enumerate(order):
+            pos.setdefault(n, i)
+        e.props.sort(key=lambda p: pos[p.name])
+    return entities
