@@ -19,11 +19,19 @@ def main(argv=None):
     ap.add_argument('--layers', default='none', choices=['none', 'category'])
     ap.add_argument('--folders', default='none', choices=['none', 'category'])
     ap.add_argument('--lib-root', default='..\\Library', help='relative path from the .block dir to the Library dir')
-    ap.add_argument('--model-ids', help='json {modelName: guid} to emit model-id attributes (needs matching .model files)')
+    ap.add_argument('--model-ids', default='auto',
+                    help="'auto' (default): model-id = the GUID flat2model.py gives the .model file (known_guids.json, else uuid5); "
+                         "'none': omit; or a json {modelName: guid}")
     ap.add_argument('--report')
     a = ap.parse_args(argv)
     index = ModelIndex(a.index)
-    ids = json.load(open(a.model_ids)) if a.model_ids else None
+    if a.model_ids == 'auto':
+        from flat2model import GuidMap
+        ids = GuidMap()
+    elif a.model_ids == 'none':
+        ids = None
+    else:
+        ids = json.load(open(a.model_ids))
     files = []
     for i in a.input:
         files += sorted(glob.glob(os.path.join(i, '*.xblock'))) if os.path.isdir(i) else [i]
