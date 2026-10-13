@@ -34,3 +34,61 @@ public:
 private:
     DelegateImplBase* m_pImpl;          // +0x00
 };
+
+// ---- one-argument form (appended by the uidungeonlobby.cpp agent) ----
+// Delegate<void(CInPacket&)> as used by the packet handlers: 8 bytes, a pointer to a heap DelegateImpl. The
+// pair-of-(object, member function) form is built by the template constructor; DelegateImpl<std::pair<C*, M>>
+// is the bound-member implementation (0x20 bytes: vftable + the 24-byte pair). DelegateImplBase's ctor/dtor are
+// out of line (declared only). Seen in client\ms2\uidungeonlobby.cpp (0x140e18340..0x140e18560).
+#include <utility>
+
+template <class R, class A1>
+class Delegate<R(A1)>
+{
+public:
+    class DelegateImplBase
+    {
+    public:
+        DelegateImplBase();
+        virtual ~DelegateImplBase();                            // 0
+        virtual DelegateImplBase* vfunc_1() const = 0;          // 1 clone
+        virtual R vfunc_2(A1 a1) = 0;                           // 2 Invoke
+        virtual bool vfunc_3(const DelegateImplBase* p) const = 0;     // 3 equals
+    };
+
+    template <class F>
+    class DelegateImpl : public DelegateImplBase
+    {
+    public:
+        DelegateImpl(const DelegateImpl& o) : m_f(o.m_f) {}
+        DelegateImpl(const F& f) : m_f(f) {}
+        virtual DelegateImplBase* vfunc_1() const { return new DelegateImpl(*this); }
+        virtual R vfunc_2(A1 a1) { Call(m_f, a1); }
+        virtual bool vfunc_3(const DelegateImplBase* p) const
+        {
+            const DelegateImpl* o = dynamic_cast<const DelegateImpl*>(p);
+            if (!o)
+                return false;
+            return m_f == o->m_f;
+        }
+
+    private:
+        template <class C, class M> static void Call(std::pair<C*, M>& p, A1 a1) { (p.first->*p.second)(a1); }
+
+        F m_f;
+    };
+
+    Delegate() : m_pImpl(0) {}
+    template <class C>
+    Delegate(C* const& obj, R (C::*const& f)(A1))     // f by const&: the caller copies the PMF before it stores `this` (uiobject.cpp agent)
+        : m_pImpl(new DelegateImpl<std::pair<C*, R (C::*)(A1)> >(std::make_pair(obj, f)))
+    {
+    }
+    Delegate(const Delegate& o);        // declared (appended by the uiobject.cpp agent): a user copy ctor makes a by-value
+                                        // Delegate argument go by reference to a caller temp that the callee destroys
+                                        // (UIObject::OnLoadComplete 0x14131ec00); without it the ABI passes it in a register
+    ~Delegate();
+
+private:
+    DelegateImplBase* m_pImpl;          // +0x00
+};

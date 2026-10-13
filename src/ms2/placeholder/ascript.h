@@ -52,6 +52,8 @@ private:
     T* m_p;                             // +0x08
 };
 
+class ASArgList;                        // the argument list of the Invoke back end (defined by the units using it)
+
 class AScript : public CPtred
 {
 public:
@@ -60,12 +62,15 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2);                      // 0x140acd070
     Scaleform::GFx::Value Invoke(const char* szMethod, CString a1);                          // 0x1409b46e0
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2);            // 0x140e78470
+    Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1);            // 0x1409b13b0 (a1 by value: callee destroys)
+    Scaleform::GFx::Value FUN_1422bb8f0(const char* szMethod, ASArgList& args);              // the Invoke back end
+    Scaleform::GFx::Value Invoke(const char* szMethod, bool a1);                             // 0x140bfe360 (inline COMDAT, defined in uicoupledanceeventdialog.cpp)
 
     // Binds the AS child `strName` to `out` and returns a copy of it (0x140bbe640 for T = Unk_ASExitButton).
     template <class T> MS2Ptr<T> FUN_140bbe640(const CString& strName, MS2Ptr<T>& out);
 
 private:
-    char m_pad_18[0x8];
+    void* m_pad_18;                     // not char[8]: an array member makes every local AS object a /GS buffer
     Scaleform::GFx::Value m_value;      // +0x20
 };
 MS2_CHECK_SIZE(AScript, 0x40);
