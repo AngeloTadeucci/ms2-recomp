@@ -1,0 +1,17 @@
+# Real MSVC 14.16 (cl 19.16.27054, VS2017 15.9) under Wine via msvc-wine wrappers in third_party/msvc/bin/x64.
+# Same compiler family as the original MapleStory2.exe: use for FunctionID reference libs and byte-matching.
+set(CMAKE_SYSTEM_NAME Windows)
+set(CMAKE_SYSTEM_PROCESSOR AMD64)
+get_filename_component(MS2_ROOT "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+set(MSVC_BIN "${MS2_ROOT}/third_party/msvc/bin/x64")
+set(CMAKE_C_COMPILER "${MSVC_BIN}/cl")
+set(CMAKE_CXX_COMPILER "${MSVC_BIN}/cl")
+set(CMAKE_LINKER "${MSVC_BIN}/link")
+set(CMAKE_AR "${MSVC_BIN}/lib")
+set(CMAKE_RC_COMPILER "${MSVC_BIN}/rc")
+set(CMAKE_MT "${MSVC_BIN}/mt")
+set(CMAKE_MSVC_RUNTIME_LIBRARY MultiThreadedDLL)
+if(NOT DEFINED ENV{WINEPREFIX})
+    set(ENV{WINEPREFIX} "${MS2_ROOT}/work/wineprefix-msvc")
+endif()
+set(ENV{WINEDEBUG} "-all")
