@@ -3,7 +3,8 @@
 set(CMAKE_SYSTEM_NAME Windows)
 set(CMAKE_SYSTEM_PROCESSOR AMD64)
 get_filename_component(MS2_ROOT "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
-set(MSVC_BIN "${MS2_ROOT}/third_party/msvc/bin/x64")
+# tools/msvc/* wrap third_party/msvc/bin/x64/* and pin WINEPREFIX at build time (see tools/ninja-msvc.sh).
+set(MSVC_BIN "${MS2_ROOT}/tools/msvc")
 set(CMAKE_C_COMPILER "${MSVC_BIN}/cl")
 set(CMAKE_CXX_COMPILER "${MSVC_BIN}/cl")
 set(CMAKE_LINKER "${MSVC_BIN}/link")
