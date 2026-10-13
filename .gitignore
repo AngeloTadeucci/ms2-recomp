@@ -1,0 +1,12 @@
+# Large inputs / generated artifacts — not tracked
+/Game Versions/
+/Gamebryo/
+/third_party/
+/work/
+/ghidra/
+/build*/
+/.venv/
+/server/
+*.pyc
+/GB/
+*.rar
