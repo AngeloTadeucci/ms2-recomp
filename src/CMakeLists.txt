@@ -13,6 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 option(MS2HOOK_WITH_GAME "Link the recovered game code (src/ms2) and its difftests into the hook DLL" ON)
+option(MS2HOOK_WITH_COMPAT "Link the client compatibility fixes (src/hook/compat, not game code; NOTES \"Field-entry crash\")" ON)
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN NOMINMAX _CRT_SECURE_NO_WARNINGS)
 add_compile_options(/W3 /EHsc /utf-8)
@@ -24,6 +25,7 @@ endif()
 # whose only content is MS2_REPLACE registrations, since nothing references them).
 file(GLOB_RECURSE MS2_GAME_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/ms2/*.cpp")
 file(GLOB_RECURSE MS2_DIFFTEST_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/hook/difftest/*.cpp")
+file(GLOB_RECURSE MS2_COMPAT_SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/hook/compat/*.cpp")
 
 add_library(detours STATIC hook/detours/detours.cpp hook/detours/disasm.cpp hook/detours/modules.cpp)
 target_compile_definitions(detours PRIVATE DETOURS_X64 DETOURS_64BIT)
@@ -35,6 +37,9 @@ add_library(dinput8 SHARED
     hook/difftest.cpp)
 if(MS2HOOK_WITH_GAME)
     target_sources(dinput8 PRIVATE ${MS2_GAME_SOURCES} ${MS2_DIFFTEST_SOURCES})
+endif()
+if(MS2HOOK_WITH_COMPAT)
+    target_sources(dinput8 PRIVATE ${MS2_COMPAT_SOURCES})
 endif()
 target_include_directories(dinput8 PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}/hook")
 target_link_libraries(dinput8 PRIVATE detours)
