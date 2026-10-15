@@ -317,3 +317,11 @@
 ?DAT_143ae53b8@@3DA	143ae53b8	data
 ??0Unk_DOFVecA@@QEAA@MM@Z	140a0a600	func
 ??0Unk_DOFVecB@@QEAA@MM@Z	140a0a4c0	func
+??0Unk_IntVec@@QEAA@XZ	14164b170	func
+??1Unk_IntVec@@QEAA@XZ	141639340	func
+??0iFaceVertexMesh@@QEAA@XZ	14164b1e0	func
+??1iFaceVertexMesh@@UEAA@XZ	14164b2a0	func
+??1Unk_MeshXform@@QEAA@XZ	140adbb80	func
+??0Unk_MeshVec3@@QEAA@XZ	140a003a0	func
+??0Unk_MeshDesc@@QEAA@XZ	1416453a0	func
+??0Unk_MeshAux@@QEAA@M@Z	140adbea0	func
