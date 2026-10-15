@@ -4,8 +4,7 @@
 #include <atlcoll.h>
 #include <string>
 #include "ms2/ms2recover.h"
-struct Unk_StreamPoint { Unk_StreamPoint(); Unk_StreamPoint(float,float,float); Unk_StreamPoint& operator=(const Unk_StreamPoint&); float x,y,z; };
-MS2_CHECK_SIZE(Unk_StreamPoint,12);
+#include "ms2/placeholder/nipoint3.h"   // Unk_StreamPoint
 class CIOBuffer {
 public:
     virtual unsigned vfunc_0() = 0;
