@@ -19,7 +19,6 @@
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsV9a0@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsV9a0@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbaf0
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsVa00@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsVa00@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb20
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsVa18@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsVa18@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb50
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@D@std@@V?$_String_val@U?$_Simple_types@D@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb80
 // MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141bdbc70
 // MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@1@0@Z 0x141bdbcc0
 // (0x142cc3a80 is the atexit thunk of a function-local static registered by the function at 0x141b977f0, another CU)
@@ -3496,7 +3495,7 @@ void WorldService::FUN_141bbfe30(const ecr::SceneGraphAddedMessage* pMsg, efd::C
     if (go.data() != 0)
     {
         efd::Category cat(targetChannel);
-        go->vfunc_13((void*)pMsg, &cat);
+        go->vfunc_13((void*)pMsg, cat);
     }
     FUN_141773d90(FUN_1409a5160(FUN_1409a8b00()), pMsg, targetChannel);
     FUN_141bc7490(ent, static_cast<NiNode*>(sceneNode));
