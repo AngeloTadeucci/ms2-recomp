@@ -37,10 +37,10 @@ i64 FUN_140278a30(void* tree, Unk_TIter* out, unsigned char addleft, Unk_TNode* 
         Unk_TNode* cur = node;
         while (cur->parent->color == 0) {
             if (cur->parent == cur->parent->parent->left) {
-                Unk_TNode* uncle = cur->parent->parent->right;
-                if (uncle->color == 0) {
+                where = cur->parent->parent->right;
+                if (where->color == 0) {
                     cur->parent->color = 1;
-                    uncle->color = 1;
+                    where->color = 1;
                     cur->parent->parent->color = 0;
                     cur = cur->parent->parent;
                 } else {
@@ -53,10 +53,10 @@ i64 FUN_140278a30(void* tree, Unk_TIter* out, unsigned char addleft, Unk_TNode* 
                     FUN_1402894e0(h, cur->parent->parent);
                 }
             } else {
-                Unk_TNode* uncle = cur->parent->parent->left;
-                if (uncle->color == 0) {
+                where = cur->parent->parent->left;
+                if (where->color == 0) {
                     cur->parent->color = 1;
-                    uncle->color = 1;
+                    where->color = 1;
                     cur->parent->parent->color = 0;
                     cur = cur->parent->parent;
                 } else {
@@ -71,8 +71,7 @@ i64 FUN_140278a30(void* tree, Unk_TIter* out, unsigned char addleft, Unk_TNode* 
             }
         }
         (*FUN_1402894c0(h))->color = 1;
-        Unk_TVal* c = FUN_14027b570(h);
-        FUN_14027d010(out, node, c);
+        FUN_14027d010(out, node, FUN_14027b570(h));
         return (i64)out;
     }
 }
@@ -419,108 +418,90 @@ i64 FUN_14027a9c0(i64 p) { return p; }
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027a9d0(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278710(first);
     i64 l = FUN_140278710(last);
-    i64 d = FUN_140278780(rd, FUN_1402788c0(&f, &l));
+    i64 d = FUN_140278780(dest, FUN_1402788c0(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a520(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a6a0(&rd, FUN_14027ade0(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a6a0(&dest, FUN_14027ade0(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027aaa0
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027aaa0(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278720(first);
     i64 l = FUN_140278720(last);
-    i64 d = FUN_140278790(rd, FUN_1402788f0(&f, &l));
+    i64 d = FUN_140278790(dest, FUN_1402788f0(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a550(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a6c0(&rd, FUN_14027ae70(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a6c0(&dest, FUN_14027ae70(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027ab70
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027ab70(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278730(first);
     i64 l = FUN_140278730(last);
-    i64 d = FUN_1402787a0(rd, FUN_140278920(&f, &l));
+    i64 d = FUN_1402787a0(dest, FUN_140278920(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a580(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a6e0(&rd, FUN_14027af00(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a6e0(&dest, FUN_14027af00(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027ac40
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027ac40(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278740(first);
     i64 l = FUN_140278740(last);
-    i64 d = FUN_1402787b0(rd, FUN_140278950(&f, &l));
+    i64 d = FUN_1402787b0(dest, FUN_140278950(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a5b0(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a700(&rd, FUN_14027af90(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a700(&dest, FUN_14027af90(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027ad10
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027ad10(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278750(first);
     i64 l = FUN_140278750(last);
-    i64 d = FUN_1402787c0(rd, FUN_140278980(&f, &l));
+    i64 d = FUN_1402787c0(dest, FUN_140278980(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a5e0(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a720(&rd, FUN_14027b020(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a720(&dest, FUN_14027b020(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027b0b0
 // std::_Uninitialized_copy(first, last, dest, al)
 i64 FUN_14027b0b0(i64 first, i64 last, i64 dest, i64 al)
 {
-    i64 rd = dest;
-    i64 ral = al;
     i64 f = FUN_140278720(first);
     i64 l = FUN_140278720(last);
-    i64 d = FUN_140278790(rd, FUN_1402788f0(&f, &l));
+    i64 d = FUN_140278790(dest, FUN_1402788f0(&f, &l));
     char tag1;
-    char pad[1];
+    char pad;
     char* p = &tag1;
     char t = FUN_14027a610(&f, &d);
-    char* t2 = FUN_140177620(p, pad);
-    FUN_14027a6c0(&rd, FUN_14027b320(f, l, d, ral, t, *t2));
-    return rd;
+    FUN_14027a6c0(&dest, FUN_14027b320(f, l, d, al, t, *FUN_140177620(p, &pad)));
+    return dest;
 }
 
 // @0x14027ade0
