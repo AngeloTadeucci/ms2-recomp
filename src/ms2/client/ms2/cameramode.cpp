@@ -5,6 +5,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 
 #include "cameramode.h"
+#include "ms2cameraservice.h"
 
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -447,11 +448,11 @@ void CCameraMode::FUN_140afe4b0()
         Unk_CameraTarget* pTarget = FUN_1413f98d0();
         if (pTarget)
         {
-            Unk_CameraObject* pCamera = FUN_14200aae0(spCamera.operator->(), pTarget);
+            ecr::CameraData* pCamera = FUN_14200aae0(spCamera.operator->(), pTarget);
             if (pCamera)
             {
-                pCamera->FUN_142008e90(m_70);
-                FUN_1414af480(spCamera.operator->(), pCamera);
+                pCamera->SetZoomFactor(m_70);
+                static_cast<MS2CameraService*>(spCamera.operator->())->FUN_1414af480(pCamera);
             }
         }
     }

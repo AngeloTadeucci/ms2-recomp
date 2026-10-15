@@ -11,23 +11,16 @@
 #include <efd/ISystemService.h>
 #include <efd/SmartPointer.h>
 #include <ecr/CameraService.h>
+#include <ecr/CameraData.h>
 
 #include "ms2/ms2layout.h"
 
-class Unk_CameraObject;     // camera object owned by the service (methods FUN_142008xxx)
 class Unk_CameraTarget;     // what FUN_1413f98d0 returns (the active camera entity)
 
 // Unrecovered members of the real ecr::CameraService, as free functions (x64 has one calling convention, so `this` is the first
 // argument). FUN_14200aae0 is ecr::CameraService::GetActiveCamera(RenderSurface*) (the "target" is the surface, whose window
-// handle is at +0x10); FUN_1414af480 lives in MS2CameraService's range (0x1414af...).
-Unk_CameraObject* FUN_14200aae0(ecr::CameraService* pService, Unk_CameraTarget* pTarget);    // camera object of the target (or 0)
-void FUN_1414af480(ecr::CameraService* pService, Unk_CameraObject* pCamera);                  // applies / refreshes it
-
-class Unk_CameraObject
-{
-public:
-    void FUN_142008e90(float f);
-};
+// handle is at +0x10); FUN_1414af480 is MS2CameraService::FUN_1414af480 (ms2cameraservice.h).
+ecr::CameraData* FUN_14200aae0(ecr::CameraService* pService, Unk_CameraTarget* pTarget);    // camera object of the target (or 0)
 
 // MS2's efd::ServiceManager (only the slot used here is declared).
 class Unk_ServiceManager
