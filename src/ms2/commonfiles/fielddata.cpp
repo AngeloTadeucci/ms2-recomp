@@ -106,7 +106,7 @@
 // MS2-PIN: ??4?$MS2Ptr@VCFieldData@@@@QEAAAEAV0@AEBV0@@Z 0x1403777f0 ; prop
 // MS2-PIN: ??4?$TPtr@VCFieldSpawnTag@@@@QEAAAEAV0@AEBV0@@Z 0x140377830 ; prop
 // MS2-PIN: ??4?$TPtr@VCFieldSpawnTag@@@@QEAAAEAV0@PEAVCFieldSpawnTag@@@Z 0x140377870 ; prop
-// MS2-PIN: ??C?$MS2Ptr@VCFieldData@@@@QEBAPEAVCFieldData@@XZ 0x1403778e0 ; prop
+// MS2-PIN: ?get@?$MS2SvrPtr@VContinentInfo@@@@QEBAPEAVContinentInfo@@XZ 0x1403778e0
 // MS2-PIN: ?Value@?$Unk_SocketRef@V?$CRBMap@HV?$TPtr@VCFieldSpawnTag@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$TPtr@VCFieldSpawnTag@@@@@3@@ATL@@@@SAPEAV?$CRBMap@HV?$TPtr@VCFieldSpawnTag@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$TPtr@VCFieldSpawnTag@@@@@3@@ATL@@PEAVCPtred@@@Z 0x1403778f0 ; prop
 // MS2-PIN: ??C?$Unk_SocketPtr@V?$CRBMap@HV?$TPtr@VCFieldSpawnTag@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$TPtr@VCFieldSpawnTag@@@@@3@@ATL@@@@QEBAPEAV?$CRBMap@HV?$TPtr@VCFieldSpawnTag@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$TPtr@VCFieldSpawnTag@@@@@3@@ATL@@XZ 0x140377930 ; prop
 // MS2-PIN: ??C?$TPtr@VCFieldSpawnTag@@@@QEBAPEAVCFieldSpawnTag@@XZ 0x140377940 ; prop
