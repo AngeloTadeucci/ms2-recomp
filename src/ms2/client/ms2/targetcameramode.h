@@ -48,7 +48,7 @@ public:
     virtual void vfunc_29(float f1, float f2, float f3);
     virtual BOOL vfunc_31();
     virtual void vfunc_33();
-    // 0x140a38d30 (COMDAT of another obj)
+    // @0x140a38d30
     virtual Unk_StreamPoint vfunc_35() { return m_78; }
     virtual void vfunc_37();                                                // recompute the eye from the angles
     virtual BOOL vfunc_38(Unk_StreamPoint ptPos, Unk_StreamPoint ptRot);    // view frustum blocked?
