@@ -51,7 +51,7 @@ private:MS2_LAYOUT_FRIEND;
  Unk_UpperPtr<Unk_UpperClip> m_clip;
  Unk_UpperPtr<Unk_UpperText> m_gauge;
  Unk_UpperBuffMap m_pending;
- ATL::CAtlMap<int,Unk_UpperPtr<ASDisplayObject> > m_buffs;
+ ATL::CAtlMap<unsigned,Unk_UpperPtr<ASDisplayObject> > m_buffs;
 };
 MS2_CHECK_SIZE(UpperHpBarEntity,0xd0);
 MS2_CHECK_OFFSET(UpperHpBarEntity,m_pending,0x40);
