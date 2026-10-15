@@ -41,3 +41,15 @@
 ?FUN_141bd1320@Unk_BattleWorld@@QEAAPEAVUnk_BattleNpc@@I@Z	141bd1320	func
 ?FUN_1401b8910@Values@Unk_BattleDamage@@QEBA_KXZ	1401b8910	func
 ?FUN_14175ac30@Unk_BattleDamage@@QEAA_JXZ	14175ac30	func
+# a3 logstring: direct callees verified in work/decomp; needed by functional functions.
+??0TiXmlDocument@@QEAA@XZ	140870b40	func
+??1TiXmlDocument@@UEAA@XZ	140164670	func
+?FUN_140870fc0@TiXmlDocument@@QEAA_NPEBDH@Z	140870fc0	func
+??0Unk_140163940@@QEAA@AEAVCLockCriticalSection@@@Z	140163940	func
+??1Unk_140163940@@QEAA@XZ	1401643b0	func
+??BUnk_140163940@@QEBAHXZ	140164a80	func
+?FUN_1401d42d0@Unk_140659080@@QEAAXXZ	1401d42d0	func
+?FUN_140165cf0@Unk_140165cf0@@QEAAPEAV1@PEBD@Z	140165cf0	func
+?FUN_1401bf530@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAVUnk_140165cf0@@PEBDV12@@Z	1401bf530	func
+?FUN_1406513d0@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@Z	1406513d0	func
+?format@?$BasicFormatter@_W@fmt@@QEAAPEB_WAEAPEB_WAEBUArg@internal@2@@Z	1402da110	func
