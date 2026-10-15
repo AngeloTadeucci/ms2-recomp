@@ -30,15 +30,19 @@
 // MS2-PIN: ??C?$MS2Ptr@USlotInfo@ItemCloset@@@@QEBAPEAUSlotInfo@ItemCloset@@XZ 0x1407ab200 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ??$make_pair@AEAHAEAH@std@@YA?AU?$pair@HH@0@AEAH0@Z 0x1407aacc0 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ??A?$CAtlArray@_KV?$CElementTraits@_K@ATL@@@ATL@@QEAAAEA_K_K@Z 0x1407ab720 ; manual: identical-body COMDAT folded in the exe
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAAAEAV01@XZ 0x1407ab3b0 ; manual: identical-body COMDAT folded in the exe
-// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1407ab3f0 ; manual: identical-body COMDAT folded in the exe
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1407ab3b0 ; manual: map const_iterator operator-- (was mispinned as set<unsigned> operator++)
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1407ab3f0 ; manual: map unchecked iterator operator-- (was mispinned as set<unsigned>)
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@$00@std@@QEBAAEBV?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@XZ 0x140703fd0 ; manual: set<unsigned> copy lives in fieldmetatable's TU, not here
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x140703ff0 ; manual: set<unsigned> copy lives in fieldmetatable's TU, not here
+// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1407041e0 ; manual: set<unsigned> copy lives in fieldmetatable's TU, not here
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1406ff750 ; manual: set<unsigned> copy lives in fieldmetatable's TU, not here
 // MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1407ac440 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@2@XZ 0x1407ac500 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1407ac580 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ?_Umove@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@AEAAPEAU?$pair@HH@2@PEAU32@00@Z 0x1407ac9f0 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1407acad0 ; manual: identical-body COMDAT folded in the exe
 // MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1407acd20 ; manual: identical-body COMDAT folded in the exe
-// MS2-PIN: ?size@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA_KXZ 0x1407ad100 ; manual: identical-body COMDAT folded in the exe
+// MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@IPEAVCAdventureLevelMissionData@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x1407ad100 ; manual: map size (was mispinned as set<unsigned>)
 // MS2-PIN: ??_G?$MS2Ptr@USlotInfo@ItemCloset@@@@QEAAPEAXI@Z 0x1407ab4c0 ; manual: scalar deleting dtor, size 0x10
 // MS2-PIN: ??_GCSAdventureLevelMission@@UEAAPEAXI@Z 0x1407ab500 ; manual
 // MS2-PIN: ??_GSlotInfo@ItemCloset@@UEAAPEAXI@Z 0x1407ab540 ; manual
