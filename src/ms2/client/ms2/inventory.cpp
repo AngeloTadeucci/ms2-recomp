@@ -185,6 +185,7 @@
 #include <algorithm>
 #include <vector>
 #include "ms2/client/ms2/pcbase.h"
+#include "ms2/placeholder/fittingdollpc.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/itemutiltransfer.h"
 #include "ms2/ms2recover.h"
@@ -228,7 +229,8 @@ unsigned FUN_1405281e0(CItem*);
 int FUN_140529640(CItem*);
 bool FUN_1405277e0(CItem*, int);
 MS2Ptr<CItemData> FUN_14053f870(int);
-class Unk_InventoryEquipment;
+// Equipment slot record: FUN_1411dc7a0 returns the equipped item, FUN_1411dc7f0 its CItemData.
+class Unk_InventoryEquipment { public: MS2Ptr<CItem> FUN_1411dc7a0(); CItemData* FUN_1411dc7f0(); };
 // Constructor141763fa0 initializes the full request through item+40.
 struct Unk_InventorySkillRequest {
     Unk_InventorySkillRequest(int, unsigned short);
@@ -261,6 +263,8 @@ public:
     int FUN_141662eb0(CItem*);
     void FUN_141526c80(int*, unsigned short*);
     MS2Ptr<Unk_InventoryEquipment> FUN_141655e80(int slot, int mode);
+    MS2Ptr<Unk_InventoryEquipment> FUN_141655cf0(int slot);
+    MS2Ptr<Unk_InventoryEquipment> FUN_141655c90(int slot);
     int FUN_14166ce30();
     int FUN_141658f30();
     int FUN_141658e60();
@@ -274,6 +278,24 @@ class Unk_InventoryContext { public: Unk_InventoryPlayer* FUN_141bd0cc0(); };
 Unk_InventoryContext* FUN_1403ed2d0();
 bool FUN_140528e20(CItem*);
 bool FUN_140528980(CItem*);
+bool FUN_14053c710(CItemData*);
+bool FUN_14053cf90(CItemData*);
+int FUN_14053c620(CItemData*);
+bool FUN_14053d460(CItemData*);
+bool FUN_14053d2b0(CItemData*);
+bool FUN_14053d2f0(CItemData*);
+int FUN_140525e50(CItem*, int, int);
+// Block-notice record returned through a hidden pointer by 0x140a2f620 and released by 0x1401cb250.
+class Unk_InventoryStateManager;
+struct Unk_InventoryBlockRef;
+void FUN_1401cb250(Unk_InventoryBlockRef*);
+struct Unk_InventoryBlockRef { void* unknown0; void* record; ~Unk_InventoryBlockRef() { FUN_1401cb250(this); } };
+MS2_CHECK_SIZE(Unk_InventoryBlockRef, 0x10);
+void* FUN_1401cb3d0(Unk_InventoryBlockRef*);
+void FUN_140a2f620(Unk_InventoryStateManager*, Unk_InventoryBlockRef*, int);
+Unk_InventoryStateManager* FUN_140a6a830();
+void FUN_140a2ff20(Unk_InventoryBlockRef*, int, __int64);
+extern CString DAT_143ab78e8;
 int FUN_140527760(CItem*);
 int FUN_14053c5c0(CItemData*);
 bool FUN_14053c7c0(CItemData*);
@@ -1463,6 +1485,103 @@ int Unk_Inventory::FUN_140a63900(CItem* item, int mode) {
     return FUN_140a63950(item, FUN_140527a20(item), mode);
 }
 MS2_REPLACE_METHOD(0x140a63900, Unk_Inventory, FUN_140a63900, 69, 0xD5A0FEBB);
+// MS2-FUNCTIONAL: typed accessors; the repeated per-slot equip checks are shared helpers.
+// Check of an equipped slot against the item being worn (mask/type from the item data); false blocks the change.
+static bool Unk_InventorySlotAllows(const MS2Ptr<Unk_InventoryEquipment>& slot, int mask, int type) {
+    if (slot.get() == nullptr) return true;
+    if (slot->FUN_1411dc7a0().get() == nullptr) return true;
+    MS2Ptr<CItem> worn = slot->FUN_1411dc7a0();
+    return FUN_140528980(worn.get()) && FUN_140525e50(worn.get(), mask, type) != 0;
+}
+static void Unk_InventoryCodiSlotError() {
+    FUN_140d73aa0(FUN_14028b8e0(L"s_item_err_codi_slot"), 0, nullptr, L"");
+}
+// Both slots are worn by different items although the item data requires one combined item.
+static bool Unk_InventoryPairMismatch(Unk_InventoryPlayer* player, int slotA, int slotB, int mode) {
+    MS2Ptr<Unk_InventoryEquipment> a = player->FUN_141655e80(slotA, mode);
+    MS2Ptr<Unk_InventoryEquipment> b = player->FUN_141655e80(slotB, mode);
+    if (a.get() != nullptr && b.get() != nullptr && a.get() != b.get()) {
+        FUN_141275260(0x43, 1, 1);
+        FUN_141276180(DAT_143ab78e8, CString(""));
+        return true;
+    }
+    return false;
+}
+// @0x140a63950
+int Unk_Inventory::FUN_140a63950(CItem* item, int slot, int mode) {
+    if (item == nullptr) return 0;
+    Unk_InventoryPlayer* player = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (player == nullptr) return 0;
+    MS2Ptr<CItemData> data(FUN_140527840(item));
+    if (!data) return 0;
+    if (!FUN_14053c710(data.get())) return 0;
+    bool codi = FUN_140166410()->FUN_14036d570(0x8e);
+    if (mode == 2) {
+        if (!codi || !FUN_14053cf90(data.get())) {
+            FUN_140d73aa0(FUN_14028b8e0(L"s_item_err_Invalid_slot_codi"), 0, nullptr, L"");
+            return 0;
+        }
+    } else if (mode == 1) {
+        if (!FUN_14053cf90(data.get())) { FUN_140d73bc0(0xd3, 0, nullptr, L""); return 0; }
+    }
+    int mask = player->FUN_141658e60();
+    bool gotoCheck = true;   // false: the combined-slot path ran and jumped past the generic check
+    if (mode != 2 && !FUN_14053cf90(data.get())) {
+        int type = FUN_14053c620(data.get());
+        gotoCheck = false;
+        if (!FUN_14053d460(data.get())) {
+            if (FUN_14053d2f0(data.get())) {
+                MS2Ptr<Unk_InventoryEquipment> head = player->FUN_141655cf0(5);
+                if (head.get() != nullptr && head->FUN_1411dc7f0() != nullptr && FUN_14053d460(head->FUN_1411dc7f0())) {
+                    FUN_140d73bc0(0xd4, 0, nullptr, L"");
+                    return 0;
+                }
+                if (codi) {
+                    MS2Ptr<Unk_InventoryEquipment> codiHead = player->FUN_141655e80(5, 2);
+                    if (codiHead.get() != nullptr && codiHead->FUN_1411dc7f0() != nullptr && FUN_14053d460(codiHead->FUN_1411dc7f0())) {
+                        Unk_InventoryCodiSlotError();
+                        return 0;
+                    }
+                }
+                if (!Unk_InventorySlotAllows(player->FUN_141655cf0(slot), mask, type)) { FUN_140d73bc0(0xd4, 0, nullptr, L""); return 0; }
+                if (codi && !Unk_InventorySlotAllows(player->FUN_141655e80(slot, 2), mask, type)) { Unk_InventoryCodiSlotError(); return 0; }
+            }
+            MS2Ptr<Unk_InventoryEquipment> cur = player->FUN_141655c90(slot);
+            if (cur.get() != nullptr && FUN_14053d460(cur->FUN_1411dc7f0())) {
+                if (slot == 5) {
+                    if (player->FUN_141655cf0(4).get() != nullptr) { FUN_140d73bc0(0xd6, 0, nullptr, L""); return 0; }
+                    if (codi && player->FUN_141655e80(4, 2).get() != nullptr) { FUN_140d73bc0(0xd6, 0, nullptr, L""); return 0; }
+                } else if (slot == 4) {
+                    if (player->FUN_141655cf0(5).get() != nullptr) { FUN_140d73bc0(0xd6, 0, nullptr, L""); return 0; }
+                    if (codi && player->FUN_141655e80(5, 2).get() != nullptr) { FUN_140d73bc0(0xd6, 0, nullptr, L""); return 0; }
+                }
+            }
+        } else {
+            if (!Unk_InventorySlotAllows(player->FUN_141655cf0(5), mask, type)) { FUN_140d73bc0(0xd4, 0, nullptr, L""); return 0; }
+            if (!Unk_InventorySlotAllows(player->FUN_141655cf0(4), mask, type)) { FUN_140d73bc0(0xd4, 0, nullptr, L""); return 0; }
+            if (codi) {
+                if (!Unk_InventorySlotAllows(player->FUN_141655e80(5, 2), mask, type)) { Unk_InventoryCodiSlotError(); return 0; }
+                if (!Unk_InventorySlotAllows(player->FUN_141655e80(4, 2), mask, type)) { Unk_InventoryCodiSlotError(); return 0; }
+            }
+        }
+    }
+    if (gotoCheck && FUN_14053d2f0(data.get())) {
+        int result = reinterpret_cast<PC*>(player)->vfunc_132(item, slot, mode == 2);
+        if (FUN_140525e50(item, mask, result) == 0) { FUN_140d73bc0(0xd2, 0, nullptr, L""); return 0; }
+    }
+    if (FUN_140a61430(FUN_140a617f0(ItemPtr(item))) == 0) {
+        int pairMode = FUN_14053cf90(data.get()) ? 1 : 0;
+        if (codi && FUN_14052a170(item) == 2) pairMode = 2;
+        if (FUN_14053d460(data.get()) && Unk_InventoryPairMismatch(player, 4, 5, pairMode)) return 0;
+        if (FUN_14053d2b0(data.get()) && Unk_InventoryPairMismatch(player, 8, 9, pairMode)) return 0;
+    }
+    if (FUN_140525f10(item) != 0) {
+        Unk_InventoryBlockRef block;
+        FUN_140a2f620(FUN_140a6a830(), &block, 4);
+        if (FUN_1401cb3d0(&block) != nullptr) { FUN_140a2ff20(&block, 4, 0); return 0; }
+    }
+    return 1;
+}
 // MS2-FUNCTIONAL: equivalent validation with early-return spelling.
 // @0x140a655b0
 int Unk_Inventory::FUN_140a655b0(CItem* item) {
