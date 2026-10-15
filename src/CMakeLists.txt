@@ -105,3 +105,12 @@ set_target_properties(dinput8 PROPERTIES OUTPUT_NAME dinput8 PREFIX "")
 # of the DLL's code, which the absolute data symbols of ms2sym.obj rely on. A fixed DLL cannot be relocated: if the
 # range is taken the DLL (and with it the process) fails to load instead of misbehaving.
 target_link_options(dinput8 PRIVATE /DEBUG /OPT:REF /OPT:ICF /BASE:0x100000000 /DYNAMICBASE:NO /FIXED)
+# NiRendererSettings.h pulls NiD3D10Headers.h, whose #pragma comment(lib) asks for the June 2010 DX SDK import libs.
+# Mixed-case symlinks, since lld-link on Linux is case-sensitive and the pragma asks for D3DX9.lib / D3DX10.lib.
+set(MS2_DXLIB_DIR "${CMAKE_BINARY_DIR}/dxsdk-lib")
+file(MAKE_DIRECTORY "${MS2_DXLIB_DIR}")
+foreach(_n D3DX9 D3DX10)
+    string(TOLOWER "${_n}" _l)
+    file(CREATE_LINK "${MS2_ROOT}/third_party/dxsdk/DXSDK/Lib/x64/${_l}.lib" "${MS2_DXLIB_DIR}/${_n}.lib" SYMBOLIC)
+endforeach()
+target_link_options(dinput8 PRIVATE "/LIBPATH:${MS2_DXLIB_DIR}")
