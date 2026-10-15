@@ -24,6 +24,9 @@ class CPtred
 {
 public:
     CPtred();                           // 0x140159740
+    // Copying a value creates fresh reference bookkeeping, as proved by the copy ctor body.
+    // @0x1401d27b0
+    CPtred(const CPtred&) : m_nRef(0), m_pad_10(0) {}
     virtual ~CPtred();                  // slot 0 (??_G 0x140159b30), dtor 0x140159840
 
     // Interlocked helpers on the count (ATL CComMultiThreadModel::Increment/Decrement shape).

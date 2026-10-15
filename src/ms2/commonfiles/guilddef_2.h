@@ -39,6 +39,7 @@ public:
     void FUN_1404d9260(CInPacket* packet);
     int f18; unsigned f1c; int f20; __int64 f28;
 };
+MS2_CHECK_SIZE(Unk_GuildShopOffer,0x30);
 class CGuildNpcShopMgr : public CPtred {
 public:
     CGuildNpcShopMgr(){}

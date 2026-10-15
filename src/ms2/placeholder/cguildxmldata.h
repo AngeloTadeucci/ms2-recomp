@@ -11,8 +11,22 @@
 #include <vector>
 class CInPacket; class COutPacket;
 // Type names of the two original enumeration keys have not been recovered.
-enum Unk_GuildNpcKind { Unk_GuildNpcKind_None=0 };
-enum Unk_GuildContribution { Unk_GuildContribution_None=0 };
+// Values proved by FUN_140219f50; names follow the accepted XML strings.
+enum Unk_GuildNpcKind {
+    Unk_GuildNpcKind_None=0, Unk_GuildNpcKind_Equip=1, Unk_GuildNpcKind_Goods=2,
+    Unk_GuildNpcKind_Gemstone=3, Unk_GuildNpcKind_ItemMerge=4,
+    Unk_GuildNpcKind_Music=5, Unk_GuildNpcKind_Quest=6
+};
+// Values proved by FUN_14021a0a0; the previous None-only enum excluded valid XML values.
+enum Unk_GuildContribution {
+    Unk_GuildContribution_None=0, Unk_GuildContribution_Attend=1,
+    Unk_GuildContribution_Donation=2, Unk_GuildContribution_WinMiniGame=3,
+    Unk_GuildContribution_LoseMiniGame=4, Unk_GuildContribution_DailyQuest=5,
+    Unk_GuildContribution_WeeklyQuest=6, Unk_GuildContribution_Raid=7,
+    Unk_GuildContribution_WinPvp=8, Unk_GuildContribution_LosePvp=9
+};
+MS2_CHECK_SIZE(Unk_GuildNpcKind,4);
+MS2_CHECK_SIZE(Unk_GuildContribution,4);
 class CGuildPVPSeasonHistoryData:public CPtred {
 public:
     CGuildPVPSeasonHistoryData(); virtual ~CGuildPVPSeasonHistoryData();

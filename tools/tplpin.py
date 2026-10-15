@@ -782,6 +782,26 @@ def solve_unit(ctx, u, args):
     # report
     allnames = list(D0)
     resolved = {n: sol[n] for n in sol}
+    # Explicit in-range anchors also need a persistent pin. They are excluded
+    # from D0, so otherwise --apply silently loses the user's verified pair.
+    # Keep the same byte/unwind bar as inferred candidates and check references
+    # against the other explicit anchors (not older symbol-table guesses).
+    explicit = {}
+    for spec in args.anchor:
+        sub, va = spec.rsplit("=", 1)
+        name = next(n for n in st.fn if sub in n)  # uniqueness checked above
+        explicit[name] = int(va, 16)
+    for name, va in explicit.items():
+        if not inrange(va):
+            continue
+        f = st.fn[name]
+        if va not in ctx.finfo or ctx.fsize(va) != f.size:
+            continue
+        if st.exe_int(va, f.size) & f.mask != f.want or not st.unwind_ok(f, va):
+            continue
+        if any(tn in explicit and explicit[tn] != target for tn, target in st.targets(f, va)):
+            continue
+        resolved[name] = (va, "unique", "explicit anchor; bytes, unwind and anchored references verified")
     # discard duplicates (two names, same VA)
     byva = collections.defaultdict(list)
     for n, (a, c, r) in resolved.items():

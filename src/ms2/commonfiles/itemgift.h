@@ -12,6 +12,11 @@ struct ItemAble {
 };
 struct ItemEntity : CPtred, ItemAble {
     ItemEntity();
+    // Both member-wise forms exist in the exe (0x1401dbe60 / 0x14027dbd0).
+    // Explicitly retain them despite the recovered out-of-line destructor declaration.
+    ItemEntity(const ItemEntity&) = default;
+    ItemEntity(ItemEntity&&) = default;
+    ItemEntity& operator=(const ItemEntity&) = default;
     ItemEntity(unsigned id,int rank,unsigned count,bool b28,bool b2a,bool b29,bool b2b);   // 0x14026abf0 (rx2a)
     ItemEntity(ItemAble& source);                                                             // 0x14026acb0 (rx2a)
     virtual ~ItemEntity();
