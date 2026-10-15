@@ -11,6 +11,7 @@ public:
     void FUN_140868750(unsigned int ms);        // arm: expires ms from now
     void FUN_1408687f0();                       // reset
     int FUN_140868c00();                        // expired?
+    int FUN_140868a70();                        // elapsed milliseconds
 private:
     void* m_0; void* m_8; void* m_10; void* m_18; void* m_20; void* m_28; void* m_30;
 };
