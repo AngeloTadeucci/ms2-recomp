@@ -1,0 +1,112 @@
+// Recovered item enchantment layout; Unk_ names are unit-local descriptive placeholders.
+#pragma once
+#include <afx.h>
+#include <atlcoll.h>
+#include <utility>
+#include "ms2/placeholder/cptred.h"
+class Unk_EnchantWrite {
+public:
+    virtual void vfunc_0(bool);
+    virtual void vfunc_1(unsigned char);
+    virtual void vfunc_2();
+    virtual void vfunc_3(int);
+    virtual void vfunc_4(__int64);
+};
+class Unk_EnchantRead {
+public:
+    virtual bool vfunc_0();
+    virtual unsigned char vfunc_1();
+    virtual void vfunc_2();
+    virtual int vfunc_3();
+    virtual __int64 vfunc_4();
+};
+class Unk_EnchantRef { public: void FUN_14015b020(); int FUN_140159bc0(); void FUN_140159ba0(); };
+template<class T> class Unk_EnchantPtr {
+public:
+    Unk_EnchantPtr();
+    Unk_EnchantPtr(const Unk_EnchantPtr&);
+    Unk_EnchantPtr(Unk_EnchantPtr&& o) : p(o.p) { o.p=0; }
+    Unk_EnchantPtr(T* value) : p(value) { AddRef(); }
+    ~Unk_EnchantPtr() { Release(); }
+    Unk_EnchantPtr& operator=(const Unk_EnchantPtr&);
+    T* operator->() const { return p; }
+private:
+    void AddRef() const { if (p) AddRefImpl(0); }
+    static void AddRefObject(T* value) { reinterpret_cast<Unk_EnchantRef*>(value)->FUN_14015b020(); }
+    void AddRefImpl(void*) const { AddRefObject(p); }
+    void Release() { if (p) { ReleaseImpl(0); p=0; } }
+    void ReleaseImpl(void*) {
+        if (reinterpret_cast<Unk_EnchantRef*>(p)->FUN_140159bc0() == 0) {
+            AddRefObject(p); reinterpret_cast<Unk_EnchantRef*>(p)->FUN_140159ba0();
+        }
+    }
+    void* pad; T* p;
+};
+class BaseOption {
+public:
+    BaseOption();
+    void FUN_140266d20(Unk_EnchantWrite&) const;
+    void FUN_140266d60(Unk_EnchantRead&);
+private: void* p0; void* p8; void* p10; void* p18;
+};
+MS2_CHECK_SIZE(BaseOption, 0x20);
+struct Unk_EnchantHistory {
+    Unk_EnchantHistory() { FUN_14058c160(); }
+    void FUN_14058c160();
+    void FUN_14058c1b0(Unk_EnchantWrite&) const;
+    void FUN_14058c250(Unk_EnchantRead&);
+    __int64 itemId; int attempts,failures; bool failed,enabled; int extra;
+};
+MS2_CHECK_SIZE(Unk_EnchantHistory, 0x18);
+// Preserve the enum-like const-reference key ABI used by the original map.
+struct Unk_EnchantKeyTraits : ATL::CElementTraits<int> { typedef const int& INARGTYPE; };
+typedef ATL::CAtlMap<int,Unk_EnchantPtr<BaseOption>,Unk_EnchantKeyTraits> Unk_EnchantMap;
+class CItemEnchantInfo : public CPtred {
+public:
+    CItemEnchantInfo(int,int);
+    ~CItemEnchantInfo() = default;
+    static int Version() { return 1; }
+    Unk_EnchantPtr<CItemEnchantInfo> FUN_14058c3b0();
+    void FUN_14058c510();
+    int FUN_14058c5a0();
+    int FUN_14058c5c0();
+    int FUN_14058c5f0();
+    int FUN_14058c610();
+    int FUN_14058c660();
+    void FUN_14058c6b0(int level, bool dirty);
+    int FUN_14058c730();
+    void FUN_14058c750(int charge);
+    void FUN_14058c7c0(int charge);
+    void FUN_14058c830();
+    bool FUN_14058c850();
+    void FUN_14058c870();
+    void FUN_14058c880();
+    int FUN_14058c8a0();
+    __int64 FUN_14058c8b0();
+    int FUN_14058c8f0();
+    int FUN_14058c910();
+    void FUN_14058c940();
+    bool FUN_14058c960();
+    bool FUN_14058c9a0();
+    void FUN_14058c9c0(Unk_EnchantWrite& stream) const;
+    void FUN_14058cb20(Unk_EnchantRead& stream);
+    void FUN_14058cc90(bool dirty);
+    bool FUN_14058ccb0();
+    int FUN_14058ccf0();
+    Unk_EnchantMap& FUN_14058cd40();
+    int FUN_14058cd60();
+    void FUN_14058cda0(int version);
+    int FUN_14058cdc0();
+    Unk_EnchantPtr<BaseOption> FUN_14058cde0(int key);
+    void FUN_14058ce60();
+private:
+    MS2_LAYOUT_FRIEND;
+    int m_id,m_rarity,m_level,m_charge,m_version;
+    Unk_EnchantHistory m_history;
+    Unk_EnchantMap m_options;
+    bool m_dirty;
+};
+MS2_CHECK_SIZE(CItemEnchantInfo,0x98);
+MS2_CHECK_OFFSET(CItemEnchantInfo,m_history,0x30);
+MS2_CHECK_OFFSET(CItemEnchantInfo,m_options,0x48);
+MS2_CHECK_OFFSET(CItemEnchantInfo,m_dirty,0x90);
