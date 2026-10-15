@@ -52,14 +52,25 @@ template class Unk_Iter<22>;
 template class Unk_Iter<23>;
 template class Unk_Iter<24>;
 
-// std::string::const_iterator and std::wstring::const_iterator comparisons (each calls its own empty _Compat).
-// MS2-PIN: ??8?$_String_const_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141127210
+// std::wstring::const_iterator comparisons (each calls its own empty _Compat). The char (std::string) pair here is a byte-identical
+// look-alike of filesystem.cpp's real std::string iterator copy (0x1403a7800 / 0x1403a79a0), so it is a unit-local stand-in.
+// Unk_StdCharIter<0>: 0x141127210 (==), 0x141127940 (!=); _Compat 0x141134f50.
+template <int N>
+class Unk_StdCharIter
+{
+public:
+    void _Compat(const Unk_StdCharIter&) const {}
+    bool operator==(const Unk_StdCharIter& r) const { _Compat(r); return (m_ptr == r.m_ptr); }
+    bool operator!=(const Unk_StdCharIter& r) const { return (!(*this == r)); }
+    const char* m_ptr;
+};
 // MS2-PIN: ??8?$_String_const_iterator@V?$_String_val@U?$_Simple_types@_W@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141127260
-// MS2-PIN: ??9?$_String_const_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141127940
 // MS2-PIN: ??9?$_String_const_iterator@V?$_String_val@U?$_Simple_types@_W@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141127980
-template bool std::_String_const_iterator<std::_String_val<std::_Simple_types<char> > >::operator==(const std::_String_const_iterator<std::_String_val<std::_Simple_types<char> > >&) const;
+// MS2-PIN: ??8?$Unk_StdCharIter@$0A@@@QEBA_NAEBV0@@Z 0x141127210
+// MS2-PIN: ??9?$Unk_StdCharIter@$0A@@@QEBA_NAEBV0@@Z 0x141127940
+template bool Unk_StdCharIter<0>::operator==(const Unk_StdCharIter<0>&) const;
 template bool std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t> > >::operator==(const std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t> > >&) const;
-template bool std::_String_const_iterator<std::_String_val<std::_Simple_types<char> > >::operator!=(const std::_String_const_iterator<std::_String_val<std::_Simple_types<char> > >&) const;
+template bool Unk_StdCharIter<0>::operator!=(const Unk_StdCharIter<0>&) const;
 template bool std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t> > >::operator!=(const std::_String_const_iterator<std::_String_val<std::_Simple_types<wchar_t> > >&) const;
 
 // A 12-byte key of three ints compared member-wise.
@@ -97,6 +108,6 @@ struct Unk_Elem16
 // MS2-PIN: ??A?$CAtlArray@UUnk_Elem16@@V?$CElementTraits@UUnk_Elem16@@@ATL@@@ATL@@QEAAAEAUUnk_Elem16@@_K@Z 0x141127a10
 template Unk_Elem16& ATL::CAtlArray<Unk_Elem16, ATL::CElementTraits<Unk_Elem16> >::operator[](size_t) throw();
 
-// efd::map<unsigned long,int>::operator[] (= try_emplace(key).first->second), keyed by the cube position hash (key type unsigned long: the exe has distinct operator-> copies for int and unsigned keys).
-// MS2-PIN: ??A?$map@KHU?$less@K@std@@V?$CustomAllocator@U?$pair@$$CBKH@std@@@efd@@@std@@QEAAAEAHAEBK@Z 0x141127a50
-template int& std::map<unsigned long, int, std::less<unsigned long>, efd::CustomAllocator<std::pair<const unsigned long, int> > >::operator[](const unsigned long&);
+// efd::map<long,int>::operator[] (= try_emplace(key).first->second), keyed by the cube position hash (key type long: the exe has distinct operator-> copies per 32-bit key type; int/unsigned/unsigned long are taken by other units).
+// MS2-PIN: ??A?$map@JHU?$less@J@std@@V?$CustomAllocator@U?$pair@$$CBJH@std@@@efd@@@std@@QEAAAEAHAEBJ@Z 0x141127a50
+template int& std::map<long, int, std::less<long>, efd::CustomAllocator<std::pair<const long, int> > >::operator[](const long&);
