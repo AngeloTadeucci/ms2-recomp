@@ -62,7 +62,7 @@ bool ScreenMaskingRenderStep::vfunc_15(unsigned int a, void* b)
     }
     void** obj = FUN_140c8f7b0(&DAT_143afbbc0, FUN_140c8f670(FUN_140c8f7f0(FUN_140c8f880(res))));
     s_pkScreenMaskProp = (NiTexturingProperty*)FUN_141d14f90((*(void* (**)(void*))(*(char**)obj + 0x50))(obj), 8);
-    NiTexturingProperty::ShaderMap* sm = new (efd::MemHint(efd::MemHint::NONE)) NiTexturingProperty::ShaderMap(s_screenMaskTexture.Get(), 0, 0, 0, 0);
+    NiTexturingProperty::ShaderMap* sm = new (efd::MemHint(efd::MemHint::NONE)) NiTexturingProperty::ShaderMap((NiTexture*)s_screenMaskTexture.Get(), 0, (NiTexturingProperty::ClampMode)0, (NiTexturingProperty::FilterMode)0, 0);
     s_pkScreenMaskProp->SetShaderMap(0, sm);
     return true;
 }
@@ -87,7 +87,7 @@ void FUN_1416ba640(Unk_PPSmartC tex)
         void* r = FUN_1416a3a90(FUN_1409a8b20(), 8);
         if (r != 0) {
             s_screenMaskTexture = tex;
-            NiTexturingProperty::ShaderMap* sm = new (efd::MemHint(efd::MemHint::NONE)) NiTexturingProperty::ShaderMap(s_screenMaskTexture.Get(), 0, 0, 0, 0);
+            NiTexturingProperty::ShaderMap* sm = new (efd::MemHint(efd::MemHint::NONE)) NiTexturingProperty::ShaderMap((NiTexture*)s_screenMaskTexture.Get(), 0, (NiTexturingProperty::ClampMode)0, (NiTexturingProperty::FilterMode)0, 0);
             s_pkScreenMaskProp->SetShaderMap(0, sm);
         }
     }

@@ -1,5 +1,6 @@
-// postprocesseffect.h - PLACEHOLDER for the Gamebryo NiDefaultClickRenderStep base and MS2's PostProcessEffect /
-// ReloadablePostProcess render-step bases (the *RenderStep family under client\ms2\postprocessing). NOT original headers.
+// postprocesseffect.h - MS2's PostProcessEffect / ReloadablePostProcess render-step bases (the *RenderStep family under
+// client\ms2\postprocessing), PLACEHOLDERS (not original headers). Their Gamebryo bases NiDefaultClickRenderStep, NiFixedString
+// and NiString are the real engine classes (cmake/ms2-engine-flags.cmake; docs/RECOVERY.md section 3).
 // Proven from the exe (KMS2_DEV x64):
 //   NiDefaultClickRenderStep : NiRefObject, 0x70 bytes, vftable slots 0 dtor, 1 DeleteThis, 2 GetRTTI, 3..12 NiClickRenderStep /
 //     NiRenderStep virtuals (ctor 0x141474910, dtor 0x141474dd0).
@@ -11,32 +12,14 @@
 #pragma once
 
 #include "ms2/ms2layout.h"
+#include <NiDefaultClickRenderStep.h>
+#include <NiFixedString.h>
+#include <NiString.h>
+
 #include "ms2/placeholder/nirefobject.h"
 #include "ms2/placeholder/ninode.h"
 
-// Gamebryo NiFixedString (8 bytes, a pooled string handle).
-class NiFixedString {
-public:
-    NiFixedString();                            // 0x14099c480
-    NiFixedString(const char* pcString);        // 0x140984450
-    ~NiFixedString();                           // 0x1409845a0
-    NiFixedString& operator=(const NiFixedString& kString);   // 0x140984780 (called with a NiFixedString*)
-    operator const char*() const;               // 0x142087e50
-private:
-    char* m_handle;
-};
 MS2_CHECK_SIZE(NiFixedString, 8);
-
-// Gamebryo NiString (8 bytes); ctor takes the buffer size.
-class NiString {
-public:
-    NiString(unsigned __int64 stSize);          // 0x141d5bfa0
-    ~NiString();                                // 0x141d5bfe0
-    void FormatPrintf(const char* pcFormat, ...);   // 0x141d5db00
-    operator const char*() const;               // 0x141d5c630
-private:
-    char* m_handle;
-};
 MS2_CHECK_SIZE(NiString, 8);
 
 // Smart-pointer-like helper objects (8 bytes) used as render-step members; real template types unknown.
@@ -63,25 +46,7 @@ private:
 };
 MS2_CHECK_SIZE(Unk_PPSmartC, 8);
 
-class NiDefaultClickRenderStep : public NiRefObject {
-public:
-    NiDefaultClickRenderStep();                 // 0x141474910
-    virtual ~NiDefaultClickRenderStep();        // 0x141474dd0
-    virtual const NiRTTI* GetRTTI() const;
-    virtual void vfunc_3();
-    virtual void vfunc_4();
-    virtual void vfunc_5();
-    virtual void vfunc_6();
-    virtual void vfunc_7();
-    virtual void vfunc_8();
-    virtual void vfunc_9();
-    virtual void vfunc_10();
-    virtual void vfunc_11();
-    virtual void vfunc_12();
-protected:
-    unsigned char m_pad_10[0x60];
-};
-MS2_CHECK_SIZE(NiDefaultClickRenderStep, 0x70);
+MS2_CHECK_SIZE(NiDefaultClickRenderStep, 0x70);     // exe: ctor 0x141474910, dtor 0x141474dd0; 13 vftable slots
 
 class PostProcessEffect : public NiDefaultClickRenderStep {
 public:

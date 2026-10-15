@@ -447,11 +447,11 @@ void CCameraMode::FUN_140afe4b0()
         Unk_CameraTarget* pTarget = FUN_1413f98d0();
         if (pTarget)
         {
-            Unk_CameraObject* pCamera = spCamera->FUN_14200aae0(pTarget);
+            Unk_CameraObject* pCamera = FUN_14200aae0(spCamera.operator->(), pTarget);
             if (pCamera)
             {
                 pCamera->FUN_142008e90(m_70);
-                spCamera->FUN_1414af480(pCamera);
+                FUN_1414af480(spCamera.operator->(), pCamera);
             }
         }
     }

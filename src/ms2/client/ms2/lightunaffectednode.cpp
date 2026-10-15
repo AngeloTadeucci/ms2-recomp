@@ -14,7 +14,7 @@ const NiRTTI LightUnaffectedNode::ms_RTTI("LightUnaffectedNode", &NiNode::ms_RTT
 static Unk_LUNHolder s_holder(0);
 
 // @0x14144df10
-NiRefObject* LightUnaffectedNode::CreateClone(NiCloningProcess& kCloning)
+NiObject* LightUnaffectedNode::CreateClone(NiCloningProcess& kCloning)
 {
     LightUnaffectedNode* pkClone = new (efd::MemHint(efd::MemHint::NONE)) LightUnaffectedNode(m_bUpdateEffects, m_bTemplate);
     CopyMembers(pkClone, kCloning);

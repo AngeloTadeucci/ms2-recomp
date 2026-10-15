@@ -1,18 +1,12 @@
-// nitexturingproperty.h - PLACEHOLDER for the parts of Gamebryo's NiTexturingProperty used by MS2 render steps (the
-// CoreRuntime include dirs are not on the path). NOT an original header. Proven from the exe (KMS2_DEV x64):
-//   NiTexturingProperty::ShaderMap : 0x28 bytes (Map base with a vfptr + m_uiID at +0x20), ctor 0x140c8f5d0
-//   (NiTexture*, uint, ClampMode, FilterMode, uint id); NiTexturingProperty::SetShaderMap(uint, ShaderMap*) 0x141d20b10.
+// nitexturingproperty.h - the real Gamebryo NiTexturingProperty (engine/gamebryo/CoreRuntime/EngineLibs/NiMain/
+// NiTexturingProperty.h), now that the engine include dirs are on the game include path (cmake/ms2-engine-flags.cmake;
+// docs/RECOVERY.md section 3). Kept as a forwarding header; new code includes <NiTexturingProperty.h> directly. Exe facts
+// (KMS2_DEV x64): NiTexturingProperty 88 bytes, 20 slots; ShaderMap 0x28 bytes (ctor 0x140c8f5d0), SetShaderMap 0x141d20b10.
 #pragma once
+#include <NiTexturingProperty.h>
+
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/nirefobject.h"
 
-class NiTexturingProperty {
-public:
-    class ShaderMap : public efd::MemObject {
-    public:
-        ShaderMap(void* pkTexture, unsigned int a, unsigned int b, unsigned int c, unsigned int uiID);   // 0x140c8f5d0
-    private:
-        unsigned char m_pad[0x28];
-    };
-    void SetShaderMap(unsigned int uiIndex, ShaderMap* pkMap);      // 0x141d20b10
-};
+MS2_CHECK_SIZE(NiTexturingProperty, 88);
+MS2_CHECK_SIZE(NiTexturingProperty::ShaderMap, 0x28);

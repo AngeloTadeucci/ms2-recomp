@@ -1,40 +1,27 @@
-// ecrcameraservice.h - PLACEHOLDER for the Gamebryo GameFramework camera service (ecr::CameraService, system service
-// id kCLASSID_CameraService 0x07002002) and the game's service-manager access. NOT an original header; the ecr headers
-// are not on the game include path and MS2's efd::ServiceManager has a different vftable from the SDK's
-// (GetSystemService is slot 14 here), so the manager is a stand-in (Unk_ServiceManager).
+// ecrcameraservice.h - the real ecr::CameraService (engine/gamebryo/GameFramework/ecr/CameraService.h, system service id
+// kCLASSID_CameraService 0x07002002) plus the game's service-manager access. Not an original header: MS2's
+// efd::ServiceManager has a different vftable from the SDK's (GetSystemService is slot 14 here), so the manager is a stand-in
+// (Unk_ServiceManager). Exe facts: ecr::CameraService members end at 0x60 (ctor 0x14200a080, dtor 0x14200a190); MS2CameraService
+// (0xa0 bytes, vftables at 0/24/104) places its egf::IPropertyCallback base at 0x68, 8 bytes after that (unexplained).
 //
 // Usage (CCameraMode, 0x140afe4b0):
 //     efd::SmartPointer<ecr::CameraService> spCamera = g_143b059e8.GetSystemServiceAs<ecr::CameraService>();
 #pragma once
-#ifndef EE_EFD_CONFIG_RELEASE
-#define EE_EFD_CONFIG_RELEASE
-#endif
-#ifndef EE_EFD_NO_IMPORT
-#define EE_EFD_NO_IMPORT
-#endif
-#ifndef EE_USE_NATIVE_STL
-#define EE_USE_NATIVE_STL
-#endif
 #include <efd/IBase.h>
 #include <efd/ISystemService.h>
 #include <efd/SmartPointer.h>
+#include <ecr/CameraService.h>
 
 #include "ms2/ms2layout.h"
 
 class Unk_CameraObject;     // camera object owned by the service (methods FUN_142008xxx)
 class Unk_CameraTarget;     // what FUN_1413f98d0 returns (the active camera entity)
 
-namespace ecr
-{
-class CameraService : public efd::ISystemService
-{
-public:
-    static const efd::ClassID CLASS_ID = 0x07002002;
-
-    Unk_CameraObject* FUN_14200aae0(Unk_CameraTarget* pTarget);    // camera object of the target (or 0)
-    void FUN_1414af480(Unk_CameraObject* pCamera);                  // applies / refreshes it
-};
-} // namespace ecr
+// Unrecovered members of the real ecr::CameraService, as free functions (x64 has one calling convention, so `this` is the first
+// argument). FUN_14200aae0 is ecr::CameraService::GetActiveCamera(RenderSurface*) (the "target" is the surface, whose window
+// handle is at +0x10); FUN_1414af480 lives in MS2CameraService's range (0x1414af...).
+Unk_CameraObject* FUN_14200aae0(ecr::CameraService* pService, Unk_CameraTarget* pTarget);    // camera object of the target (or 0)
+void FUN_1414af480(ecr::CameraService* pService, Unk_CameraObject* pCamera);                  // applies / refreshes it
 
 class Unk_CameraObject
 {

@@ -31,7 +31,7 @@ public:
     LightUnaffectedNode(bool affectsLights, bool isTemplate);       // 0x14144e030
     virtual ~LightUnaffectedNode();                                 // 0x14144e110
     virtual const NiRTTI* GetRTTI() const;                          // slot 2, 0x14144e2d0
-    virtual NiRefObject* CreateClone(NiCloningProcess& kCloning);   // slot 3, 0x14144df10
+    virtual NiObject* CreateClone(NiCloningProcess& kCloning);   // slot 3, 0x14144df10
     virtual void UpdateEffectsDownward(NiDynamicEffectState* pkParentState);   // slot 31, 0x14144e210
     void CopyMembers(LightUnaffectedNode* pkDest, NiCloningProcess& kCloning);   // 0x14144dfd0
     bool FUN_14144e250();

@@ -34,7 +34,7 @@ MS2MeshCullingProcess::MS2MeshCullingProcess(NiVisibleArray* pkVisibleSet, NiSPW
     m_ownsWorkflow = false;
     if (pkWorkflowManager == 0) {
         m_ownsWorkflow = true;
-        m_pkWorkflowManager = new (efd::MemHint(efd::MemHint::NONE)) NiSPWorkflowManager(0x40, 1, 3);
+        m_pkWorkflowManager = new (efd::MemHint(efd::MemHint::NONE)) NiSPWorkflowManager(0x40, NiStreamProcessor::MEDIUM, 3);
     }
 }
 
@@ -72,7 +72,7 @@ MS2MeshCullingProcess::MS2MeshCullingProcess(NiVisibleArray* pkVisibleSet, NiSPW
     m_ownsWorkflow = false;
     if (pkWorkflowManager == 0) {
         m_ownsWorkflow = true;
-        m_pkWorkflowManager = new (efd::MemHint(efd::MemHint::NONE)) NiSPWorkflowManager(0x40, 1, 3);
+        m_pkWorkflowManager = new (efd::MemHint(efd::MemHint::NONE)) NiSPWorkflowManager(0x40, NiStreamProcessor::MEDIUM, 3);
     }
 }
 
