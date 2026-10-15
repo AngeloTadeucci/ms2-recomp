@@ -68,7 +68,7 @@ i64 FUN_140274bb0(i64 out, i64 unused, i64 a, i64 b)
 // @0x140274c00
 i64 FUN_140274c00(i64 out, i64 a)
 {
-    Unk_StlTag tag = Unk_StlTag();
+    Unk_StlTag tag = {};
     FUN_140274cb0(out, tag, a);
     return out;
 }
@@ -79,7 +79,7 @@ i64* FUN_140274c80(i64* out, i64 a) { *out = FUN_14027c360(a); return out; }
 // @0x140274cb0
 i64 FUN_140274cb0(i64 out, Unk_StlTag, i64 a)
 {
-    Unk_StlTag tag = Unk_StlTag();
+    Unk_StlTag tag = {};
     FUN_14015e600(out, tag);
     u64 v = FUN_14027c1f0(a);
     FUN_140274c50((i64*)out, v);
@@ -218,17 +218,17 @@ void FUN_140276900(i64, i64, Unk_StlTag) {}
 // @0x140276910
 void FUN_140276910(i64, i64, Unk_StlTag) {}
 // @0x140276920
-void FUN_140276920(i64 a, i64 b) { Unk_StlTag tag = Unk_StlTag(); FUN_1402768f0(a, b, tag); }
+void FUN_140276920(i64 a, i64 b) { Unk_StlTag tag = {}; FUN_1402768f0(a, b, tag); }
 // @0x140276960
-void FUN_140276960(i64 a, i64 b) { Unk_StlTag tag = Unk_StlTag(); FUN_140276900(a, b, tag); }
+void FUN_140276960(i64 a, i64 b) { Unk_StlTag tag = {}; FUN_140276900(a, b, tag); }
 // @0x1402769a0
-void FUN_1402769a0(i64 a, i64 b) { Unk_StlTag tag = Unk_StlTag(); FUN_140276910(a, b, tag); }
+void FUN_1402769a0(i64 a, i64 b) { Unk_StlTag tag = {}; FUN_140276910(a, b, tag); }
 // @0x1402769e0
-void FUN_1402769e0(i64* p, i64 n) { *p = *p + n * 8; }
+i64 FUN_1402769e0(i64* p, i64 n, Unk_StlTag) { return *p + n * 8; }
 // @0x140276a10
-void FUN_140276a10(i64* p, i64 n) { *p = n * 0x10 + *p; }
+i64 FUN_140276a10(i64* p, i64 n, Unk_StlTag) { return n * 0x10 + *p; }
 // @0x140276a40
-void FUN_140276a40(i64 it, i64 n)
+void FUN_140276a40(i64 it, i64 n, Unk_StlTag)
 {
     for (; 0 < n; n = n - 1)
         FUN_14027f550(it);
@@ -420,15 +420,15 @@ void FUN_140277410(i64 first, i64 last, i64 al, Unk_StlTag)
     }
 }
 // @0x140277470
-void FUN_140277470(i64 a, i64 b, i64 c) { Unk_StlTag tag = Unk_StlTag(); FUN_1402772d0(a, b, c, tag); }
+void FUN_140277470(i64 a, i64 b, i64 c) { Unk_StlTag tag = {}; FUN_1402772d0(a, b, c, tag); }
 // @0x1402774c0
-void FUN_1402774c0(i64 a, i64 b, i64 c) { Unk_StlTag tag = Unk_StlTag(); FUN_1402772f0(a, b, c, tag); }
+void FUN_1402774c0(i64 a, i64 b, i64 c) { Unk_StlTag tag = {}; FUN_1402772f0(a, b, c, tag); }
 // @0x140277510
-void FUN_140277510(i64 a, i64 b, i64 c) { Unk_StlTag tag = Unk_StlTag(); FUN_140277350(a, b, c, tag); }
+void FUN_140277510(i64 a, i64 b, i64 c) { Unk_StlTag tag = {}; FUN_140277350(a, b, c, tag); }
 // @0x140277560
-void FUN_140277560(i64 a, i64 b, i64 c) { Unk_StlTag tag = Unk_StlTag(); FUN_1402773b0(a, b, c, tag); }
+void FUN_140277560(i64 a, i64 b, i64 c) { Unk_StlTag tag = {}; FUN_1402773b0(a, b, c, tag); }
 // @0x1402775b0
-void FUN_1402775b0(i64 a, i64 b, i64 c) { Unk_StlTag tag = Unk_StlTag(); FUN_140277410(a, b, c, tag); }
+void FUN_1402775b0(i64 a, i64 b, i64 c) { Unk_StlTag tag = {}; FUN_140277410(a, b, c, tag); }
 // @0x140277600
 i64 FUN_140277600(i64 a, i64 b, Unk_StlTag) { return (b - a) >> 3; }
 // @0x140277630
@@ -721,8 +721,9 @@ void FUN_140278630(i64, i64 node)
 // @0x1402786c0
 u64 FUN_1402786c0(u64 count)
 {
+    const u64 limit = 0x1fffffffffffffffULL;
     u64 bytes = count << 3;
-    if (0x1fffffffffffffffULL < count)
+    if (limit < count)
         bytes = (u64)-1;
     return bytes;
 }
