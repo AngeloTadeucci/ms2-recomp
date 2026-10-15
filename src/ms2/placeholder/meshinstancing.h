@@ -1,4 +1,5 @@
 #pragma once
+#include <list>
 #include <map>
 #include <vector>
 #include <NiNode.h>
@@ -10,13 +11,15 @@
 
 MS2_CHECK_SIZE(NiMeshHWInstance, 0xf8);
 
+struct Unk_MeshInstancingVec4 { float x, y, z, w; };
 // Heap-only configuration view, copied by 14147d4b0; trailing count at +0x68.
 struct Unk_MeshInstancingConfig {
+    Unk_MeshInstancingConfig(const Unk_MeshInstancingConfig&);  // 0x14147d4b0
     efd::AssetID asset;
     bool flags30, flags31, flags32;
     unsigned unknown34;
-    unsigned __int64 unknown38, unknown40;
-    float unknown48, unknown4c, unknown50, unknown54;
+    std::list<egf::EntityID> ids;
+    Unk_MeshInstancingVec4 unknown48;
     NiPoint3 unknown58;
     unsigned unknown64;
     int activeCount;
@@ -38,7 +41,24 @@ public:
     virtual ~MeshInstancing();
     virtual void vfunc_1();
     void FUN_14147c010(egf::Entity*, unsigned, unsigned, NiTransform*, bool);
+    void FUN_14147c730(double);
+    void FUN_14147c830();
+    void FUN_14147c910(double);
+    void FUN_14147ca20(bool);
+    void FUN_14147caa0();
+    void FUN_14147cbc0();
+    void FUN_14147ccf0();
+    bool FUN_14147cde0(const egf::EntityID&);
     NiMesh* FUN_14147ce70(const NiFixedString&);
+    unsigned FUN_14147cf40();
+    int FUN_14147cf90(const Unk_MeshInstancingConfig&);
+    int FUN_14147cfd0(const Unk_MeshInstancingConfig&);
+    bool FUN_14147d010(egf::Entity*);
+    void FUN_14147d0c0(bool);
+    void FUN_14147d180(bool);
+    NiNode* FUN_14147d200(egf::Entity*);
+    void FUN_14147d290();
+    void* FUN_14147d2f0(void* out, void* a, void* b);
     efd::SmartPointer<egf::Entity> source;
     egf::EntityID id10, id18;
     unsigned capacity;
