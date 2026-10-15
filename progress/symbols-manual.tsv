@@ -1154,3 +1154,17 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?DAT_143af62d8@@3IA	143af62d8	data
 ?ms_RTTI@NiInputXInputGamePad@@2VNiRTTI@@B	143afa340	data
 ?ms_RTTI@NiInputDI8GamePad@@2VNiRTTI@@B	143afa330	data
+?DAT_143a08cf8@@3UUnk_StreamPoint@@B	143a08cf8	data
+?DAT_143ab5bc8@@3PEAVUnk_ResourceMgr@@EA	143ab5bc8	data
+?s_listControllers@@3V?$CAtlList@V?$SmartPointer@VCItemCustomizeController@@@efd@@V?$CElementTraits@V?$SmartPointer@VCItemCustomizeController@@@efd@@@ATL@@@ATL@@A	143adad08	data
+?s_spCurrent@@3V?$SmartPointer@VCItemCustomizeController@@@efd@@A	143adacb8	data
+?DAT_143a09680@@3UUnk_FactoryNodeName@@A	143a09680	data
+??0Unk_FactoryNodeName@@QEAA@AEBU0@@Z	140987930	func
+?GetDragging@CItemCustomizeController@@QEAAHXZ	140cd5fd0	func
+?AddSequenceData@NiControllerManager@@QEAA_NPEAVNiSequenceData@@@Z	141c39310	func
+??0NiActorManager@@IEAA@PEAVNiKFMTool@@_N@Z	141c3d300	func
+??1NiActorManager@@UEAA@XZ	141c3d920	func
+?Clone@NiActorManager@@UEAAPEAV1@PEAVNiCloningProcess@@@Z	141c3f950	func
+?CloneOnlyAnimation@NiActorManager@@UEAAPEAV1@PEAVNiAVObject@@_N@Z	141c3ff70	func
+?Update@NiActorManager@@UEAAXM@Z	141c45340	func
+?ms_RTTI@NiActorManager@@2VNiRTTI@@B	143af8988	data
