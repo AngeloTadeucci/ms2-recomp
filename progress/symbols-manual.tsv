@@ -621,3 +621,4 @@
 ?ms_uiBlockSize@?$NiTAbstractPoolAllocator@_K@@1IA	1439fc820	data
 ?ms_kCriticalSection@?$NiTAbstractPoolAllocator@_K@@1VCriticalSection@efd@@A	143afaa88	data
 ?ms_pkFreeMem@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa80	data
+?s_instance@?$TSingleton@VWorldService@@@@2PEAVWorldService@@EA	143aaee10	data
