@@ -62,3 +62,43 @@ private:
     Impl* implementation;
 };
 MS2_CHECK_SIZE(FunctorImplBase<unsigned long>, 8);
+
+template<class R> class FunctorImpl<R, EmptyParam> : public FunctorImplBase<R> {
+public:
+    FunctorImpl() {}
+    FunctorImpl(const FunctorImpl& other) noexcept : FunctorImplBase<R>(other) {}
+    virtual ~FunctorImpl() = default;
+    virtual R Invoke() = 0;
+};
+template<class R> class TFunctor<R, EmptyParam> {
+public:
+    typedef R Result;
+    typedef FunctorImpl<R, EmptyParam> Impl;
+    TFunctor() : implementation(nullptr) {}
+    template<class Object, class Method> TFunctor(const Object& object, Method method)
+        : implementation(new ClassFunHandler<TFunctor, Object, Method>(object, method)) {}
+    TFunctor(const TFunctor& other) : implementation(Clone(other.implementation)) {}
+    ~TFunctor() { Clear(); }
+    TFunctor& operator=(const TFunctor& other) {
+        Clear(); implementation = Clone(other.implementation); return *this;
+    }
+    R operator()() { return implementation->Invoke(); }
+    bool IsNull() const { return implementation == nullptr; }
+    void Clear() { if (implementation) { delete implementation; implementation = nullptr; } }
+private:
+    static Impl* Clone(Impl* source) { return source ? static_cast<Impl*>(source->Clone()) : nullptr; }
+    Impl* implementation;
+};
+template<class R, class Object, class Method>
+class ClassFunHandler<TFunctor<R, EmptyParam>, Object, Method> : public FunctorImpl<R, EmptyParam> {
+public:
+    ClassFunHandler(const Object& object, Method method) : object(object), method(method) {}
+    ClassFunHandler(const ClassFunHandler& other) noexcept
+        : FunctorImpl<R, EmptyParam>(other), object(other.object), method(other.method) {}
+    virtual ~ClassFunHandler() = default;
+    virtual ClassFunHandler* Clone() const { return new ClassFunHandler(*this); }
+    virtual R Invoke() { return (object->*method)(); }
+private:
+    Object object;
+    Method method;
+};
