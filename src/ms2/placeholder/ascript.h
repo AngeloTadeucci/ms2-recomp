@@ -21,6 +21,7 @@ template <class T>
 class MS2Ptr
 {
     template <class U> friend class MS2Ptr;
+    friend struct Unk_TePtrAccess;      // taileffectobject.cpp: ResetNew on the tail info list element
 
 public:
     MS2Ptr();
