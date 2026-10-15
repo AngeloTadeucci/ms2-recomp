@@ -21,6 +21,16 @@ public:
   void FUN_140526c70(int);
   int FUN_140526bd0();
   int FUN_1405276c0();
+  // Inventory ordering accessors, a1 (inventory.cpp).
+  int FUN_140525c60();
+  __int64 FUN_140528910();
+  // Remaining primary slots verified from CItem's exe vftable by a1.
+  virtual void vfunc_1();
+  virtual void vfunc_2();
+  virtual int vfunc_3(int);
+  virtual int vfunc_4();
+  virtual void vfunc_5(bool);
+  int FUN_1405268f0();
 private:
   void *m_18;
   void *m_20;
