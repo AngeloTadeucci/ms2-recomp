@@ -153,6 +153,7 @@ CIngredientContainer::CIngredientContainer(CIngredientContainer* other) {
     }
 }
 // @0x14026b890
+// MS2-FUNCTIONAL: register allocation / operand order differs (logic identical)
 bool CIngredientContainer::FUN_14026b890(CIngredientContainer* other) {
     if (m_items.FUN_14028b500() != other->m_items.FUN_14028b500()) return true;
     size_t count = m_items.FUN_14028b500();
@@ -165,6 +166,7 @@ bool CIngredientContainer::FUN_14026b890(CIngredientContainer* other) {
 // @0x14026b980
 CIngredientContainer::~CIngredientContainer() { m_items.FUN_14028a610(); }
 // @0x14026b9d0
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 void CIngredientContainer::FUN_14026b9d0(const CStringW& text) {
     Unk_StrVec parts;
     FUN_140275180(text, &parts, L",");
@@ -226,6 +228,7 @@ void CIngredientContainer::FUN_14026bfd0(COutputStream& out) {
     }
 }
 // @0x14026c0b0
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 void CIngredientContainer::FUN_14026c0b0(CInPacket& in) {
     m_items.FUN_14028a610();
     unsigned char count = in.vfunc_o8_1();
@@ -241,6 +244,7 @@ void CIngredientContainer::FUN_14026c0b0(CInPacket& in) {
 // @0x14026c230
 Unk_IngVec* CIngredientContainer::FUN_14026c230() { return &m_items; }
 // @0x14026c250
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 void CIngredientContainer::FUN_14026c250(CIngredientContainer* other) {
     if (!other->FUN_14026bf40()) {
         Unk_IngVec pending;
@@ -267,6 +271,7 @@ void CIngredientContainer::FUN_14026c250(CIngredientContainer* other) {
     }
 }
 // @0x14026c450
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 Unk_IngRef CIngredientContainer::FUN_14026c450(unsigned key) {
     int keyBuffer;
     int* keyPtr = FUN_14026b540(&keyBuffer, key);
@@ -278,6 +283,7 @@ Unk_IngRef CIngredientContainer::FUN_14026c450(unsigned key) {
     return Unk_IngRef(0);
 }
 // @0x14026c550
+// MS2-FUNCTIONAL: register choice differs (logic identical)
 bool Unk_IngHolder::FUN_14026c550(Unk_IngHolder* other) {
     CIngredientContainer* b = other->m_container.FUN_140281f00();
     if (m_container.FUN_140281f00()->FUN_14026b890(b)) return true;
@@ -290,6 +296,7 @@ DungeonRewardInfo::DungeonRewardInfo() {}
 // @0x14026c610
 DungeonRewardInfo::~DungeonRewardInfo() {}
 // @0x14026c660
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 void DungeonRewardInfo::FUN_14026c660(COutputStream& out) {
     out.vfunc_o10_3((int)m_rewards.FUN_14028b3f0());
     Unk_It t28, t20, t18, t10;
@@ -725,6 +732,7 @@ bool CChangeableHistoryInfo::FUN_14026fea0(__int64 id) {
     return false;
 }
 // @0x14026ffd0
+// MS2-FUNCTIONAL: minor codegen diff (logic identical)
 Unk_HistRef CChangeableHistoryInfo::FUN_14026ffd0() {
     Unk_HistLock lock(m_lock, 1);
     if (m_list.FUN_14028b410() == 0) return Unk_HistRef(0);
@@ -734,7 +742,7 @@ Unk_HistRef CChangeableHistoryInfo::FUN_14026ffd0() {
     Unk_It t28;
     for (; FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t28)); FUN_14027f550(&it)) {
         CUserChangeableItemHistory* cur = (*FUN_14027f3b0(&it)).operator->();
-        if (best->m_38 > cur->m_38) best.FUN_14027eab0(*FUN_14027f3b0(&it));
+        if (cur->m_38 < best->m_38) best.FUN_14027eab0(*FUN_14027f3b0(&it));
     }
     return best;
 }
@@ -763,15 +771,16 @@ bool ChangeableProductInfo::FUN_140270330(const CMsTime& now) {
 }
 // @0x1402703a0
 bool ChangeableProductInfo::FUN_1402703a0(const CMsTime& now) {
-    if (m_58 == false) {
-        if (m_18 != 2) return false;
-        if (m_38.Get() < now.Get()) return true;
-    } else {
+    if (m_58 != false) {
         if (m_18 != 3) return false;
         if (m_38.Get() + m_5c < now.Get()) return true;
+    } else {
+        if (m_18 != 2) return false;
+        if (m_38.Get() < now.Get()) return true;
     }
     return false;
 }
+
 // @0x140270450
 bool ChangeableProductInfo::FUN_140270450(const CMsTime& now) {
     if (m_18 == 1) {
