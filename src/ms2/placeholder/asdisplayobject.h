@@ -34,7 +34,13 @@ public:
 class ASInteractiveObject : public ASDisplayObject {};
 class ASDisplayObjectContainer : public ASInteractiveObject {};
 class ASSprite : public ASDisplayObjectContainer {};
-class ASMovieClip : public ASSprite {};
+class ASMovieClip : public ASSprite
+{
+public:
+    ASMovieClip(Scaleform::GFx::Value v, int nMovieId);         // 0x1422c1e90 (the Value is destroyed by the callee)
+private:
+    unsigned char m_unrecovered_40[0x40];                       // exe allocates 0x80 bytes (asequipicon 0x1409b93ed)
+};
 
 // new ASDisplayObject(v, n) wrapped in an MS2Ptr (free function or static; 0x140d01be0).
 MS2Ptr<ASDisplayObject> FUN_140d01be0(int n, const Scaleform::GFx::Value& v);
