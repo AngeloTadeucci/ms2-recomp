@@ -299,6 +299,17 @@ __int64 FUN_141254510(void*,__int64);
 void* FUN_141253d00(void*,__int64);
 __int64 FUN_141254090(void*);
 __int64 FUN_1412540c0(void*);
+// Key binding record returned (as an address) by FUN_1412540c0.
+struct Unk_g1_KeyBinding {
+    char m_0[0x18];
+    union {
+        __int64 m_18;
+        int code;
+    };
+    int m_20;
+};
+MS2_CHECK_OFFSET(Unk_g1_KeyBinding, m_18, 0x18);
+MS2_CHECK_OFFSET(Unk_g1_KeyBinding, m_20, 0x20);
 int FUN_14142c940(void*,__int64,int);
 void FUN_141253f40(void*);
 void FUN_141254640(void*,__int64*);
@@ -361,6 +372,14 @@ typedef std::vector<DWORD> Unk_g2_Vec24; // quest-id vector
 
 typedef std::list<std::list<int> > Unk_g2_Path; // chapter -> quest path list
 struct Unk_g2_Pair16 { void* a; void* b; };
+// Row returned by FUN_14064d520: two ids used as table keys.
+struct Unk_g2_Row {
+    char m_0[0x4c];
+    int m_4c;
+    int m_50;
+};
+MS2_CHECK_OFFSET(Unk_g2_Row, m_4c, 0x4c);
+MS2_CHECK_OFFSET(Unk_g2_Row, m_50, 0x50);
 MS2_CHECK_SIZE(Unk_g2_Pair16,0x10);
 void* FUN_140764020(); CStringW FUN_1402a61e0(const wchar_t*);
 void* FUN_140186750(void*);
@@ -403,6 +422,15 @@ MS2_CHECK_SIZE(Unk_g3_Ref16,16);
 size_t FUN_14015a000(ATL::CAtlArray<CStringW>&);
 CStringW& FUN_140159a00(ATL::CAtlArray<CStringW>&,size_t);
 void* FUN_140b624b0(int);
+// Damage-test settings object (object id 0x4e32): flag byte at +0x2c0, loop count at +0x2c4.
+struct Unk_DamageTest {
+    char m_0[0x2c0];
+    char m_2c0;
+    char m_2c1[3];
+    int m_2c4;
+};
+MS2_CHECK_OFFSET(Unk_DamageTest, m_2c0, 0x2c0);
+MS2_CHECK_OFFSET(Unk_DamageTest, m_2c4, 0x2c4);
 void* FUN_140a3ab70(int);
 void FUN_1402be3c0(void*,const int*);
 void FUN_141913990(void*,bool);
@@ -1105,14 +1133,14 @@ int CUserCommandCli::FUN_141367ae0(Unk_CommandArgs& args) {
                 Unk_g1_Iter16 item;
                 FUN_141253d00(&item,FUN_141254510(FUN_1412540a0(&table),pos));
                 if(FUN_141254090(&item)!=0) {
-                    __int64 data=FUN_1412540c0(&item);
-                    int keyCode=FUN_14142c940(FUN_1409331f0(),*(__int64*)(data+0x18),priority);
+                    Unk_g1_KeyBinding* data=(Unk_g1_KeyBinding*)FUN_1412540c0(&item);
+                    int keyCode=FUN_14142c940(FUN_1409331f0(),data->m_18,priority);
                     if(keyCode!=0) {
                         Unk_g1_TiXmlElement key;
                         FUN_14086f2f0(&key,"key");
                         FUN_14086f920(&key,"priority",priority);
-                        FUN_14086f920(&key,"code",*(int*)(FUN_1412540c0(&item)+0x18));
-                        FUN_14086f920(&key,"type",*(int*)(FUN_1412540c0(&item)+0x20));
+                        FUN_14086f920(&key,"code",((Unk_g1_KeyBinding*)FUN_1412540c0(&item))->code);
+                        FUN_14086f920(&key,"type",((Unk_g1_KeyBinding*)FUN_1412540c0(&item))->m_20);
                         FUN_14086f920(&key,"keyCode",keyCode);
                         FUN_14086e000(keyConfig,&key);
                         FUN_14086f450(&key);
@@ -1471,23 +1499,23 @@ int CUserCommandCli::FUN_141369bd0(Unk_CommandArgs&) {
             Unk_g2_Pair16 q;
             FUN_14074bc40(&q,*key);
             if (!FUN_14064d4e0(&q)) {
-                char* d = (char*)FUN_14064d520(&q);
-                *(CString*)FUN_140164930(&names,*(int*)(d+0x50)) += FUN_14038f6d0(FUN_14136f6f0(*(int*)(d+0x4c)),L" ");
-                d = (char*)FUN_14064d520(&q);
-                int* c1 = FUN_1401844d0(&counts,*(int*)(d+0x4c));
+                Unk_g2_Row* d = (Unk_g2_Row*)FUN_14064d520(&q);
+                *(CString*)FUN_140164930(&names,d->m_50) += FUN_14038f6d0(FUN_14136f6f0(d->m_4c),L" ");
+                d = (Unk_g2_Row*)FUN_14064d520(&q);
+                int* c1 = FUN_1401844d0(&counts,d->m_4c);
                 *c1 = *c1 + 1;
-                d = (char*)FUN_14064d520(&q);
-                int* c2 = FUN_1401844d0(&alliances,*(int*)(d+0x50));
+                d = (Unk_g2_Row*)FUN_14064d520(&q);
+                int* c2 = FUN_1401844d0(&alliances,d->m_50);
                 *c2 = *c2 + 1;
-                d = (char*)FUN_14064d520(&q);
-                CString* line = (CString*)FUN_140164930(&quests,*(int*)(d+0x4c));
+                d = (Unk_g2_Row*)FUN_14064d520(&q);
+                CString* line = (CString*)FUN_140164930(&quests,d->m_4c);
                 if (line->GetLength() != 0) {
-                    d = (char*)FUN_14064d520(&q);
-                    *(CString*)FUN_140164930(&quests,*(int*)(d+0x4c)) += L", ";
+                    d = (Unk_g2_Row*)FUN_14064d520(&q);
+                    *(CString*)FUN_140164930(&quests,d->m_4c) += L", ";
                 }
                 int v = FUN_14074b030(FUN_14064d520(&q));
                 CStringW w = FUN_1416e4df0(v);
-                *(CString*)FUN_140164930(&quests,*(int*)((char*)FUN_14064d520(&q)+0x4c)) += (const wchar_t*)w;
+                *(CString*)FUN_140164930(&quests,((Unk_g2_Row*)FUN_14064d520(&q))->m_4c) += (const wchar_t*)w;
                 FUN_14064d3e0(&q);
             } else {
                 FUN_14064d3e0(&q);
@@ -1778,11 +1806,11 @@ int CUserCommandCli::FUN_14136bf50(Unk_CommandArgs&) {
 }
 // @0x14136bfe0
 int CUserCommandCli::FUN_14136bfe0(Unk_CommandArgs&) {
-    char* obj=(char*)FUN_140b624b0(0x4e32);
+    Unk_DamageTest* obj=(Unk_DamageTest*)FUN_140b624b0(0x4e32);
     if(obj) {
-        FUN_141913990(obj,*(char*)(obj+0x2c0)==0);
+        FUN_141913990(obj,obj->m_2c0==0);
         const wchar_t* label;
-        if(*(char*)(obj+0x2c0)==1) label=L"On"; else label=L"Off";
+        if(obj->m_2c0==1) label=L"On"; else label=L"Off";
         CStringW state(label);
         CStringW message=StringFormat(L"OnDamageUseOld : {0}",state);
         FUN_1412751b0(message,20);
@@ -1792,10 +1820,10 @@ int CUserCommandCli::FUN_14136bfe0(Unk_CommandArgs&) {
 // @0x14136c0f0
 int CUserCommandCli::FUN_14136c0f0(Unk_CommandArgs& args) {
     int value=args.FUN_1408d1f60(0,0);
-    char* obj=(char*)FUN_140b624b0(0x4e32);
+    Unk_DamageTest* obj=(Unk_DamageTest*)FUN_140b624b0(0x4e32);
     if(obj) {
-        *(int*)(obj+0x2c4)=value;
-        CStringW message=StringFormat(L"OnDamageTestLoop : {0}",*(int*)(obj+0x2c4));
+        obj->m_2c4=value;
+        CStringW message=StringFormat(L"OnDamageTestLoop : {0}",obj->m_2c4);
         FUN_1412751b0(message,20);
     }
     return 1;
