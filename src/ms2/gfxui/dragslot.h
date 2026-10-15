@@ -1,0 +1,96 @@
+// dragslot.h - GFx UI library slot classes: NotifyContext::BindData (NiRefObject + name + two GFx values + array),
+// ITooltip (1-slot interface) and DragSlot (BindData + ITooltip; drag & drop item slot). Base of MS2DragSlot
+// (client/ms2/ms2dragslot.h) and its ~30 game slot classes. The code lives in the GFx UI library range
+// (0x1422c88e0-0x1422cc830, inside unit_1422b0000 / decomp-gfxui); header name and directory assumed.
+//
+// HOW TO USE THIS HEADER (for unit workers):
+// - Game slots derive from MS2DragSlot, not directly from DragSlot. vfunc_N = slot N of the primary vftable.
+// - Slots 2-4 are the game's interface-table trio (vfunc_2 returns the class's static table; vfunc_3/4 look up an id
+//   with 0x1409f31d0 and store this+offset into *ppOut). Every class overrides all three with its own table.
+// - Slot bodies that just forward (`return vfunc_10();`) are written int: void vs int is byte-identical there.
+// - None of these have recovered .cpp files; ctors/dtors are bound by VA (progress/symbols-manual.tsv).
+#pragma once
+#include <afx.h>
+#include <atlcoll.h>
+#include <NiRefObject.h>
+
+#include "ms2/ms2layout.h"
+#include "ms2/placeholder/gfxvalue.h"
+
+namespace NotifyContext {
+
+// 0x78 bytes. vftable 0x14310c898 (10 slots, ??_G 0x1422c9a80).
+class BindData : public NiRefObject
+{
+public:
+    explicit BindData(const CString& strName);      // 0x1422c88e0
+    virtual ~BindData();                            // 0x1422c8970
+
+    virtual const void* vfunc_2();                  // 2 0x1422c9f20 interface table 0x143b0b2xx
+    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cc220
+    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cc270
+    virtual void vfunc_5();                         // 5 0x1422c8d60 {}
+    virtual void vfunc_6(void* p);                  // 6 0x1422c8d70 {}
+    virtual int vfunc_7(void* p);                   // 7 0x1422c8d90 return 1
+    virtual int vfunc_8(void* p);                   // 8 0x1422c8db0 return 0
+    virtual void vfunc_9();                         // 9 0x1422c8dd0 {}
+
+public:
+    MS2_LAYOUT_FRIEND;
+    CString m_strName;                              // +0x10
+    Scaleform::GFx::Value m_value18;                // +0x18
+    Scaleform::GFx::Value m_value38;                // +0x38
+    CAtlArray<void*> m_arr58;                       // +0x58
+};
+
+} // namespace NotifyContext
+MS2_CHECK_SIZE(NotifyContext::BindData, 0x78);
+MS2_CHECK_OFFSET(NotifyContext::BindData, m_strName, 0x10);
+MS2_CHECK_OFFSET(NotifyContext::BindData, m_value38, 0x38);
+MS2_CHECK_OFFSET(NotifyContext::BindData, m_arr58, 0x58);
+
+// 8 bytes, vftable 0x14310c8f8 (1 pure slot). No virtual dtor.
+class ITooltip
+{
+public:
+    virtual int vfunc_0(void* p) = 0;               // DragSlot: 0x1422cc690 return 0
+};
+
+// 0x88 bytes. vftable 0x14310c908 (25 slots, ??_G 0x1422cc750); ITooltip vftable @+0x78 0x14310c9d8.
+class DragSlot : public NotifyContext::BindData, public ITooltip
+{
+public:
+    DragSlot(const CString& strName, int nIndex);   // 0x1422cc350
+    virtual ~DragSlot();                            // 0x1422cc3d0
+
+    virtual const void* vfunc_2();                  // 2  0x1422cc7b0 table 0x143b0b2b0
+    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cc7c0
+    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cc810
+    virtual void vfunc_5();                         // 5  0x1422cc4c0 if (m_bDragging) vfunc_21()
+    virtual int vfunc_7(void* p);                   // 7  0x1422cc660 return vfunc_10()
+    virtual int vfunc_10();                         // 10 0x1422cc430 FUN_1422c8be0(this); return 1
+    virtual int vfunc_11();                         // 11 0x1422cc460 FUN_1422c8b50(this); return 1
+    virtual int vfunc_12();                         // 12 0x1422cc490 return vfunc_10()
+    virtual int vfunc_13();                         // 13 0x1422cc500 return vfunc_10()
+    virtual int vfunc_14();                         // 14 0x1422cc530 return vfunc_10()
+    virtual int vfunc_15();                         // 15 0x1422cc560 return vfunc_10()
+    virtual int vfunc_16();                         // 16 0x1422cc590 return vfunc_10()
+    virtual int vfunc_17();                         // 17 0x1422cc5c0 return vfunc_12()
+    virtual int vfunc_18(void* p);                  // 18 0x1422cc5f0 return 1
+    virtual int vfunc_19();                         // 19 0x1422cc610 return 0
+    virtual int vfunc_20();                         // 20 0x1422cc620 m_bDragging = 1; return 1
+    virtual int vfunc_21();                         // 21 0x1422cc640 m_bDragging = 0; return 1
+    virtual CStringW vfunc_22();                    // 22 0x1422cc6b0 return literal 0x14310c8e8
+    virtual void vfunc_23(void* p);                 // 23 0x1422cc700 {}
+    virtual void vfunc_24(void* p);                 // 24 0x1422cc720 {}
+
+    // ITooltip
+    virtual int vfunc_0(void* p);                   // 0x1422cc690 return 0
+
+public:
+    int m_nIndex;                                   // +0x80 ctor arg
+    int m_bDragging;                                // +0x84
+};
+MS2_CHECK_SIZE(DragSlot, 0x88);
+MS2_CHECK_OFFSET(DragSlot, m_nIndex, 0x80);
+MS2_CHECK_OFFSET(DragSlot, m_bDragging, 0x84);
