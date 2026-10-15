@@ -35,51 +35,11 @@ public:
 Unk_PostEffectMgr* FUN_1409a8b00();
 
 // The concrete screen effects (own units; only the constructors are used here).
-class MonochromeEffect : public CScreenEffectBase
-{
-public:
-    MonochromeEffect(int nId, const CPostEffectParam* pParam);     // 0x1414877a0
-    virtual int vfunc_5();
-    virtual void vfunc_7(int nState, float fAlpha);
-    char m_pad_50[0x8];
-};
-class RadialBlurEffect : public CScreenEffectBase
-{
-public:
-    RadialBlurEffect(int nId, const CPostEffectParam* pParam);     // 0x1416ec1f0
-    virtual int vfunc_5();
-    virtual void vfunc_7(int nState, float fAlpha);
-    char m_pad_50[0x8];
-};
-class ScreenMaskingEffect : public CScreenEffectBase
-{
-public:
-    ScreenMaskingEffect(int nId, const CPostEffectParam* pParam);  // 0x140dca1b0
-    virtual int vfunc_5();
-    virtual void vfunc_7(int nState, float fAlpha);
-    char m_pad_50[0x10];
-};
-class GaussianBlurEffect : public CScreenEffectBase
-{
-public:
-    GaussianBlurEffect(int nId, const CPostEffectParam* pParam);   // 0x140cfd370
-    virtual int vfunc_5();
-    virtual void vfunc_7(int nState, float fAlpha);
-    char m_pad_50[0x8];
-};
-class PostShimmerEffect : public CScreenEffectBase
-{
-public:
-    PostShimmerEffect(int nId, const CPostEffectParam* pParam);    // 0x140c8fae0
-    virtual int vfunc_5();
-    virtual void vfunc_7(int nState, float fAlpha);
-    char m_pad_50[0x20];
-};
-MS2_CHECK_SIZE(MonochromeEffect, 0x58);
-MS2_CHECK_SIZE(RadialBlurEffect, 0x58);
-MS2_CHECK_SIZE(ScreenMaskingEffect, 0x60);
-MS2_CHECK_SIZE(GaussianBlurEffect, 0x58);
-MS2_CHECK_SIZE(PostShimmerEffect, 0x70);
+#include "monochromeeffectparam.h"
+#include "radialblureffectparam.h"
+#include "screenmaskingeffectparam.h"
+#include "gaussianblureffectparam.h"
+#include "postprocessing/postshimmerrenderstep.h"
 
 extern int DAT_143ac47c8;   // CPostEffect id counter
 
