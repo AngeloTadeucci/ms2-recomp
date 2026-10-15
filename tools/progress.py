@@ -200,6 +200,12 @@ def lint_unit(u):
                         break
             if re.search(r"\b\w+\s*\(\s*\.\.\.\s*\)", line) and not re.search(r"\b(?:if|while|for|switch|sizeof|defined)\s*\(\s*\.\.\.", line):
                 hits.append((rel, i, "variadic-callee", rl[i - 1].strip()))
+            # `(char*)this + 0x20`: use the class's own members
+            if re.search(r"\(\s*(?:const\s+)?(?:char|unsigned\s+char|BYTE|uint8_t|uintptr_t)\s*\*\s*\)\s*this\s*\+", line):
+                hits.append((rel, i, "raw-this-offset", rl[i - 1].strip()))
+            # `*(char**)p + 0x88` / `+ slot * 8`: call through a declared virtual (real engine headers, placeholder slots)
+            if re.search(r"\*\s*\(\s*char\s*\*\*\s*\)\s*\(?\s*\w+\s*\)?\s*\)?\s*\+", line):
+                hits.append((rel, i, "raw-vtable-call", rl[i - 1].strip()))
         # registration statics: self-registering Gamebryo objects must be #ifdef MS2_STANDALONE (hook-DLL copies
         # would register into the exe's shared registries)
         stack = []  # per open #if: is the CURRENT branch compiled only in a non-hook-DLL (standalone / progress.py) build
