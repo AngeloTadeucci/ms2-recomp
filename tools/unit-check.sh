@@ -77,6 +77,14 @@ dst=0
 echo "== build/hook-msvc-$AGENT (cl 19.16)"
 mkdir -p "$R/build"
 build "$R/build/hook-msvc-$AGENT" "$R/cmake/toolchain-msvc1416-wine.cmake" "$R/tools/ninja-msvc.sh" || dst=1
+# hook thunks must have internal linkage: an external ms2_thunk_* COMDAT folds across units (merge 9e11067)
+for f in "${srcs[@]}"; do
+    o="$R/build/hook-msvc-$AGENT/ms2/CMakeFiles/ms2game.dir/$f.obj"
+    [ -f "$o" ] || continue
+    if llvm-nm -g --defined-only "$o" 2>/dev/null | grep -q 'ms2_thunk_'; then
+        echo "hook thunk with external linkage in $f (cross-unit COMDAT folding)"; dst=1
+    fi
+done
 if [ $clang -eq 1 ]; then
     echo "== build/hook-clang-$AGENT (clang-cl)"
     build "$R/build/hook-clang-$AGENT" "$R/cmake/toolchain-clangcl-x64.cmake" ninja || dst=1
