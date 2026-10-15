@@ -73,7 +73,11 @@ def engine_flags():
     txt = open(os.path.join(ROOT, "cmake", "ms2-engine-flags.cmake")).read()
 
     def listing(name):
-        return re.findall(r'"([^"]+)"', re.search(r"set\(" + name + r"\n(.*?)\n\)", txt, re.S).group(1))
+        out = re.findall(r'"([^"]+)"', re.search(r"set\(" + name + r"\n(.*?)\n\)", txt, re.S).group(1))
+        if os.environ.get("MS2_PHYSX") == "283":   # fall back to the PhysX 2.8.3 headers (cmake: -DMS2_PHYSX_VERSION=283)
+            out = [d.replace("physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/",
+                             "physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/") for d in out]
+        return out
     eng = os.path.join(ROOT, "engine", "gamebryo")
     over = os.path.join(ROOT, "build", "ms2-engine-dxsdk")
     pref = over + "-preferred"
@@ -95,6 +99,23 @@ def engine_flags():
 
 
 GAME_FLAGS += engine_flags()
+
+
+def scaleform_flags():
+    """Scaleform SDK includes/defines (cmake/ms2-scaleform-sdk.cmake: same default path, same lists). Off when the SDK dir is
+    absent or MS2_SCALEFORM_SDK is set empty in the environment; then gfxvalue.h uses its placeholders."""
+    sdk = os.environ.get("MS2_SCALEFORM_SDK", os.path.join(ROOT, "work", "scaleform", "4.1.19", "Scaleform"))
+    if not sdk or not os.path.isdir(sdk):
+        return []
+    txt = open(os.path.join(ROOT, "cmake", "ms2-scaleform-sdk.cmake")).read()
+
+    def listing(name):
+        return re.findall(r'"([^"]+)"', re.search(r"set\(" + name + r"\n(.*?)\n\)", txt, re.S).group(1))
+    return (["/I" + os.path.join(sdk, d) for d in listing("MS2_SCALEFORM_INCLUDE_DIRS")]
+            + ["/D" + d for d in listing("MS2_SCALEFORM_DEFINITIONS")])
+
+
+GAME_FLAGS += scaleform_flags()
 FLAGS_KEY = " ".join(GAME_FLAGS) + " v3"
 TAG_RE = re.compile(r"//\s*@0x([0-9a-fA-F]+)\b")
 TAG_WINDOW = 6
