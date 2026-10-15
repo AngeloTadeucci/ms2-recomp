@@ -14,14 +14,7 @@ class Unk_AnimSvc;      // MS2 view of egmAnimation::AnimationService (animation
 // Name of an animation (default ctor 0x1408a8700, dtor 0x1408a8900 are efd::utf8string's).
 typedef efd::utf8string Unk_AnimRef;
 
-// The per-owner animation-name table (ctor 0x140996b20, dtor 0x140996b80; recovered elsewhere).
-struct Unk_AnimTable
-{
-    Unk_AnimTable();     // 0x140996b20
-    ~Unk_AnimTable();    // 0x140996b80
-    void* m_pad[10];
-};
-MS2_CHECK_SIZE(Unk_AnimTable, 0x50);
+#include "animationcallbackmanager.h"   // Unk_AnimTable
 
 class CAnimationManager : public CPtred
 {

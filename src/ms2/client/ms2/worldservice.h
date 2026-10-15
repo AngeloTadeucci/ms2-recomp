@@ -76,12 +76,7 @@ class NiNode;
 namespace ecrPhysX { class PhysXPropMessage; }
 namespace egmAnimation { class ActorAddedMessage; class ActorRemovedMessage; }
 namespace ecr { class SceneGraphAddedMessage; class SceneGraphRemovedMessage; }
-class CGlobalKeyTextCallback                            // RTTI name; 8 bytes (vftable only); ctor/dtor not inline here
-{
-public:
-    CGlobalKeyTextCallback();
-    virtual ~CGlobalKeyTextCallback();
-};
+#include "animationcallbackmanager.h"   // CGlobalKeyTextCallback
 class GameObject;                                       // gameobject.h (forward decl for the worldservice_mem_*.inc members)
 class Unk_WsE_FieldObject;                               // worldservice_mem_E.inc (FUN_141bc1720 parameter; defined in the E part)
 // Polymorphic helper owned by pointer (deleted in OnShutdown through the vtable slot 1 = scalar deleting dtor; slot 0 unknown).
