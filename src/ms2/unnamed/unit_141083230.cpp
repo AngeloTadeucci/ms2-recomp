@@ -14,7 +14,7 @@
 #include <NiCommonSemantics.h>
 #include <NiDataStreamElementLock.h>
 #include <NiRenderer.h>
-#include "ms2/placeholder/basecollision.h"
+#include "ms2/placeholder/cbasecollision.h"
 
 class CCylinderCollision : public CBaseCollision
 {
@@ -27,7 +27,7 @@ public:
     virtual float vfunc_6();                                                // 0x141083450
 
     float GetTopZ() const { return m_center.z + m_height; }                 // 0x141083470
-    float GetBottomZ() const { return m_center.z - m_28.z; }                // 0x1410834a0
+    float GetBottomZ() const { return m_center.z - m_ptSize.z; }                // 0x1410834a0
     void BuildLines(NiMesh* pkMesh, Unk_StreamPoint* pkPoints, unsigned int uiCount);   // 0x141084740
     void FUN_1410848f0();
 
@@ -49,7 +49,7 @@ MS2_CHECK_OFFSET(CCylinderCollision, m_height, 0xc0);
 // @0x141083230
 CCylinderCollision::CCylinderCollision()
 {
-    m_40 = 2;
+    m_nShape = 2;
     m_radius = 0.0f;
     m_height = 0.0f;
 }
@@ -78,7 +78,7 @@ float CCylinderCollision::vfunc_6()
 // MS2-FUNCTIONAL: ring-point arg evaluation order differs (exe copies sin*r through xmm1/xmm2; no source form found)
 void CCylinderCollision::vfunc_5()
 {
-    m_built = 1;
+    m_bBuilt = 1;
     if (!(NiMesh*)m_spTopMesh)
     {
         m_spTopMesh = new (efd::MemHint(efd::MemHint::NONE)) NiMesh;
@@ -149,7 +149,7 @@ void CCylinderCollision::vfunc_5()
 // @0x1410846a0
 void CCylinderCollision::vfunc_1()
 {
-    if (m_built == 0)
+    if (m_bBuilt == 0)
         vfunc_5();
     NiRenderer* pkRenderer = NiRenderer::GetRenderer();
     for (int i = 0; i < 4; i++)
@@ -172,7 +172,7 @@ void CCylinderCollision::BuildLines(NiMesh* pkMesh, Unk_StreamPoint* pkPoints, u
         NiDataStream::USAGE_VERTEX, false, true, NiDataStream::LOCK_WRITE);
     NiTStridedRandomAccessIterator<NiColorA> kIter = kLock.begin<NiColorA>(0);
     for (int i = 0; i < (int)uiCount; i++)
-        kIter[i] = m_color;
+        kIter[i] = m_kColor;
     kLock.Unlock();
     pkMesh->Update(0.0f, true);
     pkMesh->UpdateProperties();
@@ -184,7 +184,7 @@ void CCylinderCollision::BuildLines(NiMesh* pkMesh, Unk_StreamPoint* pkPoints, u
 // @0x1410848f0
 void CCylinderCollision::FUN_1410848f0()
 {
-    if (m_built == 0)
+    if (m_bBuilt == 0)
         vfunc_5();
     if ((NiMesh*)m_spBottomMesh)
         m_spBottomMesh->RenderImmediate(NiRenderer::GetRenderer());

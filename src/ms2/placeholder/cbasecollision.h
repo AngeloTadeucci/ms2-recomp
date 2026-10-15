@@ -3,6 +3,8 @@
 // assumed). Owning unit: ?\basecollision.cpp (0x1409fbb80-0x140a02ac0), whose members are only declared here (the
 // layout is proven by CBaseCollision::CBaseCollision 0x1409fbc80 and the derived ctor of holecylindercollision.cpp).
 // Member names are invented from use.
+// Slots: 0 scalar deleting dtor, 1 render, 2/3 transform setters with identical bodies (m_ptPos = pos, then 0x1409fe440),
+// 4 empty, 5 Build (pure here), 6 float accessor (pure here), 7 intersection test.
 #pragma once
 #include <afx.h>
 #include <NiMesh.h>
@@ -17,7 +19,7 @@ public:
     CBaseCollision();                                               // 0x1409fbc80
     virtual ~CBaseCollision();                                      // 0x1409fbed0
     virtual void vfunc_1();                                         // 0x1409fbf20: draws the wire mesh
-    virtual void vfunc_2(Unk_StreamPoint ptPos);                    // 0x1409fbff0
+    virtual void vfunc_2(Unk_StreamPoint ptPos, Unk_StreamPoint ptDir, float fScale);   // 0x1409fbff0 (same body as vfunc_3)
     virtual void vfunc_3(Unk_StreamPoint ptPos, Unk_StreamPoint ptDir, float fScale);   // 0x1409fbfa0
     virtual void vfunc_4();                                         // 0x1409fc040
     virtual void vfunc_5() = 0;                                     // builds the wire meshes
