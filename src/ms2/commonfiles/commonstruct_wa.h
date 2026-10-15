@@ -151,7 +151,7 @@ public:
 MS2_CHECK_SIZE(Unk_RewardMap, 16);
 class Unk_ItemVec {
 public:
-    Unk_ItemVec() noexcept;                         // 0x14027d6c0
+    Unk_ItemVec();                         // 0x14027d6c0
     ~Unk_ItemVec();                        // 0x14027e420
     size_t FUN_14028b470();                // size
     void FUN_14028b2a0(ItemEntity&);       // push_back
@@ -232,7 +232,7 @@ public:
     virtual ~NpcShopItemLife();            // 0x14027e8e0
     bool FUN_14026ea20(NpcShopItemLife* other);
     Unk_ShopLifeRef FUN_14026eab0();
-    int FUN_14026ebc0(void* xml);
+    bool FUN_14026ebc0(void* xml);
     void FUN_14026ee70(COutputStream& out);
     void FUN_14026ef20(CInPacket& in);
     bool FUN_14026f000();
@@ -297,9 +297,9 @@ public:
 // std::list<Unk_HistRef> (16 bytes)
 class Unk_HistList {
 public:
-    Unk_HistList() noexcept;                        // 0x14027d5e0
+    Unk_HistList();                        // 0x14027d5e0
     ~Unk_HistList();                       // 0x14027e3a0
-    void FUN_14028a4b0();                  // clear
+    void FUN_14028a4b0() noexcept;                // clear
     Unk_It* FUN_14028a1a0(Unk_It*);        // begin
     Unk_It* FUN_14028a9d0(Unk_It*);        // end
     Unk_It* FUN_14028aca0(Unk_It*, Unk_It);// erase
@@ -342,8 +342,8 @@ public:
     ChangeableProductInfo();               // 0x140270170
     virtual ~ChangeableProductInfo();      // 0x14027e7e0
     void FUN_140270230(Unk_ProdRef other);
-    int FUN_140270330(const CMsTime& now);
-    int FUN_1402703a0(const CMsTime& now);
+    bool FUN_140270330(const CMsTime& now);
+    bool FUN_1402703a0(const CMsTime& now);
     bool FUN_140270450(const CMsTime& now);
     int m_18, m_1c, m_20, m_24;
     CMsTime m_28, m_38, m_48;

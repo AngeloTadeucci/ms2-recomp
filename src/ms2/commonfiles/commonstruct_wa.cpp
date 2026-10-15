@@ -441,7 +441,7 @@ Unk_ShopLifeRef NpcShopItemLife::FUN_14026eab0() {
     return ref;
 }
 // @0x14026ebc0
-int NpcShopItemLife::FUN_14026ebc0(void* xml) {
+bool NpcShopItemLife::FUN_14026ebc0(void* xml) {
     FUN_1402767f0(xml, "itemLifeType", m_type);
     if (m_type == 0) return 0;
     switch (m_type) {
@@ -449,20 +449,23 @@ int NpcShopItemLife::FUN_14026ebc0(void* xml) {
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
         if (m_value == 0) return 0;
         break;
+    case 3:
+    case 4:
+        FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
+        break;
     case 2: {
         Unk_IntArr parts;
         CString text;
         FUN_1408733e0(xml, "itemLifeDateTime", text);
         FUN_140177de0(text, &parts, "-");
-        if (parts.FUN_140186260() != 6) return 0;
-        m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
-                         *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
+        if (parts.FUN_140186260() == 6) {
+            m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
+                             *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
+        } else {
+            return 0;
+        }
         break;
     }
-    case 3:
-    case 4:
-        FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
-        break;
     default:
         return 0;
     }
@@ -558,20 +561,23 @@ char ItemDropItemLife::FUN_14026f290(void* xml) {
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
         if (m_value == 0) return 0;
         break;
+    case 3:
+    case 4:
+        FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
+        break;
     case 2: {
         Unk_IntArr parts;
         CString text;
         FUN_1408733e0(xml, "itemLifeDateTime", text);
         FUN_140177de0(text, &parts, "-");
-        if (parts.FUN_140186260() != 6) return 0;
-        m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
-                         *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
+        if (parts.FUN_140186260() == 6) {
+            m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
+                             *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
+        } else {
+            return 0;
+        }
         break;
     }
-    case 3:
-    case 4:
-        FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
-        break;
     default:
         return 0;
     }
@@ -654,20 +660,17 @@ CChangeableHistoryInfo::~CChangeableHistoryInfo() { m_list.FUN_14028a4b0(); }
 void CChangeableHistoryInfo::FUN_14026fab0() {
     Unk_HistLock lock(m_lock, 1);
     int total = 0;
-    Unk_It it;
+    Unk_It it, saved, t30, t28;
     m_list.FUN_14028a1a0(&it);
-    for (;;) {
-        Unk_It t30, t28;
-        if (!FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t30))) break;
+    while (FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t30))) {
         Unk_HistRef ref(*FUN_14027f3b0(&it));
         if (ref == 0) {
-            Unk_It saved = it;
-            Unk_It* next = m_list.FUN_14028aca0(&t28, it);
-            it = *next;
-        } else {
-            total = total + ref->m_40;
-            FUN_14027f550(&it);
+            saved = it;
+            it = *m_list.FUN_14028aca0(&t28, saved);
+            continue;
         }
+        total = total + ref->m_40;
+        FUN_14027f550(&it);
     }
     m_total = total;
 }
@@ -680,55 +683,46 @@ int CChangeableHistoryInfo::FUN_14026fc00(int mode, __int64 id) {
         Unk_It cur, end;
         list->FUN_140289d20(&cur);
         list->FUN_140289d80(&end);
-        while (FUN_14027ef40(&cur, &end)) {
+        for (; FUN_14027ef40(&cur, &end); FUN_14027f590(&cur)) {
             Unk_HistRef* ref = FUN_14027f3f0(&cur);
             total = total + (*ref)->m_40;
-            FUN_14027f590(&cur);
         }
     } else if (mode == 2) {
         Unk_HistList* list = &m_list;
         Unk_It cur, end;
         list->FUN_140289d20(&cur);
         list->FUN_140289d80(&end);
-        while (FUN_14027ef40(&cur, &end)) {
+        for (; FUN_14027ef40(&cur, &end); FUN_14027f590(&cur)) {
             Unk_HistRef* ref = FUN_14027f3f0(&cur);
-            if ((*ref)->m_28 == id) total = total + (*ref)->m_40;
-            FUN_14027f590(&cur);
+            if ((*ref)->m_28 != id) continue;
+            total = total + (*ref)->m_40;
         }
     }
     return total;
 }
 // @0x14026fda0
 void CChangeableHistoryInfo::FUN_14026fda0(Unk_HistRef entry) {
-    if (!(entry == 0)) {
-        int month = m_48;
-        if ((__int64)month == entry->m_30) {
-            if (m_4c == entry->m_3c) {
-                Unk_HistLock lock(m_lock, 1);
-                m_list.FUN_14028b260(entry);
-                m_total = m_total + entry->m_40;
-            }
-        }
-    }
+    if (entry == 0) return;
+    if ((__int64)m_48 != entry->m_30) return;
+    if (!(m_4c == entry->m_3c)) return;
+    Unk_HistLock lock(m_lock, 1);
+    m_list.FUN_14028b260(entry);
+    m_total = m_total + entry->m_40;
 }
 // @0x14026fea0
 bool CChangeableHistoryInfo::FUN_14026fea0(__int64 id) {
     Unk_HistLock lock(m_lock, 1);
-    Unk_It it;
+    Unk_It it, saved, t20, t18;
     m_list.FUN_14028a1a0(&it);
-    for (;;) {
-        Unk_It t20;
-        if (!FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t20))) return false;
-        Unk_HistRef* ref = FUN_14027f3b0(&it);
-        if ((*ref)->m_18 == id) break;
-        FUN_14027f550(&it);
+    for (; FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t20)); FUN_14027f550(&it)) {
+        if ((*FUN_14027f3b0(&it))->m_18 == id) {
+            m_total = m_total - (*FUN_14027f3b0(&it))->m_40;
+            saved = it;
+            m_list.FUN_14028aca0(&t18, saved);
+            return true;
+        }
     }
-    Unk_HistRef* ref = FUN_14027f3b0(&it);
-    m_total = m_total - (*ref)->m_40;
-    Unk_It saved = it;
-    Unk_It t18;
-    m_list.FUN_14028aca0(&t18, it);
-    return true;
+    return false;
 }
 // @0x14026ffd0
 Unk_HistRef CChangeableHistoryInfo::FUN_14026ffd0() {
@@ -737,12 +731,10 @@ Unk_HistRef CChangeableHistoryInfo::FUN_14026ffd0() {
     Unk_HistRef best(*m_list.FUN_14028aef0());
     Unk_It t30, it;
     FUN_14027c480(&it, *m_list.FUN_14028a1a0(&t30), 1);
-    for (;;) {
-        Unk_It t28;
-        if (!FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t28))) break;
+    Unk_It t28;
+    for (; FUN_14027ef00(&it, m_list.FUN_14028a9d0(&t28)); FUN_14027f550(&it)) {
         CUserChangeableItemHistory* cur = (*FUN_14027f3b0(&it)).operator->();
-        if (cur->m_38 < best->m_38) best.FUN_14027eab0(*FUN_14027f3b0(&it));
-        FUN_14027f550(&it);
+        if (best->m_38 > cur->m_38) best.FUN_14027eab0(*FUN_14027f3b0(&it));
     }
     return best;
 }
@@ -763,24 +755,22 @@ void ChangeableProductInfo::FUN_140270230(Unk_ProdRef other) {
     m_58 = other->m_58;
 }
 // @0x140270330
-int ChangeableProductInfo::FUN_140270330(const CMsTime& now) {
-    if (m_18 == 2) {
-        if (m_58 == false) return 0;
-        if (m_38.Get() < now.Get()) return 1;
-        return 0;
-    }
-    return 0;
+bool ChangeableProductInfo::FUN_140270330(const CMsTime& now) {
+    if (m_18 != 2) return false;
+    if (m_58 == false) return false;
+    if (m_38.Get() < now.Get()) return true;
+    return false;
 }
 // @0x1402703a0
-int ChangeableProductInfo::FUN_1402703a0(const CMsTime& now) {
+bool ChangeableProductInfo::FUN_1402703a0(const CMsTime& now) {
     if (m_58 == false) {
-        if (m_18 != 2) return 0;
-        if (m_38.Get() < now.Get()) return 1;
+        if (m_18 != 2) return false;
+        if (m_38.Get() < now.Get()) return true;
     } else {
-        if (m_18 != 3) return 0;
-        if (m_38.Get() + m_5c < now.Get()) return 1;
+        if (m_18 != 3) return false;
+        if (m_38.Get() + m_5c < now.Get()) return true;
     }
-    return 0;
+    return false;
 }
 // @0x140270450
 bool ChangeableProductInfo::FUN_140270450(const CMsTime& now) {
