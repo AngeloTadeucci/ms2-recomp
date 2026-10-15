@@ -179,6 +179,21 @@ public:
     efd::SmartPointer<efd::ISystemService> FUN_141bc16d0();   // copy of m_268
     int FUN_141bc2b30();                                // sum of m_350 values' +0x188
     void FUN_141bc7440();
+    void* FUN_141bc8070();                              // FUN_141bd3620()->vfunc(0x4a0) or 0
+    void* FUN_141bd3620();                              // (unrecovered, #1)
+    void FUN_141bc8fe0(unsigned __int64 key);           // m_468.RemoveKey
+    void FUN_141bc9fd0(int key);                        // m_9d0.SetAt(key, 0)
+    void FUN_141bca010();                               // re-arm the 0xa5 timer (m_a70/m_a74/m_a78)
+    void FUN_141bca090();                               // timer expired -> send 0xa5(1)
+    void FUN_141bca110(bool b);                         // send COutPacket 0xa5 { u8 b }
+    void FUN_141bca170(int interval);                   // m_a70 = interval
+    void FUN_141bca1e0();                               // m_2b8 = 1 ...
+    void FUN_141bca240();
+    void* FUN_141bd0cc0();                              // (unrecovered, #1)
+    void FUN_141bcf9f0();                               // (unrecovered, #1)
+    void FUN_141bcfad0();                               // (unrecovered, #1)
+    void FUN_141bca390(unsigned key);                   // m_1a8.RemoveKey
+    void FUN_141bca630();
     int FUN_141bcfbd0();                                // m_state == 4 && m_2b4 != 0
 
     // ---- non-virtual members, exe order (names invented unless noted). Append; do not reorder. ----

@@ -13,6 +13,7 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/header_statics_a.h"
+#include "ms2/placeholder/coutpacket.h"
 #include <efd/MessageService.h>
 
 // .text$di in exe order: 0x140120210 key input static, 0x140120240 ClassInfo, 0x140120260 maintenanceExit,
@@ -327,4 +328,139 @@ void WorldService::FUN_141bc7440()
     FUN_1411ce4c0(FUN_1409670f0(), it);
     while (FUN_1411ce510(FUN_1409670f0(), it, &p))
         FUN_141568a90(p);
+}
+
+// MS2-FUNCTIONAL: opaque callee by VA; virtual slot 0x4a0 of an unrecovered class through a raw vtable
+// @0x141bc8070
+void* WorldService::FUN_141bc8070()
+{
+    void** p = (void**)FUN_141bd3620();
+    if (p == 0)
+        return 0;
+    typedef void* (*Fn)(void*);
+    return ((Fn)(*(void***)p)[0x4a0 / 8])(p);
+}
+
+// @0x141bc8fe0
+void FUN_141c18820(void* map, unsigned __int64 key);    // m_468.RemoveKey
+void WorldService::FUN_141bc8fe0(unsigned __int64 key)
+{
+    FUN_141c18820(&m_468, key);
+}
+
+// @0x141bc9fd0
+void FUN_141c1ba40(void* map, const int* key, int value);   // m_9d0.SetAt
+void WorldService::FUN_141bc9fd0(int key)
+{
+    FUN_141c1ba40(&m_9d0, &key, 0);
+}
+
+// MS2-FUNCTIONAL: codegen differs (not investigated)
+// @0x141bca010
+unsigned FUN_140869420();                               // tick count (ms)
+void WorldService::FUN_141bca010()
+{
+    if (m_a70)
+    {
+        m_a74 = FUN_140869420() + m_a70;
+        if (m_a78)
+        {
+            m_a78 = false;
+            FUN_141bca110(m_a78);
+        }
+    }
+}
+
+// MS2-FUNCTIONAL: codegen differs (not investigated)
+// @0x141bca090
+void WorldService::FUN_141bca090()
+{
+    if (!m_a78 && m_a74 && m_a70 && (unsigned)m_a74 <= FUN_140869420())
+    {
+        m_a78 = true;
+        FUN_141bca110(m_a78);
+    }
+}
+
+// MS2-FUNCTIONAL: Encode1 goes through the virtual slot (exe calls the COutputStream bool encoder 0x14070f820)
+// @0x141bca110
+void WorldService::FUN_141bca110(bool b)
+{
+    COutPacket packet(0xa5);
+    packet.vfunc_o10_0(b);
+    FUN_140710590(packet);
+}
+
+// @0x141bca170
+void WorldService::FUN_141bca170(int interval)
+{
+    m_a70 = interval;
+    if (m_a70 == 0 && m_a78)
+    {
+        m_a78 = false;
+        FUN_141bca110(m_a78);
+    }
+}
+
+// @0x141bca1e0
+void* FUN_1409331e0();
+void FUN_14138b3a0(void*);
+void* FUN_140e09140();
+void FUN_140a03fe0(void*, int);
+void WorldService::FUN_141bca1e0()
+{
+    m_2b8 = 1;
+    FUN_14138b3a0(FUN_1409331e0());
+    FUN_140a03fe0(FUN_140e09140(), 0);
+}
+
+// MS2-FUNCTIONAL: codegen differs (not investigated)
+// @0x141bca240
+void* FUN_1408e57f0();
+int FUN_1422b9e00(void*);
+void* FUN_1403ed2b0();
+void FUN_141adb880(void*);
+void WorldService::FUN_141bca240()
+{
+    if (FUN_141bd0cc0())
+    {
+        if (FUN_1422b9e00(FUN_1408e57f0()) != 0x620001b)
+        {
+            if (m_2b8)
+            {
+                FUN_141bcf9f0();
+                m_2b8 = 0;
+            }
+            if (m_2bc)
+            {
+                FUN_141bcfad0();
+                m_2bc = 0;
+            }
+            FUN_141adb880(FUN_1403ed2b0());
+        }
+    }
+}
+
+// @0x141bca390
+void FUN_141c18890(void* map, unsigned key);            // m_1a8.RemoveKey
+void WorldService::FUN_141bca390(unsigned key)
+{
+    FUN_141c18890(&m_1a8, key);
+}
+
+// @0x141bca630
+void* FUN_141bfeb30(void* map);                         // m_0e8.GetHeadPosition
+void* FUN_141c007a0(void* map, void* pos);              // m_0e8.GetValueAt
+void* FUN_140965780(void* sp);                          // SmartPointer get
+void* FUN_140dee810(void*);
+void FUN_140ded6d0(void*);
+void FUN_141bff0b0(void* map, void** pos);              // m_0e8.GetNext
+void WorldService::FUN_141bca630()
+{
+    for (void* pos = FUN_141bfeb30(&m_0e8); pos; FUN_141bff0b0(&m_0e8, &pos))
+    {
+        void* p = FUN_140965780(FUN_141c007a0(&m_0e8, pos));
+        if (void* q = FUN_140dee810(p))
+            FUN_140ded6d0(q);
+    }
 }
