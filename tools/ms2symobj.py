@@ -41,18 +41,32 @@ BIGOBJ_CLASSID = bytes.fromhex("c7a1bad1eebaa94baf20faf66aa4dcb8")
 
 
 def load(paths):
+    """Later tables override earlier ones, but only engine -> anything is a deliberate override (symbols-engine.tsv is
+    the FID guess table, lowest priority). The same name at two different VAs anywhere else (within a file, or across
+    symbols.tsv / symbols-manual.tsv) is an error; so is the engine table itself having a name twice."""
     syms = {}
+    src = {}
+    conflicts = []
     for p in paths:
         if not os.path.exists(p):
             continue
-        for line in open(p):
+        is_engine = os.path.basename(p) == "symbols-engine.tsv"
+        for n, line in enumerate(open(p), 1):
             if line.startswith("#") or not line.strip():
                 continue
             f = line.rstrip("\n").split("\t")
             name, va, kind = f[0], int(f[1], 16), (f[2] if len(f) > 2 else "func")
             if any(a <= va < b for a, b in RUNTIME_RANGES):
                 continue
+            if name in syms and syms[name][0] != va:
+                prev = src[name]
+                if not prev[2]:
+                    conflicts.append(f"{name}: 0x{syms[name][0]:x} ({prev[0]}:{prev[1]}) vs 0x{va:x} ({os.path.basename(p)}:{n})")
             syms[name] = (va, kind)
+            src[name] = (os.path.basename(p), n, is_engine)
+    if conflicts:
+        sys.exit("ms2symobj: symbol name bound to different VAs (only symbols-engine.tsv may be overridden):\n  " +
+                 "\n  ".join(conflicts))
     return syms
 
 
