@@ -89,6 +89,11 @@ public:
     void FUN_140af0170(float f, bool b);                // applies f to the current mode (CCameraMode::FUN_140afe270)
     int FUN_140af01d0();                                // camera control type (0: normal, 1: ...)
     float FUN_140b67d10();                              // distance of the current mode (0 without one)
+    float FUN_140ad4b40();                              // current mode: setting m_0 (0 without one)
+    float FUN_140af7f00();                              // current mode: setting m_4
+    float FUN_140af7ea0();                              // current mode: setting m_8
+    Unk_StreamPoint FUN_140a17e10();                    // current mode: setting m_c (zero without one)
+    Unk_StreamPoint FUN_140af8290();                    // current mode: setting m_18
     void FUN_140aeaf40(Unk_CameraTargetEntity* pTarget, int n);
     CCameraMode* FUN_140af24f0();                       // the current camera mode
     Unk_StreamPoint FUN_140a38d00();                    // m_138 (pending move input)
