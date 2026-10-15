@@ -1062,3 +1062,5 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?SetUpdateGeometry@NiTerrainCullingProcess@@QEAAX_N@Z	141f44bc0	func
 ?AdditiveListHelper@NiShadowVisitor@@IEAAXPEAVNiNode@@PEAV?$NiTPointerList@PEAVNiAVObject@@@@_N@Z	141d733d0	func
 ?SubtractiveListHelper@NiShadowVisitor@@IEAAXPEAVNiNode@@PEAV?$NiTPointerList@PEAVNiAVObject@@@@@Z	141d73930	func
+?MarkShadowMapsDirty@NiShadowGenerator@@QEAAXXZ	141d5b4a0	func
+??1NiShadowVisitor@@UEAA@XZ	141d733c0	func
