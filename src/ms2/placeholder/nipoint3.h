@@ -21,6 +21,7 @@ struct Unk_StreamPoint
     Unk_StreamPoint FUN_14097fc90(float f) const;                   // efd::Point3::operator*(float)
     Unk_StreamPoint& FUN_140a4e560(const Unk_StreamPoint& pt);      // efd::Point3::operator+=
     bool FUN_140552700(const Unk_StreamPoint& pt) const;            // efd::Point3::operator!=
+    bool FUN_140552690(const Unk_StreamPoint& pt) const;           // efd::Point3::operator==
     float FUN_140967ac0() const;                                    // efd::Point3::Length
     Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
     Unk_StreamPoint FUN_140ae9180(float f) const;                   // efd::Point3::operator/(float)
