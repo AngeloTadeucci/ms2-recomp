@@ -36,6 +36,7 @@ public:
     T* operator->() const { return m_p; }
     T* get() const { return m_p; }
     bool operator==(T* o) const { return m_p == o; }
+    bool operator!() const { return m_p == 0; }   // portaltable.cpp: `if (!p)` is an out-of-line no-arg COMDAT
 private:
     void AddRef() const { if (m_p) AddRefImpl(0); }
     void AddRefImpl(void*) const { Reference(m_p); }
