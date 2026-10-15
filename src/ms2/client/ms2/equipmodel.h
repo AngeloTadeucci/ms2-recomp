@@ -26,11 +26,15 @@
 #include <NiPoint3.h>
 #include <NiNode.h>
 #include <NiSmartPointer.h>
+#include <atlcoll.h>
+#include <set>
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/cptred.h"
 
+// Key of CEquipModel::m_effects (passed by const& through CElementTraits, so not a primitive int; 4 bytes).
+enum Unk_EquipEffectSlot { };
 class Unk_EquipModelOwner;     // MS2Ptr<T> at +0x28 (copy ctor 0x140884f30, dtor 0x1405a85f0, get 0x1405a8ed0)
 
 // 0x118 bytes. vftable 0x142ec0ef8 (33 slots), ??_G 0x1412058b0.
@@ -86,10 +90,17 @@ public:
     NiPoint3 m_pos54;                               // +0x54 = ZERO
     NiPoint3 m_pos60;                               // +0x60 = ZERO
     NiPoint3 m_pos6c;                               // +0x6c = ZERO
-    void* m_map78[9];                               // +0x78 CAtlMap (17 bins; init 0x141205050, dtor 0x141205440)
-    void* m_listC0[6];                              // +0xc0 CAtlList-like (init 0x141205140(p,10), dtor 0x141205470)
-    void* m_unk_f0;                                 // +0xf0 (init 0x14097eba0(p,0), dtor 0x1405a85c0)
-    void* m_unk_f8[2];                              // +0xf8 (init 0x141205320, dtor 0x141205530; iterated by CNifModel)
+    // +0x78 effect slot -> effect-manager handle (Unk_1403ed280: 0x1411a49c0 creates, 0x1411a6060 releases).
+    // CAtlMap(17, .75f, .25f, 2.25f, 10) ctor 0x141205050, dtor 0x141205440, Lookup 0x141206610 (node: key +0,
+    // value +4), operator[]-style SetAt 0x141207d30, RemoveKey 0x141207a40.
+    ATL::CAtlMap<Unk_EquipEffectSlot, int> m_map78;
+    // +0xc0 name -> flag. CRBMap(10) ctor 0x141205140, dtor 0x141205470; Find 0x141205a80 compares with
+    // CDefaultCompareTraits<CString> 0x1401c0630; Lookup 0x1412066a0 (value +8), SetAt 0x141207dc0.
+    ATL::CRBMap<CString, int> m_listC0;
+    NiAVObjectPtr m_unk_f0;                         // +0xf0 loaded scene root (SmartPointer<NiAVObject> ctor 0x14097eba0, dtor 0x1405a85c0)
+    // +0xf8 std::set<NiAVObjectPtr> (_Tree, 0x28-byte nodes, value +0x20): ctor 0x141205320, dtor 0x141205530,
+    // clear 0x141209260, begin 0x141209190, insert 0x141205000 (filled by 0x141422110).
+    std::set<NiAVObjectPtr> m_unk_f8;
     NiNodePtr m_spNode;                             // +0x108 (NiPointer ctor 0x1409f7170, dtor 0x1409f74b0)
     bool m_b110;                                    // +0x110
     bool m_b111;                                    // +0x111
@@ -103,6 +114,7 @@ MS2_CHECK_OFFSET(CEquipModel, m_fScale44, 0x44);
 MS2_CHECK_OFFSET(CEquipModel, m_pos6c, 0x6c);
 MS2_CHECK_OFFSET(CEquipModel, m_map78, 0x78);
 MS2_CHECK_OFFSET(CEquipModel, m_listC0, 0xc0);
+MS2_CHECK_OFFSET(CEquipModel, m_unk_f0, 0xf0);
 MS2_CHECK_OFFSET(CEquipModel, m_unk_f8, 0xf8);
 MS2_CHECK_OFFSET(CEquipModel, m_spNode, 0x108);
 MS2_CHECK_OFFSET(CEquipModel, m_b111, 0x111);
