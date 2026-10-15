@@ -5,13 +5,17 @@
 // MS2-PIN: ?GetHeadPosition@?$CAtlList@UUnk_CommonCachedPacket@@V?$CElementTraits@UUnk_CommonCachedPacket@@@ATL@@@ATL@@QEBAPEAU__POSITION@@XZ 0x140281930
 // MS2-PIN: ?GetNext@?$CAtlList@UUnk_CommonCachedPacket@@V?$CElementTraits@UUnk_CommonCachedPacket@@@ATL@@@ATL@@QEAAAEAUUnk_CommonCachedPacket@@AEAPEAU__POSITION@@@Z 0x140281a70
 // MS2-PIN: ?GetAt@?$CAtlList@UUnk_CommonCachedPacket@@V?$CElementTraits@UUnk_CommonCachedPacket@@@ATL@@@ATL@@QEAAAEAUUnk_CommonCachedPacket@@PEAU__POSITION@@@Z 0x1402814d0
+// MS2-RANGE: 0x142c9a420-0x142c9a450 .text$yd
 // Partial recovery: network records, packet logs, resend queue and hardware information.
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonstruct.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "commonstruct.h"
+#include "ms2/placeholder/billboardinfo.h"
 #include "ms2/commonfiles/logstring.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+static CString s_commonSortNames[]={"None","Buy","Like","PriceLow","PriceHigh","Create","EnumEnd"};
+
 // This formatter constructor belongs to 0x14020a410 in an earlier unit.
 template<> fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>::MakeValue(const wchar_t*);
 
@@ -37,6 +41,37 @@ public:
 };
 Unk_CommonLog* FUN_140166440();
 
+// @0x14026ced0
+BillBoardInfo::BillBoardInfo() { Clear(); }
+// @0x14026cf80
+void BillBoardInfo::Write(COutputStream& out) {
+    out.vfunc_o10_4(firstId); out.vfunc_o10_4(secondId);
+    out.vfunc_o10_8(firstName); out.vfunc_o10_8(secondName);
+    out.vfunc_o10_2(type); out.vfunc_o10_3(value);
+    out.vfunc_o10_8(title); out.vfunc_o10_8(text);
+    out.vfunc_o10_0(enabled);
+    out.vfunc_o10_4(start); out.vfunc_o10_4(end); out.vfunc_o10_4(owner);
+}
+MS2_REPLACE_METHOD(0x14026CF80, BillBoardInfo, Write, 372, 0x7A43A00D);
+// @0x14026d100
+void BillBoardInfo::Read(CInputStream& in) {
+    firstId=in.vfunc_o8_4(); secondId=in.vfunc_o8_4();
+    firstName=in.vfunc_o8_8(); secondName=in.vfunc_o8_8();
+    type=in.vfunc_o8_2(); value=in.vfunc_o8_3();
+    title=in.vfunc_o8_8(); text=in.vfunc_o8_8();
+    enabled=in.vfunc_o8_0();
+    start=in.vfunc_o8_4(); end=in.vfunc_o8_4(); owner=in.vfunc_o8_4();
+}
+MS2_REPLACE_METHOD(0x14026D100, BillBoardInfo, Read, 629, 0xFBD6EFDC);
+// @0x14026d380
+// MS2-FUNCTIONAL: scalar position temporary omits the original reset security cookie.
+void BillBoardInfo::Clear() {
+    owner=0; localValue=0; firstId=0; secondId=0; type=0; value=0;
+    enabled=false; localState=0; start=0; end=0; localIndex=0;
+    position=Unk_CommonPosition(0,0,0);
+    firstName=L""; secondName=L""; title=L""; text=L"";
+}
+MS2_REPLACE_METHOD(0x14026D380, BillBoardInfo, Clear, 320, 0xD8223397);
 // @0x14026d4d0
 bool Unk_CommonOwner::Matches(int kind,__int64 id) {
     if(kind!=this->kind) return EffectiveId()==id;
@@ -215,3 +250,5 @@ MS2_REPLACE_METHOD(0x14026E600, CClientHardwareInfo, Get, 137, 0x8CE2105F);
 // @0x14026e690
 void CClientHardwareInfo::Set(const CStringW& value) { if(Unk_LockGuard guard=m_lock) {} else { m_hardware=value; } }
 MS2_REPLACE_METHOD(0x14026E690, CClientHardwareInfo, Set, 101, 0x13760137);
+// @0x14027db40
+Unk_CommonPosition::Unk_CommonPosition(float a,float b,float c) : x(a),y(b),z(c) {}
