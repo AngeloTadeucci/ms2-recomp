@@ -522,7 +522,6 @@ void FUN_141b91a60()
 
 // True when another desktop is in front (the secure desktop / screen saver is active).
 // @0x141b91ab0
-// MS2-FUNCTIONAL: local temporaries differ from the exe
 int FUN_141b91ab0()
 {
     HDESK hDesktop = OpenDesktopA("Default", 0, 0, 0x100);
@@ -534,7 +533,10 @@ int FUN_141b91ab0()
             CloseDesktop(hDesktop);
             return 1;
         }
-        CloseDesktop(hDesktop);
+        else
+        {
+            CloseDesktop(hDesktop);
+        }
     }
     return 0;
 }
