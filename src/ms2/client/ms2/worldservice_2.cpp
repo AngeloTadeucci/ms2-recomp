@@ -2480,8 +2480,7 @@ undefined8 FUN_141bdda20(undefined8 param_1,undefined8 param_2,undefined8 param_
   undefined8 uVar1;
   
   uVar1 = FUN_141beea80(param_3);
-  FUN_141bddc30(param_1,uVar1);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141bddc30(param_1,uVar1);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2491,8 +2490,7 @@ undefined8 FUN_141bdda50(undefined8 param_1,undefined8 param_2,undefined8 param_
   undefined8 uVar1;
   
   uVar1 = FUN_141beeab0(param_3);
-  FUN_141bde270(param_1,uVar1);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141bde270(param_1,uVar1);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2872,8 +2870,7 @@ undefined8 * FUN_141bde5d0(undefined8 param_1,undefined8 *param_2,undefined8 par
 // @0x141bde6e0
 undefined8 FUN_141bde6e0(undefined8 param_1,undefined8 param_2)
 {
-  FUN_141bdda80(param_1,param_2);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141bdda80(param_1,param_2);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4057,8 +4054,7 @@ undefined8 FUN_141be0ae0(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  FUN_141be09f0(param_1,param_2,local_18);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141be09f0(param_1,param_2,local_18);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4067,8 +4063,7 @@ undefined8 FUN_141be0b10(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  FUN_141be0a20(param_1,param_2,local_18);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141be0a20(param_1,param_2,local_18);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4077,8 +4072,7 @@ undefined8 FUN_141be0b40(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  FUN_141be0a50(param_1,param_2,local_18);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141be0a50(param_1,param_2,local_18);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4087,8 +4081,7 @@ undefined8 FUN_141be0b70(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  FUN_141be0a80(param_1,param_2,local_18);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141be0a80(param_1,param_2,local_18);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4097,8 +4090,7 @@ undefined8 FUN_141be0ba0(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  FUN_141be0ab0(param_1,param_2,local_18);
-  return 0; // RAXCHECK: callers use the return value
+  return FUN_141be0ab0(param_1,param_2,local_18);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
