@@ -1176,3 +1176,14 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?ms_RTTI@CCapRotationController@@2VNiRTTI@@B	143ab9d08	data
 ??0NiStream@@QEAA@XZ	141d44620	func
 ?DAT_143ac2fd8@@3PEAXEA	143ac2fd8	data
+?ms_ClassInfo@CGuideObject@@2VClassInfo@efd@@B	143ace5e0	data
+?ms_ClassInfo@CConstructionGuideObject@@2VClassInfo@efd@@B	143ace9f0	data
+?ms_ClassInfo@CFishingGuideObject@@2VClassInfo@efd@@B	143acee00	data
+?ms_ClassInfo@CSkillMagicControlGuide@@2VClassInfo@efd@@B	143acf210	data
+??0StateLocalController@@QEAA@XZ	1417b73c0	func
+?vfunc_0@StatePcGuideObjectController@@UEAAXXZ	1417b7a00	func
+?DAT_143ab2398@@3VPoint3@efd@@A	143ab2398	data
+?DAT_143a08d08@@3VPoint3@efd@@A	143a08d08	data
+?DAT_143acf618@@3_JA	143acf618	data
+??0?$_String_val@U?$_Simple_types@D@std@@@std@@QEAA@XZ	1401d25d0	func
+??$?0$$V@?$_Compressed_pair@V?$allocator@D@std@@V?$_String_val@U?$_Simple_types@D@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z	1401d1eb0	func
