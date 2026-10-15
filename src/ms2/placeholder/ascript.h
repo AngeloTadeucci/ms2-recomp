@@ -96,8 +96,11 @@ public:
     Scaleform::GFx::Value& FUN_1422bb890(); // root value forwarding accessor
     Scaleform::GFx::Value Invoke(const char*, CString, int); // setTabCount, 0x140a46640
 
-private:
-    void* m_pad_18;                     // not char[8]: an array member makes every local AS object a /GS buffer
+protected:   // cr4: was private; derived AS helpers (ASCommonDepth) read the movie id and the value
+    union {
+        void* m_pad_18;                 // not char[8]: an array member makes every local AS object a /GS buffer
+        int m_nMovieId;                 // +0x18 movie id given to the ctor (ASCommonDepth reads it)
+    };
     Scaleform::GFx::Value m_value;      // +0x20
 };
 MS2_CHECK_SIZE(AScript, 0x40);

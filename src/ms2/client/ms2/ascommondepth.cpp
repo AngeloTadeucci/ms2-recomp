@@ -49,11 +49,11 @@ void FUN_1422bccb0(Scaleform::GFx::Value* pValue, int n);
 ASCommonDepth::ASCommonDepth(Scaleform::GFx::Value v, int nMovieId)
     : AScript(v, nMovieId)
 {
-    void* pMovie = FUN_1422bb8b0(*(int*)((char*)this + 0x18));
+    void* pMovie = FUN_1422bb8b0(m_nMovieId);
     if (pMovie == 0)
         return;
-    FUN_14256e8e0(pMovie, reinterpret_cast<Scaleform::GFx::Value*>((char*)this + 0x20), "scaleform.ms2.common.CommonDepth", 0, 0);
-    (int)FUN_1409b0390(reinterpret_cast<Scaleform::GFx::Value*>((char*)this + 0x20));
+    FUN_14256e8e0(pMovie, &m_value, "scaleform.ms2.common.CommonDepth", 0, 0);
+    (int)FUN_1409b0390(&m_value);
 }
 
 // @0x1409b1f50
