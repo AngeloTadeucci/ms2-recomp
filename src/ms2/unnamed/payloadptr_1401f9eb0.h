@@ -15,6 +15,8 @@ public:
     Unk_PayloadPtr(Unk_PayloadPtr&& value){p=value.p;value.p=0;}
     ~Unk_PayloadPtr(){Release();}
     Unk_PayloadPtr& operator=(const Unk_PayloadPtr& value){value.AddRef();Release();p=value.p;return *this;}
+    Unk_PayloadPtr& operator=(int){Release();return *this;}                                            // guilddef#4 0x1404ef9b0
+    Unk_PayloadPtr& operator=(T* value){Unk_PayloadPtr tmp(value);T* old=p;p=tmp.p;tmp.p=old;return *this;}   // 0x1404efa90
     operator T*()const{return p;}
     T* operator->()const{return p;}
     T* get()const{return p;}
