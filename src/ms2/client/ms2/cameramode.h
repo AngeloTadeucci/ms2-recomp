@@ -86,6 +86,7 @@ class Unk_CameraManager
 public:
     static Unk_CameraManager* FUN_1409478c0();          // inline, ?\actioncameramode.cpp obj
     Unk_CameraTargetEntity* FUN_140a38d60();            // m_1c0 (the camera target)
+    void FUN_140af0170(float f, bool b);                // applies f to the current mode (CCameraMode::FUN_140afe270)
     int FUN_140af01d0();                                // camera control type (0: normal, 1: ...)
     float FUN_140b67d10();                              // distance of the current mode (0 without one)
     void FUN_140aeaf40(Unk_CameraTargetEntity* pTarget, int n);
@@ -160,6 +161,7 @@ public:
     float FUN_140afe2e0();
     float FUN_140afe300();
     void FUN_140afe4b0();
+    bool FUN_140af8140();                                           // owner property 0x2310d55e (set by vfunc_5)
 
     // 0x1409f2540 (inline, another obj)
     Unk_StreamPoint FUN_1409f2540() { return m_setting.m_c; }
