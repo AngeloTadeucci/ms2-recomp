@@ -39,3 +39,19 @@ extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const
 #define MS2_EMIT_CRT_MEMMOVE_S()                                                                          \
     __declspec(selectany) extern void(__cdecl* const ms2_pfnCheckedMemmoveS)(void*, size_t, const void*, size_t) = \
         &ATL::Checked::memmove_s
+
+// MS2_EMIT_CRT_MEMMOVE_S_COPY(n)
+//   One more internal-linkage copy of the CRT memmove_s (a unit range that spans two original TUs holds two of them: the
+//   UCRT's `static __inline memmove_s` is per TU, never folded). Put `// @0x<va>` directly above the invocation, with
+//   MS2_EMIT_CRT_MEMMOVE_S() once for the first TU's copy; n only makes the name unique (use 2, 3...).
+#include <errno.h>
+#include <string.h>
+#define MS2_EMIT_CRT_MEMMOVE_S_COPY(n)                                                                       \
+    static __inline errno_t ms2_memmove_s_copy##n(void* const d, size_t const dsz, void const* const s, size_t const ssz) \
+    { if (ssz == 0) { return 0; }                                                                            \
+      { int e = !!(d != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }     \
+      { int e = !!(s != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }     \
+      { int e = !!(dsz >= ssz); if (!e) { errno = ERANGE; _invalid_parameter_noinfo(); return ERANGE; } }    \
+      memmove(d, s, ssz); return 0; }                                                                        \
+    __declspec(selectany) extern errno_t(__cdecl* const ms2_pfnMemmoveSCopy##n)(void*, size_t, const void*, size_t) = \
+        &ms2_memmove_s_copy##n
