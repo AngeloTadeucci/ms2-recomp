@@ -179,6 +179,29 @@ def lint_unit(u):
                         break
             if re.search(r"\b\w+\s*\(\s*\.\.\.\s*\)", line) and not re.search(r"\b(?:if|while|for|switch|sizeof|defined)\s*\(\s*\.\.\.", line):
                 hits.append((rel, i, "variadic-callee", rl[i - 1].strip()))
+        # registration statics: self-registering Gamebryo objects must be #ifdef MS2_STANDALONE (hook-DLL copies
+        # would register into the exe's shared registries)
+        stack = []  # per open #if: is the CURRENT branch compiled only in a non-hook-DLL (standalone / progress.py) build
+        for i, line in enumerate(cl, 1):
+            m = re.match(r"\s*#\s*(if|ifdef|ifndef|else|elif|endif)\b\s*(.*)", line)
+            if m:
+                d, arg = m.group(1), m.group(2).strip()
+                if d in ("if", "ifdef", "ifndef"):
+                    neg = d == "ifndef" or (d == "if" and arg.startswith("!"))
+                    if "MS2_HOOK_DLL" in arg:
+                        stack.append((neg, neg))        # (current branch guarded, true-branch guarded)
+                    elif "MS2_STANDALONE" in arg:
+                        stack.append((not neg, not neg))
+                    else:
+                        stack.append((False, None))
+                elif d == "else" and stack:
+                    g, tg = stack[-1]
+                    stack[-1] = (False if tg is None else not tg, tg)
+                elif d == "endif" and stack:
+                    stack.pop()
+                continue
+            if not any(g for g, _ in stack) and re.match(r"\s*(?:EE_HANDLER\w*|RegisterLoader\w*)\s*\(", line):
+                hits.append((rel, i, "registration-static", rl[i - 1].strip()))
         # forwarder: inside the function tagged `// @0xX`, a use of FUN_X beyond the definition's own name
         tags = [(i, m.group(1)) for i, l in enumerate(rl) if (m := re.match(r"\s*//\s*@0x([0-9a-fA-F]+)\s*$", l))]
         for k, (i, va) in enumerate(tags):
