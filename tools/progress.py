@@ -78,7 +78,11 @@ class Unit:
         self.rel = os.path.relpath(path, GAME).replace("\\", "/")
         self.name = None
         self.ranges = []
+        self.pins = {}       # `// MS2-PIN: <mangled> 0x<va>`: obj symbol -> exe VA (must lie in a MS2-RANGE)
         for line in open(path, encoding="latin1"):
+            m = re.match(r"\s*//\s*MS2-PIN:\s*(\S+)\s+0x([0-9a-fA-F]+)", line)
+            if m:
+                self.pins[m.group(1)] = int(m.group(2), 16)
             m = re.match(r"\s*//\s*MS2-UNIT:\s*(\S+)", line)
             if m:
                 self.name = m.group(1)
@@ -274,16 +278,38 @@ def load_vftables():
     return bases, vft
 
 
-def vftable_va(sym, bases, vft):
+def _vft_class(sym):
     m = re.match(r"^\?\?_7(.+?)@@6B(.*)@$", sym)
     if not m:
-        return None
+        return None, None
     cls = m.group(1)
     if "@" in cls:          # nested / namespaced: Ghidra/RTTI names use '::' in reverse order
         cls = "::".join(reversed(cls.split("@")))
-    rest = m.group(2)
+    return cls, m.group(2)
+
+
+def vftable_va(sym, bases, vft, siblings=()):
+    """exe vftable of an obj vftable symbol. `??_7C@@6BBase@@@` names the subobject table of base `Base` (its offset
+    comes from the RTTI base list). MSVC names the one remaining table of a multiple-inheritance class `??_7C@@6B@`: it
+    is paired with the exe table (same class, RTTI CompleteObjectLocator offset) that no sibling symbol of the same
+    class claims. `siblings` = all ??_7 symbols of the obj."""
+    cls, rest = _vft_class(sym)
+    if cls is None:
+        return None
     if rest == "":
-        off = 0
+        claimed = set()
+        for s2 in siblings:
+            c2, r2 = _vft_class(s2)
+            if c2 == cls and r2:
+                o2 = bases.get(cls, {}).get(r2.rstrip("@").split("@")[0])
+                if o2 is not None:
+                    claimed.add(o2)
+        free = sorted(o for (c, o) in vft if c == cls and o not in claimed)
+        if not free:
+            return None
+        off = 0 if 0 in free else free[0]
+        if len(free) > 1 and 0 not in free:
+            return None         # ambiguous: more than one unclaimed exe table
     else:
         base = rest.rstrip("@").split("@")[0]
         off = bases.get(cls, {}).get(base)
@@ -385,6 +411,20 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             continue
         known[names[0]] = va
         how[names[0]] = "tag"
+    # 1b. MS2-PIN directives (compiler-generated functions and ambiguous COMDATs that cannot carry a tag). A pin only
+    # decides attribution: the address must lie in one of the unit's ranges, must be free, and the pair is
+    # byte-matched like any other (a wrong pin shows as `functional`, it never counts as matched).
+    names_here = {obj.syms[si][0] for si in syms}
+    for name, va in sorted(u.pins.items()):
+        if name not in names_here:
+            res["notes"].append(f"MS2-PIN {name}: no such function in the obj")
+        elif not u.in_range(va):
+            res["notes"].append(f"MS2-PIN {name} 0x{va:x}: outside the unit's MS2-RANGEs, ignored")
+        elif name in known or va in known.values():
+            res["notes"].append(f"MS2-PIN {name} 0x{va:x}: already attributed (tag), ignored")
+        else:
+            known[name] = va
+            how[name] = "pin"
     # 2. auto: untagged functions (COMDATs, initializers) whose masked bytes equal exe functions in the unit ranges.
     used = set(known.values())
     cands = {}
@@ -540,9 +580,10 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         if not ok:
             res["notes"].append(f"funclet {name} @0x{va:x} does not match")
     # 4. vftables (paired via RTTI, every slot checked against the pairs and the symbol map)
+    vnames = [n for (n, _, sec, _, sc) in obj.syms.values() if sec > 0 and n.startswith("??_7") and sc == 2]
     for si, (name, value, secnum, typ, sclass) in obj.syms.items():
         if secnum > 0 and name.startswith("??_7") and sclass == 2:
-            va = vftable_va(name, bases, vft)
+            va = vftable_va(name, bases, vft, vnames)
             if va is None:
                 res["notes"].append(f"{name}: no exe vftable found via RTTI")
                 continue
