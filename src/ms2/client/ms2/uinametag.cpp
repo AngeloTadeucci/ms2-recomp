@@ -8,6 +8,8 @@
 // MS2-PIN: ??0?$MS2Ptr@VEntity@UINameTag@@@@QEAA@PEAVEntity@UINameTag@@@Z 0x141a621d0 ; prop
 // MS2-PIN: ??__Fs_unk1402a9d70@@YAXXZ 0x142cc0ec0
 // MS2-PIN: ??__Fcondition@Unk_NameTagStatics@@YAXXZ 0x142cc0f50
+// MS2-PIN: ??_GEntity@UINameTag@@UEAAPEAXI@Z 0x141a62230
+// MS2-PIN: ??_GUINameTag@@UEAAPEAXI@Z 0x141a62270
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uinametag.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <math.h>
@@ -737,16 +739,15 @@ UINameTag* FUN_141a62100(int nUiId)
     return 0;
 }
 
-// MS2-FUNCTIONAL: MS2Ptr temporaries/early-out layout differs
 // @0x141a60da0
 MS2Ptr<UINameTag::Entity> FUN_141a60da0(int nActorId)
 {
     UINameTag* pTag = FUN_141a62100(0x4e5a);
-    if (pTag == 0)
-        return MS2Ptr<UINameTag::Entity>(0);
-    MS2Ptr<UINameTag::Entity> pEntity(pTag->FUN_141a61150(nActorId));
-    if (!pEntity.IsNull())
+    if (pTag != 0)
     {
+        MS2Ptr<UINameTag::Entity> pEntity(pTag->FUN_141a61150(nActorId));
+        if (pEntity.IsNull())
+            return MS2Ptr<UINameTag::Entity>(0);
         pEntity->vfunc_1();
         pEntity->FUN_140f48ce0(nActorId);
         return pEntity;
