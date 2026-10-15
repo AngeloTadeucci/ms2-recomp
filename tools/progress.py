@@ -63,8 +63,38 @@ RTTI_VFTABLES = os.path.join(ROOT, "work", "classes", "rtti_vftables.tsv")
 # cmake/ms2-game-flags.cmake (MS2_GAME_COMPILE_OPTIONS + _DEFINITIONS + C++14) + /MD /Z7 + the ms2game include dirs.
 GAME_FLAGS = ["/nologo", "/c", "/Od", "/Ob0", "/Oi", "/EHsc", "/GS", "/GR", "/Gy", "/fp:fast", "/Zc:wchar_t",
               "/Zc:threadSafeInit", "/std:c++14", "/MD", "/Z7", "/W3", "/D_MBCS", "/D_AFXDLL",
-              "/I" + SRC, "/I" + os.path.join(SRC, "hook"),
-              "/I" + os.path.join(ROOT, "engine", "gamebryo", "Foundation")]
+              "/I" + SRC, "/I" + os.path.join(SRC, "hook")]
+
+
+def engine_flags():
+    """Gamebryo include dirs + defines for the game code, parsed from cmake/ms2-engine-flags.cmake (one source of truth with
+    src/ms2/CMakeLists.txt), plus the DirectX SDK overlay (symlinks to the June 2010 headers the Windows SDK lacks; the
+    same rule as that cmake file, kept in build/ms2-engine-dxsdk*)."""
+    txt = open(os.path.join(ROOT, "cmake", "ms2-engine-flags.cmake")).read()
+
+    def listing(name):
+        return re.findall(r'"([^"]+)"', re.search(r"set\(" + name + r"\n(.*?)\n\)", txt, re.S).group(1))
+    eng = os.path.join(ROOT, "engine", "gamebryo")
+    over = os.path.join(ROOT, "build", "ms2-engine-dxsdk")
+    pref = over + "-preferred"
+    dx = os.path.join(ROOT, "third_party", "dxsdk", "DXSDK", "Include")
+    wk = os.path.join(ROOT, "third_party", "msvc", "Windows Kits", "10", "Include", "10.0.19041.0")
+    if not os.path.isdir(over):
+        os.makedirs(over, exist_ok=True)
+        os.makedirs(pref, exist_ok=True)
+        shadow = {f.lower() for sub in ("um", "shared") for f in os.listdir(os.path.join(wk, sub))}
+        for h in os.listdir(dx):
+            if h.lower() not in shadow:
+                for n in {h, h.lower()}:
+                    if not os.path.lexists(os.path.join(over, n)):
+                        os.symlink(os.path.join(dx, h), os.path.join(over, n))
+        for n in ("XInput.h", "xinput.h"):
+            os.symlink(os.path.join(dx, "XInput.h"), os.path.join(pref, n))
+    return (["/I" + pref] + ["/I" + os.path.join(eng, d) for d in listing("MS2_ENGINE_INCLUDE_DIRS")] + ["/I" + over]
+            + ["/D" + d for d in listing("MS2_ENGINE_DEFINITIONS")])
+
+
+GAME_FLAGS += engine_flags()
 FLAGS_KEY = " ".join(GAME_FLAGS) + " v3"
 TAG_RE = re.compile(r"//\s*@0x([0-9a-fA-F]+)\b")
 TAG_WINDOW = 6

@@ -4,6 +4,7 @@
 # byte-match the exe; this directory's per-config flags are cleared so no /O2 /Ob1 /DNDEBUG of the build type leak in.
 # clang-cl keeps the normal project flags (it can never byte-match).
 include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/ms2-game-flags.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/../../cmake/ms2-engine-flags.cmake")     # Gamebryo include dirs + defines (docs/RECOVERY.md section 3)
 
 if(MSVC AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     foreach(cfg DEBUG RELEASE RELWITHDEBINFO MINSIZEREL)
@@ -26,6 +27,6 @@ if(NOT MS2_GAME_SOURCES)
     message(FATAL_ERROR "MS2_GAME_FILTER '${MS2_GAME_FILTER}' matches no game source")
 endif()
 add_library(ms2game OBJECT ${MS2_GAME_SOURCES})
-target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook"
-    "${PROJECT_SOURCE_DIR}/../engine/gamebryo/Foundation")
+target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook")
+ms2_engine_flags(ms2game)
 ms2_game_flags(ms2game)
