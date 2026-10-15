@@ -15,7 +15,7 @@ public:
     MS2SvrPtr(int) { m_p = 0; }
     MS2SvrPtr(T* p) { m_p = p; AddRef(); }
     MS2SvrPtr(const MS2SvrPtr& o) { m_p = o.m_p; AddRef(); }
-    MS2SvrPtr(MS2SvrPtr& o) { m_p = o.m_p; o.m_p = 0; }   // auto_ptr-style steal (non-const lvalue)
+    MS2SvrPtr(MS2SvrPtr& o) { m_p = o.m_p; o.m_p = 0; }   // auto_ptr-style steal (non-const lvalue); PortalRandomTargetData specializes it to copy+AddRef (portaltable.h)
     ~MS2SvrPtr() { Release(); }
     MS2SvrPtr& operator=(const MS2SvrPtr& o)
     {

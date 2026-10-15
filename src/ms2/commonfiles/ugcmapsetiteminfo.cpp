@@ -50,7 +50,6 @@ void FUN_14015f050(CString& str, ATL::CAtlArray<CString>& arr, const char* pszDe
 void FUN_140873220(void*, const char*, int&);
 void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
 void FUN_140177a80(void* logger, int level, int category, const wchar_t* fmt, const int& arg);
-void FUN_1401d1160(CCacheData*, CString);
 unsigned char FUN_1401d1320(CCacheData*);
 
 CUGCMapSetItemTable* TSingleton<CUGCMapSetItemTable>::s_instance = 0;
@@ -122,7 +121,7 @@ UGCMapSetItemDataPtr CUGCMapSetItemTable::FUN_140b9e100(unsigned int nGroup)
         CString strDir("Table");
         strPath = FUN_14071a5b0(strDir, strFile);
     }
-    FUN_1401d1160(this, CString(strPath));
+    CCacheData::FUN_1401d1160(CString(strPath));
     UGCMapSetItemDataPtr data(0);
     if (Unk_LockGuard guard = m_lock) {}
     else
