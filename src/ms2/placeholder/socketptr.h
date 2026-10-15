@@ -25,6 +25,7 @@ struct Unk_SocketNew { explicit Unk_SocketNew(int) {} };
 template<class T> class Unk_SocketPtr {
 public:
     Unk_SocketPtr():p(0) {}
+    Unk_SocketPtr(int):p(0) {}   // w30: the exe's TPtr(int) ctor (stores null; 0x1401b7a70)
     Unk_SocketPtr(const Unk_SocketNew&):p(0) { ResetNew(); }
     Unk_SocketPtr(std::nullptr_t):p(0) {}
     Unk_SocketPtr(T* v):p(v) { AddRef(); }

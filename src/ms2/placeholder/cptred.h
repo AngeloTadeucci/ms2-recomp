@@ -28,6 +28,7 @@ public:
     // @0x1401d27b0
     CPtred(const CPtred&) : m_nRef(0), m_pad_10(0) {}
     virtual ~CPtred();                  // slot 0 (??_G 0x140159b30), dtor 0x140159840
+    friend CPtred* FUN_1401ba820(CPtred*);   // w30: sets the count to 1 (fieldbanner unit, 0x1401ba820)
 
     // Interlocked helpers on the count (ATL CComMultiThreadModel::Increment/Decrement shape).
     // @0x14015a340
