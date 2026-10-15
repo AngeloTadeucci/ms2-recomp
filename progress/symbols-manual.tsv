@@ -486,3 +486,16 @@
 ??1CFieldData@@UEAA@XZ	140373c90	func
 ?vfunc_1@CFieldData@@UEAA_NPEAVUnk_140165cf0@@@Z	140374530	func
 ?vfunc_2@CFieldData@@UEAAHXZ	1403757a0	func
+??1FieldPropertyAmbientLightCli@@UEAA@XZ	140b281e0	func
+??1FieldPropertyDirectionalLightCli@@UEAA@XZ	140b28200	func
+??1FieldPropertyEnableLocalCameraCli@@UEAA@XZ	140b28220	func
+??1FieldPropertyGravityCli@@UEAA@XZ	140b28240	func
+??1FieldPropertyHideMyPCCli@@UEAA@XZ	140b28260	func
+??1FieldPropertyLockMyPCCli@@UEAA@XZ	140b28280	func
+??1FieldPropertyMusicConcertCli@@UEAA@XZ	140b282a0	func
+??1FieldPropertyPhotoStudioCli@@UEAA@XZ	140b282c0	func
+??1FieldPropertyUserTagSymbolCli@@UEAA@XZ	140b282e0	func
+??1FieldPropertyWeatherCli@@UEAA@XZ	140b28300	func
+??1Unk_Handle@@QEAA@XZ	1409f20e0	func
+??1Unk_EntRef@@QEAA@XZ	1408a8720	func
+??0Unk_EntRef@@QEAA@PEAX@Z	1408a7ed0	func
