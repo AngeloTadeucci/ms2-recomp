@@ -69,6 +69,10 @@ public:
     int FUN_140a621c0(__int64 id, int slot, int mode);
     int FUN_140a62920(__int64 id);
     void FUN_140a62cc0(unsigned char category);
+    unsigned FUN_140a62d30(int skill);
+    unsigned FUN_140a63000(int itemId);
+    unsigned FUN_140a63360(int skill);
+    unsigned FUN_140a635f0(CItem*);
     int FUN_140a63880(CItem* item, const CStringW& argument);
     int FUN_140a63900(CItem* item, int mode);
     int FUN_140a63950(CItem* item, int slot, int mode);

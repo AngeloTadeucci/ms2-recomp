@@ -4,7 +4,180 @@
 // MS2-RANGE: 0x1400c4100-0x1400c45a0 .text$di
 // MS2-RANGE: 0x142c9f520-0x142c9f710 .text$yd
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??__Es_unk1402a9d70@@YAXXZ 0x1400c4320 ; unique
+// MS2-PIN: ??__Es_condition2@@YAXXZ 0x1400c4550 ; unique
+// MS2-PIN: ?FUN_140a5c650@@YA_NV?$MS2Ptr@VCItem@@@@0@Z 0x140a5c650 ; unique
+// MS2-PIN: ??0Unk_Inventory@@QEAA@XZ 0x140a5c7a0 ; unique
+// MS2-PIN: ??1Unk_Inventory@@QEAA@XZ 0x140a5c850 ; unique
+// MS2-PIN: ?FUN_140a5ca60@Unk_Inventory@@QEAAXH@Z 0x140a5ca60 ; unique
+// MS2-PIN: ?FUN_140a5cdc0@Unk_Inventory@@QEAA_NI@Z 0x140a5cdc0 ; unique
+// MS2-PIN: ?FUN_140a5d680@Unk_Inventory@@QEAA?AV?$MS2Ptr@VCItem@@@@_J@Z 0x140a5d680 ; unique
+// MS2-PIN: ?FUN_140a5d9a0@Unk_Inventory@@QEAA?AV?$MS2Ptr@VCItem@@@@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@H@Z 0x140a5d9a0 ; unique
+// MS2-PIN: ?FUN_140a5f780@Unk_Inventory@@QEAAXHH@Z 0x140a5f780 ; unique
+// MS2-PIN: ?FUN_140a603e0@Unk_Inventory@@QEAAHHHH@Z 0x140a603e0 ; unique
+// MS2-PIN: ?FUN_140a60790@Unk_Inventory@@QEAAXAEAV?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@@Z 0x140a60790 ; unique
+// MS2-PIN: ?FUN_140a617f0@Unk_Inventory@@QEAAHV?$MS2Ptr@VCItem@@@@@Z 0x140a617f0 ; unique
+// MS2-PIN: ?FUN_140a621c0@Unk_Inventory@@QEAAH_JHH@Z 0x140a621c0 ; unique
+// MS2-PIN: ?FUN_140a63900@Unk_Inventory@@QEAAHPEAVCItem@@H@Z 0x140a63900 ; unique
+// MS2-PIN: ?FUN_140a661e0@Unk_Inventory@@QEAAHPEAVCItem@@@Z 0x140a661e0 ; unique
+// MS2-PIN: ?FUN_140a66c00@Unk_Inventory@@QEAAXXZ 0x140a66c00 ; unique
+// MS2-PIN: ?FUN_140a66f20@Unk_Inventory@@QEAA_JXZ 0x140a66f20 ; unique
+// MS2-PIN: ?FUN_140a66f40@Unk_Inventory@@QEAAX_J@Z 0x140a66f40 ; unique
+// MS2-PIN: ?FUN_140a66fa0@Unk_Inventory@@QEAAXH@Z 0x140a66fa0 ; unique
+// MS2-PIN: ?FUN_140a67000@Unk_Inventory@@QEAAHXZ 0x140a67000 ; unique
+// MS2-PIN: ?FUN_140a673e0@Unk_Inventory@@QEAAXV?$MS2Ptr@VCItem@@@@@Z 0x140a673e0 ; unique
+// MS2-PIN: ?FUN_140a674c0@Unk_Inventory@@QEAAXV?$MS2Ptr@VCItem@@@@@Z 0x140a674c0 ; unique
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140a676f0 ; unique
+// MS2-PIN: ??$?0AEAPEAV?$MS2Ptr@VCItem@@@@AEAPEAV0@$0A@@?$pair@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@QEAA@AEAPEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a67720 ; unique
+// MS2-PIN: ??$_Adl_verify_range1@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@V12@@std@@YAXAEBV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@0@0U?$integral_constant@_N$0A@@0@@Z 0x140a67770 ; unique
+// MS2-PIN: ??$_Adl_verify_range@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@V12@@std@@YAXAEBV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@0@0@Z 0x140a67780 ; unique
+// MS2-PIN: ??$_Destroy_range1@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@U?$integral_constant@_N$0A@@0@@Z 0x140a677c0 ; unique
+// MS2-PIN: ??$_Destroy_range@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@@Z 0x140a67820 ; unique
+// MS2-PIN: ??$_Emplace_back@AEAV?$MS2Ptr@VCItem@@@@@?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAXAEAV?$MS2Ptr@VCItem@@@@@Z 0x140a67870 ; unique
+// MS2-PIN: ??$_Emplace_back@V?$MS2Ptr@VCItem@@@@@?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAX$$QEAV?$MS2Ptr@VCItem@@@@@Z 0x140a678d0 ; unique
+// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBV?$MS2Ptr@VCItem@@@@@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXAEBV?$MS2Ptr@VCItem@@@@@Z 0x140a67930 ; unique
+// MS2-PIN: ??$_Emplace_reallocate@AEBV?$MS2Ptr@VCItem@@@@@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAPEAV?$MS2Ptr@VCItem@@@@QEAV2@AEBV2@@Z 0x140a679f0 ; unique
+// MS2-PIN: ??$_Get_unwrapped@V?$MS2Ptr@VCItem@@@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@QEAV1@@Z 0x140a67c40 ; unique
+// MS2-PIN: ??$_Get_unwrapped@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@$0A@@std@@YAPEAV?$MS2Ptr@VCItem@@@@AEBV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@0@@Z 0x140a67c50 ; unique
+// MS2-PIN: ??$_Get_unwrapped_n@V?$MS2Ptr@VCItem@@@@_J$0A@@std@@YAPEAV?$MS2Ptr@VCItem@@@@QEAV1@_J@Z 0x140a67c70 ; unique
+// MS2-PIN: ??$_Guess_median_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@00P6A_NV1@1@Z@Z 0x140a67c80 ; unique
+// MS2-PIN: ??$_Idl_distance1@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@YA_JAEBQEAV?$MS2Ptr@VCItem@@@@0Urandom_access_iterator_tag@0@@Z 0x140a67dd0 ; unique
+// MS2-PIN: ??$_Idl_distance@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@YA_JAEBQEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a67e00 ; unique
+// MS2-PIN: ??$_Insertion_sort_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@QEAV1@P6A_NV1@2@Z@Z 0x140a67e30 ; unique
+// MS2-PIN: ??$_Make_heap_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0P6A_NV1@1@Z@Z 0x140a68050 ; unique
+// MS2-PIN: ??$_Med3_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@00P6A_NV1@1@Z@Z 0x140a68110 ; unique
+// MS2-PIN: ??$_Move_backward_unchecked1@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@00U_General_ptr_iterator_tag@0@@Z 0x140a682e0 ; unique
+// MS2-PIN: ??$_Move_backward_unchecked@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@00@Z 0x140a68350 ; unique
+// MS2-PIN: ??$_Partition_by_median_guess_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YA?AU?$pair@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@0@PEAV?$MS2Ptr@VCItem@@@@0P6A_NV2@1@Z@Z 0x140a683a0 ; unique
+// MS2-PIN: ??$_Pass_fn@P6A_NV?$MS2Ptr@VCItem@@@@0@Z$0A@@std@@YAP6A_NV?$MS2Ptr@VCItem@@@@0@ZP6A_N00@Z@Z 0x140a68ac0 ; unique
+// MS2-PIN: ??$_Pop_heap_hole_by_index@PEAV?$MS2Ptr@VCItem@@@@V1@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@_J1$$QEAV1@P6A_NV1@3@Z@Z 0x140a68ad0 ; unique
+// MS2-PIN: ??$_Pop_heap_hole_unchecked@PEAV?$MS2Ptr@VCItem@@@@V1@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@00$$QEAV1@P6A_NV1@2@Z@Z 0x140a68ce0 ; unique
+// MS2-PIN: ??$_Pop_heap_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0P6A_NV1@1@Z@Z 0x140a68d50 ; unique
+// MS2-PIN: ??$_Ptr_copy_cat@V?$MS2Ptr@VCItem@@@@V1@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a68df0 ; unique
+// MS2-PIN: ??$_Ptr_move_cat@V?$MS2Ptr@VCItem@@@@V1@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a68e20 ; unique
+// MS2-PIN: ??$_Push_heap_by_index@PEAV?$MS2Ptr@VCItem@@@@V1@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@_J1$$QEAV1@P6A_NV1@3@Z@Z 0x140a68e50 ; unique
+// MS2-PIN: ??$_Seek_wrapped@V?$MS2Ptr@VCItem@@@@@std@@YAXAEAPEAV?$MS2Ptr@VCItem@@@@QEAV1@@Z 0x140a68fb0 ; unique
+// MS2-PIN: ??$_Sort_heap_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0P6A_NV1@1@Z@Z 0x140a68fd0 ; unique
+// MS2-PIN: ??$_Sort_unchecked@PEAV?$MS2Ptr@VCItem@@@@P6A_NV1@0@Z@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0_JP6A_NV1@2@Z@Z 0x140a69030 ; unique
+// MS2-PIN: ??$_Unfancy@V?$MS2Ptr@VCItem@@@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@@Z 0x140a69180 ; unique
+// MS2-PIN: ??$_Uninitialized_copy@PEAV?$MS2Ptr@VCItem@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@@Z 0x140a69190 ; unique
+// MS2-PIN: ??$_Uninitialized_copy_al_unchecked@PEAV?$MS2Ptr@VCItem@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@QEAV1@1AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@U_General_ptr_iterator_tag@0@U_Unused_parameter@0@@Z 0x140a69260 ; unique
+// MS2-PIN: ??$_Uninitialized_move@PEAV?$MS2Ptr@VCItem@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@@Z 0x140a692f0 ; unique
+// MS2-PIN: ??$_Uninitialized_move_al_unchecked@PEAV?$MS2Ptr@VCItem@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCItem@@@@PEAV1@QEAV1@1AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@0@U_General_ptr_iterator_tag@0@U_Unused_parameter@0@@Z 0x140a693c0 ; unique
+// MS2-PIN: ??$addressof@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@YAPEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@0@AEAV10@@Z 0x140a69450 ; unique
+// MS2-PIN: ??$construct@V?$MS2Ptr@VCItem@@@@AEAV1@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@1@QEAV?$MS2Ptr@VCItem@@@@AEAV3@@Z 0x140a69460 ; unique
+// MS2-PIN: ??$construct@V?$MS2Ptr@VCItem@@@@AEBV1@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@1@QEAV?$MS2Ptr@VCItem@@@@AEBV3@@Z 0x140a694b0 ; unique
+// MS2-PIN: ??$construct@V?$MS2Ptr@VCItem@@@@V1@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@1@QEAV?$MS2Ptr@VCItem@@@@$$QEAV3@@Z 0x140a69500 ; unique
+// MS2-PIN: ??$destroy@V?$MS2Ptr@VCItem@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@1@QEAV?$MS2Ptr@VCItem@@@@@Z 0x140a69550 ; unique
+// MS2-PIN: ??$emplace_back@AEBV?$MS2Ptr@VCItem@@@@@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCItem@@@@@Z 0x140a69570 ; unique
+// MS2-PIN: ??$forward@AEAPEAV?$MS2Ptr@VCItem@@@@@std@@YAAEAPEAV?$MS2Ptr@VCItem@@@@AEAPEAV1@@Z 0x140a695e0 ; unique
+// MS2-PIN: ??$forward@AEAV?$MS2Ptr@VCItem@@@@@std@@YAAEAV?$MS2Ptr@VCItem@@@@AEAV1@@Z 0x140a695f0 ; unique
+// MS2-PIN: ??$forward@AEBV?$MS2Ptr@VCItem@@@@@std@@YAAEBV?$MS2Ptr@VCItem@@@@AEBV1@@Z 0x140a69600 ; unique
+// MS2-PIN: ??$forward@V?$MS2Ptr@VCItem@@@@@std@@YA$$QEAV?$MS2Ptr@VCItem@@@@AEAV1@@Z 0x140a69610 ; unique
+// MS2-PIN: ??$iter_swap@PEAV?$MS2Ptr@VCItem@@@@PEAV1@@std@@YAXPEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a69620 ; unique
+// MS2-PIN: ??$move@AEAV?$MS2Ptr@VCItem@@@@@std@@YA$$QEAV?$MS2Ptr@VCItem@@@@AEAV1@@Z 0x140a69650 ; unique
+// MS2-PIN: ??$sort@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@P6A_NV?$MS2Ptr@VCItem@@@@0@Z@std@@YAXV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@0@0P6A_NV?$MS2Ptr@VCItem@@@@1@Z@Z 0x140a69660 ; unique
+// MS2-PIN: ??$swap@V?$MS2Ptr@VCItem@@@@X@std@@YAXAEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a696e0 ; unique
+// MS2-PIN: ??0?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA@I@Z 0x140a69750 ; unique
+// MS2-PIN: ??0?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAA@IMMMI@Z 0x140a697b0 ; unique
+// MS2-PIN: ??0?$CRBMap@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAA@_K@Z 0x140a698a0 ; unique
+// MS2-PIN: ??0?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEAA@_K@Z 0x140a698d0 ; unique
+// MS2-PIN: ??0?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA@PEAV?$MS2Ptr@VCItem@@@@AEAV?$allocator@V?$MS2Ptr@VCItem@@@@@1@@Z 0x140a69930 ; unique
+// MS2-PIN: ??0?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAA@XZ 0x140a69970 ; unique
+// MS2-PIN: ??0?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAA@PEAV?$MS2Ptr@VCItem@@@@PEBU_Container_base0@1@@Z 0x140a699a0 ; unique
+// MS2-PIN: ??0?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAA@PEAV?$MS2Ptr@VCItem@@@@PEBU_Container_base0@1@@Z 0x140a699e0 ; unique
+// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA@XZ 0x140a69a20 ; unique
+// MS2-PIN: ??0?$allocator@V?$MS2Ptr@VCItem@@@@@std@@QEAA@XZ 0x140a69a60 ; unique
+// MS2-PIN: ??0?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA@XZ 0x140a69a70 ; unique
+// MS2-PIN: ??0Unk_InventoryUsePacket@@QEAA@XZ 0x140a69aa0 ; unique
+// MS2-PIN: ??0CNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA@AEBV?$MS2Ptr@VCItem@@@@@Z 0x140a69ae0 ; unique
+// MS2-PIN: ??0Unk_InventoryUnequipPacket@@QEAA@XZ 0x140a69c20 ; unique
+// MS2-PIN: ??0Unk_InventoryEquipPacket@@QEAA@XZ 0x140a69c40 ; unique
+// MS2-PIN: ??0TOutBindingParam@ItemUtilTransfer@@QEAA@XZ 0x140a69c70 ; unique
+// MS2-PIN: ??1?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA@XZ 0x140a69cd0 ; unique
+// MS2-PIN: ??1?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAA@XZ 0x140a69cf0 ; unique
+// MS2-PIN: ??1?$CRBMap@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAA@XZ 0x140a69d20 ; unique
+// MS2-PIN: ??1?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAA@XZ 0x140a69d40 ; unique
+// MS2-PIN: ??1?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA@XZ 0x140a69d80 ; unique
+// MS2-PIN: ??1?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA@XZ 0x140a69dc0 ; unique
+// MS2-PIN: ??1Unk_InventoryUsePacket@@QEAA@XZ 0x140a69df0 ; unique
+// MS2-PIN: ??1CNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA@XZ 0x140a69e10 ; unique
+// MS2-PIN: ??1CNode@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAA@XZ 0x140a69e30 ; unique
+// MS2-PIN: ??1CNode@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAA@XZ 0x140a69e50 ; unique
+// MS2-PIN: ??1CPair@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAA@XZ 0x140a69e70 ; unique
+// MS2-PIN: ??1CPair@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEAA@XZ 0x140a69e90 ; unique
 // MS2-PIN: ??A?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140a69ee0 ; unique
+// MS2-PIN: ??A?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAAEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140a69f20 ; unique
+// MS2-PIN: ??_GCNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAPEAXI@Z 0x140a69f50 ; unique
+// MS2-PIN: ??_GCNode@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAPEAXI@Z 0x140a69f90 ; unique
+// MS2-PIN: ??_GCNode@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAAPEAXI@Z 0x140a69fd0 ; unique
+// MS2-PIN: ?AddTail@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAPEAU__POSITION@@AEBV?$MS2Ptr@VCItem@@@@@Z 0x140a6a050 ; unique
+// MS2-PIN: ?FUN_140a6a0d0@Unk_InventoryAccount@@QEAA_NXZ 0x140a6a0d0 ; unique
+// MS2-PIN: ?DisableAutoRehash@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAXXZ 0x140a6a170 ; unique
+// MS2-PIN: ?EnableAutoRehash@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAXXZ 0x140a6a190 ; unique
+// MS2-PIN: ?Find@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEBAPEAVCNode@12@_K@Z 0x140a6a1b0 ; unique
+// MS2-PIN: ?FreeNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@AEAAXPEAVCNode@12@@Z 0x140a6a3e0 ; unique
+// MS2-PIN: ?FreeNode@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@AEAAXPEAVCNode@12@@Z 0x140a6a450 ; unique
+// MS2-PIN: ?FreeNode@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x140a6a550 ; unique
+// MS2-PIN: ?FreePlexes@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@AEAAXXZ 0x140a6a5f0 ; unique
+// MS2-PIN: ?GetFreeNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@AEAAXXZ 0x140a6a6c0 ; unique
+// MS2-PIN: ?GetHash@CNode@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEBAIXZ 0x140a6a7a0 ; unique
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x140a6a810 ; unique
+// MS2-PIN: ?FUN_140a6a830@@YAPEAVUnk_InventoryStateManager@@XZ 0x140a6a830 ; unique
+// MS2-PIN: ?FUN_140a6a840@@YAPEAVUnk_InventoryListener@@XZ 0x140a6a840 ; unique
+// MS2-PIN: ?GetNext@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x140a6a8a0 ; unique
+// MS2-PIN: ?FUN_140a6aa40@Unk_InventoryArraySetting@@QEAAAEBV?$vector@HV?$allocator@H@std@@@std@@XZ 0x140a6aa40 ; unique
+// MS2-PIN: ?GetValueAt@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAAAEAV?$MS2Ptr@VCItem@@@@PEAU__POSITION@@@Z 0x140a6aaf0 ; unique
+// MS2-PIN: ?InitHashTable@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAA_NI_N@Z 0x140a6ab50 ; unique
+// MS2-PIN: ?IsLocked@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@AEBA_NXZ 0x140a6ada0 ; unique
+// MS2-PIN: ?IsNil@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@AEBA_NPEAVCNode@12@@Z 0x140a6add0 ; unique
+// MS2-PIN: ?Lookup@?$CRBMap@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEBA_N_KAEAV?$MS2Ptr@VCItem@@@@@Z 0x140a6afc0 ; unique
+// MS2-PIN: ?Maximum@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x140a6b010 ; unique
+// MS2-PIN: ?Minimum@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x140a6b080 ; unique
+// MS2-PIN: ?NewNode@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@AEAAPEAVCNode@12@AEBV?$MS2Ptr@VCItem@@@@PEAV312@1@Z 0x140a6b0f0 ; unique
+// MS2-PIN: ?PickSize@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@AEBAI_K@Z 0x140a6b620 ; unique
+// MS2-PIN: ?Predecessor@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x140a6b710 ; unique
+// MS2-PIN: ?Rehash@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAXI@Z 0x140a6bf40 ; unique
+// MS2-PIN: ?RemoveAll@?$CAtlList@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAXXZ 0x140a6c170 ; unique
+// MS2-PIN: ?RemoveAll@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAXXZ 0x140a6c250 ; unique
+// MS2-PIN: ?RemoveAll@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAAXXZ 0x140a6c360 ; unique
+// MS2-PIN: ?RemovePostOrder@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x140a6c710 ; unique
+// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@QEAAXMMM_N@Z 0x140a6ca10 ; unique
+// MS2-PIN: ?Successor@?$CRBTree@_KV?$MS2Ptr@VCItem@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x140a6cac0 ; unique
+// MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@W4Unk_InventoryEquipSlot@@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@W4Unk_InventoryEquipSlot@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@4@@ATL@@AEAAXXZ 0x140a6cf30 ; unique
+// MS2-PIN: ?_Calculate_growth@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEBA_K_K@Z 0x140a6d010 ; unique
+// MS2-PIN: ?_Change_array@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXQEAV?$MS2Ptr@VCItem@@@@_K1@Z 0x140a6d0a0 ; unique
+// MS2-PIN: ?_Destroy@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a6d1b0 ; unique
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@XZ 0x140a6d1f0 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@$00@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@2@XZ 0x140a6d210 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@$00@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VCItem@@@@@2@XZ 0x140a6d220 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@2@XZ 0x140a6d230 ; unique
+// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VCItem@@@@@2@XZ 0x140a6d240 ; unique
+// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VCItem@@@@@2@XZ 0x140a6d260 ; unique
+// MS2-PIN: ?_Has_unused_capacity@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEBA_NXZ 0x140a6d280 ; unique
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d2d0 ; unique
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d2f0 ; unique
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d310 ; unique
+// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d330 ; unique
+// MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEAAXXZ 0x140a6d350 ; unique
+// MS2-PIN: ?_Orphan_range@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEBAXPEAV?$MS2Ptr@VCItem@@@@0@Z 0x140a6d370 ; unique
+// MS2-PIN: ?_Release@?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAPEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d380 ; unique
+// MS2-PIN: ?_Tidy@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXXZ 0x140a6d3a0 ; unique
+// MS2-PIN: ?_Umove@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAPEAV?$MS2Ptr@VCItem@@@@PEAV3@00@Z 0x140a6d470 ; unique
+// MS2-PIN: ?_Umove_if_noexcept1@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VCItem@@@@00U?$integral_constant@_N$0A@@2@@Z 0x140a6d4b0 ; unique
+// MS2-PIN: ?_Umove_if_noexcept@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VCItem@@@@00@Z 0x140a6d4f0 ; unique
+// MS2-PIN: ?_Unwrapped@?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@std@@QEBAPEAV?$MS2Ptr@VCItem@@@@XZ 0x140a6d550 ; unique
+// MS2-PIN: ?_Xlength@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@CAXXZ 0x140a6d560 ; unique
+// MS2-PIN: ?allocate@?$allocator@V?$MS2Ptr@VCItem@@@@@std@@QEAAPEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140a6d580 ; unique
+// MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@2@XZ 0x140a6d5b0 ; unique
+// MS2-PIN: ?capacity@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEBA_KXZ 0x140a6d610 ; unique
+// MS2-PIN: ?deallocate@?$allocator@V?$MS2Ptr@VCItem@@@@@std@@QEAAXQEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140a6d650 ; unique
+// MS2-PIN: ?end@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCItem@@@@@std@@@std@@@2@XZ 0x140a6d680 ; unique
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@SA_KAEBV?$allocator@V?$MS2Ptr@VCItem@@@@@2@@Z 0x140a6d6e0 ; unique
+// MS2-PIN: ?max_size@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEBA_KXZ 0x140a6d6f0 ; unique
+// MS2-PIN: ?push_back@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCItem@@@@@Z 0x140a6d740 ; unique
+// MS2-PIN: ??__Fs_unk1402a9d70@@YAXXZ 0x142c9f5e0 ; unique
+// MS2-PIN: ??__Fs_condition2@@YAXXZ 0x142c9f6f0 ; unique
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\inventory.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -56,12 +229,37 @@ int FUN_140529640(CItem*);
 bool FUN_1405277e0(CItem*, int);
 MS2Ptr<CItemData> FUN_14053f870(int);
 class Unk_InventoryEquipment;
+// Constructor141763fa0 initializes the full request through item+40.
+struct Unk_InventorySkillRequest {
+    Unk_InventorySkillRequest(int, unsigned short);
+    int skill;
+    unsigned short level;
+    unsigned __int64 tick;
+    unsigned serial, unknown14;
+    float origin[3], direction[3];
+    unsigned unknown30, unknown34;
+    bool remap, suppressDispatch, itemUse;
+    __int64 item;
+};
+MS2_CHECK_SIZE(Unk_InventorySkillRequest, 0x48);
+MS2_CHECK_OFFSET(Unk_InventorySkillRequest, remap, 0x38);
+MS2_CHECK_OFFSET(Unk_InventorySkillRequest, itemUse, 0x3a);
+MS2_CHECK_OFFSET(Unk_InventorySkillRequest, item, 0x40);
+class Unk_InventorySkillLevel;
+class Unk_InventorySkillTable { public: MS2Ptr<Unk_InventorySkillLevel> FUN_1407ee2f0(int, unsigned short); };
+Unk_InventorySkillTable* FUN_1401958b0();
+bool FUN_140804450(Unk_InventorySkillLevel*);
+bool FUN_14053d270(CItemData*);
+bool FUN_14053cb40(CItemData*);
+int FUN_141769320(MS2Ptr<CItemData>);
 class Unk_InventorySkills {
 public: int FUN_141768fb0(int skill, unsigned short level);
+    MS2Ptr<CSkillRecord> FUN_141765570(Unk_InventorySkillRequest&);
 };
 class Unk_InventoryPlayer : public PCBase {
 public:
     int FUN_141662eb0(CItem*);
+    void FUN_141526c80(int*, unsigned short*);
     MS2Ptr<Unk_InventoryEquipment> FUN_141655e80(int slot, int mode);
     int FUN_14166ce30();
     int FUN_141658f30();
@@ -1162,6 +1360,93 @@ void Unk_Inventory::FUN_140a62cc0(unsigned char category) {
     FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x140a62cc0, Unk_Inventory, FUN_140a62cc0, 94, 0x4BFCB7B4);
+// MS2-FUNCTIONAL: typed skill request and owned skill pointer; equivalent early returns.
+// @0x140a62d30
+unsigned Unk_Inventory::FUN_140a62d30(int skill) {
+    Unk_InventoryPlayer* player = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (!player) return 0;
+    ItemPtr item = FUN_140a5d760(skill, 0);
+    if (item.IsNull()) return 0;
+    if (FUN_1409331e0()->FUN_14138c900(8)) { FUN_141275260(2184, 1, 1); return 0; }
+    if (!FUN_14053d270(FUN_140527840(item.operator->())) &&
+        !FUN_14053cb40(FUN_140527840(item.operator->())) &&
+        !FUN_14053cc80(FUN_140527840(item.operator->()))) return 0;
+    MS2Ptr<Unk_InventorySkillLevel> data = FUN_1401958b0()->FUN_1407ee2f0(skill, 1);
+    if (data == 0) return 0;
+    Unk_InventorySkillRequest request(skill, 1);
+    request.remap = FUN_140804450(data.operator->());
+    request.item = item->FUN_140526a50();
+    MS2Ptr<CSkillRecord> record = player->FUN_141523bc0()->FUN_141765570(request);
+    if (record == 0) return 0;
+    return player->vfunc_102(record);
+}
+MS2_REPLACE_METHOD(0x140a62d30, Unk_Inventory, FUN_140a62d30, 702, 0xBAB5FC29);
+// MS2-FUNCTIONAL: typed skill request and owned skill pointer; equivalent early returns.
+// @0x140a63000
+unsigned Unk_Inventory::FUN_140a63000(int itemId) {
+    MS2Ptr<CItemData> metadata = FUN_14053f870(itemId);
+    if (metadata == 0) return 0;
+    Unk_InventoryPlayer* player = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (!player) return 0;
+    ItemPtr item = FUN_140a5e2e0(itemId);
+    if (item == 0) return 0;
+    if (FUN_1409331e0()->FUN_14138c900(8)) { FUN_141275260(2184, 1, 1); return 0; }
+    if (!FUN_14053d270(FUN_140527840(item.operator->()))) return 0;
+    int skill = FUN_14053dc20(metadata.operator->());
+    MS2Ptr<Unk_InventorySkillLevel> data = FUN_1401958b0()->FUN_1407ee2f0(skill, 1);
+    if (data == 0) return 0;
+    Unk_InventorySkillRequest request(FUN_14053dc20(metadata.operator->()), 1);
+    request.remap = FUN_140804450(data.operator->());
+    request.itemUse = true;
+    request.item = item->FUN_140526a50();
+    MS2Ptr<CSkillRecord> record = player->FUN_141523bc0()->FUN_141765570(request);
+    if (record == 0) return 0;
+    return player->vfunc_102(record);
+}
+MS2_REPLACE_METHOD(0x140a63000, Unk_Inventory, FUN_140a63000, 857, 0x12C5EF21);
+// MS2-FUNCTIONAL: typed skill request and owned skill pointer; equivalent early returns.
+// @0x140a63360
+unsigned Unk_Inventory::FUN_140a63360(int skill) {
+    Unk_InventoryPlayer* player = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (!player) return 0;
+    ItemPtr item = FUN_140a5d760(skill, 0);
+    if (item == 0) return 0;
+    if (FUN_1409331e0()->FUN_14138c900(8)) { FUN_141275260(2184, 1, 1); return 0; }
+    if (!FUN_14053d270(FUN_140527840(item.operator->()))) return 0;
+    MS2Ptr<Unk_InventorySkillLevel> data = FUN_1401958b0()->FUN_1407ee2f0(skill, 1);
+    if (data == 0) return 0;
+    Unk_InventorySkillRequest request(skill, 1);
+    request.remap = FUN_140804450(data.operator->());
+    request.item = item->FUN_140526a50();
+    request.itemUse = true;
+    MS2Ptr<CSkillRecord> record = player->FUN_141523bc0()->FUN_141765570(request);
+    if (record == 0) return 0;
+    return player->vfunc_102(record);
+}
+MS2_REPLACE_METHOD(0x140a63360, Unk_Inventory, FUN_140a63360, 646, 0xC31C5C98);
+// MS2-FUNCTIONAL: preserve initial lookup before player skill/level adjustment and owned call arguments.
+// @0x140a635f0
+unsigned Unk_Inventory::FUN_140a635f0(CItem* item) {
+    if (!item) return 0;
+    Unk_InventoryPlayer* player = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (!player) return 0;
+    if (FUN_1409331e0()->FUN_14138c900(8)) { FUN_141275260(2184, 1, 1); return 0; }
+    if (!FUN_14053d270(FUN_140527840(item)) && !FUN_14053cb40(FUN_140527840(item)) &&
+        !FUN_14053cc80(FUN_140527840(item))) return 0;
+    int skill = FUN_141769320(MS2Ptr<CItemData>(FUN_140527840(item)));
+    unsigned short level = 1;
+    MS2Ptr<Unk_InventorySkillLevel> data = FUN_1401958b0()->FUN_1407ee2f0(skill, level);
+    if (data == 0) return 0;
+    player->FUN_141526c80(&skill, &level);
+    Unk_InventorySkillRequest request(skill, 1);
+    request.level = level;
+    request.remap = FUN_140804450(data.operator->());
+    request.item = item->FUN_140526a50();
+    MS2Ptr<CSkillRecord> record = player->FUN_141523bc0()->FUN_141765570(request);
+    if (record == 0) return 0;
+    return player->vfunc_102(record);
+}
+MS2_REPLACE_METHOD(0x140a635f0, Unk_Inventory, FUN_140a635f0, 650, 0x3575D5E0);
 // MS2-FUNCTIONAL: typed accessors and equivalent control flow produce different temporaries.
 // @0x140a63880
 int Unk_Inventory::FUN_140a63880(CItem* item, const CStringW& argument) {
