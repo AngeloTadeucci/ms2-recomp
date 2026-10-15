@@ -8,18 +8,31 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\postprocessing\\worldfadeoutrenderstep.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "worldfadeoutrenderstep.h"
+#include <NiRenderer.h>
+#include <NiRenderTargetGroup.h>
+#include <NiRenderedTexture.h>
 #include "hook/ms2hook.h"
 
 // Unrecovered callees (real types unknown).
 unsigned char FUN_1412642d0(void* step);
-void* FUN_1416a23f0(unsigned __int64 p, int n);
+NiRenderedTexture* FUN_1416a23f0(unsigned __int64 p, int n);   // the step's input texture n
 void FUN_1416a0fb0(unsigned __int64 p, int n);
-void* FUN_1416a3ec0(unsigned __int64 p);
+// MS2: unit-local interface; only slot 17 is proven (the class behind FUN_1416a3ec0 is unrecovered). Never instantiated.
+struct Unk_WFTarget
+{
+    virtual ~Unk_WFTarget();
+    virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8();
+    virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12();
+    virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15(); virtual void vfunc_16();
+    virtual __int64 vfunc_17();                 // slot 17 (+0x88): non-zero when the target is usable
+};
+Unk_WFTarget* FUN_1416a3ec0(unsigned __int64 p);
 char* FUN_1409a8b20();
 void* FUN_140af8310(char* p);
 void* FUN_1411d15b0(void* p);
-void* FUN_140994450();
-void* FUN_1414fd170(void* p);
+NiRenderer* FUN_140994450();   // NiRenderer::GetRenderer()
+NiRenderer* FUN_1414fd170(void* p);
 void FUN_1409a5770(void* obj, float* value, int n);
 extern char DAT_143ae5320;
 extern int DAT_1439f823c;
@@ -98,20 +111,19 @@ bool FUN_1416bafb0(void* a, void* step)
 void WorldFadeOutRenderStep::vfunc_19()
 {
     if (FUN_1412642d0(this) == 1) {
-        void** a = (void**)FUN_1416a3ec0(m_70);
-        if ((*(__int64 (**)(void*))(*(char**)a + 0x88))(a) != 0) {
+        Unk_WFTarget* a = FUN_1416a3ec0(m_70);
+        if (a->vfunc_17() != 0) {
             void* h = FUN_1411d15b0(FUN_140af8310(FUN_1409a8b20() + 8));
-            void* p = FUN_140994450();
-            void* q = (*(void* (**)(void*))(*(char**)p + 0xf0))(p);
-            int w = (*(int (**)(void*, int))(*(char**)q + 0x90))(q, 0);
-            int ht = (*(int (**)(void*, int))(*(char**)q + 0x98))(q, 0);
+            NiRenderer* p = FUN_140994450();
+            NiRenderTargetGroup* q = p->GetDefaultRenderTargetGroup();
+            int w = q->GetWidth(0);
+            int ht = q->GetHeight(0);
             Unk_WFRect rect(0, w, 0, ht);
-            void* pp = FUN_1416a23f0(m_70, 5);
-            void* r = FUN_1414fd170(h);
-            r = (*(void* (**)(void*))(*(char**)r + 0xf0))(r);
-            r = (*(void* (**)(void*, int))(*(char**)r + 0xd8))(r, 0);
-            void* arg = (*(void* (**)(void*))(*(char**)pp + 0xa0))(pp);
-            ((void (*)(void*, void*, void*, void*, int))(*(void***)r)[19])(r, arg, &rect, &rect, 0);
+            NiRenderedTexture* pp = FUN_1416a23f0(m_70, 5);
+            NiRenderer* rn = FUN_1414fd170(h);
+            Ni2DBuffer* r = rn->GetDefaultRenderTargetGroup()->GetBuffer(0);
+            Ni2DBuffer* arg = pp->GetBuffer();
+            r->Copy(arg, reinterpret_cast<const NiRect<unsigned int>*>(&rect), reinterpret_cast<const NiRect<unsigned int>*>(&rect), (Ni2DBuffer::CopyFilterPreference)0);
             s_fadeStartTick = GetTickCount();
         }
     }
