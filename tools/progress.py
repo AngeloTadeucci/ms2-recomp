@@ -457,12 +457,20 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
 
     # references from tagged functions decide look-alikes as well (a function-local static's atexit thunk is named
     # only by the `lea rcx, ??__F...` inside the function that owns the static)
-    for name, va in sorted(known.items(), key=lambda kv: kv[1]):
-        for n2, v2 in refs(name, va).items():
-            if n2 in hits and n2 not in known and v2 not in used and v2 in hits[n2] and trial(n2, v2):
-                known[n2] = v2
-                how[n2] = "auto-ref"
-                used.add(v2)
+    # (to a fixpoint: a function decided by reference names its own callees in turn, e.g. an STL operator-> and the
+    # 11-byte _Const_cast it calls)
+    expanded = set()
+    while True:
+        todo = [(n, v) for n, v in sorted(known.items(), key=lambda kv: kv[1]) if n not in expanded]
+        if not todo:
+            break
+        for name, va in todo:
+            expanded.add(name)
+            for n2, v2 in refs(name, va).items():
+                if n2 in hits and n2 not in known and v2 not in used and v2 in hits[n2] and trial(n2, v2):
+                    known[n2] = v2
+                    how[n2] = "auto-ref"
+                    used.add(v2)
     hits = {n: h for n, h in hits.items() if n not in known}
 
     ok_hits = {}
