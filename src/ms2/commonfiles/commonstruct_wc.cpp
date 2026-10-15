@@ -202,7 +202,6 @@ template CStringW StringFormat<CStringW, __int64>(const wchar_t*, const CStringW
 template CStringW StringFormat<CStringW, bool>(const wchar_t*, const CStringW&, const bool&);
 
 // @0x1402767f0
-// MS2-FUNCTIONAL: tinyxmlhelper.h attribute reader instance (unsigned/float variant); assert/file text from the exe
 #undef MS2_THIS_FILE
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h"
 int FUN_1402767f0(void* node, const char* name, unsigned* out)
