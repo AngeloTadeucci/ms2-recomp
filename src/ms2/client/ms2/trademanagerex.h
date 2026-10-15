@@ -13,6 +13,15 @@
 class CItem;
 class CInPacket;
 
+// The player-to-player trade manager singleton (FUN_14140ea30 returns it). Only what the trade slots call so far;
+// the rest is in ?\trademanagerex.cpp#1.
+class CTradeManagerEx
+{
+public:
+    void FUN_14185ba70(__int64 uid, int nSlot);     // send "remove item <uid> from slot" (0x49 sub 9)
+};
+CTradeManagerEx* FUN_14140ea30();
+
 // The items currently on the trade table: global DAT_143ab2e80 (0x58 bytes, zero-initialised, set up by the
 // CTradeManagerEx ctor). m_nSlots slots (5), the items by uid (ATL::CRBMap node: key +0, value +8, color +0x18,
 // left/right/parent +0x20/+0x28/+0x30) and by slot index.
@@ -44,7 +53,7 @@ class TradeSlot : public MS2DragSlot
 {
 public:
     TradeSlot(const CString& strName, MS2Ptr<CItem> spItem, int nIndex, bool bMine);    // 0x14185dca0
-    virtual ~TradeSlot();                           // 0x14185e6b0
+    virtual ~TradeSlot() = default;                 // 0x14185e6b0 (implicit: the exe's dtor writes no vptr)
 
     // slots 2-4: GetClassDesc 0x14185e740, TypeCast 0x14185e7b0 / 0x14185e800; ms_ClassInfo 0x143aef8a0,
     // SetupClassInfo 0x14185e750 (parent MS2DragSlot, id 0x6200057).
@@ -61,7 +70,7 @@ public:
 
     void FUN_14185e370(MS2Ptr<CItem> spItem);       // play the item's pickup/drop sound
     void FUN_14185e4e0(MS2Ptr<CItem> spItem);       // m_spItem = spItem
-    __int64 FUN_14185e530();                        // item template id, 0 if empty
+    int FUN_14185e530();                            // item template id, 0 if empty
     __int64 FUN_14185e580();                        // item uid, 0 if empty
     void FUN_14185e5d0();                           // send "remove item" for this slot if it is mine
     bool FUN_14185e630();                           // return m_bMine

@@ -24,6 +24,9 @@ public:
     int FUN_1409e1770(int a1, int a2);
     int FUN_1409e0d40(CItem* pItem);
     void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem> item);
+    void FUN_1409c69b0(const CStringW& strTitle);                        // set the tooltip title line
+    void FUN_1409c65f0(const CStringW& strText);                         // set the tooltip text line
+    void FUN_1409db7b0(MS2Ptr<CItem> spItem);                            // compare against this item (by value: callee destroys)
 
 private:
     void* m_pad_40; void* m_pad_48; void* m_pad_50; void* m_pad_58;
