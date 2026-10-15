@@ -18,6 +18,7 @@ public:
                           UISwfEntity* pEntity);                                                // load
     CString FUN_1422d17a0(int nGroup, CString strKey, int n);                                   // unload; new key
     void FUN_1422d1b20(int nGroup, const CString& strKey, int n);
+    void FUN_1422d0dc0(MS2Ptr<UISwfEntity> p);                                                  // unregister (w4s9)
     void FUN_1422d4780(UISwfEntity* p, int n);
     void FUN_1422d4840(UISwfEntity* p, int n);
 };
