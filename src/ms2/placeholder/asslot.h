@@ -16,6 +16,7 @@ public:
     ASSlot(int nType);
     virtual ~ASSlot();
     int FUN_1409c3860(CItem* pItem, void* pPlayer, int nFlags);          // fill the slot from an item
+    int FUN_1409c48b0(const CString& strText);                           // set the slot's text (ItemInfoSlot)
     void FUN_1409c2650();                                                // darken / disable the slot icon
 };
 MS2_CHECK_SIZE(ASSlot, 0x40);

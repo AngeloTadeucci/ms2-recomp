@@ -26,6 +26,9 @@ public:
     void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem> item);
     void FUN_1409c69b0(const CStringW& strTitle);                        // set the tooltip title line
     void FUN_1409c65f0(const CStringW& strText);                         // set the tooltip text line
+    int FUN_1409e13f0(CItem* pCompare, CItem* pItem, int a1, int a2);   // item tooltip with a comparison item (ItemInfoSlot)
+    void FUN_1409c6a20(const CStringW& strA, const CStringW& strB);     // set a tooltip text pair (ItemInfoSlot exchange scroll)
+    void FUN_1409c7060(const CStringW& strKey, const CStringW& strB);   // set a keyed tooltip text pair (ItemInfoSlot exchange scroll)
     void FUN_1409db7b0(MS2Ptr<CItem> spItem);                            // compare against this item (by value: callee destroys)
 
 private:

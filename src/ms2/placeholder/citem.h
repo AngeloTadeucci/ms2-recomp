@@ -31,6 +31,7 @@ public:
   virtual int vfunc_4();
   virtual void vfunc_5(bool);
   int FUN_1405268f0();
+  int FUN_14052b130(int, int, int);   // can the item be combined with this one (ItemInfoSlot exchange scroll)
 private:
   void *m_18;
   void *m_20;
