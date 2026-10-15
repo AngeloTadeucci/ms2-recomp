@@ -88,7 +88,7 @@ class CEffectParam : public CPtred
 {
 public:
     explicit CEffectParam(int nType);                       // 0x1411a01d0
-    virtual ~CEffectParam() {}                              // 0x140987960 (inline), ??_G 0x1411a1db0
+    virtual ~CEffectParam() = default;                      // 0x140987960 (inline, no vptr store), ??_G 0x1411a1db0
 
     virtual void vfunc_1(Unk_140165cf0* pNode);             // 1 0x1411a0290 load startDelay/duration/lodSkipLevel/.../ignoreOptimize
     virtual bool vfunc_2();                                 // 2 0x1411a03d0 validate (warns for types 4,7-10,12,15 with no duration)
