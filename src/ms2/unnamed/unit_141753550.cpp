@@ -54,6 +54,12 @@ ShadowCullingProcess::ShadowCullingProcess() : NiTerrainCullingProcess(0, 0) {}
 bool FUN_141753a00(NiAVObject* o);
 int FUN_141753c20(const NiBound* b, const NiPlane& pl);
 void FUN_141753c10(int v);
+// Scene object that owns the shadow manager pointer at +0x138.
+struct Unk_141753b80 {
+    char m_0[0x138];
+    void* m_138;
+};
+MS2_CHECK_OFFSET(Unk_141753b80, m_138, 0x138);
 void* FUN_141753b80(char* o);
 
 // MS2-FUNCTIONAL: Process 3-byte frame/arg-order diffs; Deactivate shift-count temp; factory EH state; ~Shadow vptr store (exe omits it)
@@ -145,7 +151,7 @@ ShadowCullingProcess::~ShadowCullingProcess() {}
 void* FUN_141753a90(void** p) { return *p; }
 
 // @0x141753b80
-void* FUN_141753b80(char* o) { return FUN_141753a90((void**)(o + 0x138)); }
+void* FUN_141753b80(char* o) { return FUN_141753a90(&((Unk_141753b80*)o)->m_138); }
 
 // @0x141753bb0
 const NiRTTI* ShadowCullingProcess::GetRTTI() const { return (const NiRTTI*)&DAT_143afd5c8; }
