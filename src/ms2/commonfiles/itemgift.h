@@ -12,6 +12,8 @@ struct ItemAble {
 };
 struct ItemEntity : CPtred, ItemAble {
     ItemEntity();
+    ItemEntity(unsigned id,int rank,unsigned count,bool b28,bool b2a,bool b29,bool b2b);   // 0x14026abf0 (rx2a)
+    ItemEntity(ItemAble& source);                                                             // 0x14026acb0 (rx2a)
     virtual ~ItemEntity();
     virtual void vfunc_1(CStringW);
     virtual void vfunc_2(void*);
@@ -21,6 +23,7 @@ struct ItemEntity : CPtred, ItemAble {
     virtual bool vfunc_o18_3();
     void FUN_14026b030(Unk_GiftOutput&);
     void FUN_14026b100(Unk_GiftInput&);
+    bool FUN_14026aff0(); bool FUN_14026b010(); void FUN_14026b1c0(int rank);   // rx2a: byte getters/setter
     unsigned int m_itemId;
     unsigned int m_count;
     bool m_28,m_29,m_2a,m_2b;
