@@ -35,7 +35,7 @@ public:
     virtual int vfunc_6();                              // 0x140a7b8a0 cursor kind
 };
 
-struct Unk_MiNpc;
+class PCBase;
 class CMouseInteractNpc : public CMouseInteract
 {
 public:
@@ -45,7 +45,7 @@ public:
     virtual int vfunc_3();                             // 0x140a79400
     virtual void vfunc_5();                             // 0x140a79550
     virtual int vfunc_6();
-    Unk_MiNpc* FindTarget(const Unk_Vec3* pOrigin, const Unk_Vec3* pEnd);   // 0x140a79580
+    PCBase* FindTarget(const Unk_Vec3* pOrigin, const Unk_Vec3* pEnd);   // 0x140a79580
     int m_nAction;                                      // +0x18 6 = hold, 0x14 = talk, 0x1e = none
     int m_nNpcId;                                       // +0x1c
 };
