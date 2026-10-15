@@ -119,6 +119,13 @@ public:
     FMT_MAKE_VALUE(unsigned char, uint_value, CHAR)
     FMT_MAKE_VALUE(char, int_value, CHAR)
 
+    // MS2: long / unsigned long are distinct types on MSVC; sizeof(long) is checked at run time (/Od).
+    // Proven by timeutil.cpp: MakeValue(long) 0x14086d170 (type INT), MakeValue(unsigned long) 0x1402e1a20 (type UINT).
+    MakeValue(long value) { if(sizeof(long) == sizeof(int)) int_value = value; else long_long_value = value; }
+    static ULongLong type(long) { return Arg::INT; }
+    MakeValue(unsigned long value) { if(sizeof(unsigned long) == sizeof(unsigned)) uint_value = value; else ulong_long_value = value; }
+    static ULongLong type(unsigned long) { return Arg::UINT; }
+
     // MS2: wide log severity letters use CHAR, not integral formatting.
     static wchar_t Convert(wchar_t value) { return value; }
     MakeValue(wchar_t value) { int_value = Convert(value); }
