@@ -235,10 +235,12 @@ void FieldPropertyWeather::vfunc_1(Unk_PktOut* out)
 }
 
 // @0x140381470
+// MS2-FUNCTIONAL: pointer local for the embedded stream (clang-cl devirtualises a direct member call)
 void FieldPropertyWeather::vfunc_2(Unk_PktIn* in)
 {
     FieldProperty::vfunc_2(in);
-    m_nWeather = in->m_stream.ReadU8();
+    Unk_PktStream* stream = &in->m_stream;  // pointer: clang-cl would devirtualise a call on the embedded member
+    m_nWeather = stream->ReadU8();
 }
 
 // @0x1403814d0

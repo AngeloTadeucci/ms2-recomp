@@ -27,6 +27,9 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 
 #include <cassert>
+#ifdef __clang__
+extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const* _File, unsigned _Line);  // clang-cl: assert.h hides it under NDEBUG
+#endif
 #include <atlbase.h>
 
 // ---- unit-local stand-ins for helpers of other units (opaque) ----

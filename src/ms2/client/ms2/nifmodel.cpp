@@ -54,7 +54,14 @@ extern char DAT_143ae2440, DAT_143ae2b38, DAT_143afa4d8, DAT_143afbbb0;
 #define F8(self) ((void*)((char*)(self) + 0xf8))
 #define PAIR_BEGIN(self, it, end) FUN_141209360(F8(self), end); FUN_141209190(F8(self), it)
 
+#ifdef __clang__
+// clang-cl folds the ClassInfo setup (parent = exe's CEquipModel::ms_ClassInfo) into static data (ADDR64 to an exe
+// global, rejected by the post-link check): hide the setup function behind a volatile pointer to force a dynamic init.
+static efd::ClassInfo::CLASSINFO_FUNC volatile s_nifSetup = &CNifModel::SetupClassInfo;
+const efd::ClassInfo CNifModel::ms_ClassInfo((efd::ClassInfo::CLASSINFO_FUNC)s_nifSetup);
+#else
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(CNifModel);
+#endif
 void FUN_141566cb0(void* p);
 void FUN_141566b60(void* p);
 void* FUN_141566d90(void* p);
