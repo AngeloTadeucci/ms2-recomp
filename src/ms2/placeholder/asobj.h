@@ -19,6 +19,8 @@ public:
     void FUN_1407cbb20(const char* szName, CStringW str);                // set a wide string member
     void FUN_1407cb9c0(const char* szName, int n);                       // set an int member
     void FUN_1409c0d20(const char* szName, unsigned int n);              // set an unsigned member
+    void FUN_1409c1180(const char* szName, __int64 n);                   // set a 64-bit member
+    void FUN_1409c48f0(const char* szName, short n);                     // set a short member
     void FUN_1409adbe0(const char* szName, Scaleform::GFx::Value v);     // set a member to a value
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
