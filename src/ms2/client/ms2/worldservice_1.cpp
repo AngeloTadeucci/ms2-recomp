@@ -59,7 +59,6 @@ void FUN_141c1af10(void* map, unsigned key, Unk_WsTagPtr* value);   // m_208.Set
 
 // MS2-FUNCTIONAL: the members are constructed by their C++ types (layout-exact, element types unproven); new
 // TextureLayerManager / ChaosLightEffectLayerManager go through the exe's ctors by VA.
-// @0x141bb9720
 WorldService::WorldService()
     : m_040(0), m_0a8(DAT_143b01a60), m_0b4(3000.0f), m_state(7), m_prevState(7), m_278(0), m_280(false), m_284(0),
       m_288(0), m_28c(1), m_298(0), m_2a8(1), m_2ac(0), m_2b0(0), m_2b4(0), m_2b8(0), m_2bc(0), m_2c0(0), m_2c8(0),
@@ -131,14 +130,14 @@ void WorldService::FUN_141bbae80(void* p)
         m_048.erase(it);
 }
 
-// @0x141bc1640
 void FUN_141bfe6b0(void*);
+// @0x141bc1640
 void WorldService::FUN_141bc1640() { FUN_141bfe6b0(&m_148); }
-// @0x141bc1670
 void FUN_141bfe6c0(void*);
+// @0x141bc1670
 void WorldService::FUN_141bc1670() { FUN_141bfe6c0(&m_118); }
-// @0x141bc16a0
 void FUN_141bf7c40(void*);
+// @0x141bc16a0
 void WorldService::FUN_141bc16a0() { FUN_141bf7c40(&m_348); }
 
 // @0x141bc32b0
@@ -199,7 +198,6 @@ int WorldService::FUN_141bcfbd0()
         return 0;
 }
 
-// @0x141bcb2a0
 // The exe calls one IDependencyRegistrar::AddDependency<T> COMDAT per service (other objs own them; T by class id).
 void FUN_1411ab6e0(efd::IDependencyRegistrar*, unsigned);   // <egf::EntityManager>       0x07001000
 void FUN_1410db4c0(efd::IDependencyRegistrar*, unsigned);   // <efd::MessageService>      0x07000003
@@ -212,6 +210,7 @@ void FUN_141bdd210(efd::IDependencyRegistrar*, unsigned);   // <ecrPhysX::PropSe
 void FUN_1411ab7d0(efd::IDependencyRegistrar*, unsigned);   // <ecr::SceneGraphService>   0x07001008
 void FUN_1411ab770(efd::IDependencyRegistrar*, unsigned);   // <ecr::RenderService>       0x07002001
 void FUN_1410db460(efd::IDependencyRegistrar*, unsigned);   // <MS2 service>              0x0610001a
+// @0x141bcb2a0
 efd::SyncResult WorldService::OnPreInit(efd::IDependencyRegistrar* pDependencyRegistrar)
 {
     FUN_1411ab6e0(pDependencyRegistrar, 1);
@@ -228,19 +227,19 @@ efd::SyncResult WorldService::OnPreInit(efd::IDependencyRegistrar* pDependencyRe
     return efd::SyncResult_Success;
 }
 
-// @0x141bbbd70
 void* FUN_1409a8b00();
 void FUN_1409a49b0(void*);
+// @0x141bbbd70
 void WorldService::FUN_141bbbd70()
 {
     FUN_1409a49b0(FUN_1409a8b00());
 }
 
 // MS2-FUNCTIONAL: opaque callees by VA (singletons not recovered); m_298 operator-> inlined
-// @0x141bbbda0
 void* FUN_1409478c0();
 int FUN_140a18070(void*);
 void FUN_140af9b40(void*, int);
+// @0x141bbbda0
 void WorldService::FUN_141bbbda0()
 {
     if (FUN_140a18070(FUN_1409478c0()))
@@ -248,9 +247,9 @@ void WorldService::FUN_141bbbda0()
 }
 
 // MS2-FUNCTIONAL: opaque callees by VA
-// @0x141bbbe00
 void* FUN_1409a8b10();
 char* FUN_140e09150(void*);
+// @0x141bbbe00
 void WorldService::FUN_141bbbe00()
 {
     FUN_140e09150(FUN_1409a8b10())[0x14] = 1;
@@ -258,8 +257,8 @@ void WorldService::FUN_141bbbe00()
 }
 
 // MS2-FUNCTIONAL: m_298 null test / operator-> inlined (exe calls COMDATs)
-// @0x141bbc4e0
 void FUN_141610450(int);
+// @0x141bbc4e0
 void WorldService::FUN_141bbc4e0()
 {
     if (!(m_298 == 0))
@@ -270,8 +269,8 @@ void WorldService::FUN_141bbc4e0()
 }
 
 // MS2-FUNCTIONAL: switch codegen differs
-// @0x141bbf9f0
 int FUN_140d94390(const efd::AssetLoadResponse*);       // response code
+// @0x141bbf9f0
 void WorldService::FUN_141bbf9f0(const efd::AssetLoadResponse* pMsg, efd::Category targetChannel)
 {
     switch (FUN_140d94390(pMsg))
@@ -281,8 +280,8 @@ void WorldService::FUN_141bbf9f0(const efd::AssetLoadResponse* pMsg, efd::Catego
     }
 }
 
-// @0x141bbfde0
 void* FUN_1408a9090(const void*);
+// @0x141bbfde0
 void WorldService::FUN_141bbfde0(const egmAnimation::ActorRemovedMessage* pMsg, efd::Category targetChannel)
 {
     FUN_141bd5ea0(FUN_1408a9090((const char*)pMsg + 0x18));
@@ -302,11 +301,11 @@ efd::SmartPointer<efd::ISystemService> WorldService::FUN_141bc16d0()
     return m_268;
 }
 
-// @0x141bc2b30
 void* FUN_141bffee0(void* map);                         // m_350.GetStartPosition
 void* FUN_141c00300(void* map, void* pos);              // m_350.GetValueAt(pos) (a 16-byte pointer)
 char* FUN_140965960(void* ptr);                         // its operator->
 void FUN_141bfedb0(void* map, void** pos);              // m_350.GetNext(pos)
+// @0x141bc2b30
 int WorldService::FUN_141bc2b30()
 {
     int sum = 0;
@@ -316,11 +315,11 @@ int WorldService::FUN_141bc2b30()
 }
 
 // MS2-FUNCTIONAL: opaque iterator by VA
-// @0x141bc7440
 void* FUN_1409670f0();
 void FUN_1411ce4c0(void* mgr, void* it);
 bool FUN_1411ce510(void* mgr, void* it, void** out);
 void FUN_141568a90(void*);
+// @0x141bc7440
 void WorldService::FUN_141bc7440()
 {
     char it[8];
@@ -341,23 +340,23 @@ void* WorldService::FUN_141bc8070()
     return ((Fn)(*(void***)p)[0x4a0 / 8])(p);
 }
 
-// @0x141bc8fe0
 void FUN_141c18820(void* map, unsigned __int64 key);    // m_468.RemoveKey
+// @0x141bc8fe0
 void WorldService::FUN_141bc8fe0(unsigned __int64 key)
 {
     FUN_141c18820(&m_468, key);
 }
 
-// @0x141bc9fd0
 void FUN_141c1ba40(void* map, const int* key, int value);   // m_9d0.SetAt
+// @0x141bc9fd0
 void WorldService::FUN_141bc9fd0(int key)
 {
     FUN_141c1ba40(&m_9d0, &key, 0);
 }
 
 // MS2-FUNCTIONAL: codegen differs (not investigated)
-// @0x141bca010
 unsigned FUN_140869420();                               // tick count (ms)
+// @0x141bca010
 void WorldService::FUN_141bca010()
 {
     if (m_a70)
@@ -402,11 +401,11 @@ void WorldService::FUN_141bca170(int interval)
     }
 }
 
-// @0x141bca1e0
 void* FUN_1409331e0();
 void FUN_14138b3a0(void*);
 void* FUN_140e09140();
 void FUN_140a03fe0(void*, int);
+// @0x141bca1e0
 void WorldService::FUN_141bca1e0()
 {
     m_2b8 = 1;
@@ -415,11 +414,11 @@ void WorldService::FUN_141bca1e0()
 }
 
 // MS2-FUNCTIONAL: codegen differs (not investigated)
-// @0x141bca240
 void* FUN_1408e57f0();
 int FUN_1422b9e00(void*);
 void* FUN_1403ed2b0();
 void FUN_141adb880(void*);
+// @0x141bca240
 void WorldService::FUN_141bca240()
 {
     if (FUN_141bd0cc0())
@@ -441,20 +440,20 @@ void WorldService::FUN_141bca240()
     }
 }
 
-// @0x141bca390
 void FUN_141c18890(void* map, unsigned key);            // m_1a8.RemoveKey
+// @0x141bca390
 void WorldService::FUN_141bca390(unsigned key)
 {
     FUN_141c18890(&m_1a8, key);
 }
 
-// @0x141bca630
 void* FUN_141bfeb30(void* map);                         // m_0e8.GetHeadPosition
 void* FUN_141c007a0(void* map, void* pos);              // m_0e8.GetValueAt
 void* FUN_140965780(void* sp);                          // SmartPointer get
 void* FUN_140dee810(void*);
 void FUN_140ded6d0(void*);
 void FUN_141bff0b0(void* map, void** pos);              // m_0e8.GetNext
+// @0x141bca630
 void WorldService::FUN_141bca630()
 {
     for (void* pos = FUN_141bfeb30(&m_0e8); pos; FUN_141bff0b0(&m_0e8, &pos))
@@ -463,4 +462,95 @@ void WorldService::FUN_141bca630()
         if (void* q = FUN_140dee810(p))
             FUN_140ded6d0(q);
     }
+}
+
+void* FUN_141bfec10(void* map);                         // m_510.GetHeadPosition
+void* FUN_141c00a40(void* map, void* pos);              // m_510.GetValueAt
+void* FUN_1409657f0(void* sp);                          // get
+void FUN_141bf1520(Unk_WsP16* self, void* p);           // pointer from raw
+void FUN_141c2ebd0(void* out, Unk_WsP16* sp);           // out.push_back
+void FUN_1409649e0(Unk_WsP16* self);                    // dtor
+void FUN_141bff270(void* map, void** pos);              // m_510.GetNext
+// MS2-FUNCTIONAL: loop codegen differs (opaque COMDATs by VA)
+// @0x141bc58d0
+void WorldService::FUN_141bc58d0(void* pOut)
+{
+    for (void* pos = FUN_141bfec10(&m_510); pos; FUN_141bff270(&m_510, &pos))
+    {
+        void* p = FUN_1409657f0(FUN_141c00a40(&m_510, pos));
+        Unk_WsP16 sp;
+        FUN_141bf1520(&sp, p);
+        FUN_141c2ebd0(pOut, &sp);
+        FUN_1409649e0(&sp);
+    }
+}
+
+void* FUN_141bfead0(void* map);                         // m_540.GetHeadPosition
+void* FUN_141c00680(void* map, void* pos);              // m_540.GetValueAt
+void FUN_140964030(Unk_WsP16* self, void* src);         // copy ctor
+void FUN_141c2ec00(void* out, Unk_WsP16* sp);           // out.push_back
+void FUN_140964a10(Unk_WsP16* self);                    // dtor
+void FUN_141bff030(void* map, void** pos);              // m_540.GetNext
+// MS2-FUNCTIONAL: loop codegen differs (opaque COMDATs by VA)
+// @0x141bc5980
+void WorldService::FUN_141bc5980(void* pOut)
+{
+    for (void* pos = FUN_141bfead0(&m_540); pos; FUN_141bff030(&m_540, &pos))
+    {
+        Unk_WsP16 sp;
+        FUN_140964030(&sp, FUN_141c00680(&m_540, pos));
+        FUN_141c2ec00(pOut, &sp);
+        FUN_140964a10(&sp);
+    }
+}
+
+void* FUN_141bfebf0(void* map);                         // m_678.GetHeadPosition
+void* FUN_141c009e0(void* map, void* pos);              // m_678.GetValueAt
+void FUN_140a7b410(Unk_WsP16* self, void* src);         // copy ctor
+void FUN_141bfabe0(void* out, Unk_WsP16* sp);           // out.push_back
+void FUN_1409649b0(Unk_WsP16* self);                    // dtor
+void FUN_141bff230(void* map, void** pos);              // m_678.GetNext
+// MS2-FUNCTIONAL: loop codegen differs (opaque COMDATs by VA)
+// @0x141bc5f10
+void WorldService::FUN_141bc5f10(void* pOut)
+{
+    for (void* pos = FUN_141bfebf0(&m_678); pos; FUN_141bff230(&m_678, &pos))
+    {
+        Unk_WsP16 sp;
+        FUN_140a7b410(&sp, FUN_141c009e0(&m_678, pos));
+        FUN_141bfabe0(pOut, &sp);
+        FUN_1409649b0(&sp);
+    }
+}
+
+// MS2-FUNCTIONAL: virtual slot 3 of the unrecovered value class through a raw vtable
+void** FUN_140965920(Unk_WsP16* sp);                    // operator->
+// @0x141bc6a20
+void WorldService::FUN_141bc6a20(int n)
+{
+    for (void* pos = FUN_141bfebf0(&m_678); pos; FUN_141bff230(&m_678, &pos))
+    {
+        Unk_WsP16 sp;
+        FUN_140a7b410(&sp, FUN_141c009e0(&m_678, pos));
+        void** p = FUN_140965920(&sp);
+        typedef void (*Fn)(void*, int);
+        ((Fn)(*(void***)p)[3])(p, n);
+        FUN_141bc6af0(sp);
+        FUN_1409649b0(&sp);
+    }
+}
+
+// MS2-FUNCTIONAL: virtual slot 1 of the message's +8 sub-object through a raw vtable
+// @0x141bca6d0
+void WorldService::FUN_141bca6d0(void* pMsg)
+{
+    void** sub = (void**)((char*)pMsg + 8);
+    typedef char (*Fn)(void*);
+    char kind = ((Fn)(*(void***)sub)[1])(sub);
+    if (kind == 0)
+        FUN_141bca770(pMsg);
+    else if (kind == 1)
+        FUN_141bca8c0(pMsg);
+    else if (kind == 2)
+        FUN_141bca9b0(pMsg);
 }

@@ -194,6 +194,15 @@ public:
     void FUN_141bcfad0();                               // (unrecovered, #1)
     void FUN_141bca390(unsigned key);                   // m_1a8.RemoveKey
     void FUN_141bca630();
+    void FUN_141bc58d0(void* pOut);                     // copy m_510's pointers into *pOut
+    void FUN_141bc5980(void* pOut);                     // copy m_540's pointers into *pOut
+    void FUN_141bc5f10(void* pOut);                     // copy m_678's pointers into *pOut
+    void FUN_141bc6a20(int n);                          // each m_678 value: vfunc 3(n), FUN_141bc6af0
+    void FUN_141bc6af0(Unk_WsP16& sp);                  // (unrecovered, #1)
+    void FUN_141bca6d0(void* pMsg);                     // dispatch on pMsg+8 vfunc 1 (0/1/2)
+    void FUN_141bca770(void* pMsg);                     // (unrecovered, #1)
+    void FUN_141bca8c0(void* pMsg);                     // (unrecovered, #1)
+    void FUN_141bca9b0(void* pMsg);                     // (unrecovered, #1)
     int FUN_141bcfbd0();                                // m_state == 4 && m_2b4 != 0
 
     // ---- non-virtual members, exe order (names invented unless noted). Append; do not reorder. ----
