@@ -15,7 +15,7 @@
 // MS2-PIN: ?RemovePos@?$NiTPointerListBase@V?$NiTPointerAllocator@_K@@V?$SmartPointer@VNiAVObject@@@efd@@@@QEAA?AV?$SmartPointer@VNiAVObject@@@efd@@AEAPEAX@Z 0x141547cb0
 // MS2-PIN: ?FindPos@?$NiTPointerListBase@V?$NiTPointerAllocator@_K@@V?$SmartPointer@VNiAVObject@@@efd@@@@QEBAPEAXAEBV?$SmartPointer@VNiAVObject@@@efd@@PEAX@Z 0x1415466c0
 // MS2-PIN: ?GetNext@?$NiTPointerListBase@V?$NiTPointerAllocator@_K@@PEAVNiNode@@@@QEBAAEBQEAVNiNode@@AEAPEAX@Z 0x141546aa0
-// MS2-PIN: ??4?$SmartPointer@VNiNode@@@efd@@QEAAAEAV01@PEAVNiNode@@@Z 0x141546340
+// MS2-PIN: ??4?$SmartPointer@VNi3DRenderView@@@efd@@QEAAAEAV01@PEAVNi3DRenderView@@@Z 0x141546340
 // MS2-PIN: ?GetClassDesc@CNifAnimationService@@UEBAPEBVClassInfo@efd@@XZ 0x1415467e0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\nifanimationservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
