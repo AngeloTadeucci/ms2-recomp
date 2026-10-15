@@ -73,6 +73,7 @@ public:
     virtual void vfunc_61();
     virtual void vfunc_62();
     virtual void vfunc_63(int,int,int);
+    virtual void vfunc_64(int nValue);   // 0x200: usercommandcli's 'hide' command calls it with the parsed int (sb2)
 };
 Unk_NetworkCallbacks* FUN_140d86260();
 struct Unk_NetworkLatency {

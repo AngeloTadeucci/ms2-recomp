@@ -56,6 +56,7 @@
 #include "ms2/placeholder/uiobject.h"
 #include "usercommandcli.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
@@ -339,28 +340,7 @@ extern int DAT_143ae0fc0;
 extern int DAT_1439f7064;
 bool FUN_1413579d0(void*);
 bool FUN_1403b3c40(const CStringW&,const wchar_t*);
-// MS2: unit-local view of the network-callbacks singleton (Unk_NetworkCallbacks in networkservice.h, whose header cannot be
-// included here: TPtredDummy conflict). Slots 0-63 are the same as there; only slot 64 (the 'hide' command) is called.
-struct Unk_UccNetCallbacks {
-    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
-    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
-    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
-    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
-    virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
-    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23();
-    virtual void vfunc_24(); virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27();
-    virtual void vfunc_28(); virtual void vfunc_29(); virtual void vfunc_30(); virtual void vfunc_31();
-    virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34(); virtual void vfunc_35();
-    virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39();
-    virtual void vfunc_40(); virtual void vfunc_41(); virtual void vfunc_42(); virtual void vfunc_43();
-    virtual void vfunc_44(); virtual void vfunc_45(); virtual void vfunc_46(); virtual void vfunc_47();
-    virtual void vfunc_48(); virtual void vfunc_49(); virtual void vfunc_50(); virtual void vfunc_51();
-    virtual void vfunc_52(); virtual void vfunc_53(); virtual void vfunc_54(); virtual void vfunc_55();
-    virtual void vfunc_56(); virtual void vfunc_57(); virtual void vfunc_58(); virtual void vfunc_59();
-    virtual void vfunc_60(); virtual void vfunc_61(); virtual void vfunc_62(); virtual void vfunc_63();
-    virtual void vfunc_64(int nValue);   // 0x200
-};
-Unk_UccNetCallbacks* FUN_140d86260();
+// MS2: the network-callbacks singleton (slot 64 = the 'hide' command) is Unk_NetworkCallbacks from networkservice.h.
 extern int DAT_143ae2b50,DAT_143ae2b54,DAT_143ae2b58;
 void FUN_14161c940(void*,int,int);
 void* FUN_140c7a250(); void FUN_140db9000(void*,int); void FUN_140db9020(void*,__int64);
