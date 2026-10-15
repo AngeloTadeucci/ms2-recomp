@@ -139,4 +139,10 @@ function(ms2_engine_flags target)
     target_include_directories(${target} PRIVATE ${_dirs})
     target_include_directories(${target} AFTER PRIVATE "${MS2_ENGINE_OVERLAY}")
     target_compile_definitions(${target} PRIVATE ${MS2_ENGINE_DEFINITIONS})
+    # Hook DLL only (not progress.py): it runs inside the exe, which already ran the engine's header-inline static
+    # initialisers (SDM objects, key-loader registration); a second run would double-register. See the // MS2: guards.
+    target_compile_definitions(${target} PRIVATE MS2_NO_ENGINE_STATIC_INIT)
+    # clang-cl compiles as C++17 where the STL enforces matching allocator value types; the engine's CustomAllocator uses
+    # the mapped pair type for multimaps (the cl 19.16 /std:c++14 build does not check).
+    target_compile_definitions(${target} PRIVATE _ENFORCE_MATCHING_ALLOCATORS=0)
 endfunction()
