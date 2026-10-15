@@ -688,15 +688,36 @@ def main():
     cache = {k: v for k, v in cache.items() if k in live}
     json.dump(cache, open(cache_path, "w"))
 
-    # symbols: union of all units' harvests (existing file entries win; conflicts reported)
-    bm.HARVEST.clear()
+    # symbols: union of all units' harvests. One mangled name has one exe address: when units disagree, the mapping of
+    # the units that fully match wins (then the most units), and every unit that harvested another address is
+    # reported (CONFLICT, both units and VAs) and fails --check. Nothing is overwritten silently.
+    def fully_ok(c):
+        r = c["res"]
+        return all(p["ok"] for p in r["pairs"].values()) and all(v["ok"] for v in r["vft"].values())
+
+    seen = {}                       # name -> {va: [unit rel, ...]}
     for rel, c in sorted(cache.items()):
         if c.get("res"):
             for n, va in c["res"]["harvest"].items():
-                prev = bm.HARVEST.get(n)
-                if prev is not None and prev != va:
-                    bm.CONFLICTS.append((n, prev, va))
-                bm.HARVEST[n] = va
+                seen.setdefault(n, {}).setdefault(va, []).append(rel)
+    bm.HARVEST.clear()
+    inconsistent = {}               # unit rel -> [description]
+    for n, by_va in seen.items():
+        if len(by_va) == 1:
+            bm.HARVEST[n] = next(iter(by_va))
+            continue
+        def rank(va):
+            us = by_va[va]
+            return (sum(1 for r in us if fully_ok(cache[r])), len(us), -va)
+        win = max(by_va, key=rank)
+        bm.HARVEST[n] = win
+        for va, us in by_va.items():
+            if va != win:
+                bm.CONFLICTS.append((f"{n} [0x{win:x} from {', '.join(by_va[win])}; 0x{va:x} from {', '.join(us)}]",
+                                     win, va))
+                for r in us:
+                    inconsistent.setdefault(r, []).append(f"{n[:80]} is 0x{va:x} here, 0x{win:x} in "
+                                                          + ", ".join(by_va[win]))
     if symbols_out != bm.SYMBOLS_TSV:
         # report mode: the committed table plus this cache's harvest (rebuilt every run, nothing stale survives)
         os.makedirs(OUT, exist_ok=True)
@@ -795,6 +816,10 @@ def main():
                 bad.append(f"{name}: " + ("COMPILE FAILED" if fail else
                                           f"{m}/{n} functions matched ({f} functional, {n - m - f} stub), "
                                           f"vftables {vok}/{nv}"))
+        by_rel = {u.name: u.rel for u in all_units}
+        for name in sorted(sel):
+            for d in inconsistent.get(by_rel.get(name), []):
+                bad.append(f"{name}: inconsistent symbol mapping: {d}")
         if not units:
             bad.append("no unit matches " + " ".join(a.filters))
     where = os.path.relpath(OUT, ROOT)
