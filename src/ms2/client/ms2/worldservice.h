@@ -61,7 +61,10 @@ public:
     static WorldService* s_instance;                    // 0x143aaee10
 };
 
-namespace efd { class ServiceManager; class MessageService; }
+namespace efd { class ServiceManager; class MessageService; class AssetLoadResponse; }
+namespace egf { class FlatModelFactoryResponse; class EntityLoadResult; }
+namespace egmAnimation { class ActorAddedMessage; class ActorRemovedMessage; }
+namespace ecr { class SceneGraphAddedMessage; class SceneGraphRemovedMessage; }
 class CGlobalKeyTextCallback                            // RTTI name; 8 bytes (vftable only); ctor/dtor not inline here
 {
 public:
@@ -145,6 +148,19 @@ public:
     void FUN_141bcad60(void* p, int n);                 // m_2c8 = p, m_2d0 = n
     int FUN_141bcaf60();                                // return m_2d0
     void* FUN_141bcaf80();                              // return m_2c8
+    void FUN_141bbbd70();                               // FUN_1409a49b0(FUN_1409a8b00())
+    void FUN_141bbbda0();
+    void FUN_141bbbe00();
+    void FUN_141bbc4e0();
+    void FUN_141bd3c00(bool b);                         // (unrecovered, #1)
+    void FUN_141bd5ea0(void* pActor);                   // (unrecovered, #1)
+    // message handlers (EE_HANDLER statics in the .di, see worldservice_1.cpp); Category by value (callee destroys)
+    void FUN_141bbf9f0(const efd::AssetLoadResponse* pMsg, efd::Category targetChannel);
+    void FUN_141bbfde0(const egmAnimation::ActorRemovedMessage* pMsg, efd::Category targetChannel);
+    void FUN_141bc0f50(const egf::FlatModelFactoryResponse* pMsg, efd::Category targetChannel);
+    efd::SmartPointer<efd::ISystemService> FUN_141bc16d0();   // copy of m_268
+    int FUN_141bc2b30();                                // sum of m_350 values' +0x188
+    void FUN_141bc7440();
     int FUN_141bcfbd0();                                // m_state == 4 && m_2b4 != 0
 
     // ---- non-virtual members, exe order (names invented unless noted). Append; do not reorder. ----

@@ -2,6 +2,7 @@
 // MS2-UNIT: ?\worldservice.cpp#1
 // MS2-RANGE: 0x141bb9720-0x141bdbd10 .text$mn
 // MS2-RANGE: 0x140120210-0x1401208d0 .text$di
+// MS2-RANGE: 0x142cc3a60-0x142cc3d10 .text$yd
 // MS2-PIN: ??_7WorldService@@6BISystemService@efd@@@ 0x142ffeb98
 // MS2-PIN: ??_7WorldService@@6B?$TSingleton@VWorldService@@@@@ 0x142ffec20
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\worldservice.cpp"
@@ -10,9 +11,25 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/header_statics_a.h"
 #include <efd/MessageService.h>
 
+// .text$di in exe order: 0x140120210 key input static, 0x140120240 ClassInfo, 0x140120260 maintenanceExit,
+// 0x140120290-0x1401206a6 the 11 message handler statics (TODO, see NOTES.md "w3o2"), 0x1401206b0-0x1401207a0
+// header_statics_a (sort names, skill, stun), 0x1401207d0/0x140120800 efd kCAT_INVALID / kCAT_LocalMessage,
+// 0x140120830 egfPhysX::kCAT_egfPhysXMessage, 0x140120860 s_pointer, 0x140120880 header_statics_a's Unk_1402a9d70.
+static UICommon::CMyPCKeyInputController s_keyInputController;     // header static (origin unknown)
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(WorldService);
+static CStringW s_maintenanceExit = L"maintenanceExit";            // 0x143af88e0
+namespace egfPhysX
+{
+// egfPhysX/SceneMessage.h (GameFramework, not on the include path): Category(ECU_Any, kNetID_Any, kCLASSID_SceneService)
+static const efd::Category kCAT_egfPhysXMessage =
+    efd::Category(efd::UniversalID::ECU_Any, efd::kNetID_Any, 0x07001008);   // 0x143af88d8
+}
+class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };
+static Unk_1401cd100 s_pointer(NULL);                              // 0x143af8278 (same header static as scenestatelogin)
 WorldService* TSingleton<WorldService>::s_instance = 0;
 
 // ---- callees owned by other objs / not recovered yet (bound by VA) ----
@@ -87,6 +104,7 @@ WorldService::WorldService()
     list.FUN_1402038f0();
 }
 
+// MS2-FUNCTIONAL: members destroyed by their C++ types (container element types unproven)
 // @0x141bba870
 WorldService::~WorldService()
 {
@@ -207,4 +225,106 @@ efd::SyncResult WorldService::OnPreInit(efd::IDependencyRegistrar* pDependencyRe
     FUN_1411ab770(pDependencyRegistrar, 1);
     FUN_1410db460(pDependencyRegistrar, 1);
     return efd::SyncResult_Success;
+}
+
+// @0x141bbbd70
+void* FUN_1409a8b00();
+void FUN_1409a49b0(void*);
+void WorldService::FUN_141bbbd70()
+{
+    FUN_1409a49b0(FUN_1409a8b00());
+}
+
+// MS2-FUNCTIONAL: opaque callees by VA (singletons not recovered); m_298 operator-> inlined
+// @0x141bbbda0
+void* FUN_1409478c0();
+int FUN_140a18070(void*);
+void FUN_140af9b40(void*, int);
+void WorldService::FUN_141bbbda0()
+{
+    if (FUN_140a18070(FUN_1409478c0()))
+        FUN_140af9b40(FUN_1409478c0(), *(int*)((char*)m_298.operator->() + 0x23c));
+}
+
+// MS2-FUNCTIONAL: opaque callees by VA
+// @0x141bbbe00
+void* FUN_1409a8b10();
+char* FUN_140e09150(void*);
+void WorldService::FUN_141bbbe00()
+{
+    FUN_140e09150(FUN_1409a8b10())[0x14] = 1;
+    FUN_140e09150(FUN_1409a8b10())[0x15] = 1;
+}
+
+// MS2-FUNCTIONAL: m_298 null test / operator-> inlined (exe calls COMDATs)
+// @0x141bbc4e0
+void FUN_141610450(int);
+void WorldService::FUN_141bbc4e0()
+{
+    if (!(m_298 == 0))
+    {
+        FUN_141bd3c00(*((char*)m_298.operator->() + 0x1f0) == 0);
+        FUN_141610450(*(int*)((char*)m_298.operator->() + 0x258));
+    }
+}
+
+// MS2-FUNCTIONAL: switch codegen differs
+// @0x141bbf9f0
+int FUN_140d94390(const efd::AssetLoadResponse*);       // response code
+void WorldService::FUN_141bbf9f0(const efd::AssetLoadResponse* pMsg, efd::Category targetChannel)
+{
+    switch (FUN_140d94390(pMsg))
+    {
+    case 9:
+        break;
+    }
+}
+
+// @0x141bbfde0
+void* FUN_1408a9090(const void*);
+void WorldService::FUN_141bbfde0(const egmAnimation::ActorRemovedMessage* pMsg, efd::Category targetChannel)
+{
+    FUN_141bd5ea0(FUN_1408a9090((const char*)pMsg + 0x18));
+}
+
+// MS2-FUNCTIONAL: SmartPointer operator-> inlined (exe calls 0x1411d7290)
+// @0x141bc0f50
+void WorldService::FUN_141bc0f50(const egf::FlatModelFactoryResponse* pMsg, efd::Category targetChannel)
+{
+    if (--m_040 == 0)
+        m_spMessageService->Unsubscribe(this, m_038);
+}
+
+// @0x141bc16d0
+efd::SmartPointer<efd::ISystemService> WorldService::FUN_141bc16d0()
+{
+    return m_268;
+}
+
+// @0x141bc2b30
+void* FUN_141bffee0(void* map);                         // m_350.GetStartPosition
+void* FUN_141c00300(void* map, void* pos);              // m_350.GetValueAt(pos) (a 16-byte pointer)
+char* FUN_140965960(void* ptr);                         // its operator->
+void FUN_141bfedb0(void* map, void** pos);              // m_350.GetNext(pos)
+int WorldService::FUN_141bc2b30()
+{
+    int sum = 0;
+    for (void* pos = FUN_141bffee0(&m_350); pos; FUN_141bfedb0(&m_350, &pos))
+        sum += *(int*)(FUN_140965960(FUN_141c00300(&m_350, pos)) + 0x188);
+    return sum;
+}
+
+// MS2-FUNCTIONAL: opaque iterator by VA
+// @0x141bc7440
+void* FUN_1409670f0();
+void FUN_1411ce4c0(void* mgr, void* it);
+bool FUN_1411ce510(void* mgr, void* it, void** out);
+void FUN_141568a90(void*);
+void WorldService::FUN_141bc7440()
+{
+    char it[8];
+    void* p;
+    FUN_1411ce4c0(FUN_1409670f0(), it);
+    while (FUN_1411ce510(FUN_1409670f0(), it, &p))
+        FUN_141568a90(p);
 }
