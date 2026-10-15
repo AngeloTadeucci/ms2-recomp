@@ -29,11 +29,14 @@ public:
     int m_nKind;                    // +0x08 (CPostEffectParam::vfunc_7: 3 passes; copied to CEffect +0x18)
     int m_unk_0c[10];
     bool m_b34;                     // +0x34 copied to CEffect::m_b2f
+    char m_unk_35[0x17];
+    unsigned int m_nRandomIndex;    // +0x4c CRandomEffect: forced child index (mod count); 0 = weighted random
 
     class GameObject* FUN_140a533b0();  // 0x140a533b0 return the GameObject* at +0x58 (the effect's owner actor)
 };
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nKind, 0x08);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b34, 0x34);
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_nRandomIndex, 0x4c);
 
 class CEffectParam;
 
