@@ -252,7 +252,6 @@ int CArcMotionController::vfunc_4()
 }
 
 // @0x141488ba0
-// MS2-FUNCTIONAL: by-value point copies and the log argument temporaries differ.
 bool CArcMotionController::vfunc_5(double fTime)
 {
     CMotionController::vfunc_5(fTime);
