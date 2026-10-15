@@ -835,6 +835,13 @@ def main():
         r = c["res"]
         return all(p["ok"] for p in r["pairs"].values()) and all(v["ok"] for v in r["vft"].values())
 
+    done_rels = set()
+    try:
+        _done = {l.split("\t")[0] for l in open(os.path.join(OUT, "queue.tsv"))
+                 if l.strip() and not l.startswith("#") and l.split("\t")[4] in ("done", "done-functional")}
+        done_rels = {u.rel for u in all_units if u.name in _done}
+    except (OSError, IndexError):
+        pass
     seen = {}                       # name -> {va: [unit rel, ...]}
     for rel, c in sorted(cache.items()):
         if c.get("res"):
@@ -848,7 +855,8 @@ def main():
             continue
         def rank(va):
             us = by_va[va]
-            return (sum(1 for r in us if fully_ok(cache[r])), len(us), -va)
+            # units that are done in the queue win over blocked/in-progress ones (their pins may be stale)
+            return (sum(1 for r in us if r in done_rels), sum(1 for r in us if fully_ok(cache[r])), len(us), -va)
         win = max(by_va, key=rank)
         bm.HARVEST[n] = win
         for va, us in by_va.items():
