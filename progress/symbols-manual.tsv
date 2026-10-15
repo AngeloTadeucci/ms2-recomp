@@ -850,3 +850,4 @@ __imp_NxReleaseControllerManager	142ccec90	data
 ??0CAfterImageEffect@@QEAA@VUnk_AfterImageRef@@@Z	14097d000	func
 ?ms_RTTI@NiMesh@@2VNiRTTI@@B	143afbbb0	data
 ?GetVisibleInstanceCount@NiInstancingUtilities@@SAIPEBVNiMesh@@@Z	141e09df0	func
+?ms_RTTI@NiVertexColorProperty@@2VNiRTTI@@B	143afa570	data
