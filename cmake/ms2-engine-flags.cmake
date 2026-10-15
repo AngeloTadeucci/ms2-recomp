@@ -94,11 +94,27 @@ set(MS2_ENGINE_INCLUDE_DIRS
     "CoreRuntime/PhysXLibs/NiPhysXParticle/Kernels/NiPhysXPSSimulatorFinalKernel"
     "CoreRuntime/UtilityLibs/NiSettingsDialog"
     "3rdParty/TinyXML"
-    # PhysX 2.8.3 headers used by the game-side KFM model and the NiPhysX libraries.
-    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/Foundation/include"
-    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/Physics/include"
-    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/PhysXLoader/include"
+    # PhysX 2.8.4 headers (the exe was built against 2.8.4; MS2_PHYSX_VERSION=283 swaps them for 2.8.3 below; tools/progress.py
+    # reads the literal 2.8.4 paths, or 2.8.3 with MS2_PHYSX=283 in the environment).
+    "../../third_party/physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/SDKs/Foundation/include"
+    "../../third_party/physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/SDKs/Physics/include"
+    # MS2: NiPhysXMeshDesc.h includes NxCooking.h (EntityWorldManager's real PropService header).
+    "../../third_party/physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/SDKs/Cooking/include"
+    "../../third_party/physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/SDKs/PhysXLoader/include"
 )
+
+# Fall back to the PhysX 2.8.3 SDK headers: -DMS2_PHYSX_VERSION=283 (default 284, what the exe was compiled against).
+# The MS2_PHYSX=283 environment variable sets the default (tools/progress.py honours the same variable).
+if("$ENV{MS2_PHYSX}" STREQUAL "283")
+    set(_ms2_physx_default "283")
+else()
+    set(_ms2_physx_default "284")
+endif()
+set(MS2_PHYSX_VERSION "${_ms2_physx_default}" CACHE STRING "PhysX SDK headers for the game build: 284 or 283")
+if(MS2_PHYSX_VERSION STREQUAL "283")
+    list(TRANSFORM MS2_ENGINE_INCLUDE_DIRS REPLACE "physx284/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.4_win/"
+         "physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/")
+endif()
 
 # DirectX SDK (June 2010) headers the Windows SDK lacks (d3dx9*.h, ...), through a symlink overlay so that the Windows SDK's
 # d3d9/d3d11/dxgi headers still win (the same trick as engine/gamebryo/CMakeLists.txt). tools/progress.py builds the same
