@@ -1,0 +1,236 @@
+// fmt/format.h - RECREATED subset of the C++ Format library (cppformat / fmt 2.x era) as the game links it.
+// NOT the original header: only what the game's template instances need, written so that cl 19.16 /Od emits the
+// same per-unit COMDATs. Evidence (KMS2_DEV x64):
+//   - RTTI fmt::FormatError, fmt::SystemError, fmt::WindowsError, fmt::internal::RuntimeError; fmt's messages
+//     ("cannot switch from manual to automatic argument indexing", "missing '}' in format string", ...).
+//   - The non-variadic FMT_VARIADIC emulation is in use (FMT_USE_VARIADIC_TEMPLATES 0): make_type takes 15
+//     by-value ArgType parameters (0x14016d660), ArgType() 0x140163e80, ArgList(types, values) 0x140163e50.
+//   - Arg::Type values (from the static MakeValue::type overloads): INT 1 (0x14016d950), UINT 2 (0x14016d960,
+//     unsigned short 0x14020c260), ULONG_LONG 4 (0x1401df3c0), CSTRING 9 (0x1401d49f0), STRING 10 (CString,
+//     0x14016d940). The other enumerators' positions are inferred (one extra type between ULONG_LONG and CSTRING;
+//     taken as BOOL like fmt 3.0, but without fmt 3.0's NAMED_ARG).
+//   - Value is 16 bytes and MakeValue<F> derives from Value directly (16-byte temporaries in the wrappers).
+//   - Nexon additions: MakeValue(const CString&) / MakeValue(const CStringW&) (string.value/size from the CString).
+// Template instances per unit: see ms2/ms2format.h.
+#pragma once
+
+#include <cstddef>
+
+namespace fmt {
+
+typedef __int64 LongLong;
+typedef unsigned __int64 ULongLong;
+
+template <typename Char>
+class BasicFormatter;
+
+namespace internal {
+
+template <typename Char>
+struct StringValue
+{
+    const Char* value;
+    std::size_t size;
+};
+
+typedef void (*FormatFunc)(void* formatter, const void* arg, void* format_str_ptr);
+
+struct CustomValue
+{
+    const void* value;
+    FormatFunc format;
+};
+
+// A formatting argument value.
+struct Value
+{
+    union {
+        int int_value;
+        unsigned uint_value;
+        LongLong long_long_value;
+        ULongLong ulong_long_value;
+        double double_value;
+        long double long_double_value;
+        const void* pointer;
+        StringValue<char> string;
+        StringValue<signed char> sstring;
+        StringValue<unsigned char> ustring;
+        StringValue<wchar_t> wstring;
+        CustomValue custom;
+    };
+};
+
+// A formatting argument. It is a POD type to allow storage in internal::MemoryBuffer.
+struct Arg : Value
+{
+    enum Type {
+        NONE,
+        // Integer types should go first,
+        INT, UINT, LONG_LONG, ULONG_LONG, BOOL, CHAR, LAST_INTEGER_TYPE = CHAR,
+        // followed by floating-point types.
+        DOUBLE, LONG_DOUBLE, LAST_NUMERIC_TYPE = LONG_DOUBLE,
+        CSTRING, STRING, WSTRING, POINTER, CUSTOM
+    };
+    Type type;
+};
+
+// Makes a Value object from any type.
+template <typename Formatter>
+class MakeValue : public Value
+{
+public:
+    typedef typename Formatter::Char Char;
+
+    void set_string(const CString& str)
+    {
+        string.value = str;
+        string.size = str.GetLength();
+    }
+
+    MakeValue() {}
+
+#define FMT_MAKE_VALUE_(Type, field, TYPE, rhs) \
+    MakeValue(Type value) { field = rhs; } \
+    static ULongLong type(Type) { return Arg::TYPE; }
+
+#define FMT_MAKE_VALUE(Type, field, TYPE) \
+    FMT_MAKE_VALUE_(Type, field, TYPE, value)
+
+    FMT_MAKE_VALUE(bool, int_value, BOOL)
+    FMT_MAKE_VALUE(short, int_value, INT)
+    FMT_MAKE_VALUE(unsigned short, uint_value, UINT)
+    FMT_MAKE_VALUE(int, int_value, INT)
+    FMT_MAKE_VALUE(unsigned, uint_value, UINT)
+    FMT_MAKE_VALUE(LongLong, long_long_value, LONG_LONG)
+    FMT_MAKE_VALUE(ULongLong, ulong_long_value, ULONG_LONG)
+    FMT_MAKE_VALUE(float, double_value, DOUBLE)
+    FMT_MAKE_VALUE(double, double_value, DOUBLE)
+    FMT_MAKE_VALUE(long double, long_double_value, LONG_DOUBLE)
+    FMT_MAKE_VALUE(signed char, int_value, CHAR)
+    FMT_MAKE_VALUE(unsigned char, uint_value, CHAR)
+    FMT_MAKE_VALUE(char, int_value, CHAR)
+
+    FMT_MAKE_VALUE(char*, string.value, CSTRING)
+    FMT_MAKE_VALUE(const char*, string.value, CSTRING)
+
+#define FMT_MAKE_STR_VALUE(Type, TYPE) \
+    MakeValue(Type value) { set_string(value); } \
+    static ULongLong type(Type) { return Arg::TYPE; }
+
+    FMT_MAKE_STR_VALUE(const CString&, STRING)
+
+    FMT_MAKE_VALUE(void*, pointer, POINTER)
+    FMT_MAKE_VALUE(const void*, pointer, POINTER)
+};
+
+}  // namespace internal
+
+// An argument list.
+class ArgList
+{
+private:
+    // To reduce compiled code size per formatting function call, types of first
+    // MAX_PACKED_ARGS arguments are passed in the types_ field.
+    ULongLong types_;
+    const internal::Value* values_;
+
+public:
+    // Maximum number of arguments with packed types.
+    enum { MAX_PACKED_ARGS = 16 };
+
+    ArgList() : types_(0) {}
+    ArgList(ULongLong types, const internal::Value* values) : types_(types), values_(values) {}
+};
+
+template <typename Char>
+class BasicFormatter
+{
+public:
+    typedef Char Char;
+};
+
+namespace internal {
+
+template <typename T>
+inline ULongLong make_type(const T& arg)
+{
+    return MakeValue< BasicFormatter<char> >::type(arg);
+}
+
+template <std::size_t N>
+struct ArgArray
+{
+    typedef Value Type[N > 0 ? N : 1];
+};
+
+struct ArgType
+{
+    ULongLong type;
+
+    ArgType() : type(0) {}
+
+    template <typename T>
+    ArgType(const T& arg) : type(make_type(arg)) {}
+};
+
+#define FMT_ARG_TYPE_DEFAULT(n) ArgType t##n = ArgType()
+
+inline ULongLong make_type(ArgType t0 = ArgType(), ArgType t1 = ArgType(), ArgType t2 = ArgType(),
+                           ArgType t3 = ArgType(), ArgType t4 = ArgType(), ArgType t5 = ArgType(),
+                           ArgType t6 = ArgType(), ArgType t7 = ArgType(), ArgType t8 = ArgType(),
+                           ArgType t9 = ArgType(), ArgType t10 = ArgType(), ArgType t11 = ArgType(),
+                           ArgType t12 = ArgType(), ArgType t13 = ArgType(), ArgType t14 = ArgType())
+{
+    return t0.type | (t1.type << 4) | (t2.type << 8) | (t3.type << 12) | (t4.type << 16) | (t5.type << 20) |
+           (t6.type << 24) | (t7.type << 28) | (t8.type << 32) | (t9.type << 36) | (t10.type << 40) |
+           (t11.type << 44) | (t12.type << 48) | (t13.type << 52) | (t14.type << 56);
+}
+
+}  // namespace internal
+}  // namespace fmt
+
+// The FMT_VARIADIC emulation (fmt's FMT_GEN/FMT_WRAP macros, non-variadic branch).
+#define FMT_GEN(n, f) FMT_GEN##n(f)
+#define FMT_GEN1(f)  f(0)
+#define FMT_GEN2(f)  FMT_GEN1(f),  f(1)
+#define FMT_GEN3(f)  FMT_GEN2(f),  f(2)
+#define FMT_GEN4(f)  FMT_GEN3(f),  f(3)
+#define FMT_GEN5(f)  FMT_GEN4(f),  f(4)
+#define FMT_GEN6(f)  FMT_GEN5(f),  f(5)
+#define FMT_GEN7(f)  FMT_GEN6(f),  f(6)
+#define FMT_GEN8(f)  FMT_GEN7(f),  f(7)
+#define FMT_GEN9(f)  FMT_GEN8(f),  f(8)
+#define FMT_GEN10(f) FMT_GEN9(f),  f(9)
+#define FMT_GEN11(f) FMT_GEN10(f), f(10)
+#define FMT_GEN12(f) FMT_GEN11(f), f(11)
+#define FMT_GEN13(f) FMT_GEN12(f), f(12)
+#define FMT_GEN14(f) FMT_GEN13(f), f(13)
+#define FMT_GEN15(f) FMT_GEN14(f), f(14)
+
+#define FMT_MAKE_TEMPLATE_ARG(n) typename T##n
+#define FMT_MAKE_ARG(n) const T##n& v##n
+#define FMT_MAKE_REF2(n) v##n
+#define FMT_MAKE_REF_char(n) fmt::internal::MakeValue< fmt::BasicFormatter<char> >(v##n)
+#define FMT_MAKE_REF_wchar_t(n) fmt::internal::MakeValue< fmt::BasicFormatter<wchar_t> >(v##n)
+
+// A wrapper for `ReturnType func(Arg1 arg1, fmt::ArgList)` taking n further arguments of arbitrary types.
+#define FMT_WRAP1(Char, ReturnType, func, Arg1, n) \
+    template <FMT_GEN(n, FMT_MAKE_TEMPLATE_ARG)> \
+    inline ReturnType func(Arg1 arg1, FMT_GEN(n, FMT_MAKE_ARG)) \
+    { \
+        const fmt::internal::ArgArray<n>::Type array = {FMT_GEN(n, FMT_MAKE_REF_##Char)}; \
+        return func(arg1, fmt::ArgList(fmt::internal::make_type(FMT_GEN(n, FMT_MAKE_REF2)), array)); \
+    }
+
+#define FMT_VARIADIC_(Char, ReturnType, func, Arg1) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 1) FMT_WRAP1(Char, ReturnType, func, Arg1, 2) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 3) FMT_WRAP1(Char, ReturnType, func, Arg1, 4) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 5) FMT_WRAP1(Char, ReturnType, func, Arg1, 6) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 7) FMT_WRAP1(Char, ReturnType, func, Arg1, 8) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 9) FMT_WRAP1(Char, ReturnType, func, Arg1, 10) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 11) FMT_WRAP1(Char, ReturnType, func, Arg1, 12) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 13) FMT_WRAP1(Char, ReturnType, func, Arg1, 14) \
+    FMT_WRAP1(Char, ReturnType, func, Arg1, 15)
+
+#define FMT_VARIADIC(ReturnType, func, Arg1) FMT_VARIADIC_(char, ReturnType, func, Arg1)
+#define FMT_VARIADIC_W(ReturnType, func, Arg1) FMT_VARIADIC_(wchar_t, ReturnType, func, Arg1)
