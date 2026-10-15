@@ -41,14 +41,15 @@ public:
     void FUN_140713940();                                          // reset (state 0, length 0, offset 0)
     void FUN_140715120(const char* data,unsigned count);           // appends bytes to the payload
     void FUN_140715280(unsigned offset);                           // SetOffset (throws past the end)
+    CString FUN_140710300() const;                                 // hex dump "%02x " of the buffer, @0x140710300
     short FUN_1407140a0();                                         // Decode2 through the secondary vtable
     Unk_StreamPoint FUN_1407140d0();                               // three int reads -> point
     unsigned FUN_141269940(unsigned key) { return (unsigned)m_opcode ^ (key >> 16); }
     void FUN_14126c7b0(int n) { m_sequence=n; }
     int m_flags,m_nState;
     ATL::CAtlArray<unsigned char> m_data;
-    int m_length; unsigned short m_opcode;
-    int m_40,m_packetLength,m_offset,m_sequence;
+    unsigned m_length; unsigned short m_opcode;
+    int m_40,m_packetLength; unsigned m_offset; int m_sequence;
 };
 MS2_CHECK_SIZE(CInPacket,0x50);
 MS2_CHECK_OFFSET(CInPacket,m_data,0x18);

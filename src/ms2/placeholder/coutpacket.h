@@ -45,7 +45,8 @@ public:
     __forceinline void FUN_14020ae50(__int64 n) { COutPacket::vfunc_o10_4(n); }
 
     // 0x140710740: sets the flag/length/cursor fields; when bEncodeType and nType != 0x7fffffff writes the u16 type.
-    void FUN_140710740(int nType, int nUnk, bool bEncodeType);
+    void FUN_140710740(int nType, int nUnk, int bEncodeType);
+    CString FUN_140710c50() const;   // hex dump "%02x " of the buffer, @0x140710c50
     // 0x14020b630: grows the buffer (doubling) so that `n` more bytes fit after m_nLength (inline in commonfiles/packet.h).
     void FUN_14020b630(unsigned n);
     // 0x14020aa30: appends src's payload (from `offset`) through the virtual raw-bytes encoder (slot 9).

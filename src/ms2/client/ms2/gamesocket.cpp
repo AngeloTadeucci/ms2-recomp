@@ -42,7 +42,7 @@ void FUN_1415396b0(void*,Unk_InPtr);
 void FUN_140768600(unsigned*);
 unsigned short FUN_14020ba20(COutPacket*);
 int FUN_14020bc40(COutPacket*);
-void FUN_140710b90(COutPacket*,int,unsigned*);
+COutPacket* FUN_140710b90(COutPacket*,int,unsigned*);
 void FUN_140710870(COutPacket*,ATL::CAtlList<Unk_BufferPtr>*,unsigned,unsigned*,int);
 CPacketBuffer* FUN_1407138b0(unsigned,const Unk_SocketNew&);
 void* FUN_1403ed2b0(); void FUN_141adbea0(void*); int FUN_1406516b0();
@@ -169,7 +169,7 @@ void CGameSocket::vfunc_2(CSimpleSocket*,int error)
                 if(result==SOCKET_ERROR) { int last=WSAGetLastError(); if(last!=WSAEWOULDBLOCK) throw Exception(last); }
                 else received=result;
                 if(received==0) return;
-                Unk_BufferPtr buffer(m_receiveBuffer->FUN_140715390(m_received,received));
+                Unk_BufferPtr buffer(m_receiveBuffer->FUN_140715390(m_received,received,Unk_SocketNew(0)));
                 m_received+=received; m_receiveQueue.AddTail(buffer);
             }
         }

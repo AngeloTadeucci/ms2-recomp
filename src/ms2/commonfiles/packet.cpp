@@ -196,12 +196,11 @@ void CInPacket::FUN_140710280(int connectionState, unsigned* key)
     FUN_1401cde60(FUN_140714f80(), &m_data[0] + m_offset, m_length - m_offset, connectionState, key);
 }
 // @0x140710300
-CString FUN_140710300(CInPacket* packet)
+CString CInPacket::FUN_140710300() const
 {
     CString result;
-    const ATL::CAtlArray<unsigned char>& bytes = packet->m_data;
-    const unsigned char* data = &bytes[0];
-    for (unsigned i = 0; i < (unsigned)packet->m_length; ++i) {
+    const unsigned char* data = &m_data[0];
+    for (unsigned i = 0; i < m_length; ++i) {
         CString piece;
         piece.Format("%02x ", data[i]);
         result += piece;
@@ -258,7 +257,7 @@ void FUN_1407106d0(int type, int key)
 // @0x140710710
 void COutPacket::vfunc_o10_0(bool value) { vfunc_o10_1(value); }
 // @0x140710740
-void COutPacket::FUN_140710740(int nType, int nUnk, bool bEncodeType)
+void COutPacket::FUN_140710740(int nType, int nUnk, int bEncodeType)
 {
     m_nFlag = nUnk;
     m_nLength = 0;
@@ -269,6 +268,7 @@ void COutPacket::FUN_140710740(int nType, int nUnk, bool bEncodeType)
     }
     m_nSequence = 0;
 }
+MS2_REPLACE_METHOD(0x140710740, COutPacket, FUN_140710740, 152, 0x978D8940);
 // @0x1407107e0
 void FUN_1407107e0(COutPacket* packet, int type, int unk, const void* data, int count)
 {
@@ -277,6 +277,7 @@ void FUN_1407107e0(COutPacket* packet, int type, int unk, const void* data, int 
     packet->FUN_140710740(type, unk, true);
     packet->vfunc_o10_9(data, count);
 }
+MS2_REPLACE(0x1407107E0, FUN_1407107e0, 124, 0x76F804E3);
 // @0x140710870
 void FUN_140710870(COutPacket* packet, ATL::CAtlList<Unk_SocketPtr<CPacketBuffer> >* list, unsigned sequence, unsigned* key, int hasSequence)
 {
@@ -328,12 +329,11 @@ COutPacket* FUN_140710b90(COutPacket* packet, int state, unsigned* key)
     return packet;
 }
 // @0x140710c50
-CString FUN_140710c50(COutPacket* packet)
+CString COutPacket::FUN_140710c50() const
 {
     CString result;
-    const Unk_PodArray<char>& bytes = packet->m_aBuffer;
-    const unsigned char* data = (const unsigned char*)&bytes[0];
-    for (unsigned i = 0; i < packet->m_nLength; ++i) {
+    const unsigned char* data = (const unsigned char*)&m_aBuffer[0];
+    for (unsigned i = 0; i < m_nLength; ++i) {
         CString piece;
         piece.Format("%02x ", data[i]);
         result += piece;
@@ -357,25 +357,30 @@ CPacketBuffer::CPacketBuffer(int size, char* data, CPacketBuffer* parent) { FUN_
 // @0x1407132c0
 CPacketBuffer::~CPacketBuffer()
 {
-    if (m_parent == 0) delete[] m_data;
+    if (m_parent == 0) {
+        char* data = m_data;
+        delete[] data;
+    }
 }
 // @0x140713530
 char* CPacketBuffer::FUN_140713530() { return m_data; }
 // @0x140714fa0
 int CPacketBuffer::FUN_140714fa0() const { return m_size; }
 // @0x140715000
-void CPacketBuffer::FUN_140715000(int size, char* data, CPacketBuffer* parent)
+CPacketBuffer* CPacketBuffer::FUN_140715000(int size, char* data, CPacketBuffer* parent)
 {
     m_size = size;
     m_data = data;
     m_parent = parent;
+    return this;
 }
 // @0x140715360
 void CPacketBuffer::FUN_140715360(void* value) { *FUN_140715db0() = value; }
 // @0x140715390
 CPacketBuffer* CPacketBuffer::FUN_140715390(unsigned offset, int size, const Unk_SocketNew&)
 {
-    return new CPacketBuffer(size, m_data + offset, this);
+    CPacketBuffer* slice = new CPacketBuffer(size, m_data + offset, this);
+    return slice;
 }
 // @0x140715db0
 void** CPacketBuffer::FUN_140715db0() { return reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x10); }
@@ -383,7 +388,8 @@ void** CPacketBuffer::FUN_140715db0() { return reinterpret_cast<void**>(reinterp
 CPacketBuffer* FUN_1407138b0(unsigned size, const Unk_SocketNew&)
 {
     char* data = new char[size];
-    return new CPacketBuffer(size, data, 0);
+    CPacketBuffer* buffer = new CPacketBuffer(size, data, 0);
+    return buffer;
 }
 // @0x140714f80
 CBufferCryptManager* FUN_140714f80() { return DAT_143aac528; }
@@ -403,39 +409,37 @@ void CByteBuffer::FUN_140715230(int count) { FUN_140204670(count); }
 
 // ---- CIOBuffer bounds-checked decoders ------------------------------------------------------------------------------------
 #define MS2_PK_DECODE_FAIL(hint, code) \
-    do { CString text; FUN_140714df0(text, CString(hint)); throw Exception(text, code); } while (0)
+    { CString text; FUN_140714df0(text, CString(hint)); throw Exception(text, code); }
 // @0x140714df0
 void CIOBuffer::FUN_140714df0(CString& text, CString hint)
 {
-    unsigned offset = vfunc_0();
-    unsigned short type = vfunc_1();
-    text.Format("[type=%u][offset=%u][hint=%s]", type, offset, (const char*)hint);
+    text.Format("[type=%u][offset=%u][hint=%s]", (unsigned short)vfunc_1(), vfunc_0(), (const char*)hint);
 }
 // @0x140713970
 int CIOBuffer::FUN_140713970(unsigned char& value, const unsigned char* data, unsigned size)
 {
-    if (size < 1) MS2_PK_DECODE_FAIL("Decode1", 0x26);
+    if (size < sizeof(unsigned char)) MS2_PK_DECODE_FAIL("Decode1", 0x26);
     value = *data;
     return 1;
 }
 // @0x140713ae0
 int CIOBuffer::FUN_140713ae0(short& value, const unsigned char* data, unsigned size)
 {
-    if (size < 2) MS2_PK_DECODE_FAIL("Decode2", 0x26);
+    if (size < sizeof(short)) MS2_PK_DECODE_FAIL("Decode2", 0x26);
     value = *(const short*)data;
     return 2;
 }
 // @0x140713c50
 int CIOBuffer::FUN_140713c50(int& value, const unsigned char* data, unsigned size)
 {
-    if (size < 4) MS2_PK_DECODE_FAIL("Decode4", 0x26);
+    if (size < sizeof(int)) MS2_PK_DECODE_FAIL("Decode4", 0x26);
     value = *(const int*)data;
     return 4;
 }
 // @0x140713db0
 int CIOBuffer::FUN_140713db0(__int64& value, const unsigned char* data, unsigned size)
 {
-    if (size < 8) MS2_PK_DECODE_FAIL("Decode8", 0x26);
+    if (size < sizeof(__int64)) MS2_PK_DECODE_FAIL("Decode8", 0x26);
     value = *(const __int64*)data;
     return 8;
 }
@@ -449,7 +453,7 @@ int CIOBuffer::FUN_140713f20(void* dest, int count, const unsigned char* data, u
 // @0x140714ab0
 int CIOBuffer::FUN_140714ab0(float& value, const unsigned char* data, unsigned size)
 {
-    if (size < 4) MS2_PK_DECODE_FAIL("Decodef", 0x26);
+    if (size < sizeof(float)) MS2_PK_DECODE_FAIL("Decodef", 0x26);
     value = *(const float*)data;
     return 4;
 }
@@ -485,18 +489,14 @@ short CInPacket::vfunc_1() { const ATL::CAtlArray<unsigned char>& bytes = m_data
 unsigned char CInPacket::vfunc_o8_1()
 {
     unsigned char value;
-    int remaining = m_length - m_offset;
-    int used = FUN_140713970(value, &m_data[0] + m_offset, remaining);
-    m_offset += used;
+    m_offset += FUN_140713970(value, &m_data[0] + m_offset, m_length - m_offset);
     return value;
 }
 // @0x140713bd0
 short CInPacket::vfunc_o8_2()
 {
     short value;
-    int remaining = m_length - m_offset;
-    int used = FUN_140713ae0(value, &m_data[0] + m_offset, remaining);
-    m_offset += used;
+    m_offset += FUN_140713ae0(value, &m_data[0] + m_offset, m_length - m_offset);
     return value;
 }
 // @0x140713d40
@@ -568,15 +568,15 @@ float CInPacket::vfunc_o8_5()
     return value;
 }
 // @0x140714c20
-float CInPacket::vfunc_o8_13() { return (float)vfunc_o8_2() * 100.0f; }
+float CInPacket::vfunc_o8_13() { float r = (float)vfunc_o8_2() * 100.0f; return r; }
 // @0x140714c70
-float CInPacket::vfunc_o8_12() { return (float)vfunc_o8_2() * 10.0f; }
+float CInPacket::vfunc_o8_12() { float r = (float)vfunc_o8_2() * 10.0f; return r; }
 // @0x140714cc0
-float CInPacket::vfunc_o8_14(int scale) { return (float)vfunc_o8_2() * (float)scale; }
+float CInPacket::vfunc_o8_14(int scale) { float r = (float)vfunc_o8_2() * (float)scale; return r; }
 // @0x140714d10
-float CInPacket::vfunc_o8_15() { return (float)vfunc_o8_2() / 10.0f; }
+float CInPacket::vfunc_o8_15() { float r = (float)vfunc_o8_2() / 10.0f; return r; }
 // @0x140714d60
-float CInPacket::vfunc_o8_16(int scale) { return (float)vfunc_o8_2() / (float)scale; }
+float CInPacket::vfunc_o8_16(int scale) { float r = (float)vfunc_o8_2() / (float)scale; return r; }
 // @0x140715120
 void CInPacket::FUN_140715120(const char* data, unsigned count)
 {
