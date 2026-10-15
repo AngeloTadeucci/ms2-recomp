@@ -1817,7 +1817,9 @@
 ??0NiPhysXAccumTransformDest@@IEAA@XZ	141f19210	func
 ??0NiPhysXAccumTransformDest@@QEAA@PEAVNiAVObject@@0PEAVNxActor@@1@Z	141f19250	func
 ??0NiPhysXBodyDesc@@QEAA@XZ	141f082e0	func
+??0NiPhysXClothDesc@@QEAA@XZ	141f0cc90	func
 ??0NiPhysXClothModifier@@QEAA@XZ	141f199a0	func
+??0NiPhysXD6JointDesc@@QEAA@XZ	141ef4ee0	func
 ??0NiPhysXDest@@QEAA@XZ	141efe250	func
 ??0NiPhysXDynamicSrc@@QEAA@PEAVNiAVObject@@PEAVNxActor@@@Z	141ef8d70	func
 ??0NiPhysXFileStream@@QEAA@PEBDW4OpenMode@File@efd@@I@Z	141f23d60	func
@@ -1852,6 +1854,7 @@
 ??0NiPhysXRigidBodySrc@@QEAA@PEAVNiAVObject@@PEAVNxActor@@@Z	141efe5e0	func
 ??0NiPhysXSDKDesc@@QEAA@XZ	141f20e30	func
 ??0NiPhysXScene@@QEAA@PEAVNiSPWorkflowManager@@@Z	141eff9a0	func
+??0NiPhysXSceneDesc@@QEAA@XZ	141f1dbb0	func
 ??0NiPhysXSequenceManager@@QEAA@XZ	141f24bc0	func
 ??0NiPhysXShapeDesc@@QEAA@XZ	141f0b7b0	func
 ??0NiPhysXSrc@@QEAA@XZ	141f23940	func
@@ -2053,6 +2056,8 @@
 ??0NiVisualTrackerBase@@QEAA@V?$NiRect@M@@_NPEBD@Z	141fcdca0	func
 ??0Node@?$DirectedGraph@VServiceInfoProxy@ServiceManager@efd@@$0A@$00@efd@@QEAA@XZ	1420783b0	func
 ??0NodeType@?$OrderedMap@VBlockIdentification@egf@@ULoadData@EntityLoaderService@2@@efd@@QEAA@AEBVBlockIdentification@egf@@AEBULoadData@EntityLoaderService@4@@Z	142161060	func
+??0NxClothDesc@@QEAA@XZ	141f0ce80	func
+??0NxQuat@@QEAA@AEBVNxMat33@@@Z	141ef7750	func
 ??0ObjectDesc@NSBObjectTable@@QEAA@PEBDW4ObjectType@NiShaderAttributeDesc@@I@Z	141fe6150	func
 ??0ObjectResourceOffset@NiFragmentMaterial@@QEAA@XZ	141d66af0	func
 ??0PK_MessageAccumulatorBase@CryptoPP@@QEAA@XZ	142327ef0	func
@@ -4023,6 +4028,7 @@
 ?AddShaderProgramType@ShaderService@ecr@@QEAAXPEBD@Z	14201e630	func
 ?AddShadowGenerator@NiShadowManager@@SA_NPEAVNiShadowGenerator@@@Z	141d40850	func
 ?AddSkin@NiSkinningLODController@@QEAAXIPEAVNiMesh@@@Z	141c70450	func
+?AddSnapshotState@NiPhysXScene@@QEAAIAEAVNiFixedString@@@Z	141f012b0	func
 ?AddSource@NiPhysXProp@@QEAAIPEAVNiPhysXSrc@@@Z	141efacd0	func
 ?AddSpawner@NiPSParticleSystem@@QEAAXPEAVNiPSSpawner@@@Z	141e98ea0	func
 ?AddSpawnerTargettingThisPS@NiPSParticleSystem@@QEAAXPEAVNiPSSpawner@@@Z	141e98f10	func
@@ -4695,6 +4701,7 @@
 ?ComputeContactInformation@NiCapsuleSphereIntersector@@EEAAXAEBVNiPoint3@@0@Z	141cecf70	func
 ?ComputeCovarianceAndMean@NiOBBNode@@IEAA?AVNiMatrix3@@PEBGPEBVNiPoint3@@PEAMPEAV3@HHPEAH@Z	141cefe90	func
 ?ComputeCovarianceAndSolve@NiBox@@IEAAXPEAVNiDataStreamRef@@AEAVNiDataStreamElementLock@@I@Z	141ce7c70	func
+?ComputeDynamicData@NiPhysXRigidBodySrc@@IEAAXMAEBVNxMat34@@AEAV2@AEAVNxVec3@@2@Z	141efe7b0	func
 ?ComputeFinalFormat@NiDDSReader@@IEAA?AVNiPixelFormat@@V2@@Z	141d78c00	func
 ?ComputeFromData@NiBound@@QEAAXHPEBVNiPoint3@@@Z	141d628b0	func
 ?ComputeFromData@NiBound@@QEAAXHPEBVNiPoint4@@@Z	141d62cd0	func
@@ -4713,6 +4720,7 @@
 ?ComputeProcessOrder@StaticDataManager@efd@@CA_NXZ	1420c2f80	func
 ?ComputeScaledTime@NiSequenceData@@QEAAMM@Z	141c62a70	func
 ?ComputeScaledTime@NiTimeController@@UEAAMM@Z	141d23d60	func
+?ComputeVelocities@NiPhysXRigidBodySrc@@IEAAXAEBVNxMat34@@AEAVNxVec3@@1@Z	141efeaf0	func
 ?ComputeVolumeInitialPositionAndVelocity@NiPSBoxEmitter@@MEAA_NAEAVNiQuatTransform@@AEAVNiPoint3@@1@Z	141ec8510	func
 ?ComputeVolumeInitialPositionAndVelocity@NiPSCylinderEmitter@@MEAA_NAEAVNiQuatTransform@@AEAVNiPoint3@@1@Z	141ec9bd0	func
 ?ComputeVolumeInitialPositionAndVelocity@NiPSSphereEmitter@@MEAA_NAEAVNiQuatTransform@@AEAVNiPoint3@@1@Z	141ece1e0	func
@@ -5278,6 +5286,7 @@
 ?CreateClone@NiVertWeightsExtraData@@UEAAPEAVNiObject@@AEAVNiCloningProcess@@@Z	141d872a0	func
 ?CreateClone@NiVertexColorProperty@@UEAAPEAVNiObject@@AEAVNiCloningProcess@@@Z	141d22770	func
 ?CreateClone@NiZBufferProperty@@UEAAPEAVNiObject@@AEAVNiCloningProcess@@@Z	141d22ea0	func
+?CreateCloth@NiPhysXClothDesc@@UEAAPEAVNxCloth@@PEAVNxScene@@PEAVNxCompartment@@IAEBVNxMat34@@_N@Z	141f0e200	func
 ?CreateCollisionData@NiCollisionTraversals@@YAXPEAVNiAVObject@@W4CollisionMode@NiCollisionData@@@Z	141cb4a30	func
 ?CreateColors@NiGeometryData@@QEAAX_N@Z	141df9090	func
 ?CreateCompatible@NiDepthStencilBuffer@@SAPEAV1@PEAVNi2DBuffer@@PEAVNiRenderer@@@Z	141d64910	func
@@ -5414,6 +5423,7 @@
 ?CreateHullShaderFromBlob@D3D11ShaderProgramFactory@ecr@@SA_NPEAUID3D10Blob@@PEBDPEBU_D3D_SHADER_MACRO@@PEAUID3DInclude@@11I1_NAEAV?$SmartPointer@VD3D11HullShader@ecr@@@efd@@@Z	1428321f0	func
 ?CreateHullShaderFromFile@D3D11ShaderProgramFactory@ecr@@SA_NPEBDPEBU_D3D_SHADER_MACRO@@PEAUID3DInclude@@00I0AEAV?$SmartPointer@VD3D11HullShader@ecr@@@efd@@@Z	142832350	func
 ?CreateImpl@NiScreenFillingRenderViewImpl@@SAPEAVNiScreenFillingRenderView@@XZ	141e368d0	func
+?CreateJoint@NiPhysXD6JointDesc@@UEAAPEAVNxJoint@@PEAVNxScene@@AEBVNxMat34@@@Z	141ef5810	func
 ?CreateLight@LightService@ecr@@MEAAPEAVNiLight@@PEBVFlatModel@egf@@@Z	142027090	func
 ?CreateLine@PropertyVisualizationHelpers@egmVisualizers@@SAXPEAVNiMesh@@AEBVNiPoint3@@1@Z	1422a1770	func
 ?CreateLines@GraphCallbackObjectData@NiVisualTracker@@SA?AV?$SmartPointer@VNiMesh@@@efd@@IAEBVNiColor@@AEBV?$NiRect@M@@@Z	141fd0790	func
@@ -6540,6 +6550,7 @@
 ?FromEulerAnglesZYX@Matrix3@efd@@QEAAXMMM@Z	142084470	func
 ?FromFloat@NiString@@SA?AV1@M@Z	141d5e520	func
 ?FromInt@NiString@@SA?AV1@H@Z	141d5e620	func
+?FromJoint@NiPhysXD6JointDesc@@UEAAXPEAVNxD6Joint@@AEAV?$NiTMap@PEAVNxActor@@V?$SmartPointer@VNiPhysXActorDesc@@@efd@@V?$NiTMapHashFunctor@PEAVNxActor@@@@V?$NiTMapEqualsFunctor@PEAVNxActor@@@@@@AEBVNxMat34@@@Z	141ef5970	func
 ?FromJoint@NiPhysXJointDesc@@MEAAXPEAVNxJoint@@@Z	141ef3640	func
 ?FromLuaObject@?$LuaTraits@M@bapiLua@@SA_NPEAUlua_State@@HAEAM@Z	142051530	func
 ?FromLuaObject@?$LuaTraits@PEAD@bapiLua@@SA_NPEAUlua_State@@HAEAPEBD@Z	142206e10	func
@@ -8162,6 +8173,8 @@
 ?Interpolate@NiEulerRotKey@@KAXMPEBVNiAnimationKey@@0PEAX@Z	141c599c0	func
 ?Interpolate@NiLinColorKey@@KAXMPEBVNiAnimationKey@@0PEAX@Z	141c5a610	func
 ?Interpolate@NiLinFloatKey@@KAXMPEBVNiAnimationKey@@0PEAX@Z	141c5acc0	func
+?Interpolate@NiPhysXRigidBodyDest@@IEAAXMAEAVNiQuaternion@@AEAVNiPoint3@@@Z	141ef8120	func
+?Interpolate@NiPhysXRigidBodySrc@@IEAAXMAEAVNxMat34@@@Z	141efeec0	func
 ?Interpolate@NiTCBFloatKey@@KAXMPEBVNiAnimationKey@@0PEAX@Z	141c5ecb0	func
 ?Interpolate@NiTCBRotKey@@KAXMPEBVNiAnimationKey@@0PEAX@Z	141c5df70	func
 ?Interpolate@NiTransform@@SAXMAEBV1@0AEAV1@@Z	141d2f630	func
@@ -8484,6 +8497,7 @@
 ?IsValid@ID128@efd@@QEBA_NXZ	14212c760	func
 ?IsValid@NiDataStreamRef@@QEBA_NPEAVNiString@@@Z	141e0e9d0	func
 ?IsValid@NiMesh@@QEBA_NPEAVNiString@@@Z	141e05c50	func
+?IsValid@NiPhysXClothDesc@@UEAA_NXZ	141f0f2d0	func
 ?IsValid@PropertyDescriptor@egf@@QEBA_NXZ	1421c2130	func
 ?IsValidAppend@NiImmediateModeAdapter@@IEAA_NII@Z	141e91b00	func
 ?IsValidChainTransition@NiKFMTool@@QEAA_NIIPEAVTransition@1@@Z	141c33390	func
@@ -9121,6 +9135,7 @@
 ?NumberOfMessagesInThisSeries@MessageQueue@CryptoPP@@UEBAIXZ	142356760	func
 ?NxMat34LoadBinary@NiPhysXTypes@@SAXAEAVNiStream@@AEAVNxMat34@@@Z	141efda90	func
 ?NxMat34SaveBinary@NiPhysXTypes@@SAXAEAVNiStream@@AEBVNxMat34@@@Z	141efdce0	func
+?NxMat34ToNiQuatTransform@NiPhysXTypes@@SAXAEBVNxMat34@@AEAVNiQuaternion@@AEAVNiPoint3@@@Z	141ef8490	func
 ?NxQuatLoadBinary@NiPhysXTypes@@SAXAEAVNiStream@@AEAVNxQuat@@@Z	141efdf30	func
 ?NxQuatSaveBinary@NiPhysXTypes@@SAXAEAVNiStream@@AEBVNxQuat@@@Z	141efe010	func
 ?NxVec3LoadBinary@NiPhysXTypes@@SAXAEAVNiStream@@AEAVNxVec3@@@Z	141efe0f0	func
@@ -12128,6 +12143,7 @@
 ?ToBool@NiString@@QEBA_NAEA_N@Z	141d600f0	func
 ?ToBoxDesc@NiPhysXShapeDesc@@UEBAXAEAVNxBoxShapeDesc@@@Z	141f0c890	func
 ?ToCapsuleDesc@NiPhysXShapeDesc@@UEBAXAEAVNxCapsuleShapeDesc@@@Z	141f0c8e0	func
+?ToClothDesc@NiPhysXClothDesc@@MEAA_NAEAVNxClothDesc@@IAEBVNxMat34@@_N2@Z	141f11910	func
 ?ToConvexDesc@NiPhysXShapeDesc@@UEAAXAEAVNxConvexShapeDesc@@_N1@Z	141f0c930	func
 ?ToEulerAnglesXYZ@Matrix3@efd@@QEBA_NAEAM00@Z	142085840	func
 ?ToEulerAnglesXYZ_Legacy@Matrix3@efd@@QEBA_NAEAM00@Z	142085930	func
@@ -12453,6 +12469,7 @@
 ?UpdateActionMappedDevice@NiInputKeyboard@@UEAA?AW4NiInputErr@@PEAVNiInputSystem@@@Z	141d122c0	func
 ?UpdateActionMappedDevice@NiInputMouse@@UEAA?AW4NiInputErr@@PEAVNiInputSystem@@@Z	141d14000	func
 ?UpdateActorPose@EntityActorData@egfPhysX@@IEAAXXZ	14225fb70	func
+?UpdateActorShape@EntityActorData@egfPhysX@@IEAAXXZ	14225fcb0	func
 ?UpdateActorsToDests@NiPhysXScene@@IEAAX_N@Z	141f07e30	func
 ?UpdateAnalogButton@NiInputGamePad@@QEAAXW4Button@1@E@Z	141d07150	func
 ?UpdateAttributeConstantValue@D3D11ShaderConstantMap@ecr@@IEAAIPEAXPEAVNiShaderConstantMapEntry@@AEBVNiRenderCallContext@@_NPEAVNiExtraData@@@Z	14283dd10	func
@@ -13687,6 +13704,7 @@
 ?save@SimpleGraph@efd@@QEAA?AW4GraphSaveResult@2@_N@Z	1421151d0	func
 ?serialize@NTripleFormat@efd@@QEAA_NAEBVutf8string@2@PEAVGraph@2@@Z	142115310	func
 ?serialize@NTripleFormat@efd@@QEAA_NAEBVutf8string@2@PEAVSimpleGraph@2@@Z	142115590	func
+?setToDefault@NxClothDesc@@QEAAXXZ	141f12020	func
 ?setWebAttribute@AssetWeb@efd@@QEAAXAEBVutf8string@2@00@Z	1420e36a0	func
 ?set_index@Graph@efd@@AEAAXAEBVTriple@2@@Z	142115770	func
 ?slerp@NxQuat@@QEAAXMAEBV1@0@Z	141eff7a0	func
