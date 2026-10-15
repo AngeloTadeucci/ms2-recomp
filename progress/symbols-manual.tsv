@@ -545,3 +545,16 @@
 ?DAT_143afbbb0@@3DA	143afbbb0	data
 ?ms_RTTI@CPostEffect@@2VNiRTTI@@B	143ac47d0	data
 ?DAT_143ac47c8@@3HA	143ac47c8	data
+?ms_RTTI@MS2OutlinePreProcessor@@2VNiRTTI@@B	143ae0b88	data
+??0NiShaderSortProcessor@@QEAA@IIII@Z	141d2a130	func
+?PreRenderProcessList@NiShaderSortProcessor@@UEAAXPEBVNiVisibleArray@@AEAV2@PEAX@Z	141d2aaf0	func
+?DAT_143ae50e8@@3DA	143ae50e8	data
+?DAT_143ae50f0@@3DA	143ae50f0	data
+?DAT_143ae51b8@@3DA	143ae51b8	data
+?DAT_143ae53c8@@3DA	143ae53c8	data
+?DAT_143ae5210@@3DA	143ae5210	data
+?DAT_143a09680@@3DA	143a09680	data
+?DAT_143afafd0@@3DA	143afafd0	data
+?DAT_143afb000@@3DA	143afb000	data
+?DAT_143ad1588@@3DA	143ad1588	data
+?DAT_143afbfb8@@3DA	143afbfb8	data
