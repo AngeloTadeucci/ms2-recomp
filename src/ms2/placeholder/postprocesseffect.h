@@ -35,7 +35,7 @@ MS2_CHECK_SIZE(Unk_PPSmartA, 8);
 
 class Unk_PPSmartC {
 public:
-    Unk_PPSmartC(void* p);          // 0x14097ed60
+    Unk_PPSmartC(void* p = 0);      // 0x14097ed60 (default argument: std::map<K, Unk_PPSmartC> value-initialises with 0)
     Unk_PPSmartC(const Unk_PPSmartC& rhs);   // declared only so MSVC passes it by invisible reference (the exe does); never called
     ~Unk_PPSmartC();                // 0x14097f4a0
     void Assign(void* p);           // 0x14097f9b0
