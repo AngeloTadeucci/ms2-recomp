@@ -140,7 +140,6 @@ class Unk_140168650 { public: Unk_140168650* FUN_140168650(const char*); };
 bool FUN_14028f710(void*);
 int FUN_140873890(void*, const char*, int&);
 int FUN_140873220(void*, const char*, int&);
-void FUN_1401d1160(CCacheData*, CString);
 unsigned char FUN_1401d1320(CCacheData*);
 
 // ---- the pc preview ----
@@ -305,7 +304,7 @@ int LobbyFieldTable::Load()
     {
         m_bLoaded = true;
         CString strPath = FUN_14071a5b0(CString("Table"), CString("lobbyField.xml"));
-        FUN_1401d1160(this, strPath);
+        CCacheData::FUN_1401d1160(strPath);
         TiXmlDocument doc;
         const char* pszPath = strPath;
         if (FUN_140166420()->FUN_1403974b0(doc, pszPath, 0, true, false) != 0)
