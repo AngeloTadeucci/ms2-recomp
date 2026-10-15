@@ -74,6 +74,7 @@ public:
     virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
     virtual void vfunc_16();
     virtual Unk_StreamPoint vfunc_17();
+    virtual Unk_StreamPoint vfunc_18();                 // world position (consoleCameraMode adds its offset to it)
 };
 
 class CCameraMode;
