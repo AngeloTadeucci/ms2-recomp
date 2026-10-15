@@ -56,7 +56,7 @@ static UICommon::CMyPCKeyInputController s_keyInputController;     // header sta
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(WorldService);
 static CStringW s_maintenanceExit = L"maintenanceExit";            // 0x143af88e0
 
-#ifdef MS2_STANDALONE  // MS2: in the hook DLL these static auto-registering objects would register DLL copies of the handlers in the exe's
+#ifndef MS2_HOOK_DLL  // MS2: in the hook DLL these static auto-registering objects would register DLL copies of the handlers in the exe's
 // (shared) message handler registry on top of the exe's own identical statics: the exe then called them with a null this (AV at Character Select).
 // The 11 message handler statics (.text$di 0x140120290-0x1401206a6, exit thunks in .text$yd), in exe order.
 // @0x140120290
@@ -91,7 +91,8 @@ static const efd::Category kCAT_egfPhysXMessage =
 class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };
 // @0x140120860
 static Unk_1401cd100 s_pointer(NULL);                              // 0x143af8278 (same header static as scenestatelogin)
-WorldService* TSingleton<WorldService>::s_instance = 0;
+// TSingleton<WorldService>::s_instance (0x143aaee10) is the exe's: bound by progress/symbols-manual.tsv, not defined here, so hooked
+// functions that call GetInstance() read the live singleton instead of a DLL-local null copy.
 
 // ---- callees owned by other objs / not recovered yet (bound by VA) ----
 void* FUN_140876480(void* out, int cat);                // efd memory hint helper, returns int*

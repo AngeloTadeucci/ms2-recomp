@@ -33,6 +33,9 @@ function(ms2_game_flags target)
     # Both compilers: the game's preprocessor environment (MBCS + MFC DLL); see also src/ms2/CMakeLists.txt, which
     # drops the hook project's WIN32_LEAN_AND_MEAN/NOMINMAX/_CRT_SECURE_NO_WARNINGS and /utf-8 for game code.
     target_compile_definitions(${target} PRIVATE _MBCS _AFXDLL)
+    # Only the hook DLL builds define MS2_HOOK_DLL (tools/progress.py does not): game code that must not run its static
+    # initializers inside the DLL (self-registering exe-wide registrations) is wrapped in `#ifndef MS2_HOOK_DLL`.
+    target_compile_definitions(${target} PRIVATE MS2_HOOK_DLL)
     if(MSVC AND NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         target_compile_options(${target} PRIVATE ${MS2_GAME_COMPILE_OPTIONS})
         target_compile_definitions(${target} PRIVATE ${MS2_GAME_COMPILE_DEFINITIONS})
