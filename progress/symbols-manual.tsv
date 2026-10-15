@@ -622,3 +622,7 @@
 ?ms_kCriticalSection@?$NiTAbstractPoolAllocator@_K@@1VCriticalSection@efd@@A	143afaa88	data
 ?ms_pkFreeMem@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa80	data
 ?s_instance@?$TSingleton@VWorldService@@@@2PEAVWorldService@@EA	143aaee10	data
+?DAT_143ab2a90@@3VUnk_InventoryItems@@A	143ab2a90	data
+??4?$MS2Ptr@VCItem@@@@QEAAAEAV0@AEBV0@@Z	140692c90	func
+?FindBlockedAction@CBlockManager@@QEAA?AV?$Unk_BlockPtr@UUnk_BlockRecord@@@@H@Z	140a2f620	func
+?s_instance@?$TSingleton@VCTradeManagerEx@@@@2PEAVCTradeManagerEx@@EA	143ad9d78	data
