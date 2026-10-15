@@ -611,3 +611,13 @@
 ?DAT_142ffa29c@@3QBDB	142ffa29c	data
 ?DAT_142ffa2ac@@3QBDB	142ffa2ac	data
 ??0Unk_Random@@QEAA@H@Z	140768210	func
+??0FixedString@efd@@QEAA@AEBV01@@Z	142087b60	func
+??_UMemObject@efd@@SAPEAX_KVMemHint@1@@Z	14208a940	func
+?ms_RTTI@NiRenderView@@2VNiRTTI@@B	143afaf90	data
+?ms_RTTI@NiRenderClick@@2VNiRTTI@@B	143afb070	data
+?ms_RTTI@NiViewRenderClick@@2VNiRTTI@@B	143afa7b8	data
+?ms_kDefaultName@NiRenderClick@@1VNiFixedString@@A	143afb080	data
+?ms_pkBlockHeader@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa78	data
+?ms_uiBlockSize@?$NiTAbstractPoolAllocator@_K@@1IA	1439fc820	data
+?ms_kCriticalSection@?$NiTAbstractPoolAllocator@_K@@1VCriticalSection@efd@@A	143afaa88	data
+?ms_pkFreeMem@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa80	data
