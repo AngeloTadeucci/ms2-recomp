@@ -21,6 +21,7 @@ template<class T> class Unk_BlockPtr {
 public:
     Unk_BlockPtr() : m_p(0) {}
     Unk_BlockPtr(int) : m_p(0) {}
+    explicit Unk_BlockPtr(T* p) : m_p(p) { AddRef(); }   // 0x140a31810 for T=CBlockChecker
     Unk_BlockPtr(const Unk_BlockPtr& p) : m_p(p.m_p) { AddRef(); }
     Unk_BlockPtr(Unk_BlockPtr&& p) : m_p(p.m_p) { p.m_p=0; }
     ~Unk_BlockPtr() { Release(); }
@@ -28,6 +29,7 @@ public:
     Unk_BlockPtr& operator=(int) { Release();return *this; }
     bool operator==(T* p) const { return m_p==p; }
     T* get() const { return m_p; }
+    Unk_BlockPtr& Reset(T* p) { Unk_BlockPtr t(p); T* old = m_p; m_p = t.m_p; t.m_p = old; return *this; }   // 0x140a318e0 (swap with a temporary)
     T* operator->() const { return m_p; }
 private:
     void AddRef() const { if(m_p) AddRefImpl(0); }
