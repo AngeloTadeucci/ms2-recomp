@@ -28,6 +28,7 @@
 #include <afx.h>
 #include <efd/IBase.h>
 #include <efd/RefCount.h>
+#include <egf/EntityID.h>
 #include <NiPoint3.h>
 #include <NiActorManager.h>
 
@@ -130,6 +131,7 @@ public:
     int FUN_14123c660();                                    // visibility (+0xb0)
     void FUN_14123c5a0(int nId);                            // 0x14123c5a0 m_unk_70 = nId (w17)
     Unk_GoModelKey& FUN_14123c460(Unk_GoModelKey& kOut);    // 0x14123c460 fills kOut, returns it (w17)
+    egf::EntityID& FUN_14123c460(egf::EntityID& kOut);      // same function: the key is the entity id (w18, animationmanager)
     MS2Ptr<CAnimationManager> FUN_14123c6f0();              // 0x14123c6f0 copy of m_spAnimMgr (w17)
 
 public:
