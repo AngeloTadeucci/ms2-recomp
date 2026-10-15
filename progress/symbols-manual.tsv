@@ -851,3 +851,6 @@ __imp_NxReleaseControllerManager	142ccec90	data
 ?ms_RTTI@NiMesh@@2VNiRTTI@@B	143afbbb0	data
 ?GetVisibleInstanceCount@NiInstancingUtilities@@SAIPEBVNiMesh@@@Z	141e09df0	func
 ?ms_RTTI@NiVertexColorProperty@@2VNiRTTI@@B	143afa570	data
+?DAT_143b01a60@@3UUnk_StreamPoint@@A	143b01a60	data
+??0Unk_ArcAngle@@QEAA@XZ	14097f3a0	func
+??0AScript@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422ba780	func
