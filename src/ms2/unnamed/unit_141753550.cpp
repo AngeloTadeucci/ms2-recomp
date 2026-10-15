@@ -8,74 +8,21 @@
 #include "hook/ms2hook.h"
 #include <new>
 
-// ---- Gamebryo bits, unit-local (engine headers are not on the include path; layouts pinned below) -----------------
-class NiPlane;
-class NiBound { public: float m_center[3]; float m_fRadius; };
-class NiProperty; class NiMeshCullingProcess;
+// ---- Gamebryo: the real engine headers (cmake/ms2-engine-flags.cmake) ------------------------------------------------
+#include <NiTerrainCullingProcess.h>
+#include <NiAVObject.h>
+#include <NiBound.h>
+#include <NiPlane.h>
 class Unk_ShadowMgr { public: virtual void s0(); virtual void s1(); virtual void s2(); virtual void s3(); virtual void s4(); virtual void s5();
     virtual void s6(); virtual void s7(); virtual void s8(); virtual void s9(); virtual void s10(); virtual void s11(); virtual void s12();
     virtual void s13(); virtual void s14(); virtual void s15(); virtual void s16(); virtual void s17();
-    virtual int vfunc_18(void* camera, class NiAVObject* o); };       // slot 0x90
-// NiAVObject: only the Cull slot (0x110) is used here.
-class NiAVObject { public:
-    virtual void s0(); virtual void s1(); virtual void s2(); virtual void s3(); virtual void s4(); virtual void s5(); virtual void s6();
-    virtual void s7(); virtual void s8(); virtual void s9(); virtual void s10(); virtual void s11(); virtual void s12(); virtual void s13();
-    virtual void s14(); virtual void s15(); virtual void s16(); virtual void s17(); virtual void s18(); virtual void s19(); virtual void s20();
-    virtual void s21(); virtual void s22(); virtual void s23(); virtual void s24(); virtual void s25(); virtual void s26(); virtual void s27();
-    virtual void s28(); virtual void s29(); virtual void s30(); virtual void s31(); virtual void s32(); virtual void s33();
-    virtual void Cull(NiMeshCullingProcess* p); };
-
-// NiFrustumPlanes: 6 planes (0x60 bytes) + active-plane bit mask.
-class NiFrustumPlanes {
-public:
-    float m_planes[24];
-    unsigned m_uiActive;
-    // @0x141753b00
-    void Deactivate(unsigned i) { int s = i; m_uiActive &= ~(1 << (unsigned char)s); }
-    // @0x141753b40
-    unsigned GetActivePlaneState() const { return m_uiActive; }
-    // @0x141753bc0
-    bool IsAnyActive() const { return m_uiActive != 0 ? true : false; }
-    // @0x141753bf0
-    void SetActivePlaneState(unsigned s) { m_uiActive = s; }
-    bool IsActive(unsigned i) const;                    // 0x140af8670
-    const NiPlane* GetPlane(unsigned i) const;          // 0x140af81f0
-};
-
-class NiMeshCullingProcess {
-public:
-    virtual ~NiMeshCullingProcess();                    // 0x141e2eb80
-    virtual void vfunc_1();                             // 0x141d16bf0
-    virtual const void* GetRTTI() const;
-    virtual void Process(NiAVObject* obj);
-    virtual void vfunc_4();                             // 0x141e2ed50
-    virtual void vfunc_5();                             // 0x141e2ed60
-    virtual void vfunc_6();                             // 0x141e2ed40
-    virtual void vfunc_7();                             // 0x141e2ed20
-    virtual void vfunc_8();                             // 0x140d96620
-    static void* operator new(size_t, unsigned) throw();       // efd::MemObject::operator new 0x14208a860
-    static void operator delete(void*, size_t);         // efd::MemObject::operator delete 0x14208a8f0
-    void* m_pad_08;  int m_pad_10; int m_pad_14; void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30;
-    void* m_pad_38;  void* m_pad_40; void* m_pad_48; int m_pad_50;
-    NiFrustumPlanes m_kPlanes;                          // +0x54
-    // @0x141753b50
-    void* GetCamera() const { if (m_pad_30 == 0) return m_pad_28; return m_pad_30; }
-    void* m_pad_b8; void* m_pad_c0; void* m_pad_c8; void* m_pad_d0;
-};
-MS2_CHECK_OFFSET(NiMeshCullingProcess, m_kPlanes, 0x54);
-MS2_CHECK_SIZE(NiMeshCullingProcess, 0xd8);
-
-class NiTerrainCullingProcess : public NiMeshCullingProcess {
-public:
-    NiTerrainCullingProcess(void* visibleArray, void* workflowMgr);   // 0x141f44a30
-    virtual ~NiTerrainCullingProcess();                               // body = FUN_141753a50 (no vptr store in the exe)
-};
+    virtual int vfunc_18(const NiCamera* camera, NiAVObject* o); };       // slot 0x90
 
 class ShadowCullingProcess : public NiTerrainCullingProcess {
 public:
     ShadowCullingProcess();
     virtual ~ShadowCullingProcess();
-    virtual const void* GetRTTI() const;
+    virtual const NiRTTI* GetRTTI() const;
     virtual void Process(NiAVObject* obj);
 };
 
@@ -126,17 +73,17 @@ void ShadowCullingProcess::Process(NiAVObject* obj)
             node = FUN_14098d8d0(&DAT_143afa4d8, FUN_140a0b000((NiAVObject*)node));
         }
     }
-    if (!m_kPlanes.IsAnyActive()) {
-        obj->Cull(this);
+    if (!m_kPlanes.IsAnyPlaneActive()) {
+        obj->Cull(*this);
         return;
     }
     saved = m_kPlanes.GetActivePlaneState();
     for (i = 0; i < 6; ++i) {
-        if (m_kPlanes.IsActive(i)) {
-            const NiPlane* pl = m_kPlanes.GetPlane(i);
+        if (m_kPlanes.IsPlaneActive(i)) {
+            const NiPlane* pl = &m_kPlanes.GetPlane(i);
             int r = FUN_141753c20((const NiBound*)FUN_140994490(obj), *pl);
             if (r == 2) break;
-            if (r == 1) m_kPlanes.Deactivate(i);
+            if (r == 1) m_kPlanes.DisablePlane(i);
         }
     }
     if (i == 6) {
@@ -149,21 +96,21 @@ void ShadowCullingProcess::Process(NiAVObject* obj)
                     if (c != 0 && !FUN_1411c9940(c)) break;
                 }
                 Unk_ShadowMgr* mgr = (Unk_ShadowMgr*)FUN_141753b80((char*)o2);
-                int v = mgr->vfunc_18(GetCamera(), o2);
+                int v = mgr->vfunc_18(GetLODCamera(), o2);
                 k = FUN_140ad02f0(k, v);
                 FUN_141753c10(k);
-                obj->Cull(this);
+                obj->Cull(*this);
                 FUN_141753c10(-1);
             } else {
-                obj->Cull(this);
+                obj->Cull(*this);
             }
         } else if (DAT_143ae2b34 != 0) {
             void* x = FUN_14098d8d0(&DAT_143afa7d0, obj);
             if (x != 0 && FUN_141568f60(x) != 0)
-                obj->Cull(this);
+                obj->Cull(*this);
         } else {
             if (FUN_141d17b40(obj, &DAT_143ae5190) != 0)
-                obj->Cull(this);
+                obj->Cull(*this);
         }
     }
     m_kPlanes.SetActivePlaneState(saved);
@@ -173,7 +120,7 @@ void ShadowCullingProcess::Process(NiAVObject* obj)
 ShadowCullingProcess* FUN_141753990()
 {
     void* tmp;
-    int* cat = (int*)FUN_140876480(&tmp, 0);
+    efd::MemHint* cat = (efd::MemHint*)FUN_140876480(&tmp, 0);
     ShadowCullingProcess* r = new (*cat) ShadowCullingProcess();
     return r;
 }
@@ -201,7 +148,7 @@ void* FUN_141753a90(void** p) { return *p; }
 void* FUN_141753b80(char* o) { return FUN_141753a90((void**)(o + 0x138)); }
 
 // @0x141753bb0
-const void* ShadowCullingProcess::GetRTTI() const { return &DAT_143afd5c8; }
+const NiRTTI* ShadowCullingProcess::GetRTTI() const { return (const NiRTTI*)&DAT_143afd5c8; }
 
 // @0x141753c10
 void FUN_141753c10(int v) { DAT_1439fc854 = v; }
@@ -210,7 +157,7 @@ void FUN_141753c10(int v) { DAT_1439fc854 = v; }
 int FUN_141753c20(const NiBound* b, const NiPlane& pl)
 {
     float d = FUN_140a00ef0(&pl, b);
-    if (d <= -b->m_fRadius) { return 2; }
-    else if (d >= b->m_fRadius) { return 1; }
+    if (d <= -*(const float*)((const char*)b + 0xc)) { return 2; }
+    else if (d >= *(const float*)((const char*)b + 0xc)) { return 1; }
     else { return 0; }
 }

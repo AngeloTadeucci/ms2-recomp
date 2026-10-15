@@ -466,3 +466,5 @@
 ?vfunc_1@NiDX9Renderer@@UEAAXXZ	141d16bf0	func
 ??3NiDX9Renderer@@SAXPEAX_K@Z	14208a8f0	func
 ??1FixedString@efd@@QEAA@XZ	142087bd0	func
+??2MemObject@efd@@SAPEAX_KVMemHint@1@@Z	14208a860	func
+??3MemObject@efd@@SAXPEAX_K@Z	14208a8f0	func
