@@ -1346,3 +1346,8 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?DAT_143b05988@@3PEAVUnk_SingletonObj@@EA	143b05988	data
 ??0CResultObj@@QEAA@PEAX@Z	1414953b0	func
 ?ms_RTTI@CPonyTailController@@2VNiRTTI@@B	143ae3e58	data
+?GetTexture@Map@NiTexturingProperty@@QEBAPEAVNiTexture@@XZ	140d89f40	func
+??0ChaosLightEffectParam@@QEAA@XZ	1410415b0	func
+??0Layer@@QEAA@I@Z	141443550	func
+??0ClassObject@@QEAA@XZ	1401f7ee0	func
+??1ClassObject@@UEAA@XZ	1401f7f20	func
