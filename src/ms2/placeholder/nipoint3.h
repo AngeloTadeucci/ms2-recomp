@@ -23,6 +23,7 @@ struct Unk_StreamPoint
     bool FUN_140552700(const Unk_StreamPoint& pt) const;            // efd::Point3::operator!=
     float FUN_140967ac0() const;                                    // efd::Point3::Length
     Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
+    Unk_StreamPoint FUN_140ae9180(float f) const;                   // efd::Point3::operator/(float)
     float x, y, z;
 };
 MS2_CHECK_SIZE(Unk_StreamPoint, 12);

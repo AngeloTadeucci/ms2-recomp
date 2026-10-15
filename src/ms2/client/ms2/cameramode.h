@@ -77,6 +77,7 @@ public:
 };
 
 class CCameraMode;
+class Unk_PickListPtr;                  // picked-object list (defined by the units that use it)
 
 // The camera manager singleton (0x143ab3700). Its methods are inline COMDATs of other objs.
 class Unk_CameraManager
@@ -90,6 +91,7 @@ public:
     CCameraMode* FUN_140af24f0();                       // the current camera mode
     Unk_StreamPoint FUN_140a38d00();                    // m_138 (pending move input)
     void FUN_140a38d90(Unk_StreamPoint pt);             // m_138 = pt
+    Unk_PickListPtr FUN_140af0850(float fX, float fY, bool b1, bool b2, bool b3, void* p);  // pick at the cursor
 };
 
 // Argument of vfunc_36 (a camera preset row).
