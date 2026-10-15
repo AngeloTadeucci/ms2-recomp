@@ -228,8 +228,7 @@ struct Unk_Settings { char m_pad[0xe258]; unsigned m_nLobbyMap; };
 Unk_Settings* FUN_1401d3200();
 void* FUN_1401c0d90();
 unsigned FUN_14047b9b0(void*);
-struct Unk_Time16 : ATL::CTime { long long m_pad; };
-Unk_Time16 FUN_1406c47a0(unsigned long long);
+#include "ms2/placeholder/mstime.h"
 __int64 FUN_140869440();
 // ---- the actor search (FUN_14174f0f0) ----
 class Unk_LobbyScanner { public: void FUN_141b90e30(unsigned*, unsigned*); };
@@ -893,8 +892,8 @@ bool CSceneStateMulti::FUN_14174fdb0()
 {
     if (m_nServerTime == 0)
         return false;
-    Unk_Time16 serverTime = FUN_1406c47a0(m_nServerTime);
-    Unk_Time16 now = FUN_1406c47a0(FUN_140869440());
+    CMsTime serverTime(m_nServerTime);
+    CMsTime now(FUN_140869440());
     return serverTime.GetMonth() == now.GetMonth();
 }
 

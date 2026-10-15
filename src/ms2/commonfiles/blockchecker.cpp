@@ -12,7 +12,7 @@ CStringW FUN_14028de60(int);
 CStringW BlockFormat(int,const fmt::ArgList&);
 FMT_VARIADIC_W(CStringW,BlockFormat,int)
 // Custom game time has the CTime value at offset zero and a flag at offset eight.
-struct Unk_BlockTime : ATL::CTime { explicit Unk_BlockTime(__int64); bool flag; };
+#include "ms2/placeholder/mstime.h"
 #define BLOCK_BIT_ASSERT(line,expr) (void)((!!(expr)) || (_wassert(_CRT_WIDE(#expr),L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\bitset.inl",line),0))
 template<int T> class Unk_BlockBits {
 public:
@@ -116,7 +116,7 @@ MS2_REPLACE_METHOD(0x1401CA390, CBlockChecker, Clear, 96, 0xEBE98BC1);
 CStringW FUN_1401ca400(const BlockPtr& record,int action) {
     int message=FUN_1401ca560(record->kind,action);
     switch(message) { case 0x432: case 0x438: {
-        Unk_BlockTime time(record->expiry);
+        CMsTime time(record->expiry);
         return BlockFormat(message,time.GetYear(),time.GetMonth(),time.GetDay(),time.GetHour(),time.GetMinute(),time.GetSecond());
     }
     default: return FUN_14028de60(message);

@@ -123,8 +123,7 @@ int FUN_14136f660(void*,const char*,int&);
 extern bool DAT_143af62d0;
 extern int DAT_143ab2914,DAT_143ab0248;
 extern Unk_StreamPoint DAT_143b01a60;
-struct Unk_CommandTime { Unk_CommandTime(__int64); ATL::CTime value; };
-MS2_CHECK_SIZE(Unk_CommandTime,8);
+#include "ms2/placeholder/mstime.h"
 void FUN_1401d9a30(const CStringW&,ATL::CAtlArray<int>&,const wchar_t*);
 void* FUN_140ad4b90(); void FUN_141863340(void*,const ATL::CAtlArray<int>&,unsigned);
 void* FUN_1403ed2d0(); void* FUN_141bd0cc0(void*); void* FUN_1409478c0();
@@ -810,9 +809,9 @@ int CUserCommandCli::FUN_141365960(Unk_CommandArgs&) {
 int CUserCommandCli::FUN_1413659d0(Unk_CommandArgs&) {
     if(DAT_143ab0248==2) { if(DAT_143ab2914<51) return 0; }
     else if(DAT_143ab2914<50) return 0;
-    Unk_CommandTime time(FUN_140869440());
+    CMsTime time(FUN_140869440());
     CStringW message;
-    message.Format(L"CurrentTime : %04d-%02d-%02d %02d:%02d:%02d",time.value.GetYear(),time.value.GetMonth(),time.value.GetDay(),time.value.GetHour(),time.value.GetMinute(),time.value.GetSecond());
+    message.Format(L"CurrentTime : %04d-%02d-%02d %02d:%02d:%02d",time.GetYear(),time.GetMonth(),time.GetDay(),time.GetHour(),time.GetMinute(),time.GetSecond());
     FUN_1412751b0(message,20); return 1;
 }
 // @0x141365b00

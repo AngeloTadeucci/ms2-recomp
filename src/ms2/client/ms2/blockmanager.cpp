@@ -18,7 +18,7 @@
 typedef unsigned long long u64;
 
 // Custom game time: the CTime value at offset zero and a flag at offset eight (ctor 0x1406c47a0).
-struct Unk_BlockTime : ATL::CTime { explicit Unk_BlockTime(__int64); bool flag; };
+#include "ms2/placeholder/mstime.h"
 
 CStringW BlockFormat(int, const fmt::ArgList&);
 FMT_VARIADIC_W(CStringW, BlockFormat, int)
@@ -29,7 +29,7 @@ CStringW FUN_14028de60(int id);                               // string table lo
 void FUN_1412751b0(const CStringW& msg, int seconds);         // on-screen notice
 CStringW FUN_1408116a0(int id, const int& v);                 // string table + one int
 CStringW FUN_1409e8970(CStringW key, const int& a, const int& b);
-void FUN_14086a7e0(Unk_BlockTime* t, int addDays);
+void AddDays(CMsTime& time, long days);   // 0x14086a7e0 (commonfiles/timeutil.cpp)
 void FUN_140268750(AccountBlockInfo* info, void* stream);     // AccountBlockInfo::Read
 void FUN_140d73aa0(CStringW msg, int a, u64 cb, CStringW b);  // message box
 void* FUN_140d73d20(void* outHandle, int flags, CStringW msg, u64 cb, CStringW b);   // dialog (smart-pointer handle out)
@@ -101,8 +101,8 @@ void CBlockManager::OnBlockPacket(void* packet)
             } else if (kind == 4) {
                 FUN_1412751b0(FUN_14028de60(0x439), 0x14);
             } else if (kind == 10) {
-                Unk_BlockTime t(bp->expiry);
-                FUN_14086a7e0(&t, 1);
+                CMsTime t(bp->expiry);
+                AddDays(t, 1);
                 int day = t.GetDay();
                 int month = t.GetMonth();
                 FUN_1412751b0(FUN_1409e8970(CStringW(L"s_admin_block_cash_out"), month, day), 0x14);
@@ -132,8 +132,8 @@ void CBlockManager::OnBlockPacket(void* packet)
 // @0x140a2fcd0  "from .. to" duration text (string 0x450) with the 12 date components
 CStringW FUN_140a2fcd0(__int64 from, __int64 to)
 {
-    Unk_BlockTime t1(from);
-    Unk_BlockTime t2(to);
+    CMsTime t1(from);
+    CMsTime t2(to);
     CStringW fmtStr = FUN_14028de60(0x450);
     int s2 = t2.GetSecond(), mi2 = t2.GetMinute(), h2 = t2.GetHour(), d2 = t2.GetDay(), mo2 = t2.GetMonth(), y2 = t2.GetYear();
     int s1 = t1.GetSecond(), mi1 = t1.GetMinute(), h1 = t1.GetHour(), d1 = t1.GetDay(), mo1 = t1.GetMonth(), y1 = t1.GetYear();
@@ -159,8 +159,8 @@ void FUN_140a2ff20(const BlockPtr& rec, int action, u64 cb)
 {
     int kind = rec->kind;
     if (kind == 2 || kind == 4) {
-        Unk_BlockTime t1((__int64)rec->m_38);
-        Unk_BlockTime t2(rec->expiry);
+        CMsTime t1((__int64)rec->m_38);
+        CMsTime t2(rec->expiry);
         CStringW title, body;
         if (rec->kind == 2) {
             title = FUN_14028de60(0x436);
@@ -183,8 +183,8 @@ void FUN_140a2ff20(const BlockPtr& rec, int action, u64 cb)
         FUN_140534d60(h);
     } else if (kind == 5) {
         if (!FUN_14036e4c0(FUN_140166410())) {
-            Unk_BlockTime t1((__int64)rec->m_38);
-            Unk_BlockTime t2(rec->expiry);
+            CMsTime t1((__int64)rec->m_38);
+            CMsTime t2(rec->expiry);
             CStringW title, body;
             title = FUN_14028de60(0x43d);
             int s2 = t2.GetSecond(), mi2 = t2.GetMinute(), h2 = t2.GetHour(), d2 = t2.GetDay(), mo2 = t2.GetMonth(), y2 = t2.GetYear();
