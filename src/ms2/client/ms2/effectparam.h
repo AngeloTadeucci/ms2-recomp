@@ -20,7 +20,20 @@
 #include "ms2/placeholder/cptred.h"
 
 class Unk_140165cf0;     // game TinyXML element
-class Unk_EffectTarget;  // vfunc_7 argument: int at +8 (1 = caster/target is MyPC?); getters 0x140a53110/53010/53050
+// Effect owner/target context passed to CEffectParam::vfunc_7 and CEffect::vfunc_3 (getters 0x140a53110/53010/53050/
+// 53420). Partial layout: only the fields read directly by recovered code; never allocate it from here.
+class Unk_EffectTarget
+{
+public:
+    void* m_unk_00;
+    int m_nKind;                    // +0x08 (CPostEffectParam::vfunc_7: 3 passes; copied to CEffect +0x18)
+    int m_unk_0c[10];
+    bool m_b34;                     // +0x34 copied to CEffect::m_b2f
+};
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_nKind, 0x08);
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_b34, 0x34);
+
+class CEffectParam;
 
 // 0x30 bytes. Runtime effect base (CPostEffect 0x38 etc.). vftable 0x142eb9a50 (13 slots): slot 0 is _purecall
 // (pure virtual destructor; dtor body 0x14119eaa0), slot 1 NiRefObject::DeleteThis, 12 pure.
@@ -34,7 +47,9 @@ public:
     // every concrete effect does NiImplementRTTI(X, CEffect) -> NiDeclareRTTI in the derived class).
     NiDeclareRTTI;
 public:
-    virtual bool vfunc_3(void* a, void* b);         // 3  0x14119f0b0
+    // 3 0x14119f0b0 init from the param: m_unk_18 = pTarget->m_nKind, m_b2f = pTarget->m_b34,
+    // m_dStartTime = time + startDelay, m_fDuration, m_bLoop (param +0x30), m_str10 = param m_str20; returns true.
+    virtual bool vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget);
     virtual void vfunc_4();                         // 4  0x14119f190
     virtual void vfunc_5();                         // 5  0x14119f1b0
     virtual void vfunc_6(float f);                  // 6  0x14119f1d0 calls vfunc_5
@@ -48,17 +63,18 @@ public:
 public:
     MS2_LAYOUT_FRIEND;
     CString m_str10;                // +0x10
-    int m_unk_18;                   // +0x18
-    void* m_unk_20;                 // +0x20
-    int m_unk_28;                   // +0x28
-    bool m_b2c;                     // +0x2c
+    int m_unk_18;                   // +0x18 pTarget->m_nKind
+    double m_dStartTime;            // +0x20
+    float m_fDuration;              // +0x28 param m_fDuration
+    bool m_b2c;                     // +0x2c param m_b30 (loop?)
     bool m_b2d;                     // +0x2d
     bool m_b2e;                     // +0x2e
     bool m_b2f;                     // +0x2f = 1
 };
 MS2_CHECK_SIZE(CEffect, 0x30);
 MS2_CHECK_OFFSET(CEffect, m_str10, 0x10);
-MS2_CHECK_OFFSET(CEffect, m_unk_20, 0x20);
+MS2_CHECK_OFFSET(CEffect, m_dStartTime, 0x20);
+MS2_CHECK_OFFSET(CEffect, m_fDuration, 0x28);
 MS2_CHECK_OFFSET(CEffect, m_b2f, 0x2f);
 typedef NiPointer<CEffect> CEffectPtr;
 

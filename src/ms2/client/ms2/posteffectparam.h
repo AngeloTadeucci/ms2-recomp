@@ -1,6 +1,6 @@
 // posteffectparam.h - CPostEffectParam (CEffectParam + fade settings) and CScreenEffectBase (CPtred-based timed
 // full-screen post effect driven by a CPostEffectParam). Owning unit: ?\posteffectparam.cpp (0x140dbcbc0-0x140dbddc0,
-// 25 funcs; also holds CPostEffect 0x38). Header name assumed from the unit path.
+// 25 funcs; also CPostEffect 0x38). Header name assumed from the unit path.
 //
 // HOW TO USE THIS HEADER (for unit workers):
 // - Param: `class PostShimmerEffectParam : public CPostEffectParam`; effect: `class PostShimmerEffect : public
@@ -34,6 +34,32 @@ MS2_CHECK_SIZE(CPostEffectParam, 0x60);
 MS2_CHECK_OFFSET(CPostEffectParam, m_bUseFade, 0x48);
 MS2_CHECK_OFFSET(CPostEffectParam, m_fHoldDuration, 0x54);
 MS2_CHECK_OFFSET(CPostEffectParam, m_nFadeEndInterpolator, 0x5c);
+
+// 0x38 bytes. Runtime post effect created by CPostEffectParam::vfunc_6. vftable 0x142e37980 (13 slots, ??_G
+// 0x140dbdba0). vfunc_3 creates the CScreenEffectBase subclass for the param type (4 Monochrome, 5 RadialBlur,
+// 0x12 ScreenMasking, 0x13 GaussianBlur, 0x14 PostShimmer) and registers it with the post-process manager under m_nId.
+class CPostEffect : public CEffect
+{
+    NiDeclareRTTI;                                  // 2 GetRTTI 0x140dbdc90; ms_RTTI 0x143ac47d0 ("CPostEffect" : CEffect)
+public:
+    CPostEffect();                                  // 0x140dbcf50
+    virtual ~CPostEffect();                         // 0x140dbcfa0
+
+    virtual bool vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget);   // 3 0x140dbcfd0
+    virtual void vfunc_4();                         // 4  0x140dbd400 base + manager remove(m_nType, m_nId)
+    virtual void vfunc_5();                         // 5  0x140dbd440 base + manager (m_nType, m_nId)
+    virtual void vfunc_7();                         // 7  0x140dbd480 {}
+    virtual int vfunc_12();                         // 12 0x140dbdc80 return m_nType
+
+    static int NextId();                            // 0x140dbd490 ++counter (0x143ac47c8), skipping 0
+
+public:
+    int m_nType;                                    // +0x30 param m_nType
+    int m_nId;                                      // +0x34 NextId()
+};
+MS2_CHECK_SIZE(CPostEffect, 0x38);
+MS2_CHECK_OFFSET(CPostEffect, m_nType, 0x30);
+MS2_CHECK_OFFSET(CPostEffect, m_nId, 0x34);
 
 // 0x50 bytes. vftable 0x142e379f0 (8 slots, ??_G 0x140dbdc40).
 class CScreenEffectBase : public CPtred
