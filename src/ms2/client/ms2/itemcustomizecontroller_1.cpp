@@ -27,6 +27,8 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "itemcustomizecontroller_1.h"
 #include "itempickinghelper.h"
+
+struct Unk_PickTargetView : public Unk_PickTarget {};   // layout-identical view of the picker target element
 #include <efd/MemHint.h>
 #include <efd/MemObject.h>
 #include <efd/ServiceManager.h>
@@ -537,7 +539,8 @@ void CItemCustomizeController::vfunc_39(int bActive)
             fMode = 3.0f;
         }
     }
-    CAtlArray<MS2Ptr<Unk_PickTarget> >& aTargets = m_spPicker->GetTargets();
+    // the exe instantiates CAtlArray::operator[] separately here (0x141412c40, not the 0x141168040 copy #4 calls)
+    CAtlArray<MS2Ptr<Unk_PickTargetView> >& aTargets = (CAtlArray<MS2Ptr<Unk_PickTargetView> >&)m_spPicker->GetTargets();
     for (size_t i = 0; i < aTargets.GetCount(); i++)
     {
         Unk_PickTarget* pTarget = aTargets[i].get();

@@ -4,7 +4,7 @@
 // ?\caprotationcontroller.cpp), CMakeupController (0xe0, ?\makeupcontroller.cpp), CPonyTailController (0x250,
 // client\ms2\ponytailphysxhelper.cpp). Owning unit: ?\itemcustomizecontroller.cpp#1 (src/ms2/client/ms2/
 // itemcustomizecontroller_1.cpp). Header name assumed; the ?\itemcustomizecontroller.cpp family header
-// (itemcustomizecontroller.h, CItemPickingHelper) belongs to #4.
+// (itempickinghelper.h, CItemPickingHelper) belongs to #4.
 //
 // HOW TO USE THIS HEADER (for unit workers):
 // - `class CXController : public CItemCustomizeController`; derived data starts at +0xb8. Copy the exact virtual

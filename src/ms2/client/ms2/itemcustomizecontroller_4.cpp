@@ -6,7 +6,8 @@
 // MS2-PIN: ??_GCItemPickingHelper@@UEAAPEAXI@Z 0x141419870
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\itemcustomizecontroller.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
-#include "itemcustomizecontroller.h"
+#include "itemcustomizecontroller_1.h"
+#include "itempickinghelper.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "hook/ms2hook.h"
 #include <efd/MemHint.h>
@@ -28,7 +29,7 @@ class CMeshUVPicker : public efd::MemObject
 {
 public:
     CMeshUVPicker();                                                    // 0x14147e6e0
-    void FUN_14147e900();                                               // init
+    int FUN_14147e900();                                                // init
     bool FUN_14147ea50(NiAVObject* pMesh, NiCamera* pCam, float x, float y, NiPoint3* pHit, NiPoint3* pNormal,
                        NiPoint2* pUV, unsigned __int64* pTri, CAtlArray<NiRenderObject*>* pSkins);   // pick
     char m_pad[0x98];
@@ -68,10 +69,12 @@ bool FUN_140998dc0(const void* pName, const char* psz);                 // name 
 
 void FUN_141419670(void* pObject, CAtlArray<NiRenderObject*>* pOut);
 
+struct Unk_PickPartName : public CString {};   // layout-identical view of a part-name element
+
 // @0x141418c00
 CItemPickingHelper::CItemPickingHelper()
     : m_spMesh(0)
-    , m_nUnk18(0)
+    , m_nMode(0)
     , m_spPicker(0)
     , m_nPicked(-1)
     , m_spLast(0)
@@ -85,10 +88,10 @@ CItemPickingHelper::~CItemPickingHelper()
 }
 
 // @0x141418d60
-void CItemPickingHelper::CreatePicker()
+int CItemPickingHelper::CreatePicker()
 {
     m_spPicker.FUN_1412861e0(new (efd::MemHint(efd::MemHint::NONE)) CMeshUVPicker);
-    m_spPicker.FUN_141286290()->FUN_14147e900();
+    return m_spPicker.FUN_141286290()->FUN_14147e900();
 }
 
 // @0x141418e00
@@ -122,8 +125,9 @@ int CItemPickingHelper::GetPickedIndex() const
 }
 
 // @0x141418f10
-int CItemPickingHelper::Pick(efd::Point3* pHit, CAtlArray<NiRenderObject*>& parts)
+int CItemPickingHelper::Pick(efd::Point3* pHit, CAtlArray<CString>& parts)
 {
+    // the exe calls its own CAtlArray<CString>::operator[] copy here (0x14134b380), not the 0x1401c0cc0 one
     void* pCamMgr = FUN_1413f9a70();
     NiPoint3 camPos = *FUN_1411b1f60(FUN_1409a8a60(pCamMgr));
     float fBest = FLT_MAX;
@@ -136,7 +140,7 @@ int CItemPickingHelper::Pick(efd::Point3* pHit, CAtlArray<NiRenderObject*>& part
         for (unsigned j = 0; j < parts.GetCount(); j++)
         {
             NiPoint3 hit;
-            if (PickTarget(spTarget.get(), &parts[j], &hit) != 0)
+            if (PickTarget(spTarget.get(), &((CAtlArray<Unk_PickPartName>&)parts)[j], &hit) != 0)
             {
                 float fDist = (hit - camPos).Length();
                 if (fDist < fBest)
@@ -172,7 +176,7 @@ void CItemPickingHelper::Reset()
 }
 
 // @0x141419250
-int CItemPickingHelper::PickTarget(Unk_PickTarget* pTarget, NiRenderObject** pPart, NiPoint3* pHit)
+int CItemPickingHelper::PickTarget(Unk_PickTarget* pTarget, const CString* pPart, NiPoint3* pHit)
 {
     m_spMesh.FUN_141418a00(0);
     if (pTarget == 0)

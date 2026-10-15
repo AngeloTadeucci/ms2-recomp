@@ -2,12 +2,13 @@
 // the attach parts of the customized item against the cursor. Its out-of-line members are in
 // ?\itemcustomizecontroller.cpp#4 (0x141418c00-0x141419df0); the inline accessors below were first emitted by #1
 // (CItemCustomizeController, 0x141412e40-0x1414131c0). Header name assumed. Layout and member names follow w22's
-// #4 analysis (itemcustomizecontroller.h); this copy is the shared one (sb3), so #1 and #4 agree on one definition.
+// #4 analysis (itemcustomizecontroller.h); this is the single shared definition (itemcustomizecontroller.h was removed), used by #1, #3 and #4.
 // Member names are invented.
 #pragma once
 #include <afx.h>
 #include <atlcoll.h>
 #include <NiRefObject.h>
+#include <NiRenderObject.h>
 #include <NiPoint2.h>
 #include <NiPoint3.h>
 
@@ -69,6 +70,9 @@ public:
     // pHit; parts = CItemCustomizeController::m_aPartNames (CAtlArray<CString>, see itemcustomizecontroller_1.h)
     int Pick(efd::Point3* pHit, CAtlArray<CString>& parts);     // 0x141418f10
     void Reset();                                               // 0x141419210
+    // unit-internal (#4): ray-pick one target's part / one mesh; skins = the FA_Skin/FA_EA render objects
+    int PickTarget(Unk_PickTarget* pTarget, const CString* pPartName, NiPoint3* pHit);    // 0x141419250
+    int PickMesh(NiAVObject* pMesh, CAtlArray<NiRenderObject*>& skins, NiPoint3* pHit);    // 0x1414194b0
 
     // inline accessors (COMDATs first emitted by ?\itemcustomizecontroller.cpp#1)
     CMeshUVPicker* GetUVPicker() { return m_spPicker.FUN_141412c80(); }                 // 0x141412e40
