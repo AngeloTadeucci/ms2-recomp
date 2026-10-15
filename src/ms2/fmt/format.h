@@ -89,6 +89,12 @@ public:
 
     MakeValue() {}
 
+    void set_string(const CStringW& str)
+    {
+        wstring.value = str;
+        wstring.size = str.GetLength();
+    }
+
 #define FMT_MAKE_VALUE_(Type, field, TYPE, rhs) \
     MakeValue(Type value) { field = rhs; } \
     static ULongLong type(Type) { return Arg::TYPE; }
@@ -112,12 +118,14 @@ public:
 
     FMT_MAKE_VALUE(char*, string.value, CSTRING)
     FMT_MAKE_VALUE(const char*, string.value, CSTRING)
+    FMT_MAKE_VALUE(const wchar_t*, wstring.value, WSTRING) // MS2: banned-word logger wide literal.
 
 #define FMT_MAKE_STR_VALUE(Type, TYPE) \
     MakeValue(Type value) { set_string(value); } \
     static ULongLong type(Type) { return Arg::TYPE; }
 
     FMT_MAKE_STR_VALUE(const CString&, STRING)
+    FMT_MAKE_STR_VALUE(const CStringW&, WSTRING)    // MS2: type 11, 0x1401d0e90 (uiworldchampionrewarddialog.cpp)
 
     FMT_MAKE_VALUE(void*, pointer, POINTER)
     FMT_MAKE_VALUE(const void*, pointer, POINTER)
