@@ -8,6 +8,10 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"              // MS2Ptr<T> (16 bytes, object pointer at +8)
 #include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/commonfiles/stream.h"
+
+class CInPacket;
+class COutPacket;
 
 // Player snapshot shared by club members. 0xa8 bytes. ctor 0x14020d270, dtor 0x14020d310, reset 0x14020d380,
 // writer 0x14020d9a0 (field order: account, character, name, gender, jobCode, job, level, mapId, channel, picture,
@@ -20,6 +24,9 @@ public:
     virtual ~CClubMemberProxy();                    // ??_G 0x1402127a0, vftable 0x142cf3958
     CStringW FUN_14020e5d0();                       // name (under m_lock)
     CString FUN_14020e6c0();                        // picture (under m_lock)
+    void FUN_14020d5c0(CInPacket& packet);          // read from a packet (clubcli.cpp)
+    void FUN_14020d640(CInPacket* packet);          // read (null-checked packet pointer)
+    void FUN_14020e130(const CClubMemberProxy& o);  // copy assignment
     __int64 m_accountId;                            // +0x18
     __int64 m_characterId;                          // +0x20
     unsigned char m_gender;                         // +0x28 reset 3
@@ -54,6 +61,8 @@ class CClubMember : public CPtred
 public:
     CClubMember();
     virtual ~CClubMember();                         // ??_G 0x140212760, vftable 0x142cf3968
+    void FUN_14020ea50(CInPacket* packet);          // read from a packet
+    void FUN_14020e950(CClubMember* o);             // copy (null-checked)
     __int64 m_18;                                   // +0x18
     CClubMemberProxy m_info;                        // +0x20 (character id at +0x40 is compared with the club leader)
     int m_c8;                                       // +0xc8
@@ -88,6 +97,18 @@ public:
     virtual void vfunc_5(CStringW strName);         // 5 0x1402104e0 remove member by name (by value)
     // Accessors recovered by client\ms2\uiclubdialog.cpp (non-virtual; they take m_lock).
     CStringW FUN_14020f1a0();                       // m_name
+    // clubcli.cpp users
+    __int64 FUN_14020f0c0();                        // club id
+    unsigned FUN_14020f380();                       // max members (m_48)
+    unsigned FUN_14020f540();                       // state (m_state)
+    void FUN_14020f4e0(int nState);                 // set the state
+    void FUN_14020f5b0(int nBuffId, int nBuffLevel);   // set m_50/m_54 then vfunc_2(1)
+    void FUN_14020f230(const CStringW& strName);           // set the club name
+    void FUN_14020f3f0(__int64 n);                  // set m_90
+    void FUN_14020f720(__int64 nAccountId, __int64 nCharacterId, CStringW strName);   // set the leader, then vfunc_2(1)
+    void FUN_1402107a0(const CStringW& strOldName, const CStringW& strNewName);   // rename a member
+    CStringW FUN_14020f8c0();                       // leader name
+    void FUN_14020fd80(CInPacket& packet);          // read the club
     __int64 FUN_14020f460();                        // name change available time
     int FUN_14020f640();                            // buff id
     unsigned FUN_14020f6b0();                       // buff level
@@ -129,12 +150,52 @@ MS2_CHECK_OFFSET(CClub, m_90, 0x90);
 MS2_CHECK_OFFSET(CClub, m_leader, 0x98);
 MS2_CHECK_OFFSET(CClub, m_members, 0xa8);
 
+namespace Club {
+// Club invitation record: 0x38 bytes. ctor 0x14020c3a0, dtor 0x14020c420. The reader takes the input stream, the
+// writer the output stream (both inline-called with a packet).
+class PacketInvite : public CPtred
+{
+public:
+    PacketInvite();
+    virtual ~PacketInvite();
+    void FUN_14020c720(CInputStream& in);           // read: id, then the three strings
+    void FUN_14020c670(COutputStream& out);         // write: id, then the three strings
+    __int64 m_inviteId;                             // +0x18 (the key of the manager's invite map)
+    CStringW m_20;                                  // +0x20
+    CStringW m_28;                                  // +0x28
+    CStringW m_30;                                  // +0x30
+};
+}
+MS2_CHECK_SIZE(Club::PacketInvite, 0x38);
+
 // Client club: 0xf0 bytes (operator new(0xf0) in clubcli.cpp), no own members. ctor 0x140b12780, dtor 0x140b127f0,
 // vftables 0x142ddacd0 (CClub part) and 0x142ddad08 (CPtred part at +0xd8; slot 0 thunk 0x140b19e80).
+// The FUN_ members are the packet handlers and requests of client\ms2\clubcli.cpp.
 class CClubCli : public CClub, public CPtred
 {
 public:
     CClubCli();
     virtual ~CClubCli();
+    MS2Ptr<CClubMember> FUN_140b12850(__int64 nCharacterId);    // member by character id
+    int FUN_140b129c0();                                        // number of members whose m_f0 is 0
+    void FUN_140b12ad0(CInPacket& packet);                      // opcode 0xf
+    void FUN_140b12d70(CInPacket& packet);                      // opcode 0x11
+    void FUN_140b13060(CInPacket& packet);                      // opcode 0x12
+    void FUN_140b13200(CInPacket& packet);                      // opcode 0x13
+    void FUN_140b133c0(CInPacket& packet);                      // opcode 0x14
+    void FUN_140b135d0(CInPacket& packet);                      // opcode 0x15
+    void FUN_140b13a20(CInPacket& packet);                      // opcode 0x16
+    void FUN_140b13b50(CInPacket& packet);                      // opcode 0x17
+    void FUN_140b13c60(CInPacket& packet);                      // opcode 0x18
+    void FUN_140b13dc0(CInPacket& packet);                      // opcode 0x19
+    void FUN_140b13f20(CInPacket& packet);                      // opcode 0x1a
+    void FUN_140b14050(CInPacket& packet);                      // opcode 0x1b
+    void FUN_140b14110(CInPacket& packet);                      // opcode 0x1c
+    bool FUN_140b14220();                                       // always true
+    bool FUN_140b14230(CStringW strName);                       // request: add a member by name
+    void FUN_140b14480();                                       // request: withdraw
+    void FUN_140b14530(CStringW strName);                       // request: change the leader
+    void FUN_140b146e0(int nBuffId, int nBuffLevel);            // request: set the buff
+    void FUN_140b14900(CStringW strName);                       // request: rename the club
 };
 MS2_CHECK_SIZE(CClubCli, 0xf0);

@@ -9,17 +9,8 @@
 #include <afx.h>
 
 #include "ms2/ms2layout.h"
+#include "ms2/placeholder/unk_1402a9d70.h"
 
-class Unk_1402a9d70
-{
-public:
-    Unk_1402a9d70(int n1, float f1, float f2, float f3, int n2);   // 0x1402a9d70
-    ~Unk_1402a9d70();                                               // 0x1402aa1d0
-
-private:
-    char m_pad[0x50];
-};
-MS2_CHECK_SIZE(Unk_1402a9d70, 0x50);
 
 static CString s_strSortTypeNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_strSkill = "skill";
