@@ -39,9 +39,9 @@ MS2_CHECK_SIZE(Unk_IngRef, 16);
 // std::vector<Unk_IngRef> (24 bytes)
 class Unk_IngVec {
 public:
-    Unk_IngVec();                          // 0x14027d720
+    Unk_IngVec() noexcept;                 // 0x14027d720
     ~Unk_IngVec();                         // 0x14027e480
-    void FUN_14028a610();                  // clear
+    void FUN_14028a610() noexcept;         // clear
     void FUN_14028b3a0(size_t);            // reserve
     size_t FUN_14028b500();                // size
     void FUN_14028b330(Unk_IngRef&);       // push_back
@@ -67,8 +67,8 @@ public:
     virtual ~CIngredientInfo();            // 0x14027e620
     void FUN_14026b1e0(COutputStream&);
     void FUN_14026b250(CInPacket&);
-    char FUN_14026b2f0(CIngredientInfo*);
-    char FUN_14026b350();
+    bool FUN_14026b2f0(CIngredientInfo*);
+    bool FUN_14026b350();
     void FUN_14026b3a0(COutputStream&);
     void FUN_14026b410(CInPacket&);
     unsigned FUN_14026b4b0();
@@ -98,7 +98,7 @@ public:
     CIngredientContainer(size_t reserve);  // 0x14026b640
     CIngredientContainer(CIngredientContainer* other);   // 0x14026b6b0
     virtual ~CIngredientContainer();       // 0x14026b980
-    char FUN_14026b890(CIngredientContainer* other);
+    bool FUN_14026b890(CIngredientContainer* other);
     void FUN_14026b9d0(const CStringW& text);
     void FUN_14026bbf0(int a, int b);
     void FUN_14026bca0(Unk_IngRef r);
@@ -136,7 +136,7 @@ public:
 // std::map<unsigned,int> (16 bytes) and std::vector<ItemEntity> (24 bytes)
 class Unk_RewardMap {
 public:
-    Unk_RewardMap();                       // 0x14027d600
+    Unk_RewardMap() noexcept;                       // 0x14027d600
     ~Unk_RewardMap();                      // 0x14027e3d0
     size_t FUN_14028b3f0();                // size
     Unk_It* FUN_14028a910(Unk_It*);        // end
@@ -151,7 +151,7 @@ public:
 MS2_CHECK_SIZE(Unk_RewardMap, 16);
 class Unk_ItemVec {
 public:
-    Unk_ItemVec();                         // 0x14027d6c0
+    Unk_ItemVec() noexcept;                         // 0x14027d6c0
     ~Unk_ItemVec();                        // 0x14027e420
     size_t FUN_14028b470();                // size
     void FUN_14028b2a0(ItemEntity&);       // push_back
@@ -174,7 +174,7 @@ public:
     unsigned FUN_14026ccf0();
     unsigned FUN_14026cd70(unsigned key);
     void FUN_14026cdf0();
-    int FUN_14026ce30();
+    bool FUN_14026ce30();
     void FUN_14026ce80(unsigned key, int delta);
     Unk_RewardMap m_rewards;
     Unk_ItemVec m_items;
@@ -230,7 +230,7 @@ class NpcShopItemLife : public CPtred {
 public:
     NpcShopItemLife();                     // 0x14026e9b0
     virtual ~NpcShopItemLife();            // 0x14027e8e0
-    int FUN_14026ea20(NpcShopItemLife* other);
+    bool FUN_14026ea20(NpcShopItemLife* other);
     Unk_ShopLifeRef FUN_14026eab0();
     int FUN_14026ebc0(void* xml);
     void FUN_14026ee70(COutputStream& out);
@@ -297,7 +297,7 @@ public:
 // std::list<Unk_HistRef> (16 bytes)
 class Unk_HistList {
 public:
-    Unk_HistList();                        // 0x14027d5e0
+    Unk_HistList() noexcept;                        // 0x14027d5e0
     ~Unk_HistList();                       // 0x14027e3a0
     void FUN_14028a4b0();                  // clear
     Unk_It* FUN_14028a1a0(Unk_It*);        // begin

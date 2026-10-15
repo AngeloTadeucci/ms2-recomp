@@ -24,9 +24,9 @@ ItemEntity::ItemEntity(ItemAble& source) {
 void ItemEntity::vfunc_1(CStringW text) {
     Unk_UIntArr values;
     FUN_140274fc0(text, &values, L",");
-    if (values.FUN_140186270() != 0) m_itemId = *values.FUN_140184510(0);
-    if (values.FUN_140186270() > 1) m_rank = *values.FUN_140184510(1);
-    if (values.FUN_140186270() > 2) m_count = *values.FUN_140184510(2);
+    if (values.FUN_140186270() >= 1) m_itemId = *values.FUN_140184510(0);
+    if (values.FUN_140186270() >= 2) m_rank = *values.FUN_140184510(1);
+    if (values.FUN_140186270() >= 3) m_count = *values.FUN_140184510(2);
 }
 // @0x14026ae40
 void ItemEntity::vfunc_2(void* xml) {
@@ -36,11 +36,9 @@ void ItemEntity::vfunc_2(void* xml) {
 }
 // @0x14026aeb0
 bool FUN_14026aeb0(const ItemEntity& a, const ItemEntity& b) {
-    if (a.m_itemId == b.m_itemId) {
-        if (a.m_rank == b.m_rank) return a.m_count < b.m_count;
-        return a.m_rank < b.m_rank;
-    }
-    return a.m_itemId < b.m_itemId;
+    if (a.m_itemId != b.m_itemId) return a.m_itemId < b.m_itemId;
+    if (a.m_rank != b.m_rank) return a.m_rank < b.m_rank;
+    return a.m_count < b.m_count;
 }
 // @0x14026af70
 unsigned ItemEntity::vfunc_o18_0() { return m_itemId; }
@@ -56,25 +54,23 @@ bool ItemEntity::FUN_14026aff0() { return m_29; }
 bool ItemEntity::FUN_14026b010() { return m_2b; }
 // @0x14026b030
 void ItemEntity::FUN_14026b030(Unk_GiftOutput& stream) {
-    COutputStream& out = reinterpret_cast<COutputStream&>(stream);
-    out.vfunc_o10_3(m_itemId);
-    out.vfunc_o10_2((short)m_rank);
-    out.vfunc_o10_3(m_count);
-    out.vfunc_o10_0(m_28);
-    out.vfunc_o10_0(m_2a);
-    out.vfunc_o10_0(m_29);
-    out.vfunc_o10_0(m_2b);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_3(m_itemId);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_2((short)m_rank);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_3(m_count);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_0(m_28);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_0(m_2a);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_0(m_29);
+    reinterpret_cast<COutputStream&>(stream).vfunc_o10_0(m_2b);
 }
 // @0x14026b100
 void ItemEntity::FUN_14026b100(Unk_GiftInput& stream) {
-    CInputStream& in = reinterpret_cast<CInputStream&>(stream);
-    m_itemId = in.vfunc_o8_3();
-    m_rank = (unsigned short)in.vfunc_o8_2();
-    m_count = in.vfunc_o8_3();
-    m_28 = in.vfunc_o8_0();
-    m_2a = in.vfunc_o8_0();
-    m_29 = in.vfunc_o8_0();
-    m_2b = in.vfunc_o8_0();
+    m_itemId = reinterpret_cast<CInputStream&>(stream).vfunc_o8_3();
+    m_rank = (unsigned short)reinterpret_cast<CInputStream&>(stream).vfunc_o8_2();
+    m_count = reinterpret_cast<CInputStream&>(stream).vfunc_o8_3();
+    m_28 = reinterpret_cast<CInputStream&>(stream).vfunc_o8_0();
+    m_2a = reinterpret_cast<CInputStream&>(stream).vfunc_o8_0();
+    m_29 = reinterpret_cast<CInputStream&>(stream).vfunc_o8_0();
+    m_2b = reinterpret_cast<CInputStream&>(stream).vfunc_o8_0();
 }
 // @0x14026b1c0
 void ItemEntity::FUN_14026b1c0(int rank) { m_rank = rank; }
@@ -93,22 +89,15 @@ void CIngredientInfo::FUN_14026b250(CInPacket& in) {
     m_c = in.vfunc_o8_3();
 }
 // @0x14026b2f0
-char CIngredientInfo::FUN_14026b2f0(CIngredientInfo* other) {
-    if (m_a == other->m_a) {
-        if (m_b == other->m_b) {
-            if (m_c == other->m_c) return 0;
-            return 1;
-        }
-        return 1;
-    }
-    return 1;
+bool CIngredientInfo::FUN_14026b2f0(CIngredientInfo* other) {
+    if (m_a != other->m_a) return 1;
+    if (m_b != other->m_b) return 1;
+    if (m_c != other->m_c) return 1;
+    return 0;
 }
 // @0x14026b350
-char CIngredientInfo::FUN_14026b350() {
-    bool result;
-    if (m_c == 0 || (m_a == 0 && m_b == 0)) result = true;
-    else result = false;
-    return result;
+bool CIngredientInfo::FUN_14026b350() {
+    return m_c == 0 || (m_a == 0 && m_b == 0);
 }
 // @0x14026b3a0
 void CIngredientInfo::FUN_14026b3a0(COutputStream& out) {
@@ -125,27 +114,21 @@ void CIngredientInfo::FUN_14026b410(CInPacket& in) {
 // @0x14026b4b0
 unsigned CIngredientInfo::FUN_14026b4b0() {
     if (m_b != 0 && FUN_140281980() != 0) {
-        Unk_IngTable* table = FUN_140281980();
-        return FUN_1405575b0(table, m_b);
+        return FUN_1405575b0(FUN_140281980(), m_b);
     }
     return 0;
 }
 // @0x14026b500
 unsigned CIngredientInfo::FUN_14026b500() {
-    if (m_a == 0) return FUN_14026b4b0();
-    return m_a;
+    if (m_a != 0) return m_a;
+    return FUN_14026b4b0();
 }
 // @0x14026b540
 int* FUN_14026b540(int* out, int value) { *out = value; return out; }
 // @0x14026b560
 bool FUN_14026b560(int* id, Unk_IngRef ref) {
-    bool result;
-    if (ref == 0) {
-        result = false;
-    } else {
-        result = ref->m_a == *id;
-    }
-    return result;
+    if (ref == 0) return false;
+    return ref->m_a == *id;
 }
 
 // ---- CIngredientContainer -------------------------------------------------------------------------------------
@@ -154,6 +137,7 @@ CIngredientContainer::CIngredientContainer() {}
 // @0x14026b640
 CIngredientContainer::CIngredientContainer(size_t reserve) { m_items.FUN_14028b3a0(reserve); }
 // @0x14026b6b0
+// MS2-FUNCTIONAL: range-for temporaries sit in different stack slots (code identical otherwise).
 CIngredientContainer::CIngredientContainer(CIngredientContainer* other) {
     m_items.FUN_14028a610();
     m_items.FUN_14028b3a0(other->m_items.FUN_14028b500());
@@ -169,19 +153,14 @@ CIngredientContainer::CIngredientContainer(CIngredientContainer* other) {
     }
 }
 // @0x14026b890
-char CIngredientContainer::FUN_14026b890(CIngredientContainer* other) {
-    size_t mine = m_items.FUN_14028b500();
-    size_t theirs = other->m_items.FUN_14028b500();
-    if (mine == theirs) {
-        size_t count = m_items.FUN_14028b500();
-        for (size_t i = 0; i < count; ++i) {
-            CIngredientInfo* b = other->m_items.FUN_14027f220(i)->FUN_140281f10();
-            CIngredientInfo* a = m_items.FUN_14027f1f0(i)->FUN_140281f10();
-            if (a->FUN_14026b2f0(b)) return 1;
-        }
-        return 0;
+bool CIngredientContainer::FUN_14026b890(CIngredientContainer* other) {
+    if (m_items.FUN_14028b500() != other->m_items.FUN_14028b500()) return true;
+    size_t count = m_items.FUN_14028b500();
+    for (size_t i = 0; i < count; ++i) {
+        CIngredientInfo* b = other->m_items.FUN_14027f220(i)->FUN_140281f10();
+        if (m_items.FUN_14027f1f0(i)->FUN_140281f10()->FUN_14026b2f0(b)) return true;
     }
-    return 1;
+    return false;
 }
 // @0x14026b980
 CIngredientContainer::~CIngredientContainer() { m_items.FUN_14028a610(); }
@@ -201,33 +180,30 @@ void CIngredientContainer::FUN_14026b9d0(const CStringW& text) {
 }
 // @0x14026bbf0
 void CIngredientContainer::FUN_14026bbf0(int a, int b) {
-    if (a != 0 && b != 0) {
-        Unk_IngRef ref(new CIngredientInfo(a, b, 0));
-        m_items.FUN_14028b300(ref);
-    }
+    if (a == 0 || b == 0) return;
+    Unk_IngRef ref(new CIngredientInfo(a, b, 0));
+    m_items.FUN_14028b300(ref);
 }
 // @0x14026bca0
 void CIngredientContainer::FUN_14026bca0(Unk_IngRef r) {
-    if (!(r == 0)) m_items.FUN_14028b330(r);
+    if (r == 0) return;
+    m_items.FUN_14028b330(r);
 }
 // @0x14026bd10
 void CIngredientContainer::FUN_14026bd10(int a, int b) {
-    if (a != 0 && b != 0) {
-        Unk_IngRef ref(new CIngredientInfo(0, b, a));
-        m_items.FUN_14028b300(ref);
-    }
+    if (a == 0 || b == 0) return;
+    Unk_IngRef ref(new CIngredientInfo(0, b, a));
+    m_items.FUN_14028b300(ref);
 }
 // @0x14026bdc0
 Unk_IngRef CIngredientContainer::FUN_14026bdc0(size_t index) {
-    size_t count = FUN_14026bee0();
-    if (index < count) return *m_items.FUN_14028a0b0(index);
-    return Unk_IngRef(0);
+    if (index >= FUN_14026bee0()) return Unk_IngRef(0);
+    return *m_items.FUN_14028a0b0(index);
 }
 // @0x14026be50
 Unk_IngRef CIngredientContainer::FUN_14026be50(size_t index) {
-    size_t count = FUN_14026bf10();
-    if (index < count) return *m_items.FUN_14028a0f0(index);
-    return Unk_IngRef(0);
+    if (index >= FUN_14026bf10()) return Unk_IngRef(0);
+    return *m_items.FUN_14028a0f0(index);
 }
 // @0x14026bee0
 size_t CIngredientContainer::FUN_14026bee0() { return m_items.FUN_14028b500(); }
@@ -245,7 +221,8 @@ void CIngredientContainer::FUN_14026bfd0(COutputStream& out) {
     out.vfunc_o10_1(count);
     for (size_t i = 0; i < count; ++i) {
         Unk_IngRef ref(*m_items.FUN_14028a0b0(i));
-        if (!(ref == 0)) ref->FUN_14026b3a0(out);
+        if (ref == 0) continue;
+        ref->FUN_14026b3a0(out);
     }
 }
 // @0x14026c0b0
@@ -303,9 +280,8 @@ Unk_IngRef CIngredientContainer::FUN_14026c450(unsigned key) {
 // @0x14026c550
 bool Unk_IngHolder::FUN_14026c550(Unk_IngHolder* other) {
     CIngredientContainer* b = other->m_container.FUN_140281f00();
-    CIngredientContainer* a = m_container.FUN_140281f00();
-    char differs = a->FUN_14026b890(b);
-    return differs != 0;
+    if (m_container.FUN_140281f00()->FUN_14026b890(b)) return true;
+    return false;
 }
 
 // ---- DungeonRewardInfo ----------------------------------------------------------------------------------------
@@ -397,12 +373,10 @@ void DungeonRewardInfo::FUN_14026cdf0() {
     m_items.FUN_14028a590();
 }
 // @0x14026ce30
-int DungeonRewardInfo::FUN_14026ce30() {
-    if (m_rewards.FUN_14028b3f0() == 0) {
-        if (m_items.FUN_14028b470() == 0) return 0;
-        return 1;
-    }
-    return 1;
+bool DungeonRewardInfo::FUN_14026ce30() {
+    if (m_rewards.FUN_14028b3f0() > 0) return true;
+    if (m_items.FUN_14028b470() > 0) return true;
+    return false;
 }
 // @0x14026ce80
 void DungeonRewardInfo::FUN_14026ce80(unsigned key, int delta) {
@@ -450,16 +424,12 @@ void WeddingHallReservationFee::FUN_14026e940(CInputStream& in) {
 // @0x14026e9b0
 NpcShopItemLife::NpcShopItemLife() : m_type(0), m_value(0), m_time(), m_onlyVisible(false) {}
 // @0x14026ea20
-int NpcShopItemLife::FUN_14026ea20(NpcShopItemLife* other) {
-    if (m_type == other->m_type) {
-        if (m_value == other->m_value) {
-            if (m_time != other->m_time) return 1;
-            if (m_onlyVisible == other->m_onlyVisible) return 0;
-            return 1;
-        }
-        return 1;
-    }
-    return 1;
+bool NpcShopItemLife::FUN_14026ea20(NpcShopItemLife* other) {
+    if (m_type != other->m_type) return true;
+    if (m_value != other->m_value) return true;
+    if (m_time != other->m_time) return true;
+    if (m_onlyVisible != other->m_onlyVisible) return true;
+    return false;
 }
 // @0x14026eab0
 Unk_ShopLifeRef NpcShopItemLife::FUN_14026eab0() {
