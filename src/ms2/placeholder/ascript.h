@@ -51,6 +51,10 @@ private:
     void Release();                     // if (m_p) { <drop the reference>; m_p = NULL; } (0x1409b9e00 for T = AScript)
     void ReleaseImpl(void*);            // explicit specializations only (Unk_DropEntry, uiitemdropinfodialog.cpp)
     static void Reference(T*);
+public:
+    bool operator!() const;             // `m_p == 0` (w3o1: generic bodies of all members in ms2ptr_impl.h)
+private:
+    void AddRefImpl(void*) const;       // Reference(m_p) (rdx homed as a pointer)
 
     void* m_unk_00;
     T* m_p;                             // +0x08

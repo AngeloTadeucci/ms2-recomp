@@ -7,6 +7,7 @@ public:
     TSingleton() { s_instance=this; }
     virtual ~TSingleton() { s_instance=0; }
     static TSingleton* s_instance;
+    static T* GetInstance() { return static_cast<T*>(s_instance); }   // w3o1: 0x14015a050 for T = GameEventManagerCli
 };
 template<class T> TSingleton<T>* TSingleton<T>::s_instance=0;
 struct Unk_OSData {
