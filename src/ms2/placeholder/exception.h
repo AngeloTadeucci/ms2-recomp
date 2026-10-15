@@ -1,0 +1,20 @@
+// Game Exception (not MFC CException). Name and 0x10 size from ThrowInfo 0x1439df1b0.
+// CatchableType names .?AVException@@, with copy ctor 0x140203810.
+#pragma once
+#include <afx.h>
+#include "ms2/ms2layout.h"
+class Exception {
+public:
+    // @0x140203810
+    Exception(const Exception& rhs):m_code(rhs.m_code),m_message(rhs.m_message){}
+    // @0x140203860
+    explicit Exception(int code):m_code(code){}
+    // @0x140203af0
+    ~Exception(){}
+private:
+    MS2_LAYOUT_FRIEND;
+    int m_code;
+    CString m_message;
+};
+MS2_CHECK_SIZE(Exception,0x10);
+MS2_CHECK_OFFSET(Exception,m_message,8);
