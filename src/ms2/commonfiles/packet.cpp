@@ -33,8 +33,10 @@ CString FUN_14016a600(const wchar_t*, int);                     // wide -> CStri
 int FUN_1401cde60(CBufferCryptManager*, unsigned char* data, int length, int connectionState, unsigned* key);   // decrypt
 int FUN_1401cddd0(CBufferCryptManager*, unsigned char* data, int length, int connectionState, unsigned* key);   // encrypt
 unsigned __int64 FUN_140282020(const Unk_OSNumber&);
-int FUN_1406c3660(const ATL::CAtlArray<unsigned char>&);                       // element count
-const unsigned char* FUN_1406c3630(const ATL::CAtlArray<unsigned char>&);      // data pointer (null when empty)
+// The byte vectors streamed by the operators below are CAtlArray<char> (a distinct instantiation from CInPacket::m_data's
+// CAtlArray<unsigned char>: operator[] 0x1406c35b0 vs 0x140203bf0, both byte-identical).
+int FUN_1406c3660(const ATL::CAtlArray<char>&);                       // element count
+const unsigned char* FUN_1406c3630(const ATL::CAtlArray<char>&);      // data pointer (null when empty)
 extern CBufferCryptManager* DAT_143aac528;
 CBufferCryptManager* FUN_140714f80();
 CNetworkService* FUN_140714f90();
@@ -54,15 +56,15 @@ template<class T> T pkmin(T a, T b) { T r; if (a < b) r = a; else r = b; return 
 
 // ---- byte-vector helpers ----------------------------------------------------------------------------------------------
 // @0x140715250
-void FUN_140715250(ATL::CAtlArray<unsigned char>& array, __int64 count) { array.SetCount(count, -1); }
+void FUN_140715250(ATL::CAtlArray<char>& array, __int64 count) { array.SetCount(count, -1); }
 // @0x140714db0
-unsigned char* FUN_140714db0(ATL::CAtlArray<unsigned char>& array) { if (array.IsEmpty()) return 0; return &array[0]; }
+unsigned char* FUN_140714db0(ATL::CAtlArray<char>& array) { if (array.IsEmpty()) return 0; return (unsigned char*)&array[0]; }
 // @0x140714fc0
 unsigned __int64 FUN_140714fc0(const Unk_OSId& id) { return id.value; }
 
 // ---- stream operators -------------------------------------------------------------------------------------------------
 // @0x14070f700
-CInputStream& FUN_14070f700(CInputStream& in, ATL::CAtlArray<unsigned char>& value)
+CInputStream& FUN_14070f700(CInputStream& in, ATL::CAtlArray<char>& value)
 {
     int count = in.vfunc_o8_3();
     FUN_140715250(value, count);
@@ -108,7 +110,7 @@ COutputStream& FUN_14070fb20(COutputStream& out, const Unk_OSId& value) { out.vf
 // @0x14070fb70
 COutputStream& FUN_14070fb70(COutputStream& out, const Unk_OSNumber& value) { out.vfunc_o10_4(FUN_140282020(value)); return out; }
 // @0x14070fbc0
-COutputStream& FUN_14070fbc0(COutputStream& out, const ATL::CAtlArray<unsigned char>& value)
+COutputStream& FUN_14070fbc0(COutputStream& out, const ATL::CAtlArray<char>& value)
 {
     out.vfunc_o10_3(FUN_1406c3660(value));
     out.vfunc_o10_9(FUN_1406c3630(value), FUN_1406c3660(value));
@@ -142,8 +144,10 @@ CInPacket::CInPacket(CInPacket& iPacket)
 }
 // @0x14070fe80
 int CInPacket::FUN_14070fe80() { FUN_140715280(6); return (unsigned short)FUN_1407140a0(); }
+// MS2-FUNCTIONAL: bool temp slot differs
 // @0x14070feb0
 bool CInPacket::vfunc_o8_0() { return vfunc_o8_1() != 0; }
+// MS2-FUNCTIONAL: receive state machine: local layout / temp order differs
 // @0x14070ff00
 int CInPacket::FUN_14070ff00(Unk_SocketPtr<CPacketBuffer>* buffer, int* stateBefore, int hasSequence)
 {
@@ -207,6 +211,7 @@ CString CInPacket::FUN_140710300() const
     }
     return result;
 }
+// MS2-FUNCTIONAL: temp order differs
 // @0x1407103f0
 void FUN_1407103f0(CInPacket* packet)
 {
@@ -234,6 +239,7 @@ void FUN_140710590(COutPacket& packet)
 {
     if (FUN_140714f90() != 0) FUN_140714f90()->FUN_14153a020(packet);
 }
+// MS2-FUNCTIONAL: temp order differs
 // @0x1407105c0
 bool FUN_1407105c0(COutPacket* packet, int key, int delay)
 {
@@ -278,6 +284,7 @@ void FUN_1407107e0(COutPacket* packet, int type, int unk, const void* data, int 
     packet->vfunc_o10_9(data, count);
 }
 MS2_REPLACE(0x1407107E0, FUN_1407107e0, 124, 0x76F804E3);
+// MS2-FUNCTIONAL: send path: local layout / temp order differs
 // @0x140710870
 void FUN_140710870(COutPacket* packet, ATL::CAtlList<Unk_SocketPtr<CPacketBuffer> >* list, unsigned sequence, unsigned* key, int hasSequence)
 {
@@ -314,6 +321,7 @@ void FUN_140710870(COutPacket* packet, ATL::CAtlList<Unk_SocketPtr<CPacketBuffer
         list->AddTail(buffer);
     }
 }
+// MS2-FUNCTIONAL: temp order differs
 // @0x140710b90
 COutPacket* FUN_140710b90(COutPacket* packet, int state, unsigned* key)
 {
@@ -457,6 +465,7 @@ int CIOBuffer::FUN_140714ab0(float& value, const unsigned char* data, unsigned s
     value = *(const float*)data;
     return 4;
 }
+// MS2-FUNCTIONAL: throw path: 0x10 more stack than the exe
 // @0x140714210
 int CIOBuffer::FUN_140714210(CString& value, const unsigned char* data, unsigned size)
 {
@@ -467,6 +476,7 @@ int CIOBuffer::FUN_140714210(CString& value, const unsigned char* data, unsigned
     if (length != 0 && CString::StringLength(value.GetBuffer()) != length) MS2_PK_DECODE_FAIL("DecodeStrA", 0x18);
     return length + 2;
 }
+// MS2-FUNCTIONAL: throw path: 0x10 more stack than the exe
 // @0x1407145e0
 int CIOBuffer::FUN_1407145e0(CStringW& value, const unsigned char* data, unsigned size)
 {
@@ -483,6 +493,7 @@ int CIOBuffer::FUN_1407145e0(CStringW& value, const unsigned char* data, unsigne
 void CInPacket::FUN_140713940() { m_nState = RS_HEADER; m_length = 0; m_offset = 0; }
 // @0x140714fb0
 unsigned CInPacket::vfunc_0() { return m_offset; }
+// MS2-FUNCTIONAL: const array operator[] resolves to the other exe copy
 // @0x140714fd0
 short CInPacket::vfunc_1() { const ATL::CAtlArray<unsigned char>& bytes = m_data; return *(const short*)(&bytes[0] + 6); }
 // @0x140713a60
@@ -577,6 +588,7 @@ float CInPacket::vfunc_o8_14(int scale) { float r = (float)vfunc_o8_2() * (float
 float CInPacket::vfunc_o8_15() { float r = (float)vfunc_o8_2() / 10.0f; return r; }
 // @0x140714d60
 float CInPacket::vfunc_o8_16(int scale) { float r = (float)vfunc_o8_2() / (float)scale; return r; }
+// MS2-FUNCTIONAL: append: temp order differs
 // @0x140715120
 void CInPacket::FUN_140715120(const char* data, unsigned count)
 {
