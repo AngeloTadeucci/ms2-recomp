@@ -27,10 +27,10 @@ bool OutlineRenderStep::vfunc_15(unsigned int a, void* b)
 {
     if (!PostProcessEffect::vfunc_15(a, b))
         return false;
-    void* p = FUN_140994450();
-    void* q = (*(void* (**)(void*))(*(char**)p + 0xf0))(p);
-    unsigned int w = (*(unsigned int (**)(void*, int))(*(char**)q + 0x90))(q, 0);
-    unsigned int h = (*(unsigned int (**)(void*, int))(*(char**)q + 0x98))(q, 0);
+    NiRenderer* p = FUN_140994450();
+    NiRenderTargetGroup* q = p->GetDefaultRenderTargetGroup();
+    unsigned int w = q->GetWidth(0);
+    unsigned int h = q->GetHeight(0);
     Unk_PPFmt fmt;
     fmt.v = a;
     m_b8.Assign(FUN_141d61a80(w, h, p, &fmt, 0x100));
