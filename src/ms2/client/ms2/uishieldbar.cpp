@@ -26,7 +26,7 @@ class Unk_ShieldEntity : public ASGameEntity
 {
 public:
     Scaleform::GFx::Value FUN_140cb6990(const char* szMethod, __int64 a1, __int64 a2);          // "open"
-    Scaleform::GFx::Value FUN_140ba9470(const char* szMethod, int a1, CString a2, int a3);      // "createEntity"
+    Scaleform::GFx::Value FUN_140ba9470(const char* szMethod, int a1, CString a2, bool a3);      // "createEntity"
     Scaleform::GFx::Value FUN_140ba9570(const char* szMethod, Scaleform::GFx::Value a1, bool a2); // "updateEntity"
     Scaleform::GFx::Value& FUN_1422bb870();
     void FUN_1422c00f0(float x, float y);
@@ -352,20 +352,21 @@ void UIShieldBar::FUN_140e86430(unsigned int nCount)
     }
 }
 
-// MS2-FUNCTIONAL: local/EH-state layout differs (exe keeps an extra bool local and destroys sp before the Value)
 // @0x140e86610
 UIShieldBar::Entity* UIShieldBar::FUN_140e86610(int nActorId)
 {
     if (FUN_140f49890(nActorId) != 0)
         return 0;
+    {
     FUN_140f49c00(nActorId);
     MS2Ptr<ASGameEntity> pClip(dynamic_cast<ASGameEntity*>((AScript*)m_30));
     if (pClip.get())
     {
         if (m_78.IsEmpty())
         {
-            FUN_140930110(nActorId);
-            Scaleform::GFx::Value v = ((Unk_ShieldEntity*)pClip.operator->())->FUN_140ba9470("createEntity", nActorId, m_70, 0);
+            bool bFlag = FUN_140930110(nActorId);
+            bFlag = false;
+            Scaleform::GFx::Value v = ((Unk_ShieldEntity*)pClip.operator->())->FUN_140ba9470("createEntity", nActorId, m_70, bFlag);
             if (FUN_1409b0390(&v) == 0)
             {
                 Entity* p = new Entity(m_28, v, nActorId);
@@ -388,8 +389,7 @@ UIShieldBar::Entity* UIShieldBar::FUN_140e86610(int nActorId)
                 if (nActorId != nOld)
                 {
                     bool bNew = FUN_140930110(nActorId);
-                    bool bOld = FUN_140930110(nOld);
-                    if (bOld || bNew)
+                    if (FUN_140930110(nOld) || bNew)
                     {
                         MS2Ptr<ASGameEntity> pOldClip = pEntity->FUN_140f48ed0();
                         if (pOldClip.get())
@@ -401,6 +401,7 @@ UIShieldBar::Entity* UIShieldBar::FUN_140e86610(int nActorId)
                 return (Entity*)pEntity.get();
             }
         }
+    }
     }
     return 0;
 }
