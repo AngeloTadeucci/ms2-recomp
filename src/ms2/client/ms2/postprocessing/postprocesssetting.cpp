@@ -174,7 +174,12 @@ extern NiFixedString DAT_143ae5428;     // colour
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(PostProcessSetting);
 
 // @0x1400fc980
+// efd::map's ctor allocates its head node via the exe's efd::MemManager::Get (thread-safe static -> exe
+// _Init_thread_header lock, not yet initialised at DLL-load time): the hook DLL binds ms_propertyMap to the exe's
+// instance (symbols.tsv) instead of constructing its own.
+#ifndef MS2_HOOK_DLL
 EE_IMPLEMENT_BUILTINMODEL_PROPERTIES(PostProcessSetting);
+#endif
 
 // @0x1416b5320
 PostProcessSetting::PostProcessSetting()
