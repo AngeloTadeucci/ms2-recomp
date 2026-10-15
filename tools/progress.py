@@ -881,6 +881,26 @@ def main():
         print(f"CONFLICT symbol {n}: 0x{x:x} vs 0x{y:x}")
     bad = []
     ok_msg = None
+    # who claims the VAs named in a "symbol conflict" line: committed status.tsv (matched/functional rows) plus this run
+    va_owner = {}
+    try:
+        for line in open(os.path.join(ROOT, "progress", "status.tsv")):
+            f = line.rstrip("\n").split("\t")
+            if len(f) >= 4 and f[3] in ("matched", "functional"):
+                va_owner[int(f[0], 16)] = f[2]
+    except (OSError, ValueError):
+        pass
+    for rel, c in cache.items():
+        for p_ in ((c.get("res") or {}).get("pairs") or {}).values():
+            if p_.get("ok"):
+                va_owner[p_["va"]] = rel
+
+    def annotate(d):
+        def one(m):
+            va = int(m.group(1), 16)
+            return m.group(0) + (f" [claimed by {va_owner[va]}]" if va in va_owner else "")
+        return re.sub(r"0x([0-9a-f]+)(?= in the symbol table|$)", one, d)
+
     if a.check:
         sel = {u.name for u in units}
         by_rel = {u.name: u.rel for u in all_units}
@@ -895,7 +915,7 @@ def main():
                     bad.append(f"{name}: " + ("COMPILE FAILED" if fail else
                                               f"{m + f}/{n} functions implemented ({stubs} stub), vftables {vok}/{nv}"))
                 for d in res.get("symmismatch", []):
-                    bad.append(f"{name}: symbol conflict: {d}")
+                    bad.append(f"{name}: symbol conflict: {annotate(d)}")
                 ok_msg = (f"functional: OK (matched {m}/{n}, {f} functional, {bmt} of {b} bytes = "
                           f"{100.0 * bmt / b if b else 0:.1f}% exact, {100.0 * (bmt + bft) / b if b else 0:.1f}% implemented)")
             elif fail or n == 0 or m != n or vok != nv:
