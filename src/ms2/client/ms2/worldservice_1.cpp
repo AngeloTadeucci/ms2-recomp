@@ -9271,9 +9271,7 @@ struct Unk_WsD_LockGuard { void* m_lock; };             // scoped lock on m_lock
 Unk_WsD_LockGuard* FUN_140163940(Unk_WsD_LockGuard* g, CLockCriticalSection* lock);
 int FUN_140164a80(Unk_WsD_LockGuard* g);
 void FUN_1401643b0(Unk_WsD_LockGuard* g);
-Unk_WsVa00* FUN_141bdbbb0(Unk_WsVa00* out, const CStringA& name, const CStringW& text);   // build a queued entry
-void FUN_141c2eb70(void* vec, Unk_WsVa00* entry);       // m_a00.push_back
-void FUN_141bf5e70(Unk_WsVa00* entry);                  // entry dtor
+void FUN_141c2eb70(void* vec, std::pair<CStringA, CStringW>* entry);       // m_a00.push_back
 // queue a (name, text) entry in m_a00 unless the guard is held
 // MS2-FUNCTIONAL: opaque COMDATs by VA, EH sentinel
 // @0x141bdb030
@@ -9283,9 +9281,8 @@ void WorldService::FUN_141bdb030(CStringA name, CStringW text)
     FUN_140163940(&guard, &m_lock);
     if (FUN_140164a80(&guard) == 0)
     {
-        Unk_WsVa00 entry;
-        FUN_141c2eb70(&m_a00, FUN_141bdbbb0(&entry, name, text));
-        FUN_141bf5e70(&entry);
+        std::pair<CStringA, CStringW> entry(name, text);
+        FUN_141c2eb70(&m_a00, &entry);
     }
     FUN_1401643b0(&guard);
 }
@@ -11299,7 +11296,6 @@ struct Unk_WsK_Obb { char raw[0x3c]; };
 struct Unk_WsK_Utf8 : public efd::utf8string {};
 
 // Rank record shown by the display image (refcounted).
-class Unk_WsK_Rank : public CPtred {};
 // Interactive object display-image flavour (interactobject.cpp): shows the text / rank of a queued (name, value) entry.
 class Unk_WsK_InteractDisplayImage : public Unk_WsB_Prop
 {
@@ -11308,10 +11304,10 @@ public:
     void FUN_141401380(MS2Ptr<Unk_WsK_Rank> rank);                  // callee releases
 };
 // Queued entries of m_a00 / m_a18 (same sizes as the header stand-ins Unk_WsVa00 / Unk_WsVa18).
-struct Unk_WsK_NamedText { CStringA m_name; CStringW m_text; };
-MS2_CHECK_SIZE(Unk_WsK_NamedText, 16);
-struct Unk_WsK_NamedRank { CStringA m_name; MS2Ptr<Unk_WsK_Rank> m_rank; };
-MS2_CHECK_SIZE(Unk_WsK_NamedRank, 24);
+typedef Unk_WsVa00 Unk_WsK_NamedText;
+MS2_CHECK_SIZE(Unk_WsVa00, 16);
+typedef Unk_WsVa18 Unk_WsK_NamedRank;
+MS2_CHECK_SIZE(Unk_WsVa18, 24);
 struct Unk_WsK_LockGuard { void* m_lock; };
 
 // ==== functions from part K ====
@@ -11446,12 +11442,12 @@ void FUN_141bdb1b0(WorldService* self)
             for (unsigned __int64 i = 0; i < self->m_a00.size(); ++i)
             {
                 Unk_WsK_NamedText* entry = FUN_141bf7b90(&self->m_a00, i);
-                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->m_name);
+                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->first);
                 if (prop.get() != 0)
                 {
                     Unk_WsK_InteractDisplayImage* img = dynamic_cast<Unk_WsK_InteractDisplayImage*>(prop.get());
                     if (img != 0)
-                        img->FUN_141400800(entry->m_text);
+                        img->FUN_141400800(entry->second);
                 }
             }
             self->m_a00.clear();
@@ -11474,8 +11470,8 @@ void FUN_141bdb390(WorldService* self)
             for (unsigned __int64 i = 0; i < self->m_a18.size(); ++i)
             {
                 Unk_WsK_NamedRank* entry = FUN_141bf7bc0(&self->m_a18, i);
-                MS2Ptr<Unk_WsK_Rank> rank = entry->m_rank;
-                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->m_name);
+                MS2Ptr<Unk_WsK_Rank> rank = entry->second;
+                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->first);
                 if (prop.get() != 0)
                 {
                     Unk_WsK_InteractDisplayImage* img = dynamic_cast<Unk_WsK_InteractDisplayImage*>(prop.get());
@@ -11490,14 +11486,9 @@ void FUN_141bdb390(WorldService* self)
 }
 
 // ==== types from part J ====
-struct Unk_WsJ_Ref16 { void* m_vtbl; void* m_ref; };
-void FUN_140b2da40(Unk_WsJ_Ref16* ref);
-struct Unk_WsJ_RefHolder : Unk_WsJ_Ref16 { __forceinline ~Unk_WsJ_RefHolder() { FUN_140b2da40(this); } };
 // raw 8 byte entity id and the 32 byte utf8string storage FUN_1414da080 builds (destroyed with FUN_1408a8900)
 struct Unk_WsJ_EntityId { unsigned __int64 m_id; };
 struct Unk_WsJ_StrBuf { unsigned char raw[32]; };
-// queued m_a18 entry (CString name + ref value), scalar-only so no GS cookie is emitted
-struct Unk_WsJ_QueueEntry { void* m_name; void* m_vtbl; void* m_ref; };
 
 // ==== functions from part J ====
 
@@ -11536,10 +11527,8 @@ int FUN_141bd34b0(WorldService* self, int mapId)
 class Unk_WsME_UpdateMgr;                                       // log sink singleton (see part ME)
 Unk_WsME_UpdateMgr* FUN_140a44830();
 void FUN_1401ce2b0(Unk_WsME_UpdateMgr* log, const char* text);   // log a plain line
-// log a printf formatted line; the exe routine is variadic, the values travel in the integer argument slots
-template <class A> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a);
-template <class A, class B> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a, B b);
-template <class A, class B, class C> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a, B b, C c);
+// log a printf formatted line (the exe routine is a C varargs function)
+void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, ...);
 CStringA FUN_14016a5c0(const char* s, int codePage);            // CStringA(const char*)
 CStringA FUN_14016a600(const wchar_t* s, int codePage);         // CStringA from wide
 Unk_WsJ_EntityId* FUN_14123c460(Unk_WsC_GameObj* obj, Unk_WsJ_EntityId* out);   // entity id of the object
@@ -11552,10 +11541,8 @@ int FUN_14166c930(Unk_WsC_GameObj* pc);                         // state
 int FUN_14123dbf0(Unk_WsC_GameObj* obj);                        // KFM / scene graph completeness flags
 int FUN_14123dbd0(Unk_WsC_GameObj* obj);
 int FUN_14123bea0(Unk_WsC_GameObj* obj);
-// bit pattern of a double for the integer slot of a variadic call
-static inline unsigned __int64 Unk_WsJ_DoubleBits(double d) { return *reinterpret_cast<unsigned __int64*>(&d); }
 // dump the loader / local player state to the log
-// MS2-FUNCTIONAL: variadic log calls modelled through typed argument templates; CString temporaries as the compiler places them
+// MS2-FUNCTIONAL: CString temporaries as the compiler places them
 // @0x141bd7dd0
 void WorldService::FUN_141bd7dd0()
 {
@@ -11577,7 +11564,7 @@ void WorldService::FUN_141bd7dd0()
     double z = pc->GetPosition().z;
     double y = pc->GetPosition().y;
     double x = pc->GetPosition().x;
-    FUN_1401ce2f0(FUN_140a44830(), "MyPC Position %f %f %f", Unk_WsJ_DoubleBits(x), Unk_WsJ_DoubleBits(y), Unk_WsJ_DoubleBits(z));
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC Position %f %f %f", x, y, z);
     Unk_WsJ_EntityId id;
     Unk_WsJ_StrBuf idText;
     FUN_1414da080(FUN_14123c460(pc, &id), &idText);
@@ -11599,21 +11586,18 @@ struct Unk_WsD_LockGuard;
 Unk_WsD_LockGuard* FUN_140163940(Unk_WsD_LockGuard* g, CLockCriticalSection* lock);
 int FUN_140164a80(Unk_WsD_LockGuard* g);
 void FUN_1401643b0(Unk_WsD_LockGuard* g);
-Unk_WsJ_QueueEntry* FUN_141bdbc10(Unk_WsJ_QueueEntry* out, const CStringA& name, Unk_WsJ_Ref16* value);   // build a queued entry
-void FUN_141c2eba0(void* vec, Unk_WsJ_QueueEntry* entry);               // m_a18.push_back
-void FUN_141bf5ea0(Unk_WsJ_QueueEntry* entry);                          // entry dtor
+void FUN_141c2eba0(void* vec, std::pair<CStringA, MS2Ptr<Unk_WsK_Rank> >* entry);               // m_a18.push_back
 // queue a (name, value) entry in m_a18 unless the guard is held
 // MS2-FUNCTIONAL: opaque COMDATs by VA, EH sentinel
 // @0x141bdb0f0
-void FUN_141bdb0f0(WorldService* self, CStringA name, Unk_WsJ_RefHolder value)
+void FUN_141bdb0f0(WorldService* self, CStringA name, MS2Ptr<Unk_WsK_Rank> value)
 {
     Unk_WsD_LockGuard guard;
     FUN_140163940(&guard, &self->m_lock);
     if (FUN_140164a80(&guard) == 0)
     {
-        Unk_WsJ_QueueEntry entry;
-        FUN_141c2eba0(&self->m_a18, FUN_141bdbc10(&entry, name, &value));
-        FUN_141bf5ea0(&entry);
+        std::pair<CStringA, MS2Ptr<Unk_WsK_Rank> > entry(name, value);
+        FUN_141c2eba0(&self->m_a18, &entry);
     }
     FUN_1401643b0(&guard);
 }
