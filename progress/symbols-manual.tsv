@@ -1351,3 +1351,7 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ??0Layer@@QEAA@I@Z	141443550	func
 ??0ClassObject@@QEAA@XZ	1401f7ee0	func
 ??1ClassObject@@UEAA@XZ	1401f7f20	func
+?DAT_143ab2a90@@3VUnk_IoInventory@@A	143ab2a90	data
+?DAT_143ab3150@@3VUnk_IoGatherCount@@A	143ab3150	data
+?DAT_143aacd50@@3VQuestMask@@A	143aacd50	data
+?s_strUseTelescope@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ad97b8	data
