@@ -70,6 +70,9 @@ public:
     virtual void vfunc_58(int,int);
     virtual void vfunc_59(int);
     virtual void vfunc_60(int);
+    virtual void vfunc_61();
+    virtual void vfunc_62();
+    virtual void vfunc_63(int,int,int);
 };
 Unk_NetworkCallbacks* FUN_140d86260();
 struct Unk_NetworkLatency {
