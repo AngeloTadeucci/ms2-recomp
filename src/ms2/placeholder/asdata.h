@@ -29,6 +29,7 @@ public:
     void FUN_1422b8310(const wchar_t* sz);
     void FUN_1422b8370(size_t n);
     Scaleform::GFx::Value FUN_1422b9260();
+    float FUN_1422b8c10();                                                          // next argument as float (UIRimLightDialog)
 
 private:
     void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38; void* m_pad_40;

@@ -22,6 +22,8 @@ public:
     void FUN_1409c1180(const char* szName, __int64 n);                   // set a 64-bit member
     void FUN_1409c48f0(const char* szName, short n);                     // set a short member
     void FUN_1409adbe0(const char* szName, Scaleform::GFx::Value v);     // set a member to a value
+    void FUN_1409c4a30(const char* szName, float f);                     // set a float member (UIRimLightDialog)
+    void FUN_140e06d60(const char* szName, double d);                    // set a double member (UIRimLightDialog)
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
 
