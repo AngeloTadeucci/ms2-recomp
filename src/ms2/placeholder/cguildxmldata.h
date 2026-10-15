@@ -6,6 +6,7 @@
 #include "ms2/commonfiles/stream.h"
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
 #include <map>
+#include <set>
 #include "ms2/commonfiles/itemgift.h"
 #include <vector>
 class CInPacket; class COutPacket;
@@ -25,9 +26,8 @@ MS2_CHECK_SIZE(CGuildPVPSeasonHistoryData,0x70);
 MS2_CHECK_OFFSET(CGuildPVPSeasonHistoryData,f48,0x48);
 class CGuildXmlData:public TSingleton<CGuildXmlData>,public CValidData<CGuildXmlData> {
 public:
-    class GuildProperty:public CPtred {
-    public:
-        GuildProperty(); virtual ~GuildProperty();
+    struct GuildProperty:public CPtred {
+        GuildProperty();
         bool FUN_1404d4990(void* node);
         int f18;
         int f1c;
@@ -49,9 +49,8 @@ public:
         int f64;
         int f68;
     };
-    class GuildSkill:public CPtred {
-    public:
-        GuildSkill(); virtual ~GuildSkill();
+    struct GuildSkill:public CPtred {
+        GuildSkill();
         bool FUN_1404d4cb0(void* node);
         bool FUN_1404d4e40(); bool FUN_1404d4e60(); int FUN_1404d4e80();
         int f18;
@@ -66,17 +65,15 @@ public:
         int f3c;
         CStringW f40;
     };
-    class GuildEvent:public CPtred {
-    public:
-        GuildEvent(); virtual ~GuildEvent();
+    struct GuildEvent:public CPtred {
+        GuildEvent();
         bool FUN_1404d4f10(void* node);
         int f18;
         int f1c;
         CStringW f20;
     };
-    class GuildHouse:public CPtred {
-    public:
-        GuildHouse(); virtual ~GuildHouse();
+    struct GuildHouse:public CPtred {
+        GuildHouse();
         bool FUN_1404d5070(void* node);
         int f18;
         int f1c;
@@ -90,9 +87,8 @@ public:
         CStringW f58;
         CStringW f60;
     };
-    class GuildNpc:public CPtred {
-    public:
-        GuildNpc(); virtual ~GuildNpc();
+    struct GuildNpc:public CPtred {
+        GuildNpc();
         bool FUN_1404d5270(void* node);
         Unk_GuildNpcKind f18;
         int f1c;
@@ -101,18 +97,16 @@ public:
         int f2c;
         int f30;
     };
-    class GuildRaid:public CPtred {
-    public:
-        GuildRaid(); virtual ~GuildRaid();
+    struct GuildRaid:public CPtred {
+        GuildRaid();
         bool FUN_1404d53d0(void* node);
         unsigned f18;
         int f1c;
         float f20;
         float f24;
     };
-    class GuildRaidReward:public CPtred {
-    public:
-        GuildRaidReward(); virtual ~GuildRaidReward();
+    struct GuildRaidReward:public CPtred {
+        GuildRaidReward();
         bool FUN_1404d54e0(void*);
         int f18; __int64 f20;
         std::vector<ItemEntity> items;
@@ -136,7 +130,7 @@ public:
     Unk_PayloadPtr<GuildEvent> FUN_1404d7830(int); void FUN_1404d7900(std::vector<int>&);
     Unk_PayloadPtr<GuildHouse> FUN_1404d79b0(int,int); void FUN_1404d7a90(std::vector<std::pair<int,int>>&);
     Unk_PayloadPtr<GuildNpc> FUN_1404d7b40(Unk_GuildNpcKind,int);
-    void FUN_1404d7c20(std::map<std::pair<Unk_GuildNpcKind,int>,Unk_PayloadPtr<GuildNpc>>&);
+    void FUN_1404d7c20(std::set<Unk_GuildNpcKind>&);
     Unk_PayloadPtr<GuildRaid> FUN_1404d7cb0(unsigned); void FUN_1404d7d80(std::vector<unsigned>&);
     Unk_PayloadPtr<GuildRaidReward> FUN_1404d7e30(int);
     std::map<int,Unk_PayloadPtr<GuildProperty>> property;
