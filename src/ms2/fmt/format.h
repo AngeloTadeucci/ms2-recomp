@@ -13,6 +13,10 @@
 //   - Nexon additions: MakeValue(const CString&) / MakeValue(const CStringW&) (string.value/size from the CString).
 // Template instances per unit: see ms2/ms2format.h.
 #pragma once
+#include <wchar.h>
+// MS2: set_string(const wchar_t*) 0x14020c220 calls the imported wcslen (`call [__imp_wcslen]`, no /Oi inline loop).
+// The static-CRT headers declare wcslen without dllimport, so the IAT slot is reached through its own symbol.
+extern "C" size_t (__cdecl* __imp_wcslen)(const wchar_t*);
 
 #include <cstddef>
 #include <type_traits>
@@ -135,7 +139,20 @@ public:
 
     FMT_MAKE_VALUE(char*, string.value, CSTRING)
     FMT_MAKE_VALUE(const char*, string.value, CSTRING)
-    FMT_MAKE_VALUE(const wchar_t*, wstring.value, WSTRING) // MS2: banned-word logger wide literal.
+    // MS2: wide literal arguments. MakeValue(const wchar_t*) 0x14020a410 calls set_string 0x14020c220, which is
+    // Convert(0) (result unused), value = s, size = wcslen(s). The tags below keep the window logic of progress.py
+    // from claiming the neighbouring one-liners.
+    static ULongLong type(const wchar_t*) { return Arg::WSTRING; }
+    // @0x14020a410
+    MakeValue(const wchar_t* value) { set_string(value); }
+    // @0x14020c220
+    void set_string(const wchar_t* str) { Convert(0); wstring.value = str; wstring.size = __imp_wcslen(str); }
+    //
+    //
+    //
+    //
+    //
+    //
 
 #define FMT_MAKE_STR_VALUE(Type, TYPE) \
     MakeValue(Type value) { set_string(value); } \
