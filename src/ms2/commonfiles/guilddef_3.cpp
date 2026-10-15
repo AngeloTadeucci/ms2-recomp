@@ -227,15 +227,9 @@
 // MS2-PIN: ??$forward_as_tuple@AEBU?$pair@HH@std@@@std@@YA?AV?$tuple@AEBU?$pair@HH@std@@@0@AEBU?$pair@HH@0@@Z 0x1404eb6b0
 // MS2-PIN: ??$forward_as_tuple@AEBU?$pair@IH@std@@@std@@YA?AV?$tuple@AEBU?$pair@IH@std@@@0@AEBU?$pair@IH@0@@Z 0x1404eb6e0
 // MS2-PIN: ??$forward_as_tuple@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@std@@YA?AV?$tuple@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@0@AEBU?$pair@W4Unk_GuildNpcKind@@H@0@@Z 0x1404eb710
-// MS2-PIN: ??$get@$0A@AEBH@std@@YAAEBH$$QEAV?$tuple@AEBH@0@@Z 0x1404eb740
-// MS2-PIN: ??$get@$0A@AEBI@std@@YAAEBI$$QEAV?$tuple@AEBI@0@@Z 0x1404eb760
-// MS2-PIN: ??$get@$0A@AEBU?$pair@HH@std@@@std@@YAAEBU?$pair@HH@0@$$QEAV?$tuple@AEBU?$pair@HH@std@@@0@@Z 0x1404eb780
 // MS2-PIN: ??$move@AEAV?$vector@PEAXV?$allocator@PEAX@std@@@std@@@std@@YA$$QEAV?$vector@PEAXV?$allocator@PEAX@std@@@0@AEAV10@@Z 0x1404eb810
 // MS2-PIN: ??$move@AEAV?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@@std@@YA$$QEAV?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@0@AEAV10@@Z 0x1404eb820
 // MS2-PIN: ??$move@AEAV?$vector@UItemEntity@@V?$allocator@UItemEntity@@@std@@@std@@@std@@YA$$QEAV?$vector@UItemEntity@@V?$allocator@UItemEntity@@@std@@@0@AEAV10@@Z 0x1404eb830
-// MS2-PIN: ??$move@AEAV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@YA$$QEAV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@0@AEAV10@@Z 0x1404eb840
-// MS2-PIN: ??$move@AEAV?$vector@W4Unk_GuildNpcKind@@V?$allocator@W4Unk_GuildNpcKind@@@std@@@std@@@std@@YA$$QEAV?$vector@W4Unk_GuildNpcKind@@V?$allocator@W4Unk_GuildNpcKind@@@std@@@0@AEAV10@@Z 0x1404eb850
-// MS2-PIN: ??$move@AEAW4Unk_GuildNpcKind@@@std@@YA$$QEAW4Unk_GuildNpcKind@@AEAW41@@Z 0x1404eb860
 // MS2-PIN: ??$try_emplace@$$V@?$map@HV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1404eb870
 // MS2-PIN: ??$try_emplace@$$V@?$map@HV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1404eb8b0
 // MS2-PIN: ??$try_emplace@$$V@?$map@HV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1404eb8f0
@@ -251,6 +245,12 @@
 // MS2-PIN: ??0?$CAtlMap@_J_JV?$CElementTraits@_J@ATL@@V12@@ATL@@QEAA@IMMMI@Z 0x1404ebdc0
 // MS2-PIN: ??0Unk_GuildBlockList@@QEAA@_K@Z 0x1404ebee0
 // MS2-PIN: ??0Unk_GuildBlockHolder@@QEAA@_K@Z 0x1404ebeb0
+// MS2-PIN: ??$get@$0A@AEBU?$pair@HH@std@@@std@@YAAEBU?$pair@HH@0@$$QEAV?$tuple@AEBU?$pair@HH@std@@@0@@Z 0x1404eb740
+// MS2-PIN: ??$get@$0A@AEBU?$pair@IH@std@@@std@@YAAEBU?$pair@IH@0@$$QEAV?$tuple@AEBU?$pair@IH@std@@@0@@Z 0x1404eb760
+// MS2-PIN: ??$get@$0A@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@std@@YAAEBU?$pair@W4Unk_GuildNpcKind@@H@0@$$QEAV?$tuple@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@0@@Z 0x1404eb780
+// MS2-PIN: ??$move@AEAV?$tuple@AEBU?$pair@HH@std@@@std@@@std@@YA$$QEAV?$tuple@AEBU?$pair@HH@std@@@0@AEAV10@@Z 0x1404eb840
+// MS2-PIN: ??$move@AEAV?$tuple@AEBU?$pair@IH@std@@@std@@@std@@YA$$QEAV?$tuple@AEBU?$pair@IH@std@@@0@AEAV10@@Z 0x1404eb850
+// MS2-PIN: ??$move@AEAV?$tuple@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@std@@@std@@YA$$QEAV?$tuple@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@@0@AEAV10@@Z 0x1404eb860
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\guilddef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/commonfiles/guilddef_3.h"
