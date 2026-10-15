@@ -1,7 +1,7 @@
 #!/bin/bash
 # Per-unit done check for one agent (docs/RECOVERY.md sections 10 and 12). Safe to run while other agents run theirs.
 #
-#   MS2_AGENT=<name> tools/unit-check.sh [--no-clang] [--no-dll] [-v] <unit-substr> [<unit-substr> ...]
+#   MS2_AGENT=<name> tools/unit-check.sh [--functional] [--no-clang] [--no-dll] [-v] <unit-substr> [<unit-substr> ...]
 #
 # 1. tools/progress.py --agent <name> --check <unit>: compiles the unit with the game flags into build/progress-<name>/,
 #    pairs and byte-matches it; fails unless every function in its MS2-RANGEs is matched and every vftable is OK.
@@ -10,6 +10,9 @@
 #    unit's .cpp (+ its difftest, if any) as game code, linked against build/progress-<name>/symbols.tsv (committed
 #    symbols + the unit's own harvest). Other agents' half-finished units are never compiled here. The post-link
 #    `ms2symobj.py --check` must print ok.
+# --functional: the functional gate (docs/RECOVERY.md section 10): no stub function in the unit's ranges (matched or
+#    functional is fine), every vftable paired and byte-matching, no symbol conflict from the unit, both DLL links OK.
+#    Prints "functional: OK (matched X/Y, ...)". Without it the exact gate applies (every function byte-identical).
 # Exit 0 = the unit meets done criteria 1-3. The full shared build (build/hook-msvc, build/hook-clang) and progress/*
 # are the merge step's job.
 set -u
@@ -17,14 +20,15 @@ R=$(cd "$(dirname "$0")/.." && pwd)
 PY="$R/.venv/bin/python"
 export PATH="$R/.venv/bin:$PATH"
 
-clang=1 dll=1 verbose=()
+clang=1 dll=1 verbose=() func=()
 units=()
 for a in "$@"; do
     case "$a" in
         --no-clang) clang=0 ;;
         --no-dll) dll=0 ;;
         -v) verbose=(-v) ;;
-        -h|--help) sed -n '2,15p' "$0"; exit 0 ;;
+        --functional) func=(--functional) ;;
+        -h|--help) sed -n '2,20p' "$0"; exit 0 ;;
         *) units+=("$a") ;;
     esac
 done
@@ -45,7 +49,7 @@ echo "unit-check [$AGENT]: ${srcs[*]}"
 
 # 1. compile + bytematch (one cl at a time per agent keeps the CPU moderate)
 echo "== progress.py --agent $AGENT --check"
-nice "$PY" "$R/tools/progress.py" --agent "$AGENT" --check -j1 "${verbose[@]}" "${units[@]}"
+nice "$PY" "$R/tools/progress.py" --agent "$AGENT" --check -j1 "${func[@]}" "${verbose[@]}" "${units[@]}"
 pst=$?
 
 if [ $dll -eq 0 ]; then exit $pst; fi
@@ -79,6 +83,10 @@ if [ $clang -eq 1 ]; then
 fi
 
 echo
-[ $pst -eq 0 ] && echo "bytematch: OK" || echo "bytematch: NOT DONE (see above; -v for diffs)"
+if [ ${#func[@]} -gt 0 ]; then
+    [ $pst -eq 0 ] && echo "functional gate: OK (progress.py --functional --check passed)" || echo "functional gate: NOT DONE (see above; -v for diffs)"
+else
+    [ $pst -eq 0 ] && echo "bytematch: OK" || echo "bytematch: NOT DONE (see above; -v for diffs)"
+fi
 [ $dst -eq 0 ] && echo "DLL link: OK" || echo "DLL link: FAILED"
 [ $pst -eq 0 ] && [ $dst -eq 0 ]

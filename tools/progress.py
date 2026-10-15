@@ -579,17 +579,27 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
                                 + ", ".join(names[:3]))
     # 3. match everything paired (harvests the symbol map)
     funclets = {}
+    # the symbol map is harvested from FULLY matched functions only (bytes + unwind/EH): a function that differs
+    # anywhere contributes no mapping
+    del bm.SYMBOL_MISMATCH[:]
     for name, va in sorted(known.items(), key=lambda kv: kv[1]):
         bm.FUNCLET_PAIRS.clear()
+        snap = dict(bm.HARVEST)
         ok, text = quiet_match(obj, name, va, exe, verbose)
+        if not ok:
+            bm.HARVEST.clear()
+            bm.HARVEST.update(snap)
         res["pairs"][name] = {"va": va, "how": how[name], "ok": ok, "report": "" if ok else text}
         if ok:
             funclets.update(bm.FUNCLET_PAIRS)
     # unwind funclets of matched functions (?dtor$N@...: not in the unit ranges, not counted) are matched only to
     # harvest their callees: a destructor reached only on the exception path is otherwise missing from the symbol map
     for name, va in sorted(funclets.items(), key=lambda kv: kv[1]):
+        snap = dict(bm.HARVEST)
         ok, _ = quiet_match(obj, name, va, exe, False)
         if not ok:
+            bm.HARVEST.clear()
+            bm.HARVEST.update(snap)
             res["notes"].append(f"funclet {name} @0x{va:x} does not match")
     # 4. vftables (paired via RTTI, every slot checked against the pairs and the symbol map)
     vnames = [n for (n, _, sec, _, sc) in obj.syms.values() if sec > 0 and n.startswith("??_7") and sc == 2]
@@ -611,9 +621,14 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
                                               f"(add `// MS2-PIN: {name} 0x<va>` if the class is unit-local)"}
                 res["notes"].append(f"{name}: no exe vftable found via RTTI (counts as unpaired)")
                 continue
+            snap = dict(bm.HARVEST)
             ok, text = quiet_match(obj, name, va, exe, verbose)
+            if not ok:
+                bm.HARVEST.clear()
+                bm.HARVEST.update(snap)
             res["vft"][name] = {"va": va, "ok": ok, "report": "" if ok else text}
     res["harvest"] = dict(bm.HARVEST)
+    res["symmismatch"] = sorted({f"{n} is 0x{w:x} in the symbol table, exe uses 0x{v:x}" for n, w, v in bm.SYMBOL_MISMATCH})
     known.clear()
     return res
 
@@ -627,6 +642,9 @@ def main():
     ap.add_argument("--agent", default=os.environ.get("MS2_AGENT") or None,
                     help="private cache build/progress-AGENT/, report mode (default: $MS2_AGENT)")
     ap.add_argument("--report", action="store_true", help="report mode: never write progress/* (implied by --agent)")
+    ap.add_argument("--functional", action="store_true",
+                    help="with --check: the functional gate instead of the exact one (no stub functions, all vftables "
+                         "paired and matching, no symbol conflict from the unit; functional functions are accepted)")
     ap.add_argument("--check", action="store_true",
                     help="exit 1 unless every selected unit compiles and is 100%% matched with all vftables OK")
     a = ap.parse_args()
@@ -663,7 +681,11 @@ def main():
     exe = bm.Exe(bm.EXE)
     starts, finfo = load_functions()
     bases, vft = load_vftables()
-    bm.load_symbols(bm.SYMBOLS_TSV)
+    merge_mode = not (a.agent or a.report)
+    manual_tsv = os.path.join(OUT, "symbols-manual.tsv")
+    # merge mode: the table is rebuilt from scratch (hand-written symbols-manual.tsv + the harvest of fully matched
+    # units); stale entries of the previous table never win. Report mode checks against the committed table.
+    bm.load_symbols(manual_tsv if merge_mode else bm.SYMBOLS_TSV)
 
     for u in units:
         if u.rel in failed or not os.path.exists(u.obj):
@@ -719,18 +741,30 @@ def main():
                 for r in us:
                     inconsistent.setdefault(r, []).append(f"{n[:80]} is 0x{va:x} here, 0x{win:x} in "
                                                           + ", ".join(by_va[win]))
-    if symbols_out != bm.SYMBOLS_TSV:
+    if merge_mode:
+        if os.path.exists(manual_tsv):
+            for line in open(manual_tsv):
+                if line.startswith("#") or not line.strip():
+                    continue
+                q = line.rstrip("\n").split("\t")
+                va = int(q[1], 16)
+                if bm.HARVEST.get(q[0], va) != va:
+                    bm.CONFLICTS.append((f"{q[0]} [symbols-manual.tsv says 0x{va:x}, matched units 0x{bm.HARVEST[q[0]]:x}]",
+                                         va, bm.HARVEST[q[0]]))
+                else:
+                    bm.HARVEST.setdefault(q[0], va)
+    elif symbols_out != bm.SYMBOLS_TSV:
         # report mode: the committed table plus this cache's harvest (rebuilt every run, nothing stale survives)
         os.makedirs(OUT, exist_ok=True)
         shutil.copyfile(bm.SYMBOLS_TSV, symbols_out + ".tmp")
         os.replace(symbols_out + ".tmp", symbols_out)
-    added = bm.write_harvest(symbols_out, exe)
+    added = bm.write_harvest(symbols_out, exe, fresh=merge_mode)
 
     # status rows
     unit_by_rel = {u.rel: u for u in all_units}
     rows = []
     summary = []
-    tot = dict(n=0, m=0, f=0, b=0, bm=0)
+    tot = dict(n=0, m=0, f=0, b=0, bm=0, bf=0)
     names_to_demangle = []
     for rel, c in cache.items():
         if c.get("res"):
@@ -743,7 +777,7 @@ def main():
         if c.get("res"):
             for n, p in c["res"]["pairs"].items():
                 byva[p["va"]] = (n, p["ok"])
-        n = m = f = b = bmt = 0
+        n = m = f = b = bmt = bft = 0
         for lo, hi in u.ranges:
             i = bisect.bisect_left(starts, lo)
             while i < len(starts) and starts[i] < hi:
@@ -763,13 +797,15 @@ def main():
                     bmt += size
                 elif state == "functional":
                     f += 1
+                    bft += size
                 i += 1
         vt = c["res"]["vft"] if c.get("res") else {}
         vok = sum(1 for v in vt.values() if v["ok"])
-        summary.append((u.name, n, m, f, b, bmt, len(vt), vok, c.get("failed")))
+        summary.append((u.name, n, m, f, b, bmt, len(vt), vok, c.get("failed"), bft))
         for k, v in zip("nmfb", (n, m, f, b)):
             tot[k] += v
         tot["bm"] += bmt
+        tot["bf"] += bft
     rows.sort()
     with open(os.path.join(OUT, "status.tsv"), "w") as fo:
         fo.write("#va\tname\tunit\tstate\tsize\n")
@@ -790,15 +826,19 @@ def main():
             i += 1
     out = []
     out.append(f"# tools/progress.py  {time.strftime('%Y-%m-%d %H:%M')}")
-    out.append(f"{'unit':<45} {'funcs':>6} {'match':>6} {'func.':>6} {'stub':>5} {'bytes':>8} {'matched':>8}  vftables")
-    for name, n, m, f, b, bmt, nv, vok, fail in summary:
+    out.append(f"{'unit':<45} {'funcs':>6} {'match':>6} {'func.':>6} {'stub':>5} {'bytes':>8} {'matched':>8}  "
+               f"{'exact':>6} {'impl.':>6}  vftables")
+    for name, n, m, f, b, bmt, nv, vok, fail, bft in summary:
         pct = 100.0 * bmt / b if b else 0
-        out.append(f"{name:<45} {n:6} {m:6} {f:6} {n - m - f:5} {b:8} {bmt:8} {pct:5.1f}%  {vok}/{nv}"
+        ipct = 100.0 * (bmt + bft) / b if b else 0
+        out.append(f"{name:<45} {n:6} {m:6} {f:6} {n - m - f:5} {b:8} {bmt:8}  {pct:5.1f}% {ipct:5.1f}%  {vok}/{nv}"
                    + ("  COMPILE FAILED" if fail else ""))
     out.append(f"{'total (' + str(len(summary)) + ' units)':<45} {tot['n']:6} {tot['m']:6} {tot['f']:6} "
                f"{tot['n'] - tot['m'] - tot['f']:5} {tot['b']:8} {tot['bm']:8}")
     out.append(f"game code (work/map/units.tsv): {game_n} functions, {game_b} bytes; matched "
-               f"{tot['m']} ({100.0 * tot['m'] / game_n:.3f}%) functions, {100.0 * tot['bm'] / game_b:.3f}% of bytes")
+               f"{tot['m']} ({100.0 * tot['m'] / game_n:.3f}%) functions, {100.0 * tot['bm'] / game_b:.3f}% of bytes; "
+               f"implemented (matched + functional) {tot['m'] + tot['f']} ({100.0 * (tot['m'] + tot['f']) / game_n:.3f}%) "
+               f"functions, {100.0 * (tot['bm'] + tot['bf']) / game_b:.3f}% of bytes")
     text = "\n".join(out) + "\n"
     open(os.path.join(OUT, "summary.txt"), "w").write(text)
     print(text, end="")
@@ -810,14 +850,28 @@ def main():
     for n, x, y in bm.CONFLICTS:
         print(f"CONFLICT symbol {n}: 0x{x:x} vs 0x{y:x}")
     bad = []
+    ok_msg = None
     if a.check:
         sel = {u.name for u in units}
-        for name, n, m, f, b, bmt, nv, vok, fail in summary:
-            if name in sel and (fail or n == 0 or m != n or vok != nv):
+        by_rel = {u.name: u.rel for u in all_units}
+        for name, n, m, f, b, bmt, nv, vok, fail, bft in summary:
+            if name not in sel:
+                continue
+            rel = by_rel.get(name)
+            res = cache.get(rel, {}).get("res") or {}
+            if a.functional:
+                stubs = n - m - f
+                if fail or n == 0 or stubs or vok != nv:
+                    bad.append(f"{name}: " + ("COMPILE FAILED" if fail else
+                                              f"{m + f}/{n} functions implemented ({stubs} stub), vftables {vok}/{nv}"))
+                for d in res.get("symmismatch", []):
+                    bad.append(f"{name}: symbol conflict: {d}")
+                ok_msg = (f"functional: OK (matched {m}/{n}, {f} functional, {bmt} of {b} bytes = "
+                          f"{100.0 * bmt / b if b else 0:.1f}% exact, {100.0 * (bmt + bft) / b if b else 0:.1f}% implemented)")
+            elif fail or n == 0 or m != n or vok != nv:
                 bad.append(f"{name}: " + ("COMPILE FAILED" if fail else
                                           f"{m}/{n} functions matched ({f} functional, {n - m - f} stub), "
                                           f"vftables {vok}/{nv}"))
-        by_rel = {u.name: u.rel for u in all_units}
         for name in sorted(sel):
             for d in inconsistent.get(by_rel.get(name), []):
                 bad.append(f"{name}: inconsistent symbol mapping: {d}")
@@ -828,8 +882,10 @@ def main():
     if a.check:
         for line in bad:
             print("CHECK FAILED " + line)
-        if bad or bm.CONFLICTS:
+        if bad or (bm.CONFLICTS and not a.functional):
             sys.exit(1)
+        if ok_msg:
+            print(ok_msg)
         print("CHECK OK: " + ", ".join(u.name for u in units))
 
 

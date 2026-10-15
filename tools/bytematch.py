@@ -551,6 +551,7 @@ SYMBOLS_TSV = os.path.join(ROOT, "progress", "symbols.tsv")
 SYMBOLS = {}          # name -> va
 HARVEST = {}          # name -> va (this run)
 CONFLICTS = []
+SYMBOL_MISMATCH = []  # (name, table va, exe va): a code-identical function disagrees with the symbol table
 FUNCLET_PAIRS = {}  # unwind-map action funclet symbol (?dtor$N@...) -> exe VA, from every compared FuncInfo
 LAST_TARGETS = {}  # every symbol -> exe target of the last match_one call (statics included; empty on mismatch)
 LOCAL_KNOWN = {}   # name -> va pairs of the current unit (statics included), checked like SYMBOLS
@@ -584,6 +585,7 @@ def note_symbol(name, va, rep):
         return
     want = SYMBOLS.get(name)
     if want is not None and want != va:
+        SYMBOL_MISMATCH.append((name, want, va))
         rep.bad(f"symbol {name} is 0x{want:x} in {os.path.relpath(SYMBOLS_TSV, ROOT)}, exe uses 0x{va:x} "
                 f"(wrong callee/global?)")
         return
@@ -594,10 +596,11 @@ def note_symbol(name, va, rep):
     HARVEST[name] = va
 
 
-def write_harvest(path, exe):
-    """Merge HARVEST into the symbol TSV (sym, va, kind). Existing entries win; conflicts are reported."""
+def write_harvest(path, exe, fresh=False):
+    """Merge HARVEST into the symbol TSV (sym, va, kind). Existing entries win; conflicts are reported.
+    fresh=True ignores the existing file (the table is rebuilt from the harvest alone)."""
     cur = {}
-    if os.path.exists(path):
+    if os.path.exists(path) and not fresh:
         for line in open(path):
             if line.startswith("#") or not line.strip():
                 continue
