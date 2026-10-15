@@ -192,13 +192,13 @@ public:
     virtual ~CGuildMemberRaid();
     bool FUN_1404cab20();
     void FUN_1404cabb0(const CGuildMemberRaid& other);
-    bool FUN_1404cac30(int id,int count);
-    void FUN_1404cad50(int id,int count,bool);
+    bool FUN_1404cac30(unsigned long id,int count);
+    void FUN_1404cad50(unsigned long id,int count,bool);
     int FUN_1404cadc0();
-    int FUN_1404cae90(int id);
+    int FUN_1404cae90(unsigned long id);
     void FUN_1404caf50(COutputStream& out);
     void FUN_1404cb070(CInputStream& in);
-    std::map<int,int> raids; CLockCriticalSection lock;
+    std::map<unsigned long,int> raids; CLockCriticalSection lock;
 };
 MS2_CHECK_SIZE(CGuildMemberRaid,0x58);
 class CGuildMember : public CPtred {
@@ -219,10 +219,14 @@ public:
 MS2_CHECK_SIZE(CGuildMember,0x160);
 
 // ---- Part 1b: guild skill/event/storage/npc records and the synchronized CGuildInfo (owner of the shared declarations) ----
-// Intrusive smart pointer handle (8 bytes) as used by the guild containers; the element helpers live in neighbouring chunks
+// Intrusive smart pointer handle as used by the guild containers: the MS2Ptr<T> shape (16 bytes, object pointer at +8).
+// Proof: null ctor 0x1404ec890 / 0x1404ec640 store 0 to [this+8], copy ctor 0x1404ec820 copies [src+8] then AddRefs,
+// get 0x1404f0bb0 returns [this+8], assign-raw 0x1404efb30 swaps [this+8], release 0x140504020 clears [this+8]; the
+// CGuildInfo members f310/f360 are 16 apart from their neighbours (CGuildManager ctor 0x1413b5a10 puts its first own
+// member at 0x378 = 8 (TSingleton) + sizeof(CGuildInfo) 0x370). The element helpers live in neighbouring chunks
 // and are reached through FUN_ declarations (see guilddef_1.cpp).
-struct Unk_GuildRef { void* p; };
-MS2_CHECK_SIZE(Unk_GuildRef,8);
+struct Unk_GuildRef { void* m_unk_00; void* p; };
+MS2_CHECK_SIZE(Unk_GuildRef,16);
 // Opaque blobs for containers whose element helpers live in other chunks (sizes proven by the neighbouring member offsets).
 template<int N> struct Unk_GuildBlob { __int64 q[N/8]; };
 struct Unk_GuildPair { int a,b; };
@@ -395,9 +399,14 @@ public:
     CLockCriticalSection lock; __int64 f38; CStringW f40; CString f48; int f50; CStringW f58,f60; __int64 f68,f70,f78; CStringW f80; __int64 f88,f90; CStringW f98;
     ATL::CAtlArray<Unk_GuildPtr> fa0; int fc0,fc4; __int64 fc8,fd0; CStringW fd8; Unk_GuildSeason season;
     int f130,f134,f138,f13c,f140,f144,f148,f14c,f150,f154,f158,f15c,f160,f164,f168,f16c;
-    Unk_GuildBlob<0x48> f170; CGuildStorage storage; Unk_GuildBlob<0x48> f238,f280,f2c8; Unk_GuildRef f310; void* f318; Unk_GuildBlob<0x30> f320;
-    int f350; unsigned char f354; int f358; Unk_GuildRef f360;
+    Unk_GuildBlob<0x48> f170; CGuildStorage storage; Unk_GuildBlob<0x48> f238,f280,f2c8; Unk_GuildRef f310; Unk_GuildBlob<0x30> f320;
+    int f350; unsigned char f354; int f358; Unk_GuildRef f360;   // f360: MS2Ptr<CGuildNpcShopMgr> (new 0x28, ctor 0x1404ee230)
+    MS2_LAYOUT_FRIEND;
 };
+MS2_CHECK_SIZE(CGuildInfo,0x370);
+MS2_CHECK_OFFSET(CGuildInfo,f310,0x310);
+MS2_CHECK_OFFSET(CGuildInfo,f320,0x320);
+MS2_CHECK_OFFSET(CGuildInfo,f360,0x360);
 
 void FUN_1404d3fe0(Unk_GuildStrRec* rec,COutputStream* out);
 void FUN_1404d4060(Unk_GuildStrRec* rec,CInPacket* packet);
