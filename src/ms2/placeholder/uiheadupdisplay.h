@@ -24,6 +24,7 @@ public:
     virtual void vfunc_41(const Scaleform::GFx::Value& root);               // 41 0x141986c50 m_30 = AS object of root (type m_28)
     virtual int vfunc_48();                                                 // 48 0x141986d80 returns 0x4e67 (20071)
     // ---- agents: append non-virtual UIHeadUpDisplay members below this line (sorted by address) ----
+    int FUN_141986d30();                                                    // m_68 (shown)
 
 protected:
     MS2_LAYOUT_FRIEND;
