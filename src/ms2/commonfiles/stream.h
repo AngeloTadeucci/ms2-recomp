@@ -9,6 +9,18 @@ class CIOBuffer {
 public:
     virtual unsigned vfunc_0() = 0;
     virtual short vfunc_1() = 0;
+    // Bounds-checked decoders shared by CByteBuffer and CInPacket (defined in commonfiles\packet.cpp, inline in the
+    // exe's packet.h): store the value read from `data` (`size` bytes remain) and return the bytes consumed; they throw
+    // Exception(0x26) with a "[type=..][offset=..][hint=..]" text when too little remains.
+    void FUN_140714df0(CString& text,CString hint);
+    int FUN_140713970(unsigned char&,const unsigned char*,unsigned);
+    int FUN_140713ae0(short&,const unsigned char*,unsigned);
+    int FUN_140713c50(int&,const unsigned char*,unsigned);
+    int FUN_140713db0(__int64&,const unsigned char*,unsigned);
+    int FUN_140714ab0(float&,const unsigned char*,unsigned);
+    int FUN_140714210(CString&,const unsigned char*,unsigned);
+    int FUN_1407145e0(CStringW&,const unsigned char*,unsigned);
+    int FUN_140713f20(void*,int,const unsigned char*,unsigned);
 };
 class CInputStream { public:
     virtual bool vfunc_o8_0() = 0;
@@ -105,14 +117,6 @@ class CByteBuffer : public CIOBuffer, public CInputStream, public COutputStream 
     const unsigned char* FUN_14067c4c0() const;
     CByteBuffer& FUN_140714de0();
     void FUN_140720c30(CByteBuffer&);
-    int FUN_140713970(unsigned char&,const unsigned char*,unsigned);
-    int FUN_140713ae0(short&,const unsigned char*,unsigned);
-    int FUN_140713c50(int&,const unsigned char*,unsigned);
-    int FUN_140713db0(__int64&,const unsigned char*,unsigned);
-    int FUN_140714ab0(float&,const unsigned char*,unsigned);
-    int FUN_140714210(CString&,const unsigned char*,unsigned);
-    int FUN_1407145e0(CStringW&,const unsigned char*,unsigned);
-    int FUN_140713f20(void*,int,const unsigned char*,unsigned);
     unsigned char& operator[](size_t index) { STREAM_ASSERT(669,index < m_uLength);return m_aByteBuff[index]; }
     const unsigned char& operator[](size_t index) const { STREAM_ASSERT(670,index < m_uLength);return m_aByteBuff[index]; }
 private:
@@ -127,6 +131,8 @@ MS2_CHECK_OFFSET(CByteBuffer,m_uOffset,0x38);
 MS2_CHECK_OFFSET(CByteBuffer,m_uLength,0x3c);
 class Unk_CompressedStream {
 public:
+    Unk_CompressedStream() = default;
+    inline Unk_CompressedStream(bool useCompression,unsigned threshold);   // @0x140713140 (inline in the exe)
     void Encode(COutputStream&);
     CByteBuffer& Decode(CInputStream&);
     void EncodeReady(COutputStream&);

@@ -1,0 +1,621 @@
+// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). Packet stream operators, CInPacket, COutPacket send path,
+// CPacketBuffer, and the std::map / CAtlList instantiations of the networking layer.
+// MS2-UNIT: commonfiles\packet.cpp
+// MS2-RANGE: 0x14070f700-0x140716a40 .text$mn
+// MS2-RANGE: 0x1400bbe60-0x1400bc1a0 .text$di
+// MS2-PIN: ??C?$Unk_SocketPtr@VCPacketBuffer@@@@QEBAPEAVCPacketBuffer@@XZ 0x140713520
+// MS2-PIN: ??D?$Unk_SocketPtr@VCPacketBuffer@@@@QEBAAEAVCPacketBuffer@@XZ 0x140713540
+// MS2-PIN: ?get@?$Unk_SocketPtr@VCPacketBuffer@@@@QEBAPEAVCPacketBuffer@@XZ 0x140713570
+// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@I@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBU?$pair@HH@std@@I@1@XZ 0x140713580
+// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@I@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBU?$pair@HH@std@@I@1@XZ 0x1407135a0
+// MS2-PIN: ??$?0V?$tuple@AEBU?$pair@HH@std@@@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBU?$pair@HH@std@@I@std@@QEAA@AEAV?$tuple@AEBU?$pair@HH@std@@@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x140711050
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@I@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@I@std@@@std@@@std@@@0@AEAV10@@Z 0x140712d70
+// MS2-PIN: ?AddRefImpl@?$Unk_SocketPtr@VCPacketBuffer@@@@AEBAXPEAX@Z 0x140715470
+// MS2-PIN: ?ReleaseImpl@?$Unk_SocketPtr@VCPacketBuffer@@@@AEAAXPEAX@Z 0x140716120
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\packet.cpp"
+#include "ms2/placeholder/ms2stdafx.h"
+#include <map>
+#include "packet.h"
+#include "ms2/placeholder/cinpacket.h"
+#include "ms2/placeholder/cpacketbuffer.h"
+#include "ms2/placeholder/exception.h"
+#include "ms2/commonfiles/os.h"
+#include "ms2/commonfiles/buffercryptmanager.h"
+#include "ms2/placeholder/cbuffercryptmanager.h"
+#include "ms2/ms2format.h"
+#include "ms2/ms2recover.h"
+#include "hook/ms2hook.h"
+
+// ---- externals (bound by VA) ----------------------------------------------------------------------------------------
+#include "ms2/client/ms2/networkservice.h"
+unsigned FUN_140869420();                                       // millisecond clock
+CString FUN_14016a600(const wchar_t*, int);                     // wide -> CString
+int FUN_1401cde60(CBufferCryptManager*, unsigned char* data, int length, int connectionState, unsigned* key);   // decrypt
+int FUN_1401cddd0(CBufferCryptManager*, unsigned char* data, int length, int connectionState, unsigned* key);   // encrypt
+unsigned __int64 FUN_140282020(const Unk_OSNumber&);
+int FUN_1406c3660(const ATL::CAtlArray<unsigned char>&);                       // element count
+const unsigned char* FUN_1406c3630(const ATL::CAtlArray<unsigned char>&);      // data pointer (null when empty)
+extern CBufferCryptManager* DAT_143aac528;
+CBufferCryptManager* FUN_140714f80();
+CNetworkService* FUN_140714f90();
+CPacketBuffer* FUN_1407138b0(unsigned, const Unk_SocketNew&);
+
+// _wassert with the original text/line where the source spelling differs from the printed text.
+#define MS2_PK_ASSERT(line, text, expr) (void)((!!(expr)) || (_wassert(L##text, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
+
+// Serializable item of the stream operators (slot 0 writes, slot 1 reads); name invented.
+class Unk_PktSerializable {
+public:
+    virtual void vfunc_0(COutputStream&) = 0;
+    virtual void vfunc_1(CInputStream&) = 0;
+};
+// (a user template; its COMDAT sorts after std::forward<..>, exe 0x140712d80)
+template<class T> T pkmin(T a, T b) { T r; if (a < b) r = a; else r = b; return r; }
+
+// ---- byte-vector helpers ----------------------------------------------------------------------------------------------
+// @0x140715250
+void FUN_140715250(ATL::CAtlArray<unsigned char>& array, __int64 count) { array.SetCount(count, -1); }
+// @0x140714db0
+unsigned char* FUN_140714db0(ATL::CAtlArray<unsigned char>& array) { if (array.IsEmpty()) return 0; return &array[0]; }
+// @0x140714fc0
+unsigned __int64 FUN_140714fc0(const Unk_OSId& id) { return id.value; }
+
+// ---- stream operators -------------------------------------------------------------------------------------------------
+// @0x14070f700
+CInputStream& FUN_14070f700(CInputStream& in, ATL::CAtlArray<unsigned char>& value)
+{
+    int count = in.vfunc_o8_3();
+    FUN_140715250(value, count);
+    in.vfunc_o8_9(FUN_140714db0(value), count);
+    return in;
+}
+// @0x14070f770
+CInputStream& FUN_14070f770(CInputStream& in, Unk_PktSerializable& item) { item.vfunc_1(in); return in; }
+// @0x14070f7b0
+CInputStream& FUN_14070f7b0(CInputStream& in, CByteBuffer& value)
+{
+    int count = in.vfunc_o8_3();
+    value.FUN_140715230(count);
+    in.vfunc_o8_9(value.FUN_140204eb0(), count);
+    return in;
+}
+// @0x14070f820
+COutputStream& FUN_14070f820(COutputStream& out, bool value) { out.vfunc_o10_0(value); return out; }
+// @0x14070f860
+COutputStream& FUN_14070f860(COutputStream& out, unsigned char value) { out.vfunc_o10_1(value); return out; }
+// @0x14070f8a0
+COutputStream& FUN_14070f8a0(COutputStream& out, short value) { out.vfunc_o10_2(value); return out; }
+// @0x14070f8e0
+COutputStream& FUN_14070f8e0(COutputStream& out, unsigned short value) { out.vfunc_o10_2(value); return out; }
+// @0x14070f920
+COutputStream& FUN_14070f920(COutputStream& out, int value) { out.vfunc_o10_3(value); return out; }
+// @0x14070f960
+COutputStream& FUN_14070f960(COutputStream& out, long value) { out.vfunc_o10_3(value); return out; }
+// @0x14070f9a0
+COutputStream& FUN_14070f9a0(COutputStream& out, unsigned int value) { out.vfunc_o10_3(value); return out; }
+// @0x14070f9e0
+COutputStream& FUN_14070f9e0(COutputStream& out, __int64 value) { out.vfunc_o10_4(value); return out; }
+// @0x14070fa20
+COutputStream& FUN_14070fa20(COutputStream& out, unsigned __int64 value) { out.vfunc_o10_4(value); return out; }
+// @0x14070fa60
+COutputStream& FUN_14070fa60(COutputStream& out, float value) { out.vfunc_o10_5(value); return out; }
+// @0x14070faa0
+COutputStream& FUN_14070faa0(COutputStream& out, const CString& value) { out.vfunc_o10_7(value); return out; }
+// @0x14070fae0
+COutputStream& FUN_14070fae0(COutputStream& out, const CStringW& value) { out.vfunc_o10_8(value); return out; }
+// @0x14070fb20
+COutputStream& FUN_14070fb20(COutputStream& out, const Unk_OSId& value) { out.vfunc_o10_4(FUN_140714fc0(value)); return out; }
+// @0x14070fb70
+COutputStream& FUN_14070fb70(COutputStream& out, const Unk_OSNumber& value) { out.vfunc_o10_4(FUN_140282020(value)); return out; }
+// @0x14070fbc0
+COutputStream& FUN_14070fbc0(COutputStream& out, const ATL::CAtlArray<unsigned char>& value)
+{
+    out.vfunc_o10_3(FUN_1406c3660(value));
+    out.vfunc_o10_9(FUN_1406c3630(value), FUN_1406c3660(value));
+    return out;
+}
+// @0x14070fc40
+COutputStream& FUN_14070fc40(COutputStream& out, const Unk_PktSerializable& item) { const_cast<Unk_PktSerializable&>(item).vfunc_0(out); return out; }
+// @0x14070fc80
+COutputStream& FUN_14070fc80(COutputStream& out, CByteBuffer& value)
+{
+    out.vfunc_o10_3(value.FUN_140205190());
+    out.vfunc_o10_9(value.FUN_140204eb0(), value.FUN_140205190());
+    return out;
+}
+
+// ---- CInPacket --------------------------------------------------------------------------------------------------------
+// @0x14070fd00
+CInPacket::CInPacket(CInPacket& iPacket)
+{
+    MS2_ASSERT_AT(0xdc, iPacket.m_nState == RS_COMPLETED);
+    m_flags = iPacket.m_flags;
+    m_nState = RS_COMPLETED;
+    m_data.SetCount(iPacket.m_length, -1);
+    memcpy(&m_data[0], &iPacket.m_data[0], iPacket.m_length);
+    m_length = iPacket.m_length;
+    m_opcode = iPacket.m_opcode;
+    m_40 = iPacket.m_40;
+    m_packetLength = iPacket.m_packetLength;
+    m_offset = iPacket.m_offset;
+    iPacket.FUN_140713940();
+}
+// @0x14070fe80
+int CInPacket::FUN_14070fe80() { FUN_140715280(6); return (unsigned short)FUN_1407140a0(); }
+// @0x14070feb0
+bool CInPacket::vfunc_o8_0() { return vfunc_o8_1() != 0; }
+// @0x14070ff00
+int CInPacket::FUN_14070ff00(Unk_SocketPtr<CPacketBuffer>* buffer, int* stateBefore, int hasSequence)
+{
+    if (stateBefore != NULL) *stateBefore = m_nState;
+    char* data = (*buffer).get()->FUN_140713530();
+    int remaining = (**buffer).FUN_140714fa0();
+    if (m_nState == RS_HEADER) {
+        unsigned headerLen = 6;
+        if (hasSequence != 0) headerLen = 10;
+        MS2_PK_ASSERT(0x105, "headerLen > m_uLength", headerLen > (unsigned)m_length);
+        unsigned count = pkmin<unsigned>(remaining, headerLen - m_length);
+        FUN_140715120(data, count);
+        if (headerLen <= (unsigned)m_length) {
+            m_nState = RS_DATA;
+            m_opcode = vfunc_o8_2();
+            m_packetLength = vfunc_o8_3();
+            if (hasSequence != 0) {
+                m_40 = vfunc_o8_3();
+                m_length -= 4;
+                m_offset -= 4;
+            }
+        }
+        remaining -= count;
+        if (remaining == 0) {
+            *buffer = 0;
+            return m_nState;
+        }
+        data += count;
+    }
+    MS2_PK_ASSERT(0x11c, "m_nState == RS_DATA", m_nState == RS_DATA);
+    int count = pkmin<unsigned>(remaining, (m_packetLength + 6) - m_length);
+    FUN_140715120(data, count);
+    if (m_packetLength + 6U <= (unsigned)m_length) m_nState = RS_COMPLETED;
+    remaining -= count;
+    CPacketBuffer* rest;
+    if (remaining == 0) {
+        rest = 0;
+    } else {
+        Unk_SocketNew unused(0);
+        int offset = (**buffer).FUN_140714fa0();
+        offset -= remaining;
+        rest = (**buffer).FUN_140715390(offset, remaining, unused);
+    }
+    *buffer = rest;
+    return m_nState;
+}
+// @0x140710280
+void CInPacket::FUN_140710280(int connectionState, unsigned* key)
+{
+    FUN_1401cde60(FUN_140714f80(), &m_data[0] + m_offset, m_length - m_offset, connectionState, key);
+}
+// @0x140710300
+CString FUN_140710300(CInPacket* packet)
+{
+    CString result;
+    const ATL::CAtlArray<unsigned char>& bytes = packet->m_data;
+    const unsigned char* data = &bytes[0];
+    for (unsigned i = 0; i < (unsigned)packet->m_length; ++i) {
+        CString piece;
+        piece.Format("%02x ", data[i]);
+        result += piece;
+    }
+    return result;
+}
+// @0x1407103f0
+void FUN_1407103f0(CInPacket* packet)
+{
+    Unk_CompressedStream stream(true, 0x28);
+    CByteBuffer& decoded = stream.Decode(*static_cast<CInputStream*>(packet));
+    unsigned length = decoded.FUN_140205190();
+    packet->m_data.SetCount(length + 8, -1);
+    memcpy(&packet->m_data[0] + 8, decoded.FUN_140204eb0(), length);
+    packet->m_length = length + 8;
+    packet->m_offset = 8;
+}
+
+// ---- COutPacket -------------------------------------------------------------------------------------------------------
+// Rate limit of the packets sent through FUN_1407105c0: (type, key) -> earliest tick of the next send.
+std::map<std::pair<int, int>, unsigned> g_packetThrottle;     // 0x143ab0ab0
+
+// @0x140710500
+COutPacket::COutPacket(int nType, int nUnk)
+{
+    m_aBuffer.SetCount(0x100, -1);
+    FUN_140710740(nType, nUnk, true);
+}
+// @0x140710590
+void FUN_140710590(COutPacket& packet)
+{
+    if (FUN_140714f90() != 0) FUN_140714f90()->FUN_14153a020(packet);
+}
+// @0x1407105c0
+bool FUN_1407105c0(COutPacket* packet, int key, int delay)
+{
+    if (packet->m_aBuffer.GetCount() < 2) return false;
+    unsigned now = FUN_140869420();
+    int type = *(unsigned short*)&packet->m_aBuffer[0];
+    std::pair<int, int> id(type, key);
+    std::map<std::pair<int, int>, unsigned>::iterator it = g_packetThrottle.find(id);
+    if (it != g_packetThrottle.end() && now < it->second) return false;
+    unsigned next = now + delay;
+    g_packetThrottle[id] = next;
+    FUN_140710590(*packet);
+    return true;
+}
+// @0x1407106d0
+void FUN_1407106d0(int type, int key)
+{
+    std::pair<int, int> id(type, key);
+    g_packetThrottle.erase(id);
+}
+// @0x140710710
+void COutPacket::vfunc_o10_0(bool value) { vfunc_o10_1(value); }
+// @0x140710740
+void COutPacket::FUN_140710740(int nType, int nUnk, bool bEncodeType)
+{
+    m_nFlag = nUnk;
+    m_nLength = 0;
+    m_n14 = 0;
+    if (nType != 0x7fffffff && bEncodeType) {
+        MS2_ASSERT_AT(0x161, nType < 65535);
+        vfunc_o10_2((short)nType);
+    }
+    m_nSequence = 0;
+}
+// @0x1407107e0
+void FUN_1407107e0(COutPacket* packet, int type, int unk, const void* data, int count)
+{
+    packet->m_aBuffer.RemoveAll();
+    packet->m_aBuffer.SetCount(0x100, -1);
+    packet->FUN_140710740(type, unk, true);
+    packet->vfunc_o10_9(data, count);
+}
+// @0x140710870
+void FUN_140710870(COutPacket* packet, ATL::CAtlList<Unk_SocketPtr<CPacketBuffer> >* list, unsigned sequence, unsigned* key, int hasSequence)
+{
+    int total = packet->m_nLength + 6;
+    if (hasSequence != 0) total = packet->m_nLength + 10;
+    const Unk_PodArray<char>& constBuffer = packet->m_aBuffer;
+    const unsigned char* source = (const unsigned char*)&constBuffer[0];
+    unsigned chunk = pkmin<unsigned>(total, 0x5b4);
+    Unk_SocketPtr<CPacketBuffer> buffer(FUN_1407138b0(chunk, Unk_SocketNew(0)));
+    if (packet->FUN_14020bc40() != 0) (*buffer).FUN_140715360(buffer.operator->());
+    unsigned short* header = (unsigned short*)buffer.get()->FUN_140713530();
+    unsigned char* end = (unsigned char*)header + chunk;
+    unsigned type;
+    if (key == NULL) type = sequence & 0xffff;
+    else type = sequence & 0xffff ^ *key >> 16;
+    *header = (unsigned short)type;
+    *(unsigned*)(header + 1) = packet->m_nLength;
+    unsigned* cursor = (unsigned*)(header + 3);
+    if (hasSequence != 0) {
+        *cursor = sequence;
+        cursor = (unsigned*)(header + 5);
+    }
+    memcpy(cursor, source, end - (unsigned char*)cursor);
+    source += end - (unsigned char*)cursor;
+    list->AddTail(buffer);
+    while ((total -= chunk) != 0) {
+        chunk = pkmin<unsigned>(total, 0x5b4);
+        buffer = FUN_1407138b0(chunk, Unk_SocketNew(0));
+        if (packet->FUN_14020bc40() != 0) (*buffer).FUN_140715360(buffer.operator->());
+        unsigned char* part = (unsigned char*)buffer.get()->FUN_140713530();
+        end = part + chunk;
+        memcpy(part, source, end - part);
+        source += end - part;
+        list->AddTail(buffer);
+    }
+}
+// @0x140710b90
+COutPacket* FUN_140710b90(COutPacket* packet, int state, unsigned* key)
+{
+    if (packet->m_n14 != state) {
+        if (packet->m_n14 == 0 || packet->m_n14 == state) {
+            FUN_1401cddd0(FUN_140714f80(), (unsigned char*)&packet->m_aBuffer[0], packet->m_nLength, state, key);
+            packet->m_n14 = state;
+        } else {
+            MS2_ASSERT_AT(0x1a5, FALSE);
+            packet = 0;
+        }
+    }
+    return packet;
+}
+// @0x140710c50
+CString FUN_140710c50(COutPacket* packet)
+{
+    CString result;
+    const Unk_PodArray<char>& bytes = packet->m_aBuffer;
+    const unsigned char* data = (const unsigned char*)&bytes[0];
+    for (unsigned i = 0; i < packet->m_nLength; ++i) {
+        CString piece;
+        piece.Format("%02x ", data[i]);
+        result += piece;
+    }
+    return result;
+}
+// @0x140710d40
+void FUN_140710d40(COutPacket* packet, bool useCompression, unsigned threshold)
+{
+    Unk_CompressedStream stream(useCompression, threshold);
+    CByteBuffer& raw = stream.FUN_140714de0();
+    MS2_PK_ASSERT(0x1c1, "m_uOffset > PROTOCOL_LENGTH", packet->m_nLength > 2);
+    raw.vfunc_o10_9(&packet->m_aBuffer[0] + 2, packet->m_nLength - 2);
+    packet->m_nLength = 2;
+    stream.Encode(*packet);
+}
+
+// ---- CPacketBuffer / socket pointer helpers ---------------------------------------------------------------------------------
+// @0x1407130d0
+CPacketBuffer::CPacketBuffer(int size, char* data, CPacketBuffer* parent) { FUN_140715000(size, data, parent); }
+// @0x1407132c0
+CPacketBuffer::~CPacketBuffer()
+{
+    if (m_parent == 0) delete[] m_data;
+}
+// @0x140713530
+char* CPacketBuffer::FUN_140713530() { return m_data; }
+// @0x140714fa0
+int CPacketBuffer::FUN_140714fa0() const { return m_size; }
+// @0x140715000
+void CPacketBuffer::FUN_140715000(int size, char* data, CPacketBuffer* parent)
+{
+    m_size = size;
+    m_data = data;
+    m_parent = parent;
+}
+// @0x140715360
+void CPacketBuffer::FUN_140715360(void* value) { *FUN_140715db0() = value; }
+// @0x140715390
+CPacketBuffer* CPacketBuffer::FUN_140715390(unsigned offset, int size, const Unk_SocketNew&)
+{
+    return new CPacketBuffer(size, m_data + offset, this);
+}
+// @0x140715db0
+void** CPacketBuffer::FUN_140715db0() { return reinterpret_cast<void**>(reinterpret_cast<char*>(this) + 0x10); }
+// @0x1407138b0
+CPacketBuffer* FUN_1407138b0(unsigned size, const Unk_SocketNew&)
+{
+    char* data = new char[size];
+    return new CPacketBuffer(size, data, 0);
+}
+// @0x140714f80
+CBufferCryptManager* FUN_140714f80() { return DAT_143aac528; }
+// @0x140714f90
+CNetworkService* FUN_140714f90() { return TSingleton<CNetworkService>::s_instance; }
+
+// ---- Unk_CompressedStream constructor (inline in the exe) ---------------------------------------------------------------
+inline Unk_CompressedStream::Unk_CompressedStream(bool useCompression, unsigned threshold)
+{
+    m_threshold = threshold;
+    m_useCompression = useCompression;
+}
+// @0x140714de0
+CByteBuffer& Unk_CompressedStream::FUN_140714de0() { return m_raw; }
+// @0x140715230
+void CByteBuffer::FUN_140715230(int count) { FUN_140204670(count); }
+
+// ---- CIOBuffer bounds-checked decoders ------------------------------------------------------------------------------------
+#define MS2_PK_DECODE_FAIL(hint, code) \
+    do { CString text; FUN_140714df0(text, CString(hint)); throw Exception(text, code); } while (0)
+// @0x140714df0
+void CIOBuffer::FUN_140714df0(CString& text, CString hint)
+{
+    unsigned offset = vfunc_0();
+    unsigned short type = vfunc_1();
+    text.Format("[type=%u][offset=%u][hint=%s]", type, offset, (const char*)hint);
+}
+// @0x140713970
+int CIOBuffer::FUN_140713970(unsigned char& value, const unsigned char* data, unsigned size)
+{
+    if (size < 1) MS2_PK_DECODE_FAIL("Decode1", 0x26);
+    value = *data;
+    return 1;
+}
+// @0x140713ae0
+int CIOBuffer::FUN_140713ae0(short& value, const unsigned char* data, unsigned size)
+{
+    if (size < 2) MS2_PK_DECODE_FAIL("Decode2", 0x26);
+    value = *(const short*)data;
+    return 2;
+}
+// @0x140713c50
+int CIOBuffer::FUN_140713c50(int& value, const unsigned char* data, unsigned size)
+{
+    if (size < 4) MS2_PK_DECODE_FAIL("Decode4", 0x26);
+    value = *(const int*)data;
+    return 4;
+}
+// @0x140713db0
+int CIOBuffer::FUN_140713db0(__int64& value, const unsigned char* data, unsigned size)
+{
+    if (size < 8) MS2_PK_DECODE_FAIL("Decode8", 0x26);
+    value = *(const __int64*)data;
+    return 8;
+}
+// @0x140713f20
+int CIOBuffer::FUN_140713f20(void* dest, int count, const unsigned char* data, unsigned size)
+{
+    if (size < (unsigned)count) MS2_PK_DECODE_FAIL("DecodeBuffer", 0x26);
+    memcpy(dest, data, (unsigned)count);
+    return count;
+}
+// @0x140714ab0
+int CIOBuffer::FUN_140714ab0(float& value, const unsigned char* data, unsigned size)
+{
+    if (size < 4) MS2_PK_DECODE_FAIL("Decodef", 0x26);
+    value = *(const float*)data;
+    return 4;
+}
+// @0x140714210
+int CIOBuffer::FUN_140714210(CString& value, const unsigned char* data, unsigned size)
+{
+    if (size < 2) MS2_PK_DECODE_FAIL("DecodeStrA", 0x26);
+    unsigned short length = *(const unsigned short*)data;
+    if (size < length + 2u) MS2_PK_DECODE_FAIL("DecodeStrA", 0x26);
+    value = CString((const char*)(data + 2), length);
+    if (length != 0 && CString::StringLength(value.GetBuffer()) != length) MS2_PK_DECODE_FAIL("DecodeStrA", 0x18);
+    return length + 2;
+}
+// @0x1407145e0
+int CIOBuffer::FUN_1407145e0(CStringW& value, const unsigned char* data, unsigned size)
+{
+    if (size < 2) MS2_PK_DECODE_FAIL("DecodeStr", 0x26);
+    unsigned short length = *(const unsigned short*)data;
+    if (size < length * 2u + 2) MS2_PK_DECODE_FAIL("DecodeStr", 0x26);
+    value = CStringW((const wchar_t*)(data + 2), length);
+    if (length != 0 && CStringW::StringLength(value.GetBuffer()) != length) MS2_PK_DECODE_FAIL("DecodeStr", 0x18);
+    return length * 2 + 2;
+}
+
+// ---- CInPacket accessors and decoders ----------------------------------------------------------------------------------------
+// @0x140713940
+void CInPacket::FUN_140713940() { m_nState = RS_HEADER; m_length = 0; m_offset = 0; }
+// @0x140714fb0
+unsigned CInPacket::vfunc_0() { return m_offset; }
+// @0x140714fd0
+short CInPacket::vfunc_1() { const ATL::CAtlArray<unsigned char>& bytes = m_data; return *(const short*)(&bytes[0] + 6); }
+// @0x140713a60
+unsigned char CInPacket::vfunc_o8_1()
+{
+    unsigned char value;
+    int remaining = m_length - m_offset;
+    int used = FUN_140713970(value, &m_data[0] + m_offset, remaining);
+    m_offset += used;
+    return value;
+}
+// @0x140713bd0
+short CInPacket::vfunc_o8_2()
+{
+    short value;
+    int remaining = m_length - m_offset;
+    int used = FUN_140713ae0(value, &m_data[0] + m_offset, remaining);
+    m_offset += used;
+    return value;
+}
+// @0x140713d40
+int CInPacket::vfunc_o8_3()
+{
+    int value;
+    m_offset += FUN_140713c50(value, &m_data[0] + m_offset, m_length - m_offset);
+    return value;
+}
+// @0x140713ea0
+__int64 CInPacket::vfunc_o8_4()
+{
+    __int64 value;
+    m_offset += FUN_140713db0(value, &m_data[0] + m_offset, m_length - m_offset);
+    return value;
+}
+// @0x140714020
+void CInPacket::vfunc_o8_9(void* data, int count)
+{
+    m_offset += FUN_140713f20(data, count, &m_data[0] + m_offset, m_length - m_offset);
+}
+// @0x1407140a0
+short CInPacket::FUN_1407140a0() { return vfunc_o8_2(); }
+// @0x1407140d0
+Unk_StreamPoint CInPacket::FUN_1407140d0()
+{
+    Unk_StreamPoint point;
+    point.x = vfunc_o8_5();
+    point.y = vfunc_o8_5();
+    point.z = vfunc_o8_5();
+    return point;
+}
+// @0x140714190
+CString CInPacket::vfunc_o8_6()
+{
+    CStringW text = vfunc_o8_8();
+    return FUN_14016a600(text, 0);
+}
+// @0x140714520
+CString CInPacket::vfunc_o8_7()
+{
+    CString value;
+    m_offset += FUN_140714210(value, &m_data[0] + m_offset, m_length - m_offset);
+    return value;
+}
+// @0x140714900
+CStringW CInPacket::vfunc_o8_8()
+{
+    CStringW value;
+    m_offset += FUN_1407145e0(value, &m_data[0] + m_offset, m_length - m_offset);
+    return value;
+}
+// @0x1407149c0
+Unk_StreamPoint CInPacket::vfunc_o8_10() { return FUN_1407140d0(); }
+// @0x1407149f0
+Unk_StreamPoint CInPacket::vfunc_o8_11()
+{
+    Unk_StreamPoint point;
+    point.x = (float)vfunc_o8_2();
+    point.y = (float)vfunc_o8_2();
+    point.z = (float)vfunc_o8_2();
+    return point;
+}
+// @0x140714ba0
+float CInPacket::vfunc_o8_5()
+{
+    float value;
+    m_offset += FUN_140714ab0(value, &m_data[0] + m_offset, m_length - m_offset);
+    return value;
+}
+// @0x140714c20
+float CInPacket::vfunc_o8_13() { return (float)vfunc_o8_2() * 100.0f; }
+// @0x140714c70
+float CInPacket::vfunc_o8_12() { return (float)vfunc_o8_2() * 10.0f; }
+// @0x140714cc0
+float CInPacket::vfunc_o8_14(int scale) { return (float)vfunc_o8_2() * (float)scale; }
+// @0x140714d10
+float CInPacket::vfunc_o8_15() { return (float)vfunc_o8_2() / 10.0f; }
+// @0x140714d60
+float CInPacket::vfunc_o8_16(int scale) { return (float)vfunc_o8_2() / (float)scale; }
+// @0x140715120
+void CInPacket::FUN_140715120(const char* data, unsigned count)
+{
+    if (m_data.GetCount() < m_length + count) {
+        size_t newSize = m_data.GetCount();
+        do { newSize <<= 1; } while (newSize < m_length + count);
+        m_data.SetCount(newSize, -1);
+    }
+    memcpy(&m_data[0] + m_length, data, count);
+    m_length += count;
+}
+// @0x140715280
+void CInPacket::FUN_140715280(unsigned offset)
+{
+    if (offset <= (unsigned)m_length) { m_offset = offset; return; }
+    MS2_PK_DECODE_FAIL("SetOffset", 0x26);
+}
+
+// ---- file statics (.text$di) ---------------------------------------------------------------------------------------------
+static CString s_listNames0[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd"};   // 0x143ab0b20
+static CString s_listNames1[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};                      // 0x143ab0ae0
+static CString s_listNames2[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};                      // 0x143ab0b60
+static CString s_listNames3[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};                      // 0x143ab0ba0
+
+// The UCRT header-inline memcpy_s (corecrt_memcpy_s.h) closes the obj's COMDAT tail; the exe calls memset/memcpy here.
+#pragma function(memcpy, memset)
+#define MS2_VALIDATE_RETURN_ERRCODE(expr, errorcode) \
+    { int _Expr_val = !!(expr); if (!(_Expr_val)) { errno = errorcode; _invalid_parameter_noinfo(); return errorcode; } }
+// @0x1407168f0
+errno_t FUN_1407168f0(void* const dst, rsize_t const dstSize, void const* const src, rsize_t const srcSize)
+{
+    if (srcSize == 0) return 0;
+    MS2_VALIDATE_RETURN_ERRCODE(dst != NULL, EINVAL);
+    if (src == NULL || dstSize < srcSize) {
+        memset(dst, 0, dstSize);
+        MS2_VALIDATE_RETURN_ERRCODE(src != NULL, EINVAL);
+        MS2_VALIDATE_RETURN_ERRCODE(dstSize >= srcSize, ERANGE);
+        return EINVAL;
+    }
+    memcpy(dst, src, srcSize);
+    return 0;
+}

@@ -32,6 +32,9 @@ public:
     // @0x14020a700
     T& operator[](size_t iElement) { if (iElement >= m_nSize) AtlThrow(E_INVALIDARG); return m_pData[iElement]; }
 
+    // @0x140715210
+    void RemoveAll() { SetCount(0, -1); }
+
     // @0x14020bfa0
     bool SetCount(size_t nNewSize, int nGrowBy = -1)
     {

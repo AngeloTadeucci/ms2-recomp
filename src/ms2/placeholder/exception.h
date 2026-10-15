@@ -9,6 +9,8 @@ public:
     Exception(const Exception& rhs):m_code(rhs.m_code),m_message(rhs.m_message){}
     // @0x140203860
     explicit Exception(int code):m_code(code){}
+    // @0x1407131b0 (first instantiated by commonfiles\packet.cpp; the message is taken by value)
+    Exception(CString message,int code):m_code(code),m_message(message){}
     // @0x140203af0
     ~Exception(){}
 private:
