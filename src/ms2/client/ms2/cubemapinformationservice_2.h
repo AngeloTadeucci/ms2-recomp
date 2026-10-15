@@ -9,7 +9,7 @@ public:
     CubeHolderManager();
     virtual ~CubeHolderManager();
     void FUN_1410b4f60(const Unk_CubePaletteFilter&);
-    bool FUN_1410b5030(CubeArray&);
+    int FUN_1410b5030(CubeArray&);
     int FUN_1410b50d0(MS2Ptr<CubeItemInfo>&);
     void FUN_1410b5280(MS2Ptr<CubeItemInfo>);
     void FUN_1410b5460(int);
@@ -29,7 +29,6 @@ public:
     MS2Ptr<CItem> FUN_1410b5dc0(__int64);
     int FUN_1410b5e70();
     int FUN_1410b5eb0();
-    // Pending shared CItemData +0x1b8 build-mask field recovery; original implementation remains external.
     int FUN_1410b5f10(int itemId);
     int FUN_1410b6060(unsigned index);
     void FUN_1410b6210();
