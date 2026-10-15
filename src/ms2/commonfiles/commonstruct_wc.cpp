@@ -13,6 +13,30 @@
 // they come from are not recovered (8-byte pair, 16-byte and 0x30-byte records of the neighbouring slices).
 enum Unk_WcEnum { Unk_WcEnum_0 };
 
+// Constructor cursor of the _Construct_at_end style helpers: _Mylast write cursor at +8, allocator pointer at +0x10.
+struct Unk_140277690 {
+    i64 m_0;
+    i64 m_cursor;
+    i64 m_alloc;
+};
+MS2_CHECK_SIZE(Unk_140277690, 0x18);
+MS2_CHECK_OFFSET(Unk_140277690, m_cursor, 8);
+MS2_CHECK_OFFSET(Unk_140277690, m_alloc, 0x10);
+
+// std::list node header: flag bytes at +0x18/+0x19, value storage at +0x1c.
+struct Unk_140277000 {
+    i64 m_next;
+    i64 m_prev;
+    char m_10[8];
+    char m_isNil;
+    char m_19;
+    char m_1a[2];
+    char m_value[1];
+};
+MS2_CHECK_OFFSET(Unk_140277000, m_isNil, 0x18);
+MS2_CHECK_OFFSET(Unk_140277000, m_19, 0x19);
+MS2_CHECK_OFFSET(Unk_140277000, m_value, 0x1c);
+
 // Same wide log helper as commonstruct.cpp (unit-local there); this slice holds the const wchar_t* instance at 0x140274ea0.
 class Unk_CommonLog : public CLogString {
 public:
@@ -333,12 +357,13 @@ i64 FUN_140276fe0(i64, i64 b, i64) { return b; }
 i64 FUN_140277000(i64 list, i64 a, i64 b, i64 c)
 {
     i64 node = FUN_140286de0(list);
-    *(char*)(node + 0x18) = 0;
-    *(char*)(node + 0x19) = 0;
+    Unk_140277000* n = (Unk_140277000*)node;
+    n->m_isNil = 0;
+    n->m_19 = 0;
     i64 c2 = FUN_140162f40(c);
     i64 b2 = FUN_14027c230(b);
     i64 a2 = FUN_140162ef0(a);
-    i64 dest = FUN_14027b540(node + 0x1c);
+    i64 dest = FUN_14027b540((i64)n->m_value);
     i64 al = FUN_140288290(list);
     FUN_14027b790(al, dest, a2, b2, c2);
     return node;
@@ -439,66 +464,74 @@ i64 FUN_140277660(i64 a, i64 b, Unk_StlTag) { return (b - a) >> 4; }
 // @0x140277690
 void FUN_140277690(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c170(v);
-    i64 p = FUN_14027a980(*(i64*)(self + 8));
-    FUN_14027b840(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 8;
+    i64 p = FUN_14027a980(c->m_cursor);
+    FUN_14027b840(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 8;
 }
 // @0x1402776f0
 void FUN_1402776f0(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c180(v);
-    i64 p = FUN_14027a990(*(i64*)(self + 8));
-    FUN_14027b890(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 0x30;
+    i64 p = FUN_14027a990(c->m_cursor);
+    FUN_14027b890(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 0x30;
 }
 // @0x140277750
 void FUN_140277750(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_140180940(v);
-    i64 p = FUN_14027a9a0(*(i64*)(self + 8));
-    FUN_14027b930(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 8;
+    i64 p = FUN_14027a9a0(c->m_cursor);
+    FUN_14027b930(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 8;
 }
 // @0x1402777b0
 void FUN_1402777b0(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c190(v);
-    i64 p = FUN_14027a9b0(*(i64*)(self + 8));
-    FUN_14027b9d0(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 0x10;
+    i64 p = FUN_14027a9b0(c->m_cursor);
+    FUN_14027b9d0(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 0x10;
 }
 // @0x140277810
 void FUN_140277810(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c1a0(v);
-    i64 p = FUN_14027a9c0(*(i64*)(self + 8));
-    FUN_14027bb10(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 0x10;
+    i64 p = FUN_14027a9c0(c->m_cursor);
+    FUN_14027bb10(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 0x10;
 }
 // @0x140277870
 void FUN_140277870(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c200(v);
-    i64 p = FUN_14027a990(*(i64*)(self + 8));
-    FUN_14027b8e0(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 0x30;
+    i64 p = FUN_14027a990(c->m_cursor);
+    FUN_14027b8e0(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 0x30;
 }
 // @0x1402778d0
 void FUN_1402778d0(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_140180c50(v);
-    i64 p = FUN_14027a9a0(*(i64*)(self + 8));
-    FUN_14027b980(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 8;
+    i64 p = FUN_14027a9a0(c->m_cursor);
+    FUN_14027b980(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 8;
 }
 // @0x140277930
 void FUN_140277930(i64 self, i64 v)
 {
+    Unk_140277690* c = (Unk_140277690*)self;
     i64 a = FUN_14027c210(v);
-    i64 p = FUN_14027a9b0(*(i64*)(self + 8));
-    FUN_14027ba70(*(i64*)(self + 0x10), p, a);
-    *(i64*)(self + 8) = *(i64*)(self + 8) + 0x10;
+    i64 p = FUN_14027a9b0(c->m_cursor);
+    FUN_14027ba70(c->m_alloc, p, a);
+    c->m_cursor = c->m_cursor + 0x10;
 }
 // emplace_back with the capacity checks done: construct at _Mylast and bump it
 // @0x140277990
