@@ -110,7 +110,7 @@ MS2_CHECK_SIZE(PostProcessEffect, 0xa0);
 
 class ReloadablePostProcess : public PostProcessEffect {
 public:
-    ReloadablePostProcess(unsigned __int64 a, NiFixedString* name, unsigned char flag, unsigned int b);   // 0x1416a2bb0
+    ReloadablePostProcess(unsigned __int64 a, const NiFixedString& name, unsigned char flag, unsigned int b);   // 0x1416a2bb0
     virtual ~ReloadablePostProcess();                          // 0x141626a00
     virtual const NiRTTI* GetRTTI() const;
     virtual bool vfunc_13();                                   // 0x141626ab0
