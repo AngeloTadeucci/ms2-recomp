@@ -78,16 +78,16 @@
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@HPEAX@std@@@std@@YAAEAPEAU?$_Tree_node@HPEAX@0@AEAPEAU10@@Z 0x1411d5440
 // MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@0@AEAV10@@Z 0x1411d5480
 // MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x1411d54a0
-// MS2-PIN: ??0?$SmartPointer@VEntity@egf@@@efd@@QEAA@PEAVEntity@egf@@@Z 0x1411d5920
-// MS2-PIN: ??0?$SmartPointer@VEntityManager@egf@@@efd@@QEAA@PEAVEntityManager@egf@@@Z 0x1411d5970
-// MS2-PIN: ??0?$SmartPointer@VFlatModelManager@egf@@@efd@@QEAA@PEAVFlatModelManager@egf@@@Z 0x1411d59c0
-// MS2-PIN: ??0?$SmartPointer@VHardwareInstancingService@@@efd@@QEAA@PEAVHardwareInstancingService@@@Z 0x1411d5a10
-// MS2-PIN: ??0?$SmartPointer@VIMessage@efd@@@efd@@QEAA@PEAVIMessage@1@@Z 0x1411d5a60
-// MS2-PIN: ??0?$SmartPointer@VLightService@ecr@@@efd@@QEAA@PEAVLightService@ecr@@@Z 0x1411d5ab0
-// MS2-PIN: ??0?$SmartPointer@VMS2EntityLoaderService@@@efd@@QEAA@PEAVMS2EntityLoaderService@@@Z 0x1411d5b00
-// MS2-PIN: ??0?$SmartPointer@VMessageService@efd@@@efd@@QEAA@PEAVMessageService@1@@Z 0x1411d5b50
-// MS2-PIN: ??0?$SmartPointer@VPropService@ecrPhysX@@@efd@@QEAA@PEAVPropService@ecrPhysX@@@Z 0x1411d5ba0
-// MS2-PIN: ??0?$SmartPointer@VRenderService@ecr@@@efd@@QEAA@PEAVRenderService@ecr@@@Z 0x1411d5bf0
+// MS2-PIN: ??0?$SmartPointer@VEntityManager@egf@@@efd@@QEAA@PEAVEntityManager@egf@@@Z 0x1411d5a10
+// MS2-PIN: ??0?$SmartPointer@VFlatModelManager@egf@@@efd@@QEAA@PEAVFlatModelManager@egf@@@Z 0x1411d5920
+// MS2-PIN: ??0?$SmartPointer@VLightService@ecr@@@efd@@QEAA@PEAVLightService@ecr@@@Z 0x1411d5970
+// MS2-PIN: ??0?$SmartPointer@VMS2EntityLoaderService@@@efd@@QEAA@PEAVMS2EntityLoaderService@@@Z 0x1411d59c0
+// MS2-PIN: ??0?$SmartPointer@VMessageService@efd@@@efd@@QEAA@PEAVMessageService@1@@Z 0x1411d5a60
+// MS2-PIN: ??0?$SmartPointer@VPropService@ecrPhysX@@@efd@@QEAA@PEAVPropService@ecrPhysX@@@Z 0x1411d5ab0
+// MS2-PIN: ??0?$SmartPointer@VRenderService@ecr@@@efd@@QEAA@PEAVRenderService@ecr@@@Z 0x1411d5b00
+// MS2-PIN: ??0?$SmartPointer@VUnk_PhysXSceneView@@@efd@@QEAA@PEAVUnk_PhysXSceneView@@@Z 0x1411d5b50
+// MS2-PIN: ??0?$SmartPointer@VScheduler@egf@@@efd@@QEAA@PEAVScheduler@egf@@@Z 0x1411d5ba0
+// MS2-PIN: ??0?$SmartPointer@VShaderService@ecr@@@efd@@QEAA@PEAVShaderService@ecr@@@Z 0x1411d5bf0
 // MS2-PIN: ??0?$_Tree@V?$_Tmap_traits@HUUnk_EntityWorldRecord@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_EntityWorldRecord@@@std@@@3@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@@Z 0x1411d5df0
 // MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@HUUnk_EntityWorldRecord@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_EntityWorldRecord@@@std@@@3@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@@Z 0x1411d5e50
 // MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_EntityWorldRecord@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x1411d6070
@@ -372,7 +372,7 @@ void EntityWorldManager::FUN_1411cf980(int map, const egf::BlockIdentification& 
     worlds[map].time = FUN_141473280(FUN_14086d260());
     worlds[map].unloaded = true;
     efd::SmartPointer<HardwareInstancingService> instancing(FUN_14098c5b0(&DAT_143b059e8));
-    if (instancing.data() != nullptr) FUN_1413d73a0(instancing, map);
+    if ((HardwareInstancingService*)instancing != nullptr) FUN_1413d73a0(instancing.operator->(), map);
     loader->FUN_1411d8980(false);
     efd::SmartPointer<egf::EntityLoadRequest> request(EE_NEW egf::EntityLoadRequest(
         egf::EntityLoadRequest::elo_Unload, block, s_entityWorldChannel, 0,
@@ -408,7 +408,7 @@ void EntityWorldManager::FUN_1411cfd40(const egf::EntityChangeMessage* message, 
     egf::EntityPtr entity(message->GetEntity());
     egf::EntityID id(entity->GetEntityID());
     efd::SmartPointer<HardwareInstancingService> instancing(FUN_14098c5b0(&DAT_143b059e8));
-    if (instancing.data() != nullptr && FUN_1413d6890(instancing, entity) != 0) return;
+    if ((HardwareInstancingService*)instancing != nullptr && FUN_1413d6890(instancing.operator->(), entity) != 0) return;
     if (worlds[currentMap].createdEntities.find(id) == worlds[currentMap].createdEntities.end()) {
         worlds[currentMap].loadedEntities[id] = entity.data();
         worlds[currentMap].allEntities[id] = entity.data();
