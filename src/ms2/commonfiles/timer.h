@@ -7,8 +7,9 @@
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/mstime.h"
-#include "ms2/commonfiles/stream.h"
-#include "ms2/placeholder/cinpacket.h"
+// stream.h pulls in ms2recover.h (needs MS2_THIS_FILE), so includers of this header get forward declarations only
+class COutputStream;
+class CInPacket;
 
 namespace efd { class IClock; }
 

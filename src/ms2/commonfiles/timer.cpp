@@ -8,6 +8,8 @@
 #pragma function(memcpy, memset)
 #include "ms2/placeholder/ms2stdafx.h"
 #include "timer.h"
+#include "ms2/commonfiles/stream.h"
+#include "ms2/placeholder/cinpacket.h"
 #include <efd/ServiceManager.h>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
