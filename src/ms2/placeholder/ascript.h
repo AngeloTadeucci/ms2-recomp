@@ -95,6 +95,9 @@ public:
     template<class F> void FUN_1422c2a70(const F&, int); // click callback (DT attendance)
     Scaleform::GFx::Value& FUN_1422bb890(); // root value forwarding accessor
     Scaleform::GFx::Value Invoke(const char*, CString, int); // setTabCount, 0x140a46640
+    Scaleform::GFx::Value Invoke(const char* szMethod, unsigned int a1);                    // 0x140ba26d0 (UIStanceBar; Value = UInt)
+    Scaleform::GFx::Value Invoke(const char* szMethod, unsigned long a1);                   // 0x140ba2770
+    Scaleform::GFx::Value Invoke(const char* szMethod, unsigned long a1, unsigned long a2); // 0x140ba2810
 
 protected:   // cr4: was private; derived AS helpers (ASCommonDepth) read the movie id and the value
     union {
