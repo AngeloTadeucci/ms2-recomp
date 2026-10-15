@@ -241,7 +241,7 @@ int EntityInstancing::FUN_1411c58d0(egf::Entity* entity) {
                 instance->SetName(child->GetName());
                 if (NiInstancingUtilities::AddMeshInstance(mesh, instance)) {
                     NiNode* parent = NiDynamicCast(NiNode, child->GetParent());
-                    instance->SetLocalTransform(child->GetWorldTransform());
+                    instance->SetLocalTransform(child->GetLocalTransform());
                     parent->AttachChild(instance, false);
                     parent->DetachChild(child);
                     entries[entity->GetEntityID()].instances.push_back(NiPointer<NiMeshHWInstance>(instance));
@@ -281,7 +281,7 @@ void EntityInstancing::FUN_1411c5f40(egf::Entity* entity) {
             Unk_MeshInstanceEntry& entry = it->second;
             if ((NiNode*)entry.clone != NULL) {
                 NiAVObject* original = FUN_1413fa030(entity);
-                if (original != NULL) { entry.clone->SetLocalTransform(original->GetWorldTransform()); dirty = true; }
+                if (original != NULL) { entry.clone->SetLocalTransform(original->GetLocalTransform()); dirty = true; }
             }
         }
     }
@@ -364,7 +364,7 @@ void EntityInstancing::FUN_1411c67f0(const egf::EntityID& id) {
         egf::Entity* entity = it->second.entity;
         if (entity != NULL) {
             NiAVObject* original = FUN_1413fa030(entity);
-            if (original != NULL) { entry.clone->SetLocalTransform(original->GetWorldTransform()); dirty = true; }
+            if (original != NULL) { entry.clone->SetLocalTransform(original->GetLocalTransform()); dirty = true; }
         }
     }
 }
@@ -378,7 +378,7 @@ void EntityInstancing::FUN_1411c68d0() {
         egf::Entity* entity = entry.entity;
         if (entity != NULL) {
             NiAVObject* original = FUN_1413fa030(entity);
-            if (original != NULL) { entry.clone->SetLocalTransform(original->GetWorldTransform()); dirty = true; }
+            if (original != NULL) { entry.clone->SetLocalTransform(original->GetLocalTransform()); dirty = true; }
             bool hidden = false;
             FUN_14098c6e0(entity, 0xa0b6b179, hidden);
             if (!FUN_141bc7b20(FUN_1403ed2d0(), it->first)) renderer->AddRenderedEntity(entity, entry.original);
