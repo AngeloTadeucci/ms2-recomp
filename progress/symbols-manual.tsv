@@ -1041,3 +1041,6 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?DAT_143ae50b8@@3VNiFixedString@@A	143ae50b8	data
 ?DAT_143ae50c0@@3VNiFixedString@@A	143ae50c0	data
 ?g_cacheLock@@3VCLockCriticalSection@@A	143aac550	data
+??0Unk_ClubArray@@QEAA@H@Z	1422deec0	func
+??1Unk_ClubArray@@UEAA@XZ	1422df070	func
+?DAT_143abad48@@3PEAVUnk_ClubManager@@EA	143abad48	data
