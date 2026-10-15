@@ -11,7 +11,7 @@
 class CGameSocket;
 
 // TPtredDummy<T>: CPtred followed by the owned value (the smart pointer below points at the value).
-template<class T> class TPtredDummy : public CPtred { public: T value; };
+#include "ms2/placeholder/tptreddummy.h"
 void FUN_14015b020(CPtred*);
 int FUN_140159bc0(CPtred*);
 void FUN_140159ba0(CPtred*);

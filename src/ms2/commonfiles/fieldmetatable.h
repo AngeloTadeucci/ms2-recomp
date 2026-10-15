@@ -18,12 +18,7 @@
 
 // The wrapper the exe allocates around a value that is shared through a smart pointer: a CPtred base followed by the
 // value (TPtredDummy<T>, size 0x18 + sizeof(T)). The smart pointer below points at the value, not at the wrapper.
-template <class T>
-class TPtredDummy : public CPtred
-{
-public:
-    T value;
-};
+#include "ms2/placeholder/tptreddummy.h"
 
 struct Unk_FieldNewTag
 {

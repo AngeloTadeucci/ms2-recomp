@@ -4,7 +4,7 @@
 #include <cstddef>
 #include "ms2/placeholder/cptred.h"
 class CInPacket;
-template<class T> class TPtredDummy : public CPtred { public: TPtredDummy()=default; virtual ~TPtredDummy()=default; T value; };
+#include "ms2/placeholder/tptreddummy.h"
 void FUN_14015b020(CPtred*); int FUN_140159bc0(CPtred*); void FUN_140159ba0(CPtred*);
 CPtred* FUN_1401ba820(CPtred*);
 // MS2-FUNCTIONAL: equivalent intrusive ownership; explicit casts and allocation temporaries differ.
