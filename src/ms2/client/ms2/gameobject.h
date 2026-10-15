@@ -33,7 +33,15 @@
 
 #include "ms2/ms2layout.h"
 
-class CAnimationManager;   // 0xa0 bytes, ctor(GameObject*); held at +0x48
+class CAnimationManager;   // 0xa0 bytes, ctor(GameObject*); held at +0x48 (animationmanager.h)
+template <class T> class MS2Ptr;   // ascript.h
+
+// 16-byte key that names a GameObject's model in the model cache (plain data; 0x14123c460 fills it). w17/effectobject.
+struct Unk_GoModelKey
+{
+    void* m_pad_00;
+    void* m_pad_08;
+};
 
 // 0x140 bytes. Bases: efd::IBase @0 (vftable 0x142ec6070, 57 slots), NiActorManager::CallbackObject @8
 // (vftable 0x142ec6240: dtor thunk 0x14123ed80, AnimActivated 0x14123d5a0, AnimDeactivated 0x14123d5c0,
@@ -120,6 +128,9 @@ public:
     int FUN_14123dbd0();                                    // 0x14123dbd0 return m_unk_c8
     void FUN_14123c300(float f);                            // scale B (+0xa8)
     int FUN_14123c660();                                    // visibility (+0xb0)
+    void FUN_14123c5a0(int nId);                            // 0x14123c5a0 m_unk_70 = nId (w17)
+    Unk_GoModelKey& FUN_14123c460(Unk_GoModelKey& kOut);    // 0x14123c460 fills kOut, returns it (w17)
+    MS2Ptr<CAnimationManager> FUN_14123c6f0();              // 0x14123c6f0 copy of m_spAnimMgr (w17)
 
 public:
     MS2_LAYOUT_FRIEND;

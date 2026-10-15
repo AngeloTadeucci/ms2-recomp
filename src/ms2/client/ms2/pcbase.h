@@ -154,6 +154,7 @@ public:
     void FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
     void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
     void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
+    MS2Ptr<CStateManager> FUN_141678750();                  // 0x141678750 copy of m_spStateMgr (w17)
 
 public:
     MS2_LAYOUT_FRIEND;
