@@ -127,8 +127,53 @@ struct Unk_WsPod8 { unsigned char raw[8]; };
 struct Unk_WsPod16 { unsigned char raw[16]; };
 struct Unk_WsPod24 { unsigned char raw[24]; };
 struct Unk_WsPod32 { unsigned char raw[32]; };
+// Per-member value stand-ins: every container member of the exe instantiates its own template family (distinct ctor/dtor
+// COMDATs per member, see the VAs in the member comments), so each gets its own type of the proven size. Replace one
+// with the real class when proven (same size only).
+struct Unk_WsV058 { void* p; };
+struct Unk_WsV0b8 { void* p; };
+struct Unk_WsV0e8 { void* p; };
+struct Unk_WsV118 { void* p; };
+struct Unk_WsV148 { void* p; };
+struct Unk_WsV1a8 { unsigned char raw[16]; };
+struct Unk_WsV1d8 { unsigned char raw[32]; };
+struct Unk_WsV1f8 { unsigned char raw[16]; };
+struct Unk_WsV208 { void* p0; void* p1; };
+struct Unk_WsV2e8 { void* p; };
+struct Unk_WsV2f8 { void* p0; void* p1; };
+struct Unk_WsV350 { void* p0; void* p1; };
+struct Unk_WsV3a0 { void* p0; void* p1; };
+struct Unk_WsV420 { void* p0; void* p1; };
+struct Unk_WsV468 { void* p0; void* p1; };
+struct Unk_WsV4b0 { void* p0; void* p1; };
+struct Unk_WsV4e0 { void* p0; void* p1; };
+struct Unk_WsV510 { void* p0; void* p1; };
+struct Unk_WsV540 { void* p0; void* p1; };
+struct Unk_WsV570 { void* p0; void* p1; };
+struct Unk_WsV5a0 { void* p; };
+struct Unk_WsV5e8 { void* p; };
+struct Unk_WsV678 { void* p0; void* p1; };
+struct Unk_WsV6a8 { void* p0; void* p1; };
+struct Unk_WsV6d8 { unsigned char raw[8]; };
+struct Unk_WsV708 { void* p0; void* p1; };
+struct Unk_WsV738 { void* p; };
+struct Unk_WsV780 { void* p0; void* p1; };
+struct Unk_WsV7c8 { void* p; };
+struct Unk_WsV848 { void* p0; void* p1; };
+struct Unk_WsV930 { void* p0; void* p1; };
+struct Unk_WsV980 { unsigned char raw[8]; };
+struct Unk_WsV990 { unsigned char raw[8]; };
+struct Unk_WsV9a0 { unsigned char raw[16]; };
+struct Unk_WsVa00 { unsigned char raw[16]; };
+struct Unk_WsVa18 { unsigned char raw[24]; };
+struct Unk_WsVab0 { unsigned char raw[8]; };
+struct Unk_WsVac0 { void* p; };
+struct Unk_WsVad0 { void* p0; void* p1; };
 // Target of the MS2Ptr members (some CPtred subclass; TYPE? per member).
 class Unk_WsPtred : public CPtred {};
+class Unk_WsPtred298 : public CPtred {};       // one class per MS2Ptr member (distinct ctor/dtor COMDATs in the exe)
+class Unk_WsPtreda80 : public CPtred {};
+class Unk_WsPtredaa0 : public CPtred {};
 
 class WorldService : public efd::ISystemService, public TSingleton<WorldService>, public IMessageListener
 {
@@ -212,21 +257,21 @@ public:
     efd::Category m_038;                                // +0x038
     int m_040;                                          // +0x040
     std::set<void*> m_048;                              // +0x048 ctor 0x141bf32d0 / dtor 0x141bf5ed0 TYPE?
-    ATL::CAtlList<Unk_WsP8> m_058;                      // +0x058 0x141bef200 / 0x141bf4960
+    ATL::CAtlList<Unk_WsV058> m_058;                      // +0x058 0x141bef200 / 0x141bf4960
     std::list<Unk_WsElem> m_088;                        // +0x088 0x141bf2fa0 / 0x141bf5c60 TYPE?
     std::list<Unk_WsElem> m_098;                        // +0x098 same type as m_088
     Unk_StreamPoint m_0a8;                              // +0x0a8 copy of DAT_143b01a60 (a point constant)
     float m_0b4;                                        // +0x0b4 3000.0f
-    ATL::CRBMap<unsigned __int64, Unk_WsP8> m_0b8;      // +0x0b8 0x141beff50 / 0x141bf4d50
-    ATL::CRBMap<unsigned, Unk_WsP8> m_0e8;              // +0x0e8 0x141befd10 / 0x141bf4bd0
-    ATL::CRBMap<unsigned, Unk_WsP8> m_118;              // +0x118 0x141befd40 / 0x141bf4bf0
-    ATL::CRBMap<unsigned, Unk_WsP8> m_148;              // +0x148 0x141befce0 / 0x141bf4bb0
+    ATL::CRBMap<unsigned __int64, Unk_WsV0b8> m_0b8;      // +0x0b8 0x141beff50 / 0x141bf4d50
+    ATL::CRBMap<unsigned, Unk_WsV0e8> m_0e8;              // +0x0e8 0x141befd10 / 0x141bf4bd0
+    ATL::CRBMap<unsigned, Unk_WsV118> m_118;              // +0x118 0x141befd40 / 0x141bf4bf0
+    ATL::CRBMap<unsigned, Unk_WsV148> m_148;              // +0x148 0x141befce0 / 0x141bf4bb0
     ATL::CAtlList<Unk_WsP8> m_178;                      // +0x178 0x140963ae0 / 0x1409647c0 (shared)
-    ATL::CRBMap<unsigned, Unk_WsPod16> m_1a8;           // +0x1a8 0x141befcb0 / 0x141bf4b90
-    std::map<unsigned __int64, Unk_WsPod32> m_1d8;      // +0x1d8 0x141bf30e0 / 0x141bf5d50
+    ATL::CRBMap<unsigned, Unk_WsV1a8> m_1a8;           // +0x1a8 0x141befcb0 / 0x141bf4b90
+    std::map<unsigned __int64, Unk_WsV1d8> m_1d8;      // +0x1d8 0x141bf30e0 / 0x141bf5d50
     std::map<int, std::set<unsigned __int64> > m_1e8;   // +0x1e8 0x141bf2ff0 / 0x141bf5cb0
-    std::map<int, Unk_WsPod16> m_1f8;                   // +0x1f8 0x141bf2fc0 / 0x141bf5c90
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_208;            // +0x208 0x141bef530 / 0x141bf4a10
+    std::map<int, Unk_WsV1f8> m_1f8;                   // +0x1f8 0x141bf2fc0 / 0x141bf5c90
+    ATL::CAtlMap<unsigned, Unk_WsV208> m_208;            // +0x208 0x141bef530 / 0x141bf4a10
     CString m_250;                                      // +0x250
     CString m_258;                                      // +0x258
     int m_state;                                        // +0x260 = 7
@@ -239,7 +284,7 @@ public:
     int m_288;                                          // +0x288
     int m_28c;                                          // +0x28c = 1
     CStringW m_290;                                     // +0x290
-    MS2Ptr<Unk_WsPtred> m_298;                           // +0x298 0x141bf14b0(0) / 0x1408850f0 TYPE?
+    MS2Ptr<Unk_WsPtred298> m_298;                           // +0x298 0x141bf14b0(0) / 0x1408850f0 TYPE?
     int m_2a8;                                          // +0x2a8 = 1
     int m_2ac;                                          // +0x2ac
     int m_2b0;                                          // +0x2b0
@@ -251,33 +296,33 @@ public:
     int m_2d0;                                          // +0x2d0
     efd::SmartPointer<efd::ISystemService> m_2d8;       // +0x2d8 dtor 0x140dc13f0 TYPE?
     bool m_2e0;                                         // +0x2e0
-    std::map<unsigned __int64, Unk_WsP8> m_2e8;         // +0x2e8 0x141bf30b0 / 0x141bf5d30
-    ATL::CAtlMap<unsigned __int64, Unk_WsP16> m_2f8;    // +0x2f8 0x141befad0 / 0x141bf4b30
+    std::map<unsigned __int64, Unk_WsV2e8> m_2e8;         // +0x2e8 0x141bf30b0 / 0x141bf5d30
+    ATL::CAtlMap<unsigned __int64, Unk_WsV2f8> m_2f8;    // +0x2f8 0x141befad0 / 0x141bf4b30
     Unk_WsNiPtr<CWireframeManager> m_340;               // +0x340 0x141bf1020 / 0x141bf54e0 (OnInit: new CWireframeManager)
     Unk_WsNiPtr<Unk_WsElem> m_348;                      // +0x348 0x141bf0f90 / 0x141bf5470 TYPE?
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_350;            // +0x350 0x141bef260 / 0x141bf4980
+    ATL::CAtlMap<unsigned, Unk_WsV350> m_350;            // +0x350 0x141bef260 / 0x141bf4980
     int m_398;                                          // +0x398
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_3a0;            // +0x3a0 0x141bef710 / 0x141bf4a70
+    ATL::CAtlMap<unsigned, Unk_WsV3a0> m_3a0;            // +0x3a0 0x141bef710 / 0x141bf4a70
     CGlobalKeyTextCallback m_3e8;                       // +0x3e8
     ATL::CRBMap<Unk_WsP16, Unk_WsP16> m_3f0;            // +0x3f0 0x141234580 / 0x141234d30 (shared)
-    ATL::CAtlMap<unsigned __int64, Unk_WsP16> m_420;    // +0x420 0x141bef9e0 / 0x141bf4b00
-    ATL::CAtlMap<unsigned __int64, Unk_WsP16> m_468;    // +0x468 0x141befbc0 / 0x141bf4b60
-    ATL::CRBMap<CString, Unk_WsP16> m_4b0;              // +0x4b0 0x141befe60 / 0x141bf4cb0
-    ATL::CRBMap<unsigned __int64, Unk_WsP16> m_4e0;     // +0x4e0 0x141befdd0 / 0x141bf4c50
-    ATL::CRBMap<CString, Unk_WsP16> m_510;              // +0x510 0x141befec0 / 0x141bf4cf0
-    ATL::CRBMap<int, Unk_WsP16> m_540;                  // +0x540 0x141beff80 / 0x141bf4d70
-    ATL::CRBMap<int, Unk_WsP16> m_570;                  // +0x570 0x141beffb0 / 0x141bf4d90
-    ATL::CAtlMap<unsigned __int64, Unk_WsP8> m_5a0;     // +0x5a0 0x141bef8f0 / 0x141bf4ad0
-    ATL::CRBMap<CString, Unk_WsP8> m_5e8;               // +0x5e8 0x141befe30 / 0x141bf4c90
-    ATL::CRBMap<CString, Unk_WsP8> m_618;               // +0x618 same type as m_5e8
+    ATL::CAtlMap<unsigned __int64, Unk_WsV420> m_420;    // +0x420 0x141bef9e0 / 0x141bf4b00
+    ATL::CAtlMap<unsigned __int64, Unk_WsV468> m_468;    // +0x468 0x141befbc0 / 0x141bf4b60
+    ATL::CRBMap<CString, Unk_WsV4b0> m_4b0;              // +0x4b0 0x141befe60 / 0x141bf4cb0
+    ATL::CRBMap<unsigned __int64, Unk_WsV4e0> m_4e0;     // +0x4e0 0x141befdd0 / 0x141bf4c50
+    ATL::CRBMap<CString, Unk_WsV510> m_510;              // +0x510 0x141befec0 / 0x141bf4cf0
+    ATL::CRBMap<int, Unk_WsV540> m_540;                  // +0x540 0x141beff80 / 0x141bf4d70
+    ATL::CRBMap<int, Unk_WsV570> m_570;                  // +0x570 0x141beffb0 / 0x141bf4d90
+    ATL::CAtlMap<unsigned __int64, Unk_WsV5a0> m_5a0;     // +0x5a0 0x141bef8f0 / 0x141bf4ad0
+    ATL::CRBMap<CString, Unk_WsV5e8> m_5e8;               // +0x5e8 0x141befe30 / 0x141bf4c90
+    ATL::CRBMap<CString, Unk_WsV5e8> m_618;               // +0x618 same type as m_5e8
     ATL::CRBMap<unsigned __int64, Unk_WsPod8> m_648;    // +0x648 0x140cb6ab0 / 0x140cb6cd0 (shared)
-    ATL::CRBMap<CString, Unk_WsP16> m_678;              // +0x678 0x141befe90 / 0x141bf4cd0
-    ATL::CRBMap<unsigned __int64, Unk_WsP16> m_6a8;     // +0x6a8 0x141befef0 / 0x141bf4d10
-    ATL::CRBMap<unsigned __int64, Unk_WsPod8> m_6d8;    // +0x6d8 0x141befda0 / 0x141bf4c30
-    ATL::CRBMap<unsigned, Unk_WsP16> m_708;             // +0x708 0x141befd70 / 0x141bf4c10
-    ATL::CAtlMap<unsigned, Unk_WsP8> m_738;             // +0x738 0x141bef350 / 0x141bf49b0
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_780;            // +0x780 0x141bef800 / 0x141bf4aa0
-    ATL::CRBMap<CString, Unk_WsP8> m_7c8;               // +0x7c8 0x141befe00 / 0x141bf4c70
+    ATL::CRBMap<CString, Unk_WsV678> m_678;              // +0x678 0x141befe90 / 0x141bf4cd0
+    ATL::CRBMap<unsigned __int64, Unk_WsV6a8> m_6a8;     // +0x6a8 0x141befef0 / 0x141bf4d10
+    ATL::CRBMap<unsigned __int64, Unk_WsV6d8> m_6d8;    // +0x6d8 0x141befda0 / 0x141bf4c30
+    ATL::CRBMap<unsigned, Unk_WsV708> m_708;             // +0x708 0x141befd70 / 0x141bf4c10
+    ATL::CAtlMap<unsigned, Unk_WsV738> m_738;             // +0x738 0x141bef350 / 0x141bf49b0
+    ATL::CAtlMap<unsigned, Unk_WsV780> m_780;            // +0x780 0x141bef800 / 0x141bf4aa0
+    ATL::CRBMap<CString, Unk_WsV7c8> m_7c8;               // +0x7c8 0x141befe00 / 0x141bf4c70
     __int64 m_7f8;                                      // +0x7f8 never touched by the CU (padding or unused)
     int m_800;                                          // +0x800
     int m_804;                                          // +0x804
@@ -287,7 +332,7 @@ public:
     Unk_StreamPoint m_boundsMin;                           // +0x820 (FLT_MAX x3)
     Unk_StreamPoint m_boundsMax;                           // +0x82c (-FLT_MAX x3)
     std::set<unsigned __int64> m_838;                   // +0x838 0x140a15e30 / 0x140a16650 (shared)
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_848;            // +0x848 0x141bef440 / 0x141bf49e0
+    ATL::CAtlMap<unsigned, Unk_WsV848> m_848;            // +0x848 0x141bef440 / 0x141bf49e0
     ATL::CRBMap<unsigned, Unk_WsPod8> m_890;            // +0x890 with m_8c0: one 0x38-byte CRBTree-derived class (ctor 0x1416c3150 = base(10) + [+0x30]=0, dtor 0x1416c3190, other obj) TYPE?
     int m_8c0;                                          // +0x8c0 (part of the m_890 class)
     void* m_8c8;                                        // +0x8c8
@@ -305,33 +350,33 @@ public:
     bool m_91c;                                         // +0x91c = true
     CString m_920;                                      // +0x920
     int m_928;                                          // +0x928
-    ATL::CAtlMap<unsigned, Unk_WsP16> m_930;            // +0x930 0x141bef620 / 0x141bf4a40
+    ATL::CAtlMap<unsigned, Unk_WsV930> m_930;            // +0x930 0x141bef620 / 0x141bf4a40
     int m_978;                                          // +0x978
     int m_97c;                                          // +0x97c
-    std::map<unsigned __int64, Unk_WsPod8> m_980;       // +0x980 0x141bf3080 / 0x141bf5d10
-    std::map<unsigned __int64, Unk_WsPod8> m_990;       // +0x990 0x141bf3050 / 0x141bf5cf0
-    std::vector<Unk_WsPod16> m_9a0;                     // +0x9a0 0x141bf3390 / 0x141bf5f80
+    std::map<unsigned __int64, Unk_WsV980> m_980;       // +0x980 0x141bf3080 / 0x141bf5d10
+    std::map<unsigned __int64, Unk_WsV990> m_990;       // +0x990 0x141bf3050 / 0x141bf5cf0
+    std::vector<Unk_WsV9a0> m_9a0;                     // +0x9a0 0x141bf3390 / 0x141bf5f80
     int m_9b8;                                          // +0x9b8
     int m_9bc;                                          // +0x9bc
     float m_9c0;                                        // +0x9c0 = 1.0f
     float m_9c4;                                        // +0x9c4 = 1.0f
     int m_9c8;                                          // +0x9c8
     ATL::CRBMap<int, int> m_9d0;                        // +0x9d0 0x141beff20 / 0x141bf4d30
-    std::vector<Unk_WsPod16> m_a00;                     // +0xa00 0x141bf3330 / 0x141bf5f20
-    std::vector<Unk_WsPod24> m_a18;                     // +0xa18 0x141bf3360 / 0x141bf5f50
+    std::vector<Unk_WsVa00> m_a00;                     // +0xa00 0x141bf3330 / 0x141bf5f20
+    std::vector<Unk_WsVa18> m_a18;                     // +0xa18 0x141bf3360 / 0x141bf5f50
     CLockCriticalSection m_lock;                        // +0xa30
     CString m_a60;                                      // +0xa60 = ""
     CString m_a68;                                      // +0xa68
     int m_a70;                                          // +0xa70 interval (ms) for the 0xa5 packet toggle
     int m_a74;                                          // +0xa74 next tick
     bool m_a78;                                         // +0xa78
-    MS2Ptr<Unk_WsPtred> m_a80;                           // +0xa80 0x141bf1750 / 0x141bf5600 TYPE?
+    MS2Ptr<Unk_WsPtreda80> m_a80;                           // +0xa80 0x141bf1750 / 0x141bf5600 TYPE?
     Unk_WsOptional<float> m_a90;                        // +0xa90 ctor 0x141bf0e70, reset 0x141c2ed00, set 0x141bf68b0
     bool m_a98;                                         // +0xa98
-    MS2Ptr<Unk_WsPtred> m_aa0;                           // +0xaa0 0x141bf1650(0) / 0x141bf55d0 TYPE?
-    std::map<unsigned __int64, Unk_WsPod8> m_ab0;       // +0xab0 0x141bf3110 / 0x141bf5d70
-    std::map<unsigned, Unk_WsP8> m_ac0;                 // +0xac0 0x141bf3020 / 0x141bf5cd0
-    std::map<unsigned __int64, Unk_WsP16> m_ad0;        // +0xad0 0x141bf3140 / 0x141bf5d90
+    MS2Ptr<Unk_WsPtredaa0> m_aa0;                           // +0xaa0 0x141bf1650(0) / 0x141bf55d0 TYPE?
+    std::map<unsigned __int64, Unk_WsVab0> m_ab0;       // +0xab0 0x141bf3110 / 0x141bf5d70
+    std::map<unsigned, Unk_WsVac0> m_ac0;                 // +0xac0 0x141bf3020 / 0x141bf5cd0
+    std::map<unsigned __int64, Unk_WsVad0> m_ad0;        // +0xad0 0x141bf3140 / 0x141bf5d90
     int m_ae0;                                          // +0xae0
     int m_ae4;                                          // +0xae4
     int m_ae8;                                          // +0xae8
