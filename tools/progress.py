@@ -117,6 +117,9 @@ def scaleform_flags():
 
 GAME_FLAGS += scaleform_flags()
 FLAGS_KEY = " ".join(GAME_FLAGS) + " v3"
+import ms2pch  # noqa: E402  (opt-in MS2_PCH=1)
+if ms2pch.enabled():
+    FLAGS_KEY += " pch1"
 TAG_RE = re.compile(r"//\s*@0x([0-9a-fA-F]+)\b")
 TAG_WINDOW = 6
 
@@ -304,7 +307,8 @@ def needs_compile(u):
 def compile_unit(u):
     os.makedirs(os.path.dirname(u.obj), exist_ok=True)
     env = dict(os.environ, WINEPREFIX=os.path.join(ROOT, "work", "wineprefix-msvc"), WINEDEBUG="-all")
-    cmd = [CL] + GAME_FLAGS + ["/showIncludes", "/Fo" + u.obj, u.path]
+    pch = ms2pch.args(GAME_FLAGS, open(u.path, encoding="latin1").read(), CL, env)
+    cmd = [CL] + GAME_FLAGS + pch + ["/showIncludes", "/Fo" + u.obj, u.path]
     t0 = time.time()
     r = subprocess.run(cmd, capture_output=True, text=True, env=env, encoding="latin1")
     deps, msgs = [], []
@@ -316,6 +320,8 @@ def compile_unit(u):
         elif line.strip() and line.strip() != os.path.basename(u.path) and "_WIN32_WINNT not defined" not in line:
             msgs.append(line)
     ok = r.returncode == 0 and os.path.exists(u.obj)
+    if ok and pch:
+        deps.append(os.path.join(SRC, ms2pch.HDR))
     if ok:
         json.dump({"flags": FLAGS_KEY, "deps": sorted(set(deps))}, open(u.deps, "w"))
     elif os.path.exists(u.obj):

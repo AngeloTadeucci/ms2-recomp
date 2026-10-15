@@ -32,6 +32,7 @@ for a in "$@"; do
         *) units+=("$a") ;;
     esac
 done
+[ "${MS2_PCH:-}" = 1 ] && echo "unit-check: WARNING MS2_PCH=1 drops header-defined COMDATs (ATL module ctor/dtor): do not use it for the done gate" >&2
 AGENT="${MS2_AGENT:-}"
 if [ -z "$AGENT" ]; then echo "unit-check: set MS2_AGENT=<your agent name>" >&2; exit 2; fi
 if [ ${#units[@]} -eq 0 ]; then echo "usage: MS2_AGENT=<name> $0 <unit-substr>..." >&2; exit 2; fi
