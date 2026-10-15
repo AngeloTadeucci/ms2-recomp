@@ -180,7 +180,6 @@ public:
     void FUN_141473690(__int64);void FUN_141473530(__int64);
 };
 Unk_NetworkClientInfo* FUN_14086d260();
-void FUN_1406c5210(int,unsigned char);
 void* FUN_141264060(int);
 void FUN_141357640(void*,__int64,__int64);
 __int64 FUN_140869440();
@@ -717,7 +716,7 @@ void CNetworkService::FUN_14153a380(CInPacket& input) {
         int sequence=static_cast<CInputStream&>(input).vfunc_o8_3();
         m_latency.Received(sequence);
         FUN_14086d260()->FUN_1414734c0(time,m_latency.minimum,m_latency.maximum,m_latency.average);
-        FUN_14086d260()->FUN_141473690(serverTime);FUN_1406c5210(zone,flag);
+        FUN_14086d260()->FUN_141473690(serverTime);CMsTime::SetTimeZone(zone,flag);
     } else if(kind==1) {
         int time=static_cast<CInputStream&>(input).vfunc_o8_3();
         __int64 serverTime=static_cast<CInputStream&>(input).vfunc_o8_4();
@@ -725,7 +724,7 @@ void CNetworkService::FUN_14153a380(CInPacket& input) {
         unsigned char flag=static_cast<CInputStream&>(input).vfunc_o8_1();
         m_latency.Reset();
         FUN_14086d260()->FUN_1414734c0(time,0,0,0);
-        FUN_14086d260()->FUN_141473690(serverTime);FUN_1406c5210(zone,flag);
+        FUN_14086d260()->FUN_141473690(serverTime);CMsTime::SetTimeZone(zone,flag);
         FUN_14153a250();
     } else if(kind==2) { FUN_14153a250(); }
     else if(kind==3) { __int64 time=static_cast<CInputStream&>(input).vfunc_o8_4();FUN_14086d260()->FUN_141473530(time); }
@@ -938,7 +937,7 @@ void CNetworkService::FUN_14153c670(CInPacket& input) {
     Unk_NetworkLoginResult reply;reply.FUN_1407a4740(input);int error=reply.error;
     if(reply.result==0) { FUN_140d86260()->vfunc_11();DAT_143ab2860=reply.value;return; }
     if(reply.result==7) {
-        FUN_1406c5210(reply.zone,(unsigned char)reply.zoneFlag);
+        CMsTime::SetTimeZone(reply.zone,(unsigned char)reply.zoneFlag);
         FUN_140d86260()->vfunc_23(0x389,"AuthFailed_UserRestrict");
         CStringW reason=reply.message;
         CMsTime start(reply.start),end(reply.end);

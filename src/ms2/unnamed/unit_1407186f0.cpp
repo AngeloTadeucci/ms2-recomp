@@ -25,7 +25,7 @@ unsigned __int64 FUN_1401662c0(void* arr);              // GetCount
 const int* FUN_1402fbd20(const int* a, const int* b);   // std::min<int>
 CString* FUN_140164930(void* arr, __int64 i);           // operator[]
 void* FUN_1406c4730(void* out);                         // Unk_DateTime default
-void* FUN_1406c47d0(void* out, int y, int m, int d, int h, int mi, int s, int dst);   // Unk_DateTime(y,m,d,h,mi,s,dst)
+void* FUN_1406c47d0(void* out, int y, int m, int d, int h, int mi, int s);   // CMsTime(y,m,d,h,mi,s) (6 ints; no DST arg, sb2)
 void* FUN_140182ea0(void* s);   void FUN_140183b60(void* s);   void FUN_140178270(const CString* in, void* tmp, const char* sep);
 void* FUN_140182ed0(void* s);   void FUN_140183b90(void* s);   void FUN_1401783d0(const CString* in, void* tmp, const char* sep);
 void FUN_1402929a0(const CString* in, void* tmp, const char* sep);
@@ -117,7 +117,7 @@ void* FUN_140718950(void* ret, const CString* s) {
         vals[4] < 0 || vals[4] > 59 || vals[5] < 0 || vals[5] > 59)
         FUN_140718920(ret, s);
     else
-        FUN_1406c47d0(ret, vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], 0);
+        FUN_1406c47d0(ret, vals[0], vals[1], vals[2], vals[3], vals[4], vals[5]);
     FUN_1401641d0(parts);
     return ret;
 }
