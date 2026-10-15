@@ -246,7 +246,6 @@ void CubeHolderManager::FUN_1410b6210() {
     if(page>0) FUN_1410b6340(index);
 }
 MS2_REPLACE_METHOD(0x1410B6210, CubeHolderManager, FUN_1410b6210, 64, 0x5214C64F);
-// MS2-FUNCTIONAL: preserves unsigned size_t subtraction before dividing the last page.
 // @0x1410b6260
 void CubeHolderManager::FUN_1410b6260() {
     unsigned page=FUN_1410b5ce0();
