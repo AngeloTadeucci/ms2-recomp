@@ -236,9 +236,9 @@ public:
     void FUN_14026ee70(COutputStream& out);
     void FUN_14026ef20(CInPacket& in);
     bool FUN_14026f000();
-    int FUN_14026f040(const CMsTime& now);
-    int FUN_14026f080(const CMsTime& now);
-    int FUN_14026f0f0();
+    bool FUN_14026f040(const CMsTime& now);
+    bool FUN_14026f080(const CMsTime& now);
+    bool FUN_14026f0f0();
     __int64 FUN_14026f170();
     int m_type, m_value;
     CMsTime m_time;
@@ -253,7 +253,7 @@ public:
     virtual ~ItemDropItemLife();           // 0x14027e8c0
     char FUN_14026f290(void* xml);
     __int64 FUN_14026f520();
-    int FUN_14026f5d0();
+    bool FUN_14026f5d0();
     int m_type, m_value;
     CMsTime m_time;
 };

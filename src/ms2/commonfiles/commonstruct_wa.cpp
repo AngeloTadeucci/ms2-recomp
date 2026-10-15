@@ -444,11 +444,12 @@ Unk_ShopLifeRef NpcShopItemLife::FUN_14026eab0() {
 int NpcShopItemLife::FUN_14026ebc0(void* xml) {
     FUN_1402767f0(xml, "itemLifeType", m_type);
     if (m_type == 0) return 0;
-    int type = m_type;
-    if (type == 1) {
+    switch (m_type) {
+    case 1:
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
         if (m_value == 0) return 0;
-    } else if (type == 2) {
+        break;
+    case 2: {
         Unk_IntArr parts;
         CString text;
         FUN_1408733e0(xml, "itemLifeDateTime", text);
@@ -456,9 +457,14 @@ int NpcShopItemLife::FUN_14026ebc0(void* xml) {
         if (parts.FUN_140186260() != 6) return 0;
         m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
                          *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
-    } else {
-        if (type < 3 || 4 < type) return 0;
+        break;
+    }
+    case 3:
+    case 4:
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
+        break;
+    default:
+        return 0;
     }
     FUN_1408730a0(xml, "onlyVisibleInLifePeriod", m_onlyVisible);
     return 1;
@@ -466,74 +472,78 @@ int NpcShopItemLife::FUN_14026ebc0(void* xml) {
 // @0x14026ee70
 void NpcShopItemLife::FUN_14026ee70(COutputStream& out) {
     out.vfunc_o10_1((unsigned char)m_type);
-    int type = m_type;
-    if (type != 1) {
-        if (type == 2) {
-            out.vfunc_o10_4(m_time.Get());
-            return;
-        }
-        if (type < 3) return;
-        if (4 < type) return;
+    switch (m_type) {
+    case 1:
+    case 3:
+    case 4:
+        out.vfunc_o10_3(m_value);
+        break;
+    case 2:
+        out.vfunc_o10_4(m_time.Get());
+        break;
     }
-    out.vfunc_o10_3(m_value);
 }
 // @0x14026ef20
 void NpcShopItemLife::FUN_14026ef20(CInPacket& in) {
     m_type = in.vfunc_o8_1();
-    int type = m_type;
-    if (type != 1) {
-        if (type == 2) {
-            m_time = CMsTime(in.vfunc_o8_4());
-            return;
-        }
-        if (type < 3) return;
-        if (4 < type) return;
+    switch (m_type) {
+    case 1:
+    case 3:
+    case 4:
+        m_value = in.vfunc_o8_3();
+        break;
+    case 2:
+        m_time = CMsTime(in.vfunc_o8_4());
+        break;
     }
-    m_value = in.vfunc_o8_3();
 }
 // @0x14026f000
 bool NpcShopItemLife::FUN_14026f000() { return m_onlyVisible == false; }
 // @0x14026f040
-int NpcShopItemLife::FUN_14026f040(const CMsTime& now) {
-    if (FUN_14026f000()) return 1;
+bool NpcShopItemLife::FUN_14026f040(const CMsTime& now) {
+    if (FUN_14026f000()) return true;
     return FUN_14026f080(now);
 }
 // @0x14026f080
-int NpcShopItemLife::FUN_14026f080(const CMsTime& now) {
-    if (FUN_14026f0f0() && m_time.Get() > 0 && now > m_time) return 0;
-    return 1;
+bool NpcShopItemLife::FUN_14026f080(const CMsTime& now) {
+    if (!FUN_14026f0f0()) return true;
+    if (m_time.Get() > 0 && now > m_time) return false;
+    return true;
 }
 // @0x14026f0f0
-int NpcShopItemLife::FUN_14026f0f0() {
-    int type = m_type;
-    if (type == 1) {
-        if (m_value == 0) return 0;
-    } else if (type == 2) {
-        if (m_time.Get() == 0) return 0;
-    } else if (type < 3 || 4 < type) {
-        return 0;
+bool NpcShopItemLife::FUN_14026f0f0() {
+    switch (m_type) {
+    case 1:
+        if (m_value == 0) return false;
+        break;
+    case 2:
+        if (m_time.Get() == 0) return false;
+        break;
+    case 3:
+    case 4:
+        break;
+    default:
+        return false;
     }
-    return 1;
+    return true;
 }
 // @0x14026f170
 __int64 NpcShopItemLife::FUN_14026f170() {
-    int type = m_type;
-    __int64 result;
-    if (type == 1) {
-        result = FUN_140869440();
-        result = result + (unsigned)(m_value * 60);
-    } else if (type == 2) {
-        result = m_time.Get();
-    } else if (type == 3) {
-        __int64 now = FUN_140869440();
-        result = FUN_14086b950(now, m_value);
-    } else if (type == 4) {
-        __int64 now = FUN_140869440();
-        result = FUN_14086ba60(now, m_value);
-    } else {
-        result = 0;
+    switch (m_type) {
+    case 1:
+        return FUN_140869440() + (unsigned)(m_value * 60);
+    case 3: {
+        __int64 local = FUN_140869440();
+        return FUN_14086b950(local, m_value);
     }
-    return result;
+    case 4: {
+        __int64 local = FUN_140869440();
+        return FUN_14086ba60(local, m_value);
+    }
+    case 2:
+        return m_time.Get();
+    }
+    return 0;
 }
 
 // ---- ItemDropItemLife -----------------------------------------------------------------------------------------
@@ -543,11 +553,12 @@ ItemDropItemLife::ItemDropItemLife() : m_type(0), m_value(0), m_time() {}
 char ItemDropItemLife::FUN_14026f290(void* xml) {
     FUN_1402767f0(xml, "itemLifeType", m_type);
     if (m_type == 0) return 0;
-    int type = m_type;
-    if (type == 1) {
+    switch (m_type) {
+    case 1:
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
         if (m_value == 0) return 0;
-    } else if (type == 2) {
+        break;
+    case 2: {
         Unk_IntArr parts;
         CString text;
         FUN_1408733e0(xml, "itemLifeDateTime", text);
@@ -555,43 +566,51 @@ char ItemDropItemLife::FUN_14026f290(void* xml) {
         if (parts.FUN_140186260() != 6) return 0;
         m_time = CMsTime(*parts.FUN_1401844d0(0), *parts.FUN_1401844d0(1), *parts.FUN_1401844d0(2),
                          *parts.FUN_1401844d0(3), *parts.FUN_1401844d0(4), *parts.FUN_1401844d0(5));
-    } else {
-        if (type < 3 || 4 < type) return 0;
+        break;
+    }
+    case 3:
+    case 4:
         FUN_140873220(xml, "itemLifeValue", (unsigned&)m_value);
+        break;
+    default:
+        return 0;
     }
     return 1;
 }
 // @0x14026f520
 __int64 ItemDropItemLife::FUN_14026f520() {
-    int type = m_type;
-    __int64 result;
-    if (type == 1) {
-        result = FUN_140869440();
-        result = result + (unsigned)(m_value * 60);
-    } else if (type == 2) {
-        result = m_time.Get();
-    } else if (type == 3) {
-        __int64 now = FUN_140869440();
-        result = FUN_14086b950(now, m_value);
-    } else if (type == 4) {
-        __int64 now = FUN_140869440();
-        result = FUN_14086ba60(now, m_value);
-    } else {
-        result = 0;
+    switch (m_type) {
+    case 1:
+        return FUN_140869440() + (unsigned)(m_value * 60);
+    case 3: {
+        __int64 local = FUN_140869440();
+        return FUN_14086b950(local, m_value);
     }
-    return result;
+    case 4: {
+        __int64 local = FUN_140869440();
+        return FUN_14086ba60(local, m_value);
+    }
+    case 2:
+        return m_time.Get();
+    }
+    return 0;
 }
 // @0x14026f5d0
-int ItemDropItemLife::FUN_14026f5d0() {
-    int type = m_type;
-    if (type == 1) {
-        if (m_value == 0) return 0;
-    } else if (type == 2) {
-        if (m_time.Get() == 0) return 0;
-    } else if (type < 3 || 4 < type) {
-        return 0;
+bool ItemDropItemLife::FUN_14026f5d0() {
+    switch (m_type) {
+    case 1:
+        if (m_value == 0) return false;
+        break;
+    case 2:
+        if (m_time.Get() == 0) return false;
+        break;
+    case 3:
+    case 4:
+        break;
+    default:
+        return false;
     }
-    return 1;
+    return true;
 }
 
 // ---- CUserChangeableItemHistory -------------------------------------------------------------------------------
