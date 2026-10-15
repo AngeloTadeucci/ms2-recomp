@@ -123,7 +123,9 @@ public:
     // Logging callback containers (logstring.cpp): bodies specialized in that unit.
     Delegate& operator=(const Delegate& o);
     bool operator==(const Delegate& o) const;
+    bool IsNull() const { return m_pImpl == 0; }
     R operator()(A1 a1) const;
+    void Reset();                       // deletes the implementation (alphaanimation.cpp: Delegate<float(float)>, 0x14098e760)
 
 private:
     DelegateImplBase* m_pImpl;          // +0x00
