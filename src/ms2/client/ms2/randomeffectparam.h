@@ -63,7 +63,7 @@ public:
     virtual CEffectPtr vfunc_6();                                   // 6 0x1416f47b0 new CRandomEffect
 public:
     ATL::CAtlArray<CEffectParamPtr> m_arrEffects;   // +0x48 child effect params
-    ATL::CAtlArray<unsigned int> m_arrWeights;      // +0x68 "prob" (comma list; missing = 0)
+    ATL::CAtlArray<DWORD> m_arrWeights;      // +0x68 "prob" (comma list; missing = 0)
 };
 MS2_CHECK_SIZE(CRandomEffectParam, 0x88);
 MS2_CHECK_OFFSET(CRandomEffectParam, m_arrEffects, 0x48);
