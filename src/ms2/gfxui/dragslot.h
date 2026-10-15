@@ -101,6 +101,8 @@ public:
     // ITooltip
     virtual int vfunc_0(void* p);                   // 0x1422cc690 return 0
 
+    int FUN_1422cc410();                            // return m_nIndex
+
 public:
     int m_nIndex;                                   // +0x80 ctor arg
     int m_bDragging;                                // +0x84
@@ -127,7 +129,7 @@ public:
     virtual void vfunc_13(int i);                   // 13 0x1422ccf10 slot(i)->vfunc_11()
     virtual void vfunc_14(int i);                   // 14 0x1422ccf60 slot(i)->vfunc_10()
     virtual CString vfunc_15(int i);                // 15 0x1422cd120 Format("%s.%d", m_strName, i)
-    virtual int vfunc_16(int n);                    // 16 0x1422cd1a0 return 0
+    virtual DragSlot* vfunc_16(int n);              // 16 0x1422cd1a0 return 0 (creates the slot for index n; TradeSlotBag: new TradeSlot)
 
 public:
     void* m_slots78[2];                             // +0x78 std::set/map keyed by slot name (init 0x141000090, dtor 0x1410004f0)

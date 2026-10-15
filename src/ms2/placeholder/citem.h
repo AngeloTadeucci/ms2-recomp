@@ -16,8 +16,8 @@ public:
   void FUN_140524eb0(CInputStream&);
   __int64 FUN_140526a50();
   void FUN_140526a70(__int64);
-  unsigned char FUN_140526b50();
-  void FUN_140526b70(unsigned char);
+  int FUN_140526b50();
+  void FUN_140526b70(int);
   int FUN_140526bd0();
   int FUN_1405276c0();
 private:
