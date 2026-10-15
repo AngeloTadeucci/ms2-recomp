@@ -1355,3 +1355,9 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?DAT_143ab3150@@3VUnk_IoGatherCount@@A	143ab3150	data
 ?DAT_143aacd50@@3VQuestMask@@A	143aacd50	data
 ?s_strUseTelescope@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ad97b8	data
+?s_instance@?$TSingleton@VCTriggerService@@@@2PEAVCTriggerService@@EA	143ab9510	data
+??0SidePopupTalkParam@@QEAA@XZ	140e90ce0	func
+??0StateTriggerEmotionData@@QEAA@XZ	1417c4370	func
+?Create@TriggerObject@@SA?AV?$MS2Ptr@VTriggerObject@@@@PEAVEntity@egf@@@Z	140de6260	func
+?Contains@TriggerObject@@QEAA_NUUnk_StreamPoint@@@Z	140de5f60	func
+?DAT_143a08cf8@@3DA	143a08cf8	data
