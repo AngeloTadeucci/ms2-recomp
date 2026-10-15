@@ -36,6 +36,16 @@ extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const
 #define MS2_LINE(line) (line)
 
 
+// MS2_FOR_EACH(decl, range)
+//   MSVC's non-standard `for each (decl in range)`: the exe shape is a range reference, end() then begin() into
+//   temps copied to the iterator locals (a C++11 range-for calls begin() first). clang-cl has no `for each`, so the
+//   hook build uses the equivalent range-for.
+#ifdef __clang__
+#define MS2_FOR_EACH(decl, range) for (decl : range)
+#else
+#define MS2_FOR_EACH(decl, range) for each (decl in range)
+#endif
+
 #define MS2_EMIT_CRT_MEMMOVE_S()                                                                          \
     __declspec(selectany) extern void(__cdecl* const ms2_pfnCheckedMemmoveS)(void*, size_t, const void*, size_t) = \
         &ATL::Checked::memmove_s
