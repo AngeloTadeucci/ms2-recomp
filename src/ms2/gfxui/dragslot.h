@@ -94,3 +94,28 @@ public:
 MS2_CHECK_SIZE(DragSlot, 0x88);
 MS2_CHECK_OFFSET(DragSlot, m_nIndex, 0x80);
 MS2_CHECK_OFFSET(DragSlot, m_bDragging, 0x84);
+
+// 0x88 bytes. Container of named DragSlots ("<bag name>.<index>"). vftable 0x14310cbd0 (17 slots, ??_G 0x1422cda80).
+// Derived bags (TradeSlotBag, InventorySlotBag, ...) start their members / UIItemEventListener base at +0x88.
+class DragSlotBag : public NotifyContext::BindData
+{
+public:
+    explicit DragSlotBag(const CString& strName);   // 0x1422cc8f0
+    virtual ~DragSlotBag();                         // 0x1422cc950
+
+    virtual const void* vfunc_2();                  // 2  0x1422cdae0 interface table
+    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cdaf0
+    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cdb40
+    virtual void vfunc_10(int nCount);              // 10 0x1422cc990 for i < n: FUN_1422ccb50(this, i) (create slots)
+    virtual void vfunc_11(void* p);                 // 11 0x1422ccd50 for each slot: slot->vfunc_23(p)
+    virtual void vfunc_12(void* p);                 // 12 0x1422cce30 for each slot: slot->vfunc_24(p)
+    virtual void vfunc_13(int i);                   // 13 0x1422ccf10 slot(i)->vfunc_11()
+    virtual void vfunc_14(int i);                   // 14 0x1422ccf60 slot(i)->vfunc_10()
+    virtual CString vfunc_15(int i);                // 15 0x1422cd120 Format("%s.%d", m_strName, i)
+    virtual int vfunc_16(int n);                    // 16 0x1422cd1a0 return 0
+
+public:
+    void* m_slots78[2];                             // +0x78 std::set/map keyed by slot name (init 0x141000090, dtor 0x1410004f0)
+};
+MS2_CHECK_SIZE(DragSlotBag, 0x88);
+MS2_CHECK_OFFSET(DragSlotBag, m_slots78, 0x78);
