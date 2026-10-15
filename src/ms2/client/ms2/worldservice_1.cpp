@@ -56,6 +56,8 @@ static UICommon::CMyPCKeyInputController s_keyInputController;     // header sta
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(WorldService);
 static CStringW s_maintenanceExit = L"maintenanceExit";            // 0x143af88e0
 
+#ifdef MS2_STANDALONE  // MS2: in the hook DLL these static auto-registering objects would register DLL copies of the handlers in the exe's
+// (shared) message handler registry on top of the exe's own identical statics: the exe then called them with a null this (AV at Character Select).
 // The 11 message handler statics (.text$di 0x140120290-0x1401206a6, exit thunks in .text$yd), in exe order.
 // @0x140120290
 EE_HANDLER_WRAP(WorldService, FUN_141bc0530, ecrPhysX::PhysXPropMessage, 12299);        // 0x143af82c8
@@ -79,6 +81,7 @@ EE_HANDLER(WorldService, FUN_141bc0a70, egf::EntityLoadResult);
 EE_HANDLER(WorldService, FUN_141bbfe30, ecr::SceneGraphAddedMessage);
 // @0x140120650
 EE_HANDLER(WorldService, FUN_141bc0290, ecr::SceneGraphRemovedMessage);
+#endif
 namespace egfPhysX
 {
 // egfPhysX/SceneMessage.h (GameFramework, not on the include path): Category(ECU_Any, kNetID_Any, kCLASSID_SceneService)

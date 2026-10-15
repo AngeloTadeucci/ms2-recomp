@@ -1,5 +1,6 @@
 // Hook runtime: registry of MS2_REPLACE entries, validation, installation via Microsoft Detours, call counting,
 // ms2hook.log. See ms2hook.h and NOTES.md "Recompiled source layout & hook DLL".
+#include <string>
 #include "hook_runtime.h"
 
 #include "ms2hook.h"
@@ -48,22 +49,54 @@ bool EnvFlag(const char* name, bool def) {
     return !(buf[0] == '0' || buf[0] == 'n' || buf[0] == 'N' || buf[0] == 'f' || buf[0] == 'F');
 }
 
-// MS2HOOK_DISABLE: "*" = no hooks, or comma-separated names / hex VAs.
-bool IsDisabled(const Replacement* r) {
-    static char list[4096];
-    static DWORD n = GetEnvironmentVariableA("MS2HOOK_DISABLE", list, sizeof(list));
-    if (n == 0 || n >= sizeof(list)) return false;
+// MS2HOOK_DISABLE: "*" = no hooks, or comma-separated names / hex VAs / "file:<substring of the source path>".
+// A value starting with '@' names a list file (Wine path, e.g. Z:\\home\\...) read instead of the env text, so
+// bisecting is not limited by the 32 KB environment value; entries may be separated by commas or newlines.
+// MS2HOOK_ONLY (same syntax): when set, hooks matching NO entry are disabled (allow list).
+static const char* LoadList(const char* var, char** storage, bool* isSet) {
+    static char envbuf[4096];
+    DWORD n = GetEnvironmentVariableA(var, envbuf, sizeof(envbuf));
+    *isSet = n != 0 && n < sizeof(envbuf);
+    if (!*isSet) return "";
+    if (envbuf[0] != '@') return envbuf;
+    HANDLE h = CreateFileA(envbuf + 1, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, 0, nullptr);
+    if (h == INVALID_HANDLE_VALUE) return "";
+    DWORD sz = GetFileSize(h, nullptr), got = 0;
+    *storage = static_cast<char*>(HeapAlloc(GetProcessHeap(), HEAP_ZERO_MEMORY, sz + 2));
+    ReadFile(h, *storage, sz, &got, nullptr);
+    CloseHandle(h);
+    for (char* c = *storage; *c; ++c) if (*c == '\n' || *c == '\r' || *c == ' ') *c = ',';
+    return *storage;
+}
+
+static bool ListMatches(const char* list, const Replacement* r) {
     char va[32];
     snprintf(va, sizeof(va), "0x%llx", static_cast<unsigned long long>(r->va));
     const char* p = list;
     while (*p) {
         const char* e = strchr(p, ',');
         size_t len = e ? static_cast<size_t>(e - p) : strlen(p);
+        if (len == 0) { p += e ? 1 : 0; if (!e) break; continue; }
         if ((len == 1 && *p == '*') || (len == strlen(r->name) && _strnicmp(p, r->name, len) == 0) ||
             (len == strlen(va) && _strnicmp(p, va, len) == 0))
             return true;
+        if (len > 5 && _strnicmp(p, "file:", 5) == 0 && r->file) {
+            std::string sub(p + 5, len - 5), f(r->file);
+            for (char& c : f) if (c == '\\') c = '/';
+            if (f.find(sub) != std::string::npos) return true;
+        }
         p += len + (e ? 1 : 0);
     }
+    return false;
+}
+
+bool IsDisabled(const Replacement* r) {
+    static char* store1 = nullptr; static char* store2 = nullptr;
+    static bool dis = false, only = false;
+    static const char* disList = LoadList("MS2HOOK_DISABLE", &store1, &dis);
+    static const char* onlyList = LoadList("MS2HOOK_ONLY", &store2, &only);
+    if (dis && ListMatches(disList, r)) return true;
+    if (only && !ListMatches(onlyList, r)) return true;
     return false;
 }
 
@@ -139,7 +172,7 @@ DWORD WINAPI StatsThread(void*) {
             uint64_t c = *r->counter;
             if (c != last[i]) changed = true;
             last[i] = c;
-            if (pos < static_cast<int>(sizeof(line)) - 128)
+            if (c != 0 && pos < static_cast<int>(sizeof(line)) - 128)   // only counters that moved: the 8 KB line is no longer cut off by thousands of zeros
                 pos += snprintf(line + pos, sizeof(line) - pos, " %s=%llu", r->name, static_cast<unsigned long long>(c));
         }
         if (changed) Log("calls:%s", line);

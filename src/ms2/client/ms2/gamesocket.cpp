@@ -138,7 +138,7 @@ void CGameSocket::vfunc_1(CSimpleSocket*,int error)
         if(error==0) {
             if(m_specialConnect) {
                 int result=-1,last=-1; char buffer[1024];
-                for(int i=0;i<50;++i) { Sleep(100); result=recv(m_socket,buffer,sizeof(buffer),0); if(result!=-1 || (last=WSAGetLastError())!=WSAEWOULDBLOCK) break; }
+                for(int i=0;i<50;++i) { Sleep(100); result=recv(m_socket,buffer,0,MSG_PEEK);  /* exe: len 0, flags 2 (peek); a consuming recv ate the server hello and stalled login */ if(result!=-1 || (last=WSAGetLastError())!=WSAEWOULDBLOCK) break; }
                 if(result==-1) {
                     if(last!=WSAECONNRESET && last!=WSAECONNABORTED) { FUN_140d86260()->vfunc_31(m_host,m_port,0); FUN_141266500(0); return; }
                     PostMessageA(FUN_14209c720(FUN_140aadf80()),0x46a,0,0); return;
