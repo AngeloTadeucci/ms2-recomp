@@ -12,6 +12,11 @@ public:
     // gamesocket.cpp worker management (non-virtual).
     bool FUN_141215220(void*,void*,int,int,int);
     HANDLE FUN_14126a990() const;
+    // Typed start path recovered in the file preload object.
+    int Start(void* user,int priority,int suspended,unsigned stackSize,LPSECURITY_ATTRIBUTES attributes);
+    DWORD GetThreadId() const;
+    int WaitForExit(DWORD timeout);
+    void FUN_1401d2fa0();
 private:
     DWORD m_threadId;
     HANDLE m_thread;
