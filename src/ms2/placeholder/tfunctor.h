@@ -84,6 +84,12 @@ public:
     }
     R operator()() { return implementation->Invoke(); }
     bool IsNull() const { return implementation == nullptr; }
+    // MS2: replace the handler with a new ClassFunHandler (flybycameramode.cpp, 0x14121fa40 for CFlyByCameraMode).
+    template<class Object, class Method> void Bind(const Object& object, Method method) {
+        if (!IsNull()) Clear();
+        Impl* pImpl = new ClassFunHandler<TFunctor, Object, Method>(object, method);
+        implementation = pImpl;
+    }
     void Clear() { if (implementation) { delete implementation; implementation = nullptr; } }
 private:
     static Impl* Clone(Impl* source) { return source ? static_cast<Impl*>(source->Clone()) : nullptr; }

@@ -55,6 +55,10 @@ struct Unk_CameraSetting
         m_24 = false;
     }
 
+    // 0x140ae7e80 (another obj): operator*(float) and 0x140ae81c0: operator+ (members blended by the interpolators)
+    Unk_CameraSetting FUN_140ae7e80(float f) const;
+    Unk_CameraSetting FUN_140ae81c0(const Unk_CameraSetting& o) const;
+
     float m_0;                                  // +0x00
     float m_4;                                  // +0x04
     float m_8;                                  // +0x08
@@ -77,6 +81,17 @@ public:
     virtual Unk_StreamPoint vfunc_18();                 // world position (consoleCameraMode adds its offset to it)
 };
 
+// The fly-by camera request stored in the camera manager at +0x34 (0x58 bytes): interpolation kind (1 linear, 2 log,
+// 3 exp), duration, then the start and end camera settings.
+struct Unk_FlyByCameraData
+{
+    int m_nKind;                                // +0x00
+    float m_fDuration;                          // +0x04
+    Unk_CameraSetting m_from;                   // +0x08
+    Unk_CameraSetting m_to;                     // +0x30
+};
+MS2_CHECK_SIZE(Unk_FlyByCameraData, 0x58);
+
 class CCameraMode;
 class Unk_PickListPtr;                  // picked-object list (defined by the units that use it)
 
@@ -98,6 +113,7 @@ public:
     CCameraMode* FUN_140af24f0();                       // the current camera mode
     Unk_StreamPoint FUN_140a38d00();                    // m_138 (pending move input)
     void FUN_140a38d90(Unk_StreamPoint pt);             // m_138 = pt
+    Unk_FlyByCameraData* FUN_1412201a0();               // &m_34 (inline, ?\flybycameramode.cpp obj)
     Unk_PickListPtr FUN_140af0850(float fX, float fY, bool b1, bool b2, bool b3, void* p);  // pick at the cursor
 };
 
