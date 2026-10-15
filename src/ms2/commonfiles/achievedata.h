@@ -14,14 +14,20 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cvaliddata.h"
 
-// The reward block of a grade (0x60 bytes, ctor 0x140164110; m_nType 0 = no reward).
+// The reward block of a grade (0x60 bytes, ctor 0x140164110, dtor 0x140164650; m_nType 0 = no reward).
+// Loaded from the <reward type= code= value= rank= subJobLevel= extra=> element.
 struct Unk_AchieveReward
 {
     Unk_AchieveReward();                // 0x140164110
-    int m_nType;                        // +0x00
-    int m_pad_04;
-    void* m_pad_08; void* m_pad_10; void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38;
-    void* m_pad_40; void* m_pad_48; void* m_pad_50; void* m_pad_58;
+    ~Unk_AchieveReward();               // 0x140164650
+    bool operator!=(const Unk_AchieveReward& o) const;  // 0x140164880
+    int m_nType;                        // +0x00 (1 item, 2 title, 3 statpoint, 4 skillpoint, ...)
+    unsigned m_nCode;                   // +0x04
+    unsigned m_nValue;                  // +0x08
+    int m_nRank;                        // +0x0c (1 by default)
+    long m_nSubJob;                     // +0x10 (1 by default)
+    int m_pad_14;
+    ATL::CAtlMap<CStringA, CStringA, ATL::CStringElementTraitsI<CStringA> > m_mapExtra;   // +0x18
 };
 MS2_CHECK_SIZE(Unk_AchieveReward, 0x60);
 
@@ -31,6 +37,7 @@ class CAchieveGradeData : public CPtred
 public:
     CAchieveGradeData();                // 0x14015b490
     virtual ~CAchieveGradeData();       // 0x14015b540
+    bool operator!=(const CAchieveGradeData& o) const;  // 0x14015b5a0 (true when the grades differ)
 
     int m_nGrade;                       // +0x18
     int m_pad_1c;
@@ -50,36 +57,57 @@ public:
     CAchieveData();                     // 0x14015b640
     virtual ~CAchieveData();            // 0x14015b7d0
 
+    bool operator!=(const CAchieveData& o) const;       // 0x14015b8d0 (true when the tables differ)
     MS2Ptr<CAchieveGradeData> GetGrade(int nGrade);     // 0x14015bc40
-    CString GetName();                  // 0x14015bcd0
+    CString GetName();                  // 0x14015bcd0 (icon path)
+    bool IsAvailable();                 // 0x14015bd60 (feature and locale of this build)
+    void OnLoaded();                    // 0x14015dcb0 (empty)
 
-    int m_30;                           // +0x30
-    int m_34;
-    int m_nType;                        // +0x38
+    // The table (loaded from Achieve\*.xml, see LoadAll/Load in achievedata.cpp).
+    static bool s_bInit;                // 0x143aab3a0
+    static void CheckInit();            // 0x140165670
+    static void SetInit(bool bInit);    // 0x14016a500
+    static int GetSurvivalFlag(int nId);                // 0x14015be50
+    static bool HasRewardSkill(unsigned nId, int nGrade);   // 0x14015bed0
+    static bool HasRewardStat(unsigned nId, int nGrade);    // 0x14015bf90
+    static void LoadAll();              // 0x14015c050
+    static void Load(CString strPath);  // 0x14015c270
+    static void LoadClient(CString strPath, MS2Ptr<CAchieveData>& rOut);   // 0x14015cff0
+    static MS2Ptr<CAchieveGradeData> Find(int nId, int nGrade);   // 0x14015dab0
+    static void GetAll(ATL::CAtlArray<MS2Ptr<CAchieveData> >& rOut);   // 0x14015db60
+    static int MarkSeen(int nId);       // 0x14015dc10
+    static int ParseRequireType(CStringA& str);         // 0x14015dcc0
+    static int ParseRewardType(CStringA& str);          // 0x14015dd20
+    static int ParseRewardType(CStringW& str);          // 0x14015df00
+    static CStringW GetRewardTypeName(int nType);       // 0x14015df70
+
+    int m_nAccount;                     // +0x30 ("account")
+    unsigned m_nId;                     // +0x34 ("id")
+    int m_nType;                        // +0x38 (id / 10000000)
     int m_nMaxGrade;                    // +0x3c
     int m_nFirstGrade;                  // +0x40 (ctor: 0x7fffffff)
     int m_pad_44;
-    CString m_strName;                  // +0x48
-    int m_50;
+    CString m_strIcon;                  // +0x48 ("icon")
+    int m_nNoticePercent;               // +0x50 ("noticePercent", ctor: 1)
     int m_pad_54;
-    CStringW m_strW_58;                 // +0x58
-    CString m_str_60;                   // +0x60
-    int m_68;                           // +0x68
-    int m_6c;
-    int m_nCategory;                    // +0x70
+    CStringW m_strFeature;              // +0x58 ("feature")
+    CString m_strLocale;                // +0x60 ("locale")
+    int m_nLocking;                     // +0x68 ("locking")
+    int m_nSurvival;                    // +0x6c (1 when contentsTag contains "Survival")
+    int m_nCategory;                    // +0x70 ((id / 1000000) % 10)
     int m_pad_74;
-    CString m_str_78;                   // +0x78
-    CString m_str_80;                   // +0x80
-    int m_nRequireType;                 // +0x88 (1: event name, 2: event id)
+    CString m_strCategoryTag;           // +0x78 ("categoryTag")
+    CString m_strContentsTag;           // +0x80 ("contentsTag")
+    int m_nRequireType;                 // +0x88 ("uiFilterType": 1 event name, 2 event id)
     int m_pad_8c;
-    ATL::CAtlArray<CStringW> m_aRequire;                        // +0x90
+    ATL::CAtlArray<CStringW> m_aRequire;                        // +0x90 ("uiFilterValue")
     ATL::CAtlMap<int, MS2Ptr<CAchieveGradeData> > m_mapGrade;   // +0xb0
 };
 MS2_CHECK_SIZE(CAchieveData, 0xf8);
 MS2_CHECK_OFFSET(CAchieveData, m_nFirstGrade, 0x40);
-MS2_CHECK_OFFSET(CAchieveData, m_strName, 0x48);
+MS2_CHECK_OFFSET(CAchieveData, m_strIcon, 0x48);
 MS2_CHECK_OFFSET(CAchieveData, m_nRequireType, 0x88);
 MS2_CHECK_OFFSET(CAchieveData, m_aRequire, 0x90);
 
-// Looks the achievement up in the table cache (0x14015d9e0; non-member or static, name invented).
+// Looks the achievement up in the table cache (0x14015d9e0; name invented).
 MS2Ptr<CAchieveData> GetAchieveData(int nId);

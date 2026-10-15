@@ -111,7 +111,7 @@ int CAchieve::GetData30()
 {
     if (m_pData == NULL)
         return 0;
-    return m_pData->m_30;
+    return m_pData->m_nAccount;
 }
 MS2_REPLACE_METHOD(0x140158670, CAchieve, GetData30, 64, 0x41D4FCA4);
 // @0x1401586c0
@@ -143,7 +143,7 @@ int CAchieve::GetData68()
 {
     if (m_pData == NULL)
         return 0;
-    return m_pData->m_68;
+    return m_pData->m_nLocking;
 }
 MS2_REPLACE_METHOD(0x140158870, CAchieve, GetData68, 64, 0x24CF358C);
 // @0x1401588c0
