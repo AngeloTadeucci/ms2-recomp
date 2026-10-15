@@ -160,11 +160,7 @@ class Unk_NtSeatSub { public: NiPoint3* FUN_140adf8e0(void* pTmp24); };
 class Unk_NtPC : public PC
 {
 public:
-    virtual void vfunc_133();
-    virtual CStringW vfunc_134();                       // 134 +0x430
-    virtual void vfunc_135(); virtual void vfunc_136(); virtual void vfunc_137(); virtual void vfunc_138();
-    virtual void vfunc_139(); virtual void vfunc_140();
-    virtual int vfunc_141();                            // 141 +0x468
+    // slots 133-146 are declared by PC (placeholder/fittingdollpc.h)
     Unk_NtMountSeatPtr FUN_141657730();
     Unk_NtTeamPtr FUN_140967420();
 };
