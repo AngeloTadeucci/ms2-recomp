@@ -10,6 +10,7 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\homeblockmanager.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "homeblockmanager.h"
+#include "buddymanager.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/ms2format.h"
@@ -38,6 +39,7 @@ public:
 };
 MS2_CHECK_SIZE(Unk_HomeNotifications,8);
 Unk_HomeNotifications* FUN_140a4a7b0();
+extern Unk_HomeNotifications* DAT_143ab6878;
 template<class T> inline void HomeMessage(int id,int a,int b,const T& value) {
     const fmt::internal::ArgArray<1>::Type values={fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(value)};
     FUN_141275460(id,a,b,fmt::ArgList(fmt::internal::make_type(value),values));
@@ -220,5 +222,22 @@ void HomeBlockManager::FUN_140a47c80(__int64 id,CStringW text) {
     FUN_140710590(out);
 }
 MS2_REPLACE_METHOD(0x140a47c80, HomeBlockManager, FUN_140a47c80, 133, 0x7835393B);
-// FUN_140a47d10 remains a stub: CBuddy's shared layout needs typed fields
-// at +0x28 (CString), +0x48 (int64), +0x98 (short), +0xa0/+0xa4 (int).
+// @0x140a47d10
+HomeBlockManager::BuddyPtr HomeBlockManager::FUN_140a47d10(HomePtr home) {
+    if(home==0) return BuddyPtr(0);
+    BuddyPtr buddy(new CBuddy);
+    buddy->id=home->m_18;
+    buddy->m_48=home->m_20;
+    buddy->account=home->m_28;
+    buddy->name=(const char*)home->m_30;
+    buddy->m_98=home->m_38;
+    buddy->m_a0=home->m_3c;
+    buddy->m_a4=home->m_40;
+    buddy->m_28=home->m_48;
+    buddy->memo=(const char*)home->m_50;
+    return buddy;
+}
+// @0x140a4a7b0
+Unk_HomeNotifications* FUN_140a4a7b0() {
+    return DAT_143ab6878;
+}
