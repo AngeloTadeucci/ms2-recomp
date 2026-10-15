@@ -304,7 +304,6 @@ MS2KFMFactory::MS2KFMFactory(efd::AssetFactoryManager* factories,efd::MessageSer
     : egmAnimation::KFMFactory(factories,messages) {}
 // @0x140d8fb90
 MS2KFMFactory::~MS2KFMFactory() {}
-// MS2-FUNCTIONAL: equivalent typed request lifecycle; compiler local allocation differs.
 // @0x140d8fbc0
 MS2KFMFactory::LoadStatus MS2KFMFactory::LoadAsset(efd::AssetFactoryManager*,const efd::AssetLoadRequest* request,efd::AssetLoadResponsePtr& response) {
     efd::SmartPointer<ResponseData> data;
