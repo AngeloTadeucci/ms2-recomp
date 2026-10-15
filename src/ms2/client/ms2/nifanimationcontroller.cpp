@@ -6,6 +6,8 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "nifanimationcontroller.h"
 #include "hook/ms2hook.h"
+#include <NiAVObject.h>
+#include <NiMultiTargetTransformController.h>
 #include <string.h>
 #include <errno.h>
 #pragma function(memset, memcpy)
@@ -123,7 +125,7 @@ bool CNifAnimationController::FUN_141544850(int mode, CStringA name, float* eule
             FUN_140aacb60(FUN_14098d0f0(&m_10), xf);
             NiFixedString dummy("Dummy01");
             void* root = FUN_14098d0f0(&m_10);
-            void* d = (*(void* (**)(void*, NiFixedString*))(*(char**)root + 0xa0))(root, &dummy);
+            void* d = static_cast<NiAVObject*>(root)->GetObjectByName(dummy);
             FUN_1409f76f0(&m_18, FUN_14098d8d0(&NiNode::ms_RTTI, d));
         }
         // dummy dtor via scope end
@@ -132,13 +134,13 @@ bool CNifAnimationController::FUN_141544850(int mode, CStringA name, float* eule
                 float t = FUN_140af7f50(c);
                 if (m_54 < t)
                     m_54 = FUN_140af7f50(c);
-                void** mt = (void**)FUN_14098d8d0(&DAT_143af8a00, c);
+                NiMultiTargetTransformController* mt = (NiMultiTargetTransformController*)FUN_14098d8d0(&DAT_143af8a00, c);
                 if (mt != 0 && FUN_140b85fc0(&m_20, 0)) {
                     for (unsigned short i = 0;; ++i) {
-                        unsigned short n = (*(unsigned short (**)(void*))((*(char**)mt) + 0xe0))(mt);
+                        unsigned short n = mt->GetInterpolatorCount();
                         if ((int)i >= (int)n)
                             break;
-                        void* tg = (*(void* (**)(void*, unsigned short))((*(char**)mt) + 0xf8))(mt, i);
+                        void* tg = mt->GetInterpolator(i);
                         FUN_140b85cd0(&m_20, FUN_14098d8d0(&DAT_143af89f0, tg));
                         if (FUN_140b85fc0(&m_20, 0))
                             break;
@@ -155,7 +157,7 @@ bool CNifAnimationController::FUN_141544850(int mode, CStringA name, float* eule
         if (FUN_140af72f0(&m_10, 0)) {
             NiFixedString cam("Camera01");
             void* root = FUN_14098d0f0(&m_10);
-            void* d = (*(void* (**)(void*, NiFixedString*))(*(char**)root + 0xa0))(root, &cam);
+            void* d = static_cast<NiAVObject*>(root)->GetObjectByName(cam);
             FUN_1409f76f0(&m_28, FUN_14098d8d0(&NiNode::ms_RTTI, d));
             char it[0x30];
             FUN_14098cb80(it, FUN_1409475d0(&m_28));
