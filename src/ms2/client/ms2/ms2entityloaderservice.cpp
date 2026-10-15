@@ -167,12 +167,19 @@ char* FUN_1414b4440(long long* p) { return (char*)*p + 0x20; }
 // @0x1414b4460
 void* FUN_1414b4460(void* it) { return FUN_1414b4440((long long*)it); }
 
+// BlockIdentification key: comparison id at +0x30.
+struct Unk_1414b4480 {
+    char m_0[0x30];
+    unsigned m_30;
+};
+MS2_CHECK_OFFSET(Unk_1414b4480, m_30, 0x30);
+
 // @0x1414b4480  BlockIdentification less-than
 u64 FUN_1414b4480(char* a, char* b)
 {
     if (!FUN_1413e9750(a, b))
         return FUN_1413eb2e0(a, b);
-    return *(unsigned*)(a + 0x30) < *(unsigned*)(b + 0x30);
+    return ((Unk_1414b4480*)a)->m_30 < ((Unk_1414b4480*)b)->m_30;
 }
 // @0x1414b44f0
 void* FUN_1414b44f0(void* self, void* a, void* b) { return (void*)FUN_1414b4480((char*)a, (char*)b); }
