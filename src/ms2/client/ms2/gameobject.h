@@ -29,6 +29,7 @@
 #include <efd/IBase.h>
 #include <efd/RefCount.h>
 #include <egf/EntityID.h>
+#include <efd/Category.h>
 #include <NiPoint3.h>
 #include <NiActorManager.h>
 
@@ -36,6 +37,7 @@
 
 class CAnimationManager;   // 0xa0 bytes, ctor(GameObject*); held at +0x48 (animationmanager.h)
 template <class T> class MS2Ptr;   // ascript.h
+namespace egf { class Entity; }
 
 // 16-byte key that names a GameObject's model in the model cache (plain data; 0x14123c460 fills it). w17/effectobject.
 struct Unk_GoModelKey
@@ -77,7 +79,7 @@ public:
     virtual int vfunc_10();                                 // 10 0x14123b970
     virtual int vfunc_11();                                 // 11 0x14123b9b0
     virtual void vfunc_12();                                // 12 0x14123b9d0
-    virtual void vfunc_13(void* a, void* b);                // 13 0x14123b9f0
+    virtual void vfunc_13(void* a, efd::Category cat);      // 13 0x14123b9f0 (cat by value: copy 0x1409fabb0, dtor 0x1409fabe0; sb4)
     virtual void vfunc_14();                                // 14 0x14123ba60
     virtual void vfunc_15();                                // 15 0x14123bb10
     virtual void vfunc_16();                                // 16 0x14123bb20
@@ -133,6 +135,10 @@ public:
     Unk_GoModelKey& FUN_14123c460(Unk_GoModelKey& kOut);    // 0x14123c460 fills kOut, returns it (w17)
     egf::EntityID& FUN_14123c460(egf::EntityID& kOut);      // same function: the key is the entity id (w18, animationmanager)
     MS2Ptr<CAnimationManager> FUN_14123c6f0();              // 0x14123c6f0 copy of m_spAnimMgr (w17)
+    CString FUN_14123bbd0();                                // 0x14123bbd0 copy of m_str90 (model path; sb4)
+    void FUN_14123bc20(CString str);                        // 0x14123bc20 reload the model from str (by value; sb4)
+    int FUN_14123bea0();                                    // 0x14123bea0 return m_unk_b4 (model loaded; sb4)
+    egf::Entity* FUN_14123c410();                           // 0x14123c410 return m_unk_80 (the entity; sb4)
 
 public:
     MS2_LAYOUT_FRIEND;

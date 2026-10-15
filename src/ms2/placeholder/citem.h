@@ -4,6 +4,7 @@
 class Unk_UserProxyItemData;
 class COutputStream;
 class CInputStream;
+class Unk_ItemUgcInfo;
 class CItem : public CPtred {
 public:
   CItem();
@@ -32,6 +33,9 @@ public:
   virtual void vfunc_5(bool);
   int FUN_1405268f0();
   int FUN_14052b130(int, int, int);   // can the item be combined with this one (ItemInfoSlot exchange scroll)
+  // sb4 (clonecube.cpp): UGC look of the item. The callee returns a byte; callers test eax (declared int there).
+  int FUN_140525f10();                   // 0x140525f10 item data at +0xe8 is a UGC item
+  Unk_ItemUgcInfo* FUN_1405278d0();       // 0x1405278d0 operator-> of the MS2Ptr at +0x118 (UGC info)
 private:
   void *m_18;
   void *m_20;
@@ -84,3 +88,10 @@ private:
   void *m_198;
 };
 MS2_CHECK_SIZE(CItem, 0x1a0);
+// Prefix view of the UGC info behind CItem::FUN_1405278d0 (type name unknown; inventory.cpp views the same +0x30
+// field as Unk_InventoryStackIdentity::owner).
+class Unk_ItemUgcInfo {
+public:
+  void *m_pad_00[6];
+  __int64 m_nUgcUid;                     // +0x30 compared by CloneCube::vfunc_61
+};
