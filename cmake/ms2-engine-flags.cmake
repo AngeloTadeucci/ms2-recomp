@@ -94,6 +94,10 @@ set(MS2_ENGINE_INCLUDE_DIRS
     "CoreRuntime/PhysXLibs/NiPhysXParticle/Kernels/NiPhysXPSSimulatorFinalKernel"
     "CoreRuntime/UtilityLibs/NiSettingsDialog"
     "3rdParty/TinyXML"
+    # PhysX 2.8.3 headers used by the game-side KFM model and the NiPhysX libraries.
+    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/Foundation/include"
+    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/Physics/include"
+    "../../third_party/physx283/PFiles/NVIDIA Corporation/NVIDIA PhysX SDK/v2.8.3/SDKs/PhysXLoader/include"
 )
 
 # DirectX SDK (June 2010) headers the Windows SDK lacks (d3dx9*.h, ...), through a symlink overlay so that the Windows SDK's
