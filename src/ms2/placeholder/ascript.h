@@ -97,6 +97,9 @@ public:
 
     template<class T> MS2Ptr<T> FUN_140beaf20(const CString&, MS2Ptr<T>&); // bind text (mentoring reward)
     template<class T> MS2Ptr<T> FUN_140bc71c0(const CString&, MS2Ptr<T>&); // bind display object
+    template<class T> MS2Ptr<T> FUN_140bbe7c0(const CString&, MS2Ptr<T>&); // bind combo box (party search register)
+    template<class T> MS2Ptr<T> FUN_140bbe940(const CString&, MS2Ptr<T>&); // bind input box (party search register)
+    template<class T> MS2Ptr<T> FUN_140c12010(const CString&, MS2Ptr<T>&); // bind check box (party search register)
     template<class T> MS2Ptr<T> FUN_140bc7100(const CString&, MS2Ptr<T>&); // bind icon (DT attendance)
     template<class F> void FUN_1422c2a70(const F&, int); // click callback (DT attendance)
     Scaleform::GFx::Value& FUN_1422bb890(); // root value forwarding accessor
