@@ -4,6 +4,7 @@
 // MS2-RANGE: 0x140edb370-0x140edea60 .text$mn
 // MS2-RANGE: 0x142ca85d0-0x142ca8690 .text$yd
 // MS2-PIN: ??_GNotifyBlindTarget@@UEAAPEAXI@Z 0x140ede740
+// MS2-PIN: ??_7?$Unk_ReportDelegateImpl@U?$pair@PEAVUITencentUserReportDialog@TencentUserReport@@P812@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Unk_ReportDelegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@6B@ 0x142e691b0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uitencentuserreportdialog.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "uitencentuserreportdialog.h"

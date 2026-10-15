@@ -258,12 +258,17 @@ def load_functions():
     return starts, info
 
 
+TD2NAME = {}     # RTTI TypeDescriptor name (.?AV...@@) -> class name used by bases/vft
+
+
 def load_vftables():
     bases = {}       # class -> {base: mdisp}
+    TD2NAME.clear()
     for line in open(RTTI_CLASSES):
         p = line.rstrip("\n").split("\t")
         if p[0].startswith("#") or len(p) < 6:
             continue
+        TD2NAME[p[1]] = p[2]
         bases[p[2]] = {}
         for b in p[5].split(";"):
             q = b.split("|")
@@ -283,6 +288,10 @@ def _vft_class(sym):
     if not m:
         return None, None
     cls = m.group(1)
+    for kind in "VU":       # template instances / unit-local names: the mangled TypeDescriptor name is exact
+        td = TD2NAME.get(".?A" + kind + cls + "@@")
+        if td:
+            return td, m.group(2)
     if "@" in cls:          # nested / namespaced: Ghidra/RTTI names use '::' in reverse order
         cls = "::".join(reversed(cls.split("@")))
     return cls, m.group(2)
@@ -416,6 +425,8 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
     # byte-matched like any other (a wrong pin shows as `functional`, it never counts as matched).
     names_here = {obj.syms[si][0] for si in syms}
     for name, va in sorted(u.pins.items()):
+        if name.startswith("??_7"):
+            continue            # vftable pins: step 4
         if name not in names_here:
             res["notes"].append(f"MS2-PIN {name}: no such function in the obj")
         elif not u.in_range(va):
@@ -584,8 +595,20 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
     for si, (name, value, secnum, typ, sclass) in obj.syms.items():
         if secnum > 0 and name.startswith("??_7") and sclass == 2:
             va = vftable_va(name, bases, vft, vnames)
+            pin = u.pins.get(name)
+            if pin is not None:
+                if va is not None and va != pin:
+                    res["notes"].append(f"MS2-PIN {name} 0x{pin:x}: RTTI pairing says 0x{va:x}, pin wins")
+                if pin in set(vft.values()):
+                    va = pin
+                else:
+                    res["notes"].append(f"MS2-PIN {name} 0x{pin:x}: not an RTTI vftable of the exe, ignored")
             if va is None:
-                res["notes"].append(f"{name}: no exe vftable found via RTTI")
+                # an unpaired vftable counts against the unit (it is never silently skipped)
+                res["vft"][name] = {"va": None, "ok": False,
+                                    "report": f"UNPAIRED vftable {name}: no exe vftable via RTTI "
+                                              f"(add `// MS2-PIN: {name} 0x<va>` if the class is unit-local)"}
+                res["notes"].append(f"{name}: no exe vftable found via RTTI (counts as unpaired)")
                 continue
             ok, text = quiet_match(obj, name, va, exe, verbose)
             res["vft"][name] = {"va": va, "ok": ok, "report": "" if ok else text}
