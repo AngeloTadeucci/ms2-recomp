@@ -6,6 +6,8 @@
 class CInPacket;
 class StringIdInterfaceBase {
 public:
+    StringIdInterfaceBase(CStringW text);              // 0x14084f0e0 (formatted = false; the callee destroys `text`)
+    StringIdInterfaceBase(int kind, int id);           // 0x14084ee90 (formatted = true)
     virtual ~StringIdInterfaceBase();
     int kind, id;
     ATL::CAtlArray<CStringW> arguments;

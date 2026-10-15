@@ -1,0 +1,35 @@
+// csadventurelevelmission.h - PLACEHOLDER for CSAdventureLevelMission (RTTI .?AVCSAdventureLevelMission@@, 0x20 bytes,
+// vftable 0x142d8c5c0, one slot: the deleting dtor 0x1407ab500) and CAdventureLevelMissionData (RTTI
+// .?AVCAdventureLevelMissionData@@, 0x28 bytes, base CPtred, vftable 0x142ceae90). NOT original headers.
+// The packet body is a mission-kind byte (6 or 7) and a map of mission id -> progress record (unit_1407a4f20).
+#pragma once
+#include <map>
+#include "ms2/ms2layout.h"
+#include "ms2/placeholder/cptred.h"
+#include "ms2/commonfiles/stream.h"
+
+class CInPacket;
+class CAdventureLevelMissionData : public CPtred {
+public:
+    CAdventureLevelMissionData();                 // 0x140195660
+    virtual ~CAdventureLevelMissionData();        // 0x140195820 (deleting dtor)
+    unsigned m_progress;                          // +0x18
+    bool m_complete;                              // +0x1c
+    __int64 m_20;                                 // +0x20
+};
+MS2_CHECK_SIZE(CAdventureLevelMissionData, 0x28);
+
+class CSAdventureLevelMission {
+public:
+    CSAdventureLevelMission();                    // 0x1407a8d50
+    virtual ~CSAdventureLevelMission();           // 0x1407a8db0
+    void FUN_1407a8e00(COutputStream& out) const;
+    void FUN_1407a90e0(CInputStream& in);
+    void FUN_1407a9420(unsigned id, const CAdventureLevelMissionData& data);
+    void FUN_1407a95b0();                         // deletes every record, then clears the map
+    int m_kind;                                   // +0x08 (8 = none)
+    int m_0c;
+    std::map<unsigned int, CAdventureLevelMissionData*> m_missions; // +0x10
+};
+MS2_CHECK_SIZE(CSAdventureLevelMission, 0x20);
+MS2_CHECK_OFFSET(CSAdventureLevelMission, m_missions, 0x10);
