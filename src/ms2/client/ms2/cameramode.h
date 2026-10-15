@@ -40,6 +40,11 @@ public:
 extern const Unk_StreamPoint g_143b01a60;       // NiPoint3::ZERO
 struct Unk_CameraSetting
 {
+    // 0x140ae7d90 (another obj): the members are default-constructed, then assigned
+    Unk_CameraSetting(const Unk_CameraSetting& o)
+    {
+        *this = o;
+    }
     Unk_CameraSetting()
     {
         m_c = g_143b01a60;
@@ -58,6 +63,34 @@ struct Unk_CameraSetting
     bool m_24;                                  // +0x24 (vfunc_5)
 };
 MS2_CHECK_SIZE(Unk_CameraSetting, 0x28);
+
+// The camera target entity (+0x1c0 of the camera manager); slot 17 returns its position.
+class Unk_CameraTargetEntity
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
+    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
+    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
+    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
+    virtual void vfunc_16();
+    virtual Unk_StreamPoint vfunc_17();
+};
+
+class CCameraMode;
+
+// The camera manager singleton (0x143ab3700). Its methods are inline COMDATs of other objs.
+class Unk_CameraManager
+{
+public:
+    static Unk_CameraManager* FUN_1409478c0();          // inline, ?\actioncameramode.cpp obj
+    Unk_CameraTargetEntity* FUN_140a38d60();            // m_1c0 (the camera target)
+    int FUN_140af01d0();                                // camera control type (0: normal, 1: ...)
+    float FUN_140b67d10();                              // distance of the current mode (0 without one)
+    void FUN_140aeaf40(Unk_CameraTargetEntity* pTarget, int n);
+    CCameraMode* FUN_140af24f0();                       // the current camera mode
+    Unk_StreamPoint FUN_140a38d00();                    // m_138 (pending move input)
+    void FUN_140a38d90(Unk_StreamPoint pt);             // m_138 = pt
+};
 
 // Argument of vfunc_36 (a camera preset row).
 struct Unk_CameraPreset
@@ -79,8 +112,8 @@ public:
 
     virtual int vfunc_1() = 0;                                      // mode id
     virtual bool vfunc_2() = 0;
-    virtual void vfunc_3(const Unk_StreamPoint& pt);                // 0x140afd570
-    virtual void vfunc_4(const Unk_StreamPoint& pt);                // 0x140afd5d0
+    virtual void vfunc_3(Unk_StreamPoint pt);                       // 0x140afd570
+    virtual void vfunc_4(Unk_StreamPoint pt);                       // 0x140afd5d0
     virtual void vfunc_5(bool b);                                   // 0x140afd630
     virtual void vfunc_6(int n);                                    // 0x140afd670
     virtual void vfunc_7();                                         // 0x140afd740
@@ -100,15 +133,15 @@ public:
     virtual void vfunc_21(float f, int n);                          // 0x140afd9a0
     virtual float vfunc_22();                                       // 0x140afd9d0
     virtual float vfunc_23();                                       // 0x140afd9e0
-    virtual void vfunc_24(void* p, int n);                          // 0x140afd9f0
-    virtual int vfunc_25();                                         // 0x140afda10
+    virtual void vfunc_24(Unk_CameraTargetEntity* p, int n);                 // 0x140afd9f0
+    virtual Unk_CameraTargetEntity* vfunc_25();                                   // 0x140afda10
     virtual Unk_StreamPoint vfunc_26();                             // 0x140afda20
     virtual float vfunc_27();                                       // 0x140afda50
     virtual int vfunc_28();                                         // 0x140afda60
     virtual void vfunc_29(float f1, float f2, float f3);            // 0x140afda80
     // 0x140947930 (COMDAT of the ?\actioncameramode.cpp obj)
     virtual void vfunc_30() {}
-    virtual void vfunc_31();                                        // 0x140afe2c0
+    virtual BOOL vfunc_31();                                        // 0x140afe2c0
     virtual void vfunc_32(float f);                                 // 0x140afe320
     virtual void vfunc_33();                                        // 0x140afe350
     // 0x1409478d0 (COMDAT of the ?\actioncameramode.cpp obj)
@@ -127,6 +160,10 @@ public:
 
     // 0x1409f2540 (inline, another obj)
     Unk_StreamPoint FUN_1409f2540() { return m_setting.m_c; }
+    // 0x140af8260 (inline, another obj)
+    Unk_StreamPoint FUN_140af8260() { return m_setting.m_18; }
+    // 0x140ad4b30 (inline, another obj)
+    float FUN_140ad4b30() { return m_setting.m_0; }
 
     Unk_CameraOwner* m_pOwner;          // +0x18
     Unk_CameraSetting m_setting;        // +0x20

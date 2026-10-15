@@ -18,37 +18,61 @@ struct Unk_StreamPoint
     Unk_StreamPoint FUN_14097fd50(const Unk_StreamPoint& pt) const; // efd::Point3::operator+
     Unk_StreamPoint FUN_140a00e10(const Unk_StreamPoint& pt) const; // efd::Point3::Cross
     float FUN_140968990();                                          // efd::Point3::Unitize (returns the old length)
+    Unk_StreamPoint FUN_14097fc90(float f) const;                   // efd::Point3::operator*(float)
+    Unk_StreamPoint& FUN_140a4e560(const Unk_StreamPoint& pt);      // efd::Point3::operator+=
+    bool FUN_140552700(const Unk_StreamPoint& pt) const;            // efd::Point3::operator!=
+    float FUN_140967ac0() const;                                    // efd::Point3::Length
+    Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
     float x, y, z;
 };
 MS2_CHECK_SIZE(Unk_StreamPoint, 12);
 
 // efd::Point3 operator*(float, const Point3&) (friend, 0x1409ab5c0).
 Unk_StreamPoint FUN_1409ab5c0(float fScalar, const Unk_StreamPoint& pt);
+// Horizontal distance of two points (z cleared on the copies; 0x140966ea0).
+float FUN_140966ea0(Unk_StreamPoint a, Unk_StreamPoint b);
 
 // NiPoint3 as a matrix-ctor argument: NiPoint3(const efd::Point3&) (0x14027dcf0) makes the conversion temporaries.
 // Defined inline here (the exe copy belongs to another obj).
 struct Unk_NiPoint3
 {
     Unk_NiPoint3(const Unk_StreamPoint& pt) : x(pt.x), y(pt.y), z(pt.z) {}
+    float FUN_140967ac0() const;                                    // efd::Point3::Length (inherited)
     float x, y, z;
 };
 MS2_CHECK_SIZE(Unk_NiPoint3, 12);
 
-// NiMatrix3 (0x24 bytes, rows of 3 floats). The ctors are inline COMDATs of other objs (defined here so that the DLL
-// has them); the efd::Matrix3 functions are external.
-struct Unk_NiMatrix3
+// efd::Matrix3 (0x24 bytes, rows of 3 floats), the base of NiMatrix3. The functions are external; the empty default
+// ctor is 0x1409f72e0.
+struct Unk_EfdMatrix3
 {
-    // 0x1409f7320 (calls the empty efd::Matrix3() 0x1409f72e0)
+    Unk_EfdMatrix3() {}
+    void FUN_142083420(const Unk_NiPoint3& col0, const Unk_NiPoint3& col1, const Unk_NiPoint3& col2);
+    void FUN_142083d40(float fX, float fY, float fZ);               // efd::Matrix3::FromEulerAnglesXYZ (radians)
+    bool FUN_142085840(float& fX, float& fY, float& fZ) const;      // efd::Matrix3::ToEulerAnglesXYZ
+    void FUN_142084b30(float fAngle);                               // efd::Matrix3::MakeXRotation
+    void FUN_142084ba0(float fAngle);                               // efd::Matrix3::MakeYRotation
+    void FUN_142084c10(float fAngle);                               // efd::Matrix3::MakeZRotation
+    Unk_EfdMatrix3 FUN_140a33480(const Unk_EfdMatrix3& m) const;    // efd::Matrix3::operator*
+    float m_afEntry[3][3];
+};
+MS2_CHECK_SIZE(Unk_EfdMatrix3, 0x24);
+
+// NiMatrix3 : efd::Matrix3. The ctors are inline COMDATs of other objs (defined here so that the DLL has them).
+struct Unk_NiMatrix3 : public Unk_EfdMatrix3
+{
+    // 0x1409f7320
     Unk_NiMatrix3() {}
     // 0x140a0a480 -> efd::Matrix3::Matrix3(col0, col1, col2) 0x142083420
     Unk_NiMatrix3(const Unk_NiPoint3& col0, const Unk_NiPoint3& col1, const Unk_NiPoint3& col2)
     {
         FUN_142083420(col0, col1, col2);
     }
-    void FUN_142083420(const Unk_NiPoint3& col0, const Unk_NiPoint3& col1, const Unk_NiPoint3& col2);
-    void FUN_142083d40(float fX, float fY, float fZ);               // efd::Matrix3::FromEulerAnglesXYZ (radians)
-    bool FUN_142085840(float& fX, float& fY, float& fZ) const;      // efd::Matrix3::ToEulerAnglesXYZ
+    // 0x140a33240: converts an efd::Matrix3 (memcpy)
+    Unk_NiMatrix3(const Unk_EfdMatrix3& m)
+    {
+        memcpy(this, &m, sizeof(Unk_EfdMatrix3));
+    }
     void FUN_140a01190(unsigned int uiCol, Unk_StreamPoint& pt) const;  // GetCol (inline, 0x140a01190)
-    float m_afEntry[3][3];
 };
 MS2_CHECK_SIZE(Unk_NiMatrix3, 0x24);

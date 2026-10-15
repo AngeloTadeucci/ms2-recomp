@@ -21,26 +21,6 @@ public:
 };
 Unk_UpperActor* FUN_1409ffd30(void* p);
 
-// The camera target entity (+0x1c0 of the camera manager); slot 17 returns its position.
-class Unk_CameraTargetEntity
-{
-public:
-    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
-    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
-    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
-    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
-    virtual void vfunc_16();
-    virtual Unk_StreamPoint vfunc_17();
-};
-
-// The camera manager singleton (0x143ab3700).
-class Unk_CameraManager
-{
-public:
-    static Unk_CameraManager* FUN_1409478c0();          // inline, ?\actioncameramode.cpp obj
-    Unk_CameraTargetEntity* FUN_140a38d60();            // m_1c0
-};
-
 // An entry of the list at 0x143afa980->+0x190 (vfunc_6 tells each one whether the mode is a free camera).
 class Unk_CameraListEntry
 {
@@ -123,7 +103,7 @@ CCameraMode::~CCameraMode()
 }
 
 // @0x140afd570
-void CCameraMode::vfunc_3(const Unk_StreamPoint& pt)
+void CCameraMode::vfunc_3(Unk_StreamPoint pt)
 {
     m_setting.m_c = pt;
     m_pOwner->FUN_140a38dc0(pt);
@@ -131,7 +111,7 @@ void CCameraMode::vfunc_3(const Unk_StreamPoint& pt)
 MS2_REPLACE_METHOD(0x140afd570, CCameraMode, vfunc_3, 84, 0xFD1CE8FB);
 
 // @0x140afd5d0
-void CCameraMode::vfunc_4(const Unk_StreamPoint& pt)
+void CCameraMode::vfunc_4(Unk_StreamPoint pt)
 {
     m_setting.m_18 = pt;
     m_pOwner->FUN_140a38e00(pt);
@@ -269,12 +249,12 @@ float CCameraMode::vfunc_23()
 }
 
 // @0x140afd9f0
-void CCameraMode::vfunc_24(void* p, int n)
+void CCameraMode::vfunc_24(Unk_CameraTargetEntity* p, int n)
 {
 }
 
 // @0x140afda10
-int CCameraMode::vfunc_25()
+Unk_CameraTargetEntity* CCameraMode::vfunc_25()
 {
     return 0;
 }
@@ -402,9 +382,9 @@ void CCameraMode::FUN_140afe270(float f, bool bApply)
 MS2_REPLACE_METHOD(0x140afe270, CCameraMode, FUN_140afe270, 60, 0x4C2590A6);
 
 // @0x140afe2c0
-void CCameraMode::vfunc_31()
+BOOL CCameraMode::vfunc_31()
 {
-    FUN_140ae8540();
+    return FUN_140ae8540();
 }
 MS2_REPLACE_METHOD(0x140afe2c0, CCameraMode, vfunc_31, 19, 0x6704C278);
 
