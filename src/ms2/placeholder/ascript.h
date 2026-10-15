@@ -24,6 +24,7 @@ class MS2Ptr
 
 public:
     MS2Ptr();
+    MS2Ptr(decltype(nullptr)) { m_p = 0; } // fielddata: distinct nullptr overload
     MS2Ptr(int nNull);                  // `MS2Ptr<T> p(0)`: m_p = NULL (0x140c74e10 for T = AScript)
     MS2Ptr(T* p);                       // m_p = p; AddRef() (0x140f9c100 for T = UISwfEntity)
     MS2Ptr(const MS2Ptr& o);            // 0x1409b9940 for T = AScript

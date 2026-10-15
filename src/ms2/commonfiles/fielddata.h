@@ -1,12 +1,12 @@
 // fielddata.h - CFieldData (RTTI .?AVCFieldData@@), the per-map record of ./Data/Xml/Table/fieldData.xml.
 // Recovered shared header (w3o3, 2026-10-15); owner unit ?\fielddata.cpp (0x1403727d0-0x14037bf80 .text$mn,
 // 0x1400b6150-0x1400b6260 .text$di; probably commonfiles\fielddata.cpp: it sorts between featuremanager and
-// fieldmissiontable). The unit itself is NOT recovered yet; everything here binds to the exe.
+// fieldmissiontable). Implementation recovered by a3 in fielddata.cpp.
 //
 // HOW TO USE (Sonnet workers):
 //   #include "ms2/commonfiles/fielddata.h"
 //   - Derive from it (CFieldDataCli : CFieldData, ?\fielddatacli.cpp) or read its public members by name.
-//   - Ctor/dtor/vfunc_1/vfunc_2 and the static table accessors are declared here and bound to the exe through
+//   - Ctor/dtor/vfunc_1/vfunc_2 and table accessors are owned by fielddata.cpp; other isolated units bind through
 //     progress/symbols-manual.tsv (ctor/dtor/vfuncs) or the FUN_<va> auto-binding (statics). Do NOT define them in
 //     another unit. An override calls the base as `CFieldData::vfunc_1(node)`.
 //   - The XML node type is the game's TinyXML element, spelled `Unk_140165cf0` like the done units
@@ -31,7 +31,7 @@
 // Unproven: the real method names (vfunc_1 = Load, vfunc_2 = GetCapacity invented), m_unk_1c / m_unk_148 meaning,
 //   the exact enum types of +0x68 / +0x140 / +0x144, short vs unsigned short at +0xbe/+0xc0/+0xe8.
 //
-// The unit also holds the table: a static CAtlMap<int, MS2Ptr<CFieldData>> at 0x143aaec00 (ctor 0x140376c60, 17 bins,
+// The unit also holds the table: a static CAtlMap<unsigned, MS2Ptr<CFieldData>> at 0x143aaec00 (ctor 0x140376c60, 17 bins,
 // 0.75/0.25/2.25, block 10; cleared by 0x14037a2d0) guarded by a lock at 0x143aaebc8, and the classes CStarting,
 // CNpcSpawnData, CFieldSpawnTag, TPtredDummy<CRBMap<int,TPtr<CFieldSpawnTag>>> (not declared here). The loader
 // 0x140373d50 creates `new CFieldDataCli` (0x260) for every <fieldData> element, sets m_nFieldID, calls vfunc_1.
@@ -75,6 +75,16 @@ public:
     // 0x140374410 / 0x1403744a0: lookup(fieldId)->m_nMapType == 3 / == 9 (false when not found).
     static bool FUN_140374410(int fieldId);
     static bool FUN_1403744a0(int fieldId);
+
+    // Recovered predicates and accessors (appended by a3; the shared layout is unchanged).
+    bool FUN_140375100(); bool FUN_140375130(); bool FUN_140375170(); bool FUN_140375190();
+    bool FUN_1403751b0(); bool FUN_140375270(); bool FUN_1403752c0(); bool FUN_140375310();
+    int FUN_140375350(); int FUN_140375370();
+    int FUN_140375390(); int FUN_1403753d0(); int FUN_140375410(); int FUN_140375450(); int FUN_140375490();
+    int FUN_1403754d0(); int FUN_1403754f0();
+    int FUN_140375570(); int FUN_1403755a0(); int FUN_1403755d0();
+    int FUN_140375660(unsigned); int FUN_140375690(void*); bool FUN_1403756c0(unsigned);
+    bool FUN_1403756f0(); int FUN_140375740(); int FUN_140375780(); int FUN_1403757c0(); unsigned FUN_1403757e0();
 
 public:
     MS2_LAYOUT_FRIEND;
