@@ -4,6 +4,24 @@
 // MS2-RANGE: 0x140120210-0x1401208d0 .text$di
 // MS2-RANGE: 0x142cc3a60-0x142cc3a80 .text$yd
 // MS2-RANGE: 0x142cc3aa0-0x142cc3d10 .text$yd
+// MS2-PIN: ??$?0$$QEAI$$Z$$V@?$pair@$$CBII@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@$$QEAI@1@V?$tuple@$$V@1@@Z 0x141bdb890
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_WsV1f8@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_WsV1f8@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb8e0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$set@_KU?$less@_K@std@@V?$allocator@_K@2@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$set@_KU?$less@_K@std@@V?$allocator@_K@2@@std@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb910
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUUnk_WsVac0@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUUnk_WsVac0@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb940
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsV1d8@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV1d8@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb970
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsV2e8@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV2e8@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb9a0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsV980@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV980@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdb9d0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsV990@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdba00
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsVab0@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdba30
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KUUnk_WsVad0@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVad0@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdba60
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdba90
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@PEAXPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@PEAX@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbac0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsV9a0@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsV9a0@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbaf0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsVa00@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsVa00@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb20
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_WsVa18@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_WsVa18@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb50
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@D@std@@V?$_String_val@U?$_Simple_types@D@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141bdbb80
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsV990@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141bdbc70
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KUUnk_WsVab0@@@std@@@std@@@std@@@1@0@Z 0x141bdbcc0
 // (0x142cc3a80 is the atexit thunk of a function-local static registered by the function at 0x141b977f0, another CU)
 // MS2-PIN: ??_7WorldService@@6BISystemService@efd@@@ 0x142ffeb98
 // MS2-PIN: ??_7WorldService@@6B?$TSingleton@VWorldService@@@@@ 0x142ffec20
@@ -282,7 +300,7 @@ void FUN_140af9b40(void*, int);
 void WorldService::FUN_141bbbda0()
 {
     if (FUN_140a18070(FUN_1409478c0()))
-        FUN_140af9b40(FUN_1409478c0(), *(int*)((char*)m_298.operator->() + 0x23c));
+        FUN_140af9b40(FUN_1409478c0(), m_298.operator->()->m_23c);
 }
 
 // MS2-FUNCTIONAL: opaque callees by VA
@@ -302,8 +320,8 @@ void WorldService::FUN_141bbc4e0()
 {
     if (!(m_298 == 0))
     {
-        FUN_141bd3c00(*((char*)m_298.operator->() + 0x1f0) == 0);
-        FUN_141610450(*(int*)((char*)m_298.operator->() + 0x258));
+        FUN_141bd3c00(m_298.operator->()->m_1f0 == 0);
+        FUN_141610450(m_298.operator->()->m_258);
     }
 }
 
@@ -420,12 +438,12 @@ void WorldService::FUN_141bca090()
     }
 }
 
-// MS2-FUNCTIONAL: Encode1 goes through the virtual slot (exe calls the COutputStream bool encoder 0x14070f820)
+void FUN_14070f820(COutPacket* packet, bool value);      // COutputStream bool encoder wrapper (calls stream slot 0)
 // @0x141bca110
 void WorldService::FUN_141bca110(bool b)
 {
     COutPacket packet(0xa5);
-    packet.vfunc_o10_0(b);
+    FUN_14070f820(&packet, b);
     FUN_140710590(packet);
 }
 
@@ -11251,4 +11269,351 @@ int WorldService::OnMessage(UISwfEntity* pSender, UIMsg* pMsg)
         FUN_14151f200();
     }
     return 1;
+}
+
+// ==== types from part K ====
+#include <float.h>
+#include <math.h>
+// ---- types (prefix Unk_WsK_) ----
+// Axis aligned box (boxcollision.cpp): min then max corner, ctor makes it "empty" (+-FLT_MAX).
+struct Unk_WsK_Box
+{
+    Unk_WsK_Box() : m_min(FLT_MAX, FLT_MAX, FLT_MAX), m_max(-FLT_MAX, -FLT_MAX, -FLT_MAX) {}
+    Unk_StreamPoint m_min;
+    Unk_StreamPoint m_max;
+};
+MS2_CHECK_SIZE(Unk_WsK_Box, 24);
+// Rotation matrix + translation (identity by default).
+struct Unk_WsK_Pose
+{
+    Unk_WsK_Pose() : m_pos(0.0f, 0.0f, 0.0f) { Identity(); }
+    void Identity() { for (int i = 0; i < 9; ++i) m_rot[i] = (i % 4 == 0) ? 1.0f : 0.0f; }
+    void RotateZ(float a) { float c = cosf(a), s = sinf(a); Identity(); m_rot[4] = c; m_rot[0] = c; m_rot[1] = -s; m_rot[3] = s; }
+    float m_rot[9];
+    Unk_StreamPoint m_pos;                      // +0x24
+};
+MS2_CHECK_SIZE(Unk_WsK_Pose, 48);
+// Oriented box produced by NxUtilLib from (box, pose); only used as an opaque out parameter.
+struct Unk_WsK_Obb { char raw[0x3c]; };
+// utf8string overload tag type: the exe getter returns a status (0 = ok) where the other parts declare it void.
+struct Unk_WsK_Utf8 : public efd::utf8string {};
+
+// Rank record shown by the display image (refcounted).
+class Unk_WsK_Rank : public CPtred {};
+// Interactive object display-image flavour (interactobject.cpp): shows the text / rank of a queued (name, value) entry.
+class Unk_WsK_InteractDisplayImage : public Unk_WsB_Prop
+{
+public:
+    void FUN_141400800(const CStringW& text);
+    void FUN_141401380(MS2Ptr<Unk_WsK_Rank> rank);                  // callee releases
+};
+// Queued entries of m_a00 / m_a18 (same sizes as the header stand-ins Unk_WsVa00 / Unk_WsVa18).
+struct Unk_WsK_NamedText { CStringA m_name; CStringW m_text; };
+MS2_CHECK_SIZE(Unk_WsK_NamedText, 16);
+struct Unk_WsK_NamedRank { CStringA m_name; MS2Ptr<Unk_WsK_Rank> m_rank; };
+MS2_CHECK_SIZE(Unk_WsK_NamedRank, 24);
+struct Unk_WsK_LockGuard { void* m_lock; };
+
+// ==== functions from part K ====
+
+
+void* FUN_14086d260();
+double FUN_141473280(void* timeSvc);
+void* FUN_141b6f910();
+bool FUN_141c06b80(void* map, unsigned key, Unk_WsC_TagPtr* out);   // m_208.Lookup
+int FUN_140961880(egf::Entity* e, unsigned propId, float* out);
+int FUN_1409618c0(egf::Entity* e, unsigned propId, Unk_StreamPoint* out);
+int FUN_1408a20a0(egf::Entity* e, unsigned propId, char* out);
+int FUN_1408a2060(egf::Entity* e, unsigned propId, Unk_WsK_Utf8* out);
+void FUN_14098c6e0(egf::Entity* e, unsigned propId, const bool* v);
+void FUN_1409457c0(egf::Entity* e, unsigned propId, const float* v);
+bool FUN_140552690(const Unk_StreamPoint* a, const Unk_StreamPoint* b);
+extern Unk_StreamPoint DAT_143b01a60;
+void FUN_140adc690(Unk_WsK_Obb* out, const Unk_WsK_Box* box, const Unk_WsK_Pose* pose);   // NxUtilLib: build the OBB
+char FUN_140adc610(const Unk_WsK_Obb* obb, const Unk_StreamPoint* pt);                    // NxUtilLib: point inside OBB
+void* FUN_140c20a10(void* map);
+void* FUN_140c20a80(void* map, void* pos);
+void FUN_140c20a30(void* map, void** pos);
+Unk_WsC_GameObj* FUN_140aac420(Unk_WsC_GameObjPtr* sp);
+char FUN_1409a1fc0(void* animMgr, const egf::EntityID& id, const efd::utf8string& name, float speed, bool loop);
+// periodic update of the trigger-box props (tag 0x2f96eeb2): toggles a prop and plays its animation when a player enters/leaves
+// MS2-FUNCTIONAL: opaque box-collision COMDATs replaced by inline types
+// @0x141bd56b0
+void FUN_141bd56b0(WorldService* self)
+{
+    Unk_WsC_TagPtr tags;
+    if (!FUN_141c06b80(&self->m_208, 0x2f96eeb2, &tags))
+        return;
+    float now = (float)FUN_141473280(FUN_14086d260());
+    for (POSITION p = tags->GetHeadPosition(); p; tags->GetNext(p))
+    {
+        Unk_WsC_EntityPtr ent = tags->GetAt(p);
+        float lastTime = 0.0f;
+        if (FUN_140961880(ent.operator->(), 0xeccd2366, &lastTime) != 0)
+            continue;
+        float period = 1.0f;
+        if (FUN_140961880(ent.operator->(), 0xbf333fda, &period) != 0)
+            continue;
+        if (period > now - lastTime)
+            continue;
+        Unk_StreamPoint size = DAT_143b01a60;
+        if (FUN_1409618c0(ent.operator->(), 0x9dc22aea, &size) != 0)
+            continue;
+        if (FUN_140552690(&size, &DAT_143b01a60))
+            continue;
+        char checkObjects = 0;
+        if (FUN_1408a20a0(ent.operator->(), 0xcb84c946, &checkObjects) != 0)
+            continue;
+        char flagB = 0;
+        if (FUN_1408a20a0(ent.operator->(), 0x54adb2fd, &flagB) != 0)
+            continue;
+        if (checkObjects == 0 && flagB == 0)
+            continue;
+        Unk_WsK_Utf8 enterAnim;
+        if (FUN_1408a2060(ent.operator->(), 0xc9385319, &enterAnim) != 0)
+            continue;
+        if (enterAnim.empty())
+            continue;
+        char enabled = 1;
+        if (FUN_1408a20a0(ent.operator->(), 0x2683e9ec, &enabled) != 0)
+            continue;
+
+        Unk_StreamPoint pos = DAT_143b01a60;
+        FUN_1409618c0(ent.operator->(), 0xfd95ca52, &pos);
+        Unk_StreamPoint rot = DAT_143b01a60;
+        FUN_1409618c0(ent.operator->(), 0x68c7c29d, &rot);
+        Unk_StreamPoint half = size.FUN_14097fc90(0.5f);
+        Unk_WsK_Box box;
+        box.m_min = Unk_StreamPoint(-half.x, -half.y, -half.z);
+        box.m_max = half;
+        Unk_WsK_Pose pose;
+        pose.m_pos = pos;
+        pose.RotateZ(rot.z * 3.1415927f / 180.0f);
+        Unk_WsK_Obb obb;
+        FUN_140adc690(&obb, &box, &pose);
+
+        bool inside = false;
+        if (checkObjects != 0)
+        {
+            for (void* pos2 = FUN_140c20a10(&self->m_118); pos2 != 0; FUN_140c20a30(&self->m_118, &pos2))
+            {
+                Unk_WsC_GameObj* obj = FUN_140aac420(static_cast<Unk_WsC_GameObjPtr*>(FUN_140c20a80(&self->m_118, pos2)));
+                Unk_StreamPoint at = obj->GetPosition();
+                if (FUN_140adc610(&obb, &at) != 0)
+                {
+                    inside = true;
+                    break;
+                }
+            }
+        }
+        if (!inside)
+        {
+            if (enabled == 0)
+            {
+                bool on = true;
+                FUN_14098c6e0(ent.operator->(), 0x2683e9ec, &on);
+                Unk_WsK_Utf8 leaveAnim;
+                if (FUN_1408a2060(ent.operator->(), 0x3ff293c8, &leaveAnim) == 0)
+                    FUN_1409a1fc0(FUN_141b6f910(), ent->GetEntityID(), leaveAnim, 1.0f, false);
+            }
+        }
+        else if (enabled != 0)
+        {
+            bool off = false;
+            FUN_14098c6e0(ent.operator->(), 0x2683e9ec, &off);
+            FUN_1409a1fc0(FUN_141b6f910(), ent->GetEntityID(), enterAnim, 1.0f, false);
+            FUN_1409457c0(ent.operator->(), 0xeccd2366, &now);
+        }
+    }
+}
+
+Unk_WsD_LockGuard* FUN_140163940(Unk_WsD_LockGuard* g, CLockCriticalSection* lock);
+int FUN_140164a80(Unk_WsD_LockGuard* g);
+void FUN_1401643b0(Unk_WsD_LockGuard* g);
+Unk_WsK_NamedText* FUN_141bf7b90(std::vector<Unk_WsVa00>* v, unsigned __int64 i);   // m_a00[i]
+Unk_WsK_NamedRank* FUN_141bf7bc0(std::vector<Unk_WsVa18>* v, unsigned __int64 i);   // m_a18[i]
+// apply the queued (name, text) entries to their display-image props, then clear the queue
+// MS2-FUNCTIONAL: vector COMDATs inlined, unused local container omitted
+// @0x141bdb1b0
+void FUN_141bdb1b0(WorldService* self)
+{
+    Unk_WsD_LockGuard guard;
+    FUN_140163940(&guard, &self->m_lock);
+    if (FUN_140164a80(&guard) == 0)
+    {
+        if (!self->m_a00.empty())
+        {
+            for (unsigned __int64 i = 0; i < self->m_a00.size(); ++i)
+            {
+                Unk_WsK_NamedText* entry = FUN_141bf7b90(&self->m_a00, i);
+                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->m_name);
+                if (prop.get() != 0)
+                {
+                    Unk_WsK_InteractDisplayImage* img = dynamic_cast<Unk_WsK_InteractDisplayImage*>(prop.get());
+                    if (img != 0)
+                        img->FUN_141400800(entry->m_text);
+                }
+            }
+            self->m_a00.clear();
+        }
+    }
+    FUN_1401643b0(&guard);
+}
+
+// same for the queued (name, rank) entries
+// MS2-FUNCTIONAL: vector COMDATs inlined
+// @0x141bdb390
+void FUN_141bdb390(WorldService* self)
+{
+    Unk_WsD_LockGuard guard;
+    FUN_140163940(&guard, &self->m_lock);
+    if (FUN_140164a80(&guard) == 0)
+    {
+        if (!self->m_a18.empty())
+        {
+            for (unsigned __int64 i = 0; i < self->m_a18.size(); ++i)
+            {
+                Unk_WsK_NamedRank* entry = FUN_141bf7bc0(&self->m_a18, i);
+                MS2Ptr<Unk_WsK_Rank> rank = entry->m_rank;
+                MS2Ptr<Unk_WsB_Prop> prop = self->FUN_141bc66b0(entry->m_name);
+                if (prop.get() != 0)
+                {
+                    Unk_WsK_InteractDisplayImage* img = dynamic_cast<Unk_WsK_InteractDisplayImage*>(prop.get());
+                    if (img != 0)
+                        img->FUN_141401380(rank);
+                }
+            }
+            self->m_a18.clear();
+        }
+    }
+    FUN_1401643b0(&guard);
+}
+
+// ==== types from part J ====
+struct Unk_WsJ_Ref16 { void* m_vtbl; void* m_ref; };
+void FUN_140b2da40(Unk_WsJ_Ref16* ref);
+struct Unk_WsJ_RefHolder : Unk_WsJ_Ref16 { __forceinline ~Unk_WsJ_RefHolder() { FUN_140b2da40(this); } };
+// raw 8 byte entity id and the 32 byte utf8string storage FUN_1414da080 builds (destroyed with FUN_1408a8900)
+struct Unk_WsJ_EntityId { unsigned __int64 m_id; };
+struct Unk_WsJ_StrBuf { unsigned char raw[32]; };
+// queued m_a18 entry (CString name + ref value), scalar-only so no GS cookie is emitted
+struct Unk_WsJ_QueueEntry { void* m_name; void* m_vtbl; void* m_ref; };
+
+// ==== functions from part J ====
+
+
+extern efd::utf8string DAT_142ffa22c;                       // map-id prefix tokens (two-digit category of "%08d")
+extern efd::utf8string DAT_142ffa244;
+extern efd::utf8string DAT_142ffa25c;
+extern efd::utf8string DAT_142ffa29c;
+extern efd::utf8string DAT_142ffa2ac;
+size_t FUN_141c2eee0(const efd::utf8string* s);              // utf8string::size
+bool FUN_140de8e30(const efd::utf8string& a, const efd::utf8string& b);   // utf8string equality
+// map category from the eight-digit zero padded id: digits 2..3 select the kind (0..4), default 2
+// MS2-FUNCTIONAL: exe takes the id as unsigned (direct r9d load); the forward declaration fixes it as int
+// @0x141bd34b0
+int FUN_141bd34b0(WorldService* self, int mapId)
+{
+    int kind = 2;
+    efd::utf8string text(efd::Formatted, "%08d", (unsigned __int64)(unsigned)mapId);
+    if (FUN_141c2eee0(&text) == 8)
+    {
+        efd::utf8string code = text.substr(2, 2);
+        if (FUN_140de8e30(code, DAT_142ffa22c))
+            kind = 0;
+        else if (FUN_140de8e30(code, DAT_142ffa244))
+            kind = 1;
+        else if (FUN_140de8e30(code, DAT_142ffa25c))
+            kind = 2;
+        else if (FUN_140de8e30(code, DAT_142ffa29c))
+            kind = 3;
+        else if (FUN_140de8e30(code, DAT_142ffa2ac))
+            kind = 4;
+    }
+    return kind;
+}
+
+class Unk_WsME_UpdateMgr;                                       // log sink singleton (see part ME)
+Unk_WsME_UpdateMgr* FUN_140a44830();
+void FUN_1401ce2b0(Unk_WsME_UpdateMgr* log, const char* text);   // log a plain line
+// log a printf formatted line; the exe routine is variadic, the values travel in the integer argument slots
+template <class A> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a);
+template <class A, class B> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a, B b);
+template <class A, class B, class C> void FUN_1401ce2f0(Unk_WsME_UpdateMgr* log, const char* fmt, A a, B b, C c);
+CStringA FUN_14016a5c0(const char* s, int codePage);            // CStringA(const char*)
+CStringA FUN_14016a600(const wchar_t* s, int codePage);         // CStringA from wide
+Unk_WsJ_EntityId* FUN_14123c460(Unk_WsC_GameObj* obj, Unk_WsJ_EntityId* out);   // entity id of the object
+Unk_WsJ_StrBuf* FUN_1414da080(Unk_WsJ_EntityId* id, Unk_WsJ_StrBuf* out);        // "<EntityID=(0x%016llX)>"
+void FUN_1408a8900(Unk_WsJ_StrBuf* s);                          // utf8string dtor
+const char* FUN_1408ac310(const void* name);
+int FUN_141658e60(Unk_WsC_GameObj* pc);                         // gender
+int FUN_14166cc80(Unk_WsC_GameObj* pc);                         // sub state
+int FUN_14166c930(Unk_WsC_GameObj* pc);                         // state
+int FUN_14123dbf0(Unk_WsC_GameObj* obj);                        // KFM / scene graph completeness flags
+int FUN_14123dbd0(Unk_WsC_GameObj* obj);
+int FUN_14123bea0(Unk_WsC_GameObj* obj);
+// bit pattern of a double for the integer slot of a variadic call
+static inline unsigned __int64 Unk_WsJ_DoubleBits(double d) { return *reinterpret_cast<unsigned __int64*>(&d); }
+// dump the loader / local player state to the log
+// MS2-FUNCTIONAL: variadic log calls modelled through typed argument templates; CString temporaries as the compiler places them
+// @0x141bd7dd0
+void WorldService::FUN_141bd7dd0()
+{
+    FUN_1401ce2b0(FUN_140a44830(), "\n--- WorldService Log---");
+    FUN_1401ce2f0(FUN_140a44830(), "LoadedBlockFile %s", (const char*)FUN_14016a5c0((const char*)m_250, 0));
+    FUN_1401ce2f0(FUN_140a44830(), "m_LoadResult: %s, m_prevLoadResult: %s",
+                  (const char*)FUN_14016a5c0((const char*)FUN_141bd8370(m_state), 0),
+                  (const char*)FUN_14016a5c0((const char*)FUN_141bd8370(m_prevState), 0));
+    FUN_1401ce2f0(FUN_140a44830(), "GetMyPC %s", FUN_141bd0cc0() == 0 ? "False" : "True");
+    FUN_1401ce2f0(FUN_140a44830(), "LoadCompleteNextTick %d", m_2ac);
+    Unk_WsC_GameObj* pc = static_cast<Unk_WsC_GameObj*>(FUN_141bd0cc0());
+    if (pc == 0)
+        return;
+    {
+        CStringW name = pc->GetName();
+        CStringA nameA = FUN_14016a600((const wchar_t*)name, 0);
+        FUN_1401ce2f0(FUN_140a44830(), "userName %s", (const char*)nameA);
+    }
+    double z = pc->GetPosition().z;
+    double y = pc->GetPosition().y;
+    double x = pc->GetPosition().x;
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC Position %f %f %f", Unk_WsJ_DoubleBits(x), Unk_WsJ_DoubleBits(y), Unk_WsJ_DoubleBits(z));
+    Unk_WsJ_EntityId id;
+    Unk_WsJ_StrBuf idText;
+    FUN_1414da080(FUN_14123c460(pc, &id), &idText);
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC %s", FUN_1408ac310(&idText));
+    FUN_1408a8900(&idText);
+    int gender = FUN_141658e60(pc);
+    int oid = pc->FUN_14123c580();
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC OID %d Gender %d", oid, gender);
+    int subState = FUN_14166cc80(pc);
+    int state = FUN_14166c930(pc);
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC State: %d, SubState: %d", state, subState);
+    int sceneGraph = FUN_14123dbf0(pc);
+    int kfm = FUN_14123dbd0(pc);
+    int entity = FUN_14123bea0(pc);
+    FUN_1401ce2f0(FUN_140a44830(), "MyPC IsComplete Entity: %d, KFM: %d SceneGraph: %d", entity, kfm, sceneGraph);
+}
+
+struct Unk_WsD_LockGuard;
+Unk_WsD_LockGuard* FUN_140163940(Unk_WsD_LockGuard* g, CLockCriticalSection* lock);
+int FUN_140164a80(Unk_WsD_LockGuard* g);
+void FUN_1401643b0(Unk_WsD_LockGuard* g);
+Unk_WsJ_QueueEntry* FUN_141bdbc10(Unk_WsJ_QueueEntry* out, const CStringA& name, Unk_WsJ_Ref16* value);   // build a queued entry
+void FUN_141c2eba0(void* vec, Unk_WsJ_QueueEntry* entry);               // m_a18.push_back
+void FUN_141bf5ea0(Unk_WsJ_QueueEntry* entry);                          // entry dtor
+// queue a (name, value) entry in m_a18 unless the guard is held
+// MS2-FUNCTIONAL: opaque COMDATs by VA, EH sentinel
+// @0x141bdb0f0
+void FUN_141bdb0f0(WorldService* self, CStringA name, Unk_WsJ_RefHolder value)
+{
+    Unk_WsD_LockGuard guard;
+    FUN_140163940(&guard, &self->m_lock);
+    if (FUN_140164a80(&guard) == 0)
+    {
+        Unk_WsJ_QueueEntry entry;
+        FUN_141c2eba0(&self->m_a18, FUN_141bdbc10(&entry, name, &value));
+        FUN_141bf5ea0(&entry);
+    }
+    FUN_1401643b0(&guard);
 }
