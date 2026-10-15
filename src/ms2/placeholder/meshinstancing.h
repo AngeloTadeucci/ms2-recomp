@@ -26,6 +26,7 @@ struct Unk_MeshInstancingConfig {
 };
 MS2_CHECK_SIZE(Unk_MeshInstancingConfig, 0x70);
 struct Unk_MeshInstanceEntry {
+    Unk_MeshInstanceEntry() : entity(NULL), clone(NULL), original(NULL) {}   // 0x141196260
     egf::Entity* entity;
     NiPointer<NiNode> clone;
     NiPointer<NiNode> original;
