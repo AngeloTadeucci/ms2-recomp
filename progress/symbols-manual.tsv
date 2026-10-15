@@ -567,6 +567,5 @@
 ?_Malloc@efd@@YAPEAX_KVMemHint@1@@Z	14206ac20	func
 ?ms_kStrings@NiCommonSemantics@@1PAVNiFixedString@@A	143afa830	data
 ?ms_uiObjects@NiRefObject@@0IA	143afa470	data
-?_Malloc@efd@@YAPEAX_KVMemHint@1@@Z	14208a860	func
-?gs_bDisableMemLogging@efd@@3_NA	143a5363d	data
+?gs_bDisableMemLogging@efd@@3_NA	143b01ad0	data
 ??0AccountBlockInfo@@QEAA@XZ	140268600	func
