@@ -15,6 +15,7 @@
 #pragma once
 
 #include <cstddef>
+#include <type_traits>
 
 namespace fmt {
 
@@ -23,6 +24,8 @@ typedef unsigned __int64 ULongLong;
 
 template <typename Char>
 class BasicFormatter;
+template<class Char, class T>
+void format_arg(BasicFormatter<Char>&, const Char*&, const T&);
 
 namespace internal {
 
@@ -116,6 +119,13 @@ public:
     FMT_MAKE_VALUE(unsigned char, uint_value, CHAR)
     FMT_MAKE_VALUE(char, int_value, CHAR)
 
+    // MS2: wide log severity letters use CHAR, not integral formatting.
+    static wchar_t Convert(wchar_t value) { return value; }
+    MakeValue(wchar_t value) { int_value = Convert(value); }
+    // Proven by logstring 0x14065b030: wide character tag is 5. The older shared
+    // BOOL/CHAR enum names are inferred; leave existing users unchanged for now.
+    static ULongLong type(wchar_t) { return 5; }
+
     FMT_MAKE_VALUE(char*, string.value, CSTRING)
     FMT_MAKE_VALUE(const char*, string.value, CSTRING)
     FMT_MAKE_VALUE(const wchar_t*, wstring.value, WSTRING) // MS2: banned-word logger wide literal.
@@ -129,6 +139,15 @@ public:
 
     FMT_MAKE_VALUE(void*, pointer, POINTER)
     FMT_MAKE_VALUE(const void*, pointer, POINTER)
+
+    // MS2: enum arguments use the formatter customization path (log categories).
+    template<class T> static void FormatCustomArg(void* formatter, const void* value, void* format) {
+        format_arg(*static_cast<Formatter*>(formatter), *static_cast<const Char**>(format), *static_cast<const T*>(value));
+    }
+    template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    MakeValue(const T& value) { custom.value = &value; custom.format = &FormatCustomArg<T>; }
+    template<class T, typename std::enable_if<std::is_enum<T>::value, int>::type = 0>
+    static ULongLong type(const T&) { return Arg::CUSTOM; }
 };
 
 }  // namespace internal
@@ -155,7 +174,19 @@ class BasicFormatter
 {
 public:
     typedef Char Char;
+    const Char* format(const Char*&, const internal::Arg&);
 };
+
+// MS2-FUNCTIONAL: enum customization preserves numeric rendering without unused scratch storage.
+// Verified for the wide log-category instance at 0x140657f80.
+template<class Char, class T>
+inline void format_arg(BasicFormatter<Char>& formatter, const Char*& format, const T& value)
+{
+    internal::Arg arg;
+    arg.int_value = static_cast<int>(value);
+    arg.type = internal::Arg::INT;
+    format = formatter.format(format, arg);
+}
 
 namespace internal {
 

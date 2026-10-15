@@ -120,6 +120,11 @@ public:
                                         // (UIObject::OnLoadComplete 0x14131ec00); without it the ABI passes it in a register
     ~Delegate();
 
+    // Logging callback containers (logstring.cpp): bodies specialized in that unit.
+    Delegate& operator=(const Delegate& o);
+    bool operator==(const Delegate& o) const;
+    R operator()(A1 a1) const;
+
 private:
     DelegateImplBase* m_pImpl;          // +0x00
 };

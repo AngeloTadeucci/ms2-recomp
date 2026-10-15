@@ -1,0 +1,14 @@
+// CLockCriticalSection (RTTI name) and the scoped lock helper the game wraps around it. PLACEHOLDER: layout from
+// the ctor/dtor of CStopWatchEx (commonfiles\timeutil.cpp) and buddymanager.h (which keeps its own identical copy).
+#pragma once
+#include <afx.h>
+#include "ms2/ms2layout.h"
+class CLockCriticalSection {
+public:
+    CLockCriticalSection(); virtual ~CLockCriticalSection(); virtual void vfunc_1(); virtual void vfunc_2();
+    CRITICAL_SECTION section;
+};
+MS2_CHECK_SIZE(CLockCriticalSection,0x30);
+// Scoped guard: `if (Unk_LockGuard guard = lock) {} else { ... }` (0x140163940 ctor, 0x140164a80 operator int, 0x1401643b0 dtor).
+class Unk_LockGuard { public: Unk_LockGuard(CLockCriticalSection&); ~Unk_LockGuard(); operator int(); private: void* p; };
+MS2_CHECK_SIZE(Unk_LockGuard,8);
