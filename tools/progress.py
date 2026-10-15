@@ -198,7 +198,13 @@ def lint_unit(u):
                     if 0x140000000 <= int(m.group(1), 16) < 0x144000000:
                         hits.append((rel, i, "exe-address-literal", rl[i - 1].strip()))
                         break
-            if re.search(r"\b\w+\s*\(\s*\.\.\.\s*\)", line) and not re.search(r"\b(?:if|while|for|switch|sizeof|defined)\s*\(\s*\.\.\.", line):
+            if re.search(r"\b(?:param_\d+|[a-z]{1,3}Var\d+|local_[0-9a-f]+|in_stack_[0-9a-f]+|extraout_\w+|unaff_\w+)\b", line):
+                hits.append((rel, i, "ghidra-name", rl[i - 1].strip()))
+            # `*(i64*)(node + 0x18)`, `(i64)(p) + (o)` (incl. Q8-style macros): use typed members
+            if re.search(r"\(\s*\w+\s*\*+\s*\)\s*\(\s*\w+\s*\+\s*0[xX][0-9a-fA-F]+\s*\)", line) or re.search(
+                    r"\(\s*(?:i64|u64|__int64|INT_PTR|UINT_PTR|LONG_PTR|ULONG_PTR|intptr_t|uintptr_t|long\s+long)\s*\)\s*\(?\s*\w+\s*\)?\s*\+\s*\(?\s*(?:0[xX][0-9a-fA-F]+|\d+|\w+)\s*\)?\s*\)", line):
+                hits.append((rel, i, "raw-ptr-offset", rl[i - 1].strip()))
+            if re.search(r"\b\w+\s*\(\s*\.\.\.\s*\)", line) and not re.search(r"\b(?:if|while|for|switch|sizeof|defined|catch)\s*\(\s*\.\.\.", line):
                 hits.append((rel, i, "variadic-callee", rl[i - 1].strip()))
             # `(char*)this + 0x20`: use the class's own members
             if re.search(r"\(\s*(?:const\s+)?(?:char|unsigned\s+char|BYTE|uint8_t|uintptr_t)\s*\*\s*\)\s*this\s*\+", line):
