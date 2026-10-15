@@ -398,13 +398,13 @@ void CQuest::ShowRewards(int reward)
             } else {
                 PCBase* actor = FUN_141bd0cc0(FUN_1403ed2d0());
                 if (actor) {
-                    for (size_t i = 0; i < m_data->m_choiceRewards.GetCount(); ++i) {
-                        CQuestData::QuestRewardItem& item = m_data->m_choiceRewards[i];
+                    for (size_t i = 0; i < m_data->m_complete.m_choiceRewards.GetCount(); ++i) {
+                        CQuestData::QuestRewardItem& item = m_data->m_complete.m_choiceRewards[i];
                         if (item.m_itemId != 0) {
                             int job = FUN_141654700(actor);
                             if (FUN_140748050(&item, job) != 0) {
-                                int itemId = m_data->m_choiceRewards[i].m_itemId;
-                                dialog->FUN_141abf6e0(itemId, m_data->m_choiceRewards[i].m_count);
+                                int itemId = m_data->m_complete.m_choiceRewards[i].m_itemId;
+                                dialog->FUN_141abf6e0(itemId, m_data->m_complete.m_choiceRewards[i].m_count);
                                 if (FUN_14047eb30(FUN_1401c0d90(), type, subtype, itemId) != 0) eventBonus = true;
                             }
                         }
