@@ -6,6 +6,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "screenmaskingrenderstep.h"
 #include "ms2/placeholder/nitexturingproperty.h"
+#include <NiScreenFillingRenderView.h>
 #include "hook/ms2hook.h"
 
 // Unrecovered callees (real types unknown).
@@ -17,7 +18,7 @@ Unk_SMMgr* FUN_140a0afd0();
 void* FUN_140c8f880(void* p);
 void* FUN_140c8f7f0(void* p);
 void* FUN_140c8f670(void* p);
-void** FUN_140c8f7b0(void* tbl, void* key);
+NiScreenFillingRenderView* FUN_140c8f7b0(void* tbl, void* key);
 void* FUN_141d14f90(void* node, int type);
 void* FUN_1409a8b20();
 void* FUN_1416a3a90(void* p, int n);
@@ -60,8 +61,8 @@ bool ScreenMaskingRenderStep::vfunc_15(unsigned int a, void* b)
         vfunc_16();
         return false;
     }
-    void** obj = FUN_140c8f7b0(&DAT_143afbbc0, FUN_140c8f670(FUN_140c8f7f0(FUN_140c8f880(res))));
-    s_pkScreenMaskProp = (NiTexturingProperty*)FUN_141d14f90((*(void* (**)(void*))(*(char**)obj + 0x50))(obj), 8);
+    NiScreenFillingRenderView* obj = FUN_140c8f7b0(&DAT_143afbbc0, FUN_140c8f670(FUN_140c8f7f0(FUN_140c8f880(res))));
+    s_pkScreenMaskProp = (NiTexturingProperty*)FUN_141d14f90(&obj->GetScreenFillingQuad(), 8);
     NiTexturingProperty::ShaderMap* sm = new (efd::MemHint(efd::MemHint::NONE)) NiTexturingProperty::ShaderMap((NiTexture*)s_screenMaskTexture.Get(), 0, (NiTexturingProperty::ClampMode)0, (NiTexturingProperty::FilterMode)0, 0);
     s_pkScreenMaskProp->SetShaderMap(0, sm);
     return true;
