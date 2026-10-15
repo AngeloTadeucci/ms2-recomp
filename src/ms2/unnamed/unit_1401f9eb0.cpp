@@ -298,7 +298,6 @@ struct Unk_PayloadItemWire {
 // Payloads are opaque: these helpers neither allocate nor copy whole payload objects.
 // Typed accesses preserve each observed field offset and wire width.
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401f9eb0
 void FUN_1401f9eb0(unsigned char* payload, void* inputPacket)
@@ -349,7 +348,6 @@ void FUN_1401fa2c0(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FA2C0, FUN_1401fa2c0, 81, 0xC84F2203);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fa320
 void FUN_1401fa320(unsigned char* payload, void* inputPacket)
@@ -485,7 +483,6 @@ void FUN_1401fa9a0(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FA9A0, FUN_1401fa9a0, 190, 0x5E157002);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401faa70
 void FUN_1401faa70(unsigned char* payload, void* inputPacket)
@@ -719,7 +716,6 @@ void FUN_1401fbd30(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FBD30, FUN_1401fbd30, 53, 0x02F7FD6B);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fbd70
 void FUN_1401fbd70(unsigned char* payload, void* inputPacket)
@@ -775,7 +771,6 @@ void FUN_1401fc0b0(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FC0B0, FUN_1401fc0b0, 102, 0x13010E13);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fc120
 void FUN_1401fc120(unsigned char* payload, void* inputPacket)
@@ -794,7 +789,6 @@ void FUN_1401fc1e0(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FC1E0, FUN_1401fc1e0, 53, 0x02F7FD6B);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fc220
 void FUN_1401fc220(unsigned char* payload, void* inputPacket)
@@ -869,7 +863,6 @@ void FUN_1401fc610(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FC610, FUN_1401fc610, 78, 0x705DDEAA);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fc670
 void FUN_1401fc670(unsigned char* payload, void* inputPacket)
@@ -886,7 +879,6 @@ void FUN_1401fc710(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FC710, FUN_1401fc710, 44, 0xDE48B588);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fc750
 void FUN_1401fc750(unsigned char* payload, void* inputPacket)
@@ -906,7 +898,6 @@ void FUN_1401fc790(unsigned char* payload, COutputStream& stream)
 }
 MS2_REPLACE(0x1401FC790, FUN_1401fc790, 310, 0x002C2E8B);
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fc910
 void FUN_1401fc910(unsigned char* payload, void* inputPacket)
@@ -1157,7 +1148,6 @@ void FUN_1401fdb50(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FDB50, FUN_1401fdb50, 116, 0x3693878F);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fdbd0
 void FUN_1401fdbd0(unsigned char* payload, void* inputPacket)
@@ -1179,7 +1169,6 @@ void FUN_1401fdc80(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FDC80, FUN_1401fdc80, 116, 0xEAE15273);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fdd00
 void FUN_1401fdd00(unsigned char* payload, void* inputPacket)
@@ -1199,7 +1188,6 @@ void FUN_1401fddd0(unsigned char* payload, COutputStream& stream)
 }
 MS2_REPLACE(0x1401FDDD0, FUN_1401fddd0, 223, 0x0C02C129);
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fdec0
 void FUN_1401fdec0(unsigned char* payload, void* inputPacket)
@@ -1224,7 +1212,6 @@ void FUN_1401fe0d0(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FE0D0, FUN_1401fe0d0, 177, 0x7B6F94D9);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fe190
 void FUN_1401fe190(unsigned char* payload, void* inputPacket)
@@ -1246,7 +1233,6 @@ void FUN_1401fe310(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x1401FE310, FUN_1401fe310, 53, 0xEE8624DB);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fe350
 void FUN_1401fe350(unsigned char* payload, void* inputPacket)
@@ -1282,7 +1268,6 @@ void CMeratMarketPacket::UgcAddProduct::vfunc_1(COutputStream& stream)
 }
 MS2_REPLACE_METHOD(0x1401FE630, CMeratMarketPacket::UgcAddProduct, vfunc_1, 59, 0x8F6B6DF2);
 
-// MS2-FUNCTIONAL: recovered packet operations; compiler temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fe680
 void CMeratMarketPacket::UgcAddProduct::vfunc_2(void* packet)
@@ -1299,7 +1284,6 @@ void CMeratMarketPacket::UgcResaleProduct::vfunc_1(COutputStream& stream)
 }
 MS2_REPLACE_METHOD(0x1401FE6E0, CMeratMarketPacket::UgcResaleProduct, vfunc_1, 59, 0xE4312713);
 
-// MS2-FUNCTIONAL: recovered packet operations; compiler temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fe730
 void CMeratMarketPacket::UgcResaleProduct::vfunc_2(void* packet)
@@ -1498,7 +1482,6 @@ void Unk_PetIdentity::FUN_1401fee50(COutputStream& stream)
 }
 MS2_REPLACE_METHOD(0x1401FEE50, Unk_PetIdentity, FUN_1401fee50, 226, 0xB35DE9FE);
 
-// MS2-FUNCTIONAL: recovered member operations; compiler temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401fef40
 void Unk_PetIdentity::FUN_1401fef40(void* packet)
@@ -1686,7 +1669,6 @@ void CCPetInfoPacket::Info::FUN_1401ffca0(COutputStream& stream)
 }
 MS2_REPLACE_METHOD(0x1401FFCA0, CCPetInfoPacket::Info, FUN_1401ffca0, 87, 0xC23F9BBD);
 
-// MS2-FUNCTIONAL: recovered member operations; compiler temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401ffd00
 void CCPetInfoPacket::Info::FUN_1401ffd00(void* packet)
@@ -1718,7 +1700,6 @@ void FUN_1401ffdc0(unsigned char* payload, COutputStream& stream)
 }
 MS2_REPLACE(0x1401FFDC0, FUN_1401ffdc0, 167, 0x36EF964D);
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1401ffe70
 void FUN_1401ffe70(unsigned char* payload, void* inputPacket)
@@ -1911,7 +1892,6 @@ void FUN_140201180(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x140201180, FUN_140201180, 463, 0xFA1E0F19);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x140201360
 void FUN_140201360(unsigned char* payload, void* inputPacket)
@@ -2078,7 +2058,6 @@ void FUN_140202190(unsigned char* payload, COutputStream& stream)
 MS2_REPLACE(0x140202190, FUN_140202190, 80, 0x1F873B3D);
 
 
-// MS2-FUNCTIONAL: recovered wire operations; expression temporaries may differ.
 // Not hooked: constructs DLL-local RTTI (directly or through validation).
 // @0x1402021f0
 void FUN_1402021f0(unsigned char* payload, void* inputPacket)
