@@ -127,6 +127,70 @@ class Unit:
         return any(a <= va < b for a, b in self.ranges)
 
 
+# ----------------------------------------------------------------------------------------------------------------
+# source lint (functional gate; docs/RECOVERY.md "Functional tier: source lint")
+
+def _strip_code(text):
+    """Blank comments and string/char literals (keeping line structure) so rules only see code."""
+    out, i, n = [], 0, len(text)
+    while i < n:
+        c = text[i]
+        if text.startswith("//", i):
+            j = text.find("\n", i)
+            j = n if j < 0 else j
+            out.append(" " * (j - i)); i = j
+        elif text.startswith("/*", i):
+            j = text.find("*/", i + 2)
+            j = n if j < 0 else j + 2
+            out.append(re.sub(r"[^\n]", " ", text[i:j])); i = j
+        elif c in "\"'":
+            j = i + 1
+            while j < n and text[j] != c and text[j] != "\n":
+                j += 2 if text[j] == "\\" else 1
+            j = min(j + 1, n)
+            out.append(c + " " * (j - i - 2) + c if j - i >= 2 else c); i = j
+        else:
+            out.append(c); i += 1
+    return "".join(out)
+
+
+def lint_unit(u):
+    """Return [(file, line, rule, text)] for the unit's .cpp and its same-stem / quoted-include unit-local .h files."""
+    files = [u.path]
+    d = os.path.dirname(u.path)
+    stem = os.path.splitext(os.path.basename(u.path))[0]
+    for m in re.finditer(r'^\s*#\s*include\s+"([^"/]+\.h)"', open(u.path, encoding="latin1").read(), re.M):
+        q = os.path.join(d, m.group(1))
+        if os.path.exists(q) and os.path.splitext(m.group(1))[0].split("_")[0] == stem.split("_")[0]:
+            files.append(q)
+    hits = []
+    for f in dict.fromkeys(files):
+        raw = open(f, encoding="latin1").read()
+        code = _strip_code(raw)
+        rl, cl = raw.split("\n"), code.split("\n")
+        rel = os.path.relpath(f, ROOT)
+        for i, line in enumerate(cl, 1):
+            if re.search(r"\bundefined[1248]?\b", line):
+                hits.append((rel, i, "ghidra-type", rl[i - 1].strip()))
+            if not re.search(r"\bMS2_[A-Z_]+\s*\(", line):
+                for m in re.finditer(r"\b0[xX]([0-9a-fA-F]{9})(?:[uUlL]{0,3})\b", line):
+                    if 0x140000000 <= int(m.group(1), 16) < 0x144000000:
+                        hits.append((rel, i, "exe-address-literal", rl[i - 1].strip()))
+                        break
+            if re.search(r"\b\w+\s*\(\s*\.\.\.\s*\)", line) and not re.search(r"\b(?:if|while|for|switch|sizeof|defined)\s*\(\s*\.\.\.", line):
+                hits.append((rel, i, "variadic-callee", rl[i - 1].strip()))
+        # forwarder: inside the function tagged `// @0xX`, a use of FUN_X beyond the definition's own name
+        tags = [(i, m.group(1)) for i, l in enumerate(rl) if (m := re.match(r"\s*//\s*@0x([0-9a-fA-F]+)\s*$", l))]
+        for k, (i, va) in enumerate(tags):
+            end = tags[k + 1][0] if k + 1 < len(tags) else len(cl)
+            seg = "\n".join(l for l in cl[i + 1:end] if not re.search(r"\bMS2_[A-Z_]+\s*\(", l))
+            pat = r"\bFUN_0*%s\b" % va.lower().lstrip("0")
+            head, _, body = seg.partition("{")
+            if body and not re.search(pat, head, re.I) and re.search(pat + r"\s*\(", body, re.I):
+                hits.append((rel, i + 1, "forwarder", f"function @0x{va} calls FUN_{va}"))
+    return hits
+
+
 def find_units(filters):
     out = []
     for d, _, files in os.walk(GAME):
@@ -916,6 +980,13 @@ def main():
                                               f"{m + f}/{n} functions implemented ({stubs} stub), vftables {vok}/{nv}"))
                 for d in res.get("symmismatch", []):
                     bad.append(f"{name}: symbol conflict: {annotate(d)}")
+                if not os.environ.get("MS2_NO_LINT"):
+                    lu = next((x for x in all_units if x.name == name), None)
+                    lh = lint_unit(lu) if lu else []
+                    for lf, ln, lr, lt in lh[:12]:
+                        bad.append(f"{name}: lint: {lr} at {lf}:{ln}: {lt[:100]}")
+                    if len(lh) > 12:
+                        bad.append(f"{name}: lint: ... {len(lh) - 12} more")
                 ok_msg = (f"functional: OK (matched {m}/{n}, {f} functional, {bmt} of {b} bytes = "
                           f"{100.0 * bmt / b if b else 0:.1f}% exact, {100.0 * (bmt + bft) / b if b else 0:.1f}% implemented)")
             elif fail or n == 0 or m != n or vok != nv:
