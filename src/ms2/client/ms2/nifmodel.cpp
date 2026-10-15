@@ -95,10 +95,10 @@ CNifModel::CNifModel(MS2Ptr<Unk_EquipModelOwner> spOwner, void* p18, void* p20)
 int CNifModel::vfunc_4(CString strPath)
 {
     FUN_141200e30(this, 1);
-    int iVar2 = FUN_1412033e0(this);
+    int nUseFlag = FUN_1412033e0(this);
     char local20[8];
     void* svc = FUN_140a0afd0();
-    void* r = FUN_141551ea0(svc, local20, strPath, iVar2 != 0, 5, 0, 0);
+    void* r = FUN_141551ea0(svc, local20, strPath, nUseFlag != 0, 5, 0, 0);
     FUN_14097f710(&m_unk_f0, r);
     FUN_1405a85c0(local20);
     char c = FUN_1409a7f70(&m_unk_f0, 0);
@@ -199,15 +199,15 @@ void CNifModel::vfunc_11()
 {
     char t48[16];
     void* ow = FUN_1411dc7a0(FUN_1405a8ed0(&m_spOwner), t48);
-    void* lVar4 = FUN_140527870(FUN_1401c0180(ow));
+    void* pPartList = FUN_140527870(FUN_1401c0180(ow));
     FUN_1401bfde0(t48);
-    if (lVar4 != 0) {
+    if (pPartList != 0) {
         for (int i = 0; i < 3; ++i) {
             char v70[16];
-            FUN_141b6dea0(v70, FUN_140599fd0(lVar4, i));
+            FUN_141b6dea0(v70, FUN_140599fd0(pPartList, i));
             if (i == 1) {
                 char t38[12], t2c[28], v60[16];
-                void* a = FUN_141b6dea0(t38, FUN_140599fd0(lVar4, 0));
+                void* a = FUN_141b6dea0(t38, FUN_140599fd0(pPartList, 0));
                 void* b = FUN_1414424f0(a, t2c, 0x3fa66666);
                 FUN_140a0a3a0(v60, b);
                 memcpy(v70, v60, 12);
@@ -272,51 +272,51 @@ void CNifModel::vfunc_12()
 void CNifModel::vfunc_13()
 {
     if (*(int*)((char*)m_unk_20 + 0x2c) == 0) return;
-    void* lVar7 = FUN_1412008e0(this);
-    if (lVar7 == 0) return;
-    void* plVar8 = FUN_141200820(this);
-    if (plVar8 == 0) return;
+    void* pRootNode = FUN_1412008e0(this);
+    if (pRootNode == 0) return;
+    void* pController = FUN_141200820(this);
+    if (pController == 0) return;
     char v80[16];
     FUN_1411dc7a0(FUN_1405a8ed0(&m_spOwner), v80);
     if (FUN_140534e50(v80) != 0) {
         FUN_1401bfde0(v80);
         return;
     }
-    int iVar3 = V0(int, plVar8, 0x180);
-    char uVar2 = FUN_14053d2b0(FUN_140527840(FUN_1401c0180(v80)));
-    unsigned uVar4 = FUN_1405258b0(FUN_1401c0180(v80));
+    int nDebugFlag = V0(int, pController, 0x180);
+    char cAttrA = FUN_14053d2b0(FUN_140527840(FUN_1401c0180(v80)));
+    unsigned uAttrB = FUN_1405258b0(FUN_1401c0180(v80));
     alignas(8) char sbuf[8];
     CString& s = *(CString*)sbuf;
     FUN_1412029d0(this, &s);
-    int uVar5 = FUN_140527a20(FUN_1401c0180(v80));
-    int iVar6 = FUN_1411e99a0(FUN_1416561a0(plVar8), uVar5, &s, uVar4, uVar2);
+    int nModelKind = FUN_140527a20(FUN_1401c0180(v80));
+    int nResult = FUN_1411e99a0(FUN_1416561a0(pController), nModelKind, &s, uAttrB, cAttrA);
     s.~CString();
-    if (iVar6 != 0) {
-        bool bVar10 = *(int*)((char*)m_unk_20 + 0x34) == 0;
+    if (nResult != 0) {
+        bool bHeadBone = *(int*)((char*)m_unk_20 + 0x34) == 0;
         void* target;
         char nm[8];
-        if (bVar10) {
+        if (bHeadBone) {
             FUN_140984450(nm, "Bip01 Head");
-            void* o = FUN_1409f7cb0(lVar7);
+            void* o = FUN_1409f7cb0(pRootNode);
             void* r = V1(void*, o, 0xa0, void*, nm);
             target = FUN_14098d8d0(&DAT_143afa4d8, r);
         } else {
-            target = FUN_14098d8d0(&DAT_143afa4d8, FUN_1409f7cb0(lVar7));
+            target = FUN_14098d8d0(&DAT_143afa4d8, FUN_1409f7cb0(pRootNode));
         }
-        if (bVar10) FUN_1409845a0(nm);
+        if (bHeadBone) FUN_1409845a0(nm);
         if (target == 0) {
             FUN_1401bfde0(v80);
             return;
         }
         void* hf = vfunc_14();
-        iVar6 = FUN_141422110(hf, (char*)m_unk_20 + 8, F8(this));
-        if (iVar6 != 0) {
+        nResult = FUN_141422110(hf, (char*)m_unk_20 + 8, F8(this));
+        if (nResult != 0) {
             char end[8], it[8], sp[8];
             PAIR_BEGIN(this, it, end);
             while (FUN_140b029f0(it, end) != 0) {
                 FUN_14097eb60(sp, FUN_140b02a60(it));
                 V2(void, target, 0x120, void*, FUN_1409849b0(sp), int, 1);
-                if (iVar3 != 0)
+                if (nDebugFlag != 0)
                     FUN_141ab6e80(FUN_1409849b0(sp));
                 FUN_1405a85c0(sp);
                 FUN_140b02a80(it);
@@ -362,11 +362,11 @@ void CNifModel::vfunc_17()
     CEquipModel::vfunc_17();
     if (m_p120 != 0)
         FUN_140a0b300(m_p120, 0);
-    bool bVar1;
+    bool bActive;
     if (m_nState == 0 || vfunc_20() == 0)
-        bVar1 = false;
+        bActive = false;
     else
-        bVar1 = true;
+        bActive = true;
     char end[8], it[8], sp[8];
     PAIR_BEGIN(this, it, end);
     while (FUN_140b029f0(it, end) != 0) {
@@ -377,7 +377,7 @@ void CNifModel::vfunc_17()
         while ((o = FUN_14098e0d0(mi, 1)) != 0) {
             void* c = FUN_14098d8d0(&DAT_143afbbb0, o);
             if (c != 0 && m_p120 != c)
-                FUN_140a0b300(c, !bVar1);
+                FUN_140a0b300(c, !bActive);
         }
         FUN_14098cf00(mi);
         FUN_1405a85c0(sp);
@@ -389,7 +389,7 @@ void CNifModel::vfunc_17()
     while ((o2 = FUN_14098e0d0(mi2, 1)) != 0) {
         void* c = FUN_14098d8d0(&DAT_143afbbb0, o2);
         if (c != 0 && m_p120 != c)
-            FUN_140a0b300(c, !bVar1);
+            FUN_140a0b300(c, !bActive);
     }
     FUN_14098cf00(mi2);
 }
