@@ -36,9 +36,9 @@ public:
     unsigned int GetRandomSelectMap();                      // 0x14174d9a0 (FUN_14174d9a0)
 
 private:
-    ATL::CAtlMap<int, int> m_selectMap;                     // +0x28 jobCode -> selectMap
+    ATL::CAtlMap<DWORD, int> m_selectMap;                     // +0x28 jobCode -> selectMap
     ATL::CAtlArray<unsigned int> m_selectMaps;              // +0x70 the select maps of the rows without a createMap
-    ATL::CAtlMap<int, int> m_createMap;                     // +0x90 jobCode -> createMap
+    ATL::CAtlMap<DWORD, int> m_createMap;                     // +0x90 jobCode -> createMap
     bool m_bLoaded;                                         // +0xd8
 };
 MS2_CHECK_SIZE(LobbyFieldTable, 0xe0);

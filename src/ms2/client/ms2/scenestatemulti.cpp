@@ -282,7 +282,7 @@ static Unk_1401cd100 s_pointer(NULL);
 static Unk_1402a9d70 s_condition(17, 0.75f, 0.25f, 2.25f, 10);
 
 // @0x14174d380
-// MS2-FUNCTIONAL: CAtlMap<int,int> ctor is an ICF look-alike bound to a different exe copy in symbols.tsv
+// MS2-NOTE: job-code maps are keyed DWORD (hash 0x14015a330 family), not int
 LobbyFieldTable::LobbyFieldTable()
     : m_selectMap(17, 0.75f, 0.25f, 2.25f, 10), m_createMap(17, 0.75f, 0.25f, 2.25f, 10), m_bLoaded(false)
 {
