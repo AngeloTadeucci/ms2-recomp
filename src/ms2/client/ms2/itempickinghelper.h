@@ -20,12 +20,16 @@ class CItem;
 class NiAVObject;
 class CMeshUVPicker;       // RTTI .?AVCMeshUVPicker@@ (NiRefObject, 0x98), unit ?\meshuvpicker.cpp
 
+// Model facts of a pickable part: m_nKind 0 = ponytail hair, otherwise a morph hair (read by the controller factory).
+struct Unk_PickPartInfo { char m_pad[0x2c]; int m_nKind; };
+
 // One pickable attach part of the item model (CPtred-derived, held in MS2Ptr; methods in unit_1411673f0 /
 // ?\equipmodel.cpp). Only the members recovered code calls are declared.
 struct Unk_PickTarget : public CPtred
 {
     MS2Ptr<CItem> FUN_141200940() const;                        // the item the slot shows
     void* FUN_141200850() const;                                // the slot's game object (owns the model)
+    Unk_PickPartInfo* FUN_141200ab0() const;                    // the part's model facts
     NiAVObject* FUN_1411676d0(const CString* pPartName) const;  // the model node of one attach part (w22: NiRenderObject**)
     // highlight: fScale/fMode from CItemCustomizeController::vfunc_39, pNode = the picked mesh or NULL
     void FUN_1411679d0(float fScale, float fMode, NiAVObject* pNode);

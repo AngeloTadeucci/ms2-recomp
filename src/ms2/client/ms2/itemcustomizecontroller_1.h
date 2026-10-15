@@ -129,6 +129,13 @@ public:
     void OnMouseButton2(int bActive, const efd::Point3& kPos);      // 0x141412870 right button: drag mode 2
     static float GetHighlightScale(NiAVObject* pNode);              // 0x141412990
     void SetDragging(int bDragging) { m_bDragging = bDragging; }    // 0x141413190 (inline COMDAT)
+    // inline COMDATs first emitted by TU B (factory/registry, itemcustomizecontroller_1b.cpp)
+    int GetSlot() const { return m_nSlot; }                         // 0x141414920
+    int IsDragging1() const { return m_bDragging1; }                // 0x141414930
+    int IsDragging2() const { return m_bDragging2; }                // 0x141414950
+    void SetListener(Unk_ItemCustomizeListener* p) { m_pListener = p; }   // 0x141414c20
+    int IsInteractive() const;                                      // 0x141414760 any of m_bUseButton1/m_bUseButton2/m_bEnabled
+    int GetDragging();                                              // 0x140cd5fd0 (inline COMDAT first emitted by customize.cpp)
 
     int m_nSlot;                                    // +0x10 equip slot (Initialize; 6 = cap, 1 = hair)
     MS2Ptr<CEquipItem> m_spEquipItem;               // +0x18
