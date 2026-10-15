@@ -36,6 +36,7 @@ public:
   // sb4 (clonecube.cpp): UGC look of the item. The callee returns a byte; callers test eax (declared int there).
   int FUN_140525f10();                   // 0x140525f10 item data at +0xe8 is a UGC item
   Unk_ItemUgcInfo* FUN_1405278d0();       // 0x1405278d0 operator-> of the MS2Ptr at +0x118 (UGC info)
+  unsigned __int64 FUN_1405283d0();       // 0x1405283d0 UGC uid of that info (0 when null; avatarcube.cpp)
 private:
   void *m_18;
   void *m_20;
@@ -94,4 +95,6 @@ class Unk_ItemUgcInfo {
 public:
   void *m_pad_00[6];
   __int64 m_nUgcUid;                     // +0x30 compared by CloneCube::vfunc_61
+  char m_pad_38[0x38];
+  CString m_strName;                     // +0x70 cached UGC file name (avatarcube.cpp)
 };
