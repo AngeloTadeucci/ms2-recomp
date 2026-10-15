@@ -6,6 +6,7 @@
 // MS2-PINS-END tplpin
 // MS2-PIN: memmove_s 0x14137df60
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\groupchatmanager.cpp"
+// MS2-PIN: ?FUN_14137e160@CGroupChatManager@@QEAAXXZ 0x14137e160
 #include "ms2/placeholder/ms2stdafx.h"
 #include "groupchatmanager.h"
 #include "ms2/ms2recover.h"
