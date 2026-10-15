@@ -41,6 +41,8 @@ public:
     T* get() const;                     // tested for null: `if (p)` is written `if (p.get())` (0x1409ee240 for AScript)
     operator T*() const;                // `if (MS2Ptr<T> p = ...)`, `dynamic_cast<X*>((T*)p)` (AScript: 0x140ba7c60)
     T* operator->() const;
+    MS2Ptr& operator=(const MS2Ptr& o); // 0x1409b9ad0 for AScript (mentoring reward page)
+    T& operator*() const;              // 0x140c353d0 for AScript
     bool IsNull() const;                // `p.get() == 0` as a bool
     bool operator==(T* p) const;
 
@@ -75,6 +77,13 @@ public:
 
     // Binds the AS child `strName` to `out` and returns a copy of it (0x140bbe640 for T = Unk_ASExitButton).
     template <class T> MS2Ptr<T> FUN_140bbe640(const CString& strName, MS2Ptr<T>& out);
+
+    template<class T> MS2Ptr<T> FUN_140beaf20(const CString&, MS2Ptr<T>&); // bind text (mentoring reward)
+    template<class T> MS2Ptr<T> FUN_140bc71c0(const CString&, MS2Ptr<T>&); // bind display object
+    template<class T> MS2Ptr<T> FUN_140bc7100(const CString&, MS2Ptr<T>&); // bind icon (DT attendance)
+    template<class F> void FUN_1422c2a70(const F&, int); // click callback (DT attendance)
+    Scaleform::GFx::Value& FUN_1422bb890(); // root value forwarding accessor
+    Scaleform::GFx::Value Invoke(const char*, CString, int); // setTabCount, 0x140a46640
 
 private:
     void* m_pad_18;                     // not char[8]: an array member makes every local AS object a /GS buffer
