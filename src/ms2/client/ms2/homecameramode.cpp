@@ -223,7 +223,6 @@ void CHomeCameraMode::vfunc_10()
 MS2_REPLACE_METHOD(0x140B652C0, CHomeCameraMode, vfunc_10, 59, 0x3AEC2CB0);
 
 // @0x140b65310
-// MS2-FUNCTIONAL: a float comparison operand order and temp slot layout differ
 void CHomeCameraMode::vfunc_8(double fTime)
 {
     int nLoop = 100;
@@ -316,7 +315,7 @@ void CHomeCameraMode::vfunc_8(double fTime)
                 ptPos.x = m_50 * m_100.x + ptCenter.x;
                 ptPos.y = m_50 * m_100.y + ptCenter.y;
                 ptPos.z = m_50 * m_100.z + ptCenter.z;
-                if (m_58 < m_50 && m_54 + m_9c > m_50)
+                if (m_50 > m_58 && m_54 + m_9c > m_50)
                 {
                     m_c4.m_pos = ptPos;
                     ptRot = CCameraMode::FUN_140afdd40(ptCenter, m_c4.m_pos, m_10c);
