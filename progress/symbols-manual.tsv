@@ -630,7 +630,7 @@
 ?ms_RTTI@NiZBufferProperty@@2VNiRTTI@@B	143afa588	data
 ?ms_RTTI@NiProperty@@2VNiRTTI@@B	143afa4a8	data
 ?ms_cAppendCharacter@NiObjectNET@@1DA	1439fae8c	data
-?ms_RTTI@NiDynamicEffect@@2VNiRTTI@@B	143afa458	data
+?ms_RTTI@NiDynamicEffect@@2VNiRTTI@@B	143afb010	data
 ?GetRenderStep@RenderSurface@ecr@@QEAAPEAVNiRenderStep@@XZ	141ff5ca0	func
 ?Equals@FixedString@efd@@QEBA_NPEBD@Z	142087f40	func
 ??0Unk_SceneWalker@@QEAA@PEAVNiObject@@@Z	14098cb80	func
@@ -1168,3 +1168,11 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?CloneOnlyAnimation@NiActorManager@@UEAAPEAV1@PEAVNiAVObject@@_N@Z	141c3ff70	func
 ?Update@NiActorManager@@UEAAXM@Z	141c45340	func
 ?ms_RTTI@NiActorManager@@2VNiRTTI@@B	143af8988	data
+?s_instance@?$TSingleton@VAnimationCallbackManager@@@@2PEAVAnimationCallbackManager@@EA	143ab3be0	data
+?RegisterCallback@NiActorManager@@QEAA_NW4EventType@1@IPEAVNiTextKeyMatch@@@Z	141c43700	func
+?RegisterCallback@NiActorManager@@QEAA_NW4EventType@1@IAEBVNiFixedString@@@Z	141c435b0	func
+??$Unk_FileLog@PEBDPEBD@@YAXPEAVCLogString@@HHPEB_WAEBQEBD2@Z	1403a1310	func
+??4?$MS2Ptr@VCItem@@@@QEAAAEAV0@H@Z	1401bffb0	func
+?ms_RTTI@CCapRotationController@@2VNiRTTI@@B	143ab9d08	data
+??0NiStream@@QEAA@XZ	141d44620	func
+?DAT_143ac2fd8@@3PEAXEA	143ac2fd8	data
