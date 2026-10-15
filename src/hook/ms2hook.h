@@ -146,6 +146,10 @@ template <uintptr_t VA, class T> struct Global {
 #define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) MS2_REPLACE_METHOD_VIA(va, Class, Class, Method, glen, ghash)
 
 #define MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, glen, ghash)                                        \
+    /* Anonymous namespace: the thunk's template members must have internal linkage. Named only by __LINE__, \
+       two units with a registration on the same line and the same signature produced identical COMDAT      \
+       symbols and the linker folded them (a hook ran another unit's method: client crash). */              \
+    namespace {                                                                                             \
     struct MS2_CAT(ms2_thunk_, __LINE__) : Base {                                                           \
         template <class R, class... A> R Call(A... a) {                                                     \
             return static_cast<Class*>(static_cast<Base*>(this))->Class::Method(std::forward<A>(a)...);     \
@@ -155,6 +159,7 @@ template <uintptr_t VA, class T> struct Global {
                 std::forward<A>(a)...);                                                                     \
         }                                                                                                   \
     };                                                                                                      \
+    }                                                                                                       \
     MS2_REPLACE_IMPL(va,                                                                                    \
         (::ms2::hook::detail::MemberThunk<MS2_CAT(ms2_thunk_, __LINE__), decltype(&Class::Method)>::Get()), \
         #Class "::" #Method, glen, ghash)
