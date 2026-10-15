@@ -23,6 +23,7 @@ struct Unk_StreamPoint
     bool FUN_140552700(const Unk_StreamPoint& pt) const;            // efd::Point3::operator!=
     bool FUN_140552690(const Unk_StreamPoint& pt) const;           // efd::Point3::operator==
     float FUN_140967ac0() const;                                    // efd::Point3::Length
+    float FUN_140a00f20(const Unk_StreamPoint& pt) const;           // efd::Point3::Dot
     Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
     Unk_StreamPoint FUN_140ae9180(float f) const;                   // efd::Point3::operator/(float)
     float x, y, z;
@@ -55,6 +56,8 @@ struct Unk_EfdMatrix3
     void FUN_142084b30(float fAngle);                               // efd::Matrix3::MakeXRotation
     void FUN_142084ba0(float fAngle);                               // efd::Matrix3::MakeYRotation
     void FUN_142084c10(float fAngle);                               // efd::Matrix3::MakeZRotation
+    Unk_StreamPoint FUN_140a00720(const Unk_StreamPoint& v) const;  // efd::Matrix3::operator*(Point3)
+    void FUN_14107cc40(float fAngle, const Unk_StreamPoint& kAxis); // efd::Matrix3::MakeRotation (angle about a unit axis)
     Unk_EfdMatrix3 FUN_140a33480(const Unk_EfdMatrix3& m) const;    // efd::Matrix3::operator*
     float m_afEntry[3][3];
 };
