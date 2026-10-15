@@ -20,6 +20,7 @@ public:
     virtual ~CQuestData();
     int m_id, m_type, m_20, m_level, m_28;
     unsigned char m_2c, m_2d, m_2e, m_2f, m_30, m_31, m_flag, m_33, m_34;
+    unsigned char GetKind() const { return m_2c; }   // 0x14064dbd0 (COMDAT first emitted by learningquesttable.cpp)
     int m_durationMinutes, m_resetType;
     CStringW m_schedule;
     // <require> block, CQuestData+0x58 (0x1f0). ctor 0x140747910, dtor 0x140758c80,
