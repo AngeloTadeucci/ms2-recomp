@@ -379,17 +379,16 @@ void CLocalTargetCameraMode::FUN_140d4f680(const Unk_CameraSetup& setup)
 MS2_REPLACE_METHOD(0x140d4f680, CLocalTargetCameraMode, FUN_140d4f680, 419, 0xF1BA60D2);
 
 // @0x140d4f830
-// MS2-FUNCTIONAL: the m_188 vs m_3c clamp compiles to jb instead of jae (same result)
 void CLocalTargetCameraMode::FUN_140d4f830()
 {
     FUN_140aeb920(Unk_CameraManager::FUN_1409478c0());
     m_178 = 1;
     m_184 = 1;
     float fTime;
-    if (m_108.m_3c <= m_188)
-        fTime = m_108.m_3c;
-    else
+    if (m_108.m_3c > m_188)
         fTime = m_188;
+    else
+        fTime = m_108.m_3c;
     m_108.m_3c = fTime;
     m_188 = 0;
     static_cast<Unk_CameraSetting&>(m_108) = m_1c4;
