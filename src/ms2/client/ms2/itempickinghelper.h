@@ -13,10 +13,12 @@
 #include <NiPoint3.h>
 
 #include "ms2/ms2layout.h"
+#include "ms2/placeholder/nipoint3.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"     // MS2Ptr<T>
 
 class CItem;
+class CEquipItem;
 class NiAVObject;
 class CMeshUVPicker;       // RTTI .?AVCMeshUVPicker@@ (NiRefObject, 0x98), unit ?\meshuvpicker.cpp
 
@@ -30,6 +32,9 @@ struct Unk_PickTarget : public CPtred
     MS2Ptr<CItem> FUN_141200940() const;                        // the item the slot shows
     void* FUN_141200850() const;                                // the slot's game object (owns the model)
     Unk_PickPartInfo* FUN_141200ab0() const;                    // the part's model facts
+    MS2Ptr<CEquipItem> FUN_141200a40() const;                   // the equip item the part belongs to (caprotationcontroller.cpp)
+    void FUN_141200160(Unk_StreamPoint kOffset);                // sets the part's model offset
+    void FUN_141200100(Unk_StreamPoint kEuler);                 // sets the part's model rotation (euler degrees)
     NiAVObject* FUN_1411676d0(const CString* pPartName) const;  // the model node of one attach part (w22: NiRenderObject**)
     // highlight: fScale/fMode from CItemCustomizeController::vfunc_39, pNode = the picked mesh or NULL
     void FUN_1411679d0(float fScale, float fMode, NiAVObject* pNode);
