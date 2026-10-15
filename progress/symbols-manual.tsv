@@ -1012,3 +1012,16 @@ __imp_NxReleaseControllerManager	142ccec90	data
 ??1Unk_MsgCallback@@QEAA@XZ	140534cb0	func
 ??1Unk_StateRef@@QEAA@XZ	140f30880	func
 D3DXSaveSurfaceToFileA	14230399f	func
+?INVALID_SEQUENCE_ID@NiActorManager@@2IB	143000c88	data
+?DAT_143a09600@@3UUnk_EfdMatrix3@@A	143a09600	data
+??1Unk_GemDbPtr@@QEAA@XZ	1405a8740	func
+??0Unk_GemEffPtr@@QEAA@PEAVCGemCharEffectData@@@Z	1405a80c0	func
+??1Unk_GemEffPtr@@QEAA@XZ	1405a86b0	func
+??1Unk_CeMapPtr@@QEAA@XZ	1408850f0	func
+??0Unk_CoupleTick@@QEAA@XZ	140517b00	func
+??0Unk_CoupleVec@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
+??0NiTexturingProperty@@QEAA@XZ	141d1d470	func
+?BLACK@Color@efd@@2V12@B	143b01ef0	data
+?ms_RTTI@NiFogProperty@@2VNiRTTI@@B	143afa7e0	data
+?ms_RTTI@NiStencilProperty@@2VNiRTTI@@B	143afa7f8	data
+?ms_RTTI@NiWireframeProperty@@2VNiRTTI@@B	143afa810	data
