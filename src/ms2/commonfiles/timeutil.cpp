@@ -232,7 +232,7 @@ Unk_DayTime::Unk_DayTime() { m_seconds = 0; }
 // @0x14086a0e0
 Unk_DayTime::Unk_DayTime(int hour, int minute, int second) { m_seconds = 0; Set(hour, minute, second); }
 // @0x14086a130
-Unk_DayTime::Unk_DayTime(const ATL::CTime& time) { m_seconds = 0; Set(time.GetHour(), time.GetMinute(), time.GetSecond()); }
+Unk_DayTime::Unk_DayTime(const CMsTime& time) { m_seconds = 0; Set(time.GetHour(), time.GetMinute(), time.GetSecond()); }
 // @0x14086a1a0
 Unk_DayTime::Unk_DayTime(__int64 time) {
     m_seconds = 0;

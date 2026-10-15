@@ -73,7 +73,7 @@ MS2_CHECK_SIZE(Unk_TimeRange,16);
 struct Unk_DayTime {
     Unk_DayTime();
     Unk_DayTime(int hour,int minute,int second);
-    Unk_DayTime(const ATL::CTime& time);
+    Unk_DayTime(const CMsTime& time);   // sb2: CMsTime (calls 0x1406c4f10..), not ATL::CTime
     Unk_DayTime(__int64 time);
     Unk_DayTime(const CStringW& text);
     bool Set(int hour,int minute,int second);
