@@ -90,7 +90,7 @@ __int64 FUN_14185ec90(int nSlot)
     DAT_143ab2e80.FUN_14185b520(items);
     for (unsigned i = 0; i < items.GetCount(); i++)
     {
-        MS2Ptr<CItem> spItem = items[i];
+        MS2Ptr<CItem> spItem = items.GetAt(i);
         if (spItem.get() ? true : false)
         {
             if (((CItem*)spItem)->FUN_140526b50() == nSlot)

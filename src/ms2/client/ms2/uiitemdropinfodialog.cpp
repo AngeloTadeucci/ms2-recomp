@@ -236,7 +236,7 @@ MS2_REPLACE_METHOD(0x140C3A140, UIItemDropInfoDialog, OnLoadComplete, 2316, 0xD9
 void UIItemDropInfoDialog::vfunc_26() {
     UIDialog::vfunc_26();
     FUN_141415600(m_slot);
-    m_item = NULL;
+    m_item.AssignRaw(0);
     m_list = NULL;
     m_drop = NULL;
     m_test = NULL;
@@ -251,7 +251,7 @@ void UIItemDropInfoDialog::vfunc_49(Scaleform::GFx::Value* result, ASData* args)
     unsigned int index = args->FUN_1422b8b10();
     if (m_items.IsEmpty()) return;
     if (index >= m_items.GetCount()) return;
-    MS2Ptr<CItem> item(m_items[index]);
+    MS2Ptr<CItem> item(m_items.GetAt(index));
     if (item == NULL) return;
     void* player = FUN_1403ed2d0()->FUN_141bd0cc0();
     ASTooltip tooltip(player,0x20,2);

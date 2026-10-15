@@ -53,7 +53,7 @@ bool UserEventContext::FUN_1408d57c0(const CStringW& text) {
     ATL::CAtlArray<CStringW> entries;
     FUN_14025a680(text, entries, L"|");
     for (size_t i=0; i<entries.GetCount(); ++i) {
-        const CStringW& entry = entries[i];
+        const CStringW& entry = entries.GetAt(i);
         if (!FUN_1408d5630(entry)) return false;
     }
     return true;
