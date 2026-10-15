@@ -70,12 +70,14 @@ class ASArgList;                        // the argument list of the Invoke back 
 class AScript : public CPtred
 {
 public:
+    AScript(const Scaleform::GFx::Value& v, int nMovieId);                                   // 0x1422ba780 (ASCommonDepth)
     Scaleform::GFx::Value& FUN_1422bb870();                                                  // m_value
     Scaleform::GFx::Value Invoke(const char* szMethod);                                     // 0x1422bb330
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2);                      // 0x140acd070
     Scaleform::GFx::Value Invoke(const char* szMethod, CString a1);                          // 0x1409b46e0
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2);            // 0x140e78470
     Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1);            // 0x1409b13b0 (a1 by value: callee destroys)
+    Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, int a2);   // 0x1409b1490 (ascommondepth.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, const AScript& obj);                  // 0x140ba4cc0 (passes obj's value)
     Scaleform::GFx::Value FUN_1422bb8f0(const char* szMethod, ASArgList& args);              // the Invoke back end
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, CStringW a2, int a3, CStringW a4);   // 0x141b4da00 (inline COMDAT, defined in uiupperhpbar.cpp)
