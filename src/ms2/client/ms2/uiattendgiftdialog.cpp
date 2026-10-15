@@ -388,7 +388,7 @@ MS2_REPLACE_METHOD(0x14102EC90, UIAttendGiftDialog, FUN_14102ec90, 37, 0x6F2E601
 // @0x14102ecc0
 void UIAttendGiftDialog::FUN_14102ecc0(CInPacket& packet)
 {
-    int id=reinterpret_cast<Unk_14070f480*>(&packet.m_stream)->vfunc_3();
+    unsigned long id=reinterpret_cast<Unk_14070f480*>(&packet.m_stream)->vfunc_3();
     if(m_events.find(id)==m_events.end()) return;
     {
         FUN_14102d5c0(id);

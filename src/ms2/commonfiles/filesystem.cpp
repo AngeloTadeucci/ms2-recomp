@@ -43,7 +43,6 @@
 // MS2-PIN: ??1?$InputRejecting@VFilter@CryptoPP@@@CryptoPP@@UEAA@XZ 0x1403a6f50 ; prop
 // MS2-PIN: ??1?$vector@PEAVUnk_FileArchive@@V?$allocator@PEAVUnk_FileArchive@@@std@@@std@@QEAA@XZ 0x1403a72f0 ; unique
 // MS2-PIN: ??1Base64Decoder@CryptoPP@@UEAA@XZ 0x1403a7360 ; prop
-// MS2-PIN: ??1ParameterNotUsed@AlgorithmParametersBase@CryptoPP@@UEAA@XZ 0x1403a7520 ; order
 // MS2-PIN: ??1Source@CryptoPP@@UEAA@XZ 0x1403a7570 ; unique
 // MS2-PIN: ??1Store@CryptoPP@@UEAA@XZ 0x1403a7590 ; prop
 // MS2-PIN: ??1StringSource@CryptoPP@@UEAA@XZ 0x1403a75d0 ; prop
@@ -72,7 +71,6 @@
 // MS2-PIN: ??_G?$AlgorithmParametersTemplate@PEBH@CryptoPP@@UEAAPEAXI@Z 0x1403a8770 ; unique
 // MS2-PIN: ??_GBase64Decoder@CryptoPP@@UEAAPEAXI@Z 0x1403a89f0 ; prop
 // MS2-PIN: ??_GBaseN_Decoder@CryptoPP@@UEAAPEAXI@Z 0x1403a8a30 ; prop
-// MS2-PIN: ??_GParameterNotUsed@AlgorithmParametersBase@CryptoPP@@UEAAPEAXI@Z 0x1403a8b30 ; order
 // MS2-PIN: ??_GStringSource@CryptoPP@@UEAAPEAXI@Z 0x1403a8bb0 ; unique
 // MS2-PIN: ??_GStringStore@CryptoPP@@UEAAPEAXI@Z 0x1403a8bf0 ; prop
 // MS2-PIN: ?ChannelMessageSeriesEnd@?$InputRejecting@VBufferedTransformation@CryptoPP@@@CryptoPP@@UEAA_NAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@H_N@Z 0x1403a8db0 ; unique

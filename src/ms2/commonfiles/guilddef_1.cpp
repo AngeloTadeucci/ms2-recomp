@@ -710,13 +710,13 @@ void CGuildMemberRaid::FUN_1404cabb0(const CGuildMemberRaid& other)
 }
 
 // @0x1404cac30
-bool CGuildMemberRaid::FUN_1404cac30(int id,int count)
+bool CGuildMemberRaid::FUN_1404cac30(unsigned long id,int count)
 {
     Unk_GuildMapLock guard(lock,1); auto i=raids.find(id); if(i==raids.end() || i->second<count) { FUN_1404cad50(id,count,false); return true; } return false;
 }
 
 // @0x1404cad50
-void CGuildMemberRaid::FUN_1404cad50(int id,int count,bool)
+void CGuildMemberRaid::FUN_1404cad50(unsigned long id,int count,bool)
 {
     Unk_GuildMapLock guard(lock,1); raids[id]=count;
 }
@@ -728,7 +728,7 @@ int CGuildMemberRaid::FUN_1404cadc0()
 }
 
 // @0x1404cae90
-int CGuildMemberRaid::FUN_1404cae90(int id)
+int CGuildMemberRaid::FUN_1404cae90(unsigned long id)
 {
     Unk_GuildMapLock guard(lock,1); auto i=raids.find(id); return i==raids.end() ? 0 : i->second;
 }
@@ -742,7 +742,7 @@ void CGuildMemberRaid::FUN_1404caf50(COutputStream& out)
 // @0x1404cb070
 void CGuildMemberRaid::FUN_1404cb070(CInputStream& in)
 {
-    Unk_GuildMapLock guard(lock,1); raids.clear(); int count=in.vfunc_o8_3(); for(int i=0;i<count;++i) { int id=in.vfunc_o8_3(); int value=in.vfunc_o8_3(); raids[id]=value; }
+    Unk_GuildMapLock guard(lock,1); raids.clear(); int count=in.vfunc_o8_3(); for(int i=0;i<count;++i) { unsigned long id=in.vfunc_o8_3(); int value=in.vfunc_o8_3(); raids[id]=value; }
 }
 
 // @0x1404cb150

@@ -110,7 +110,20 @@ class Ctx:
         s = self._size.get(va)
         if s is None:
             rva = va - self.exe.base
-            s = self.exe.rf[rva][0] - rva if rva in self.exe.rf else self.finfo[va][0]
+            if rva in self.exe.rf:
+                s = self.exe.rf[rva][0] - rva
+            else:
+                # leaf without .pdata: Ghidra omits unreachable trailing jumps (1403ab430: 79 listed, 83 real), so
+                # extend to the next function start minus 0xCC padding (at most 16 bytes beyond the listed size)
+                s = self.finfo[va][0]
+                i = bisect.bisect_right(self.starts, va)
+                if i < len(self.starts):
+                    end = self.starts[i] - self.exe.base
+                    lim = min(end, rva + s + 16)
+                    img = self.exe.img
+                    while lim > rva + s and img[lim - 1] == 0xCC:
+                        lim -= 1
+                    s = max(s, lim - rva)
             self._size[va] = s
         return s
 

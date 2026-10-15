@@ -32,7 +32,6 @@
 // MS2-PIN: ??$_Try_emplace@AEBU?$pair@HH@std@@$$V@?$map@U?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@@std@@@std@@@std@@_N@1@AEBU?$pair@HH@1@@Z 0x1404e8cd0 ; prop
 // MS2-PIN: ??$_Try_emplace@AEBU?$pair@IH@std@@$$V@?$map@U?$pair@IH@std@@UItemEntity@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@std@@@std@@@std@@_N@1@AEBU?$pair@IH@1@@Z 0x1404e8e20 ; prop
 // MS2-PIN: ??$_Try_emplace@AEBU?$pair@W4Unk_GuildNpcKind@@H@std@@$$V@?$map@U?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@U?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@std@@@std@@@std@@_N@1@AEBU?$pair@W4Unk_GuildNpcKind@@H@1@@Z 0x1404e8f70 ; prop
-// MS2-PIN: ??$_Unfancy@I@std@@YAPEAIPEAI@Z 0x1404e90d0 ; prop
 // MS2-PIN: ??$_Uninitialized_move@PEAU?$pair@HH@std@@PEAU12@V?$allocator@U?$pair@HH@std@@@2@@std@@YAPEAU?$pair@HH@0@QEAU10@0PEAU10@AEAV?$allocator@U?$pair@HH@std@@@0@@Z 0x1404e94c0 ; prop
 // MS2-PIN: ??$_Uninitialized_move@PEAV?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@PEAV1@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@YAPEAV?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@0@@Z 0x1404e9590 ; prop
 // MS2-PIN: ??$addressof@$$CBV?$vector@HV?$allocator@H@std@@@std@@@std@@YAPEBV?$vector@HV?$allocator@H@std@@@0@AEBV10@@Z 0x1404e99c0 ; prop
@@ -212,9 +211,9 @@ void Unk_GuildDriveContainers(Unk_PropertyMap& a,Unk_SkillMap& b,Unk_EventMap& c
     Unk_DriveMap(e,std::pair<Unk_GuildNpcKind,int>()); Unk_DriveMap(f,0u); Unk_DriveMap(g,0u);
     Unk_DriveMap(h,std::pair<unsigned,int>());
     i.insert(Unk_GuildNpcKind_None); i.find(Unk_GuildNpcKind_None); i.clear();
-    std::vector<int> vi; std::vector<unsigned> vu; std::vector<std::pair<int,int>> vp; std::vector<void*> vv;
+    std::vector<int> vi; std::vector<std::pair<int,int>> vp; std::vector<void*> vv;
     std::vector<Unk_PayloadPtr<CGuildXmlData::GuildSkill>> vs; std::vector<ItemEntity> ve; std::vector<Unk_GuildNpcKind> vk;
-    Unk_DriveVector(vi,0); Unk_DriveVector(vu,0u); Unk_DriveVector(vp,std::pair<int,int>()); Unk_DriveVector(vv,(void*)0);
+    Unk_DriveVector(vi,0); Unk_DriveVector(vp,std::pair<int,int>()); Unk_DriveVector(vv,(void*)0);
     Unk_DriveVector(vs,Unk_PayloadPtr<CGuildXmlData::GuildSkill>()); Unk_DriveVector(ve,ItemEntity()); Unk_DriveVector(vk,Unk_GuildNpcKind_None);
 }
 
@@ -232,6 +231,7 @@ void Unk_GuildDriveOther(guilddef4::ProductVec& products, guilddef4::HistDeque& 
 void Unk_GuildDriveProxy(std::_Container_proxy* destination, std::_Container_proxy& source) {
     std::allocator<std::_Container_proxy> allocator;
     std::allocator_traits<decltype(allocator)>::construct(allocator, destination, std::move(source));
+    (void)std::_Unfancy(destination);
 }
 int Unk_GuildDriveReverse(Unk_PropertyMap& properties, int limit) {
     int last = properties.rbegin()->first;

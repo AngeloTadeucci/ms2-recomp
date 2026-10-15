@@ -82,7 +82,7 @@ private:
     MS2Ptr<Unk_140acd6e0> m_detail;
     MS2Ptr<Unk_140acd6e0> m_pay;
     MS2Ptr<Unk_140acd6e0> m_usePoint;
-    std::map<int,Unk_14102fe10<Unk_140ce3510>> m_events;
+    std::map<unsigned long,Unk_14102fe10<Unk_140ce3510>> m_events;
     ATL::CAtlArray<Unk_14102fe10<Unk_140ce3510>> m_activeEvents;
     ATL::CAtlArray<MS2Ptr<Unk_140acd6e0>> m_buttons;
     Unk_14102fe10<Unk_140ce3510> m_selected;
