@@ -154,7 +154,7 @@ public:
     Unk_ItemVec() noexcept;                         // 0x14027d6c0
     ~Unk_ItemVec() noexcept;                        // 0x14027e420
     size_t FUN_14028b470();                // size
-    void FUN_14028b2a0(ItemEntity&);       // push_back
+    void FUN_14028b2a0(const ItemEntity&);       // push_back
     Unk_It* FUN_14028b360(Unk_It*);        // last element iterator
     Unk_It* FUN_14028aa30(Unk_It*);        // end
     Unk_It* FUN_14028a200(Unk_It*);        // begin

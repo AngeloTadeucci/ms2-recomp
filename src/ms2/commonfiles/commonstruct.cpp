@@ -1,6 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13).
 // MS2-UNIT: commonfiles\commonstruct.cpp#1
-// MS2-RANGE: 0x14026ab50-0x14027b180 .text$mn
+// MS2-RANGE: 0x14026ced0-0x14026e700 .text$mn
 // MS2-RANGE: 0x1400b5630-0x1400b56f0 .text$di
 // MS2-PIN: ?GetHeadPosition@?$CAtlList@UUnk_CommonCachedPacket@@V?$CElementTraits@UUnk_CommonCachedPacket@@@ATL@@@ATL@@QEBAPEAU__POSITION@@XZ 0x140281930
 // MS2-PIN: ?GetNext@?$CAtlList@UUnk_CommonCachedPacket@@V?$CElementTraits@UUnk_CommonCachedPacket@@@ATL@@@ATL@@QEAAAEAUUnk_CommonCachedPacket@@AEAPEAU__POSITION@@@Z 0x140281a70
