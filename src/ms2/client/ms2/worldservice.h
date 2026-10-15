@@ -364,6 +364,8 @@ public:
     void FUN_141bc8e00(); // 0x141bc8e00
     void FUN_141bc8ef0(const unsigned __int64& key, MS2Ptr<class Unk_WsB_Vibrator> vibrator); // 0x141bc8ef0
     MS2Ptr<class Unk_WsB_Vibrator> FUN_141bc8f60(const unsigned __int64& key); // 0x141bc8f60
+    // Height-index caller proves an ID value in r8; retained alias pending owner signature audit.
+    MS2Ptr<class Unk_WsB_Vibrator> FUN_141bc8f60_value(unsigned __int64 key);
     void FUN_141bc9020(CString name, class Unk_WsB_ShakeRef shake, CString shakeName, bool flag); // 0x141bc9020
     void FUN_141bc92e0(CString name); // 0x141bc92e0
     void FUN_141bc9480(CString name); // 0x141bc9480
