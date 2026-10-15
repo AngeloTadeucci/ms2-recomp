@@ -10,7 +10,9 @@ public:
     virtual ~CItemData();
     unsigned char unknown20[0x68];
     unsigned stackLimit;
-    unsigned char unknown8c[0x204];
+    unsigned char unknown8c[0x17c];
+    CString cubeTextureName; // +0x208, read by CNifCubeGuide::FUN_1410b0680
+    unsigned char unknown210[0x80];
     CStringW functionName;
     CStringW functionName2;
     int functionArg0, functionArg1, functionArg2;
@@ -20,5 +22,6 @@ public:
 };
 MS2_CHECK_SIZE(CItemData, 0x390);
 MS2_CHECK_OFFSET(CItemData, stackLimit, 0x88);
+MS2_CHECK_OFFSET(CItemData, cubeTextureName, 0x208);
 MS2_CHECK_OFFSET(CItemData, functionName, 0x290);
 MS2_CHECK_OFFSET(CItemData, functionParameter, 0x2b0);

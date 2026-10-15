@@ -118,6 +118,8 @@ public:
     void FUN_14123c280(float f);                            // 0x14123c280 m_fScaleA4 = f (+ entity scale prop)
     int FUN_14123c580();                                    // 0x14123c580 return m_unk_70 (object id)
     int FUN_14123dbd0();                                    // 0x14123dbd0 return m_unk_c8
+    void FUN_14123c300(float f);                            // scale B (+0xa8)
+    int FUN_14123c660();                                    // visibility (+0xb0)
 
 public:
     MS2_LAYOUT_FRIEND;
