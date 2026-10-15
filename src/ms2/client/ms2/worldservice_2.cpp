@@ -59,7 +59,7 @@ undefined8 FUN_140442290(...);
 undefined8 FUN_1404426d0(...);
 undefined8 * FUN_1404459d0(...);
 bool FUN_14044a540(...);
-GameObjectEffectNifCtx * FUN_1404746a0(...);
+void * FUN_1404746a0(...);
 undefined8 FUN_140474900(...);
 undefined8 FUN_1406530d0(...);
 longlong * FUN_14070f480(...);
@@ -124,9 +124,9 @@ undefined8 FUN_14133e750(...);
 undefined8 * FUN_14133e9c0(...);
 undefined8 FUN_1414c6a20(...);
 undefined8 FUN_141531da0(...);
-_Container_proxy * FUN_1415373e0(...);
+void * FUN_1415373e0(...);
 undefined8 FUN_141537590(...);
-_Container_proxy * FUN_141622af0(...);
+void * FUN_141622af0(...);
 undefined8 FUN_141623bd0(...);
 undefined8 FUN_141623f00(...);
 undefined8 FUN_141625060(...);
@@ -268,10 +268,10 @@ undefined8 * FUN_141bf2b70(...);
 undefined8 * FUN_141bf2bb0(...);
 undefined8 * FUN_141bf2bf0(...);
 undefined8 * FUN_141bf2c30(...);
-void * FUN_141bf3170(...);
-void * FUN_141bf31d0(...);
-void * FUN_141bf3230(...);
-void * FUN_141bf3280(...);
+undefined1 * FUN_141bf3170(...);
+undefined1 * FUN_141bf31d0(...);
+undefined1 * FUN_141bf3230(...);
+undefined1 * FUN_141bf3280(...);
 undefined8 FUN_141bf33c0(...);
 undefined8 * FUN_141bf4660(...);
 undefined8 * FUN_141bf4740(...);
@@ -1685,12 +1685,12 @@ undefined8 FUN_141bdc6c0(undefined8 param_1,undefined8 param_2,undefined8 param_
 // @0x141bdc710
 undefined8 * FUN_141bdc710(undefined8 *param_1,undefined8 param_2,undefined8 param_3)
 {
-  void
+  undefined1
   *pCVar1;
   undefined8 local_20;
   
-  pCVar1 = operator new(0x18);
-  if (pCVar1 == (void
+  pCVar1 = (undefined1 *)(operator new(0x18));
+  if (pCVar1 == (undefined1
                  *)0x0) {
     local_20 = 0;
   }
@@ -1705,15 +1705,15 @@ undefined8 * FUN_141bdc710(undefined8 *param_1,undefined8 param_2,undefined8 par
 // @0x141bdc790
 undefined8 * FUN_141bdc790(undefined8 *param_1,undefined8 param_2,undefined1 *param_3)
 {
-  void
+  undefined1
   *pCVar1;
   longlong lVar2;
   undefined1 *puVar3;
   undefined8 local_40;
   undefined1 local_28 [24];
   
-  pCVar1 = operator new(0x20);
-  if (pCVar1 == (void
+  pCVar1 = (undefined1 *)(operator new(0x20));
+  if (pCVar1 == (undefined1
                  *)0x0) {
     local_40 = 0;
   }
@@ -2117,24 +2117,11 @@ longlong * FUN_141bdd080(longlong *param_1,undefined8 param_2)
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
+// MS2-FUNCTIONAL: forwards to the exe copy (translation did not compile)
 // @0x141bdd120
 undefined8 FUN_141bdd120(undefined8 param_1,undefined8 param_2)
 {
-  GameObjectEffectNifCtx *pGVar1;
-  undefined8 uVar2;
-  undefined8 local_20;
-  
-  pGVar1 = (GameObjectEffectNifCtx *)(operator new(0x38));
-  if (pGVar1 == (GameObjectEffectNifCtx *)0x0) {
-    local_20 = 0;
-  }
-  else {
-    local_20 = (undefined8)(FUN_1404746a0(pGVar1));
-  }
-  FUN_141bf6c00(param_2,local_20);
-  uVar2 = FUN_141bf7ef0(param_2);
-  FUN_140474900(param_1,uVar2);
-  return param_1;
+  return (undefined8)((undefined8 (*)(...))0x141bdd120ULL)(param_1,param_2);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2308,53 +2295,19 @@ undefined8 FUN_141bdd660(longlong *param_1)
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
+// MS2-FUNCTIONAL: forwards to the exe copy (translation did not compile)
 // @0x141bdd6b0
  undefined8 FUN_141bdd6b0(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)
 {
-  undefined1 local_34 [4];
-  ActorRemovedMessage *local_30;
-  undefined8 local_28;
-  undefined4 *local_20;
-  undefined8 local_18;
-  undefined8 local_10;
-  
-  local_10 = 0xfffffffffffffffe;
-  local_20 = (undefined4 *)FUN_140876480(local_34,0,param_3,param_4,0);
-  local_30 = (ActorRemovedMessage *)FUN_14208a860(0x20,*local_20);
-  if (local_30 == (ActorRemovedMessage *)0x0) {
-    local_28 = 0;
-  }
-  else {
-    local_28 = FUN_141bf33c0(local_30);
-  }
-  local_18 = local_28;
-  FUN_140d98a60(param_1,local_28);
-  return param_1;
+  return (undefined8)((undefined8 (*)(...))0x141bdd6b0ULL)(param_1,param_2,param_3,param_4);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
+// MS2-FUNCTIONAL: forwards to the exe copy (translation did not compile)
 // @0x141bdd750
 undefined8 FUN_141bdd750(undefined8 param_1,undefined8 param_2,undefined8 param_3,undefined8 param_4)
 {
-  undefined1 local_34 [4];
-  EntityLoadResult *local_30;
-  undefined8 local_28;
-  undefined4 *local_20;
-  undefined8 local_18;
-  undefined8 local_10;
-  
-  local_10 = 0xfffffffffffffffe;
-  local_20 = (undefined4 *)FUN_140876480(local_34,0,param_3,param_4,0);
-  local_30 = (EntityLoadResult *)FUN_14208a860(0x58,*local_20);
-  if (local_30 == (EntityLoadResult *)0x0) {
-    local_28 = 0;
-  }
-  else {
-    local_28 = FUN_14214f570(local_30);
-  }
-  local_18 = local_28;
-  FUN_140d98a60(param_1,local_28);
-  return param_1;
+  return (undefined8)((undefined8 (*)(...))0x141bdd750ULL)(param_1,param_2,param_3,param_4);
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2386,15 +2339,15 @@ undefined8 FUN_141bdd7f0(undefined8 param_1,undefined8 param_2,undefined8 param_
 // @0x141bdd890
 undefined8 FUN_141bdd890(void)
 {
-  void
+  undefined1
   *pTVar1;
   longlong lVar2;
-  void
+  undefined1
   *pTVar3;
   undefined8 local_20;
   
-  pTVar1 = operator new(0x48);
-  if (pTVar1 == (void
+  pTVar1 = (undefined1 *)(operator new(0x48));
+  if (pTVar1 == (undefined1
                  *)0x0) {
     local_20 = 0;
   }
@@ -2402,7 +2355,7 @@ undefined8 FUN_141bdd890(void)
     pTVar3 = pTVar1;
     for (lVar2 = 0x48; lVar2 != 0; lVar2 = lVar2 + -1) {
       *(undefined1 *)(pTVar3) = 0;
-      pTVar3 = (void
+      pTVar3 = (undefined1
                 *)((longlong)(pTVar3) + 1);
     }
     local_20 = FUN_141bf19b0(pTVar1);
@@ -2480,7 +2433,8 @@ undefined8 FUN_141bdda20(undefined8 param_1,undefined8 param_2,undefined8 param_
   undefined8 uVar1;
   
   uVar1 = FUN_141beea80(param_3);
-  return FUN_141bddc30(param_1,uVar1);
+  FUN_141bddc30(param_1,uVar1);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2490,7 +2444,8 @@ undefined8 FUN_141bdda50(undefined8 param_1,undefined8 param_2,undefined8 param_
   undefined8 uVar1;
   
   uVar1 = FUN_141beeab0(param_3);
-  return FUN_141bde270(param_1,uVar1);
+  FUN_141bde270(param_1,uVar1);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -2870,7 +2825,8 @@ undefined8 * FUN_141bde5d0(undefined8 param_1,undefined8 *param_2,undefined8 par
 // @0x141bde6e0
 undefined8 FUN_141bde6e0(undefined8 param_1,undefined8 param_2)
 {
-  return FUN_141bdda80(param_1,param_2);
+  FUN_141bdda80(param_1,param_2);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -3314,7 +3270,7 @@ longlong FUN_141bdf210(undefined8 param_1,longlong param_2,undefined8 param_3)
 {
   longlong *plVar1;
   longlong lVar2;
-  void *this_;
+  undefined1 *this_;
   longlong lVar3;
   longlong lVar4;
   __uint64 _Var5;
@@ -3328,7 +3284,7 @@ longlong FUN_141bdf210(undefined8 param_1,longlong param_2,undefined8 param_3)
   
   plVar1 = (longlong *)FUN_140969ac0(param_1);
   lVar2 = param_2 - *plVar1 >> 4;
-  this_ = (void *)FUN_1409697b0(param_1);
+  this_ = (undefined1 *)FUN_1409697b0(param_1);
   lVar3 = FUN_14096b180(param_1);
   lVar4 = FUN_141c2e8f0(param_1);
   if (lVar3 == lVar4) {
@@ -3365,7 +3321,7 @@ longlong FUN_141bdf460(undefined8 param_1,longlong param_2,undefined8 param_3)
 {
   longlong *plVar1;
   longlong lVar2;
-  void *this_;
+  undefined1 *this_;
   longlong lVar3;
   longlong lVar4;
   __uint64 _Var5;
@@ -3379,7 +3335,7 @@ longlong FUN_141bdf460(undefined8 param_1,longlong param_2,undefined8 param_3)
   
   plVar1 = (longlong *)FUN_141c28870(param_1);
   lVar2 = param_2 - *plVar1 >> 4;
-  this_ = (void *)FUN_141c27000(param_1);
+  this_ = (undefined1 *)FUN_141c27000(param_1);
   lVar3 = FUN_141c2ee10(param_1);
   lVar4 = FUN_141c2e800(param_1);
   if (lVar3 == lVar4) {
@@ -3416,7 +3372,7 @@ longlong FUN_141bdf6b0(undefined8 param_1,longlong param_2,undefined8 param_3)
 {
   longlong *plVar1;
   longlong lVar2;
-  void *this_;
+  undefined1 *this_;
   longlong lVar3;
   longlong lVar4;
   __uint64 _Var5;
@@ -3429,7 +3385,7 @@ longlong FUN_141bdf6b0(undefined8 param_1,longlong param_2,undefined8 param_3)
   
   plVar1 = (longlong *)FUN_141c288b0(param_1);
   lVar2 = (param_2 - *plVar1) / 0x18;
-  this_ = (void *)FUN_141c27040(param_1,(param_2 - *plVar1) % 0x18);
+  this_ = (undefined1 *)FUN_141c27040(param_1,(param_2 - *plVar1) % 0x18);
   lVar3 = FUN_141c2ee50(param_1);
   lVar4 = FUN_141c2e850(param_1);
   if (lVar3 == lVar4) {
@@ -3466,7 +3422,7 @@ longlong FUN_141bdf900(undefined8 param_1,longlong param_2,undefined8 param_3)
 {
   longlong *plVar1;
   longlong lVar2;
-  void *this_;
+  undefined1 *this_;
   longlong lVar3;
   longlong lVar4;
   __uint64 _Var5;
@@ -3480,7 +3436,7 @@ longlong FUN_141bdf900(undefined8 param_1,longlong param_2,undefined8 param_3)
   
   plVar1 = (longlong *)FUN_140969a80(param_1);
   lVar2 = param_2 - *plVar1 >> 4;
-  this_ = (void *)FUN_140969790(param_1);
+  this_ = (undefined1 *)FUN_140969790(param_1);
   lVar3 = FUN_14096b140(param_1);
   lVar4 = FUN_141c2e8a0(param_1);
   if (lVar3 == lVar4) {
@@ -3517,7 +3473,7 @@ longlong FUN_141bdfb50(undefined8 param_1,longlong param_2,undefined8 param_3)
 {
   longlong *plVar1;
   longlong lVar2;
-  void *this_;
+  undefined1 *this_;
   longlong lVar3;
   longlong lVar4;
   __uint64 _Var5;
@@ -3531,7 +3487,7 @@ longlong FUN_141bdfb50(undefined8 param_1,longlong param_2,undefined8 param_3)
   
   plVar1 = (longlong *)FUN_141c288f0(param_1);
   lVar2 = param_2 - *plVar1 >> 4;
-  this_ = (void *)FUN_141c270c0(param_1);
+  this_ = (undefined1 *)FUN_141c270c0(param_1);
   lVar3 = FUN_141c2eea0(param_1);
   lVar4 = FUN_141c2e940(param_1);
   if (lVar3 == lVar4) {
@@ -4054,7 +4010,8 @@ undefined8 FUN_141be0ae0(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  return FUN_141be09f0(param_1,param_2,local_18);
+  FUN_141be09f0(param_1,param_2,local_18);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4063,7 +4020,8 @@ undefined8 FUN_141be0b10(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  return FUN_141be0a20(param_1,param_2,local_18);
+  FUN_141be0a20(param_1,param_2,local_18);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4072,7 +4030,8 @@ undefined8 FUN_141be0b40(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  return FUN_141be0a50(param_1,param_2,local_18);
+  FUN_141be0a50(param_1,param_2,local_18);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4081,7 +4040,8 @@ undefined8 FUN_141be0b70(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  return FUN_141be0a80(param_1,param_2,local_18);
+  FUN_141be0a80(param_1,param_2,local_18);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4090,7 +4050,8 @@ undefined8 FUN_141be0ba0(undefined8 param_1,undefined8 param_2)
 {
   undefined1 local_18;
   
-  return FUN_141be0ab0(param_1,param_2,local_18);
+  FUN_141be0ab0(param_1,param_2,local_18);
+  return 0; // RAXCHECK: callers use the return value
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4214,7 +4175,7 @@ undefined8 FUN_141be0cd0(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21930(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4306,7 +4267,7 @@ undefined8 FUN_141be1030(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21980(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4398,7 +4359,7 @@ undefined8 FUN_141be1390(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c219d0(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4490,7 +4451,7 @@ undefined8 FUN_141be16f0(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21a20(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4582,7 +4543,7 @@ undefined8 FUN_141be1a50(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21a70(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4674,7 +4635,7 @@ undefined8 FUN_141be1db0(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21ac0(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4766,7 +4727,7 @@ undefined8 FUN_141be2110(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21b10(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4858,7 +4819,7 @@ undefined8 FUN_141be2470(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21b60(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -4950,7 +4911,7 @@ undefined8 FUN_141be27d0(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21bb0(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -5042,7 +5003,7 @@ undefined8 FUN_141be2b30(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21c00(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
@@ -5134,7 +5095,7 @@ undefined8 FUN_141be2e90(undefined8 param_1,undefined8 param_2,char param_3,long
   }
   FUN_141c21c10(param_1,param_6);
                     
-  ((undefined8 (*)(...))0x14274cd7bULL)("map/void too long");
+  ((undefined8 (*)(...))0x14274cd7bULL)("map/undefined1 too long");
 }
 
 // MS2-FUNCTIONAL: translated from the decompile; exact bytes not attempted
