@@ -18,6 +18,8 @@ class CClubMemberProxy : public CPtred
 public:
     CClubMemberProxy();
     virtual ~CClubMemberProxy();                    // ??_G 0x1402127a0, vftable 0x142cf3958
+    CStringW FUN_14020e5d0();                       // name (under m_lock)
+    CString FUN_14020e6c0();                        // picture (under m_lock)
     __int64 m_accountId;                            // +0x18
     __int64 m_characterId;                          // +0x20
     unsigned char m_gender;                         // +0x28 reset 3
@@ -84,6 +86,16 @@ public:
     virtual int vfunc_3();                          // 3 0x1402133d0 return 0
     virtual int vfunc_4(MS2Ptr<CClubMember> spMember);  // 4 0x140210340 add member (by value; max 10, sets m_leader)
     virtual void vfunc_5(CStringW strName);         // 5 0x1402104e0 remove member by name (by value)
+    // Accessors recovered by client\ms2\uiclubdialog.cpp (non-virtual; they take m_lock).
+    CStringW FUN_14020f1a0();                       // m_name
+    __int64 FUN_14020f460();                        // name change available time
+    int FUN_14020f640();                            // buff id
+    unsigned FUN_14020f6b0();                       // buff level
+    int FUN_140210df0();                            // member count
+    int FUN_140211080(CStringW strName);            // 1 when the name is the leader's
+    MS2Ptr<CClubMember> FUN_140210560(CStringW strName);   // find a member by name
+    MS2Ptr<CClubMember> FUN_140210f70();            // leader
+    void FUN_1402109d0(ATL::CAtlArray<MS2Ptr<CClubMember>>& members);   // all members
 
     typedef ATL::CRBMap<CStringW, MS2Ptr<CClubMember>, ATL::CStringElementTraitsI<CStringW>> MemberMap;
 
