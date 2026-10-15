@@ -13,6 +13,7 @@
 #pragma once
 #include <afx.h>
 #include <NiRefObject.h>
+#include <NiRTTI.h>
 #include <NiSmartPointer.h>
 
 #include "ms2/ms2layout.h"
@@ -29,7 +30,10 @@ public:
     CEffect();                                      // 0x14119ea10
     virtual ~CEffect() = 0;                         // 0x14119eaa0
 
-    virtual const void* vfunc_2();                  // 2  0x14119f4a0 return static table (interface map?)
+    // slot 2: GetRTTI 0x14119f4a0. Root NiRTTI "CEffect" at 0x143ad1568 (built by the effectservice static init;
+    // every concrete effect does NiImplementRTTI(X, CEffect) -> NiDeclareRTTI in the derived class).
+    NiDeclareRTTI;
+public:
     virtual bool vfunc_3(void* a, void* b);         // 3  0x14119f0b0
     virtual void vfunc_4();                         // 4  0x14119f190
     virtual void vfunc_5();                         // 5  0x14119f1b0

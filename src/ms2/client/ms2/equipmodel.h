@@ -5,13 +5,24 @@
 // HOW TO USE THIS HEADER (for unit workers):
 // - `class CNifModel : public CEquipModel` and override by copying the exact declaration. Slots 4, 6-16, 18, 19 are
 //   pure (_purecall) - implement all of them in a concrete model. vfunc_N = slot N of vftable 0x142ec0ef8 (33).
-// - Slots 1-3 are the game's interface-table query trio (vfunc_1 returns the class's static table, vfunc_2/3 look up
-//   an interface id in it via 0x1409f31d0 and store this+offset into *ppOut). Each class overrides all three with its
-//   own table (CEquipModel 0x143ad2360). Names/table type are unproven.
+// - Slots 1-3 are efd RTTI (EE_BEGIN_DECLARE_CLASS: GetClassDesc + TypeCast(const void**) + TypeCast(void**),
+//   ms_ClassInfo.TypeCast = 0x1409f31d0). Derived models declare EE_DECLARE_CLASS1(X, <id>, CEquipModel)
+//   (CNifModel 0x06200049, ms_ClassInfo 0x143ae2440) and bind ?ms_ClassInfo@X@@2VClassInfo@efd@@B in
+//   progress/symbols-manual.tsv.
 // - Signatures were taken from CEquipModel, CNifModel and CKfmModel bodies; void* params are unproven pointer types.
 // - CEquipModel is heap-only (array stand-ins are fine).
 #pragma once
+#ifndef EE_EFD_CONFIG_RELEASE
+#define EE_EFD_CONFIG_RELEASE
+#endif
+#ifndef EE_EFD_NO_IMPORT
+#define EE_EFD_NO_IMPORT
+#endif
+#ifndef EE_USE_NATIVE_STL
+#define EE_USE_NATIVE_STL
+#endif
 #include <afx.h>
+#include <efd/ClassInfo.h>
 #include <NiPoint3.h>
 #include <NiNode.h>
 #include <NiSmartPointer.h>
@@ -29,9 +40,10 @@ public:
     CEquipModel(MS2Ptr<Unk_EquipModelOwner> spOwner, void* p18, void* p20);   // 0x1411ffa10
     virtual ~CEquipModel();                                                    // 0x1411ffcb0
 
-    virtual const void* vfunc_1();                          // 1  0x141205e10 return &table 0x143ad2360
-    virtual bool vfunc_2(unsigned int nId, void** ppOut);   // 2  0x141208280
-    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3  0x1412082d0 (same body as 2)
+    // slots 1-3: GetClassDesc 0x141205e10, TypeCast 0x141208280 / 0x1412082d0; ms_ClassInfo 0x143ad2360,
+    // SetupClassInfo 0x141208010 (no parents).
+    EE_DECLARE_CLASS(CEquipModel, 0x06200048);
+public:
     virtual int vfunc_4(const CString& strPath) = 0;        // 4  pure (CNifModel 0x141565700: load)
     virtual void vfunc_5();                                 // 5  0x1411ffdd0 (unload: detach + reset +0x28/+0xf0)
     virtual int vfunc_6() = 0;                              // 6  pure (CNifModel: m_nState = 1, calls 10, 11; returns 1)

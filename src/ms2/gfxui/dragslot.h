@@ -5,13 +5,25 @@
 //
 // HOW TO USE THIS HEADER (for unit workers):
 // - Game slots derive from MS2DragSlot, not directly from DragSlot. vfunc_N = slot N of the primary vftable.
-// - Slots 2-4 are the game's interface-table trio (vfunc_2 returns the class's static table; vfunc_3/4 look up an id
-//   with 0x1409f31d0 and store this+offset into *ppOut). Every class overrides all three with its own table.
+// - Slots 2-4 are efd RTTI: EE_BEGIN_DECLARE_CLASS emits GetClassDesc (return &ms_ClassInfo) and the two
+//   TypeCast overloads (ms_ClassInfo.TypeCast = 0x1409f31d0). Every derived class declares its own
+//   EE_DECLARE_CLASS1(X, <id>, <parent>) - find the id in its SetupClassInfo (`FUN_1409f2e10(p,"<Name>",id,...)`).
+//   ms_ClassInfo objects are bound as data symbols in progress/symbols-manual.tsv.
 // - Slot bodies that just forward (`return vfunc_10();`) are written int: void vs int is byte-identical there.
 // - None of these have recovered .cpp files; ctors/dtors are bound by VA (progress/symbols-manual.tsv).
 #pragma once
+#ifndef EE_EFD_CONFIG_RELEASE
+#define EE_EFD_CONFIG_RELEASE
+#endif
+#ifndef EE_EFD_NO_IMPORT
+#define EE_EFD_NO_IMPORT
+#endif
+#ifndef EE_USE_NATIVE_STL
+#define EE_USE_NATIVE_STL
+#endif
 #include <afx.h>
 #include <atlcoll.h>
+#include <efd/ClassInfo.h>
 #include <NiRefObject.h>
 
 #include "ms2/ms2layout.h"
@@ -26,9 +38,10 @@ public:
     explicit BindData(const CString& strName);      // 0x1422c88e0
     virtual ~BindData();                            // 0x1422c8970
 
-    virtual const void* vfunc_2();                  // 2 0x1422c9f20 interface table 0x143b0b2xx
-    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cc220
-    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cc270
+    // slots 2-4: GetClassDesc 0x1422c9f20, TypeCast 0x1422cc220 / 0x1422cc270; ms_ClassInfo 0x143b0ae50,
+    // SetupClassInfo 0x140a36910 (no parents).
+    EE_DECLARE_CLASS(BindData, 0x06202734);
+public:
     virtual void vfunc_5();                         // 5 0x1422c8d60 {}
     virtual void vfunc_6(void* p);                  // 6 0x1422c8d70 {}
     virtual int vfunc_7(void* p);                   // 7 0x1422c8d90 return 1
@@ -63,9 +76,10 @@ public:
     DragSlot(const CString& strName, int nIndex);   // 0x1422cc350
     virtual ~DragSlot();                            // 0x1422cc3d0
 
-    virtual const void* vfunc_2();                  // 2  0x1422cc7b0 table 0x143b0b2b0
-    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cc7c0
-    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cc810
+    // slots 2-4: GetClassDesc 0x1422cc7b0, TypeCast 0x1422cc7c0 / 0x1422cc810; ms_ClassInfo 0x143b0b2b0,
+    // SetupClassInfo 0x140a369b0 (includes BindData only; ITooltip has no RTTI).
+    EE_DECLARE_CLASS1(DragSlot, 0x06202735, NotifyContext::BindData);
+public:
     virtual void vfunc_5();                         // 5  0x1422cc4c0 if (m_bDragging) vfunc_21()
     virtual int vfunc_7(void* p);                   // 7  0x1422cc660 return vfunc_10()
     virtual int vfunc_10();                         // 10 0x1422cc430 FUN_1422c8be0(this); return 1
@@ -103,9 +117,10 @@ public:
     explicit DragSlotBag(const CString& strName);   // 0x1422cc8f0
     virtual ~DragSlotBag();                         // 0x1422cc950
 
-    virtual const void* vfunc_2();                  // 2  0x1422cdae0 interface table
-    virtual bool vfunc_3(unsigned int nId, void** ppOut);   // 3 0x1422cdaf0
-    virtual bool vfunc_4(unsigned int nId, void** ppOut);   // 4 0x1422cdb40
+    // slots 2-4: GetClassDesc 0x1422cdae0, TypeCast 0x1422cdaf0 / 0x1422cdb40; ms_ClassInfo 0x143b0b6c0,
+    // SetupClassInfo 0x140a375e0.
+    EE_DECLARE_CLASS1(DragSlotBag, 0x06202736, NotifyContext::BindData);
+public:
     virtual void vfunc_10(int nCount);              // 10 0x1422cc990 for i < n: FUN_1422ccb50(this, i) (create slots)
     virtual void vfunc_11(void* p);                 // 11 0x1422ccd50 for each slot: slot->vfunc_23(p)
     virtual void vfunc_12(void* p);                 // 12 0x1422cce30 for each slot: slot->vfunc_24(p)
