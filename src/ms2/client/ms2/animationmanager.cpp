@@ -17,7 +17,7 @@
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBVutf8string@efd@@I@std@@@std@@SAPEAU?$pair@$$CBVutf8string@efd@@I@2@AEAU32@@Z 0x1409a32b0 ; unique
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEBU?$pair@$$CBIVutf8string@efd@@@std@@@std@@SAPEBU?$pair@$$CBIVutf8string@efd@@@2@AEBU32@@Z 0x1409a32d0 ; unique
 // MS2-PINS-END tplpin
-// MS2-PIN: ?FUN_1409a20a0@Unk_ActorMgr@@QEAA_NIM_N@Z 0x1409a20a0
+// MS2-PIN: ?SetTargetAnimation@NiActorManager@@QEAA_NIM_N@Z 0x1409a20a0
 // MS2-PIN: ??$_Construct1@PEAU?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@AEAPEAU12@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@@efd@@@std@@SAXU?$integral_constant@_N$00@1@AEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@1@AEAPEAU51@@Z 0x14099f030
 // MS2-PIN: ??$_Destroy1@PEAU?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@U?$pair@$$CBVutf8string@efd@@I@std@@PEAX@1@U?$integral_constant@_N$00@1@@Z 0x14099f130
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIVutf8string@efd@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1409a1100
@@ -37,10 +37,15 @@
 // MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@IVutf8string@efd@@U?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBIVutf8string@efd@@@std@@@2@$0A@@std@@@std@@IEBAAEBIAEBU?$pair@$$CBIVutf8string@efd@@@2@@Z 0x1409a29d0
 // MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@IVutf8string@efd@@U?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBIVutf8string@efd@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBI0@Z 0x1409a25c0
 // MS2-PIN: ??$_Kfn@$$CBIVutf8string@efd@@@?$_Tmap_traits@IVutf8string@efd@@U?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBIVutf8string@efd@@@std@@@2@$0A@@std@@SAAEBIAEBU?$pair@$$CBIVutf8string@efd@@@1@@Z 0x1409a05d0
-// MS2-FUNCTIONAL: opaque FUN_ callees, exe-side NiActorManager tail layout (see Unk_ActorTail).
+// MS2-FUNCTIONAL: the _Compressed_pair<CustomAllocator<char>,_String_val> ctor COMDAT 0x14099edc0 (its _String_val ctor
+// binds to the duplicate 0x141bf2e70 instead of 0x1401d25d0; NOTES.md "w18 (animationmanager)").
+// NiActorManager / NiControllerManager are the engine headers with Nexon's changes (`// MS2:`): the MS2
+// SetTargetAnimation (0x1409a20a0), Reset (0x1409a1cd0) and NiControllerManager::SetSequenceDataValue (0x1409a1f80)
+// are their inlines, first instantiated here.
 #include "ms2/placeholder/ms2stdafx.h"
 #include "animationmanager.h"
 #include "gameobject.h"
+#include "ms2actormanager.h"
 #include <egmAnimation/AnimationService.h>
 #include <egf/EntityID.h>
 #include <NiActorManager.h>
@@ -83,36 +88,6 @@ class Unk_AnimSvc : public egmAnimation::AnimationService
 {
 public:
     bool FUN_1409a1fc0(const egf::EntityID& entityID, const efd::utf8string& sequenceName, float fBlend, bool bForce);   // 0x1409a1fc0
-};
-
-// The exe's NiActorManager has a "pending sequence data" map at +0x100 (sequences are moved into the manager on first
-// use); everything behind it is shifted by 0x20 against the SDK layout.
-struct Unk_ActorTail
-{
-    char m_pad_00[0x100];
-    NiTPointerMap<NiActorManager::SequenceID, NiSequenceDataPtr> m_kPendingSeqDataMap;          // +0x100
-    char m_pad_120[0x18];                                                                       // m_kCallbacks
-    NiTPointerMap<NiActorManager::SequenceID, NiControllerSequencePtr> m_kExtraSequenceMap;     // +0x138
-};
-MS2_CHECK_OFFSET(Unk_ActorTail, m_kPendingSeqDataMap, 0x100);
-MS2_CHECK_OFFSET(Unk_ActorTail, m_kExtraSequenceMap, 0x138);
-
-// NiActorManager as the exe has it: primary vftable slot 4 (+0x20) is a per-frame update taking the time.
-class Unk_ActorMgr : public NiActorManager
-{
-public:
-    virtual void vfunc_2();
-    virtual void vfunc_3();
-    virtual void vfunc_4(float fTime);                                      // 0x20
-    bool FUN_1409a20a0(SequenceID eSequenceID, float fBlend, bool bForce);   // 0x1409a20a0 MS2 SetTargetAnimation
-    void FUN_1409a1cd0();                                                   // 0x1409a1cd0 Reset incl. the shifted tail
-};
-
-// The MS2 NiControllerManager keeps a per-sequence-data speed in the hash map behind +0x100.
-class Unk_CtrlMgr : public NiControllerManager
-{
-public:
-    void FUN_1409a1f80(const void* pKey, float fValue) { m_kMS2FloatMap.SetAt(pKey, fValue); }   // 0x1409a1f80
 };
 
 // The game-side actor (class id 0x6200003) a GameObject casts to; only slots 60 / 136 and FUN_141659790 are used here.
@@ -206,7 +181,6 @@ public:
 };
 
 Unk_AnimActor* FUN_14099eef0(GameObject* pObj);
-bool FUN_141c39310(NiControllerManager* pMgr, NiSequenceData* pSeqData);   // adds the sequence data to the manager
 CString FUN_1409a2360(const char* psz, int nCodePage);
 CString FUN_1409a2470(const char* psz, int nCodePage);
 
@@ -320,9 +294,9 @@ bool CAnimationManager::FUN_14099e050(Unk_AnimRef& kName, float fScale, bool bFo
     if (bForce)
     {
         efd::UInt64 qwId6;
-        Unk_ActorMgr* pForced = (Unk_ActorMgr*)m_pModelCache->GetActorManager(m_pOwner->FUN_14123c460(reinterpret_cast<egf::EntityID&>(qwId6)));
+        NiActorManager* pForced = m_pModelCache->GetActorManager(m_pOwner->FUN_14123c460(reinterpret_cast<egf::EntityID&>(qwId6)));
         if (pForced != 0)
-            pForced->vfunc_4((float)FUN_141473280(FUN_14086d260()));
+            pForced->Update((float)FUN_141473280(FUN_14086d260()));
         NiAVObject* pRoot = FUN_141b6efc0(FUN_14123c410(m_pOwner));
         if (pRoot != 0)
             pRoot->Update((float)FUN_141473280(FUN_14086d260()), true);
@@ -344,12 +318,12 @@ void CAnimationManager::FUN_14099e640()
 void CAnimationManager::FUN_14099e680()
 {
     efd::UInt64 qwId;
-    Unk_ActorMgr* pMgr = (Unk_ActorMgr*)m_pModelCache->GetActorManager(m_pOwner->FUN_14123c460(reinterpret_cast<egf::EntityID&>(qwId)));
+    NiActorManager* pMgr = m_pModelCache->GetActorManager(m_pOwner->FUN_14123c460(reinterpret_cast<egf::EntityID&>(qwId)));
     if (pMgr == 0)
         return;
-    pMgr->FUN_1409a20a0(NiActorManager::INVALID_SEQUENCE_ID, 1.0f, false);
+    pMgr->SetTargetAnimation(NiActorManager::INVALID_SEQUENCE_ID, 1.0f, false);
     if (pMgr->GetTransitionState() == NiActorManager::NO_TRANSITION)
-        pMgr->vfunc_4(0.0f);
+        pMgr->Update(0.0f);
 }
 
 void CAnimationManager::FUN_14099e710(float fOffset)
@@ -450,74 +424,7 @@ bool Unk_AnimSvc::FUN_1409a1fc0(const egf::EntityID& entityID, const efd::utf8st
     NiActorManager* pActorManager = pEntry->m_spActorManager;
     if (!pActorManager)
         return false;
-    return ((Unk_ActorMgr*)pActorManager)->FUN_1409a20a0(sequenceID, fBlend, bForce);
-}
-
-bool Unk_ActorMgr::FUN_1409a20a0(SequenceID eSequenceID, float fBlend, bool bForce)
-{
-    if (!bForce && m_eTargetID == eSequenceID)
-        return true;
-    if (bForce)
-        FUN_1409a1cd0();
-    if (eSequenceID != INVALID_SEQUENCE_ID)
-    {
-        NiSequenceDataPtr spPending = 0;
-        if (((Unk_ActorTail*)this)->m_kPendingSeqDataMap.GetAt(eSequenceID, spPending))
-        {
-            NiSequenceData* pPending = spPending;
-            FUN_141c39310(m_spManager.operator->(), pPending);
-            m_kSeqDataMap.SetAt(eSequenceID, spPending);
-            ((Unk_ActorTail*)this)->m_kPendingSeqDataMap.RemoveAt(eSequenceID);
-        }
-        else
-        {
-            NiSequenceDataPtr spSeqData = 0;
-            if (!m_kSeqDataMap.GetAt(eSequenceID, spSeqData) || !spSeqData)
-                return false;
-        }
-    }
-    if (eSequenceID != INVALID_SEQUENCE_ID)
-    {
-        NiSequenceDataPtr spSeqData = GetSequenceData(eSequenceID);
-        if (spSeqData)
-        {
-            NiSequenceData* pSeqData = spSeqData;
-            ((Unk_CtrlMgr*)m_spManager.operator->())->FUN_1409a1f80(pSeqData, fBlend);
-        }
-    }
-    m_eTargetID = eSequenceID;
-    if (m_bChainActive)
-    {
-        m_bChainActive = false;
-        m_kChainIDs.RemoveAll();
-        m_kChainDurations.RemoveAll();
-        m_fNextChainTime = INVALID_TIME;
-    }
-    return true;
-}
-
-void Unk_ActorMgr::FUN_1409a1cd0()
-{
-    if (m_spManager)
-        m_spManager->DeactivateAll();
-    m_eTargetID = INVALID_SEQUENCE_ID;
-    m_fTime = INVALID_TIME;
-    m_eTransitionState = NO_TRANSITION;
-    m_bStartTransition = false;
-    m_fTransStartTime = NI_INFINITY;
-    m_fTransEndTime = -NI_INFINITY;
-    m_fTransStartFrameTime = INVALID_TIME;
-    m_pcTargetKey = NULL;
-    m_eCurID = INVALID_SEQUENCE_ID;
-    m_spCurSequence = NULL;
-    m_eNextID = INVALID_SEQUENCE_ID;
-    m_spNextSeqData = NULL;
-    m_spNextSequence = NULL;
-    m_bChainActive = false;
-    m_fNextChainTime = INVALID_TIME;
-    m_kChainIDs.RemoveAll();
-    m_kChainDurations.RemoveAll();
-    ((Unk_ActorTail*)this)->m_kExtraSequenceMap.RemoveAll();
+    return pActorManager->SetTargetAnimation(sequenceID, fBlend, bForce);
 }
 
 // ---- string conversions (code page 0 = the default one) ----
