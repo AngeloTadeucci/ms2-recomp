@@ -81,8 +81,8 @@ if(MS2HOOK_WITH_GAME)
     endif()
     set(MS2_SYMOBJ "${CMAKE_CURRENT_BINARY_DIR}/ms2sym.obj")
     add_custom_command(OUTPUT "${MS2_SYMOBJ}"
-        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES}
-        DEPENDS "${MS2_ROOT}/tools/ms2symobj.py" ${MS2_SYMBOL_TABLES}
+        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES} --objs $<TARGET_OBJECTS:ms2game>
+        DEPENDS "${MS2_ROOT}/tools/ms2symobj.py" ${MS2_SYMBOL_TABLES} $<TARGET_OBJECTS:ms2game>
         COMMENT "Generating ms2sym.obj (exe symbol map)")
     set_source_files_properties("${MS2_SYMOBJ}" PROPERTIES EXTERNAL_OBJECT TRUE GENERATED TRUE)
     target_sources(dinput8 PRIVATE "${MS2_SYMOBJ}")

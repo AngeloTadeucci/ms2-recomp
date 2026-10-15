@@ -20,6 +20,7 @@ runtime (CRT, import stubs; 0x142748000-0x1427b6c90) is never mapped: the DLL us
 """
 import argparse
 import os
+import re
 import struct
 import sys
 
@@ -53,6 +54,59 @@ def load(paths):
                 continue
             syms[name] = (va, kind)
     return syms
+
+
+FUN_RE = re.compile(r"FUN_([0-9a-f]{8,9})(?![0-9a-zA-Z])")
+
+
+def undefined_externals(objs):
+    """Undefined external symbol names of COFF objects (regular and bigobj)."""
+    out = set()
+    for path in objs:
+        d = open(path, "rb").read()
+        if d[:4] == b"\0\0\xff\xff":                     # bigobj
+            symoff, nsyms = struct.unpack_from("<II", d, 48)
+            recsz = 20
+        else:
+            symoff, nsyms = struct.unpack_from("<II", d, 8)
+            recsz = 18
+        stroff = symoff + nsyms * recsz
+        i = 0
+        while i < nsyms:
+            o = symoff + i * recsz
+            nm = d[o:o + 8]
+            value, secnum = struct.unpack_from("<Ii", d, o + 8) if recsz == 20 else struct.unpack_from("<Ih", d, o + 8)
+            sclass, naux = d[o + recsz - 2], d[o + recsz - 1]
+            if sclass == 2 and secnum == 0 and value == 0:
+                if nm[:4] == b"\0\0\0\0":
+                    so = stroff + struct.unpack_from("<I", nm, 4)[0]
+                    nm = d[so:d.index(b"\0", so)]
+                else:
+                    nm = nm.rstrip(b"\0")
+                out.add(nm.decode("latin1"))
+            i += 1 + naux
+    return out
+
+
+def autobind_fun(syms, objs):
+    """Undefined externals named ...FUN_<va>... bind to that exe VA when it is a known function start. An explicit
+    symbols.tsv / symbols-manual.tsv entry for the same name always wins."""
+    starts = set()
+    fp = os.path.join(ROOT, "work", "functions.tsv")
+    if os.path.exists(fp):
+        for line in open(fp):
+            starts.add(line.split("\t", 1)[0].strip().lower())
+    n = 0
+    for name in sorted(undefined_externals(objs)):
+        if name in syms:
+            continue
+        m = FUN_RE.search(name)
+        if m and m.group(1) in starts:
+            va = int(m.group(1), 16)
+            if not any(a <= va < b for a, b in RUNTIME_RANGES):
+                syms[name] = (va, "func")
+                n += 1
+    return n
 
 
 def build(syms):
@@ -166,11 +220,16 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("inputs", nargs="*", default=DEFAULT_INPUTS)
     ap.add_argument("-o", "--output", default=os.path.join(ROOT, "build", "ms2sym.obj"))
+    ap.add_argument("--objs", nargs="+", metavar="OBJ", help="game objects: undefined FUN_<va> externals are auto-bound")
     ap.add_argument("--check", metavar="DLL", help="post-link check of the DLL (base, no ADDR64 to exe globals)")
     a = ap.parse_args()
     if a.check:
         return check(a.check, a.inputs)
-    data, nf, nd, ns = build(load(a.inputs))
+    syms = load(a.inputs)
+    if a.objs:
+        nauto = autobind_fun(syms, a.objs)
+        print(f"auto-bound {nauto} FUN_<va> externals")
+    data, nf, nd, ns = build(syms)
     os.makedirs(os.path.dirname(os.path.abspath(a.output)), exist_ok=True)
     tmp = a.output + ".tmp"
     open(tmp, "wb").write(data)
