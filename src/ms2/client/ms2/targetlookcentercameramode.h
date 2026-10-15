@@ -12,6 +12,9 @@ struct Unk_Point2
     Unk_Point2(float fX, float fY);                         // 0x140a0a600 (inline, another obj)
     Unk_Point2 FUN_140a4e500(const Unk_Point2& pt) const;   // operator-
     float FUN_140a4e630() const;                            // squared length
+    Unk_Point2 FUN_140affce0(float f) const;                // operator*(float)
+    float FUN_140affe70() const;                            // length
+    float FUN_140affeb0();                                  // Unitize (returns the old length)
 
     float x, y;
 };
