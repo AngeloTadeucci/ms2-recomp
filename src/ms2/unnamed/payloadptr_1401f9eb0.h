@@ -21,6 +21,7 @@ public:
     T* operator->()const{return p;}
     T* get()const{return p;}
     bool operator==(T* value)const{return p==value;}
+    bool IsNull()const{return p==0;} // a4: CQuest handle null test, 0x1407475b0
 private:
     void AddRef()const{if(p)AddRefImpl(0);}
     void AddRefImpl(void*)const{Reference(p);}
