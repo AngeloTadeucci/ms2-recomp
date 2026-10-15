@@ -27,7 +27,7 @@ struct Unk_PetOption {
 };
 MS2_CHECK_SIZE(Unk_PetOption,12);
 struct Unk_PetOptions {
-    ATL::CAtlMap<int,Unk_PetOption> map;
+    ATL::CAtlMap<unsigned int,Unk_PetOption> map;
     Unk_PetOptions();
     ~Unk_PetOptions();
     void FUN_1401ff3f0(COutputStream&);

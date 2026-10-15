@@ -18,12 +18,12 @@
 // MS2-PIN: ?Check@?$Unk_140203550@I@@QEBA_NI@Z 0x140204220
 // MS2-PIN: ??$ReadPoint@UUnk_PayloadPoint@@@Unk_PayloadReader@@QEAA?AUUnk_PayloadPoint@@XZ 0x140204500
 // MS2-PIN: ??$WritePoint@UUnk_PayloadPoint@@@Unk_PointWriter@@QEAAXAEBUUnk_PayloadPoint@@@Z 0x140204610
-// MS2-PIN: ?Find@?$CAtlList@HV?$CElementTraits@H@ATL@@@ATL@@QEBAPEAU__POSITION@@HPEAU3@@Z 0x140204740
+// MS2-PIN: ?Find@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEBAPEAU__POSITION@@IPEAU3@@Z 0x140204740
 // MS2-PIN: ?FreePlexes@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@AEAAXXZ 0x140204dd0
 // MS2-PIN: ?FreePlexes@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@AEAAXXZ 0x140204e20
 // MS2-PIN: ?GetHash@CNode@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAIXZ 0x140205020
 // MS2-PIN: ?GetHash@CNode@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAIXZ 0x140205030
-// MS2-PIN: ?GetNode@?$CAtlMap@HUUnk_PetOption@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x140205290
+// MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_PetOption@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x140205290
 // MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@AEAAXXZ 0x140207c80
 // MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@AEAAXXZ 0x140207d60
 // MS2-PIN: ?AddRef@?$Unk_PayloadPtr@VBaseOption@@@@AEBAXXZ 0x140207e70
@@ -43,12 +43,12 @@
 // MS2-PIN: ??C?$Unk_PayloadPtr@VBaseOption@@@@QEBAPEAVBaseOption@@XZ 0x140203ca0
 // MS2-PIN: ??0Unk_PayloadPoint@@QEAA@XZ 0x140203800
 // MS2-PIN: ??$ReadMarkup@UUnk_WideMaximum@@@Unk_PayloadReader@@QEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@UUnk_WideMaximum@@AEAH@Z 0x140202b40
-// MS2-PIN: ??$SAL_Assume_bytecap_for_opt_@VCNode@?$CAtlList@HV?$CElementTraits@H@ATL@@@ATL@@@ATL@@YAPEAVCNode@?$CAtlList@HV?$CElementTraits@H@ATL@@@0@PEAV120@_K@Z 0x140203140
+// MS2-PIN: ??$SAL_Assume_bytecap_for_opt_@VCNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@ATL@@YAPEAVCNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@0@PEAV120@_K@Z 0x140203140
 // MS2-PIN: ??A?$CAtlArray@V?$Unk_PayloadPtr@VChangeColorItem@CCItemColoringPacket@@@@V?$CElementTraits@V?$Unk_PayloadPtr@VChangeColorItem@CCItemColoringPacket@@@@@ATL@@@ATL@@QEAAAEAV?$Unk_PayloadPtr@VChangeColorItem@CCItemColoringPacket@@@@_K@Z 0x140204e70
-// MS2-PIN: ?GetCount@?$CAtlMap@HUUnk_PetOption@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@QEBA_KXZ 0x140204f00
+// MS2-PIN: ?GetCount@?$CAtlMap@IUUnk_PetOption@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@QEBA_KXZ 0x140204f00
 // MS2-PIN: ?GetCount@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBA_KXZ 0x140204f10
 // MS2-PIN: ?GetCount@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBA_KXZ 0x140204f20
-// MS2-PIN: ?GetKeyAt@?$CAtlMap@HUUnk_PetOption@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x140205040
+// MS2-PIN: ?GetKeyAt@?$CAtlMap@IUUnk_PetOption@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_PetOption@@@3@@ATL@@QEBAAEBIPEAU__POSITION@@@Z 0x140205040
 // MS2-PIN: ?GetKeyAt@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAAEBW4Unk_PacketOptionA@@PEAU__POSITION@@@Z 0x1402050b0
 // MS2-PIN: ?GetKeyAt@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAAEBW4Unk_PacketOptionB@@PEAU__POSITION@@@Z 0x140205120
 // MS2-PIN: ?Get@?$Unk_PayloadConstant@H@@QEAAAEAHXZ 0x1402056b0
@@ -62,6 +62,18 @@
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAPEAU__POSITION@@XZ 0x1402055d0
 // MS2-PIN: ?CreateNode@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@AEAAPEAVCNode@12@AEBW4Unk_PacketOptionB@@II@Z 0x140204480
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEBAPEAU__POSITION@@XZ 0x140205640
+// MS2-PIN: ??0?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAA@I@Z 0x140203150
+// MS2-PIN: ??0CNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAA@I@Z 0x140203660
+// MS2-PIN: ??1?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAA@XZ 0x1402038f0
+// MS2-PIN: ??1CNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAA@XZ 0x140203a30
+// MS2-PIN: ??1CPair@?$CAtlMap@W4Unk_PacketOptionA@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionA@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEAA@XZ 0x140203a80
+// MS2-PIN: ??1CPair@?$CAtlMap@W4Unk_PacketOptionB@@V?$Unk_PayloadPtr@VBaseOption@@@@V?$CElementTraits@W4Unk_PacketOptionB@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VBaseOption@@@@@4@@ATL@@QEAA@XZ 0x140203aa0
+// MS2-PIN: ??_GCNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAAPEAXI@Z 0x140203d10
+// MS2-PIN: ?AddTail@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAAPEAU__POSITION@@I@Z 0x140203f00
+// MS2-PIN: ?FreeNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@AEAAXPEAVCNode@12@@Z 0x140204a20
+// MS2-PIN: ?GetFreeNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@AEAAXXZ 0x140204f30
+// MS2-PIN: ?NewNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@AEAAPEAVCNode@12@IPEAV312@0@Z 0x140205eb0
+// MS2-PIN: ?RemoveAll@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@QEAAXXZ 0x140206f50
 #define MS2_THIS_FILE "" // No original source path recovered; no unit-file assertions here.
 #include "ms2/placeholder/ms2stdafx.h"
 #include "unit_1401f9eb0.h"
@@ -1579,7 +1591,7 @@ void Unk_PetOptions::FUN_1401ff5e0(const Unk_PetOptions& other)
     map.RemoveAll();
     POSITION pos=other.map.GetStartPosition();
     while(pos) {
-        int key=other.map.GetKeyAt(pos);
+        unsigned int key=other.map.GetKeyAt(pos);
         const Unk_PetOption& option=other.map.GetValueAt(pos);
         map.SetAt(key,option);
         other.map.GetNext(pos);
@@ -1590,7 +1602,7 @@ MS2_REPLACE_METHOD(0x1401FF5E0, Unk_PetOptions, FUN_1401ff5e0, 149, 0xD429DC30);
 // @0x1401ff680
 int Unk_PetOptions::FUN_1401ff680()
 {
-    ATL::CAtlList<int> types(10);
+    ATL::CAtlList<unsigned int> types(10);
     for(POSITION pos=map.GetStartPosition();pos;map.GetNext(pos)) {
         const Unk_PetOption& option=map.GetValueAt(pos);
         if(option.enabled==0)continue;
