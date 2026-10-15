@@ -26,5 +26,6 @@ if(NOT MS2_GAME_SOURCES)
     message(FATAL_ERROR "MS2_GAME_FILTER '${MS2_GAME_FILTER}' matches no game source")
 endif()
 add_library(ms2game OBJECT ${MS2_GAME_SOURCES})
-target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook")
+target_include_directories(ms2game PRIVATE "${PROJECT_SOURCE_DIR}" "${PROJECT_SOURCE_DIR}/hook"
+    "${PROJECT_SOURCE_DIR}/../engine/gamebryo/Foundation")
 ms2_game_flags(ms2game)

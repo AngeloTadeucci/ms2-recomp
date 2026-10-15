@@ -63,7 +63,8 @@ RTTI_VFTABLES = os.path.join(ROOT, "work", "classes", "rtti_vftables.tsv")
 # cmake/ms2-game-flags.cmake (MS2_GAME_COMPILE_OPTIONS + _DEFINITIONS + C++14) + /MD /Z7 + the ms2game include dirs.
 GAME_FLAGS = ["/nologo", "/c", "/Od", "/Ob0", "/Oi", "/EHsc", "/GS", "/GR", "/Gy", "/fp:fast", "/Zc:wchar_t",
               "/Zc:threadSafeInit", "/std:c++14", "/MD", "/Z7", "/W3", "/D_MBCS", "/D_AFXDLL",
-              "/I" + SRC, "/I" + os.path.join(SRC, "hook")]
+              "/I" + SRC, "/I" + os.path.join(SRC, "hook"),
+              "/I" + os.path.join(ROOT, "engine", "gamebryo", "Foundation")]
 FLAGS_KEY = " ".join(GAME_FLAGS) + " v3"
 TAG_RE = re.compile(r"//\s*@0x([0-9a-fA-F]+)\b")
 TAG_WINDOW = 6
