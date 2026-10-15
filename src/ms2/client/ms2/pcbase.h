@@ -24,6 +24,7 @@
 #include <efd/utf8string.h>
 
 // Component types behind the MS2Ptr members/getters (names unknown; MS2Ptr null-ctor VA in brackets).
+class CSkillRecord;        // slots 100-102 (RTTI CSkillRecord, 0x1c0; ?\skillrecord.cpp)
 class Unk_PCBaseComp_a58;   // slot 80, +0xa58 [0x14108af40]
 class Unk_PCBaseComp_a68;   // slot 81, +0xa68 [0x140e86b20] (null ctor COMDAT in uishieldbar)
 class Unk_PCBaseComp_a78;   // slot 82, +0xa78 [0x14108af60]
@@ -118,9 +119,12 @@ public:
     virtual float vfunc_97();                               // 97  0x141671720
     virtual void vfunc_98(float f);                         // 98  0x1416718d0
     virtual int vfunc_99(int n);                            // 99  0x141671b70
-    virtual void vfunc_100(void* p, int n);                 // 100 0x141672910
-    virtual void vfunc_101(void* p, int n, void* q);        // 101 0x141672de0
-    virtual bool vfunc_102(void* p);                        // 102 0x141673890
+    // 100-102 take the skill record smart pointer BY VALUE (the callee destroys it: MS2Ptr<CSkillRecord> dtor
+    // 0x140975740 on the homed rdx in 0x141672910 / 0x141672de0 / 0x141673890; callers copy it with 0x1409f71b0 first,
+    // e.g. inventory 0x140a62d30 -> slot 102, skillslot 0x141765570 -> slot 100). CSkillRecord: RTTI, new(0x1c0).
+    virtual void vfunc_100(MS2Ptr<CSkillRecord> skill, int n);           // 100 0x141672910
+    virtual void vfunc_101(MS2Ptr<CSkillRecord> skill, int n, void* q);  // 101 0x141672de0
+    virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);                  // 102 0x141673890 (base: return true)
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_103();         // 103 0x1416738c0 (checks +0x8e8 list)
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b);  // 104 0x1416739c0 (base: null)
     virtual void vfunc_105(void* a, void* b, void* c, int d);      // 105 0x141673a10
@@ -133,7 +137,10 @@ public:
     virtual void vfunc_112(void* p, int n);                 // 112 0x141674d80 (CNpc/CPet override)
     virtual void vfunc_113(void* p);                        // 113 0x141674ec0
     virtual void vfunc_114(void*) {}                        // 114 0x140a4ffb0 (inline; Ridee overrides)
-    virtual float vfunc_115(float x, float y, float z);     // 115 0x141675270 (base: return 0.0f)
+    // 115: three register floats + stack float, int, int* (CGuideObject 0x1410a1240 / Ridee 0x141706490 forward all
+    // six; CNpc/CPet 0x141090850 stores 0 to *pOut, tests nFlag == 0 and multiplies the result by d; PC 0x14165e500
+    // stores 1/0 to *pOut). Base 0x141675270: return 0.0f.
+    virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);  // 115 0x141675270
     virtual int vfunc_116() = 0;                            // 116 _purecall (CubeSpawnObject 0x140a4efd0: return 1)
     virtual int vfunc_117();                                // 117 0x1416752a0
     virtual int vfunc_118(void* a, float* b, CString* c);   // 118 0x1416752f0
