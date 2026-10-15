@@ -24,6 +24,14 @@ public:
         m_p = o.m_p;
         return *this;
     }
+    MS2SvrPtr& operator=(T* p)              // assign from a raw pointer: build a temporary, swap (ugcmapsetiteminfo.cpp)
+    {
+        MS2SvrPtr tmp(p);
+        T* old = m_p;
+        m_p = tmp.m_p;
+        tmp.m_p = old;
+        return *this;
+    }
     operator T*() const { return m_p; }
     T* operator->() const { return m_p; }
     T* get() const { return m_p; }
