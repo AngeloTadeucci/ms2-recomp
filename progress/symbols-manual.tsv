@@ -648,3 +648,16 @@
 ?DAT_143aad168@@3PEAU__crt_locale_pointers@@EA	143aad168	data
 ?DAT_143ab0568@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ab0568	data
 ?DAT_143ab0588@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ab0588	data
+?ms_RTTI@MS2MaterialSwapProcessor@@2VNiRTTI@@B	143ae0ac8	data
+??0Unk_CommonPacketPtr@@QEAA@$$QEAV0@@Z	14020a440	func
+??0Unk_CommonPacketPtr@@QEAA@AEBV0@@Z	14020a470	func
+??0CIngredientInfo@@QEAA@XZ	14027d830	func
+??0Unk_HistRef@@QEAA@$$QEAV0@@Z	14027cbe0	func
+??0Unk_HistRef@@QEAA@H@Z	14027cc10	func
+??0Unk_StrVec@@QEAA@XZ	14027d6f0	func
+??1Unk_StrVec@@QEAA@XZ	14027e450	func
+??1ChangeableProductInfo@@UEAA@XZ	14027e7e0	func
+??1CUserChangeableItemHistory@@UEAA@XZ	14027e7a0	func
+??1HomeBlockInfo@@UEAA@XZ	14027e820	func
+??1ItemDropItemLife@@UEAA@XZ	14027e8c0	func
+??1NpcShopItemLife@@UEAA@XZ	14027e8e0	func
