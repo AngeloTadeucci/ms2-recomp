@@ -2341,20 +2341,36 @@ Unk_GuildSeason* CGuildInfo::FUN_1404d3180()
     return &season;
 }
 
+// Guild season table row as returned by FUN_1404f0bf0 (fields copied into CGuildInfo::season).
+struct Unk_GuildSeasonRow {
+    char m_0[0x1c];
+    int id;
+    CStringW name;
+    char m_28[8];
+    CMsTime begin;
+    CMsTime end;
+    int points[7];
+};
+MS2_CHECK_OFFSET(Unk_GuildSeasonRow, id, 0x1c);
+MS2_CHECK_OFFSET(Unk_GuildSeasonRow, name, 0x20);
+MS2_CHECK_OFFSET(Unk_GuildSeasonRow, begin, 0x30);
+MS2_CHECK_OFFSET(Unk_GuildSeasonRow, end, 0x40);
+MS2_CHECK_OFFSET(Unk_GuildSeasonRow, points, 0x50);
+
 // @0x1404d31b0
 void CGuildInfo::FUN_1404d31b0()
 {
     Unk_GuildRef ref; FUN_140791e40(FUN_1404f4540(),&ref,2);
     if(FUN_1404f01a0(&ref,0)==0) {
-        char* s=FUN_1404f0bf0(&ref);
-        if(season.id!=*(int*)(s+0x1c)) {
-            season.id=*(int*)(s+0x1c);
-            season.name=*(CStringW*)(s+0x20);
-            season.begin=*(CMsTime*)(s+0x30);
-            season.end=*(CMsTime*)(s+0x40);
-            season.points[1]=*(int*)(s+0x50); season.points[2]=*(int*)(s+0x54); season.points[3]=*(int*)(s+0x58);
-            season.points[4]=*(int*)(s+0x5c); season.points[5]=*(int*)(s+0x60); season.points[6]=*(int*)(s+0x64);
-            season.points[7]=*(int*)(s+0x68);
+        Unk_GuildSeasonRow* s=(Unk_GuildSeasonRow*)FUN_1404f0bf0(&ref);
+        if(season.id!=s->id) {
+            season.id=s->id;
+            season.name=s->name;
+            season.begin=s->begin;
+            season.end=s->end;
+            season.points[1]=s->points[0]; season.points[2]=s->points[1]; season.points[3]=s->points[2];
+            season.points[4]=s->points[3]; season.points[5]=s->points[4]; season.points[6]=s->points[5];
+            season.points[7]=s->points[6];
         }
         FUN_1404eec20(&ref);
     } else {
