@@ -5,6 +5,8 @@
 // UIMsg: RTTI .?AVUIMsg@@ (80 bytes, bases ASData, CPtred, vftable 0x1431152e0, ddtor 0x1422e4530).
 #pragma once
 
+#include <afx.h>
+
 class UISwfEntity;
 
 class UIMsg
@@ -12,6 +14,7 @@ class UIMsg
 public:
     int FUN_1422e4520();                // nonzero: handled/cancelled? (UICutSceneMovie::OnMessage returns 0)
     int FUN_1422b8a10();                // result code; 0 = OK/yes button (switched on)
+    CStringW FUN_1422b8f40();           // message box tag ("askClose") passed to UIMessageBox
 };
 
 class IMessageListener

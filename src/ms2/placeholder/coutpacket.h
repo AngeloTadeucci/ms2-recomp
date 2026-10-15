@@ -13,7 +13,7 @@ public:
     COutPacket(int nType, int nUnk);
     virtual ~COutPacket();                                  // slot 0
     virtual void Encode1(unsigned char n);                  // slot 1 0x14020ac70
-    virtual void vfunc_2();
+    virtual void Encode2(short n);                          // slot 2 0x14020ad10 (word; Ghidra: vfunc_2)
     virtual void Encode4(int n);                            // slot 3 0x14020adb0
 
 private:

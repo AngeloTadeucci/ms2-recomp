@@ -96,6 +96,10 @@ public:
     bool FUN_141926960();                                   // m_168
     void FUN_141926980(bool b);                             // m_168 = b
     // ---- agents: append further non-virtual UIDialog members below this line (sorted by address) ----
+    void FUN_141925ec0(CString strName);                     // bind close button (UILoginNotice)
+    void FUN_141925fa0(CString strName);                     // bind drag bar (UIDungeonPopupRewardDialog)
+    int FUN_141924630();                                    // vfunc_55() == 0 (UICoupleDanceEventDialog)
+    void FUN_1419260d0(CString strName, int n);             // takes the child name by value (UIDungeonLobby: "m_webGuideButton", 0)
 
 protected:
     MS2_LAYOUT_FRIEND;
