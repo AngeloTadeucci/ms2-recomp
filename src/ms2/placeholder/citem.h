@@ -2,6 +2,8 @@
 #pragma once
 #include "ms2/placeholder/cptred.h"
 class Unk_UserProxyItemData;
+class COutputStream;
+class CInputStream;
 class CItem : public CPtred {
 public:
   CItem();
@@ -9,6 +11,15 @@ public:
   bool FUN_140523c40(int, int, int);
   Unk_UserProxyItemData *FUN_140527870();
 
+  // Packet serialization declarations appended by a4 (unit_1401f9eb0).
+  void FUN_140524ad0(COutputStream&);
+  void FUN_140524eb0(CInputStream&);
+  __int64 FUN_140526a50();
+  void FUN_140526a70(__int64);
+  unsigned char FUN_140526b50();
+  void FUN_140526b70(unsigned char);
+  int FUN_140526bd0();
+  int FUN_1405276c0();
 private:
   void *m_18;
   void *m_20;
