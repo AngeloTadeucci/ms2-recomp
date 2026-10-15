@@ -378,7 +378,7 @@
 ??1Unk_ShList@@QEAA@XZ	1409647c0	func
 ??0Unk_ShList2@@QEAA@H@Z	140884ed0	func
 ??1Unk_ShList2@@QEAA@XZ	1408850d0	func
-??0NiDX9Renderer@@QEAA@XZ	1427c8af0	func
+??0NiDX9Renderer@@IEAA@XZ	1427c8af0	func
 ??1NiDX9Renderer@@UEAA@XZ	1427c9810	func
 ??0Unk_MatBindPtr@@QEAA@PEAX@Z	140d89070	func
 ??1Unk_MatBindPtr@@QEAA@XZ	140d89160	func
@@ -465,3 +465,4 @@
 ?vfunc_100@NiDX9Renderer@@UEAAXXZ	1427d5140	func
 ?vfunc_1@NiDX9Renderer@@UEAAXXZ	141d16bf0	func
 ??3NiDX9Renderer@@SAXPEAX_K@Z	14208a8f0	func
+??1FixedString@efd@@QEAA@XZ	142087bd0	func
