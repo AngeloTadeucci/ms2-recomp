@@ -13,13 +13,71 @@
 class CItem;
 class CInPacket;
 
-// The player-to-player trade manager singleton (FUN_14140ea30 returns it). Only what the trade slots call so far;
-// the rest is in ?\trademanagerex.cpp#1.
-class CTradeManagerEx
+// The player-to-player trade manager singleton (FUN_14140ea30 returns it; s_instance is DAT_143ad9d78). Handles the
+// trade packet (type 0x82 in, 0x49 out) and the trade-request message boxes.
+class CTradeManagerEx;
+template <class T> class TSingleton;
+template<> class TSingleton<CTradeManagerEx>
 {
 public:
-    void FUN_14185ba70(__int64 uid, int nSlot);     // send "remove item <uid> from slot" (0x49 sub 9)
+    TSingleton();                                   // 0x14185db70
+    virtual ~TSingleton() { s_instance = 0; }       // 0x14185dba0 (scalar deleting 0x14185dbc0)
+    static CTradeManagerEx* s_instance;
 };
+
+class CTradeManagerEx : public TSingleton<CTradeManagerEx>
+{
+public:
+    CTradeManagerEx();                              // 0x14185b780
+    virtual ~CTradeManagerEx();                     // 0x14185b810 (scalar deleting 0x14185dc00)
+
+    // Outgoing packets (type 0x49, sub-code in the comment).
+    void FUN_14185b870(__int64 uid);                // 0  request a trade with uid
+    void FUN_14185b8e0(__int64 uid, int bAccept);   // 3 accept / 4 decline the request from uid
+    void FUN_14185b970();                           // 7
+    void FUN_14185b9d0(__int64 uid, int a, int b);  // 8
+    void FUN_14185ba70(__int64 uid, int nSlot);     // 9  remove item <uid> from slot
+    void FUN_14185baf0(__int64 uid);                // 10 (once per uid)
+    void FUN_14185bb80();                           // 11
+    void FUN_14185bbe0();                           // 13
+    void FUN_14185bc40(__int64 uid);                // 2
+    void FUN_14185bcb0(__int64 uid);                // 14
+
+    // Incoming packet (opcode 0x82): FUN_14185bd20 switches on the sub-code.
+    void FUN_14185bd20(CInPacket& packet);
+    void FUN_14185bec0(CInPacket& packet);          // 0  trade request from a player
+    void FUN_14185c230();                           // 2  request sent
+    void FUN_14185c2a0(CInPacket& packet);          // 1  request failed (reason code)
+    void FUN_14185cc60(CInPacket& packet);          // 4  request declined
+    void FUN_14185cd10(CInPacket& packet);          // 5  trade started
+    void FUN_14185cee0(CInPacket& packet);          // 6  trade finished / cancelled
+    void FUN_14185d020(CInPacket& packet);          // 8  item added
+    void FUN_14185d380(CInPacket& packet);          // 9  item removed
+    void FUN_14185d4f0(CInPacket& packet);          // 10
+    void FUN_14185d590(CInPacket& packet);          // 11 confirm
+    void FUN_14185d610(CInPacket& packet);          // 12
+    void FUN_14185d720();                           // 13
+    void FUN_14185d750();                           // 14
+
+    void FUN_14185d7b0();                           // reset the trade state
+    void FUN_14185d820(__int64 uid, CStringW strName, CString strChar); // begin a trade with uid
+    bool FUN_14185d8b0();                           // can a new trade start?
+    __int64 FUN_14185d920();                        // m_uidLastSent
+    void FUN_14185dc90();                           // m_bConfirmed = false
+
+public:
+    MS2_LAYOUT_FRIEND;
+    bool m_bConfirmed;                              // +0x08
+    __int64 m_uidPartner;                           // +0x10
+    CStringW m_strName;                             // +0x18
+    CString m_strChar;                              // +0x20
+    __int64 m_uidLastSent;                          // +0x28
+};
+MS2_CHECK_SIZE(CTradeManagerEx, 0x30);
+MS2_CHECK_OFFSET(CTradeManagerEx, m_uidPartner, 0x10);
+MS2_CHECK_OFFSET(CTradeManagerEx, m_strName, 0x18);
+MS2_CHECK_OFFSET(CTradeManagerEx, m_strChar, 0x20);
+MS2_CHECK_OFFSET(CTradeManagerEx, m_uidLastSent, 0x28);
 CTradeManagerEx* FUN_14140ea30();
 
 // The items currently on the trade table: global DAT_143ab2e80 (0x58 bytes, zero-initialised, set up by the

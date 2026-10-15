@@ -18,6 +18,7 @@ public:
   void FUN_140526a70(__int64);
   int FUN_140526b50();
   void FUN_140526b70(int);
+  void FUN_140526c70(int);
   int FUN_140526bd0();
   int FUN_1405276c0();
 private:
