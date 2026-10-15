@@ -20,7 +20,7 @@ private:
 class Unk_DTItemData;
 class Unk_DTReward:public CPtred {};
 class Unk_DTEntry:public CPtred {public:
- bool FUN_140ce3510();bool FUN_140ce35c0();unsigned FUN_140ce3690();unsigned FUN_140ce3660();unsigned FUN_140ce3a20();int FUN_1402e1d00();
+ bool FUN_140ce3510();bool FUN_140ce35c0();unsigned FUN_140ce3690();unsigned FUN_140ce3660();unsigned FUN_140ce3a20();unsigned long FUN_1402e1d00();
  MS2Ptr<Unk_DTReward> FUN_140ce3710(unsigned);
 };
 class Unk_DTText:public ASDisplayObject {public:void FUN_1422c4cd0(const CStringW&);};
@@ -36,7 +36,7 @@ public:
 private:
  MS2_LAYOUT_FRIEND;
  MS2Ptr<ASMovieClip> m_item;MS2Ptr<Unk_DTText> m_time;MS2Ptr<Unk_DTIcon> m_icon;
- std::map<int,Unk_DTPtr<Unk_DTEntry>> m_entries;Unk_DTTick m_tick,m_requestTick;
+ std::map<unsigned long,Unk_DTPtr<Unk_DTEntry>> m_entries;Unk_DTTick m_tick,m_requestTick;
 };
 MS2_CHECK_SIZE(UIDTAttendPopup,0x1c8);
 MS2_CHECK_OFFSET(UIDTAttendPopup,m_item,0x178);
