@@ -24,4 +24,9 @@ MS2_CHECK_SIZE(Unk_1402a9d70, 0x50);
 static CString s_strSortTypeNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_strSkill = "skill";
 static CString s_strStun = "stun";
+// A unit whose own header sits between the skill/stun statics and the condition (uinametag: the gos name table) names
+// that header in MS2_STATICS_A_BEFORE_CONDITION before including this one.
+#ifdef MS2_STATICS_A_BEFORE_CONDITION
+#include MS2_STATICS_A_BEFORE_CONDITION
+#endif
 static Unk_1402a9d70 s_unk1402a9d70(17, 0.75f, 0.25f, 2.25f, 10);

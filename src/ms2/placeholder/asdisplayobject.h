@@ -27,6 +27,7 @@ public:
     virtual void vfunc_5();                                     // 5 0x1422c1560
 
     bool FUN_1422bfca0();                                       // IsVisible
+    void FUN_1422bfe00(float fAlpha);                           // set the alpha (100 = opaque)
     int FUN_1422c1340();                                        // ceil(width)
     int FUN_1422c13b0();                                        // ceil(height)
 };
