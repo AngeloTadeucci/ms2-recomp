@@ -215,7 +215,6 @@ int Unk_TimeRange::Contains(__int64 time) {
     }
     return 0;
 }
-// MS2-FUNCTIONAL: exe returns via xor eax,eax; bool return form not reproduced.
 // @0x14086a000
 int Unk_TimeRange::IsValid() {
     if(startHour > 23) return 0;
