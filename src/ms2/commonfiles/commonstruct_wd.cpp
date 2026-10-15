@@ -243,7 +243,7 @@ void FUN_140279de0(void* vec, Unk_E16* where, i64 first, i64 last)
             u64 newcap = FUN_140287070(vec, size + count);
             void* al = FUN_1402883b0(vec);
             Unk_E16* newvec = FUN_14028a050(al, newcap);
-            FUN_14027a900(vec, first, last, (i64)(newvec + whereoff));
+            FUN_14027a900(vec, first, last, (i64)&newvec[whereoff]);
             if (onebback) {
                 i64* l = FUN_140288ba0(vec);
                 i64* f = FUN_140288a40(vec);
@@ -261,10 +261,10 @@ void FUN_140279de0(void* vec, Unk_E16* where, i64 first, i64 last)
                 i64 nl = FUN_140289b00(vec, (i64)(oldlast - count), (i64)oldlast, (i64)oldlast);
                 *FUN_140288ba0(vec) = nl;
                 FUN_14027a390((i64)where, (i64)(oldlast - count), (i64)oldlast);
-                FUN_140287670(vec, (i64)where, (i64)(where + count));
+                FUN_140287670(vec, (i64)where, (i64)&where[count]);
                 FUN_14027a900(vec, first, last, (i64)where);
             } else {
-                i64 nl = FUN_140289b00(vec, (i64)where, (i64)oldlast, (i64)(where + count));
+                i64 nl = FUN_140289b00(vec, (i64)where, (i64)oldlast, (i64)&where[count]);
                 *FUN_140288ba0(vec) = nl;
                 FUN_140287670(vec, (i64)where, (i64)oldlast);
                 FUN_14027a900(vec, first, last, (i64)where);
@@ -382,7 +382,7 @@ Unk_TIterBool* FUN_14027a770(void* tree, Unk_TIterBool* out, i64 key)
     i64 k;
     FUN_14028af20(tree, &lb, key);
     if (FUN_14027ee20(&lb, FUN_14028a910(tree, &end)) != 0 ||
-        (k = FUN_1402885e0(tree, lb.node), FUN_14027f870(FUN_140288430(tree), key, (i64)(k + 0)) != 0)) {
+        (k = FUN_1402885e0(tree, lb.node), FUN_14027f870(FUN_140288430(tree), key, (i64)k) != 0)) {
         ins = true;
         Unk_TNode* hint = lb.node;
         void* vt = FUN_140162f80(&pad);
