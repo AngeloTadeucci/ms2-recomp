@@ -20,17 +20,13 @@
 
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/asdata.h"
+#include "ms2/placeholder/astooltip.h"
 
 static UICommon::CMyPCKeyInputController s_keyInputController;     // header static (origin unknown), 0x143ad7930
 
 // ---- unit-local placeholders (unrecovered singletons / helpers; promote to src/ms2/placeholder/ when shared) ----
 
-class ASData            // ActionScript call arguments (RTTI .?AVASData@@)
-{
-public:
-    CString FUN_1422b8d30();            // first argument as a string
-    CStringW FUN_1422b8f40();           // first argument as a wide string
-};
 
 class ASUIComponent : public AScript    // RTTI .?AVASUIComponent@@
 {
@@ -40,21 +36,6 @@ public:
 void FUN_1422c6380(Scaleform::GFx::Value& value, int nGroup);
 void FUN_1422c63f0(Scaleform::GFx::Value& value, int nGroup);
 
-class ASTooltip : public AScript        // RTTI .?AVASTooltip@@
-{
-public:
-    ASTooltip(int a1, int a2);          // 0x1409c63d0
-    ~ASTooltip();                       // 0x1409b4af0
-    void FUN_1409c6dc0(int n);
-    void FUN_1409c6e90(int n);
-    int FUN_1409e26b0(const CStringW& strText);
-
-private:
-    void* m_pad_40;
-    void* m_pad_48;
-    void* m_pad_50;
-    void* m_pad_58;
-};
 
 extern int g_nDebugUI;                  // 0x143ae0fc0 (name invented): debug UI information on
 

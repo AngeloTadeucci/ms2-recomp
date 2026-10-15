@@ -12,34 +12,13 @@ static CString s_sortNames[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/asdata.h"
+#include "ms2/placeholder/astooltip.h"
 static CString s_jobCode = "jobCode";
 static CString s_sortValue = "sortValue";
 static CString s_tabIndex = "tabIndex";
 static UICommon::CMyPCKeyInputController s_keyInputController;
 
-// Unrecovered data and helpers used only by this unit. Names are invented.
-class ASData : public CPtred
-{
-public:
-    ASData();
-    virtual ~ASData();
-    int FUN_1422b9620(const Scaleform::GFx::Value*, unsigned int);
-    int FUN_1422b8b10();
-private:
-    void* m_18; void* m_20; void* m_28; void* m_30; void* m_38; void* m_40; void* m_48;
-};
-MS2_CHECK_SIZE(ASData, 0x50);
-class ASArgList
-{
-public:
-    ASArgList();
-    ~ASArgList();
-    void FUN_1409b2800(int);
-    Scaleform::GFx::Value* FUN_1409b1f70(int);
-private:
-    void* m_0; void* m_8; void* m_10; void* m_18;
-};
-MS2_CHECK_SIZE(ASArgList, 0x20);
 class Unk_GalleryAS;
 void GallerySet(Scaleform::GFx::Value*, int);
 void GallerySet(Scaleform::GFx::Value*, size_t);
@@ -149,20 +128,6 @@ class Unk_GalleryCounters { public: int FUN_1409617d0(int, int, int*); };
 extern Unk_GalleryCounters g_galleryCounters;
 class Unk_GalleryItem { public: CString FUN_14053fdd0(); };
 Unk_GalleryPtr<Unk_GalleryItem> FUN_14053f870(int);
-class ASTooltip : public AScript
-{
-public:
-    ASTooltip(int, int);
-    ASTooltip(void*, int, int);
-    virtual ~ASTooltip();
-    int FUN_1409e26b0(const CStringW&);
-    int FUN_1409e1770(int, int);
-    void FUN_1409c6dc0(int);
-    void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem>);
-private:
-    void* m_40; void* m_48; void* m_50; void* m_58;
-};
-MS2_CHECK_SIZE(ASTooltip, 0x60);
 class Unk_GalleryPlayer { public: void* FUN_141bd0cc0(); };
 Unk_GalleryPlayer* FUN_1403ed2d0();
 bool FUN_140184310(const CString&, const char*);

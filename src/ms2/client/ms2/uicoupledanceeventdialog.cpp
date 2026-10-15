@@ -23,6 +23,8 @@ static CStringW s_strBannerClose(L"bannerClose");
 
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/asdata.h"
+#include "ms2/placeholder/asobj.h"
 
 static UICommon::CMyPCKeyInputController s_keyInputController;     // header static (origin unknown)
 // A second string table from another unidentified header (enum names of a sort/chart order).
@@ -30,55 +32,8 @@ static CString s_strChartOrderNames[] = {"None", "Buy", "PriceLow", "PriceHigh",
 
 // ---- unit-local placeholders (unrecovered singletons / helpers; promote to src/ms2/placeholder/ when shared) ----
 
-// ActionScript call arguments (RTTI .?AVASData@@, vftable 0x143109b30, base CPtred); an array of GFx values at +0x18.
-// Ctor 0x1422b7f20, dtor 0x1406147b0. 0x48 bytes: the array (ctor 0x1422b96a0) is 5 pointers + an int (0x30 with
-// padding), and UIMsg (0x50) adds an int at +0x48. The size is load-bearing: /Od orders the frame slots by size and use
-// count, so with 0x50 the MS2Ptr argument copy in vfunc_28 lands below ASData instead of above it (RECOVERY.md §8).
-class ASData : public CPtred
-{
-public:
-    ASData();
-    virtual ~ASData();
-    int FUN_1422b9620(const Scaleform::GFx::Value* pArgs, unsigned int nArgs);    // copy the arguments in
-    int FUN_1422b8b10();                                                            // first argument as int
 
-private:
-    void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38; void* m_pad_40;
-};
-MS2_CHECK_SIZE(ASData, 0x48);
 
-// An AS object created on the C++ side (AScript itself with type 2; ctor 0x1422ba6e0, dtor 0x1422ba860) and the AS
-// array derived from it (ctor 0x1422bbb50, dtor 0x1422bbc30). The Set helpers are COMDAT template instances (one per
-// value type).
-class ASObj : public AScript
-{
-public:
-    ASObj(int nType);
-    virtual ~ASObj();
-    void FUN_1407cbbe0(const char* szName, bool b);                      // set a bool member
-    void FUN_1407cba60(const char* szName, CString str);                 // set a string member
-    void FUN_1409adbe0(const char* szName, Scaleform::GFx::Value v);     // set a member to a value
-};
-class ASArray : public ASObj
-{
-public:
-    ASArray(int nType);
-    virtual ~ASArray();
-    bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
-};
-
-// The argument list of AScript::Invoke (32 bytes: a PodArray<Value>; ctor 0x1409b1e80, dtor 0x1409b1f20).
-class ASArgList
-{
-public:
-    ASArgList();
-    ~ASArgList();
-    void FUN_1409b2800(int nCount);                                      // resize
-    Scaleform::GFx::Value* FUN_1409b1f70(int nIndex);                    // operator[]
-private:
-    void* m_pad_00; void* m_pad_08; void* m_pad_10; void* m_pad_18;
-};
-MS2_CHECK_SIZE(ASArgList, 0x20);
 void FUN_1422bcce0(Scaleform::GFx::Value* pValue, bool b);               // Value = b
 
 // The event's data: id at +0x18, the reward steps (each a vector of reward items) at +0x38.

@@ -12,6 +12,7 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include <stdarg.h>
+#include "ms2/placeholder/asdata.h"
 
 static CString s_marketSort[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd"};
 static CString s_shopSort[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
@@ -35,16 +36,6 @@ class Unk_ReportEntity : public AScript {
 public:
     template<class T> Unk_ReportHandle<T> GetChild(const CString&, Unk_ReportHandle<T>&);
 };
-class ASArgList {
-public:
-    ASArgList();
-    ~ASArgList();
-    void FUN_1409b2800(int count);
-    Scaleform::GFx::Value* FUN_1409b1f70(int index);
-private:
-    void* m_00; void* m_08; void* m_10; void* m_18;
-};
-MS2_CHECK_SIZE(ASArgList, 0x20);
 void FUN_1422bccb0(Scaleform::GFx::Value*, int);
 class Unk_ReportValue { public: bool FUN_1409b4d40() const; };
 template<class T> Unk_ReportHandle<T> MakeReportEntity(int, const Scaleform::GFx::Value&);

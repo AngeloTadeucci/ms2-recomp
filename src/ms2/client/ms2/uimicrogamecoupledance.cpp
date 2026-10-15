@@ -14,34 +14,14 @@
 #include "ms2/placeholder/header_statics_a.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/asdata.h"
+#include "ms2/placeholder/asgameentity.h"
 static CString s_clickSound("System_PinkBeans_Arcade_Click_01");
 
 // ---- unit-local placeholders (unrecovered singletons / helpers; promote to src/ms2/placeholder/ when shared) ----
 
-// ActionScript call arguments (RTTI .?AVASData@@, vftable 0x143109b30, base CPtred); an array of GFx values at +0x18.
-// Ctor 0x1422b7f20, dtor ASData::~ASData.
-class ASData : public CPtred
-{
-public:
-    ASData();
-    virtual ~ASData();
-    int FUN_1422b9620(const Scaleform::GFx::Value* pArgs, unsigned int nArgs);    // copy the arguments in
-    int FUN_1422b8b10();                                                            // first argument as int
 
-private:
-    void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38; void* m_pad_40; void* m_pad_48;
-};
 
-MS2_CHECK_SIZE(ASData, 0x50);
-
-// The AS entity of the micro game's root (0x88 bytes; ctor 0x1422de590); only its position/size members are used.
-class ASGameEntity : public ASDisplayObject
-{
-public:
-    int FUN_1422c1500();                                    // width
-    int FUN_1422c1530();                                    // height
-    void FUN_1422bffe0(int x, int y);                       // set the position
-};
 // This assignment COMDAT belongs to the earlier unit at 0x140ba7780.
 template <> template <>
 MS2Ptr<AScript>& MS2Ptr<AScript>::operator=<ASGameEntity>(const MS2Ptr<ASGameEntity>&);
@@ -902,15 +882,6 @@ MS2_CHECK_SIZE(Unk_CoupleEvent, 0x10);
 int FUN_141277f40();
 unsigned int FUN_140768010(unsigned int, unsigned int);
 void FUN_141276180(const CString&, const CString&);
-class ASArgList {
-public:
-    ASArgList(); ~ASArgList();
-    void FUN_1409b2800(int);
-    Scaleform::GFx::Value* FUN_1409b1f70(int);
-private:
-    void* m_00; void* m_08; void* m_10; void* m_18;
-};
-MS2_CHECK_SIZE(ASArgList, 0x20);
 void FUN_1422bccb0(Scaleform::GFx::Value*, int);
 
 // @0x140e63e60
