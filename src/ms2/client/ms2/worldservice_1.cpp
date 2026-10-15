@@ -996,10 +996,12 @@ public:
 MS2_CHECK_OFFSET(Unk_WsB_Cullable, m_bound, 0x40);
 struct Unk_WsB_BgmPair { int id; int param; };
 // Scoped reference on a COM-style service handle (CComPtrBase<> instance: pointer at +0).
+struct Unk_WsB_Com;
+void FUN_14098c7d0(Unk_WsB_Com* self, void* raw);   // ctor from raw pointer: AddRef (merge3: without it the dtor over-released the UI service -> camera AV)
 struct Unk_WsB_Com
 {
     void* m_p;
-    explicit Unk_WsB_Com(void* p) : m_p(p) {}
+    explicit Unk_WsB_Com(void* p) : m_p(0) { FUN_14098c7d0(this, p); }
 };
 void FUN_14098cc60(Unk_WsB_Com* c);
 
@@ -3075,7 +3077,7 @@ void FUN_140a55460(MS2Ptr<Unk_WsPtred298>* out, int mapId);
 void* FUN_1414a5840();
 void FUN_140a729e0(void* p);
 void* FUN_1401a9d70();
-CStringW FUN_141811980(void* stringTable, int kind, int id);
+CStringW* FUN_141811980(void* stringTable, CStringW* out, int category, unsigned id);   // member of the string table in the exe (this=rcx, hidden return=rdx)
 void FUN_1410b76d0(void* p);
 void* FUN_140aab420(void* mem);                         // CRandomTargetEffectController::CRandomTargetEffectController
 void FUN_141bf6e10(void* ptr, void* p);                 // m_aa0 = p
@@ -3104,7 +3106,12 @@ int WorldService::FUN_141bbbe40(int mapId, int arg2, int arg3)
     CString urn;
     urn.Format("urn:emergent-world:%s", (const char*)((Unk_WsA_FieldData*)m_298.operator->())->m_name);
     m_284 = mapId;
-    m_290 = FUN_141811980(FUN_1401a9d70(), 3, mapId);
+    {
+        // MS2-FUNCTIONAL: the exe passes (this, &ret, 3, mapId); a by-value CStringW free function swapped rcx/rdx (corrupted the string table).
+        CStringW mapName;
+        FUN_141811980(FUN_1401a9d70(), &mapName, 3, (unsigned)mapId);
+        m_290 = mapName;
+    }
     m_28c = FUN_141bd34b0(this, mapId);
     m_2c0 = arg3;
     if (FUN_141bbc1d0((const char*)urn, arg2) == 0)
@@ -3600,7 +3607,7 @@ const char* FUN_1408ac310(const void* name);             // name object -> c_str
 void FUN_1403a1280(void* logger, int level, int cat, const wchar_t* fmt, const char** a0);
 void FUN_141bdd240(void* logger, int level, int cat, const wchar_t* fmt, const char** a0, const int* a1);
 bool FUN_140184310(const CString& s, const char* t);     // s == t
-void FUN_14168a540(void* mgr);
+void FUN_14168a540(void* mgr, int arg);   // exe passes edx=0 (merge3: the one-arg declaration left edx undefined)
 void FUN_14168a570(void* mgr);
 Unk_WsA_View* FUN_1416892a0(void* mgr, int i);           // returns the slot owner
 Unk_WsA_View* FUN_14151e890(void* slot);                 // the view at +0x70
@@ -3620,7 +3627,7 @@ void WorldService::FUN_141bc0a70(const egf::EntityLoadResult* pMsg, efd::Categor
             FUN_1403a1280(FUN_140166440(), 0xc, 0x13, L"HandleWorldLoadedMessage BlockName={0} is created", &blockName);
             m_prevState = m_state;
             m_state = msg->m_result;
-            FUN_14168a540(FUN_1409f7ca0());
+            FUN_14168a540(FUN_1409f7ca0(), 0);
             for (int i = 0; i < 2; ++i)
             {
                 void* slot = FUN_1416892a0(FUN_1409f7ca0(), i);
@@ -4811,9 +4818,11 @@ MS2_REPLACE_METHOD(0x141BC7AA0, WorldService, FUN_141bc7aa0, 110, 0xC57B610A);
 
 // MS2-FUNCTIONAL: map COMDATs inlined
 // @0x141bc7b20
-void WorldService::FUN_141bc7b20(std::map<unsigned __int64, Unk_WsV1d8>::iterator where)
+bool WorldService::FUN_141bc7b20(const unsigned __int64& key)
 {
-    m_1d8.erase(where);
+    // exe: m_1d8.find(key) != m_1d8.end() (callers: entityinstancing, 0x14147cb5a ...). merge3: it was recovered as
+    // erase(iterator), which crashed in the hook (the exe passes a key pointer in rdx and tests the bool in al).
+    return m_1d8.find(key) != m_1d8.end();
 }
 MS2_REPLACE_METHOD(0x141BC7B20, WorldService, FUN_141bc7b20, 85, 0xA023915B);
 
@@ -5014,7 +5023,7 @@ MS2_REPLACE_METHOD(0x141BC8F60, WorldService, FUN_141bc8f60, 122, 0x30C65DB3);
 Unk_WsB_ShakeRef* FUN_1409f71b0(Unk_WsB_ShakeRef* dst, const Unk_WsB_ShakeRef* src);        // copy constructor
 Unk_WsB_ShakeRef::Unk_WsB_ShakeRef(const Unk_WsB_ShakeRef& o) { FUN_1409f71b0(this, &o); }
 bool FUN_141c071c0(void* map, CString& key, efd::SmartPointer<egf::Entity>* out);           // m_5e8.Lookup
-const unsigned __int64& FUN_140affe40(egf::Entity* entity);                                  // the entity's id
+unsigned __int64 FUN_140affe40(egf::Entity* entity);   // the entity's id (BY VALUE: the exe returns [entity+0x40]; merge3: a const& decl made the callers deref the id -> AV)
 int FUN_1411cd550(Unk_WsB_Vibrator* v);                                                      // already vibrating
 void FUN_1411cd3b0(Unk_WsB_Vibrator* v);                                                     // stop and release
 void FUN_1411cdba0(Unk_WsB_Vibrator* v);                                                     // start
@@ -6488,7 +6497,7 @@ void WorldService::FUN_141bd2030(std::list<Unk_WsC_GameObj*>* out)
 MS2_REPLACE_METHOD(0x141BD2030, WorldService, FUN_141bd2030, 311, 0x958CE419);
 
 float FUN_140993fe0(Unk_StreamPoint a, Unk_StreamPoint b);
-Unk_WsC_GameObjPtr FUN_1416764a0(Unk_WsC_GameObj* player);   // mounted/rider object (+0xb10)
+Unk_WsC_GameObj* FUN_1416764a0(Unk_WsC_GameObj* player);   // mounted/rider object (+0xb10), raw pointer in rax
 float FUN_140a00ef0(const NiPlane* plane, Unk_StreamPoint pt);   // NiPlane distance
 void* FUN_140a7b840(ATL::CRBMap<unsigned, Unk_WsV148>* map);     // m_148.GetHeadPosition
 Unk_WsC_GameObjPtr* FUN_140a7b8e0(ATL::CRBMap<unsigned, Unk_WsV148>* map, void* pos);   // GetValueAt
@@ -6502,7 +6511,7 @@ Unk_WsC_GameObj* WorldService::FUN_141bd2170(int type, float range, int useFront
     if (player == 0)
         return 0;
     NiPlane plane;
-    Unk_WsC_GameObjPtr rider = FUN_1416764a0(reinterpret_cast<Unk_WsC_GameObj*>(m_2d8.data()));
+    Unk_WsC_GameObjPtr rider(FUN_1416764a0(reinterpret_cast<Unk_WsC_GameObj*>(m_2d8.data())));
     Unk_WsC_GameObj* ref = (rider != 0) ? static_cast<Unk_WsC_GameObj*>(rider) : reinterpret_cast<Unk_WsC_GameObj*>(m_2d8.data());
     Unk_StreamPoint f = ref->FUN_14123cc20();
     plane.SetNormal(NiPoint3(f.x, f.y, f.z));
@@ -6704,7 +6713,7 @@ NiAVObject* FUN_14098d8d0(char* typeDesc, NiAVObject* o);
 void FUN_1409fabf0(NiAVObject** slot, NiAVObject* o);
 int FUN_1411a49c0(void* sys, Unk_WsC_SpawnCfg* cfg);
 void FUN_140cb83c0(void* map, unsigned __int64 key, int v);                         // m_648.SetAt
-const unsigned __int64& FUN_140affe40(egf::Entity* e);
+unsigned __int64 FUN_140affe40(egf::Entity* e);   // by value (merge3)
 int FUN_140961880(egf::Entity* e, unsigned propId, float* out);   // float property
 
 Unk_WsC_Breakable* FUN_140add560(void* mem);
@@ -6744,7 +6753,7 @@ void FUN_141c1b8f0(void* map, CString& key, MS2Ptr<Unk_WsC_Interact>& v);       
 void FUN_141c1b9d0(void* map, unsigned __int64* key, MS2Ptr<Unk_WsC_Interact>& v);  // m_6a8.SetAt
 void FUN_141bd9410(WorldService* self, MS2Ptr<Unk_WsC_Interact> v);                 // after-add hook (part D)
 void FUN_141bda580(WorldService* self);                                             // (part D)
-void FUN_1416105a0(int v);
+void FUN_1416105a0(float v);   // merge3: the exe passes xmm0 (a float member); the int declaration left xmm0 undefined
 
 extern char DAT_143b059e8;
 Unk_WsC_SvcRef* FUN_14098c5b0_C(char* idCell);
@@ -7001,7 +7010,7 @@ void WorldService::FUN_141bcda90()
 
     ::FUN_141bda580(this);
     FUN_141bd6520();
-    FUN_1416105a0(m_298->m_254);
+    FUN_1416105a0(*reinterpret_cast<const float*>(&m_298->m_254));
     FUN_141bc7440();
     FUN_141bc72f0();
     for (std::set<void*>::iterator it = m_048.begin(); it != m_048.end(); ++it)
@@ -10125,9 +10134,9 @@ Unk_WsG_EntryHandle* FUN_140d37260(Unk_WsG_EntryHandle* dst, Unk_WsG_EntryHandle
 void FUN_140d37980(Unk_WsG_EntryHandle* h);                           // release
 Unk_WsG_Ref16* FUN_1402034d0(Unk_WsG_Ref16* dst, Unk_WsG_Ref16* src); // copy (add ref) of a kind 0 / 1 value
 Unk_WsG_Ref16* FUN_140884f30(Unk_WsG_Ref16* dst, Unk_WsG_Ref16* src); // copy (add ref) of a kind 2 value
-void FUN_141656580(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value);       // apply kind 0 (callee consumes the copy)
-void FUN_1416565f0(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value);       // apply kind 1
-void FUN_141656660(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value);       // apply kind 2
+void FUN_141656580(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value, void* extra);       // apply kind 0 (callee consumes the copy)
+void FUN_1416565f0(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value, int arg);       // apply kind 1
+void FUN_141656660(Unk_WsG_Actor* actor, Unk_WsG_Ref16* value, int arg);       // apply kind 2
 void FUN_141656710(Unk_WsG_Actor* actor);                             // flush the applied changes
 Unk_WsG_Sys6a840* FUN_140a6a840();
 // m_178 timed effects
@@ -10311,15 +10320,15 @@ efd::AsyncResult WorldService::OnTick()
                             {
                             case 0:
                                 FUN_1402034d0(&copy, &entry.m_p->m_ref20);
-                                FUN_141656580(actor, &copy);
+                                FUN_141656580(actor, &copy, reinterpret_cast<char*>(entry.m_p) + 0x48);
                                 break;
                             case 1:
                                 FUN_1402034d0(&copy, &entry.m_p->m_ref20);
-                                FUN_1416565f0(actor, &copy);
+                                FUN_1416565f0(actor, &copy, *reinterpret_cast<int*>(reinterpret_cast<char*>(entry.m_p) + 0x40));
                                 break;
                             case 2:
                                 FUN_140884f30(&copy, &entry.m_p->m_ref30);
-                                FUN_141656660(actor, &copy);
+                                FUN_141656660(actor, &copy, *reinterpret_cast<int*>(reinterpret_cast<char*>(entry.m_p) + 0x40));
                                 break;
                             }
                         }

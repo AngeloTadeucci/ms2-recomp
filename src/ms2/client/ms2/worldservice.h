@@ -354,7 +354,7 @@ public:
     class FieldProperty* FUN_141bcab60(unsigned type); // 0x141bcab60
     bool FUN_141bc7920(std::set<void*>& visible); // 0x141bc7920
     bool FUN_141bc7aa0(int id, std::set<unsigned __int64>& out); // 0x141bc7aa0
-    void FUN_141bc7b20(std::map<unsigned __int64, Unk_WsV1d8>::iterator where); // 0x141bc7b20
+    bool FUN_141bc7b20(const unsigned __int64& key); // 0x141bc7b20 (merge3: is `key` present in m_1d8; was mis-recovered as erase(iterator))
     void FUN_141bc7b80(int force); // 0x141bc7b80
     void FUN_141bc7d40(const unsigned __int64& key); // 0x141bc7d40
     void FUN_141bc7ec0(const unsigned __int64& key); // 0x141bc7ec0

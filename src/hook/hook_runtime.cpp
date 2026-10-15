@@ -163,7 +163,7 @@ DWORD WINAPI StatsThread(void*) {
     std::vector<uint64_t> last(g_installed.size(), 0);
     for (;;) {
         Sleep(5000);
-        char line[8192];
+        char line[65536];
         int pos = 0;
         bool changed = false;
         for (size_t i = 0; i < g_installed.size(); ++i) {
@@ -172,7 +172,7 @@ DWORD WINAPI StatsThread(void*) {
             uint64_t c = *r->counter;
             if (c != last[i]) changed = true;
             last[i] = c;
-            if (c != 0 && pos < static_cast<int>(sizeof(line)) - 128)   // only counters that moved: the 8 KB line is no longer cut off by thousands of zeros
+            if (c != 0 && pos < static_cast<int>(sizeof(line)) - 128)   // only counters that moved: the 64 KB line is no longer cut off by thousands of zeros
                 pos += snprintf(line + pos, sizeof(line) - pos, " %s=%llu", r->name, static_cast<unsigned long long>(c));
         }
         if (changed) Log("calls:%s", line);
@@ -183,7 +183,7 @@ DWORD WINAPI StatsThread(void*) {
 
 void Log(const char* fmt, ...) {
     if (g_log == INVALID_HANDLE_VALUE) return;
-    char buf[8192];
+    char buf[65536];
     ULONGLONG t = GetTickCount64() - g_t0;
     int n = snprintf(buf, sizeof(buf), "[%6llu.%03llu] ", t / 1000, t % 1000);
     va_list ap;
@@ -227,6 +227,34 @@ bool IsInstalled(uintptr_t va) {
     return false;
 }
 
+// MS2HOOK_AVLOG=1: log the first access violations (rip, module+offset, fault address, a few stack qwords).
+static LONG CALLBACK AvLogHandler(EXCEPTION_POINTERS* ep) {
+    static volatile LONG count = 0;
+    if (ep->ExceptionRecord->ExceptionCode == 0x406D1388 || ep->ExceptionRecord->ExceptionCode == 0x40010006 || ep->ExceptionRecord->ExceptionCode == 0x4001000A || InterlockedIncrement(&count) > 60) return EXCEPTION_CONTINUE_SEARCH;
+    auto describe = [](uintptr_t a, char* out, size_t n) {
+        HMODULE m = nullptr;
+        char nm[MAX_PATH] = "?";
+        if (GetModuleHandleExA(GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS | GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT,
+                               reinterpret_cast<LPCSTR>(a), &m)) {
+            GetModuleFileNameA(m, nm, MAX_PATH);
+            const char* b = strrchr(nm, '\\');
+            snprintf(out, n, "%s+0x%llx", b ? b + 1 : nm, (unsigned long long)(a - reinterpret_cast<uintptr_t>(m)));
+        } else snprintf(out, n, "%p", reinterpret_cast<void*>(a));
+    };
+    char d[320];
+    describe(ep->ContextRecord->Rip, d, sizeof d);
+    Log("EXC code=%08lx rip=%s addr=%p rw=%llu", ep->ExceptionRecord->ExceptionCode, d, reinterpret_cast<void*>(ep->ExceptionRecord->ExceptionInformation[1]),
+        (unsigned long long)ep->ExceptionRecord->ExceptionInformation[0]);
+    auto* sp = reinterpret_cast<uintptr_t*>(ep->ContextRecord->Rsp);
+    for (int i = 0; i < 700; ++i) {
+        uintptr_t v = 0;
+        __try { v = sp[i]; } __except (EXCEPTION_EXECUTE_HANDLER) { break; }
+        if (v >= 0x140000000ull && v < 0x143c00000ull) { Log("   stack[%d] exe 0x%llx", i, (unsigned long long)v); }
+        else if (v >= 0x100000000ull && v < 0x100400000ull) { describe(v, d, sizeof d); Log("   stack[%d] %s", i, d); }
+    }
+    return EXCEPTION_CONTINUE_SEARCH;
+}
+
 void OpenLog() {
     InitializeCriticalSection(&g_logLock);
     g_t0 = GetTickCount64();
@@ -237,6 +265,7 @@ void OpenLog() {
     wcscpy_s(slash + 1, MAX_PATH - (slash + 1 - path), L"ms2hook.log");
     g_log = CreateFileW(path, GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, CREATE_ALWAYS,
                         FILE_ATTRIBUTE_NORMAL, nullptr);
+    if (getenv("MS2HOOK_AVLOG")) AddVectoredExceptionHandler(1, AvLogHandler);
 }
 
 int InstallAll() {
