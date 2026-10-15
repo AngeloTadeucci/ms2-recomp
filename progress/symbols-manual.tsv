@@ -501,3 +501,17 @@
 ??0Unk_EntRef@@QEAA@PEAX@Z	1408a7ed0	func
 ?ms_RTTI@Ni3DRenderView@@2VNiRTTI@@B	143afaf80	data
 ?DAT_143afa7c8@@3DA	143afa7c8	data
+??0Unk_GVec3@@QEAA@XZ	1405522f0	func
+??0Unk_GVec3@@QEAA@MMM@Z	14097f250	func
+??0Unk_GVec3@@QEAA@AEBU0@@Z	14027dcf0	func
+??4Unk_GVec3@@QEAAAEAU0@U0@@Z	14097faa0	func
+??0Unk_Rect4@@QEAA@MMMM@Z	14097eac0	func
+??0Unk_Frustum@@QEAA@H@Z	141d2fba0	func
+?DAT_143b01a60@@3DA	143b01a60	data
+?DAT_143ab77c8@@3DA	143ab77c8	data
+?DAT_143ab77d0@@3DA	143ab77d0	data
+?DAT_143ab77d8@@3DA	143ab77d8	data
+?DAT_143ab77e0@@3DA	143ab77e0	data
+?DAT_143ab77e8@@3DA	143ab77e8	data
+?DAT_143ab77f0@@3DA	143ab77f0	data
+?DAT_143ab77f8@@3DA	143ab77f8	data
