@@ -74,9 +74,9 @@ public:
     virtual void vfunc_16();                                // 16 0x14123bb20
     virtual NiPoint3 vfunc_17();                            // 17 0x14123bec0
     virtual NiPoint3 vfunc_18();                            // 18 0x14123c120 returns m_pos28
-    virtual void vfunc_19(void* p);                         // 19 0x14123c150
+    virtual void vfunc_19(efd::Point3 kPos);                // 19 0x14123c150 (by value)
     virtual NiPoint3 vfunc_20();                            // 20 0x14123c1c0 returns m_pos34
-    virtual void vfunc_21(void* p);                         // 21 0x14123c1f0
+    virtual void vfunc_21(efd::Point3 kDir);                // 21 0x14123c1f0 (by value)
     virtual void vfunc_22(void* p);                         // 22 0x14123c3a0
     virtual void vfunc_23(int n);                           // 23 0x14123c5c0
     virtual void vfunc_24(int) {}                           // 24 0x1409f3020 (inline, COMDAT in avatarcube)
@@ -112,6 +112,12 @@ public:
     virtual void vfunc_54(float f);                         // 54 0x14123e220
     virtual bool vfunc_55(float a, float b);                // 55 0x14123e450
     virtual bool vfunc_56(float f);                         // 56 0x14123e3f0
+
+    // non-virtual
+    void FUN_14123bb80(CString str);                        // 0x14123bb80 m_str90 = str (model path, by value)
+    void FUN_14123c280(float f);                            // 0x14123c280 m_fScaleA4 = f (+ entity scale prop)
+    int FUN_14123c580();                                    // 0x14123c580 return m_unk_70 (object id)
+    int FUN_14123dbd0();                                    // 0x14123dbd0 return m_unk_c8
 
 public:
     MS2_LAYOUT_FRIEND;

@@ -45,6 +45,9 @@ public:
     T& operator*() const;              // 0x140c353d0 for AScript
     bool IsNull() const;                // `p.get() == 0` as a bool
     bool operator==(T* p) const;
+    // `MS2Ptr tmp(p); swap(m_p, tmp.m_p);` - assignment from a raw pointer (0x140a4fd30 for T = CStateManager).
+    // A named member, not operator=(T*), so that existing `p = q` / `p = 0` call sites keep their overloads.
+    MS2Ptr& AssignRaw(T* p);
 
 private:
     void AddRef() const;                // if (m_p) <add a reference> (0x140d03270 for T = ASDisplayObject)

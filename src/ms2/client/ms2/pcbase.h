@@ -21,6 +21,7 @@
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/timer.h"     // Timer (0x38)
+#include <efd/utf8string.h>
 
 // Component types behind the MS2Ptr members/getters (names unknown; MS2Ptr null-ctor VA in brackets).
 class Unk_PCBaseComp_a58;   // slot 80, +0xa58 [0x14108af40]
@@ -32,6 +33,8 @@ class Unk_PCBaseComp_aa8;   // slot 85, +0xaa8 [0x140a4fc30] (CubeSpawnObject ov
 class Unk_PCBaseComp_ab8;   // slot 86, +0xab8 [0x14108af80]
 class Unk_PCBaseComp_ac8;   // slot 87, +0xac8 [0x140ba97e0]
 class Unk_PCBaseComp_b18;   // slots 103/104, +0xb18 [0x141532140 / member init 0x141532470]
+class CStateManager;        // +0x140 actor state machine (0x98 bytes, ctor(actor) 0x1417da7a0, AddState 0x1417daeb0)
+class Unk_PCBaseEquipPart;  // element of the npc row's part list (+0x588), applied by FUN_141674ef0
 
 // 0xd40 bytes. vftable 0x142f4c6f0 (124 slots); CallbackObject vftable @+8 0x142f4cad8 (dtor thunk 0x14167f518,
 // overrides AnimActivated 0x14166bec0, TextKeyEvent 0x14166bf40, EndOfSequence 0x14166c550).
@@ -61,9 +64,9 @@ public:
     virtual void vfunc_15();                                // 15 0x14166b990
     virtual void vfunc_16();                                // 16 0x14166b9e0
     virtual NiPoint3 vfunc_18();                            // 18 0x14166bbe0
-    virtual void vfunc_19(void* p);                         // 19 0x14166bb10
+    virtual void vfunc_19(efd::Point3 kPos);                // 19 0x14166bb10 (by value)
     virtual NiPoint3 vfunc_20();                            // 20 0x14166bc50
-    virtual void vfunc_21(void* p);                         // 21 0x14166bb60
+    virtual void vfunc_21(efd::Point3 kDir);                // 21 0x14166bb60 (by value)
     virtual void vfunc_23(int n);                           // 23 0x14166c5b0
     virtual int vfunc_26();                                 // 26 0x14166bd70
     virtual void vfunc_32(bool b);                          // 32 0x14166bdd0
@@ -91,7 +94,7 @@ public:
     virtual void vfunc_73(void* p, int n);                  // 73  0x14166fa70
     virtual void vfunc_74(void* a, void* b);                // 74  0x14166fbf0
     virtual void vfunc_75(void* a, void* b);                // 75  0x14166fc70
-    virtual void vfunc_76(const CStringW& str);             // 76  0x14166fcf0
+    virtual void vfunc_76(CStringW str);                    // 76  0x14166fcf0 (by value: the callee destroys it)
     virtual CStringW vfunc_77();                            // 77  0x14166fd50
     virtual int vfunc_78();                                 // 78  0x14166fda0
     virtual void vfunc_79();                                // 79  0x14166fdb0
@@ -140,14 +143,25 @@ public:
     virtual int vfunc_122(void* p);                         // 122 0x1416781c0
     virtual void* vfunc_123(int n);                         // 123 0x1416790b0 (looks up in +0xd00)
 
+    // non-virtual helpers called by derived units
+    void FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
+    void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
+    void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
+
 public:
     MS2_LAYOUT_FRIEND;
-    void* m_unk_140[2];                 // +0x140 (init 0x14167dfe0)
+    MS2Ptr<CStateManager> m_spStateMgr; // +0x140 (init 0x14167dfe0; CubeSpawnObject assigns via AssignRaw)
     void* m_unk_150;                    // +0x150 = 0
     int m_unk_158;                      // +0x158
     int m_unk_15c;                      // +0x15c
     int m_unk_160;                      // +0x160
-    int m_unk_164[7];                   // +0x164 (not initialised by the ctor)
+    float m_f164;                       // +0x164 (not initialised by PCBase; derived ctors load config floats)
+    float m_f168;                       // +0x168
+    float m_f16c;                       // +0x16c
+    float m_f170;                       // +0x170
+    float m_f174;                       // +0x174
+    float m_f178;                       // +0x178
+    int m_unk_17c;                      // +0x17c
     float m_unk_180[4];                 // +0x180 (init 0x140266620; [0] = 1800.0)
     float m_unk_190[4];                 // +0x190 (init 0x140266620; [0] = 1800.0)
     float m_unk_1a0[7];                 // +0x1a0 (init 0x1402666f0; [0] = 50.0)
@@ -237,7 +251,9 @@ public:
     std::vector<unsigned> m_vecD28;     // +0xd28 (init 0x140182ed0)
 };
 MS2_CHECK_SIZE(PCBase, 0xd40);
-MS2_CHECK_OFFSET(PCBase, m_unk_140, 0x140);
+MS2_CHECK_OFFSET(PCBase, m_spStateMgr, 0x140);
+MS2_CHECK_OFFSET(PCBase, m_f164, 0x164);
+MS2_CHECK_OFFSET(PCBase, m_f178, 0x178);
 MS2_CHECK_OFFSET(PCBase, m_unk_1c0, 0x1c0);
 MS2_CHECK_OFFSET(PCBase, m_unk_620, 0x620);
 MS2_CHECK_OFFSET(PCBase, m_colorBoost, 0x648);
