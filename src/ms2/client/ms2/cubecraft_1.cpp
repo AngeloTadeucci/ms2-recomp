@@ -80,8 +80,8 @@ inline R CallSlot(void* pObj, int nSlot, A... args)
 
 extern efd::Point3 DAT_143ab2398;                               // down vector
 extern efd::Point3 DAT_143a08d08;                               // forward vector
-extern char DAT_143b059e8[];                                    // cube grid service key
-extern const char* DAT_143ae50a0;                               // extra data key
+extern char DAT_143b059e8;                                    // cube grid service key
+extern NiFixedString DAT_143ae50a0;                               // extra data key
 
 
 inline const Unk_StreamPoint& SP(const efd::Point3& p) { return *(const Unk_StreamPoint*)&p; }
@@ -1217,7 +1217,7 @@ void CFishingGuideObject::vfunc_24(int)
         m_unk_40 = pOwner->vfunc_25();
         if (FUN_140ddcc90(FUN_1409f7c90()) == 0)
         {
-            Unk_AnimSvc* pSvc = FUN_1410a68f0(DAT_143b059e8); (void)pSvc;
+            Unk_AnimSvc* pSvc = FUN_1410a68f0(&DAT_143b059e8); (void)pSvc;
             if (m_unk_40 == 0)
             {
                 if (m_unk_b0 == 0)
