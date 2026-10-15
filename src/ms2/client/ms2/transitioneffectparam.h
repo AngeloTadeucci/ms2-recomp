@@ -1,7 +1,7 @@
 // transitioneffectparam.h - keyframed "transition" effects: TransitionData (one keyframe, NiRefObject),
 // TransitionEffectParam (CEffectParam + keyframe list) and TransitionEffect (CEffect that walks the keyframes and
 // hands each (from, to, t) to the pure slot 13). Base of the light effects (CLightEffectParam/CLightEffect with
-// LightEffectTransitionData, ?\lighteffectparam.cpp) and of the chaos-light layer data (?\uichaoslightdialog.cpp).
+// LightEffectTransitionData, ?\lighteffectparam.cpp) and of the chaos-light layer data (?\chaoslighttransitiondata.cpp).
 // Owning unit: ?\transitioneffectparam.cpp (0x14185f1d0-0x14185ff70). Header name assumed from the unit path.
 //
 // HOW TO USE: derive the keyframe from TransitionData, the param from TransitionEffectParam (pass the effect type
@@ -11,7 +11,7 @@
 #include "ms2/client/ms2/effectparam.h"
 
 // 0x20 bytes. vftable 0x142ea3300 (2 slots: ??_G 0x1410477f0, DeleteThis). ctor 0x141047100, implicit dtor
-// 0x1410473f0 (both emitted in ?\uichaoslightdialog.cpp).
+// 0x1410473f0 (both emitted in ?\chaoslighttransitiondata.cpp).
 class TransitionData : public NiRefObject
 {
 public:
