@@ -44,7 +44,7 @@ public:
     // SetupClassInfo 0x141208010 (no parents).
     EE_DECLARE_CLASS(CEquipModel, 0x06200048);
 public:
-    virtual int vfunc_4(const CString& strPath) = 0;        // 4  pure (CNifModel 0x141565700: load)
+    virtual int vfunc_4(CString strPath) = 0;               // 4  pure, strPath BY VALUE (callee destroys it; CNifModel 0x141565700: load)
     virtual void vfunc_5();                                 // 5  0x1411ffdd0 (unload: detach + reset +0x28/+0xf0)
     virtual int vfunc_6() = 0;                              // 6  pure (CNifModel: m_nState = 1, calls 10, 11; returns 1)
     virtual int vfunc_7() = 0;                              // 7  pure (CNifModel: returns 1)
@@ -54,7 +54,7 @@ public:
     virtual void vfunc_11() = 0;                            // 11 pure
     virtual void vfunc_12() = 0;                            // 12 pure
     virtual void vfunc_13() = 0;                            // 13 pure
-    virtual void vfunc_14() = 0;                            // 14 pure
+    virtual void* vfunc_14() = 0;                           // 14 pure (CNifModel: returns &m_unk_f0's pointee, FUN_1409849b0(&m_unk_f0))
     virtual int vfunc_15() = 0;                             // 15 pure
     virtual void vfunc_16() = 0;                            // 16 pure
     virtual void vfunc_17();                                // 17 0x1411ffe70
