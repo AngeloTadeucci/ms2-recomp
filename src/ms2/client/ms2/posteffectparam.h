@@ -5,7 +5,7 @@
 // HOW TO USE THIS HEADER (for unit workers):
 // - Param: `class PostShimmerEffectParam : public CPostEffectParam`; effect: `class PostShimmerEffect : public
 //   CScreenEffectBase`. CScreenEffectBase slots 5 and 7 are pure. vfunc_N = slot N of the vftables below.
-// - CPostEffectParam's dtor is inline (only COMDAT 0x140c901a0 is in postshimmerrenderstep).
+// - CPostEffectParam's dtor is implicit (only COMDAT 0x140c901a0 is in postshimmerrenderstep; no vptr reset).
 // - CScreenEffectBase is driven by its param: duration/fade times are copied in the ctor. States for SetState
 //   (0x140dbdb00, non-virtual): 0 off, 1 fade-out, 2 hold, 3 fade-in (inferred from vfunc_2).
 #pragma once
@@ -16,7 +16,7 @@ class CPostEffectParam : public CEffectParam
 {
 public:
     explicit CPostEffectParam(int nType);                   // 0x140dbcbc0
-    virtual ~CPostEffectParam() {}                          // 0x140c901a0 (inline)
+    // implicit virtual dtor: COMDAT 0x140c901a0 (postshimmerrenderstep) has no vptr reset, so it is compiler-generated
 
     virtual void vfunc_1(Unk_140165cf0* pNode);             // 1 0x140dbcc40 + useFade/fade*Duration/holdDuration/interpolators
     virtual CEffectPtr vfunc_6();                           // 6 0x140dbce60 new CPostEffect (0x38)

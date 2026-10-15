@@ -102,6 +102,7 @@ void FUN_14169fbf0(NiDefaultClickRenderStep* step, void* p);
 class Unk_PPRes {
 public:
     ~Unk_PPRes();                   // 0x1409a7b30
+    friend void* FUN_140c8f690(const Unk_PPRes& res);   // the getter (COMDAT in postshimmerrenderstep.cpp)
 private:
     void* m_p;
 };
