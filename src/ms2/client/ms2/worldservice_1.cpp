@@ -11502,13 +11502,13 @@ struct Unk_WsJ_QueueEntry { void* m_name; void* m_vtbl; void* m_ref; };
 // ==== functions from part J ====
 
 
-extern efd::utf8string DAT_142ffa22c;                       // map-id prefix tokens (two-digit category of "%08d")
-extern efd::utf8string DAT_142ffa244;
-extern efd::utf8string DAT_142ffa25c;
-extern efd::utf8string DAT_142ffa29c;
-extern efd::utf8string DAT_142ffa2ac;
+extern const char DAT_142ffa22c[];                       // map-id prefix tokens (two-digit category of "%08d")
+extern const char DAT_142ffa244[];
+extern const char DAT_142ffa25c[];
+extern const char DAT_142ffa29c[];
+extern const char DAT_142ffa2ac[];
 size_t FUN_141c2eee0(const efd::utf8string* s);              // utf8string::size
-bool FUN_140de8e30(const efd::utf8string& a, const efd::utf8string& b);   // utf8string equality
+bool FUN_140de8e30(const efd::utf8string& a, const char* lit);   // utf8string equals C string
 // map category from the eight-digit zero padded id: digits 2..3 select the kind (0..4), default 2
 // MS2-FUNCTIONAL: exe takes the id as unsigned (direct r9d load); the forward declaration fixes it as int
 // @0x141bd34b0
