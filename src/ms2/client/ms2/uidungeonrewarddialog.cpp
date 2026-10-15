@@ -363,7 +363,8 @@ private: void* m_0; void* m_8; void* m_10;
 CString FUN_14031c9d0(unsigned int);
 
 // @0x140e26860
-bool Unk_RewardOtherDialog::FUN_140e26860() { return *(bool*)((char*)this+0xa8); }
+// MS2: the exe reads one byte at +0xa8, which UIDialog declares as the first pointer of a vector (m_a8); the real owner of this flag is unproven.
+bool Unk_RewardOtherDialog::FUN_140e26860() { return *reinterpret_cast<const bool*>(&m_a8); }
 MS2_REPLACE_METHOD(0x140E26860, Unk_RewardOtherDialog, FUN_140e26860, 18, 0x2CB8DA8D);
 // @0x140e26660
 bool Unk_RewardMissionPtr::operator==(Unk_RewardMission* p) const { return m_p==p; }
