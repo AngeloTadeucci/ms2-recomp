@@ -26,6 +26,7 @@
 // MS2-PINS-END tplpin
 // MS2-PIN: ?get@?$MS2Ptr@VCDotDamageRecord@@@@QEBAPEAVCDotDamageRecord@@XZ 0x141747270 ; w95 manual
 // MS2-PIN: ?FUN_14174a510@Unk_SSGMyPCScore@@QEAAXH@Z 0x14174a510 ; w95 manual
+// MS2-PIN: ??4?$MS2Ptr@VUnk_StateArg22@@@@QEAAAEAV0@AEBV0@@Z 0x141746f20 ; w95 manual
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
@@ -45,6 +46,7 @@
 #include "ridee.h"
 #include "reactor.h"
 #include "cubecraft_1.h"
+#include "statemanager.h"
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/client/ms2/uimessageboxdata.h"
@@ -70,9 +72,13 @@
 CNetworkService* FUN_140714f90();
 
 // The world/field manager (FUN_1403ed2d0).
+// 0x1417212d0: a named field object (the cube/ridee field object of ridee.cpp/state.cpp).
+class Unk_RideeFieldObj : public CPtred { public: void FUN_140ade420(int nState, int nFlag); void FUN_140adeaa0(int nA, int nB, int nC); };
 class Unk_SSGWorld
 {
 public:
+    MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName);
+    void FUN_141bd9950(const CString& strUrl);              // open in the external browser
     void FUN_141bbae40(IWorldServiceCallback* cb);          // register a callback
     void FUN_141bbae80(IWorldServiceCallback* cb);          // unregister it
     void FUN_141bbc580(int a, int b);
@@ -229,7 +235,9 @@ Unk_SSGSlotMgr* FUN_1409eed90();
 
 // The dialogs this unit looks up by id (GetDialog<T> instances 0x141742310..0x141743690).
 // 0x4e6a / 0x4f40 / 0x4ee9: web browser dialogs (slot 89 navigates).
-class UIWebBrowser : public UIWebBrowserBase { };
+class UIWebBrowser : public UIWebBrowserBase { public: void FUN_14135ec00(const CString& strUrl, bool bShow); };
+class Unk_SSGDlg4f24 { public: void FUN_140e2e030(CString strUrl); };
+Unk_SSGDlg4f24* FUN_140b2d030(int nId);                     // GetDialog<T>(0x4f24)
 class UIWebBrowserPopup : public UIWebBrowserBase { };
 UIWebBrowser* FUN_140c43790(int nId);                       // GetDialog<UIWebBrowser>
 UIWebBrowserPopup* FUN_140beafe0(int nId);                  // GetDialog<UIWebBrowserPopup>
@@ -317,6 +325,7 @@ public:
     static void FUN_141b77e50(const CString& str);
     static void FUN_141b77e90(const CString& str);
     static void FUN_141b77ed0(const CString& str);
+    void FUN_141b794e0(CString& strOut, const char* pszUrl);  // resolve the url macros
     void FUN_141b78cf0(int nType, const CString& strUrl);  // open the url externally
 };
 Unk_SSGProfile* FUN_140cc18a0();
@@ -385,6 +394,7 @@ public:
     void FUN_1410d4680(ATL::CAtlArray<MS2Ptr<UGCMapBlueprintInfo> >& arr);
     void FUN_1410c3e40(int nKey, bool bValue);
     void FUN_1410c3f10(int nKey, int nValue);
+    void FUN_1410caa60(const CString& strName, int nState);
 };
 struct Unk_EntityAppFramework { efd::ServiceManagerPtr manager; };
 extern Unk_EntityAppFramework DAT_143b059e8;
@@ -508,6 +518,11 @@ class UISceneGameBeautyShop : public UISceneEntity { public: void FUN_141ac9270(
 UISceneEntity* FUN_1422b9e50(Unk_SSGSoundCtl* p);          // the current scene entity
 
 MyPC* FUN_14096e160(PCBase* pActor);                        // efd::DynamicCast<MyPC> (class id 0x06200004)
+// 0x1417127b0: an actor's state request list (Unk_StateArg22 in statemanager.h).
+MS2Ptr<Unk_StateArg22> FUN_140835450(int nType);
+class Unk_SSGHitReport { public: void FUN_140cfaf30(); };
+class Unk_SSGStBody { public: void FUN_141240730(); Unk_SSGHitReport* FUN_141240f20(); };
+Unk_SSGStBody* FUN_14166d220(PCBase* pActor);
 
 // 0x3f..0x5a: npc / actor state packets
 class Unk_PCBaseComp_b18 : public CPtred { public: char m_pad[0x28 - sizeof(CPtred)]; __int64 m_nSkillUid; };   // the casting skill
@@ -652,7 +667,7 @@ Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4e
 class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); void FUN_141a3a780(int nId); };
 Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e29)
 
-class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); };
+class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); void FUN_14015eb90(int nCat, int nLevel, const wchar_t* pszFormat, const CString& strArg); };
 Unk_SSGCommandLog* FUN_140166440();
 class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
@@ -687,7 +702,11 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0x358]; CString m_str358; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0x2d0]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x78]; CString m_str358; };
+MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
+int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
+class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
+Unk_SSGDlg4e3c* FUN_140ac55a0(int nId);
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str358, 0x358);
 Unk_SSGEffectCfg* FUN_1401d31f0();
 PC* FUN_140974230(PCBase* pActor);                          // DynamicCast<PC> (class id 0x6200003)
@@ -2147,6 +2166,43 @@ void CSceneStateGame::FUN_141712710(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141712710, CSceneStateGame, FUN_141712710, 141, 0xA57CCB2D);
 
+// @0x1417127b0
+void CSceneStateGame::FUN_1417127b0(CInPacket& packet, PCBase* pActor)
+{
+    if (pActor == 0)
+        return;
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    MyPC* pMyPC = FUN_14096e160(pActor);
+    if (pMyPC != 0)
+    {
+        MS2Ptr<Unk_StateArg22> spReq(0);
+        for (int i = 0; i < nCount; i++)
+        {
+            int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spReq = FUN_140835450(nType);
+            spReq->FUN_1408356f0(packet);
+        }
+        pMyPC->FUN_141523be0()->FUN_1417b7450();
+        static_cast<CStateManager*>(pMyPC->FUN_141678750())->FUN_1417db550(spReq.get());
+        if (FUN_14166d220(pMyPC) != 0)
+        {
+            FUN_14166d220(pMyPC)->FUN_141240730();
+            FUN_14166d220(pMyPC)->FUN_141240f20()->FUN_140cfaf30();
+        }
+    }
+    else
+    {
+        for (int i = 0; i < nCount; i++)
+        {
+            int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            MS2Ptr<Unk_StateArg22> spReq = FUN_140835450(nType);
+            spReq->FUN_1408356f0(packet);
+            pActor->vfunc_114(spReq.get());
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1417127b0, CSceneStateGame, FUN_1417127b0, 718, 0x3B245B75);
+
 // @0x141712fb0
 // MS2-FUNCTIONAL: exe frame 0x20 larger (the uid reads go through extra expression temps); same calls and args
 void CSceneStateGame::FUN_141712fb0(CInPacket& packet)
@@ -2447,6 +2503,38 @@ void CSceneStateGame::FUN_1417212a0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x1417212a0, CSceneStateGame, FUN_1417212a0, 37, 0xF8895DB9);
 
+// @0x1417212d0
+void CSceneStateGame::FUN_1417212d0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nCount = 0;
+    if (nMode == 1)
+        nCount = 1;
+    else if (nMode == 0)
+        nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < nCount; i++)
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<Unk_RideeFieldObj> spObj = FUN_1403ed2d0()->FUN_141bc4e70(strName);
+        if (spObj.get() != 0)
+        {
+            spObj->FUN_140ade420(nState, 0);
+            spObj->FUN_140adeaa0(nA, nB, nC);
+        }
+        else
+        {
+            efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+            if (spService)
+                spService->FUN_1410caa60(strName, nState);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1417212d0, CSceneStateGame, FUN_1417212d0, 709, 0x5D2F19F9);
+
 // @0x141721c50
 void CSceneStateGame::FUN_141721c50(CInPacket& packet)
 {
@@ -2490,6 +2578,52 @@ void CSceneStateGame::FUN_141732af0(CInPacket& packet)
     FUN_1409eed60()->FUN_14127e550(packet);
 }
 MS2_REPLACE_METHOD(0x141732af0, CSceneStateGame, FUN_141732af0, 37, 0x8D93BFEE);
+
+// @0x141733140
+void CSceneStateGame::FUN_141733140(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CString strUrl = static_cast<CInputStream&>(packet).vfunc_o8_6();
+    CString strTarget(strUrl);
+    FUN_140cc18a0()->FUN_141b794e0(strTarget, strUrl);
+    if (nType == 1)
+    {
+        if (FUN_140166410()->FUN_14036d570(0x3f) == true)
+        {
+            Unk_SSGDlg4f24* pDlg = FUN_140b2d030(0x4f24);
+            if (pDlg != 0)
+            {
+                pDlg->FUN_140e2e030(strUrl);
+                FUN_1403ed2b0()->FUN_141adc530(0x4f24);
+                return;
+            }
+        }
+        if (!FUN_140166410()->FUN_14036d570(0x3b))
+            return;
+        UIWebBrowser* pBrowser = FUN_140c43790(0x4e6a);
+        if (pBrowser == 0)
+            return;
+        pBrowser->FUN_14135ec00(strTarget, true);
+        FUN_140166440()->FUN_14015eb90(0xc, 0x13, L"Open URL in Maview: {0}", strUrl);
+    }
+    else if (nType == 0)
+    {
+        FUN_1403ed2d0()->FUN_141bd9950(strTarget);
+        FUN_140166440()->FUN_14015eb90(0xc, 0x13, L"Open URL in External Browser: {0}", strUrl);
+    }
+    else if (nType == 2)
+    {
+        if (FUN_140166410()->FUN_14036d570(0x5c) == true)
+        {
+            UIWebBrowser* pBrowser = FUN_140c43790(0x4e6a);
+            if (pBrowser == 0)
+                return;
+            pBrowser->FUN_14135ec00(strTarget, true);
+            FUN_140166440()->FUN_14015eb90(0xc, 0x13, L"Open URL in AdventureBar: {0}", strUrl);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141733140, CSceneStateGame, FUN_141733140, 758, 0xE8555A88);
 
 // @0x141733440
 void CSceneStateGame::FUN_141733440(CInPacket& packet)
@@ -3089,6 +3223,39 @@ void CSceneStateGame::FUN_141722fb0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141722fb0, CSceneStateGame, FUN_141722fb0, 152, 0x8674E8E3);
+
+// MS2-FUNCTIONAL: frame 0x88 vs 0xe8 only; shared Unk_EffectQuery (effectquery.h) is declared 0x10 but the 0x140a52ef0 ctor fills 0x70 bytes
+// @0x141723050
+void CSceneStateGame::FUN_141723050(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nAmount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC != 0)
+    {
+        if (FUN_1403ed2d0()->FUN_141bd0cc0() == static_cast<PCBase*>(pPC))
+        {
+            if (pPC->FUN_14166ce30() == 0)
+                pPC->vfunc_59(0x1f, 0, 0, 0);
+            Unk_SSGDlg4e3c* pDlg = FUN_140ac55a0(0x4e3c);
+            if (pDlg != 0)
+                pDlg->FUN_141910b10(-nAmount);
+            FUN_1409331e0()->FUN_14138bf00(0xf, pPC->FUN_14166ce30() == 0 ? -1 : 1, 0);
+            if (pPC->FUN_1416764a0() != 0)
+            {
+                Unk_EffectQuery query;
+                if (FUN_141658e60(pPC) == 1)
+                    query.m_strName = FUN_1401d31f0()->m_str2d0;
+                else if (FUN_141658e60(pPC) == 0)
+                    query.m_strName = FUN_1401d31f0()->m_str2d8;
+                query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
+                query.FUN_140a53190(pPC->FUN_14123c580());
+                FUN_1403ed280()->FUN_1411a4a00(&query);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141723050, CSceneStateGame, FUN_141723050, 522, 0x8423E0F7);
 
 // @0x1417232a0
 void CSceneStateGame::FUN_1417232a0(CInPacket& packet)

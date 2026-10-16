@@ -19,6 +19,7 @@ public:
     void FUN_14152a960();                                   // stop observing
     void FUN_14152a2f0(int n);                              // scenestategame packet 0x35
     class Unk_MyPCSkillSlots* FUN_141523bc0();              // the skill slot set (skillslot.cpp, 0x141765de0 etc.)
+    class StatePcGuideObjectController* FUN_141523be0();    // the guide object controller (scenestategame 0x1417127b0)
     MS2Ptr<class Unk_MyPCStatPoints> FUN_140c25130();       // the stat point manager (statpointmanager.cpp)
     void FUN_141661370(int a, int b, int c);                // PC member (scenestategame packet 0x83)
     void FUN_141528c30(CInPacket& packet);                  // scenestategame packet 0x135

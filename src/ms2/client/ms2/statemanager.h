@@ -21,6 +21,7 @@
 
 class PCBase;
 class StateData;
+class CInPacket;
 
 // A queued state request (the record PCBase/the network feed the state machine): CPtred-derived, held in MS2Ptr<>.
 // Fields proven from CStateManager::FUN_1417db550 (applies one request to the actor).
@@ -48,6 +49,7 @@ public:
     float m_fA4;                        // +0xa4
     int m_nA8;                          // +0xa8 already-fired flag
     int m_nAC;                          // +0xac server tick (Ridee::FUN_141706650)
+    void FUN_1408356f0(CInPacket& packet);    // read the request (scenestategame 0x1417127b0)
 };
 MS2_CHECK_OFFSET(Unk_StateArg22, m_nState, 0x18);
 MS2_CHECK_OFFSET(Unk_StateArg22, m_pos20, 0x20);
