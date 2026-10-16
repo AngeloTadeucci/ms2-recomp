@@ -1328,10 +1328,35 @@ private:
     char m_pad_18[0x90];
 };  // vftable 0x142d414f8, ??_G 0x1403eb910, dtor 0x1403e70f0
 MS2_CHECK_SIZE(StampEventContext, 0xa8);
+// Members proven by the dtor 0x1403e7150 (CString dtors at +0x118/+0x110/+0x108/+0xf8, then the CAtlMap/CAtlArray
+// members at +0xa8, +0x68, +0x20) and by TreeWateringAction::vfunc_1/2/6 (0x1409602c0 / 0x1409606a0 / 0x140960a10).
+class CMsTime;
 class TreeWateringContext : public CPtred {
-    char m_pad_18[0x108];
+public:
+    int m_nEventId;                 // +0x18 key of the attend table rows
+    int m_pad_1c;
+    bool FUN_1404038c0(const CMsTime& now);     // 0x1404038c0 some emotion day (array at +0x68) covers the time
+    char m_pad_20[0x88 - 0x20];     // +0x20 CAtlMap, +0x68 CAtlArray (unrecovered)
+    int m_nDailyLimit;              // +0x88 waterings a day (attend row 0x777)
+    char m_pad_8c[0x98 - 0x8c];
+    int m_nBonusLimit;              // +0x98 bonus waterings a day (attend row 0x778)
+    char m_pad_9c[0xf8 - 0x9c];     // +0xa8 CAtlMap (unrecovered)
+    CString m_strTreeName;          // +0xf8 the tree's world entity name
+    int m_nWaterItemId;             // +0x100 item id looked up in the inventory
+    int m_pad_104;
+    CString m_strStateWater;        // +0x108 state data name of the water action
+    CString m_strStateBonus;        // +0x110 state data name of the bonus action
+    CString m_str118;               // +0x118
 };  // vftable 0x142d415f0, ??_G 0x1403eb950, dtor 0x1403e7150
 MS2_CHECK_SIZE(TreeWateringContext, 0x120);
+MS2_CHECK_OFFSET(TreeWateringContext, m_nEventId, 0x18);
+MS2_CHECK_OFFSET(TreeWateringContext, m_nDailyLimit, 0x88);
+MS2_CHECK_OFFSET(TreeWateringContext, m_nBonusLimit, 0x98);
+MS2_CHECK_OFFSET(TreeWateringContext, m_strTreeName, 0xf8);
+MS2_CHECK_OFFSET(TreeWateringContext, m_nWaterItemId, 0x100);
+MS2_CHECK_OFFSET(TreeWateringContext, m_strStateWater, 0x108);
+MS2_CHECK_OFFSET(TreeWateringContext, m_strStateBonus, 0x110);
+MS2_CHECK_OFFSET(TreeWateringContext, m_str118, 0x118);
 class TreeWatering_EmotionDay : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d415d0, ??_G 0x1403eb990, dtor 0x1403e71f0

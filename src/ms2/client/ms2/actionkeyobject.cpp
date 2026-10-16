@@ -133,6 +133,9 @@ static CString s_stun("stun");
 #include "ms2/unnamed/unit_1401b6d10.h"
 #include "ms2/commonfiles/rideonaction.h"
 #include "uibanner.h"
+#include "ms2/commonfiles/gameevent.h"
+#include "ms2/placeholder/mstime.h"
+#include "inventory.h"
 
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -3087,10 +3090,119 @@ int QuestUserFindAction::vfunc_5() { return 7; }
 MS2_REPLACE_METHOD(0x140960020, QuestUserFindAction, vfunc_5, 11, 0x41502B22);
 
 // ---- TreeWateringAction ----------------------------------------------------------------------------------------------
+// The game event manager singleton (class of unit_1401c0d90, unrecovered): the tree watering event's context at +0xbf0.
+class Unk_1401c0d90
+{
+public:
+    MS2Ptr<TreeWateringContext> FUN_14047d320();            // the context (copied under the manager's lock)
+};
+Unk_1401c0d90* FUN_1401c0d90();
+// The context pointer's out-of-line members (COMDATs of the gameevent tail; symbols-manual rows).
+template <> MS2Ptr<TreeWateringContext>::~MS2Ptr();
+template <> bool MS2Ptr<TreeWateringContext>::operator==(TreeWateringContext* p) const;
+template <> TreeWateringContext* MS2Ptr<TreeWateringContext>::operator->() const;
+// The attend table (global 0x143ab2fc0): the day's counters by row id and event id.
+class Unk_AttendTable
+{
+public:
+    int FUN_1409617d0(int nRow, unsigned nEventId, const int& nDefault);
+};
+extern Unk_AttendTable g_attendTable;
+extern Unk_Inventory DAT_143ab2a90;
+__int64 FUN_140869440();                                    // the server time
+
 // @0x140960250
 TreeWateringAction::TreeWateringAction() {}
 // @0x140960290
 TreeWateringAction::~TreeWateringAction() {}
+// @0x1409602c0
+int TreeWateringAction::vfunc_1()
+{
+    MyPC* pPlayer = static_cast<MyPC*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    if (!pPlayer)
+        return 0;
+    if (pPlayer->FUN_14166ce30() != 0)
+        return 0;
+    if (!static_cast<Unk_AkoPCMove*>(pPlayer->FUN_14166d240())->FUN_141683ef0())
+        return 0;
+    int nState = pPlayer->FUN_14166c930();
+    if (nState == 0x3e || nState == 0x1e)
+        return 0;
+    MS2Ptr<TreeWateringContext> spContext = FUN_1401c0d90()->FUN_14047d320();
+    if (spContext == 0)
+        return 0;
+    efd::SmartPointer<egf::Entity> spTree = FUN_1403ed2d0()->FUN_141bd2cd0(spContext->m_strTreeName);
+    if (spTree == 0)
+        return 0;
+    NiPoint3 ptTree = reinterpret_cast<const NiPoint3&>(DAT_143b01a60);
+    spTree->GetPropertyValue(0xfd95ca52, static_cast<efd::Point3&>(ptTree));
+    float fDist = FUN_140966ea0(pPlayer->vfunc_18(), ptTree);
+    if (fDist < 400.0f)
+    {
+        int nDefaultWater = 0;
+        m_n18 = g_attendTable.FUN_1409617d0(0x777, spContext->m_nEventId, nDefaultWater);
+        int nDefaultBonus = 0;
+        m_n1c = g_attendTable.FUN_1409617d0(0x778, spContext->m_nEventId, nDefaultBonus);
+        if (m_n18 < spContext->m_nDailyLimit)
+        {
+            MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5e2e0(spContext->m_nWaterItemId);
+            if (spItem.get() != 0)
+                return 1;
+        }
+        CMsTime now(FUN_140869440());
+        if (spContext->FUN_1404038c0(now) == 1 && m_n1c < spContext->m_nBonusLimit
+            && m_n18 >= spContext->m_nDailyLimit)
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1409602C0, TreeWateringAction, vfunc_1, 985, 0x74DFA7D4);
+// @0x1409606a0
+void TreeWateringAction::vfunc_2()
+{
+    MyPC* pPlayer = static_cast<MyPC*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    if (pPlayer == 0)
+        return;
+    MS2Ptr<TreeWateringContext> spContext = FUN_1401c0d90()->FUN_14047d320();
+    if (spContext == 0)
+        return;
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5e2e0(spContext->m_nWaterItemId);
+    if (spItem.get() != 0 && m_n18 < spContext->m_nDailyLimit)
+    {
+        MS2Ptr<StateTreeWateringData> spState(new StateTreeWateringData(spContext->m_strStateWater));
+        pPlayer->vfunc_59(0x3e, spState, 0xa0, 0);
+        return;
+    }
+    CMsTime now(FUN_140869440());
+    if (spContext->FUN_1404038c0(now) == 1 && m_n1c < spContext->m_nBonusLimit
+        && m_n18 >= spContext->m_nDailyLimit)
+    {
+        MS2Ptr<StateTreeWateringData> spState(new StateTreeWateringData(spContext->m_strStateBonus));
+        pPlayer->vfunc_59(0x3e, spState, 0xa1, 0);
+    }
+}
+MS2_REPLACE_METHOD(0x1409606A0, TreeWateringAction, vfunc_2, 837, 0xF791FF78);
+// @0x140960a10
+CStringW TreeWateringAction::vfunc_6()
+{
+    void* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPlayer == 0)
+        return CStringW(L"");
+    MS2Ptr<TreeWateringContext> spContext = FUN_1401c0d90()->FUN_14047d320();
+    if (spContext == 0)
+        return CStringW(L"");
+    if (m_n18 < spContext->m_nDailyLimit)
+    {
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5e2e0(spContext->m_nWaterItemId);
+        if (spItem.get() != 0)
+            return FUN_14028de60(0xd19);
+    }
+    CMsTime now(FUN_140869440());
+    if (spContext->FUN_1404038c0(now) == 1 && m_n1c < spContext->m_nBonusLimit)
+        return FUN_14028de60(0xd1a);
+    return CStringW(L"");
+}
+MS2_REPLACE_METHOD(0x140960A10, TreeWateringAction, vfunc_6, 529, 0x58A43792);
 // @0x1409609f0
 int TreeWateringAction::vfunc_5() { return 0x1c; }
 MS2_REPLACE_METHOD(0x1409609F0, TreeWateringAction, vfunc_5, 11, 0x25A49707);

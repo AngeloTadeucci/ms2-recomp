@@ -398,3 +398,13 @@ public:
     CString m_strAnim;                                          // +0x28
 };
 MS2_CHECK_SIZE(StateReactData, 0x30);
+
+// 0x20. The tree watering state (built by TreeWateringAction::vfunc_2; the state itself is in another unit).
+class StateTreeWateringData : public StateData
+{
+public:
+    StateTreeWateringData(CString strName);                     // 0x140ad5280 (the callee destroys the argument)
+
+    CString m_strName;                                          // +0x18
+};
+MS2_CHECK_SIZE(StateTreeWateringData, 0x20);
