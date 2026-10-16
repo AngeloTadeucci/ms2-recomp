@@ -2,7 +2,8 @@
 #pragma once
 #include <afx.h>
 #include "ms2/placeholder/cptred.h"
-class NotifyObject : public CPtred {
+#include "ms2/placeholder/classobject.h"
+class NotifyObject : public ClassObject {
 public:
     NotifyObject();
     virtual ~NotifyObject();

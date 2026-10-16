@@ -65,6 +65,13 @@ public:
     // @0x14015a290
     int GetType() { return m_pData->m_nType; }
 
+    // More inline accessors; their COMDATs sit in client\ms2\achievemanager.cpp's range (bodies there).
+    MS2Ptr<CAchieveData> GetDataRef();  // 0x1409398d0
+    unsigned GetId();                   // 0x1409399f0
+    int GetStartGrade();                // 0x140939ae0
+    int GetCondType();                  // 0x140941760
+    __int64 GetProgress();              // 0x140941790
+
     float m_18;                         // +0x18
     MS2Ptr<CAchieveData> m_pData;       // +0x20
     __int64 m_30;                       // +0x30
