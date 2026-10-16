@@ -1353,7 +1353,7 @@ const char* PostProcessingService::GetDisplayName() const
 {
     return "PostProcessingService";
 }
-MS2_REPLACE_METHOD(0x1416a35a0, PostProcessingService, GetDisplayName, 13, 0x1E1596B4);
+MS2_REPLACE_METHOD_VIA(0x1416a35a0, PostProcessingService, efd::ISystemService, GetDisplayName, 13, 0x1E1596B4);
 
 // @0x1416a35c0
 bool PostProcessingService::FUN_1416a35c0(bool bEnable)
@@ -1717,7 +1717,7 @@ efd::SyncResult PostProcessingService::OnPreInit(efd::IDependencyRegistrar* pReg
     pRegistrar->AddDependency<Unk_PPEffectServiceDep>(1);
     return efd::SyncResult_Success;
 }
-MS2_REPLACE_METHOD(0x1416a4800, PostProcessingService, OnPreInit, 84, 0x822D00AC);
+MS2_REPLACE_METHOD_VIA(0x1416a4800, PostProcessingService, efd::ISystemService, OnPreInit, 84, 0x822D00AC);
 
 // @0x1416a4860
 // MS2-FUNCTIONAL: frame is 0x20 bytes larger than the exe (temporary layout of the step allocations); same calls in the same order
@@ -2131,7 +2131,7 @@ void PostProcessingService::vfunc_3(int)
             pkView->RemoveAllScenes();
     }
 }
-MS2_REPLACE_METHOD(0x1416aad30, PostProcessingService, vfunc_3, 157, 0x558D0698);
+MS2_REPLACE_METHOD_VIA(0x1416aad30, PostProcessingService, IWorldServiceCallback, vfunc_3, 157, 0x558D0698);
 
 // @0x1416abce0
 bool PostProcessingService::FUN_1416abce0(bool bBeforeReset, void* pvData)
