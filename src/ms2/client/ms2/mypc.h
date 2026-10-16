@@ -54,6 +54,7 @@ public:
     ~CSkillSystem();                                        // 0x141764900
     void FUN_141764a80(class MyPC* pOwner);                 // init with the owner
     void FUN_141766af0(float fDelta);                       // per-frame update
+    MS2Ptr<class CSkillRecord> FUN_141765570(struct Unk_InventorySkillRequest& kReq);   // build the record of a request
     void FUN_141767f80(int nSkillId);                       // add a temporary skill
     void FUN_1417683d0();                                   // refresh the skill slots
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
@@ -193,6 +194,11 @@ public:
     int FUN_141528160();
     CStringW FUN_1415281c0();
     CStringW FUN_141528330();
+    int FUN_141528970();                                    // open the item remake option talk
+    int FUN_1415283c0(int nKind);                           // enter the home convenience state
+    int FUN_1415286a0();                                    // enter the home convenience state 3
+    int FUN_141525480(int nSkillId, bool bRemap);           // the skill (switched by buffs) may be cast
+    void FUN_141526c80(int& nSkillId, unsigned short& nLevel);   // switch the skill by the casting skill / buffs
     int FUN_141529620();
     int FUN_141529ae0(int nMapId, int nA, int nB, __int64 nC);   // check the portal lock, then stop
     void FUN_14152a040();

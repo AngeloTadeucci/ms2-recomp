@@ -38,6 +38,8 @@
 // MS2-PIN: ??4?$MS2Ptr@VUnk_MyPCComp1618@@@@QEAAAEAV0@H@Z 0x141532ef0
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
 // MS2-PIN: ??C?$MS2Ptr@VUnk_MyPCPortalLock@@@@QEBAPEAVUnk_MyPCPortalLock@@XZ 0x141533250
+// MS2-PIN: ??C?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x1415331b0
+// MS2-PIN: ??B?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x141533120
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -64,6 +66,7 @@
 #include <algorithm>
 #include "ms2/ms2format.h"
 #include "statedata.h"                       // StateSummonData
+#include "ms2/placeholder/statehomeconvenientdata.h"
 #include "hook/ms2hook.h"
 
 
@@ -100,10 +103,34 @@ MS2Ptr<Unk_PCBaseComp_a58> FUN_141992920(int nObjectId);    // hp bar
 MS2Ptr<Unk_PCBaseComp_a68> FUN_140e86320(int nObjectId);    // shield bar
 MS2Ptr<Unk_PCBaseComp_a88> FUN_14192fd40(int nObjectId);    // emoticon
 
+// A skill row's swap pair (+0xa4): nFrom is cast as nTo.
+struct Unk_MyPCSkillSwap
+{
+    int FUN_140802fc0(int nSkillId);                        // nTo when nSkillId is nFrom, else nSkillId
+    int FUN_140803040();                                    // nTo, or 0 without a pair
+    int m_nFrom;                                            // +0x0
+    int m_nTo;                                              // +0x4
+};
+// The skill row a casting skill was built from (MS2Ptr at Unk_PCBaseComp_b18+0x30, -> 0x14063ed50).
+class Unk_MyPCSkillRow : public CPtred
+{
+public:
+    char m_pad_18[0xa4 - 0x18];
+    Unk_MyPCSkillSwap m_kSwap;                              // +0xa4
+    unsigned char m_bAC;                                    // +0xac
+    bool m_bNoSwap;                                         // +0xad
+};
+MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_kSwap, 0xa4);
+MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_bNoSwap, 0xad);
+
 // The casting skill record behind PCBase slots 103/104 (completed per unit; see statemanager.cpp).
 class Unk_PCBaseComp_b18 : public CPtred
 {
+public:
+    char m_pad_18[0x30 - 0x18];
+    MS2Ptr<Unk_MyPCSkillRow> m_spRow;                       // +0x30
 };
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_spRow, 0x30);
 
 // The MS2Ptr member at +0x1618: the character's house (MS2Ptr bodies: copy 0x14050dd40, -> 0x14050dee0,
 // get 0x140fa9d30, dtor 0x14050de40).
@@ -158,6 +185,7 @@ void FUN_140d73bc0(int nStringId, int nA, void* pListener, CStringW strArg);   /
 void FUN_141275260(int nStringId, int nA, int nB);          // a blocked-feature notice
 void FUN_1412751f0(const CStringW& strText, int nA, int nB);   // a notice text
 CStringW FUN_140298ea0(CStringW strKey);                    // the client string of a key
+CStringW FUN_14028b8e0(const CStringW& strKey);             // the client string of a key (by reference)
 class Unk_MyPCFeatures { public: bool FUN_14036d570(int nFeature); };
 Unk_MyPCFeatures* FUN_140166410();
 
@@ -270,8 +298,10 @@ public:
     void FUN_141adc5d0(int nId);                            // hide
     void FUN_141adc530(int nId);                            // close
     void FUN_141adc190();
+    int FUN_141adc890(int nId);                             // the UI is open
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
+int FUN_1418fd280();                                        // the home convenience is available
 class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); void FUN_14138bf00(int nKind, int nId, int nArg); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
 Unk_MyPCWidgets* FUN_1409331e0();
 // The HUD notifier (FUN_140a94350); slot 10 takes a state id.
@@ -384,8 +414,50 @@ class Unk_MyPCBurningEvent : public CPtred { public: bool FUN_140ce64e0(short nK
 class Unk_MyPCBurningDlg { public: MS2Ptr<Unk_MyPCBurningEvent> FUN_140c5ab80(); };
 Unk_MyPCBurningDlg* FUN_140ce8090(int nUiId);                  // the open UIBurningEventWidgetDialog
 // A learned skill's level row (uimessagebox.cpp's name for the same MS2Ptr instantiation).
-class Unk_InventorySkillLevel : public CPtred {};
+// The level data of a skill (FUN_140803e10): the buff-dependent replacement skills.
+class Unk_MyPCSkillLevelData
+{
+public:
+    char m_pad_00[0xb0];
+    ATL::CAtlArray<unsigned int> m_aBuffIds;                // +0xb0 the buffs that switch the skill
+    ATL::CAtlArray<unsigned short> m_aBuffLevels;           // +0xd0
+    ATL::CAtlArray<unsigned int> m_aBuffOwners;             // +0xf0
+    std::vector<int> m_aBuffStacks;                         // +0x110
+    ATL::CAtlArray<unsigned int> m_aSkillIds;               // +0x128 the skill each one switches to
+};
+MS2_CHECK_OFFSET(Unk_MyPCSkillLevelData, m_aBuffLevels, 0xd0);
+MS2_CHECK_OFFSET(Unk_MyPCSkillLevelData, m_aBuffStacks, 0x110);
+MS2_CHECK_OFFSET(Unk_MyPCSkillLevelData, m_aSkillIds, 0x128);
+class Unk_InventorySkillLevel : public CPtred
+{
+public:
+    Unk_MyPCSkillLevelData* FUN_140803e10();                // the level data
+};
 unsigned short FUN_140803df0(Unk_InventorySkillLevel* pLevel); // the row's level
+class Unk_MyPCSkillTable { public: MS2Ptr<Unk_InventorySkillLevel> FUN_1407ee2f0(int nSkillId, unsigned short nLevel); };
+Unk_MyPCSkillTable* FUN_1401958b0();                        // SkillDataTableCli
+// The skill request a CSkillRecord is built from (same view as pcbase.cpp / avatarpc.cpp / uimessagebox.cpp).
+struct Unk_InventorySkillRequest
+{
+    Unk_InventorySkillRequest(int, unsigned short);         // 0x141763fa0
+    int skill;
+    unsigned short level;
+    unsigned __int64 tick;
+    unsigned serial, unknown14;
+    efd::Point3 origin;                                     // +0x18
+    efd::Point3 direction;                                  // +0x24
+    float fValue;                                           // +0x30
+    unsigned unknown34;
+    bool remap, suppressDispatch, itemUse;
+    __int64 item;
+};
+MS2_CHECK_SIZE(Unk_InventorySkillRequest, 0x48);
+class CSkillRecord : public CPtred                          // RTTI, 0x1c0 (?\skillrecord.cpp)
+{
+public:
+    char m_pad_18[0x1c0 - 0x18];
+};
+MS2_CHECK_SIZE(CSkillRecord, 0x1c0);
 class Unk_MyPCSkillBook : public CPtred
 {
 public:
@@ -458,10 +530,30 @@ MS2_CHECK_SIZE(Unk_MyPCFurnitureUse, 0x10);
 void FUN_1401fc610(Unk_MyPCFurnitureUse& kUse, COutPacket& packet);
 Unk_MyPCPartyMgr* FUN_14109a6f0();
 int FUN_14082f1a0(int nType);
-class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); };
+class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); int FUN_140970020(int nBuffId, unsigned short nLevel, int nOwner, int nStacks); };
 class Unk_MyPCPetMgr { public: bool FUN_14162ab20(); int FUN_14162ae20(void* p); int FUN_14162ae90(void* p); void FUN_14162b560(CStringW strName); void FUN_14162b740(); };
 Unk_MyPCPetMgr* FUN_1409670d0();
-class Unk_MyPCSurvival { public: int FUN_141b21220(); void FUN_141b1fcf0(int nObjectId); };
+class Unk_MyPCTalkScript;
+// The npc talk script handle (MS2Ptr-shaped; dtor 0x14078f140, ctor 0x140859c20).
+struct Unk_MyPCTalkScriptPtr
+{
+    Unk_MyPCTalkScriptPtr(Unk_MyPCTalkScript* p);           // 0x140859c20
+    Unk_MyPCTalkScriptPtr(const Unk_MyPCTalkScriptPtr& o);  // (passed by value, built in place)
+    ~Unk_MyPCTalkScriptPtr();                               // 0x14078f140
+    Unk_MyPCTalkScript* FUN_14078f3a0() const;              // get
+    void* m_00;
+    Unk_MyPCTalkScript* m_p;
+};
+Unk_MyPCTalkScriptPtr FUN_140856820(int nNpcId, int nKind);   // the talk script of the npc with the kind
+// The npc talk manager.
+class Unk_MyPCSurvival
+{
+public:
+    int FUN_141b21220();                                    // a talk is open
+    void FUN_141b1fcf0(int nObjectId);
+    int FUN_141b213f0(Unk_MyPCTalkScriptPtr spScript, int nNpcId, int nMode, int n);   // open the talk
+    void FUN_141b1eb90(CStringA strDialog, CStringA strArg);   // open a dialog with the talk
+};
 Unk_MyPCSurvival* FUN_140967100();
 class Unk_MyPCClock { public: DWORD FUN_1406773d0(); };
 Unk_MyPCClock* FUN_1401c0db0();
@@ -1450,6 +1542,182 @@ CStringW MyPC::FUN_141528330()
     return pHouse->m_strName;
 }
 MS2_REPLACE_METHOD(0x141528330, MyPC, FUN_141528330, 125, 0x95244E52);
+
+// Enter the home convenience state with nKind (get off the ride first).
+// @0x1415283c0
+int MyPC::FUN_1415283c0(int nArg)
+{
+    if (FUN_1403ed2b0()->FUN_141adc890(0x4e47) != 0)
+    {
+        FUN_140d73bc0(0x662, 0, 0, CStringW(L""));
+        return 0;
+    }
+    if (FUN_14166ce30() != 0)
+    {
+        FUN_140d73bc0(0x660, 0, 0, CStringW(L""));
+        return 0;
+    }
+    int nKind = nArg;
+    if (FUN_1416764d0() != 0)
+    {
+        MS2Ptr<RideOffActionHomeConvenient> spAction(new RideOffActionHomeConvenient(0));
+        spAction->m_n28 = nKind;
+        FUN_14152c280(spAction);
+    }
+    else
+    {
+        if (FUN_141527160(0x36) == 0)
+        {
+            FUN_140d73bc0(0x661, 0, 0, CStringW(L""));
+            return 0;
+        }
+        NiPoint3 kDir = vfunc_20();
+        FUN_14166d8b0(kDir.z);
+        vfunc_21(reinterpret_cast<efd::Point3&>(kDir));
+        vfunc_59(0x36, new StateHomeConvenientData(nKind), 0, 0);
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1415283c0, MyPC, FUN_1415283c0, 719, 0xD2B6D603);
+
+// Enter the home convenience state 3, if it is available.
+// @0x1415286a0
+int MyPC::FUN_1415286a0()
+{
+    if (FUN_1418fd280() == 0)
+    {
+        FUN_140d73bc0(0xb90, 0, 0, CStringW(L""));
+        return 0;
+    }
+    if (FUN_14166ce30() != 0)
+    {
+        FUN_140d73bc0(0x664, 0, 0, CStringW(L""));
+        return 0;
+    }
+    int nKind = 3;
+    if (FUN_1416764d0() != 0)
+    {
+        MS2Ptr<RideOffActionHomeConvenient> spAction(new RideOffActionHomeConvenient(0));
+        spAction->m_n28 = nKind;
+        FUN_14152c280(spAction);
+    }
+    else
+    {
+        if (FUN_141527160(0x36) == 0)
+        {
+            FUN_140d73bc0(0x665, 0, 0, CStringW(L""));
+            return 0;
+        }
+        NiPoint3 kDir = vfunc_20();
+        FUN_14166d8b0(kDir.z);
+        vfunc_21(reinterpret_cast<efd::Point3&>(kDir));
+        vfunc_59(0x36, new StateHomeConvenientData(nKind), 0, 0);
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1415286a0, MyPC, FUN_1415286a0, 699, 0x17BD299B);
+
+// Whether the skill (switched by the active buffs) may be cast now.
+// @0x141525480
+int MyPC::FUN_141525480(int nSkillId, bool bRemap)
+{
+    unsigned short nLevel = FUN_141528b80(nSkillId);
+    FUN_141526c80(nSkillId, nLevel);
+    Unk_InventorySkillRequest kReq(nSkillId, 1);
+    kReq.level = nLevel;
+    kReq.remap = bRemap;
+    MS2Ptr<CSkillRecord> spRecord = m_kSkillSystem.FUN_141765570(kReq);
+    return vfunc_102(spRecord);
+}
+MS2_REPLACE_METHOD(0x141525480, MyPC, FUN_141525480, 250, 0xBAAB98AC);
+
+// Switch the skill to the one its level data names for the casting skill or an active buff.
+// @0x141526c80
+void MyPC::FUN_141526c80(int& nSkillId, unsigned short& nLevel)
+{
+    MS2Ptr<Unk_InventorySkillLevel> spLevel = FUN_1401958b0()->FUN_1407ee2f0(nSkillId, nLevel);
+    if (spLevel.IsNull())
+        return;
+    Unk_MyPCSkillLevelData* pData = spLevel->FUN_140803e10();
+    const ATL::CAtlArray<unsigned int>& aBuffIds = pData->m_aBuffIds;
+    const ATL::CAtlArray<unsigned short>& aBuffLevels = pData->m_aBuffLevels;
+    const ATL::CAtlArray<unsigned int>& aBuffOwners = pData->m_aBuffOwners;
+    const std::vector<int>& aBuffStacks = pData->m_aBuffStacks;
+    if (!aBuffIds.IsEmpty())
+    {
+        int bFound = 0;
+        MS2Ptr<Unk_PCBaseComp_b18> spCast = vfunc_103();
+        if (FUN_140166410()->FUN_14036d570(0xca))
+        {
+            if (spCast.get() != 0 && !spCast->m_spRow->m_bNoSwap && spCast->m_spRow->m_kSwap.FUN_140803040() != 0)
+            {
+                for (unsigned int i = 0; i < aBuffIds.GetCount(); i++)
+                {
+                    int nNext = pData->m_aSkillIds[i];
+                    if (nNext != spCast->m_spRow->m_kSwap.FUN_140802fc0(nNext))
+                    {
+                        nSkillId = pData->m_aSkillIds[i];
+                        nLevel = ::FUN_140803df0(spLevel.operator->());
+                        bFound = 1;
+                        break;
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (spCast.get() != 0)
+            {
+                for (unsigned int i = 0; i < aBuffIds.GetCount(); i++)
+                {
+                    int nNext = pData->m_aSkillIds[i];
+                    if (nNext != spCast->m_spRow->m_kSwap.FUN_140802fc0(nNext))
+                    {
+                        nSkillId = pData->m_aSkillIds[i];
+                        nLevel = ::FUN_140803df0(spLevel.operator->());
+                        bFound = 1;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!bFound)
+        {
+            for (unsigned int i = 0; i < aBuffIds.GetCount(); i++)
+            {
+                if (reinterpret_cast<Unk_PCBaseBuffs&>(m_unk_748).FUN_140970020(aBuffIds[i], aBuffLevels[i], aBuffOwners[i], aBuffStacks[i]) != 0)
+                {
+                    nSkillId = pData->m_aSkillIds[i];
+                    nLevel = ::FUN_140803df0(spLevel.operator->());
+                    break;
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141526c80, MyPC, FUN_141526c80, 1173, 0x188392BE);
+
+// Open the item remake option talk (npc 0xa7dabc), unless in a forced battle talk state.
+// MS2-FUNCTIONAL: the exe also copies the script pointer to a dead stack slot before the handle temp dies (frame 0x108 vs 0xf8)
+// @0x141528970
+int MyPC::FUN_141528970()
+{
+    if (vfunc_65() == 1)
+    {
+        FUN_1412751f0(FUN_14028b8e0(L"s_error_talk_battle_state_force_talk"), 1, 1);
+        return 0;
+    }
+    int nKind = 0x1e;
+    int nNpcId = 0xa7dabc;
+    Unk_MyPCTalkScript* pScript = FUN_140856820(nNpcId, nKind).FUN_14078f3a0();
+    if (pScript != 0)
+    {
+        FUN_140967100()->FUN_141b213f0(Unk_MyPCTalkScriptPtr(pScript), nNpcId, 2, 0);
+        FUN_140967100()->FUN_141b1eb90(CStringA("ItemRemakeOptionDialog"), CStringA(""));
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141528970, MyPC, FUN_141528970, 513, 0x2DFCF232);
 
 // @0x141528c30
 void MyPC::FUN_141528c30(CInPacket& packet)
