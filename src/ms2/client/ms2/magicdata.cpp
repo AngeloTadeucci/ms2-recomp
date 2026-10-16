@@ -332,7 +332,8 @@ struct Unk_MagicSkillRow {
     char m_pad124[0x24];
     CString m_str148;                                               // +0x148 end effect
     CString m_str150;                                               // +0x150 end effect when the flight was cut short
-    char m_pad158[0x30];
+    CString m_str158;                                               // +0x158 spawn effect
+    char m_pad160[0x28];
     CString m_str188;                                               // +0x188 hit effect
 };
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
@@ -340,6 +341,7 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str148, 0x148);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str158, 0x158);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str188, 0x188);
 
 // The skill cast record behind Unk_MagicTagPtr.
@@ -400,9 +402,10 @@ struct Unk_MagicEntity {
     Unk_StreamPoint FUN_14123cc20();                                // facing direction
 };
 
-struct Unk_MagicTagLookup { void* m_p; void* m_pad; };
+struct Unk_MagicTagLookup { ~Unk_MagicTagLookup(); void* m_p; void* m_pad; };    // dtor 0x1410a6c00; m_p is the looked-up entity
 // @0x1414691d0
 static inline bool FUN_1414691d0(Unk_MagicTagLookup* p, void* pNull) { return p->m_p == pNull; }
+MS2_CHECK_SIZE(Unk_MagicTagLookup, 0x10);
 // The world manager (FUN_1403ed2d0).
 class Unk_MagicWorld {
 public:
@@ -452,8 +455,13 @@ extern Unk_StreamPoint DAT_143b01a60;                               // the zero 
 extern Unk_StreamPoint DAT_143a08cd8;                                       // the right axis
 bool FUN_14028d530(const Unk_StreamPoint* pA, const Unk_StreamPoint* pB);   // approximately equal
 void FUN_1420849a0(Unk_NiMatrix3* pMatrix);                         // efd::Matrix3::MakeIdentity
-void FUN_14109aa30(Unk_NiMatrix3* pMatrix, int nColumn, const Unk_StreamPoint& pt);   // set one column
 void FUN_140ddcca0(void* pNode, const Unk_NiMatrix3& matRotation);  // NiAVObject::SetRotate
+
+// The 0x34 byte NiTransform the effect system takes (rotate, translate, scale).
+struct Unk_MagicXform { Unk_NiMatrix3 m_rotate; Unk_NiPoint3 m_translate; float m_fScale; };
+MS2_CHECK_SIZE(Unk_MagicXform, 0x34);
+// @0x14146aa10
+static inline void FUN_14146aa10(Unk_EfdMatrix3* pMatrix, unsigned nRow, unsigned nCol, float fValue) { pMatrix->m_afEntry[nRow][nCol] = fValue; }
 
 // ---- callees of the projectile logic (unit-local declarations; names invented) ----
 struct Unk_MagicCullCfg { float FUN_1410a71d0(); };                 // the cull distance
@@ -473,6 +481,8 @@ Unk_MagicEffectFiles* FUN_1411b1dd0();
 int FUN_14119f5f0(void* pFile);
 void* FUN_1409f7c90();
 int FUN_14161ce60(void* pArg, int nId);
+void FUN_140a53190(Unk_MagicEffectReq* pReq, unsigned nTarget);      // bind the target entity
+unsigned FUN_14123c580(Unk_MagicEntity* pEntity);                   // the entity's effect handle
 float FUN_141473280(Unk_MagicTime* pTime);                          // the frame time in seconds
 Unk_MagicTime* FUN_14086d260();
 float FUN_140966f00(const Unk_StreamPoint& a, const Unk_StreamPoint& b);   // distance
@@ -926,9 +936,9 @@ void CMagic::FUN_1414614d0()
         ptRight = ptAxis.FUN_14109adc0(DAT_143a08cf8);
     }
     Unk_StreamPoint ptUp = ptRight.FUN_14109adc0(ptAxis);
-    FUN_14109aa30(&matRotation, 0, ptRight);
-    FUN_14109aa30(&matRotation, 1, ptAxis);
-    FUN_14109aa30(&matRotation, 2, ptUp);
+    matRotation.FUN_14109aa30(0, ptRight);
+    matRotation.FUN_14109aa30(1, ptAxis);
+    matRotation.FUN_14109aa30(2, ptUp);
     FUN_141461ba0(matRotation);
     FUN_141461720(0);
 }
@@ -966,14 +976,93 @@ void CMagic::FUN_141461720(int nFlag)
         ptRight = ptAxis.FUN_14109adc0(DAT_143a08cf8);
     }
     Unk_StreamPoint ptUp = ptRight.FUN_14109adc0(ptAxis);
-    FUN_14109aa30(&matRotation, 0, ptRight);
-    FUN_14109aa30(&matRotation, 1, ptAxis);
-    FUN_14109aa30(&matRotation, 2, ptUp);
+    matRotation.FUN_14109aa30(0, ptRight);
+    matRotation.FUN_14109aa30(1, ptAxis);
+    matRotation.FUN_14109aa30(2, ptUp);
     FUN_140ddcca0(FUN_1409475f0(&m_spScene), matRotation);
     double dTime = FUN_141473280(FUN_14086d260());
     static_cast<NiAVObject*>(FUN_1409475f0(&m_spScene))->Update((float)dTime, false);
 }
 MS2_REPLACE_METHOD(0x141461720, CMagic, FUN_141461720, 852, 0x58FA7E4A);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x1414607e0
+void CMagic::FUN_1414607e0()
+{
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1290(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL)
+        return;
+    Unk_MagicTagLookup kLookup = FUN_1403ed2d0()->FUN_141bc5bb0(m_spSkill->m_nTagId);
+    if (FUN_1414691d0(&kLookup, 0))
+        return;
+    Unk_MagicEntity* pEntity = static_cast<Unk_MagicEntity*>(kLookup.m_p);
+    Unk_StreamPoint ptNew = m_ptCurrent;
+    ptNew.x = pEntity->vf18_GetPosition().x;
+    ptNew.y = pEntity->vf18_GetPosition().y;
+    ptNew.z = pEntity->vf18_GetPosition().z;
+    FUN_141461a80(ptNew);
+    FUN_141461b60(pEntity->FUN_14123cc20());
+}
+MS2_REPLACE_METHOD(0x1414607e0, CMagic, FUN_1414607e0, 496, 0x890BF44E);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141464b40
+void CMagic::FUN_141464b40()
+{
+    if (m_spSkill->m_nCasterId == 0)
+        return;
+    Unk_MagicEntity* pCaster = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nCasterId);
+    if (pCaster == NULL)
+        return;
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL || pRow->m_flag100.FUN_1407dfbb0())
+        return;
+    if (FUN_14161ce60(FUN_1409f7c90(), m_spSkill->m_nOwnerId) != 0)
+        return;
+    Unk_MagicEffectReq kReq;
+    kReq.m_strName = pRow->m_str158;
+    FUN_140a53190(&kReq, FUN_14123c580(pCaster));
+    kReq.m_nObject = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+    m_nEffectId2 = FUN_1403ed280()->FUN_1411a49c0(&kReq);
+}
+MS2_REPLACE_METHOD(0x141464b40, CMagic, FUN_141464b40, 435, 0xE5AFB908);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141467f60
+void FUN_141467f60(const Unk_StreamPoint& ptPos, const Unk_StreamPoint* pDirection, Unk_MagicXform* pOut)
+{
+    Unk_NiMatrix3 matRotation;
+    FUN_1420849a0(&matRotation);
+    if (pDirection->FUN_140552700(DAT_143b01a60)) {
+        Unk_StreamPoint ptAxis = *pDirection;
+        Unk_StreamPoint ptRight = DAT_143b01a60;
+        Unk_StreamPoint ptDown;
+        if (ptAxis.FUN_140552690(DAT_143a08cf8)) {
+            ptRight = DAT_143a08cd8;
+        } else if (ptAxis.FUN_140552690(ptDown = DAT_143a08cf8.FUN_1409f7960())) {
+            ptRight = DAT_143a08cd8.FUN_1409f7960();
+        } else {
+            ptRight = ptAxis.FUN_14109adc0(DAT_143a08cf8);
+        }
+        Unk_StreamPoint ptUp = ptRight.FUN_14109adc0(ptAxis);
+        matRotation.FUN_14109aa30(0, ptRight);
+        matRotation.FUN_14109aa30(1, ptAxis);
+        matRotation.FUN_14109aa30(2, ptUp);
+        float fAngleX, fAngleY, fAngleZ;
+        matRotation.FUN_142085840(fAngleX, fAngleY, fAngleZ);
+        if (0.0f < fAngleZ) {
+            Unk_NiMatrix3 matFlip;
+            FUN_1420849a0(&matFlip);
+            FUN_14146aa10(&matFlip, 0, 0, -1.0f);
+            FUN_1420849a0(&matRotation);
+            matRotation.FUN_142084c10(6.2831855f - fAngleZ);
+            matRotation = Unk_NiMatrix3(matFlip.FUN_140a33480(matRotation));
+        }
+    }
+    pOut->m_fScale = 1.0f;
+    pOut->m_rotate = matRotation;
+    pOut->m_translate = Unk_NiPoint3(ptPos);
+}
 
 // @0x141461a80
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
