@@ -3,6 +3,15 @@
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/cptred.h"
 class CItemData;
+class CItemStatus;
+class CItemUgc;
+class CItemGem;
+class CItemCustomMusicScore;
+class CItemSocket;
+class CItemCoupleInfo;
+class CItemTransfer : public CPtred { public: class CItemBinding; CItemTransfer(); unsigned char FUN_1406352b0(); unsigned char FUN_1406351f0(void*, void*); __int64 FUN_140634fa0(); void FUN_140634fc0(unsigned); __int64 FUN_140634fe0(); void FUN_140635000(unsigned); void FUN_140635300(); char m_pad18[0x40]; };   // 0x58, ctor 0x140634820
+MS2_CHECK_SIZE(CItemTransfer, 0x58);
+struct Unk_ItemSlot188 { Unk_ItemSlot188(); ~Unk_ItemSlot188(); void* m_pad; void* m_p; };   // 16-byte handle (ctor 0x14052c0d0, dtor 0x14027e150)
 class Unk_UserProxyItemData;
 class COutputStream;
 class CInputStream;
@@ -37,7 +46,7 @@ public:
   // Remaining primary slots verified from CItem's exe vftable by a1.
   virtual void vfunc_1();
   virtual void vfunc_2();
-  virtual int vfunc_3(int);
+  virtual void vfunc_3(int);
   virtual int vfunc_4();
   virtual void vfunc_5(bool);
   int FUN_1405268f0();
@@ -141,8 +150,73 @@ public:
   unsigned char FUN_1405269f0();
   void FUN_1405269d0(unsigned char);
   int FUN_1405291f0();
+  // item.cpp (w88): name is the address.
+  bool FUN_140525680();
+  bool FUN_140525730();
+  bool FUN_140525790();
+  int FUN_1405257f0();
+  int FUN_1405258f0();
+  int FUN_140525920();
+  void FUN_140525950();
+  int FUN_1405259e0();
+  int FUN_140525a30();
+  bool FUN_140525c00();
+  bool FUN_140525f60();
+  __int64 FUN_140525fc0();
+  bool FUN_140526160();
+  void FUN_140526470(unsigned);
+  void FUN_140526640(unsigned);
+  bool FUN_140526850();
+  unsigned FUN_140526cc0(int);
+  int FUN_140526d30();
+  void FUN_140526f50(unsigned, unsigned char);
+  __int64 FUN_140527440();
+  void FUN_1405273f0(unsigned);
+  void FUN_140527490(unsigned);
+  unsigned FUN_1405274e0();
+  unsigned FUN_140527530();
+  int FUN_140527580();
+  void FUN_1405275f0();
+  __int64 FUN_140527640();
+  bool FUN_1405279f0();
+  unsigned FUN_140527a20();
+  unsigned FUN_1405281e0();
+  unsigned short FUN_1405282d0();
+  __int64 FUN_140528420();
+  void FUN_140528470(class CUgcItemLook*);
+  class CUgcItemLook* FUN_1405284f0();
+  __int64 FUN_140528540();
+  bool FUN_140528930();
+  void FUN_140528b00(const CStringW&);
+  CStringW* FUN_140528b40();
+  void FUN_140525590(__int64);
+  CItemCustomMusicScore* FUN_140527960();
+  CItemCustomMusicScore* FUN_140527990();
+  CItemSocket* FUN_1405279c0();
+  CItemGem* FUN_140527900();
+  void FUN_140529210(unsigned, __int64);
+  void FUN_1405292c0(const CItemCoupleInfo&);
+  void FUN_140529330(const CStringW&);
+  __int64 FUN_1405293b0();
+  unsigned char FUN_1405294a0();
+  void FUN_140529500(const CStringW&);
+  CStringW* FUN_140529540();
+  void FUN_140529600();
+  bool FUN_140529680(int);
+  void FUN_140529fd0(CString);
+  void FUN_14052a210(unsigned);
+  void FUN_14052a230(unsigned);
+  void FUN_14052a260(unsigned);
+  bool FUN_14052a290(unsigned);
+  bool FUN_14052a2d0();
+  bool FUN_14052a330();
+  bool FUN_14052a390();
+  __int64 FUN_14052a480();
+  int FUN_14052b340(unsigned);
+  bool FUN_14052b710(unsigned*, __int64*);
+  unsigned char FUN_14052b630();
 private:
-  void *m_18;
+  CString m_strName;                    // +0x18
   int m_20;
   int m_24;
   unsigned m_28;
@@ -173,7 +247,7 @@ private:
   __int64 m_a8;
   int m_b0;
   int m_b4;
-  void *m_b8;
+  CStringW m_strB8;                     // +0xb8
   __int64 m_c0;
   int m_c8;
   unsigned short m_cc;
@@ -183,28 +257,18 @@ private:
   char m_pad_d5[3];
   int m_d8;
   int m_dc;
-  void *m_e0;
+  CStringW m_strE0;                     // +0xe0
   MS2Ptr<CItemData> m_spData;           // +0xe8 (the pointer is at +0xf0): the item's table row
-  void *m_f8;
-  void *m_100;
-  void *m_108;
-  void *m_110;
-  void *m_118;
-  void *m_120;
-  void *m_128;
-  void *m_130;
-  void *m_138;
-  void *m_140;
-  void *m_148;
-  void *m_150;
-  void *m_158;
-  void *m_160;
-  void *m_168;
-  void *m_170;
-  void *m_178;
-  void *m_180;
-  void *m_188;
-  void *m_190;
+  MS2Ptr<CItemStatus> m_spStatus;       // +0xf8 enchant/status block (CItemStatus, 0x48)
+  MS2Ptr<Unk_UserProxyItemData> m_spProxy;   // +0x108
+  MS2Ptr<CItemUgc> m_spUgc;             // +0x118 (CItemUgc, 0xd8)
+  MS2Ptr<CItemGem> m_spGem;             // +0x128 (CItemGem, 0x28)
+  MS2Ptr<CItemTransfer> m_spTransfer;   // +0x138 (CItemTransfer, 0x58)
+  MS2Ptr<CItemCustomMusicScore> m_spMusic;   // +0x148 (0x78)
+  MS2Ptr<CItemSocket> m_spSocket;       // +0x158 (CItemSocket, 0xf0)
+  MS2Ptr<CItemCoupleInfo> m_spCouple;   // +0x168 (CItemCoupleInfo, 0x30)
+  MS2Ptr<CItemTransfer::CItemBinding> m_spBinding;   // +0x178 (CItemTransfer::CItemBinding, 0x28)
+  Unk_ItemSlot188 m_slot188;            // +0x188 (ctor 0x14052c0d0 zeroes +8; dtor 0x14027e150)
   unsigned char m_198;
   char m_pad_199[3];
   int m_19c;
