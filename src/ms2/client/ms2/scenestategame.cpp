@@ -211,6 +211,7 @@ public:
     MS2Ptr<class CPortal> FUN_141bc2800(int nId);            // a field object by id
     void FUN_141bc3140(int nId, int nVisible, int nEnabled, int nHidden);
     void FUN_141bc31d0(int nId, Unk_StreamPoint kPos, Unk_StreamPoint kScale);
+    void FUN_141bc5e20(int nType);                          // refresh the field objects of a type (0xcd)
 };
 Unk_SSGWorld* FUN_1403ed2d0();
 
@@ -453,7 +454,7 @@ public:
 Unk_SSGProfile* FUN_140cc18a0();
 class Unk_SSGChannelDialog { public: void FUN_141ad2ea0(int nChannel); };
 Unk_SSGChannelDialog* FUN_14136f520(int nId);
-class Unk_SSG1c0d90 { public: void FUN_1404766e0(); };
+class Unk_SSG1c0d90 { public: void FUN_1404766e0(); bool FUN_14047f0f0(); bool FUN_14047f300(); };   // game rules (the two are pet-taming event checks)
 Unk_SSG1c0d90* FUN_1401c0d90();
 class Unk_SSG3ed2a0 { public: void FUN_1407ce240(); };
 Unk_SSG3ed2a0* FUN_1403ed2a0();
@@ -772,7 +773,7 @@ template <class A, class B> void Unk_SSGFormatMsg(int nStringId, int nA, int nB,
 // 0x4d..0xf2: forwarders to the feature managers
 class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_141861f60(CInPacket& packet); void FUN_141863630(int nId, bool bHas, CString strName); };
 Unk_SSGad4b90* FUN_140ad4b90();
-class Unk_SSG9670b0 { public: void FUN_14122f270(CInPacket& packet); };
+class Unk_SSG9670b0 { public: void FUN_14122f270(CInPacket& packet); void FUN_141232260(); };
 Unk_SSG9670b0* FUN_1409670b0();
 class Unk_SSG97a780                                         // the buddy manager
 {
@@ -3479,6 +3480,165 @@ void CSceneStateGame::FUN_141735410(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141735410, CSceneStateGame, FUN_141735410, 29, 0x1B221102);
 
+class Unk_SSGMastery
+{
+public:
+    CStringW FUN_14066bdd0(int nType);                      // the mastery name
+    CStringW FUN_14066c690(int nType, int nGrade);          // the mastery grade name
+    int FUN_14066b050(int nType);                           // the max grade
+    int FUN_14066ba00(int nType);                           // nonzero: a grade change refreshes the world (0xcd)
+    int FUN_14066b4c0(unsigned int nRecipe);                // recipe / 1000 (mastery type)
+    int FUN_14066b4e0(unsigned int nRecipe);                // recipe % 1000
+};
+Unk_SSGMastery* FUN_1409670c0();
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);   // fmt one-argument format
+// Packet 0xcd: life-skill mastery (exp and grade changes, rewards, recipe unlocks).
+class Unk_SSGFishData { public: CStringW FUN_1403b2240(int nGrade); };     // the fishing grade name
+Unk_SSGFishData* FUN_1403b4740();
+class UIFishingBookDialog : public UIDialog { public: void FUN_140f41a10(); };     // refresh
+UIFishingBookDialog* FUN_140cdecd0(int nId);                 // GetDialog<UIFishingBookDialog>
+class UIPlayInstrumentDialog : public UIDialog { public: void FUN_14100c2c0(); };  // refresh
+UIPlayInstrumentDialog* FUN_140d0c040(int nId);              // GetDialog<UIPlayInstrumentDialog>
+class Unk_SSGMasteryMgr { public: void FUN_140b6d710(int nRecipeId); };
+Unk_SSGMasteryMgr* FUN_140e5ca20();
+CStringW FUN_140938ae0(CStringW sFormat, const unsigned& v0);   // FUN_14028dfa0<unsigned> (out-of-unit instance)
+extern ATL::CAtlMap<unsigned int, int> DAT_143ab31a0;       // mastery id -> value
+// @0x141735440
+void CSceneStateGame::FUN_141735440(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nExp = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nSubType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nOldGrade = static_cast<PC*>(static_cast<PCBase*>(pMyPC))->FUN_1416627d0(nType);
+        unsigned int nGain = nExp - static_cast<PC*>(static_cast<PCBase*>(pMyPC))->FUN_141662750(nType);
+        static_cast<PC*>(static_cast<PCBase*>(pMyPC))->FUN_141662790(nType, nExp);
+        int bGradeUp = static_cast<PC*>(static_cast<PCBase*>(pMyPC))->FUN_1416627d0(nType) != nOldGrade;
+        if (nType == 1)
+        {
+            if (bGradeUp)
+            {
+                int nGrade = static_cast<PC*>(static_cast<PCBase*>(pMyPC))->FUN_1416627d0(1);
+                CStringW strGrade = FUN_1403b4740()->FUN_1403b2240(nGrade);
+                if (nGrade == FUN_1409670c0()->FUN_14066b050(1))
+                    FUN_1412751b0(FUN_1405c2690(CStringW(L"s_fishing_grade_up_max"), strGrade), 10);
+                else
+                    FUN_1412751b0(FUN_1405c2690(CStringW(L"s_fishing_grade_up"), strGrade), 10);
+            }
+            UIFishingBookDialog* pBook = FUN_140cdecd0(0x4ee6);
+            if (pBook != 0 && pBook->FUN_141924630())
+                pBook->FUN_140f41a10();
+        }
+        else if (nType == 2)
+        {
+            UIPlayInstrumentDialog* pInstrument = FUN_140d0c040(0x4eec);
+            if (pInstrument != 0 && pInstrument->FUN_141924630())
+                pInstrument->FUN_14100c2c0();
+            if (nGain > 0 && nOldGrade != 4)
+            {
+                CStringW strMsg = FUN_140938ae0(CStringW(L"s_play_instrument_mastery"), nGain);
+                FUN_1412751b0(strMsg, 0x14);
+            }
+        }
+        else if (nType == 0xb)
+        {
+            int bEvent = 0;
+            if (nSubType == 0xc80)
+            {
+                if (FUN_1401c0d90()->FUN_14047f0f0())
+                    bEvent = 1;
+            }
+            else
+            {
+                if (FUN_1401c0d90()->FUN_14047f300())
+                    bEvent = 1;
+            }
+            if (bEvent)
+            {
+                CStringW strMsg = FUN_140938ae0(CStringW(L"s_pettaming_mastery_event"), nGain);
+                FUN_1412751b0(strMsg, 0x14);
+            }
+            else
+            {
+                CStringW strMsg = FUN_140938ae0(CStringW(L"s_pettaming_mastery"), nGain);
+                FUN_1412751b0(strMsg, 0x14);
+            }
+        }
+        else
+        {
+            if (nType == 5 || nType == 6)
+                FUN_1409670b0()->FUN_141232260();
+            UIMasteryDialog* pMastery = FUN_140faf160(0x4f1e);
+            if (pMastery != 0)
+                pMastery->FUN_140eb4c10(nType, bGradeUp);
+            if (bGradeUp)
+            {
+                Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+                if (pDlg != 0)
+                    pDlg->FUN_141938190();
+            }
+            if (FUN_1409670c0()->FUN_14066ba00(nType))
+                FUN_1403ed2d0()->FUN_141bc5e20(6);
+        }
+    }
+    else if (nMode == 1)
+    {
+        int nRecipe = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab31a0.SetAt(nRecipe, 1);
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            for (int i = 0; i < nCount; i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nAmount = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+                pChat->FUN_141abf6e0(nItemId, nAmount);
+            }
+        }
+        UIMasteryDialog* pMastery = FUN_140faf160(0x4f1e);
+        if (pMastery != 0)
+        {
+            int nType = FUN_1409670c0()->FUN_14066b4c0(nRecipe);
+            int nIndex = FUN_1409670c0()->FUN_14066b4e0(nRecipe);
+            pMastery->FUN_140eb0bf0(nType, nIndex);
+            pMastery->FUN_140eb4be0();
+        }
+        Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+        if (pDlg != 0)
+            pDlg->FUN_141938190();
+    }
+    else if (nMode == 2)
+    {
+        int nType = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            for (int i = 0; i < nCount; i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nAmount = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+                pChat->FUN_141abf6e0(nItemId, nAmount);
+            }
+        }
+        UIMasteryDialog* pMastery = FUN_140faf160(0x4f1e);
+        if (pMastery != 0)
+            pMastery->FUN_140eb5260(nType);
+    }
+    else if (nMode == 3)
+    {
+        int nRecipeId = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        FUN_140e5ca20()->FUN_140b6d710(nRecipeId);
+    }
+}
+MS2_REPLACE_METHOD(0x141735440, CSceneStateGame, FUN_141735440, 2437, 0x2F06ECD1);
+
 // @0x14173a0d0
 void CSceneStateGame::FUN_14173a0d0(CInPacket& packet)
 {
@@ -4954,13 +5114,6 @@ CString FUN_140298360(const char* pszLeft, const CString& strRight);   // ATL::o
 extern ATL::CAtlArray<int> DAT_143ab3128;                    // templates whose first use was announced
 int FUN_1402bacf0(ATL::CAtlArray<int>& arr, const int& n);  // index of n (-1 if absent)
 extern CString DAT_143ae79e0;                                // the first use sound event
-class Unk_SSGMastery
-{
-public:
-    CStringW FUN_14066bdd0(int nType);                      // the mastery name
-    CStringW FUN_14066c690(int nType, int nGrade);          // the mastery grade name
-};
-Unk_SSGMastery* FUN_1409670c0();
 void FUN_141275460(int nStringId, int nA, int nB, const fmt::ArgList& args);
 // fmt center notices with one / two arguments (the same template as actionkeyobject.cpp's).
 template <class A> void Unk_AkoMessage(int nStringId, int nA, int nB, const A& x)

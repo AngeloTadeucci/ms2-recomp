@@ -160,6 +160,8 @@ public:
     void FUN_141663060(int n);
     void FUN_1416630a0(int n);
     void FUN_141662790(int nIndex, int nValue);
+    unsigned int FUN_141662750(int nIndex);                 // 0x141662750 mastery exp (+0x1150[nIndex], 0..11)
+    int FUN_1416627d0(int nIndex);                          // 0x1416627d0 mastery grade of the exp
     void FUN_141660fc0(CString str);
     void FUN_14165f090(int n);
     void FUN_141653d10(MS2Ptr<CItem> spItem);
