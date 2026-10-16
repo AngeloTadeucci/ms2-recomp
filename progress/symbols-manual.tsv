@@ -2052,3 +2052,13 @@ D3DXFloat16To32Array	14230396f	func
 ??0CItemTransfer@@QEAA@XZ	140634820	func
 ??0CItemSocket@@QEAA@XZ	140620320	func
 ??1Unk_ItemSlot188@@QEAA@XZ	14027e150	func
+??0CDotDamageRecord@@QEAA@XZ	14175af90	func
+??1CDotDamageRecord@@UEAA@XZ	14175b590	func
+??0?$MS2Ptr@VCDotDamageRecord@@@@QEAA@PEAVCDotDamageRecord@@@Z	141099c70	func
+??1?$MS2Ptr@VCDotDamageRecord@@@@QEAA@XZ	141099ed0	func
+??C?$MS2Ptr@VCDotDamageRecord@@@@QEBAPEAVCDotDamageRecord@@XZ	141186320	func
+?kInvalidUpdateIndex@SceneGraphData@SceneGraphService@ecr@@2IB	1430ad42c	data
+??0ASObj@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422ba780	func
+?DAT_143ab2954@@3HA	143ab2954	data
+?DAT_143ab32e8@@3VUnk_SSGCountMapMap@@A	143ab32e8	data
+?DAT_143ab32f8@@3VUnk_SSGCountMap@@A	143ab32f8	data
