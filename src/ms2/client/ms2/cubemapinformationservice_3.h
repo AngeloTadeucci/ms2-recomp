@@ -117,6 +117,9 @@ public:
     Cube* FUN_1410b8ab0(Unk_StreamPoint pt);
     Cube* FUN_1410b8b00(int nKey);
     Cube* FUN_1410b8be0(const Unk_CMISEntityRef& ref);
+    Cube* FUN_1410b8c90(const Unk_CMISEntityRef& ref);
+    Cube* FUN_1410b8d90(Cube* pBase, int nOffset, int nField44);
+    Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();
     void FUN_1410d0310();

@@ -132,6 +132,7 @@ Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // e
 bool FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+Unk_Int3* FUN_14112ca20(Unk_Int3* pA, Unk_Int3* pOut, Unk_Int3* pB);   // point add
 const int* FUN_1402fbd20(const int*, const int*);               // std::min
 const int* FUN_1404eb7e0(const int*, const int*);               // std::max
 MS2Ptr<Cube>* FUN_141127cd0(Unk_CMISTree<260>*, const int*);             // operator[]: the cube of a key
@@ -379,6 +380,53 @@ Cube* CubeMapInformationService::FUN_1410b8be0(const Unk_CMISEntityRef& ref)
     if (FUN_141127800(&itFind, FUN_1411520f0(&fa8, &itEnd)))
         return FUN_141128780(&itFind)->second.get();
     return 0;
+}
+
+// @0x1410b8c90
+Cube* CubeMapInformationService::FUN_1410b8c90(const Unk_CMISEntityRef& ref)
+{
+    Unk_1401cd100 none(0);
+    if (ref.FUN_140965410(none))
+        return 0;
+    Unk_CMISIter<259> itFind, itEnd;
+    FUN_1411581c0(&fa8, &itFind, &ref);
+    if (FUN_141127800(&itFind, FUN_1411520f0(&fa8, &itEnd))) {
+        MS2Ptr<Cube> spCube(FUN_141128780(&itFind)->second);
+        if (spCube->field48 == 0)
+            return 0;
+        return spCube.get();
+    }
+    return 0;
+}
+// @0x1410b8d90
+Cube* CubeMapInformationService::FUN_1410b8d90(Cube* pBase, int nOffset, int nField44)
+{
+    Cube* pCube = 0;
+    if (pBase != 0 && nOffset != 0) {
+        Unk_Int3 off = FUN_1408a0400(nOffset);
+        Unk_Int3 tmp;
+        pCube = FUN_1410b8a60(*FUN_14112ca20(&off, &tmp, &pBase->position));
+        if (pCube != 0 && pCube->field44 == nField44)
+            return pCube;
+        else
+            return 0;
+    }
+    return pCube;
+}
+// @0x1410b9080
+Cube* CubeMapInformationService::FUN_1410b9080(Cube* pBase, int nOffset)
+{
+    Cube* pCube = 0;
+    if (pBase != 0 && nOffset != 0) {
+        Unk_Int3 off = FUN_1408a0400(nOffset);
+        Unk_Int3 tmp;
+        pCube = FUN_1410b8a60(*FUN_14112ca20(&off, &tmp, &pBase->position));
+        if (pCube != 0 && pCube->field70 != 0)
+            return pCube;
+        else
+            return 0;
+    }
+    return pCube;
 }
 
 // @0x1410ce800
