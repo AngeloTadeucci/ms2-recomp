@@ -30,6 +30,7 @@
 #include "pcbase.h"
 #include "ms2/placeholder/fittingdollpc.h"
 #include "ms2/placeholder/stringidinterface.h"
+#include "ms2/placeholder/mstime.h"
 #include "interactobject.h"
 #include "worldservice.h"
 #include "ms2/commonfiles/itemgift.h"
@@ -81,7 +82,7 @@ class Unk_GuildEventMgr { public: bool FUN_14047e880(); bool FUN_14047eca0(); };
 Unk_GuildEventMgr* FUN_1401c0d90();
 class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
-class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); void FUN_14196b620(); void FUN_14196e590(); void FUN_14196e2c0(); void FUN_141974120(const CString& code); void FUN_141974190(const CStringW& guildName); };
+class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); void FUN_14196b620(); void FUN_14196e590(); void FUN_14196e2c0(); void FUN_14196c1d0(); void FUN_141974930(); void FUN_141973fd0(int gradeIndex); void FUN_141974120(const CString& code); void FUN_141974190(const CStringW& guildName); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
 class Unk_GuildNotifyCenter {
 public:
@@ -189,11 +190,35 @@ MS2_CHECK_SIZE(Unk_GuildBuddyRef, 0x10);
 class Unk_GuildBuddyMgr { public: Unk_GuildBuddyRef FUN_140ae4950(const CStringW& name); };
 Unk_GuildBuddyMgr* FUN_14097a780();
 void FUN_1404ef970(Unk_GuildRef* dst, const MS2Ptr<CGuildMember>& src);   // MS2Ptr<CGuildMember> assignment into raw storage
+bool FUN_1404effe0(Unk_GuildRef* grade, int null);   // the grade reference's operator==
+int FUN_140267ef0(const Unk_GuildTriple* left, const Unk_GuildTriple* right);   // all three components equal
+// An achievement (trophy) table row reference (see uimainplayerinfo.cpp).
+class Unk_GuildAchieveRow { public: char m_pad_00[0x38]; int m_category; };
+class Unk_GuildAchieveRowPtr {
+public:
+    ~Unk_GuildAchieveRowPtr();                              // 0x1401597b0
+    bool FUN_140159920();                                   // == null
+    Unk_GuildAchieveRow* FUN_140159a80();                   // operator->
+private:
+    void* m_00;
+    void* m_p;
+};
+MS2_CHECK_SIZE(Unk_GuildAchieveRowPtr, 0x10);
+Unk_GuildAchieveRowPtr FUN_14015d9e0(int achieveId);
+__int64 FUN_140869440();                                    // the server time
+CMsTime FUN_1406c47a0(__int64 time);
+CStringW FUN_14028de60(int id);
+CStringW FUN_14083bab0(const CMsTime& time, CStringW separator);
+CStringW FUN_140656190(const wchar_t* format, const CStringW& arg0, const CStringW& arg1);
+CStringW FUN_140d2d8a0(int achieveId, int grade, CStringW text, CStringW date);
+CStringW FUN_14062b4f0(CStringW key, const int* arg);
 // Client options (+5: refuse guild invitations).
 struct Unk_GuildClientOptions { bool m_flags[5]; bool m_refuseGuildInvite; };
 class Unk_GuildOptionsMgr;
 Unk_GuildOptionsMgr* FUN_1409a8b10();
 Unk_GuildClientOptions* FUN_140ae6540(Unk_GuildOptionsMgr* mgr);
+struct Unk_GuildBattleOptions { bool m_promptArenaJoin; };
+Unk_GuildBattleOptions* FUN_140c9b8b0(Unk_GuildOptionsMgr* mgr);
 // The local player's busy state (a pending party/trade request); see partymanager.cpp.
 class Unk_GuildBusyState { public: bool FUN_140743550(); };
 class Unk_GuildBusyStatePtr {
@@ -2272,3 +2297,262 @@ void CGuildManager::FUN_1413c1840(CInPacket& packet)
     FUN_1412751b0(FUN_1408116a0(0x3b5, value), 0xd);
 }
 MS2_REPLACE_METHOD(0x1413C1840, CGuildManager, FUN_1413c1840, 281, 0xD98EC819);
+
+// MS2-FUNCTIONAL: the grade reference is guilddef_1's POD Unk_GuildRef with an explicit FUN_1404eeaa0 call, so the
+// exe's EH state for its destructible type is missing.
+// @0x1413c1960
+void CGuildManager::FUN_1413c1960(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW changer = StringIdInterface(packet).FUN_141024e60();
+    int index = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CGuildGrade grade;
+    grade.FUN_1404c71d0(packet);
+    Unk_GuildRef current;
+    FUN_1404d0860(&current, index);
+    if (FUN_1404effe0(&current, 0)) {
+        FUN_1404eeaa0(&current);
+        return;
+    }
+    FUN_1404f0b70(&current)->FUN_1404c70f0(grade.grade, grade.name, grade.permissions);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_141973fd0(index);
+    MS2Ptr<CGuildMember> me = FUN_1404cf9f0(FUN_1413c7c20());
+    if (me.get() != 0 && me->fb4 == index)
+        FUN_1412751b0(FUN_14052bd00(0x3a7, FUN_1413c7c20()), 0xd);
+    FUN_1404eeaa0(&current);
+}
+MS2_REPLACE_METHOD(0x1413C1960, CGuildManager, FUN_1413c1960, 741, 0xB97EA301);
+
+// @0x1413c1c50
+void CGuildManager::FUN_1413c1c50(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int focus = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int value = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    FUN_1404d17e0(focus, value);
+}
+MS2_REPLACE_METHOD(0x1413C1C50, CGuildManager, FUN_1413c1c50, 204, 0x8C4BE824);
+
+// A member's character data changed.
+// MS2-FUNCTIONAL: the exe frame carries a /GS cookie (its Unk_GuildTriple is an int[3] array in the original, see the
+// FUN_140267ef0 loop); the shared header models it as three ints, so no cookie is emitted here.
+// @0x1413c1d30
+void CGuildManager::FUN_1413c1d30(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    Unk_GuildMemberData data;
+    data.FUN_1404c9670(&packet);
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(name);
+    if (member == 0)
+        return;
+    bool changed = FUN_140267ef0(&member->data.f2c, &data.f2c) == 0;
+    member->data.FUN_1404ca1a0(data);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f)) {
+        if (changed)
+            dialog->FUN_14196b620();
+        dialog->FUN_141973b20(name);
+    }
+}
+MS2_REPLACE_METHOD(0x1413C1D30, CGuildManager, FUN_1413c1d30, 457, 0x300F88FD);
+
+// @0x1413c1f00
+void CGuildManager::FUN_1413c1f00(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(name);
+    if (member == 0)
+        return;
+    member->data.FUN_1404c95f0(packet);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_141973b20(name);
+}
+MS2_REPLACE_METHOD(0x1413C1F00, CGuildManager, FUN_1413c1f00, 292, 0x1D49DD04);
+
+// A guild member reached an achievement grade.
+// @0x1413c2030
+void CGuildManager::FUN_1413c2030(CInPacket& packet)
+{
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int achieveId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int grade = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int kind = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+    Unk_GuildAchieveRowPtr row = FUN_14015d9e0(achieveId);
+    if (row.FUN_140159920())
+        return;
+    if (row.FUN_140159a80()->m_category == 8)
+        return;
+    CMsTime now = FUN_1406c47a0(FUN_140869440());
+    CStringW suffix = FUN_14028de60(0x780);
+    CStringW date = FUN_14083bab0(now, CStringW(L"/"));
+    CStringW text = FUN_140656190(L"{0} {1}", name, suffix);
+    CStringW detail = FUN_140d2d8a0(achieveId, grade, text, date);
+    CStringW message;
+    if (kind == 2)
+        message = FUN_140632a60(0x3b6, name, detail);
+    else
+        message = FUN_140632a60(0x3b7, name, detail);
+    FUN_1412751b0(message, 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C2030, CGuildManager, FUN_1413c2030, 915, 0x7E9C85B6);
+
+// @0x1413c23d0
+void CGuildManager::FUN_1413c23d0(CInPacket& packet)
+{
+    Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f);
+    if (dialog == 0)
+        return;
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        int value0 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int value1 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CGuildMember> member = FUN_1404cf9f0(name);
+        if (member.get() != 0) {
+            member->fe0 = value0;
+            member->fe4 = value1;
+            dialog->FUN_141973b20(name);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413C23D0, CGuildManager, FUN_1413c23d0, 440, 0x7F49B151);
+
+// A member gained guild contribution.
+// @0x1413c2590
+void CGuildManager::FUN_1413c2590(CInPacket& packet)
+{
+    Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f);
+    if (dialog == 0)
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int gained = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int weekly = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int total = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(name);
+    if (member.get() != 0) {
+        member->fe8 = weekly;
+        member->fec = total;
+        dialog->FUN_141973b20(name);
+    }
+    if (gained > 0 && FUN_141b70f50(name, FUN_1413c7c20()) == true)
+        FUN_1412751b0(FUN_14062b4f0(CStringW(L"s_guild_gain_contribution"), &gained), 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C2590, CGuildManager, FUN_1413c2590, 702, 0xD91F084E);
+
+// @0x1413c2860
+void CGuildManager::FUN_1413c2860(CInPacket& packet)
+{
+    int level = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    FUN_1404d1140(level);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196c1d0();
+}
+MS2_REPLACE_METHOD(0x1413C2860, CGuildManager, FUN_1413c2860, 114, 0x5145F95F);
+
+// The guild battle matching finished.
+// @0x1413c28e0
+void CGuildManager::FUN_1413c28e0(CInPacket& packet)
+{
+    bool matched = FUN_14028d780(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    CStringW message = FUN_14028de60(0x3bf);
+    if (matched) {
+        FUN_141276180(s_strGuildBattleMatchingSuccess, "");
+        FUN_141276180(s_strGuildBattleMatchingNotice, "");
+    } else {
+        message = FUN_14028de60(0x3c0);
+        FUN_141276180(s_strGuildBattleMatchingFail, "");
+    }
+    if (matched && FUN_140c9b8b0(FUN_1409a8b10())->m_promptArenaJoin) {
+        if (m_targetGuildId == 0) {
+            if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+                dialog->FUN_141974930();
+        } else {
+            CStringW text = FUN_14028de60(0x3c1);
+            MS2Ptr<CMsgBoxData> box = FUN_140d73d20(1, text, 0, CStringW(s_strGuildArenaJoin));
+            if (box.get()) {
+                box->FUN_141a01ca0(0x1e, 1, FUN_14028de60(0x2b8));
+                box->FUN_141a02460(1);
+                box->FUN_141a02480(1);
+                box->FUN_141a024a0(0);
+                FUN_140d73c60(box);
+            }
+        }
+    }
+    FUN_1412751f0(message, 1, 1);
+}
+MS2_REPLACE_METHOD(0x1413C28E0, CGuildManager, FUN_1413c28e0, 879, 0xB537B89A);
+
+// The guild battle season score changed.
+// @0x1413c2c60
+void CGuildManager::FUN_1413c2c60(CInPacket& packet)
+{
+    int score = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int wins = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int losses = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned oldScore = FUN_1404d0ff0();
+    FUN_1404d1060(score);
+    FUN_1404d12f0(wins);
+    FUN_1404d13d0(losses);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196c1d0();
+    Unk_GuildSeason* season = FUN_1404d3180();
+    unsigned newScore = FUN_1404d0ff0();
+    int oldTier = season->FUN_1404c6110(oldScore);
+    int newTier = season->FUN_1404c6110(newScore);
+    if (oldTier != newTier) {
+        CStringW tierName = FUN_1401a9d70()->FUN_141811980(0x2d, newTier);
+        CStringW message = FUN_14052bd00(0x3b8, tierName);
+        FUN_1412751b0(message, 0xd);
+    }
+}
+MS2_REPLACE_METHOD(0x1413C2C60, CGuildManager, FUN_1413c2c60, 480, 0x34BB3C11);
+
+// A guild battle ended (won / lost against the named guild).
+// @0x1413c2e50
+void CGuildManager::FUN_1413c2e50(CInPacket& packet)
+{
+    bool won = FUN_14028d780(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW message;
+    if (guildName.GetLength() < 1)
+        guildName = L"Unknown";
+    if (won)
+        message = FUN_14052bd00(0x3bb, guildName);
+    else
+        message = FUN_14052bd00(0x3bc, guildName);
+    FUN_1412751b0(message, 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C2E50, CGuildManager, FUN_1413c2e50, 354, 0x6F67FBA0);
+
+// @0x1413c2fc0
+void CGuildManager::FUN_1413c2fc0(CInPacket& packet)
+{
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW message = FUN_14052bd00(0x3b9, guildName);
+    FUN_1412751b0(message, 0xd);
+    FUN_141276180(s_strGuildBattleApply, "");
+}
+MS2_REPLACE_METHOD(0x1413C2FC0, CGuildManager, FUN_1413c2fc0, 176, 0x2422FBEB);
+
+// @0x1413c3080
+void CGuildManager::FUN_1413c3080(CInPacket& packet)
+{
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW message = FUN_14052bd00(0x3ba, guildName);
+    FUN_1412751b0(message, 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C3080, CGuildManager, FUN_1413c3080, 128, 0x1EA1580C);
+
+// @0x1413c3110
+void CGuildManager::FUN_1413c3110(CInPacket& packet)
+{
+    FUN_1404d3600(static_cast<CInputStream&>(packet).vfunc_o8_3());
+}
+MS2_REPLACE_METHOD(0x1413C3110, CGuildManager, FUN_1413c3110, 78, 0x409DBFAD);
