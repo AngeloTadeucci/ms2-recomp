@@ -1498,3 +1498,14 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ??0Unk_IconItemPtr@@QEAA@AEBV0@@Z	1403bb3b0	func
 ??1Unk_IconItemPtr@@QEAA@XZ	1401b50d0	func
 ??1Unk_LapenPtr@@QEAA@XZ	1405b6e60	func
+??0Unk_UtilColor4@@QEAA@MMMM@Z	1408a86a0	func
+??0Unk_UtilNxVec3@@QEAA@XZ	140a003a0	func
+??0Unk_UtilNxVec3@@QEAA@AEBU0@@Z	140a00300	func
+?DAT_143af7e00@@3VUnk_UtilErrorDialog@@A	143af7e00	data
+??0Unk_HudPoint3@@QEAA@XZ	1405522f0	func
+?DAT_143ae5140@@3VNiFixedString@@A	143ae5140	data
+??0ASGameEntity@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422de590	func
+??0Unk_AdvHolderRef@@QEAA@PEAVUnk_AdvHolder@@@Z	140963df0	func
+??1Unk_AdvHolderRef@@QEAA@XZ	1409648b0	func
+??1Unk_AdvMountPtr@@QEAA@XZ	140788ed0	func
+?DAT_143ab2958@@3_JA	143ab2958	data
