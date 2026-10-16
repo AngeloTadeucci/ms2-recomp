@@ -18,7 +18,47 @@
 
 class GFxMovieBackground;
 class UIDialog;
-struct Unk_UisDlgSlot;
+class CGemBase;
+class UIObject;
+// UI dialog class id (the type name is from the OpenDialog log text; enumerator names are not recovered)
+enum eUIClassID
+{
+    eUI_3ed = 0x3ed,
+    eUI_2711 = 0x2711,
+    eUI_4e2d = 0x4e2d,
+    eUI_4e3e = 0x4e3e,
+    eUI_4e42 = 0x4e42,
+    eUI_4e49 = 0x4e49,
+    eUI_4e4a = 0x4e4a,
+    eUI_4e4d = 0x4e4d,
+    eUI_4e68 = 0x4e68,
+    eUI_4e6d = 0x4e6d,
+    eUI_4e6e = 0x4e6e,
+    eUI_4e73 = 0x4e73,
+    eUI_4e77 = 0x4e77,
+    eUI_4e78 = 0x4e78,
+    eUI_4e7c = 0x4e7c,
+    eUI_4e92 = 0x4e92,
+    eUI_4e97 = 0x4e97,
+    eUI_4e98 = 0x4e98,
+    eUI_4e9d = 0x4e9d,
+    eUI_4ec0 = 0x4ec0,
+    eUI_4ec1 = 0x4ec1,
+    eUI_4ec3 = 0x4ec3,
+    eUI_4eeb = 0x4eeb,
+    eUI_4ef3 = 0x4ef3,
+    eUI_4f14 = 0x4f14,
+    eUI_4f2d = 0x4f2d,
+    eUI_4f38 = 0x4f38,
+    eUI_4f3e = 0x4f3e,
+    eUI_4f5b = 0x4f5b,
+    eUI_4f6d = 0x4f6d,
+    eUI_4f76 = 0x4f76,
+    eUI_4f8d = 0x4f8d,
+    eUI_4f8e = 0x4f8e,
+    eUI_4f94 = 0x4f94,
+    eUI_4f97 = 0x4f97
+};
 
 // Opaque exe containers owned by this unit (CAtlMap-shaped, 0x48 bytes; their bodies are unit glue).
 struct Unk_UisMap
@@ -82,8 +122,9 @@ public:
     int FUN_141adcb40();                            // 0x141adcb40
     void FUN_141adcb60(int n);                      // 0x141adcb60
     void FUN_141add1b0(int nSlot, bool bOn);        // 0x141add1b0 enable one hot key slot
-    void FUN_141adc530(int nScene);                 // 0x141adc530 open a queued scene's dialogs
-    void FUN_141add040(int nScene);                 // 0x141add040 close a queued scene's dialogs
+    void FUN_141adc530(eUIClassID nClass);          // 0x141adc530 open a dialog
+    void FUN_141add040(eUIClassID nClass);          // 0x141add040 close a dialog
+    void FUN_141aec3e0();                           // 0x141aec3e0 reset the saved UI layout
     void FUN_141aec690();                           // 0x141aec690
     void FUN_141aec760(unsigned uTime);             // 0x141aec760
     void FUN_141aec9c0();                           // 0x141aec9c0
@@ -98,11 +139,16 @@ public:
     void FUN_141adc050();                                                   // 0x141adc050 close the closable dialogs
     void FUN_141aec8c0(int nMode);                                          // 0x141aec8c0
     void FUN_141ad9350();                                              // 0x141ad9350
+    void FUN_141ad93b0();                                              // 0x141ad93b0 check / rewrite version.xml
+    void FUN_141ad9650();                                              // 0x141ad9650 field background movie
     void FUN_141ad9980(char nStage);                                   // 0x141ad9980
     void FUN_141ad9a60(CStringA strBg);                                // 0x141ad9a60
     void FUN_141ad9b30();                                              // 0x141ad9b30
     bool FUN_141ad9b60();                                              // 0x141ad9b60
     void FUN_141ad9c10();                                              // 0x141ad9c10
+    void FUN_141ad9c40(MS2Ptr<CGemBase> spGem);                        // 0x141ad9c40 damage overlay: gem effect on
+    void FUN_141ad9d00(MS2Ptr<CGemBase> spGem);                        // 0x141ad9d00 damage overlay: gem effect off
+    void FUN_141ad9dc0();                                              // 0x141ad9dc0
     bool FUN_141ad9e20(HWND__* hWnd);                                  // 0x141ad9e20 window-proc style callback (argument unused)
     void FUN_141adbca0(int n);                                         // 0x141adbca0
     void FUN_141adbcd0(char b);                                        // 0x141adbcd0
@@ -110,19 +156,48 @@ public:
     void FUN_141adbe70();                                              // 0x141adbe70
     void FUN_141adbf30();                                              // 0x141adbf30
     void FUN_141adbf70(int n);                                         // 0x141adbf70
-    void FUN_141aebfa0(Unk_UisDlgSlot* pSlot);                   // 0x141aebfa0 register a dialog (class id / name tables)
-    void FUN_141aec080(Unk_UisDlgSlot* pSlot);                   // 0x141aec080
+    void FUN_141aebfa0(MS2Ptr<UIObject> spObj);                        // 0x141aebfa0 register an object (class id / name tables)
+    void FUN_141aec080(MS2Ptr<UIDialog> spDlg);                        // 0x141aec080 register a dialog
+    void FUN_141adb810();                                              // 0x141adb810
+    void FUN_141adb880();                                              // 0x141adb880
+    void FUN_141adb900(int n);                                         // 0x141adb900
+    void FUN_141adb9c0(const CStringW& str, int a, int b);             // 0x141adb9c0
+    void FUN_141adba40();                                              // 0x141adba40
+    int FUN_141adbb00();                                               // 0x141adbb00
+    void FUN_141adbfb0(void* p);                                       // 0x141adbfb0 vfunc_79 on every floating dialog
+    void FUN_141add6e0(int nMode);                                     // 0x141add6e0 set the mode (deferred while m_b120)
+    int FUN_141add730();                                               // 0x141add730
+    int FUN_141add860();                                               // 0x141add860 m_nMode
+    int FUN_141aec350();                                               // 0x141aec350 current field's name id
+    void FUN_141adc170();                                              // 0x141adc170
+    void FUN_141adc190();                                              // 0x141adc190
+    void FUN_141adc2c0();                                              // 0x141adc2c0
+    void FUN_141adc3d0();                                              // 0x141adc3d0
+    void FUN_141adc400();                                              // 0x141adc400
+    void FUN_141adc5d0(eUIClassID nClass);                                    // 0x141adc5d0 close a dialog (if open)
+    void FUN_141adc690(eUIClassID nClass);                                    // 0x141adc690 close-request a dialog (if open)
+    void FUN_141adc750(eUIClassID nClass);                                    // 0x141adc750 toggle a dialog
+    int FUN_141adc7f0(eUIClassID nClass);                              // 0x141adc7f0 dialog vfunc_73 (can open)
+    int FUN_141adc890(eUIClassID nClass);                              // 0x141adc890 dialog open
+    int FUN_141adc940(eUIClassID nClass);                              // 0x141adc940 dialog vfunc_55 (closed)
+    int FUN_141adc9e0(eUIClassID nClass);                              // 0x141adc9e0
+    void FUN_141adca70();                                              // 0x141adca70 TooltipManager.dispatchRefreshTooltip
+    MS2Ptr<UIDialog> FUN_141aec130(eUIClassID nClass);                 // 0x141aec130 dialog by class id
+    MS2Ptr<UIObject> FUN_141adcea0(eUIClassID nClass);                 // 0x141adcea0 object by class id
+    MS2Ptr<UIObject> FUN_141adcf50(const CStringA& strName);           // 0x141adcf50 object by name
+    void FUN_141add0b0(eUIClassID nClass);                             // 0x141add0b0
+    void FUN_141add120(eUIClassID nClass, int n);                      // 0x141add120
     // @@
 
     void* m_pEntitySvc28;                           // +0x28 (OnInit: FUN_14168ab40(service manager))
     void* m_pWorldSvc30;                            // +0x30 (OnInit: FUN_1411d15b0(service manager))
     Unk_UisPtr8 m_x38;                              // +0x38 ctor 0x1416ae2a0, dtor 0x1416aecf0
-    ATL::CAtlMap<unsigned long long, MS2Ptr<UIDialog> > m_mapA;                              // +0x40 ctor 0x141aed9e0, clear 0x141af0f00, dtor 0x141aee190
-    ATL::CAtlMap<int, MS2Ptr<UIDialog> > m_mapDlg;                            // +0x88 class id -> dialog, ctor 0x141aed8f0, clear 0x141af0df0
-    ATL::CAtlMap<CStringA, MS2Ptr<UIDialog>, ATL::CStringElementTraits<CStringA> > m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
+    ATL::CAtlMap<eUIClassID, MS2Ptr<UIObject> > m_mapA;                                       // +0x40 ctor 0x141aed9e0, clear 0x141af0f00, dtor 0x141aee190
+    ATL::CAtlMap<eUIClassID, MS2Ptr<UIDialog> > m_mapDlg;                            // +0x88 class id -> dialog, ctor 0x141aed8f0, clear 0x141af0df0
+    ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraits<CStringA> > m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
     int m_nMode;                                    // +0x118 initial 0x3ed
     int m_n11c;                                     // +0x11c
-    char m_b120;                                    // +0x120
+    bool m_b120;                                    // +0x120
     char m_pad_121[3];
     int m_n124;                                     // +0x124
     int m_n128;                                     // +0x128
