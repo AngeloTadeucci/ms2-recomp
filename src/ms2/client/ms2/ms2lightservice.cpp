@@ -239,7 +239,7 @@ void MS2LightService::OnPropertyUpdate(const efd::ClassID& callerID, egf::Entity
             LightEntityChanged(it->second, pEntity);
     }
 }
-MS2_REPLACE_METHOD(0x1414C0000, MS2LightService, OnPropertyUpdate, 227, 0x3922D2B1);
+MS2_REPLACE_METHOD_VIA(0x1414C0000, MS2LightService, egf::IPropertyCallback, OnPropertyUpdate, 227, 0x3922D2B1);
 
 // @0x1414c00f0
 void MS2LightService::vfunc_0(int nMap)
@@ -308,7 +308,7 @@ void MS2LightService::vfunc_3(int nMap)
     m_lightList.clear();
     m_changedLightList.clear();
 }
-MS2_REPLACE_METHOD(0x1414C0120, MS2LightService, vfunc_3, 722, 0xFEE50E8E);
+MS2_REPLACE_METHOD_VIA(0x1414C0120, MS2LightService, IWorldServiceCallback, vfunc_3, 722, 0xFEE50E8E);
 
 // @0x1414c0400
 void MS2LightService::vfunc_1(int nMap)
