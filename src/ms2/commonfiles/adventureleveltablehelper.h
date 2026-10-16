@@ -99,7 +99,7 @@ public:
     int CountClaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed);    // 0x140195f70
     void CollectMissionIds(std::set<unsigned>& setOut);         // 0x140196110
 
-    std::map<unsigned, unsigned> m_map10;       // +0x10 placeholder, never filled
+    std::set<unsigned> m_map10;                  // +0x10 placeholder, never filled (a set: the exe uses _Tset_traits here)
     std::map<unsigned, unsigned> m_map20;       // +0x20 placeholder, never filled
     std::vector<unsigned> m_vecLevels;          // +0x30 reward levels in file order
     std::map<unsigned, CAdventureLevelReward> m_mapReward;      // +0x48
