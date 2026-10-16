@@ -3,32 +3,24 @@
 // MS2-RANGE: 0x14145bd70-0x1414723a0 .text$mn
 // MS2-RANGE: 0x1400f7440-0x1400f77f0 .text$di
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ?New@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@PEAX@Z 0x1414683b0 ; unique
-// MS2-PIN: ??0?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@QEAA@XZ 0x141468580 ; prop
-// MS2-PIN: ??0?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@IMMMI@Z 0x1414685c0 ; unique
+// MS2-PIN: ??0?$Unk_SocketPtr@VCMagicData@@@@QEAA@PEAVCMagicData@@@Z 0x141468900 ; unique
 // MS2-PIN: ??0?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@QEAA@XZ 0x141468930 ; unique
-// MS2-PIN: ??1?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@QEAA@XZ 0x141468ba0 ; unique
-// MS2-PIN: ??1?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@XZ 0x141468be0 ; prop
-// MS2-PIN: ??1?$Unk_SocketPtr@VCMagicData@@@@QEAA@XZ 0x141468cd0 ; unique
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@QEBAAEAPEAU?$_Tree_node@HPEAX@2@XZ 0x141469300 ; unique
 // MS2-PIN: ??C?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@QEBAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@XZ 0x141469310 ; unique
-// MS2-PIN: ??C?$Unk_SocketPtr@VCMagicData@@@@QEBAPEAVCMagicData@@XZ 0x141469350 ; unique
-// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@CAXPEAV?$Unk_SocketPtr@VCMagicData@@@@_K@Z 0x141469730 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@QEAA_KAEBV?$Unk_SocketPtr@VCMagicData@@@@@Z 0x141469620 ; unique
 // MS2-PIN: ?CreateNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x141469790 ; unique
-// MS2-PIN: ?FreeNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141469850 ; prop
+// MS2-PIN: ?DisableAutoRehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXXZ 0x141469810 ; unique
+// MS2-PIN: ?EnableAutoRehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXXZ 0x141469830 ; unique
+// MS2-PIN: ?FreeNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141469850 ; unique
+// MS2-PIN: ?FreePlexes@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXXZ 0x141469950 ; unique
 // MS2-PIN: ?GetNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141469aa0 ; unique
-// MS2-PIN: ?InitHashTable@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAA_NI_N@Z 0x141469ed0 ; prop
 // MS2-PIN: ?NewNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x14146a0f0 ; unique
-// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@SAXPEAV?$Unk_SocketPtr@VCMagicData@@@@0_K@Z 0x14146a660 ; unique
-// MS2-PIN: ?RemoveAll@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXXZ 0x14146a6a0 ; unique
+// MS2-PIN: ?PickSize@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEBAI_K@Z 0x14146a300 ; unique
+// MS2-PIN: ?Rehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXI@Z 0x14146a3f0 ; unique
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXPEAU__POSITION@@@Z 0x14146a7b0 ; prop
-// MS2-PIN: ?RemoveNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x14146a8a0 ; prop
+// MS2-PIN: ?RemoveNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x14146a8a0 ; unique
 // MS2-PIN: ?SetAt@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@Z 0x14146a960 ; unique
-// MS2-PIN: ?Create@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@PEAX@Z 0x14146ae90 ; unique
-// MS2-PIN: ?Release@?$Unk_SocketPtr@VCMagic@@@@AEAAXXZ 0x14146af80 ; unique
-// MS2-PIN: ?Release@?$Unk_SocketPtr@VCMagicData@@@@AEAAXXZ 0x14146afc0 ; prop
-// MS2-PIN: ?Rehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXI@Z 0x141470db0 ; unique
-// MS2-PIN: ?Reference@?$Unk_SocketPtr@VCMagicData@@@@CAXPEAVCPtred@@@Z 0x141472260 ; prop
-// MS2-PIN: ?AddRefImpl@?$Unk_SocketPtr@VCMagicData@@@@AEBAXPEAX@Z 0x141472280 ; unique
+// MS2-PIN: ?AddRef@?$Unk_SocketPtr@VCMagicData@@@@AEBAXXZ 0x14146aca0 ; prop
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7CMagicService@@6BISystemService@efd@@@ 0x142f17128
 // MS2-PIN: ??_7CMagicService@@6B?$TSingleton@VCMagicService@@@@@ 0x142f171b0
@@ -157,6 +149,7 @@ Unk_StreamPoint CMagicData::FUN_14145c030(void* pRandom)
     result.z = m_ptControl[0].z + range.z * rz;
     return result;
 }
+MS2_REPLACE_METHOD(0x14145C030, CMagicData, FUN_14145c030, 321, 0xF39C8023);
 
 // @0x14145c180
 // MS2-FUNCTIONAL: any-nonzero-control-point test; exe passes the Point3 ctor's returned pointer to operator!=, 7 bytes of temp shuffling differ
@@ -171,6 +164,7 @@ bool CMagicData::FUN_14145c180()
     Unk_StreamPoint zeroC(0, 0, 0);
     return m_ptControlEnd.FUN_140552700(zeroC);
 }
+MS2_REPLACE_METHOD(0x14145C180, CMagicData, FUN_14145c180, 188, 0x4477E028);
 
 // @0x14145c250
 Unk_MagicListPtr FUN_14145c250(unsigned nMagicId)
@@ -183,6 +177,7 @@ Unk_MagicListPtr FUN_14145c250(unsigned nMagicId)
     return list;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14145c300
 Unk_SocketPtr<CMagicData> FUN_14145c300(unsigned nMagicId, int nIndex)
 {
@@ -204,6 +199,7 @@ static void FUN_14145c4b0()
     FUN_14145c4d0();
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14145c4d0
 int FUN_14145c4d0()
 {
@@ -326,20 +322,32 @@ struct Unk_MagicRowFlag { int m_nPad; int m_nValue; int m_nPad2; bool FUN_1407df
 struct Unk_MagicSkillRow {
     char m_pad00[0x34];
     int m_n34;                                                      // +0x34 target-tracking projectile
-    char m_pad38[0xc8];
-    Unk_MagicRowFlag m_flag100;                                     // +0x100
+    int m_n38;                                                      // +0x38 aim type of the projectile
+    char m_pad3c[0xc4];
+    Unk_MagicRowFlag m_flag100;                                     // +0x100 (+0x104: spawn the hit effect)
     int m_n10c;                                                     // +0x10c
     char m_pad10[0x10];
     int m_n120;                                                     // +0x120
+    char m_pad124[0x24];
+    CString m_str148;                                               // +0x148 end effect
+    CString m_str150;                                               // +0x150 end effect when the flight was cut short
+    char m_pad158[0x30];
+    CString m_str188;                                               // +0x188 hit effect
 };
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str148, 0x148);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str188, 0x188);
 
 // The skill cast record behind Unk_MagicTagPtr.
+struct Unk_MagicTag;
+struct Unk_MagicLinkPtr { Unk_MagicTag* FUN_1410a7150() const; void* m_pad; Unk_MagicTag* m_p; };   // 16 byte handle; operator-> is 0x1410a7150
+struct Unk_MagicAimInfo { char m_pad00[0xb8]; float m_fAim; };      // +0xb8 nonzero: keep the caller's direction
 struct Unk_MagicTag : public CPtred {
-    Unk_MagicSkillRow* FUN_141759050();
+    Unk_MagicAimInfo* FUN_141759010();
+    const Unk_MagicSkillRow* FUN_141759050();
     int FUN_141759090();
     unsigned long long m_nTagId;                                    // +0x18
     unsigned long long m_nTagSub;                                   // +0x20
@@ -348,8 +356,14 @@ struct Unk_MagicTag : public CPtred {
     int m_nTimeMode;                                                // +0x30
     char m_pad34[4];
     Unk_MagicAttackerPtr m_spAttacker;                              // +0x38
-    char m_setHit[0x40];                                            // +0x48
+    char m_setHit[0x14];                                            // +0x48
+    unsigned char m_b5c;                                            // +0x5c
+    char m_pad5d[0x13];
+    Unk_MagicLinkPtr m_spLinked;                                    // +0x70 the cast this one continues
+    char m_pad80[4];
+    int m_n84;                                                      // +0x84
     int m_nStartTick;                                               // +0x88
+    int m_n8c;                                                      // +0x8c
 };
 MS2_CHECK_OFFSET(Unk_MagicTag, m_nTagId, 0x18);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_spAttacker, 0x38);
@@ -377,6 +391,7 @@ struct Unk_MagicEntity {
     virtual void vf39();
     virtual void vf40(); virtual void vf41(); virtual void vf42(); virtual void vf43(); virtual void vf44(); virtual void vf45(); virtual void vf46(); virtual void vf47(); virtual void vf48(); virtual void vf49(); virtual void vf50(); virtual void vf51(); virtual void vf52(); virtual void vf53(); virtual void vf54(); virtual void vf55(); virtual void vf56(); virtual void vf57(); virtual void vf58(); virtual void vf59(); virtual void vf60(); virtual void vf61(); virtual void vf62(); virtual void vf63(); virtual void vf64(); virtual void vf65(); virtual void vf66(); virtual void vf67(); virtual void vf68(); virtual void vf69(); virtual void vf70(); virtual void vf71(); virtual void vf72(); virtual void vf73(); virtual void vf74(); virtual void vf75(); virtual void vf76(); virtual void vf77(); virtual void vf78(); virtual void vf79(); virtual void vf80(); virtual void vf81(); virtual void vf82(); virtual void vf83(); virtual void vf84(); virtual void vf85(); virtual void vf86(); virtual void vf87(); virtual void vf88(); virtual void vf89(); virtual void vf90(); virtual void vf91(); virtual void vf92(); virtual void vf93(); virtual void vf94(); virtual void vf95(); virtual void vf96(); virtual void vf97(); virtual void vf98(); virtual void vf99(); virtual void vf100(); virtual void vf101(); virtual void vf102(); virtual void vf103(); virtual void vf104(); virtual void vf105(); virtual void vf106(); virtual void vf107();
     virtual bool vf108_GetLockOn();                                 // MS2: slot 108 (+0x360)
+    Unk_StreamPoint FUN_14123cc20();                                // facing direction
 };
 
 struct Unk_MagicTagLookup { void* m_p; void* m_pad; };
@@ -524,6 +539,7 @@ void CMagic::FUN_14145d9d0()
         bRandomized = 0;
     m_n26C = bRandomized;
 }
+MS2_REPLACE_METHOD(0x14145D9D0, CMagic, FUN_14145d9d0, 1010, 0x7394C1D9);
 
 // @0x14145ddd0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -536,6 +552,7 @@ void CMagic::FUN_14145ddd0(const Unk_StreamPoint& ptStart)
     FUN_141461a80(m_ptStart);
     FUN_141461140();
 }
+MS2_REPLACE_METHOD(0x14145DDD0, CMagic, FUN_14145ddd0, 165, 0xC90F698B);
 
 // @0x14145de80
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -591,6 +608,88 @@ void CMagic::FUN_14145de80()
     }
     m_nLastTick = nNow;
 }
+MS2_REPLACE_METHOD(0x14145DE80, CMagic, FUN_14145de80, 794, 0xBB62665B);
+
+// The npc table row and npc object seen by the aim helper (MS2Ptr<Unk_NpcData> members bound by symbol, see uihpbar.cpp).
+class Unk_NpcData { public: bool FUN_1406cd200(int nFlag); };
+template <> void MS2Ptr<Unk_NpcData>::Reference(Unk_NpcData* p);            // 0x1406d9f40
+template <> void MS2Ptr<Unk_NpcData>::Release();                            // 0x1406db080
+template <> MS2Ptr<Unk_NpcData>::~MS2Ptr();                                 // 0x1406d5390
+template <> Unk_NpcData* MS2Ptr<Unk_NpcData>::operator->() const;           // 0x140965990
+class Unk_MagicNpc { public: MS2Ptr<Unk_NpcData> FUN_141093270(); };
+Unk_MagicNpc* FUN_140a38a00(Unk_MagicEntity* pEntity);                      // cast to class 0x6200028
+float FUN_14109ace0();                                                      // random in [-1, 1]
+extern Unk_StreamPoint DAT_143a08cf8;                                       // the up axis
+
+// @0x14145e1a0
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+int FUN_14145e1a0(int nFrom, int nTo, Unk_MagicAimInfo* pInfo, const Unk_MagicSkillRow* pRow, Unk_StreamPoint* pPos, Unk_StreamPoint* pDir)
+{
+    Unk_MagicEntity* pFrom = FUN_1403ed2d0()->FUN_141bd1180(nFrom);
+    if (pFrom == NULL)
+        return 0;
+    if (pInfo == NULL || pRow == NULL)
+        return 0;
+    int bAttach = 0;
+    Unk_StreamPoint ptPos = pFrom->vf18_GetPosition().FUN_14097fd50(pFrom->vf37_GetExtent());
+    Unk_MagicNpc* pNpc = FUN_140a38a00(pFrom);
+    if (pNpc != NULL) {
+        if (pNpc->FUN_141093270()->FUN_1406cd200(0x11)) {
+            bAttach = 1;
+            ptPos = *pPos;
+        }
+    }
+    Unk_MagicEntity* pTo = FUN_1403ed2d0()->FUN_141bd1180(nTo);
+    if (pTo != NULL) {
+        if (bAttach == 0) {
+            float fHeight;
+            if (pFrom->vf37_GetExtent().z <= pTo->vf37_GetExtent().z)
+                fHeight = pFrom->vf37_GetExtent().z;
+            else
+                fHeight = pTo->vf37_GetExtent().z;
+            float fRand = FUN_14109ace0();
+            Unk_StreamPoint ptOff(0, 0, fHeight * (fRand * 0.2f + 1.0f));
+            ptPos = pFrom->vf18_GetPosition().FUN_14097fd50(ptOff);
+            Unk_StreamPoint ptDirTo = pTo->FUN_14123cc20();
+            if (pRow->m_n38 == 3) {
+                if (pInfo->m_fAim == 0.0f)
+                    *pDir = ptDirTo;
+                else
+                    *pDir = *pDir;
+                pDir->FUN_140968990();
+            } else if (pRow->m_n38 == 4) {
+                if (pInfo->m_fAim == 0.0f)
+                    *pDir = ptDirTo.FUN_1409f7960();
+                else
+                    *pDir = pDir->FUN_1409f7960();
+                pDir->FUN_140968990();
+            } else if (pRow->m_n38 == 2) {
+                Unk_StreamPoint ptDiff = pFrom->vf18_GetPosition().FUN_140965c40(pTo->vf18_GetPosition());
+                *pDir = ptDiff.FUN_14109adc0(DAT_143a08cf8).FUN_1409f7960();
+            } else if (pRow->m_n38 == 1) {
+                Unk_StreamPoint ptDiff = pFrom->vf18_GetPosition().FUN_140965c40(pTo->vf18_GetPosition());
+                *pDir = ptDiff.FUN_14109adc0(DAT_143a08cf8);
+            } else {
+                *pDir = pTo->FUN_14123cc20();
+                pDir->FUN_140968990();
+            }
+            *pDir = *pDir;
+            ptPos = pFrom->vf38_Trace(*pDir, ptPos, 2000.0f);
+        } else {
+            *pDir = pTo->FUN_14123cc20();
+            pDir->FUN_140968990();
+            float fExtent = pTo->vf37_GetExtent().z;
+            float fRand = FUN_14109ace0();
+            ptPos = ptPos.FUN_14097fd50(Unk_StreamPoint(0, 0, fExtent * (fRand * 0.2f + 1.0f)));
+            Unk_StreamPoint ptHit = pFrom->vf38_Trace(*pDir, ptPos, 0.0f);
+            if (ptHit.FUN_140552690(ptPos))
+                ptHit.FUN_140a4e560(pDir->FUN_14097fc90(100.0f));
+            ptPos = ptHit;
+        }
+    }
+    *pPos = ptPos;
+    return 1;
+}
 
 // @0x14145e960
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -622,6 +721,99 @@ void CMagic::FUN_14145e960(unsigned nNow)
     FUN_141461a80(m_ptStart);
     m_n268 = nNow;
 }
+MS2_REPLACE_METHOD(0x14145E960, CMagic, FUN_14145e960, 746, 0xDD0A920B);
+
+// The physics query service (decoeditservice.cpp names the same member).
+class Unk_MagicPhysX { public: int FUN_14168a230(Unk_StreamPoint ptFrom, Unk_StreamPoint& ptHit, Unk_StreamPoint ptDir, float fLength, int nMask); };
+Unk_MagicPhysX* FUN_1409f7ca0();
+float FUN_14028d280(unsigned nMs);                                  // ms -> seconds
+float FUN_141403f20(Unk_NiPoint3 ptA, Unk_NiPoint3 ptB);            // distance
+Unk_StreamPoint FUN_141b71390(Unk_StreamPoint ptStart, Unk_StreamPoint ptControl, Unk_StreamPoint ptEnd, float fT);   // bezier point
+Unk_StreamPoint FUN_140a0adf0(const Unk_StreamPoint& p0, const Unk_StreamPoint& p1, const Unk_StreamPoint& p2, const Unk_StreamPoint& p3, float fT);   // catmull-rom point
+
+// @0x14145ec50
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_14145ec50(unsigned nNow)
+{
+    if (!FUN_14028d470(m_data.m_fVelocity, 0)) {
+        if (!FUN_141464490()) {
+            FUN_141461140();
+            Unk_StreamPoint ptNew;
+            if (m_n26C == 0) {
+                float fStep = FUN_14028d280(nNow - m_nLastTick);
+                if (fStep < m_fRemainTime) {
+                    m_fRemainTime = m_fRemainTime - fStep;
+                    ptNew = m_ptCurrent.FUN_14097fd50(m_ptDirection.FUN_14097fc90(m_data.m_fVelocity).FUN_14097fc90(fStep));
+                } else {
+                    m_fRemainTime = 0;
+                    ptNew = m_ptTarget;
+                }
+            } else {
+                float fT = FUN_14028d280(nNow - m_nStateTick);
+                fT = fT / m_fTotalTime;
+                if (fT < 1.0f) {
+                    if (m_data.m_nCatmullRom == 0) {
+                        ptNew = FUN_141b71390(m_ptStart, m_ptPredicted, m_ptTarget, fT);
+                    } else if (fT < m_data.m_fControlRate) {
+                        ptNew = FUN_140a0adf0(m_ptStart, m_ptStart, m_ptPredicted, m_ptTarget, fT / m_data.m_fControlRate);
+                    } else {
+                        ptNew = FUN_140a0adf0(m_ptStart, m_ptPredicted, m_ptTarget, m_ptTarget, (fT - m_data.m_fControlRate) / (1.0f - m_data.m_fControlRate));
+                    }
+                    m_fRemainTime = m_fTotalTime * (1.0f - fT);
+                } else {
+                    m_fRemainTime = 0;
+                    ptNew = m_ptTarget;
+                }
+            }
+            int nType = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+            if ((nType == 1 || nType == 3) && !FUN_14028d470(m_fRemainTime, 0)) {
+                float fMoved = FUN_141403f20(Unk_NiPoint3(m_ptCurrent), Unk_NiPoint3(m_ptStart));
+                if (fMoved < m_data.m_fDistance) {
+                    if (!FUN_14028d470(m_data.m_fNonTargetMoveDistance, 0)) {
+                        const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+                        if (pRow != NULL && !pRow->m_flag100.FUN_1407dfbb0() && FUN_141464360() == NULL) {
+                            fMoved = FUN_141403f20(Unk_NiPoint3(m_ptCurrent), Unk_NiPoint3(m_ptStart));
+                            if (m_data.m_fNonTargetMoveDistance <= fMoved)
+                                m_fRemainTime = 0;
+                        }
+                    }
+                } else {
+                    m_fRemainTime = 0;
+                }
+            }
+            if (m_nState != 5) {
+                Unk_StreamPoint ptHit;
+                float fDelta = ptNew.FUN_140965c40(m_ptCurrent).FUN_140967ac0();
+                if (0.0f < fDelta) {
+                    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+                    if (pRow != NULL) {
+                        if (m_n1C8 == 0) {
+                            if (pRow->m_n120 != 0) {
+                                float fLength = fDelta + 1.0f;
+                                if (FUN_1409f7ca0()->FUN_14168a230(m_ptCurrent, ptHit, m_ptDirection, fLength, 0x201) != 0) {
+                                    ptNew = ptHit.FUN_140965c40(m_ptDirection.FUN_14097fc90(5.0f));
+                                    m_ptTarget = ptNew;
+                                    m_fRemainTime = 0;
+                                    m_n1C8 = 1;
+                                }
+                            }
+                        } else {
+                            ptNew = m_ptStart;
+                            m_ptTarget = m_ptStart;
+                            m_fRemainTime = 0;
+                        }
+                    }
+                }
+            }
+            FUN_141461a80(ptNew);
+            if (0.0f < m_fRemainTime)
+                FUN_1414614d0();
+        } else {
+            FUN_1414607e0();
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14145EC50, CMagic, FUN_14145ec50, 2316, 0x13251CBB);
 
 // @0x141460640
 void CMagic::FUN_141460640(unsigned nNow)
@@ -635,6 +827,7 @@ void CMagic::FUN_141460640(unsigned nNow)
     }
     m_nEffectId = 0;
 }
+MS2_REPLACE_METHOD(0x141460640, CMagic, FUN_141460640, 179, 0x0262413B);
 
 // @0x141460700
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -650,6 +843,7 @@ void CMagic::FUN_141460700()
         FUN_14145d9d0();
     }
 }
+MS2_REPLACE_METHOD(0x141460700, CMagic, FUN_141460700, 208, 0x262997B3);
 
 // @0x141461a80
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -664,6 +858,7 @@ void CMagic::FUN_141461a80(Unk_StreamPoint ptNew)
     static_cast<NiAVObject*>(FUN_1409475f0(&m_spScene))->Update((float)dTime, false);
     FUN_141464160();
 }
+MS2_REPLACE_METHOD(0x141461A80, CMagic, FUN_141461a80, 210, 0x555ADF73);
 
 // @0x141461b60
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -672,6 +867,7 @@ void CMagic::FUN_141461b60(const Unk_StreamPoint& ptDirection)
     m_ptDirection = ptDirection;
     FUN_141461720(0);
 }
+MS2_REPLACE_METHOD(0x141461B60, CMagic, FUN_141461b60, 53, 0x479E3C1A);
 
 // @0x141461ba0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -697,7 +893,7 @@ void CMagic::FUN_141463fb0(unsigned nNow)
             m_nD0 = nNow + m_data.m_nMoveEndHoldDuration;
         } else if ((unsigned)m_nD0 < nNow) {
             m_nStateTick = nNow;
-            Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+            const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
             if (m_nState == 2 && pRow != NULL && pRow->m_n10c == 4 && m_n528 != 2) {
                 m_nState = 5;
                 FUN_141460700();
@@ -708,6 +904,7 @@ void CMagic::FUN_141463fb0(unsigned nNow)
         }
     }
 }
+MS2_REPLACE_METHOD(0x141463FB0, CMagic, FUN_141463fb0, 415, 0x3990B4E8);
 
 // @0x141464160
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -721,6 +918,7 @@ void CMagic::FUN_141464160()
         }
     }
 }
+MS2_REPLACE_METHOD(0x141464160, CMagic, FUN_141464160, 183, 0x56FAAEF6);
 
 // @0x141464220
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -738,6 +936,7 @@ bool CMagic::FUN_141464220()
     float fDist = FUN_140966f00(m_ptCurrent, ptLocal);
     return pCfg->FUN_1410a71d0() < fDist;
 }
+MS2_REPLACE_METHOD(0x141464220, CMagic, FUN_141464220, 309, 0xDB62E170);
 
 // @0x141464360
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -751,6 +950,7 @@ Unk_MagicEntity* CMagic::FUN_141464360()
     }
     return pEntity;
 }
+MS2_REPLACE_METHOD(0x141464360, CMagic, FUN_141464360, 160, 0xAB22AB6F);
 
 // @0x141464410
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -763,6 +963,7 @@ bool CMagic::FUN_141464410()
         return false;
     return pEntity->vf108_GetLockOn();
 }
+MS2_REPLACE_METHOD(0x141464410, CMagic, FUN_141464410, 111, 0xD3F16574);
 
 // @0x141464490
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -778,6 +979,7 @@ void CMagic::FUN_1414644d0(int bShow)
 {
     FUN_140a0b300(FUN_1409475f0(&m_spScene), bShow == 0);
 }
+MS2_REPLACE_METHOD(0x1414644D0, CMagic, FUN_1414644d0, 69, 0x367BA853);
 
 // @0x141464520
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -787,6 +989,7 @@ Unk_StreamPoint CMagic::FUN_141464520()
     m_matRotation.FUN_140a01190(0, kColumn);
     return kColumn;
 }
+MS2_REPLACE_METHOD(0x141464520, CMagic, FUN_141464520, 84, 0x57A64776);
 
 // @0x141464580
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -796,6 +999,7 @@ Unk_StreamPoint CMagic::FUN_141464580()
     m_matRotation.FUN_140a01190(1, kColumn);
     return kColumn;
 }
+MS2_REPLACE_METHOD(0x141464580, CMagic, FUN_141464580, 87, 0xCDD09EF7);
 
 // @0x1414645e0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -805,6 +1009,7 @@ Unk_StreamPoint CMagic::FUN_1414645e0()
     m_matRotation.FUN_140a01190(2, kColumn);
     return kColumn;
 }
+MS2_REPLACE_METHOD(0x1414645E0, CMagic, FUN_1414645e0, 87, 0x36459900);
 
 // @0x141464640
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -831,6 +1036,7 @@ int CMagic::FUN_141464670()
     int nSpawn = (int)FUN_14028d260(FUN_141464640());
     return nSpawn + nExtra + nFlight + m_data.m_nMoveEndHoldDuration;
 }
+MS2_REPLACE_METHOD(0x141464670, CMagic, FUN_141464670, 274, 0x2F8B3639);
 
 // @0x141467440
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -838,60 +1044,70 @@ unsigned CMagic::FUN_141467440()
 {
     return (unsigned)FUN_14086d260()->FUN_1414732f0(m_spSkill->m_nTimeMode);
 }
+MS2_REPLACE_METHOD(0x141467440, CMagic, FUN_141467440, 57, 0x3E76BE86);
 
 // @0x141467420
 int CMagic::FUN_141467420()
 {
     return m_nState;
 }
+MS2_REPLACE_METHOD(0x141467420, CMagic, FUN_141467420, 14, 0x72E52537);
 
 // @0x141467a90
 int CMagicModel::FUN_141467a90()
 {
     return m_spMagic->m_nState >= 3;
 }
+MS2_REPLACE_METHOD(0x141467A90, CMagicModel, FUN_141467a90, 59, 0xDE70DD31);
 
 // @0x141467ae0
 int CMagicModel::FUN_141467ae0()
 {
     return m_spMagic->m_nState == 4;
 }
+MS2_REPLACE_METHOD(0x141467AE0, CMagicModel, FUN_141467ae0, 59, 0xDE7175D1);
 
 // @0x141467b30
 int CMagicModel::FUN_141467b30()
 {
     return m_spMagic->FUN_141464670();
 }
+MS2_REPLACE_METHOD(0x141467B30, CMagicModel, FUN_141467b30, 39, 0xBC2D2B81);
 
 // @0x141467b60
 unsigned long long CMagicModel::FUN_141467b60()
 {
     return m_spA->m_nTagSub;
 }
+MS2_REPLACE_METHOD(0x141467B60, CMagicModel, FUN_141467b60, 35, 0x7BCCD890);
 
 // @0x141467c10
 Unk_StreamPoint CMagicModel::FUN_141467c10()
 {
     return m_spMagic->m_ptCurrent;
 }
+MS2_REPLACE_METHOD(0x141467C10, CMagicModel, FUN_141467c10, 61, 0xE0BDA332);
 
 // @0x141467c60
 Unk_StreamPoint CMagicModel::FUN_141467c60()
 {
     return m_spMagic->m_ptDirection;
 }
+MS2_REPLACE_METHOD(0x141467C60, CMagicModel, FUN_141467c60, 61, 0x54719B09);
 
 // @0x141467cb0
 Unk_NiMatrix3 CMagicModel::FUN_141467cb0()
 {
     return m_spMagic->m_matRotation;
 }
+MS2_REPLACE_METHOD(0x141467CB0, CMagicModel, FUN_141467cb0, 64, 0xFF5606DF);
 
 // @0x141467d00
 void CMagicModel::FUN_141467d00(Unk_StreamPoint ptNew)
 {
     m_spMagic->FUN_141461a80(ptNew);
 }
+MS2_REPLACE_METHOD(0x141467D00, CMagicModel, FUN_141467d00, 73, 0x42C0EDEA);
 
 // @0x141467d50
 void CMagicModel::FUN_141467d50(Unk_StreamPoint ptDirection)
@@ -899,12 +1115,14 @@ void CMagicModel::FUN_141467d50(Unk_StreamPoint ptDirection)
     Unk_StreamPoint ptCopy = ptDirection;
     m_spMagic->FUN_141461b60(ptCopy);
 }
+MS2_REPLACE_METHOD(0x141467D50, CMagicModel, FUN_141467d50, 73, 0x85005B77);
 
 // @0x141467da0
 void CMagicModel::FUN_141467da0()
 {
     m_spMagic->FUN_141467420();
 }
+MS2_REPLACE_METHOD(0x141467DA0, CMagicModel, FUN_141467da0, 39, 0x0E5A1776);
 
 // @0x141467480
 CMagicModel::CMagicModel()
@@ -994,6 +1212,7 @@ const char* CMagicService::GetDisplayName() const
 }
 MS2_REPLACE_METHOD(0x14146B420, CMagicService, GetDisplayName, 13, 0xE5D35438);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14146c4b0
 void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast)
 {
@@ -1008,19 +1227,23 @@ void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long
     if (spModels->IsEmpty())
         m_mapModels.RemoveKey(nCaster);
 }
+MS2_REPLACE_METHOD(0x14146C4B0, CMagicService, FUN_14146c4b0, 276, 0xFA5B4338);
 
 // @0x14146cee0
 efd::SyncResult CMagicService::OnPreInit(efd::IDependencyRegistrar*)
 {
     return efd::SyncResult_Success;
 }
+MS2_REPLACE_METHOD(0x14146CEE0, CMagicService, OnPreInit, 16, 0x32804D89);
 
 // @0x14146cf00
 efd::AsyncResult CMagicService::OnInit()
 {
     return efd::AsyncResult_Complete;
 }
+MS2_REPLACE_METHOD(0x14146CF00, CMagicService, OnInit, 11, 0x620C90F9);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14146cf20
 efd::AsyncResult CMagicService::OnTick()
 {
@@ -1038,6 +1261,7 @@ efd::AsyncResult CMagicService::OnTick()
     }
     return efd::AsyncResult_Pending;
 }
+MS2_REPLACE_METHOD(0x14146CF20, CMagicService, OnTick, 379, 0xAC7AA564);
 
 // @0x14146d0b0
 efd::AsyncResult CMagicService::OnShutdown()
@@ -1045,3 +1269,4 @@ efd::AsyncResult CMagicService::OnShutdown()
     m_mapModels.RemoveAll();
     return efd::AsyncResult_Complete;
 }
+MS2_REPLACE_METHOD(0x14146D0B0, CMagicService, OnShutdown, 36, 0x36A30B21);
