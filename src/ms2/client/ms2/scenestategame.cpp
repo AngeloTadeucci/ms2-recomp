@@ -41,6 +41,15 @@
 // MS2-PIN: ?Reference@?$MS2Ptr@VCDotDamageRecord@@@@CAXPEAVCDotDamageRecord@@@Z 0x14174a850 ; w109 manual (was auto-order)
 // MS2-PIN: ?Reference@?$MS2Ptr@VCMsgBoxData@@@@CAXPEAVCMsgBoxData@@@Z 0x14174a870 ; w109 manual (was auto-order)
 // MS2-PIN: ?Ref@?$Unk_BmBoxPtr@USpecialNPCInfo@@@@CAXPEAVCPtred@@@Z 0x14174a8b0 ; w109 manual (byte-identical look-alike slot)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIArcadeLifeBar@@@@YAPEAVUIArcadeLifeBar@@H@Z 0x1417424f0 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIArcadeMainDialog@@@@YAPEAVUIArcadeMainDialog@@H@Z 0x141742590 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIArcadeTextEffectDialog@@@@YAPEAVUIArcadeTextEffectDialog@@H@Z 0x141742630 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIHpBar@@@@YAPEAVUIHpBar@@H@Z 0x141742c80 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIUGCPortalDialog@@@@YAPEAVUIUGCPortalDialog@@H@Z 0x141743410 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIUGCCubeNoticeDialog@@@@YAPEAVUIUGCCubeNoticeDialog@@H@Z 0x1417432d0 ; w118 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIUGCPVPControlDialog@@@@YAPEAVUIUGCPVPControlDialog@@H@Z 0x141743370 ; w118 manual (RTTI)
+// MS2-PIN: ??1Unk_SSGUserChat@@QEAA@XZ 0x1417469a0 ; w118 manual
+// MS2-PIN: ??4?$Unk_PayloadPtr@VNoticeCubeInfo@@@@QEAAAEAV0@PEAVNoticeCubeInfo@@@Z 0x141746eb0 ; w118 manual
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -83,6 +92,7 @@
 #include "uisnowmaneventdialog.h"
 #include "ms2/placeholder/sidepopuptalkparam.h"
 #include "ms2/placeholder/dropitem.h"
+#include "ms2/placeholder/cube.h"
 #include "ms2/commonfiles/blackmarketitemoption.h"   // Unk_BmBoxPtr / Unk_BmNewTag
 #include "ms2/placeholder/tptreddummy.h"
 #include "ms2/ms2format.h"
@@ -150,6 +160,8 @@ public:
     void FUN_141adc530(int nId);
     void FUN_141add1f0();
     void FUN_141adc5d0(int nId);
+    void FUN_141add0b0(int nId);
+    void FUN_141add1b0(int nSlot, bool bOn);                // enable one hot key slot
     void FUN_141ada6f0(int nScene);
     void FUN_141ad9e50(int nScene);
     void FUN_141adafd0(int nScene);
@@ -416,6 +428,7 @@ MS2_CHECK_SIZE(Unk_SSGHouseRule, 3);
 class Unk_Service6100017 : public efd::ISystemService
 {
 public:
+    Cube* FUN_1410b8b00(int nCubeId);                      // the placed cube with this id
     static const efd::ClassID CLASS_ID = 0x06100017;
     void FUN_1410c3020(int n);
     void FUN_1410bc1c0();                                   // UI hidden (debug key)
@@ -635,7 +648,13 @@ class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_14
 Unk_SSGad4b90* FUN_140ad4b90();
 class Unk_SSG9670b0 { public: void FUN_14122f270(CInPacket& packet); };
 Unk_SSG9670b0* FUN_1409670b0();
-class Unk_SSG97a780 { public: void FUN_140ae2e90(CInPacket& packet); };
+class Unk_SSG97a780                                         // the buddy manager
+{
+public:
+    void FUN_140ae2e90(CInPacket& packet);
+    unsigned FUN_140ae51b0(__int64 nCharId);                // blocked by character id
+    unsigned FUN_140ae5240(const CStringW& strName);        // blocked by name
+};
 Unk_SSG97a780* FUN_14097a780();
 class Unk_SSGa6a830 { public: void FUN_140a2f730(CInPacket& packet); };
 Unk_SSGa6a830* FUN_140a6a830();
@@ -850,9 +869,34 @@ public:
 };
 UIEnchantScrollDialog* FUN_140cd7aa0(int nId);              // GetDialog<UIEnchantScrollDialog>
 UIMasteryDialog* FUN_140faf160(int nId);                    // GetDialog<UIMasteryDialog>
-class UIDarkStreamScoreDialog : public UIDialog { public: virtual void vfunc_84(int nScore); };
+class UIDarkStreamScoreDialog : public UIDialog
+{
+public:
+    virtual void vfunc_84(int nScore);
+    void FUN_140f35660(int nOffset);
+    void FUN_140f356a0(int nAlign);
+};
 UIDarkStreamScoreDialog* FUN_140f9d8a0(int nId);            // GetDialog<UIDarkStreamScoreDialog>
-class UIDarkStreamResultDialog : public UIDialog { public: void FUN_140f34cb0(int n); void FUN_140f34ab0(CInPacket& packet); };
+class UIDarkStreamResultDialog : public UIDialog { public: void FUN_140f34cb0(bool bShow); void FUN_140f34ab0(CInPacket& packet); };
+// 0x141734e00: the arcade mini game packet fans out to these dialogs and the local player's hud entity.
+class Unk_PCBaseComp_a78 : public CPtred                    // UIHudEntity::Entity
+{
+public:
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();                                 // hide
+    void FUN_140f48dc0(int bVisible);
+};
+extern template class MS2Ptr<Unk_PCBaseComp_a78>;           // instances live outside the unit (0x1405a89b0...)
+class UIMainPlayerInfo : public UIDialog { public: void FUN_1419f1d10(unsigned int nMask, bool bShow); };
+UIMainPlayerInfo* FUN_140931900(int nId);                   // GetDialog<UIMainPlayerInfo>
+class UIHpBar : public UIDialog { };
+void FUN_1419929f0(int nActorId);                           // refresh the hp bar of an actor
+class UIArcadeMainDialog : public UIDialog { public: void FUN_140ef7d30(int nMode, CInPacket& packet); };
+class UIArcadeLifeBar : public UIDialog { public: void FUN_140ef51e0(int nMode, CInPacket& packet); };
+class UIMicroGameCoupleDance : public UIDialog { public: void FUN_140e647c0(int nMode, CInPacket& packet); };
+UIMicroGameCoupleDance* FUN_140b8b5c0(int nId);             // GetDialog<UIMicroGameCoupleDance>
+class UIArcadeTextEffectDialog : public UIDialog { public: void FUN_140ba7fe0(int nMode, CInPacket& packet); };
 
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);
 bool FUN_1403b3c40(const CStringW& str, const wchar_t* psz);  // str == psz
@@ -4939,6 +4983,245 @@ void CSceneStateGame::FUN_141734ca0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141734ca0, CSceneStateGame, FUN_141734ca0, 334, 0x7DA5CD92);
+
+// 0x141738b40: UGC map notices. Chat from another player (0x1407a7eb0 reads it; the dtor 0x1417469a0 is emitted here).
+struct Unk_SSGUserChat
+{
+    Unk_SSGUserChat(CInPacket& packet);
+    __int64 m_nCharId;
+    CStringW m_strName;
+    unsigned char m_nType;
+    CStringW m_strMsg;
+};
+MS2_CHECK_SIZE(Unk_SSGUserChat, 0x20);
+class Unk_SSG9c1730 { public: bool FUN_140a25840(__int64 nId, CStringW strName); };   // chat filter
+Unk_SSG9c1730* FUN_1409c1730();
+CStringW FUN_14028ee20(unsigned int nFlags, CStringW strText);
+class UISurveyDialog : public UIDialog { public: void FUN_140eda1b0(CInPacket& packet); };
+class UIUGCPortalDialog : public UIDialog { public: void FUN_140fb0290(CInPacket& packet); };
+class UIUGCCubeNoticeDialog : public UIDialog { public: void FUN_140faf900(CInPacket& packet); };
+class UIUGCPVPControlDialog : public UIDialog { public: void FUN_140fb5650(CInPacket& packet); };
+void FUN_140dee4a0(CInPacket& packet);
+void FUN_140dff600(CInPacket& packet);
+// The notice text of a cube (0x28 bytes, ctor 0x1408b4850).
+class NoticeCubeInfo
+{
+public:
+    NoticeCubeInfo();
+    void FUN_1408b4970(const CStringW& strText, int nType);
+private:
+    void* m_unk_00[5];
+};
+MS2_CHECK_SIZE(NoticeCubeInfo, 0x28);
+extern template class MS2Ptr<Cube>;                          // instances live outside the unit (0x140884fb0...)
+// Unk_PayloadPtr<NoticeCubeInfo>: only operator=(T*) is emitted here (0x141746eb0); the rest are ICF copies elsewhere.
+extern template Unk_PayloadPtr<NoticeCubeInfo>::Unk_PayloadPtr(NoticeCubeInfo* value);
+extern template Unk_PayloadPtr<NoticeCubeInfo>::~Unk_PayloadPtr();
+extern template bool Unk_PayloadPtr<NoticeCubeInfo>::operator==(NoticeCubeInfo* value) const;
+extern template NoticeCubeInfo* Unk_PayloadPtr<NoticeCubeInfo>::operator->() const;
+class Unk_SSG9670e0 { public: void FUN_1410c92e0(int nCubeId); };
+Unk_SSG9670e0* FUN_1409670e0();
+
+// @0x141734e00
+// MS2-FUNCTIONAL: exe frame is 0x10 bytes larger (point copy at +0xe0, unwind state at +0xf0); code otherwise identical
+void CSceneStateGame::FUN_141734e00(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        UIDarkStreamScoreDialog* pScore = FUN_140f9d8a0(0x4ee4);
+        if (pScore != 0)
+        {
+            pScore->vfunc_84(0);
+            pScore->FUN_140f35660(-80);
+            pScore->FUN_140f356a0(6);
+            if (nType == 3)
+            {
+                pScore->FUN_140f35660(100);
+                pScore->FUN_140f356a0(1);
+            }
+            pScore->FUN_141924680();
+        }
+        UIMainPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+        if (pInfo != 0)
+            pInfo->FUN_1419f1d10(2, false);
+        FUN_1403ed2b0()->FUN_141add0b0(0x4e3d);
+        FUN_1403ed2b0()->FUN_141add0b0(0x4e51);
+        FUN_1403ed2b0()->FUN_141add1b0(8, false);
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0)
+        {
+            {
+                MS2Ptr<Unk_PCBaseComp_a78> spHud = pPC->vfunc_82();
+                if (spHud.get())
+                {
+                    spHud->FUN_140f48dc0(0);
+                    spHud->vfunc_3();
+                }
+            }
+            UIHpBar* pHpBar = Unk_SSGGetDialog<UIHpBar>(0x4e36);
+            if (pHpBar != 0)
+                FUN_1419929f0(pPC->FUN_14123c580());
+        }
+    }
+    else if (nMode == 1)
+    {
+        int nScore = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        UIDarkStreamScoreDialog* pScore = FUN_140f9d8a0(0x4ee4);
+        if (pScore == 0)
+            return;
+        pScore->vfunc_84(nScore);
+    }
+    else if (nMode == 2)
+    {
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4ee4);
+        FUN_1403ed2b0()->FUN_141adc530(0x4ee5);
+        UIDarkStreamResultDialog* pResult = Unk_SSGGetDialog<UIDarkStreamResultDialog>(0x4ee5);
+        if (pResult == 0)
+            return;
+        pResult->FUN_140f34cb0(true);
+        pResult->FUN_140f34ab0(packet);
+    }
+    else if (nMode == 12)
+    {
+        int nAlign = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        UIDarkStreamScoreDialog* pScore = FUN_140f9d8a0(0x4ee4);
+        if (pScore != 0)
+        {
+            pScore->vfunc_84(0);
+            if (nAlign == 1)
+            {
+                pScore->FUN_140f35660(0);
+                pScore->FUN_140f356a0(1);
+            }
+            else if (nAlign == 2)
+            {
+                pScore->FUN_140f35660(-80);
+                pScore->FUN_140f356a0(6);
+            }
+            pScore->FUN_141924680();
+        }
+    }
+    else if (nMode == 13)
+    {
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4ee4);
+    }
+    else if (nMode == 14)
+    {
+        bool bOn = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC == 0)
+            return;
+        if (bOn)
+            pPC->FUN_14166cd70(0x200);
+        else
+        {
+            efd::Point3 kPos = efd::Point3::ZERO;
+            pPC->vfunc_22(kPos);
+            pPC->FUN_14166cce0(0x200);
+        }
+    }
+    UIArcadeMainDialog* pMain = Unk_SSGGetDialog<UIArcadeMainDialog>(0x4efd);
+    if (pMain != 0)
+        pMain->FUN_140ef7d30(nMode, packet);
+    UIArcadeLifeBar* pLifeBar = Unk_SSGGetDialog<UIArcadeLifeBar>(0x4efc);
+    if (pLifeBar != 0)
+        pLifeBar->FUN_140ef51e0(nMode, packet);
+    UIMicroGameCoupleDance* pDance = FUN_140b8b5c0(0x4f70);
+    if (pDance != 0)
+        pDance->FUN_140e647c0(nMode, packet);
+    UIArcadeTextEffectDialog* pText = Unk_SSGGetDialog<UIArcadeTextEffectDialog>(0x4f82);
+    if (pText != 0)
+        pText->FUN_140ba7fe0(nMode, packet);
+}
+MS2_REPLACE_METHOD(0x141734E00, CSceneStateGame, FUN_141734e00, 1437, 0xAD857D61);
+
+// @0x141738b40
+void CSceneStateGame::FUN_141738b40(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 8:
+        FUN_141739220(packet);
+        break;
+    case 4:
+    {
+        StringIdInterface kText(packet);
+        FUN_1412751f0(kText.FUN_141024e60(), 3, 1);
+        break;
+    }
+    case 5:
+    {
+        UISurveyDialog* pDlg = dynamic_cast<UISurveyDialog*>((UIObject*)FUN_1403ed2b0()->FUN_141adcea0(0x4f1a));
+        if (pDlg != 0)
+            pDlg->FUN_140eda1b0(packet);
+        break;
+    }
+    case 6:
+        switch (static_cast<CInputStream&>(packet).vfunc_o8_1())
+        {
+        case 0:
+            UIUGCPortalDialog* pDlg = Unk_SSGGetDialog<UIUGCPortalDialog>(0x4f1f);
+            if (pDlg != 0)
+                pDlg->FUN_140fb0290(packet);
+        }
+        break;
+    case 12:
+        switch (static_cast<CInputStream&>(packet).vfunc_o8_1())
+        {
+        case 1:
+        {
+            UIUGCCubeNoticeDialog* pDlg = Unk_SSGGetDialog<UIUGCCubeNoticeDialog>(0x4f51);
+            if (pDlg != 0)
+                pDlg->FUN_140faf900(packet);
+            break;
+        }
+        case 0:
+            efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+            if (spService)
+            {
+                int nCubeId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                CStringW strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+                int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                MS2Ptr<Cube> spCube(spService->FUN_1410b8b00(nCubeId));
+                if (spCube->notice == 0)
+                    spCube->notice = new NoticeCubeInfo;
+                spCube->notice->FUN_1408b4970(strText, nType);
+                FUN_1409670e0()->FUN_1410c92e0(nCubeId);
+            }
+        }
+        break;
+    case 7:
+        FUN_140dee4a0(packet);
+        break;
+    case 10:
+        FUN_140dff600(packet);
+        break;
+    case 11:
+    {
+        Unk_SSGUserChat kChat(packet);
+        if (FUN_1409c1730()->FUN_140a25840(0, kChat.m_strName))
+            break;
+        if (FUN_14097a780()->FUN_140ae5240(kChat.m_strName) != 0)
+            break;
+        if (kChat.m_nCharId != 0 && FUN_14097a780()->FUN_140ae51b0(kChat.m_nCharId) != 0)
+            break;
+        FUN_1412751b0(FUN_14028ee20(4, kChat.m_strMsg), 0x14);
+        break;
+    }
+    case 14:
+        switch (static_cast<CInputStream&>(packet).vfunc_o8_1())
+        {
+        case 0:
+            UIUGCPVPControlDialog* pDlg = Unk_SSGGetDialog<UIUGCPVPControlDialog>(0x4f64);
+            if (pDlg != 0)
+                pDlg->FUN_140fb5650(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141738B40, CSceneStateGame, FUN_141738b40, 1665, 0x3FD69AC2);
 
 // @0x141739e40
 void CSceneStateGame::FUN_141739e40(CInPacket& packet)
