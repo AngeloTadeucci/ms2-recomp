@@ -70,7 +70,7 @@ static NiTexturingProperty* s_pkShimmerProp;
 static Unk_PPSmartC s_shimmerTexture(0);
 
 // @0x1400cf2e0
-const NiRTTI PostShimmerRenderStep::ms_RTTI("PostShimmerRenderStep", &PostProcessEffect::ms_RTTI);
+const NiRTTI PostShimmerRenderStep::ms_RTTI("PostShimmerRenderStep", &NiDefaultClickRenderStep::ms_RTTI);
 
 // Header-defined statics (same strings as client\ms2\scenestatemove.cpp's initializers).
 // @0x1400cf310

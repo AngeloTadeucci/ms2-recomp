@@ -33,7 +33,7 @@ static NiTexturingProperty* s_pkScreenMaskProp;
 static Unk_PPSmartC s_screenMaskTexture(0);
 
 // @0x1400fca10
-const NiRTTI ScreenMaskingRenderStep::ms_RTTI("ScreenMaskingRenderStep", &PostProcessEffect::ms_RTTI);
+const NiRTTI ScreenMaskingRenderStep::ms_RTTI("ScreenMaskingRenderStep", &NiDefaultClickRenderStep::ms_RTTI);
 
 // @0x1416ba110
 ScreenMaskingRenderStep::ScreenMaskingRenderStep(unsigned __int64 a, unsigned int b) : PostProcessEffect(a, b)

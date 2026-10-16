@@ -53,10 +53,10 @@ static unsigned long s_fadeStartTick;
 // MS2: clang folds this to a constant initializer holding the address of an exe global (ADDR64 in .rdata), which the
 // DLL post-link check rejects; a base-pointer getter reading a mutable zero forces dynamic initialization (MSVC build unaffected).
 static volatile unsigned __int64 s_wfZero;
-static const NiRTTI* wfBaseRTTI() { return (const NiRTTI*)((unsigned __int64)&PostProcessEffect::ms_RTTI + s_wfZero); }
+static const NiRTTI* wfBaseRTTI() { return (const NiRTTI*)((unsigned __int64)&NiDefaultClickRenderStep::ms_RTTI + s_wfZero); }
 const NiRTTI WorldFadeOutRenderStep::ms_RTTI("WorldFadeOutRenderStep", wfBaseRTTI());
 #else
-const NiRTTI WorldFadeOutRenderStep::ms_RTTI("WorldFadeOutRenderStep", &PostProcessEffect::ms_RTTI);
+const NiRTTI WorldFadeOutRenderStep::ms_RTTI("WorldFadeOutRenderStep", &NiDefaultClickRenderStep::ms_RTTI);
 #endif
 
 // @0x1416bad00

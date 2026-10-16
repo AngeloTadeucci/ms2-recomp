@@ -15,6 +15,10 @@
 #include <NiDefaultClickRenderStep.h>
 #include <NiFixedString.h>
 #include <NiString.h>
+#include <efd/SmartPointer.h>
+
+class NiRenderedTexture;
+class NiRenderTargetGroup;
 
 #include "ms2/placeholder/nirefobject.h"
 #include "ms2/placeholder/ninode.h"
@@ -64,14 +68,14 @@ public:
     virtual void vfunc_21();
     virtual void vfunc_22();
 
-    static const NiRTTI ms_RTTI;                               // 0x143afa7a8
+    static const NiRTTI ms_RTTI;                               // 0x143ae4640 (0x143afa7a8 is NiDefaultClickRenderStep::ms_RTTI)
 
     unsigned __int64 m_70;
     void* m_78;
-    void* m_80;             // smart-pointer-like (ctor 0x14127c2a0)
-    void* m_88;             // second helper object (ctor 0x1414748a0)
-    unsigned char m_90;
-    void* m_98;
+    efd::SmartPointer<NiRenderedTexture> m_80;      // the step's output texture (ctor 0x14127c2a0)
+    efd::SmartPointer<NiRenderTargetGroup> m_88;    // its render target group (ctor 0x1414748a0)
+    unsigned char m_90;     // vfunc_15 result (output created)
+    void* m_98;             // vfunc_15 argument b (the service's shared targets)
 };
 MS2_CHECK_SIZE(PostProcessEffect, 0xa0);
 

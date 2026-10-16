@@ -8,7 +8,7 @@
 #include "hook/ms2hook.h"
 
 // @0x1400fc9b0
-const NiRTTI RadialBlurRenderStep::ms_RTTI("RadialBlurRenderStep", &PostProcessEffect::ms_RTTI);
+const NiRTTI RadialBlurRenderStep::ms_RTTI("RadialBlurRenderStep", &NiDefaultClickRenderStep::ms_RTTI);
 
 // @0x1416b9e50
 RadialBlurRenderStep::RadialBlurRenderStep(unsigned __int64 a, unsigned int b) : PostProcessEffect(a, b)
