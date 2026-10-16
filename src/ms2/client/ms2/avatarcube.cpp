@@ -79,9 +79,9 @@ static CString s_strStun = "stun";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // @0x1409f2670
-AvatarCube* FUN_1409f2670(const MS2Ptr<CItemData>& spData)
+AvatarCube* FUN_1409f2670(CItemData* pData)
 {
-    AvatarCube* pCube = new (efd::MemHint(efd::MemHint::NONE)) AvatarCube(spData);
+    AvatarCube* pCube = new (efd::MemHint(efd::MemHint::NONE)) AvatarCube(pData);
     if (pCube == 0)
     {
         pCube = 0;
@@ -128,8 +128,8 @@ void AvatarCube::vfunc_12()
 }
 
 // @0x1409f2960
-AvatarCube::AvatarCube(const MS2Ptr<CItemData>& spData)
-    : CloneCube(spData, "urn:gamebryo-scenegraph:ugc_cube_A01")
+AvatarCube::AvatarCube(CItemData* pData)
+    : CloneCube(MS2Ptr<CItemData>(pData), "urn:gamebryo-scenegraph:ugc_cube_A01")
 {
 }
 

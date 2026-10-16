@@ -13,7 +13,7 @@ class AvatarCube : public CloneCube
 
 public:
     // spData by value in the exe (copied for CloneCube's by-value parameter); the model path is the empty UGC cube.
-    AvatarCube(const MS2Ptr<CItemData>& spData);            // 0x1409f2960
+    AvatarCube(CItemData* pData);                             // 0x1409f2960 (raw pointer: MS2Ptr(T*) 0x1401bf970 builds the by-value argument)
     virtual ~AvatarCube();                                  // 0x1409f27e0
 
     virtual void vfunc_12();                                // 12 0x1409f2820 starts the idle animation
@@ -23,4 +23,4 @@ MS2_CHECK_SIZE(AvatarCube, 0x1a0);
 
 unsigned int FUN_1409f2cd0();   // 0x1409f2cd0
 // Creates an AvatarCube for spData with a free object id (0x410..0x419), rotated 90 degrees; null when none is free.
-AvatarCube* FUN_1409f2670(const MS2Ptr<CItemData>& spData);   // 0x1409f2670
+AvatarCube* FUN_1409f2670(CItemData* pData);   // 0x1409f2670
