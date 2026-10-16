@@ -38,6 +38,7 @@ public:
     void FUN_140e35d00(const char* szName, int n);                       // set an int member (inline COMDAT, uigamerankingdialog.cpp)
     void FUN_140e35da0(const char* szName, int n);                       // same body, a second instance (uigamerankingdialog.cpp)
     void FUN_140c1f8b0(const char* szName, int n);                       // set an int member (hide and seek result rows)
+    void FUN_140bd0d90(const char* szName, int n);                       // set an int member (job code, uimainplayerinfo)
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
 
@@ -48,6 +49,8 @@ public:
     ASArray(const ASArray& o);                                           // 0x140bbf770 (copy; passed by value to Invoke(.., int, AScript, ASArray))
     virtual ~ASArray();
     bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
+    void FUN_1422bbf70(const char* sz);                                  // push a string (uimainplayerinfo empty slot names)
+    void FUN_1422bbfe0(const wchar_t* sz);                               // push a wide string
 };
 
 // ASDataProvider: an ASArray with its own vftable (RTTI ASDataProvider : ASArray : AScript : CPtred), same 0x40 layout.
