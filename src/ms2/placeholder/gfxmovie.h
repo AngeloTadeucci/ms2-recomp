@@ -16,6 +16,27 @@
 #include <NiRefObject.h>
 
 #include "ms2/ms2layout.h"
+#include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/gfxvalue.h"
+
+class ASStage;                          // 0x80, base ASDisplayObjectContainer (vftable 0x143111a78, ctor 0x1422cfcb0)
+class ASMovieClipLoader;                // 0x80, base ASEventDispatcher (vftable 0x143111c90, ctor 0x1422cfff0)
+class ASMouseCursor;                    // 0x90, base ASGameEntity (vftable 0x14310d408; methods "unlock", "changeType")
+// Target of the two Ptr<> arguments of vfunc_9/10 (a ref-counted Scaleform render/handle object, released through
+// 0x14257dcb0; the two parameters cannot be told apart by their release code, so both use this one name).
+class Unk_GFxHandleObj;
+
+#if defined(MS2_HAVE_SCALEFORM_SDK)
+#define MS2_GFX_PTR(T) Scaleform::Ptr<T>
+#define MS2_GFX_LOADER Scaleform::GFx::Loader
+#define MS2_GFX_MOVIE Scaleform::GFx::Movie
+#define MS2_GFX_MOVIEDEF Scaleform::GFx::MovieDef
+#else
+#define MS2_GFX_PTR(T) T*
+#define MS2_GFX_LOADER void
+#define MS2_GFX_MOVIE void
+#define MS2_GFX_MOVIEDEF void
+#endif
 
 class GFxMovie : public NiRefObject
 {
@@ -25,32 +46,38 @@ public:
     // 1 = NiRefObject::DeleteThis (0x141d16bf0)
     virtual void* vfunc_2();                                        //  2 0x1422bf590 returns &DAT_143b0ae40 (a static descriptor)
     virtual void vfunc_3(void*, void*, int);                        //  3 0x1422bd350 (empty)
-    virtual void vfunc_4(void*, void*, void*);                      //  4 0x1422bd370 (empty)
+    virtual void vfunc_4(void*, const char*, const Scaleform::GFx::Value*, unsigned);   //  4 0x1422bd370 (empty)
     virtual void vfunc_5(bool);                                     //  5 0x1422bd390 movie slot +0x40(!b)
-    virtual int vfunc_6(void*, void*, int);                         //  6 0x1422bd3f0
+    // 6 0x1422bd3f0: stores the loader at +0x58, CreateMovie(path, flags) -> MovieDef (+0x68), CreateInstance -> Movie (+0x60);
+    // the path is a CString taken by value (the callee destroys it).
+    virtual int vfunc_6(MS2_GFX_LOADER* pLoader, CString strPath, int nLoadFlags);
     virtual int vfunc_7(int x, int y);                              //  7 0x1422bd880 returns 1; sends a mouse-move event
     virtual void vfunc_8(float fTime);                              //  8 0x1422bda00 advance
-    virtual void vfunc_9(void*, void*);                             //  9 0x1422bdb90
-    virtual void vfunc_10(void*, void*);                            // 10 0x1422bdc50
+    virtual void vfunc_9(MS2_GFX_PTR(Unk_GFxHandleObj), MS2_GFX_PTR(Unk_GFxHandleObj));    //  9 0x1422bdb90 (both Ptr<> by value)
+    virtual void vfunc_10(MS2_GFX_PTR(Unk_GFxHandleObj), MS2_GFX_PTR(Unk_GFxHandleObj));   // 10 0x1422bdc50
     virtual void vfunc_11();                                        // 11 0x1422bdd20 release the movie handles
     virtual void vfunc_12();                                        // 12 0x1422bddd0 (empty)
     virtual bool vfunc_13();                                        // 13 0x1422bdde0 returns true
     virtual int vfunc_14(void* hwnd, unsigned msg, unsigned __int64 wParam, __int64 lParam);   // 14 0x1422bddf0 returns 0
     virtual bool vfunc_15(void* hwnd, unsigned msg, unsigned __int64 wParam, __int64 lParam);  // 15 0x1422bde10 returns 0
 
-    // 0x10..0x80, ctor 0x1422bced0 (the handle types are unrecovered: ctor/dtor wrappers FUN_1422b31e0/b31a0/b31c0/bea60/beaa0)
+    // 0x10..0x80, ctor 0x1422bced0. The three 16-byte handles are MS2Ptr<T> (pointer at +8, intrusive CPtred count:
+    // ctor FUN_1422b31e0/b31a0/b31c0 zero +8, dtors FUN_140b62a60/140a58400/140b62a30). The two Scaleform handles are
+    // Ptr<> with the SDK's AddRef/Release (FUN_14257dc30/142573e70 for the Movie, FUN_1425a3850/1425a4030 for the MovieDef).
+    // Movie vtable slots of the exe equal the SDK's Scaleform::GFx::Movie 4.1.19 slot numbers (dtor = slot 0,
+    // SetViewport 0x58, Advance 0xb8, GetDisplayHandle 0xc8, SetBackgroundAlpha 0x100, HandleEvent 0x110).
     int m_10;                                                       // +0x10 ctor 0
     float m_14;                                                     // +0x14 ctor 1.0f
     int m_18;                                                       // +0x18 not set by the ctor (derived classes store 4)
     int m_pad_1c;
-    void* m_20[2];                                                  // +0x20 16-byte handle
-    void* m_30[2];                                                  // +0x30 16-byte handle
-    void* m_40[2];                                                  // +0x40 16-byte handle
+    MS2Ptr<ASStage> m_20;                                           // +0x20 the stage object (created by FUN_140b62400)
+    MS2Ptr<ASMouseCursor> m_30;                                     // +0x30 the mouse cursor (type 6 of the movie manager)
+    MS2Ptr<ASMovieClipLoader> m_40;                                 // +0x40 vfunc_11 invokes "shutdown" on it (FUN_140b62350)
     int m_50;                                                       // +0x50 ctor 0
-    int m_54;                                                       // +0x54 (ctor FUN_14127c3b0)
-    void* m_58;                                                     // +0x58 ctor 0
-    void* m_60;                                                     // +0x60 Ptr<GFx::Movie> (accessor FUN_14127c960 / FUN_14127c910 = non-null)
-    void* m_68;                                                     // +0x68 handle
+    int m_54;                                                       // +0x54 (ctor FUN_14127c3b0: a byte at +0x54)
+    MS2_GFX_LOADER* m_58;                                           // +0x58 ctor 0; vfunc_6 argument
+    MS2_GFX_PTR(MS2_GFX_MOVIE) m_60;                                // +0x60 Ptr<GFx::Movie> (accessor FUN_14127c960 / FUN_14127c910 = non-null)
+    MS2_GFX_PTR(MS2_GFX_MOVIEDEF) m_68;                             // +0x68 Ptr<GFx::MovieDef> (Loader::CreateMovie result)
     void* m_70;                                                     // +0x70 ctor 0
     void* m_78;                                                     // +0x78 ctor 0
 };
