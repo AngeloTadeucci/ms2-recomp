@@ -18,6 +18,24 @@
 // MS2-PIN: ?_Unchecked_begin@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1dd0
 // MS2-PIN: ?_Unchecked_end@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1e70
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?8PEAVCQuestManager@@P80@EAAXAEAVCInPacket@@@Z@std@@YA_NAEBU?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@0@0@Z 0x1416d4a40 ; prop
+// MS2-PIN: ??$?8PEAVCQuestManager@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x1416d4ab0 ; prop
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@_J@std@@@0@AEAV10@@Z 0x1416d9c70 ; prop
+// MS2-PIN: ??$destroy@V?$list@IV?$allocator@I@std@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@1@QEAV?$list@IV?$allocator@I@std@@@1@@Z 0x1416da140 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daec0 ; unique
+// MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@PEAVCQuest@@@Z 0x1416db050 ; unique
+// MS2-PIN: ??1TextKeyCallbackData@NiControllerSequence@@QEAA@XZ 0x1416dbfa0 ; unique
+// MS2-PIN: ?IsEmpty@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEBA_NXZ 0x1416dc1d0 ; unique
+// MS2-PIN: ?SetStartTime@CQuest@@QEAAX_J@Z 0x1416ded20 ; unique
+// MS2-PIN: ?Set68@CQuest@@QEAAXH@Z 0x1416dedb0 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1416e2750 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1416e27b0 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEAAXAEAVCInPacket@@@Z 0x1416e31b0 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x1416e31e0 ; unique
+// MS2-PIN: ??$Call@VCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@CAXAEAU?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@AEAVCInPacket@@@Z 0x1416e3210 ; prop
+// MS2-PIN: ??$Call@VCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@CAXAEAU?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@PEAVNotifyObject@@@Z 0x1416e3250 ; prop
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e3290 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e32f0 ; unique
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\questmanager.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
