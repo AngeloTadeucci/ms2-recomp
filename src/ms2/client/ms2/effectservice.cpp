@@ -112,6 +112,7 @@ class Unk_EsClock
 {
 public:
     double FUN_141473280();
+    double FUN_141473260();                         // elapsed seconds
 };
 Unk_EsClock* FUN_14086d260();
 
@@ -742,3 +743,184 @@ int FUN_1411a16c0(Unk_140165cf0* pNode, const char* pszName, int& nType)
 MS2_REPLACE(0x1411a16c0, FUN_1411a16c0, 188, 0x12156597);
 #undef MS2_THIS_FILE
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.cpp"
+
+// ======== second CU: EffectNode ========
+#include "effectdummy.h"
+
+// The ground probe: physxhelper.h's Unk_RayCastInfo / CPhysXHelper::FUN_14168a310 with efd::Point3 points.
+struct Unk_EffNodeRayHit
+{
+    Unk_EffNodeRayHit();                                        // 0x140ad4440
+    efd::Point3 m_origin;                                       // +0x00
+    efd::Point3 m_dir;                                          // +0x0c
+    float m_maxDist;                                            // +0x18
+    int m_groups;                                               // +0x1c
+    void* m_20;
+    void* m_28;
+    class Unk_EffNodeEntity* m_hitEntity;                       // +0x30
+    void* m_hitActor;
+    void* m_hitShape;
+    float m_hitDist;                                            // +0x48
+    efd::Point3 m_hitPoint;                                     // +0x4c
+    efd::Point3 m_hitNormal;                                    // +0x58
+};
+MS2_CHECK_SIZE(Unk_EffNodeRayHit, 0x68);
+class Unk_EffNodeEntity
+{
+public:
+    void FUN_140ae1160(unsigned int uiPropId, unsigned short* pOut);    // short property
+};
+class Unk_EffNodePhysX
+{
+public:
+    int FUN_14168a310(const efd::Point3& kFrom, efd::Point3& kHit, Unk_EffNodeRayHit* pInfo, float fMaxDist,
+                      efd::Point3* pNormal, int nMask);
+};
+Unk_EffNodePhysX* FUN_1409f7ca0();
+
+const NiRTTI EffectNode::ms_RTTI("EffectNode", &LightUnaffectedNode::ms_RTTI);
+
+// @0x1411a32c0
+NiObject* EffectNode::CreateClone(NiCloningProcess& kCloning)
+{
+    EffectNode* pkClone = new (efd::MemHint(efd::MemHint::NONE)) EffectNode(m_bUpdateEffects, m_bTemplate);
+    CopyMembers(pkClone, kCloning);
+    return pkClone;
+}
+
+// @0x1411a3380
+void EffectNode::CopyMembers(EffectNode* pkDest, NiCloningProcess& kCloning)
+{
+    if (pkDest == 0)
+        return;
+    LightUnaffectedNode::CopyMembers(pkDest, kCloning);
+    if (m_spMovement.get())
+        pkDest->FUN_1411a3db0(m_spMovement->Clone());
+    pkDest->m_unk_17c = m_unk_17c;
+    pkDest->m_bApplyLocalScale = m_bApplyLocalScale;
+    pkDest->m_bApplyWorldTransform = m_bApplyWorldTransform;
+    pkDest->FUN_1411a3fd0(m_pTarget);
+    pkDest->FUN_1411a4040(m_kTranslate);
+    pkDest->FUN_1411a4000(m_kRotate);
+    pkDest->FUN_1411a3fa0(m_bOnGround);
+}
+MS2_REPLACE_METHOD(0x1411a3380, EffectNode, CopyMembers, 291, 0xCB6031CB);
+
+// @0x1411a34b0
+EffectNode::EffectNode(bool bUpdateEffects, bool bTemplate)
+    : LightUnaffectedNode(bUpdateEffects, bTemplate), m_pTarget(0), m_bApplyWorldTransform(0), m_bApplyLocalScale(1),
+      m_bOnGround(0), m_kTranslate(0.0f, 0.0f, 0.0f), m_unk_17c(1), m_spMovement(0)
+{
+    m_kRotate.MakeIdentity();
+}
+
+// @0x1411a35b0
+EffectNode::EffectNode(const CEffectDummy& kDummy)
+    : LightUnaffectedNode(true, false), m_pTarget(0), m_bOnGround(0), m_unk_17c(2), m_spMovement(0)
+{
+    {
+        NiFixedString kName(kDummy.GetName());
+        SetName(kName);
+    }
+    FUN_1411a3cb0(kDummy);
+}
+
+// @0x1411a36b0
+EffectNode::~EffectNode()
+{
+    m_spMovement = 0;
+}
+
+// @0x1411a3720
+void EffectNode::UpdateWorldData()
+{
+    if (m_pkParent != 0) {
+        NiTransform kParent = m_pkParent->GetWorldTransform();
+        if (!m_bApplyLocalScale)
+            kParent.m_fScale = 1.0f;
+        if (m_bApplyWorldTransform) {
+            NiPoint3 kUp(0.0f, 0.0f, m_kTranslate.z);
+            NiPoint3 kPlane(m_kTranslate.x, m_kTranslate.y, 0.0f);
+            NiMatrix3 kInv;
+            m_pkParent->GetWorldRotate().Inverse(kInv);
+            m_kLocal.m_Translate = kInv * kUp;
+            m_kWorld = kParent * m_kLocal;
+            m_kWorld.m_Rotate = m_kRotate;
+            if (m_pTarget != 0) {
+                m_kWorld.m_Rotate = m_pTarget->GetWorldRotate() * m_kWorld.m_Rotate;
+                NiPoint3 kOffset = m_pTarget->GetWorldRotate() * kPlane;
+                m_kWorld.m_Translate.x += kOffset.x;
+                m_kWorld.m_Translate.y += kOffset.y;
+            }
+        } else {
+            m_kWorld = kParent * m_kLocal;
+        }
+    } else {
+        m_kWorld = m_kLocal;
+    }
+    if (m_spMovement.get()) {
+        double dTime = FUN_14086d260()->FUN_141473260();
+        m_kWorld = m_spMovement->FUN_141625430(dTime, m_kWorld);
+    }
+    if (m_bOnGround) {
+        Unk_EffNodeRayHit kInfo;
+        efd::Point3 kHit;
+        if (FUN_1409f7ca0()->FUN_14168a310(m_kWorld.m_Translate + NiPoint3(0.0f, 0.0f, 60.0f), kHit, &kInfo, 0, 0, 0)) {
+            m_kWorld.m_Translate = kHit;
+            m_kWorld.m_Translate.z += 1.0f;
+            if (kInfo.m_hitEntity != 0) {
+                unsigned short nKind = 0;
+                kInfo.m_hitEntity->FUN_140ae1160(0xada5c5d2, &nKind);
+                if (nKind == 8)
+                    m_kWorld.m_Translate.z += 50.0f;
+            }
+        }
+    }
+    if (m_spCollisionObject)
+        m_spCollisionObject->UpdateWorldData();
+}
+MS2_REPLACE_METHOD(0x1411a3720, EffectNode, UpdateWorldData, 1407, 0xA6E76FBE);
+
+// @0x1411a3cb0
+void EffectNode::FUN_1411a3cb0(const CEffectDummy& kDummy)
+{
+    m_bApplyWorldTransform = kDummy.m_bApplyWorldTransform;
+    m_bApplyLocalScale = kDummy.m_bApplyLocalScale;
+    FUN_1411a4040(reinterpret_cast<const NiPoint3&>(kDummy.GetTranslate()));
+    SetScale(kDummy.m_fScale);
+    m_kRotate.FromEulerAnglesXYZ(kDummy.m_vRotation.x * 3.1415927f / 180.0f, kDummy.m_vRotation.y * 3.1415927f / 180.0f,
+                                 kDummy.m_vRotation.z * 3.1415927f / 180.0f);
+    FUN_1411a4000(m_kRotate);
+}
+MS2_REPLACE_METHOD(0x1411a3cb0, EffectNode, FUN_1411a3cb0, 244, 0x5441C62C);
+
+// @0x1411a3db0
+void EffectNode::FUN_1411a3db0(INodeMovement* pMovement) { m_spMovement.AssignRaw(pMovement); }
+MS2_REPLACE_METHOD(0x1411a3db0, EffectNode, FUN_1411a3db0, 43, 0x3153449B);
+
+// @0x1411a3fa0
+void EffectNode::FUN_1411a3fa0(int bOnGround) { m_bOnGround = bOnGround; }
+MS2_REPLACE_METHOD(0x1411a3fa0, EffectNode, FUN_1411a3fa0, 25, 0xA75DD37E);
+
+// @0x1411a3fc0
+const NiRTTI* EffectNode::GetRTTI() const { return &ms_RTTI; }
+
+// @0x1411a3fd0
+void EffectNode::FUN_1411a3fd0(NiAVObject* pTarget)
+{
+    if (pTarget != this)
+        m_pTarget = pTarget;
+}
+MS2_REPLACE_METHOD(0x1411a3fd0, EffectNode, FUN_1411a3fd0, 40, 0xF6CFED15);
+
+// @0x1411a4000
+void EffectNode::FUN_1411a4000(const NiMatrix3& kRot)
+{
+    m_kLocal.m_Rotate = kRot;
+    m_kRotate = m_kLocal.m_Rotate;
+}
+MS2_REPLACE_METHOD(0x1411a4000, EffectNode, FUN_1411a4000, 64, 0x244D07F7);
+
+// @0x1411a4040
+void EffectNode::FUN_1411a4040(const NiPoint3& kPos) { m_kLocal.m_Translate = m_kTranslate = kPos; }
+MS2_REPLACE_METHOD(0x1411a4040, EffectNode, FUN_1411a4040, 60, 0xFFB13170);
