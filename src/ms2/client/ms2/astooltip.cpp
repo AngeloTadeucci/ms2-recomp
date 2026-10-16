@@ -177,37 +177,29 @@ extern CString DAT_143ab45c8;
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409c62e0
 ASTooltip::ASTooltip(int nMovieId)
-    : ASObj(nMovieId)
+    : ASObj(nMovieId), m_40(0), m_48(0)
 {
-    m_40 = 0;
-    m_48 = 0;
 }
 
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409c6350
 ASTooltip::ASTooltip(const Scaleform::GFx::Value& root, int nMovieId)
-    : ASObj(root, nMovieId)
+    : ASObj(root, nMovieId), m_40(0), m_48(0)
 {
-    m_40 = 0;
-    m_48 = 0;
 }
 
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409c63d0
 ASTooltip::ASTooltip(int a1, int a2)
-    : ASObj(a2)
+    : ASObj(a2), m_40(0), m_48(a1)
 {
-    m_40 = 0;
-    m_48 = a1;
 }
 
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409c6440
 ASTooltip::ASTooltip(void* pOwner, int a1, int a2)
-    : ASObj(a2)
+    : ASObj(a2), m_40((__int64)pOwner), m_48(a1)
 {
-    m_40 = (__int64)pOwner;
-    m_48 = a1;
 }
 
 // @0x1409c7b10
