@@ -28,6 +28,7 @@
 // MS2-PIN: ?FUN_14174a510@Unk_SSGMyPCScore@@QEAAXH@Z 0x14174a510 ; w95 manual
 // MS2-PIN: ??4?$MS2Ptr@VUnk_StateArg22@@@@QEAAAEAV0@AEBV0@@Z 0x141746f20 ; w95 manual
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
+// MS2-PIN: ??_7Unk_SkillMagicInfo@@6B@ 0x142f5fb08 ; CSkillMagicControlGuide::SkillContext
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
 // MS2-PIN: ??1Unk_SSGCharNameResult@@QEAA@XZ 0x141746aa0 ; w97 manual
 // MS2-PIN: ?Id@UIExpBar@@SAHXZ 0x141748200 ; w102 manual
@@ -168,11 +169,13 @@ public:
     PCBase* FUN_141bd1200(int nId);
     int FUN_141bbb1e0(GameObject* pObj, int nA, int nB);    // add an object to the world
     int FUN_141bd1a10(PCBase* pActor);
+    PCBase* FUN_141bd1530(__int64 nUid);                    // the actor by its object uid
+    void FUN_141bc5ab0(efd::SmartPointer<CSkillMagicControlGuide> spGuide);   // keep the skill guide alive
     PCBase* FUN_141bd3620();
     void FUN_141bd92c0(float fX, float fY, float fZ, int n);
     void FUN_141bd9380();
     class Unk_SSGNpc* FUN_141bd1320(int nId);
-    class Unk_SSGCubeObj* FUN_141bd13a0(int nId);
+    class CPet* FUN_141bd13a0(int nId);
     void FUN_141bc92e0(CString strName);
     void FUN_141bc9480(CString strName);
     void FUN_141bca220();
@@ -624,7 +627,8 @@ MS2_CHECK_OFFSET(Unk_SSGDropItem, m_n294, 0x294);
 class Unk_SSGNpc : public PCBase
 {
 public:
-    virtual void vfunc_124();
+    int vfunc_116() override;                               // 116 (CNpc)
+    virtual int vfunc_124(int nNpcId);                      // 124 (0x3e0): set up from the npc table
     virtual void vfunc_125(int n);                          // 125 (called with 1 on packet 0x57)
     MS2Ptr<Unk_SSGNpcData> FUN_141093270();                 // the npc table row
     void FUN_1410932c0(int n);
@@ -632,11 +636,21 @@ public:
     void FUN_14174a560(char c) { m_ce50 = c; }
     void FUN_141092c50(CInPacket& packet);
     void FUN_141094df0(__int64 nExp);                       // pet/npc exp gain
+    void FUN_141094f20(int n);
+    void FUN_141094790(__int64 n);
+    void FUN_14174a580(unsigned short n) { m_ne58 = n; }
+    void FUN_14174a4f0(int n) { m_nea8 = n; }
 
     char m_pad_d40[0xe50 - 0xd40];
     char m_ce50;                                            // +0xe50
+    char m_pad_e51[0xe58 - 0xe51];
+    int m_ne58;                                             // +0xe58
+    char m_pad_e5c[0xea8 - 0xe5c];
+    int m_nea8;                                             // +0xea8
 };
 MS2_CHECK_OFFSET(Unk_SSGNpc, m_ce50, 0xe50);
+MS2_CHECK_OFFSET(Unk_SSGNpc, m_ne58, 0xe58);
+MS2_CHECK_OFFSET(Unk_SSGNpc, m_nea8, 0xea8);
 class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); void FUN_140c86450(MS2Ptr<CItem> spItem); void FUN_140c860b0(CInputStream& stream, int nObjId); };
 // The item event hub (FUN_140a6a840); slots 5/21/23 are item notifications.
 class Unk_SSGItemHub
@@ -776,15 +790,22 @@ Unk_SSGDlg4e52* FUN_14136f290(int nId);                     // GetDialog<T>(0x4e
 void FUN_140930fe0(CInPacket& packet);
 
 // 0x1a..0xe7: feature manager / dialog handlers
-class Unk_SSGCubeObj : public Unk_SSGNpc
+class CPet : public Unk_SSGNpc
 {
 public:
+    CPet();                                                 // 0x140b0f4c0, size 0x10b0
     virtual void vfunc_126();
     virtual int vfunc_127();                                // 127 (0x3f8): plays the removal sound
     void FUN_140b107f0(int n);
     void FUN_140b10a10(__int64 n);
+    void FUN_140b10210(int n);
+    void FUN_140b10f90(unsigned short n);
+    GameObject* FUN_140b10320();                            // the owner (the sound plays at it)
+    void FUN_140b10c80(CStringW strName);
+
+    char m_pad_eb0[0x10b0 - 0xeb0];
 };
-GameObject* FUN_140b10320(Unk_SSGCubeObj* pObj);           // the object the sound plays at
+MS2_CHECK_SIZE(CPet, 0x10b0);
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
@@ -2495,6 +2516,7 @@ public:
     void FUN_140c86bb0(__int64 nItemUid);                   // remove an item
     int FUN_140c874f0();
     MS2Ptr<CItem> FUN_140c86c90(int nSlot);
+    void FUN_140c88100();                                   // a pet of the local player was summoned
 };
 class Unk_SSG535320 { public: Unk_SSGStorage* FUN_140c8b410(); __int64 FUN_140c8b2e0(); void FUN_140c8b300(__int64 nValue); };
 Unk_SSG535320* FUN_140535320();
@@ -3462,7 +3484,7 @@ void CSceneStateGame::FUN_14171a5f0(CInPacket& packet)
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
     int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
     __int64 nB = (unsigned int)static_cast<CInputStream&>(packet).vfunc_o8_3();
-    Unk_SSGCubeObj* pObj = FUN_1403ed2d0()->FUN_141bd13a0(nId);
+    CPet* pObj = FUN_1403ed2d0()->FUN_141bd13a0(nId);
     if (pObj == 0)
         return;
     pObj->FUN_140b107f0(nA);
@@ -7436,14 +7458,16 @@ void CSceneStateGame::FUN_141711e70(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141711e70, CSceneStateGame, FUN_141711e70, 1221, 0x738FBD8D);
 
-extern CString DAT_143ae7990;                               // the cube removal sound name
+extern CString DAT_143ae7990;                               // the pet removal sound name
+extern CString DAT_143ae7988;                               // the pet summon sound name
+bool FUN_14028d470(float a, float b);                       // approx equal
 
 // @0x14171a2e0
 void CSceneStateGame::FUN_14171a2e0(CInPacket& packet)
 {
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
     Unk_SSGWorld* pWorld = FUN_1403ed2d0();
-    Unk_SSGCubeObj* pObj = pWorld->FUN_141bd13a0(nId);
+    CPet* pObj = pWorld->FUN_141bd13a0(nId);
     if (pObj == 0)
         return;
     int n = pObj->FUN_141093270()->m_n60;
@@ -7451,7 +7475,7 @@ void CSceneStateGame::FUN_14171a2e0(CInPacket& packet)
         pObj->vfunc_40(1.0f, 0.0f, 0.0f, 0.5f);
     pObj->FUN_1410932c0(0);
     pWorld->FUN_141bbbcf0(nId, 1);
-    GameObject* pTarget = FUN_140b10320(pObj);
+    GameObject* pTarget = pObj->FUN_140b10320();
     if (pTarget != 0 && pObj->vfunc_127() != 0)
     {
         Unk_SSGXform xf;
@@ -7466,6 +7490,61 @@ void CSceneStateGame::FUN_14171a2e0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171a2e0, CSceneStateGame, FUN_14171a2e0, 765, 0x54213933);
+
+// Packet 0x5a: a pet is summoned (field add).
+// @0x141719a60
+void CSceneStateGame::FUN_141719a60(CInPacket& packet)
+{
+    int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nNpcId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nLevel = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    float fScale = static_cast<CInputStream&>(packet).vfunc_o8_5();
+    int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    kPos.z += 4.0f;
+    efd::SmartPointer<CPet> spPet = new (efd::MemHint(efd::MemHint::NONE)) CPet;
+    spPet->FUN_14123c5a0(nObjId);
+    spPet->vfunc_19(reinterpret_cast<efd::Point3&>(kPos));
+    spPet->vfunc_21(reinterpret_cast<efd::Point3&>(kDir));
+    spPet->FUN_140b10210(nLevel);
+    spPet->FUN_141094f20(nValue);
+    if (spPet->vfunc_124(nNpcId) == 0)
+        return;
+    if (!FUN_14028d470(fScale, 1.0f))
+        spPet->FUN_14123c300(fScale);
+    spPet->vfunc_90(&packet);
+    spPet->FUN_141094790(static_cast<CInputStream&>(packet).vfunc_o8_4());
+    spPet->FUN_14174a560(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    spPet->FUN_14174a580(static_cast<CInputStream&>(packet).vfunc_o8_2());
+    spPet->FUN_140b10f90(static_cast<CInputStream&>(packet).vfunc_o8_2());
+    spPet->FUN_14174a4f0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    spPet->FUN_140b10c80(static_cast<CInputStream&>(packet).vfunc_o8_8());
+    if (pWorld->FUN_141bbb1e0(spPet, 0, 1) == 0)
+        return;
+    MyPC* pMyPC = pWorld->FUN_141bd0cc0();
+    GameObject* pOwner = spPet->FUN_140b10320();
+    if (pMyPC != 0 && pMyPC == pOwner)
+    {
+        FUN_140535320()->FUN_140c8b410()->FUN_140c88100();
+        if (pMyPC->FUN_14166cb00(1))
+            spPet->FUN_14166ca20(1);
+    }
+    if (pOwner != 0 && spPet->vfunc_127() != 0)
+    {
+        Unk_SSGXform xf;
+        FUN_140a332d0(&xf);
+        xf.m_fScale = 1.0f;
+        Unk_SSGNiPt3 pos(pOwner->vfunc_18());
+        FUN_14097faa0(&xf.m_translate, pos);
+        Unk_SSGRot rot;
+        FUN_140a33240(&rot, &DAT_143a09600);
+        xf.m_rotate = rot;
+        FUN_1403ed280()->FUN_1411a5110(CString("ms2sound/sound/system"), CString(DAT_143ae7988), CString(""), 1, &xf, 1.0f, 0);
+    }
+}
+MS2_REPLACE_METHOD(0x141719A60, CSceneStateGame, FUN_141719a60, 2169, 0xA7D32A68);
 
 // A special (event) npc announced by packet 0x?? (boxed in TPtredDummy<SpecialNPCInfo>; its unit is near 0x14092c0a0).
 struct SpecialNPCInfo
@@ -9392,3 +9471,143 @@ void CSceneStateGame::FUN_141721cd0(CInPacket& packet)
         pMenu->FUN_141937e40(nMode);
 }
 MS2_REPLACE_METHOD(0x141721CD0, CSceneStateGame, FUN_141721cd0, 4625, 0x92ABA4C9);
+
+// 0x6e: guide objects (construction / fishing / skill-magic control). The skill context is
+// CSkillMagicControlGuide::SkillContext (RTTI); cubecraft_1.h knows it as Unk_SkillMagicInfo.
+// CSkillMagicControlGuide::SkillContext (RTTI)
+class Unk_SkillMagicInfo : public CPtred
+{
+public:
+    Unk_SkillMagicInfo();
+    __int64 m_nTagId;                                       // +0x18
+    int m_nSkillId;                                         // +0x20
+    short m_nLevel;                                         // +0x24
+    int m_nSrcLevel;                                        // +0x28
+    int m_nSrcIndex;                                        // +0x2c
+    int m_n30;                                              // +0x30
+    ATL::CAtlList<Unk_MagicTagPtr> m_tags;                  // +0x38
+};
+MS2_CHECK_OFFSET(Unk_SkillMagicInfo, m_tags, 0x38);
+MS2_CHECK_SIZE(Unk_SkillMagicInfo, 0x68);
+
+// @0x1417463b0
+Unk_SkillMagicInfo::Unk_SkillMagicInfo()
+    : m_nTagId(0), m_nSkillId(0), m_nLevel(0), m_nSrcLevel(0), m_nSrcIndex(0), m_n30(0)
+{
+}
+
+CSkillMagicControlGuide* FUN_141662610(PCBase* pOwner);   // the owner's skill-magic control guide
+
+// @0x14172c170
+void CSceneStateGame::FUN_14172c170(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nType = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int nGuideId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        Unk_StreamPoint ptPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        Unk_StreamPoint ptDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid);
+        if (pOwner == 0)
+            return;
+        efd::SmartPointer<CGuideObject> spGuide(0);
+        if (nType == 0)
+        {
+            int nItemId = static_cast<int>(static_cast<CInputStream&>(packet).vfunc_o8_4());
+            efd::SmartPointer<CConstructionGuideObject> spBuild = EE_NEW CConstructionGuideObject;
+            if (spBuild->FUN_1410a1ee0(nGuideId, reinterpret_cast<efd::Point3&>(ptPos), reinterpret_cast<efd::Point3&>(ptDir), pOwner, nItemId) == 0)
+                return;
+            spGuide = spBuild;
+        }
+        else if (nType == 1)
+        {
+            efd::SmartPointer<CFishingGuideObject> spFish = EE_NEW CFishingGuideObject;
+            if (spFish->vfunc_124(nGuideId, reinterpret_cast<efd::Point3&>(ptPos), reinterpret_cast<efd::Point3&>(ptDir), pOwner) == 0)
+                return;
+            spGuide = spFish;
+        }
+        else if (nType == 2)
+        {
+            int nTimeMode = FUN_1403ed2d0()->FUN_141bd1a10(pOwner);
+            int nStartTick = Unk_ServerClock::GetInstance()->FUN_1414732f0(nTimeMode);
+            MS2Ptr<Unk_SkillMagicInfo> spInfo(new Unk_SkillMagicInfo);
+            spInfo->m_nTagId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spInfo->m_nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            spInfo->m_nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            spInfo->m_nSrcLevel = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spInfo->m_nSrcIndex = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            unsigned char nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            for (unsigned char i = 0; i < nCount; i++)
+            {
+                __int64 nTagSub = static_cast<CInputStream&>(packet).vfunc_o8_4();
+                unsigned char n84 = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                if (spTag->FUN_141758d70(spInfo->m_nTagId, nTagSub, pOwner->FUN_14123c580(), 0, spInfo->m_nSkillId,
+                        spInfo->m_nLevel, spInfo->m_nSrcLevel, ptDir, 0, n84, spInfo->m_nSrcIndex, 0))
+                {
+                    spTag->m_nStartTick = nStartTick;
+                    spInfo->m_tags.AddTail(spTag);
+                }
+            }
+            efd::SmartPointer<CSkillMagicControlGuide> spSkill = EE_NEW CSkillMagicControlGuide;
+            if (spSkill->FUN_1410a5ea0(nGuideId, reinterpret_cast<efd::Point3&>(ptPos), reinterpret_cast<efd::Point3&>(ptDir), pOwner, spInfo) == 0)
+                return;
+            FUN_1403ed2d0()->FUN_141bc5ab0(spSkill);
+            spGuide = spSkill;
+        }
+        if (!spGuide)
+            return;
+        spGuide->vfunc_127();
+        FUN_1403ed2d0()->FUN_141bbb1e0(spGuide, 0, 1);
+    }
+    else if (nMode == 1)
+    {
+        int nGuideId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid);
+        if (pOwner == 0)
+            return;
+        GameObject* pObj = FUN_1403ed2d0()->FUN_141bd1180(nGuideId);
+        if (pObj == 0)
+            return;
+        CGuideObject* pGuide = efd::DynamicCast<CGuideObject>(pObj);
+        if (pGuide == 0)
+            return;
+        pGuide->vfunc_128();
+        FUN_1403ed2d0()->FUN_141bbbcf0(nGuideId, 0);
+        MyPC* pMyPC = FUN_1409613d0(pOwner);
+        if (pMyPC != 0 && pMyPC->FUN_141530290() != 0)
+        {
+            pMyPC->FUN_141530200();
+            FUN_141275260(0xbb2, 1, 1);
+        }
+    }
+    else if (nMode == 2)
+    {
+        int nGuideId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        GameObject* pObj = FUN_1403ed2d0()->FUN_141bd1180(nGuideId);
+        if (pObj == 0)
+            return;
+        CGuideObject* pGuide = efd::DynamicCast<CGuideObject>(pObj);
+        if (pGuide == 0)
+            return;
+        pGuide->vfunc_129(&packet);
+    }
+    else if (nMode == 3)
+    {
+        int nGuideId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid);
+        if (pOwner == 0)
+            return;
+        CSkillMagicControlGuide* pSkill = FUN_141662610(pOwner);
+        if (pSkill == 0)
+            return;
+        if (pSkill->FUN_14123c580() != nGuideId)
+            return;
+        pSkill->FUN_1410a6520();
+    }
+}
+MS2_REPLACE_METHOD(0x14172C170, CSceneStateGame, FUN_14172c170, 3949, 0x6D5C85AE);
