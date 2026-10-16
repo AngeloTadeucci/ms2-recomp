@@ -12,6 +12,7 @@
 class ASGameEntity : public ASDisplayObject
 {
 public:
+    ASGameEntity(const Scaleform::GFx::Value& root, int nMovieId);     // 0x1422de590
     int FUN_1422c1500();                                    // width
     int FUN_1422c1530();                                    // height
     void FUN_1422bffe0(int x, int y);                       // set the position
