@@ -132,6 +132,11 @@ public:
     int FUN_1410b9b20(int nItemId);
     int FUN_1410b9d80(__int64 nId);
     Unk_CMISTree<277>* FUN_1410b9e70();
+    int FUN_1410b9c20(int nItemId, __int64 nOwnerId);
+    float FUN_1410ba440(int nDir);
+    int FUN_1410ba4a0(Unk_StreamPoint ptDir);
+    Unk_Int3 FUN_1410bab50(Unk_Int3 pt, int nDir);
+    Unk_Int3 FUN_1410bac00(Unk_StreamPoint ptDir);
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();

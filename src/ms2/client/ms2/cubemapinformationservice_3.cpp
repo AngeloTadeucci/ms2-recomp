@@ -153,6 +153,8 @@ void FUN_141129b50(Unk_CMISIter<260>*);                                     // o
 int FUN_1408b4f20(Cube*);                                                   // the item id of a cube
 __int64 FUN_1408b4f50(Cube*);
 int FUN_14053fc10(int);                                                     // the item category
+struct Unk_CMISCubeOwner { char m_pad[0x18]; __int64 m_nId; };
+Unk_CMISCubeOwner* FUN_1408b4f80(Cube*);                                    // the owner record of a cube
 struct Unk_CMISPair { int m_a, m_b; };
 extern Unk_CMISPair DAT_143b02320;                                          // initial cursor pair
 float FUN_14029d220(float f);                                               // fabsf
@@ -650,6 +652,101 @@ int CubeMapInformationService::FUN_1410b9d80(__int64 nId)
 Unk_CMISTree<277>* CubeMapInformationService::FUN_1410b9e70()
 {
     return &f2a8;
+}
+
+// @0x1410b9c20
+int CubeMapInformationService::FUN_1410b9c20(int nItemId, __int64 nOwnerId)
+{
+    int nCount = 0;
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        if (FUN_1408b4f20(spCube.operator->()) != nItemId)
+            continue;
+        __int64 nOwner = 0;
+        Unk_CMISCubeOwner* pOwner = FUN_1408b4f80(spCube.operator->());
+        if (pOwner != 0)
+            nOwner = pOwner->m_nId;
+        if (nOwner != nOwnerId)
+            continue;
+        nCount++;
+    }
+    return nCount;
+}
+// @0x1410ba440
+float CubeMapInformationService::FUN_1410ba440(int nDir)
+{
+    switch (nDir) {
+    case 1:
+        return 270.0f;
+    case 2:
+        return 180.0f;
+    case 3:
+        return 90.0f;
+    case 4:
+        return 0.0f;
+    default:
+        return 0.0f;
+    }
+}
+// @0x1410ba4a0
+int CubeMapInformationService::FUN_1410ba4a0(Unk_StreamPoint ptDir)
+{
+    Unk_StreamPoint kWest(-1.0f, 0.0f, 0.0f);
+    Unk_StreamPoint kNorth(0.0f, 1.0f, 0.0f);
+    Unk_StreamPoint kEast(1.0f, 0.0f, 0.0f);
+    Unk_StreamPoint kSouth(0.0f, -1.0f, 0.0f);
+    Unk_StreamPoint kForward, kRight;
+    FUN_140a01250(ptDir, &kForward, &kRight);
+    if (kWest.FUN_140a00f20(kForward) == 1.0f)
+        return 1;
+    else if (kNorth.FUN_140a00f20(kForward) == 1.0f)
+        return 2;
+    else if (kEast.FUN_140a00f20(kForward) == 1.0f)
+        return 3;
+    else if (kSouth.FUN_140a00f20(kForward) == 1.0f)
+        return 4;
+    return 0;
+}
+// @0x1410bab50
+Unk_Int3 CubeMapInformationService::FUN_1410bab50(Unk_Int3 pt, int nDir)
+{
+    switch (nDir) {
+    case 1:
+        pt.x = pt.x - 1;
+        break;
+    case 2:
+        pt.y = pt.y + 1;
+        break;
+    case 3:
+        pt.x = pt.x + 1;
+        break;
+    case 4:
+        pt.y = pt.y - 1;
+        break;
+    }
+    return pt;
+}
+// @0x1410bac00
+Unk_Int3 CubeMapInformationService::FUN_1410bac00(Unk_StreamPoint ptDir)
+{
+    Unk_StreamPoint kWest(-1.0f, 0.0f, 0.0f);
+    Unk_StreamPoint kNorth(0.0f, 1.0f, 0.0f);
+    Unk_StreamPoint kEast(1.0f, 0.0f, 0.0f);
+    Unk_StreamPoint kSouth(0.0f, -1.0f, 0.0f);
+    Unk_StreamPoint kForward, kRight;
+    FUN_140a01250(ptDir, &kForward, &kRight);
+    if (kWest.FUN_140a00f20(kForward) == 1.0f)
+        return Unk_Int3(-1, 0, 0);
+    else if (kNorth.FUN_140a00f20(kForward) == 1.0f)
+        return Unk_Int3(0, 1, 0);
+    else if (kEast.FUN_140a00f20(kForward) == 1.0f)
+        return Unk_Int3(1, 0, 0);
+    else if (kSouth.FUN_140a00f20(kForward) == 1.0f)
+        return Unk_Int3(0, -1, 0);
+    return Unk_Int3(0, 0, 0);
 }
 
 // @0x1410ce800
