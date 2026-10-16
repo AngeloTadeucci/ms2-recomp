@@ -164,6 +164,9 @@ namespace egf { class EntityChangeMessage; class Entity; }
 #include "ms2/placeholder/iworldservicecallback.h"
 class PendingEffect;
 class RainDropSystem;
+class GameObject;
+class NiPoint3;
+class NiTransform;
 
 // The live effects of one owner id (0x20 bytes; plain new/delete, ??_G 0x1411b1330, dtor 0x1411b0140).
 struct Unk_EsEffectGroup
@@ -173,6 +176,8 @@ struct Unk_EsEffectGroup
     void FUN_1411a42b0();                                       // drop every effect (vfunc_7) and the skip counts
 
     static int FUN_1411b1f50();                                 // m_sTotalEffectCount
+    // @0x1411b1ed0
+    unsigned FUN_1411b1ed0() { return m_nId; }
     static int m_sTotalEffectCount;                             // 0x143ad15a0 live effects of every group
 
     // @0x141044280
@@ -180,6 +185,9 @@ struct Unk_EsEffectGroup
     // @0x1410443f0
     std::list<CEffectPtr>::iterator FUN_1410443f0() { return m_listEffects.end(); }
     std::list<CEffectPtr>::iterator FUN_1411b2df0(std::list<CEffectPtr>::iterator it);   // erase one effect
+    void FUN_1411b3070(const char* pszName);                    // m_strName = pszName
+    const std::string& FUN_1411b1e40();                         // m_strName
+    void FUN_1411b15b0(CEffectPtr spEffect);                    // add an effect (counted)
     bool FUN_1411b2720();                                       // no effects left
 
     unsigned m_nId;                                             // +0x00
@@ -232,7 +240,19 @@ public:
 
     unsigned FUN_1411a49c0(Unk_EffectTarget& kTarget);          // insert, not detached (+0x34 = 0)
     unsigned FUN_1411a4a00(Unk_EffectTarget& kTarget);          // insert an effect: its id, 0 on failure
-    unsigned FUN_1411a5a60(const CString& strName, const CString& strArg);  // play a field effect
+    Unk_EsEffectGroup* FUN_1411aac40(unsigned nId);             // the group of an id (created when missing)
+    CString FUN_1411aad50();                                    // the m_a190 history, "[name]" per line
+    CString FUN_1411aaeb0();                                    // the m_a1b0 history, "[name]" per line
+    void FUN_1411ab010(CString strName);                        // remember an inserted effect name (last 6)
+    void FUN_1411ab090(CString strName);                        // remember a ... name (last 6)
+    unsigned FUN_1411a4f40(CString strName, const NiPoint3& kPos);          // play a voice sound at kPos
+    unsigned FUN_1411a5110(CString strCategory, CString strName, CString strExtra, int nKind, NiTransform* pXform,
+        float fVolume, int nOwner);                             // play a sound event: its id, 0 when skipped
+    unsigned FUN_1411a5580(int nA, int nB, int nKind, const NiPoint3& kPos, float fVolume);    // play a hit sound
+    unsigned FUN_1411a5770(int nId, GameObject* pActor);        // play an actor voice
+    unsigned FUN_1411a5a60(const CString& strName, const CString& strArg);  // play a field sound
+    unsigned FUN_1411a5d80(const CString& strName);             // play a local player voice
+    void FUN_1411a6160();                                       // stop the sound effects (vfunc_12 2/3)
     void FUN_1411a6060(unsigned nId);                           // stop (vfunc_5) the effects of an id
     void FUN_1411a66d0(unsigned nId);                           // drop the pending requests of an id
     void FUN_1411a67c0();                                       // drop every pending request
@@ -264,12 +284,21 @@ public:
     unsigned FUN_1411a85c0();
     int FUN_1411a88c0();
     void FUN_1411a8880(int n);                                  // m_unk_188 = clamp(n, 1, 3)
+    void FUN_1411aa800();                                       // insert the loaded pending requests
+    void FUN_1411aab90(NiAVObject* pObject);                    // put pObject in front of the camera
+    void FUN_1411a8e90();                                       // stop the sounds of the sound event effects
+    void FUN_1411a8610();                                       // crash log: counters and the newest id's effects
+    int FUN_1411a88e0(int nKind, float fDistance);              // the effect LOD level of a caster kind and distance
+    static CString FUN_1411a8ae0(int nCaster);                  // caster kind name ("eCaster_...")
+    // @0x1411b1bd0
+    unsigned FUN_1411b1bd0() { return s_nLastId; }              // the newest effect id
     void FUN_1411a8cb0(const CString& strName);                 // play strName on the camera target, keep the id
     void FUN_1411a8dc0();                                       // stop every id of m_list140
     void FUN_1411a8e50(unsigned nTick);
     unsigned FUN_1411a8e70();
     bool FUN_1411a91d0(int nType);                              // false when the option hides that effect type
     static unsigned FUN_1411a9230();                            // next effect id (never 0)
+    static unsigned s_nLastId;                                  // 0x1439f7038
 
     MS2_LAYOUT_FRIEND;
     NiNode** m_ppRoots;                                         // +0x30 the roots of the split mode (DAT_143ae2b30)

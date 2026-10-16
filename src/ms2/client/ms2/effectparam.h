@@ -18,6 +18,7 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/delegate.h"
 
 class Unk_140165cf0;     // game TinyXML element
 class NiAVObject;
@@ -46,8 +47,7 @@ public:
     bool m_b37;
     int m_unk_38;
     int m_unk_3c;
-    int m_unk_40;
-    int m_unk_44;
+    Delegate<void(unsigned int, CString, bool)> m_dgInserted;  // +0x40 called with the effect id once the effects exist
     int m_unk_48;
     unsigned int m_nRandomIndex;    // +0x4c CRandomEffect: forced child index (mod count); 0 = weighted random
     void* m_unk_50;
@@ -64,11 +64,15 @@ public:
     bool FUN_140a53110();           // 0x140a53110 the owner is optimized out (hidden)
     double FUN_140a53420();         // 0x140a53420 start time (+0x68), 0 = now
     void FUN_140a534a0();           // 0x140a534a0 resolve the owner by id and its scene node
+    void FUN_140a53550();           // 0x140a53550 start time (+0x68) = now
+    void FUN_140a53170(int nId);    // 0x140a53170 +0x50 = nId
+    Delegate<void(unsigned int, CString, bool)>& FUN_140a53460();  // 0x140a53460 the inserted callback (+0x40)
 };
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nKind, 0x08);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_spObject, 0x10);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b30, 0x30);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b34, 0x34);
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_dgInserted, 0x40);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nRandomIndex, 0x4c);
 MS2_CHECK_SIZE(Unk_EffectTarget, 0x70);
 

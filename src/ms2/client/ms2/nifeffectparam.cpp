@@ -150,9 +150,6 @@
 // MS2-PIN: ?DecRefCount@CNifLoadingService@@UEBAXXZ 0x14155ce50 ; hand: byte-identical
 // MS2-PIN: ?DeleteThis@CNifLoadingService@@MEBAXXZ 0x14155ce90 ; hand: byte-identical
 // MS2-PIN: ?Clone@?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCNifLoadingService@@P82@EAAXXZ@@UEBAPEAV1@XZ 0x14155cee0 ; hand: byte-identical
-// MS2-PIN: ?GetSearchPath@NiStream@@QEBAPEAVNiSearchPath@@XZ 0x14155d9a0
-// MS2-PIN: ?GetObjectAt@NiStream@@QEBAPEAVNiObject@@I@Z 0x14155d900
-// MS2-PIN: ?GetObjectCount@NiStream@@QEBAIXZ 0x14155d950
 // MS2-PIN: ??$AddDependency@UUnk_NifDepSix@@@IDependencyRegistrar@efd@@QEAA_NI@Z 0x141556d30
 // MS2-PIN: ??4?$SmartPointer@VCEffectObject@@@efd@@QEAAAEAV01@PEAVCEffectObject@@@Z 0x14154f270
 // MS2-PIN: ??_7CNiStreamLoadThread@@6B?$TSingleton@VCNiStreamLoadThread@@@@@ 0x142f2e158
@@ -1451,6 +1448,11 @@ Unk_NifGate* FUN_1406aeee0();
 void FUN_140659080(Unk_140659080& kStartup, unsigned nError);        // record the start-up error
 unsigned FUN_140869420();                                            // random seed
 void FUN_14028e7c0(CString& strPath);                                // normalize a path in place
+// NiStream accessors of the exe's layout: the header's inline NiStream::GetSearchPath/GetObjectCount/GetObjectAt read the
+// header layout (0x4c8 bytes, search path +0x130) and return null/garbage on the exe's 0x5d0-byte NiStream
+NiSearchPath* FUN_14155d9a0(NiStream* pStream);                      // +0x238
+unsigned FUN_14155d950(NiStream* pStream);                           // object count (array at +0x280)
+NiObject* FUN_14155d900(NiStream* pStream, unsigned nIndex);         // object at index
 void FUN_1403a1280(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const char* const& pszArg);
 
 CNiStreamLoadThread* TSingleton<CNiStreamLoadThread>::s_instance = 0;
@@ -1631,14 +1633,15 @@ MS2_REPLACE_METHOD(0x1415512C0, CNiStreamLoadThread, Pause, 18, 0x79DC8588);
 NiStream* CNiStreamLoadThread::Load(CString strPath, int bKeep)
 {
     FUN_14028e7c0(strPath);
-    NiStream* pStream = EE_NEW NiStream;
+    // the exe's NiStream is 0x5d0 bytes (this tree's header: 0x4c8): its ctor and Load write past a header-sized block
+    NiStream* pStream = ::new (efd::MemObject::operator new(0x5d0, EE_MEMHINT_NONE)) NiStream;
     pStream->SetTexturePalette(m_spPalette);
     std::string strDir;
     void* pBuf;
     int nSize;
     if (FUN_140166420()->FUN_1403972f0(strPath, &pBuf, &nSize, &strDir))
     {
-        pStream->GetSearchPath()->SetReferencePath(strDir.c_str());
+        FUN_14155d9a0(pStream)->SetReferencePath(strDir.c_str());
         if (!pStream->Load(static_cast<char*>(pBuf), nSize))
         {
             delete pStream;
@@ -1649,7 +1652,7 @@ NiStream* CNiStreamLoadThread::Load(CString strPath, int bKeep)
         NiFree(pBuf);
     }
     NiStream* pFound = 0;
-    if (pStream != 0 && pStream->GetObjectCount() != 0)
+    if (pStream != 0 && FUN_14155d950(pStream) != 0)
     {
         if (bKeep == 0)
             return pStream;
@@ -2429,7 +2432,7 @@ CCachedNifPtr CNifLoadingService::CreateCachedNif(CString strPath, int nClass, b
     CCachedNifPtr spEntry = EE_NEW CCachedNif;
     spEntry->m_kFile.FUN_1401d1160(CString(strPath));
     spEntry->m_dLastUse = FUN_14086d260()->FUN_141473280();
-    FUN_1409fabf0(&spEntry->m_spData, FUN_14098d8d0(&DAT_143afa458, pStream->GetObjectAt(0)));
+    FUN_1409fabf0(&spEntry->m_spData, FUN_14098d8d0(&DAT_143afa458, FUN_14155d900(pStream, 0)));
     spEntry->m_nClass = nClass;
     if (FUN_1409849b0(&spEntry->m_spData) == 0)
     {
@@ -2438,9 +2441,9 @@ CCachedNifPtr CNifLoadingService::CreateCachedNif(CString strPath, int nClass, b
         return 0;
     }
     FUN_1415672e0(FUN_1409849b0(&spEntry->m_spData), bFlag);
-    for (unsigned i = 1; i < pStream->GetObjectCount(); ++i)
+    for (unsigned i = 1; i < FUN_14155d950(pStream); ++i)
     {
-        NiAVObjectPtr spExtra = static_cast<NiAVObject*>(FUN_14098d8d0(&DAT_143afc918, pStream->GetObjectAt(i)));
+        NiAVObjectPtr spExtra = static_cast<NiAVObject*>(FUN_14098d8d0(&DAT_143afc918, FUN_14155d900(pStream, i)));
         if (spExtra != 0)
             spEntry->m_aClones.Add(spExtra);
     }
