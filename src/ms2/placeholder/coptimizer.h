@@ -6,6 +6,8 @@ public:
     COptimizer();
     virtual ~COptimizer();
     int FUN_141215630() const;
+    int IsModelCullingOn() { return ms_nModelCulling; }     // 0x1414c98a0 (COMDAT, also optimizer.cpp)
+    static int ms_nModelCulling;                            // 0x143ae2b44 model node culling enabled
     void* unknown08; void* unknown10;
     void* unknown18; void* unknown20;
     unsigned __int64 field28;
