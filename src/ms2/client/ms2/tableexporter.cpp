@@ -4,12 +4,17 @@
 // MS2-RANGE: 0x141821bf0-0x1418379e0 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1418265b0 ; unique
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141826610 ; prop
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1418265e0 ; prop
 // MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x141826990 ; unique
 // MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1418269e0 ; unique
-// MS2-PIN: ??$StringFormat@_KV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_KAEBV01@@Z 0x141827280 ; unique
-// MS2-PIN: ??$StringFormat@HIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@IIII@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBHAEBIAEBV01@2222@Z 0x141827590 ; unique
+// MS2-PIN: ??$StringFormat@IHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HHHH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBIAEBHAEBV01@2222@Z 0x141827590 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@1@@Z 0x141827b60 ; unique
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@1@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@1@1@Z 0x141828960 ; unique
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@1@@Z 0x14182a8a0 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@1@@Z 0x14182c940 ; unique
+// MS2-PIN: ??$forward@AEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@YAAEAU?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@0@AEAU10@@Z 0x14182e2d0 ; prop
 // MS2-PIN: ??0?$CAtlArray@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x14182e4c0 ; order
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAA@XZ 0x14182eb70 ; prop
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@@std@@@std@@QEAA@XZ 0x14182ee70 ; unique
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@@std@@@std@@QEAA@XZ 0x14182eea0 ; prop
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@QEAA@XZ 0x14182eed0 ; prop
@@ -17,23 +22,35 @@
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAA@XZ 0x14182ef70 ; unique
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAA@XZ 0x14182ef80 ; prop
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAA@XZ 0x14182ef90 ; prop
-// MS2-PIN: ??1?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@QEAA@XZ 0x14182f360 ; prop
-// MS2-PIN: ??1?$TPtredDummy@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@UEAA@XZ 0x14182f410 ; prop
-// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1418301d0 ; prop
+// MS2-PIN: ??1?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@QEAA@XZ 0x14182f780 ; unique
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1418301f0 ; prop
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141830230 ; prop
-// MS2-PIN: ??_G?$TPtredDummy@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@UEAAPEAXI@Z 0x141830950 ; prop
-// MS2-PIN: ?FreeNode@?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@AEAAXPEAVCNode@12@@Z 0x141831060 ; prop
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1418304d0 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141830550 ; prop
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x141830730 ; unique
 // MS2-PIN: ?GetAt@?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@QEAAAEAUUnk_NpcInfo@?A0x82dadc2e@@PEAU__POSITION@@@Z 0x141831150 ; unique
-// MS2-PIN: ?GetModuleInstance@CAtlBaseModule@ATL@@QEAAPEAUHINSTANCE__@@XZ 0x1418311d0 ; order
 // MS2-PIN: ?GetKeyAt@?$CAtlMap@IV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@I@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEBAAEBIPEAU__POSITION@@@Z 0x1418313c0 ; order
 // MS2-PIN: ?GetKeyAt@?$CAtlMap@I_NV?$CElementTraits@I@ATL@@V?$CElementTraits@_N@2@@ATL@@QEBAAEBIPEAU__POSITION@@@Z 0x141831430 ; order
-// MS2-PIN: ?RemoveAll@?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@QEAAXXZ 0x141831980 ; prop
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@@Z 0x1418326d0 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@2@$00@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@2@XZ 0x141834bc0 ; prop
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x141836700 ; unique
 // MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@2@_K@Z 0x141836790 ; order
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x1418367f0 ; order
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@2@_K@Z 0x141836820 ; order
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@2@@Z 0x1418377e0 ; unique
+// MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@IV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x1418379a0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@QEAA@XZ 0x14182f340
+// MS2-PIN: ??1?$TPtredDummy@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@UEAA@XZ 0x14182f3e0
+// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141830210
+// MS2-PIN: ?FreeNode@?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@AEAAXPEAVCNode@12@@Z 0x141830ff0
+// MS2-PIN: ?GetModuleInstance@CAtlBaseModule@ATL@@QEAAPEAUHINSTANCE__@@XZ 0x1418311d0
+// MS2-PIN: ?RemoveAll@?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@QEAAXXZ 0x1418318a0
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBHV?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x1418367c0
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@2@_K@Z 0x141836820
 // MS2-PIN: ??0Unk_NpcInfo@?A0x82dadc2e@@QEAA@XZ 0x14182f220
+// MS2-PIN: ??_G?$TPtredDummy@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@UEAAPEAXI@Z 0x141830950
+// MS2-PIN: ?GetNext@?$CAtlMap@I_NV?$CElementTraits@I@ATL@@V?$CElementTraits@_N@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1418315a0
+// MS2-PIN: ?deallocate@?$allocator@U?$_List_node@UCSoundDataEntry@@PEAX@std@@@std@@QEAAXQEAU?$_List_node@UCSoundDataEntry@@PEAX@2@_K@Z 0x141836760
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x1418367f0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\tableexporter.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>
@@ -134,19 +151,13 @@ struct Unk_PortalInfo                           // <portal> row collected per fi
     unsigned int m_nTargetField;
     unsigned int m_nTargetPortal;
     int m_nType;
-    bool operator==(const Unk_PortalInfo& o) const
-    {
-        return m_nId == o.m_nId && m_nTargetField == o.m_nTargetField && m_nTargetPortal == o.m_nTargetPortal && m_nType == o.m_nType;
-    }
+    bool operator==(const Unk_PortalInfo& o) const;
 };
 
 struct Unk_NpcInfo                              // npc spawn of a field, 0x20 bytes
 {
     Unk_NpcInfo() { m_pos = NiPoint3(0.0f, 0.0f, 0.0f); }
-    bool operator==(const Unk_NpcInfo& o) const
-    {
-        return m_nFieldId == o.m_nFieldId && m_pos == o.m_pos && m_strStart == o.m_strStart && m_strEnd == o.m_strEnd;
-    }
+    bool operator==(const Unk_NpcInfo& o) const;
     unsigned int m_nFieldId;
     NiPoint3 m_pos;                             // spawn position
     CStringW m_strStart;                        // event start / end (gameEvent spawns)
@@ -168,7 +179,7 @@ static Unk_FieldMapA g_mapLiftable;
 static ATL::CAtlMap<unsigned int, bool> g_mapTaxi;
 
 // Opaque handles of the model / spawn / npc tables.
-struct Unk_Ref { char m_raw[16]; };
+struct Unk_Ref { void* m_pObj; void* m_pCtrl; };            // counted handle: object + control block
 struct Unk_NpcData { char m_pad[0x18]; int m_nId; };
 struct Unk_NpcRow { char m_pad[0x50]; CString m_strModel; };
 struct Unk_RegionData { char m_pad[0x20]; CStringW m_strName; int m_nIndex; int m_pad2c; int m_nCount; };
@@ -232,7 +243,7 @@ void FUN_1403775a0(Unk_Ref* pRef);
 struct Unk_SpawnMgr { char m_pad[8]; char m_groups[1]; };
 Unk_SpawnMgr* FUN_1406d6e90();
 void FUN_1406cd840(void* pGroups, Unk_Ref* pOut, const CStringW& strName, int nIndex);
-long long FUN_14182fd90(Unk_Ref* pRef);
+void* FUN_14182fd90(Unk_Ref* pRef);
 Unk_SpawnGroup* FUN_1406d5cb0(Unk_Ref* pRef);
 unsigned long long FUN_1406d6e40(Unk_EntryArray* pArr);
 void* FUN_1406d5b40(Unk_EntryArray* pArr, unsigned long long nIndex);
@@ -284,6 +295,8 @@ static const Unk_SoundTagMap& Unk_GetSoundTags(CSoundService* pService)
 }
 
 int FUN_141827210(ATL::CAtlArray<CString>& rArray, const CString& str);
+CString FUN_1402bf9a0(const char* pszFormat, const fmt::ArgList& args);
+CString FUN_141827280(const char* pszFormat, const unsigned long long& nIndex, const CString& strName);
 
 // Removes the named <property> children from every xblock / block entity whose model the model manager knows.
 // MS2-FUNCTIONAL: instruction sequence matches but stack frame is 0x20 larger than the exe
@@ -317,7 +330,7 @@ void FUN_141821bf0(CString strModelFilter, CString strDeleteProps)
         Unk_140165cf0* pEntitySet = FUN_140165cf0(pGame, "entitySet");
         if (pEntitySet == NULL)
             continue;
-        FUN_1411683e0(FUN_141168200(), StringFormat("{0} Read xblock {1}", i, xblocks[i]));
+        FUN_1411683e0(FUN_141168200(), FUN_141827280("{0} Read xblock {1}", i, xblocks[i]));
         for (Unk_140165cf0* pEntity = FUN_140165cf0(pEntitySet, "entity"); pEntity != NULL;
              pEntity = FUN_140168650(pEntity, "entity")) {
             CString strModel = FUN_140188f50(FUN_14086f4b0(pEntity, "modelName"), 0);
@@ -351,7 +364,7 @@ void FUN_141821bf0(CString strModelFilter, CString strDeleteProps)
         Unk_140165cf0* pEntities = FUN_140165cf0(pBlock, "entities");
         if (pEntities == NULL)
             continue;
-        FUN_1411683e0(FUN_141168200(), StringFormat("{0} Read block {1}", i, blocks[i]));
+        FUN_1411683e0(FUN_141168200(), FUN_141827280("{0} Read block {1}", i, blocks[i]));
         for (Unk_140165cf0* pEntity = FUN_140165cf0(pEntities, "entity"); pEntity != NULL;
              pEntity = FUN_140168650(pEntity, "entity")) {
             CString strModel = FUN_140188f50(FUN_14086f4b0(pEntity, "model-name"), 0);
@@ -500,7 +513,7 @@ bool FUN_141825610(CString strPath, bool bMessageBox)
     CString strRow;
     int nRows = 0;
     for (unsigned int i = 0; i < ids.size(); i++) {
-        int nItemId = ids[i];
+        unsigned int nItemId = ids[i];
         MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
         if (spItem.get() == 0)
             continue;
@@ -509,12 +522,12 @@ bool FUN_141825610(CString strPath, bool bMessageBox)
         if (spItem->FUN_14053d550())
             continue;
         CString strCategory(spItem->property.blackMarketCategory);
-        unsigned int nCategory = FUN_1401bd070(strCategory);
-        unsigned int nLevel = spItem->limit.levelLimit;
-        unsigned int nJob = FUN_1401bd120(&spItem->limit.jobLimit);
-        unsigned int nGender = FUN_1401bd340(spItem->limit.genderLimit);
+        int nCategory = FUN_1401bd070(strCategory);
+        int nLevel = spItem->limit.levelLimit;
+        int nJob = FUN_1401bd120(&spItem->limit.jobLimit);
+        int nGender = FUN_1401bd340(spItem->limit.genderLimit);
         for (size_t j = 0; j < languages.GetCount(); j++) {
-            unsigned int nLanguage = languages[j];
+            int nLanguage = languages[j];
             CString strName = FUN_140390ea0(FUN_1401bd850((Unk_BmLanguage)nLanguage, nItemId), 0);
             if (strName.IsEmpty())
                 continue;
@@ -634,6 +647,13 @@ bool FUN_1418270c0(unsigned int nNpc, Unk_NpcInfo info, Unk_NpcMap& rMap)
     if (pos == NULL)
         list.get()->AddTail(info);
     return true;
+}
+
+// @0x141827280
+CString FUN_141827280(const char* pszFormat, const unsigned long long& nIndex, const CString& strName)
+{
+    const fmt::internal::ArgArray<2>::Type array = {fmt::internal::MakeValue< fmt::BasicFormatter<char> >(nIndex), fmt::internal::MakeValue< fmt::BasicFormatter<char> >(strName)};
+    return FUN_1402bf9a0(pszFormat, fmt::ArgList(fmt::internal::make_type(nIndex, strName), array));
 }
 
 // Scans fieldData.xml, every xblock and the time / game event tables, and writes Table/<language>/FieldMetaData.xml.
@@ -1055,7 +1075,9 @@ bool FUN_1418226b0(bool bLog)
     if (bLog)
         FUN_1411683e0(FUN_141168200(), "Write FieldMetaTable Complete.");
     FUN_14086e000(&docOut, &elemRoot);
-    CString strOut = StringFormat("./Data/Xml/Table/{0}/FieldMetaData.xml", FUN_14036d8e0(FUN_140166410()));
+    CString strLang = FUN_14036d8e0(FUN_140166410());
+    const fmt::internal::ArgArray<1>::Type arrOut = {fmt::internal::MakeValue< fmt::BasicFormatter<char> >(strLang)};
+    CString strOut = FUN_1402bf9a0("./Data/Xml/Table/{0}/FieldMetaData.xml", fmt::ArgList(fmt::internal::make_type(strLang), arrOut));
     if (!FUN_1408710c0(&docOut, strOut))
         return false;
     if (bLog && FUN_141168200() != NULL)
@@ -1068,3 +1090,127 @@ bool FUN_1418226b0(bool bLog)
     return true;
 }
 
+// ---- glue of the model-reference arrays and the field map nodes ----------------------------------------
+void FUN_140335fe0(Unk_Ref* pRef, unsigned int nFlags);
+
+struct Unk_RefArrayA
+{
+    ~Unk_RefArrayA();
+    Unk_Ref* m_pData;
+    size_t m_nSize;
+    size_t m_nMaxSize;
+    size_t m_nGrowBy;
+};
+
+struct Unk_RefArrayB
+{
+    ~Unk_RefArrayB();
+    Unk_Ref* m_pData;
+    size_t m_nSize;
+    size_t m_nMaxSize;
+    size_t m_nGrowBy;
+};
+
+void FUN_141830cb0(Unk_Ref* pData, size_t nCount);
+void FUN_141830d10(Unk_Ref* pData, size_t nCount);
+
+// @0x14182f2c0
+Unk_RefArrayA::~Unk_RefArrayA()
+{
+    if (m_pData != NULL) {
+        FUN_141830cb0(m_pData, m_nSize);
+        free(m_pData);
+    }
+}
+
+// @0x14182f300
+Unk_RefArrayB::~Unk_RefArrayB()
+{
+    if (m_pData != NULL) {
+        FUN_141830d10(m_pData, m_nSize);
+        free(m_pData);
+    }
+}
+
+// @0x14182f9b0
+int FUN_14182f9b0(const efd::Point3* pFirst, const efd::Point3* pSecond)
+{
+    if (pSecond->x == pFirst->x && pSecond->y == pFirst->y && pSecond->z == pFirst->z)
+        return 1;
+    return 0;
+}
+
+// @0x14182fa20
+bool Unk_PortalInfo::operator==(const Unk_PortalInfo& o) const
+{
+    if (m_nId == o.m_nId && m_nTargetField == o.m_nTargetField)
+        return true;
+    return false;
+}
+
+// @0x14182fa70
+bool Unk_NpcInfo::operator==(const Unk_NpcInfo& o) const
+{
+    if (m_nFieldId == o.m_nFieldId && FUN_14182f9b0(&m_pos, &o.m_pos) != 0)
+        return true;
+    return false;
+}
+
+// @0x14182fc10
+Unk_Ref* FUN_14182fc10(Unk_RefArrayA* pArray, size_t nIndex)
+{
+    if (nIndex >= pArray->m_nSize)
+        AtlThrow(E_INVALIDARG);
+    return &pArray->m_pData[nIndex];
+}
+
+// @0x14182fc50
+Unk_Ref* FUN_14182fc50(Unk_RefArrayB* pArray, size_t nIndex)
+{
+    if (nIndex >= pArray->m_nSize)
+        AtlThrow(E_INVALIDARG);
+    return &pArray->m_pData[nIndex];
+}
+
+// @0x14182fd90
+void* FUN_14182fd90(Unk_Ref* pRef)
+{
+    return pRef->m_pCtrl;
+}
+
+// @0x1418301d0
+std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const unsigned int, Unk_PortalListPtr> > > >*
+FUN_1418301d0(std::_Tree_const_iterator<std::_Tree_val<std::_Tree_simple_types<std::pair<const unsigned int, Unk_PortalListPtr> > > >* pIter)
+{
+    ++*pIter;
+    return pIter;
+}
+
+// @0x1418308d0
+Unk_Ref* FUN_1418308d0(Unk_Ref* pRef, unsigned int nFlags)
+{
+    FUN_140a2c340(pRef);
+    if (nFlags & 1)
+        operator delete(pRef, sizeof(Unk_Ref));
+    return pRef;
+}
+
+// @0x141830cb0
+void FUN_141830cb0(Unk_Ref* pData, size_t nCount)
+{
+    for (size_t i = 0; i < nCount; i++)
+        FUN_1418308d0(&pData[i], 0);
+}
+
+// @0x141830d10
+void FUN_141830d10(Unk_Ref* pData, size_t nCount)
+{
+    for (size_t i = 0; i < nCount; i++)
+        FUN_140335fe0(&pData[i], 0);
+}
+
+// @0x1418311c0
+size_t FUN_1418311c0(Unk_RefArrayA* pArray)
+{
+    return pArray->m_nSize;
+}
