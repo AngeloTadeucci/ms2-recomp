@@ -1202,6 +1202,7 @@ class Unk_PPPostEffectMgr
 public:
     void FUN_1409a5190(bool bEnable);
     Unk_PPSecondView* FUN_1409a5160();
+    void FUN_1409a3b60(bool bBeforeReset);      // device reset notification
 };
 Unk_PPPostEffectMgr* FUN_1409a8b00();
 class WorldService;
@@ -2774,3 +2775,56 @@ void PostProcessingService::FUN_1416aa950()
     m_b210 = true;
 }
 MS2_REPLACE_METHOD(0x1416aa950, PostProcessingService, FUN_1416aa950, 775, 0x502A26EE);
+
+// @0x1416abd20
+// MS2-FUNCTIONAL: the exe calls the virtual GetOutputRenderTargetGroup before GetRenderer and copies the step map's begin()/end() temporaries into separate locals
+// Device reset: before the reset detach every target that is not the back buffer and release the copy target; after
+// it rebuild the targets, the pre-process step and the effect chain.
+bool PostProcessingService::FUN_1416abd20(bool bBeforeReset)
+{
+    if (bBeforeReset)
+    {
+        if (FUN_1409a8b10()->FUN_1409a8ac0()->FUN_1416b0b20())
+            FUN_1416aa450(7, false);
+        NiRenderer::GetRenderer()->EndUsingRenderTargetGroup();
+        ecr::RenderService* pkRenderService = m_pServiceManager->GetSystemServiceAs<ecr::RenderService>();
+        if (pkRenderService != 0)
+        {
+            NiRenderStep* pkStep = pkRenderService->GetActiveRenderSurface()->GetRenderStep();
+            if (pkStep != 0)
+            {
+                if (pkStep->GetOutputRenderTargetGroup() != pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup())
+                    FUN_1416ac3b0(0);
+                for (auto& kStep : m_kSteps)
+                {
+                    if (kStep.second->GetOutputRenderTargetGroup() != pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup()
+                        && kStep.second)
+                        kStep.second->SetOutputRenderTargetGroup(0);
+                }
+            }
+        }
+    }
+    if (!bBeforeReset)
+    {
+        FUN_1416a3bb0();
+        FUN_1416a7570();
+        if (FUN_1409a8b10()->FUN_1409a8ac0()->FUN_1416b0b20())
+            FUN_1416aa450(7, true);
+        FUN_1416ab960();
+        FUN_1416aaef0();
+    }
+    else if (m_spTarget190)
+    {
+        Ni2DBuffer* pkBuffer = m_spTarget190->GetBuffer(0);
+        if (pkBuffer != 0)
+        {
+            Ni2DBuffer::RendererData* pkData = pkBuffer->GetRendererData();
+            if (pkData != 0)
+                FUN_1427e7520(pkData);
+            m_spTarget190 = 0;
+        }
+    }
+    FUN_1409a8b00()->FUN_1409a3b60(bBeforeReset);
+    return true;
+}
+MS2_REPLACE_METHOD(0x1416abd20, PostProcessingService, FUN_1416abd20, 820, 0x723AFA3D);
