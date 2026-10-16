@@ -80,7 +80,9 @@ int FUN_1406cd020(void* p);
 
 
 // ---- npc list iteration (a red-black tree of smart pointers, root at +0, nil node at +0x28) ----
-struct Unk_NpcNode { char m_pad_00[8]; Unk_NpcNode* m_pParent; Unk_NpcNode* m_pLeft; Unk_NpcNode* m_pRight; };
+// CAtlRBTree CNode: key +0, value (PCBaseRef) +8, color +0x10, left +0x18, right +0x20, parent +0x28 (exe 0x140a7b980
+// reads [p+0x18], 0x140a7b9f0 [p+0x20]/[p+0x28])
+struct Unk_NpcNode { char m_pad_00[0x18]; Unk_NpcNode* m_pLeft; Unk_NpcNode* m_pRight; Unk_NpcNode* m_pParent; };
 struct PCBaseRef
 {
     PCBase* m_p;
