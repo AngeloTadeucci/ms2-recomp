@@ -54,6 +54,7 @@ public:
     int FUN_140266e30() const;              // 0x140266e30 the value [+0x18] (itemsocketsystemutil.cpp)
     void FUN_140266d20(Unk_EnchantWrite&) const;
     void FUN_140266d60(Unk_EnchantRead&);
+    void FUN_140266da0(const BaseOption* pSource);   // copy
 private: void* p0; void* p8; void* p10; void* p18;
 };
 MS2_CHECK_SIZE(BaseOption, 0x20);

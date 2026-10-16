@@ -34,6 +34,11 @@ public:
     Unk_EnchantPtr<BaseOption> FUN_1405cb800(int nSub, unsigned nType);     // 0x1405cb800
     void FUN_1405cb190(int);                    // 0x1405cb190
     void FUN_1405cb360(int);                    // 0x1405cb360
+    int FUN_1405cb380();                        // 0x1405cb380
+    Unk_EnchantMap& FUN_1405cb8a0(int nGroup);  // 0x1405cb8a0 the first option map of a group
+    Unk_EnchantMap& FUN_1405cb8d0(int nGroup);  // 0x1405cb8d0 the second option map of a group
+    void FUN_1405cb200(int nGroup, unsigned nIndex, Unk_EnchantPtr<BaseOption> spOption);   // 0x1405cb200
+    void FUN_1405cb2a0(int nGroup, unsigned nIndex, Unk_EnchantPtr<BaseOption> spOption);   // 0x1405cb2a0
     bool FUN_1405cc410();                       // 0x1405cc410
     MS2Ptr<CItemOption> FUN_1405caf90();        // 0x1405caf90 copy
     void FUN_1405cbeb0(COutputStream&);         // 0x1405cbeb0 write
@@ -64,6 +69,7 @@ public:
     bool FUN_140630dc0(int nType);
     bool FUN_140630810();
     void FUN_140630840();
+    bool FUN_1406308a0(MS2Ptr<CItemStatus> spOther);   // 0x1406308a0 take over the options of another status
 
     MS2Ptr<CItemOption> m_spOption;             // +0x18
     Unk_EnchantPtr<CItemEnchantInfo> m_spEnchant;   // +0x28
@@ -94,11 +100,14 @@ public:
     CBlueprintItemData m_blueprint;         // +0x80
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
+class Unk_SocketSlot;
 class CItemSocket : public CPtred
 {
 public:
     CItemSocket();                          // 0x140620320
     bool FUN_140620de0();
+    bool FUN_14061fbb0();
+    MS2Ptr<Unk_SocketSlot> FUN_140620280();
     void FUN_140620840(unsigned, unsigned);
     MS2Ptr<CItemSocket> FUN_140620490();
     void FUN_1406205e0(COutputStream&);

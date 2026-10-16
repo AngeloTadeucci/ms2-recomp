@@ -1312,6 +1312,105 @@ bool FUN_14062abb0(MS2Ptr<CItem> spItem, const CMsgBoxData& box)
 }
 MS2_REPLACE(0x14062ABB0, FUN_14062abb0, 443, 0xB6C836FB);
 
+class Unk_ItemEnchantData : public CItemStatus {};
+class Unk_SocketSlot : public CPtred
+{
+public:
+    int FUN_140623e20();
+};
+CStringW FUN_14028b8e0(const CStringW& str);
+class Unk_OptionFactory
+{
+public:
+    MS2Ptr<CItemOption> FUN_1405f4ff0(MS2Ptr<CItemData> spData, int nRank, Unk_Random& kRandom);
+};
+Unk_OptionFactory* FUN_140166430();
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+int FUN_14053feb0(int nItemId);
+CStringW FUN_140631600(int nStat, BaseOption* pBase);
+CStringW FUN_140631830(int nStat, int nValue, CItemData* pData);
+
+// The first option text of an option record: the first random option, else the first extra one.
+// @0x14062b020
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_14062b020(MS2Ptr<CItemOption> spOption)
+{
+    if (spOption == (CItemOption*)0)
+        return CStringW(L"");
+    CStringW str;
+    Unk_EnchantMap& mapRandom = spOption->FUN_1405cb8a0(0);
+    for (POSITION pos = mapRandom.GetStartPosition(); pos; mapRandom.GetNext(pos))
+    {
+        int nType = mapRandom.GetKeyAt(pos);
+        Unk_EnchantPtr<BaseOption> spBase = mapRandom.GetValueAt(pos);
+        if (!(spBase == (BaseOption*)0))
+            return FUN_140631600(nType, spBase.get());
+    }
+    Unk_EnchantMap& mapExtra = spOption->FUN_1405cb8d0(0);
+    for (POSITION pos = mapExtra.GetStartPosition(); pos; mapExtra.GetNext(pos))
+    {
+        int nType = mapExtra.GetKeyAt(pos);
+        Unk_EnchantPtr<BaseOption> spBase = mapExtra.GetValueAt(pos);
+        if (!(spBase == (BaseOption*)0))
+            return FUN_140631830(nType, spBase->FUN_140266e30(), 0);
+    }
+    return str;
+}
+MS2_REPLACE(0x14062B020, FUN_14062b020, 733, 0x424D87E9);
+
+// @0x14062ad80
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_14062ad80(MS2Ptr<CItem> spItem)
+{
+    if (!(spItem == (CItem*)0))
+    {
+        Unk_ItemEnchantData* pStatus = spItem->FUN_1405278a0();
+        if (pStatus != 0)
+            return FUN_14062b020(spItem->FUN_1405278a0()->m_spOption);
+    }
+    return CStringW(L"");
+}
+MS2_REPLACE(0x14062AD80, FUN_14062ad80, 215, 0x5D6DA17D);
+
+// @0x14062aeb0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_14062aeb0(int nItemId, int nRank)
+{
+    MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+    if (spData == (CItemData*)0)
+        return CStringW(L"");
+    Unk_Random kRandom(0);
+    MS2Ptr<CItemOption> spOption = FUN_140166430()->FUN_1405f4ff0(spData, nRank, kRandom);
+    return FUN_14062b020(spOption);
+}
+MS2_REPLACE(0x14062AEB0, FUN_14062aeb0, 351, 0x74D6C1BF);
+
+// @0x14062ae60
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_14062ae60(int nItemId)
+{
+    return FUN_14062aeb0(nItemId, FUN_14053feb0(nItemId));
+}
+MS2_REPLACE(0x14062AE60, FUN_14062ae60, 74, 0x2E79F9D4);
+
+// The tooltip row text of a socket: locked or unlocked gemstone row.
+// @0x14062b310
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_14062b310(MS2Ptr<CItemSocket> spSocket)
+{
+    CStringW str;
+    if (spSocket.get() != 0 && spSocket->FUN_14061fbb0())
+    {
+        MS2Ptr<Unk_SocketSlot> spSlot = spSocket->FUN_140620280();
+        if (spSlot.get() == 0 || spSlot->FUN_140623e20() != 1)
+            str = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_unlock_gemstone"));
+        else
+            str = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_lock_gemstone"));
+    }
+    return str;
+}
+MS2_REPLACE(0x14062B310, FUN_14062b310, 472, 0x9DD26D8D);
+
 // @0x14062c280
 CItemGemStoneUpgradeTable* FUN_14062c280()
 {
@@ -1600,11 +1699,6 @@ int FUN_140644bb0(Unk_JobTable*, int nJob);             // the job's name id
 CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
 CStringW FormatStringId(int nId, const fmt::ArgList& args);                 // 0x14028dee0
 FMT_VARIADIC_W(CStringW, FormatStringId, int)
-class Unk_OptionFactory
-{
-public:
-    MS2Ptr<CItemOption> FUN_1405f4ff0(MS2Ptr<CItemData> spData, int nRank, Unk_Random& kRandom);
-};
 Unk_OptionFactory* FUN_140166430();
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);
 CStringW FUN_140631830(int nStat, int nValue, CItemData* pData);
@@ -2091,6 +2185,43 @@ void CItemStatus::FUN_140630840()
 }
 MS2_REPLACE_METHOD(0x140630840, CItemStatus, FUN_140630840, 88, 0x4E3181F8);
 
+// @0x1406308a0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+bool CItemStatus::FUN_1406308a0(MS2Ptr<CItemStatus> spOther)
+{
+    if (spOther == (CItemStatus*)0)
+        return false;
+    bool bChanged = false;
+    for (unsigned i = 0; i < 0x23; ++i)
+    {
+        Unk_EnchantPtr<BaseOption> spSource = spOther->m_spOption->FUN_1405cb760(4, i);
+        if (spSource.get() != 0)
+        {
+            Unk_EnchantPtr<BaseOption> spCopy(new BaseOption());
+            spCopy->FUN_140266da0(spSource.get());
+            m_spOption->FUN_1405cb200(4, i, spCopy);
+            if (m_spOption->FUN_1405cb380() == 0)
+                m_spOption->FUN_1405cb360(spOther->m_spOption->FUN_1405cb380());
+            bChanged = true;
+        }
+    }
+    for (unsigned i = 0; i < 0xcf; ++i)
+    {
+        Unk_EnchantPtr<BaseOption> spSource = spOther->m_spOption->FUN_1405cb800(4, i);
+        if (spSource.get() != 0)
+        {
+            Unk_EnchantPtr<BaseOption> spCopy(new BaseOption());
+            spCopy->FUN_140266da0(spSource.get());
+            m_spOption->FUN_1405cb2a0(4, i, spCopy);
+            if (m_spOption->FUN_1405cb380() == 0)
+                m_spOption->FUN_1405cb360(spOther->m_spOption->FUN_1405cb380());
+            bChanged = true;
+        }
+    }
+    return bChanged;
+}
+MS2_REPLACE_METHOD(0x1406308A0, CItemStatus, FUN_1406308a0, 1103, 0xFA56D793);
+
 // @0x140630d00
 unsigned short CItemStatus::FUN_140630d00()
 {
@@ -2298,7 +2429,6 @@ MS2_REPLACE(0x140632990, FUN_140632990, 42, 0xC9ADCF11);
 // actions the enchant record must allow it too. The reason variants report which
 // part refused (1 = transfer/enchant, 2 = socket).
 class Unk_ItemOwnerRef : public CItemTransfer {};
-class Unk_ItemEnchantData : public CItemStatus {};
 bool FUN_140633e40(MS2Ptr<CItem> spItem, int* pReason);
 bool FUN_140633fb0(MS2Ptr<CItem> spItem, int* pReason);
 bool FUN_140634120(MS2Ptr<CItem> spItem, int* pReason);
