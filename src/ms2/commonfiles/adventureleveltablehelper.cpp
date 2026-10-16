@@ -501,7 +501,7 @@ static int ParseRewardType(const CString& str)
 {
     if (str.CompareNoCase("statPoint") == 0)
         return 2;
-    if (str.CompareNoCase("item") == 0)
+    else if (str.CompareNoCase("item") == 0)
         return 1;
     return 0;
 }
@@ -740,6 +740,7 @@ bool CAdventureLevelTable::LoadMission()
 MS2_REPLACE_METHOD(0x1401968B0, CAdventureLevelTable, LoadMission, 689, 0xABCA5713);
 
 // @0x140195910
+// MS2-FUNCTIONAL: the min() argument and the 1/0 temp sit at 0x24/0x28 here, at 0x22/0x24 in the exe
 unsigned short CAdventureLevelAbility::GetCount(unsigned nLevel) const
 {
     if (m_nId == 0)
