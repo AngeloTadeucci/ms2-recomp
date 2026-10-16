@@ -601,6 +601,7 @@ struct Unk_PayloadNames
 };
 MS2_CHECK_SIZE(Unk_PayloadNames, 0x20);
 void FUN_1401fa9a0(unsigned char* payload, COutputStream& stream);
+void FUN_1401feb20(efd::UniversalID* pId, COutputStream& stream); // Encode8 of the id
 extern int DAT_143ab2870;                                   // the local character's current map id
 
 
@@ -1757,6 +1758,21 @@ void MyPC::FUN_14152a310(MS2Ptr<Unk_PCBaseComp_b18> sp)
 {
     m_sp1608 = sp;
 }
+
+// @0x14152b800
+void MyPC::FUN_14152b800(__int64 nItemUid)
+{
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+    if (spItem == 0)
+        return;
+    efd::UniversalID kUid;
+    reinterpret_cast<__int64&>(kUid) = nItemUid;
+    COutPacket packet(0x78, 0);
+    packet.Encode1(1);
+    ::FUN_1401feb20(&kUid, packet);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152b800, MyPC, FUN_14152b800, 192, 0x59BEFECE);
 
 // @0x14152e060
 int MyPC::FUN_14152e060()
