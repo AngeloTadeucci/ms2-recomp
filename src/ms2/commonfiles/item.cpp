@@ -8,7 +8,7 @@
 // MS2-PIN: ??B?$MS2Ptr@VUnk_IngItem@@@@QEBAPEAVUnk_IngItem@@XZ 0x14052cdf0 ; unique
 // MS2-PIN: ??C?$MS2Ptr@VUnk_IngItem@@@@QEBAPEAVUnk_IngItem@@XZ 0x14052ced0 ; unique
 // MS2-PIN: ?Reference@?$MS2Ptr@VCItemData@@@@CAXPEAVCItemData@@@Z 0x14052d520 ; prop
-// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x14052ea30 ; unique
+// MS2-PIN: ??$StringFormat@I@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBI@Z 0x14052ea30 ; unique
 // MS2-PIN: ??8?$MS2SvrPtr@VCIngredientContainer@@@@QEBA_NPEAVCIngredientContainer@@@Z 0x14052f040 ; unique
 // MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2SvrPtr@VCIngredientContainer@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCIngredientContainer@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14052f400 ; unique
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PetRow@@@@QEAA@XZ 0x14052c420 ; prop: symbols.tsv (hand)
@@ -2986,7 +2986,7 @@ int CItemBreakIngredientTable::LoadBreakItems()
         if (nItemId == 0)
             continue;
         IngredientPtr spIngredients(new CIngredientContainer);
-        int n = 1;
+        unsigned n = 1;
         while (true)
         {
             int nIngredientId = 0;

@@ -337,6 +337,7 @@ void FUN_140cff310(const Scaleform::GFx::Value&,CString,CString,CStringW);
 void FUN_140cffca0(const Scaleform::GFx::Value&,CString,CString);
 void FUN_14141f770(CString&,unsigned int,const ATL::CAtlArray<MS2Ptr<CItem> >&,MS2Ptr<CItem>(*)(const ATL::CAtlArray<MS2Ptr<CItem> >&,int),int,int);
 MS2Ptr<CItem> FUN_141420330(const ATL::CAtlArray<MS2Ptr<CItem> >&,int);
+enum Unk_ClosingJob { Unk_ClosingJob_None };   // same enum as uidungeonclosingphotodialog.cpp (job id; StringFormat<Unk_ClosingJob> 0x140e10af0)
 class Unk_RewardPActor {
 public:
  virtual void vfunc_0();
@@ -349,7 +350,7 @@ public:
  virtual void vfunc_60(); virtual void vfunc_61(); virtual void vfunc_62(); virtual void vfunc_63(); virtual void vfunc_64(); virtual void vfunc_65(); virtual void vfunc_66(); virtual void vfunc_67(); virtual void vfunc_68(); virtual void vfunc_69();
  virtual void vfunc_70(); virtual void vfunc_71(); virtual void vfunc_72(); virtual void vfunc_73(); virtual void vfunc_74(); virtual void vfunc_75(); virtual void vfunc_76();
  virtual CStringW vfunc_77();
- int FUN_141654730();
+ Unk_ClosingJob FUN_141654730();
 };
 class Unk_RewardEntry { public: CStringW FUN_140b1e060(); unsigned short FUN_140b1e030(); unsigned short FUN_140b1e010(); };
 class Unk_RewardEntryPtr {
@@ -784,7 +785,7 @@ void UIDungeonRewardDialog::FUN_140e25170() {
  Unk_RewardPtr<Unk_RewardClip> charInfo=info->FUN_1409b4560("m_charInfo");
  if(charInfo.get()) {
   FUN_140cfee80((*charInfo).FUN_1422bb890(),"m_charName",actor->vfunc_77());
-  int job=actor->FUN_141654730();
+  Unk_ClosingJob job=actor->FUN_141654730();
   CString jobStr=StringFormat("_{0}",job);
   FUN_140cffca0((*charInfo).FUN_1422bb890(),"m_jobMovie",jobStr);
  }

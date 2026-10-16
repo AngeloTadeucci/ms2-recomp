@@ -223,7 +223,7 @@ MS2_CHECK_SIZE(Unk_SeparateNode, 0x138);
 
 struct Unk_SwooshTarget { char m_pad_00[0x10]; void* m_hNode; };            // +0x10 handle of the owner's scene node
 MS2_CHECK_OFFSET(Unk_SwooshTarget, m_hNode, 0x10);
-Unk_StreamPoint FUN_141820e00(const Unk_StreamPoint& p0, const Unk_StreamPoint& p1, const Unk_StreamPoint& p2, const Unk_StreamPoint& p3, float fT);
+NiPoint3 FUN_141820e00(const Unk_StreamPoint& p0, const Unk_StreamPoint& p1, const Unk_StreamPoint& p2, const Unk_StreamPoint& p3, float fT);
 int FUN_141820fa0(const Unk_EffectMgr* pMgr);
 
 #ifndef MS2_HOOK_DLL
@@ -632,8 +632,8 @@ void CSwooshEffect::UpdateTrail()
                 for (unsigned j = 0; j < nSteps; ++j)
                 {
                     float fT = (float)j / fPerSegment;
-                    m_kCurveA.push_back(FUN_141820e00(m_kPointsA[i], m_kPointsA[i + 1], m_kPointsA[i + 2], m_kPointsA[i + 3], fT));
-                    m_kCurveB.push_back(FUN_141820e00(m_kPointsB[i], m_kPointsB[i + 1], m_kPointsB[i + 2], m_kPointsB[i + 3], fT));
+                    m_kCurveA.push_back(reinterpret_cast<Unk_StreamPoint&&>(static_cast<NiPoint3&&>(FUN_141820e00(m_kPointsA[i], m_kPointsA[i + 1], m_kPointsA[i + 2], m_kPointsA[i + 3], fT))));
+                    m_kCurveB.push_back(reinterpret_cast<Unk_StreamPoint&&>(static_cast<NiPoint3&&>(FUN_141820e00(m_kPointsB[i], m_kPointsB[i + 1], m_kPointsB[i + 2], m_kPointsB[i + 3], fT))));
                 }
             }
             m_kCurveA.push_back(m_kPointsA[m_kPointsA.size() - 1]);
@@ -701,13 +701,13 @@ void CSwooshEffect::UpdateTrail()
     }
 }
 
-// MS2-FUNCTIONAL: Unk_StreamPoint(x,y,z) ctor bound to another identical exe copy (0x14097f250).
+// FUN_141820e00 builds its result with NiPoint3(x,y,z) (0x14097f250); the curve vectors store it as Unk_StreamPoint.
 // @0x141820e00
-Unk_StreamPoint FUN_141820e00(const Unk_StreamPoint& p0, const Unk_StreamPoint& p1, const Unk_StreamPoint& p2, const Unk_StreamPoint& p3, float fT)
+NiPoint3 FUN_141820e00(const Unk_StreamPoint& p0, const Unk_StreamPoint& p1, const Unk_StreamPoint& p2, const Unk_StreamPoint& p3, float fT)
 {
     D3DXVECTOR3 v0(p0.x, p0.y, p0.z), v1(p1.x, p1.y, p1.z), v2(p2.x, p2.y, p2.z), v3(p3.x, p3.y, p3.z), kOut(0, 0, 0);
     D3DXVec3CatmullRom(&kOut, &v0, &v1, &v2, &v3, fT);
-    return Unk_StreamPoint(kOut.x, kOut.y, kOut.z);
+    return NiPoint3(kOut.x, kOut.y, kOut.z);
 }
 
 // @0x141820f80

@@ -39,7 +39,7 @@ public:
     void FUN_140fec540(size_t);
 private:
     MS2_LAYOUT_FRIEND;
-    int m_season;
+    unsigned m_season;
     Unk_WcDate m_start;
     Unk_WcDate m_end;
     unsigned char m_step, m_maxStep, m_selected, m_page, m_maxPage;

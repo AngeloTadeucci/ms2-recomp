@@ -13,6 +13,7 @@
 // MS2-PIN: ??C?$MS2Ptr@VCCameraMode@@@@QEBAPEAVCCameraMode@@XZ 0x1409f21a0
 // MS2-PIN: ?Invoke@?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCAutoFindTaxiStation@@P82@EAAXXZ@@UEAAXXZ 0x1409f21b0
 // MS2-PIN: ??_GCAutoFindTaxiStation@@UEAAPEAXI@Z 0x1409f22d0
+// MS2-PIN: ??1?$Unk_TaxiPtr@V?$CAtlList@UUnk_TaxiEntRef@@V?$CElementTraits@UUnk_TaxiEntRef@@@ATL@@@ATL@@@@QEAA@XZ 0x1409f20e0
 // MS2-PIN: ?get@?$Unk_TaxiPtr@V?$CAtlList@UUnk_TaxiEntRef@@V?$CElementTraits@UUnk_TaxiEntRef@@@ATL@@@ATL@@@@QEBAPEAV?$CAtlList@UUnk_TaxiEntRef@@V?$CElementTraits@UUnk_TaxiEntRef@@@ATL@@@ATL@@XZ 0x1409f2170
 // MS2-PIN: ??C?$Unk_TaxiPtr@V?$CAtlList@UUnk_TaxiEntRef@@V?$CElementTraits@UUnk_TaxiEntRef@@@ATL@@@ATL@@@@QEBAPEAV?$CAtlList@UUnk_TaxiEntRef@@V?$CElementTraits@UUnk_TaxiEntRef@@@ATL@@@ATL@@XZ 0x1409f2190
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\autofindtaxistation.cpp"

@@ -4,7 +4,7 @@
 // MS2-RANGE: 0x1400fa2f0-0x1400fa540 .text$di
 // MS2-RANGE: 0x141548790-0x141562ee0 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$StringFormat@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HV12@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBV01@AEBH1@Z 0x14154dd60 ; unique
+// MS2-PIN: ??$StringFormat@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@IV12@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBV01@AEBI1@Z 0x14154dd60 ; unique
 // MS2-PIN: ??$_Kfn@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@5@$0A@@std@@SAAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEBU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@1@@Z 0x14154ea60 ; prop
 // MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14154ea70 ; prop
 // MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14154ea80 ; prop
@@ -25,8 +25,6 @@
 // MS2-PIN: ??B?$SmartPointer@VUnk_SeparateNode@@@efd@@QEBAPEAVUnk_SeparateNode@@XZ 0x14154f490 ; unique
 // MS2-PIN: ??C?$SmartPointer@VNiAlphaController@@@efd@@QEBAPEAVNiAlphaController@@XZ 0x14154f500 ; unique
 // MS2-PIN: ??C?$SmartPointer@VUnk_SeparateNode@@@efd@@QEBAPEAVUnk_SeparateNode@@XZ 0x14154f510 ; unique
-// MS2-PIN: ??0NiFloatKey@@IEAA@XZ 0x14154f540 ; prop
-// MS2-PIN: ??0NiLinFloatKey@@QEAA@XZ 0x14154f560 ; prop
 // MS2-PIN: ?GetParent@NiAVObject@@QEAAPEAVNiNode@@XZ 0x14154f9e0 ; unique
 // MS2-PIN: ?AddRef@?$MS2Ptr@VCBirdMovement@@@@AEBAXXZ 0x141550080 ; prop
 // MS2-PIN: ?AddRef@?$MS2Ptr@VCNifEffectParam@@@@AEBAXXZ 0x1415500b0 ; prop
@@ -663,6 +661,27 @@ Unk_BitRef::operator bool() const
     return FUN_140314790(m_pBits, m_nPos);
 }
 
+// The exe's 0x14154f540 / 0x14154f560 are the pre-increment wrappers of std::map<NiAVObject*, NiString> iterators
+// (_Tree_const_iterator / _Tree_iterator::operator++ over _Tree_unchecked_const_iterator::operator++ 0x14154f580); the
+// source never iterates that map, so they are stand-ins.
+void FUN_14154f580(void* pIter);
+
+// @0x14154f540
+// MS2-FUNCTIONAL: stand-in for _Tree_const_iterator<pair<NiAVObject* const, NiString>>::operator++
+void* Unk_PathMapConstIterInc(void* pIter)
+{
+    FUN_14154f580(pIter);
+    return pIter;
+}
+
+// @0x14154f560
+// MS2-FUNCTIONAL: stand-in for _Tree_iterator<pair<NiAVObject* const, NiString>>::operator++
+void* Unk_PathMapIterInc(void* pIter)
+{
+    Unk_PathMapConstIterInc(pIter);
+    return pIter;
+}
+
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415494d0
 CNifEffect::CNifEffect()
@@ -1280,7 +1299,7 @@ void CNifEffect::FUN_14154c7f0(Unk_EffectTarget* pTarget)
                 }
                 else
                 {
-                    int nItemId = FUN_1411dc820(spModelEquip.get());
+                    unsigned nItemId = FUN_1411dc820(spModelEquip.get());
                     CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nItemId);
                     strWhere = StringFormat("targetNode:{0}, itemID:{1}({2})", CString(FUN_142087e50(FUN_1409a8b90(FUN_14098d0f0(&spModel)))), nItemId, CString((const wchar_t*)strName));
                 }
@@ -1288,7 +1307,7 @@ void CNifEffect::FUN_14154c7f0(Unk_EffectTarget* pTarget)
         }
         else
         {
-            int nItemId = FUN_1411dc820(spEquip.get());
+            unsigned nItemId = FUN_1411dc820(spEquip.get());
             CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nItemId);
             strWhere = StringFormat("targetNode:{0}, itemID:{1}({2})", CString(FUN_142087e50(FUN_1409a8b90(static_cast<NiAVObject*>(FUN_1409475f0(&kTarget))))), nItemId, CString((const wchar_t*)strName));
         }

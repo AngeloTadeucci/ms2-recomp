@@ -4,7 +4,7 @@
 // MS2-RANGE: 0x140fe9d00-0x140fed9c0 .text$mn
 // MS2-RANGE: 0x142cab070-0x142cab0f5 .text$yd
 // MS2-PIN: ??$FUN_14028dfa0@E@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBE@Z 0x140fecba0
-// MS2-PIN: ??$FUN_14028dfa0@HV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V12@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBHAEBV01@2@Z 0x140fecc50
+// MS2-PIN: ??$FUN_14028dfa0@IV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V12@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBIAEBV01@2@Z 0x140fecc50
 // MS2-PIN: ?GetModuleInstance@CAtlBaseModule@ATL@@QEAAPEAUHINSTANCE__@@XZ 0x140fed3e0
 // MS2-PIN: ?vfunc_48@UIWorldChampionRewardDialog@@UEAAHXZ 0x140fed4f0
 // MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVUIWorldChampionRewardDialog@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x140fed680
@@ -308,7 +308,7 @@ MS2_REPLACE_METHOD(0x140feb1b0, UIWorldChampionRewardDialog, FUN_140feb1b0, 251,
 // @0x140feb2c0
 void UIWorldChampionRewardDialog::FUN_140feb2c0(CInPacket& packet) {
     m_rewardVector.clear();
-    packet.stream.FUN_14070f480(m_season);
+    packet.stream.FUN_14070f480(reinterpret_cast<int&>(m_season));
     packet.stream.FUN_14070f6b0(m_start);
     packet.stream.FUN_14070f6b0(m_end);
     packet.stream.FUN_14070f340(m_maxStep);
