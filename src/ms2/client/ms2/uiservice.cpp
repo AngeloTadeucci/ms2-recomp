@@ -112,6 +112,8 @@
 #include "ms2/placeholder/tfunctor_small.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
+#include "ms2/client/ms2/uimessageboxdata.h"
+#include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/uivideocontents.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -157,9 +159,22 @@ char FUN_1410c3600(void* p, int n);
 void* FUN_1401d3200();
 void* FUN_140166410();
 unsigned char FUN_14036d570(void* p, int n);
+class UIMeratMarketDialog;                                          // unit-local in uichatemoticondialog.cpp; only used by pointer here
+UIMeratMarketDialog* FUN_140bfed50(eUIClassID nClass);              // find the dialog (dynamic_cast)
+void FUN_14130fa80(UIMeratMarketDialog* pDlg, CStringW& str);
 void* FUN_140b632f0();
 void FUN_1422d4a30(void* p, char b);
 void FUN_1422d49f0(void* p);
+void FUN_140d73cd0();
+class UIGroupMessengerBrowser;                                      // unit-local elsewhere; only used by pointer here
+class UIAdPushDialog;
+UIGroupMessengerBrowser* FUN_140a3aad0(eUIClassID nClass);          // find the dialog (dynamic_cast)
+int FUN_141952840(UIGroupMessengerBrowser* pDlg);
+UIAdPushDialog* FUN_140d61c00(eUIClassID nClass);                   // find the dialog (dynamic_cast)
+char FUN_140e41110(UIAdPushDialog* pDlg);
+void* FUN_140939a00();
+void FUN_140d5a290(void* p);
+void FUN_141a8a010(float x, float y);      // right mouse button down at (x, y)
 UIObject* FUN_141540270(int nClass);                                // dialog by class id
 class Unk_UisLoading : public UIObject                              // UILoadingProgress
 {
@@ -271,7 +286,7 @@ void FUN_141aeec30();
 void FUN_141aeec90();
 void FUN_140a5bb80(void* p);
 void FUN_140a5bba0(void* p);
-char FUN_140361ab0(void* pMap, int nKey, int* pVal);                // CAtlMap<int,int>::Lookup
+unsigned char FUN_140361ab0(void* pMap, int nKey, int* pVal);                // CAtlMap<int,int>::Lookup
 void FUN_14016a050(void* pMap, int nKey, int nVal);                 // CAtlMap<int,int>::SetAt
 void* FUN_141aee850(void* pList, const int* pVal);                  // CAtlList<int>::AddTail
 CStringA FUN_14071a5b0(const CStringA& strKey, const CStringA& strFile);
@@ -562,6 +577,27 @@ bool CUIService::FUN_141ad9e20(HWND__*)
     return true;
 }
 
+// @0x141ada610
+void CUIService::FUN_141ada610(int nScene)
+{
+    int nOpen = 0;
+    if (!FUN_140361ab0(&m_mapOpen, nScene, &nOpen))
+        return;
+    if (nOpen == 0)
+        return;
+    FUN_14016a050(&m_mapOpen, nScene, 0);
+    if (nScene == 0x6200018) {
+        FUN_141adc050();
+    } else if (nScene == 0x620001d) {
+        FUN_141adc050();
+        FUN_140d5a290(FUN_140939a00());
+    } else if (nScene == 0x620001f) {
+        FUN_141adc5d0(eUI_4ef2);
+        FUN_140d86260()->vfunc_44();
+    }
+}
+MS2_REPLACE_METHOD(0x141ada610, CUIService, FUN_141ada610, 215, 0x260C5DC3);
+
 // @0x141adbd10
 unsigned CUIService::FUN_141adbd10()
 {
@@ -637,6 +673,35 @@ void CUIService::FUN_141adbf70(int n)
     if (p != 0)
         p->FUN_14135afa0(n);
 }
+
+// @0x141adcbb0
+// MS2-FUNCTIONAL: GetNext/GetValueAt order and the MS2Ptr temporaries are reconstructed from the decompile
+int CUIService::FUN_141adcbb0(int (*pfn)(MS2Ptr<UIDialog>))
+{
+    POSITION pos = m_mapDlg.GetStartPosition();
+    while (pos != 0) {
+        POSITION cur = pos;
+        m_mapDlg.GetNext(pos);
+        MS2Ptr<UIDialog> spDlg = m_mapDlg.GetValueAt(cur);
+        if (!spDlg.IsNull()) {
+            if (spDlg->vfunc_55() == 0) {
+                if (pfn(spDlg) != 0) {
+                    return 1;
+                }
+            }
+        }
+    }
+    UIGroupMessengerBrowser* pBrowser = FUN_140a3aad0(eUI_4e93);
+    if (pBrowser != 0 && FUN_141952840(pBrowser) != 0) {
+        return 1;
+    }
+    UIAdPushDialog* pAdPush = FUN_140d61c00(eUI_4f34);
+    if (pAdPush != 0 && FUN_140e41110(pAdPush) != 0) {
+        return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141adcbb0, CUIService, FUN_141adcbb0, 382, 0xE066350E);
 
 // @0x141adcb40
 int CUIService::FUN_141adcb40()
@@ -794,6 +859,54 @@ int CUIService::FUN_141add860()
     return m_nMode;
 }
 MS2_REPLACE_METHOD(0x141add860, CUIService, FUN_141add860, 17, 0xCF7F4092);
+
+// @0x141add880
+// msg-box result callback (Delegate<bool(int, const CMsgBoxData&)>): on OK open the market dialog with the box's first argument
+bool CUIService::FUN_141add880(int nResult, const CMsgBoxData& box)
+{
+    if (nResult == 0) {
+        CStringW str = box.FUN_141a02fd0(0, CStringW());
+        if (str.IsEmpty()) {
+            FUN_141adc530(eUI_4ec1);
+        } else {
+            UIMeratMarketDialog* pDlg = FUN_140bfed50(eUI_4ec1);
+            if (pDlg != 0) {
+                FUN_14130fa80(pDlg, str);
+            }
+        }
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x141add880, CUIService, FUN_141add880, 180, 0x01ADF378);
+
+// @0x141add940
+bool CUIService::FUN_141add940(int nResult, const CMsgBoxData&)
+{
+    if (nResult == 0) {
+        if (FUN_14036d570(FUN_140166410(), 0xc2) == 0) {
+            FUN_140d73cd0();
+            return false;
+        }
+        FUN_140d86260()->vfunc_45();
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x141add940, CUIService, FUN_141add940, 95, 0x11C5CC36);
+
+// @0x141add9b0
+bool CUIService::FUN_141add9b0(int nResult, const CMsgBoxData&)
+{
+    if (nResult != 0) {
+        return true;
+    }
+    if (!FUN_14036d570(FUN_140166410(), 0xc2)) {
+        FUN_140d73cd0();
+        return false;
+    }
+    FUN_140d86260()->vfunc_45();
+    return true;
+}
+MS2_REPLACE_METHOD(0x141add9b0, CUIService, FUN_141add9b0, 99, 0x19D19D27);
 
 // @0x141aec350
 int CUIService::FUN_141aec350()
@@ -1173,8 +1286,9 @@ void* FUN_140994450();
 void* FUN_14098d8d0(void* pTable, void* p);
 void FUN_1411d7c70(void* p, void (*pfn)(), void* pSelf);
 void FUN_1411d7c10(void* p, bool (*pfn)(void*), void* pSelf);
-void* FUN_140a44830();
-void FUN_1401ce3d0(void* p, TFunctor<void, EmptyParam>& fn);
+class Unk_UisLog { public: void FUN_1401ce2f0(const char* szFormat, const char* szArg); };   // debug log (printf-style)
+Unk_UisLog* FUN_140a44830();
+void FUN_1401ce3d0(Unk_UisLog* p, TFunctor<void, EmptyParam>& fn);
 void* FUN_141aee920();
 void FUN_140cf10d0(void* p);
 extern char DAT_143d6eb58;
@@ -3793,6 +3907,54 @@ void CUIService::FUN_141aec8c0(int nMode)
     FUN_14025e7a0()->FUN_1422aeaa0(nMode);
 }
 MS2_REPLACE_METHOD(0x141aec8c0, CUIService, FUN_141aec8c0, 35, 0x66E851B8);
+
+// @0x141aecf60
+int CUIService::FUN_141aecf60(MS2Ptr<UIDialog> spDlg)
+{
+    FUN_140a44830()->FUN_1401ce2f0("*Lost \xbf\xad\xb7\xc1\xc0\xd6\xb4\xc2 dlg [%s]", (const char*)spDlg->vfunc_1());
+    return 0;
+}
+MS2_REPLACE(0x141aecf60, CUIService::FUN_141aecf60, 152, 0x2A7C9D69);
+
+// @0x141aed000
+int CUIService::FUN_141aed000(MS2Ptr<UIDialog> spDlg)
+{
+    FUN_140a44830()->FUN_1401ce2f0("*Reset \xbf\xad\xb7\xc1\xc0\xd6\xb4\xc2 dlg [%s]", (const char*)spDlg->vfunc_1());
+    return 0;
+}
+MS2_REPLACE(0x141aed000, CUIService::FUN_141aed000, 152, 0x11E968B0);
+
+// @0x141ade340
+// MS2-FUNCTIONAL: the exe is a switch (nMsg) with seven dead `break` blocks (other message ids unrecovered); same behaviour
+// window message hook: remembers the mouse position on WM_RBUTTONDOWN, then lets the dialogs see the message
+long long FUN_141ade340(void*, int nMsg, void* wParam, void* lParam)
+{
+    if (nMsg == 0x204) {
+        FUN_141a8a010((float)(int)(short)(unsigned long long)lParam, (float)(int)(short)((unsigned long long)lParam >> 16));
+    }
+    if (FUN_1403ed2b0() == 0) {
+        return 0;
+    }
+    return FUN_1403ed2b0()->FUN_141adf0f0(nMsg, wParam, lParam);
+}
+MS2_REPLACE(0x141ade340, FUN_141ade340, 159, 0xED9CBC2C);
+
+// @0x141adf0f0
+int CUIService::FUN_141adf0f0(int nMsg, void* wParam, void* lParam)
+{
+    for (POSITION pos = m_mapDlg.GetStartPosition(); pos != 0; m_mapDlg.GetNext(pos))
+    {
+        MS2Ptr<UIDialog> spDlg = m_mapDlg.GetValueAt(pos);
+        if (spDlg->vfunc_55() != 0)
+            continue;
+        if (spDlg->vfunc_9() == 0)
+            continue;
+        if (spDlg->vfunc_74(nMsg, wParam, lParam) != 0)
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141adf0f0, CUIService, FUN_141adf0f0, 336, 0xCB80458D);
 
 // @0x141ade400
 void CUIService::FUN_141ade400()

@@ -40,6 +40,7 @@ enum eUIClassID
     eUI_4e78 = 0x4e78,
     eUI_4e7c = 0x4e7c,
     eUI_4e92 = 0x4e92,
+    eUI_4e93 = 0x4e93,
     eUI_4e97 = 0x4e97,
     eUI_4e98 = 0x4e98,
     eUI_4e9d = 0x4e9d,
@@ -47,9 +48,11 @@ enum eUIClassID
     eUI_4ec1 = 0x4ec1,
     eUI_4ec3 = 0x4ec3,
     eUI_4eeb = 0x4eeb,
+    eUI_4ef2 = 0x4ef2,
     eUI_4ef3 = 0x4ef3,
     eUI_4f14 = 0x4f14,
     eUI_4f2d = 0x4f2d,
+    eUI_4f34 = 0x4f34,
     eUI_4f38 = 0x4f38,
     eUI_4f3e = 0x4f3e,
     eUI_4f5b = 0x4f5b,
@@ -137,6 +140,7 @@ public:
     static bool FUN_141ade2d0(void* pContext);                  // 0x141ade2d0
     static void FUN_141ade400();                    // 0x141ade400
     static int FUN_141aecf60(MS2Ptr<UIDialog> spDlg);   // 0x141aecf60
+    static int FUN_141aed000(MS2Ptr<UIDialog> spDlg);   // 0x141aed000
     int FUN_141adcbb0(int (*pfn)(MS2Ptr<UIDialog>));   // 0x141adcbb0
 
     // ---- generated member decls ----
@@ -171,6 +175,10 @@ public:
     void FUN_141adbfb0(void* p);                                       // 0x141adbfb0 vfunc_79 on every floating dialog
     void FUN_141add6e0(int nMode);                                     // 0x141add6e0 set the mode (deferred while m_b120)
     int FUN_141add730();                                               // 0x141add730
+    bool FUN_141add880(int nResult, const class CMsgBoxData& box);     // 0x141add880
+    bool FUN_141add940(int nResult, const class CMsgBoxData& box);     // 0x141add940
+    bool FUN_141add9b0(int nResult, const class CMsgBoxData& box);     // 0x141add9b0
+    int FUN_141adf0f0(int nMsg, void* wParam, void* lParam);           // 0x141adf0f0 offer a window message to the dialogs
     int FUN_141add860();                                               // 0x141add860 m_nMode
     int FUN_141aec350();                                               // 0x141aec350 current field's name id
     void FUN_141adc170();                                              // 0x141adc170
