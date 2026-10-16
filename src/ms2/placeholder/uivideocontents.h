@@ -9,11 +9,14 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/uiobject.h"
+#include "ms2/placeholder/ascript.h"
 
 // The AS video player clip ("m_videoPlayer"); class unknown (an AS* wrapper, methods in 0x1422c1500..0x1422e9810).
-class Unk_ASVideoPlayer
+class Unk_ASVideoPlayer : public AScript
 {
 public:
+    Unk_ASVideoPlayer(const Scaleform::GFx::Value& v, int nMovieId);   // 0x1422e92e0
+    void FUN_1422e9650();               // stop
     int FUN_1422c1500();                // width?
     int FUN_1422c1530();                // height?
     float FUN_1422e9540();              // current play time (s)?
@@ -21,7 +24,10 @@ public:
     void FUN_1422e95b0(const CString& strPath);     // play file
     void FUN_1422e9690(float f);
     void FUN_1422e9810(int a1, int a2); // resize?
+private:
+    char m_pad_40[0x40];
 };
+MS2_CHECK_SIZE(Unk_ASVideoPlayer, 0x80);
 
 class UIVideoContents : public UIObject
 {
@@ -34,8 +40,9 @@ public:
     virtual void vfunc_41(const Scaleform::GFx::Value& root);              // 41 0x14135b0a0
     virtual int vfunc_48();                                                 // 48 0x14135b420
     virtual int vfunc_52(const CString& strPath, float fVolume);            // 52 0x14135ab40 play
-    virtual int vfunc_53();                                                 // 53 0x14135ad10 stop
-    virtual void vfunc_54();                                                // 54 0x14135adc0
+    virtual bool vfunc_53();                                                // 53 0x14135ad10 stop
+    virtual int vfunc_54(float fTimeout);                                  // 54 0x14135adc0
+    void FUN_14135afa0(int bMute);
 
 protected:
     MS2_LAYOUT_FRIEND;
