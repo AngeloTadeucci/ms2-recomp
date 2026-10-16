@@ -6,6 +6,7 @@
 class TiXmlDocument {
 public:
     TiXmlDocument();
+    TiXmlDocument(const TiXmlDocument& rhs);                                   // 0x140870c70
     virtual ~TiXmlDocument();
     // Virtual slots 1..16 (vftable 0x142ce6780). The To*() accessors are TiXmlNode's inline virtuals in the original;
     // they are flattened into this placeholder (achievedata.cpp emits their COMDATs with the vftable).
