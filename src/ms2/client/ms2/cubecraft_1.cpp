@@ -433,8 +433,8 @@ int CGuideObject::vfunc_124(int nOwnerId, efd::Point3 kPos, efd::Point3 kDir, PC
     {
         for (int nSlot = 0; nSlot < 0x23; ++nSlot)
         {
-            void* pEquip = FUN_141670990(pOwner, nPart, nSlot);
-            FUN_141670540(this, nPart, nSlot, pEquip);
+            void* pEquip = ::FUN_141670990(pOwner, nPart, nSlot);
+            ::FUN_141670540(this, nPart, nSlot, pEquip);
         }
     }
     PCBase* pLocal = FUN_1403ed2d0()->FUN_141bd0cc0();
@@ -981,7 +981,7 @@ void CConstructionGuideObject::vfunc_53(float f)
     if (pOwner != 0)
     {
         if (m_bLocal)
-            FUN_14166d2d0(pOwner, vfunc_18(), 0);
+            ::FUN_14166d2d0(pOwner, vfunc_18(), 0);
         FUN_1410a2440();
         if (m_spGod.get())
             m_spGod->FUN_141374d40(vfunc_18());

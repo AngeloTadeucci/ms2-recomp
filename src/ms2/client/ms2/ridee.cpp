@@ -500,18 +500,18 @@ int Ridee::vfunc_10()
         {
             m_pRider->vfunc_59(0x21, 0, 0, 0);
             NiPoint3 kPos = m_pRider->vfunc_18();
-            Unk_EntRef spEntity(FUN_141240f20(FUN_14166d220(m_pRider))->GetEntity());
+            Unk_EntRef spEntity(FUN_141240f20(::FUN_14166d220(m_pRider))->GetEntity());
             if (spEntity != 0)
             {
                 MS2Ptr<Unk_RideeFieldObj> spObj = FUN_1403ed2d0()->FUN_141bc4f10(spEntity.FUN_1408a9090());
                 if (spObj.get() == 0)
                 {
-                    FUN_141240f20(FUN_14166d220(this))->SetEntity(spEntity.FUN_1408a9090());
+                    FUN_141240f20(::FUN_14166d220(this))->SetEntity(spEntity.FUN_1408a9090());
                 }
                 else
                 {
                     kPos.z = spObj->FUN_140adf8e0().z + spObj->FUN_140ae0660().z + 10.0f;
-                    FUN_141240f20(FUN_14166d220(this))->SetEntity(spEntity.FUN_1408a9090());
+                    FUN_141240f20(::FUN_14166d220(this))->SetEntity(spEntity.FUN_1408a9090());
                     egf::EntityID kId(s_kNoEntity);
                     NiPoint3 kAt = NiPoint3::ZERO;
                     m_pRider->FUN_141678240(kId, kAt);
@@ -520,7 +520,7 @@ int Ridee::vfunc_10()
             }
             kPos.z += 25.0f;
             vfunc_19(kPos);
-            FUN_141240f20(FUN_14166d220(m_pRider))->FUN_140cfaf30();
+            FUN_141240f20(::FUN_14166d220(m_pRider))->FUN_140cfaf30();
             m_pRider->FUN_141678290(s_kNoEntity, NiPoint3::ZERO);
             vfunc_24(0);
         }

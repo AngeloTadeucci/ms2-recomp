@@ -10,6 +10,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "pcbase.h"
 #include "ms2/client/ms2/ridee.h"
+#include "ms2/placeholder/cinpacket.h"
 #include "ms2/client/ms2/statemanager.h"
 #include "ms2/client/ms2/animationmanager.h"
 #include "ms2/placeholder/state.h"
@@ -23,16 +24,137 @@
 
 // ---- unit-local placeholders ----
 
-// The lazily created per-actor components (vfunc_80..87, 103/104); only reset here.
-class Unk_PCBaseComp_a58 : public CPtred {};
-class Unk_PCBaseComp_a68 : public CPtred {};
+// The lazily created per-actor components (vfunc_80..87, 103/104). Their exe types are UI entities:
+// a58 UIHpBar, a68 UIShieldBar, a78 UINameTag, a88 UIEmoticon, a98 UIBuffBalloon, aa8 UIChatBalloon,
+// ab8 UIPopupProfileImage, ac8 UIBanner (::Entity each).
+class Unk_PCBaseComp_a58 : public CPtred
+{
+public:
+    void FUN_141992140(int bShow);
+    void FUN_141992180(__int64 nCur, __int64 nMax);
+    void FUN_141992230(__int64 nCur, __int64 nMax);                 // UIHpBar::Entity, set hp
+};
+class Unk_PCBaseComp_a68 : public CPtred
+{
+public:
+    void FUN_140e85fc0(__int64 nCur, __int64 nMax);                 // UIShieldBar::Entity, set shield
+    void FUN_140e85ed0(int bShow);
+    void FUN_140e85f10(__int64 nCur, __int64 nMax);
+};
 class Unk_PCBaseComp_a78 : public CPtred {};
 class Unk_PCBaseComp_a88 : public CPtred {};
 class Unk_PCBaseComp_a98 : public CPtred {};
-class Unk_PCBaseComp_aa8 : public CPtred {};
+class Unk_PCBaseComp_aa8 : public CPtred
+{
+public:
+    virtual void vfunc_1();
+    virtual void vfunc_2();                                         // refresh
+    void FUN_1418fb730(const CStringW& strText);                    // UIChatBalloon::Entity, set the text
+};
+class Unk_PCBaseTextFilter
+{
+public:
+    void FUN_1416fb340(CStringW& strText);
+};
+Unk_PCBaseTextFilter* FUN_1403b4750();
 class Unk_PCBaseComp_ab8 : public CPtred {};
-class Unk_PCBaseComp_ac8 : public CPtred {};
+class Unk_PCBaseComp_ac8 : public CPtred
+{
+public:
+    virtual void vfunc_1();
+    virtual void vfunc_2();                                         // show
+    virtual void vfunc_3();                                         // hide
+    void FUN_140ba8720(int nType);                                  // UIBanner::Entity
+};
 class Unk_PCBaseComp_b18 : public CPtred {};
+
+// The argument of vfunc_71/73 (passed as MS2Ptr by value; the callee releases it).
+class Unk_PCBaseFxSet : public CPtred
+{
+public:
+    CString FUN_1411bd0c0(int n);
+    char m_pad[0x28];
+    CAtlArray<CString> m_arrEffects;                                // +0x40 effect names
+};
+MS2_CHECK_OFFSET(Unk_PCBaseFxSet, m_arrEffects, 0x40);
+class Unk_PCBaseFxSource : public CPtred
+{
+public:
+    virtual void vfunc_1();
+    virtual MS2Ptr<Unk_PCBaseFxSet> vfunc_2(void* pKey);
+};
+class Unk_PCBaseEmoPlayer : public CPtred
+{
+public:
+    void FUN_141848650();
+    bool FUN_141848740(int nTime);
+};
+class Unk_PCBaseState0b : public State
+{
+public:
+    int FUN_1417c4320();
+};
+class Unk_PCBaseState0f : public State
+{
+public:
+    int FUN_1417c6a30();
+};
+class Unk_PCBaseSpawnMgr
+{
+public:
+    void FUN_1411bf1b0();
+};
+Unk_PCBaseSpawnMgr* FUN_140a50010();
+
+// The stat formula service (FUN_1401c0db0; blackmarketitemoption / usermail use other slices of it).
+class Unk_PCBaseFormula
+{
+public:
+    float FUN_140674100(__int64 nStat, int nBonus);                // move speed
+    float FUN_140674290(__int64 nStat);                             // move speed of a 0x6200045 actor
+    void FUN_140674420(__int64 nStat, float f);
+};
+Unk_PCBaseFormula* FUN_1401c0db0();
+
+// An entity seen through its property getters.
+class Unk_PCBaseEntity
+{
+public:
+    int FUN_1408a2060(unsigned int uiPropId, efd::utf8string* pOut);   // string property
+    void FUN_140ae1160(unsigned int uiPropId, unsigned short* pOut);  // short property
+};
+class Unk_PCBaseHitReport
+{
+public:
+    Unk_PCBaseEntity* FUN_140cfaff0();                              // the entity stood on
+};
+
+// A physics ray query (physxhelper.h's Unk_RayCastInfo; 0x68).
+struct Unk_PCBaseRayHit
+{
+    Unk_PCBaseRayHit();                                             // 0x140ad4440
+    efd::Point3 m_origin;                                           // +0x00
+    efd::Point3 m_dir;                                              // +0x0c
+    float m_maxDist;                                                // +0x18
+    int m_groups;                                                   // +0x1c
+    void* m_20;
+    void* m_28;
+    void* m_hitEntity;                                              // +0x30
+    void* m_hitActor;
+    void* m_hitShape;
+    float m_hitDist;                                                // +0x48
+    efd::Point3 m_hitPoint;                                         // +0x4c
+    efd::Point3 m_hitNormal;                                        // +0x58
+};
+MS2_CHECK_SIZE(Unk_PCBaseRayHit, 0x68);
+class Unk_PCBasePhysX
+{
+public:
+    int FUN_14168a310(const NiPoint3& kFrom, NiPoint3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, NiPoint3* pNormal, int nB);
+};
+Unk_PCBasePhysX* FUN_1409f7ca0();
+float FUN_14028d380(float fValue);                                  // percent (x100)
+int FUN_14082f1a0(int nType);                                       // stat kind: 0 = 32-bit value
 
 // The physics/controller body of an actor (0xf8; gameobject unit 0x14123f2d0..0x141241300).
 class GameObjectControllerHitReport;
@@ -43,6 +165,12 @@ public:
     ~Unk_PCBaseBody();                                              // 0x14123f460
     void FUN_14123f5b0(PCBase* pOwner, void* pEntity, efd::Point3 kPos, float fHeight, float fRadius);
     void FUN_14123fd30(int nGroup);
+    void FUN_14123fbf0(short nMode);
+    NiPoint3 FUN_141240df0();                                       // ground normal
+    int FUN_141240ed0();                                            // collision flags
+    int FUN_141240ef0();                                            // slope limit
+    Unk_PCBaseHitReport* FUN_141240f20();
+    int FUN_141240f40();                                            // grounded
     void FUN_14123fe70(NiPoint3 kPos);
     NiPoint3 FUN_14123fd90();
 private:
@@ -158,6 +286,7 @@ void FUN_140291bc0(efd::Point3* pkAngles);
 void FUN_1419929f0(int nActorId);                                   // hp bar
 void FUN_140e863f0(int nActorId);                                   // shield bar
 void FUN_141a60ec0(int nActorId);                                   // name tag
+void FUN_141a60f00(int nActorId);                                   // name tag text
 void FUN_14192fdc0(int nActorId);                                   // emoticon
 void FUN_14128eff0(int nActorId);
 void FUN_1418fbe30(int nActorId);                                   // chat balloon
@@ -836,3 +965,904 @@ void PCBase::FUN_14166de50(float fOffset)
     m_spAnimMgr->FUN_14099e710(fOffset);
 }
 MS2_REPLACE_METHOD(0x14166de50, PCBase, FUN_14166de50, 51, 0x1292505D);
+
+// @0x14166f6d0
+int PCBase::FUN_14166f6d0()
+{
+    if (FUN_14166c930() == 0xb)
+        return static_cast<Unk_PCBaseState0b*>(FUN_14166ccb0())->FUN_1417c4320();
+    if (FUN_14166c930() == 0xf)
+        return static_cast<Unk_PCBaseState0f*>(FUN_14166ccb0())->FUN_1417c6a30();
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14166f6d0, PCBase, FUN_14166f6d0, 100, 0xE80CDCB9);
+
+// @0x14166f790
+bool PCBase::FUN_14166f790(void* pKey, CString& strOut, int n)
+{
+    if (m_spD10 == 0) {
+        MS2_ASSERT_AT(0x4c5, 0);
+        return false;
+    }
+    MS2Ptr<Unk_PCBaseFxSet> spSet = m_spD10->vfunc_2(pKey);
+    if (spSet == 0)
+        return false;
+    strOut = spSet->FUN_1411bd0c0(n);
+    return strOut.IsEmpty() ? false : true;
+}
+MS2_REPLACE_METHOD(0x14166f790, PCBase, FUN_14166f790, 336, 0x1E9BA79D);
+
+// @0x14166f940
+void PCBase::FUN_14166f940()
+{
+    if (m_timer9e8.FUN_140868ba0() != 0) {
+        int nTime = m_timer9e8.FUN_140868a70();
+        bool bBusy = false;
+        if (m_sp638.get() != 0 && m_sp638->FUN_141848740(nTime))
+            bBusy = true;
+        if (!bBusy)
+            FUN_14166f8f0(0, 1);
+    }
+}
+MS2_REPLACE_METHOD(0x14166f940, PCBase, FUN_14166f940, 159, 0x60041217);
+
+// @0x14166f9f0
+int PCBase::vfunc_69()
+{
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14166f9f0, PCBase, vfunc_69, 8, 0x7F371472);
+
+// @0x14166fa00
+void PCBase::vfunc_70()
+{
+    FUN_140a50010()->FUN_1411bf1b0();
+}
+MS2_REPLACE_METHOD(0x14166fa00, PCBase, vfunc_70, 27, 0x7E5CDCB1);
+
+// @0x14166fa30
+void PCBase::vfunc_71(MS2Ptr<Unk_PCBaseFxSet> spSet)
+{
+}
+MS2_REPLACE_METHOD(0x14166fa30, PCBase, vfunc_71, 29, 0x0BDFA7F1);
+
+// @0x14166fa60
+void PCBase::vfunc_72()
+{
+}
+
+// @0x14166fa70
+void PCBase::vfunc_73(MS2Ptr<Unk_PCBaseFxSet> spSet, int bFx)
+{
+    if (spSet == 0)
+        return;
+    if (m_unk_a50 != 0 && bFx != 0) {
+        for (unsigned int i = 0; i < spSet->m_arrEffects.GetCount(); i++) {
+            Unk_PCBaseFxQuery kQuery;
+            kQuery.m_strName = spSet->m_arrEffects[i];
+            kQuery.m_nPlayer = FUN_1403ed2d0()->FUN_141bd1a10(this);
+            kQuery.FUN_140a53190(FUN_14123c580());
+            unsigned int nHandle = FUN_1403ed280()->FUN_1411a49c0(&kQuery);
+            m_arrA30.Add(nHandle);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14166fa70, PCBase, vfunc_73, 376, 0xE3593D94);
+
+// @0x14166fbf0
+void PCBase::vfunc_74(__int64 nCur, __int64 nMax)
+{
+    MS2Ptr<Unk_PCBaseComp_a58> spBar = vfunc_80();
+    if (spBar.get() != 0)
+        spBar->FUN_141992230(nCur, nMax);
+}
+MS2_REPLACE_METHOD(0x14166fbf0, PCBase, vfunc_74, 112, 0x3B69713E);
+
+// @0x14166fc70
+void PCBase::vfunc_75(__int64 nCur, __int64 nMax)
+{
+    MS2Ptr<Unk_PCBaseComp_a68> spBar = vfunc_81();
+    if (spBar.get() != 0)
+        spBar->FUN_140e85fc0(nCur, nMax);
+}
+MS2_REPLACE_METHOD(0x14166fc70, PCBase, vfunc_75, 112, 0x44FD6E43);
+
+// @0x14166fcf0
+void PCBase::vfunc_76(CStringW str)
+{
+    m_strW918 = str;
+    FUN_141a60f00(m_unk_70);
+}
+MS2_REPLACE_METHOD(0x14166fcf0, PCBase, vfunc_76, 78, 0x72F191E4);
+
+// @0x14166fd50
+CStringW PCBase::vfunc_77()
+{
+    return m_strW918;
+}
+MS2_REPLACE_METHOD(0x14166fd50, PCBase, vfunc_77, 68, 0x928E7FA5);
+
+// @0x14166fff0
+void PCBase::FUN_14166fff0(CStringW str)
+{
+    vfunc_94(0);
+    FUN_1403b4750()->FUN_1416fb340(str);
+    MS2Ptr<Unk_PCBaseComp_aa8> spBalloon = vfunc_85();
+    if (spBalloon.get() != 0) {
+        spBalloon->FUN_1418fb730(str);
+        spBalloon->vfunc_2();
+    }
+}
+MS2_REPLACE_METHOD(0x14166fff0, PCBase, FUN_14166fff0, 184, 0xF815B00C);
+
+// @0x14166fda0
+int PCBase::vfunc_78()
+{
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14166fda0, PCBase, vfunc_78, 8, 0x7F371472);
+
+// @0x14166fdb0
+void PCBase::vfunc_79()
+{
+    vfunc_78();
+}
+MS2_REPLACE_METHOD(0x14166fdb0, PCBase, vfunc_79, 33, 0xAE300131);
+
+// @0x14166fde0
+MS2Ptr<Unk_PCBaseComp_a58> PCBase::vfunc_80()
+{
+    return MS2Ptr<Unk_PCBaseComp_a58>(0);
+}
+MS2_REPLACE_METHOD(0x14166fde0, PCBase, vfunc_80, 55, 0x634E2F19);
+
+// @0x14166fe20
+MS2Ptr<Unk_PCBaseComp_a68> PCBase::vfunc_81()
+{
+    return MS2Ptr<Unk_PCBaseComp_a68>(0);
+}
+MS2_REPLACE_METHOD(0x14166fe20, PCBase, vfunc_81, 55, 0x726A9F94);
+
+// @0x14166fe60
+MS2Ptr<Unk_PCBaseComp_a78> PCBase::vfunc_82()
+{
+    return MS2Ptr<Unk_PCBaseComp_a78>(0);
+}
+MS2_REPLACE_METHOD(0x14166fe60, PCBase, vfunc_82, 55, 0x8DF18BD0);
+
+// @0x14166fea0
+MS2Ptr<Unk_PCBaseComp_a88> PCBase::vfunc_83()
+{
+    return MS2Ptr<Unk_PCBaseComp_a88>(0);
+}
+MS2_REPLACE_METHOD(0x14166fea0, PCBase, vfunc_83, 55, 0x74036550);
+
+// @0x14166fee0
+MS2Ptr<Unk_PCBaseComp_a98> PCBase::vfunc_84()
+{
+    return MS2Ptr<Unk_PCBaseComp_a98>(0);
+}
+MS2_REPLACE_METHOD(0x14166fee0, PCBase, vfunc_84, 55, 0xCD6979FF);
+
+// @0x14166ff20
+MS2Ptr<Unk_PCBaseComp_aa8> PCBase::vfunc_85()
+{
+    return MS2Ptr<Unk_PCBaseComp_aa8>(0);
+}
+MS2_REPLACE_METHOD(0x14166ff20, PCBase, vfunc_85, 55, 0xB27808D8);
+
+// @0x14166ff60
+MS2Ptr<Unk_PCBaseComp_ab8> PCBase::vfunc_86()
+{
+    return MS2Ptr<Unk_PCBaseComp_ab8>(0);
+}
+MS2_REPLACE_METHOD(0x14166ff60, PCBase, vfunc_86, 55, 0x895D3E07);
+
+// @0x14166ffa0
+MS2Ptr<Unk_PCBaseComp_ac8> PCBase::vfunc_87()
+{
+    return MS2Ptr<Unk_PCBaseComp_ac8>(0);
+}
+MS2_REPLACE_METHOD(0x14166ffa0, PCBase, vfunc_87, 55, 0xEA2BBE0A);
+
+// @0x14166ffe0
+int PCBase::vfunc_88()
+{
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14166ffe0, PCBase, vfunc_88, 8, 0x7F371472);
+
+// @0x14166e0d0
+efd::utf8string& PCBase::FUN_14166e0d0()
+{
+    return m_spAnimMgr->FUN_140a53f90();
+}
+MS2_REPLACE_METHOD(0x14166e0d0, PCBase, FUN_14166e0d0, 39, 0x04A60983);
+
+// @0x14166e0a0
+void PCBase::FUN_14166e0a0()
+{
+    m_spAnimMgr->FUN_14099e680();
+}
+MS2_REPLACE_METHOD(0x14166e0a0, PCBase, FUN_14166e0a0, 39, 0x4949AA37);
+
+// @0x14166ed10
+bool PCBase::FUN_14166ed10()
+{
+    return m_b9d0;
+}
+MS2_REPLACE_METHOD(0x14166ed10, PCBase, FUN_14166ed10, 18, 0x00EA9B7C);
+
+// @0x14166ed30
+void PCBase::FUN_14166ed30(bool b)
+{
+    m_b9d0 = b;
+}
+MS2_REPLACE_METHOD(0x14166ed30, PCBase, FUN_14166ed30, 26, 0xEF65E47C);
+
+// @0x14166ed50
+void PCBase::FUN_14166ed50(bool b)
+{
+    m_b9d1 = b;
+}
+MS2_REPLACE_METHOD(0x14166ed50, PCBase, FUN_14166ed50, 26, 0x97B64443);
+
+// @0x14166f740
+CString PCBase::FUN_14166f740()
+{
+    return m_str9e0;
+}
+MS2_REPLACE_METHOD(0x14166f740, PCBase, FUN_14166f740, 68, 0xC97EA0D3);
+
+// @0x14166f8f0
+void PCBase::FUN_14166f8f0(int nA, int nB)
+{
+    FUN_14166ed50(true);
+    FUN_14166ef10(m_str9d8, nA, nB, false);
+}
+MS2_REPLACE_METHOD(0x14166f8f0, PCBase, FUN_14166f8f0, 74, 0x17B9A2EE);
+
+// @0x141670330
+void PCBase::FUN_141670330(float f)
+{
+    m_f170 = f;
+}
+MS2_REPLACE_METHOD(0x141670330, PCBase, FUN_141670330, 31, 0xF6772D25);
+
+// @0x141670360
+void PCBase::FUN_141670360(float f)
+{
+    m_f174 = f;
+}
+MS2_REPLACE_METHOD(0x141670360, PCBase, FUN_141670360, 31, 0x5BDAD799);
+
+// @0x141670430
+float PCBase::FUN_141670430()
+{
+    return m_f178;
+}
+MS2_REPLACE_METHOD(0x141670430, PCBase, FUN_141670430, 19, 0x040BA781);
+
+// @0x141670500
+float PCBase::FUN_141670500()
+{
+    return m_f168;
+}
+MS2_REPLACE_METHOD(0x141670500, PCBase, FUN_141670500, 19, 0x99972B51);
+
+// @0x141670520
+float PCBase::FUN_141670520()
+{
+    return m_f17c;
+}
+MS2_REPLACE_METHOD(0x141670520, PCBase, FUN_141670520, 19, 0x9EAB230D);
+
+// @0x141670990
+__int64 PCBase::FUN_141670990(int nKind, int nStat)
+{
+    return m_unk_1c0[nKind][nStat];
+}
+MS2_REPLACE_METHOD(0x141670990, PCBase, FUN_141670990, 49, 0xFF3D117E);
+
+// @0x1416709d0
+__int64 PCBase::FUN_1416709d0(int nStat)
+{
+    return m_unk_1c0[1][nStat];
+}
+MS2_REPLACE_METHOD(0x1416709d0, PCBase, FUN_1416709d0, 41, 0x1193CA91);
+
+// @0x141670a00
+__int64 PCBase::FUN_141670a00(int nStat)
+{
+    return m_unk_1c0[2][nStat];
+}
+MS2_REPLACE_METHOD(0x141670a00, PCBase, FUN_141670a00, 41, 0xE53E749A);
+
+// @0x141670a30
+__int64 PCBase::FUN_141670a30(int nStat)
+{
+    return m_unk_1c0[0][nStat];
+}
+MS2_REPLACE_METHOD(0x141670a30, PCBase, FUN_141670a30, 41, 0x740EAF44);
+
+// @0x141670a60
+__int64 PCBase::FUN_141670a60(int nStat)
+{
+    return m_unk_508[nStat];
+}
+MS2_REPLACE_METHOD(0x141670a60, PCBase, FUN_141670a60, 28, 0x0DFD3A6B);
+
+// @0x141670d50
+void PCBase::FUN_141670d50(efd::Point2 kSize)
+{
+    m_unk_620 = kSize;
+}
+MS2_REPLACE_METHOD(0x141670d50, PCBase, FUN_141670d50, 28, 0x9913344D);
+
+// @0x141670d80
+void PCBase::FUN_141670d80(float fSpeed)
+{
+    m_f938 = fSpeed;
+}
+MS2_REPLACE_METHOD(0x141670d80, PCBase, FUN_141670d80, 31, 0x98CE89D5);
+
+// @0x141670db0
+void PCBase::FUN_141670db0(CString str)
+{
+    m_str940 = str;
+}
+MS2_REPLACE_METHOD(0x141670db0, PCBase, FUN_141670db0, 65, 0x35877EDC);
+
+// @0x141670e00
+void PCBase::FUN_141670e00(CString str)
+{
+    m_str948 = str;
+}
+MS2_REPLACE_METHOD(0x141670e00, PCBase, FUN_141670e00, 65, 0x4B4FE054);
+
+// @0x141670e50
+void PCBase::FUN_141670e50(CString str)
+{
+    m_str960 = str;
+}
+MS2_REPLACE_METHOD(0x141670e50, PCBase, FUN_141670e50, 65, 0x796101FC);
+
+// @0x141670ea0
+void PCBase::FUN_141670ea0()
+{
+    m_str960.Empty();
+}
+MS2_REPLACE_METHOD(0x141670ea0, PCBase, FUN_141670ea0, 34, 0xB2735B13);
+
+// @0x141671390
+efd::Point2 PCBase::FUN_141671390()
+{
+    return m_unk_620;
+}
+MS2_REPLACE_METHOD(0x141671390, PCBase, FUN_141671390, 36, 0x977D29BC);
+
+// @0x1416713c0
+float PCBase::FUN_1416713c0()
+{
+    return m_f938;
+}
+MS2_REPLACE_METHOD(0x1416713c0, PCBase, FUN_1416713c0, 19, 0xD8D95139);
+
+// @0x1416713e0
+CString PCBase::FUN_1416713e0()
+{
+    return m_str940;
+}
+MS2_REPLACE_METHOD(0x1416713e0, PCBase, FUN_1416713e0, 68, 0xEF54CDE1);
+
+// @0x141671430
+CString PCBase::FUN_141671430()
+{
+    return m_str948;
+}
+MS2_REPLACE_METHOD(0x141671430, PCBase, FUN_141671430, 68, 0xD486A189);
+
+// @0x1416715b0
+CString PCBase::FUN_1416715b0()
+{
+    return m_str950;
+}
+MS2_REPLACE_METHOD(0x1416715b0, PCBase, FUN_1416715b0, 68, 0x981B8463);
+
+// @0x141671600
+float PCBase::FUN_141671600()
+{
+    return m_f1a0;
+}
+MS2_REPLACE_METHOD(0x141671600, PCBase, FUN_141671600, 19, 0x515C60A9);
+
+// @0x141671920
+float* PCBase::FUN_141671920()
+{
+    return m_unk_180;
+}
+MS2_REPLACE_METHOD(0x141671920, PCBase, FUN_141671920, 17, 0x87CF6FFA);
+
+// @0x141671940
+float PCBase::FUN_141671940()
+{
+    return m_f198;
+}
+MS2_REPLACE_METHOD(0x141671940, PCBase, FUN_141671940, 19, 0x31ACDCE1);
+
+// @0x141671960
+void PCBase::FUN_141671960(float fSpeed)
+{
+    m_f198 = fSpeed;
+}
+MS2_REPLACE_METHOD(0x141671960, PCBase, FUN_141671960, 31, 0xEEDFB76D);
+
+// @0x141671990
+void PCBase::FUN_141671990(float fScale)
+{
+    m_f92c = fScale;
+}
+MS2_REPLACE_METHOD(0x141671990, PCBase, FUN_141671990, 31, 0x10F8FD89);
+
+// @0x141671b20
+BOOL PCBase::FUN_141671b20()
+{
+    return GetClassID() == 0x6200050;
+}
+MS2_REPLACE_METHOD(0x141671b20, PCBase, FUN_141671b20, 59, 0xF6428016);
+
+// @0x1416749a0
+Unk_PCBaseBuffs* PCBase::FUN_1416749a0()
+{
+    return static_cast<Unk_PCBaseBuffs*>(&m_unk_748);
+}
+MS2_REPLACE_METHOD(0x1416749a0, PCBase, FUN_1416749a0, 17, 0xD57792A0);
+
+// @0x141676020
+NiPoint3 PCBase::FUN_141676020()
+{
+    return m_posC10;
+}
+MS2_REPLACE_METHOD(0x141676020, PCBase, FUN_141676020, 44, 0x0E0311C6);
+
+// @0x141676980
+void PCBase::FUN_141676980(int n)
+{
+    m_unk_b70 = n;
+}
+MS2_REPLACE_METHOD(0x141676980, PCBase, FUN_141676980, 25, 0x39A0BC30);
+
+// @0x1416769a0
+void PCBase::FUN_1416769a0(void* p)
+{
+    m_unk_b78 = p;
+}
+MS2_REPLACE_METHOD(0x1416769a0, PCBase, FUN_1416769a0, 28, 0x17093EA8);
+
+// @0x1416769d0
+int PCBase::FUN_1416769d0()
+{
+    return m_unk_b70;
+}
+MS2_REPLACE_METHOD(0x1416769d0, PCBase, FUN_1416769d0, 17, 0xCC36A574);
+
+// @0x1416769f0
+void* PCBase::FUN_1416769f0()
+{
+    return m_unk_b78;
+}
+MS2_REPLACE_METHOD(0x1416769f0, PCBase, FUN_1416769f0, 18, 0x5451CDDE);
+
+// @0x141676b50
+void PCBase::FUN_141676b50(int n)
+{
+    m_unk_b80 = n;
+}
+MS2_REPLACE_METHOD(0x141676b50, PCBase, FUN_141676b50, 25, 0xF9008D40);
+
+// @0x141676b70
+int PCBase::FUN_141676b70()
+{
+    return m_unk_b80;
+}
+MS2_REPLACE_METHOD(0x141676b70, PCBase, FUN_141676b70, 17, 0x3936E264);
+
+// @0x1416781a0
+void PCBase::FUN_1416781a0(int n)
+{
+    m_unk_c00 = n;
+}
+MS2_REPLACE_METHOD(0x1416781a0, PCBase, FUN_1416781a0, 25, 0xB8378DBB);
+
+// @0x1416782e0
+int PCBase::FUN_1416782e0()
+{
+    return m_unk_af4;
+}
+MS2_REPLACE_METHOD(0x1416782e0, PCBase, FUN_1416782e0, 17, 0x49054061);
+
+// @0x141678300
+void PCBase::FUN_141678300(int n)
+{
+    m_unk_af4 = n;
+}
+MS2_REPLACE_METHOD(0x141678300, PCBase, FUN_141678300, 25, 0x287B4905);
+
+// @0x141678320
+int PCBase::FUN_141678320()
+{
+    return m_unk_af8;
+}
+MS2_REPLACE_METHOD(0x141678320, PCBase, FUN_141678320, 17, 0xE0DF37DD);
+
+// @0x141678340
+void PCBase::FUN_141678340(int n)
+{
+    m_unk_af8 = n;
+}
+MS2_REPLACE_METHOD(0x141678340, PCBase, FUN_141678340, 25, 0x758EB519);
+
+// @0x141678710
+NiPoint3 PCBase::FUN_141678710()
+{
+    return m_pos9ac;
+}
+MS2_REPLACE_METHOD(0x141678710, PCBase, FUN_141678710, 44, 0xFCD0A4DB);
+
+// @0x141679070
+int PCBase::FUN_141679070()
+{
+    return m_unk_c0c;
+}
+MS2_REPLACE_METHOD(0x141679070, PCBase, FUN_141679070, 17, 0x6CCB6E73);
+
+// @0x141679090
+void PCBase::FUN_141679090(int n)
+{
+    m_unk_c0c = n;
+}
+MS2_REPLACE_METHOD(0x141679090, PCBase, FUN_141679090, 25, 0xCEB11FAF);
+
+// @0x141670cd0
+void PCBase::vfunc_91(void* p)
+{
+    vfunc_90(p);
+}
+MS2_REPLACE_METHOD(0x141670cd0, PCBase, vfunc_91, 43, 0x79C52993);
+
+// @0x141670d10
+void PCBase::vfunc_92(void* p)
+{
+    vfunc_90(p);
+}
+MS2_REPLACE_METHOD(0x141670d10, PCBase, vfunc_92, 43, 0x79C52993);
+
+// @0x141671380
+void PCBase::vfunc_94(int n)
+{
+}
+
+// @0x141671620
+float PCBase::vfunc_95()
+{
+    float fBase = FUN_141671940();
+    float fRate = vfunc_96();
+    return fBase * fRate * m_f92c;
+}
+MS2_REPLACE_METHOD(0x141671620, PCBase, vfunc_95, 80, 0x873F203D);
+
+// @0x141674bf0
+int PCBase::vfunc_108()
+{
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141674bf0, PCBase, vfunc_108, 8, 0x7F371472);
+
+// @0x141674c00
+void PCBase::vfunc_109(int n)
+{
+    if (n != 0)
+        m_unk_150->FUN_14123fbf0(2);
+    else
+        m_unk_150->FUN_14123fbf0(5);
+}
+MS2_REPLACE_METHOD(0x141674c00, PCBase, vfunc_109, 69, 0x460AC9D8);
+
+// @0x141674c50
+void PCBase::vfunc_110()
+{
+}
+
+// @0x141671680
+float PCBase::vfunc_96()
+{
+    if (GetClassID() == 0x6200045)
+        return FUN_1401c0db0()->FUN_140674290(FUN_141670a00(0x20));
+    return FUN_1401c0db0()->FUN_140674100(FUN_141670a00(0xe), FUN_1416787a0());
+}
+MS2_REPLACE_METHOD(0x141671680, PCBase, vfunc_96, 142, 0x5A4E0AB6);
+
+// @0x1416718d0
+void PCBase::vfunc_98(float f)
+{
+    FUN_1401c0db0()->FUN_140674420(FUN_141670a00(0xd), f);
+}
+MS2_REPLACE_METHOD(0x1416718d0, PCBase, vfunc_98, 67, 0x9F70B920);
+
+// @0x1416700b0
+void PCBase::FUN_1416700b0(int nType)
+{
+    MS2Ptr<Unk_PCBaseComp_ac8> spBanner = vfunc_87();
+    if (spBanner == 0)
+        return;
+    if (nType == 0) {
+        spBanner->vfunc_3();
+        return;
+    }
+    spBanner->FUN_140ba8720(nType);
+    spBanner->vfunc_2();
+}
+MS2_REPLACE_METHOD(0x1416700b0, PCBase, FUN_1416700b0, 198, 0xEB11A23B);
+
+// @0x141670180
+void PCBase::FUN_141670180(bool bShow)
+{
+    if (FUN_14166ce30() != 0)
+        return;
+    MS2Ptr<Unk_PCBaseComp_a58> spBar = vfunc_80();
+    if (spBar.get() != 0) {
+        spBar->FUN_141992180(FUN_141670a00(4), FUN_141670a30(4));
+        if (bShow)
+            spBar->FUN_141992140(bShow);
+    }
+}
+MS2_REPLACE_METHOD(0x141670180, PCBase, FUN_141670180, 213, 0x5B144CC8);
+
+// @0x141670260
+void PCBase::FUN_141670260(int nShield, bool bShow)
+{
+    if (FUN_14166ce30() != 0)
+        return;
+    MS2Ptr<Unk_PCBaseComp_a68> spBar = vfunc_81();
+    if (spBar.get() != 0) {
+        spBar->FUN_140e85f10(nShield, nShield);
+        if (bShow)
+            spBar->FUN_140e85ed0(bShow);
+    }
+}
+MS2_REPLACE_METHOD(0x141670260, PCBase, FUN_141670260, 198, 0x18291DE7);
+
+// @0x141670390
+float PCBase::FUN_141670390()
+{
+    float fMount = 0.0f;
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee != 0)
+        fMount = spRidee->FUN_141707960();
+    return m_f164 + m_f174 + fMount;
+}
+MS2_REPLACE_METHOD(0x141670390, PCBase, FUN_141670390, 153, 0xEF36227E);
+
+// @0x141670450
+float PCBase::vfunc_89()
+{
+    float fMount = 0.0f;
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee != 0)
+        fMount = spRidee->vfunc_89();
+    return m_f16c + m_f170 + fMount;
+}
+MS2_REPLACE_METHOD(0x141670450, PCBase, vfunc_89, 169, 0x56B885A2);
+
+// @0x141670540
+void PCBase::FUN_141670540(int nKind, int nStat, __int64 nValue)
+{
+    if (nKind == 1)
+        FUN_1416705c0(nStat, nValue);
+    else if (nKind == 2)
+        FUN_141670700(nStat, nValue);
+    else if (nKind == 0)
+        FUN_1416708a0(nStat, nValue);
+}
+MS2_REPLACE_METHOD(0x141670540, PCBase, FUN_141670540, 110, 0xF9DEC14D);
+
+// @0x1416705c0
+void PCBase::FUN_1416705c0(int nStat, __int64 nValue)
+{
+    m_unk_1c0[1][nStat] = nValue;
+    if (m_unk_1c0[1][nStat] < 0)
+        m_unk_1c0[1][nStat] = 0;
+    if (m_unk_1c0[1][nStat] > m_unk_1c0[0][nStat])
+        m_unk_1c0[1][nStat] = m_unk_1c0[0][nStat];
+    if (m_spB10)
+        m_spB10->FUN_1416705c0(nStat, nValue);
+}
+MS2_REPLACE_METHOD(0x1416705c0, PCBase, FUN_1416705c0, 314, 0xA07389F9);
+
+// @0x141670700
+void PCBase::FUN_141670700(int nStat, __int64 nValue)
+{
+    if (nValue != m_unk_1c0[2][nStat])
+        FUN_141670920(nStat, m_unk_1c0[2][nStat]);
+    m_unk_1c0[2][nStat] = nValue;
+    if (m_unk_1c0[2][nStat] < 0)
+        m_unk_1c0[2][nStat] = 0;
+    if (m_unk_1c0[2][nStat] > m_unk_1c0[0][nStat])
+        m_unk_1c0[2][nStat] = m_unk_1c0[0][nStat];
+    if (m_spB10)
+        m_spB10->FUN_141670700(nStat, nValue);
+}
+MS2_REPLACE_METHOD(0x141670700, PCBase, FUN_141670700, 397, 0xDF9AE4CF);
+
+// @0x1416708a0
+void PCBase::FUN_1416708a0(int nStat, __int64 nValue)
+{
+    m_unk_1c0[0][nStat] = nValue;
+    if (m_spB10)
+        m_spB10->FUN_1416708a0(nStat, nValue);
+}
+MS2_REPLACE_METHOD(0x1416708a0, PCBase, FUN_1416708a0, 119, 0x0F9E58B8);
+
+// @0x141670920
+void PCBase::FUN_141670920(int nStat, __int64 nValue)
+{
+    m_unk_508[nStat] = nValue;
+    if (m_spB10)
+        m_spB10->FUN_141670920(nStat, nValue);
+}
+MS2_REPLACE_METHOD(0x141670920, PCBase, FUN_141670920, 106, 0x9D769AB6);
+
+// @0x141670a90
+// MS2-FUNCTIONAL: slot 90 takes void* in the shared PCBase/PC declarations (as in MyPC::vfunc_90).
+void PCBase::vfunc_90(void* p)
+{
+    CInPacket* pPacket = static_cast<CInPacket*>(p);
+    unsigned char nCount = pPacket->vfunc_o8_1();
+    if (nCount == 0x23) {
+        for (int nType = 0; nType < 0x23; nType++) {
+            for (int i = 0; i < 3; i++) {
+                __int64 nValue;
+                if (FUN_14082f1a0(nType) == 0)
+                    nValue = (unsigned)pPacket->vfunc_o8_3();
+                else
+                    nValue = pPacket->vfunc_o8_4();
+                FUN_141670540(i, nType, nValue);
+            }
+        }
+    }
+    else {
+        for (int n = 0; n < nCount; n++) {
+            unsigned char nType = pPacket->vfunc_o8_1();
+            for (int i = 0; i < 3; i++) {
+                __int64 nValue;
+                if (FUN_14082f1a0(nType) == 0)
+                    nValue = (unsigned)pPacket->vfunc_o8_3();
+                else
+                    nValue = pPacket->vfunc_o8_4();
+                FUN_141670540(i, nType, nValue);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141670a90, PCBase, vfunc_90, 569, 0xAFACA969);
+
+// @0x141670ed0
+void PCBase::FUN_141670ed0(Unk_PCBaseEntity* pEntity)
+{
+    m_str958 = "default";
+    if (m_unk_9a8 != 0 && pEntity != 0) {
+        efd::utf8string strMaterial;
+        pEntity->FUN_1408a2060(0xde5dd580, &strMaterial);
+        unsigned short nKind = 0;
+        pEntity->FUN_140ae1160(0xada5c5d2, &nKind);
+        if (!strMaterial.empty()) {
+            m_unk_9c4 = nKind;
+            m_str958 = strMaterial.c_str();
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141670ed0, PCBase, FUN_141670ed0, 247, 0xF98BBCFA);
+
+// @0x141671130
+// MS2-FUNCTIONAL: the exe assigns efd::Point3::ZERO to the NiPoint3 member directly; here it goes through a temporary.
+void PCBase::vfunc_93(bool bMaterial)
+{
+    if (FUN_141671a30() != 0) {
+        m_unk_9a8 = 1;
+        m_f9c8 = 0;
+        m_pos9ac = vfunc_18();
+        m_pos9b8 = FUN_14166d220()->FUN_141240df0();
+    }
+    else {
+        Unk_PCBaseRayHit kHit;
+        m_unk_9a8 = FUN_1409f7ca0()->FUN_14168a310(vfunc_18(), &m_pos9ac, &kHit, 0.0f, &m_pos9b8, 0);
+        if (m_unk_9a8 == 0) {
+            m_pos9ac = NiPoint3::ZERO;
+            m_f9c8 = FLT_MAX;
+        }
+        else {
+            m_f9c8 = kHit.m_hitDist;
+        }
+    }
+    if (bMaterial) {
+        m_unk_9c4 = 0;
+        m_str958.Empty();
+        Unk_PCBaseEntity* pEntity = FUN_14166d220()->FUN_141240f20()->FUN_140cfaff0();
+        if (pEntity != 0)
+            FUN_141670ed0(pEntity);
+    }
+}
+MS2_REPLACE_METHOD(0x141671130, PCBase, vfunc_93, 576, 0x9C628E51);
+
+// @0x141671480
+CString PCBase::FUN_141671480()
+{
+    if (!m_str960.IsEmpty()) {
+        BOOL bUse = FALSE;
+        if (vfunc_62() == false)
+            bUse = m_unk_9c4 != 8;
+        else
+            bUse = m_unk_9c4 != 8 && vfunc_61() == 2;
+        if (bUse)
+            return m_str960;
+    }
+    return m_str958;
+}
+MS2_REPLACE_METHOD(0x141671480, PCBase, FUN_141671480, 295, 0xCA524CA6);
+
+// @0x141671720
+float PCBase::vfunc_97()
+{
+    float fRate = 1.0f;
+    if (m_fScaleA8 != m_fScaleAC) {
+        if (m_fScaleAC / 2.0f > m_fScaleA8)
+            fRate = 1.5f;
+        else if (m_fScaleAC / 2.0f <= m_fScaleA8 && m_fScaleA8 < m_fScaleAC)
+            fRate = 2.0f - m_fScaleA8 / m_fScaleAC;
+        else if (m_fScaleA8 > m_fScaleAC && m_fScaleAC * 2.0f >= m_fScaleA8)
+            fRate = 1.0f - (m_fScaleA8 - m_fScaleAC) / (m_fScaleAC * 2.0f);
+        else if (m_fScaleAC * 2.0f < m_fScaleA8)
+            fRate = 0.5f;
+    }
+    return fRate;
+}
+MS2_REPLACE_METHOD(0x141671720, PCBase, vfunc_97, 412, 0xA3371C75);
+
+// @0x1416719c0
+BOOL PCBase::FUN_1416719c0()
+{
+    CString strModel = FUN_14166dc50();
+    if (strModel.Find("Dash", 0) != -1)
+        return TRUE;
+    return FALSE;
+}
+MS2_REPLACE_METHOD(0x1416719c0, PCBase, FUN_1416719c0, 103, 0xCE9ED2D7);
+
+// @0x141671a30
+int PCBase::FUN_141671a30()
+{
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee != 0 && FUN_14166c930() == 0x21)
+        return spRidee->FUN_141671a30();
+    if (FUN_14166d220() == 0)
+        return 0;
+    return FUN_14166d220()->FUN_141240f40() != 0;
+}
+MS2_REPLACE_METHOD(0x141671a30, PCBase, FUN_141671a30, 220, 0x9D9E0C20);
+
+// @0x141671b70
+int PCBase::vfunc_99(int nSlope)
+{
+    if (m_unk_150 == 0)
+        return 0;
+    if (nSlope < 0)
+        nSlope = 0;
+    if (nSlope == 0)
+        nSlope = 100;
+    int nLimit = m_unk_150->FUN_141240ef0();
+    if (nLimit > nSlope && FUN_14028d380(0.3f) < m_f9c8 && (FUN_14166d220()->FUN_141240ed0() & 4) == 0)
+        return 1;
+    else
+        return 0;
+}
+MS2_REPLACE_METHOD(0x141671b70, PCBase, vfunc_99, 159, 0x1EE7592B);

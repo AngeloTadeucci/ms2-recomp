@@ -43,6 +43,10 @@ class StateData;            // state.h (the request record handed to CStateManag
 class RideOffAction;        // commonfiles/rideonaction.h
 class Ridee;                // ridee.h (the mount; +0xb10)
 class PCBase;
+class Unk_PCBaseEntity;      // an egf entity seen through its property getters, pcbase.cpp
+class Unk_PCBaseFxSet;       // vfunc_71/73 argument (MS2Ptr by value; effect names at +0x40), pcbase.cpp
+class Unk_PCBaseFxSource;    // +0xd10, hands out Unk_PCBaseFxSet by key (slot 2), pcbase.cpp
+class Unk_PCBaseEmoPlayer;   // +0x638 (FUN_141848650 stop, FUN_141848740 busy at a time), pcbase.cpp
 class Unk_PCBaseBody;       // +0x150 physics/controller body (0xf8; ctor 0x14123f2d0, dtor 0x14123f460), pcbase.cpp
 
 // +0xc08: an 11-bit set (commonfiles\bitset.inl instance, the same as unit_140d73aa0's Unk_BitSet11): the reasons the
@@ -142,11 +146,11 @@ public:
     virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d);  // 68 0x14166e100
     virtual int vfunc_69();                                 // 69  0x14166f9f0
     virtual void vfunc_70();                                // 70  0x14166fa00
-    virtual void vfunc_71(void* p);                         // 71  0x14166fa30
+    virtual void vfunc_71(MS2Ptr<Unk_PCBaseFxSet> spSet);   // 71  0x14166fa30
     virtual void vfunc_72();                                // 72  0x14166fa60
-    virtual void vfunc_73(void* p, int n);                  // 73  0x14166fa70
+    virtual void vfunc_73(MS2Ptr<Unk_PCBaseFxSet> spSet, int bFx); // 73  0x14166fa70
     virtual void vfunc_74(__int64 nCur, __int64 nMax);      // 74  0x14166fbf0 (scenestategame 0x2e: hp current/max)
-    virtual void vfunc_75(void* a, void* b);                // 75  0x14166fc70
+    virtual void vfunc_75(__int64 nCur, __int64 nMax);      // 75 (shield bar current/max)  0x14166fc70
     virtual void vfunc_76(CStringW str);                    // 76  0x14166fcf0 (by value: the callee destroys it)
     virtual CStringW vfunc_77();                            // 77  0x14166fd50
     virtual int vfunc_78();                                 // 78  0x14166fda0
@@ -167,7 +171,7 @@ public:
     virtual void vfunc_93(bool b);                          // 93  0x141671130
     virtual void vfunc_94(int n);                           // 94  0x141671380
     virtual float vfunc_95();                               // 95  0x141671620
-    virtual void vfunc_96();                                // 96  0x141671680
+    virtual float vfunc_96();                               // 96  0x141671680 move speed
     virtual float vfunc_97();                               // 97  0x141671720
     virtual void vfunc_98(float f);                         // 98  0x1416718d0
     virtual int vfunc_99(int n);                            // 99  0x141671b70
@@ -210,8 +214,10 @@ public:
     // clonepc.cpp (w69)
     bool FUN_14166ed10();                                   // 0x14166ed10 the value ClonePC copies into m_b9d0
     void FUN_14166ed70(int n);                              // 0x14166ed70
-    void FUN_14166ef10(const CString& str, bool bA, int nB, int nC);   // 0x14166ef10
-    int FUN_14166f6d0();                                    // 0x14166f6d0
+    void FUN_14166ef10(const CString& str, int nA, int nB, bool bC);   // 0x14166ef10 play an emotion
+    int FUN_14166f6d0();
+    bool FUN_14166f790(void* pKey, CString& strOut, int n);   // 0x14166f790 effect name of a key
+    void FUN_14166f940();                                   // 0x14166f940 emotion timer expired: back to default                                    // 0x14166f6d0
     CString FUN_14166f740();                                // 0x14166f740 (returns a string)
     // uipvpguildteamdialog.cpp (w71)
     __int64 FUN_141670a00(int nStat);                       // 0x141670a00 current value of a stat (4 = hp)
@@ -244,6 +250,57 @@ public:
     void FUN_14166ce70(int nEmotion);                       // 0x14166ce70 (scenestategame packet 0x3f, w86)
     __int64 FUN_141670990(int nKind, int nStat);            // 0x141670990 stat value (kind 0..2, stat 0..0x22; scenestategame w109)
     // pcbase.cpp (w112)
+    void FUN_141670ed0(Unk_PCBaseEntity* pEntity);          // 0x141670ed0 ground material of the entity under the actor
+    CString FUN_141671480();                                // 0x141671480 footstep material
+    BOOL FUN_1416719c0();                                   // 0x1416719c0 model is a "Dash" model
+    int FUN_141671a30();                                    // 0x141671a30 standing on ground
+    void FUN_1416700b0(int nType);                          // 0x1416700b0 banner
+    void FUN_141670180(bool bShow);                         // 0x141670180 refresh the hp bar
+    void FUN_141670260(int nShield, bool bShow);            // 0x141670260 refresh the shield bar
+    float FUN_141670390();                                  // 0x141670390 height (+ mount)
+    void FUN_141670540(int nKind, int nStat, __int64 nValue);   // 0x141670540 set a stat value
+    void FUN_1416705c0(int nStat, __int64 nValue);          // 0x1416705c0
+    void FUN_1416708a0(int nStat, __int64 nValue);          // 0x1416708a0
+    void FUN_141670920(int nStat, __int64 nValue);          // 0x141670920
+    int FUN_1416787a0();                                    // 0x1416787a0 field +0x4c of the local player record
+    efd::utf8string& FUN_14166e0d0();                       // 0x14166e0d0 current animation name
+    void FUN_14166ed30(bool b);
+    void FUN_14166ed50(bool b);
+    void FUN_14166f8f0(int nA, int nB);
+    void FUN_141670330(float f);
+    void FUN_141670360(float f);
+    float FUN_141670430();
+    float FUN_141670500();
+    float FUN_141670520();
+    __int64 FUN_1416709d0(int nStat);
+    __int64 FUN_141670a60(int nStat);
+    void FUN_141670d80(float fSpeed);
+    void FUN_141670db0(CString str);
+    void FUN_141670e00(CString str);
+    void FUN_141670e50(CString str);
+    void FUN_141670ea0();
+    efd::Point2 FUN_141671390();
+    CString FUN_1416713e0();
+    CString FUN_141671430();
+    CString FUN_1416715b0();
+    float FUN_141671600();
+    float* FUN_141671920();
+    float FUN_141671940();
+    void FUN_141671990(float fScale);
+    BOOL FUN_141671b20();
+    NiPoint3 FUN_141676020();
+    void FUN_141676980(int n);
+    void FUN_1416769a0(void* p);
+    int FUN_1416769d0();
+    void* FUN_1416769f0();
+    void FUN_1416781a0(int n);
+    int FUN_1416782e0();
+    void FUN_141678300(int n);
+    int FUN_141678320();
+    void FUN_141678340(int n);
+    NiPoint3 FUN_141678710();
+    int FUN_141679070();
+    void FUN_141679090(int n);
     int FUN_14166c960();                                    // 0x14166c960 queued state (m_unk_c48)
     int FUN_14166c980();                                    // 0x14166c980 previous state id
     void FUN_14166ca20(unsigned int nReason);               // 0x14166ca20 hide for a reason
@@ -294,7 +351,7 @@ public:
     float m_f170;                       // +0x170
     float m_f174;                       // +0x174
     float m_f178;                       // +0x178
-    int m_unk_17c;                      // +0x17c
+    float m_f17c;                       // +0x17c
     float m_unk_180[4];                 // +0x180 (init 0x140266620; [0] = 1800.0)
     union {
         float m_unk_190[4];             // +0x190 (init 0x140266620; [0] = 1800.0)
@@ -305,13 +362,16 @@ public:
             float m_f19c;
         };
     };
-    float m_unk_1a0[7];                 // +0x1a0 (init 0x1402666f0; [0] = 50.0)
+    union {
+        float m_unk_1a0[7];             // +0x1a0 (init 0x1402666f0; [0] = 50.0)
+        float m_f1a0;                   // +0x1a0
+    };
     int m_unk_1bc;                      // +0x1bc
     __int64 m_unk_1c0[3][0x23];         // +0x1c0 stat values (kind 0..2, stat 0..0x22; FUN_141670990)
     __int64 m_unk_508[0x23];            // +0x508 zero-filled record
-    float m_unk_620[2];                 // +0x620 (init 0x140a0a600(p, 25.0, 105.0))
+    efd::Point2 m_unk_620;              // +0x620 (init 0x140a0a600(p, 25.0, 105.0)) model size
     void* m_unk_628[2];                 // +0x628 (init 0x140ae13b0)
-    void* m_unk_638[2];                 // +0x638 (init 0x14167e030)
+    MS2Ptr<Unk_PCBaseEmoPlayer> m_sp638; // +0x638 (init 0x14167e030)
     void* m_colorBoost[9];              // +0x648 CColorBoostManager (0x48)
     void* m_pushControl[9];             // +0x690 CPushControl (0x48)
     void* m_unk_6d8[14];                // +0x6d8 (init 0x141682e90)
@@ -333,7 +393,7 @@ public:
     int m_unk_9a8;                      // +0x9a8
     NiPoint3 m_pos9ac;                  // +0x9ac = ZERO
     NiPoint3 m_pos9b8;                  // +0x9b8 (init 0x1402bd040)
-    short m_unk_9c4;                    // +0x9c4
+    unsigned short m_unk_9c4;           // +0x9c4 ground material kind
     float m_f9c8;                       // +0x9c8 (FLT_MAX / 0; shadow argument)
     int m_unk_9cc;                      // +0x9cc
     bool m_b9d0;                        // +0x9d0 = 1
@@ -342,7 +402,7 @@ public:
     CString m_str9e0;                   // +0x9e0
     Timer m_timer9e8;                   // +0x9e8
     void* m_unk_a20[2];                 // +0xa20 (not initialised by the ctor)
-    CAtlArray<void*> m_arrA30;          // +0xa30
+    CAtlArray<unsigned int> m_arrA30;   // +0xa30 effect handles (vfunc_73)
     int m_unk_a50;                      // +0xa50 = 1
     MS2Ptr<Unk_PCBaseComp_a58> m_spA58; // +0xa58
     MS2Ptr<Unk_PCBaseComp_a68> m_spA68; // +0xa68 (init 0x14167e0b0)
@@ -387,7 +447,7 @@ public:
     void* m_mapCA8[9];                  // +0xca8 CAtlMap (init 0x140c69c80)
     void* m_unk_cf0[2];                 // +0xcf0 (init 0x14167e4b0)
     void* m_unk_d00[2];                 // +0xd00 (init 0x14094d440); vfunc_123 looks up here (0x14094e040)
-    void* m_unk_d10[2];                 // +0xd10 (init 0x1411bf870)
+    MS2Ptr<Unk_PCBaseFxSource> m_spD10; // +0xd10 (init 0x1411bf870)
     int m_unk_d20;                      // +0xd20
     std::vector<unsigned> m_vecD28;     // +0xd28 (init 0x140182ed0)
 };
