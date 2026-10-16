@@ -6579,6 +6579,80 @@ void CSceneStateGame::FUN_14173c7a0(CInPacket& packet)
 MS2_REPLACE_METHOD(0x14173c7a0, CSceneStateGame, FUN_14173c7a0, 189, 0x0673F946);
 
 // 0x118: result notices (mode 2: sub 0..2, mode 3: sub 0/3).
+// @0x14173c870
+void CSceneStateGame::FUN_14173c870(CInPacket& packet)
+{
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    if (pWorld == 0)
+    {
+        MS2_ASSERT_AT(0x2adc, 0);
+        return;
+    }
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+    {
+        efd::SmartPointer<CReactor> spReactor = new (efd::MemHint(efd::MemHint::NONE)) CReactor;
+        if (!spReactor)
+        {
+            MS2_ASSERT_AT(0x2ae8, 0);
+            return;
+        }
+        if (!spReactor->FUN_140b79490(&packet))
+            return;
+        if (pWorld->FUN_141bbb1e0(spReactor, 0, 1) == 0)
+            return;     // (the add failure and success paths are separate returns in the exe)
+        return;
+    }
+    case 1:
+    {
+        int nMapId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        pWorld->FUN_141bbbcf0(nMapId, 0);
+        break;
+    }
+    case 3:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        GameObject* pObj = pWorld->FUN_141bd1180(nId);
+        if (pObj == 0)
+            return;
+        efd::SmartPointer<CReactor> spReactor = efd::DynamicCast<CReactor>(pObj);
+        if (!spReactor)
+            return;
+        spReactor->FUN_140b79a10(&packet);
+        return;
+    }
+    case 4:
+    {
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat == 0)
+            return;
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; i++)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nAmount = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+            pChat->FUN_141abf6e0(nItemId, nAmount);
+        }
+        break;
+    }
+    case 5:
+    {
+        int nReactorId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pPC = pWorld->FUN_141bd0cc0();
+        if (pPC == 0)
+        {
+            MS2_ASSERT_AT(0x2b1e, 0);
+            return;
+        }
+        MS2Ptr<StateReactData> spData(new StateReactData(nReactorId, "", ""));
+        pPC->vfunc_59(0x3d, spData, 0x9e, 1);
+    }
+    }
+}
+MS2_REPLACE_METHOD(0x14173c870, CSceneStateGame, FUN_14173c870, 1452, 0xA52CF4B9);
+
 // @0x14173ce30
 void CSceneStateGame::FUN_14173ce30(CInPacket& packet)
 {
