@@ -111,8 +111,6 @@ extern long g_lUniqueSeq;
 void FUN_1402929a0(const CStringW& strText, std::vector<int>& arrOut, const wchar_t* pszDelim);
 int FUN_140274f40(const CStringW& strText);                     // _wtoi
 bool FUN_14028d470(float fValue, float fTolerance);
-float FUN_14029d220(float fValue);                              // fabs
-float FUN_14029d430(float fValue, float fDivisor);              // fmod
 
 // Unrecovered helpers.
 CString FUN_140188f50(const char* psz, int n);                  // CString from a C string
@@ -680,7 +678,7 @@ CString FUN_14028d3c0(CString strPath)
 // @0x14028d470
 bool FUN_14028d470(float fA, float fB)
 {
-    return FUN_14029d220(fA - fB) < 1e-06f ? true : false;
+    return fabsf(fA - fB) < 1e-06f ? true : false;
 }
 
 // MS2-FUNCTIONAL: bool/branch lowering and stack slots differ from the exe
@@ -705,7 +703,7 @@ int FUN_14028d530(const Unk_CommonVec3* pA, const Unk_CommonVec3* pB)
 // @0x14028d5b0
 float FUN_14028d5b0(float fDegrees)
 {
-    fDegrees = FUN_14029d430(fDegrees, 360.0f);
+    fDegrees = fmodf(fDegrees, 360.0f);
     if (180.0f < fDegrees)
         fDegrees = fDegrees - 360.0f;
     if (fDegrees < -180.0f)
@@ -1140,7 +1138,13 @@ void FUN_14028ea70(const char* pszName, const char* pszFormat, ...)
         mapFile.SetAt(strName, strFile);
     }
     ATL::CAtlFile file;
+#ifdef __clang__
+    CString strPath(".\\log\\"); // clang would import MFC CopyChars for operator+
+    strPath.Append(strFile);
+    file.Create(strPath, GENERIC_WRITE, 3, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0, 0);
+#else
     file.Create(".\\log\\" + strFile, GENERIC_WRITE, 3, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0, 0);
+#endif
     file.Seek(0, FILE_END);
     ATL::CStringT<char, ATL::StrTraitATL<char, ATL::ChTraitsCRT<char> > > strWrite(strLine);
     file.Write(strWrite.GetString(), strWrite.GetLength(), (DWORD*)0);
@@ -1647,7 +1651,7 @@ float EaseOutCalculator::vfunc_0(float fDelta, float fTime, float fDuration, flo
 // @0x1402921d0
 float EaseOutCalculator::Calc(float fTime, float fDuration, float fDistance)
 {
-    return fDistance * sqrtf(FUN_14029d220(1.0f - powf((fTime - fDuration) / fDuration, 2.0f)));
+    return fDistance * sqrtf(fabsf(1.0f - powf((fTime - fDuration) / fDuration, 2.0f)));
 }
 
 // @0x140292240
@@ -1660,7 +1664,7 @@ float EaseInCalculator::vfunc_0(float fDelta, float fTime, float fDuration, floa
 // @0x1402922c0
 float EaseInCalculator::Calc(float fTime, float fDuration, float fDistance)
 {
-    return fDistance * (1.0f - sqrtf(FUN_14029d220(1.0f - powf(fTime / fDuration, 2.0f))));
+    return fDistance * (1.0f - sqrtf(fabsf(1.0f - powf(fTime / fDuration, 2.0f))));
 }
 
 // @0x140292820
@@ -1803,7 +1807,13 @@ void FUN_14028fd90(Unk_XmlElement* pParent, const char* pszChild, const char* ps
             CStringW strKey2;
             FUN_140873420(pElem, pszKeyAttr1, strKey1);
             FUN_140873420(pElem, pszKeyAttr2, strKey2);
+#ifdef __clang__
+            CStringW strKey(strKey1); // clang would import MFC CopyChars for operator+
+            strKey.Append(L"_");
+            strKey.Append(strKey2);
+#else
             CStringW strKey = (const wchar_t*)((const wchar_t*)strKey1 + CStringW(L"_")) + strKey2;
+#endif
             if (mapByKey.find(strKey) != mapByKey.end())
             {
                 Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
