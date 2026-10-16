@@ -32,7 +32,7 @@ public:
 };
 class Unk_ItemPriceSvc { public: int FUN_140678760(int, int, int); };
 extern Unk_ItemPriceSvc* FUN_1401c0db0();
-class Unk_ItemEnchantData : public CItemStatus { public: int FUN_14062ffb0(unsigned, int, int); int FUN_140630290(unsigned, int, int); };
+class Unk_ItemEnchantData : public CItemStatus { public: int FUN_14062ffb0(unsigned, int, int); int FUN_140630290(unsigned, int, int); unsigned short FUN_140630d00(); };
 class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
 extern unsigned FUN_14054b400(ItemModelData*);
@@ -63,6 +63,10 @@ extern Unk_MusicBookTable* DAT_143aaf1a8;
 class Unk_EnchantRates { public: int FUN_140594720(int); int FUN_140594750(int); int FUN_1405947c0(int); };
 extern Unk_EnchantRates* DAT_143aaf1b0;
 class NpcShopItemLife : public CPtred { public: Unk_ItemSlot188 FUN_14026eab0(); };   // commonstruct_wa.h has the full class
+// The pet row table behind DAT_143aaf1c8 (tabcontentspetevolution.cpp declares the same lookup).
+class Unk_PetRow : public CPtred { public: int m_n18; };
+class Unk_PetRowTable : public Unk_SingletonObj { public: MS2Ptr<Unk_PetRow> FUN_1407290f0(int); };
+CStringW FUN_141277a90(CUgcItemLook* pLook, const CStringW& strFallback);
 class Unk_ItemSetTable { public: int FUN_140597430(int); };   // behind DAT_143aaf1b8 (FUN_14052d1f0 returns it as void*)
 extern void* DAT_143aaf1b8;
 void* FUN_140166440();
@@ -1946,9 +1950,9 @@ void* FUN_14052d200()
 }
 
 // @0x14052d210
-Unk_SingletonObj* FUN_14052d210()
+Unk_PetRowTable* FUN_14052d210()
 {
-    return DAT_143aaf1c8;
+    return static_cast<Unk_PetRowTable*>(DAT_143aaf1c8);
 }
 
 // @0x14052d220
@@ -2277,6 +2281,54 @@ CStringW CItem::FUN_140528010()
     return strName;
 }
 MS2_REPLACE_METHOD(0x140528010, CItem, FUN_140528010, 322, 0x89EAC3CB);
+
+// @0x140527b10
+// MS2-FUNCTIONAL: branch layout / pet-name tail ordering differs from the exe
+CStringW CItem::FUN_140527b10()
+{
+    CStringW strName = FUN_1401a9d70()->FUN_141811980(1, FUN_1405276c0());
+    if (static_cast<CItemUgc*>(m_spUgc) != 0)
+    {
+        return FUN_141277a90(&m_spUgc->m_look, strName);
+    }
+    else if (FUN_140527840()->FUN_14053cd10())
+    {
+        return FUN_1405296c0();
+    }
+    else if (FUN_140525640() != 0)
+    {
+        if (m_strB8.GetLength() > 0)
+            strName = m_strB8;
+        MS2Ptr<Unk_PetRow> spRow = FUN_14052d210()->FUN_1407290f0(FUN_140527840()->FUN_14053dc60());
+        if (spRow.get() == 0)
+            return strName;
+        if (spRow->m_n18 == 1)
+            return FormatStringId(0xcd6, strName);
+        return FormatStringId(0xcd5, strName);
+    }
+    else
+    {
+        if (m_spData->FUN_14053da20() || m_spData->FUN_14053d9d0())
+            return strName;
+        if (FUN_140525a30() != 0)
+        {
+            CStringW strGem = FUN_140529de0();
+            if (!strGem.IsEmpty())
+                return strName + strGem;
+        }
+        unsigned short nUnlimited = FUN_1405278a0()->FUN_140630d90()->FUN_1408bbc50();
+        if (nUnlimited != 0)
+            return FUN_14028dfa0(CStringW(L"s_word_item_unlimited_enchant"), nUnlimited, strName);
+        unsigned short nEnchant = FUN_1405278a0()->FUN_140630d00();
+        if (nEnchant != 0)
+        {
+            CStringW strFormatted;
+            strFormatted.Format(L"+%d %s", nEnchant, (LPCWSTR)strName);
+            return strFormatted;
+        }
+        return strName;
+    }
+}
 
 // @0x140528160
 CStringW CItem::FUN_140528160()
