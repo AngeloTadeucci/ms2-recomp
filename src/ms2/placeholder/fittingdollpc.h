@@ -98,6 +98,7 @@ public:
     class Unk_PCCubeCraft* FUN_141659700();                 // the cube craft controller
     void FUN_141660000(__int64 nValue);
     void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
+    void FUN_141661dc0(unsigned short nA, int nB);          // scenestategame packet 0xb1
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];

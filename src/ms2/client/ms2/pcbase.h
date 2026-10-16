@@ -173,6 +173,7 @@ public:
     int FUN_14166cc80();                                    // 0x14166cc80 current sub state
     State* FUN_14166ccb0();                                 // 0x14166ccb0 current state
     void FUN_141670700(int nType, __int64 nValue);           // 0x141670700 (scenestategame packet 0x64: 10, skill id)
+    __int64 FUN_141656a80();                                // 0x141656a80 (scenestategame packet 0x39 battle record key)
     int FUN_14166ce30();                                    // 0x14166ce30 dead (1)
     float FUN_14166da40();                                  // 0x14166da40
     void FUN_14166d820();                                   // 0x14166d820
