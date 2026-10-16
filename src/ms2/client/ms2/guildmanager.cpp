@@ -4,20 +4,21 @@
 // MS2-RANGE: 0x1400f4800-0x1400f4b40 .text$di
 // MS2-RANGE: 0x142cb1280-0x142cb1430 .text$yd
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$?0AEBU?$less@U?$pair@HH@std@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@U?$pair@HH@std@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HH@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@U?$pair@HH@std@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1413c8280 ; unique
+// MS2-PIN: ??$?0VCGuildManager@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAVCGuildManager@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x1413c8480 ; unique
 // MS2-PIN: ??$?8PEAVCGuildManager@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x1413c8640 ; prop
-// MS2-PIN: ??0?$CTraceCategoryEx@$00$0A@@ATL@@QEAA@PEBD@Z 0x1413c9040 ; order
-// MS2-PIN: ??$forward@U_Zero_then_variadic_args_t@std@@@std@@YA$$QEAU_Zero_then_variadic_args_t@0@AEAU10@@Z 0x1413cb810 ; order
-// MS2-PIN: ??$forward@_J@std@@YA$$QEA_JAEA_J@Z 0x1413cb830 ; order
-// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1413cba30 ; prop
-// MS2-PIN: ??8?$MS2Ptr@VCGuildMember@@@@QEBA_NPEAVCGuildMember@@@Z 0x1413ccb70 ; order
-// MS2-PIN: ??8?$MS2Ptr@VCGuildSkill@@@@QEBA_NPEAVCGuildSkill@@@Z 0x1413ccbb0 ; order
-// MS2-PIN: ?AddRef@?$MS2Ptr@VCGuildMember@@@@AEBAXXZ 0x1413cf0c0 ; unique
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCGuildMember@@@@AEBAXPEAX@Z 0x1413cf2a0 ; prop
+// MS2-PIN: ??$?8PEAVCGuildManager@@P80@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA_NAEBU?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@0@Z 0x1413c86b0 ; prop
+// MS2-PIN: ??$destroy@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@1@QEAV?$MS2Ptr@VCGuildPVPHistoryData@@@@@Z 0x1413cb690 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1413cba30 ; unique
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCGuildMember@@@@QEAAAEAV1@PEAVCGuildMember@@@Z 0x1413cc9b0 ; unique
 // MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1413d1ec0 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1413d1f20 ; unique
 // MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x1413d25a0 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x1413d25d0 ; unique
 // MS2-PIN: ??$Call@VCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@CAXAEAU?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@PEAVNotifyObject@@@Z 0x1413d2610 ; unique
+// MS2-PIN: ??$Call@VCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@CA_NAEAU?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@HAEBVCMsgBoxData@@@Z 0x1413d2650 ; unique
 // MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1413d2690 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1413d26f0 ; unique
+// MS2-PIN: ?pop_back@?$deque@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@V?$allocator@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@std@@@std@@QEAAXXZ 0x1413d29d0 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7CGuildManager@@6B?$TSingleton@VCGuildManager@@@@@ 0x142f0a5d8
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@AEBV0@@Z 0x1404ec5b0
@@ -1167,7 +1168,7 @@ bool CGuildManager::FUN_1413bb490(ItemEntity& item, const CStringW& receiver)
         return false;
     }
     if (itemData->FUN_14053c6b0(0xd7)) {
-        if (receiver == FUN_1413c7c20()) {
+        if (receiver != FUN_1413c7c20()) {
             FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_storage_send_only_to_me"), 1, 1);
             return false;
         }
@@ -2583,7 +2584,8 @@ MS2_REPLACE_METHOD(0x1413C3080, CGuildManager, FUN_1413c3080, 128, 0x1EA1580C);
 // @0x1413c3110
 void CGuildManager::FUN_1413c3110(CInPacket& packet)
 {
-    FUN_1404d3600(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    int value = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    FUN_1404d3600(value);
 }
 MS2_REPLACE_METHOD(0x1413C3110, CGuildManager, FUN_1413c3110, 78, 0x409DBFAD);
 
@@ -2936,6 +2938,8 @@ void CGuildManager::FUN_1413c5000(CInPacket& packet)
 MS2_REPLACE_METHOD(0x1413C5000, CGuildManager, FUN_1413c5000, 428, 0x307F6644);
 
 // Guild pvp season history entries.
+// MS2-FUNCTIONAL: byte-identical; only the pairing differs (MS2Ptr<CGuildPVPSeasonHistoryData>'s dtor resolves to
+// the PVPHistoryData copy at 0x1413cc6a0, and pinning it moves other look-alikes).
 // @0x1413c51c0
 void CGuildManager::FUN_1413c51c0(CInPacket& packet)
 {
