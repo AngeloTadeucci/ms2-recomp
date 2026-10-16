@@ -21,6 +21,7 @@ public:
     void FUN_1422d0dc0(MS2Ptr<UISwfEntity> p);                                                  // unregister (w4s9)
     void FUN_1422d4780(UISwfEntity* p, int n);
     void FUN_1422d4840(UISwfEntity* p, int n);
+    void FUN_1422d48f0(UISwfEntity* p, int nLayer);                                             // bring to the top (uimessagebox.cpp)
 };
 
 UISwfEntityManager* FUN_140b632f0();    // the instance (a global pointer at 0x143abb058)

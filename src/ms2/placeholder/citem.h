@@ -65,6 +65,8 @@ public:
   int FUN_140528f90(int);
   CStringW FUN_140528160();               // 0x140528160 item name
   int FUN_140526c50();                    // 0x140526c50 count
+  int FUN_1405258b0();                    // 0x1405258b0 nonzero: no sell confirm by price (uimessagebox.cpp)
+  __int64 FUN_140527670();                // 0x140527670 unit sell price (uimessagebox.cpp)
 private:
   void *m_18;
   void *m_20;

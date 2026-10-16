@@ -61,6 +61,7 @@ public:
     Delegate& operator=(const Delegate& o);
     bool IsNull() const { return m_pImpl == 0; }
     R operator()(A1 a1, A2 a2) const { return m_pImpl->Invoke(a1, a2); }
+    bool operator==(const Delegate& o) const;   // specialized by the units with the COMDAT (uimessagebox.cpp)
 
 private:
     DelegateImplBase* m_pImpl;          // +0x00

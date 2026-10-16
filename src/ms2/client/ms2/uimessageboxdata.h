@@ -24,6 +24,9 @@
 class ASObj;
 class CItem;
 class CMsgBoxData;
+class ASDialog;
+class IMessageListener;
+class UIMessageBox;
 
 // The remembered modaless box position (top left corner) and stage size, and whether a position was saved. The one
 // instance (0x143af3df8) belongs to uimessagebox.cpp's static initializers; its ctor sits in this unit.
@@ -201,6 +204,37 @@ public:
     void FUN_141a024e0(CStringW str, int n);
     void FUN_140533ff0(int n);                                      // appends an int argument (COMDAT outside this class' range)
     void FUN_140b76940(CStringW str);                               // appends a string argument (the callee destroys it)
+
+    // Accessors uimessagebox.cpp calls (0x141a01570-0x141a03470 and outside COMDATs).
+    void FUN_141a01570(const CStringW& strMsg);                     // set the message text
+    void FUN_141a02810(CStringW strTag);                            // the clicked tag (OnClick)
+    const CString& FUN_141a02be0() const;                           // the sound event name
+    __int64 FUN_141a02c00() const;                                  // the item uid
+    int FUN_141a02c40() const;                                      // keep the box open after the result
+    int FUN_141a02c60() const;                                      // the storage slot
+    int FUN_141a02ca0() const;                                      // the box id
+    IMessageListener* FUN_141a02cc0() const;                        // the listener
+    const CStringW& FUN_141a02ce0() const;                          // the tag
+    const Delegate<bool(int, const CMsgBoxData&)>& FUN_141a02da0() const;  // the result callback
+    CString FUN_141a02dc0() const;                                  // the hyper link url
+    unsigned int FUN_141a02e90(int nIndex, unsigned int nDefault) const;    // the nIndex-th argument as an unsigned
+    __int64 FUN_141a02ed0(int nIndex, int nDefault) const;          // the nIndex-th argument as an __int64
+    __int64 FUN_141a02f10(int nIndex, __int64 nDefault) const;      // the nIndex-th argument as an __int64
+    bool FUN_141a03050() const;
+    bool FUN_141a03090() const;                                     // the enter key presses the default button
+    bool FUN_141a030b0() const;                                     // a type with a default button
+    bool FUN_141a03100() const;                                     // the escape key closes the box
+    void FUN_141a03130(UIMessageBox* pBox, int nSec);               // OnChangeTime
+    void FUN_141a03390(UIMessageBox* pBox);                         // OnPopupTimerComplete
+    void FUN_141a03470();                                           // before closing
+    static void FUN_141a04f80(MS2Ptr<ASDialog> spBox);              // remember the modaless box position
+    bool FUN_140961900(unsigned int nIndex, int& nOut) const;       // the nIndex-th argument (COMDATs outside the range)
+    bool FUN_140b19130(unsigned int nIndex, __int64& nOut) const;
+    bool FUN_140b76a70(unsigned int nIndex, CStringW& strOut) const;
+    bool FUN_140be25f0(unsigned int nIndex, int& nOut) const;
+    bool FUN_140e01c50(unsigned int nIndex, __int64& nOut) const;
+    // 0x141a00450 below: inline COMDAT, defined in uimessagebox.cpp
+    bool FUN_141a00450(unsigned int nIndex, int& nOut) const;
 
     void* m_18;                                                     // +0x18 0
     int m_nType;                                                    // +0x20
