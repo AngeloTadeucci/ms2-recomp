@@ -1,6 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The game's subclass of ecr::LightService.
 // MS2-UNIT: ?\ms2lightservice.cpp
-// MS2-RANGE: 0x1414bfc40-0x1414cf940 .text$mn
+// MS2-RANGE: 0x1414bfc40-0x1414cf920 .text$mn
 // MS2-RANGE: 0x1400f8d70-0x1400f8ee0 .text$di
 // MS2-PIN: ??_7MS2LightService@@6BISystemService@efd@@@ 0x142f213b0
 // MS2-PIN: ??_7MS2LightService@@6BIRenderServiceDelegate@ecr@@@ 0x142f21488
@@ -16,14 +16,12 @@
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_List_node@VEntityID@egf@@PEAX@std@@@std@@V?$_List_val@U?$_List_simple_types@VEntityID@egf@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1414c12d0 ; unique
 // MS2-PIN: ??$construct@PEAU?$_List_node@VEntityID@egf@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@VEntityID@egf@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@VEntityID@egf@@PEAX@std@@@1@QEAPEAU?$_List_node@VEntityID@egf@@PEAX@1@AEAPEAU31@@Z 0x1414c61a0 ; unique
 // MS2-PIN: ??0BaseObjectData@LightService@ecr@@QEAA@XZ 0x1414c7960 ; unique
-// MS2-PIN: ??1?$_List_alloc@U?$_List_base_types@VEntityID@egf@@V?$allocator@VEntityID@egf@@@std@@@std@@@std@@QEAA@XZ 0x1414c7cc0 ; unique
 // MS2-PIN: ?RegisterMessageFactory@?$MessageHandlerImpl@VMS2LightService@@VEntityChangeMessage@egf@@@efd@@UEAAXPEAV?$GenericFactory@V?$SmartPointer@VIMessage@efd@@@efd@@I@2@@Z 0x1414c98e0 ; unique
 // MS2-PIN: ?RegisterMessageFactory@?$MessageSubclassHandler@VMS2LightService@@VEntityChangeMessage@egf@@V23@@efd@@UEAAXPEAV?$GenericFactory@V?$SmartPointer@VIMessage@efd@@@efd@@I@2@@Z 0x1414c9920 ; unique
 // MS2-PIN: ?RegisterMessageFactory@?$MessageWrapperSubclassHandler@VMS2LightService@@VEntityChangeMessage@egf@@V23@$0CADO@@efd@@UEAAXPEAV?$GenericFactory@V?$SmartPointer@VIMessage@efd@@@efd@@I@2@@Z 0x1414c9980 ; unique
 // MS2-PIN: ?TypeCast@LightService@ecr@@UEBA_NIPEAPEBX@Z 0x1414c9c60 ; unique
 // MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@V?$SmartPointer@VEntity@egf@@@efd@@MU?$less@V?$SmartPointer@VEntity@egf@@@efd@@@std@@V?$CustomAllocator@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@M@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@M@std@@PEAX@2@@Z 0x1414cb9a0 ; prop
 // MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@PEAVLightData@LightService@ecr@@U?$less@VEntityID@egf@@@std@@V?$CustomAllocator@U?$pair@$$CBVEntityID@egf@@PEAVLightData@LightService@ecr@@@std@@@efd@@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@PEAVLightData@LightService@ecr@@@std@@PEAX@2@@Z 0x1414cb9d0 ; prop
-// MS2-PIN: ?allocate@?$allocator@U?$_List_node@VEntityID@egf@@PEAX@std@@@std@@QEAAPEAU?$_List_node@VEntityID@egf@@PEAX@2@_K@Z 0x1414cda80 ; unique
 // MS2-PINS-END tplpin
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2lightservice.h"
@@ -36,6 +34,7 @@
 #include <egf/StandardModelLibraryPropertyIDs.h>
 #include <ecr/SceneGraphService.h>
 #include <NiNode.h>
+#include <NiTPointerMap.h>
 #include <NiLight.h>
 #include <NiShadowManager.h>
 #include <NiShadowGenerator.h>
@@ -249,8 +248,12 @@ void MS2LightService::vfunc_0(int nMap)
     SetLightAddedCallback(QueueLight);
 }
 
+// MS2: the exe's NiDynamicEffect keeps its affected nodes in a NiTPointerMap<NiNode*, NiNode*> (key == value; the
+// GetFirstPos/GetNext/RemoveAll COMDATs 0x1414c9250/0x1414c92b0/0x1414c9a20 are NiTMapBase's), the SDK header has a
+// NiTPointerList at the same offset. View the member through the exe's type.
+typedef NiTPointerMap<NiNode*, NiNode*> AffectedNodeMap;
+
 // @0x1414c0120
-// MS2-FUNCTIONAL: the exe's NiDynamicEffect keeps its affected nodes in a hash map (engine NiTPointerMap helpers), the SDK has an NiTPointerList; same behavior
 void MS2LightService::vfunc_3(int nMap)
 {
     m_lightIntensity.clear();
@@ -272,18 +275,19 @@ void MS2LightService::vfunc_3(int nMap)
             pConfiguration->SetRebuildFrustums(true);
         }
 
-        NiNodeList& affectedNodeList = const_cast<NiNodeList&>(pLight->GetAffectedNodeList());
-        NiTListIterator kIter = affectedNodeList.GetHeadPos();
+        AffectedNodeMap& affectedNodeMap = (AffectedNodeMap&)pLight->GetAffectedNodeList();
+        NiTMapIterator kIter = affectedNodeMap.GetFirstPos();
         while (kIter)
         {
-            NiNode* pNode = affectedNodeList.GetNext(kIter);
+            NiNode* pNode = NULL;
+            affectedNodeMap.GetNext(kIter, pNode, pNode);
             if (pNode)
             {
                 pNode->DetachEffect(pLight);
                 pNode->UpdateEffects();
             }
         }
-        affectedNodeList.RemoveAll();
+        affectedNodeMap.RemoveAll();
 
         pLight->DetachAllAffectedNodes();
         pLight->DetachAllUnaffectedNodes();
@@ -368,7 +372,7 @@ void MS2LightService::UpdateLightShadow(egf::Entity* pEntity)
 
     int nNeeded = FUN_141376880(FUN_140ae1c00(), 5);
     bool bShadows = FUN_140ae1c10() >= nNeeded;
-    efd::map<egf::EntityID, bool>::iterator it = m_lightShadow.find(pEntity->GetEntityID());
+    std::map<egf::EntityID, bool>::iterator it = m_lightShadow.find(pEntity->GetEntityID());
     bool bKnown = it != m_lightShadow.end();
     if (bShadows)
     {

@@ -63,7 +63,7 @@ public:
     bool CreateQueuedLights();                                          // 0x1414c0d60
 
 public:
-    efd::map<egf::EntityID, bool> m_lightShadow;                        // +0x160 light entity -> its own "shadow" value
+    std::map<egf::EntityID, bool> m_lightShadow;                        // +0x160 light entity -> its own "shadow" value (std::allocator: exe max_size = SIZE_MAX / 0x30)
     efd::map<egf::EntityPtr, float> m_lightIntensity;                   // +0x170 light entity -> its base intensity
     bool m_bSortedRelight;                                              // +0x180 relight everything along the default axis
 };
