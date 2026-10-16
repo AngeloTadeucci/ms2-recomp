@@ -14,3 +14,7 @@ class UIPartySearchRegisterDialog : public UIModalDialog {
 MS2_CHECK_SIZE(UIChaosDPSDialog, 0x1a0);
 MS2_CHECK_SIZE(UIPartyDPSDialog, 0x1a0);
 MS2_CHECK_SIZE(UIPartySearchRegisterDialog, 0x228);
+class UIPartyDialog : public UIDialog {
+    unsigned char unrecovered[0x70];
+};
+MS2_CHECK_SIZE(UIPartyDialog, 0x1e8);

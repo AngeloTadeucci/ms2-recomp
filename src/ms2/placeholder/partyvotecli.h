@@ -6,7 +6,8 @@
 class CInPacket;
 class PartyVoteCli : public CPtred {
 public:
-    virtual ~PartyVoteCli();
+    PartyVoteCli();
+    virtual ~PartyVoteCli() = default;
     virtual void vfunc_1(CInPacket&);
     virtual void vfunc_2();
     virtual void vfunc_3();
@@ -15,6 +16,12 @@ public:
     virtual void vfunc_6(__int64);
     virtual void vfunc_7(__int64, bool);
     void FUN_140a894e0(__int64, bool);
+    int FUN_140a894c0() const;      // kind
+    size_t FUN_140a89560();         // yes count
+    size_t FUN_140a89590();         // no count
+    bool FUN_140a895c0();     // the local player already voted
+    void FUN_140a89680(bool);       // sends the vote (0x2c / 0x30)
+    CStringW FUN_140a89720() const; // remaining time text
     int id, kind;
     __int64 owner, expires;
     std::set<__int64> participants, yes, no;
