@@ -73,12 +73,17 @@
 // MS2-PIN: ?_Has_unused_capacity@?$vector@PEAUUnk_XmlElement@@V?$allocator@PEAUUnk_XmlElement@@@std@@@std@@AEBA_NXZ 0x14029bb70 ; unique
 // MS2-PIN: ?_Has_unused_capacity@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AEBA_NXZ 0x14029bbc0 ; unique
 // MS2-PIN: ?find@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA_KQEBD_K@Z 0x14029d350 ; unique
+// hand pins (w108)
+
+// MS2-PIN: ??0Unk_CommonVec2@@QEAA@XZ 0x140297240
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp"
 #include <afx.h>
 #include <winsock2.h>
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>
 #include <atltime.h>
+#include <atlfile.h>
+#include <stdarg.h>
 #include <time.h>
 #include <string>
 #include <vector>
@@ -93,8 +98,18 @@ int FUN_14028c3e0(const CString& strText, CAtlArray<CString>& arrOut, const char
 
 struct Unk_CommonVec3 { float x, y, z; };
 
+struct Unk_CommonVec2
+{
+    float x, y;
+    Unk_CommonVec2() { }                                        // 0x140297240
+    Unk_CommonVec2(float fX, float fY) : x(fX), y(fY) { }       // 0x140297200
+    Unk_CommonVec2 operator*(float fScale) const { return Unk_CommonVec2(x * fScale, y * fScale); }   // 0x140297e00
+};
+MS2_CHECK_SIZE(Unk_CommonVec2, 8);
+
 extern long g_lUniqueSeq;
 void FUN_1402929a0(const CStringW& strText, std::vector<int>& arrOut, const wchar_t* pszDelim);
+int FUN_140274f40(const CStringW& strText);                     // _wtoi
 bool FUN_14028d470(float fValue, float fTolerance);
 float FUN_14029d220(float fValue);                              // fabs
 float FUN_14029d430(float fValue, float fDivisor);              // fmod
@@ -103,6 +118,7 @@ float FUN_14029d430(float fValue, float fDivisor);              // fmod
 CString FUN_140188f50(const char* psz, int n);                  // CString from a C string
 CString FUN_14016a5c0(const char* psz, int n);
 long FUN_140298fd0(long* plValue);                              // interlocked increment
+float FUN_140768090();                                          // random float in [0, 1]
 __int64 FUN_140869440();                                        // current server time
 CString FUN_140298360(const char* pszPrefix, const CString& str);
 
@@ -292,6 +308,30 @@ CString FUN_14028bd10(int nAddr)
     kAddr.s_addr = nAddr;
     CString strAddr = FUN_140188f50(inet_ntoa(kAddr), 0);
     return strAddr;
+}
+
+// Resolves a host name and picks one of its addresses at random (empty when it does not resolve).
+// MS2-FUNCTIONAL: exe frame is 0x10 larger (stack slot order of the pick locals not recovered)
+// @0x14028bdb0
+CString FUN_14028bdb0(const CString& strHost)
+{
+    hostent* pHost = gethostbyname(FUN_14016a5c0(strHost, 0));
+    if (pHost == 0)
+        return "";
+    CAtlArray<CString> arrAddr;
+    int i = 0;
+    while (pHost->h_addr_list[i] != 0)
+    {
+        CString strAddr = FUN_140188f50(inet_ntoa(*(in_addr*)pHost->h_addr_list[i]), 0);
+        if (!strAddr.IsEmpty())
+            arrAddr.Add(strAddr);
+        i++;
+    }
+    if (FUN_140299100(arrAddr))
+        return "";
+    unsigned long long ullRand = rand();
+    unsigned long long ullCount = arrAddr.GetCount();
+    return arrAddr.GetAt((int)(ullRand % ullCount));
 }
 
 // ---- string splitting and parsing helpers ----
@@ -673,6 +713,17 @@ float FUN_14028d5b0(float fDegrees)
     return fDegrees;
 }
 
+// A random direction (uniform angle) scaled by fScale.
+// @0x14028d630
+Unk_CommonVec2 FUN_14028d630(float fScale)
+{
+    float fAngle = FUN_140768090() * 360.0f;
+    Unk_CommonVec2 kDir;
+    kDir.x = cos(fAngle * 3.1415927f / 180.0f);
+    kDir.y = sin(fAngle * 3.1415927f / 180.0f);
+    return kDir * fScale;
+}
+
 // Appends the first nCount (or nLen when nCount is 0) bytes as upper-case hex.
 // MS2-FUNCTIONAL: bool/branch lowering and stack slots differ from the exe
 // @0x14028d6d0
@@ -971,6 +1022,20 @@ IDistanceCalculator* FUN_14028e960(int nType)
         return 0;
 }
 
+bool FUN_14028f650(Unk_XmlElement* pElem);
+
+// Collects every sibling element of the given name that passes the feature filter.
+// @0x14028f5d0
+void FUN_14028f5d0(Unk_XmlElement* pParent, const char* pszChild, std::vector<Unk_XmlElement*>& arrOut)
+{
+    for (Unk_XmlElement* pElem = FUN_140165cf0(pParent, pszChild); pElem != 0; pElem = FUN_140168650(pElem, pszChild))
+    {
+        if (!FUN_14028f650(pElem))
+            continue;
+        arrOut.push_back(pElem);
+    }
+}
+
 // True when the element's "feature" attribute is empty or enabled.
 // @0x14028f650
 bool FUN_14028f650(Unk_XmlElement* pElem)
@@ -1043,7 +1108,44 @@ void FUN_14028c0b0()
     PostQuitMessage(0);
 }
 
-CStringW FUN_140292b10(int nId, const int* pHour, const int* pMin, const CStringW& strArg);   // formats string id nId with hour/minute
+CStringW FormatStringId(int nId, const fmt::ArgList& args);     // 0x14028dee0
+FMT_VARIADIC_W(CStringW, FormatStringId, int)
+
+// Appends a timestamped line to .\\log\\<name>_<date>.txt (the per-name file name is cached in a local map).
+// @0x14028ea70
+void FUN_14028ea70(const char* pszName, const char* pszFormat, ...)
+{
+    CRBMap<CString, CString, CStringElementTraits<CString> > mapFile(10);
+    CString strName(pszName);
+    CString strMsg;
+    va_list args;
+    va_start(args, pszFormat);
+    strMsg.FormatV(pszFormat, args);
+    va_end(args);
+    SYSTEMTIME kTime;
+    GetLocalTime(&kTime);
+    CString strLine;
+    strLine.Format("[%02d:%02d:%02d.%03d]", kTime.wHour, kTime.wMinute, kTime.wSecond, kTime.wMilliseconds);
+    strLine += strMsg;
+    strLine += "\r\n";
+    CString strFile("");
+    mapFile.Lookup(strName, strFile);
+    if (strFile.IsEmpty() == true)
+    {
+        strFile.Format("%s_%04d%02d%02d.txt", pszName, kTime.wYear, kTime.wMonth, kTime.wDay);
+        CString strDir(".\\log");
+        char szFull[260];
+        _fullpath(szFull, FUN_14016a5c0(strDir, 0), 260);
+        CreateDirectoryA(szFull, 0);
+        mapFile.SetAt(strName, strFile);
+    }
+    ATL::CAtlFile file;
+    file.Create(".\\log\\" + strFile, GENERIC_WRITE, 3, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, 0, 0);
+    file.Seek(0, FILE_END);
+    ATL::CStringT<char, ATL::StrTraitATL<char, ATL::ChTraitsCRT<char> > > strWrite(strLine);
+    file.Write(strWrite.GetString(), strWrite.GetLength(), (DWORD*)0);
+    file.Close();
+}
 
 // Wraps the text with the current-time prefix when flag 8 is set and the time converts.
 // @0x14028ee20
@@ -1054,7 +1156,7 @@ CStringW FUN_14028ee20(unsigned int nFlags, CStringW strText)
         __time64_t tNow = FUN_140869440();
         tm* pTm = FUN_14028b820(&tNow);
         if (pTm)
-            return FUN_140292b10(0xa9, &pTm->tm_hour, &pTm->tm_min, strText);
+            return FormatStringId(0xa9, pTm->tm_hour, pTm->tm_min, strText);
     }
     return strText;
 }
@@ -1306,7 +1408,7 @@ bool FUN_140291340(int nTab, std::string& strOut)
     return strOut.size() != 0;
 }
 
-unsigned char FUN_140292820(const std::string& strLeft, const char* pszRight);   // string equals
+bool FUN_140292820(const std::string& strLeft, const char* pszRight);   // string equals
 ATL::CTime FUN_1406c47a0(__int64 nTime);                                // CTime from a time_t
 ATL::CTime FUN_1406c47d0(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec);
 __int64 FUN_140282020(const ATL::CTime& time);                          // time_t of a CTime
@@ -1497,6 +1599,24 @@ void FUN_140291e40(CStringW strUnused, char cUnused, void* pUnused)
 {
 }
 
+// @0x140291e70
+unsigned long FUN_140291e70(CString strAddr)
+{
+    return inet_addr(FUN_14016a5c0(strAddr, 0));
+}
+
+// @0x140291f00
+CString FUN_140291f00(int nId)
+{
+    return CString(FUN_14028dc80(nId));
+}
+
+// @0x140291f40
+CString FUN_140291f40(int nId, const fmt::ArgList& args)
+{
+    return CString(FUN_14028dd20(nId, args));
+}
+
 // Text before ('/' first token) or after the first '/' of the token.
 // MS2-FUNCTIONAL: not yet byte-matched
 // @0x140291f90
@@ -1543,11 +1663,44 @@ float EaseInCalculator::Calc(float fTime, float fDuration, float fDistance)
     return fDistance * (1.0f - sqrtf(FUN_14029d220(1.0f - powf(fTime / fDuration, 2.0f))));
 }
 
+// @0x140292820
+bool FUN_140292820(const std::string& strText, const char* pszText)
+{
+    return strText == pszText;
+}
+
 // Wide text as a float.
 // @0x1402928b0
 float FUN_1402928b0(const CStringW& strText)
 {
     return (float)_wtof((const wchar_t*)strText);
+}
+
+// Splits on the delimiter characters and appends each token as a float.
+// @0x1402928e0
+void FUN_1402928e0(const CStringW& strText, CAtlArray<float>& arrOut, const wchar_t* pszDelim)
+{
+    int nStart = 0;
+    CStringW strToken = strText.Tokenize(pszDelim, nStart);
+    while (!strToken.IsEmpty())
+    {
+        arrOut.Add(FUN_1402928b0(strToken));
+        strToken = strText.Tokenize(pszDelim, nStart);
+    }
+}
+
+// Same, as ints.
+// @0x1402929a0
+void FUN_1402929a0(const CStringW& strText, std::vector<int>& arrOut, const wchar_t* pszDelim)
+{
+    int nStart = 0;
+    CStringW strToken = strText.Tokenize(pszDelim, nStart);
+    while (!strToken.IsEmpty())
+    {
+        int nValue = FUN_140274f40(strToken);
+        arrOut.push_back(nValue);
+        strToken = strText.Tokenize(pszDelim, nStart);
+    }
 }
 
 // Icon name of a currency/token kind (kind 2 is the item-id icon).
