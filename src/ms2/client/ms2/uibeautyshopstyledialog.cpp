@@ -172,7 +172,7 @@ class Unk_BSPriceRow : public CPtred
 public:
     int m_id;                                   // +0x18 item id
     char m_pad_1c[0x24 - 0x1c];
-    short m_level;                              // +0x24 required level
+    unsigned short m_level;                     // +0x24 required level
     int m_achieve;                              // +0x28 achieve required
     int m_grade;                                // +0x2c grade of that achieve
 };

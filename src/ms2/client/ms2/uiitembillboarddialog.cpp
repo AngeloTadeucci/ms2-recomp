@@ -8,7 +8,7 @@
 // MS2-PIN: ??$?8PEAVUIItemBillBoardDialog@@P80@EAAXAEAVCInPacket@@@Z@std@@YA_NAEBU?$pair@PEAVUIItemBillBoardDialog@@P81@EAAXAEAVCInPacket@@@Z@0@0@Z 0x140c343e0 ; prop
 // MS2-PIN: ??$?8PEAVUIItemBillBoardDialog@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVUIItemBillBoardDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x140c34450 ; prop
 // MS2-PIN: ??$?8PEAVUIItemBillBoardDialog@@P80@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA_NAEBU?$pair@PEAVUIItemBillBoardDialog@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@0@Z 0x140c344c0 ; prop
-// MS2-PIN: ??$FormatStringId@FV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HAEBFAEBV01@@Z 0x140c348b0 ; unique
+// MS2-PIN: ??$FormatStringId@GV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HAEBGAEBV01@@Z 0x140c348b0 ; unique
 // MS2-PIN: ??$FUN_14028dfa0@HHHHH_J@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBH1111AEB_J@Z 0x140c34bc0 ; unique
 // MS2-PIN: ??$forward@AEBQ8UIItemBillBoardDialog@@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YAAEBQ8UIItemBillBoardDialog@@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@ZAEBQ81@EAAX0@Z@Z 0x140c35030 ; unique
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVUIItemBillBoardDialog@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z 0x140c35150 ; unique

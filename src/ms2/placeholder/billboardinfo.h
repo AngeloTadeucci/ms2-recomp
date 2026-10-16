@@ -18,7 +18,7 @@ public:
     void Clear();
     __int64 owner,firstId,secondId;
     CStringW firstName,secondName;
-    short type;
+    unsigned short type;
     int value,localValue;
     CStringW title,text;
     bool enabled;
