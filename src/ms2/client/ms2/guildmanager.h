@@ -104,11 +104,12 @@ public:
     CStringW FUN_1413c7c20();
     bool FUN_1413c7cb0(int result, const CMsgBoxData& box);
     void FUN_1413c7900(CInPacket& packet);
-    void FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out);
-    MS2Ptr<CSearchGuildJoin> FUN_1413c7dc0(const CStringW& guildName);
+    void FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out) const;
+    MS2Ptr<CSearchGuildJoin> FUN_1413c7dc0(const CStringW& guildName) const;
     void FUN_1413c7ed0();
-    void FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>>& out);
-    void FUN_1413c7f80(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>>& out);
+    void FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>>& out) const;
+    void FUN_1413c7f80(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>>& out) const;
+    MS2Ptr<CGuildJoinRequestForChar> FUN_1413c8000(__int64 guildId) const;
 
     // packet handlers dispatched by FUN_1413b6370 (exe order)
     void FUN_1413bd680(CInPacket& packet);

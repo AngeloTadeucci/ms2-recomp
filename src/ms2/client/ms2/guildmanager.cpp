@@ -3252,7 +3252,7 @@ void CGuildManager::FUN_1413c7900(CInPacket& packet)
 MS2_REPLACE_METHOD(0x1413C7900, CGuildManager, FUN_1413c7900, 404, 0x35152723);
 
 // @0x1413c7d40
-void CGuildManager::FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out)
+void CGuildManager::FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out) const
 {
     for (size_t i = 0; i < m_searchResults.GetCount(); i++)
         out.Add(m_searchResults[i]);
@@ -3261,10 +3261,10 @@ MS2_REPLACE_METHOD(0x1413C7D40, CGuildManager, FUN_1413c7d40, 108, 0x1219FE27);
 
 // A search result by guild name.
 // @0x1413c7dc0
-MS2Ptr<CSearchGuildJoin> CGuildManager::FUN_1413c7dc0(const CStringW& guildName)
+MS2Ptr<CSearchGuildJoin> CGuildManager::FUN_1413c7dc0(const CStringW& guildName) const
 {
     for (size_t i = 0; i < m_searchResults.GetCount(); i++) {
-        MS2Ptr<CSearchGuildJoin> result = m_searchResults[i];
+        MS2Ptr<CSearchGuildJoin> result = m_searchResults.GetAt(i);
         if (FUN_14025cd60(result->f58, guildName))
             return result;
     }
@@ -3280,7 +3280,7 @@ void CGuildManager::FUN_1413c7ed0()
 MS2_REPLACE_METHOD(0x1413C7ED0, CGuildManager, FUN_1413c7ed0, 33, 0x97C69940);
 
 // @0x1413c7f00
-void CGuildManager::FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>>& out)
+void CGuildManager::FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>>& out) const
 {
     for (size_t i = 0; i < m_joinRequestsForChar.GetCount(); i++)
         out.Add(m_joinRequestsForChar[i]);
@@ -3288,7 +3288,7 @@ void CGuildManager::FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar
 MS2_REPLACE_METHOD(0x1413C7F00, CGuildManager, FUN_1413c7f00, 108, 0xB8FF205B);
 
 // @0x1413c7f80
-void CGuildManager::FUN_1413c7f80(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>>& out)
+void CGuildManager::FUN_1413c7f80(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>>& out) const
 {
     for (size_t i = 0; i < m_joinRequestsForGuild.GetCount(); i++)
         out.Add(m_joinRequestsForGuild[i]);
@@ -3437,6 +3437,19 @@ void CGuildManager::FUN_1413c66f0(int kind, int code, int arg)
     FUN_1412751f0(text, 1, 1);
 }
 MS2_REPLACE_METHOD(0x1413C66F0, CGuildManager, FUN_1413c66f0, 3906, 0x24209A69);
+
+// This character's join request to a guild.
+// @0x1413c8000
+MS2Ptr<CGuildJoinRequestForChar> CGuildManager::FUN_1413c8000(__int64 guildId) const
+{
+    for (size_t i = 0; i < m_joinRequestsForChar.GetCount(); i++) {
+        MS2Ptr<CGuildJoinRequestForChar> request = m_joinRequestsForChar[i];
+        if (request.get() && request->f20 == guildId)
+            return request;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1413C8000, CGuildManager, FUN_1413c8000, 255, 0x48CD7B49);
 
 // The vs-game entry prompt's result: enter on the first button.
 // @0x1413c7cb0
