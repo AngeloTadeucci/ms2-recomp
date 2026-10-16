@@ -1,7 +1,18 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). Chat / name text filter (CBanTextChecker) and CommonString.
 // MS2-UNIT: commonfiles\commonstringtable.cpp
 // MS2-RANGE: 0x140223c60-0x140266860 .text$mn
+// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x14025d8e0
+// MS2-PIN: ?_Allocate@_Default_allocate_traits@std@@SAPEAX_K@Z 0x14025c810
+// MS2-PIN: ?__empty_global_delete@@YAXPEAX@Z 0x1402272b0
+// MS2-PIN: ?__empty_global_delete@@YAXPEAX_K@Z 0x140266770
+// MS2-PIN: ?_Adopt@_Iterator_base0@std@@QEAAXPEBX@Z 0x140266670
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@1@@Z 0x14025be00
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@std@@@1@@Z 0x14025be40
+// MS2-PIN: memmove_s 0x140266500
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??_7CBanTextChecker@@6B?$CValidData@VCBanTextChecker@@@@@ 0x142d129b8
+// MS2-PIN: ??_7CommonString@@6B?$TSingleton@VCommonString@@@@@ 0x142d129f8
+// MS2-PIN: ??_7CommonString@@6B?$CValidData@VCommonString@@@@@ 0x142d12a08
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14025a4b0 ; unique
 // MS2-PIN: ??$_Buynode@AEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$less@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@1@AEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z 0x14025a820 ; unique
 // MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@std@@@std@@@?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@std@@@1@PEAU01@@Z 0x14025a940 ; unique
@@ -62,6 +73,9 @@
 #include <typeinfo>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+
+// The exe binds a temporary to a non-const reference (MSVC extension); clang-cl needs the cast.
+#define AS_LVALUE(T, expr) const_cast<T&>(static_cast<const T&>(expr))
 
 CStringW FUN_14028de60(EBanStringId nStringId);
 bool FUN_14028f710(Unk_140165cf0* pNode);   // node is enabled for this client
@@ -824,7 +838,7 @@ int CBanTextChecker::FUN_140225c90(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c1));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c2));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140225de0
@@ -835,7 +849,7 @@ int CBanTextChecker::FUN_140225de0(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140225f70
@@ -846,7 +860,7 @@ int CBanTextChecker::FUN_140225f70(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8bb));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8bc));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140226440
@@ -857,7 +871,7 @@ int CBanTextChecker::FUN_140226440(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c1));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c2));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140226590
@@ -868,7 +882,7 @@ int CBanTextChecker::FUN_140226590(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x1402266e0
@@ -879,7 +893,7 @@ int CBanTextChecker::FUN_1402266e0(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140226830
@@ -890,7 +904,7 @@ int CBanTextChecker::FUN_140226830(const CStringW& str, CStringW& message)
         pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
         pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
     }
-    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(pkg, 0xd8, true)), message);
 }
 
 // @0x140225f30
@@ -982,7 +996,7 @@ int CBanTextChecker::CheckTextWithLimit(const CStringW& str, CheckerOption& opt,
 // @0x140228080
 int CBanTextChecker::CheckTypes(const CStringW& str, unsigned nTypes, bool bFlag, CStringW& message)
 {
-    return CheckTextOption(str, CheckerOption(nTypes, bFlag), message);
+    return CheckTextOption(str, AS_LVALUE(CheckerOption, CheckerOption(nTypes, bFlag)), message);
 }
 
 // @0x14025a640
@@ -1004,6 +1018,7 @@ void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* 
 }
 
 // @0x1402272c0
+// MS2-FUNCTIONAL: CAtlArray<CStringW>::operator[] resolves to this unit's copy (0x14025e580); the exe calls an identical copy at 0x140159a00
 int CBanTextChecker::LoadWords(CString strPath, TextFilterUnit* pTrie)
 {
     TiXmlDocument doc;
@@ -1388,6 +1403,92 @@ MS2Ptr<CBanTextChecker> CommonString::GetChecker()
     }
 }
 
+// @0x14025ed00
+unsigned FUN_14025ed00(const wchar_t* psz)
+{
+    ATLENSURE(psz != NULL);
+    ULONG nHash = 0;
+    const wchar_t* pch = psz;
+    while (*pch != 0)
+    {
+        nHash = (nHash << 5) + nHash + (*pch);
+        pch++;
+    }
+    return nHash;
+}
+
+struct Unk_Vec4
+{
+    float m_x;
+    float m_y;
+    float m_z;
+    float m_w;
+    Unk_Vec4();
+};
+
+struct Unk_Vec3
+{
+    float m_x;
+    float m_y;
+    float m_z;
+    bool operator!=(const Unk_Vec3& other) const;
+};
+
+struct Unk_Vec7
+{
+    float m_a;
+    float m_b;
+    float m_c;
+    float m_d;
+    float m_e;
+    float m_f;
+    float m_g;
+    Unk_Vec7();
+    bool operator!=(const Unk_Vec7& other) const;
+};
+
+// @0x140266620
+Unk_Vec4::Unk_Vec4() : m_x(0), m_y(0), m_z(0), m_w(0)
+{
+}
+
+// @0x140266690
+bool Unk_Vec3::operator!=(const Unk_Vec3& other) const
+{
+    if (m_x != other.m_x)
+        return true;
+    if (m_y != other.m_y)
+        return true;
+    if (m_z != other.m_z)
+        return true;
+    return false;
+}
+
+// @0x1402666f0
+Unk_Vec7::Unk_Vec7() : m_a(0), m_b(0), m_c(200.0f), m_d(50.0f), m_e(0), m_f(0), m_g(0)
+{
+}
+
+// @0x140266790
+bool Unk_Vec7::operator!=(const Unk_Vec7& other) const
+{
+    if (m_a != other.m_a)
+        return true;
+    if (m_b != other.m_b)
+        return true;
+    if (m_c != other.m_c)
+        return true;
+    if (m_d != other.m_d)
+        return true;
+    if (m_e != other.m_e)
+        return true;
+    if (m_f != other.m_f)
+        return true;
+    if (m_g != other.m_g)
+        return true;
+    return false;
+}
+
 // @0x14025e7a0
 Unk_AltStringMgr* FUN_14025e7a0()
 {
@@ -1425,11 +1526,6 @@ bool FUN_14025fab0(CStringW& str)
         return false;
     }
     return true;
-}
-
-// @0x1402272b0
-static void FUN_1402272b0()
-{
 }
 
 template <class T, size_t N> size_t CountOf(T (&)[N])
@@ -5051,3 +5147,64 @@ void CommonString::SetInit(bool bInit)
 {
     s_bInit = bInit;
 }
+
+
+// ---- hooks (byte-exact members that do not read the unit's mutable statics) ----
+MS2_REPLACE_METHOD(0x140223DC0, TextFilterUnit, GetChar, 15, 0x5AC51DCC);
+MS2_REPLACE_METHOD(0x140223FE0, TextFilterUnit, Find, 384, 0x77FB699A);
+MS2_REPLACE_METHOD(0x140224170, TextFilterUnit, Clear, 31, 0x14AA08D7);
+MS2_REPLACE_METHOD(0x1402241A0, TextFilterUnit, GetChildCount, 31, 0x597A3807);
+MS2_REPLACE_METHOD(0x1402241D0, TextFilterUnit, Match, 349, 0xCFDAE958);
+MS2_REPLACE_METHOD(0x140224340, TextFilterUnit, IsTagStart, 49, 0xF8F833AF);
+MS2_REPLACE_METHOD(0x140224380, TextFilterUnit, SkipTag, 166, 0x9398CF96);
+MS2_REPLACE_METHOD(0x140229220, CBanTextChecker, FUN_140229220, 6, 0xA9AF6E37);
+MS2_REPLACE_METHOD(0x140227890, CBanTextChecker, ClearTries, 145, 0x9B3C9039);
+MS2_REPLACE_METHOD(0x140224F80, CBanTextChecker, HasStartWithWords, 78, 0x43438119);
+MS2_REPLACE_METHOD(0x140224FE0, CBanTextChecker, IsAlnumName, 305, 0x9686387E);
+MS2_REPLACE_METHOD(0x140225120, CBanTextChecker, FUN_140225120, 224, 0xFCE38FF3);
+MS2_REPLACE_METHOD(0x140225210, CBanTextChecker, FUN_140225210, 216, 0xE33FE7DC);
+MS2_REPLACE_METHOD(0x1402252F0, CBanTextChecker, FUN_1402252f0, 176, 0x88FCA6B1);
+MS2_REPLACE_METHOD(0x1402253B0, CBanTextChecker, FUN_1402253b0, 173, 0x09FEAF57);
+MS2_REPLACE_METHOD(0x140225470, CBanTextChecker, FUN_140225470, 216, 0xE1731069);
+MS2_REPLACE_METHOD(0x140225550, CBanTextChecker, FUN_140225550, 216, 0x29173518);
+MS2_REPLACE_METHOD(0x140225630, CBanTextChecker, FUN_140225630, 224, 0x4D5BA48F);
+MS2_REPLACE_METHOD(0x140225720, CBanTextChecker, FUN_140225720, 224, 0x2840BD6F);
+MS2_REPLACE_METHOD(0x140225810, CBanTextChecker, FUN_140225810, 211, 0x36F09730);
+MS2_REPLACE_METHOD(0x1402258F0, CBanTextChecker, FUN_1402258f0, 176, 0x8AC2EC42);
+MS2_REPLACE_METHOD(0x1402259B0, CBanTextChecker, FUN_1402259b0, 176, 0xC7A7B0EF);
+MS2_REPLACE_METHOD(0x140225A70, CBanTextChecker, FUN_140225a70, 533, 0x4789474A);
+MS2_REPLACE_METHOD(0x140225C90, CBanTextChecker, FUN_140225c90, 322, 0x5177F359);
+MS2_REPLACE_METHOD(0x140225DE0, CBanTextChecker, FUN_140225de0, 322, 0x416B8E3D);
+MS2_REPLACE_METHOD(0x140225F70, CBanTextChecker, FUN_140225f70, 322, 0x1BB88BF2);
+MS2_REPLACE_METHOD(0x140226440, CBanTextChecker, FUN_140226440, 322, 0xFE4EB06B);
+MS2_REPLACE_METHOD(0x140226590, CBanTextChecker, FUN_140226590, 322, 0x92FA53AE);
+MS2_REPLACE_METHOD(0x1402266E0, CBanTextChecker, FUN_1402266e0, 322, 0x659E94EA);
+MS2_REPLACE_METHOD(0x140226830, CBanTextChecker, FUN_140226830, 322, 0x83ADDA52);
+MS2_REPLACE_METHOD(0x140225F30, CBanTextChecker, FUN_140225f30, 58, 0xAF657D4B);
+MS2_REPLACE_METHOD(0x1402260C0, CBanTextChecker, FUN_1402260c0, 58, 0xBB338219);
+MS2_REPLACE_METHOD(0x1402261E0, CBanTextChecker, FUN_1402261e0, 58, 0xD69737A8);
+MS2_REPLACE_METHOD(0x140226220, CBanTextChecker, FUN_140226220, 58, 0x63305908);
+MS2_REPLACE_METHOD(0x140226260, CBanTextChecker, FUN_140226260, 58, 0x75DD8167);
+MS2_REPLACE_METHOD(0x1402262A0, CBanTextChecker, FUN_1402262a0, 58, 0xA084B6AF);
+MS2_REPLACE_METHOD(0x1402262E0, CBanTextChecker, FUN_1402262e0, 58, 0x2D31E9E7);
+MS2_REPLACE_METHOD(0x140226400, CBanTextChecker, FUN_140226400, 58, 0xA1F0E4A6);
+MS2_REPLACE_METHOD(0x140226100, CBanTextChecker, FUN_140226100, 90, 0x0415F78B);
+MS2_REPLACE_METHOD(0x140226160, CBanTextChecker, FUN_140226160, 111, 0x679211E4);
+MS2_REPLACE_METHOD(0x140226320, CBanTextChecker, FUN_140226320, 204, 0x7A9039D6);
+MS2_REPLACE_METHOD(0x140227FB0, CBanTextChecker, CheckTextWithLimit, 201, 0x12BA3C46);
+MS2_REPLACE_METHOD(0x140228080, CBanTextChecker, CheckTypes, 125, 0xBCBD8433);
+MS2_REPLACE_METHOD(0x1402271A0, CBanTextChecker, SetBanWords, 215, 0x174E9D70);
+MS2_REPLACE_METHOD(0x140227280, CBanTextChecker, RemoveBanWords, 41, 0xDEB9B3F6);
+MS2_REPLACE_METHOD(0x140228740, CBanTextChecker, BuildUrlHashes, 308, 0xD24ECED3);
+MS2_REPLACE_METHOD(0x140228880, CBanTextChecker, ReplaceUrlsWithHashes, 222, 0xAF1E4F1C);
+MS2_REPLACE_METHOD(0x140228970, CBanTextChecker, ReplaceHashesWithUrls, 222, 0x9417CD7A);
+MS2_REPLACE_METHOD(0x140226980, CBanTextChecker, MaskBannedWords, 385, 0xC7374C85);
+MS2_REPLACE_METHOD(0x1402295B0, CommonString, GetNarrowDefault, 68, 0x66E9412D);
+MS2_REPLACE_METHOD(0x140229600, CommonString, GetNarrow, 130, 0x6A0BF3EA);
+MS2_REPLACE_METHOD(0x140229690, CommonString, GetNarrowByKey, 187, 0x89D93563);
+MS2_REPLACE_METHOD(0x140229940, CommonString, FUN_140229940, 71, 0x8E6E398A);
+MS2_REPLACE_METHOD(0x140229A50, CommonString, GetChecker, 105, 0xDA7A8C8F);
+MS2_REPLACE_METHOD(0x140259340, CommonString, LoadCommon, 752, 0xAFDA9937);
+MS2_REPLACE_METHOD(0x140259640, CommonString, LoadDebug, 699, 0x7F19123D);
+MS2_REPLACE_METHOD(0x140259910, CommonString, FUN_140259910, 11, 0x30025ED0);
+MS2_REPLACE_METHOD(0x140259E60, CommonString, LoadStrings, 364, 0xBDFDA64C);
