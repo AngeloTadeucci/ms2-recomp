@@ -1625,3 +1625,7 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ?g_ltaTable@@3VUnk_LtaTable@@A	143ab2fc0	data
 ??0ASDataProvider@@QEAA@H@Z	140bbf7b0	func
 ??1ASDataProvider@@UEAA@XZ	140bc0740	func
+?IsNull@Unk_MentorInstPtr@@QEBA_NXZ	1407475b0	func
+??0Unk_HmImageHttp@@QEAA@XZ	140511030	func
+??1Unk_HmImageHttp@@QEAA@XZ	1405110d0	func
+??1Unk_EnchantItemPtr@@QEAA@XZ	1401b50d0	func
