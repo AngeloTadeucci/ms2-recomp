@@ -5,7 +5,7 @@
 // int at +0x48. The size is load-bearing: /Od orders the frame slots by size and use count, so a 0x50 ASData swaps the
 // slots of the by-value MS2Ptr copies in the dialogs' vfunc_28 (RECOVERY.md section 8, "Frame slots in the wrong order").
 //
-// ASArgList: the argument list of AScript::Invoke (a PodArray<Value>, 32 bytes; ctor 0x1409b1e80, dtor 0x1409b1f20).
+// ASArgList: the argument list of AScript::Invoke (a std::vector-like first/last/end triple of GFx values, 0x18 bytes; ctor 0x1409b1e80, dtor 0x1409b1f20).
 //
 // Declared: the union of the FUN_ methods the units use. Units must include this header instead of redefining the classes.
 #pragma once
@@ -46,6 +46,6 @@ public:
     Scaleform::GFx::Value* FUN_1409b1f70(int nIndex);                    // operator[]
 
 private:
-    void* m_pad_00; void* m_pad_08; void* m_pad_10; void* m_pad_18;
+    void* m_pad_00; void* m_pad_08; void* m_pad_10;
 };
-MS2_CHECK_SIZE(ASArgList, 0x20);
+MS2_CHECK_SIZE(ASArgList, 0x18);
