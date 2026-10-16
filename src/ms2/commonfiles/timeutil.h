@@ -11,6 +11,7 @@
 class Unk_ServerClock {
 public:
     __int64 FUN_141473640();
+    __int64 FUN_1414732f0(int nMode);                               // 0x1414732f0 the clock in ms (mode: the actor's time mode)
     static Unk_ServerClock* GetInstance() { return s_instance; }   // 0x14086d260
     static Unk_ServerClock* s_instance;                            // 0x143ab1fa8
 };

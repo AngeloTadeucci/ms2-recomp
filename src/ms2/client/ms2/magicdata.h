@@ -98,6 +98,8 @@ struct Unk_MagicTagPtr {
     ~Unk_MagicTagPtr();                                             // 0x1410a6d40
     Unk_MagicTagPtr& operator=(const Unk_MagicTagPtr&);             // 0x141235040
     Unk_MagicTag* operator->() const;                               // 0x141235260
+    Unk_MagicTagPtr(Unk_MagicTag* p);                               // 0x1410a6b10 (scenestategame 0x3d)
+    Unk_MagicTag* get() const;                                      // 0x1410a7150 (scenestategame 0x3d)
     void* m_pad;
     Unk_MagicTag* m_p;
 };

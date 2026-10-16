@@ -57,6 +57,9 @@
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
 // MS2-PIN: ??_GNotifyChangeMyJob@@UEAAPEAXI@Z 0x141747850 ; w125 manual
 // MS2-PIN: ??1NotifyChangeMyJob@@UEAA@XZ 0x141746bc0 ; w125 manual
+// MS2-PIN: ??1Unk_MagicTag@@UEAA@XZ 0x141746cb0 ; w125 manual (RTTI SkillTargetRecord)
+// MS2-PIN: ??_7Unk_MagicTag@@6B@ 0x142f5faf8 ; w125 manual (RTTI SkillTargetRecord)
+// MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@AEBV0@@Z 0x141746e70 ; w125 manual (this obj's copy; mypc has 0x141532e00)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -118,6 +121,8 @@
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/commonfiles/rideonaction.h"
 #include "ms2/placeholder/cproxygameobject.h"
+#include "magicdata.h"                    // CMagicModel, Unk_MagicTagPtr (0x3d mode 0)
+#include "ms2/commonfiles/timeutil.h"     // Unk_ServerClock
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
 // MS2Ptr<CProxyGameObject>::operator-> / get are the exe's out-of-range copies (0x1406c71d0 / 0x1406c71b0); left
 // undefined here so they are not paired with the unit's in-range look-alikes.
@@ -656,8 +661,19 @@ class Unk_SSGStBody { public: void FUN_141240730(); Unk_SSGHitReport* FUN_141240
 Unk_SSGStBody* FUN_14166d220(PCBase* pActor);
 
 // 0x3f..0x5a: npc / actor state packets
-class Unk_PCBaseComp_b18 : public CPtred { public: char m_pad[0x28 - sizeof(CPtred)]; __int64 m_nSkillUid; };   // the casting skill
+class Unk_PCBaseComp_b18 : public CPtred   // the casting skill
+{
+public:
+    char m_pad[0x28 - sizeof(CPtred)];
+    __int64 m_nSkillUid;                                    // +0x28
+    char m_pad_30[0xa0 - 0x30];
+    int m_nA0;                                              // +0xa0 nonzero: the cast is finished (no new projectiles)
+    char m_pad_a4[0x108 - 0xa4];
+    ATL::CAtlList<Unk_SocketPtr<CMagicModel> > m_listModels;   // +0x108 the projectiles started by this cast
+};
 MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_nSkillUid, 0x28);
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_nA0, 0xa0);
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_listModels, 0x108);
 class NotifyRemoveNpc : public NotifyObject
 {
 public:
@@ -4005,6 +4021,136 @@ void CSceneStateGame::FUN_14171c0b0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171c0b0, CSceneStateGame, FUN_14171c0b0, 237, 0x1D3E61F8);
+
+// ---- 0x3d mode 0: a skill cast's projectiles (the cast record chain, one CMagicModel per record) ----
+// The cast record (RTTI SkillTargetRecord, new(0xd8); ?\skillrecord.cpp owns its members). magicdata.h hands it out
+// through the 16 byte Unk_MagicTagPtr handle, so it keeps that name here.
+class Unk_SSGSkillLevel : public CPtred { };                // the skill level row behind the record's +0x48 handle
+struct Unk_MagicTag : public CPtred
+{
+    Unk_MagicTag();
+    virtual ~Unk_MagicTag() = default;                              // 0x141746cb0 (pinned)
+    bool FUN_141758d70(unsigned long long nTagId, unsigned long long nTagSub, int nOwnerId, int nCasterId, int nSkillId,
+        short nLevel, int nSrcLevel, Unk_StreamPoint ptDir, int n80, int n84, int nSrcIndex, int n8c);   // 0x141758d70 fill in
+
+    unsigned long long m_nTagId;                                    // +0x18
+    unsigned long long m_nTagSub;                                   // +0x20
+    int m_nCasterId;                                                // +0x28
+    int m_nOwnerId;                                                 // +0x2c
+    int m_nTimeMode;                                                // +0x30
+    MS2Ptr<Unk_SSGSkillRow> m_spSkill;                              // +0x38
+    MS2Ptr<Unk_SSGSkillLevel> m_spLevel;                            // +0x48
+    int m_nSrcLevel;                                                // +0x58
+    int m_nSrcIndex;                                                // +0x5c
+    Unk_StreamPoint m_ptDir;                                        // +0x60
+    Unk_MagicTagPtr m_spLinked;                                     // +0x70 the cast this one continues into
+    int m_n80;                                                      // +0x80
+    int m_n84;                                                      // +0x84
+    int m_nStartTick;                                               // +0x88
+    int m_n8c;                                                      // +0x8c
+    ATL::CAtlMap<__int64, int> m_mapHit;                            // +0x90
+};
+MS2_CHECK_OFFSET(Unk_MagicTag, m_spSkill, 0x38);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_spLinked, 0x70);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_mapHit, 0x90);
+MS2_CHECK_SIZE(Unk_MagicTag, 0xd8);
+
+// @0x141746440
+Unk_MagicTag::Unk_MagicTag()
+{
+}
+
+// @0x14171c1d0
+void CSceneStateGame::FUN_14171c1d0(CInPacket& packet)
+{
+    unsigned long long nTagId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    int nSrcLevel = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nSrcIndex = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_StreamPoint ptStart = static_cast<CInputStream&>(packet).vfunc_o8_11();
+    Unk_StreamPoint ptDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    int bServer = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+
+    MS2Ptr<Unk_PCBaseComp_b18> spCast(0);
+    PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1200(nOwnerId);
+    if (pOwner != 0)
+    {
+        MS2Ptr<Unk_PCBaseComp_b18> spFound = pOwner->FUN_141673bf0(nTagId, nSrcLevel);
+        if (spFound.get() != 0 && spFound->m_nA0 == 0)
+            spCast = spFound;
+    }
+    int nStartTick = 0;
+    if (bServer != 0)
+    {
+        int nTimeMode = FUN_1403ed2d0()->FUN_141bd1a10(pOwner);
+        nStartTick = Unk_ServerClock::GetInstance()->FUN_1414732f0(nTimeMode);
+    }
+
+    ATL::CAtlArray<Unk_MagicTagPtr> arrRoots;
+    ATL::CRBMap<unsigned long long, Unk_MagicTagPtr> mapTags(10);
+    for (int i = 0; i < nCount; i++)
+    {
+        unsigned long long nParent = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        unsigned long long nTagSub = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nCasterId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int n84 = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int n80 = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (static_cast<bool>(spCast.get()) || bServer != 0)
+        {
+            if (nParent > 0)
+            {
+                Unk_MagicTagPtr spParent(0);
+                if (mapTags.Lookup(nParent, spParent))
+                {
+                    Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                    if (spTag->FUN_141758d70(nTagId, nTagSub, nOwnerId, nCasterId, nSkillId, nLevel, nSrcLevel, ptDir,
+                            n80, n84, nSrcIndex, 0))
+                    {
+                        spParent->m_spLinked = spTag;
+                        mapTags.SetAt(nTagSub, spTag);
+                    }
+                }
+            }
+            else
+            {
+                Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                if (spTag->FUN_141758d70(nTagId, nTagSub, nOwnerId, nCasterId, nSkillId, nLevel, nSrcLevel, ptDir,
+                        n80, n84, nSrcIndex, 0))
+                {
+                    arrRoots.Add(spTag);
+                    mapTags.SetAt(nTagSub, spTag);
+                    spTag->m_nStartTick = nStartTick;
+                }
+            }
+        }
+    }
+
+    if (static_cast<bool>(spCast.get()) || bServer != 0)
+    {
+        for (unsigned i = 0; i < arrRoots.GetCount(); i++)
+        {
+            Unk_MagicTagPtr spCur(arrRoots[i]);
+            Unk_SocketPtr<CMagicModel> spModel(new CMagicModel());
+            spModel->FUN_141467500(spCur, Unk_MagicTagPtr(0), ptStart, 1, bServer, 0);
+            if (spCast.get() != 0)
+                spCast->m_listModels.AddTail(spModel);
+            do
+            {
+                Unk_MagicTagPtr spPrev(spCur);
+                spCur = spCur->m_spLinked;
+                if (spCur.get() != 0)
+                {
+                    Unk_SocketPtr<CMagicModel> spLinkModel(new CMagicModel());
+                    spLinkModel->FUN_141467500(spCur, spPrev, ptStart, 1, bServer, 0);
+                }
+            } while (spCur.get() != 0);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14171c1d0, CSceneStateGame, FUN_14171c1d0, 3088, 0xC2D4B0C8);
 
 // @0x14171d610
 void CSceneStateGame::FUN_14171d610(CInPacket& packet)
