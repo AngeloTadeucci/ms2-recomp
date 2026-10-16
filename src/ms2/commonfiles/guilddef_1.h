@@ -315,7 +315,7 @@ public:
     CStringW FUN_1404ccfa0(); void FUN_1404cd030(CStringW v);
     CStringW FUN_1404cd0b0(); void FUN_1404cd140(CStringW v);
     int FUN_1404cd1c0(); void FUN_1404cd2b0(int v);
-    void FUN_1404cd310(__int64 a,__int64 b,CStringW c);
+    void FUN_1404cd310(__int64 a,__int64 b,CStringW c,int unused);   // every caller passes 1 as the last argument
     __int64 FUN_1404cd3b0(); __int64 FUN_1404cd420(); CStringW FUN_1404cd490();
     __int64 FUN_1404cd530(); void FUN_1404cd5b0(__int64 v);
     __int64 FUN_1404cd620(); void FUN_1404cd6a0(__int64 v);

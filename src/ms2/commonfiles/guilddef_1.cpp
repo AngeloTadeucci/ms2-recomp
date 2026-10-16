@@ -1121,7 +1121,7 @@ void CGuildInfo::FUN_1404cd2b0(int v)
 }
 
 // @0x1404cd310
-void CGuildInfo::FUN_1404cd310(__int64 a,__int64 b,CStringW c)
+void CGuildInfo::FUN_1404cd310(__int64 a,__int64 b,CStringW c,int)
 {
     if(Unk_LockGuard guard=lock) {} else { f70=a; f78=b; f80=c; }
 }
@@ -1229,7 +1229,7 @@ void CGuildInfo::FUN_1404cdda0(CInPacket& packet)
         FUN_1404cd2b0(b1);
         FUN_1404cd140(s190);
         FUN_1404cd030(s188);
-        FUN_1404cd310(l48,l50,s198);
+        FUN_1404cd310(l48,l50,s198,1);
         FUN_1404ccf30(l40);
         FUN_1404d11b0(v6,v7,v8,v9,v10,v11,v12);
         FUN_1404d1140(b2);

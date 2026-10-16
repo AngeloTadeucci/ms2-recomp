@@ -211,7 +211,7 @@ public:
     ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>> m_joinRequestsForChar; // +0x428
     ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>> m_joinRequestsForGuild; // +0x448
     int m_468;
-    std::set<std::pair<int, int>> m_470;                               // +0x470 (skill id, level) uses awaiting the server ack
+    std::set<std::pair<int, unsigned short>> m_470;                    // +0x470 (skill id, level) uses awaiting the server ack
 };
 MS2_CHECK_OFFSET(CGuildManager, m_invite, 0x378);
 MS2_CHECK_OFFSET(CGuildManager, m_pvpHistory, 0x388);
