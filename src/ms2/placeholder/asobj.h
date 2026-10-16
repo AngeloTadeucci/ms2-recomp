@@ -39,6 +39,7 @@ class ASArray : public ASObj
 {
 public:
     ASArray(int nType);
+    ASArray(const ASArray& o);                                           // 0x140bbf770 (copy; passed by value to Invoke(.., int, AScript, ASArray))
     virtual ~ASArray();
     bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
 };

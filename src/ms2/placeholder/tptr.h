@@ -13,6 +13,7 @@ public:
     ~TPtr();
     T* get() const;
     T* operator->() const;
+    bool operator==(T* p) const;        // 0x140c206b0 for T = PCBase (inline COMDAT, uihideandseekresultdialog.cpp)
 
 private:
     T* m_p;                             // +0x00
