@@ -15,6 +15,8 @@ public:
     bool FUN_14092c370(CXmlData* pOther);           // differs from pOther (additionalactionadditional.cpp)
     void FUN_14092c590();                           // clears the parsed values
     void FUN_14092c400(const CStringW& strValues);  // parses "key=value" text
+    CString FUN_1409e8560(const CStringW& strKey, const CString& strDefault);     // value as an ansi string (scenestategame.cpp)
+    CStringW FUN_14042cad0(const CStringW& strKey, const CStringW& strDefault);   // value as a wide string
 private:
     unsigned char m_unknown18[0x48];    // +0x18
 };

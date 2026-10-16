@@ -5022,6 +5022,8 @@ extern template NoticeCubeInfo* Unk_PayloadPtr<NoticeCubeInfo>::operator->() con
 class Unk_SSG9670e0 { public: void FUN_1410c92e0(int nCubeId); };
 Unk_SSG9670e0* FUN_1409670e0();
 
+UIDialog* FUN_141386950(const CString& strName);           // a dialog by its name
+
 // @0x141734e00
 // MS2-FUNCTIONAL: exe frame is 0x10 bytes larger (point copy at +0xe0, unwind state at +0xf0); code otherwise identical
 void CSceneStateGame::FUN_141734e00(CInPacket& packet)
@@ -5419,6 +5421,65 @@ public:
     __int64 m_nEnd;                                         // +0x20
 };
 MS2_CHECK_SIZE(NotifyActiveMyCodiTab, 0x28);
+
+// @0x141739910
+void CSceneStateGame::FUN_141739910(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        FUN_140d73bc0(0x2a2, 0, 0, L"");
+        break;
+    case 1:
+        FUN_140d73bc0(0x2a3, 0, 0, L"");
+        break;
+    case 2:
+        FUN_140d73bc0(0x2a4, 0, 0, L"");
+        break;
+    case 3:
+        FUN_140d73bc0(0x2a5, 0, 0, L"");
+        break;
+    case 4:
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+        if (spData)
+        {
+            CString strDialog = spData->function.xml.FUN_1409e8560(L"notifyDlg", "");
+            CStringW strMsg = spData->function.xml.FUN_14042cad0(L"notifyMsg", L"");
+            if (strDialog.GetLength() != 0)
+            {
+                UIDialog* pDlg = FUN_141386950(strDialog);
+                if (pDlg != 0)
+                    pDlg->FUN_141924680();
+            }
+            else if (strMsg.GetLength() != 0)
+            {
+                CStringW strText = FUN_14052bd00(0x5f6, FUN_1401a9d70()->FUN_141811980(1, nItemId));
+                strText += L"\n";
+                strText += FUN_14028b8e0(strMsg);
+                FUN_140d73aa0(strText, 0, 0, L"");
+            }
+        }
+        Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+        if (pDlg != 0)
+            pDlg->FUN_140ea5f80();
+    }
+        break;
+    case 5:
+        FUN_14173c2d0(packet);
+        break;
+    case 6:
+        FUN_14173c630(packet);
+        break;
+    case 7:
+        Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+        if (pDlg != 0)
+            pDlg->FUN_140ea5f80();
+    }
+}
+MS2_REPLACE_METHOD(0x141739910, CSceneStateGame, FUN_141739910, 1277, 0x53BFFD2C);
 
 // @0x14173c2d0
 void CSceneStateGame::FUN_14173c2d0(CInPacket& packet)
