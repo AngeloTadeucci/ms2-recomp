@@ -43,7 +43,9 @@
 // The exe's memcpy_s copy calls memset/memcpy (no /Oi expansion): the pragma must precede its inline definition.
 #include <vcruntime_string.h>
 #pragma function(memcpy, memset)
+#define NOMINMAX
 #include "ms2/placeholder/ms2stdafx.h"
+#include "ms2/client/ms2/entityworldmanager.h"
 #include "camera.h"
 #include "hook/ms2hook.h"
 #include <math.h>
@@ -62,6 +64,8 @@
 #include <ecr/PickService.h>
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/uidialog.h"
+#include <egf/EntityIDFactory.h>
+#include <efd/utf8string.h>
 
 // ---- out-of-unit callees ----
 class Unk_140165cf0 { public: Unk_140165cf0* FUN_140165cf0(const char*); Unk_140165cf0* FUN_140168650(const char*); };
@@ -82,6 +86,7 @@ public:
     // @0x140af8310
     efd::ServiceManager* FUN_140af8310() { return m_pServiceManager; }
     MS2Ptr<class CFieldDataCli> FUN_141bd30a0();                        // the current field data
+    Unk_StreamPoint FUN_141bd3dc0();                                    // the map camera center
 
     void* m_0;
     efd::ServiceManager* m_pServiceManager;                             // +0x08
@@ -151,6 +156,18 @@ template <class T> T* Unk_CameraDialog(int nId)
 class Unk_CameraInput;
 Unk_CameraInput* FUN_14025e7c0();
 bool FUN_14116d720(Unk_CameraInput* pInput);                            // npc control mode
+bool FUN_14116d7a0(Unk_CameraInput* pInput, int nState);
+bool FUN_14116d950(Unk_CameraInput* pInput, int nKey, bool b, int n);   // key down
+bool FUN_14116d9c0(Unk_CameraInput* pInput, int nKey, bool b, int n);   // key pressed this frame
+void FUN_1412751b0(const CStringW& strMsg, int nType);                  // system chat notice
+class Unk_CameraHousing
+{
+public:
+    int FUN_1410d2f10();
+};
+Unk_CameraHousing* FUN_1409670e0();
+extern int DAT_143ab0248;                                               // client country (0..3)
+extern int DAT_143ab2914;                                               // client build / region level
 class Unk_CameraCursor;
 Unk_CameraCursor* FUN_140aadf80();
 void FUN_141b90e30(Unk_CameraCursor* pCursor, float* pX, float* pY);    // cursor window position
@@ -189,6 +206,7 @@ struct Unk_CameraOption
 {
     bool m_0;
     bool m_1;                                                           // camera effects on
+    int m_4;                                                            // camera speed (percent)
 };
 class Unk_ClientSettings
 {
@@ -201,6 +219,25 @@ public:
     Unk_CameraOption m_8;
 };
 Unk_ClientSettings* FUN_1409a8b10();
+// The client constants table (FUN_1401d3200). Each value is a 0x58-byte record.
+class Unk_CameraConstValue
+{
+public:
+    const float& FUN_140298f40();
+    char m_pad[0x58];
+};
+struct Unk_CameraConsts
+{
+    char m_pad[0x1a80];
+    Unk_CameraConstValue m_kCameraSpeed1;                               // +0x1a80
+    Unk_CameraConstValue m_kCameraSpeed2;                               // +0x1ad8
+    Unk_CameraConstValue m_kCameraSpeed3;                               // +0x1b30
+};
+Unk_CameraConsts* FUN_1401d3200();
+EntityWorldManager* FUN_1409670f0();
+egf::Entity* FUN_1408a9090(const void* sp);                             // the entity of a smart pointer
+float FUN_1409f25a0(float f);                                           // cos
+float FUN_1409f2310(float f);                                           // sin
 Unk_CameraSetting* FUN_140947880(CCameraMode* p);                       // &p->m_setting
 int FUN_1422b9dc0(Unk_UIManager* pUI);                                  // current ui scene id
 class Unk_1409a8b20;
@@ -1722,3 +1759,187 @@ void CameraMgr::FUN_140aec0e0(unsigned int nMapId)
         }
     }
 }
+
+// @0x140af8080
+static CString FUN_140af8080()
+{
+    return s_strGameplayCamera;
+}
+
+// @0x140af80c0
+CString CameraMgr::FUN_140af80c0()
+{
+    return FUN_140af8080();
+}
+MS2_REPLACE_METHOD(0x140AF80C0, CameraMgr, FUN_140af80c0, 53, 0xA77BD198);
+
+// @0x140aec4c0
+// MS2-FUNCTIONAL: the exe stages the entity argument of FUN_1411cf2d0 through rcx (mov rcx,[x]; mov rdx,rcx), we load rdx directly.
+void CameraMgr::FUN_140aec4c0()
+{
+    if (FUN_140af7f70() == 0)
+    {
+        FUN_140aeb920();
+        FUN_140aed260();
+        FUN_140aebb30(FUN_141bd3060(FUN_1403ed2d0()));
+        egf::EntityID id = egf::EntityIDFactory::GetNextID();
+        egf::EntityPtr spEntity = FUN_1409670f0()->FUN_1411cec80((const char*)FUN_140af80c0(), id, true);
+        if (FUN_1408a9090(&spEntity) != 0)
+        {
+            float fDistance = m_spMapCameraData->m_distance;
+            float fHAngle = ((m_spMapCameraData->m_hAngle + 180.0f) * 3.1415927f) / 180.0f;
+            float fVAngle = (m_spMapCameraData->m_vAngle * 3.1415927f) / 180.0f;
+            Unk_StreamPoint ptAt = FUN_1403ed2d0()->FUN_141bd3dc0();
+            ptAt.z += m_278 + 25.0f;
+            Unk_StreamPoint ptEye;
+            ptEye.x = fDistance * FUN_1409f25a0(fHAngle) + ptAt.x;
+            ptEye.y = fDistance * FUN_1409f2310(fHAngle) + ptAt.y;
+            ptEye.z = fDistance * FUN_1409f2310(fVAngle) + ptAt.z;
+            Unk_StreamPoint ptRot = CCameraMode::FUN_140afdd40(ptAt, ptEye, g_143a08cf8);
+            FUN_140ae9ed0(FUN_1408a9090(&spEntity), &ptEye, &ptRot);
+            egf::Entity* pEntity = FUN_1408a9090(&spEntity);
+            FUN_1409670f0()->FUN_1411cf2d0(pEntity, 0);
+        }
+        float fSpeed = (float)FUN_1409a8b10()->FUN_140af7de0()->m_4 / 100.0f;
+        float f1 = FUN_1401d3200()->m_kCameraSpeed1.FUN_140298f40() * fSpeed;
+        float f2 = FUN_1401d3200()->m_kCameraSpeed2.FUN_140298f40() * fSpeed;
+        float f3 = FUN_1401d3200()->m_kCameraSpeed3.FUN_140298f40() * fSpeed;
+        FUN_140aeb880(f1, f2, f3);
+    }
+}
+MS2_REPLACE_METHOD(0x140AEC4C0, CameraMgr, FUN_140aec4c0, 971, 0xEBD98476);
+
+// @0x140aebb30
+void CameraMgr::FUN_140aebb30(unsigned int nMapId)
+{
+    MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+    if (spField == 0)
+        return;
+    m_spMapCameraData.AssignRaw(new CMapCameraData());
+    m_spMapCameraData->m_30 = spField->m_bUseFileSetting;
+    m_spMapCameraData->m_distance = spField->m_fCameraDistance;
+    m_spMapCameraData->m_vAngle = spField->m_fCameraVAngle;
+    m_spMapCameraData->m_hAngle = spField->m_fCameraHAngle;
+    m_spMapCameraData->m_zoomOutHeightOffset = spField->m_fZoomOutHeightOffset;
+    m_spMapCameraData->m_zoomInHeightOffset = spField->m_fZoomInHeightOffset;
+    if (!m_spMapCameraData->m_30)
+        return;
+    CString strPath;
+    strPath.Format("%s/%08d.xml", (const char*)FUN_14071a5b0("Camera", "Map"), nMapId);
+    TiXmlDocument doc;
+    if (!FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false))
+        return;
+    m_mapCache.FUN_1401d1160(strPath);
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (!pRoot)
+        return;
+    Unk_140165cf0* pElem = pRoot->FUN_140165cf0("defaultCamera");
+    if (pElem)
+    {
+        CString strType;
+        const char* pszType = FUN_14086f4b0(pElem, "type");
+        if (pszType)
+        {
+            strType = pszType;
+            strType.MakeLower();
+            if (strType == "bosstarget")
+            {
+                m_spMapCameraData.AssignRaw(new CBossTargetCameraData(*m_spMapCameraData.get()));
+                m_spMapCameraData->m_18 = 0x12;
+                m_spMapCameraData->vfunc_1(pElem);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140AEBB30, CameraMgr, FUN_140aebb30, 1440, 0x461DF218);
+
+// @0x140aea7f0
+// The developer camera keys: F4+Ctrl toggles the studio camera, F5+Shift rereads TestCamerValue.xml, F6+Ctrl cycles
+// the camera modes.
+void CameraMgr::FUN_140aea7f0()
+{
+    static int s_bStudioCamera;
+    static int s_nDebugMode;
+    if (m_spMode.IsNull())
+        return;
+    int nState = 0xb;
+    if (FUN_14116d7a0(FUN_14025e7c0(), nState))
+        return;
+    m_spMode->vfunc_9();
+    bool bAllowed = true;
+    if (DAT_143ab0248 == 2)
+        bAllowed = DAT_143ab2914 >= 52;
+    if (bAllowed)
+    {
+        if (FUN_14116d9c0(FUN_14025e7c0(), 0x3e, true, 0) && FUN_14116d950(FUN_14025e7c0(), 0x1d, true, 0))
+        {
+            Unk_CameraSetting setting;
+            setting.m_0 = FUN_140ad4b40();
+            setting.m_4 = FUN_140af7f00();
+            setting.m_8 = FUN_140af7ea0();
+            setting.m_18 = FUN_140af8290();
+            setting.m_c = FUN_140a17e10();
+            FUN_140aed720(setting);
+            if (s_bStudioCamera == 0)
+            {
+                { CStringW strMsg(L"Studio Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                FUN_140aed750(7, 1);
+            }
+            else
+            {
+                { CStringW strMsg(L"Target Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                if (FUN_1409670e0()->FUN_1410d2f10() != 0)
+                    FUN_140aed750(0x11, 1);
+                else
+                    FUN_140aed750(2, 1);
+            }
+            s_bStudioCamera ^= 1;
+            return;
+        }
+        if (FUN_14116d9c0(FUN_14025e7c0(), 0x3f, true, 0) && FUN_14116d950(FUN_14025e7c0(), 0x2a, true, 0))
+        {
+            FUN_140af0c10();
+            { CStringW strMsg(L"Read Camera value [./data/xml/table/TestCamerValue.xml]"); FUN_1412751b0(strMsg, 0x14); }
+            return;
+        }
+        if (FUN_14116d9c0(FUN_14025e7c0(), 0x40, true, 0) && FUN_14116d950(FUN_14025e7c0(), 0x1d, true, 0))
+        {
+            int nMode = 2;
+            if (++s_nDebugMode == 7)
+                s_nDebugMode = 0;
+            switch (s_nDebugMode)
+            {
+            case 0:
+                nMode = 2;
+                { CStringW strMsg(L"Target Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 1:
+                nMode = 0xd;
+                { CStringW strMsg(L"PVP Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 2:
+                nMode = 0xb;
+                { CStringW strMsg(L"2D Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 3:
+                nMode = 9;
+                { CStringW strMsg(L"TPS Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 4:
+                nMode = 10;
+                { CStringW strMsg(L"FPS Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 5:
+                nMode = 0xc;
+                { CStringW strMsg(L"RPG Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            case 6:
+                nMode = 0xe;
+                { CStringW strMsg(L"Console Camera Mode"); FUN_1412751b0(strMsg, 0x14); }
+                break;
+            }
+            FUN_140aeb420(nMode, 0);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140AEA7F0, CameraMgr, FUN_140aea7f0, 1392, 0x0B60B36B);

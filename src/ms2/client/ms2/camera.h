@@ -60,6 +60,8 @@ public:
     void FUN_140af9b20(int n) { m_c = n; }
     // @0x140af9a50
     void FUN_140af9a50(egf::Entity* pEntity) { m_10 = pEntity; }
+    // @0x140af7f60
+    egf::Entity* FUN_140af7f60() { return m_10; }
     egf::EntityID FUN_140af7fd0();                                      // the camera entity id (inline, camera.cpp)
     void FUN_140a38dc0(Unk_StreamPoint pt);                             // look-at offset (another obj)
     void FUN_140a38e00(Unk_StreamPoint pt);                             // second point property (another obj)
@@ -172,6 +174,9 @@ public:
     bool FUN_140aeb590(Unk_CameraSetting& setting);                     // the first saved setting
     void FUN_140aeb950(CLocalTargetCameraMode* pMode);                  // cycle the map camera setups
     void FUN_140aec0e0(unsigned int nMapId);                            // load the map camera xml
+    void FUN_140aebb30(unsigned int nMapId);
+    void FUN_140aec4c0();                                               // create the map camera entity
+    CString FUN_140af80c0();                                            // the gameplay camera model name
     void FUN_140aeb600();                                               // leave the map: drop the map camera data
     void FUN_140aed580(const Unk_CameraFlyBy* pFlyBy, int nKind, float fDuration);  // start a fly-by
     void FUN_140aed750(int nMode, int bKeep);                           // set the camera mode
@@ -247,6 +252,8 @@ public:
     Unk_StreamPoint FUN_140af8290() { if (m_spMode.get()) return m_spMode->FUN_140af8260(); return g_143b01a60; }
     // @0x140aed720
     void FUN_140aed720(const Unk_CameraSetting& setting) { m_setting = setting; }
+    // @0x140af7f70
+    egf::Entity* FUN_140af7f70() { return (m_pCamera && m_pCamera->FUN_140af7f60()) ? m_pCamera->FUN_140af7f60() : 0; }
     // @0x140af9a70
     void FUN_140af9a70(egf::Entity* pEntity) { if (m_pCamera) m_pCamera->FUN_140af9a50(pEntity); }
     // @0x140af9ab0
