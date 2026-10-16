@@ -11,6 +11,12 @@
 // MS2-PIN: ??__Es_strSkill@@YAXXZ 0x1400e7950
 // MS2-PIN: ??__Es_strStun@@YAXXZ 0x1400e7980
 // MS2-PIN: ??__Es_unk1402a9d70@@YAXXZ 0x1400e79b0
+// MS2-PIN: ??8?$SmartPointer@VCEffect@@@efd@@QEBA_NPEAVCEffect@@@Z 0x14119f440
+// MS2-PIN: ??C?$SmartPointer@VCEffect@@@efd@@QEBAPEAVCEffect@@XZ 0x14119f480
+// MS2-PIN: ?GetInstance@?$TSingleton@VEffectSkipMgr@@@@SAPEAVEffectSkipMgr@@XZ 0x14119f490
+// MS2-PIN: ?GetRTTI@CEffect@@UEBAPEBVNiRTTI@@XZ 0x14119f4a0
+// MS2-PIN: ?GetAt@?$CAtlList@V?$MS2Ptr@VCEffectParam@@@@V?$CElementTraits@V?$MS2Ptr@VCEffectParam@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCEffectParam@@@@PEAU__POSITION@@@Z 0x1411a2130
+// MS2-PIN: ?GetNext@?$CAtlList@V?$MS2Ptr@VCEffectParam@@@@V?$CElementTraits@V?$MS2Ptr@VCEffectParam@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCEffectParam@@@@AEAPEAU__POSITION@@@Z 0x1411a2280
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "effectservice.h"
