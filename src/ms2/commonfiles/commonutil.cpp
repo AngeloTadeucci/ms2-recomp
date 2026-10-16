@@ -1560,33 +1560,6 @@ typedef std::pair<int, Unk_XmlElement*> Unk_XmlSlot;           // document posit
 typedef std::map<CStringW, Unk_XmlSlot> Unk_XmlSlotMap;
 typedef std::set<Unk_XmlSlot> Unk_XmlSlotSet;
 
-// Keeps one element per key (a later element replaces the earlier one when the locale filter prefers it).
-static void Unk_XmlSlotAdd(Unk_XmlSlotMap& mapByKey, Unk_XmlSlotSet& setOrdered, const CStringW& strKey, int nIndex, Unk_XmlElement* pElem)
-{
-    if (mapByKey.find(strKey) != mapByKey.end())
-    {
-        Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
-        if (pPick == pElem)
-        {
-            setOrdered.erase(mapByKey[strKey]);
-            mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
-            setOrdered.insert(mapByKey[strKey]);
-        }
-    }
-    else
-    {
-        mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
-        setOrdered.insert(mapByKey[strKey]);
-    }
-}
-
-static void Unk_XmlSlotFlush(Unk_XmlSlotSet& setOrdered, std::vector<Unk_XmlElement*>& arrOut)
-{
-    arrOut.reserve(setOrdered.size());
-    for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
-        arrOut.push_back(it->second);
-}
-
 // Collects the passing children <pszChild>, one per pszKeyAttr value, in document order.
 // MS2-FUNCTIONAL: not yet byte-matched (inlined map/set code is a separate function in the exe)
 // @0x14028faa0
@@ -1602,10 +1575,26 @@ void FUN_14028faa0(Unk_XmlElement* pParent, const char* pszChild, const char* ps
             ++nIndex;
             CStringW strKey;
             FUN_140873420(pElem, pszKeyAttr, strKey);
-            Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+            if (mapByKey.find(strKey) != mapByKey.end())
+            {
+                Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
+                if (pPick == pElem)
+                {
+                    setOrdered.erase(mapByKey[strKey]);
+                    mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+                    setOrdered.insert(mapByKey[strKey]);
+                }
+            }
+            else
+            {
+                mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+                setOrdered.insert(mapByKey[strKey]);
+            }
         }
     }
-    Unk_XmlSlotFlush(setOrdered, arrOut);
+    arrOut.reserve(setOrdered.size());
+    for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
+        arrOut.push_back(it->second);
 }
 
 // Same, keyed by "<attr1>_<attr2>".
@@ -1626,10 +1615,26 @@ void FUN_14028fd90(Unk_XmlElement* pParent, const char* pszChild, const char* ps
             FUN_140873420(pElem, pszKeyAttr1, strKey1);
             FUN_140873420(pElem, pszKeyAttr2, strKey2);
             CStringW strKey = (const wchar_t*)((const wchar_t*)strKey1 + CStringW(L"_")) + strKey2;
-            Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+            if (mapByKey.find(strKey) != mapByKey.end())
+            {
+                Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
+                if (pPick == pElem)
+                {
+                    setOrdered.erase(mapByKey[strKey]);
+                    mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+                    setOrdered.insert(mapByKey[strKey]);
+                }
+            }
+            else
+            {
+                mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+                setOrdered.insert(mapByKey[strKey]);
+            }
         }
     }
-    Unk_XmlSlotFlush(setOrdered, arrOut);
+    arrOut.reserve(setOrdered.size());
+    for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
+        arrOut.push_back(it->second);
 }
 
 // Same, keyed by an attribute of the sub-element <pszSub> of each child.
@@ -1650,7 +1655,23 @@ void FUN_140290150(Unk_XmlElement* pParent, const char* pszChild, const char* ps
         ++nIndex;
         CStringW strKey;
         FUN_140873420(pSub, pszKeyAttr, strKey);
-        Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+        if (mapByKey.find(strKey) != mapByKey.end())
+        {
+            Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
+            if (pPick == pElem)
+            {
+                setOrdered.erase(mapByKey[strKey]);
+                mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+                setOrdered.insert(mapByKey[strKey]);
+            }
+        }
+        else
+        {
+            mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+            setOrdered.insert(mapByKey[strKey]);
+        }
     }
-    Unk_XmlSlotFlush(setOrdered, arrOut);
+    arrOut.reserve(setOrdered.size());
+    for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
+        arrOut.push_back(it->second);
 }
