@@ -32,6 +32,8 @@ public:
     void FUN_14152f530(int nA, int nB, int bBulk);          // set entry nA = nB
     void FUN_14152fa20();                                   // end bulk update
     void FUN_14152f620(int nA);                             // remove entry nA
+    int FUN_1416595d0();                                    // PC member: the cube craft mode (actionkeyobject.cpp)
+    class Unk_MyPCEmotion* FUN_14165f100();                 // PC member: the playing emotion (stateemotionidle.cpp)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };

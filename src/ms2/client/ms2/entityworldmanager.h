@@ -57,6 +57,8 @@ template <> class TSingleton<EntityWorldManager> {
 public:
     TSingleton();
     virtual ~TSingleton() { s_instance = 0; }
+    // @0x1409670f0
+    static EntityWorldManager* GetInstance() { return s_instance; }   // COMDAT in actionkeyobject.cpp's range
     static EntityWorldManager* s_instance;
 };
 
