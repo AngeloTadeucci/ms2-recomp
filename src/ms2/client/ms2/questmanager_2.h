@@ -4,6 +4,7 @@
 #include <atlcoll.h>
 #include <map>
 #include <set>
+#include <list>
 #include <vector>
 #include <algorithm>
 #include "ms2/commonfiles/os.h"
@@ -145,6 +146,10 @@ public:
     void FUN_1416d16c0(int group, ATL::CAtlList<unsigned>& out);
     void FUN_1416d1800(int group, Unk_QmNpcQuestState* best);
     void FUN_1416d1a30(int questId);
+    const std::set<__int64>& FUN_1416d2510(int questId);   // users found for the quest (empty set if none)
+    unsigned FUN_1416d2600(int questId, int checkAccept);   // first available follow-up quest
+    int FUN_1416d26c0(int questId, std::list<unsigned>& out, int checkAccept);
+    int FUN_1416d3ed0(MS2Ptr<class CQuestData> data, int checkAccept, int job);   // job 200 = the player's
     int FUN_1416d00c0();
     int FUN_1416d0100();
     int FUN_1416d0150();

@@ -184,6 +184,7 @@ public:
 int FUN_14123c580(PCBase* pc);
 MS2Ptr<CQuestData> FUN_14074bc40(int questId);
 int FUN_14074b050(CQuestData* data);
+int FUN_14074b030(CQuestData* data);
 int FUN_14074b070(CQuestData* data);
 CFieldMetaTable* FUN_140700390();
 CLearningQuestTable* FUN_140ea4060();
@@ -1732,6 +1733,43 @@ void CQuestManager::FUN_1416d1d00(PCBase* pc)
 }
 MS2_REPLACE_METHOD(0x1416d1d00, CQuestManager, FUN_1416d1d00, 389, 0x1360BBF1);
 
+// @0x1416d2510
+const std::set<__int64>& CQuestManager::FUN_1416d2510(int questId)
+{
+    static std::set<__int64> s_empty;
+    if (m_targets250.find(questId) == m_targets250.end()) return s_empty;
+    return m_targets250[questId];
+}
+MS2_REPLACE_METHOD(0x1416d2510, CQuestManager, FUN_1416d2510, 234, 0xD6DE581E);
+
+// @0x1416d2600
+unsigned CQuestManager::FUN_1416d2600(int questId, int checkAccept)
+{
+    std::list<unsigned> next;
+    if (FUN_1416d26c0(questId, next, checkAccept) == 0) return 0;
+    return next.empty() ? 0 : *next.begin();
+}
+MS2_REPLACE_METHOD(0x1416d2600, CQuestManager, FUN_1416d2600, 173, 0x8B7C30EA);
+
+// @0x1416d26c0
+int CQuestManager::FUN_1416d26c0(int questId, std::list<unsigned>& out, int checkAccept)
+{
+    PCBase* player = static_cast<PCBase*>(FUN_141bd0cc0(FUN_1403ed2d0()));
+    if (player == 0) return 0;
+    int job = FUN_141654700(player);
+    MS2Ptr<CQuestData> data = FUN_14074bc40(questId);
+    if (data == 0) return 0;
+    std::list<unsigned> found;
+    for (size_t i = 0; i < data->m_require.m_followingQuests.GetCount(); i++) {
+        unsigned next = data->m_require.m_followingQuests[i];
+        MS2Ptr<CQuestData> nextData = FUN_14074bc40(next);
+        if (FUN_1416d3ed0(nextData, checkAccept, job) == 0) continue;
+        found.push_back(next);
+    }
+    if (!found.empty()) out.insert(out.end(), found.begin(), found.end());
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416d26c0, CQuestManager, FUN_1416d26c0, 583, 0xE822ACDB);
 // @0x1416d3010
 void CQuestManager::FUN_1416d3010()
 {
@@ -1815,6 +1853,25 @@ int CQuestManager::FUN_1416d3430()
     return 0;
 }
 MS2_REPLACE_METHOD(0x1416d3430, CQuestManager, FUN_1416d3430, 216, 0x2CD58E85);
+
+// @0x1416d3ed0
+int CQuestManager::FUN_1416d3ed0(MS2Ptr<CQuestData> data, int checkAccept, int job)
+{
+    if (data == 0) return 0;
+    if (FUN_14074b050(data.operator->()) != 0) return 0;
+    if (data->m_30 != 0) return 0;
+    if (data->m_require.m_job.GetCount() != 0) {
+        if (job == 200) {
+            PCBase* player = static_cast<PCBase*>(FUN_141bd0cc0(FUN_1403ed2d0()));
+            if (player == 0) return 0;
+            job = FUN_141654700(player);
+        }
+        if (FUN_1407474d0(&data->m_require.m_job, &job) == -1) return 0;
+    }
+    if (checkAccept != 0) return vfunc_1(FUN_14074b030(data.operator->()), 0);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416d3ed0, CQuestManager, FUN_1416d3ed0, 456, 0x455541D4);
 
 // @0x1416dbb50
 CQuestManagerCommon::CQuestManagerCommon() : m_selector(0) {}
