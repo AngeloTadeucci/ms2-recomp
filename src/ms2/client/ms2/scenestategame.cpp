@@ -623,7 +623,51 @@ private:
     char m_pad_18[0xd8 - 0x18];
 };
 MS2_CHECK_SIZE(CSplashDamageRecord, 0xd8);
-class Unk_SSGMagicService { public: void FUN_14146bc20(CDotDamageRecord* pRecord); void FUN_14146bc80(CSplashDamageRecord* pRecord); };
+// The skill level row of a damage record (FUN_140803f60); only the fields the hit handler reads.
+class Unk_PCBaseSkillLevel
+{
+public:
+    char m_pad_00[0x10c];
+    int m_n10c;                                             // +0x10c the attack kind (2, 3, 4: no model drop)
+    int m_n110;                                             // +0x110
+};
+MS2_CHECK_OFFSET(Unk_PCBaseSkillLevel, m_n110, 0x110);
+class Unk_SSGSkillAim;                                      // the record's aim info (FUN_14175a850)
+// The skill hit record (?\skillrecord.cpp, ctor 0x14175a4e0, new(0xd8)); only the members the hit handler uses.
+class CDamageRecord : public CPtred
+{
+public:
+    CDamageRecord();
+    int FUN_14175a610(__int64 nCasterUid, __int64 nCastUid, int nOwnerId, int nCasterId, int nSkillId, short nLevel,
+                      int nMotion, int nAttack, Unk_StreamPoint kPos, Unk_StreamPoint kAim, Unk_StreamPoint kDir);
+    void FUN_14175abc0(int nFlag, __int64 nDamage);
+    int FUN_14175acc0();                                    // nonzero: the skill tracks its target
+    Unk_SSGSkillAim* FUN_14175a850();
+    Unk_PCBaseSkillLevel* FUN_14175a8b0();
+    char m_pad_18[0x6c - 0x18];
+    Unk_StreamPoint m_kDir;                                 // +0x6c
+    Unk_StreamPoint m_kPos;                                 // +0x78
+    char m_pad_84[0xd0 - 0x84];
+    int m_nd0;                                              // +0xd0
+    char m_pad_d4[0xd8 - 0xd4];
+};
+MS2_CHECK_OFFSET(CDamageRecord, m_kDir, 0x6c);
+MS2_CHECK_OFFSET(CDamageRecord, m_nd0, 0xd0);
+MS2_CHECK_SIZE(CDamageRecord, 0xd8);
+struct Unk_MagicXform { Unk_MagicXform(); char m_pad[0x34]; };   // NiTransform (0x140a332d0)
+// Builds the hit transform from a position and a direction (?\magicdata.cpp).
+void FUN_141467f60(Unk_StreamPoint kPos, Unk_StreamPoint kDir, Unk_MagicXform* pOut);
+// Moves the hit position / direction onto the target (?\magicdata.cpp).
+int FUN_14145e1a0(int nFrom, int nTo, Unk_SSGSkillAim* pAim, const Unk_PCBaseSkillLevel* pLevel, Unk_StreamPoint* pPos,
+                  Unk_StreamPoint* pDir);
+class Unk_SSGMagicService
+{
+public:
+    void FUN_14146bc20(CDotDamageRecord* pRecord);
+    void FUN_14146bc80(CSplashDamageRecord* pRecord);
+    void FUN_14146b440(CDamageRecord* pRecord, int bTracked, Unk_MagicXform* pXform, Unk_StreamPoint kDir);
+    void FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast);   // drop the cast's model
+};
 Unk_SSGMagicService* FUN_1410a7630();
 
 class Unk_SSGDropItem : public GameObject
@@ -5060,6 +5104,66 @@ void CSceneStateGame::FUN_14171c1d0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171c1d0, CSceneStateGame, FUN_14171c1d0, 3088, 0xC2D4B0C8);
+
+Unk_SSGNpc* FUN_140a38a00(GameObject* pObj);                // cast to the npc class (0x6200028)
+
+// 0x3d mode 1: skill hits. A cast header (caster/cast uids, owner, skill, level, motion, position, direction), then
+// per target its id and (flag, damage) hits; plays the hit on the target and drops the cast model when it is done.
+// @0x14171cdf0
+void CSceneStateGame::FUN_14171cdf0(CInPacket& packet)
+{
+    __int64 nCasterUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    __int64 nCastUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    int nMotion = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nAttack = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_11();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_11();
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    for (int i = 0; i < nCount; i++)
+    {
+        int nCasterId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nHits = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        MS2Ptr<CDamageRecord> spRecord(new CDamageRecord());
+        if (!spRecord->FUN_14175a610(nCasterUid, nCastUid, nOwnerId, nCasterId, nSkillId, nLevel, nMotion, nAttack, kPos,
+                                     DAT_143b01a60, kDir))
+            return;
+        for (int j = 0; j < nHits; j++)
+        {
+            int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            __int64 nDamage = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spRecord->FUN_14175abc0(nFlag, nDamage);
+        }
+        GameObject* pCaster = FUN_1403ed2d0()->FUN_141bd1180(nCasterId);
+        if (pCaster != 0)
+        {
+            Unk_StreamPoint ptPos = kPos;
+            Unk_StreamPoint ptDir = kDir;
+            if (spRecord->FUN_14175acc0() == 0)
+                FUN_14145e1a0(nCasterId, nOwnerId, spRecord->FUN_14175a850(), spRecord->FUN_14175a8b0(), &ptPos, &ptDir);
+            else
+                spRecord->m_kDir = ptDir;
+            Unk_SSGNpc* pNpc = FUN_140a38a00(pCaster);
+            if (pNpc != 0)
+            {
+                if (pNpc->FUN_141093270()->FUN_1406cd200(0x11))
+                    spRecord->m_kPos = ptPos;
+            }
+            Unk_MagicXform kXform;
+            FUN_141467f60(ptPos, ptDir, &kXform);
+            FUN_1410a7630()->FUN_14146b440(spRecord.get(), 1, &kXform, ptDir);
+        }
+        if (spRecord->FUN_14175acc0() != 0 && spRecord->m_nd0 != 8)
+        {
+            Unk_PCBaseSkillLevel* pLevel = spRecord->FUN_14175a8b0();
+            if (pLevel->m_n10c != 3 && pLevel->m_n10c != 4 && pLevel->m_n10c != 2 && pLevel->m_n110 <= 1)
+                FUN_1410a7630()->FUN_14146c4b0(nCasterUid, nCastUid);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14171CDF0, CSceneStateGame, FUN_14171cdf0, 2073, 0xD06DFEFB);
 
 // @0x14171d610
 void CSceneStateGame::FUN_14171d610(CInPacket& packet)
