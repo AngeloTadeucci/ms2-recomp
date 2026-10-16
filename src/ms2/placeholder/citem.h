@@ -2,6 +2,7 @@
 #pragma once
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/ms2svrptr.h"
 class CItemData;
 class CItemStatus;
 class CItemUgc;
@@ -11,7 +12,7 @@ class CItemSocket;
 class CItemCoupleInfo;
 class CItemTransfer : public CPtred { public: class CItemBinding; CItemTransfer(); unsigned char FUN_1406352b0(); unsigned char FUN_1406351f0(void*, void*); __int64 FUN_140634fa0(); void FUN_140634fc0(unsigned); __int64 FUN_140634fe0(); void FUN_140635000(unsigned); void FUN_140635300(); char m_pad18[0x40]; };   // 0x58, ctor 0x140634820
 MS2_CHECK_SIZE(CItemTransfer, 0x58);
-struct Unk_ItemSlot188 { Unk_ItemSlot188(); ~Unk_ItemSlot188(); void* m_pad; void* m_p; };   // 16-byte handle (ctor 0x14052c0d0, dtor 0x14027e150)
+typedef MS2SvrPtr<CPtred> Unk_ItemSlot188;   // 16-byte handle (ctor 0x14052c0d0, dtor 0x14027e150)
 class Unk_UserProxyItemData;
 class COutputStream;
 class CInputStream;
@@ -160,6 +161,27 @@ public:
   int FUN_140526390();
   int FUN_1405264c0(int, unsigned*);
   int FUN_140526670(int, unsigned*);
+  unsigned FUN_140527a90(size_t);
+  CString FUN_140528230();
+  CStringW FUN_140529410();
+  int FUN_140529560();
+  CStringW FUN_140529de0();
+  CString FUN_140529eb0();
+  CString FUN_140529f60(int, int, int, unsigned);
+  int FUN_14052a060();
+  void FUN_14052b370();
+  int FUN_14052b420(unsigned);
+  unsigned char FUN_14052b5e0(void*, void*);
+  CStringW FUN_140528010();
+  bool FUN_140528e80(int, __int64);
+  CStringW FUN_1405296c0();
+  CStringW FUN_140529890();
+  CStringW FUN_140529aa0();
+  int FUN_1405299a0();
+  CString FUN_140529cb0();
+  bool FUN_14052b670(MS2Ptr<CItem>);
+  void FUN_14052b870(Unk_ItemSlot188);
+  Unk_ItemSlot188 FUN_14052b8c0();
   // item.cpp (w88): name is the address.
   bool FUN_140525680();
   bool FUN_140525730();

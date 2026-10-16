@@ -7,6 +7,7 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/citem.h"
 #include "ms2/commonfiles/itemgem.h"
+#include "ms2/placeholder/cubeiteminfo.h"
 
 // Opaque parts defined in their own units; only the allocation sizes and constructors are known here.
 // The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the checks CItem makes.
@@ -30,7 +31,10 @@ class CItemUgc : public CPtred
 {
 public:
     CItemUgc();                             // 0x140631d70
-    char m_pad18[0xc0];
+    CUgcItemLook m_look;                    // +0x18
+    char m_pad80[0x58];
+    int FUN_1406321a0();
+    CString FUN_140632100();
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
 class CItemSocket : public CPtred
@@ -38,6 +42,7 @@ class CItemSocket : public CPtred
 public:
     CItemSocket();                          // 0x140620320
     bool FUN_140620de0();
+    void FUN_140620840(unsigned, unsigned);
     char m_pad18[0xd8];
 };
 MS2_CHECK_SIZE(CItemSocket, 0xf0);
@@ -104,7 +109,8 @@ public:
     virtual ~CItemCustomMusicScore();       // (??_G 0x14052cfc0)
     void FUN_1406328c0();                   // reset the score (elsewhere)
 
-    char m_pad18[8];
+    int m_n18;                              // +0x18
+    int m_n1c;                              // +0x1c a music book id
     CStringW m_str20;                       // +0x20
     CStringW m_str28;                       // +0x28
     CString m_str30;                        // +0x30

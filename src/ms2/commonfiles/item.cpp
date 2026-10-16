@@ -18,6 +18,7 @@
 #include "ms2/commonfiles/itemenchantinfo.h"
 #include "ms2/commonfiles/itemgachaboxtable.h"
 #include "ms2/ms2recover.h"
+#include "ms2/fmt/format.h"
 #include "hook/ms2hook.h"
 
 class Unk_ItemEquipData : public CItemData
@@ -30,15 +31,15 @@ public:
 };
 class Unk_ItemPriceSvc { public: int FUN_140678760(int, int, int); };
 extern Unk_ItemPriceSvc* FUN_1401c0db0();
-class Unk_ItemEnchantData : public CItemStatus {};
+class Unk_ItemEnchantData : public CItemStatus { public: int FUN_14062ffb0(unsigned, int, int); int FUN_140630290(unsigned, int, int); };
 class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
 extern unsigned FUN_14054b400(ItemModelData*);
 extern unsigned __int64 FUN_140632030(CItemUgc*);
 
 // w101 additions: unit-local record types for the table lookups CItem makes (names are descriptive, not original).
-class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); };
-class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405565f0(int); };
+class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); int FUN_14054ace0(); CStringW FUN_14054ad20(); };
+class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405565f0(int); CString FUN_140557270(int, int, int, unsigned); };
 extern Unk_IngTable* FUN_140281980();
 extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
 extern void* FUN_140166410();
@@ -47,8 +48,11 @@ extern MS2Ptr<CItemData> FUN_14053f870(int);
 // @0x14052d230 TSingleton<ItemGachaBoxTable>::GetInstance (s_instance is the exe's DAT_143aaf1d0)
 ItemGachaBoxTable* FUN_14052d230();
 class Unk_SingletonObj;
-extern void* DAT_143aaf1a8;
-extern void* DAT_143aaf1b0;
+class Unk_MusicBookInfo : public CPtred { public: char m_pad18[0x10]; CString m_str28; CStringW FUN_14072c480(); };
+class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsigned); };
+extern Unk_MusicBookTable* DAT_143aaf1a8;
+class Unk_EnchantRates { public: int FUN_140594720(int); int FUN_140594750(int); int FUN_1405947c0(int); };
+extern Unk_EnchantRates* DAT_143aaf1b0;
 extern void* DAT_143aaf1b8;
 extern void* DAT_143aaf1c0;
 extern Unk_SingletonObj* DAT_143aaf1c8;
@@ -731,12 +735,6 @@ CItem::CItem()
 // @0x140523b00
 CItem::~CItem()
 {
-}
-
-// @0x14052c0d0
-Unk_ItemSlot188::Unk_ItemSlot188()
-{
-    m_p = 0;
 }
 
 unsigned char FUN_14053f8c0(unsigned);
@@ -1911,13 +1909,13 @@ MS2_REPLACE_METHOD(0x140526670, CItem, FUN_140526670, 273, 0x5F65DE16);
 
 // The TSingleton<T>::GetInstance bodies this unit instantiates (the s_instance statics are the exe's own data).
 // @0x14052d1d0
-void* FUN_14052d1d0()
+Unk_MusicBookTable* FUN_14052d1d0()
 {
     return DAT_143aaf1a8;
 }
 
 // @0x14052d1e0
-void* FUN_14052d1e0()
+Unk_EnchantRates* FUN_14052d1e0()
 {
     return DAT_143aaf1b0;
 }
@@ -1951,3 +1949,478 @@ ItemGachaBoxTable* FUN_14052d230()
 {
     return TSingleton<ItemGachaBoxTable>::s_instance;
 }
+
+// ---- w101 batch 3: UGC look accessors, name/category helpers
+extern void FUN_140631ff0(CItemUgc*, CUgcItemLook*);
+extern __int64 FUN_140632050(CItemUgc*);
+extern void FUN_140632070(CItemUgc*, CUgcItemLook*);
+extern __int64 FUN_1406320c0(CItemUgc*);
+
+// @0x140525c60
+int CItem::FUN_140525c60()
+{
+    return 0 < FUN_140528910();
+}
+MS2_REPLACE_METHOD(0x140525C60, CItem, FUN_140525c60, 51, 0x6105C5B1);
+
+// @0x140527a90
+unsigned CItem::FUN_140527a90(size_t nIndex)
+{
+    if (m_68 != 0 && m_spData->FUN_14053d510())
+        return m_68;
+    return m_spData->FUN_14053eba0()->FUN_14054b2f0(nIndex)->FUN_1405451a0();
+}
+MS2_REPLACE_METHOD(0x140527A90, CItem, FUN_140527a90, 122, 0x4D291B02);
+
+// @0x140528230
+CString CItem::FUN_140528230()
+{
+    if (m_spData == NULL)
+        return CString("");
+    return m_spData->property.category;
+}
+MS2_REPLACE_METHOD(0x140528230, CItem, FUN_140528230, 146, 0xD05BE2EF);
+
+// @0x140528300
+void CItem::FUN_140528300(CUgcItemLook* pLook)
+{
+    if (pLook == 0)
+        return;
+    if (FUN_140525f10() == 0 && FUN_140526010() == 0)
+        return;
+    if (static_cast<CItemUgc*>(m_spUgc) != 0)
+        FUN_140631ff0(m_spUgc.get(), pLook);
+}
+MS2_REPLACE_METHOD(0x140528300, CItem, FUN_140528300, 115, 0x85D67BAB);
+
+// @0x140528380
+CUgcItemLook* CItem::FUN_140528380()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return &m_spUgc->m_look;
+}
+MS2_REPLACE_METHOD(0x140528380, CItem, FUN_140528380, 69, 0x9943DD56);
+
+// @0x1405283d0
+unsigned __int64 CItem::FUN_1405283d0()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return FUN_140632030(m_spUgc.get());
+}
+MS2_REPLACE_METHOD(0x1405283D0, CItem, FUN_1405283d0, 73, 0x2AB13BCA);
+
+// @0x140528420
+__int64 CItem::FUN_140528420()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return FUN_140632050(m_spUgc.get());
+}
+MS2_REPLACE_METHOD(0x140528420, CItem, FUN_140528420, 73, 0x96D2DFC9);
+
+// @0x140528470
+void CItem::FUN_140528470(CUgcItemLook* pLook)
+{
+    if (pLook == 0)
+        return;
+    if (FUN_140526010() == 0)
+        return;
+    if (FUN_1405276c0() != 35200000)
+        return;
+    if (static_cast<CItemUgc*>(m_spUgc) != 0)
+        FUN_140632070(m_spUgc.get(), pLook);
+}
+MS2_REPLACE_METHOD(0x140528470, CItem, FUN_140528470, 120, 0xEA20A929);
+
+// @0x1405284f0
+CUgcItemLook* CItem::FUN_1405284f0()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return reinterpret_cast<CUgcItemLook*>(m_spUgc->m_pad80);
+}
+MS2_REPLACE_METHOD(0x1405284F0, CItem, FUN_1405284f0, 71, 0x33B685AE);
+
+// @0x140528540
+__int64 CItem::FUN_140528540()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return FUN_1406320c0(m_spUgc.get());
+}
+MS2_REPLACE_METHOD(0x140528540, CItem, FUN_140528540, 73, 0x78F83810);
+
+// ---- w101 batch 4: couple/gem/effect-name helpers
+class Unk_OptionData : public CPtred { public: int FUN_1405d5fe0(int); };
+class Unk_OptionMgr { public: MS2Ptr<Unk_OptionData> FUN_1405f6010(int); };
+extern Unk_OptionMgr* FUN_140166430();
+extern bool FUN_14036d570(void*, int);
+extern int FUN_14088de00(MS2Ptr<CItemData>);
+extern int FUN_14062d6f0(void*, int, int, MS2Ptr<CItemData>);
+extern int FUN_1406320e0(CItemUgc*);
+extern unsigned FUN_14062d4b0(void*, int, int, MS2Ptr<CItemData>);
+
+// @0x140528840
+int CItem::FUN_140528840()
+{
+    if (static_cast<CItemUgc*>(m_spUgc) != 0 ? true : false)
+    {
+        if (FUN_1406320e0(m_spUgc.get()) != 0)
+            return FUN_14088de00(m_spData);
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140528840, CItem, FUN_140528840, 143, 0x5DF16F86);
+
+// @0x140529410
+CStringW CItem::FUN_140529410()
+{
+    MS2_ASSERT_MSG_AT(0xb3a, L"m_pCoupleInfo != NULL", m_spCouple != NULL);
+    return m_spCouple->m_str20;
+}
+MS2_REPLACE_METHOD(0x140529410, CItem, FUN_140529410, 132, 0x5F30A84A);
+
+// @0x140529560
+int CItem::FUN_140529560()
+{
+    if (!FUN_14036d570(FUN_140166410(), 0x2e))
+        return 0;
+    if (FUN_140527840() == 0)
+        return 0;
+    if (!FUN_140527840()->FUN_14053e940())
+        return 0;
+    if (FUN_140525c60() != 0 && FUN_140527840()->property.socketDataId == 0)
+        return 0;
+    if ((unsigned)FUN_140529260() > 0)
+        return 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x140529560, CItem, FUN_140529560, 151, 0x8A8E3DC7);
+
+// @0x140529de0
+CStringW CItem::FUN_140529de0()
+{
+    if (FUN_140525a30() == 0)
+        return CStringW(L"");
+    if (!m_spGem)
+        return CStringW(L"");
+    return m_spGem->FUN_1405a7d60();
+}
+MS2_REPLACE_METHOD(0x140529DE0, CItem, FUN_140529de0, 187, 0x2B386C86);
+
+// @0x140529eb0
+CString CItem::FUN_140529eb0()
+{
+    return FUN_140529f60(m_spData->FUN_14053c620(), FUN_140526fc0(), FUN_140527270(), m_spData->effect.enchantShape);
+}
+MS2_REPLACE_METHOD(0x140529EB0, CItem, FUN_140529eb0, 168, 0xB191BA0F);
+
+// @0x140529f60
+CString CItem::FUN_140529f60(int nA, int nB, int nC, unsigned nD)
+{
+    return FUN_140281980()->FUN_140557270(nA, nB, nC, nD);
+}
+MS2_REPLACE_METHOD(0x140529F60, CItem, FUN_140529f60, 97, 0xF4F758D0);
+
+// @0x14052a060
+int CItem::FUN_14052a060()
+{
+    MS2Ptr<Unk_OptionData> spOption = FUN_140166430()->FUN_1405f6010(m_spData->FUN_14053eff0(FUN_140526bd0()));
+    if (spOption == NULL)
+        return 0;
+    return spOption->FUN_1405d5fe0(FUN_140526bd0());
+}
+MS2_REPLACE_METHOD(0x14052A060, CItem, FUN_14052a060, 197, 0x509A0B26);
+
+// @0x14052b370
+void CItem::FUN_14052b370()
+{
+    int nMax = FUN_14062d6f0(FUN_14052d200(), m_spData->property.socketDataId, FUN_140526bd0(),
+        MS2Ptr<CItemData>(FUN_140527840()));
+    FUN_14052b420(nMax);
+}
+MS2_REPLACE_METHOD(0x14052B370, CItem, FUN_14052b370, 162, 0x8FD3EAB9);
+
+// @0x14052b420
+int CItem::FUN_14052b420(unsigned nMax)
+{
+    if (!FUN_14036d570(FUN_140166410(), 0x2e))
+        return 1;
+    if (!FUN_140527840()->FUN_14053cbc0())
+        return 1;
+    if (FUN_140527840() == 0)
+        return 1;
+    if (FUN_140525c60() != 0)
+        return 1;
+    unsigned nCur = FUN_14062d4b0(FUN_14052d200(), m_spData->property.socketDataId, FUN_140526bd0(),
+        MS2Ptr<CItemData>(FUN_140527840()));
+    unsigned nUse = nCur < nMax ? nCur : nMax;
+    MS2Ptr<CItemSocket> spSocket = m_spSocket;
+    if (static_cast<CItemSocket*>(spSocket) != 0)
+        spSocket->FUN_140620840(nCur, nUse);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14052B420, CItem, FUN_14052b420, 429, 0x3FB6220B);
+
+// ---- w101 batch 5: binding/slot helpers, string table formatter
+CStringW FormatStringId(int nId, const fmt::ArgList& args);   // 0x14028dee0
+FMT_VARIADIC_W(CStringW, FormatStringId, int)
+template CStringW FormatStringId<CStringW>(int, const CStringW&);   // 0x14052bd00
+
+extern int FUN_14052a7e0(MS2Ptr<CItem>, MS2Ptr<CItem>);
+
+// @0x14052b5e0
+unsigned char CItem::FUN_14052b5e0(void* pA, void* pB)
+{
+    if (FUN_140527930() == 0)
+        return 0;
+    return FUN_140527930()->FUN_1406351f0(pA, pB);
+}
+MS2_REPLACE_METHOD(0x14052B5E0, CItem, FUN_14052b5e0, 71, 0x6D360F0B);
+
+// @0x14052b670
+bool CItem::FUN_14052b670(MS2Ptr<CItem> spItem)
+{
+    if (spItem == NULL)
+        return false;
+    __int64 n64 = spItem->FUN_140528e00();
+    unsigned n32 = spItem->FUN_140528ca0();
+    FUN_14052b710(&n32, &n64);
+    return true;
+}
+MS2_REPLACE_METHOD(0x14052B670, CItem, FUN_14052b670, 154, 0xE6542247);
+
+// @0x14052b870
+// MS2-FUNCTIONAL: the by-value parameter's destructor is the folded exe copy 0x14027e150 (outside the unit); the body is identical
+void CItem::FUN_14052b870(Unk_ItemSlot188 slot)
+{
+    m_slot188 = slot;
+}
+
+// @0x14052b8c0
+Unk_ItemSlot188 CItem::FUN_14052b8c0()
+{
+    return m_slot188;
+}
+MS2_REPLACE_METHOD(0x14052B8C0, CItem, FUN_14052b8c0, 67, 0xBDDFB3B2);
+
+// @0x14052b910
+int FUN_14052b910(const MS2Ptr<CItem>& rFirst, const MS2Ptr<CItem>& rSecond)
+{
+    MS2Ptr<CItem> spFirst = rFirst;
+    MS2Ptr<CItem> spSecond = rSecond;
+    return FUN_14052a7e0(spFirst, spSecond);
+}
+
+// ---- w101 batch 6: UGC / gem display names
+class Unk_StringTbl { public: CStringW FUN_141811980(int nTable, int nIndex); };
+extern Unk_StringTbl* FUN_1401a9d70();
+extern CString FUN_14016a5c0(const char* psz, int n);
+extern CStringW FUN_14183e9c0(CStringW strName, int nRank);
+
+// @0x140528010
+CStringW CItem::FUN_140528010()
+{
+    CStringW strName = FUN_1401a9d70()->FUN_141811980(1, FUN_1405276c0());
+    if (static_cast<CItemUgc*>(m_spUgc) != 0)
+    {
+        bool bNamed = m_spUgc->m_look.FUN_140892ec0().GetLength() > 0;
+        if (bNamed)
+            return m_spUgc->m_look.title;
+    }
+    return strName;
+}
+MS2_REPLACE_METHOD(0x140528010, CItem, FUN_140528010, 322, 0x89EAC3CB);
+
+// @0x140528160
+CStringW CItem::FUN_140528160()
+{
+    return FUN_14183e9c0(FUN_140527b10(), FUN_140526bd0());
+}
+
+// @0x140528590
+CString CItem::FUN_140528590()
+{
+    if (m_strName.GetLength() > 0)
+        return m_strName;
+    if ((static_cast<CItemUgc*>(m_spUgc) != 0 ? true : false) && FUN_1406320e0(m_spUgc.get()) != 0)
+    {
+        if (m_spUgc->FUN_1406321a0() == 1)
+            return m_spData->FUN_14053fdd0();
+        return FUN_14016a5c0(m_spUgc->FUN_140632100(), 0);
+    }
+    if (FUN_140527840()->FUN_14053cd10())
+        return FUN_140529cb0();
+    if ((static_cast<CItemGem*>(m_spGem) != 0 ? true : false) && m_spGem->FUN_1405a7c60() != 0)
+        return FUN_14016a5c0(m_spGem->FUN_1405a7cc0(), 0);
+    return m_spData->FUN_14053fdd0();
+}
+MS2_REPLACE_METHOD(0x140528590, CItem, FUN_140528590, 669, 0x0B183905);
+
+// ---- w101 batch 7: enchant success rate, music/couple names, bind check
+// @0x140528e80
+bool CItem::FUN_140528e80(int nType, __int64 nTime)
+{
+    if (FUN_140528ca0() != nType)
+        return false;
+    if (nType == 1)
+    {
+        if (FUN_140528e00() == nTime)
+            return true;
+    }
+    else if (nType == 0)
+    {
+        __int64 nNow = FUN_140869440();
+        bool bMine = FUN_140528e00() == 0 || nNow >= FUN_140528e00();
+        bool bOther = nTime == 0 || nNow >= nTime;
+        if (bMine && bOther)
+            return true;
+        if (FUN_140528e00() == nTime)
+            return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140528E80, CItem, FUN_140528e80, 254, 0x4CEA5801);
+
+// @0x140528f90
+// MS2-FUNCTIONAL: the exe takes no parameter (no home-slot spill of edx) although uiitemenchantdialog passes one; kept for the shared prototype
+int CItem::FUN_140528f90(int)
+{
+    Unk_ItemEnchantData* pEnchant = FUN_1405278a0();
+    if (pEnchant == 0)
+        return 0;
+    CItemEnchantInfo* pInfo = pEnchant->FUN_140630d60();
+    if (pInfo == 0)
+        return 0;
+    int nRate = 0;
+    int nLevel = pInfo->FUN_14058c5f0() + 1;
+    if (pInfo->FUN_14058c730() != 0)
+    {
+        switch (pInfo->FUN_14058cdc0())
+        {
+        case 0:
+            nRate = FUN_14052d1e0()->FUN_140594750(nLevel);
+            break;
+        case 1:
+            nRate = FUN_14052d1e0()->FUN_1405947c0(nLevel);
+            break;
+        }
+    }
+    else
+    {
+        nRate = FUN_14052d1e0()->FUN_140594720(nLevel);
+    }
+    return nRate;
+}
+
+// @0x1405296c0
+CStringW CItem::FUN_1405296c0()
+{
+    CStringW strName = FUN_1401a9d70()->FUN_141811980(1, FUN_1405276c0());
+    if (!FUN_140527840()->FUN_14053cd10())
+        return strName;
+    if (FUN_140525680() && (static_cast<CItemCustomMusicScore*>(m_spMusic) != 0 ? true : false))
+    {
+        if (!m_spMusic->FUN_140632780())
+            return m_spMusic->m_str28;
+        if (!m_strE0.IsEmpty())
+            return m_strE0;
+    }
+    return strName;
+}
+MS2_REPLACE_METHOD(0x1405296C0, CItem, FUN_1405296c0, 449, 0xB6D03849);
+
+// ---- w101 batch 8: music book names
+// @0x140529890
+CStringW CItem::FUN_140529890()
+{
+    if (!FUN_140527840()->FUN_14053cd10())
+        return CStringW(L"");
+    if (FUN_140525680())
+    {
+        if (m_spMusic == NULL)
+            return CStringW(L"");
+        return m_spMusic->m_str20;
+    }
+    return CStringW(L"");
+}
+MS2_REPLACE_METHOD(0x140529890, CItem, FUN_140529890, 261, 0x7DA563E5);
+
+// @0x1405299a0
+int CItem::FUN_1405299a0()
+{
+    if (!FUN_140527840()->FUN_14053cd10())
+        return 0;
+    if (FUN_140525680())
+    {
+        if (m_spMusic == NULL)
+            return 0;
+        return m_spMusic->m_n18;
+    }
+    MS2Ptr<Unk_IngItem> spIng = FUN_140281980()->FUN_1405565f0(FUN_1405276c0());
+    if (spIng == NULL)
+        return 0;
+    return spIng->FUN_14054ace0();
+}
+MS2_REPLACE_METHOD(0x1405299A0, CItem, FUN_1405299a0, 250, 0xCFD163E1);
+
+// @0x140529cb0
+CString CItem::FUN_140529cb0()
+{
+    CItemCustomMusicScore* pScore;
+    if (FUN_140525680() && (pScore = FUN_140527990()) != 0 && !pScore->FUN_140632780())
+    {
+        unsigned nBook = m_spMusic->m_n1c;
+        MS2Ptr<Unk_MusicBookInfo> spInfo = FUN_14052d1d0()->FUN_14072cc10(nBook);
+        if (static_cast<Unk_MusicBookInfo*>(spInfo) != 0)
+            return spInfo->m_str28;
+    }
+    return m_spData->FUN_14053fdd0();
+}
+MS2_REPLACE_METHOD(0x140529CB0, CItem, FUN_140529cb0, 284, 0x5CFDCA28);
+
+// ---- w101 batch 9: enchant comparison
+// @0x14052a620
+int FUN_14052a620(MS2Ptr<CItem> spFirst, MS2Ptr<CItem> spSecond)
+{
+    for (unsigned i = 0; i < 0x23; ++i)
+    {
+        unsigned nKey = i;
+        int nA = spFirst->FUN_1405278a0()->FUN_14062ffb0(nKey, 0, 5);
+        int nB = spSecond->FUN_1405278a0()->FUN_14062ffb0(nKey, 0, 5);
+        if (nA - nB)
+            return 0;
+    }
+    for (unsigned j = 1; j < 0xcf; ++j)
+    {
+        unsigned nKey = j;
+        int nA = spFirst->FUN_1405278a0()->FUN_140630290(nKey, 0, 5);
+        int nB = spSecond->FUN_1405278a0()->FUN_140630290(nKey, 0, 5);
+        if (nA - nB)
+            return 0;
+    }
+    return 1;
+}
+
+// @0x140529aa0
+CStringW CItem::FUN_140529aa0()
+{
+    if (!FUN_140527840()->FUN_14053cd10())
+        return CStringW(L"");
+    if (FUN_140525680())
+    {
+        if (m_spMusic == NULL)
+            return CStringW(L"");
+        MS2Ptr<Unk_MusicBookInfo> spInfo = FUN_14052d1d0()->FUN_14072cc10(m_spMusic->m_n1c);
+        if (spInfo == NULL)
+            return CStringW(L"");
+        return spInfo->FUN_14072c480();
+    }
+    MS2Ptr<Unk_IngItem> spIng = FUN_140281980()->FUN_1405565f0(FUN_1405276c0());
+    if (spIng == NULL)
+        return CStringW(L"");
+    return spIng->FUN_14054ad20();
+}
+MS2_REPLACE_METHOD(0x140529AA0, CItem, FUN_140529aa0, 516, 0x85FDBEFF);
