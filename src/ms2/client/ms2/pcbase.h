@@ -172,6 +172,7 @@ public:
     int FUN_14166c930();                                    // 0x14166c930 current state id (0: none)
     int FUN_14166cc80();                                    // 0x14166cc80 current sub state
     State* FUN_14166ccb0();                                 // 0x14166ccb0 current state
+    int FUN_14166ce30();                                    // 0x14166ce30 dead (1)
     float FUN_14166da40();                                  // 0x14166da40
     void FUN_14166d820();                                   // 0x14166d820
     void FUN_14166e0a0();                                   // 0x14166e0a0
@@ -187,6 +188,8 @@ public:
     void FUN_141678240(const egf::EntityID& kId, const NiPoint3& kPos);   // 0x141678240
     void FUN_141678290(egf::EntityID kId, NiPoint3 kPos);   // 0x141678290
     void FUN_141678360();                                   // 0x141678360
+    class Ridee* FUN_1416764a0();                           // 0x1416764a0 the ridee this actor rides (scenestategame, w86)
+    void FUN_14166ce70(int nEmotion);                       // 0x14166ce70 (scenestategame packet 0x3f, w86)
 
 public:
     MS2_LAYOUT_FRIEND;

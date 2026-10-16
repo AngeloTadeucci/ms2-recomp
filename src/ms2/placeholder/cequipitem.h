@@ -13,6 +13,7 @@ class CEquipItem : public CPtred
 {
 public:
     MS2Ptr<CItem> FUN_1411dc7a0();                                  // 0x1411dc7a0 the item the slot shows
+    void FUN_1411dd1c0();                                           // 0x1411dd1c0 (scenestategame, w86)
 private:
     char m_pad_18[0xb0 - 0x18];                                     // unrecovered members
 };

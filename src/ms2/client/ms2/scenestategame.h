@@ -13,6 +13,7 @@ class CInPacket;
 class CInputStream;
 class CMsgBoxData;
 class NotifyObject;
+class PCBase;
 
 class CSceneStateGame : public CSceneStateBase, public IWorldServiceCallback
 {
@@ -222,6 +223,7 @@ public:
     void FUN_14173fc40(CInPacket& packet);                  // 0x139
 
     // helpers
+    void FUN_1417127b0(CInPacket& packet, PCBase* pActor);    // read an actor's skill/buff list
     void FUN_141739450(bool bFlag);                         // spawn the taxi-station markers
     void FUN_141739880();                                   // drop the taxi effect (m_nTaxiEffect)
     int FUN_14173fe20();                                    // Ctrl+Alt+... debug key combination
