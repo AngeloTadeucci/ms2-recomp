@@ -19,6 +19,8 @@
 #include "ms2/commonfiles/ugcbuildvalidator.h"
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
 #include "ms2/commonfiles/ugcmapdata.h"
+#include "ms2/placeholder/nipoint3.h"
+#include "ms2/client/ms2/cubespawnobject.h"
 
 // RTTI name; layout from 1410b68a0, storage size 0x70.
 class FittingDollData : public CPtred {
@@ -72,10 +74,11 @@ class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };
 struct Unk_CMISEntityRef
 {
     Unk_CMISEntityRef(const Unk_1401cd100&);
+    bool FUN_140965410(const Unk_1401cd100& none) const;     // operator==
     void* m_p;
 };
 
-struct Unk_CMISObj158; struct Unk_CMISObj208; struct Unk_CMISObj480;
+struct Unk_CMISObj208; struct Unk_CMISObj480;
 
 struct Unk_CMISElem388;
 struct Unk_CMISElem3a8;
@@ -93,6 +96,30 @@ public:
     virtual efd::AsyncResult OnTick();              // 0x1410ce8a0
     virtual efd::AsyncResult OnShutdown();          // 0x1410cef40
 
+    int FUN_1410b76a0();
+    void FUN_1410b76d0();
+    Unk_StreamPoint FUN_1410b7a20(Unk_StreamPoint pt, Unk_StreamPoint* pOut);
+    Unk_StreamPoint FUN_1410b7ad0(PCBase* pActor, float fDist, Unk_StreamPoint* pOut, int bSnap);
+    Unk_StreamPoint FUN_1410b7ba0(Unk_StreamPoint ptFrom, Unk_StreamPoint ptTo, float fDist, Unk_StreamPoint* pOut, int bSnap);
+    bool FUN_1410b7d50();
+    bool FUN_1410b7da0(Unk_StreamPoint pt);
+    bool FUN_1410b7e80(Unk_StreamPoint pt);
+    bool FUN_1410b7ed0(int nKey);
+    bool FUN_1410b7f90(const Unk_Int3* pCell);
+    Unk_CMISTree<287>* FUN_1410b7fe0(int nKey);
+    Cube* FUN_1410b80d0(MS2Ptr<Cube> spCube, int nZ);
+    bool FUN_1410b82c0(MS2Ptr<Cube> spCube);
+    bool FUN_1410b8420(MS2Ptr<Cube> spCube, int nZ);
+    void FUN_1410b85f0(Unk_Int3* pMin, Unk_Int3* pMax);
+    Cube* FUN_1410b8790(Unk_Int3 pt);
+    Cube* FUN_1410b8980(Unk_Int3 pt);
+    Cube* FUN_1410b8a60(Unk_Int3 pt);
+    Cube* FUN_1410b8ab0(Unk_StreamPoint pt);
+    Cube* FUN_1410b8b00(int nKey);
+    Cube* FUN_1410b8be0(const Unk_CMISEntityRef& ref);
+    int FUN_1410d2f40(int nKey);
+    void FUN_1410c68e0();
+    void FUN_1410d0310();
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
@@ -145,7 +172,8 @@ public:
     Unk_CMISTree<267> f128;
     Unk_CMISTree<268> f138;
     Unk_CMISTree<269> f148;
-    Unk_PayloadPtr<Unk_CMISObj158> f158;
+    Unk_EntRef f158;
+    bool f160;                                      // cleared by FUN_1410b76d0
     Timer t168;
     Unk_CMISTree<270> f1a0;
     int f1b0 = 0, f1b4 = 0, f1b8 = 0;
@@ -216,6 +244,7 @@ MS2_CHECK_OFFSET(CubeMapInformationService,f128,0x128);
 MS2_CHECK_OFFSET(CubeMapInformationService,f138,0x138);
 MS2_CHECK_OFFSET(CubeMapInformationService,f148,0x148);
 MS2_CHECK_OFFSET(CubeMapInformationService,f158,0x158);
+MS2_CHECK_OFFSET(CubeMapInformationService,f160,0x160);
 MS2_CHECK_OFFSET(CubeMapInformationService,t168,0x168);
 MS2_CHECK_OFFSET(CubeMapInformationService,f1a0,0x1a0);
 MS2_CHECK_OFFSET(CubeMapInformationService,f1b0,0x1b0);
