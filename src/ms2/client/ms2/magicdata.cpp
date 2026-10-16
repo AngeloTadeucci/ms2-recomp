@@ -22,6 +22,15 @@
 // MS2-PIN: ?SetAt@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@Z 0x14146a960 ; unique
 // MS2-PIN: ?AddRef@?$Unk_SocketPtr@VCMagicData@@@@AEBAXXZ 0x14146aca0 ; prop
 // MS2-PINS-END tplpin
+// hand pins (w98): tplpin unique proposals
+// MS2-PIN: ?New@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@PEAX@Z 0x1414683b0 ; unique
+// MS2-PIN: ??0?$Unk_SocketPtr@VCMagicData@@@@QEAA@H@Z 0x1414688e0 ; unique
+// MS2-PIN: ?Create@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@PEAX@Z 0x14146ae90 ; unique
+// MS2-PIN: ?New@?$Unk_SocketRef@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@SAPEAV?$TPtredDummy@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@PEAX@Z 0x14146d130 ; unique
+// MS2-PIN: ??0?$TPtredDummy@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@QEAA@XZ 0x14146d5e0 ; unique
+// MS2-PIN: ??1?$TPtredDummy@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@UEAA@XZ 0x14146d990 ; unique
+// MS2-PIN: ?Value@?$Unk_SocketRef@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@SAPEAV?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@PEAVCPtred@@@Z 0x14146dbc0 ; unique
+// MS2-PIN: ?ResetNew@?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@AEAAXXZ 0x1414722b0 ; unique
 // MS2-PIN: ??_7CMagicService@@6BISystemService@efd@@@ 0x142f17128
 // MS2-PIN: ??_7CMagicService@@6B?$TSingleton@VCMagicService@@@@@ 0x142f171b0
 // MS2-PIN: ??_7?$TSingleton@VCMagicService@@@@6B@ 0x142f17118
