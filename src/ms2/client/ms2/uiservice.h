@@ -14,8 +14,10 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ccachedata.h"
+#include "ms2/placeholder/ascript.h"
 
 class GFxMovieBackground;
+class UIDialog;
 
 // Opaque exe containers owned by this unit (CAtlMap-shaped, 0x48 bytes; their bodies are unit glue).
 struct Unk_UisMap
@@ -112,9 +114,9 @@ public:
     void* m_pEntitySvc28;                           // +0x28 (OnInit: FUN_14168ab40(service manager))
     void* m_pWorldSvc30;                            // +0x30 (OnInit: FUN_1411d15b0(service manager))
     Unk_UisPtr8 m_x38;                              // +0x38 ctor 0x1416ae2a0, dtor 0x1416aecf0
-    Unk_UisMap m_mapA;                              // +0x40 ctor 0x141aed9e0, clear 0x141af0f00, dtor 0x141aee190
-    Unk_UisMap m_mapDlg;                            // +0x88 class id -> dialog, ctor 0x141aed8f0, clear 0x141af0df0
-    Unk_UisMap m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
+    ATL::CAtlMap<unsigned long long, MS2Ptr<UIDialog> > m_mapA;                              // +0x40 ctor 0x141aed9e0, clear 0x141af0f00, dtor 0x141aee190
+    ATL::CAtlMap<int, MS2Ptr<UIDialog> > m_mapDlg;                            // +0x88 class id -> dialog, ctor 0x141aed8f0, clear 0x141af0df0
+    ATL::CAtlMap<CStringA, MS2Ptr<UIDialog>, ATL::CStringElementTraits<CStringA> > m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
     int m_nMode;                                    // +0x118 initial 0x3ed
     int m_n11c;                                     // +0x11c
     char m_b120;                                    // +0x120

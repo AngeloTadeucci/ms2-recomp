@@ -2,6 +2,82 @@
 // MS2-UNIT: ?\uiservice.cpp
 // MS2-RANGE: 0x14011d200-0x14011d540 .text$di
 // MS2-RANGE: 0x141ad8bc0-0x141af2110 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ?AddRef@?$MS2Ptr@VUIDialog@@@@AEBAXXZ 0x141af1e50 ; unique
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VUIDialog@@@@AEBAXPEAX@Z 0x141af1e80 ; unique
+// MS2-PINS-END tplpin
+// hand pins (w107): m_mapA (last copy) and m_mapC (first copy) CAtlMap members
+// MS2-PIN: ??0?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA@IMMMI@Z 0x141aed9e0
+// MS2-PIN: ?Lookup@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBA_N_KAEAV?$MS2Ptr@VUIDialog@@@@@Z 0x141aefce0
+// MS2-PIN: ?SetAt@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAPEAU__POSITION@@_KAEBV?$MS2Ptr@VUIDialog@@@@@Z 0x141af17b0
+// MS2-PIN: ?RemoveAll@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXXZ 0x141af0f00
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141af11f0
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141aef6d0
+// MS2-PIN: ?GetNext@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetNext@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetValueAt@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAAEBV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?GetValueAt@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAAEAV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?InitHashTable@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA_NI_N@Z 0x141aefa20
+// MS2-PIN: ?Rehash@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXI@Z 0x141af0ab0
+// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXMMM_N@Z 0x141af19e0
+// MS2-PIN: ?IsLocked@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBA_NXZ 0x141aefbd0
+// MS2-PIN: ?PickSize@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBAI_K@Z 0x141af0560
+// MS2-PIN: ?NewNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAPEAVCNode@12@_KII@Z 0x141af0170
+// MS2-PIN: ?FreeNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141aef110
+// MS2-PIN: ?FreePlexes@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXXZ 0x141aef2b0
+// MS2-PIN: ?CreateNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAPEAVCNode@12@_KII@Z 0x141aeeb20
+// MS2-PIN: ?RemoveNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141af1520
+// MS2-PIN: ?FindNextNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141aeee50
+// MS2-PIN: ??1?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA@XZ 0x141aee190
+// MS2-PIN: ??0CNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA@_KI@Z 0x141aedfe0
+// MS2-PIN: ??_GCNode@?$CAtlMap@_KV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAPEAXI@Z 0x141aee770
+// MS2-PIN: ??0?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAA@IMMMI@Z 0x141aed800
+// MS2-PIN: ?Lookup@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEBA_NPEBDAEAV?$MS2Ptr@VUIDialog@@@@@Z 0x141aefc00
+// MS2-PIN: ?SetAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAPEAU__POSITION@@PEBDAEBV?$MS2Ptr@VUIDialog@@@@@Z 0x141af1650
+// MS2-PIN: ?RemoveAll@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAXXZ 0x141af0ce0
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141af1010
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141aef6d0
+// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEBAAEBV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAAEAV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?InitHashTable@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAA_NI_N@Z 0x141aef7e0
+// MS2-PIN: ?Rehash@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAXI@Z 0x141af0650
+// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAXMMM_N@Z 0x141af1880
+// MS2-PIN: ?IsLocked@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEBA_NXZ 0x141aefb70
+// MS2-PIN: ?PickSize@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEBAI_K@Z 0x141af0380
+// MS2-PIN: ?NewNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aefd50
+// MS2-PIN: ?FreeNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEAAXPEAVCNode@12@@Z 0x141aeef10
+// MS2-PIN: ?FreePlexes@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEAAXXZ 0x141aef210
+// MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEBAPEAVCNode@12@PEBDAEAI1AEAPEAV312@@Z 0x141aef3c0
+// MS2-PIN: ?CreateNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aeea20
+// MS2-PIN: ?RemoveNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141af13a0
+// MS2-PIN: ?FindNextNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141aeee50
+// MS2-PIN: ??1?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAA@XZ 0x141aee130
+// MS2-PIN: ??0CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@IEAA@PEBD@Z 0x141aee020
+// MS2-PIN: ??1CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAA@XZ 0x141aee320
+// MS2-PIN: ??0CNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAA@PEBDI@Z 0x141aedf60
+// MS2-PIN: ??_GCNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIDialog@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@2@@ATL@@QEAAPEAXI@Z 0x141aee6f0
+// hand pins (w107): middle copy of the 3 identical CAtlMap member COMDATs = m_mapDlg
+// MS2-PIN: ??0?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA@IMMMI@Z 0x141aed8f0
+// MS2-PIN: ?RemoveAll@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXXZ 0x141af0df0
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141af1100
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141aef6d0
+// MS2-PIN: ?GetNext@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetNext@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEBAAEBV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAAEAV?$MS2Ptr@VUIDialog@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?InitHashTable@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA_NI_N@Z 0x141aef900
+// MS2-PIN: ?Rehash@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXI@Z 0x141af0880
+// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAXMMM_N@Z 0x141af1930
+// MS2-PIN: ?IsLocked@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBA_NXZ 0x141aefba0
+// MS2-PIN: ?PickSize@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBAI_K@Z 0x141af0470
+// MS2-PIN: ?FreeNode@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141aef010
+// MS2-PIN: ?FreePlexes@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXXZ 0x141aef260
+// MS2-PIN: ?RemoveNode@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141af1460
+// MS2-PIN: ?FindNextNode@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141aeee50
+// MS2-PIN: ??1?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAA@XZ 0x141aee160
+// MS2-PIN: ??_GCNode@?$CAtlMap@HV?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@3@@ATL@@QEAAPEAXI@Z 0x141aee730
 // MS2-PIN: ??_7CUIService@@6BISystemService@efd@@@ 0x142fe2580
 // MS2-PIN: ??_7CUIService@@6B?$TSingleton@VCUIService@@@@@ 0x142fe2608
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uiservice.cpp"
@@ -146,13 +222,10 @@ inline TSingleton<CUIService>::TSingleton() { s_instance = static_cast<CUIServic
 // @0x141ad8bc0
 // MS2-FUNCTIONAL: container glue called through the exe; branch/temporary layout differs
 CUIService::CUIService()
-    : m_nMode(0x3ed), m_n11c(0), m_b120(0), m_n124(0), m_n128(0), m_n12c(0), m_n130(0), m_nCursor(0)
+    : m_mapA(17, 0.75f, 0.25f, 2.25f, 10), m_mapDlg(17, 0.75f, 0.25f, 2.25f, 10), m_mapC(17, 0.75f, 0.25f, 2.25f, 10), m_nMode(0x3ed), m_n11c(0), m_b120(0), m_n124(0), m_n128(0), m_n12c(0), m_n130(0), m_nCursor(0)
 {
     m_pWorldSvc30 = 0;
     FUN_1416ae2a0(&m_x38, 0);
-    FUN_141aed9e0(&m_mapA, 0x11, 0.75f, 0.25f, 2.25f, 10);
-    FUN_141aed8f0(&m_mapDlg, 0x11, 0.75f, 0.25f, 2.25f, 10);
-    FUN_141aed800(&m_mapC, 0x11, 0.75f, 0.25f, 2.25f, 10);
     FUN_140163400(&m_mapOpen, 0x11, 0.75f, 0.25f, 2.25f, 10);
     FUN_140163400(&m_mapOpen2, 0x11, 0.75f, 0.25f, 2.25f, 10);
     FUN_141926ff0(&m_listOpen, 10);
@@ -193,9 +266,6 @@ CUIService::~CUIService()
     FUN_141927180(&m_listOpen);
     FUN_1401642a0(&m_mapOpen2);
     FUN_1401642a0(&m_mapOpen);
-    FUN_141aee130(&m_mapC);
-    FUN_141aee160(&m_mapDlg);
-    FUN_141aee190(&m_mapA);
     FUN_1416aecf0(&m_x38);
 }
 
@@ -231,9 +301,9 @@ void FUN_1405a8650(void* p);
 void CUIService::FUN_141ad9350()
 {
     FUN_141adc050();
-    FUN_141af0f00(&m_mapA);
-    FUN_141af0df0(&m_mapDlg);
-    FUN_141af0ce0(&m_mapC);
+    m_mapA.RemoveAll();
+    m_mapDlg.RemoveAll();
+    m_mapC.RemoveAll();
 }
 
 // @0x141ad9980
@@ -590,3 +660,7 @@ efd::AsyncResult CUIService::OnShutdown()
     FUN_141aece70();
     return efd::AsyncResult_Complete;
 }
+
+template class ATL::CAtlMap<int, MS2Ptr<UIDialog> >;
+template class ATL::CAtlMap<unsigned long long, MS2Ptr<UIDialog> >;
+template class ATL::CAtlMap<CStringA, MS2Ptr<UIDialog>, ATL::CStringElementTraits<CStringA> >;
