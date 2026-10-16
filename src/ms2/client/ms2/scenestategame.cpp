@@ -5892,6 +5892,96 @@ void CSceneStateGame::FUN_1417235a0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x1417235a0, CSceneStateGame, FUN_1417235a0, 202, 0x35B1E1B2);
 
+// Packet 0x74: the item merge option dialog (0x4e68) and the merge revert dialog (0x4f3d).
+class UIItemMergeOptionDialog : public UIDialog
+{
+public:
+    void FUN_1419d0ef0(CInPacket& packet);
+    void FUN_1419d11b0(CInPacket& packet);
+    void FUN_1419d12f0(CInPacket& packet);
+    void FUN_1419d1490(int nA, int nB, int nC);
+    void FUN_1419d1ad0(MS2Ptr<CItem> spItem);
+    void FUN_1419d1d20(int nError);
+};
+UIItemMergeOptionDialog* FUN_14123a9b0(int nId);            // GetDialog<UIItemMergeOptionDialog>
+class UIItemMergeRevertDialog : public UIDialog { public: void FUN_140e4cda0(CItem* pItem); };
+UIItemMergeRevertDialog* FUN_140d274e0(int nId);            // GetDialog<UIItemMergeRevertDialog>
+MS2Ptr<CItem> FUN_1419be700(unsigned __int64 nItemUid);    // inventory or equipped item
+// @0x141729ce0
+void CSceneStateGame::FUN_141729ce0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+        if (pDlg != 0)
+            pDlg->FUN_1419d0ef0(packet);
+    }
+    else if (nMode == 1)
+    {
+        UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+        if (pDlg != 0)
+            pDlg->FUN_1419d11b0(packet);
+    }
+    else if (nMode == 2)
+    {
+        UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+        if (pDlg != 0)
+            pDlg->FUN_1419d12f0(packet);
+    }
+    else if (nMode == 6)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (spItem.get() != 0)
+        {
+            spItem->FUN_140524eb0(packet);
+            UIItemMergeRevertDialog* pDlg = FUN_140d274e0(0x4f3d);
+            if (pDlg != 0)
+                pDlg->FUN_140e4cda0(spItem.get());
+        }
+    }
+    else if (nMode == 4)
+    {
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+        if (pDlg != 0)
+            pDlg->FUN_1419d1490(nA, nB, nC);
+    }
+    else if (nMode == 5)
+    {
+        int nError = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        if (nError == 0)
+        {
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            MS2Ptr<CItem> spItem = FUN_1419be700(nItemUid);
+            if (spItem.get() != 0)
+            {
+                spItem->FUN_140524eb0(packet);
+                UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+                if (pDlg != 0)
+                    pDlg->FUN_1419d1ad0(spItem);
+                int bInInventory = DAT_143ab2a90.FUN_140a5d680(nItemUid).get() != 0;
+                if (!bInInventory)
+                {
+                    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+                    if (pMyPC != 0)
+                        pMyPC->FUN_1416561a0()->FUN_1411e7660();
+                }
+            }
+        }
+        else
+        {
+            UIItemMergeOptionDialog* pDlg = FUN_14123a9b0(0x4e68);
+            if (pDlg != 0)
+                pDlg->FUN_1419d1d20(nError);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141729ce0, CSceneStateGame, FUN_141729ce0, 1232, 0xC6F49804);
+
 // @0x14172a1c0
 void CSceneStateGame::FUN_14172a1c0(CInPacket& packet)
 {
@@ -6013,7 +6103,6 @@ public:
     void FUN_1419c41b0();
 };
 UIItemEnchantDialog* FUN_1413b1bc0(int nId);
-MS2Ptr<CItem> FUN_1419be700(unsigned __int64 nItemUid);    // inventory or equipped item
 class CItemEnchantInfo { public: int FUN_14058c5f0(); };    // the enchant level
 class Unk_ItemEnchantData { public: CItemEnchantInfo* FUN_140630d60(); };   // CItemStatus
 void FUN_140d73ff0(CStringW strKey);                        // system message box by string key
