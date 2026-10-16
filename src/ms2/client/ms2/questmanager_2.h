@@ -108,6 +108,12 @@ public:
     int FUN_1416cfc10(int);
     void FUN_1416cfc60(int);
     void FUN_1416cfc70(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>&, int, int);
+    int FUN_1416cfe20();
+    int FUN_1416cff70();
+    int FUN_1416d0260(MS2Ptr<class CLearningQuestData>, int);
+    int FUN_1416d0530();
+    int FUN_1416d0f60(int);
+    unsigned FUN_1416d1100(int, int, int*);
     int FUN_1416d00c0();
     int FUN_1416d0100();
     int FUN_1416d0150();

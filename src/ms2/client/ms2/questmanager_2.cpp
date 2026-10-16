@@ -33,6 +33,8 @@
 #include "ms2/client/ms2/uidialog.h"
 #include "ms2/client/ms2/inventory.h"
 #include "ms2/client/ms2/uiquesteventlistener.h"
+#include "ms2/commonfiles/learningquesttable.h"
+#include "ms2/commonfiles/chapterbooktable.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -176,6 +178,11 @@ MS2Ptr<CQuestData> FUN_14074bc40(int questId);
 int FUN_14074b050(CQuestData* data);
 int FUN_14074b070(CQuestData* data);
 CFieldMetaTable* FUN_140700390();
+CLearningQuestTable* FUN_140ea4060();
+CChapterBookTable* FUN_140e0a9f0();
+bool FUN_140764040(CQuestData*);
+bool FUN_140764080(CQuestData*);
+bool FUN_1407640c0(CQuestData*);
 int FUN_14074b210(CQuestData* data);
 int FUN_1407474d0(const ATL::CAtlArray<int>* values, const int* value);   // index of value, or -1
 void FUN_140d73bc0(int id, int a, void* b, CStringW text);
@@ -255,6 +262,11 @@ template<> ATL::CAtlArray<Unk_QuestItemLink>::CAtlArray() throw();
 template<> ATL::CAtlArray<Unk_QuestItemLink>::~CAtlArray() throw();
 template<> size_t ATL::CAtlArray<Unk_QuestItemLink>::GetCount() const throw();
 template<> Unk_QuestItemLink& ATL::CAtlArray<Unk_QuestItemLink>::operator[](size_t) throw();
+// CAtlArray<MS2Ptr<CLearningQuestData>> members live with the learning quest UI (0x140ea3c70..0x140ea4040).
+template<> ATL::CAtlArray<CLearningQuestTable::DataPtr>::CAtlArray() throw();
+template<> ATL::CAtlArray<CLearningQuestTable::DataPtr>::~CAtlArray() throw();
+template<> size_t ATL::CAtlArray<CLearningQuestTable::DataPtr>::GetCount() const throw();
+template<> CLearningQuestTable::DataPtr& ATL::CAtlArray<CLearningQuestTable::DataPtr>::operator[](size_t) throw();
 
 // @0x1416c7fd0
 CQuestManager::CQuestManager()
@@ -1219,6 +1231,40 @@ void CQuestManager::FUN_1416cfc70(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>& out, i
 }
 MS2_REPLACE_METHOD(0x1416cfc70, CQuestManager, FUN_1416cfc70, 415, 0x2680E591);
 
+// @0x1416cfe20
+int CQuestManager::FUN_1416cfe20()
+{
+    int count = 0;
+    for (POSITION pos = m_quests50.GetHeadPosition(); pos != 0; m_quests50.GetNext(pos)) {
+        Unk_PayloadPtr<CQuest> quest = m_quests50.GetValueAt(pos);
+        if (quest->IsComplete() == 0) continue;
+        switch (quest->GetData()->m_338.m_value) {
+        case 3: case 4: case 5:
+            count++;
+            break;
+        }
+    }
+    return count;
+}
+MS2_REPLACE_METHOD(0x1416cfe20, CQuestManager, FUN_1416cfe20, 328, 0x5CA6FBBD);
+
+// @0x1416cff70
+int CQuestManager::FUN_1416cff70()
+{
+    int count = 0;
+    for (POSITION pos = m_quests50.GetHeadPosition(); pos != 0; m_quests50.GetNext(pos)) {
+        Unk_PayloadPtr<CQuest> quest = m_quests50.GetValueAt(pos);
+        if (quest->IsComplete() == 0) continue;
+        switch (quest->GetData()->m_338.m_value) {
+        case 1: case 2:
+            count++;
+            break;
+        }
+    }
+    return count;
+}
+MS2_REPLACE_METHOD(0x1416cff70, CQuestManager, FUN_1416cff70, 328, 0x568D72E6);
+
 // @0x1416d00c0
 int CQuestManager::FUN_1416d00c0()
 {
@@ -1256,6 +1302,40 @@ int CQuestManager::FUN_1416d0210()
     return m_group == FUN_14037c610(FUN_140d738f0());
 }
 MS2_REPLACE_METHOD(0x1416d0210, CQuestManager, FUN_1416d0210, 62, 0xD8B73C66);
+
+// @0x1416d0260
+int CQuestManager::FUN_1416d0260(MS2Ptr<CLearningQuestData> learning, int checkRequirements)
+{
+    if (!learning) return 0;
+    PCBase* player = static_cast<PCBase*>(FUN_141bd0cc0(FUN_1403ed2d0()));
+    if (player == 0) return 0;
+    if (checkRequirements != 0) {
+        if (learning->m_nReqField != 0 && learning->m_nReqField != FUN_1403ed2d0()->FUN_141bd3060()) return 0;
+        if (learning->m_nReqLevel > static_cast<unsigned short>(player->vfunc_78())) return 0;
+    }
+    MS2Ptr<CQuestData> data = FUN_14074bc40(learning->m_nReqQuest);
+    if (data.IsNull()) return 0;
+    if (FUN_140745630(learning->m_nReqQuest) != 0 || FUN_140745590(learning->m_nReqQuest) != 0) {
+        if (FUN_1416ce3d0(data->m_28) != 0) return 0;
+    } else if (vfunc_1(learning->m_nReqQuest, 0) == 0) {
+        return 0;
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416d0260, CQuestManager, FUN_1416d0260, 701, 0x0FE8655A);
+
+// @0x1416d0530
+int CQuestManager::FUN_1416d0530()
+{
+    ATL::CAtlArray<CLearningQuestTable::DataPtr> rows;
+    FUN_140ea4060()->GetAll(rows);
+    int count = 0;
+    for (size_t i = 0; i < rows.GetCount(); i++) {
+        if (FUN_1416d0260(rows[i], 0) != 0) count++;
+    }
+    return count;
+}
+MS2_REPLACE_METHOD(0x1416d0530, CQuestManager, FUN_1416d0530, 209, 0x315C3DCF);
 
 // @0x1416d0610
 int CQuestManager::FUN_1416d0610()
@@ -1379,6 +1459,50 @@ bool CQuestManager::FUN_1416d0ea0(int result, const CMsgBoxData& message)
     return true;
 }
 MS2_REPLACE_METHOD(0x1416d0ea0, CQuestManager, FUN_1416d0ea0, 186, 0x7E1A7D4B);
+
+// @0x1416d0f60
+int CQuestManager::FUN_1416d0f60(int epilogue)
+{
+    ATL::CAtlArray<CChapterBookTable::DataPtr> books;
+    FUN_140e0a9f0()->GetByEpilogue(epilogue, books);
+    for (size_t i = 0; i < books.GetCount(); i++) {
+        CChapterBookTable::DataPtr book = books[i];
+        if (FUN_140745590(book->m_nPrologue) != 0) return book->m_nId;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416d0f60, CQuestManager, FUN_1416d0f60, 248, 0xB2F5179C);
+
+// @0x1416d1100
+unsigned CQuestManager::FUN_1416d1100(int npcId, int questId, int* state)
+{
+    unsigned flags = 0;
+    if (FUN_140764020()->vfunc_1(questId, npcId) != 0) {
+        *state = 0;
+        flags |= 0x20;
+    } else if (FUN_140764020()->FUN_140746850(questId, npcId, 0) != 0) {
+        *state = 1;
+        flags |= 0x10;
+    } else if (FUN_140764020()->FUN_140746ba0(questId, npcId, 0) == 0) {
+        *state = 2;
+        flags |= 0x30;
+    } else {
+        *state = 4;
+        return 0;
+    }
+    MS2Ptr<CQuestData> data = FUN_14074bc40(questId);
+    if (data.IsNull()) return 0;
+    if (FUN_140764040(data.operator->()))
+        flags |= 4;
+    else if (FUN_140764080(data.operator->()))
+        flags |= 3;
+    else if (FUN_1407640c0(data.operator->()))
+        flags |= 1;
+    else
+        flags |= 2;
+    return flags;
+}
+MS2_REPLACE_METHOD(0x1416d1100, CQuestManager, FUN_1416d1100, 449, 0x7A2F3290);
 
 // @0x1416d1060
 void CQuestManager::FUN_1416d1060(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>& out)
