@@ -187,6 +187,8 @@ public:
     class Unk_SSGNpc* FUN_141bd1320(int nId);
     class CPet* FUN_141bd13a0(int nId);
     void FUN_141bc92e0(CString strName);
+    void FUN_141bc9020(CString strName, MS2Ptr<Unk_PCBaseComp_b18> spSkill, CString strBone, unsigned char nFlag);   // 0x75 start a named field skill
+    void FUN_141bc9560(CString strName, CString strModel, unsigned char nFlag);   // 0x75 mode 2
     void FUN_141bc9480(CString strName);
     void FUN_141bca220();
     void FUN_141bca6d0(CInPacket& packet);
@@ -823,7 +825,9 @@ public:
     float m_fSpeed;                                         // +0x74 the caster's speed scale
     char m_pad_78[0x8c - 0x78];
     unsigned int m_nMotion;                                 // +0x8c the motion index of the cast
-    char m_pad_90[0xa0 - 0x90];
+    char m_pad_90[0x94 - 0x90];
+    unsigned int m_n94;                                     // +0x94 (packet 0x75)
+    char m_pad_98[0xa0 - 0x98];
     int m_nA0;                                              // +0xa0 nonzero: the cast is finished (no new projectiles)
     char m_pad_a4[0xb0 - 0xa4];
     int m_nExtra;                                           // +0xb0 option 0xae: the extra id of the cast
@@ -5829,6 +5833,43 @@ void CSceneStateGame::FUN_1417235a0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x1417235a0, CSceneStateGame, FUN_1417235a0, 202, 0x35B1E1B2);
+
+// @0x14172a1c0
+void CSceneStateGame::FUN_14172a1c0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0 || nMode == 1)
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        __int64 nCastUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        unsigned short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        int nMotion = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int n94 = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_11();
+        int nSerial = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CString strBone = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        unsigned char nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_InventorySkillRequest kReq(nSkillId, nLevel);
+        kReq.serial = nSerial;
+        kReq.tick = nCastUid;
+        kReq.unknown14 = nMotion;
+        kReq.origin = kPos;
+        MS2Ptr<Unk_PCBaseComp_b18> spSkill(new Unk_PCBaseComp_b18());
+        if (!spSkill->FUN_1417595d0(kReq))
+            return;
+        spSkill->m_n94 = n94;
+        FUN_1403ed2d0()->FUN_141bc9020(strName, spSkill, strBone, nFlag);
+    }
+    if (nMode == 2)
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CString strModel = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        unsigned char nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        FUN_1403ed2d0()->FUN_141bc9560(strName, strModel, nFlag);
+    }
+}
+MS2_REPLACE_METHOD(0x14172a1c0, CSceneStateGame, FUN_14172a1c0, 1501, 0x7E67768A);
 
 // @0x14172a7b0
 void CSceneStateGame::FUN_14172a7b0(CInPacket& packet)
