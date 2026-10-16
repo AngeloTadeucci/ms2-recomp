@@ -18,6 +18,7 @@
 
 class GFxMovieBackground;
 class UIDialog;
+struct Unk_UisDlgSlot;
 
 // Opaque exe containers owned by this unit (CAtlMap-shaped, 0x48 bytes; their bodies are unit glue).
 struct Unk_UisMap
@@ -109,6 +110,8 @@ public:
     void FUN_141adbe70();                                              // 0x141adbe70
     void FUN_141adbf30();                                              // 0x141adbf30
     void FUN_141adbf70(int n);                                         // 0x141adbf70
+    void FUN_141aebfa0(Unk_UisDlgSlot* pSlot);                   // 0x141aebfa0 register a dialog (class id / name tables)
+    void FUN_141aec080(Unk_UisDlgSlot* pSlot);                   // 0x141aec080
     // @@
 
     void* m_pEntitySvc28;                           // +0x28 (OnInit: FUN_14168ab40(service manager))

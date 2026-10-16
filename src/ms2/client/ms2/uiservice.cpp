@@ -530,7 +530,7 @@ void* FUN_140a44830();
 void FUN_1401ce3d0(void* p, TFunctor<void, EmptyParam>& fn);
 void* FUN_141aee920();
 void FUN_140cf10d0(void* p);
-extern char DAT_143d6eb58[];
+extern char DAT_143d6eb58;
 unsigned FUN_14086d260();
 unsigned FUN_141473230(void* p);
 char FUN_14140ea60(void* pList);
@@ -542,7 +542,7 @@ void FUN_141aef370(void* pMap, void* pPos);
 void* FUN_141aee510(void* p);
 void* FUN_141aee520(void* p);
 void FUN_141aee3b0(void* p, int n);
-void NiDebugVisualizationClick_ProcessScene(void* p);
+void FUN_141e30f30(void* p);
 char FUN_1401d1320(void* pCache);
 void* FUN_140e45740();
 void FUN_1422e6960(void* p);
@@ -578,7 +578,7 @@ efd::AsyncResult CUIService::OnInit()
         return efd::AsyncResult_Complete;
     FUN_141adf250();
     FUN_141adf580();
-    void* pEvt = FUN_14098d8d0(DAT_143d6eb58, FUN_140994450());
+    void* pEvt = FUN_14098d8d0(&DAT_143d6eb58, FUN_140994450());
     FUN_1411d7c70(pEvt, &CUIService::FUN_141ade1f0, this);
     FUN_1411d7c10(pEvt, &CUIService::FUN_141ade2d0, this);
     TFunctor<void, EmptyParam> fnReset(this, &CUIService::FUN_141aece70);
@@ -617,7 +617,7 @@ efd::AsyncResult CUIService::OnTick()
         (void)pDlg;
     }
     if (FUN_141aee510(&m_x268) != 0)
-        NiDebugVisualizationClick_ProcessScene(FUN_141aee520(&m_x268));
+        FUN_141e30f30(FUN_141aee520(&m_x268));
     FUN_141aec9c0();
     if (FUN_1401d1320(&m_cache))
     {
@@ -649,6 +649,2856 @@ efd::AsyncResult CUIService::OnShutdown()
         FUN_141aee3b0(&m_x268, 0);
     FUN_141aece70();
     return efd::AsyncResult_Complete;
+}
+
+
+// ---- FUN_141adf580: every dialog's construction (the ctors are unrecovered-signature exe functions) ----
+// A dialog reference slot of the two smart-pointer flavours the registration helpers take (+0x8 holds the dialog).
+struct Unk_UisDlgSlot
+{
+    void* m_pad0;
+    UIDialog* m_pDlg;
+};
+Unk_UisDlgSlot* FUN_141aedec0(Unk_UisDlgSlot* pOut, UIDialog* pDlg);
+Unk_UisDlgSlot* FUN_141296f00(Unk_UisDlgSlot* pOut, UIDialog* pDlg);
+void FUN_1422d4b40(void* pObj, unsigned long long (*pfn)());
+unsigned long long FUN_141adda20();
+void FUN_141addb30(long long n);
+void FUN_141ade430(void* p, int n);
+void FUN_1422aee20(Unk_UisMovieMgr* pMgr, void (*pfn)(long long));
+void FUN_1422aeea0(Unk_UisMovieMgr* pMgr, void (*pfn)(void*, int));
+UIDialog* FUN_141959330(void* pMem);   // UIGuideEvent::UIGuideEvent
+UIDialog* FUN_141931eb0(void* pMem);   // UIExpBar::UIExpBar
+UIDialog* FUN_140ba6b20(void* pMem);   // UIAdventureLevelExpBar::UIAdventureLevelExpBar
+UIDialog* FUN_141b4bd20(void* pMem);   // UIUpperHpBar::UIUpperHpBar
+UIDialog* FUN_141911060(void* pMem);   // UIDamageText::UIDamageText
+UIDialog* FUN_141b15900(void* pMem);   // UISystemText::UISystemText
+UIDialog* FUN_141910480(void* pMem);   // UIDamageEffect::UIDamageEffect
+UIDialog* FUN_1419f55d0(void* pMem);   // UIMassiveEvent::UIMassiveEvent
+UIDialog* FUN_1419df070(void* pMem);   // UIKillCount::UIKillCount
+UIDialog* FUN_141906f30(void* pMem);   // UICutSceneCinematic::UICutSceneCinematic
+UIDialog* FUN_141ad0650(void* pMem);   // UIScreenMask::UIScreenMask
+UIDialog* FUN_1419df870(void* pMem);   // UILoadingProgress::UILoadingProgress
+UIDialog* FUN_1419e0920(void* pMem);   // UILoadingProgressLobby::UILoadingProgressLobby
+UIDialog* FUN_1418b1520(void* pMem);   // UIActionTooltip::UIActionTooltip
+UIDialog* FUN_1412c3e60(void* pMem);   // UIGuildFlagTooltip::UIGuildFlagTooltip
+UIDialog* FUN_141a7d580(void* pMem);   // UIPopUpMenu::UIPopUpMenu
+UIDialog* FUN_141abe1d0(void* pMem);   // UIRewardNotify::UIRewardNotify
+UIDialog* FUN_1418e0f10(void* pMem);   // UICastingBar::UICastingBar
+UIDialog* FUN_14190eac0(void* pMem);   // UICutSceneMovie::UICutSceneMovie
+UIDialog* FUN_1419f71e0(void* pMem);   // UIMessageBox::UIMessageBox
+UIDialog* FUN_1419950d0(void* pMem);   // UIIntroMovie::UIIntroMovie
+UIDialog* FUN_141b19ea0(void* pMem);   // UITalkCinematic::UITalkCinematic
+UIDialog* FUN_141353540(void* pMem);   // UIUpperHudDialog::UIUpperHudDialog
+UIDialog* FUN_1419927f0(void* pMem);   // UIHpBar::UIHpBar
+UIDialog* FUN_140e861f0(void* pMem);   // UIShieldBar::UIShieldBar
+UIDialog* FUN_141992fd0(void* pMem);   // UITombStoneBar::UITombStoneBar
+UIDialog* FUN_141a60c00(void* pMem);   // UINameTag::UINameTag
+UIDialog* FUN_14192fc10(void* pMem);   // UIEmoticon::UIEmoticon
+UIDialog* FUN_14128ee40(void* pMem);   // UIBuffBalloon::UIBuffBalloon
+UIDialog* FUN_1418fbc80(void* pMem);   // UIChatBalloon::UIChatBalloon
+UIDialog* FUN_141a8fa20(void* pMem);   // UIPopupProfileImage::UIPopupProfileImage
+UIDialog* FUN_140ba87d0(void* pMem);   // UIBanner::UIBanner
+UIDialog* FUN_140fa8640(void* pMem);   // UITopLayerNotify::UITopLayerNotify
+UIDialog* FUN_140fa3b10(void* pMem);   // UISmartPush::UISmartPush
+UIDialog* FUN_140f40ce0(void* pMem);   // UIEventIntroduce::UIEventIntroduce
+UIDialog* FUN_140e09a90(void* pMem);   // UIChapterBook::UIChapterBook
+UIDialog* FUN_140e59a00(void* pMem);   // UIMasteryObjectMark::UIMasteryObjectMark
+UIDialog* FUN_140e97e50(void* pMem);   // UITamingBar::UITamingBar
+UIDialog* FUN_140e79f20(void* pMem);   // UIQuestNavigation::UIQuestNavigation
+UIDialog* FUN_140e86d80(void* pMem);   // UISidePopupTalk::UISidePopupTalk
+UIDialog* FUN_141ac2190(void* pMem);   // UIFameContentsNotify::UIFameContentsNotify
+UIDialog* FUN_140be99c0(void* pMem);   // UICommunityPopup::UICommunityPopup
+UIDialog* FUN_140e66040(void* pMem);   // UIMicroGameRps::UIMicroGameRps
+UIDialog* FUN_140e63e60(void* pMem);   // UIMicroGameCoupleDance::UIMicroGameCoupleDance
+UIDialog* FUN_1419935a0(void* pMem);   // UISlimeEventBar::UISlimeEventBar
+UIDialog* FUN_140bd09e0(void* pMem);   // UIChangeJobEffect::UIChangeJobEffect
+UIDialog* FUN_140e65990(void* pMem);   // UIMicroGameCoupleDanceMessage::UIMicroGameCoupleDanceMessage
+UIDialog* FUN_140c5efa0(void* pMem);   // UILapenshardShieldBar::UILapenshardShieldBar
+UIDialog* FUN_140e7fd50(void* pMem);   // UIReconnectTopLayerNotify::UIReconnectTopLayerNotify
+UIDialog* FUN_14198c750(void* pMem);   // UIHouseMark::UIHouseMark
+UIDialog* FUN_140bfe4b0(void* pMem);   // UIRandomCoupon::UIRandomCoupon
+UIDialog* FUN_140ba2180(void* pMem);   // UIStanceBar::UIStanceBar
+UIDialog* FUN_1419e0cb0(void* pMem);   // UILoginDialog::UILoginDialog
+UIDialog* FUN_140e80220(void* pMem);   // UIRegionListDialog::UIRegionListDialog
+UIDialog* FUN_141ad0c80(void* pMem);   // UIServerListDialog::UIServerListDialog
+UIDialog* FUN_1418e20a0(void* pMem);   // UICharacterCreateDialog::UICharacterCreateDialog
+UIDialog* FUN_140f2e4d0(void* pMem);   // UICharacterCreateSelectDialog::UICharacterCreateSelectDialog
+UIDialog* FUN_1418ea2b0(void* pMem);   // UICharacterListDialog::UICharacterListDialog
+UIDialog* FUN_1418dd5e0(void* pMem);   // UICameraEditDialog::UICameraEditDialog
+UIDialog* FUN_141b12ad0(void* pMem);   // UISystemMenuDialog::UISystemMenuDialog
+UIDialog* FUN_141941b80(void* pMem);   // UIGameOptionDialog::UIGameOptionDialog
+UIDialog* FUN_141aba6a0(void* pMem);   // UIRevivalDialog::UIRevivalDialog
+UIDialog* FUN_141928c80(void* pMem);   // UIDPSDialog::UIDPSDialog
+UIDialog* FUN_14191c7d0(void* pMem);   // UIBeautyShopDevDialog::UIBeautyShopDevDialog
+UIDialog* FUN_141a55740(void* pMem);   // UIMoveFieldDialog::UIMoveFieldDialog
+UIDialog* FUN_141a6a470(void* pMem);   // UINpcCreateDialog::UINpcCreateDialog
+UIDialog* FUN_1419b3c50(void* pMem);   // UIItemCreateDialog::UIItemCreateDialog
+UIDialog* FUN_141986ea0(void* pMem);   // UIHideSettingDialog::UIHideSettingDialog
+UIDialog* FUN_14192a2e0(void* pMem);   // UIItemDropSimulatorDialog::UIItemDropSimulatorDialog
+UIDialog* FUN_14191b380(void* pMem);   // UIDecoEditDialog::UIDecoEditDialog
+UIDialog* FUN_141a51f00(void* pMem);   // UIMinimapEditDialog::UIMinimapEditDialog
+UIDialog* FUN_141946c10(void* pMem);   // UIGraphicOptionDialog::UIGraphicOptionDialog
+UIDialog* FUN_141a92ed0(void* pMem);   // UIQuestDebugDialog::UIQuestDebugDialog
+UIDialog* FUN_141980ed0(void* pMem);   // UIHairPhysxDialog::UIHairPhysxDialog
+UIDialog* FUN_141a623e0(void* pMem);   // UINpcControlDialog::UINpcControlDialog
+UIDialog* FUN_141a6e060(void* pMem);   // UINpcPreviewDialog::UINpcPreviewDialog
+UIDialog* FUN_1418b25f0(void* pMem);   // UIAdditionalControlDialog::UIAdditionalControlDialog
+UIDialog* FUN_1412d1400(void* pMem);   // UIItemEnchantSimulateDialog::UIItemEnchantSimulateDialog
+UIDialog* FUN_141286850(void* pMem);   // UIDebugGuideDialog::UIDebugGuideDialog
+UIDialog* FUN_14128f8f0(void* pMem);   // UIDebugPacketDialog::UIDebugPacketDialog
+UIDialog* FUN_14134e450(void* pMem);   // UIStatControlDialog::UIStatControlDialog
+UIDialog* FUN_141294100(void* pMem);   // UIDialogCenterDialog::UIDialogCenterDialog
+UIDialog* FUN_14184ac20(void* pMem);   // UITextureDensityDialog::UITextureDensityDialog
+UIDialog* FUN_1412c9860(void* pMem);   // UIHSLDialog::UIHSLDialog
+UIDialog* FUN_141040a30(void* pMem);   // UIChaosLightDialog::UIChaosLightDialog
+UIDialog* FUN_141448b90(void* pMem);   // UILightDialog::UILightDialog
+UIDialog* FUN_14109b900(void* pMem);   // UIColorBoostDialog::UIColorBoostDialog
+UIDialog* FUN_141709320(void* pMem);   // UIRimLightDialog::UIRimLightDialog
+UIDialog* FUN_14135e1c0(void* pMem);   // UIWeaponDummyDialog::UIWeaponDummyDialog
+UIDialog* FUN_141031f80(void* pMem);   // UICameraDialog::UICameraDialog
+UIDialog* FUN_141346a40(void* pMem);   // UIRangePreviewDialog::UIRangePreviewDialog
+UIDialog* FUN_141b72f60(void* pMem);   // UIVisualTrackerListDialog::UIVisualTrackerListDialog
+UIDialog* FUN_141284e00(void* pMem);   // UIDebuggingDialog::UIDebuggingDialog
+UIDialog* FUN_1412920b0(void* pMem);   // UIDevelopDialog::UIDevelopDialog
+UIDialog* FUN_14135bc20(void* pMem);   // UIVisualEffectDialog::UIVisualEffectDialog
+UIDialog* FUN_141350cf0(void* pMem);   // UITextPreviewDialog::UITextPreviewDialog
+UIDialog* FUN_1412dd900(void* pMem);   // UIMDEditDialog::UIMDEditDialog
+UIDialog* FUN_14131f690(void* pMem);   // UIObjectCreateDialog::UIObjectCreateDialog
+UIDialog* FUN_1412d2660(void* pMem);   // UIItemOptionCreateDialog::UIItemOptionCreateDialog
+UIDialog* FUN_140c39fd0(void* pMem);   // UIItemDropInfoDialog::UIItemDropInfoDialog
+UIDialog* FUN_141a58040(void* pMem);   // UIMyInfoDialog::UIMyInfoDialog
+UIDialog* FUN_141a35220(void* pMem);   // UIMinimapDialog::UIMinimapDialog
+UIDialog* FUN_141935f20(void* pMem);   // UIGameMenuDialog::UIGameMenuDialog
+UIDialog* FUN_141996ec0(void* pMem);   // UIInventoryDialog::UIInventoryDialog
+UIDialog* FUN_1418c3630(void* pMem);   // UIBeautyShopDialog::UIBeautyShopDialog
+UIDialog* FUN_1419abdd0(void* pMem);   // UIItemColoringDialog::UIItemColoringDialog
+UIDialog* FUN_141b265f0(void* pMem);   // UITimerDialog::UITimerDialog
+UIDialog* FUN_140edec30(void* pMem);   // UITimerGaugeDialog::UITimerGaugeDialog
+UIDialog* FUN_141a993a0(void* pMem);   // UIQuestDialog::UIQuestDialog
+UIDialog* FUN_141af2420(void* pMem);   // UIShopDialog::UIShopDialog
+UIDialog* FUN_141b53fc0(void* pMem);   // UIWorldMapDialog::UIWorldMapDialog
+UIDialog* FUN_141b0ebd0(void* pMem);   // UIStoreDialog::UIStoreDialog
+UIDialog* FUN_1419e3510(void* pMem);   // UIMailListDialog::UIMailListDialog
+UIDialog* FUN_1419ec180(void* pMem);   // UIMailSendDialog::UIMailSendDialog
+UIDialog* FUN_1418d3190(void* pMem);   // UICommunityDialog::UICommunityDialog
+UIDialog* FUN_1418da510(void* pMem);   // UICommunityQueryDialog::UICommunityQueryDialog
+UIDialog* FUN_141a74b40(void* pMem);   // UIPartyDialog::UIPartyDialog
+UIDialog* FUN_141aa97d0(void* pMem);   // UIQuestGuideDialog::UIQuestGuideDialog
+UIDialog* FUN_141b39900(void* pMem);   // UIUGCImageUploadDialog::UIUGCImageUploadDialog
+UIDialog* FUN_141b37fb0(void* pMem);   // UIUGCCameraDialog::UIUGCCameraDialog
+UIDialog* FUN_141b51780(void* pMem);   // UIWhisperNotifyDialog::UIWhisperNotifyDialog
+UIDialog* FUN_1419ee140(void* pMem);   // UIMainPlayerInfo::UIMainPlayerInfo
+UIDialog* FUN_141a20f90(void* pMem);   // UIMessengerBrowser::UIMessengerBrowser
+UIDialog* FUN_141b224f0(void* pMem);   // UITalkPanelSettingDialog::UITalkPanelSettingDialog
+UIDialog* FUN_1419ccd00(void* pMem);   // UIItemMergeOptionDialog::UIItemMergeOptionDialog
+UIDialog* FUN_141b3b830(void* pMem);   // UIUGCItemEditDialog::UIUGCItemEditDialog
+UIDialog* FUN_141b4f220(void* pMem);   // UIWebBrowser::UIWebBrowser
+UIDialog* FUN_141b29f20(void* pMem);   // UITriggerEditorDialog::UITriggerEditorDialog
+UIDialog* FUN_141ac4920(void* pMem);   // UIRouletteDialog::UIRouletteDialog
+UIDialog* FUN_140c3cc10(void* pMem);   // UIItemEnchantTransformDialog::UIItemEnchantTransformDialog
+UIDialog* FUN_1419d95c0(void* pMem);   // UIItemGetOptionDialog::UIItemGetOptionDialog
+UIDialog* FUN_141b34100(void* pMem);   // UIUGCBannerDialog::UIUGCBannerDialog
+UIDialog* FUN_140ec4e50(void* pMem);   // UISkillBookTreeDialog::UISkillBookTreeDialog
+UIDialog* FUN_1418a7310(void* pMem);   // UIAchieveDialog::UIAchieveDialog
+UIDialog* FUN_141946030(void* pMem);   // UIGemSettingDialog::UIGemSettingDialog
+UIDialog* FUN_141ab20e0(void* pMem);   // UIRealEstateDialog::UIRealEstateDialog
+UIDialog* FUN_141933270(void* pMem);   // UIFittingDollDialog::UIFittingDollDialog
+UIDialog* FUN_141a72480(void* pMem);   // UIObjectStoreDialog::UIObjectStoreDialog
+UIDialog* FUN_141b26de0(void* pMem);   // UITradeDialogEx::UITradeDialogEx
+UIDialog* FUN_14192ac30(void* pMem);   // UIDynamicActionDialog::UIDynamicActionDialog
+UIDialog* FUN_1418cd0c0(void* pMem);   // UIBillDialog::UIBillDialog
+UIDialog* FUN_1419db000(void* pMem);   // UIJobChangeDialog::UIJobChangeDialog
+UIDialog* FUN_1419bc730(void* pMem);   // UIItemEditDialog::UIItemEditDialog
+UIDialog* FUN_141a7c4c0(void* pMem);   // UIPerformanceDialog::UIPerformanceDialog
+UIDialog* FUN_141ab5d50(void* pMem);   // UIRealEstateSell::UIRealEstateSell
+UIDialog* FUN_141905eb0(void* pMem);   // UIConstructHelpDialog::UIConstructHelpDialog
+UIDialog* FUN_141ab8920(void* pMem);   // UIReportDialog::UIReportDialog
+UIDialog* FUN_1418df4e0(void* pMem);   // UICartoonDialog::UICartoonDialog
+UIDialog* FUN_141960ce0(void* pMem);   // UIGuildDialog::UIGuildDialog
+UIDialog* FUN_141a732e0(void* pMem);   // UIObserveDialog::UIObserveDialog
+UIDialog* FUN_141a57b00(void* pMem);   // UIMyHouseAuthDialog::UIMyHouseAuthDialog
+UIDialog* FUN_141a7b050(void* pMem);   // UIPartyDPSDialog::UIPartyDPSDialog
+UIDialog* FUN_140f3fb10(void* pMem);   // UIEnterEventFieldDialog::UIEnterEventFieldDialog
+UIDialog* FUN_140f359b0(void* pMem);   // UIDTEventDialog::UIDTEventDialog
+UIDialog* FUN_140f4ab90(void* pMem);   // UIIndividualDPSDialog::UIIndividualDPSDialog
+UIDialog* FUN_1419a21c0(void* pMem);   // UIItemBreakDialog::UIItemBreakDialog
+UIDialog* FUN_1419a4d30(void* pMem);   // UIItemBreakDonationDialog::UIItemBreakDonationDialog
+UIDialog* FUN_14199f740(void* pMem);   // UIInviteGroupDialog::UIInviteGroupDialog
+UIDialog* FUN_140e291e0(void* pMem);   // UIEnchantSelectDialog::UIEnchantSelectDialog
+UIDialog* FUN_140c581a0(void* pMem);   // UIKeySettingSelectDialog::UIKeySettingSelectDialog
+UIDialog* FUN_1419befc0(void* pMem);   // UIItemEnchantDialog::UIItemEnchantDialog
+UIDialog* FUN_141950770(void* pMem);   // UIGroupMessengerBrowser::UIGroupMessengerBrowser
+UIDialog* FUN_141b330c0(void* pMem);   // UITriggerTimerDialog::UITriggerTimerDialog
+UIDialog* FUN_141a911b0(void* pMem);   // UIPvPObserverDialog::UIPvPObserverDialog
+UIDialog* FUN_141935200(void* pMem);   // UIGambleDialog::UIGambleDialog
+UIDialog* FUN_1418cf080(void* pMem);   // UIBlackMarketDialog::UIBlackMarketDialog
+UIDialog* FUN_141b33620(void* pMem);   // UIFreeForAllTimerDialog::UIFreeForAllTimerDialog
+UIDialog* FUN_141342f10(void* pMem);   // UIPvPRankingDialog::UIPvPRankingDialog
+UIDialog* FUN_1413439a0(void* pMem);   // UIPvPResultDialog::UIPvPResultDialog
+UIDialog* FUN_141344ab0(void* pMem);   // UIPvPTeamFlagGagueDialog::UIPvPTeamFlagGagueDialog
+UIDialog* FUN_1412d7040(void* pMem);   // UIMaidDialog::UIMaidDialog
+UIDialog* FUN_14134d770(void* pMem);   // UISmartRecommendNotifyDialog::UISmartRecommendNotifyDialog
+UIDialog* FUN_14134c9d0(void* pMem);   // UISmartRecommendBillingDialog::UISmartRecommendBillingDialog
+UIDialog* FUN_141342570(void* pMem);   // UIPvPKillLogDialog::UIPvPKillLogDialog
+UIDialog* FUN_141284ac0(void* pMem);   // UIAutoReviveCountDownDialog::UIAutoReviveCountDownDialog
+UIDialog* FUN_1412c3ac0(void* pMem);   // UIIGuideMovieDialog::UIIGuideMovieDialog
+UIDialog* FUN_14102b4d0(void* pMem);   // UIAttendGiftDialog::UIAttendGiftDialog
+UIDialog* FUN_140c6b300(void* pMem);   // UILongTermAttendGiftDialog::UILongTermAttendGiftDialog
+UIDialog* FUN_140bc2c70(void* pMem);   // UICashAttendDialog::UICashAttendDialog
+UIDialog* FUN_140c032b0(void* pMem);   // UIDTAttendPopup::UIDTAttendPopup
+UIDialog* FUN_1412b6c90(void* pMem);   // UIDungeonRoomDialog::UIDungeonRoomDialog
+UIDialog* FUN_141339640(void* pMem);   // UIPvPGuildTeamDialog::UIPvPGuildTeamDialog
+UIDialog* FUN_1413409a0(void* pMem);   // UIPvPGuildTeamResultDialog::UIPvPGuildTeamResultDialog
+UIDialog* FUN_1412e24f0(void* pMem);   // UIManufactureDialog::UIManufactureDialog
+UIDialog* FUN_1412d5890(void* pMem);   // UIItemPreviewDialog::UIItemPreviewDialog
+UIDialog* FUN_140e93690(void* pMem);   // UISkillPreviewDialog::UISkillPreviewDialog
+UIDialog* FUN_1412e84b0(void* pMem);   // UIMeratMarketDialog::UIMeratMarketDialog
+UIDialog* FUN_141317690(void* pMem);   // UIMeratMarketRegisterDialog::UIMeratMarketRegisterDialog
+UIDialog* FUN_14132bc00(void* pMem);   // UIPCInfoDialog::UIPCInfoDialog
+UIDialog* FUN_1412dba80(void* pMem);   // UIManufactureStatus::UIManufactureStatus
+UIDialog* FUN_141030e20(void* pMem);   // UIBannerAdvertisingDialog::UIBannerAdvertisingDialog
+UIDialog* FUN_141033360(void* pMem);   // UICashShopDialog::UICashShopDialog
+UIDialog* FUN_1412daa40(void* pMem);   // UIMaidRecipeListDialog::UIMaidRecipeListDialog
+UIDialog* FUN_1413518a0(void* pMem);   // UITokenPocketDialog::UITokenPocketDialog
+UIDialog* FUN_141322c00(void* pMem);   // UIPcBangDialog::UIPcBangDialog
+UIDialog* FUN_1412c9e70(void* pMem);   // UIIndividualPvPDialog::UIIndividualPvPDialog
+UIDialog* FUN_1413450d0(void* pMem);   // UIPvPTeamResultDialog::UIPvPTeamResultDialog
+UIDialog* FUN_1413466b0(void* pMem);   // UIPvPTeamScoreDialog::UIPvPTeamScoreDialog
+UIDialog* FUN_14131d910(void* pMem);   // UINameTagSymbolSettingDialog::UINameTagSymbolSettingDialog
+UIDialog* FUN_1412c8bd0(void* pMem);   // UIHomePasswordDialog::UIHomePasswordDialog
+UIDialog* FUN_141299650(void* pMem);   // UIHomeSummonDialog::UIHomeSummonDialog
+UIDialog* FUN_1412c2020(void* pMem);   // UIGlobalPortalDialog::UIGlobalPortalDialog
+UIDialog* FUN_1412c4cd0(void* pMem);   // UIHomeInfoDialog::UIHomeInfoDialog
+UIDialog* FUN_14135b540(void* pMem);   // UIVisitorsBookDialog::UIVisitorsBookDialog
+UIDialog* FUN_140f8c480(void* pMem);   // UIPartySearchDialog::UIPartySearchDialog
+UIDialog* FUN_141320660(void* pMem);   // UIPartySearchRegisterDialog::UIPartySearchRegisterDialog
+UIDialog* FUN_1412a4590(void* pMem);   // UISystemMailNotifyDialog::UISystemMailNotifyDialog
+UIDialog* FUN_14129ba60(void* pMem);   // UIRecallScrollNotifyDialog::UIRecallScrollNotifyDialog
+UIDialog* FUN_140f3b490(void* pMem);   // UIEnchantScrollDialog::UIEnchantScrollDialog
+UIDialog* FUN_14129a3c0(void* pMem);   // UIQuizDialog::UIQuizDialog
+UIDialog* FUN_14134fc90(void* pMem);   // UIHouseDemolishDialog::UIHouseDemolishDialog
+UIDialog* FUN_140f4b3d0(void* pMem);   // UIInteriorBuildDialog::UIInteriorBuildDialog
+UIDialog* FUN_140f4cc50(void* pMem);   // UIInteriorPreviewDialog::UIInteriorPreviewDialog
+UIDialog* FUN_140f35340(void* pMem);   // UIDarkStreamScoreDialog::UIDarkStreamScoreDialog
+UIDialog* FUN_140f345b0(void* pMem);   // UIDarkStreamResultDialog::UIDarkStreamResultDialog
+UIDialog* FUN_140f41250(void* pMem);   // UIFishingBookDialog::UIFishingBookDialog
+UIDialog* FUN_140f43df0(void* pMem);   // UIFishingFloatDialog::UIFishingFloatDialog
+UIDialog* FUN_1410084b0(void* pMem);   // UINoticeDialog::UINoticeDialog
+UIDialog* FUN_14129cfa0(void* pMem);   // UIItemRemakeOptionDialog::UIItemRemakeOptionDialog
+UIDialog* FUN_14100a030(void* pMem);   // UIPlayInstrumentDialog::UIPlayInstrumentDialog
+UIDialog* FUN_140fed9c0(void* pMem);   // UIWriteMusicDialog::UIWriteMusicDialog
+UIDialog* FUN_140f4f460(void* pMem);   // UIItemAutoUseOptionDialog::UIItemAutoUseOptionDialog
+UIDialog* FUN_140f9e200(void* pMem);   // UISkillCompactControlDialog::UISkillCompactControlDialog
+UIDialog* FUN_140f3a810(void* pMem);   // UIDungeonExpenseRewardDialog::UIDungeonExpenseRewardDialog
+UIDialog* FUN_140e20ae0(void* pMem);   // UIDungeonRewardDialog::UIDungeonRewardDialog
+UIDialog* FUN_140f84310(void* pMem);   // UILevelUpGuideDialog::UILevelUpGuideDialog
+UIDialog* FUN_140f255e0(void* pMem);   // UIBossRewardPreviewDialog::UIBossRewardPreviewDialog
+UIDialog* FUN_140ef4f10(void* pMem);   // UIArcadeLifeBar::UIArcadeLifeBar
+UIDialog* FUN_140ef5640(void* pMem);   // UIArcadeMainDialog::UIArcadeMainDialog
+UIDialog* FUN_140ba7d90(void* pMem);   // UIArcadeTextEffectDialog::UIArcadeTextEffectDialog
+UIDialog* FUN_140f004b0(void* pMem);   // UIBeautyListDialog::UIBeautyListDialog
+UIDialog* FUN_140f99280(void* pMem);   // UISelectItemBoxDialog::UISelectItemBoxDialog
+UIDialog* FUN_140f26990(void* pMem);   // UICardReverseGameDialog::UICardReverseGameDialog
+UIDialog* FUN_140f03090(void* pMem);   // UIBeautyShopStyleDialog::UIBeautyShopStyleDialog
+UIDialog* FUN_140f91d90(void* pMem);   // UIRankPvPDialog::UIRankPvPDialog
+UIDialog* FUN_140f90780(void* pMem);   // UIPvPRankDuelResultDialog::UIPvPRankDuelResultDialog
+UIDialog* FUN_140fa4180(void* pMem);   // UISystemShopDialog::UISystemShopDialog
+UIDialog* FUN_140f56ab0(void* pMem);   // UIItemLockDialog::UIItemLockDialog
+UIDialog* FUN_140f58080(void* pMem);   // UIItemRemakeScrollDialog::UIItemRemakeScrollDialog
+UIDialog* FUN_140f68da0(void* pMem);   // UIItemSocketSystemDialog::UIItemSocketSystemDialog
+UIDialog* FUN_140f447d0(void* pMem);   // UIGameDictionaryDialog::UIGameDictionaryDialog
+UIDialog* FUN_140f2a260(void* pMem);   // UICharacterAbilityDialog::UICharacterAbilityDialog
+UIDialog* FUN_140f9cc60(void* pMem);   // UIShadowExpeditionBossBar::UIShadowExpeditionBossBar
+UIDialog* FUN_140f83ff0(void* pMem);   // UIKeyboardGuideDialog::UIKeyboardGuideDialog
+UIDialog* FUN_140f64630(void* pMem);   // UIItemSocketScrollDialog::UIItemSocketScrollDialog
+UIDialog* FUN_140f60e00(void* pMem);   // UIItemRePackingScrollDialog::UIItemRePackingScrollDialog
+UIDialog* FUN_140e56eb0(void* pMem);   // UIItemPetTrainingDialog::UIItemPetTrainingDialog
+UIDialog* FUN_140f50d60(void* pMem);   // UIItemExchangeScrollDialog::UIItemExchangeScrollDialog
+UIDialog* FUN_140f21590(void* pMem);   // UIBlueMarbleGameDialog::UIBlueMarbleGameDialog
+UIDialog* FUN_140ee9f50(void* pMem);   // UIUGCCubePaletteDialog::UIUGCCubePaletteDialog
+UIDialog* FUN_140ea0850(void* pMem);   // UILearningQuestDialog::UILearningQuestDialog
+UIDialog* FUN_140ea6ee0(void* pMem);   // UIMarketBillDialog::UIMarketBillDialog
+UIDialog* FUN_140e0de40(void* pMem);   // UIDungeonClosingPhotoDialog::UIDungeonClosingPhotoDialog
+UIDialog* FUN_140ed9b80(void* pMem);   // UISurveyDialog::UISurveyDialog
+UIDialog* FUN_140fb7dc0(void* pMem);   // UIVIPDialog::UIVIPDialog
+UIDialog* FUN_140e19b60(void* pMem);   // UIDungeonSearchDialog::UIDungeonSearchDialog
+UIDialog* FUN_140fb9ac0(void* pMem);   // UIVIPGoodsShopDialog::UIVIPGoodsShopDialog
+UIDialog* FUN_140fa8cc0(void* pMem);   // UIHomeOptionDialog::UIHomeOptionDialog
+UIDialog* FUN_140e2cc90(void* pMem);   // UIGameRankingDialog::UIGameRankingDialog
+UIDialog* FUN_140e0aa10(void* pMem);   // UIClubDialog::UIClubDialog
+UIDialog* FUN_140eadeb0(void* pMem);   // UIMasteryDialog::UIMasteryDialog
+UIDialog* FUN_140fb0190(void* pMem);   // UIUGCPortalDialog::UIUGCPortalDialog
+UIDialog* FUN_140ec41e0(void* pMem);   // UISkillBookAutoDistributeDialog::UISkillBookAutoDistributeDialog
+UIDialog* FUN_140e176a0(void* pMem);   // UIDungeonLobby::UIDungeonLobby
+UIDialog* FUN_140e26c20(void* pMem);   // UIDungeonSearchSelectDialog::UIDungeonSearchSelectDialog
+UIDialog* FUN_140e05460(void* pMem);   // UIChaosDPSDialog::UIChaosDPSDialog
+UIDialog* FUN_140fa9eb0(void* pMem);   // UIHomeSaveSlotDialog::UIHomeSaveSlotDialog
+UIDialog* FUN_140c2bc50(void* pMem);   // UIHomeResizeDialog::UIHomeResizeDialog
+UIDialog* FUN_140fadb00(void* pMem);   // UIUGCHousingPointDialog::UIUGCHousingPointDialog
+UIDialog* FUN_140ee7610(void* pMem);   // UIUGCCubeBillDialog::UIUGCCubeBillDialog
+UIDialog* FUN_140ea60c0(void* pMem);   // UILoginNotice::UILoginNotice
+UIDialog* FUN_140e9a970(void* pMem);   // UIItemLulluBoxDialog::UIItemLulluBoxDialog
+UIDialog* FUN_140e4df70(void* pMem);   // UIItemPetBoxDialog::UIItemPetBoxDialog
+UIDialog* FUN_140e39790(void* pMem);   // UIGuildHouseUpgradeDialog::UIGuildHouseUpgradeDialog
+UIDialog* FUN_140ea44b0(void* pMem);   // UILevelUpPackageDialog::UILevelUpPackageDialog
+UIDialog* FUN_140e99b90(void* pMem);   // UITencentCashChargeDialog::UITencentCashChargeDialog
+UIDialog* FUN_140e988a0(void* pMem);   // UITencentAas2Dialog::UITencentAas2Dialog
+UIDialog* FUN_140edb370(void* pMem);   // TencentUserReport::UITencentUserReportDialog::UITencentUserReportDialog
+UIDialog* FUN_140ed74c0(void* pMem);   // UIStampEventDialog::UIStampEventDialog
+UIDialog* FUN_140e694a0(void* pMem);   // UIMusicConcertDialog::UIMusicConcertDialog
+UIDialog* FUN_140e73440(void* pMem);   // UIPetSystemDialog::UIPetSystemDialog
+UIDialog* FUN_140e6d3c0(void* pMem);   // UIOtherPetSystemDialog::UIOtherPetSystemDialog
+UIDialog* FUN_140e4c050(void* pMem);   // UIItemMergeRevertDialog::UIItemMergeRevertDialog
+UIDialog* FUN_140e05260(void* pMem);   // UICameraModeHelpDialog::UICameraModeHelpDialog
+UIDialog* FUN_140e3efd0(void* pMem);   // UIAdPushDialog::UIAdPushDialog
+UIDialog* FUN_140faf390(void* pMem);   // UIUGCModelHouseDialog::UIUGCModelHouseDialog
+UIDialog* FUN_140fc1e20(void* pMem);   // UIWebBrowserPopup::UIWebBrowserPopup
+UIDialog* FUN_140e47540(void* pMem);   // UIItemEventOpenBoxDialog::UIItemEventOpenBoxDialog
+UIDialog* FUN_140ee2190(void* pMem);   // UITimeRunEventDialog::UITimeRunEventDialog
+UIDialog* FUN_140e7dc10(void* pMem);   // UIQuizHostDialog::UIQuizHostDialog
+UIDialog* FUN_140e7ead0(void* pMem);   // UIQuizOXSelectDialog::UIQuizOXSelectDialog
+UIDialog* FUN_140e78150(void* pMem);   // UIPrizeMoneyDialog::UIPrizeMoneyDialog
+UIDialog* FUN_140e7e2f0(void* pMem);   // UIQuizOXCreateDialog::UIQuizOXCreateDialog
+UIDialog* FUN_140e7ef40(void* pMem);   // UIQuizOXWelcomeDialog::UIQuizOXWelcomeDialog
+UIDialog* FUN_140e49ec0(void* pMem);   // UIItemExtractionScrollDialog::UIItemExtractionScrollDialog
+UIDialog* FUN_140e71190(void* pMem);   // UIPetExtractionScrollDialog::UIPetExtractionScrollDialog
+UIDialog* FUN_140e5db70(void* pMem);   // UIMentoringDialog::UIMentoringDialog
+UIDialog* FUN_140c2dea0(void* pMem);   // UIInviteMentoringDialog::UIInviteMentoringDialog
+UIDialog* FUN_140e76460(void* pMem);   // UIPopupNpcTalkDialog::UIPopupNpcTalkDialog
+UIDialog* FUN_140bebfb0(void* pMem);   // UICoupleActionDialog::UICoupleActionDialog
+UIDialog* FUN_140c308c0(void* pMem);   // UIItemBillBoardDialog::UIItemBillBoardDialog
+UIDialog* FUN_140bf60f0(void* pMem);   // UIAllianceQuestDialog::UIAllianceQuestDialog
+UIDialog* FUN_140faf840(void* pMem);   // UIUGCCubeNoticeDialog::UIUGCCubeNoticeDialog
+UIDialog* FUN_140bff060(void* pMem);   // UIDailyMissionDialog::UIDailyMissionDialog
+UIDialog* FUN_140c15460(void* pMem);   // UIFamePointBoardDialog::UIFamePointBoardDialog
+UIDialog* FUN_140bb9770(void* pMem);   // UIBirthdayCardDialog::UIBirthdayCardDialog
+UIDialog* FUN_140e7f2e0(void* pMem);   // UIQuestPostBoxDialog::UIQuestPostBoxDialog
+UIDialog* FUN_140e8bcb0(void* pMem);   // UISelectSuperWorldChatDialog::UISelectSuperWorldChatDialog
+UIDialog* FUN_140c165e0(void* pMem);   // UIGalleryEventDialog::UIGalleryEventDialog
+UIDialog* FUN_140c54ee0(void* pMem);   // UIItemTreasureMapDialog::UIItemTreasureMapDialog
+UIDialog* FUN_140e943b0(void* pMem);   // UISnowmanEventDialog::UISnowmanEventDialog
+UIDialog* FUN_140c593d0(void* pMem);   // UILevelUpPackageWidgetDialog::UILevelUpPackageWidgetDialog
+UIDialog* FUN_140e82350(void* pMem);   // UIRpsEventDialog::UIRpsEventDialog
+UIDialog* FUN_140e6b7b0(void* pMem);   // UINpcDuelHPBarDialog::UINpcDuelHPBarDialog
+UIDialog* FUN_140c1aaf0(void* pMem);   // UIGamePadMenuDialog::UIGamePadMenuDialog
+UIDialog* FUN_140fb53d0(void* pMem);   // UIUGCPVPControlDialog::UIUGCPVPControlDialog
+UIDialog* FUN_140ba2a80(void* pMem);   // UIAdventureLevelDialog::UIAdventureLevelDialog
+UIDialog* FUN_140fe9d00(void* pMem);   // UIWorldChampionRewardDialog::UIWorldChampionRewardDialog
+UIDialog* FUN_140c59f10(void* pMem);   // UIBurningEventWidgetDialog::UIBurningEventWidgetDialog
+UIDialog* FUN_140c611d0(void* pMem);   // UILapenshardSystemDialog::UILapenshardSystemDialog
+UIDialog* FUN_140bd7e10(void* pMem);   // UIChangeJobDialog::UIChangeJobDialog
+UIDialog* FUN_140c19f20(void* pMem);   // UIGameModeSelectDialog::UIGameModeSelectDialog
+UIDialog* FUN_140c193f0(void* pMem);   // UIGameMakerMainDialog::UIGameMakerMainDialog
+UIDialog* FUN_140bfcb00(void* pMem);   // UICoupleDanceEventDialog::UICoupleDanceEventDialog
+UIDialog* FUN_140c220d0(void* pMem);   // UIHighlightGameMenu::UIHighlightGameMenu
+UIDialog* FUN_140bd9290(void* pMem);   // UIClosetDialog::UIClosetDialog
+UIDialog* FUN_140c26440(void* pMem);   // UIHomeInfoEditDialog::UIHomeInfoEditDialog
+UIDialog* FUN_140c27340(void* pMem);   // UIHomeInsideOptionDialog::UIHomeInsideOptionDialog
+UIDialog* FUN_140c35890(void* pMem);   // UIItemBlueprintCreateDialog::UIItemBlueprintCreateDialog
+UIDialog* FUN_140c29160(void* pMem);   // UIHomeMenuDialog::UIHomeMenuDialog
+UIDialog* FUN_140e6e400(void* pMem);   // UIOxQuizDialog::UIOxQuizDialog
+UIDialog* FUN_140bb9cf0(void* pMem);   // UIBlueprintMarketDialog::UIBlueprintMarketDialog
+UIDialog* FUN_140bd0e90(void* pMem);   // UIChatEmoticonDialog::UIChatEmoticonDialog
+UIDialog* FUN_140be6eb0(void* pMem);   // UICollectItemGroupEventDialog::UICollectItemGroupEventDialog
+UIDialog* FUN_140bad0a0(void* pMem);   // UIBingoEventDialog::UIBingoEventDialog
+UIDialog* FUN_140c0aea0(void* pMem);   // UIDungeonControlCenter::UIDungeonControlCenter
+UIDialog* FUN_140c0ec90(void* pMem);   // UIDungeonPopupRewardDialog::UIDungeonPopupRewardDialog
+UIDialog* FUN_140c0fdc0(void* pMem);   // UIDungeonSearchSettingDialog::UIDungeonSearchSettingDialog
+UIDialog* FUN_140c3f350(void* pMem);   // UIItemMultiOpenBoxDialog::UIItemMultiOpenBoxDialog
+UIDialog* FUN_140ee52f0(void* pMem);   // UITypingGameDialog::UITypingGameDialog
+UIDialog* FUN_140c3ff80(void* pMem);   // UIItemGachaBoxDialog::UIItemGachaBoxDialog
+UIDialog* FUN_140fc6fa0(void* pMem);   // UIWeddingDialog::UIWeddingDialog
+UIDialog* FUN_140fdb090(void* pMem);   // UIWeddingHallReservationDialog::UIWeddingHallReservationDialog
+UIDialog* FUN_140fe5780(void* pMem);   // UIWeddingInvitationDialog::UIWeddingInvitationDialog
+UIDialog* FUN_140e75ea0(void* pMem);   // UIPhotoStudioMenuDialog::UIPhotoStudioMenuDialog
+UIDialog* FUN_140fc2c50(void* pMem);   // UIWeddingBillboardDialog::UIWeddingBillboardDialog
+UIDialog* FUN_140fc07a0(void* pMem);   // UIWatchAGameDialog::UIWatchAGameDialog
+UIDialog* FUN_140c1e730(void* pMem);   // UIHideAndSeekResultDialog::UIHideAndSeekResultDialog
+UIDialog* FUN_140e6ec50(void* pMem);   // UIPaybackDialog::UIPaybackDialog
+UIDialog* FUN_140fcc860(void* pMem);   // UIWeddingGuestDialog::UIWeddingGuestDialog
+UIDialog* FUN_140fc2090(void* pMem);   // UIWeddingAffinityDialog::UIWeddingAffinityDialog
+UIDialog* FUN_140fd8df0(void* pMem);   // UIWeddingHallListDialog::UIWeddingHallListDialog
+UIDialog* FUN_140fb5ca0(void* pMem);   // UIUnlimitedEnchantDialog::UIUnlimitedEnchantDialog
+
+// @0x141adf580
+// MS2-FUNCTIONAL: operator-new + ctor + register sequence written as one block per dialog (the exe keeps all 353 temporaries live in one 0x4d68 frame); the dialog classes' ctors are unrecovered-signature FUN_ externs
+void CUIService::FUN_141adf580()
+{
+    FUN_1422d4b40(FUN_140b632f0(), FUN_141adda20);
+    FUN_1422aee20(FUN_14025e7a0(), FUN_141addb30);
+    FUN_1422aeea0(FUN_14025e7a0(), FUN_141ade430);
+    // UIGuideEvent
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141959330(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIExpBar
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_141931eb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIAdventureLevelExpBar
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ba6b20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIUpperHpBar
+    {
+        void* pMem = ::operator new(0x3c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b4bd20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIDamageText
+    {
+        void* pMem = ::operator new(0x2c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141911060(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UISystemText
+    {
+        void* pMem = ::operator new(0x98);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b15900(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIDamageEffect
+    {
+        void* pMem = ::operator new(0x88);
+        UIDialog* pDlg = pMem != 0 ? FUN_141910480(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMassiveEvent
+    {
+        void* pMem = ::operator new(0xb0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419f55d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIKillCount
+    {
+        void* pMem = ::operator new(0x88);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419df070(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UICutSceneCinematic
+    {
+        void* pMem = ::operator new(0x148);
+        UIDialog* pDlg = pMem != 0 ? FUN_141906f30(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIScreenMask
+    {
+        void* pMem = ::operator new(0x70);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ad0650(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UILoadingProgress
+    {
+        void* pMem = ::operator new(0x80);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419df870(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UILoadingProgressLobby
+    {
+        void* pMem = ::operator new(0x80);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419e0920(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIActionTooltip
+    {
+        void* pMem = ::operator new(0x98);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418b1520(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIGuildFlagTooltip
+    {
+        void* pMem = ::operator new(0x80);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c3e60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIPopUpMenu
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a7d580(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIRewardNotify
+    {
+        void* pMem = ::operator new(0x98);
+        UIDialog* pDlg = pMem != 0 ? FUN_141abe1d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UICastingBar
+    {
+        void* pMem = ::operator new(0x108);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418e0f10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UICutSceneMovie
+    {
+        void* pMem = ::operator new(0xa8);
+        UIDialog* pDlg = pMem != 0 ? FUN_14190eac0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMessageBox
+    {
+        void* pMem = ::operator new(0x90);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419f71e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIIntroMovie
+    {
+        void* pMem = ::operator new(0xa8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419950d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UITalkCinematic
+    {
+        void* pMem = ::operator new(0xd0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b19ea0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIUpperHudDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141353540(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIHpBar
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419927f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIShieldBar
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e861f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UITombStoneBar
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141992fd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UINameTag
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a60c00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIEmoticon
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_14192fc10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIBuffBalloon
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_14128ee40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIChatBalloon
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418fbc80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIPopupProfileImage
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a8fa20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIBanner
+    {
+        void* pMem = ::operator new(0x120);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ba87d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UITopLayerNotify
+    {
+        void* pMem = ::operator new(0x80);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fa8640(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UISmartPush
+    {
+        void* pMem = ::operator new(0x70);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fa3b10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIEventIntroduce
+    {
+        void* pMem = ::operator new(0x70);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f40ce0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIChapterBook
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e09a90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMasteryObjectMark
+    {
+        void* pMem = ::operator new(0xf8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e59a00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UITamingBar
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e97e50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIQuestNavigation
+    {
+        void* pMem = ::operator new(0xb0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e79f20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UISidePopupTalk
+    {
+        void* pMem = ::operator new(0x140);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e86d80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIFameContentsNotify
+    {
+        void* pMem = ::operator new(0xa0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ac2190(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UICommunityPopup
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140be99c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMicroGameRps
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e66040(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMicroGameCoupleDance
+    {
+        void* pMem = ::operator new(0x98);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e63e60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UISlimeEventBar
+    {
+        void* pMem = ::operator new(0xf0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419935a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIChangeJobEffect
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bd09e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIMicroGameCoupleDanceMessage
+    {
+        void* pMem = ::operator new(0x70);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e65990(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UILapenshardShieldBar
+    {
+        void* pMem = ::operator new(0xa8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c5efa0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIReconnectTopLayerNotify
+    {
+        void* pMem = ::operator new(0x78);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7fd50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIHouseMark
+    {
+        void* pMem = ::operator new(0xb0);
+        UIDialog* pDlg = pMem != 0 ? FUN_14198c750(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIRandomCoupon
+    {
+        void* pMem = ::operator new(0xa0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bfe4b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UIStanceBar
+    {
+        void* pMem = ::operator new(0x88);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ba2180(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aebfa0(FUN_141aedec0(&slot, pDlg));
+    }
+    // UILoginDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419e0cb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRegionListDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e80220(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIServerListDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ad0c80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICharacterCreateDialog
+    {
+        void* pMem = ::operator new(0x278);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418e20a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICharacterCreateSelectDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f2e4d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICharacterListDialog
+    {
+        void* pMem = ::operator new(0x240);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418ea2b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICameraEditDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418dd5e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISystemMenuDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b12ad0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameOptionDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141941b80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRevivalDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141aba6a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDPSDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_141928c80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBeautyShopDevDialog
+    {
+        void* pMem = ::operator new(0x2c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_14191c7d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMoveFieldDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a55740(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINpcCreateDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a6a470(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemCreateDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419b3c50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHideSettingDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141986ea0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemDropSimulatorDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14192a2e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDecoEditDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14191b380(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMinimapEditDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a51f00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGraphicOptionDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141946c10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuestDebugDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a92ed0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHairPhysxDialog
+    {
+        void* pMem = ::operator new(0x2e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141980ed0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINpcControlDialog
+    {
+        void* pMem = ::operator new(0x1b0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a623e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINpcPreviewDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a6e060(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAdditionalControlDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418b25f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemEnchantSimulateDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412d1400(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDebugGuideDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_141286850(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDebugPacketDialog
+    {
+        void* pMem = ::operator new(0x380);
+        UIDialog* pDlg = pMem != 0 ? FUN_14128f8f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIStatControlDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_14134e450(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDialogCenterDialog
+    {
+        void* pMem = ::operator new(0x240);
+        UIDialog* pDlg = pMem != 0 ? FUN_141294100(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITextureDensityDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_14184ac20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHSLDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c9860(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIChaosLightDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141040a30(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILightDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141448b90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIColorBoostDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14109b900(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRimLightDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141709320(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeaponDummyDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_14135e1c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICameraDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141031f80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRangePreviewDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141346a40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIVisualTrackerListDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b72f60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDebuggingDialog
+    {
+        void* pMem = ::operator new(0x1d0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141284e00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDevelopDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412920b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIVisualEffectDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14135bc20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITextPreviewDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141350cf0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMDEditDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412dd900(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIObjectCreateDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14131f690(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemOptionCreateDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412d2660(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemDropInfoDialog
+    {
+        void* pMem = ::operator new(0x208);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c39fd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMyInfoDialog
+    {
+        void* pMem = ::operator new(0x308);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a58040(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMinimapDialog
+    {
+        void* pMem = ::operator new(0x490);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a35220(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameMenuDialog
+    {
+        void* pMem = ::operator new(0x260);
+        UIDialog* pDlg = pMem != 0 ? FUN_141935f20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIInventoryDialog
+    {
+        void* pMem = ::operator new(0x228);
+        UIDialog* pDlg = pMem != 0 ? FUN_141996ec0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBeautyShopDialog
+    {
+        void* pMem = ::operator new(0x2f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418c3630(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemColoringDialog
+    {
+        void* pMem = ::operator new(0x2e0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419abdd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITimerDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b265f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITimerGaugeDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140edec30(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuestDialog
+    {
+        void* pMem = ::operator new(0x310);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a993a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIShopDialog
+    {
+        void* pMem = ::operator new(0x348);
+        UIDialog* pDlg = pMem != 0 ? FUN_141af2420(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWorldMapDialog
+    {
+        void* pMem = ::operator new(0x280);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b53fc0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIStoreDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b0ebd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMailListDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419e3510(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMailSendDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419ec180(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICommunityDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418d3190(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICommunityQueryDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418da510(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPartyDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a74b40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuestGuideDialog
+    {
+        void* pMem = ::operator new(0x248);
+        UIDialog* pDlg = pMem != 0 ? FUN_141aa97d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCImageUploadDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b39900(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCCameraDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b37fb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWhisperNotifyDialog
+    {
+        void* pMem = ::operator new(0x218);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b51780(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMainPlayerInfo
+    {
+        void* pMem = ::operator new(0x240);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419ee140(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMessengerBrowser
+    {
+        void* pMem = ::operator new(0x310);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a20f90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITalkPanelSettingDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b224f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemMergeOptionDialog
+    {
+        void* pMem = ::operator new(0x1f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419ccd00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCItemEditDialog
+    {
+        void* pMem = ::operator new(0x260);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b3b830(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWebBrowser
+    {
+        void* pMem = ::operator new(0x220);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b4f220(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITriggerEditorDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b29f20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRouletteDialog
+    {
+        void* pMem = ::operator new(0x230);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ac4920(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemEnchantTransformDialog
+    {
+        void* pMem = ::operator new(0x208);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c3cc10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemGetOptionDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419d95c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCBannerDialog
+    {
+        void* pMem = ::operator new(0x248);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b34100(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISkillBookTreeDialog
+    {
+        void* pMem = ::operator new(0x2f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ec4e50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAchieveDialog
+    {
+        void* pMem = ::operator new(0x228);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418a7310(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGemSettingDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_141946030(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRealEstateDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ab20e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIFittingDollDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_141933270(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIObjectStoreDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a72480(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITradeDialogEx
+    {
+        void* pMem = ::operator new(0x230);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b26de0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDynamicActionDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_14192ac30(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBillDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418cd0c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIJobChangeDialog
+    {
+        void* pMem = ::operator new(0x218);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419db000(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemEditDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419bc730(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPerformanceDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a7c4c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRealEstateSell
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ab5d50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIConstructHelpDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141905eb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIReportDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_141ab8920(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICartoonDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418df4e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGuildDialog
+    {
+        void* pMem = ::operator new(0x388);
+        UIDialog* pDlg = pMem != 0 ? FUN_141960ce0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIObserveDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a732e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMyHouseAuthDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a57b00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPartyDPSDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a7b050(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIEnterEventFieldDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f3fb10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDTEventDialog
+    {
+        void* pMem = ::operator new(0x288);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f359b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIIndividualDPSDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f4ab90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemBreakDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419a21c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemBreakDonationDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419a4d30(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIInviteGroupDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_14199f740(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIEnchantSelectDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e291e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIKeySettingSelectDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c581a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemEnchantDialog
+    {
+        void* pMem = ::operator new(0x328);
+        UIDialog* pDlg = pMem != 0 ? FUN_1419befc0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGroupMessengerBrowser
+    {
+        void* pMem = ::operator new(0x290);
+        UIDialog* pDlg = pMem != 0 ? FUN_141950770(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITriggerTimerDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b330c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPObserverDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141a911b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGambleDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_141935200(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBlackMarketDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1418cf080(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIFreeForAllTimerDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141b33620(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPRankingDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_141342f10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPResultDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_1413439a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPTeamFlagGagueDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141344ab0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMaidDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412d7040(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISmartRecommendNotifyDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_14134d770(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISmartRecommendBillingDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_14134c9d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPKillLogDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_141342570(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAutoReviveCountDownDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_141284ac0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIIGuideMovieDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c3ac0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAttendGiftDialog
+    {
+        void* pMem = ::operator new(0x230);
+        UIDialog* pDlg = pMem != 0 ? FUN_14102b4d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILongTermAttendGiftDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c6b300(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICashAttendDialog
+    {
+        void* pMem = ::operator new(0x238);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bc2c70(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDTAttendPopup
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c032b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonRoomDialog
+    {
+        void* pMem = ::operator new(0x258);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412b6c90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPGuildTeamDialog
+    {
+        void* pMem = ::operator new(0x288);
+        UIDialog* pDlg = pMem != 0 ? FUN_141339640(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPGuildTeamResultDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_1413409a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIManufactureDialog
+    {
+        void* pMem = ::operator new(0x220);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412e24f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemPreviewDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412d5890(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISkillPreviewDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e93690(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMeratMarketDialog
+    {
+        void* pMem = ::operator new(0x660);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412e84b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMeratMarketRegisterDialog
+    {
+        void* pMem = ::operator new(0x240);
+        UIDialog* pDlg = pMem != 0 ? FUN_141317690(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPCInfoDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_14132bc00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIManufactureStatus
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412dba80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBannerAdvertisingDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_141030e20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICashShopDialog
+    {
+        void* pMem = ::operator new(0x2f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141033360(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMaidRecipeListDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412daa40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITokenPocketDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_1413518a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPcBangDialog
+    {
+        void* pMem = ::operator new(0x2b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_141322c00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIIndividualPvPDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c9e70(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPTeamResultDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_1413450d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPTeamScoreDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_1413466b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINameTagSymbolSettingDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_14131d910(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomePasswordDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c8bd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeSummonDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_141299650(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGlobalPortalDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c2020(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeInfoDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412c4cd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIVisitorsBookDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_14135b540(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPartySearchDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f8c480(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPartySearchRegisterDialog
+    {
+        void* pMem = ::operator new(0x228);
+        UIDialog* pDlg = pMem != 0 ? FUN_141320660(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISystemMailNotifyDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_1412a4590(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRecallScrollNotifyDialog
+    {
+        void* pMem = ::operator new(0x218);
+        UIDialog* pDlg = pMem != 0 ? FUN_14129ba60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIEnchantScrollDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f3b490(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuizDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_14129a3c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHouseDemolishDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_14134fc90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIInteriorBuildDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f4b3d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIInteriorPreviewDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f4cc50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDarkStreamScoreDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f35340(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDarkStreamResultDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f345b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIFishingBookDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f41250(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIFishingFloatDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f43df0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINoticeDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_1410084b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemRemakeOptionDialog
+    {
+        void* pMem = ::operator new(0x228);
+        UIDialog* pDlg = pMem != 0 ? FUN_14129cfa0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPlayInstrumentDialog
+    {
+        void* pMem = ::operator new(0x288);
+        UIDialog* pDlg = pMem != 0 ? FUN_14100a030(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWriteMusicDialog
+    {
+        void* pMem = ::operator new(0x270);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fed9c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemAutoUseOptionDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f4f460(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISkillCompactControlDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f9e200(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonExpenseRewardDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f3a810(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonRewardDialog
+    {
+        void* pMem = ::operator new(0x348);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e20ae0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILevelUpGuideDialog
+    {
+        void* pMem = ::operator new(0x210);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f84310(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBossRewardPreviewDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f255e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIArcadeLifeBar
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ef4f10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIArcadeMainDialog
+    {
+        void* pMem = ::operator new(0x2e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ef5640(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIArcadeTextEffectDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ba7d90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBeautyListDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f004b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISelectItemBoxDialog
+    {
+        void* pMem = ::operator new(0x278);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f99280(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICardReverseGameDialog
+    {
+        void* pMem = ::operator new(0x208);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f26990(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBeautyShopStyleDialog
+    {
+        void* pMem = ::operator new(0x2b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f03090(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRankPvPDialog
+    {
+        void* pMem = ::operator new(0x280);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f91d90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPvPRankDuelResultDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f90780(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISystemShopDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fa4180(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemLockDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f56ab0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemRemakeScrollDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f58080(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemSocketSystemDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f68da0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameDictionaryDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f447d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICharacterAbilityDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f2a260(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIShadowExpeditionBossBar
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f9cc60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIKeyboardGuideDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f83ff0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemSocketScrollDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f64630(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemRePackingScrollDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f60e00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemPetTrainingDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e56eb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemExchangeScrollDialog
+    {
+        void* pMem = ::operator new(0x230);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f50d60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBlueMarbleGameDialog
+    {
+        void* pMem = ::operator new(0x1b0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140f21590(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCCubePaletteDialog
+    {
+        void* pMem = ::operator new(0x238);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ee9f50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILearningQuestDialog
+    {
+        void* pMem = ::operator new(0x358);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ea0850(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMarketBillDialog
+    {
+        void* pMem = ::operator new(0x280);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ea6ee0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonClosingPhotoDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e0de40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISurveyDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ed9b80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIVIPDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fb7dc0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonSearchDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e19b60(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIVIPGoodsShopDialog
+    {
+        void* pMem = ::operator new(0x1f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fb9ac0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeOptionDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fa8cc0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameRankingDialog
+    {
+        void* pMem = ::operator new(0x250);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e2cc90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIClubDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e0aa10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMasteryDialog
+    {
+        void* pMem = ::operator new(0x340);
+        UIDialog* pDlg = pMem != 0 ? FUN_140eadeb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCPortalDialog
+    {
+        void* pMem = ::operator new(0x1b0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fb0190(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISkillBookAutoDistributeDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ec41e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonLobby
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e176a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonSearchSelectDialog
+    {
+        void* pMem = ::operator new(0x250);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e26c20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIChaosDPSDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e05460(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeSaveSlotDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fa9eb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeResizeDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c2bc50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCHousingPointDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fadb00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCCubeBillDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ee7610(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILoginNotice
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ea60c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemLulluBoxDialog
+    {
+        void* pMem = ::operator new(0x270);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e9a970(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemPetBoxDialog
+    {
+        void* pMem = ::operator new(0x290);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e4df70(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGuildHouseUpgradeDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e39790(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILevelUpPackageDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ea44b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITencentCashChargeDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e99b90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITencentAas2Dialog
+    {
+        void* pMem = ::operator new(0x1d0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e988a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // TencentUserReport::UITencentUserReportDialog
+    {
+        void* pMem = ::operator new(0x270);
+        UIDialog* pDlg = pMem != 0 ? FUN_140edb370(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIStampEventDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ed74c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMusicConcertDialog
+    {
+        void* pMem = ::operator new(0x260);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e694a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPetSystemDialog
+    {
+        void* pMem = ::operator new(0x1e0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e73440(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIOtherPetSystemDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e6d3c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemMergeRevertDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e4c050(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICameraModeHelpDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e05260(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAdPushDialog
+    {
+        void* pMem = ::operator new(0x3f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e3efd0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCModelHouseDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140faf390(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWebBrowserPopup
+    {
+        void* pMem = ::operator new(0x220);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fc1e20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemEventOpenBoxDialog
+    {
+        void* pMem = ::operator new(0x1f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e47540(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITimeRunEventDialog
+    {
+        void* pMem = ::operator new(0x208);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ee2190(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuizHostDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7dc10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuizOXSelectDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7ead0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPrizeMoneyDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e78150(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuizOXCreateDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7e2f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuizOXWelcomeDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7ef40(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemExtractionScrollDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e49ec0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPetExtractionScrollDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e71190(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIMentoringDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e5db70(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIInviteMentoringDialog
+    {
+        void* pMem = ::operator new(0x1b0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c2dea0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPopupNpcTalkDialog
+    {
+        void* pMem = ::operator new(0x1e0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e76460(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICoupleActionDialog
+    {
+        void* pMem = ::operator new(0x1b0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bebfb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemBillBoardDialog
+    {
+        void* pMem = ::operator new(0x260);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c308c0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAllianceQuestDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bf60f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCCubeNoticeDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140faf840(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDailyMissionDialog
+    {
+        void* pMem = ::operator new(0x1b8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bff060(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIFamePointBoardDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c15460(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBirthdayCardDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bb9770(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIQuestPostBoxDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e7f2e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISelectSuperWorldChatDialog
+    {
+        void* pMem = ::operator new(0x230);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e8bcb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGalleryEventDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c165e0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemTreasureMapDialog
+    {
+        void* pMem = ::operator new(0x208);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c54ee0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UISnowmanEventDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e943b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILevelUpPackageWidgetDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c593d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIRpsEventDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e82350(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UINpcDuelHPBarDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e6b7b0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGamePadMenuDialog
+    {
+        void* pMem = ::operator new(0x270);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c1aaf0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUGCPVPControlDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fb53d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIAdventureLevelDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ba2a80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWorldChampionRewardDialog
+    {
+        void* pMem = ::operator new(0x260);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fe9d00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBurningEventWidgetDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c59f10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UILapenshardSystemDialog
+    {
+        void* pMem = ::operator new(0x1c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c611d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIChangeJobDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bd7e10(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameModeSelectDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c19f20(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIGameMakerMainDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c193f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICoupleDanceEventDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bfcb00(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHighlightGameMenu
+    {
+        void* pMem = ::operator new(0x1f0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c220d0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIClosetDialog
+    {
+        void* pMem = ::operator new(0x2c0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bd9290(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeInfoEditDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c26440(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeInsideOptionDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c27340(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemBlueprintCreateDialog
+    {
+        void* pMem = ::operator new(0x220);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c35890(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHomeMenuDialog
+    {
+        void* pMem = ::operator new(0x1f8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c29160(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIOxQuizDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e6e400(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBlueprintMarketDialog
+    {
+        void* pMem = ::operator new(0x1e8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bb9cf0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIChatEmoticonDialog
+    {
+        void* pMem = ::operator new(0x1c8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bd0e90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UICollectItemGroupEventDialog
+    {
+        void* pMem = ::operator new(0x218);
+        UIDialog* pDlg = pMem != 0 ? FUN_140be6eb0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIBingoEventDialog
+    {
+        void* pMem = ::operator new(0x428);
+        UIDialog* pDlg = pMem != 0 ? FUN_140bad0a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonControlCenter
+    {
+        void* pMem = ::operator new(0x1d0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c0aea0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonPopupRewardDialog
+    {
+        void* pMem = ::operator new(0x188);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c0ec90(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIDungeonSearchSettingDialog
+    {
+        void* pMem = ::operator new(0x238);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c0fdc0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemMultiOpenBoxDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c3f350(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UITypingGameDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_140ee52f0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIItemGachaBoxDialog
+    {
+        void* pMem = ::operator new(0x200);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c3ff80(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingDialog
+    {
+        void* pMem = ::operator new(0x1a0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fc6fa0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingHallReservationDialog
+    {
+        void* pMem = ::operator new(0x1d0);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fdb090(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingInvitationDialog
+    {
+        void* pMem = ::operator new(0x190);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fe5780(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPhotoStudioMenuDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e75ea0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingBillboardDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fc2c50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWatchAGameDialog
+    {
+        void* pMem = ::operator new(0x238);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fc07a0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIHideAndSeekResultDialog
+    {
+        void* pMem = ::operator new(0x198);
+        UIDialog* pDlg = pMem != 0 ? FUN_140c1e730(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIPaybackDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140e6ec50(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingGuestDialog
+    {
+        void* pMem = ::operator new(0x1a8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fcc860(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingAffinityDialog
+    {
+        void* pMem = ::operator new(0x178);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fc2090(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIWeddingHallListDialog
+    {
+        void* pMem = ::operator new(0x180);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fd8df0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
+    // UIUnlimitedEnchantDialog
+    {
+        void* pMem = ::operator new(0x1d8);
+        UIDialog* pDlg = pMem != 0 ? FUN_140fb5ca0(pMem) : 0;
+        Unk_UisDlgSlot slot;
+        FUN_141aec080(FUN_141296f00(&slot, pDlg));
+    }
 }
 
 template class ATL::CAtlMap<int, MS2Ptr<UIDialog> >;
