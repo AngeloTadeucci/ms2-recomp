@@ -2172,3 +2172,9 @@ D3DXFloat16To32Array	14230396f	func
 ?AttachAffectedNode@NiDynamicEffect@@QEAA_NPEAVNiNode@@@Z	141d58e60	func
 ??0MS2OutlinePreProcessor@@QEAA@XZ	1414d3120	func
 ??0SpecialNPCInfo@@QEAA@XZ	14092c0a0	func
+??0Unk_PCBaseFxQuery@@QEAA@XZ	140a52ef0	func
+??1Unk_PCBaseFxQuery@@QEAA@XZ	1405a89e0	func
+?g_ClientConstantsFloats@@3PAMA	1439ed010	data
+??0Unk_MagicHitHolder@@QEAA@H@Z	140963df0	func
+??1Unk_MagicHitHolder@@QEAA@XZ	140964870	func
+??1Unk_MagicSkillStateRef@@QEAA@XZ	140975740	func
