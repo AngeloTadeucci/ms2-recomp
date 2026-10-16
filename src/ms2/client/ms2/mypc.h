@@ -106,6 +106,9 @@ public:
 // The key of the lapenshard slot maps at +0x16b0 / +0x17c0 (an enum: CAtlMap passes it by reference).
 enum Unk_MyPCLapenSlot { MYPC_LAPEN_SLOT_NONE = 0 };
 
+// The house setting sent by FUN_141530720 (compared as a byte: a scoped enum over unsigned char).
+enum class Unk_MyPCHouseSetting : unsigned char { Kind0 = 0, Kind1 = 1, Kind2 = 2 };
+
 class MyPC : public PC, public IMessageListener
 {
     EE_DECLARE_CLASS1(MyPC, 0x06200004, PC);   // ClassInfo 0x143ae10b0 (setup 0x141536810)
@@ -186,7 +189,7 @@ public:
     CStringW FUN_1415281c0();
     CStringW FUN_141528330();
     int FUN_141529620();
-    int FUN_141529ae0(int nPortalId, int nA, int nB, __int64 nC);
+    int FUN_141529ae0(int nMapId, int nA, int nB, __int64 nC);   // check the portal lock, then stop
     void FUN_14152a040();
     void FUN_14152a240(int nId);
     void FUN_14152a2b0(int n);
@@ -234,8 +237,10 @@ public:
     int FUN_14152ecc0(__int64 n);
     int FUN_14152ed10(__int64 n);
     void FUN_141528c30(CInPacket& packet);
+    void FUN_141528c90(efd::Point3 kPos, efd::Point3 kDir); // warp the ridee (ground snapped)
     int FUN_14152f860(unsigned int nKey);
     void FUN_141530700(int n);
+    void FUN_141530720(Unk_MyPCHouseSetting nKind, CStringW strValue, unsigned char bFlag);   // house setting (packet 0x37 0x18)
     void FUN_14152f9e0();                                   // begin bulk update
     void FUN_14152f530(Unk_MyPCLapenSlot nSlot, unsigned nItemId, int bBulk);   // equip nItemId in nSlot
     void FUN_14152f620(Unk_MyPCLapenSlot nSlot);            // unequip nSlot
@@ -252,6 +257,7 @@ public:
     int FUN_1415271e0(PCBase* pActor, struct Unk_MyPCSkillUse* pSkill);   // can the skill be used on pActor
     void FUN_141529fb0();                                   // request the field leave (packet 0x6c 6)
     void FUN_141524880(MS2Ptr<Unk_MyPCComp1618> sp);        // set m_sp1618
+    int FUN_1415248d0(int nSide, int nType);                // sit (0xbadf0a13) or lie (0xc13e30c8) on a nearby object
 
     Unk_MyPCStateCtl m_kStateCtl;                           // +0x12e8
     Unk_MyPCActionKeys m_kActionKeys;                       // +0x1338

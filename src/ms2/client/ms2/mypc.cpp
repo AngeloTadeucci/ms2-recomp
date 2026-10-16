@@ -37,6 +37,7 @@
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@H@Z 0x141532e40
 // MS2-PIN: ??4?$MS2Ptr@VUnk_MyPCComp1618@@@@QEAAAEAV0@H@Z 0x141532ef0
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
+// MS2-PIN: ??C?$MS2Ptr@VUnk_MyPCPortalLock@@@@QEBAPEAVUnk_MyPCPortalLock@@XZ 0x141533250
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -210,7 +211,9 @@ struct Unk_MyPCOptionData
     bool m_bShowHpBar;                                      // +0xa
     bool m_bShowShieldBar;                                  // +0xb
 };
-class Unk_MyPCAdvCfg { public: unsigned char* FUN_140af7de0(); Unk_MyPCOptionData* FUN_140b123b0(); };
+// The house settings (the flags shown on the house info).
+class Unk_MyPCHouseCfg { public: void FUN_141261e40(int bSet, int nFlag); void FUN_141261dd0(int nFlag); };
+class Unk_MyPCAdvCfg { public: unsigned char* FUN_140af7de0(); Unk_MyPCOptionData* FUN_140b123b0(); Unk_MyPCHouseCfg* FUN_140a46860(); };
 Unk_MyPCAdvCfg* FUN_1409a8b10();
 class Unk_MyPCUpdateList { public: void FUN_140a0d0c0(int n); };
 Unk_MyPCUpdateList* FUN_14123ee80();
@@ -245,7 +248,7 @@ public:
     void FUN_141adc530(int nId);                            // close
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
-class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
+class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); void FUN_14138bf00(int nKind, int nId, int nArg); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
 Unk_MyPCWidgets* FUN_1409331e0();
 class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
@@ -320,6 +323,16 @@ Unk_14025e7c0* FUN_14025e7c0();
 void FUN_141683a90(void* pQueue);                           // flush the queue
 bool FUN_141682f80(void* pQueue, int nId);                  // the queue holds nId
 void FUN_141676140(PCBase* pActor);                         // move update
+// PC members fittingdollpc.h does not declare.
+void* FUN_141659b80(PC* pPC, int nSide, unsigned nType, float fRange);   // the nearest object of nType on a side
+extern Unk_StreamPoint DAT_143b01a60;                       // the zero point
+// The physics body helpers of PCBase::FUN_14166d220 (pcbase.h's Unk_PCBaseBody does not declare them).
+void FUN_141240730(Unk_PCBaseBody* pBody);                  // reset the body
+void* FUN_141240f20(Unk_PCBaseBody* pBody);                 // the body's actor
+void FUN_140cfaf30(void* pActor);                           // sync the actor to the body
+// The collision queries.
+class Unk_MyPCCollision { public: int FUN_14168a310(const efd::Point3& kFrom, efd::Point3& kHit, int nMask, float fLen, void* pIgnore, int bAll); };
+Unk_MyPCCollision* FUN_1409f7ca0();
 NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // the entity's scene node
 
 // The npc table row (MS2Ptr<T>; see cubespawnobject.h).
@@ -519,6 +532,17 @@ template <class T> T* MyPCDialog(int nId)
 
 typedef ATL::CRBMap<Unk_MyPCPortalKey, MS2Ptr<Unk_MyPCPortalLock> > Unk_MyPCPortalLockMap;
 extern Unk_MyPCPortalLockMap DAT_143ab3288;                 // the locked password portals
+
+// The portal move request (packet 0x6c 0; ctor 0x1401fa920 and encoder 0x1401fa9a0 in ?\unit_1401f9eb0).
+struct Unk_PayloadNames
+{
+    Unk_PayloadNames();                                     // 0x1401fa920
+    int a, b, c, d;                                         // map id, portal id, portal coordinates
+    CStringW name, other;                                   // +0x10 password, +0x18
+};
+MS2_CHECK_SIZE(Unk_PayloadNames, 0x20);
+void FUN_1401fa9a0(unsigned char* payload, COutputStream& stream);
+extern int DAT_143ab2870;                                   // the local character's current map id
 
 
 // ---- class info and statics (the exe runs them in this order) ----
@@ -909,6 +933,37 @@ Unk_MyPCComp1618* MyPC::FUN_141523c50()
 }
 MS2_REPLACE_METHOD(0x141523C50, MyPC, FUN_141523c50, 33, 0x3FD3C56B);
 
+// @0x1415248d0
+// MS2-FUNCTIONAL: the exe keeps the zero point copy 8 bytes higher in the frame (one more hidden slot)
+int MyPC::FUN_1415248d0(int nSide, int nType)
+{
+    if (nType == (int)0xbadf0a13 || nType == 0) {
+        void* pChair = ::FUN_141659b80(this, nSide, 0xbadf0a13, 90.0f);
+        if (pChair != 0) {
+            int nSub = 0x2a;
+            if (nSide == 1)
+                nSub = 0x2f;
+            else if (nSide == 2)
+                nSub = 0x30;
+            vfunc_59(8, 0, nSub, 0);
+            return 1;
+        }
+    }
+    if (nType == (int)0xc13e30c8 || nType == 0) {
+        void* pBed = ::FUN_141659b80(this, nSide, 0xc13e30c8, 90.0f);
+        if (pBed != 0) {
+            if (nSide == 2)
+                return 0;
+            if (nSide == 1)
+                vfunc_22(efd::Point3(reinterpret_cast<const efd::Point3&>(DAT_143b01a60)));
+            vfunc_59(9, 0, 0, 0);
+            return 1;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1415248d0, MyPC, FUN_1415248d0, 413, 0x38A60820);
+
 // @0x141527120
 int MyPC::FUN_141527120()
 {
@@ -1105,6 +1160,29 @@ void MyPC::FUN_141528c30(CInPacket& packet)
     m_pos1790 = packet.vfunc_o8_11();
 }
 MS2_REPLACE_METHOD(0x141528C30, MyPC, FUN_141528c30, 78, 0xE53AF5C9);
+
+// @0x141528c90
+void MyPC::FUN_141528c90(efd::Point3 kPos, efd::Point3 kDir)
+{
+    PCBase* pRidee = static_cast<PCBase*>(FUN_141676a10());
+    if (pRidee == 0)
+        return;
+    kPos.z += 25.0f;
+    efd::Point3 kHit;
+    if (FUN_1409f7ca0()->FUN_14168a310(kPos, kHit, 0, 0.0f, 0, 0) != 0) {
+        kHit.z += 25.0f;
+        kPos = kHit;
+    }
+    pRidee->FUN_141676060(reinterpret_cast<const NiPoint3&>(DAT_143b01a60));
+    pRidee->vfunc_19(kPos);
+    pRidee->vfunc_21(kDir);
+    pRidee->FUN_14166d8b0(kDir.z);
+    if (pRidee->FUN_14166d220() != 0) {
+        ::FUN_141240730(pRidee->FUN_14166d220());
+        ::FUN_140cfaf30(::FUN_141240f20(pRidee->FUN_14166d220()));
+    }
+}
+MS2_REPLACE_METHOD(0x141528c90, MyPC, FUN_141528c90, 428, 0x4C50DA48);
 
 // @0x141529620
 int MyPC::FUN_141529620()
@@ -1313,6 +1391,40 @@ int MyPC::FUN_141529a50(int nNpcId)
 }
 MS2_REPLACE_METHOD(0x141529a50, MyPC, FUN_141529a50, 123, 0x33B013F2);
 
+// @0x141529ae0
+int MyPC::FUN_141529ae0(int nMapId, int nA, int nB, __int64 nC)
+{
+    Unk_MyPCPortalKey key(nMapId, nA, nB, nC);
+    MS2Ptr<Unk_MyPCPortalLock> spLock;
+    if (DAT_143ab3288.Lookup(key, spLock)) {
+        if (spLock->m_nUntil > GetServerTime()) {
+            FUN_140d73bc0(0xb0c, 0, 0, CStringW(L""));
+            return 0;
+        } else if (spLock->m_nUntil != 0 && spLock->m_nUntil <= GetServerTime())
+            DAT_143ab3288.RemoveKey(key);
+    }
+    FUN_1415293b0();
+    m_kStateCtl.vfunc_0();
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141529ae0, MyPC, FUN_141529ae0, 397, 0xB33A68C8);
+
+// @0x141529c80
+void MyPC::FUN_141529c80(int nPortalId, int nA, int nB, __int64 nC, CStringW strPwd)
+{
+    if (FUN_141529ae0(nPortalId, nA, nB, nC) == 0)
+        return;
+    COutPacket packet(0x6c, 0);
+    packet.Encode1(2);
+    packet.Encode4(nPortalId);
+    packet.Encode4(nA);
+    packet.Encode4(nB);
+    packet.Encode8(nC);
+    packet.vfunc_o10_8(strPwd);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x141529c80, MyPC, FUN_141529c80, 263, 0xD4282BAC);
+
 // @0x141529d90
 void MyPC::FUN_141529d90()
 {
@@ -1357,6 +1469,26 @@ void MyPC::FUN_14152a040()
     FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x14152A040, MyPC, FUN_14152a040, 111, 0x3DC1CC31);
+
+// @0x14152a0c0
+void MyPC::FUN_14152a0c0(int nPortalId, int nD, int nA, int nB, CStringW strA, CStringW strPwd)
+{
+    if (FUN_141529ae0(FUN_1403ed2d0()->FUN_141bd3060(), nA, nB, 0) == 0)
+        return;
+    FUN_1409331e0()->FUN_14138bf00(0x19, nD, 0);
+    Unk_PayloadNames kMove;
+    kMove.a = DAT_143ab2870;
+    kMove.b = nD;
+    kMove.c = nA;
+    kMove.d = nB;
+    kMove.name = strPwd;
+    kMove.other = strA;
+    COutPacket packet(0x6c, 0);
+    packet.Encode1(0);
+    FUN_1401fa9a0(reinterpret_cast<unsigned char*>(&kMove), packet);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152a0c0, MyPC, FUN_14152a0c0, 363, 0x00CCBEA9);
 
 // @0x14152a240
 void MyPC::FUN_14152a240(int nId)
@@ -1998,6 +2130,33 @@ void MyPC::FUN_141530700(int n)
     m_n15e4 = n;
 }
 MS2_REPLACE_METHOD(0x141530700, MyPC, FUN_141530700, 25, 0x3C9E62E6);
+
+// @0x141530720
+void MyPC::FUN_141530720(Unk_MyPCHouseSetting nKind, CStringW strValue, unsigned char bFlag)
+{
+    if (FUN_141523c50() == 0)
+        return;
+    COutPacket packet(0x37, 0);
+    packet.Encode1(0x18);
+    packet.Encode1((unsigned char)nKind);
+    packet.vfunc_o10_8(strValue);
+    packet.Encode1(bFlag);
+    FUN_140710590(packet);
+    if (FUN_140166410()->FUN_14036d570(0x117)) {
+        if (nKind == Unk_MyPCHouseSetting::Kind0) {
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261e40(1, 8);
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261dd0(8);
+        } else if (nKind == Unk_MyPCHouseSetting::Kind1) {
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261e40(1, 0x10);
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261dd0(0x10);
+        } else if (nKind == Unk_MyPCHouseSetting::Kind2) {
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261e40(1, 0x20);
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261dd0(0x20);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141530720, MyPC, FUN_141530720, 420, 0x15DAA1F8);
+
 
 // Leave the cube build mode (packet 0x36 with mode 0).
 // @0x141530200
