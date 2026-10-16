@@ -1646,3 +1646,12 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ?DAT_143ab291c@@3GA	143ab291c	data
 ?DAT_143ab2d80@@3PADA	143ab2d80	data
 ??1Unk_HiMapPtr@@QEAA@XZ	1408850f0	func
+??0UIAvatarPet@@QEAA@PEAX@Z	1418be8f0	func
+??1Unk_PetBoxDropVec@@QEAA@XZ	1405a1a40	func
+??0Unk_PetBoxDropVec@@QEAA@XZ	1405a1910	func
+??1Unk_PetBoxIntVec@@QEAA@XZ	140183b90	func
+??0Unk_PetBoxIntVec@@QEAA@XZ	140182ed0	func
+??0Unk_PetBoxCameraData@@QEAA@XZ	140cb13b0	func
+??1Unk_PetBoxCameraPtr@@QEAA@XZ	140cb1460	func
+??YUnk_PetBoxVector@@QEAAAEAU0@AEBU0@@Z	140a4e560	func
+??CUnk_PetBoxCameraPtr@@QEBAPEAVUnk_PetBoxCamera@@XZ	1409f7910	func
