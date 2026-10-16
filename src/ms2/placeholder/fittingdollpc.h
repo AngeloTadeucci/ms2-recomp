@@ -19,7 +19,8 @@ struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 class Unk_PCArg125;   // MS2Ptr<T> by value (MyPC override destroys it with 0x1409f74e0)
 class Unk_PCActionTimer;   // CPtred-derived, defined by the user unit (avatarpc.cpp)
 class CEquipItem;
-struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
+class CMsTime;
+struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); void FUN_1411ea620(const CMsTime& kStart, const CMsTime& kEnd); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
 class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
 class PC : public PCBase {

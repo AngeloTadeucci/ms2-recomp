@@ -210,6 +210,7 @@ public:
     void FUN_14173b5a0(CInPacket& packet);                  // 0x105
     void FUN_14173c090(CInPacket& packet);                  // 0x106
     void FUN_14173c0f0(CInPacket& packet);                  // 0x106 mode 1
+    void FUN_14173c2d0(CInPacket& packet);                  // 0x141739910 sub-handler (codi tab activated)
     void FUN_14173c630(CInPacket& packet);                  // 0x141739910 sub-handler (beauty shop open)
     void FUN_14173c7a0(CInPacket& packet);                  // 0x111
     void FUN_14173c870(CInPacket& packet);                  // 0x115

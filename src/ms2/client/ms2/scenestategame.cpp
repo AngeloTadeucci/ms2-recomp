@@ -50,6 +50,8 @@
 #include "statemanager.h"
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/uiswfentitymanager.h"
+#include "ms2/placeholder/mstime.h"
 #include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/notifyobject.h"
@@ -104,6 +106,8 @@ public:
     MyPC* FUN_141bd0cc0();                                  // the local player actor
     int FUN_141bd98d0();                                    // current field id
     void FUN_141bd9c20(CInPacket& packet);
+    void FUN_141bdb6a0();                                   // hide the world tooltips
+    void FUN_141bdb7a0();                                   // show them
 };
 Unk_SSGWorld* FUN_1403ed2d0();
 
@@ -121,6 +125,16 @@ public:
     void FUN_141adc530(int nId);
     void FUN_141add1f0();
     void FUN_141adc5d0(int nId);
+    void FUN_141ada6f0(int nScene);
+    void FUN_141ad9e50(int nScene);
+    void FUN_141adafd0(int nScene);
+    void FUN_141adad20(int nScene);
+    void FUN_141ada610(int nScene);
+    void FUN_141adb2a0(int nScene);
+    void FUN_141ad9650();
+    void FUN_141ad9b30();
+    bool FUN_141ad9b60();
+    void FUN_141ad9c10();
 };
 Unk_SSGUIMgr* FUN_1403ed2b0();
 
@@ -377,6 +391,8 @@ class Unk_Service6100017 : public efd::ISystemService
 public:
     static const efd::ClassID CLASS_ID = 0x06100017;
     void FUN_1410c3020(int n);
+    void FUN_1410bc1c0();                                   // UI hidden (debug key)
+    void FUN_1410bc320();                                   // UI shown again
     void FUN_1410c3120(int n);
     void FUN_1410c3160(int n);
     void FUN_1410cb8b0(bool b);
@@ -419,7 +435,7 @@ class Unk_SSG967100 { public: void FUN_141b21390(); void FUN_141b1ddd0(CInPacket
 Unk_SSG967100* FUN_140967100();
 class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14138bf00(int nKind, int nId, int nArg); void FUN_14138b280(CInPacket& packet); };
 Unk_SSG9331e0* FUN_1409331e0();
-class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); UISwfEntity* FUN_1422b9e20(int nId); };
+class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); UISwfEntity* FUN_1422b9e20(int nId); UISwfEntity* FUN_1422b9e80(); };
 Unk_SSGSoundCtl* FUN_1408e57f0();
 class Unk_SSG931510 { public: void FUN_140d9f710(CInPacket& packet); MS2Ptr<class Unk_SSGDungeonRecord> FUN_140d9f2c0(); MS2Ptr<class Unk_SSGChatEmoticon> FUN_140d9f8f0(); };
 void FUN_1412b9870(int nId, int nType);
@@ -514,7 +530,7 @@ public:
 Unk_SSGItemHub* FUN_140a6a840();
 MyPC* FUN_1409613d0(PCBase* pPC);                          // efd::DynamicCast<MyPC> (class id 0x6200004)
 int FUN_1422b9e00(Unk_SSGSoundCtl* p);
-class UISceneEntity { public: virtual ~UISceneEntity(); };
+class UISceneEntity : public UISwfEntity { };
 class UISceneGameBeautyShop : public UISceneEntity { public: void FUN_141ac9270(); };
 UISceneEntity* FUN_1422b9e50(Unk_SSGSoundCtl* p);          // the current scene entity
 
@@ -684,7 +700,7 @@ public:
 
 class Unk_SSGBattleRecord { public: void FUN_140a05550(__int64 nKey, __int64 nDelta); };
 Unk_SSGBattleRecord* FUN_140e09140();                       // TSingleton<CBattleRecordManager>
-class Unk_SSG9a6f0 { public: void FUN_14117e4c0(__int64 nDelta); };
+class Unk_SSG9a6f0 { public: void FUN_14117e4c0(__int64 nDelta); void FUN_14117d090(int nSide, int n, __int64 nA, __int64 nB, __int64 nC, int nD); void FUN_14117e690(); };
 Unk_SSG9a6f0* FUN_14109a6f0();
 void FUN_1413612c0(__int64 nDelta, int n);
 class Unk_SSGQuestMgr { public: void FUN_1416ca2f0(); };
@@ -925,6 +941,7 @@ CStringW FormatStringId(int id, const fmt::ArgList& args);  // 0x14028dee0
 FMT_VARIADIC_W(CStringW, FormatStringId, int)
 CStringW FUN_14052bd00(int nId, const CStringW& strArg);   // formatted system text
 CStringW FUN_1409404f0(__int64 nAmount);                    // money string
+CStringW FUN_140811740(int nId, const int& nArg1, const int& nArg2);   // formatted system text (util.cpp)
 CStringW FUN_1409eec40(int nId);                                // 0/1/2 -> same, else 6
 // The EP gauge of the HUD (?\uiepprogress.cpp).
 class Unk_SSGEPGauge { public: void FUN_141931bd0(int nValue, int nMax); };
@@ -3266,6 +3283,60 @@ void CSceneStateGame::FUN_14171d610(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14171d610, CSceneStateGame, FUN_14171d610, 514, 0xFE149045);
 
+// 0x3d mode 4: a buff/effect update between two actors (ids, buff id, three effect values, effect flag).
+class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); };
+// Picks an effect value: when nValue is set, it becomes the (type, value) pair to show.
+static int FUN_1417403b0(const __int64& nValue, const int& nType, int& nOutType, __int64& nOutValue);
+
+// @0x14171d820
+void CSceneStateGame::FUN_14171d820(CInPacket& packet)
+{
+    int nTargetId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nBuffId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nValue1 = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    __int64 nValue2 = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    __int64 nValue3 = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    int bShow = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1200(nOwnerId);
+    if (pOwner == 0)
+        return;
+    pOwner->FUN_1416749a0()->FUN_14096fc00(nBuffId);
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC != 0)
+    {
+        if (pMyPC->FUN_14123c580() == nOwnerId)
+            FUN_14109a6f0()->FUN_14117d090(0, 0, nValue1, nValue2, nValue3, 0);
+        if (pMyPC->FUN_14123c580() == nTargetId)
+        {
+            FUN_14109a6f0()->FUN_14117d090(1, 0, nValue1, nValue2, nValue3, 0);
+            if (nValue1 != 0)
+                FUN_14109a6f0()->FUN_14117e690();
+        }
+    }
+    if (bShow != 0)
+    {
+        int nType = 5;
+        __int64 nValue = 0;
+        if (FUN_1417403b0(nValue1, 5, nType, nValue))
+        {
+            Unk_StreamPoint kPos = DAT_143b01a60;
+            pOwner->vfunc_111((void*)nValue, nType, nTargetId, &kPos);
+        }
+        if (FUN_1417403b0(nValue2, 6, nType, nValue))
+        {
+            Unk_StreamPoint kPos = DAT_143b01a60;
+            pOwner->vfunc_111((void*)nValue, nType, nTargetId, &kPos);
+        }
+        if (FUN_1417403b0(nValue3, 7, nType, nValue))
+        {
+            Unk_StreamPoint kPos = DAT_143b01a60;
+            pOwner->vfunc_111((void*)nValue, nType, nTargetId, &kPos);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14171D820, CSceneStateGame, FUN_14171d820, 1036, 0xBA2CEA1E);
+
 // @0x141721940
 void CSceneStateGame::FUN_141721940(CInPacket& packet)
 {
@@ -3525,6 +3596,36 @@ void CSceneStateGame::FUN_14173a990(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173a990, CSceneStateGame, FUN_14173a990, 116, 0x91EABDAC);
 
+// Guild/party invite request (mode 2): ask the player unless invites are blocked in the options (then answer 5).
+class Unk_SSGGameOpt { public: bool m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6, m_b7, m_b8; bool m_bBlockInvite; };   // +9
+class Unk_SSGCfg { public: Unk_SSGGameOpt* FUN_140ae6540(); };
+Unk_SSGCfg* FUN_1409a8b10();
+
+// @0x14173aa10
+void CSceneStateGame::FUN_14173aa10(CInPacket& packet)
+{
+    __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (FUN_1409a8b10()->FUN_140ae6540()->m_bBlockInvite)
+        FUN_141740200(strName, 5);
+    else
+    {
+        MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(1, FUN_14052bd00(0x87f, strName), 0, CStringW(L""));
+        if (spBox.get() != 0)
+        {
+            spBox->FUN_141a01ca0(0x14, 1, FUN_14028de60(0x2b8));
+            spBox->FUN_141a02460(1);
+            spBox->FUN_141a02480(1);
+            spBox->FUN_141a024a0(0);
+            spBox->FUN_1405340b0(nUid);
+            spBox->FUN_140b76940(strName);
+            spBox->FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)>(this, &CSceneStateGame::FUN_141740280));
+            FUN_140d73c60(spBox);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14173AA10, CSceneStateGame, FUN_14173aa10, 839, 0x1C632D3A);
+
 // @0x14173ad60
 void CSceneStateGame::FUN_14173ad60(CInPacket& packet)
 {
@@ -3585,6 +3686,40 @@ void CSceneStateGame::FUN_14173c7a0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14173c7a0, CSceneStateGame, FUN_14173c7a0, 189, 0x0673F946);
+
+// 0x118: result notices (mode 2: sub 0..2, mode 3: sub 0/3).
+// @0x14173ce30
+void CSceneStateGame::FUN_14173ce30(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 2)
+    {
+        unsigned char nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nResult == 0)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            FUN_1412751f0(FUN_140811740(0xd1d, nA, nB), 1, 1);
+        }
+        if (nResult == 1)
+            FUN_1412751f0(FUN_1409eec40(0xd1f), 1, 1);
+        if (nResult == 2)
+            FUN_1412751f0(FUN_1409eec40(0xd20), 1, 1);
+    }
+    if (nMode == 3)
+    {
+        unsigned char nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nResult == 0)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            FUN_1412751f0(FUN_140811740(0xd1e, nA, nB), 1, 1);
+        }
+        if (nResult == 3)
+            FUN_1412751f0(FUN_1409eec40(0xd21), 1, 1);
+    }
+}
+MS2_REPLACE_METHOD(0x14173CE30, CSceneStateGame, FUN_14173ce30, 842, 0x499679E3);
 
 // @0x14173de10
 void CSceneStateGame::FUN_14173de10(CInPacket& packet)
@@ -3721,6 +3856,61 @@ int CSceneStateGame::FUN_14173fe20()
     return 0;
 }
 MS2_REPLACE_METHOD(0x14173fe20, CSceneStateGame, FUN_14173fe20, 126, 0x98F76DA5);
+
+// The debug key action: toggle the whole UI (m_b18) for screenshots.
+// @0x14173feb0
+void CSceneStateGame::FUN_14173feb0()
+{
+    int nScene = FUN_1422b9e00(FUN_1408e57f0());
+    if (m_b18)
+    {
+        Unk_SSGUIMgr* pUI = FUN_1403ed2b0();
+        if (pUI != 0)
+        {
+            pUI->FUN_141adad20(nScene);
+            pUI->FUN_141ada610(nScene);
+            pUI->FUN_141adb2a0(nScene);
+            pUI->FUN_141ad9b30();
+        }
+        UISwfEntity* pHud = FUN_1408e57f0()->FUN_1422b9e80();
+        if (pHud != 0)
+            pHud->FUN_1422dc080();
+        UISwfEntity* pScene = FUN_1422b9e50(FUN_1408e57f0());
+        if (pScene != 0)
+            pScene->FUN_1422dc080();
+        efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+        if (spService)
+            spService->FUN_1410bc320();
+        FUN_1403ed2d0()->FUN_141bdb7a0();
+        FUN_140b632f0()->FUN_1422d4b70(true);
+        FUN_1403ed2b0()->FUN_141ad9c10();
+    }
+    else
+    {
+        FUN_140b632f0()->FUN_1422d4b70(false);
+        UISwfEntity* pHud = FUN_1408e57f0()->FUN_1422b9e80();
+        if (pHud != 0)
+            pHud->FUN_1422dbf80(pHud->FUN_1422db790(), pHud->FUN_1422db750(), 0, 0);
+        UISwfEntity* pScene = FUN_1422b9e50(FUN_1408e57f0());
+        if (pScene != 0)
+            pScene->FUN_1422dbf80(pScene->FUN_1422db790(), pScene->FUN_1422db750(), 0, 0);
+        Unk_SSGUIMgr* pUI = FUN_1403ed2b0();
+        if (pUI != 0)
+        {
+            pUI->FUN_141ada6f0(nScene);
+            pUI->FUN_141ad9e50(nScene);
+            pUI->FUN_141adafd0(nScene);
+            pUI->FUN_141ad9650();
+            pUI->FUN_141ad9b60();
+        }
+        efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+        if (spService)
+            spService->FUN_1410bc1c0();
+        FUN_1403ed2d0()->FUN_141bdb6a0();
+    }
+    m_b18 = !m_b18;
+}
+MS2_REPLACE_METHOD(0x14173FEB0, CSceneStateGame, FUN_14173feb0, 830, 0xE21C6DBD);
 
 // @0x141740200
 void CSceneStateGame::FUN_141740200(const CStringW& strName, int nType)
@@ -4437,6 +4627,60 @@ void CSceneStateGame::FUN_14173c0f0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173c0f0, CSceneStateGame, FUN_14173c0f0, 469, 0x00599B3A);
 
+// 0xab mode 5: an outfit (codi) tab was activated, permanently or for a period.
+struct Unk_SSGCodiTabInfo
+{
+    Unk_SSGCodiTabInfo() : m_nActorId(0), m_nStart(0), m_nEnd(0), m_nExpire(0), m_bSilent(false) {}   // @0x141745f70
+    int m_nActorId;                                         // +0x00
+    __int64 m_nStart;                                       // +0x08
+    __int64 m_nEnd;                                         // +0x10
+    __int64 m_nExpire;                                      // +0x18 (0 = limitless)
+    bool m_bSilent;                                         // +0x20
+};
+void FUN_1407a8250(Unk_SSGCodiTabInfo& v, CInputStream& in);   // decode (unit_1407a4f20.cpp)
+int FUN_14086be70(int nTime);                               // days left until nTime (32-bit time)
+// The codi tab notification (ctor/dtor are emitted in this unit; vfunc_1 lives in the notify unit).
+class NotifyActiveMyCodiTab : public NotifyObject
+{
+public:
+    NotifyActiveMyCodiTab(const __int64& nStart, const __int64& nEnd) : m_nStart(nStart), m_nEnd(nEnd) {}
+    virtual ~NotifyActiveMyCodiTab() {}
+    virtual CStringW vfunc_1();                             // 0x140db4cd0
+    __int64 m_nStart;                                       // +0x18
+    __int64 m_nEnd;                                         // +0x20
+};
+MS2_CHECK_SIZE(NotifyActiveMyCodiTab, 0x28);
+
+// @0x14173c2d0
+void CSceneStateGame::FUN_14173c2d0(CInPacket& packet)
+{
+    Unk_SSGCodiTabInfo kInfo;
+    FUN_1407a8250(kInfo, packet);
+    int nActorId = kInfo.m_nActorId;
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nActorId);
+    if (pPC == 0)
+        return;
+    const __int64& nStart = kInfo.m_nStart;
+    const __int64& nEnd = kInfo.m_nEnd;
+    pPC->FUN_1416561a0()->FUN_1411ea620(nStart, nEnd);
+    if (efd::ClassInfo::IsKindOf(pPC != NULL ? pPC->GetClassDesc() : NULL, 0x6200004))
+    {
+        if (kInfo.m_bSilent == false)
+        {
+            if (kInfo.m_nExpire == 0)
+                FUN_140d73aa0(FUN_14028b8e0(L"s_msg_item_active_codi_tab_complete_limitless"), 0, 0, CStringW(L""));
+            else
+            {
+                int nDays = FUN_14086be70(static_cast<int>(kInfo.m_nExpire));
+                if (0 < nDays)
+                    FUN_140d73aa0(FUN_14062b4f0(CStringW(L"s_msg_item_active_codi_tab_complete_period"), nDays), 0, 0, CStringW(L""));
+            }
+        }
+        FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyActiveMyCodiTab(nStart, nEnd)));
+    }
+}
+MS2_REPLACE_METHOD(0x14173C2D0, CSceneStateGame, FUN_14173c2d0, 850, 0x8F073C4A);
+
 // @0x14173c630
 void CSceneStateGame::FUN_14173c630(CInPacket& packet)
 {
@@ -4576,3 +4820,15 @@ bool CSceneStateGame::FUN_141740280(int nButton, const CMsgBoxData& data)
     return true;
 }
 MS2_REPLACE_METHOD(0x141740280, CSceneStateGame, FUN_141740280, 285, 0x7362E0DC);
+
+// @0x1417403b0
+static int FUN_1417403b0(const __int64& nValue, const int& nType, int& nOutType, __int64& nOutValue)
+{
+    if (nValue != 0)
+    {
+        nOutType = nType;
+        nOutValue = nValue;
+        return 1;
+    }
+    return 0;
+}
