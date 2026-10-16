@@ -106,6 +106,7 @@
 #include <map>
 #include <set>
 #include "ms2/commonfiles/ugcmappackageinfo.h"   // Unk_Int3
+#include "ms2/commonfiles/ugcmapdata.h"          // CubeOwner
 #include "ms2/unnamed/unit_140fa9eb0.h"
 #include "uiugccubepalettedialog.h"
 #include "ms2/commonfiles/userproxy.h"
@@ -463,6 +464,14 @@ public:
     void FUN_1410d5350();
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     void FUN_1410c7a50(int nA, int nB, int nC, __int64 nD);
+    // 0x6a (housing snapshot)
+    void FUN_1410c3f50(int nState);
+    void FUN_1410bbc00(int nBlock, int nState);
+    Unk_CubeOwners* FUN_1410d3360();                        // the owners by group and block
+    void FUN_1410ce3f0(Unk_CubeOwnerPtr spOwner);
+    bool FUN_1410b7e80(efd::Point3 kPos);
+    bool FUN_1410b7da0(efd::Point3 kPos);
+    void FUN_1410c1910(const Unk_Int3& kPos, bool bFlag);
     unsigned int FUN_1410c3470();
     unsigned int FUN_1410c34b0();
     void FUN_1410d4450(__int64 nCharId, int nSlot, CString strName, __int64 nTime);
@@ -607,7 +616,7 @@ public:
     virtual void vfunc_4();
     virtual void vfunc_5(CItem* pItem);
     virtual void vfunc_6(CItem* pItem);
-    virtual void vfunc_7();
+    virtual void vfunc_7(CItem* pItem);
     virtual void vfunc_8();
     virtual void vfunc_9();
     virtual void vfunc_10();
@@ -2414,6 +2423,133 @@ void CSceneStateGame::FUN_141712fb0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141712fb0, CSceneStateGame, FUN_141712fb0, 748, 0xAE8F8967);
+// ---- item storage (bank) updates ---------------------------------------------------------------------------------
+class Unk_SSGStorage
+{
+public:
+    void FUN_140c868d0();                                   // the storage was cleared
+    void FUN_140c869e0(CItem* pItem);                       // add an item
+    MS2Ptr<CItem> FUN_140c87250(__int64 nItemUid);          // find an item by uid
+    void FUN_140c86bb0(__int64 nItemUid);                   // remove an item
+    int FUN_140c874f0();
+    MS2Ptr<CItem> FUN_140c86c90(int nSlot);
+};
+class Unk_SSG535320 { public: Unk_SSGStorage* FUN_140c8b410(); __int64 FUN_140c8b2e0(); void FUN_140c8b300(__int64 nValue); };
+Unk_SSG535320* FUN_140535320();
+
+// @0x1417132b0
+void CSceneStateGame::FUN_1417132b0(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 6)
+    {
+        FUN_140535320()->FUN_140c8b410()->FUN_140c868d0();
+    }
+    else if (nMode == 4)
+    {
+        int nCount = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        for (int i = 0; i < nCount; i++)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            short nAmount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MS2Ptr<CItem> spItem(new CItem());
+            if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+            {
+                spItem->FUN_140526b30(DAT_143ab2864);
+                spItem->FUN_140526a70(nItemUid);
+                spItem->FUN_140526b70(nAmount);
+                spItem->FUN_140524eb0(packet);
+                spItem->FUN_1405268d0(0);
+                FUN_140535320()->FUN_140c8b410()->FUN_140c869e0(spItem.get());
+                FUN_140a6a840()->vfunc_5(spItem.get());
+            }
+        }
+    }
+    else if (nMode == 0)
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        short nAmount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem());
+        if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+        {
+            spItem->FUN_140526b30(DAT_143ab2864);
+            spItem->FUN_140526a70(nItemUid);
+            spItem->FUN_140526b70(nAmount);
+            spItem->FUN_140524eb0(packet);
+            FUN_140535320()->FUN_140c8b410()->FUN_140c869e0(spItem.get());
+            FUN_140a6a840()->vfunc_5(spItem.get());
+        }
+        MS2Ptr<CItem> spSelected = DAT_143ab2a90.FUN_140a5d680(FUN_140535320()->FUN_140c8b2e0());
+        if (spSelected.get() != 0)
+            spSelected->FUN_140528c40(FUN_140535320()->FUN_140c8b410()->FUN_140c874f0() > 0);
+    }
+    else if (nMode == 1)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = FUN_140535320()->FUN_140c8b410()->FUN_140c87250(nItemUid);
+        if (!spItem)
+            return;
+        FUN_140535320()->FUN_140c8b410()->FUN_140c86bb0(nItemUid);
+        FUN_140a6a840()->vfunc_6(spItem.get());
+        MS2Ptr<CItem> spSelected = DAT_143ab2a90.FUN_140a5d680(FUN_140535320()->FUN_140c8b2e0());
+        if (spSelected.get() != 0)
+            spSelected->FUN_140528c40(FUN_140535320()->FUN_140c8b410()->FUN_140c874f0() > 0);
+    }
+    else if (nMode == 3)
+    {
+        MS2Ptr<CItem> aspItem[2] = { 0, 0 };
+        for (int i = 0; i < 2; i++)
+        {
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            short nSlot = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            if (nItemUid == 0)
+            {
+                MS2Ptr<CItem> spItem = FUN_140535320()->FUN_140c8b410()->FUN_140c86c90(nSlot);
+                if (spItem.get() != 0)
+                    FUN_140a6a840()->vfunc_6(spItem.get());
+                continue;
+            }
+            aspItem[i] = FUN_140535320()->FUN_140c8b410()->FUN_140c87250(nItemUid);
+            if (!aspItem[i])
+                continue;
+            FUN_140535320()->FUN_140c8b410()->FUN_140c86bb0(nItemUid);
+            aspItem[i]->FUN_140526b70(nSlot);
+        }
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            if (aspItem[i].get() != 0)
+                FUN_140535320()->FUN_140c8b410()->FUN_140c869e0(aspItem[i].get());
+        }
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            if (aspItem[i].get() != 0)
+                FUN_140a6a840()->vfunc_7(aspItem[i].get());
+        }
+    }
+    else if (nMode == 2)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem = FUN_140535320()->FUN_140c8b410()->FUN_140c87250(nItemUid);
+        if (!spItem)
+            return;
+        spItem->FUN_140526c70(nAmount);
+        int bNotify = 1;
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0 && pPC->FUN_141527eb0() != 0)
+            bNotify = 0;
+        if (bNotify)
+            FUN_140a6a840()->vfunc_7(spItem.get());
+    }
+}
+MS2_REPLACE_METHOD(0x1417132B0, CSceneStateGame, FUN_1417132b0, 3305, 0xFCDC2CD4);
 // @0x141715860
 void CSceneStateGame::FUN_141715860(CInPacket& packet)
 {
@@ -7270,6 +7406,105 @@ void CSceneStateGame::FUN_141723670(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141723670, CSceneStateGame, FUN_141723670, 18808, 0xE92E47F8);
 
+// ---- 0x6a: the housing cube snapshot (cubes, block states, block owners, block flags) --------------------------
+// Unk_PayloadPtr<NoticeCubeInfo>() and Unk_PayloadPtr<CubeOwner>::get are ICF copies outside the unit.
+extern template Unk_PayloadPtr<NoticeCubeInfo>::Unk_PayloadPtr();
+extern template CubeOwner* Unk_PayloadPtr<CubeOwner>::get() const;
+efd::Point3 FUN_1408a15b0(Unk_Int3 kCell, efd::Point3& kOut);   // a cube coordinate to world units
+Unk_CubeOwnerPtr FUN_1408a0fa0(Unk_CubeOwners& owners, int nGroup, int nBlock);
+void FUN_1408a10e0(Unk_CubeOwners& owners, int nGroup, int nBlock, const CStringW& strName, __int64 nOwnerId);
+
+// @0x141728110
+void CSceneStateGame::FUN_141728110(CInPacket& packet)
+{
+    efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+    {
+        if (!FUN_1406aeee0()->FUN_1406af0c0())
+        {
+            int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spService->FUN_1410c3f50(nState);
+            int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            for (int i = 0; i < nCount; ++i)
+            {
+                int nPacked = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                Unk_Int3 kPos = FUN_1408a0400(nPacked);
+                __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+                CubeItemInfo info(packet);
+                int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1() == 0 ? false : true;
+                float fRot = static_cast<CInputStream&>(packet).vfunc_o8_5();
+                int nD = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                Unk_PayloadPtr<NoticeCubeInfo> spNotice;
+                int nHasNotice = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                if (nHasNotice == 1)
+                {
+                    CStringW strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+                    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                    spNotice = new NoticeCubeInfo;
+                    spNotice->FUN_1408b4970(strText, nType);
+                }
+                efd::Point3 kWorld;
+                FUN_1408a15b0(kPos, kWorld);
+                if (spService->FUN_1410b7e80(kWorld))
+                {
+                    if (!spService->FUN_1410b7da0(kWorld))
+                        spService->FUN_1410c1910(kPos, false);
+                }
+                spService->FUN_1410c4850(nItemUid, kPos, info, fRot, nA, nB, bFlag, 0, nD, spNotice);
+            }
+        }
+    }
+        break;
+    case 1:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; ++i)
+        {
+            int nBlock = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spService->FUN_1410bbc00(nBlock, nState);
+        }
+    }
+        break;
+    case 2:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_CubeOwners* pOwners = spService->FUN_1410d3360();
+        for (int i = 0; i < nCount; ++i)
+        {
+            int nGroup = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nBlock = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            __int64 nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            FUN_1408a10e0(*pOwners, nGroup, nBlock, strName, nOwnerId);
+            Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(*pOwners, nGroup, nBlock);
+            if (spOwner.get() != 0)
+                spService->FUN_1410ce3f0(spOwner);
+        }
+    }
+        break;
+    case 3:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; ++i)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            __int64 nD = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410c7a50(nA, nB, nC, nD);
+        }
+    }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x141728110, CSceneStateGame, FUN_141728110, 2816, 0xFC8AA5C6);
+
 // ---- 0x17: a user (player character) entered the field ---------------------------------------------------------
 // TPtr<PC>::operator=(PC*) is an inline COMDAT in this unit's range (0x141746d10).
 template <> inline TPtr<PC>& TPtr<PC>::operator=(PC* p)
@@ -7314,8 +7549,6 @@ public:
     MS2Ptr<CItem> FUN_141270140(int nSlot);
     MS2Ptr<CGemBase> FUN_141270740(int nSlot);
 };
-class Unk_SSG535320 { public: void FUN_140c8b300(__int64 nValue); };
-Unk_SSG535320* FUN_140535320();
 void FUN_141425610();
 extern __int64 DAT_143ab2840;                               // the platform account id
 extern CString DAT_143ab2a40;                               // the platform account name

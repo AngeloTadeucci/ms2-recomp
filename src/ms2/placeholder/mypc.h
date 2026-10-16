@@ -47,6 +47,7 @@ public:
     void FUN_141699a20();                                   // scenestategame OnAddUser
     void FUN_14152ed60(class Unk_UserProxy* pProxy);        // scenestategame OnAddUser
     void FUN_1416634a0(__int64 nCharId);                    // PC member (scenestategame OnAddUser)
+    int FUN_141527eb0();                                    // (scenestategame storage update)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };
