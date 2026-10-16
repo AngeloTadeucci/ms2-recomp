@@ -8,6 +8,7 @@ class Unk_ItemUgcInfo;
 class Unk_ItemEquipData;
 class Unk_ItemEnchantData;
 class Unk_ItemOwnerRef;
+class CInPacket;
 template <class T> class MS2Ptr;
 class CItem : public CPtred {
 public:
@@ -21,6 +22,7 @@ public:
   void FUN_140524eb0(CInputStream&);
   __int64 FUN_140526a50();
   void FUN_140526a70(__int64);
+  void FUN_140526c10(int);
   int FUN_140526b50();
   void FUN_140526b70(int);
   void FUN_140526c70(int);
@@ -67,6 +69,10 @@ public:
   int FUN_140526c50();                    // 0x140526c50 count
   int FUN_1405258b0();                    // 0x1405258b0 nonzero: no sell confirm by price (uimessagebox.cpp)
   __int64 FUN_140527670();                // 0x140527670 unit sell price (uimessagebox.cpp)
+  void FUN_140526b30(int);                // 0x140526b30 set the owner object id (uibeautyshopstyledialog.cpp)
+  void FUN_140528ab0(__int64);            // 0x140528ab0 set the creation time (saved beauty styles)
+  __int64 FUN_140528ae0();                // 0x140528ae0 the creation time
+  void FUN_1405255e0(CInPacket&);         // 0x1405255e0 read the item body (saved beauty styles)
 private:
   void *m_18;
   void *m_20;
