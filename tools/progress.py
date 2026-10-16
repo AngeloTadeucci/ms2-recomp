@@ -627,6 +627,7 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
              bytes(exe.img[va - exe.base + k] for k in keep) == want]
         if h:
             hits[name] = h
+    hits0 = {n: list(h) for n, h in hits.items()}
     # resolve: a candidate must be consistent with the pairs known so far (call targets, unwind, EH); iterate
     # because each accepted pair constrains the others. Several obj functions can fit one exe function (tiny
     # look-alikes: a 24-byte dtor vs. _Allocate, an initializer of the unit's static vs. of a selectany ATL global):
@@ -741,6 +742,78 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         elif vas:
             res["notes"].append(f"ambiguous: {len(names)} look-alike functions for {len(vas)} exe candidates: "
                                 + ", ".join(names[:3]))
+    # references from every pair accepted so far name their callees (to a fixpoint): look-alikes that a caller
+    # already pins must not be handed out by the arbitrary leaf/fold assignments below
+    implied = {}                # obj name -> exe VAs its paired callers call (the COMDAT may live in another unit)
+    if not os.environ.get("MS2_NO_ICF_FOLD"):
+        expanded2 = set()
+        while True:
+            todo = [(n, v) for n, v in sorted(known.items(), key=lambda kv: kv[1]) if n not in expanded2]
+            if not todo:
+                break
+            for name, va in todo:
+                expanded2.add(name)
+                for n2, v2 in refs(name, va).items():
+                    implied.setdefault(n2, set()).add(v2)
+                    if n2 in hits0 and n2 not in known and v2 not in used and v2 in hits0[n2] and trial(n2, v2):
+                        known[n2] = v2
+                        how[n2] = "auto-ref"
+                        used.add(v2)
+    # relocation-free look-alikes that the order test rejected everywhere (tiny `mov rax, rcx; ret` stubs: there is
+    # no information to order them): equal bytes mean equal behaviour, so any pairing is exact and harmless.
+    if not os.environ.get("MS2_NO_ICF_FOLD"):
+        leaf = {}
+        for name in sorted(hits0):
+            if name in known or obj.function(si_of[name])[1]:
+                continue
+            cv = tuple(va for va in hits0[name] if va not in used and va in implied.get(name, (va,)) and trial(name, va))
+            if cv:
+                leaf.setdefault(cv, []).append(name)
+        for cv, names in leaf.items():
+            free = [va for va in cv if va not in used]
+            for name, va in zip(sorted(names, key=order_key), sorted(free)):
+                known[name] = va
+                how[name] = "auto-leaf"
+                used.add(va)
+    # ICF folding (/OPT:ICF): the linker keeps ONE body for several byte-identical COMDATs of the unit (look-alike
+    # std::forward<T>, _Allocate/dtor stubs ...), so the exe has fewer functions than the obj has names and the
+    # group cannot be paired one-to-one. A name whose only byte/unwind/reference-compatible candidate is an exe
+    # function that nobody claims is paired with it AFTER the normal pairs are matched (never part of `known`, so no
+    # caller's check changes): the folded body is not a stub, and every name of the group is bound to it.
+    folds = {}
+    if not os.environ.get("MS2_NO_ICF_FOLD"):
+        taken = set(known.values())
+        for name in sorted(hits0):
+            if name in known:
+                continue
+            cv = [va for va in hits0[name] if va not in taken and va in implied.get(name, (va,)) and trial(name, va)]
+            if len(cv) == 1:
+                folds[name] = cv[0]
+        # names folded onto one body must call the same functions: two different targets (memcpy vs memmove, a vector
+        # vs a list _Tidy: same bytes up to the relocation) cannot be one exe function. On a conflict keep only the
+        # names whose targets the pairs/symbol maps confirm (to a fixpoint: dropping a name unconfirms its callers).
+        tg = {n: refs(n, va) for n, va in folds.items()}
+        while True:
+            def where(t):
+                return known.get(t) or folds.get(t) or bm.HARVEST.get(t) or bm.SYMBOLS.get(t)
+            drop = set()
+            byva_f = {}
+            for n, va in folds.items():
+                byva_f.setdefault(va, []).append(n)
+            for va, ns in byva_f.items():
+                seen_t = {}
+                for n in ns:
+                    for t, v in tg[n].items():
+                        seen_t.setdefault(v, set()).add(t)
+                if all(len(x) == 1 for x in seen_t.values()):
+                    continue
+                for n in ns:
+                    if not all(where(t) == v for t, v in tg[n].items()):
+                        drop.add(n)
+            if not drop:
+                break
+            for n in drop:
+                del folds[n]
     # 3. match everything paired (harvests the symbol map)
     funclets = {}
     # the symbol map is harvested from FULLY matched functions only (bytes + unwind/EH): a function that differs
@@ -757,6 +830,14 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
         res["pairs"][name] = {"va": va, "how": how[name], "ok": ok, "report": "" if ok else text}
         if ok:
             funclets.update(bm.FUNCLET_PAIRS)
+    for name, va in sorted(folds.items(), key=lambda kv: kv[1]):
+        snap = dict(bm.HARVEST)
+        ok, text = quiet_match(obj, name, va, exe, verbose)
+        if not ok:
+            bm.HARVEST.clear()
+            bm.HARVEST.update(snap)
+        if ok:                  # a fold that does not match is no evidence: the function stays a stub
+            res["pairs"][name] = {"va": va, "how": "auto-fold", "ok": ok, "report": ""}
     # unwind funclets of matched functions (?dtor$N@...: not in the unit ranges, not counted) are matched only to
     # harvest their callees: a destructor reached only on the exception path is otherwise missing from the symbol map
     for name, va in sorted(funclets.items(), key=lambda kv: kv[1]):
@@ -864,7 +945,7 @@ def main():
         if u.rel in failed or not os.path.exists(u.obj):
             cache[u.rel] = {"key": None, "failed": True, "res": None}
             continue
-        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy4" + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
+        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy4" + ("f9" if not os.environ.get("MS2_NO_ICF_FOLD") else "") + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
         c = cache.get(u.rel)
         if not a.force and c and c.get("key") == json.loads(json.dumps(key)) and not a.verbose:
             continue
@@ -992,7 +1073,8 @@ def main():
         byva = {}
         if c.get("res"):
             for n, p in c["res"]["pairs"].items():
-                byva[p["va"]] = (n, p["ok"])
+                if p["va"] not in byva or p["ok"] and not byva[p["va"]][1]:     # several names on one ICF-folded VA: exact wins
+                    byva[p["va"]] = (n, p["ok"])
         n = m = f = b = bmt = bft = 0
         for lo, hi in u.ranges:
             i = bisect.bisect_left(starts, lo)

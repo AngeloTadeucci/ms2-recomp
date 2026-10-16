@@ -52,9 +52,10 @@ import progress as P  # noqa: E402
 
 BEGIN = "// MS2-PINS-BEGIN tplpin"
 END = "// MS2-PINS-END tplpin"
-RANK = {"unique": 0, "prop": 1, "order": 2, "probe": 3, "guess": 4}
+RANK = {"committed": 0, "unique": 0, "prop": 1, "order": 2, "probe": 3, "sym": 4, "guess": 5}
 HOOK_RE = re.compile(r"ms2_thunk|ms2_registered|ms2_replacement|MemberToVoid|FnToVoid|hook@ms2|^__(catch|dtor|filt|fin)\$")
 APPLY_OK = ("unique", "prop", "order", "probe")
+SIM_OK = APPLY_OK + ("sym",)        # --simulate also tries free-choice pins; --apply writes them only when simulate accepted them
 
 
 class Contradiction(Exception):
@@ -317,7 +318,7 @@ class Solver:
         self._op = before
         return before
 
-    def run(self, order, sac, budget, label=""):
+    def run(self, order, sac, budget, label="", complete=False):
         st = self.st
         V = self.V
         t0 = time.time()
@@ -506,6 +507,31 @@ class Solver:
                             state["why"][n] = "probe"
                         fix(state, False, seeds={n} | self.callers[n] | self.callees[n])
                         changed = True
+        # completion: structurally equivalent look-alikes (every remaining candidate is consistent with the call
+        # graph) are assigned one by one, propagating after each choice. Any complete consistent choice gives the same
+        # bytes; a name with no consistent candidate left (more names than exe copies: ICF) stays unresolved.
+        state["completed"] = set()
+        if complete:
+            amb = sorted((n for n in V if len(state["D"][n]) > 1 and n not in state["relaxed"]),
+                         key=lambda n: (len(state["D"][n]), n))
+            for n in amb:
+                if time.time() - t0 > budget:
+                    break
+                if len(state["D"][n]) < 2:
+                    continue
+                for a in sorted(state["D"][n]):
+                    S2 = dict(D={k: list(v) for k, v in state["D"].items()}, why=dict(state["why"]),
+                              relaxed=set(state["relaxed"]),
+                              vaidx=collections.defaultdict(set, {k: set(v) for k, v in state["vaidx"].items()}))
+                    setdom(S2, n, [a], "free choice")
+                    try:
+                        fix(S2, True, seeds={n} | self.callers[n] | self.callees[n])
+                    except Contradiction:
+                        continue
+                    newly = {m for m in V if len(S2["D"][m]) == 1 and len(state["D"][m]) > 1}
+                    S2["completed"] = state["completed"] | newly
+                    state = S2
+                    break
         return state
 
 
@@ -746,17 +772,42 @@ def solve_unit(ctx, u, args):
     # solve
     inrange = lambda a: st.rng_of(a) >= 0
     tiers = {}
-    passes = [("A", False, False), ("B", True, False), ("C", True, True)]
+    passes = [("A", False, False)]
+    if order_ok:
+        passes += [("B", True, False), ("C", True, True)]
+    else:
+        passes += [("P", False, True)]
     states = {}
     for tag, order, sac in passes:
-        if order and not order_ok:
-            continue
         s = Solver(st, [n for n in D0], D0, why0, args.glob)
         t0 = time.time()
-        states[tag] = s.run(order, sac, args.budget)
+        states[tag] = s.run(order, sac, args.budget, complete=(tag == passes[-1][0] and not args.no_complete))
         print(f"  pass {tag} (order={'on' if order else 'off'}{', probe' if sac else ''}): "
               f"{sum(1 for n in D0 if len(states[tag]['D'][n]) == 1)} resolved of {len(D0)} ({time.time() - t0:.0f}s, "
-              f"{len(states[tag]['relaxed'])} relaxed)")
+              f"{len(states[tag]['relaxed'])} relaxed, {len(states[tag]['completed'])} by free choice)")
+    last = states[passes[-1][0]]
+    sol = {}
+    for n in D0:
+        d = None
+        for tag, label in (("A", None), ("B", "order"), ("C", "probe"), ("P", "probe")):
+            if tag in states and len(states[tag]["D"][n]) == 1 and states[tag]["D"][n][0] not in (d or []):
+                d = states[tag]["D"][n][0]
+                if tag == "A":
+                    reason = states["A"]["why"].get(n) or "unique"
+                    if why0.get(n) == "unique":
+                        conf, reason = "unique", "single byte-identical candidate"
+                    elif reason.startswith(("symbols.tsv", "vftable", "caller ")) and n in forced:
+                        conf = "unique"
+                    else:
+                        conf = "prop"
+                elif tag == "B":
+                    conf, reason = "order", states["B"]["why"].get(n) or "name order"
+                elif n in states[tag]["completed"]:
+                    conf, reason = "sym", "free choice among structurally equivalent look-alikes (same bytes, same call-graph shape)"
+                else:
+                    conf, reason = "probe", "only candidate surviving trial assignment"
+                sol[n] = (d, conf, reason)
+                break
     last = states[max(states)]
     sol = {}
     for n in D0:
@@ -819,6 +870,9 @@ def solve_unit(ctx, u, args):
     byva = collections.defaultdict(list)
     for n, (a, c, r) in resolved.items():
         byva[a].append(n)
+    ndup = sum(len(ns) for ns in byva.values() if len(ns) > 1)
+    if args.verbose:
+        print(f"  {len(resolved)} resolved before the duplicate check; {ndup} names share an exe VA with another name")
     for a, ns in byva.items():
         if len(ns) > 1:
             for n in ns:
@@ -834,6 +888,176 @@ def solve_unit(ctx, u, args):
     return dict(st=st, res=res, D0=D0, why0=why0, nocand=nocand, resolved=resolved, amb=amb, guess=guess,
                 elsewhere=elsewhere, states=states, partner=partner, prior_diff=prior_diff, oc=oc, order_ok=order_ok,
                 free=free, V=V, pool=pool, last=last, forced=forced)
+
+
+
+def unit_score(ctx, u, pins):
+    """Run progress.py's pairing with `pins` (obj symbol -> VA) and count the unit: (exact, functional, stubs, set of
+    byte-exact exe VAs/vftable names), counted per exe function in the ranges like progress/status.tsv."""
+    old = u.pins
+    u.pins = dict(pins)
+    snap = dict(bm.HARVEST)
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            res = P.process_unit(u, ctx.exe, ctx.starts, ctx.finfo, ctx.bases, ctx.vft, False)
+    finally:
+        u.pins = old
+        bm.HARVEST.clear()
+        bm.HARVEST.update(snap)
+    # same bookkeeping as progress.py's status rows: one state per exe function in the ranges
+    byva = {}
+    for n, p in res["pairs"].items():
+        byva[p["va"]] = byva.get(p["va"], False) or p["ok"]
+    ex = fu = stub = 0
+    okset = set()
+    for va in ctx.starts:
+        if any(a <= va < b for a, b in u.ranges):
+            if va not in byva:
+                stub += 1
+            elif byva[va]:
+                ex += 1
+                okset.add(va)
+            else:
+                fu += 1
+    for n, v in res["vft"].items():
+        if v["ok"]:
+            okset.add(n)
+    return ex, fu, stub, okset
+
+
+def simulate(ctx, u, R, keep_pins, args):
+    """Validate the proposed pins against progress.py: tier groups, then drop every pin that loses a byte-exact
+    pair elsewhere (a pin can steal a VA or contradict progress.py's own auto pairing of its caller).
+    Returns the accepted pins [(name, va, conf, reason)] and prints a per-reason report."""
+    proposals = {n: (a, c, r) for n, (a, c, r) in R["resolved"].items() if c in SIM_OK and n not in keep_pins}
+    base = unit_score(ctx, u, keep_pins)
+    print(f"\n== simulate {u.name}: baseline (existing pins only) exact {base[0]}, functional {base[1]}, stubs {base[2]}")
+    cp = dict(keep_pins)
+    text = open(u.path, encoding="latin1").read()
+    blk_names, span = block_pins(text)
+    committed_block = {}
+    for l in text.split("\n"):
+        m = re.match(r"\s*//\s*MS2-PIN:\s*(\S+)\s+0x([0-9a-fA-F]+)", l)
+        if m:
+            cp[m.group(1)] = int(m.group(2), 16)
+            if m.group(1) in blk_names:
+                committed_block[m.group(1)] = int(m.group(2), 16)
+    # pins of the existing tplpin block the solver no longer proposes stay candidates (older tool versions, hand edits)
+    for n, a in committed_block.items():
+        if n not in proposals and n not in keep_pins and n in R["st"].fn:
+            proposals[n] = (a, "committed", "already in the file's tplpin block")
+    cs = unit_score(ctx, u, cp)
+    print(f"   as committed (all pins in the file): exact {cs[0]}, functional {cs[1]}, stubs {cs[2]}")
+    t0 = time.time()
+    obj_of = lambda sc: (sc[0], -sc[2])
+    allp = dict(keep_pins)
+    allp.update({n: v[0] for n, v in proposals.items()})
+    cur, cur_sc = allp, unit_score(ctx, u, allp)
+    print(f"   all {len(proposals)} proposals together: exact {cur_sc[0]}, functional {cur_sc[1]}, stubs {cur_sc[2]}")
+    accepted = dict(proposals)
+    rejected = {}
+    # leave-one-out elimination (a pin may only be harmful together with the others), weakest tier first; a pin is
+    # dropped when the unit gets better without it (more exact, then fewer stubs)
+    order = sorted(proposals, key=lambda n: (-RANK[proposals[n][1]], n))
+    for rnd in range(2):
+        changed = False
+        for n in order:
+            if n not in accepted:
+                continue
+            if time.time() - t0 > args.sim_budget:
+                break
+            trial = dict(cur)
+            del trial[n]
+            sc = unit_score(ctx, u, trial)
+            if obj_of(sc) > obj_of(cur_sc):
+                rejected[n] = f"unit is better without it ({cur_sc[0]}/{cur_sc[2]} -> {sc[0]}/{sc[2]} exact/stubs)"
+                del accepted[n]
+                cur, cur_sc = trial, sc
+                changed = True
+        # a dropped pin may become good once the others changed
+        for n in list(rejected):
+            if time.time() - t0 > args.sim_budget:
+                break
+            trial = dict(cur)
+            trial[n] = proposals[n][0]
+            sc = unit_score(ctx, u, trial)
+            if obj_of(sc) > obj_of(cur_sc):
+                cur, cur_sc = trial, sc
+                accepted[n] = proposals[n]
+                del rejected[n]
+                changed = True
+        if not changed:
+            break
+    print(f"   accepted {len(accepted)} / {len(proposals)}: exact {cur_sc[0]}, functional {cur_sc[1]}, stubs {cur_sc[2]} "
+          f"(baseline {base[0]}/{base[1]}/{base[2]}, {time.time() - t0:.0f}s)")
+    groups = collections.defaultdict(list)
+    for n, (a, c, r) in accepted.items():
+        groups[f"{c}: " + re.sub(r"0x[0-9a-f]+|\?\S+", "<..>", r)[:50]].append((n, a))
+    print("-- recommended pins by reason (hand-apply: paste after the tplpin block; they override same-name pins above):")
+    for g, items in sorted(groups.items(), key=lambda kv: -len(kv[1])):
+        print(f"   [{g}] x{len(items)}")
+        for n, a in sorted(items, key=lambda x: x[1]):
+            print(f"// MS2-PIN: {n} 0x{a:x}")
+    R["sim_pins"] = dict(cur)
+    # what stays unclaimed, and who could claim it
+    final = unit_score(ctx, u, cur)
+    st = R["st"]
+    claimed = set()
+    snapres = None
+    with contextlib.redirect_stdout(io.StringIO()):
+        old = u.pins
+        u.pins = dict(cur)
+        try:
+            snapres = P.process_unit(u, ctx.exe, ctx.starts, ctx.finfo, ctx.bases, ctx.vft, False)
+        finally:
+            u.pins = old
+    claimed = {p["va"] for p in snapres["pairs"].values()}
+    left = [va for va in ctx.starts if any(a <= va < b for a, b in u.ranges) and va not in claimed]
+    if left:
+        left_set = set(left)
+        implied = collections.defaultdict(set)         # unclaimed exe va -> obj names an anchored caller wants there
+        for n, p in snapres["pairs"].items():
+            f = st.fn.get(n)
+            if f is None or p["how"] == "auto-fold" or not p["ok"]:
+                continue
+            for tn, tva in st.targets(f, p["va"]):
+                if tva in left_set and tn in st.fn:
+                    implied[tva].add(tn)
+        print(f"-- {len(left)} exe functions still unclaimed; why (callers = anchored exact callers that call it):")
+        why_count = collections.Counter()
+        shown = 0
+        for va in left:
+            f_sz = ctx.fsize(va)
+            who = [n for n, f in st.fn.items() if f.size == f_sz and va in R["D0"].get(n, [])]
+            imp = sorted(implied.get(va, ()))
+            if who:
+                kind = "byte-identical obj name(s) exist but were not paired (reference/unwind conflict or look-alike group)"
+            elif imp:
+                kind = "caller expects " + short(imp[0])[:60] + (" (+%d)" % (len(imp) - 1) if len(imp) > 1 else "")
+                nm = imp[0]
+                if nm in snapres["pairs"]:
+                    kind += f"; that name is paired to 0x{snapres['pairs'][nm]['va']:x}"
+                elif nm in R["nocand"]:
+                    kind += "; it has NO byte-identical copy in the ranges (its template/args differ from the exe: see --hints)"
+                else:
+                    kind += "; unresolved"
+            else:
+                kind = "no obj function with these bytes and no anchored caller names it (source never instantiates it)"
+            why_count[kind.split(";")[0].split(" expects")[0][:40]] += 1
+            if shown < args.max_list:
+                shown += 1
+                print(f"   0x{va:x} {f_sz}B {ctx.finfo[va][1]}: {kind}" + (f" [{', '.join(short(n)[:50] for n in who[:2])}]" if who else ""))
+                if args.hints and not who and imp and shown <= 6:
+                    for l in hint_for(st, st.fn[imp[0]], va, imp[0])[:12]:
+                        print("   " + l)
+        if len(left) > shown:
+            print(f"   ... {len(left) - shown} more (--max-list)")
+        print("   summary: " + ", ".join(f"{k}: {v}" for k, v in why_count.most_common()))
+    if rejected:
+        print(f"-- rejected {len(rejected)} (would regress the unit):")
+        for n, why in rejected.items():
+            print(f"   0x{proposals[n][0]:x} {short(n)[:70]}: {why}")
+    return [(n, a, c, r) for n, (a, c, r) in accepted.items()]
 
 
 def report(ctx, u, R, args):
@@ -989,6 +1213,11 @@ def main():
     ap.add_argument("--budget", type=float, default=240, help="seconds for the probing pass (default 240)")
     ap.add_argument("--max-list", type=int, default=40)
     ap.add_argument("--show-pins", action="store_true", help="with --apply: also print the pin lines")
+    ap.add_argument("--simulate", action="store_true",
+                    help="dry-run report: re-run progress pairing with the proposals, drop pins that regress the unit, "
+                         "print the accepted pins grouped by reason with exact/functional/stub counts before/after")
+    ap.add_argument("--no-complete", action="store_true", help="skip the free-choice completion of equivalent look-alikes")
+    ap.add_argument("--sim-budget", type=float, default=420, help="seconds for the greedy pin validation")
     ap.add_argument("--list-exe", action="store_true", help="list exe functions in the ranges nobody claims")
     ap.add_argument("-v", "--verbose", action="store_true")
     a = ap.parse_args()
@@ -1014,6 +1243,8 @@ def main():
         R = solve_unit(ctx, u, a)
         st = R["st"]
         pins = report(ctx, u, R, a)
+        if a.simulate:
+            simulate(ctx, u, R, dict(u.pins), a)
         if a.apply:
             apply_pins(u, pins, a)
 
