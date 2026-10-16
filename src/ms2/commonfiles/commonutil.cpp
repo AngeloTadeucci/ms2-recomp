@@ -29,11 +29,15 @@
 #include <winsock2.h>
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>
+#include <atltime.h>
 #include <time.h>
+#include <string>
 #include <vector>
 #include <math.h>
 #include <stdlib.h>
 #include "ms2/ms2recover.h"
+#include "ms2/ms2format.h"
+#include "ms2/placeholder/mstime.h"
 #include "hook/ms2hook.h"
 
 int FUN_14028c3e0(const CString& strText, CAtlArray<CString>& arrOut, const char* pszDelim, int nMax);
@@ -56,9 +60,66 @@ CString FUN_140298360(const char* pszPrefix, const CString& str);
 class Unk_StringMgr                                             // localized string table
 {
 public:
+    CString FUN_140229600(int nId);                             // narrow text of a string id
+    CString FUN_140229690(const CString& strKey);               // narrow text of a key
+    CStringW FUN_140229760(int nId);                            // wide text of a string id
     CStringW FUN_140229820(const CStringW& strKey);
+    CStringW FUN_140229940(const CString& strKey);              // wide text of a "$..." key
 };
+
+// Date printed with a strftime format (the format text lives at +8).
+class Unk_TimeFormat
+{
+public:
+    Unk_TimeFormat();                                           // 0x14028da50
+    void SetFormat(CString strFormat);                          // 0x14028dac0
+    CString Format() const;                                     // 0x14028db10
+    ~Unk_TimeFormat() { }                                       // 0x140297910
+
+    ATL::CTime m_time;
+    CString m_strFormat;
+};
+MS2_CHECK_SIZE(Unk_TimeFormat, 0x10);
+
+// Easing distance calculators: base interface and its three implementations.
+class IDistanceCalculator
+{
+public:
+    virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance) = 0;
+};
+
+class LinearCalculator : public IDistanceCalculator
+{
+public:
+    virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance);
+};
+
+class EaseOutCalculator : public IDistanceCalculator
+{
+public:
+    virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance);
+};
+
+class EaseInCalculator : public IDistanceCalculator
+{
+public:
+    virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance);
+};
+
+void FUN_14015f050(const CString& strText, CAtlArray<CString>& arrOut, const char* pszDelim);
+bool FUN_14036e510(void* pFeatures);
+void* FUN_140166410();
+int FUN_1406516b0();
+CStringW FUN_14028dee0(int nId, const fmt::ArgList& args);
+CStringW FUN_140298ea0(CStringW strKey);
+CStringW FUN_14016a730(const char* psz, int n);                 // narrow -> wide
+CString FUN_14016a600(const wchar_t* pwsz, int n);              // wide -> narrow
 Unk_StringMgr* FUN_14025e7d0();
+void FUN_14029dd60(const char* pszText, const char* pszFormat, int* pnA, int* pnB, int* pnC, int* pnD, int* pnE, int* pnF);
+void FUN_1401d3700(CString& strPath);
+bool FUN_140184310(const CString& strText, const char* pszPrefix);
+std::string FUN_140291f90(const std::string& strToken, int nWhich);
+
 bool FUN_140299100(const CAtlArray<CString>& arr);              // IsEmpty
 
 // @0x14028b820
@@ -568,4 +629,277 @@ bool FUN_14028d760(char c)
 bool FUN_14028d780(char c)
 {
     return c ? true : false;
+}
+
+// ---- file/path name helpers and localized text ----
+
+// Last "/"-separated component of a path.
+// @0x14028d7a0
+CString FUN_14028d7a0(const CString& strPath)
+{
+    CAtlArray<CString> arrParts;
+    FUN_14015f050(strPath, arrParts, "/");
+    if (arrParts.GetCount() == 0)
+        return "";
+    int nLast = (int)arrParts.GetCount() - 1;
+    CString strName = arrParts[nLast];
+    return strName;
+}
+
+// Second-to-last "/"-separated component of a path (the parent folder name).
+// @0x14028d890
+CString FUN_14028d890(const CString& strPath)
+{
+    CAtlArray<CString> arrParts;
+    FUN_14015f050(strPath, arrParts, "/");
+    if (arrParts.GetCount() < 2)
+        return "";
+    int nLast = (int)arrParts.GetCount() - 2;
+    CString strName = arrParts[nLast];
+    return strName;
+}
+
+// @0x14028d990
+CString FUN_14028d990(const CString& strPath)
+{
+    if (FUN_14036e510(FUN_140166410()))
+        return FUN_14028d890(strPath);
+    return FUN_14028d7a0(strPath);
+}
+
+// @0x14028da10
+unsigned char FUN_14028da10()
+{
+    int nType = FUN_1406516b0();
+    unsigned char ucResult = 0;
+    if (nType == 3)
+        ucResult = 4;
+    else
+        ucResult = 1;
+    return ucResult;
+}
+
+// Current server time plus the format used to print it.
+// @0x14028da50
+Unk_TimeFormat::Unk_TimeFormat() : m_time(FUN_140869440())
+{
+    m_strFormat = L"%A, %B %d, %Y, %H:%M";
+}
+
+// @0x14028dac0
+void Unk_TimeFormat::SetFormat(CString strFormat)
+{
+    m_strFormat = strFormat;
+}
+
+// @0x14028db10
+CString Unk_TimeFormat::Format() const
+{
+    return m_time.Format(m_strFormat);
+}
+
+// @0x14028db70
+CString FUN_14028db70()
+{
+    Unk_TimeFormat kTime;
+    return kTime.Format();
+}
+
+// "Mon DD YYYY HH:MM:SS" of the build.
+// @0x14028dbd0
+CString FUN_14028dbd0()
+{
+    CString strBuild;
+    strBuild.Format("%s %s", "Apr 13 2022", "17:36:52");
+    return FUN_140188f50(strBuild, 0);
+}
+
+// @0x14028dc60
+void* FUN_14028dc60(void* p)
+{
+    return p;
+}
+
+// String table lookups: narrow text of an id / of a key, wide text with {n} arguments.
+// @0x14028dc80
+CString FUN_14028dc80(int nId)
+{
+    return FUN_14025e7d0()->FUN_140229600(nId);
+}
+
+// @0x14028dcd0
+CString FUN_14028dcd0(const CString& strKey)
+{
+    return FUN_14025e7d0()->FUN_140229690(strKey);
+}
+
+// @0x14028dd20
+CString FUN_14028dd20(int nId, const fmt::ArgList& args)
+{
+    return FUN_14016a600(FUN_14028dee0(nId, args), 0);
+}
+
+// @0x14028ddb0
+CString FUN_14028ddb0(const CString& strKey, const fmt::ArgList& args)
+{
+    return FUN_14016a600(FUN_140298ea0(FUN_14016a730(strKey, 0)), 0);
+}
+
+// @0x14028de60
+CStringW FUN_14028de60(int nId)
+{
+    if (FUN_14025e7d0() == 0)
+        return L"";
+    return FUN_14025e7d0()->FUN_140229760(nId);
+}
+
+// @0x14028dee0
+CStringW FUN_14028dee0(int nId, const fmt::ArgList& args)
+{
+    CStringW strText = FUN_14028de60(nId);
+    if (strText.IsEmpty())
+        return L"";
+    return StringFormat(strText, args);
+}
+
+// @0x14028dfa0
+CStringW FUN_14028dfa0(const CStringW& strKey, const fmt::ArgList& args)
+{
+    CStringW strText = FUN_14028b8e0(strKey);
+    if (strText.IsEmpty())
+        return L"";
+    return StringFormat(strText, args);
+}
+
+// @0x14028e060
+CStringW FUN_14028e060(const CString& strKey, const fmt::ArgList& args)
+{
+    if (FUN_14025e7d0() == 0)
+        return L"";
+    CStringW strText = FUN_14025e7d0()->FUN_140229940(strKey);
+    if (strText.IsEmpty())
+        return L"";
+    return StringFormat(strText, args);
+}
+
+// Day-of-week number (1 = Sun .. 7 = Sat) of a three-letter abbreviation, 0 when unknown.
+// @0x14028e160
+int FUN_14028e160(CString& strDay)
+{
+    if (strDay.IsEmpty())
+        return 0;
+    if (strDay.CompareNoCase("sun") == 0)
+        return 1;
+    else if (strDay.CompareNoCase("mon") == 0)
+        return 2;
+    else if (strDay.CompareNoCase("tue") == 0)
+        return 3;
+    else if (strDay.CompareNoCase("wed") == 0)
+        return 4;
+    else if (strDay.CompareNoCase("thu") == 0)
+        return 5;
+    else if (strDay.CompareNoCase("fri") == 0)
+        return 6;
+    else if (strDay.CompareNoCase("sat") == 0)
+        return 7;
+    return 0;
+}
+
+// Parses a date/time text with a scanf-style format into a CMsTime; false when out of range.
+// MS2-FUNCTIONAL: compiler temp-copy spill layout and EH state count differ
+// @0x14028e280
+int FUN_14028e280(CMsTime& kOut, const CString& strFormat, const CString& strText)
+{
+    int nYear = 0;
+    int nMonth = 0;
+    int nDay = 0;
+    int nHour = 0;
+    int nMinute = 0;
+    int nSecond = 0;
+    FUN_14029dd60((LPCSTR)CString(strText), (LPCSTR)CString(strFormat), &nYear, &nMonth, &nDay, &nHour, &nMinute, &nSecond);
+    if (!(nYear < 1900 || nMonth < 1 || nMonth > 12 || nDay < 1 || nDay > 31 || nHour < 0 || nHour > 23 || nMinute < 0
+          || nMinute > 59 || nSecond < 0 || nSecond > 59))
+    {
+        kOut = CMsTime(nYear, nMonth, nDay, nHour, nMinute, nSecond);
+        return 1;
+    }
+    return 0;
+}
+
+// @0x14028e440
+CString FUN_14028e440(const ATL::CTime& kTime, const CString& strFormat)
+{
+    CString strResult;
+    strResult.Format(strFormat, kTime.GetYear(), kTime.GetMonth(), kTime.GetDay(), kTime.GetHour(), kTime.GetMinute(),
+                     kTime.GetSecond());
+    return strResult;
+}
+
+// Replaces every "(token)" in the text with its translation; true when anything was found.
+// MS2-FUNCTIONAL: std::string temp/EH layout differs
+// @0x14028e560
+bool FUN_14028e560(std::string& strText, int nWhich)
+{
+    bool bFound = false;
+    const wchar_t* pwszDelim = L"()";
+    while (true)
+    {
+        size_t nOpen = strText.find((char)pwszDelim[0], 0);
+        if (nOpen == (size_t)-1)
+            return bFound;
+        size_t nClose = strText.find((char)pwszDelim[1], nOpen);
+        if (nClose == (size_t)-1)
+            break;
+        std::string strToken;
+        strToken = strText.substr(nOpen + 1, nClose - nOpen - 1);
+        if (strToken.size() == 0)
+            return bFound;
+        bFound = true;
+        std::string strTranslated = FUN_140291f90(strToken, nWhich);
+        strText.replace(strText.begin() + nOpen, strText.begin() + nClose + 1, strTranslated.c_str());
+    }
+    return bFound;
+}
+
+// Normalizes a data path to "./data/..." with forward slashes.
+// @0x14028e7c0
+void FUN_14028e7c0(CString& strPath)
+{
+    FUN_1401d3700(strPath);
+    CString strHead = strPath.Left(4);
+    if (FUN_140184310(strHead, "data"))
+        strPath = FUN_140298360("./", strPath);
+    else if (FUN_140184310(strHead, "/data"))
+        strPath = FUN_140298360(".", strPath);
+    strPath.Replace('\\', '/');
+}
+
+// @0x14028e900
+int FUN_14028e900(CString strPath)
+{
+    int nResult = 0;
+    try
+    {
+        CFile::Remove(strPath, 0);
+        nResult = 1;
+    }
+    catch (CFileException* pException)
+    {
+        pException->Delete();
+    }
+    return nResult;
+}
+
+// Easing calculator factory: 0 linear, 1 ease out, 2 ease in.
+// @0x14028e960
+IDistanceCalculator* FUN_14028e960(int nType)
+{
+    if (nType == 0)
+        return new LinearCalculator();
+    else if (nType == 1)
+        return new EaseOutCalculator();
+    else if (nType == 2)
+        return new EaseInCalculator();
+    else
+        return 0;
 }
