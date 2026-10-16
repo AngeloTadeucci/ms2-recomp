@@ -11,6 +11,7 @@
 #include "pcbase.h"
 #include "ms2/client/ms2/ridee.h"
 #include "ms2/placeholder/cinpacket.h"
+#include "ms2/client/ms2/fielddatacli.h"
 #include "ms2/client/ms2/statemanager.h"
 #include "ms2/client/ms2/animationmanager.h"
 #include "ms2/placeholder/state.h"
@@ -19,6 +20,7 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include <efd/Matrix3.h>
+#include <algorithm>
 #include <NiMatrix3.h>
 #include <NiFixedString.h>
 
@@ -100,6 +102,7 @@ class Unk_PCBaseBuffsEx : public Unk_PCBaseBuffList
 {
 public:
     int FUN_140970990();
+    unsigned int FUN_140970bf0();                                   // skill-use disable mask
     void FUN_1409711c0();
 };
 
@@ -250,7 +253,15 @@ class Unk_PCBaseBuffs : public Unk_PCBaseBuffList
 // The weak reference at +0x628 (ctor 0x140ae13b0, dtor 0x140a00490).
 Unk_GoAttachment* FUN_140a006f0(void* pWeak);
 
+// CString + const char* (the exe's out-of-line operator+; compiling it here needs the unresolvable MFC CopyChars import).
+CString FUN_14038f6d0(const CString& str, const char* psz);
+
 // The node smart pointers at +0xbe8 / +0xc38 / +0xc40.
+// The entity manager (0x1409670f0) and its lookup / property getter.
+class Unk_PCBaseEntMgr;
+Unk_PCBaseEntMgr* FUN_1409670f0();
+egf::Entity* FUN_1411cf440(Unk_PCBaseEntMgr* pMgr, const egf::EntityID& kId);
+void FUN_1409618c0(egf::Entity* pEntity, unsigned int nPropId, NiPoint3& kValue);
 void FUN_1409fabf0(void* pNodePtr, void* pNode);
 
 // The shadow mesh (efd::SmartPointer at GameObject +0x58; unit_14160fb10).
@@ -300,6 +311,7 @@ class Unk_PCBaseFxMgr
 public:
     int FUN_1411a49c0(Unk_PCBaseFxQuery* pQuery);                   // spawn, returns the handle
     void FUN_1411a4a00(Unk_PCBaseFxQuery* pQuery);                  // play once
+    void FUN_1411a6060(int nHandle);                                // stop
 };
 Unk_PCBaseFxMgr* FUN_1403ed280();
 
@@ -310,8 +322,29 @@ public:
     class Unk_PCBaseWorldActor* FUN_141bd13a0(int nId);
     PCBase* FUN_141bd0cc0();                                        // the local player
     class Unk_PCBaseWorldObj* FUN_141bd1200(int nId);
+    MS2Ptr<CFieldDataCli> FUN_141bd30a0();                          // the current field data
 };
 Unk_PCBaseWorld* FUN_1403ed2d0();
+
+// The action container at +0xd00 (?\actioncontainer.cpp).
+class Unk_PCBaseActions : public CPtred
+{
+public:
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();
+    virtual void vfunc_4(int n);
+    virtual CString vfunc_5(int n);
+    virtual CString vfunc_6(int a, int b);
+    virtual std::vector<CString>* vfunc_7(int nKey);                // sequence names
+};
+// The action containers (0x1414a5860).
+class Unk_PCBaseActionsMgr
+{
+public:
+    MS2Ptr<Unk_PCBaseActions> FUN_1409494e0(int nId);
+};
+Unk_PCBaseActionsMgr* FUN_1414a5860();
 
 // The world object found by id (FUN_141676a10).
 class Unk_PCBaseWorldObj
@@ -367,6 +400,7 @@ class Unk_PCBaseAnimSvc
 {
 public:
     efd::utf8string FUN_140b7cc50(const egf::EntityID& kId);         // current animation name
+    unsigned int FUN_140999490(const egf::EntityID& kId, const efd::utf8string& strName);   // GetAnimationIdFromName
 };
 Unk_PCBaseAnimSvc* FUN_141b6f910();
 
@@ -428,7 +462,7 @@ MS2_REPLACE_METHOD(0x14166b810, PCBase, vfunc_12, 96, 0x7E2C6D08);
 // @0x14166b880
 void PCBase::vfunc_14()
 {
-    FUN_1409fabf0(&m_unk_c38, 0);
+    m_spC38 = 0;
     if (FUN_1416764a0())
         vfunc_121(MS2Ptr<RideOffAction>(0));
     if (m_spStateMgr.get() ? true : false) {
@@ -2458,3 +2492,245 @@ void PCBase::FUN_141678160(const NiPoint3& kPos)
     m_posBF4 = kPos;
 }
 MS2_REPLACE_METHOD(0x141678160, PCBase, FUN_141678160, 43, 0x6EE29682);
+
+// @0x141678240
+void PCBase::FUN_141678240(egf::EntityID& kId, NiPoint3& kPos)
+{
+    kId = m_unk_ae0;
+    kPos = m_posAE8;
+}
+MS2_REPLACE_METHOD(0x141678240, PCBase, FUN_141678240, 72, 0x119736F1);
+
+// @0x141678290
+void PCBase::FUN_141678290(egf::EntityID kId, NiPoint3 kPos)
+{
+    m_posAE8 = kPos;
+    m_unk_ae0 = kId;
+}
+MS2_REPLACE_METHOD(0x141678290, PCBase, FUN_141678290, 72, 0xE8669FA0);
+
+// @0x141678680
+unsigned int PCBase::FUN_141678680()
+{
+    unsigned int nMask = static_cast<Unk_PCBaseBuffsEx*>(&m_unk_748)->FUN_140970bf0();
+    MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+    if (spField.get() != 0)
+        nMask |= spField->m_nSkillUseDisableMask;
+    return nMask;
+}
+MS2_REPLACE_METHOD(0x141678680, PCBase, FUN_141678680, 130, 0x482C383A);
+
+// @0x1416787a0
+int PCBase::FUN_1416787a0()
+{
+    MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+    if (spField == 0)
+        return 0;
+    return spField->m_nMapType;
+}
+MS2_REPLACE_METHOD(0x1416787a0, PCBase, FUN_1416787a0, 116, 0xE689F429);
+
+// @0x141678820
+int PCBase::FUN_141678820()
+{
+    MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+    if (spField == 0)
+        return 0;
+    if (spField->m_nCheckClimb == 0)
+        return 0;
+    return m_unk_c68;
+}
+MS2_REPLACE_METHOD(0x141678820, PCBase, FUN_141678820, 157, 0xB74623DA);
+
+// @0x1416790b0
+const char* PCBase::vfunc_123(int n)
+{
+    return m_spD00->vfunc_5(n);
+}
+MS2_REPLACE_METHOD(0x1416790b0, PCBase, vfunc_123, 105, 0x3D3A5EA7);
+
+// @0x141679120
+void PCBase::FUN_141679120(int n)
+{
+    m_spD00->vfunc_4(n);
+}
+MS2_REPLACE_METHOD(0x141679120, PCBase, FUN_141679120, 62, 0x06B74A69);
+
+// @0x141679170
+efd::utf8string PCBase::FUN_141679170(int a, int b)
+{
+    return efd::utf8string((const char*)m_spD00->vfunc_6(a, b));
+}
+MS2_REPLACE_METHOD(0x141679170, PCBase, FUN_141679170, 167, 0x25DB4066);
+
+// @0x14166de90
+bool PCBase::FUN_14166de90(int nKey, unsigned int nSeq)
+{
+    Unk_PCBaseAnimSvc* pSvc = FUN_141b6f910();
+    if (pSvc == 0)
+        return false;
+    std::map<CString, std::vector<unsigned int> >& kByName = m_mapCF0[nKey];
+    CString strPrefix = vfunc_60();
+    std::vector<unsigned int>& kIds = kByName[strPrefix];
+    if (kIds.empty()) {
+        std::vector<CString>* pNames = m_spD00->vfunc_7(nKey);
+        if (pNames->empty())
+            return false;
+        for (size_t i = 0; i < pNames->size(); ++i) {
+            unsigned int nId = FUN_141679270((*pNames)[i]);
+            if (nId != NiActorManager::INVALID_SEQUENCE_ID)
+                kIds.push_back(nId);
+        }
+    }
+    return std::find(kIds.begin(), kIds.end(), nSeq) != kIds.end();
+}
+MS2_REPLACE_METHOD(0x14166de90, PCBase, FUN_14166de90, 511, 0xCC0FDC50);
+
+// @0x141679270
+unsigned int PCBase::FUN_141679270(const char* szName)
+{
+    Unk_PCBaseAnimSvc* pSvc = FUN_141b6f910();
+    if (pSvc == 0)
+        return NiActorManager::INVALID_SEQUENCE_ID;
+    CString strPrefix = vfunc_60();
+    CString strName;
+    if (!strPrefix.IsEmpty())
+        strName = FUN_14038f6d0(strPrefix, szName);
+    else
+        strName = szName;
+    unsigned int nId = pSvc->FUN_140999490(FUN_14123c460(), (const char*)strName);
+    if (nId == NiActorManager::INVALID_SEQUENCE_ID && !strPrefix.IsEmpty())
+        nId = pSvc->FUN_140999490(FUN_14123c460(), szName);
+    return nId;
+}
+MS2_REPLACE_METHOD(0x141679270, PCBase, FUN_141679270, 463, 0x55F4C7F1);
+
+// @0x1416795e0
+void PCBase::FUN_1416795e0()
+{
+    if (m_unk_c48 == 0)
+        return;
+    if (m_spStateMgr->FUN_1417db270() == 0x21 && m_spB10 != 0)
+        m_spB10->vfunc_59(m_unk_c48, m_unk_c50.get(), m_unk_c60, m_unk_c64);
+    else
+        m_spStateMgr->FUN_1417dafa0(m_unk_c48, m_unk_c50.get(), m_unk_c60, m_unk_c64);
+    m_unk_c48 = 0;
+    m_unk_c50 = 0;
+    m_unk_c60 = 0;
+    m_unk_c64 = 0;
+}
+MS2_REPLACE_METHOD(0x1416795e0, PCBase, FUN_1416795e0, 373, 0xA091CF77);
+
+// @0x141679760
+void PCBase::FUN_141679760()
+{
+    m_spD00 = FUN_1414a5860()->FUN_1409494e0(vfunc_57());
+    m_mapCF0.clear();
+}
+MS2_REPLACE_METHOD(0x141679760, PCBase, FUN_141679760, 140, 0xB20F089E);
+
+// @0x141679e00
+void PCBase::FUN_141679e00()
+{
+    for (unsigned int i = 0; i < m_arrA30.GetCount(); ++i)
+    {
+        unsigned int nHandle = m_arrA30[i];
+        FUN_1403ed280()->FUN_1411a6060(nHandle);
+    }
+    m_arrA30.RemoveAll();
+}
+MS2_REPLACE_METHOD(0x141679e00, PCBase, FUN_141679e00, 137, 0x85FE2DC4);
+
+// @0x141679e90
+void PCBase::FUN_141679e90()
+{
+    for (size_t i = 0; i < m_vecD28.size(); ++i)
+        FUN_1403ed280()->FUN_1411a6060(m_vecD28[i]);
+    m_vecD28.clear();
+    m_unk_d20 = 0;
+}
+MS2_REPLACE_METHOD(0x141679e90, PCBase, FUN_141679e90, 149, 0xC892B3AB);
+
+// @0x141679f30
+void PCBase::FUN_141679f30()
+{
+    if (m_sp638.get() != 0)
+        m_sp638->FUN_141848650();
+    m_timer9e8.FUN_1408687f0();
+    FUN_141679e00();
+}
+MS2_REPLACE_METHOD(0x141679f30, PCBase, FUN_141679f30, 94, 0x69BC8436);
+
+// @0x141676310
+void PCBase::FUN_141676310(int n)
+{
+}
+MS2_REPLACE_METHOD(0x141676310, PCBase, FUN_141676310, 10, 0x96F6F902);
+
+// @0x141678750
+MS2Ptr<CStateManager> PCBase::FUN_141678750()
+{
+    return m_spStateMgr;
+}
+MS2_REPLACE_METHOD(0x141678750, PCBase, FUN_141678750, 67, 0xE1DD1C3D);
+
+// @0x141679220
+bool PCBase::FUN_141679220(const char* szName)
+{
+    unsigned int nId = FUN_141679270(szName);
+    return nId != NiActorManager::INVALID_SEQUENCE_ID;
+}
+MS2_REPLACE_METHOD(0x141679220, PCBase, FUN_141679220, 73, 0x7A70E4CC);
+
+// @0x1416765b0
+int PCBase::FUN_1416765b0()
+{
+    if (FUN_1416764a0() != 0)
+        return (int)m_mapB28.GetCount() < FUN_1416764a0()->FUN_141707750()->m_seats.FUN_140784180();
+    else
+        return 0;
+}
+MS2_REPLACE_METHOD(0x1416765b0, PCBase, FUN_1416765b0, 181, 0x26DE6170);
+
+// @0x141676060
+void PCBase::FUN_141676060(NiPoint3 kPos)
+{
+    if (kPos != efd::Point3::ZERO && m_posC10 != efd::Point3::ZERO)
+        return;
+    efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
+    if (spRidee)
+        spRidee->FUN_141676060(kPos);
+    else
+        m_posC10 = kPos;
+}
+MS2_REPLACE_METHOD(0x141676060, PCBase, FUN_141676060, 210, 0xAEE43850);
+
+// @0x14166ebf0
+void PCBase::FUN_14166ebf0(PCBase* pOther)
+{
+    if (pOther == 0)
+        return;
+    NiPoint3 kPos = pOther->m_posAE8;
+    egf::EntityID kId = pOther->m_unk_ae0;
+    if (kId != egf::kENTITY_INVALID) {
+        egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_unk_ae0);
+        if (pEntity == 0)
+            return;
+        FUN_1409618c0(pEntity, 0xfd95ca52, kPos);
+        FUN_141678290(kId, kPos);
+    }
+}
+MS2_REPLACE_METHOD(0x14166ebf0, PCBase, FUN_14166ebf0, 268, 0x8CB8826E);
+
+// @0x141678f50
+// MS2-FUNCTIONAL: the exe keeps the NiNode smart pointer's ctor result in three extra slots (frame 0x78 vs 0x58); same calls and order.
+void PCBase::FUN_141678f50()
+{
+    if (m_spC40 == 0)
+        return;
+    efd::SmartPointer<NiNode> spRoot = (NiNode*)FUN_141675150("Eff_UI");
+    if (spRoot)
+        spRoot->DetachChild(m_spC40);
+    m_spC40 = 0;
+}
+MS2_REPLACE_METHOD(0x141678f50, PCBase, FUN_141678f50, 279, 0x6D1CA468);

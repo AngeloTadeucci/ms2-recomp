@@ -14,6 +14,7 @@
 // - Members: proven types where known, otherwise pointer/int-aligned stand-ins of the right size (PCBase is
 //   heap-only, never a local). MS2_CHECK_OFFSETs below pin the ones derived classes touch.
 #pragma once
+#include <map>
 #include <vector>
 #include <atlcoll.h>
 #include <atlcomcli.h>
@@ -26,6 +27,7 @@
 
 // Component types behind the MS2Ptr members/getters (names unknown; MS2Ptr null-ctor VA in brackets).
 class RideOnAction;        // rideonaction.h (+0xb00, slot 121)
+class Unk_PCBaseActions;   // +0xd00 (?\actioncontainer.cpp; pcbase.cpp)
 class CSkillRecord;        // slots 100-102 (RTTI CSkillRecord, 0x1c0; ?\skillrecord.cpp)
 class Unk_PCBaseComp_a58;   // slot 80, +0xa58 [0x14108af40]
 class Unk_PCBaseComp_a68;   // slot 81, +0xa68 [0x140e86b20] (null ctor COMDAT in uishieldbar)
@@ -222,6 +224,12 @@ public:
     void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
     void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
     MS2Ptr<CStateManager> FUN_141678750();                  // 0x141678750 copy of m_spStateMgr (w17)
+    void FUN_141676310(int n);                              // 0x141676310 empty
+    bool FUN_141679220(const char* szName);                 // 0x141679220 FUN_141679270 found a sequence
+    int FUN_1416765b0();                                    // 0x1416765b0 the ridee has a free seat
+    void FUN_141676060(NiPoint3 kPos);                      // 0x141676060 set +0xc10 (forwarded to the ridee)
+    void FUN_14166ebf0(PCBase* pOther);                     // 0x14166ebf0 copy pOther's +0xae0 entity position
+    void FUN_141678f50();                                   // 0x141678f50 detach +0xc40 from "Eff_UI"
     // clonepc.cpp (w69)
     bool FUN_14166ed10();                                   // 0x14166ed10 the value ClonePC copies into m_b9d0
     void FUN_14166ed70(int n);                              // 0x14166ed70
@@ -254,7 +262,7 @@ public:
     MS2Ptr<Unk_PCBaseComp_b18> FUN_141676930();             // 0x141676930 ugc ridee item
     void FUN_141676b50(int bRun);                           // 0x141676b50
     int FUN_141676b70();                                    // 0x141676b70
-    void FUN_141678240(const egf::EntityID& kId, const NiPoint3& kPos);   // 0x141678240
+    void FUN_141678240(egf::EntityID& kId, NiPoint3& kPos);   // 0x141678240 out: +0xae0 / +0xae8
     void FUN_141678290(egf::EntityID kId, NiPoint3 kPos);   // 0x141678290
     void FUN_141678360();                                   // 0x141678360
     class Ridee* FUN_1416764a0();                           // 0x1416764a0 the ridee this actor rides (scenestategame, w86)
@@ -370,6 +378,10 @@ public:
     void FUN_141676ab0(__int64 nUid);                        // 0x141676ab0 +0xca8 RemoveKey
     int FUN_141676b00(__int64 nUid);                         // 0x141676b00 +0xca8 has it
     void FUN_141678160(const NiPoint3& kPos);                // 0x141678160 m_posBF4 = kPos
+    unsigned int FUN_141678680();                            // 0x141678680 skill-use disable mask (buffs | field)
+    int FUN_141678820();                                     // 0x141678820 +0xc68 when the field checks climbing
+    void FUN_141679120(int n);                               // 0x141679120 (+0xd00 slot 4)
+    efd::utf8string FUN_141679170(int a, int b);             // 0x141679170 (+0xd00 slot 6)
     NiPoint3 FUN_14166dbb0();                               // 0x14166dbb0
     CString FUN_14166dc50();                                // 0x14166dc50 model name
     bool FUN_14166dda0(int nId);                            // 0x14166dda0 play the animation of slot 123
@@ -378,6 +390,12 @@ public:
     float FUN_1416713c0();                                  // 0x1416713c0 animation speed
     void FUN_141675980();                                   // 0x141675980
     void FUN_141679e90();                                   // 0x141679e90 stop the sequence effects
+    bool FUN_14166de90(int nKey, unsigned int nSeq);            // 0x14166de90 nAnimId is one of +0xd00's names for nKey
+    unsigned int FUN_141679270(const char* szName);                   // 0x141679270 animation id of vfunc_60() + szName (-2: none)
+    void FUN_1416795e0();                                    // 0x1416795e0 replay the queued state request (+0xc48)
+    void FUN_141679760();                                    // 0x141679760 reload +0xd00 for vfunc_57()
+    void FUN_141679e00();                                    // 0x141679e00 stop the +0xa30 effects
+    void FUN_141679f30();                                    // 0x141679f30
     // mypc.cpp (w99)
     unsigned short FUN_141661e00();                         // 0x141661e00 the channel the actor is on
     int FUN_141661e20();                                    // 0x141661e20
@@ -481,8 +499,8 @@ public:
     NiPoint3 m_posC10;                  // +0xc10 = ZERO
     NiPoint3 m_posC1C;                  // +0xc1c
     NiPoint3 m_posC28;                  // +0xc28
-    void* m_unk_c38;                    // +0xc38 (init 0x14097eba0(p,0))
-    void* m_unk_c40;                    // +0xc40 (init 0x14097eba0(p,0))
+    efd::SmartPointer<NiAVObject> m_spC38;  // +0xc38 (init 0x14097eba0(p,0))
+    efd::SmartPointer<NiAVObject> m_spC40;  // +0xc40 (init 0x14097eba0(p,0)) attached under "Eff_UI"
     int m_unk_c48;                      // +0xc48 = 5
     MS2Ptr<StateData> m_unk_c50;        // +0xc50 state request queued before the model loads (init 0x14167e100(p,0))
     int m_unk_c60;                      // +0xc60
@@ -490,8 +508,8 @@ public:
     int m_unk_c68;                      // +0xc68
     Timer m_timerC70;                   // +0xc70 (armed 1000 ms)
     CAtlMap<__int64, int> m_mapCA8;     // +0xca8 item uid -> n (init 0x140c69c80)
-    void* m_unk_cf0[2];                 // +0xcf0 (init 0x14167e4b0)
-    void* m_unk_d00[2];                 // +0xd00 (init 0x14094d440); vfunc_123 looks up here (0x14094e040)
+    std::map<int, std::map<CString, std::vector<unsigned int> > > m_mapCF0;   // +0xcf0 (init 0x14167e4b0) key -> prefixed sequence name -> animation ids
+    MS2Ptr<Unk_PCBaseActions> m_spD00;  // +0xd00 (init 0x14094d440 = MS2Ptr()); vfunc_123 looks up here (0x14094e040 = ->)
     MS2Ptr<Unk_PCBaseFxSource> m_spD10; // +0xd10 (init 0x1411bf870)
     int m_unk_d20;                      // +0xd20
     std::vector<unsigned> m_vecD28;     // +0xd28 (init 0x140182ed0)
@@ -527,5 +545,5 @@ MS2_CHECK_OFFSET(PCBase, m_spBE8, 0xbe8);
 MS2_CHECK_OFFSET(PCBase, m_posC28, 0xc28);
 MS2_CHECK_OFFSET(PCBase, m_timerC70, 0xc70);
 MS2_CHECK_OFFSET(PCBase, m_mapCA8, 0xca8);
-MS2_CHECK_OFFSET(PCBase, m_unk_d00, 0xd00);
+MS2_CHECK_OFFSET(PCBase, m_spD00, 0xd00);
 MS2_CHECK_OFFSET(PCBase, m_vecD28, 0xd28);
