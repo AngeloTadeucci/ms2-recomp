@@ -16,6 +16,7 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/commonfiles/itemdata.h"
 #include "ms2/commonfiles/itemenchantinfo.h"
+#include "ms2/commonfiles/itemgachaboxtable.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -34,6 +35,24 @@ class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
 extern unsigned FUN_14054b400(ItemModelData*);
 extern unsigned __int64 FUN_140632030(CItemUgc*);
+
+// w101 additions: unit-local record types for the table lookups CItem makes (names are descriptive, not original).
+class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); };
+class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405565f0(int); };
+extern Unk_IngTable* FUN_140281980();
+extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
+extern void* FUN_140166410();
+extern unsigned short FUN_14036dc40(void*);
+extern MS2Ptr<CItemData> FUN_14053f870(int);
+// @0x14052d230 TSingleton<ItemGachaBoxTable>::GetInstance (s_instance is the exe's DAT_143aaf1d0)
+ItemGachaBoxTable* FUN_14052d230();
+class Unk_SingletonObj;
+extern void* DAT_143aaf1a8;
+extern void* DAT_143aaf1b0;
+extern void* DAT_143aaf1b8;
+extern void* DAT_143aaf1c0;
+extern Unk_SingletonObj* DAT_143aaf1c8;
+extern Unk_SingletonObj* DAT_143aaf1d8;
 #define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
 
 // @0x14052a020
@@ -722,7 +741,7 @@ Unk_ItemSlot188::Unk_ItemSlot188()
 
 unsigned char FUN_14053f8c0(unsigned);
 unsigned char FUN_14053f940(unsigned);
-void FUN_14053f990(unsigned);
+int FUN_14053f990(unsigned);
 
 // @0x140524240
 void CItem::vfunc_1()
@@ -826,9 +845,9 @@ int CItem::FUN_140525920()
 MS2_REPLACE_METHOD(0x140525920, CItem, FUN_140525920, 34, 0xA303E991);
 
 // @0x140525950
-void CItem::FUN_140525950()
+int CItem::FUN_140525950()
 {
-    FUN_14053f990(FUN_1405276c0());
+    return FUN_14053f990(FUN_1405276c0());
 }
 MS2_REPLACE_METHOD(0x140525950, CItem, FUN_140525950, 31, 0x537B6C6C);
 
@@ -1710,3 +1729,225 @@ bool CItem::FUN_140528980()
     return true;
 }
 MS2_REPLACE_METHOD(0x140528980, CItem, FUN_140528980, 210, 0xC3F33C70);
+
+// @0x140525680
+bool CItem::FUN_140525680()
+{
+    if (!FUN_1405277b0()->FUN_14053cd10())
+        return false;
+    MS2Ptr<Unk_IngItem> spIng = FUN_140281980()->FUN_1405565f0(FUN_1405276c0());
+    if (spIng == 0)
+        return false;
+    return spIng->FUN_14054aca0();
+}
+MS2_REPLACE_METHOD(0x140525680, CItem, FUN_140525680, 170, 0x68FB8AA6);
+
+// @0x140525980
+int CItem::FUN_140525980()
+{
+    return FUN_1405258f0() || FUN_140525920() || FUN_140525950();
+}
+MS2_REPLACE_METHOD(0x140525980, CItem, FUN_140525980, 78, 0xEC17A787);
+
+// @0x140525a80
+int CItem::FUN_140525a80()
+{
+    if (m_spData.IsNull())
+        return 0;
+    switch (m_spData->FUN_14053c5c0())
+    {
+    case 1:
+        if (FUN_140525f10() != 0 && FUN_140525f60() == 0)
+            return 1;
+        break;
+    case 2:
+    case 5:
+    case 9:
+    case 0xb:
+    case 0xc:
+    case 0x18:
+        return 1;
+    }
+    if (m_spData->FUN_14053cd90())
+    {
+        CStringW* pName = &m_spData->function.name;
+        if (FUN_1403b3c40(*pName, L"RecallParty") || FUN_1403b3c40(*pName, L"TreasureMap"))
+            return 0;
+        return 1;
+    }
+    if ((unsigned)m_spData->FUN_14053ddb0() > 0)
+        return 1;
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140525A80, CItem, FUN_140525a80, 340, 0x9FD5B6B6);
+
+// @0x140526190
+int CItem::FUN_140526190()
+{
+    if (FUN_140526160() == 1)
+    {
+        GachaBoxDataPtr spBox = FUN_14052d230()->FUN_14059e340(FUN_140529640());
+        if (spBox == 0)
+            return 0;
+        MS2Ptr<CItemData> spCoin = FUN_14053f870(spBox->m_nCoinItemID);
+        if (spCoin == 0)
+            return 0;
+        if (spBox->m_nCoinItemAmount == 0)
+            return 0;
+        return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140526190, CItem, FUN_140526190, 294, 0x9B68AECD);
+
+// @0x140526390
+int CItem::FUN_140526390()
+{
+    if (m_spData == 0)
+        return 0;
+    if (m_spData->FUN_14053e670())
+        return 1;
+    CItemSocket* pSocket = FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140620de0())
+        return 1;
+    if (m_spStatus.get() != 0)
+    {
+        if (m_spStatus->m_spOption->FUN_1405cbc90() != 0)
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140526390, CItem, FUN_140526390, 213, 0xDBB250D2);
+
+// @0x140526470
+void CItem::FUN_140526470(unsigned nSlot)
+{
+    unsigned nResult;
+    if (FUN_140525640())
+        FUN_140526670(nSlot, &nResult);
+    else
+        FUN_1405264c0(nSlot, &nResult);
+}
+MS2_REPLACE_METHOD(0x140526470, CItem, FUN_140526470, 72, 0x8C36A151);
+
+// @0x1405264c0
+int CItem::FUN_1405264c0(int nSlot, unsigned* pResult)
+{
+    if (m_spData.IsNull())
+    {
+        *pResult = 1;
+        return false;
+    }
+    if (FUN_140526bd0() < 4)
+    {
+        *pResult = 7;
+        return false;
+    }
+    if (!m_spData->FUN_14053d600() && !m_spData->FUN_14053d5c0())
+    {
+        *pResult = 8;
+        return false;
+    }
+    if (m_spData->limit.levelLimit < FUN_14036dc40(FUN_140166410()))
+    {
+        *pResult = 4;
+        return false;
+    }
+    if (m_spData->property.remakeDisable == 1)
+    {
+        *pResult = 2;
+        return false;
+    }
+    if (m_spStatus->m_spOption->FUN_1405cbbb0(nSlot) == 0)
+    {
+        *pResult = 6;
+        return false;
+    }
+    *pResult = 0;
+    return true;
+}
+MS2_REPLACE_METHOD(0x1405264C0, CItem, FUN_1405264c0, 378, 0x2F4CADF4);
+
+// @0x140526640
+void CItem::FUN_140526640(unsigned nSlot)
+{
+    unsigned nResult;
+    FUN_140526670(nSlot, &nResult);
+}
+MS2_REPLACE_METHOD(0x140526640, CItem, FUN_140526640, 37, 0x01B62087);
+
+// @0x140526670
+int CItem::FUN_140526670(int nSlot, unsigned* pResult)
+{
+    if (m_spData.IsNull())
+    {
+        *pResult = 1;
+        return false;
+    }
+    if (FUN_140526bd0() < 3)
+    {
+        *pResult = 7;
+        return false;
+    }
+    if (!m_spData->FUN_14053cc40())
+    {
+        *pResult = 8;
+        return false;
+    }
+    if (m_spData->property.remakeDisable == 1)
+    {
+        *pResult = 2;
+        return false;
+    }
+    if (m_spStatus->m_spOption->FUN_1405cbbb0(nSlot) == 0)
+    {
+        *pResult = 6;
+        return false;
+    }
+    *pResult = 0;
+    return true;
+}
+MS2_REPLACE_METHOD(0x140526670, CItem, FUN_140526670, 273, 0x5F65DE16);
+
+// The TSingleton<T>::GetInstance bodies this unit instantiates (the s_instance statics are the exe's own data).
+// @0x14052d1d0
+void* FUN_14052d1d0()
+{
+    return DAT_143aaf1a8;
+}
+
+// @0x14052d1e0
+void* FUN_14052d1e0()
+{
+    return DAT_143aaf1b0;
+}
+
+// @0x14052d1f0
+void* FUN_14052d1f0()
+{
+    return DAT_143aaf1b8;
+}
+
+// @0x14052d200
+void* FUN_14052d200()
+{
+    return DAT_143aaf1c0;
+}
+
+// @0x14052d210
+Unk_SingletonObj* FUN_14052d210()
+{
+    return DAT_143aaf1c8;
+}
+
+// @0x14052d220
+Unk_SingletonObj* FUN_14052d220()
+{
+    return DAT_143aaf1d8;
+}
+
+// @0x14052d230
+ItemGachaBoxTable* FUN_14052d230()
+{
+    return TSingleton<ItemGachaBoxTable>::s_instance;
+}

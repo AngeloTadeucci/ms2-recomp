@@ -153,6 +153,13 @@ public:
   unsigned char FUN_1405269f0();
   void FUN_1405269d0(unsigned char);
   int FUN_1405291f0();
+  // item.cpp (w101): name is the address; return types read from the callers' disassembly.
+  int FUN_140525980();
+  int FUN_140525a80();
+  int FUN_140526190();
+  int FUN_140526390();
+  int FUN_1405264c0(int, unsigned*);
+  int FUN_140526670(int, unsigned*);
   // item.cpp (w88): name is the address.
   bool FUN_140525680();
   bool FUN_140525730();
@@ -160,7 +167,7 @@ public:
   int FUN_1405257f0();
   int FUN_1405258f0();
   int FUN_140525920();
-  void FUN_140525950();
+  int FUN_140525950();
   int FUN_1405259e0();
   int FUN_140525a30();
   int FUN_140525c00();

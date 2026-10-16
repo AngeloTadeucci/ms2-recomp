@@ -9,13 +9,21 @@
 #include "ms2/commonfiles/itemgem.h"
 
 // Opaque parts defined in their own units; only the allocation sizes and constructors are known here.
+// The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the checks CItem makes.
+class CItemOption : public CPtred
+{
+public:
+    int FUN_1405cbbb0(int nSlot);               // 0x1405cbbb0
+    int FUN_1405cbc90();                        // 0x1405cbc90
+};
 class CItemStatus : public CPtred
 {
 public:
     CItemStatus(unsigned, unsigned, unsigned);   // 0x14062fa00
     class CItemEnchantInfo* FUN_140630d60();     // the enchant record (null when absent)
     class Unk_ItemPlusInfo* FUN_140630d90();
-    char m_pad18[0x30];
+    MS2Ptr<CItemOption> m_spOption;             // +0x18
+    char m_pad28[0x20];
 };
 MS2_CHECK_SIZE(CItemStatus, 0x48);
 class CItemUgc : public CPtred
@@ -29,6 +37,7 @@ class CItemSocket : public CPtred
 {
 public:
     CItemSocket();                          // 0x140620320
+    bool FUN_140620de0();
     char m_pad18[0xd8];
 };
 MS2_CHECK_SIZE(CItemSocket, 0xf0);
