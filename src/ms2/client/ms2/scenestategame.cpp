@@ -6,15 +6,23 @@
 // MS2-RANGE: 0x1400ff860-0x140100050 .text$di
 // MS2-RANGE: 0x142cb5fd0-0x142cb6450 .text$yd
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@$$QEA_N@Z 0x141740440 ; prop
+// MS2-PIN: ??$?0AEBH@?$_Tuple_val@AEBH@std@@QEAA@AEBH@Z 0x1417406d0 ; unique
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@std@@@0@AEAV10@@Z 0x1417451d0 ; prop
+// MS2-PIN: ??1_ATL_COM_MODULE70@ATL@@QEAA@XZ 0x141746a80 ; unique
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141747160 ; unique
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417473e0 ; unique
-// MS2-PIN: ?TypeCast@CSceneStateGame@@UEBA_NIPEAPEAX@Z 0x14174a720 ; unique
-// MS2-PIN: ?TypeCast@CSceneStateGame@@UEBA_NIPEAPEBX@Z 0x14174a770 ; unique
-// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x14174acb0 ; unique
+// MS2-PIN: ??_GCAtlStringMgr@ATL@@UEAAPEAXI@Z 0x1417478d0 ; unique
+// MS2-PIN: ?GetClassDesc@CSceneStateGame@@UEBAPEBVClassInfo@efd@@XZ 0x141747f90 ; unique
 // MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@XZ 0x14174b020 ; unique
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b090 ; prop
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@H@2@XZ 0x14174b060 ; prop
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b070 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@2@XZ 0x14174b0a0 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@2@$00@std@@QEBAAEBV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@2@XZ 0x14174b0b0 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@XZ 0x14174b0c0 ; unique
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b0e0 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBH_N@std@@@std@@@2@XZ 0x14174b0d0 ; prop
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b110 ; prop
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x14174b190 ; prop
 // MS2-PINS-END tplpin
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
@@ -41,6 +49,7 @@
 #include "ms2/placeholder/notifyobject.h"
 #include "ms2/commonfiles/stream.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/placeholder/effectquery.h"
 #include "ms2/client/ms2/stateemotionidle.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
@@ -64,6 +73,7 @@ public:
     GameObject* FUN_141bd1180(int nId);
     PC* FUN_141bd1290(int nId);
     PCBase* FUN_141bd1200(int nId);
+    int FUN_141bd1a10(PCBase* pActor);
     PCBase* FUN_141bd3620();
     class Unk_SSGNpc* FUN_141bd1320(int nId);
     class Unk_SSGCubeObj* FUN_141bd13a0(int nId);
@@ -92,6 +102,7 @@ public:
     void FUN_141ad9a60(CString strName);
     void FUN_141adc530(int nId);
     void FUN_141add1f0();
+    void FUN_141adc5d0(int nId);
 };
 Unk_SSGUIMgr* FUN_1403ed2b0();
 
@@ -108,6 +119,7 @@ class Unk_SSGEffectMgr
 public:
     void FUN_1411a6060(int nHandle);                        // remove an effect
     void FUN_1411a4f40(CString strName, const NiPoint3& kPos);
+    void FUN_1411a4a00(Unk_EffectQuery* pQuery);                    // play once
 };
 Unk_SSGEffectMgr* FUN_1403ed280();
 
@@ -376,7 +388,7 @@ extern int DAT_143ab2880;
 extern int DAT_143ab2890;
 class Unk_SSG967100 { public: void FUN_141b21390(); void FUN_141b1ddd0(CInPacket& packet); };
 Unk_SSG967100* FUN_140967100();
-class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14138b280(CInPacket& packet); };
+class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14138bf00(int nKind, int nId, int nArg); void FUN_14138b280(CInPacket& packet); };
 Unk_SSG9331e0* FUN_1409331e0();
 class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); };
 Unk_SSGSoundCtl* FUN_1408e57f0();
@@ -491,12 +503,14 @@ class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet); };
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
-class Unk_SSGConstValue { public: int* FUN_1402056b0(); };
+class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
 class Unk_SSGConstants
 {
 public:
-    char m_pad_00[0x3680];
+    char m_pad_00[0x2970];
+    Unk_SSGConstValue m_2970;                               // +0x2970
+    char m_pad_2971[0x3680 - 0x2971];
     Unk_SSGConstValue m_3680;                               // +0x3680
     char m_pad_3681[0x66d0 - 0x3681];
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
@@ -504,6 +518,7 @@ public:
     Unk_SSGConstValue2 m_67e0;                              // +0x67e0
 };
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_67e0, 0x67e0);
+MS2_CHECK_OFFSET(Unk_SSGConstants, m_2970, 0x2970);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_3680, 0x3680);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_66d0, 0x66d0);
 Unk_SSGConstants* FUN_1401d3200();
@@ -573,6 +588,35 @@ void FUN_141a60f00(int nObjectId);
 class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
+
+class Unk_SSGEffectCfg { public: char m_pad_00[0x358]; CString m_str358; };
+MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str358, 0x358);
+Unk_SSGEffectCfg* FUN_1401d31f0();
+PC* FUN_140974230(PCBase* pActor);                          // DynamicCast<PC> (class id 0x6200003)
+class Unk_SSGa94350
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
+    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
+    virtual void vfunc_8(); virtual void vfunc_9();
+    virtual void vfunc_10(int n);
+};
+Unk_SSGa94350* FUN_140a94350();
+
+class Unk_SSGSkillAttr : public CPtred { };
+class Unk_SSGSkillTable { public: MS2Ptr<Unk_SSGSkillAttr> FUN_140aafef0(int nSkillId, unsigned short nLevel); };
+Unk_SSGSkillTable* FUN_1401958b0();                         // SkillDataTableCli
+class Unk_SSGSkillCollision
+{
+public:
+    void FUN_141755cd0(PCBase* pActor, MS2Ptr<Unk_SSGSkillAttr> spSkill, const Unk_StreamPoint& kPos, const Unk_StreamPoint& kDir);
+};
+Unk_SSGSkillCollision* FUN_141469a90();                     // CSkillCollisionManager
+class Unk_SSGMyPCV : public PC
+{
+public:
+    virtual void vfunc_147(); virtual void vfunc_148(); virtual void vfunc_149();
+};
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -2828,3 +2872,109 @@ void CSceneStateGame::FUN_141738120(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141738120, CSceneStateGame, FUN_141738120, 279, 0x1DD3407C);
+
+// @0x14171a730
+// MS2-FUNCTIONAL: frame 0x88 vs 0xe8 only; shared Unk_EffectQuery (effectquery.h) is declared 0x10 but the 0x140a52ef0 ctor fills 0x70 bytes
+void CSceneStateGame::FUN_14171a730(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int bEffect = pPC->FUN_141661aa0() && nB == 0;
+    pPC->FUN_141661a60(nB);
+    pPC->FUN_1416619d0(nA);
+    void* pHost = FUN_1409613d0(pPC);
+    if (pHost != 0)
+    {
+        if (bEffect)
+        {
+            Unk_EffectQuery query;
+            query.m_strName = FUN_1401d31f0()->m_str358;
+            query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
+            query.FUN_140a53190(pPC->FUN_14123c580());
+            FUN_1403ed280()->FUN_1411a4a00(&query);
+        }
+        else if (nB != 0)
+        {
+            FUN_1409331e0()->FUN_14138bf00(0xe, 0, 0);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14171a730, CSceneStateGame, FUN_14171a730, 452, 0xFA154A72);
+
+// @0x14171a900
+void CSceneStateGame::FUN_14171a900(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+    if (pActor == 0)
+        return;
+    PC* pPC = FUN_140974230(pActor);
+    if (pPC != 0)
+        pPC->FUN_141661ba0(nFlag);
+    pActor->FUN_14166ce50(0);
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pActor == pMyPC)
+    {
+        pMyPC->vfunc_59(0x18, 0, 0, 0);
+        pMyPC->FUN_14152a960();
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4e38);
+        FUN_140a94350()->vfunc_10(8);
+        FUN_1409331e0()->FUN_14138d7e0(0xb, 0);
+    }
+    if (pPC != 0)
+        pPC->FUN_141661370(1, FUN_1401d3200()->m_2970.FUN_140ad5c50(), 100000004);
+}
+MS2_REPLACE_METHOD(0x14171a900, CSceneStateGame, FUN_14171a900, 393, 0xEF236C66);
+
+// @0x141720c60
+// MS2-FUNCTIONAL: code identical; the MS2Ptr<Unk_SSGSkillAttr> copy-ctor COMDAT pairs with the in-range copy 0x1417459d0 (called from 0x141725xxx) instead of 0x140182280
+void CSceneStateGame::FUN_141720c60(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+    if (pActor == 0)
+        return;
+    MS2Ptr<Unk_SSGSkillAttr> spSkill = FUN_1401958b0()->FUN_140aafef0(nSkillId, nLevel);
+    if (spSkill == 0)
+        return;
+    FUN_141469a90()->FUN_141755cd0(pActor, spSkill, kPos, kDir);
+}
+MS2_REPLACE_METHOD(0x141720c60, CSceneStateGame, FUN_141720c60, 479, 0x10631625);
+
+// @0x141723410
+void CSceneStateGame::FUN_141723410(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int bHasItem = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    if (pPC->FUN_14166ce30() != 0)
+        return;
+    if (bHasItem)
+    {
+        CubeItemInfo info(packet);
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        pPC->vfunc_135(bHasItem, nSlot, &info);
+    }
+    else
+    {
+        pPC->vfunc_135(bHasItem, 0, 0);
+    }
+    if (FUN_1409613d0(pPC) != 0)
+    {
+        PCBase* pTarget = FUN_1403ed2d0()->FUN_141bd3620();
+        if (pTarget != 0)
+            static_cast<Unk_SSGMyPCV*>(pTarget)->vfunc_149();
+    }
+}
+MS2_REPLACE_METHOD(0x141723410, CSceneStateGame, FUN_141723410, 384, 0xE64CE8BE);

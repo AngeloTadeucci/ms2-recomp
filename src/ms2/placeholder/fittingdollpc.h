@@ -99,6 +99,10 @@ public:
     void FUN_141660000(__int64 nValue);
     void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
     void FUN_141661dc0(unsigned short nA, int nB);          // scenestategame packet 0xb1
+    int FUN_141661aa0();                                    // scenestategame packet 0x33 (pvp flag)
+    void FUN_141661a60(int n);                              // scenestategame packet 0x33
+    void FUN_1416619d0(int n);                              // scenestategame packet 0x33
+    void FUN_141661370(int a, int b, int c);                // scenestategame packet 0x34 (also on MyPC)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];
