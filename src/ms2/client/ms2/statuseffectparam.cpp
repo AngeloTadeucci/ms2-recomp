@@ -5,9 +5,6 @@
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0AEAV?$SmartPointer@VNiNode@@@efd@@AEAH$0A@@?$pair@V?$SmartPointer@VNiNode@@@efd@@H@std@@QEAA@AEAV?$SmartPointer@VNiNode@@@efd@@AEAH@Z 0x141801c10 ; unique
 // MS2-PIN: ??$make_pair@AEAV?$SmartPointer@VNiNode@@@efd@@AEAH@std@@YA?AU?$pair@V?$SmartPointer@VNiNode@@@efd@@H@0@AEAV?$SmartPointer@VNiNode@@@efd@@AEAH@Z 0x141802b30 ; unique
-// MS2-PIN: ??$construct@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@U?$pair@V?$SmartPointer@VNiNode@@@efd@@H@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@PEAX@std@@@1@QEAU?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@1@$$QEAU?$pair@V?$SmartPointer@VNiNode@@@efd@@H@1@@Z 0x1418029a0
-// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@V?$SmartPointer@VNiNode@@@efd@@HU?$less@V?$SmartPointer@VNiNode@@@efd@@@std@@V?$allocator@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@PEAX@2@XZ 0x141802dd0
-// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VNiNode@@@efd@@H@std@@PEAX@std@@@2@@Z 0x141803050
 // MS2-PINS-END tplpin
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -16,6 +13,10 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "statuseffectparam.h"
 #include <map>
+#include <new>
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
 #include <atlcoll.h>
 #include <efd/MemoryDefines.h>
 #include <NiAVObject.h>
@@ -270,4 +271,107 @@ void CStatusEffect::FUN_141801900(void* pUnused)
 int CStatusEffect::vfunc_12()
 {
     return 8;
+}
+
+// ---- std::map<SmartPointer<NiNode>, int> instantiation glue (the exe's STL differs from the toolchain's) ----
+typedef std::pair<efd::SmartPointer<NiNode>, int> Unk_NodeIntPair;
+
+// A red-black tree node of Unk_NodeIntMap.
+struct Unk_NodeIntTreeNode
+{
+    Unk_NodeIntTreeNode* m_pLeft;
+    Unk_NodeIntTreeNode* m_pParent;
+    Unk_NodeIntTreeNode* m_pRight;
+    char m_cColor;
+    char m_cIsNil;
+    std::pair<const efd::SmartPointer<NiNode>, int> m_value;
+};
+
+void* FUN_1420b8410();                                              // default memory log handler factory
+
+// @0x141801ea0
+// MS2-FUNCTIONAL: allocator::construct stand-in (placement-copies the pair)
+void FUN_141801ea0(char cTag, void* pHint, void* pWhere, Unk_NodeIntPair* pSrc)
+{
+    new (pWhere) std::pair<const efd::SmartPointer<NiNode>, int>(std::move(*pSrc));
+}
+
+// @0x1418029a0
+// MS2-FUNCTIONAL: allocator construct forwarder stand-in
+void FUN_1418029a0(char cTag, void* pHint, void* pWhere, Unk_NodeIntPair* pSrc)
+{
+    FUN_141801ea0(cTag, pHint, pWhere, pSrc);
+}
+
+// @0x141802dd0
+// MS2-FUNCTIONAL: _Buynode0 stand-in: head node with all links pointing at the given node
+Unk_NodeIntTreeNode* FUN_141802dd0(Unk_NodeIntTreeNode* pHead)
+{
+    Unk_NodeIntTreeNode* pNode = static_cast<Unk_NodeIntTreeNode*>(operator new(sizeof(Unk_NodeIntTreeNode)));
+    pNode->m_pLeft = pHead;
+    pNode->m_pParent = pHead;
+    pNode->m_pRight = pHead;
+    return pNode;
+}
+
+// @0x141803040
+// MS2-FUNCTIONAL: allocator max_size stand-in (0x1555555 nodes)
+size_t FUN_141803040()
+{
+    return 0x1555555;
+}
+
+// @0x141802f70
+// MS2-FUNCTIONAL: allocator max_size forwarder stand-in
+size_t FUN_141802f70(void* pAlloc, char cTag)
+{
+    return FUN_141803040();
+}
+
+// @0x141803050
+// MS2-FUNCTIONAL: _Default_allocator_traits::max_size stand-in
+size_t FUN_141803050(void* pAlloc)
+{
+    char cTag = 0;
+    return FUN_141802f70(pAlloc, cTag);
+}
+
+// @0x1418030a0
+// MS2-FUNCTIONAL: CRT memcpy_s stand-in
+int FUN_1418030a0(void* pDst, size_t nDstSize, const void* pSrc, size_t nCount)
+{
+    if (nCount == 0)
+        return 0;
+    if (pDst == 0)
+    {
+        errno = EINVAL;
+        _invalid_parameter_noinfo();
+        return EINVAL;
+    }
+    if (pSrc == 0 || nDstSize < nCount)
+    {
+        memset(pDst, 0, nDstSize);
+        if (pSrc == 0)
+        {
+            errno = EINVAL;
+            _invalid_parameter_noinfo();
+            return EINVAL;
+        }
+        if (nDstSize < nCount)
+        {
+            errno = ERANGE;
+            _invalid_parameter_noinfo();
+            return ERANGE;
+        }
+        return EINVAL;
+    }
+    memcpy(pDst, pSrc, nCount);
+    return 0;
+}
+
+// @0x1418031f0
+// MS2-FUNCTIONAL: default memory log handler creation thunk
+void FUN_1418031f0()
+{
+    FUN_1420b8410();
 }
