@@ -74,6 +74,9 @@
 // MS2-PIN: ?_Has_unused_capacity@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AEBA_NXZ 0x14029bbc0 ; unique
 // MS2-PIN: ?find@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA_KQEBD_K@Z 0x14029d350 ; unique
 // hand pins (w108)
+// MS2-PIN: ??G?$_String_const_iterator@V?$_String_val@U?$_Simple_types@_W@std@@@std@@@std@@QEBA_JAEBV01@@Z 0x140298250
+// MS2-PIN: ?size@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@QEBA_KXZ 0x14029d490
+// MS2-PIN: ?size@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA_KXZ 0x14029dc00
 
 // MS2-PIN: ??0Unk_CommonVec2@@QEAA@XZ 0x140297240
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp"
@@ -193,10 +196,10 @@ CStringW FUN_140298ea0(CStringW strKey);
 CStringW FUN_14016a730(const char* psz, int n);                 // narrow -> wide
 CString FUN_14016a600(const wchar_t* pwsz, int n);              // wide -> narrow
 Unk_StringMgr* FUN_14025e7d0();
-void FUN_14029dd60(const char* pszText, const char* pszFormat, int* pnA, int* pnB, int* pnC, int* pnD, int* pnE, int* pnF);
+int FUN_14029dd60(const char* pszText, const char* pszFormat, ...);                // sscanf
 void FUN_1401d3700(CString& strPath);
 bool FUN_140184310(const CString& strText, const char* pszPrefix);
-std::string FUN_140291f90(const std::string& strToken, int nWhich);
+std::wstring FUN_140291f90(const std::wstring& strToken, int nWhich);
 
 bool FUN_140299100(const CAtlArray<CString>& arr);              // IsEmpty
 
@@ -954,30 +957,29 @@ CString FUN_14028e440(const ATL::CTime& kTime, const CString& strFormat)
 // Replaces every "(token)" in the text with its translation; true when anything was found.
 // MS2-FUNCTIONAL: std::string temp/EH layout differs
 // @0x14028e560
-bool FUN_14028e560(std::string& strText, int nWhich)
+bool FUN_14028e560(std::wstring& strText, int nWhich)
 {
     bool bFound = false;
     const wchar_t* pwszDelim = L"()";
     while (true)
     {
-        size_t nOpen = strText.find((char)pwszDelim[0], 0);
+        size_t nOpen = strText.find(pwszDelim[0], 0);
         if (nOpen == (size_t)-1)
             return bFound;
-        size_t nClose = strText.find((char)pwszDelim[1], nOpen);
+        size_t nClose = strText.find(pwszDelim[1], nOpen);
         if (nClose == (size_t)-1)
             break;
-        std::string strToken;
+        std::wstring strToken;
         strToken = strText.substr(nOpen + 1, nClose - nOpen - 1);
         if (strToken.size() == 0)
             return bFound;
         bFound = true;
-        std::string strTranslated = FUN_140291f90(strToken, nWhich);
-        strText.replace(strText.begin() + nOpen, strText.begin() + nClose + 1, strTranslated.c_str());
+        std::wstring strTranslated = FUN_140291f90(strToken, nWhich);
+        strText.replace(strText.begin() + nOpen, strText.begin() + nClose + 1, strTranslated.c_str(), strTranslated.size());
     }
     return bFound;
 }
 
-// Normalizes a data path to "./data/..." with forward slashes.
 // @0x14028e7c0
 void FUN_14028e7c0(CString& strPath)
 {
@@ -1419,8 +1421,26 @@ __int64 FUN_140282020(const ATL::CTime& time);                          // time_
 __int64 FUN_14086b190(int nKind, __int64 nTime);
 const std::string& FUN_14018ef70(const std::string& str);
 void* FUN_1401d3200();                                                  // game config singleton
-CString& FUN_140298f80(void* pEntry);                                   // string option entry value
-int& FUN_140298f40(void* pEntry);                                       // int option entry value
+void FUN_1402b7560(void* pEntry, const char* pszMessage);
+
+// Config option entries: set flag at +8, value after the header.
+struct Unk_IntOptionEntry
+{
+    void* m_unk00;
+    bool m_bSet;
+    unsigned char m_unk09[0x47];
+    int m_nValue;
+    int& FUN_140298f40();                                       // 0x140298f40
+};
+
+struct Unk_StringOptionEntry
+{
+    void* m_unk00;
+    bool m_bSet;
+    unsigned char m_unk09[0x47];
+    CString m_strValue;
+    CString& FUN_140298f80();                                   // 0x140298f80
+};
 
 // Item tab key of a tab string (empty string = "all"); the tab key is also written to strTabOut.
 // MS2-FUNCTIONAL: not yet byte-matched
@@ -1550,11 +1570,11 @@ CString FUN_140291c10(int nKind)
     switch (nKind)
     {
     case 1:
-        return FUN_140298f80((char*)FUN_1401d3200() + 0x8170);
+        return reinterpret_cast<Unk_StringOptionEntry*>((char*)FUN_1401d3200() + 0x8170)->FUN_140298f80();
     case 2:
-        return FUN_140298f80((char*)FUN_1401d3200() + 0x81d0);
+        return reinterpret_cast<Unk_StringOptionEntry*>((char*)FUN_1401d3200() + 0x81d0)->FUN_140298f80();
     case 3:
-        return FUN_140298f80((char*)FUN_1401d3200() + 0x8230);
+        return reinterpret_cast<Unk_StringOptionEntry*>((char*)FUN_1401d3200() + 0x8230)->FUN_140298f80();
     default:
         return CString("");
     }
@@ -1567,11 +1587,11 @@ int FUN_140291d10(int nKind)
     switch (nKind)
     {
     case 1:
-        return FUN_140298f40((char*)FUN_1401d3200() + 0x8068);
+        return reinterpret_cast<Unk_IntOptionEntry*>((char*)FUN_1401d3200() + 0x8068)->FUN_140298f40();
     case 2:
-        return FUN_140298f40((char*)FUN_1401d3200() + 0x80c0);
+        return reinterpret_cast<Unk_IntOptionEntry*>((char*)FUN_1401d3200() + 0x80c0)->FUN_140298f40();
     case 3:
-        return FUN_140298f40((char*)FUN_1401d3200() + 0x8118);
+        return reinterpret_cast<Unk_IntOptionEntry*>((char*)FUN_1401d3200() + 0x8118)->FUN_140298f40();
     default:
         return 0;
     }
@@ -1624,15 +1644,15 @@ CString FUN_140291f40(int nId, const fmt::ArgList& args)
 // Text before ('/' first token) or after the first '/' of the token.
 // MS2-FUNCTIONAL: not yet byte-matched
 // @0x140291f90
-std::string FUN_140291f90(const std::string& strToken, int nWhich)
+std::wstring FUN_140291f90(const std::wstring& strToken, int nWhich)
 {
-    size_t nPos = strToken.find("/", 0);
-    if (nPos == std::string::npos)
-        return std::string("");
+    size_t nPos = strToken.find(L"/", 0);
+    if (nPos == std::wstring::npos)
+        return std::wstring(L"");
     else if (nWhich == 0)
-        return std::string(strToken, 0, nPos);
+        return std::wstring(strToken, 0, nPos);
     else
-        return std::string(strToken, nPos + 1, std::string::npos);
+        return std::wstring(strToken, nPos + 1, std::wstring::npos);
 }
 
 // @0x140292110
@@ -1874,3 +1894,159 @@ void FUN_140290150(Unk_XmlElement* pParent, const char* pszChild, const char* ps
     for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
         arrOut.push_back(it->second);
 }
+
+// @0x140298f40
+int& Unk_IntOptionEntry::FUN_140298f40()
+{
+    if (!m_bSet)
+        FUN_1402b7560(this, "constants is not set");
+    return m_nValue;
+}
+
+// @0x140298f80
+CString& Unk_StringOptionEntry::FUN_140298f80()
+{
+    if (!m_bSet)
+        FUN_1402b7560(this, "constants is not set");
+    return m_strValue;
+}
+
+// @0x140298fd0
+long FUN_140298fd0(long* plValue)
+{
+    return InterlockedIncrement(plValue);
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (CRT import / inline layout)
+// @0x140299100
+bool FUN_140299100(const CAtlArray<CString>& arr)
+{
+    return arr.GetCount() == 0;
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (CRT import / inline layout)
+// @0x14029dba0
+float FUN_14029dba0(float fAngle)
+{
+    return sinf(fAngle);
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (CRT import / inline layout)
+// @0x14029cc60
+float FUN_14029cc60(float fAngle)
+{
+    return cosf(fAngle);
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (CRT import / inline layout)
+// @0x14029d430
+float FUN_14029d430(float fX, float fY)
+{
+    return fmodf(fX, fY);
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (CRT import / inline layout)
+// @0x14029dd40
+float FUN_14029dd40(float fValue)
+{
+    return (float)fabs((double)fValue);
+}
+
+// @0x14029d220
+float FUN_14029d220(float fValue)
+{
+    return FUN_14029dd40(fValue);
+}
+
+// @0x14029dd60
+int FUN_14029dd60(const char* pszText, const char* pszFormat, ...)
+{
+    va_list args;
+    va_start(args, pszFormat);
+    int nCount = vsscanf(pszText, pszFormat, args);
+    va_end(args);
+    return nCount;
+}
+
+// BSTR plus a narrow conversion buffer.
+struct Unk_BstrHolder
+{
+    BSTR m_bstr;
+    char* m_pszNarrow;
+    void FUN_14029b610();                                       // 0x14029b610
+    unsigned FUN_1402992b0();                                   // 0x1402992b0
+};
+
+struct Unk_BstrHolderRef
+{
+    Unk_BstrHolder* m_pHolder;
+    unsigned FUN_14029d4b0();                                   // 0x14029d4b0
+};
+
+// @0x14029b610
+void Unk_BstrHolder::FUN_14029b610()
+{
+    if (m_bstr)
+    {
+        SysFreeString(m_bstr);
+        m_bstr = NULL;
+    }
+    if (m_pszNarrow)
+    {
+        delete[] m_pszNarrow;
+        m_pszNarrow = NULL;
+    }
+}
+
+// @0x1402992b0
+unsigned Unk_BstrHolder::FUN_1402992b0()
+{
+    return m_bstr ? SysStringLen(m_bstr) : 0;
+}
+
+// @0x14029d4b0
+unsigned Unk_BstrHolderRef::FUN_14029d4b0()
+{
+    return m_pHolder ? m_pHolder->FUN_1402992b0() : 0;
+}
+
+// Reference-counted object (count at +0x10).
+struct Unk_BindHost
+{
+    void* m_unk00;
+    void* m_unk08;
+    volatile long m_nRefs;
+    long FUN_140298720();                                       // 0x140298720
+};
+
+struct Unk_BindHostPtr
+{
+    Unk_BindHost* m_pHost;
+    void FUN_140299e30();                                       // 0x140299e30
+};
+
+// @0x140298720
+long Unk_BindHost::FUN_140298720()
+{
+    InterlockedIncrement(&m_nRefs);
+    return m_nRefs;
+}
+
+// @0x140299e30
+void Unk_BindHostPtr::FUN_140299e30()
+{
+    if (m_pHost)
+        m_pHost->FUN_140298720();
+}
+
+MS2_REPLACE(0x14028B820, FUN_14028b820, 25, 0x5B243679);
+MS2_REPLACE(0x14028B840, FUN_14028b840, 60, 0x6C3E9287);
+MS2_REPLACE(0x14028B890, FUN_14028b890, 68, 0x51B88B44);
+MS2_REPLACE_METHOD(0x140298F40, Unk_IntOptionEntry, FUN_140298f40, 53, 0xC651AF56);
+MS2_REPLACE_METHOD(0x140298F80, Unk_StringOptionEntry, FUN_140298f80, 53, 0x8459A15E);
+MS2_REPLACE(0x140298FD0, FUN_140298fd0, 24, 0xE9DE9F2E);
+MS2_REPLACE_METHOD(0x1402992B0, Unk_BstrHolder, FUN_1402992b0, 57, 0x39A7E074);
+MS2_REPLACE_METHOD(0x14029B610, Unk_BstrHolder, FUN_14029b610, 100, 0x78F0708C);
+MS2_REPLACE_METHOD(0x14029D4B0, Unk_BstrHolderRef, FUN_14029d4b0, 56, 0xD03F266E);
+MS2_REPLACE_METHOD(0x140298720, Unk_BindHost, FUN_140298720, 26, 0xC507010C);
+MS2_REPLACE_METHOD(0x140299E30, Unk_BindHostPtr, FUN_140299e30, 38, 0x01C0B517);
