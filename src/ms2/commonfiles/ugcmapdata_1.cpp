@@ -19,11 +19,22 @@
 // MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@IV?$allocator@I@std@@@std@@@std@@QEAAAEAPEAIXZ 0x1408abaa0 ; prop
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@IV?$allocator@I@std@@@std@@@std@@QEBAAEBQEAIXZ 0x1408abb40 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??B?$SmartPointer@VEntity@egf@@@efd@@QEBAPEAVEntity@egf@@XZ 0x1408a9090
+// MS2-PIN: ??4?$vector@HV?$allocator@H@std@@@std@@QEAAAEAV01@AEBV01@@Z 0x1408a8ac0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\ugcmapdata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ugcmapdata.h"
 #include "fielddata.h"
 #include "hook/ms2hook.h"
+#include <efd/ServiceManager.h>
+#include <egf/Entity.h>
+#include <egf/FlatModel.h>
+#include "ms2/commonfiles/commonstruct_wa.h"
+#include "ms2/placeholder/cube.h"
+#include "ms2/placeholder/citemdata.h"
+#include "ms2/placeholder/clientconstants.h"
+#include "ms2/placeholder/ms2color.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
 
 static CString s_sortNames[]={"None","Buy","Like","PriceLow","PriceHigh","Create","EnumEnd"};
 // Earlier objects own these shared bodies.
@@ -40,6 +51,32 @@ bool FUN_14053f8c0(unsigned);
 bool FUN_14053f940(unsigned);
 Unk_Int3* FUN_1408850a0(Unk_Int3*);
 float FUN_14059d930(float);
+class PCBase;
+extern char DAT_143b059e8;
+class Unk_UgcPhysSvc {
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    void FUN_1410bb610(int mode,PCBase* player,float distance,std::vector<efd::SmartPointer<egf::Entity> >& hits);
+};
+class Unk_UgcPhysSvcRef {
+public:
+    Unk_UgcPhysSvcRef(Unk_UgcPhysSvc* svc) { m_p=svc; if(m_p) m_p->vfunc_1(); }
+    ~Unk_UgcPhysSvcRef();
+    Unk_UgcPhysSvc* FUN_1401cd1a0();
+    Unk_UgcPhysSvc* m_p;
+};
+void FUN_1401cd150(Unk_UgcPhysSvcRef*);
+Unk_UgcPhysSvcRef::~Unk_UgcPhysSvcRef() { FUN_1401cd150(this); }
+Unk_UgcPhysSvc* FUN_1401cd040(char*);
+class Unk_UgcWorld { public: PCBase* FUN_141bd0cc0(); };
+Unk_UgcWorld* FUN_1403ed2d0();
+int FUN_1408b4f20(Cube*);
+MS2Ptr<CItemData> FUN_14053f870(int);
+void FUN_140194470(void*,const void*);
+void FUN_1402237c0(Unk_IntArr*);
+__int64 FUN_141656a80(PCBase*);
 
 // @0x1408a0190
 unsigned FUN_1408a0190(int type) {
@@ -82,7 +119,30 @@ Unk_Int3 FUN_1408a0400(int packed) {
     return p;
 }
 MS2_REPLACE(0x1408a0400, FUN_1408a0400, 111, 0x0E4D8B28);
-// FUN_1408a0480 requires Cube's shared layout and CItemData's opaque +0x1b8..+0x200 fields.
+// @0x1408a0480
+void FUN_1408a0480(Cube* cube) {
+    if(FUN_1408b4f20(cube)==0) return;
+    MS2Ptr<CItemData> item=FUN_14053f870(FUN_1408b4f20(cube));
+    if(item.get()!=0) {
+        cube->field58=item->install.placeable;
+        cube->field64=item->install.unchangeable;
+        cube->field5c=item->install.stackable;
+        cube->field60=item->install.attachable;
+        cube->field74=item->install.cannotStackAttach;
+        cube->field68=item->install.wall;
+        cube->field6c=item->install.generatePhysX;
+        cube->field70=item->install.cubeProp;
+        FUN_140194470(&cube->offset,&item->install.physXdimension);
+        cube->textA0=item->install.mapAttribute;
+        cube->fieldAc=item->install.space;
+        cube->fieldB0=item->install.animatable;
+        cube->fieldB4=item->install.objCode;
+        cube->fieldB8=item->install.staticAngle;
+        if(item->install.propCollisionGroup==0) cube->fieldA8=9;
+        else cube->fieldA8=item->install.propCollisionGroup;
+    }
+}
+MS2_REPLACE(0x1408a0480, FUN_1408a0480, 534, 0xB42E0BC4);
 // @0x1408a06a0
 bool FUN_1408a06a0(int mapID,int group) {
     Unk_UGCMapPtr p=FUN_1408ad3f0(mapID);
@@ -109,9 +169,13 @@ MS2_REPLACE(0x1408a07f0, FUN_1408a07f0, 139, 0x6AAD10DC);
 int FUN_1408a0890(int mapID,int group,int* result) {
     Unk_UGCMapPtr p=FUN_1408ad3f0(mapID);
     if(p==0) return 0;
-    if(p==0 || p->groups.find(group)==p->groups.end()) return 0;
-    *result=p->groups[group].sellType;
-    return 1;
+    if(!(p==0)) {
+        if(p->groups.find(group)!=p->groups.end()) {
+            *result=p->groups[group].sellType;
+            return 1;
+        }
+    }
+    return 0;
 }
 MS2_REPLACE(0x1408a0890, FUN_1408a0890, 303, 0x384A4FFD);
 // MS2-FUNCTIONAL: reviewed branches and side effects; compiler temporaries differ.
@@ -192,7 +256,10 @@ void FUN_1408a10e0(Unk_CubeOwners& owners,int mapID,int blockID,const CStringW& 
     Unk_CubeOwnerPtr p=FUN_1408a0fa0(owners,mapID,blockID);
     if(p==0) {
         p=new CubeOwner(mapID,blockID,ownerID,name);
-        if(owners.find(mapID)==owners.end()) owners[mapID]=Unk_CubeOwnerMap();
+        if(owners.find(mapID)==owners.end()) {
+            Unk_CubeOwnerMap empty;
+            owners[mapID]=empty;
+        }
         Unk_CubeOwnerMap& blocks=owners[mapID];
         if(blocks.find(blockID)==blocks.end()) blocks[blockID]=p;
     } else {
@@ -205,7 +272,7 @@ MS2_REPLACE(0x1408a1360, FUN_1408a1360, 100, 0x09C21056);
 Unk_Int3 FUN_1408a1430(NiPoint3);
 // MS2-FUNCTIONAL: reviewed branches and side effects; compiler temporaries differ.
 // @0x1408a13d0
-int FUN_1408a13d0(NiPoint3 p) { Unk_Int3 cube=FUN_1408a1430(p); return FUN_1408a03c0(cube); }
+int FUN_1408a13d0(NiPoint3 p) { Unk_Int3 cube; cube=FUN_1408a1430(p); return FUN_1408a03c0(cube); }
 MS2_REPLACE(0x1408a13d0, FUN_1408a13d0, 81, 0x560BD7D8);
 // @0x1408a1430
 Unk_Int3 FUN_1408a1430(NiPoint3 p) {
@@ -232,8 +299,62 @@ NiPoint3 FUN_1408a15b0(const Unk_Int3& p,NiPoint3& out) {
     return out;
 }
 MS2_REPLACE(0x1408a15b0, FUN_1408a15b0, 124, 0x4D11513D);
-// FUN_1408a1640 depends on Cube's entity and property fields (owned by ugcmapoptions).
-// FUN_1408a18d0 needs the complete scene-query service interface.
+// @0x1408a1640
+void FUN_1408a1640(Cube* cube) {
+    int unusedA=0;
+    int objCode=0;
+    bool wall=false;
+    bool unchangeable=false;
+    bool field74=false;
+    egf::PropertyResult result=(egf::PropertyResult)0;
+    egf::Entity* entity=cube->entity;
+    result=entity->GetPropertyValue(0xa4c827fd,unusedA);
+    result=entity->GetPropertyValue(0xc30cd7b2,objCode);
+    result=entity->GetPropertyValue(0xd06a740b,wall);
+    result=entity->GetPropertyValue(0xde9ecdb6,unchangeable);
+    result=entity->GetPropertyValue(0xe599ffe5,field74);
+    cube->field64=unchangeable;
+    cube->field74=field74;
+    Unk_IntArr types;
+    CString typeText("");
+    efd::utf8string typeNames;
+    FUN_1402237c0(&types);
+    entity->GetPropertyValue(0x6b780e9d,typeNames);
+    typeText=typeNames.c_str();
+    FUN_140177de0(typeText,&types,",");
+    for(size_t i=0;i<types.FUN_140186260();i++) {
+        int type=*types.FUN_1401844d0(i);
+        cube->field5c|=FUN_1408a0190(type);
+    }
+    cube->fieldB4=objCode;
+    cube->field68=wall;
+    cube->field70=entity->GetModel()->ContainsModel(0xd8dea70d);
+    bool animatable=false;
+    entity->GetPropertyValue(0x38141815,animatable);
+    cube->field6c=animatable;
+}
+MS2_REPLACE(0x1408a1640, FUN_1408a1640, 640, 0x80A95CB0);
+// MS2-FUNCTIONAL: float argument reaches the call via movss xmm0; movaps xmm3,xmm0 in the exe (no source form found).
+// @0x1408a18d0
+int FUN_1408a18d0(__int64 charID) {
+    Unk_UgcPhysSvcRef service(FUN_1401cd040(&DAT_143b059e8));
+    int style=0;
+    PCBase* player=FUN_1403ed2d0()->FUN_141bd0cc0();
+    if(player!=0) {
+        if(charID==FUN_141656a80(player)) {
+            std::vector<efd::SmartPointer<egf::Entity> > hits;
+            MS2Color color(3);
+            float packed=(float)(unsigned)(FUN_1401d3200()->ConstructUgcDistance.Read()*color);
+            service.FUN_1401cd1a0()->FUN_1410bb610(3,player,packed,hits);
+            if(hits.size()>0) {
+                efd::SmartPointer<egf::Entity> first=hits[0];
+                first->GetPropertyValue(0x85ef19e7,style);
+            }
+        }
+    }
+    return style;
+}
+MS2_REPLACE(0x1408a18d0, FUN_1408a18d0, 364, 0xAE4C35ED);
 // @0x1408a85a0
 Unk_Int3* FUN_1408a85a0(Unk_Int3* p,int x,int y,int z) { p->x=x; p->y=y; p->z=z; return p; }
 

@@ -31,7 +31,8 @@ public:
     Unk_PayloadPtr<ObjectWeaponInfo> weapon;
     NiPoint3 offset;
     CString textA0;
-    int fieldA8,fieldAc,fieldB0,fieldB4,fieldB8;
+    int fieldA8,fieldAc,fieldB0,fieldB4;
+    float fieldB8;   // static angle (copied from ItemInstallData::staticAngle by 0x1408a0480)
     NiPoint3 pointBc;
     int fieldC8,fieldCc;
     bool fieldD0;
