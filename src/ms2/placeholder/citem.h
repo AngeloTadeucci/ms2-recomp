@@ -39,6 +39,8 @@ public:
   void FUN_140526c70(int);
   int FUN_140526bd0();
   int FUN_1405276c0();
+  Unk_ItemEquipData* FUN_1405277b0();   // 0x1405277b0
+  int FUN_140527760();                  // 0x140527760
   Unk_ItemEquipData* FUN_140527840();   // 0x140527840 the item's data record (equip flags; uiequipiconcontainer.cpp)
   // Inventory ordering accessors, a1 (inventory.cpp).
   int FUN_140525c60();
@@ -163,7 +165,7 @@ public:
   bool FUN_140525c00();
   bool FUN_140525f60();
   __int64 FUN_140525fc0();
-  bool FUN_140526160();
+  int FUN_140526160();
   void FUN_140526470(unsigned);
   void FUN_140526640(unsigned);
   bool FUN_140526850();
@@ -178,7 +180,7 @@ public:
   int FUN_140527580();
   void FUN_1405275f0();
   __int64 FUN_140527640();
-  bool FUN_1405279f0();
+  int FUN_1405279f0();
   unsigned FUN_140527a20();
   unsigned FUN_1405281e0();
   unsigned short FUN_1405282d0();

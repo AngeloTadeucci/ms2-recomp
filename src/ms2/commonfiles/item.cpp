@@ -1,6 +1,9 @@
 // MS2-UNIT: commonfiles\item.cpp
 // MS2-RANGE: 0x140523790-0x140530640 .text$mn
 // MS2-RANGE: 0x1400b9290-0x1400b9410 .text$di
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??8?$MS2Ptr@VCItemUgc@@@@QEBA_NPEAVCItemUgc@@@Z 0x14052cc40 ; unique
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\item.cpp"
 // item.cpp - CItem (commonfiles\item.cpp; the wassert path is e:\build\kr\22_04\ms2code\commonfiles\item.cpp).
 // Partial: the plain scalar field accessors. The constructor, serializer and smart-pointer slot helpers are not
@@ -11,6 +14,14 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/commonfiles/item.h"
 #include "ms2/ms2recover.h"
+#include "hook/ms2hook.h"
+
+class Unk_ItemEquipData : public CItemData {};
+class Unk_ItemEnchantData : public CItemStatus {};
+class Unk_ItemOwnerRef : public CItemTransfer {};
+extern __int64 FUN_140869440();
+extern unsigned FUN_14054b400(ItemModelData*);
+extern int FUN_140632030();
 #define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
 
 // @0x14052a020
@@ -18,391 +29,457 @@ int CItem::FUN_14052a020()
 {
     return m_20;
 }
+MS2_REPLACE_METHOD(0x14052A020, CItem, FUN_14052a020, 14, 0xA25B27BF);
 
 // @0x14052a040
 void CItem::FUN_14052a040(int v)
 {
     m_20 = v;
 }
+MS2_REPLACE_METHOD(0x14052A040, CItem, FUN_14052a040, 22, 0xF6E32213);
 
 // @0x14052a150
 int CItem::FUN_14052a150()
 {
     return m_24;
 }
+MS2_REPLACE_METHOD(0x14052A150, CItem, FUN_14052a150, 14, 0xBA6447E3);
 
 // @0x14052a130
 void CItem::FUN_14052a130(int v)
 {
     m_24 = v;
 }
+MS2_REPLACE_METHOD(0x14052A130, CItem, FUN_14052a130, 22, 0x5ED7A56F);
 
 // @0x1405268f0
 int CItem::FUN_1405268f0()
 {
     return m_2c;
 }
+MS2_REPLACE_METHOD(0x1405268F0, CItem, FUN_1405268f0, 14, 0x6A78E4AB);
 
 // @0x1405268d0
 void CItem::FUN_1405268d0(int v)
 {
     m_2c = v;
 }
+MS2_REPLACE_METHOD(0x1405268D0, CItem, FUN_1405268d0, 22, 0x0EEC4237);
 
 // @0x140526930
 unsigned char CItem::FUN_140526930()
 {
     return m_30;
 }
+MS2_REPLACE_METHOD(0x140526930, CItem, FUN_140526930, 15, 0x228C1F9D);
 
 // @0x140526910
 void CItem::FUN_140526910(unsigned char v)
 {
     m_30 = v;
 }
+MS2_REPLACE_METHOD(0x140526910, CItem, FUN_140526910, 23, 0x09675A9D);
 
 // @0x140526a10
 int CItem::FUN_140526a10()
 {
     return m_34;
 }
+MS2_REPLACE_METHOD(0x140526A10, CItem, FUN_140526a10, 14, 0x9A8B24F3);
 
 // @0x140526a30
 void CItem::FUN_140526a30(int v)
 {
     m_34 = v;
 }
+MS2_REPLACE_METHOD(0x140526A30, CItem, FUN_140526a30, 22, 0xFEAFFEDF);
 
 // @0x140526970
 int CItem::FUN_140526970()
 {
     return m_38;
 }
+MS2_REPLACE_METHOD(0x140526970, CItem, FUN_140526970, 14, 0xB2976B17);
 
 // @0x1405269b0
 int CItem::FUN_1405269b0()
 {
     return m_3c;
 }
+MS2_REPLACE_METHOD(0x1405269B0, CItem, FUN_1405269b0, 14, 0xCAA08B3B);
 
 // @0x140526990
 void CItem::FUN_140526990(int v)
 {
     m_3c = v;
 }
+MS2_REPLACE_METHOD(0x140526990, CItem, FUN_140526990, 22, 0x2EC56527);
 
 // @0x140526a50
 __int64 CItem::FUN_140526a50()
 {
     return m_40;
 }
+MS2_REPLACE_METHOD(0x140526A50, CItem, FUN_140526a50, 15, 0x8B0075C1);
 
 // @0x140526a70
 void CItem::FUN_140526a70(__int64 v)
 {
     m_40 = v;
 }
+MS2_REPLACE_METHOD(0x140526A70, CItem, FUN_140526a70, 25, 0x9BEF1163);
 
 // @0x140526a90
 __int64 CItem::FUN_140526a90()
 {
     return m_48;
 }
+MS2_REPLACE_METHOD(0x140526A90, CItem, FUN_140526a90, 15, 0x5AEB0F79);
 
 // @0x140526ab0
 void CItem::FUN_140526ab0(__int64 v)
 {
     m_48 = v;
 }
+MS2_REPLACE_METHOD(0x140526AB0, CItem, FUN_140526ab0, 25, 0x4C00882B);
 
 // @0x140526ad0
 __int64 CItem::FUN_140526ad0()
 {
     return m_50;
 }
+MS2_REPLACE_METHOD(0x140526AD0, CItem, FUN_140526ad0, 15, 0x6B2752D1);
 
 // @0x140526af0
 void CItem::FUN_140526af0(__int64 v)
 {
     m_50 = v;
 }
+MS2_REPLACE_METHOD(0x140526AF0, CItem, FUN_140526af0, 25, 0x7C15EE73);
 
 // @0x140526b10
 int CItem::FUN_140526b10()
 {
     return m_58;
 }
+MS2_REPLACE_METHOD(0x140526B10, CItem, FUN_140526b10, 14, 0x7245C177);
 
 // @0x140526b30
 void CItem::FUN_140526b30(int v)
 {
     m_58 = v;
 }
+MS2_REPLACE_METHOD(0x140526B30, CItem, FUN_140526b30, 22, 0x05E09DEB);
 
 // @0x140526b50
 int CItem::FUN_140526b50()
 {
     return m_5c;
 }
+MS2_REPLACE_METHOD(0x140526B50, CItem, FUN_140526b50, 14, 0x8A52079B);
 
 // @0x140526b70
 void CItem::FUN_140526b70(int v)
 {
     m_5c = v;
 }
+MS2_REPLACE_METHOD(0x140526B70, CItem, FUN_140526b70, 22, 0x6DD84747);
 
 // @0x140526b90
 int CItem::FUN_140526b90()
 {
     return m_60;
 }
+MS2_REPLACE_METHOD(0x140526B90, CItem, FUN_140526b90, 14, 0xA1BBC3FF);
 
 // @0x140526bd0
 int CItem::FUN_140526bd0()
 {
     return m_64;
 }
+MS2_REPLACE_METHOD(0x140526BD0, CItem, FUN_140526bd0, 14, 0xB9C4E423);
 
 // @0x140526bf0
 void CItem::FUN_140526bf0(int v)
 {
     m_64 = v;
 }
+MS2_REPLACE_METHOD(0x140526BF0, CItem, FUN_140526bf0, 22, 0x5E3B67AF);
 
 // @0x140526c30
 int CItem::FUN_140526c30()
 {
     return m_68;
 }
+MS2_REPLACE_METHOD(0x140526C30, CItem, FUN_140526c30, 14, 0xD1D12A47);
 
 // @0x140526c10
 void CItem::FUN_140526c10(int v)
 {
     m_68 = v;
 }
+MS2_REPLACE_METHOD(0x140526C10, CItem, FUN_140526c10, 22, 0x2659249B);
 
 // @0x140526c50
 int CItem::FUN_140526c50()
 {
     return m_6c;
 }
+MS2_REPLACE_METHOD(0x140526C50, CItem, FUN_140526c50, 14, 0x69D980EB);
 
 // @0x140526e40
 int CItem::FUN_140526e40()
 {
     return m_70;
 }
+MS2_REPLACE_METHOD(0x140526E40, CItem, FUN_140526e40, 14, 0x81E2A10F);
 
 // @0x140528910
 __int64 CItem::FUN_140528910()
 {
     return m_80;
 }
+MS2_REPLACE_METHOD(0x140528910, CItem, FUN_140528910, 18, 0x841B6891);
 
 // @0x1405288e0
 void CItem::FUN_1405288e0(__int64 v)
 {
     m_80 = v;
 }
+MS2_REPLACE_METHOD(0x1405288E0, CItem, FUN_1405288e0, 28, 0xF376627F);
 
 // @0x140528a90
 __int64 CItem::FUN_140528a90()
 {
     return m_88;
 }
+MS2_REPLACE_METHOD(0x140528A90, CItem, FUN_140528a90, 18, 0x4EDF9779);
 
 // @0x140528a60
 void CItem::FUN_140528a60(__int64 v)
 {
     m_88 = v;
 }
+MS2_REPLACE_METHOD(0x140528A60, CItem, FUN_140528a60, 28, 0x28AF0D97);
 
 // @0x140528ae0
 __int64 CItem::FUN_140528ae0()
 {
     return m_90;
 }
+MS2_REPLACE_METHOD(0x140528AE0, CItem, FUN_140528ae0, 18, 0xEE8FE4C1);
 
 // @0x140528ab0
 void CItem::FUN_140528ab0(__int64 v)
 {
     m_90 = v;
 }
+MS2_REPLACE_METHOD(0x140528AB0, CItem, FUN_140528ab0, 28, 0x5DEADEAF);
 
 // @0x140529260
 int CItem::FUN_140529260()
 {
     return m_98;
 }
+MS2_REPLACE_METHOD(0x140529260, CItem, FUN_140529260, 17, 0xA9AE535B);
 
 // @0x140527300
 int CItem::FUN_140527300()
 {
     return m_9c;
 }
+MS2_REPLACE_METHOD(0x140527300, CItem, FUN_140527300, 17, 0x444DCEE7);
 
 // @0x1405272e0
 void CItem::FUN_1405272e0(int v)
 {
     m_9c = v;
 }
+MS2_REPLACE_METHOD(0x1405272E0, CItem, FUN_1405272e0, 25, 0x79F379CB);
 
 // @0x140527340
 int CItem::FUN_140527340()
 {
     return m_a0;
 }
+MS2_REPLACE_METHOD(0x140527340, CItem, FUN_140527340, 17, 0xB518FD33);
 
 // @0x140527320
 void CItem::FUN_140527320(int v)
 {
     m_a0 = v;
 }
+MS2_REPLACE_METHOD(0x140527320, CItem, FUN_140527320, 25, 0x9EB3CF4F);
 
 // @0x140528ca0
 int CItem::FUN_140528ca0()
 {
     return m_a4;
 }
+MS2_REPLACE_METHOD(0x140528CA0, CItem, FUN_140528ca0, 17, 0x4FB552BF);
 
 // @0x140528c80
 void CItem::FUN_140528c80(int v)
 {
     m_a4 = v;
 }
+MS2_REPLACE_METHOD(0x140528C80, CItem, FUN_140528c80, 25, 0x041453C3);
 
 // @0x140528e00
 __int64 CItem::FUN_140528e00()
 {
     return m_a8;
 }
+MS2_REPLACE_METHOD(0x140528E00, CItem, FUN_140528e00, 18, 0x23C88FD9);
 
 // @0x140528dd0
 void CItem::FUN_140528dd0(__int64 v)
 {
     m_a8 = v;
 }
+MS2_REPLACE_METHOD(0x140528DD0, CItem, FUN_140528dd0, 28, 0x7D973C77);
 
 // @0x140529070
 int CItem::FUN_140529070()
 {
     return m_b0;
 }
+MS2_REPLACE_METHOD(0x140529070, CItem, FUN_140529070, 17, 0x1F8D7963);
 
 // @0x140529090
 int CItem::FUN_140529090()
 {
     return m_b4;
 }
+MS2_REPLACE_METHOD(0x140529090, CItem, FUN_140529090, 17, 0xBA29CEEF);
 
 // @0x140528b90
 __int64 CItem::FUN_140528b90()
 {
     return m_c0;
 }
+MS2_REPLACE_METHOD(0x140528B90, CItem, FUN_140528b90, 18, 0xADEC8FD1);
 
 // @0x140528b60
 void CItem::FUN_140528b60(__int64 v)
 {
     m_c0 = v;
 }
+MS2_REPLACE_METHOD(0x140528B60, CItem, FUN_140528b60, 28, 0xC9A2153F);
 
 // @0x140528bd0
 int CItem::FUN_140528bd0()
 {
     return m_c8;
 }
+MS2_REPLACE_METHOD(0x140528BD0, CItem, FUN_140528bd0, 17, 0x690E246B);
 
 // @0x140528bb0
 void CItem::FUN_140528bb0(int v)
 {
     m_c8 = v;
 }
+MS2_REPLACE_METHOD(0x140528BB0, CItem, FUN_140528bb0, 25, 0xA8D572C7);
 
 // @0x140528c20
 unsigned short CItem::FUN_140528c20()
 {
     return m_cc;
 }
+MS2_REPLACE_METHOD(0x140528C20, CItem, FUN_140528c20, 18, 0xB3C569C6);
 
 // @0x140528bf0
 void CItem::FUN_140528bf0(unsigned short v)
 {
     m_cc = v;
 }
+MS2_REPLACE_METHOD(0x140528BF0, CItem, FUN_140528bf0, 28, 0xF1E0B56E);
 
 // @0x140528c60
 int CItem::FUN_140528c60()
 {
     return m_d0;
 }
+MS2_REPLACE_METHOD(0x140528C60, CItem, FUN_140528c60, 17, 0x9E46CF83);
 
 // @0x140528c40
 void CItem::FUN_140528c40(int v)
 {
     m_d0 = v;
 }
+MS2_REPLACE_METHOD(0x140528C40, CItem, FUN_140528c40, 25, 0x09284B7F);
 
 // @0x140529620
 unsigned char CItem::FUN_140529620()
 {
     return m_d4;
 }
+MS2_REPLACE_METHOD(0x140529620, CItem, FUN_140529620, 18, 0x9D8408D9);
 
 // @0x1405292a0
 int CItem::FUN_1405292a0()
 {
     return m_d8;
 }
+MS2_REPLACE_METHOD(0x1405292A0, CItem, FUN_1405292a0, 17, 0xD382A09B);
 
 // @0x140529280
 void CItem::FUN_140529280(int v)
 {
     m_d8 = v;
 }
+MS2_REPLACE_METHOD(0x140529280, CItem, FUN_140529280, 25, 0x3E60F697);
 
 // @0x140529640
 int CItem::FUN_140529640()
 {
     return m_dc;
 }
+MS2_REPLACE_METHOD(0x140529640, CItem, FUN_140529640, 17, 0x6E1EF627);
 
 // @0x140529660
 void CItem::FUN_140529660(int v)
 {
     m_dc = v;
 }
+MS2_REPLACE_METHOD(0x140529660, CItem, FUN_140529660, 25, 0xA3C4A10B);
 
 // @0x1405269f0
 unsigned char CItem::FUN_1405269f0()
 {
     return m_198;
 }
+MS2_REPLACE_METHOD(0x1405269F0, CItem, FUN_1405269f0, 18, 0x6158C2DC);
 
 // @0x1405269d0
 void CItem::FUN_1405269d0(unsigned char v)
 {
     m_198 = v;
 }
+MS2_REPLACE_METHOD(0x1405269D0, CItem, FUN_1405269d0, 26, 0x4FD40BDC);
 
 // @0x1405291f0
 int CItem::FUN_1405291f0()
 {
     return m_19c;
 }
+MS2_REPLACE_METHOD(0x1405291F0, CItem, FUN_1405291f0, 17, 0x1679479E);
 
 // @0x140525640
 int CItem::FUN_140525640()
 {
     return m_spData->FUN_14053cc40();
 }
+MS2_REPLACE_METHOD(0x140525640, CItem, FUN_140525640, 44, 0x892B8595);
 
 // @0x140525870
 int CItem::FUN_140525870()
 {
     return m_spData->FUN_14053d150();
 }
+MS2_REPLACE_METHOD(0x140525870, CItem, FUN_140525870, 44, 0x1B3AC98C);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525ca0
 int CItem::FUN_140525ca0()
 {
@@ -410,7 +487,9 @@ int CItem::FUN_140525ca0()
         return 0;
     return m_spData->FUN_14053ce20();
 }
+MS2_REPLACE_METHOD(0x140525CA0, CItem, FUN_140525ca0, 74, 0x4FAA5D2F);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525db0
 int CItem::FUN_140525db0()
 {
@@ -418,7 +497,9 @@ int CItem::FUN_140525db0()
         return 0;
     return m_spData->FUN_14053d1f0();
 }
+MS2_REPLACE_METHOD(0x140525DB0, CItem, FUN_140525db0, 74, 0x1FA82CFB);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525e00
 int CItem::FUN_140525e00()
 {
@@ -426,7 +507,9 @@ int CItem::FUN_140525e00()
         return 0;
     return m_spData->FUN_14053d210();
 }
+MS2_REPLACE_METHOD(0x140525E00, CItem, FUN_140525e00, 74, 0xAE2063CB);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525e50
 int CItem::FUN_140525e50(int nGender, int nCategory)
 {
@@ -434,7 +517,9 @@ int CItem::FUN_140525e50(int nGender, int nCategory)
         return 0;
     return FUN_140525eb0(nGender, nCategory);
 }
+MS2_REPLACE_METHOD(0x140525E50, CItem, FUN_140525e50, 86, 0xCD65FAD7);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525eb0
 int CItem::FUN_140525eb0(int nGender, int nB)
 {
@@ -442,7 +527,9 @@ int CItem::FUN_140525eb0(int nGender, int nB)
         return 0;
     return m_spData->FUN_14053c9e0(nGender, nB);
 }
+MS2_REPLACE_METHOD(0x140525EB0, CItem, FUN_140525eb0, 87, 0x3CF14EF1);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140526010
 int CItem::FUN_140526010()
 {
@@ -450,6 +537,7 @@ int CItem::FUN_140526010()
         return 0;
     return m_spData->FUN_14053d900();
 }
+MS2_REPLACE_METHOD(0x140526010, CItem, FUN_140526010, 72, 0x6813C8A0);
 
 // @0x140526100
 int CItem::FUN_140526100()
@@ -458,6 +546,7 @@ int CItem::FUN_140526100()
         return 0;
     return m_spData->FUN_14053d8c0();
 }
+MS2_REPLACE_METHOD(0x140526100, CItem, FUN_140526100, 76, 0x532D60CC);
 
 // @0x1405262c0
 int CItem::FUN_1405262c0()
@@ -466,7 +555,9 @@ int CItem::FUN_1405262c0()
         return 0;
     return m_spData->FUN_14053dad0();
 }
+MS2_REPLACE_METHOD(0x1405262C0, CItem, FUN_1405262c0, 76, 0x8CD26A7C);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140526320
 bool CItem::FUN_140526320()
 {
@@ -474,24 +565,28 @@ bool CItem::FUN_140526320()
         return false;
     return m_spData->FUN_14053c6f0() == 0x60;
 }
+MS2_REPLACE_METHOD(0x140526320, CItem, FUN_140526320, 100, 0x95712DC4);
 
 // @0x140526790
 void CItem::FUN_140526790(int nJob)
 {
     m_spData->FUN_14053c8e0(nJob);
 }
+MS2_REPLACE_METHOD(0x140526790, CItem, FUN_140526790, 49, 0xCA42CD40);
 
 // @0x1405267d0
 void CItem::FUN_1405267d0(int nGender)
 {
     m_spData->FUN_14053c940(nGender);
 }
+MS2_REPLACE_METHOD(0x1405267D0, CItem, FUN_1405267d0, 49, 0xC0D977A0);
 
 // @0x140526810
 void CItem::FUN_140526810(unsigned short nLevel)
 {
     m_spData->FUN_14053c9a0(nLevel);
 }
+MS2_REPLACE_METHOD(0x140526810, CItem, FUN_140526810, 51, 0xAFB2B386);
 
 // MS2-PIN: ?IsNull@?$MS2Ptr@VCItemData@@@@QEBA_NXZ 0x1402ffd90
 
@@ -509,12 +604,14 @@ void Unk_MusicNoteBlock::FUN_14052d040()
     m_n10 = 0;
     m_str18.Empty();
 }
+MS2_REPLACE_METHOD(0x14052D040, Unk_MusicNoteBlock, FUN_14052d040, 69, 0x99410530);
 
 // @0x14052c0f0
 CItemTransfer::CItemBinding::CItemBinding() : m_n18(0)
 {
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14052c4e0
 CItemTransfer::CItemBinding::~CItemBinding()
 {
@@ -533,7 +630,9 @@ void CItemCoupleInfo::FUN_14052d000()
     m_str20 = L"";
     m_b28 = 0;
 }
+MS2_REPLACE_METHOD(0x14052D000, CItemCoupleInfo, FUN_14052d000, 61, 0xDD3E3735);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14052c510
 CItemCoupleInfo::~CItemCoupleInfo()
 {
@@ -617,17 +716,20 @@ void FUN_14053f990(unsigned);
 void CItem::vfunc_1()
 {
 }
+MS2_REPLACE_METHOD(0x140524240, CItem, vfunc_1, 6, 0xA9AF6E37);
 
 // @0x1405268c0
 void CItem::vfunc_2()
 {
 }
+MS2_REPLACE_METHOD(0x1405268C0, CItem, vfunc_2, 6, 0xA9AF6E37);
 
 // @0x140526d80
 void CItem::vfunc_3(int)
 {
     MS2_ASSERT_AT(0x43d, 0);
 }
+MS2_REPLACE_METHOD(0x140526D80, CItem, vfunc_3, 52, 0x532D3E75);
 
 // @0x140526dc0
 int CItem::vfunc_4()
@@ -637,18 +739,21 @@ int CItem::vfunc_4()
         return nCount > 0 ? nCount - 1 : 0;
     return nCount;
 }
+MS2_REPLACE_METHOD(0x140526DC0, CItem, vfunc_4, 81, 0x28A974E4);
 
 // @0x140525590
 void CItem::FUN_140525590(__int64 n)
 {
     m_spProxy->vfunc_5(n);
 }
+MS2_REPLACE_METHOD(0x140525590, CItem, FUN_140525590, 64, 0xECB9E513);
 
 // @0x1405255e0
 void CItem::FUN_1405255e0(CInPacket& pkt)
 {
     m_spProxy->vfunc_6(reinterpret_cast<CInputStream*>(reinterpret_cast<char*>(&pkt) + 8));
 }
+MS2_REPLACE_METHOD(0x1405255E0, CItem, FUN_1405255e0, 81, 0x6811AC4A);
 
 // @0x140525730
 bool CItem::FUN_140525730()
@@ -660,6 +765,7 @@ bool CItem::FUN_140525730()
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x140525730, CItem, FUN_140525730, 81, 0x2CA15262);
 
 // @0x140525790
 bool CItem::FUN_140525790()
@@ -671,6 +777,7 @@ bool CItem::FUN_140525790()
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x140525790, CItem, FUN_140525790, 81, 0x1FD1AC30);
 
 // @0x1405257f0
 int CItem::FUN_1405257f0()
@@ -683,31 +790,37 @@ int CItem::FUN_1405257f0()
         return 1;
     return 0;
 }
+MS2_REPLACE_METHOD(0x1405257F0, CItem, FUN_1405257f0, 115, 0xC01347F9);
 
 // @0x1405258b0
 int CItem::FUN_1405258b0()
 {
     return m_spData->FUN_14053cf90();
 }
+MS2_REPLACE_METHOD(0x1405258B0, CItem, FUN_1405258b0, 44, 0x1E0F1D2F);
 
 // @0x1405258f0
 int CItem::FUN_1405258f0()
 {
     return FUN_14053f8c0(FUN_1405276c0());
 }
+MS2_REPLACE_METHOD(0x1405258F0, CItem, FUN_1405258f0, 34, 0xB579842C);
 
 // @0x140525920
 int CItem::FUN_140525920()
 {
     return FUN_14053f940(FUN_1405276c0());
 }
+MS2_REPLACE_METHOD(0x140525920, CItem, FUN_140525920, 34, 0xA303E991);
 
 // @0x140525950
 void CItem::FUN_140525950()
 {
     FUN_14053f990(FUN_1405276c0());
 }
+MS2_REPLACE_METHOD(0x140525950, CItem, FUN_140525950, 31, 0x537B6C6C);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1405259e0
 int CItem::FUN_1405259e0()
 {
@@ -715,7 +828,9 @@ int CItem::FUN_1405259e0()
         return 0;
     return m_spData->FUN_14053ce80();
 }
+MS2_REPLACE_METHOD(0x1405259E0, CItem, FUN_1405259e0, 74, 0xC931371A);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525a30
 int CItem::FUN_140525a30()
 {
@@ -723,6 +838,7 @@ int CItem::FUN_140525a30()
         return 0;
     return m_spData->FUN_14053cc00();
 }
+MS2_REPLACE_METHOD(0x140525A30, CItem, FUN_140525a30, 74, 0xA87C95CD);
 
 // @0x140529210
 void CItem::FUN_140529210(unsigned nId, __int64 nCount)
@@ -733,6 +849,7 @@ void CItem::FUN_140529210(unsigned nId, __int64 nCount)
         m_98 = nId;
     }
 }
+MS2_REPLACE_METHOD(0x140529210, CItem, FUN_140529210, 60, 0xC03BAF7D);
 
 // @0x1405292c0
 void CItem::FUN_1405292c0(const CItemCoupleInfo& src)
@@ -740,6 +857,7 @@ void CItem::FUN_1405292c0(const CItemCoupleInfo& src)
     MS2_ASSERT_MSG_AT(0xb40, L"m_pCoupleInfo != NULL", m_spCouple.get() != 0);
     *m_spCouple = src;
 }
+MS2_REPLACE_METHOD(0x1405292C0, CItem, FUN_1405292c0, 103, 0x10173ED6);
 
 // @0x140529330
 void CItem::FUN_140529330(const CStringW& str)
@@ -747,6 +865,7 @@ void CItem::FUN_140529330(const CStringW& str)
     MS2_ASSERT_MSG_AT(0xb46, L"m_pCoupleInfo != NULL", m_spCouple.get() != 0);
     m_spCouple->m_str20 = str;
 }
+MS2_REPLACE_METHOD(0x140529330, CItem, FUN_140529330, 108, 0x6C0038BA);
 
 // @0x1405293b0
 __int64 CItem::FUN_1405293b0()
@@ -754,6 +873,7 @@ __int64 CItem::FUN_1405293b0()
     MS2_ASSERT_MSG_AT(0xb34, L"m_pCoupleInfo != NULL", m_spCouple.get() != 0);
     return m_spCouple->m_n18;
 }
+MS2_REPLACE_METHOD(0x1405293B0, CItem, FUN_1405293b0, 89, 0x8AEEB83D);
 
 // @0x1405294a0
 unsigned char CItem::FUN_1405294a0()
@@ -761,60 +881,70 @@ unsigned char CItem::FUN_1405294a0()
     MS2_ASSERT_MSG_AT(0xb4c, L"m_pCoupleInfo != NULL", m_spCouple.get() != 0);
     return m_spCouple->m_b28;
 }
+MS2_REPLACE_METHOD(0x1405294A0, CItem, FUN_1405294a0, 89, 0xB5B90365);
 
 // @0x140529500
 void CItem::FUN_140529500(const CStringW& str)
 {
     m_strE0 = str;
 }
+MS2_REPLACE_METHOD(0x140529500, CItem, FUN_140529500, 44, 0x44BD2447);
 
 // @0x140529540
 CStringW* CItem::FUN_140529540()
 {
     return &m_strE0;
 }
+MS2_REPLACE_METHOD(0x140529540, CItem, FUN_140529540, 17, 0x8A8CEFA3);
 
 // @0x140529600
 void CItem::FUN_140529600()
 {
     m_d4 = 1;
 }
+MS2_REPLACE_METHOD(0x140529600, CItem, FUN_140529600, 18, 0xAAF63E0F);
 
 // @0x140529680
 bool CItem::FUN_140529680(int n)
 {
     return m_dc == n;
 }
+MS2_REPLACE_METHOD(0x140529680, CItem, FUN_140529680, 55, 0xA5806025);
 
 // @0x140529fd0
 void CItem::FUN_140529fd0(CString str)
 {
     m_strName = str;
 }
+MS2_REPLACE_METHOD(0x140529FD0, CItem, FUN_140529fd0, 63, 0xD01079EB);
 
 // @0x14052a210
 void CItem::FUN_14052a210(unsigned n)
 {
     m_28 = n;
 }
+MS2_REPLACE_METHOD(0x14052A210, CItem, FUN_14052a210, 22, 0x26F5625B);
 
 // @0x14052a230
 void CItem::FUN_14052a230(unsigned n)
 {
     m_28 = m_28 | n;
 }
+MS2_REPLACE_METHOD(0x14052A230, CItem, FUN_14052a230, 32, 0x19425900);
 
 // @0x14052a260
 void CItem::FUN_14052a260(unsigned n)
 {
     m_28 = m_28 & ~n;
 }
+MS2_REPLACE_METHOD(0x14052A260, CItem, FUN_14052a260, 36, 0x2B91A089);
 
 // @0x14052a290
 bool CItem::FUN_14052a290(unsigned n)
 {
     return (m_28 & n) > 0;
 }
+MS2_REPLACE_METHOD(0x14052A290, CItem, FUN_14052a290, 56, 0x7063F737);
 
 // @0x14052a2d0
 bool CItem::FUN_14052a2d0()
@@ -823,6 +953,7 @@ bool CItem::FUN_14052a2d0()
         return false;
     return FUN_140525ca0() == 1;
 }
+MS2_REPLACE_METHOD(0x14052A2D0, CItem, FUN_14052a2d0, 78, 0xF3A5AB3E);
 
 // @0x14052a330
 bool CItem::FUN_14052a330()
@@ -831,6 +962,7 @@ bool CItem::FUN_14052a330()
         return false;
     return FUN_140525db0() == 1;
 }
+MS2_REPLACE_METHOD(0x14052A330, CItem, FUN_14052a330, 78, 0x28AA9D71);
 
 // @0x14052a390
 bool CItem::FUN_14052a390()
@@ -839,6 +971,7 @@ bool CItem::FUN_14052a390()
         return false;
     return FUN_140525e00() == 1;
 }
+MS2_REPLACE_METHOD(0x14052A390, CItem, FUN_14052a390, 78, 0xE7EBFA56);
 
 // @0x14052a480
 __int64 CItem::FUN_14052a480()
@@ -846,6 +979,7 @@ __int64 CItem::FUN_14052a480()
     MS2_ASSERT_MSG_AT(0xc28, L"m_pMoveStoreChar != NULL", m_spBinding.get() != 0);
     return m_spBinding->FUN_14052d1c0();
 }
+MS2_REPLACE_METHOD(0x14052A480, CItem, FUN_14052a480, 93, 0xC2E28FA1);
 
 // @0x14052b340
 int CItem::FUN_14052b340(unsigned n)
@@ -853,6 +987,7 @@ int CItem::FUN_14052b340(unsigned n)
     m_6c = n;
     return 1;
 }
+MS2_REPLACE_METHOD(0x14052B340, CItem, FUN_14052b340, 27, 0xE2CA3F90);
 
 // @0x14052b710
 bool CItem::FUN_14052b710(unsigned* pA, __int64* pB)
@@ -861,6 +996,7 @@ bool CItem::FUN_14052b710(unsigned* pA, __int64* pB)
     FUN_140528dd0(*pB);
     return true;
 }
+MS2_REPLACE_METHOD(0x14052B710, CItem, FUN_14052b710, 61, 0x8AB3CC15);
 
 // @0x14052b630
 unsigned char CItem::FUN_14052b630()
@@ -869,6 +1005,7 @@ unsigned char CItem::FUN_14052b630()
         return 1;
     return reinterpret_cast<CItemTransfer*>(FUN_140527930())->FUN_1406352b0();
 }
+MS2_REPLACE_METHOD(0x14052B630, CItem, FUN_14052b630, 51, 0xDD6A277F);
 
 // @0x14052cae0
 CItemCoupleInfo& CItemCoupleInfo::operator=(const CItemCoupleInfo& o)
@@ -885,3 +1022,292 @@ __int64 CItemTransfer::CItemBinding::FUN_14052d1c0()
 {
     return m_n18;
 }
+MS2_REPLACE_METHOD(0x14052D1C0, CItemTransfer::CItemBinding, FUN_14052d1c0, 15, 0xBBB219C9);
+
+// @0x140527840
+Unk_ItemEquipData* CItem::FUN_140527840()
+{
+    return static_cast<Unk_ItemEquipData*>(m_spData.get());
+}
+MS2_REPLACE_METHOD(0x140527840, CItem, FUN_140527840, 33, 0xFF365AEE);
+
+// @0x1405277b0
+Unk_ItemEquipData* CItem::FUN_1405277b0()
+{
+    return static_cast<Unk_ItemEquipData*>(m_spData.get());
+}
+MS2_REPLACE_METHOD(0x1405277B0, CItem, FUN_1405277b0, 33, 0x7099585E);
+
+// @0x140527870
+Unk_UserProxyItemData* CItem::FUN_140527870()
+{
+    return m_spProxy.get();
+}
+MS2_REPLACE_METHOD(0x140527870, CItem, FUN_140527870, 33, 0x82E03B80);
+
+// @0x1405278a0
+Unk_ItemEnchantData* CItem::FUN_1405278a0()
+{
+    return static_cast<Unk_ItemEnchantData*>(m_spStatus.get());
+}
+MS2_REPLACE_METHOD(0x1405278A0, CItem, FUN_1405278a0, 33, 0x1C66B116);
+
+// @0x1405278d0
+Unk_ItemUgcInfo* CItem::FUN_1405278d0()
+{
+    return reinterpret_cast<Unk_ItemUgcInfo*>(m_spUgc.get());
+}
+MS2_REPLACE_METHOD(0x1405278D0, CItem, FUN_1405278d0, 33, 0xF5A6EEE7);
+
+// @0x140527900
+CItemGem* CItem::FUN_140527900()
+{
+    return m_spGem.get();
+}
+MS2_REPLACE_METHOD(0x140527900, CItem, FUN_140527900, 33, 0xF400AA87);
+
+// @0x140527930
+Unk_ItemOwnerRef* CItem::FUN_140527930()
+{
+    return static_cast<Unk_ItemOwnerRef*>(m_spTransfer.get());
+}
+MS2_REPLACE_METHOD(0x140527930, CItem, FUN_140527930, 33, 0x70254757);
+
+// @0x140527960
+CItemCustomMusicScore* CItem::FUN_140527960()
+{
+    return m_spMusic.get();
+}
+MS2_REPLACE_METHOD(0x140527960, CItem, FUN_140527960, 33, 0xD0F5E797);
+
+// @0x140527990
+CItemCustomMusicScore* CItem::FUN_140527990()
+{
+    return m_spMusic.get();
+}
+MS2_REPLACE_METHOD(0x140527990, CItem, FUN_140527990, 33, 0xC78B125C);
+
+// @0x1405279c0
+CItemSocket* CItem::FUN_1405279c0()
+{
+    return m_spSocket.get();
+}
+MS2_REPLACE_METHOD(0x1405279C0, CItem, FUN_1405279c0, 33, 0x830CFC5C);
+
+// @0x1405279f0
+int CItem::FUN_1405279f0()
+{
+    if (FUN_140525680())
+        return 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1405279F0, CItem, FUN_1405279f0, 40, 0x27EECBC7);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140526160
+int CItem::FUN_140526160()
+{
+    if ((unsigned)m_dc > 0)
+        return 1;
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140526160, CItem, FUN_140526160, 29, 0x4E475867);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140526c70
+void CItem::FUN_140526c70(int nCount)
+{
+    unsigned n = nCount;
+    m_6c = n < FUN_1405281e0() ? n : FUN_1405281e0();
+}
+MS2_REPLACE_METHOD(0x140526C70, CItem, FUN_140526c70, 70, 0x1DBDC687);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140526cc0
+unsigned CItem::FUN_140526cc0(int nAdd)
+{
+    m_6c = m_6c + nAdd;
+    FUN_140526c70(m_6c);
+    return m_6c;
+}
+MS2_REPLACE_METHOD(0x140526CC0, CItem, FUN_140526cc0, 93, 0x92394BB5);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140526d30
+int CItem::FUN_140526d30()
+{
+    if (FUN_1405277b0()->FUN_14053cd10())
+        return 0x17;
+    if (FUN_140525640() == 0)
+        return 0;
+    return 0x18;
+}
+MS2_REPLACE_METHOD(0x140526D30, CItem, FUN_140526d30, 69, 0x30D36CF3);
+
+// @0x1405274e0
+unsigned CItem::FUN_1405274e0()
+{
+    if (m_spData == NULL)
+        return 0;
+    return m_spData->property.rePackingLimitCount;
+}
+MS2_REPLACE_METHOD(0x1405274E0, CItem, FUN_1405274e0, 71, 0x3C7D6924);
+
+// @0x140527530
+unsigned CItem::FUN_140527530()
+{
+    if (m_spData == NULL)
+        return 0;
+    return m_spData->property.rePackingItemConsumeCount;
+}
+MS2_REPLACE_METHOD(0x140527530, CItem, FUN_140527530, 71, 0xB0CECF7D);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140527580
+int CItem::FUN_140527580()
+{
+    unsigned n;
+    if (FUN_1405274e0() - FUN_140527440() < 0)
+        n = 0;
+    else
+        n = FUN_1405274e0() - FUN_140527440();
+    return n;
+}
+MS2_REPLACE_METHOD(0x140527580, CItem, FUN_140527580, 100, 0xDED28C8F);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140527640
+__int64 CItem::FUN_140527640()
+{
+    return FUN_140527670() * (unsigned __int64)m_6c;
+}
+MS2_REPLACE_METHOD(0x140527640, CItem, FUN_140527640, 36, 0x1268982F);
+
+// @0x140527670
+__int64 CItem::FUN_140527670()
+{
+    return m_spData->FUN_14053ea00(FUN_140526bd0());
+}
+MS2_REPLACE_METHOD(0x140527670, CItem, FUN_140527670, 59, 0xD7F60E55);
+
+// @0x1405276c0
+int CItem::FUN_1405276c0()
+{
+    if (m_spData != NULL)
+        return m_spData->FUN_14053c510();
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1405276C0, CItem, FUN_1405276c0, 69, 0x027BAB5E);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140527710
+unsigned CItem::FUN_140527710()
+{
+    if (m_spData.get() == 0)
+        return 0;
+    return m_spData->limit.levelLimit;
+}
+MS2_REPLACE_METHOD(0x140527710, CItem, FUN_140527710, 67, 0x198C6BCE);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140527760
+int CItem::FUN_140527760()
+{
+    if (m_spData.get() == 0)
+        return 0;
+    return m_spData->FUN_14053c600();
+}
+MS2_REPLACE_METHOD(0x140527760, CItem, FUN_140527760, 69, 0xAC97522B);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x1405277e0
+bool CItem::FUN_1405277e0(int n)
+{
+    if (m_spData.get() == 0)
+        return false;
+    return m_spData->FUN_14053c6b0(n);
+}
+MS2_REPLACE_METHOD(0x1405277E0, CItem, FUN_1405277e0, 77, 0x4F881743);
+
+// @0x140527a20
+unsigned CItem::FUN_140527a20()
+{
+    if (m_68 != 0 && m_spData->FUN_14053d510())
+        return m_68;
+    return FUN_14054b400(m_spData->FUN_14053eba0());
+}
+MS2_REPLACE_METHOD(0x140527A20, CItem, FUN_140527a20, 104, 0x946235F9);
+
+// @0x1405281e0
+unsigned CItem::FUN_1405281e0()
+{
+    if (m_spData == NULL)
+        return 0;
+    return m_spData->property.slotMax;
+}
+MS2_REPLACE_METHOD(0x1405281E0, CItem, FUN_1405281e0, 71, 0xD8B41AF4);
+
+// @0x1405282d0
+unsigned short CItem::FUN_1405282d0()
+{
+    return m_spData->limit.levelLimit;
+}
+MS2_REPLACE_METHOD(0x1405282D0, CItem, FUN_1405282d0, 40, 0x5F468EB9);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140528930
+bool CItem::FUN_140528930()
+{
+    __int64 nNow = FUN_140869440();
+    if (m_80 < 1 || nNow < m_80)
+        return false;
+    return true;
+}
+MS2_REPLACE_METHOD(0x140528930, CItem, FUN_140528930, 64, 0x2211389E);
+
+// @0x140528b00
+void CItem::FUN_140528b00(const CStringW& str)
+{
+    m_strB8 = str;
+}
+MS2_REPLACE_METHOD(0x140528B00, CItem, FUN_140528b00, 44, 0x874D4D35);
+
+// @0x140528b40
+CStringW* CItem::FUN_140528b40()
+{
+    return &m_strB8;
+}
+MS2_REPLACE_METHOD(0x140528B40, CItem, FUN_140528b40, 17, 0x2B7FF74B);
+
+// @0x140528da0
+bool CItem::FUN_140528da0()
+{
+    if (FUN_140528ca0() == 1)
+        return true;
+    return false;
+}
+MS2_REPLACE_METHOD(0x140528DA0, CItem, FUN_140528da0, 35, 0x83E8C624);
+
+// @0x140528e20
+bool CItem::FUN_140528e20()
+{
+    if (FUN_140528ca0() == 1)
+        return true;
+    if (FUN_140528ca0() == 0)
+    {
+        if (FUN_140869440() < FUN_140528e00())
+            return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140528E20, CItem, FUN_140528e20, 83, 0x1359AAF1);
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x140525f60
+bool CItem::FUN_140525f60()
+{
+    if (m_spUgc == NULL)
+        return FUN_140632030() != 0;
+    return false;
+}
+MS2_REPLACE_METHOD(0x140525F60, CItem, FUN_140525f60, 87, 0x14B28FAE);
