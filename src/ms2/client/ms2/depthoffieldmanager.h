@@ -12,6 +12,7 @@ public:
     void FUN_141177fa0();                   // fetch the render step and apply the saved enable flag
     void FUN_141178020(unsigned char on);   // enable / disable
     unsigned char FUN_1411780c0();          // m_50
+    void FUN_141178000(double dDelta);      // advance the focus fade (PostProcessingService::OnTick)
 
     void* m_10;                             // render step (slot 4)
     Timer m_18;

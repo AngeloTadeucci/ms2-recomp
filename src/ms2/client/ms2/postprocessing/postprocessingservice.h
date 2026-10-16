@@ -7,25 +7,169 @@
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/postprocesseffect.h"
 #include <NiTPointerList.h>
+#include <NiTList.h>
+#include <efd/ISystemService.h>
+#include <efd/StdContainers.h>
+#include <efd/Category.h>
+#include "ms2/placeholder/iworldservicecallback.h"
+#include "ms2/client/ms2/afterimageeffectparam.h"
 
 class Ni2DBuffer;
 class NiRenderClick;
 class NiTexturingProperty;
+class NiMaterial;
+class NiViewRenderClick;
+class NiDefaultClickRenderStep;
+class NiRenderTargetGroup;
+class NiTextureEffect;
+class NiRenderListProcessor;
+class NiNode;
+class PostProcessSetting;
+class CPlaneReflectionSetting;
+class MS2TextureDensityProcessor;
+class CDepthOfFieldManager;
+class NiRenderStep;
+class NiTexture;
+class NiAVObject;
+class NiPixelFormat;
+struct IDirect3DSurface9;
+typedef IDirect3DSurface9* LPDIRECT3DSURFACE9;
+namespace egf { class IBuiltinModel; class EntityChangeMessage; }
+namespace ecr { class SceneGraphAddedMessage; class SceneGraphRemovedMessage; }
 
-// The owner passed to the steps as PostProcessEffect::m_70 (the PostProcessingService); only the event queue is known.
-class Unk_PPOwner
+// ---- PostProcessingService (0x218, class id 0x06100005) ----
+// TSingleton at +0, ISystemService at +8, IWorldServiceCallback at +0x20. Owns the render clicks / targets the steps
+// draw with and the step map (step index -> effect). Passed to the steps as PostProcessEffect::m_70.
+class PostProcessingService;
+template <class T> class TSingleton;
+template <> class TSingleton<PostProcessingService>
 {
 public:
-    void FUN_1416a0fb0(int nEvent);     // queue an event (13 = fade-in finished)
-    NiRenderedTexture* FUN_1416a23f0(int nIndex);   // m_aspTextures[nIndex]
-
-    char m_pad_0[0x88];
-    int m_iFrame;                       // +0x88 (motion blur ping-pong frame)
-    char m_pad_8c[0x110 - 0x8c];
-    efd::SmartPointer<NiRenderedTexture> m_aspTextures[5];  // +0x110 (3/4: motion blur history)
-    char m_pad_138[0x198 - 0x138];
-    NiTPointerList<int> m_kEvents;      // +0x198
+    TSingleton();                                   // 0x1416ae4f0 (inline, in the cpp)
+    virtual ~TSingleton() { s_instance = 0; }       // 0x1416aedf0
+    static PostProcessingService* s_instance;       // 0x143ab3da0
 };
+
+class PostProcessingService : public TSingleton<PostProcessingService>, public efd::ISystemService,
+    public IWorldServiceCallback
+{
+    EE_DECLARE_CLASS1(PostProcessingService, 0x06100005, efd::ISystemService);
+    EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
+public:
+    PostProcessingService();                        // 0x1416a3020
+    virtual ~PostProcessingService();               // 0x1416a3380
+    virtual const char* GetDisplayName() const;     // 0x1416a35a0
+    virtual efd::SyncResult OnPreInit(efd::IDependencyRegistrar* pRegistrar);   // 0x1416a4800
+    virtual efd::AsyncResult OnInit();              // 0x1416a4860
+    virtual efd::AsyncResult OnTick();              // 0x1416a5f20
+    virtual efd::AsyncResult OnShutdown();          // 0x1416a6100
+
+    // IWorldServiceCallback
+    virtual void vfunc_0(int) {}                    // 0x1416b1d70
+    virtual void vfunc_1(int) {}                    // 0x1416b1d80
+    virtual void vfunc_2(int, CString) {}           // 0x1416b1d90
+    virtual void vfunc_3(int);                      // 0x1416aad30 world unloaded: drop the mirrored view
+    virtual void vfunc_4(int) {}                    // 0x1416b1dc0
+
+    bool FUN_1416a35c0(bool bEnable);               // toggle the extra MRT targets (1..6)
+    bool FUN_1416a36f0(bool bEnable);               // toggle the 16-bit float target format
+    bool FUN_1416a3760();
+    bool FUN_1416a3780();
+    bool FUN_1416a37a0(int nStep, bool bRelink);    // toggle a step's active flag; returns the new state
+    bool FUN_1416a3920(int nStep, bool bActive);    // set a step's active flag (toggles + relinks when it differs)
+    bool FUN_1416a3a00(int nStep);                  // is the step active
+    PostProcessEffect* FUN_1416a3a90(int nStep);
+    static egf::IBuiltinModel* FUN_1416a3b10();     // "PostProcessSetting" builtin model factory
+    void FUN_1416a3bb0();                           // create the off-screen target m_spTarget190
+    LPDIRECT3DSURFACE9 FUN_1416a3cd0(const NiPixelFormat* pkFormat, unsigned int uiWidth, unsigned int uiHeight);
+    PostProcessEffect* FUN_1416a3ec0();             // first active step
+    efd::SmartPointer<NiRenderTargetGroup> FUN_1416a3fb0();
+    static bool FUN_1416a4000(NiRenderClick* pkClick, void* pvData);                    // re-point the mirrored view at the main camera
+    static bool FUN_1416a40c0(NiRenderClick* pkClick, void* pvData);                    // disable user clip planes
+    void FUN_1416a4110(const ecr::SceneGraphAddedMessage* pMessage, efd::Category targetChannel);
+    void FUN_1416a4240(const ecr::SceneGraphRemovedMessage* pMessage, efd::Category targetChannel);
+    void FUN_1416a4350(const egf::EntityChangeMessage* pMessage, efd::Category targetChannel);   // 8196
+    void FUN_1416a43e0(const egf::EntityChangeMessage* pMessage, efd::Category targetChannel);   // 8253
+    void FUN_1416a44d0(const egf::EntityChangeMessage* pMessage, efd::Category targetChannel);   // 8254
+    void FUN_1416a4570(bool bEnable);               // texture-density debug view on/off
+    bool FUN_1416a4620();                           // is the texture-density view on
+    void FUN_1416a4660(int nMode);
+    int FUN_1416a46a0();
+    void FUN_1416a46d0();                           // toggle the outline click
+    bool FUN_1416a4790();                           // is the outline click active
+    void FUN_1416aa450(int nClick, bool bActive);
+    bool FUN_1416a66d0();                           // can the device do MRT
+    bool FUN_1416a69a0();                           // can the device do float targets
+    void FUN_1416a6d90(int nStep, efd::SmartPointer<PostProcessEffect> spStep);   // insert a step
+    void FUN_1416a7570();                           // build the pre-process render step
+    void FUN_1416a6fc0();                           // debug hot-key: Ctrl+S toggles the post-process debug view
+    void FUN_1416aade0(NiRenderTargetGroup* pkTarget);  // release the D3D references of the target's colour buffer
+    void FUN_1416aae50();                           // flush the queued click events
+    void FUN_1416aa240();                           // rebuild the shimmer target over m_aspTextures[7]
+    void FUN_1416aa330();                           // create the seven post-process materials
+    bool FUN_1416aa850(int nClick);                 // is click nClick active
+    bool FUN_1416aa8b0(NiRenderStep* pkStep);       // is the step one of the fade steps
+    void FUN_1416aac60(NiAVObject* pkScene);        // remove a scene from the mirrored view
+    CDepthOfFieldManager* FUN_1416aad00();          // m_spDoF
+    void FUN_1416aa6a0(int nClick, bool bActive);   // reference-counted SetActive of a pre-process click
+    void FUN_1416aa950();                           // attach the reflection texture effect to the reflective nodes
+    void FUN_1416ab960();                           // append the steps to the active render frame
+    static bool FUN_1416ac0b0(NiRenderClick* pkClick, void* pvData);   // save the background colour, clear to grey
+    static bool FUN_1416ac150(NiRenderClick* pkClick, void* pvData);   // save the background colour, clear to pvData
+    static bool FUN_1416ac1e0(NiRenderClick* pkClick, void* pvData);   // restore the background colour
+    static bool FUN_1416ac240(NiRenderClick* pkClick, void* pvData);   // flip the motion-blur frame target
+    static bool FUN_1416ac2e0(NiRenderClick* pkClick, void* pvData);   // remember the view-projection matrix
+    static void FUN_1416ac3b0(NiRenderTargetGroup* pkTarget);   // point the main scene clicks at a render target
+    static egf::IBuiltinModel* FUN_1416aa1a0();     // "PlaneReflectionSetting" builtin model factory
+    static bool FUN_1416abce0(bool bBeforeReset, void* pvData);   // device reset callback
+    bool FUN_1416abd20(bool bBeforeReset);
+    void FUN_1416a0fb0(int nEvent);                 // queue an event (13 = fade-in finished)
+    NiRenderedTexture* FUN_1416a23f0(int nIndex);   // m_aspTextures[nIndex]
+    void FUN_1416a7050();                           // create the MRT targets
+    void FUN_1416aaef0();                           // link the active effects into the post-process render step
+    bool FUN_1416ac060(PostProcessEffect* pkEffect);   // (re)create the effect's output over the shared textures
+    void FUN_1416abb30(NiTexture* pkTexture);       // copy the m_spTarget190 colour buffer into a texture
+    static bool FUN_1416abac0(NiRenderStep* pkStep, void* pvData);   // post-processing callback: copy into the step's texture
+
+    efd::SmartPointer<NiMaterial> m_aspMaterials[7];            // +0x30
+    efd::map<NiNode*, int> m_kMap68;                            // +0x68 (only constructed / destroyed)
+    efd::map<NiNode*, int> m_kMap78;                            // +0x78
+    int m_iFrame;                                               // +0x88 (motion blur ping-pong frame)
+    int m_aiRefCount[11];                                       // +0x8c
+    efd::SmartPointer<NiViewRenderClick> m_aspClicks[11];       // +0xb8 (3 = mirrored, 7 = shimmer, 9 = outline)
+    efd::SmartPointer<NiRenderedTexture> m_aspTextures[11];     // +0x110 (3/4: motion blur history)
+    efd::SmartPointer<NiDefaultClickRenderStep> m_spMirroredStep;   // +0x168
+    efd::SmartPointer<NiRenderTargetGroup> m_spTarget170;       // +0x170
+    efd::SmartPointer<NiRenderTargetGroup> m_spTarget178;       // +0x178
+    efd::SmartPointer<NiRenderTargetGroup> m_aspFrameTargets[2];    // +0x180 (indexed by m_iFrame)
+    efd::SmartPointer<NiRenderTargetGroup> m_spTarget190;       // +0x190
+    NiTList<int> m_kEvents;                                     // +0x198
+    efd::SmartPointer<PostProcessSetting> m_spSetting;          // +0x1b8
+    bool m_bMRT;                                                // +0x1c0
+    bool m_bHDR;                                                // +0x1c1
+    bool m_b1c2;                                                // +0x1c2 extra MRT targets
+    bool m_b1c3;                                                // +0x1c3 float target format
+    int m_nFormat;                                              // +0x1c4 (2, or 0xd with m_b1c3)
+    efd::map<int, efd::SmartPointer<PostProcessEffect> > m_kSteps;  // +0x1c8
+    Unk_AfterImageColor m_kBackground;                          // +0x1d8
+    efd::SmartPointer<CPlaneReflectionSetting> m_spReflection;  // +0x1e8
+    efd::SmartPointer<NiTextureEffect> m_spTextureEffect;       // +0x1f0
+    efd::SmartPointer<NiRenderListProcessor> m_spProcessor;     // +0x1f8
+    efd::SmartPointer<MS2TextureDensityProcessor> m_spDensity;  // +0x200
+    efd::SmartPointer<CDepthOfFieldManager> m_spDoF;            // +0x208
+    bool m_b210;                                                // +0x210 mirrored view active
+};
+MS2_CHECK_SIZE(PostProcessingService, 0x218);
+MS2_CHECK_OFFSET(PostProcessingService, m_aspMaterials, 0x30);
+MS2_CHECK_OFFSET(PostProcessingService, m_iFrame, 0x88);
+MS2_CHECK_OFFSET(PostProcessingService, m_aspClicks, 0xb8);
+MS2_CHECK_OFFSET(PostProcessingService, m_aspTextures, 0x110);
+MS2_CHECK_OFFSET(PostProcessingService, m_kEvents, 0x198);
+MS2_CHECK_OFFSET(PostProcessingService, m_bMRT, 0x1c0);
+MS2_CHECK_OFFSET(PostProcessingService, m_kSteps, 0x1c8);
+MS2_CHECK_OFFSET(PostProcessingService, m_kBackground, 0x1d8);
+MS2_CHECK_OFFSET(PostProcessingService, m_b210, 0x210);
+typedef PostProcessingService Unk_PPOwner;
 
 // The service's shared targets passed to vfunc_15 as `b`: +8 the scene colour texture, +0x10 the depth texture.
 struct Unk_PPTargets
