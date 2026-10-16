@@ -320,12 +320,8 @@ int CFamePickAlliance::Read(Unk_140165cf0* pElem)
 }
 
 // @0x140358ee0
-CFamePickMethod::CFamePickMethod()
+CFamePickMethod::CFamePickMethod() : m_nType(0), m_nRepeatType(2), m_nReloadOnAccept(0), m_nReloadOnComplete(0)
 {
-    m_nType = 0;
-    m_nRepeatType = 2;
-    m_nReloadOnAccept = 0;
-    m_nReloadOnComplete = 0;
 }
 
 // @0x140358f90
@@ -363,11 +359,8 @@ int CFamePickMethod::HasAlliance(Unk_FameAlliance nAlliance)
 }
 
 // @0x140359240
-CFameDef::CFameDef()
+CFameDef::CFameDef() : m_nAlliance(Unk_FameAlliance_None), m_nOfficerNpcKind(0), m_nIsExped(0)
 {
-    m_nAlliance = Unk_FameAlliance_None;
-    m_nOfficerNpcKind = 0;
-    m_nIsExped = 0;
 }
 
 // @0x1403592b0
@@ -388,9 +381,8 @@ int CFameDef::Read(Unk_140165cf0* pElem)
 }
 
 // @0x1403593d0
-CFameSeasonDef::CFameSeasonDef()
+CFameSeasonDef::CFameSeasonDef() : m_nRequireQuest(0)
 {
-    m_nRequireQuest = 0;
 }
 
 // @0x140359420
@@ -417,6 +409,8 @@ CFameTable::CFameTable() : m_mapLimit(17, 0.75f, 0.25f, 2.25f, 10), m_mapDef(17,
 // @0x1403596e0
 CFameTable::~CFameTable()
 {
+    for (unsigned __int64 i = 0; i < 10; i++)
+        m_aGrades[i].RemoveAll();
 }
 
 // @0x140359840
