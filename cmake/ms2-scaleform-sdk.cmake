@@ -25,6 +25,30 @@ if(NOT IS_DIRECTORY "${_ms2_sf_default}")
 endif()
 set(MS2_SCALEFORM_SDK "${_ms2_sf_default}" CACHE PATH "Scaleform GFx SDK root (dir with Include/ and Src/); empty = placeholders only")
 
+# GFx::Value::ObjectInterface of the exe (4.1.18) has no AS3 ByteArray virtuals: the AS3ValueObjectInterface vftable 0x14317eff8
+# has 40 slots (SetElement 13, PushBack 15, RemoveElements 17, GetWorldMatrix 21, GetCxform 26, ToString 35), 4.1.19 declares
+# IsByteArray/GetByteArraySize/ReadFromByteArray/WriteToByteArray as slots 18-21, so every Value inline from
+# IsDisplayObjectActive on called 4 slots too far (Value::GotoAndPlay(const char*): [+0x130] = CreateObjectValue instead of the
+# exe's [+0x110]). <dir>/GFx/GFx_Player.h = the SDK header without those 4 virtuals and Value's AS3 ByteArray inlines (same
+# include guard, searched before the SDK; tools/progress.py generates the same file). Rewritten only when the content changes.
+function(ms2_scaleform_418_player_h dir)
+    file(READ "${MS2_SCALEFORM_SDK}/Src/GFx/GFx_Player.h" h)
+    string(REGEX REPLACE "\n[ ]*GFX_VM_ABSTRACT\\([a-z]+ +(IsByteArray|GetByteArraySize|ReadFromByteArray|WriteToByteArray)\\([^\n]*" "" h "${h}")
+    string(REGEX REPLACE "\n#ifdef GFX_AS3_SUPPORT\r?\n[ ]*SF_INLINE bool +IsByteArray\\(\\)[^#]*#endif[^\n]*" "" h "${h}")
+    if(h MATCHES "ByteArray\\(")
+        message(FATAL_ERROR "ms2_scaleform_418_player_h: GFx_Player.h ByteArray declarations not removed")
+    endif()
+    set(out "${dir}/GFx/GFx_Player.h")
+    if(EXISTS "${out}")
+        file(READ "${out}" old)
+    else()
+        set(old "")
+    endif()
+    if(NOT old STREQUAL h)
+        file(WRITE "${out}" "${h}")
+    endif()
+endfunction()
+
 # clang-cl: src/ms2/sdkshim is searched before the SDK (Kernel/SF_SIMD.h shim, see there). cl 19.16 uses the SDK as is.
 function(ms2_scaleform_flags target)
     if(NOT MS2_SCALEFORM_SDK OR NOT IS_DIRECTORY "${MS2_SCALEFORM_SDK}")
@@ -35,6 +59,8 @@ function(ms2_scaleform_flags target)
         # clang-cl builds as C++17: the SDK uses `register` locals (Render_Containers.h) and similar C++03 idioms.
         target_compile_options(${target} PRIVATE -Wno-register -Wno-deprecated-declarations)
     endif()
+    ms2_scaleform_418_player_h("${CMAKE_BINARY_DIR}/ms2-sf418")
+    target_include_directories(${target} PRIVATE "${CMAKE_BINARY_DIR}/ms2-sf418")
     foreach(d ${MS2_SCALEFORM_INCLUDE_DIRS})
         target_include_directories(${target} PRIVATE "${MS2_SCALEFORM_SDK}/${d}")
     endforeach()
