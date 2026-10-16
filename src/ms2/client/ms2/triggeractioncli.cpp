@@ -113,8 +113,10 @@ void FUN_1401cd100(void* pId, int n);
 
 // ---- dynamic initializers ----
 // @0x1400d66e0
+#ifndef MS2_HOOK_DLL   // registers into the exe's ClassObject registrar at DllMain time, before the exe's CRT/locks exist (startup hang)
 static char s_dat_143ac4e79;
 static int s_dat_143ac4e79_init = (FUN_140316aa0(&s_dat_143ac4e79, CStringW(L"TriggerConditionCli"), FUN_140de5570), 0);
+#endif
 // @0x1400d6730
 static CStringA s_strSkill("skill");
 // @0x1400d6760
