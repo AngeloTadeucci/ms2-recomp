@@ -930,8 +930,8 @@ void CConstructionGuideObject::vfunc_67(void* a, void* b)
     {
         if (FUN_140af0210(FUN_1409478c0()) != 0)
         {
-            *(efd::Point3*)b = efd::Point3(-1.0f, 0.0f, 0.0f);
-            *(efd::Point3*)a = efd::Point3(0.0f, 1.0f, 0.0f);
+            *(NiPoint3*)b = NiPoint3(-1.0f, 0.0f, 0.0f);
+            *(NiPoint3*)a = NiPoint3(0.0f, 1.0f, 0.0f);
         }
     }
 }
