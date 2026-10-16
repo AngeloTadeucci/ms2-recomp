@@ -34,15 +34,28 @@ public:
     int m_unk_0c;
     NiPointer<NiAVObject> m_spObject;   // +0x10 the node the effect is attached to (effectservice: skip position)
     NiTransform* m_pXform;          // +0x18 world transform when there is no node (caller owned)
-    void* m_unk_20[2];
+    void* m_unk_20;
+    void* m_unk_28;
     bool m_b30;                     // +0x30 effectservice: Unk_SkipCheck::m_n14
     bool m_b31;                     // +0x31
-    char m_unk_32[2];
+    bool m_b32;
+    bool m_b33;
     bool m_b34;                     // +0x34 copied to CEffect::m_b2f
-    char m_unk_35[0x17];
+    bool m_b35;
+    bool m_b36;
+    bool m_b37;
+    int m_unk_38;
+    int m_unk_3c;
+    int m_unk_40;
+    int m_unk_44;
+    int m_unk_48;
     unsigned int m_nRandomIndex;    // +0x4c CRandomEffect: forced child index (mod count); 0 = weighted random
-    char m_unk_50[0x20];
+    void* m_unk_50;
+    void* m_unk_58;
+    void* m_unk_60;
+    void* m_unk_68;
 
+    void FUN_140a53190(int nObjectId);  // 0x140a53190 set the owner object id
     class GameObject* FUN_140a533b0();  // 0x140a533b0 return the GameObject* at +0x58 (the effect's owner actor)
     // ?\unit_140a52ef0.cpp getters (owner = the GameObject at +0x58; 2 = "any" for gender/job).
     int FUN_140a53010();            // 0x140a53010 owner gender
