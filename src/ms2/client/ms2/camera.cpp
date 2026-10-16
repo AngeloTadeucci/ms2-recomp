@@ -42,6 +42,16 @@
 // MS2-PIN: ??9?$SmartPointer@VNiAVObject@@@efd@@QEBA_NPEAVNiAVObject@@@Z 0x140af72f0
 // MS2-PIN: ?GetAnimType@NiTimeController@@QEBA?AW4AnimType@1@XZ 0x140af7db0
 // MS2-PIN: ?GetEndKeyTime@NiTimeController@@QEBAMXZ 0x140af7f50
+// MS2-PIN: ??$?0VEntityID@egf@@UUnk_CameraSetting@@$0A@@?$pair@VEntityID@egf@@UUnk_CameraSetting@@@std@@QEAA@AEBVEntityID@egf@@AEBUUnk_CameraSetting@@@Z 0x140af26b0
+// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140af27a0
+// MS2-PIN: ?push_back@?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@QEAAXAEBUUnk_CameraSetup@@@Z 0x140afd3c0
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@UUnk_CameraSetting@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@5@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@2@XZ 0x140afa080
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@UUnk_CameraSetting@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@5@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@2@XZ 0x140afa2e0
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x140afa560
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@1@AEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@1@1@Z 0x140af3370
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@1@@Z 0x140af4670
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@1@@Z 0x140af3a30
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x140af4fd0
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x140afc240
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140afc6b0
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140afcd00
@@ -534,6 +544,30 @@ Unk_CameraSetup::Unk_CameraSetup()
     : m_28(0), m_2c(0), m_30(0), m_34(0), m_38(0), m_3c(0), m_40(0, 0, 0), m_4c(0, 0, 0), m_58(false), m_59(true),
       m_5c(1), m_60(1), m_64(0), m_68(0), m_6c(0)
 {
+}
+
+// @0x140af6fc0
+// MS2-FUNCTIONAL: Unk_CameraSetup holds the setting as a base here; the exe copies it like a member at +0 (rax temp).
+// The memberwise copy assignment (the exe's implicit one; a COMDAT of this obj).
+Unk_CameraSetup& Unk_CameraSetup::operator=(const Unk_CameraSetup& o)
+{
+    Unk_CameraSetting::operator=(o);
+    m_28 = o.m_28;
+    m_2c = o.m_2c;
+    m_30 = o.m_30;
+    m_34 = o.m_34;
+    m_38 = o.m_38;
+    m_3c = o.m_3c;
+    m_40 = o.m_40;
+    m_4c = o.m_4c;
+    m_58 = o.m_58;
+    m_59 = o.m_59;
+    m_5c = o.m_5c;
+    m_60 = o.m_60;
+    m_64 = o.m_64;
+    m_68 = o.m_68;
+    m_6c = o.m_6c;
+    return *this;
 }
 
 // ---- CMapCameraData / CBossTargetCameraData ----
