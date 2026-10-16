@@ -4,6 +4,8 @@
 #include <atlcoll.h>
 #include <map>
 #include <set>
+#include <vector>
+#include <algorithm>
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/uiitemeventlistener.h"
 #include "ms2/placeholder/cquestmanagercommon.h"
@@ -13,16 +15,17 @@ class PCBase;
 // Original counter constructor 0x140517b00; zeroes both 32-bit fields.
 struct Unk_QuestCounter { Unk_QuestCounter(); int FUN_140268870(int interval); int first, second; };
 MS2_CHECK_SIZE(Unk_QuestCounter, 8);
-// The +260 tree is constructed/destroyed here but no recovered method accesses
-// its elements yet. Keep its representation explicit until its key/value types
-// are established from the remaining COMDATs.
-struct Unk_QuestTree260 {
-    Unk_QuestTree260();
-    ~Unk_QuestTree260();
-    void* root;
-    size_t count;
+class CItem;
+template <class T> class MS2Ptr;
+// A quest an item starts or advances (ctor 0x1416dbb20; the 0x1416ce860 list, ranked by 0x1416ce6a0).
+struct Unk_QuestItemLink
+{
+    unsigned m_questId = 0;
+    int m_state = 4;           // 4 = not offered
+    int m_kind = 2;            // 0 start item, 1 progress item
 };
-MS2_CHECK_SIZE(Unk_QuestTree260, 0x10);
+MS2_CHECK_SIZE(Unk_QuestItemLink, 0xc);
+
 class CQuestManager : public TSingleton<CQuestManager>, public UIItemEventListener,
                       public CQuestManagerCommon {
 public:
@@ -83,7 +86,17 @@ public:
     int FUN_1416cae20(int);
     void FUN_1416caec0(Unk_PayloadPtr<CQuest>);
     void FUN_1416cb260(ATL::CAtlArray<unsigned>&, int, int, int);
+    void FUN_1416cb4d0(std::vector<unsigned>&, std::vector<int>, int, int);
+    void FUN_1416cb8b0(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>&, int, int, int);
+    void FUN_1416cbb20(std::vector<Unk_PayloadPtr<CQuest>>&, int, int, int);
+    void FUN_1416cde50(int);
     void FUN_1416ce140(int, int);
+    int FUN_1416ce170(MS2Ptr<CItem>);
+    int FUN_1416ce260(int);
+    int FUN_1416ce3d0(int);
+    int FUN_1416ce5a0();
+    int FUN_1416ce6a0(MS2Ptr<CItem>);
+    void FUN_1416ce860(MS2Ptr<CItem>, ATL::CAtlArray<Unk_QuestItemLink>&);
     int FUN_1416ce340(int);
     void FUN_1416cf510(int);
     void FUN_1416cf630(int);
@@ -126,7 +139,10 @@ public:
     ATL::CAtlMap<int, int> m_dailyCounts; // +1c0
     ATL::CAtlMap<int, int> m_weeklyCounts; // +208
     std::map<int, std::set<__int64>> m_targets250;
-    Unk_QuestTree260 m_tree260;
+    // +260: a std::set of an 8-byte element (ctor 0x1416db960 / dtor 0x1416dbf60 are this object's own
+    // instantiation; set<__int64> and set<unsigned __int64> belong to other objects). Only the ctor and dtor
+    // reach it, so the element type is not recovered: an opaque pointer element stands in.
+    std::set<class Unk_QmTreeItem*> m_tree260;
 };
 MS2_CHECK_SIZE(CQuestManager, 0x270);
 MS2_CHECK_OFFSET(CQuestManager, m_quests20, 0x20);

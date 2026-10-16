@@ -99,7 +99,21 @@ public:
     void* m_2f0; void* m_2f8;
     int m_300, m_304, m_308, m_30c;
     int m_roomId, m_fieldId;
-    unsigned char m_318[0x50];
+    // +0x318..+0x368, typed from the member ctors called by CQuestData::CQuestData 0x140748cf0.
+    int m_318[2];                       // +0x318 ctor 0x1407488c0 zeroes both
+    struct Triple { int m_0, m_4, m_8; };   // ctor 0x140748930 zeroes all three
+    Triple m_320, m_32c;
+    struct Grade                        // ctor 0x1407484d0
+    {
+        int m_value;                    // +0x338 0; CQuestManager counts quests by ranges 1..2 / 3..5
+        int m_4;                        // ctor 6
+        CString m_8;
+        short m_10, m_12;               // ctor 0x140757bd0 zeroes both
+    };
+    Grade m_338;
+    int m_350;                          // ctor 0x1407485c0 zeroes; CQuestManager::vfunc_1 tests == 2
+    struct Named { int m_0, m_4; CString m_8; };   // ctor 0x140748610: 1, 0
+    Named m_358;
     ATL::CAtlArray<int> m_fields;
     ATL::CAtlArray<MS2Ptr<CConditionCommonData>> m_conditions;
     unsigned char m_3a8[0x48];
@@ -125,3 +139,8 @@ MS2_CHECK_OFFSET(CQuestData, m_rewards, 0x2b8);
 MS2_CHECK_OFFSET(CQuestData, m_acceptSound, 0x2d8);
 MS2_CHECK_OFFSET(CQuestData, m_roomId, 0x310);
 MS2_CHECK_OFFSET(CQuestData, m_conditions, 0x388);
+MS2_CHECK_OFFSET(CQuestData, m_320, 0x320);
+MS2_CHECK_OFFSET(CQuestData, m_338, 0x338);
+MS2_CHECK_OFFSET(CQuestData, m_350, 0x350);
+MS2_CHECK_OFFSET(CQuestData, m_358, 0x358);
+MS2_CHECK_OFFSET(CQuestData, m_fields, 0x368);
