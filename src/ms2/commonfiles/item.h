@@ -24,6 +24,8 @@ public:
     class CItemEnchantInfo* FUN_140630d60();     // the enchant record (null when absent)
     class Unk_ItemPlusInfo* FUN_140630d90();
     void FUN_1406306f0(int, int, int);
+    void FUN_14062fda0(COutputStream&);
+    void FUN_14062fe20(CInputStream&);
     MS2Ptr<CItemOption> m_spOption;             // +0x18
     char m_pad28[0x20];
 };
@@ -35,6 +37,8 @@ public:
     CUgcItemLook m_look;                    // +0x18
     char m_pad80[0x58];
     int FUN_1406321a0();
+    void FUN_140631f50(COutputStream&);
+    void FUN_140631fa0(CInputStream&);
     CString FUN_140632100();
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
@@ -44,6 +48,8 @@ public:
     CItemSocket();                          // 0x140620320
     bool FUN_140620de0();
     void FUN_140620840(unsigned, unsigned);
+    void FUN_1406205e0(COutputStream&);
+    void FUN_140620700(CInputStream&);
     char m_pad18[0xd8];
 };
 MS2_CHECK_SIZE(CItemSocket, 0xf0);
@@ -82,6 +88,8 @@ public:
     CStringW m_str20;                       // +0x20
     __int64 FUN_14052d1c0();                // m_n18
     const CStringW& FUN_14052d1b0();        // m_str20
+    void FUN_1406346a0(COutputStream&);
+    void FUN_140634700(CInputStream&);
     bool FUN_140634790(void*);              // elsewhere (itemtransfer)
 };
 MS2_CHECK_SIZE(CItemTransfer::CItemBinding, 0x28);
@@ -93,11 +101,13 @@ public:
     CItemCoupleInfo();                      // 0x14052c140
     virtual ~CItemCoupleInfo();             // 0x14052c510 (??_G 0x14052cf80)
     void FUN_14052d000();                   // reset
+    void FUN_14052d090(CInputStream&);      // read from a stream
+    void FUN_14052d130(COutputStream&);     // write to a stream
     CItemCoupleInfo& operator=(const CItemCoupleInfo&);   // 0x14052cae0
 
     __int64 m_n18;                          // +0x18
     CStringW m_str20;                       // +0x20
-    unsigned char m_b28;                    // +0x28
+    bool m_b28;                    // +0x28
 };
 MS2_CHECK_SIZE(CItemCoupleInfo, 0x30);
 
@@ -107,6 +117,8 @@ class CItemCustomMusicScore : public CPtred
 public:
     CItemCustomMusicScore();                // 0x14052c1a0
     bool FUN_140632780();
+    void FUN_140632500(COutputStream&);
+    void FUN_140632620(CInputStream&);
     virtual ~CItemCustomMusicScore();       // (??_G 0x14052cfc0)
     void FUN_1406328c0();                   // reset the score (elsewhere)
 

@@ -19,6 +19,7 @@
 #include "ms2/commonfiles/itemgachaboxtable.h"
 #include "ms2/ms2recover.h"
 #include "ms2/fmt/format.h"
+#include "ms2/commonfiles/stream.h"
 #include "hook/ms2hook.h"
 
 class Unk_ItemEquipData : public CItemData
@@ -47,7 +48,15 @@ extern unsigned short FUN_14036dc40(void*);
 extern MS2Ptr<CItemData> FUN_14053f870(int);
 // @0x14052d230 TSingleton<ItemGachaBoxTable>::GetInstance (s_instance is the exe's DAT_143aaf1d0)
 ItemGachaBoxTable* FUN_14052d230();
-class Unk_SingletonObj;
+class Unk_SingletonObj {};
+// The UGC model download manager behind DAT_143aaf1d8 (avatarpc.cpp declares the same class).
+struct Unk_UgcNullKey { Unk_UgcNullKey(int n); void* m_pad; };   // ctor 0x1401cd100
+class Unk_UgcRideeMgr : public Unk_SingletonObj
+{
+public:
+    void FUN_141883df0(MS2Ptr<CItem> spItem, const Unk_UgcNullKey& kKey);
+    void FUN_141885880(MS2Ptr<CItem> spItem);
+};
 class Unk_MusicBookInfo : public CPtred { public: char m_pad18[0x10]; CString m_str28; CStringW FUN_14072c480(); };
 class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsigned); };
 extern Unk_MusicBookTable* DAT_143aaf1a8;
@@ -1939,9 +1948,9 @@ Unk_SingletonObj* FUN_14052d210()
 }
 
 // @0x14052d220
-Unk_SingletonObj* FUN_14052d220()
+Unk_UgcRideeMgr* FUN_14052d220()
 {
-    return DAT_143aaf1d8;
+    return static_cast<Unk_UgcRideeMgr*>(DAT_143aaf1d8);
 }
 
 // @0x14052d230
@@ -2509,3 +2518,159 @@ bool CItem::FUN_14052b760(MS2Ptr<CItem> spItem)
     return true;
 }
 MS2_REPLACE_METHOD(0x14052B760, CItem, FUN_14052b760, 252, 0x53E6689C);
+
+// @0x14052b120
+void CItem::vfunc_5(bool)
+{
+}
+MS2_REPLACE_METHOD(0x14052B120, CItem, vfunc_5, 10, 0x208A1D67);
+
+// @0x14052b2e0
+int CItem::FUN_14052b2e0(int nItemId, int nRarity, int nAmount, int n6c)
+{
+    if (!FUN_14052b130(nItemId, nRarity, nAmount))
+        return 0;
+    m_6c = n6c;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14052B2E0, CItem, FUN_14052b2e0, 77, 0x982D1C2E);
+
+// @0x140524eb0
+// MS2-FUNCTIONAL: the UGC manager call's temporaries (null key, MS2Ptr<CItem>) are laid out differently (the exe hoists both temp addresses and uses an 8-byte-larger frame); behaviour identical
+void CItem::FUN_140524eb0(CInputStream& in)
+{
+    m_6c = in.vfunc_o8_3();
+    m_60 = in.vfunc_o8_3();
+    m_90 = in.vfunc_o8_4();
+    m_80 = in.vfunc_o8_4();
+    m_88 = in.vfunc_o8_4();
+    m_9c = in.vfunc_o8_3();
+    m_a0 = in.vfunc_o8_3();
+    m_a4 = in.vfunc_o8_1();
+    m_a8 = in.vfunc_o8_4();
+    m_d8 = (unsigned short)in.vfunc_o8_2();
+    m_d4 = in.vfunc_o8_0();
+    m_dc = in.vfunc_o8_3();
+    m_spProxy->vfunc_6(&in);
+    m_spStatus->FUN_14062fe20(in);
+    if ((FUN_140525f10() != 0 || FUN_140526010() != 0) && static_cast<CItemUgc*>(m_spUgc) != 0)
+    {
+        m_spUgc->FUN_140631fa0(in);
+        if (FUN_140525f10() != 0)
+        {
+            if (m_spUgc->FUN_140632100().GetLength() > 0)
+            {
+                FUN_14052d220()->FUN_141883df0(MS2Ptr<CItem>(this), Unk_UgcNullKey(0));
+            }
+        }
+        if (FUN_140526010() != 0)
+        {
+            if (m_spUgc->FUN_140632100().GetLength() > 0)
+                FUN_14052d220()->FUN_141885880(MS2Ptr<CItem>(this));
+        }
+    }
+    if (FUN_140525a30() != 0 && static_cast<CItemGem*>(m_spGem) != 0)
+        m_spGem->vfunc_4(in);
+    if (FUN_140525680() && static_cast<CItemCustomMusicScore*>(m_spMusic) != 0)
+        m_spMusic->FUN_140632620(in);
+    if (FUN_140525640() != 0)
+    {
+        m_strB8 = in.vfunc_o8_8();
+        m_c0 = in.vfunc_o8_4();
+        FUN_140528bb0(in.vfunc_o8_3());
+        FUN_140528bf0(in.vfunc_o8_3());
+        m_d0 = in.vfunc_o8_1();
+    }
+    m_spTransfer->vfunc_2(in);
+    m_spSocket->FUN_140620700(in);
+    m_spCouple->FUN_14052d090(in);
+    m_spBinding->FUN_140634700(in);
+    FUN_1405290b0();
+}
+
+// ---- w101 batch 11: item write
+// @0x140524ad0
+void CItem::FUN_140524ad0(COutputStream& out)
+{
+    out.vfunc_o10_3(m_6c);
+    out.vfunc_o10_3(m_60);
+    out.vfunc_o10_4(m_90);
+    out.vfunc_o10_4(m_80);
+    out.vfunc_o10_4(m_88);
+    out.vfunc_o10_3(m_9c);
+    out.vfunc_o10_3(m_a0);
+    out.vfunc_o10_1((unsigned char)m_a4);
+    out.vfunc_o10_4(m_a8);
+    out.vfunc_o10_2((short)m_d8);
+    out.vfunc_o10_0(m_d4);
+    out.vfunc_o10_3(m_dc);
+    m_spProxy->vfunc_5(reinterpret_cast<__int64>(&out));
+    m_spStatus->FUN_14062fda0(out);
+    if (FUN_140525f10() != 0 || FUN_140526010() != 0)
+    {
+        if (static_cast<CItemUgc*>(m_spUgc) != 0)
+            m_spUgc->FUN_140631f50(out);
+    }
+    if (FUN_140525a30() != 0)
+    {
+        if (static_cast<CItemGem*>(m_spGem) != 0)
+            m_spGem->vfunc_3(out);
+    }
+    if (FUN_140525680())
+    {
+        if (static_cast<CItemCustomMusicScore*>(m_spMusic) != 0)
+            m_spMusic->FUN_140632500(out);
+    }
+    if (FUN_140525640() != 0)
+    {
+        out.vfunc_o10_8(m_strB8);
+        out.vfunc_o10_4(m_c0);
+        out.vfunc_o10_3(m_c8);
+        out.vfunc_o10_3(m_cc);
+        out.vfunc_o10_1((unsigned char)m_d0);
+    }
+    m_spTransfer->vfunc_1(out);
+    m_spSocket->FUN_1406205e0(out);
+    m_spCouple->FUN_14052d130(out);
+    m_spBinding->FUN_1406346a0(out);
+}
+MS2_REPLACE_METHOD(0x140524AD0, CItem, FUN_140524ad0, 982, 0x8BA0884C);
+
+// ---- w101 batch 11: couple info streams
+// @0x14052d090
+void CItemCoupleInfo::FUN_14052d090(CInputStream& in)
+{
+    m_n18 = in.vfunc_o8_4();
+    if (m_n18 != 0)
+    {
+        m_str20 = in.vfunc_o8_8();
+        m_b28 = in.vfunc_o8_0();
+    }
+}
+MS2_REPLACE_METHOD(0x14052D090, CItemCoupleInfo, FUN_14052d090, 159, 0x772E2F30);
+
+// @0x14052d130
+void CItemCoupleInfo::FUN_14052d130(COutputStream& out)
+{
+    out.vfunc_o10_4(m_n18);
+    if (m_n18 != 0)
+    {
+        out.vfunc_o10_8(m_str20);
+        out.vfunc_o10_0(m_b28);
+    }
+}
+MS2_REPLACE_METHOD(0x14052D130, CItemCoupleInfo, FUN_14052d130, 118, 0xAC4AF148);
+
+// ---- w101 batch 11: MS2Ptr glue instances
+template class MS2Ptr<CItemCoupleInfo>;
+template class MS2Ptr<CItemTransfer::CItemBinding>;
+template class MS2Ptr<CItemCustomMusicScore>;
+template class MS2Ptr<CItemSocket>;
+template class MS2Ptr<CItemGem>;
+template class MS2Ptr<CItemTransfer>;
+template class MS2Ptr<CItemUgc>;
+template class MS2Ptr<CItemStatus>;
+template class MS2Ptr<Unk_IngItem>;
+template class MS2Ptr<Unk_MusicBookInfo>;
+template class MS2Ptr<CItemOption>;
+template class MS2Ptr<CItem>;
