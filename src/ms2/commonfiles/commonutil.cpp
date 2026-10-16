@@ -418,6 +418,7 @@ void FUN_14028ca50(const CString& strText, CAtlArray<CString>& arrOut, const CSt
     }
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x14028cb70
 int FUN_14028cb70(const CStringW& strText, CAtlArray<CStringW>& arrOut, const wchar_t* pszSep, int nExpected)
 {
@@ -437,6 +438,7 @@ int FUN_14028cb70(const CStringW& strText, CAtlArray<CStringW>& arrOut, const wc
     return 0;
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x14028cd00
 void FUN_14028cd00(const CStringW& strText, CAtlArray<CStringW>& arrOut, const wchar_t* pszSep, int nMax)
 {
@@ -469,6 +471,7 @@ void FUN_14028cd00(const CStringW& strText, CAtlArray<CStringW>& arrOut, const w
     }
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x14028cf00
 void FUN_14028cf00(const CStringW& strText, CAtlArray<CStringW>& arrOut, const CStringW& strOpen, const CStringW& strClose)
 {
@@ -1056,6 +1059,7 @@ Unk_CommonVec3 FUN_14028f060(CString strText)
     return vResult;
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x14028f190
 Unk_CommonVec3 FUN_14028f190(CStringW strText)
 {
@@ -1235,12 +1239,14 @@ const std::string& CItemTabNameTable::GetTabName(int nTab)
     return m_arrNames[nTab][0];
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x140291190
 int FUN_140291190(std::string strName)
 {
     return g_ItemTabNames.FindIndex(strName);
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x140291200
 int FUN_140291200(CString strName)
 {
@@ -1254,9 +1260,215 @@ int FUN_1402912d0(CStringW strName)
     return FUN_140291200(CString((const wchar_t*)strName));
 }
 
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x140291340
 bool FUN_140291340(int nTab, std::string& strOut)
 {
     strOut = g_ItemTabNames.GetTabName(nTab);
     return strOut.size() != 0;
+}
+
+unsigned char FUN_140292820(const std::string& strLeft, const char* pszRight);   // string equals
+ATL::CTime FUN_1406c47a0(__int64 nTime);                                // CTime from a time_t
+ATL::CTime FUN_1406c47d0(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec);
+__int64 FUN_140282020(const ATL::CTime& time);                          // time_t of a CTime
+__int64 FUN_14086b190(int nKind, __int64 nTime);
+const std::string& FUN_14018ef70(const std::string& str);
+void* FUN_1401d3200();                                                  // game config singleton
+CString& FUN_140298f80(void* pEntry);                                   // string option entry value
+int& FUN_140298f40(void* pEntry);                                       // int option entry value
+
+// Item tab key of a tab string (empty string = "all"); the tab key is also written to strTabOut.
+// MS2-FUNCTIONAL: not yet byte-matched
+// @0x1402913b0
+int FUN_1402913b0(CString strTab, CString& strTabOut)
+{
+    int nTab = -1;
+    strTabOut = "";
+    if (strTab.IsEmpty())
+    {
+        nTab = 15;
+        strTabOut = "all";
+    }
+    else
+    {
+        nTab = FUN_140291200(strTab);
+    }
+    if (FUN_140291150(nTab))
+    {
+        std::string strName;
+        FUN_140291340(nTab, strName);
+        strTabOut = strName.c_str();
+    }
+    if (nTab == 0)
+        strTabOut = "equip";
+    else if (nTab == 6)
+        strTabOut = "gemstone";
+    else if (nTab == 7)
+        strTabOut = "etc";
+    if (strTabOut.IsEmpty())
+        _wassert(L"!outTabStr.IsEmpty()", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp", 0x883);
+    return nTab;
+}
+
+// Avatar tab key.
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
+// @0x140291550
+std::string FUN_140291550(int nKind)
+{
+    switch (nKind)
+    {
+    case 0:
+        return std::string("game");
+    case 1:
+        return std::string("skin");
+    case 2:
+        return std::string("codi");
+    default:
+        return std::string("");
+    }
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
+// @0x140291620
+int FUN_140291620(const std::string& strKey)
+{
+    if (FUN_140292820(strKey, "game"))
+        return 0;
+    if (FUN_140292820(strKey, "skin"))
+        return 1;
+    if (FUN_140292820(strKey, "codi"))
+        return 2;
+    return 3;
+}
+
+// Time of the next reset: 1 = next midnight, 2 = server-defined, 3 = first of next month, else the far future.
+// MS2-FUNCTIONAL: not yet byte-matched
+// @0x1402916a0
+__int64 FUN_1402916a0(__int64 nTime, int nMode)
+{
+    ATL::CTime timeNow = FUN_1406c47a0(nTime);
+    __int64 nResult;
+    if (nMode == 1)
+    {
+        ATL::CTime timeDay = FUN_1406c47d0(timeNow.GetYear(), timeNow.GetMonth(), timeNow.GetDay(), 0, 0, 0);
+        timeDay += ATL::CTimeSpan(1, 0, 0, 0);
+        nResult = FUN_140282020(timeDay);
+    }
+    else if (nMode == 2)
+    {
+        ATL::CTime timeOther = FUN_1406c47a0(FUN_14086b190(6, nTime));
+        nResult = FUN_140282020(timeOther);
+    }
+    else if (nMode == 3)
+    {
+        int nYear = timeNow.GetYear();
+        int nMonth = timeNow.GetMonth();
+        nMonth = nMonth + 1;
+        if (nMonth > 12)
+        {
+            nMonth = 1;
+            nYear = nYear + 1;
+        }
+        ATL::CTime timeMonth = FUN_1406c47d0(nYear, nMonth, 1, 0, 0, 0);
+        nResult = FUN_140282020(timeMonth);
+    }
+    else
+    {
+        ATL::CTime timeFar = FUN_1406c47d0(2500, 1, 1, 0, 0, 0);
+        nResult = FUN_140282020(timeFar);
+    }
+    return nResult;
+}
+
+// Wraps a degree value into [0, 360).
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
+// @0x140291b70
+void FUN_140291b70(float* pfDegrees)
+{
+    int nDegrees = (int)*pfDegrees % 360;
+    if (nDegrees < 0)
+        nDegrees = nDegrees + 360;
+    *pfDegrees = (float)nDegrees;
+}
+
+// @0x140291bc0
+void FUN_140291bc0(Unk_CommonVec3* pVec)
+{
+    FUN_140291b70(&pVec->x);
+    FUN_140291b70(&pVec->y);
+    FUN_140291b70(&pVec->z);
+}
+
+// @0x140291c10
+CString FUN_140291c10(int nKind)
+{
+    switch (nKind)
+    {
+    case 1:
+        return FUN_140298f80((char*)FUN_1401d3200() + 0x8170);
+    case 2:
+        return FUN_140298f80((char*)FUN_1401d3200() + 0x81d0);
+    case 3:
+        return FUN_140298f80((char*)FUN_1401d3200() + 0x8230);
+    default:
+        return CString("");
+    }
+}
+
+// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
+// @0x140291d10
+int FUN_140291d10(int nKind)
+{
+    switch (nKind)
+    {
+    case 1:
+        return FUN_140298f40((char*)FUN_1401d3200() + 0x8068);
+    case 2:
+        return FUN_140298f40((char*)FUN_1401d3200() + 0x80c0);
+    case 3:
+        return FUN_140298f40((char*)FUN_1401d3200() + 0x8118);
+    default:
+        return 0;
+    }
+}
+
+// Rounds half away from zero.
+// @0x140291dc0
+int FUN_140291dc0(float fValue, float fBias)
+{
+    if (FUN_14028d470(fValue, 0) == true)
+        return 0;
+    if (fValue > 0.0f)
+        fValue = fValue + fBias;
+    else if (fValue < 0.0f)
+        fValue = fValue - fBias;
+    return (int)fValue;
+}
+
+int FUN_140291dc0(float fValue, float fBias);
+
+// @0x140291d90
+int FUN_140291d90(float fValue)
+{
+    return FUN_140291dc0(fValue, 0.5f);
+}
+
+// @0x140291e40
+void FUN_140291e40(CStringW strUnused, char cUnused, void* pUnused)
+{
+}
+
+// Text before ('/' first token) or after the first '/' of the token.
+// MS2-FUNCTIONAL: not yet byte-matched
+// @0x140291f90
+std::string FUN_140291f90(const std::string& strToken, int nWhich)
+{
+    size_t nPos = strToken.find("/", 0);
+    if (nPos == std::string::npos)
+        return std::string("");
+    else if (nWhich == 0)
+        return std::string(strToken, 0, nPos);
+    else
+        return std::string(strToken, nPos + 1, std::string::npos);
 }
