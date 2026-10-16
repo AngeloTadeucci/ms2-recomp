@@ -97,7 +97,8 @@ public:
     __int64 FUN_14052d1c0();                // m_n18
     const CStringW& FUN_14052d1b0();        // m_str20
     void FUN_1406346a0(COutputStream&);
-    void FUN_1406347d0(const __int64& nId, const CStringW& strName);
+    bool FUN_1406347d0(const __int64& nId, const CStringW& strName);
+    CItemBinding& operator=(const CItemBinding&);   // 0x140635c90
     void FUN_140634700(CInputStream&);
     bool FUN_140634790(void*);              // elsewhere (itemtransfer)
 };

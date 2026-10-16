@@ -65,6 +65,7 @@ public:
 
     int Load();                             // 0x14062cbc0 Table/itemSocket.xml
     MS2Ptr<CItemSocketData> Find(unsigned nItemId, int nGrade);     // 0x14062d330
+    bool FUN_14062d980(MS2Ptr<CItemData> spData, int nGrade);       // 0x14062d980 the item cannot take more sockets
 
 private:
     MS2_LAYOUT_FRIEND;

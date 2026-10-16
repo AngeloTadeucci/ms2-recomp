@@ -14,7 +14,72 @@ template <class T> class MS2Ptr;
 class CItem;
 class COutputStream;
 class CInputStream;
-class CItemTransfer : public CPtred { public: class CItemBinding; CItemTransfer(); virtual void vfunc_1(COutputStream&); virtual void vfunc_2(CInputStream&); unsigned char FUN_1406352b0(); unsigned char FUN_1406351f0(void*, void*); __int64 FUN_140634fa0(); void FUN_140634fc0(unsigned); __int64 FUN_140634fe0(); void FUN_140635000(unsigned); void FUN_140635300(); MS2Ptr<CItemTransfer> FUN_140634b30(); void FUN_140634970(CItem*); void FUN_140634990(CItem*); char m_pad18[0x40]; };   // 0x58, ctor 0x140634820
+// The transfer (trade / bind) state of an item, 0x58 bytes (ctor 0x140634820). Member names are invented from use.
+class CItemTransfer : public CPtred
+{
+public:
+    class CItemBinding;
+    CItemTransfer();                                    // 0x140634820
+    virtual ~CItemTransfer();                           // 0x140634930 (scalar deleting 0x140635e80)
+    virtual void vfunc_1(COutputStream&);               // 0x140634d00 write
+    virtual void vfunc_2(CInputStream&);                // 0x140634e30 read
+    unsigned char FUN_1406352b0();
+    unsigned char FUN_1406351f0(void*, void*);
+    __int64 FUN_140634fa0();
+    void FUN_140634fc0(unsigned);
+    __int64 FUN_140634fe0();
+    void FUN_140635000(unsigned);
+    void FUN_140635300();
+    MS2Ptr<CItemTransfer> FUN_140634b30();
+    void FUN_140634970(CItem*);
+    void FUN_140634990(CItem*);
+    CItemTransfer& operator=(const CItemTransfer&);     // 0x140635cf0
+    int FUN_140634cc0();
+    int FUN_140635020();
+    int FUN_140635070();
+    unsigned FUN_140635100();                           // m_nRule & 8
+    int FUN_140635120();                               // has a binding
+    CItemBinding* FUN_140635160();                      // the binding
+    int FUN_140635190();
+    bool FUN_1406351b0();
+    void FUN_140635320(bool);
+    int FUN_1406354d0();
+    unsigned FUN_140635520();
+    int FUN_140635580();
+    unsigned FUN_140635590();
+    int FUN_140635630();
+    unsigned FUN_140635690();
+    int FUN_140635770();
+    int FUN_140635870();
+    int FUN_1406358c0();
+    int FUN_140635900();
+    bool FUN_140635940();
+    bool FUN_140635980(const __int64*);
+    bool FUN_140635470(const __int64*);
+    void FUN_1406359c0(__int64*, CStringW*);
+    void FUN_140635a60();
+    static unsigned FUN_140635ae0(int, CItemData*, int);
+
+    CItem* m_pItem;                                     // +0x18 the owner item (not owned)
+    unsigned m_nRule;                                   // +0x20 transfer rule mask (0x4, 0x8, 0x10 tested)
+    int m_n24;                                          // +0x24
+    int m_nType;                                        // +0x28 the data record's transfer type
+    unsigned char m_b2C;                                         // +0x2c
+    int m_nCount;                                       // +0x30 remaining transfers
+    int m_nMax;                                         // +0x34 transfers used
+    bool m_b38;                                         // +0x38
+    unsigned char m_b39;                                         // +0x39
+    unsigned char m_b3A;                                         // +0x3a
+    unsigned char m_b3B;                                         // +0x3b
+    unsigned char m_b3C;                                         // +0x3c
+    unsigned char m_b3D;                                         // +0x3d
+    unsigned char m_b3E;                                         // +0x3e
+    unsigned char m_b3F;                                         // +0x3f
+    unsigned char m_b40;                                         // +0x40
+    unsigned char m_b41;                                         // +0x41
+    unsigned char m_b42;                                         // +0x42
+    MS2Ptr<CItemBinding> m_spBinding;                   // +0x48
+};
 MS2_CHECK_SIZE(CItemTransfer, 0x58);
 typedef MS2SvrPtr<CPtred> Unk_ItemSlot188;   // 16-byte handle (ctor 0x14052c0d0, dtor 0x14027e150)
 class Unk_UserProxyItemData;
