@@ -79,6 +79,17 @@ public:
     int FUN_141adcb40();                            // 0x141adcb40
     void FUN_141adcb60(int n);                      // 0x141adcb60
     void FUN_141add1b0(int nSlot, bool bOn);        // 0x141add1b0 enable one hot key slot
+    void FUN_141adc530(int nScene);                 // 0x141adc530 open a queued scene's dialogs
+    void FUN_141add040(int nScene);                 // 0x141add040 close a queued scene's dialogs
+    void FUN_141aec690();                           // 0x141aec690
+    void FUN_141aec760(unsigned uTime);             // 0x141aec760
+    void FUN_141aec9c0();                           // 0x141aec9c0
+    void FUN_141aece70();                           // 0x141aece70 reset the input handlers
+    void FUN_141adf250();                           // 0x141adf250 create the click render steps
+    void FUN_141adf580();                           // 0x141adf580 create every dialog
+    static void FUN_141ade300();                    // 0x141ade300
+    static void FUN_141ade1f0();                    // 0x141ade1f0
+    static void FUN_141ade2d0();                    // 0x141ade2d0
 
     // ---- generated member decls ----
     void FUN_141adc050();                                                   // 0x141adc050 close the closable dialogs

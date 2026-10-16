@@ -10,6 +10,7 @@
 #include "ms2/client/ms2/gfxmoviebackground.h"
 #include "ms2/client/ms2/uidialog.h"
 #include <new>
+#include <string.h>
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -437,4 +438,155 @@ void CUIService::FUN_141adb4c0(int bOn)
     FUN_141add1b0(0x17, b);
     FUN_141add1b0(0x23, b);
     FUN_141add1b0(0xb, b);
+}
+
+// ---- efd::ISystemService overrides ----
+extern "C++" {
+void FUN_1411ab770(void* pRegistrar, int n);
+void FUN_141af1860(void* pMgr, void (*pfn)());
+void FUN_141af1a90(void* pMgr, void (*pfn)());
+void FUN_141b6fc50();
+void* FUN_141aed330(void* pBuf, void* ppSelf, void* pMemFn);
+void FUN_1422aee50(void* pMgr, void* pDelegate);
+void* FUN_1411d15b0(void* pSvcMgr);
+void* FUN_14168ab40(void* pSvcMgr);
+void* FUN_140af7da0(void* pWorld);
+void* FUN_140994450();
+void* FUN_14098d8d0(void* pTable, void* p);
+void FUN_1411d7c70(void* p, void (*pfn)(), void* pSelf);
+void FUN_1411d7c10(void* p, void (*pfn)(), void* pSelf);
+void* FUN_141aed1c0(void* pBuf, void* ppSelf, void* pMemFn);
+void* FUN_140a44830();
+void FUN_1401ce3d0(void* p, void* pDelegate);
+void* FUN_141aee920();
+void FUN_140cf10d0(void* p);
+extern char DAT_143d6eb58[];
+unsigned FUN_14086d260();
+unsigned FUN_141473230(void* p);
+char FUN_14140ea60(void* pList);
+int FUN_141af12e0(void* pList);
+void* FUN_141aef6d0(void* pMap);
+void* FUN_1412784d0(void* pRef);
+int FUN_1419244c0(void* pDlg, int n);
+void FUN_141aef370(void* pMap, void* pPos);
+void* FUN_141aee510(void* p);
+void* FUN_141aee520(void* p);
+void FUN_141aee3b0(void* p, int n);
+void NiDebugVisualizationClick_ProcessScene(void* p);
+char FUN_1401d1320(void* pCache);
+void* FUN_140e45740();
+void FUN_1422e6960(void* p);
+void FUN_1422e6d00(void* p, int n);
+void FUN_1401d1160(void* pCache, CStringA str);
+void* FUN_1416af8c0(void* p);
+void* FUN_1416af950(void* p);
+void FUN_1416af350(void* p, int n);
+void* FUN_1413fc250(void* p);
+void FUN_1416b2360(void* a, void* b);
+void FUN_141626ac0(void* p);
+}
+
+// @0x141adea90
+// MS2-FUNCTIONAL: the delegate buffer for the FUN_141ad9e20 callback is built through the unit's Delegate glue (not recovered)
+efd::SyncResult CUIService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
+{
+    FUN_1411ab770(pRegistrar, 1);
+    FUN_141af1860(FUN_14025e7a0(), &CUIService::FUN_141ade300);
+    FUN_141af1a90(FUN_14025e7a0(), FUN_141b6fc50);
+    char buf[8];
+    char fn[16] = {0};
+    bool (CUIService::*pmf)() = &CUIService::FUN_141ad9e20;
+    memcpy(fn, &pmf, sizeof(pmf));
+    CUIService* pSelf = this;
+    void* pDelegate = FUN_141aed330(buf, &pSelf, fn);
+    FUN_1422aee50(FUN_14025e7a0(), pDelegate);
+    return efd::SyncResult_Success;
+}
+
+// @0x141adeb70
+// MS2-FUNCTIONAL: delegate glue and the global event manager are opaque exe helpers
+efd::AsyncResult CUIService::OnInit()
+{
+    m_pWorldSvc30 = FUN_1411d15b0(m_pServiceManager);
+    m_pEntitySvc28 = FUN_14168ab40(m_pServiceManager);
+    if (FUN_140af7da0(m_pWorldSvc30) == 0)
+        return efd::AsyncResult_Complete;
+    FUN_141adf250();
+    FUN_141adf580();
+    void* pEvt = FUN_14098d8d0(DAT_143d6eb58, FUN_140994450());
+    FUN_1411d7c70(pEvt, &CUIService::FUN_141ade1f0, this);
+    FUN_1411d7c10(pEvt, &CUIService::FUN_141ade2d0, this);
+    char buf[8];
+    char fn[16] = {0};
+    void (CUIService::*pmf)() = &CUIService::FUN_141aece70;
+    memcpy(fn, &pmf, sizeof(pmf));
+    CUIService* pSelf = this;
+    void* pDelegate = FUN_141aed1c0(buf, &pSelf, fn);
+    FUN_1401ce3d0(FUN_140a44830(), pDelegate);
+    FUN_140cf10d0(FUN_141aee920());
+    return efd::AsyncResult_Pending;
+}
+
+// @0x141adecf0
+// MS2-FUNCTIONAL: ATL list / map iteration goes through the unit's opaque container helpers
+efd::AsyncResult CUIService::OnTick()
+{
+    unsigned uTime = FUN_141473230((void*)(size_t)FUN_14086d260());
+    if (!FUN_14140ea60(&m_listOpen))
+    {
+        for (unsigned i = 0; i < 3 && !FUN_14140ea60(&m_listOpen); ++i)
+            FUN_141adc530(FUN_141af12e0(&m_listOpen));
+    }
+    if (!FUN_14140ea60(&m_listClose))
+    {
+        for (unsigned i = 0; i < 3 && !FUN_14140ea60(&m_listClose); ++i)
+            FUN_141add040(FUN_141af12e0(&m_listClose));
+    }
+    if (DAT_143af62e0 != 0 && FUN_14140ea60(&m_listOpen) && FUN_14140ea60(&m_listClose))
+    {
+        FUN_141adbea0();
+        DAT_143af62e0 = 0;
+    }
+    FUN_141aec690();
+    FUN_141aec760(uTime);
+    void* pos = FUN_141aef6d0(&m_mapDlg);
+    while (pos != 0)
+    {
+        void** pDlg = (void**)FUN_1412784d0(FUN_141aef740(&m_mapDlg, pos));
+        FUN_141aef370(&m_mapDlg, &pos);
+        (void)pDlg;
+    }
+    if (FUN_141aee510(&m_x268) != 0)
+        NiDebugVisualizationClick_ProcessScene(FUN_141aee520(&m_x268));
+    FUN_141aec9c0();
+    if (FUN_1401d1320(&m_cache))
+    {
+        FUN_1422e6960(FUN_140e45740());
+        FUN_1422e6d00(FUN_140e45740(), 1);
+        FUN_1401d1160(&m_cache, m_strTable);
+    }
+    return efd::AsyncResult_Pending;
+}
+
+// @0x141adeff0
+efd::AsyncResult CUIService::OnShutdown()
+{
+    if (FUN_1416af8c0(&m_x38) != 0)
+    {
+        void* pWorld = FUN_1411d15b0(m_pServiceManager);
+        if (pWorld != 0 && FUN_140af7da0(pWorld) != 0)
+        {
+            void* pRoot = FUN_1413fc250(FUN_140af7da0(pWorld));
+            if (pRoot != 0)
+            {
+                FUN_1416b2360(pRoot, FUN_1416af8c0(&m_x38));
+                FUN_141626ac0(FUN_1416af950(&m_x38));
+                FUN_1416af350(&m_x38, 0);
+            }
+        }
+    }
+    if (FUN_141aee510(&m_x268) != 0)
+        FUN_141aee3b0(&m_x268, 0);
+    FUN_141aece70();
+    return efd::AsyncResult_Complete;
 }
