@@ -11,6 +11,7 @@
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/commonfiles/os.h"
+#include "ms2/placeholder/citem.h"
 
 class Unk_140165cf0;    // xml element (declared where the loader is)
 
@@ -81,10 +82,14 @@ public:
     EnableSocketUnlockFunction();           // 0x140626a20
     virtual ~EnableSocketUnlockFunction();  // 0x14062c160
 
-    int m_n18;                              // +0x18
-    int m_n1C;                              // +0x1c
-    unsigned __int64 m_n20;                 // +0x20
-    int m_n28;                              // +0x28
+    bool Init(MS2Ptr<CItem> pItem, int nSocketMode, int nUnlockMode);   // 0x140626aa0 take the item's identity
+    bool Matches(MS2Ptr<CItem> pItem);      // 0x140626bc0 the item is another one of the same kind and can be unlocked
+    bool InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOther, int nSocketMode, int nUnlockMode);   // 0x140626e20
+
+    int m_n18;                              // +0x18 the item data's kind (FUN_14053c560 of its data record)
+    int m_n1C;                              // +0x1c the item id
+    unsigned __int64 m_n20;                 // +0x20 the item uid
+    int m_n28;                              // +0x28 the enhance record's level
     int m_nSocketMode;                      // +0x2c
     int m_nUnlockMode;                      // +0x30
 };

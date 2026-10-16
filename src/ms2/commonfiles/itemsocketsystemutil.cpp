@@ -35,6 +35,84 @@ void FUN_140873220(Unk_140165cf0*, const char*, unsigned int&);
 int FUN_14015f500(Unk_140165cf0*, const char*, int*);
 int FUN_140178670(Unk_140165cf0*, const char*, ATL::CAtlArray<int>&);
 
+// Item accessors (the CItem members are declared in citem.h; the rest are unrecovered members taken as free functions).
+int FUN_14053c560(void* pData);             // kind of the item data record
+void* FUN_140527840(CItem* pItem);          // the item's data record
+void* FUN_1405279c0(CItem* pItem);          // the item's enhance record (null for none)
+int FUN_140620a20(void* pEnhance);          // enhance level
+int FUN_140620a50(void* pEnhance);
+char FUN_1406211f0(void* pEnhance);
+char FUN_140528980(CItem* pItem);
+int FUN_140525ca0(CItem* pItem);
+int FUN_140525db0(CItem* pItem);
+char FUN_140528e20(CItem* pItem);
+
+// @0x140626aa0
+// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
+bool EnableSocketUnlockFunction::Init(MS2Ptr<CItem> pItem, int nSocketMode, int nUnlockMode)
+{
+    if (!(pItem == 0))
+    {
+        if (FUN_1405279c0(pItem.get()) != 0)
+        {
+            m_n18 = FUN_14053c560(FUN_140527840(pItem.get()));
+            m_n1C = pItem.get()->FUN_140526bd0();
+            m_n20 = pItem.get()->FUN_140526a50();
+            m_n28 = FUN_140620a20(FUN_1405279c0(pItem.get()));
+            m_nSocketMode = nSocketMode;
+            m_nUnlockMode = nUnlockMode;
+            return true;
+        }
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140626AA0, EnableSocketUnlockFunction, Init, 270, 0xC2E6278E);
+
+// @0x140626bc0
+// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
+bool EnableSocketUnlockFunction::Matches(MS2Ptr<CItem> pItem)
+{
+    if (!(pItem == 0))
+    {
+        if (m_n20 != (unsigned __int64)pItem.get()->FUN_140526a50())
+        {
+            if (m_n18 == FUN_14053c560(FUN_140527840(pItem.get())))
+            {
+                if (m_n1C == pItem.get()->FUN_140526bd0())
+                {
+                    void* pEnhance = FUN_1405279c0(pItem.get());
+                    if (pEnhance == 0 || FUN_140620a50(pEnhance) == 0)
+                        return false;
+                    if (m_n28 != FUN_140620a20(pEnhance))
+                        return false;
+                    if (FUN_140528980(pItem.get()) == 0)
+                        return false;
+                    if (FUN_140525ca0(pItem.get()) != 0 && m_nSocketMode == 0)
+                        return false;
+                    if (FUN_140525db0(pItem.get()) != 0 && m_nUnlockMode == 0)
+                        return false;
+                    if (FUN_140528e20(pItem.get()) != 0)
+                        return false;
+                    if (FUN_1406211f0(pEnhance) != 0)
+                        return false;
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140626BC0, EnableSocketUnlockFunction, Matches, 599, 0x3252C071);
+
+// @0x140626e20
+// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
+bool EnableSocketUnlockFunction::InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOther, int nSocketMode, int nUnlockMode)
+{
+    if (!Init(pItem, nSocketMode, nUnlockMode))
+        return false;
+    return Matches(pOther);
+}
+
 // @0x14062c7b0
 CItemSocketData::CItemSocketData() : m_nGrade(0), m_nMaxCount(0), m_nOpenType(0)
 {
