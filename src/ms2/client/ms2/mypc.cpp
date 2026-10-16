@@ -56,9 +56,11 @@
 #include "ms2/client/ms2/inventory.h"
 #include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/placeholder/cube.h"
 #include "ms2/placeholder/clientconstants.h"
 #include "ms2/placeholder/state.h"
 #include "ms2/client/ms2/ridee.h"
+#include "ms2/commonfiles/rideonaction.h"
 #include <algorithm>
 #include "ms2/ms2format.h"
 #include "hook/ms2hook.h"
@@ -122,6 +124,11 @@ public:
     void FUN_1410cd440();
     int FUN_1410cdd80(NiPoint3 kFrom, NiPoint3 kTo, float fRange, efd::Point3 kDir);   // the build reach test
     void FUN_1410d6590(int nNoticeId);
+    bool FUN_1410d55d0(int nMapId, int nBlock);             // the player owns the block
+    efd::Point3 FUN_1410b7ad0(PCBase* pPC, float fOffset, efd::Point3& kOut, int bFeet);
+    efd::Point3 FUN_1410b7a20(efd::Point3 kPos, efd::Point3& kCell);   // snap to the cube grid
+    Cube* FUN_1410b8ab0(efd::Point3 kCell);                 // the cube at a grid point
+    void FUN_1410cab10(Cube* pCube);                        // select a cube
 };
 class Unk_MyPCSvcPtr
 {
@@ -129,6 +136,7 @@ public:
     Unk_MyPCSvcPtr(void* p);
     ~Unk_MyPCSvcPtr();
     Unk_MyPCHousingSvc* FUN_1401cd1a0() const;
+    Unk_MyPCHousingSvc* FUN_140885310() const;              // get
     void* m_p;
 };
 extern char DAT_143b059e8;                                  // service lookup cell
@@ -158,6 +166,8 @@ struct Unk_MyPCFieldData
     char m_pad_000[0x120];
     int m_n120;                                             // +0x120 the field allows it outright
     int m_n124;                                             // +0x124
+    int FUN_140375570();
+    int FUN_1403755a0();
 };
 class Unk_MyPCFieldRef
 {
@@ -256,10 +266,21 @@ public:
     void FUN_141ad9c40(MS2Ptr<Unk_MyPCEquipItem> spItem);
     void FUN_141adc5d0(int nId);                            // hide
     void FUN_141adc530(int nId);                            // close
+    void FUN_141adc190();
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
 class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); void FUN_14138bf00(int nKind, int nId, int nArg); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
 Unk_MyPCWidgets* FUN_1409331e0();
+// The HUD notifier (FUN_140a94350); slot 10 takes a state id.
+class Unk_MyPCHud
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9();
+    virtual void vfunc_10(int nState);
+};
+Unk_MyPCHud* FUN_140a94350();
+void FUN_141a8a730();
 class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
 class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); void FUN_14117e560(__int64 nExp); };
@@ -341,6 +362,12 @@ int FUN_14165c1b0(PCBase* pPC, int* pOut, CString& strOut, float f);   // PCBase
 extern int DAT_143ab2914;                                   // the local character level
 class Unk_MyPCNoticeSound { public: void FUN_141276180(const CString& str); };
 extern Unk_MyPCNoticeSound DAT_143ae14c8;                   // the blocked-action notice sound
+extern Unk_MyPCNoticeSound DAT_143ae14b8;                   // the build mode off / on sounds
+extern Unk_MyPCNoticeSound DAT_143ae10a8;
+void FUN_140ef4330();
+int FUN_1408a18d0(__int64 nCharId);
+class Unk_MyPCGuildHouse { public: bool FUN_14047e150(__int64 nValue); };
+Unk_MyPCGuildHouse* FUN_1401c0d90();
 // The worn items of PC::m_kEquipDE0 and the item array at PC::m_kListD48.
 void FUN_1411e1b80(Unk_PCEquipSet* pSet, ATL::CAtlList<MS2Ptr<CEquipItem> >& aOut);   // the worn items
 class Unk_MyPCItemArray { public: size_t FUN_140720ca0() const; MS2Ptr<CItem>& FUN_140a69ee0(size_t i); };
@@ -944,6 +971,65 @@ MS2Ptr<Unk_PCBaseComp_ab8> MyPC::vfunc_86()
 }
 MS2_REPLACE_METHOD(0x141523630, MyPC, vfunc_86, 55, 0x8756C0FC);
 
+// @0x141523720
+int MyPC::vfunc_137()
+{
+    int nResult = PC::vfunc_137();
+    if (FUN_14166ce30() != 0)
+    {
+        vfunc_59(0xc, 0, 0, 0);
+        FUN_140a94350()->vfunc_10(7);
+        FUN_1409331e0()->FUN_14138d7e0(0xb, 0);
+        if (FUN_1403ed2d0()->FUN_141bd30a0().FUN_140885340()->FUN_140375570() == 0
+            && FUN_1403ed2d0()->FUN_141bd30a0().FUN_140885340()->FUN_1403755a0() == 0)
+        {
+            FUN_141a8a730();
+            FUN_1403ed2b0()->FUN_141adc530(0x4e38);
+        }
+    }
+    return nResult;
+}
+MS2_REPLACE_METHOD(0x141523720, MyPC, vfunc_137, 425, 0xD688D519);
+
+// The cube craft mode changed: show or hide the housing build HUD.
+// @0x1415238d0
+void MyPC::vfunc_135(int a, int b, void* p)
+{
+    int nOld = FUN_1416595d0();
+    PC::vfunc_135(a, b, p);
+    FUN_140ef4330();
+    int nNew = FUN_1416595d0();
+    if (nOld != nNew && b != 2)
+    {
+        if (nNew != 0)
+        {
+            m_b15d4 = 0;
+            Unk_MyPCSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+            if (spSvc.FUN_140885310() != 0)
+            {
+                int nMapId = FUN_1403ed2d0()->FUN_141bd3060();
+                int nBlock = FUN_1408a18d0(FUN_141656a80());
+                if (spSvc.FUN_1401cd1a0()->FUN_1410d55d0(nMapId, nBlock)
+                    || FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820)
+                    || FUN_1401c0d90()->FUN_14047e150(DAT_143ab2820))
+                    m_b15d4 = 1;
+            }
+            FUN_1403ed2b0()->FUN_141adc190();
+            FUN_1403ed2b0()->FUN_141adc530(0x4e85);
+            CString strEmpty("");
+            DAT_143ae10a8.FUN_141276180(strEmpty);
+        }
+        else
+        {
+            m_b15d4 = 0;
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4e85);
+            CString strEmpty("");
+            DAT_143ae14b8.FUN_141276180(strEmpty);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1415238D0, MyPC, vfunc_135, 509, 0xB83681F4);
+
 // @0x141523ae0
 CStringW MyPC::vfunc_134()
 {
@@ -957,6 +1043,29 @@ bool MyPC::vfunc_146()
     return FUN_1409eed90()->FUN_141b89990();
 }
 MS2_REPLACE_METHOD(0x141523B70, MyPC, vfunc_146, 27, 0xDB9FCEA7);
+
+// Select the housing cube under the player (the one below when the cube at the feet is not standable).
+// @0x141523c80
+void MyPC::FUN_141523c80()
+{
+    Unk_MyPCSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+    efd::Point3 kPos;
+    spSvc.FUN_1401cd1a0()->FUN_1410b7ad0(this, 0.0f, kPos, 1);
+    efd::Point3 kCell;
+    spSvc.FUN_1401cd1a0()->FUN_1410b7a20(kPos, kCell);
+    Cube* pCube = spSvc.FUN_1401cd1a0()->FUN_1410b8ab0(kCell);
+    bool bValue = false;
+    if (pCube != 0)
+        pCube->entity->GetPropertyValue(0x9ea356ad, bValue);
+    if (pCube == 0 || !bValue)
+    {
+        kCell.z -= 150.0f;
+        pCube = spSvc.FUN_1401cd1a0()->FUN_1410b8ab0(kCell);
+    }
+    if (pCube != 0 && pCube->entity != 0)
+        spSvc.FUN_1401cd1a0()->FUN_1410cab10(pCube);
+}
+MS2_REPLACE_METHOD(0x141523C80, MyPC, FUN_141523c80, 463, 0x8A794E2E);
 
 // @0x141523ba0
 void MyPC::FUN_141523ba0()
@@ -1773,6 +1882,38 @@ void MyPC::FUN_14152b800(__int64 nItemUid)
     FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x14152b800, MyPC, FUN_14152b800, 192, 0x59BEFECE);
+
+// MS2Ptr<Unk_RideeData> (Unk_RideeData is not CPtred-derived here): dtor 0x140788ed0, operator-> 0x1407895d0.
+template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();
+template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;
+
+// Mounted: learn the ridee's skill and close the windows a multi-seat ridee hides.
+// @0x14152c460
+void MyPC::vfunc_120(MS2Ptr<RideOnAction> spAction)
+{
+    PC::vfunc_120(spAction);
+    m_kStateCtl.FUN_1417b7450();
+    if (FUN_1416764a0() != 0)
+    {
+        const int& nSkillId = FUN_1416764a0()->FUN_141707750()->m_nSkillId;   // outlives the temp copy (the ridee keeps the data)
+        if (nSkillId != 0)
+        {
+            FUN_141523bc0()->FUN_141767f80(nSkillId);
+            FUN_141523bc0()->FUN_1417683d0();
+        }
+        if (FUN_1416764a0()->FUN_141707750()->m_nSeats > 1)
+        {
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4e2d);
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4f2d);
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4ec8);
+            FUN_1403ed2b0()->FUN_141adc5d0(0x2711);
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4f76);
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4ec3);
+        }
+    }
+    FUN_140aa6d40()->FUN_141b0ce20(0xc, 1);
+}
+MS2_REPLACE_METHOD(0x14152C460, MyPC, vfunc_120, 510, 0x966C40D5);
 
 // @0x14152e060
 int MyPC::FUN_14152e060()

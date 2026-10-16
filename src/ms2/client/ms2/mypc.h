@@ -54,6 +54,8 @@ public:
     ~CSkillSystem();                                        // 0x141764900
     void FUN_141764a80(class MyPC* pOwner);                 // init with the owner
     void FUN_141766af0(float fDelta);                       // per-frame update
+    void FUN_141767f80(int nSkillId);                       // add a temporary skill
+    void FUN_1417683d0();                                   // refresh the skill slots
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
     unsigned char m_body[0x1e8];
 };
@@ -171,6 +173,7 @@ public:
     Unk_MyPCStateCtl* FUN_141523be0();                      // the state controller
     MS2Ptr<Unk_PCBaseComp_b18> FUN_141523c00();
     Unk_MyPCComp1618* FUN_141523c50();
+    void FUN_141523c80();                                   // pick the housing cube under the player
     int FUN_141527120();
     int FUN_141527160(int nNext);
     bool FUN_141527280();

@@ -63,7 +63,10 @@ public:
     int m_nType;                                            // +0x38 1/2: the rider is not slowed down
     char m_pad_3c[0x1c];
     float m_fScale;                                         // +0x58
-    char m_pad_5c[0x1c];
+    char m_pad_5c[0x10];
+    int m_nSeats;                                           // +0x6c (>1: the ridee carries passengers)
+    int m_nSkillId;                                         // +0x70 the skill learned while riding
+    char m_pad_74[4];
     float m_f78;                                            // +0x78
     float m_f7c;                                            // +0x7c run speed
     float m_f80;                                            // +0x80 walk speed
