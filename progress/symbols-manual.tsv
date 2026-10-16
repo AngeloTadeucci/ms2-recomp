@@ -1623,3 +1623,5 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ??1Unk_ClosingCameraPtr@@QEAA@XZ	140cb1460	func
 ??$GetChild@VASUIComponent@@@UISwfEntity@@QEAA?AV?$MS2Ptr@VASUIComponent@@@@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z	140c02990	func
 ?g_ltaTable@@3VUnk_LtaTable@@A	143ab2fc0	data
+??0ASDataProvider@@QEAA@H@Z	140bbf7b0	func
+??1ASDataProvider@@UEAA@XZ	140bc0740	func
