@@ -172,6 +172,7 @@ public:
   int FUN_14052a170();                   // w98
   CStringW FUN_14052a4f0();
   int FUN_14052a580(void*);
+  bool FUN_140528980();                   // w98
   int FUN_140525cf0();                   // w98
   int FUN_140526060(void*);              // w98
   int FUN_140525f60();

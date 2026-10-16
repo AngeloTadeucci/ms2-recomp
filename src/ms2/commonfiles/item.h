@@ -99,7 +99,8 @@ public:
     CStringW m_str20;                       // +0x20
     CStringW m_str28;                       // +0x28
     CString m_str30;                        // +0x30
-    char m_pad38[0x18];
+    int m_n38;                              // +0x38
+    char m_pad3c[0x14];
     Unk_MusicNoteBlock m_note;              // +0x50
     char m_pad70[8];
 };

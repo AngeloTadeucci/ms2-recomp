@@ -1656,3 +1656,57 @@ const CStringW& CItemTransfer::CItemBinding::FUN_14052d1b0()
 {
     return m_str20;
 }
+
+// MS2-FUNCTIONAL: switch temporaries/slot layout differ from the exe (jump table and behaviour identical)
+// @0x140528cc0
+bool CItem::FUN_140528cc0()
+{
+    if (FUN_140528ca0() == 1)
+        return false;
+    if (FUN_140525ca0() == 1)
+        return false;
+    if (FUN_140525db0() == 1)
+        return false;
+    if (FUN_140525e00() == 1)
+        return false;
+    int nType = FUN_140527840()->FUN_14053c5c0();
+    unsigned nIdx = nType - 1;
+    switch (nIdx)
+    {
+    case 0:
+    case 4:
+    case 8:
+    case 10:
+    case 11:
+    case 12:
+    case 20:
+        return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140528CC0, CItem, FUN_140528cc0, 178, 0xE2BEDD66);
+
+// @0x140528980
+bool CItem::FUN_140528980()
+{
+    if (FUN_140528930() && FUN_140525640() == 0)
+    {
+        if (!FUN_140527840()->FUN_14053cde0())
+            return false;
+    }
+    if (FUN_140527840()->FUN_14053cd10())
+    {
+        if (!FUN_140525730() && FUN_140527340() < 1)
+            return false;
+        if (FUN_140525680())
+        {
+            CItemCustomMusicScore* pScore = FUN_140527990();
+            if (pScore == 0)
+                return false;
+            if (pScore->m_n38 != 0 && pScore->m_n38 != 1)
+                return false;
+        }
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x140528980, CItem, FUN_140528980, 210, 0xC3F33C70);
