@@ -66,7 +66,7 @@ public:
     struct GuildSkill:public CPtred {
         GuildSkill();
         bool FUN_1404d4cb0(void* node);
-        bool FUN_1404d4e40(); bool FUN_1404d4e60(); int FUN_1404d4e80();
+        bool FUN_1404d4e40(); bool FUN_1404d4e60(); bool FUN_1404d4e80();
         int f18;
         int f1c;
         int f20;

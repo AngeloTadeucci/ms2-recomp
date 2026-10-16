@@ -370,7 +370,7 @@ MS2_REPLACE_METHOD(0x1404d4e40, CGuildXmlData::GuildSkill, FUN_1404d4e40, 26, 0x
 bool CGuildXmlData::GuildSkill::FUN_1404d4e60(){if(f18<10001) return true; else return false;}
 MS2_REPLACE_METHOD(0x1404d4e60, CGuildXmlData::GuildSkill, FUN_1404d4e60, 26, 0x5489544F);
 // @0x1404d4e80
-int CGuildXmlData::GuildSkill::FUN_1404d4e80(){if(f18<1001 || 10000<f18)return 0;else return 1;}
+bool CGuildXmlData::GuildSkill::FUN_1404d4e80(){if(f18>1000 && f18<=10000)return true;return false;}
 MS2_REPLACE_METHOD(0x1404d4e80, CGuildXmlData::GuildSkill, FUN_1404d4e80, 40, 0x930E0806);
 // @0x1404d4eb0
 CGuildXmlData::GuildEvent::GuildEvent():f18(0),f1c(0){}

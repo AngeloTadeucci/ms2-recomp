@@ -5,6 +5,8 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\guilddef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "guilddef_1.h"
+#include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
 #include "hook/ms2hook.h"
 __time64_t FUN_140869440();
 int FUN_14086ace0(__int64);
@@ -17,6 +19,9 @@ unsigned FUN_1404f44b0(void* map);
 char FUN_1404f6070(void* map,const wchar_t* key,Unk_GuildRef* out);
 void FUN_1404f91b0(void* map,const wchar_t* key);
 void FUN_1404f9ae0(void* map,const wchar_t* key,Unk_GuildRef* v);
+char FUN_1404f6070(void* map,const wchar_t* key,MS2Ptr<CGuildMember>& out);
+char FUN_1404f5f60(void* map,int key,MS2Ptr<CGuildSkill>& out);
+char FUN_1404f5ef0(void* map,int key,MS2Ptr<CGuildCustomEvent>& out);
 Unk_GuildRef* FUN_1404ec5b0(Unk_GuildRef* dst,const Unk_GuildRef* src);
 Unk_GuildRef* FUN_1404ec580(Unk_GuildRef* dst,const Unk_GuildRef* src);
 void FUN_1404ec5f0(Unk_GuildRef*,int);
@@ -76,7 +81,7 @@ void* FUN_1404efe60(void*,const void*); char FUN_1404f01a0(Unk_GuildRef*,int); c
 char FUN_1404f0660(void*,void*); Unk_GuildRef* FUN_1404f0760(void*,int); void* FUN_1404f0990(void*,void*);
 char FUN_1404f0ae0(Unk_GuildRef*); CGuildStorage::CGuildStroageHistory* FUN_1404f0bd0(Unk_GuildRef*); char* FUN_1404f0bf0(Unk_GuildRef*);
 void* FUN_1404f0ce0(void*); void FUN_1404f14c0(void*); void FUN_1404f31c0(void*,Unk_GuildRef*); void FUN_1404f3270(void*,Unk_GuildRef*);
-unsigned FUN_1404f4450(void*); void FUN_1404f44a0(void*); void FUN_1404f8b40(void*); void FUN_1404f8c50(void*);
+unsigned FUN_1404f4450(void*); size_t FUN_1404f44a0(void*); void FUN_1404f8b40(void*); void FUN_1404f8c50(void*);
 void FUN_1404f9a40(void*,__int64,__int64); void FUN_1405063e0(void*,void*); void FUN_140506ac0(void*); void FUN_140506ca0(void*);
 void* FUN_1405076d0(void*,void*); void FUN_1405085e0(void*,void*); void FUN_140508ed0(void*,void*,void*);
 void FUN_1405098f0(void*); void FUN_1405099e0(void*,Unk_GuildRef*); void FUN_140509c90(void*,Unk_GuildRef*);
@@ -866,16 +871,16 @@ int CGuildSkill::FUN_1404cbbf0()
 }
 
 // @0x1404cbcd0
-int CGuildSkill::FUN_1404cbcd0()
+bool CGuildSkill::FUN_1404cbcd0()
 {
-    if(FUN_1404cbb00()<1) { if(FUN_1404cbbf0()<1) return 1; return 0; }
-    return 0;
+    if(FUN_1404cbb00()<1) { if(FUN_1404cbbf0()<1) return true; return false; }
+    return false;
 }
 
 // @0x1404cbd20
 bool CGuildSkill::FUN_1404cbd20()
 {
-    char ok=(char)FUN_1404cbcd0();
+    char ok=FUN_1404cbcd0();
     if(ok!=0) f20=FUN_140869440();
     return ok!=0;
 }
@@ -1489,41 +1494,31 @@ void CGuildInfo::vfunc_1(CStringW name)
 }
 
 // @0x1404cf9f0
-Unk_GuildRef* CGuildInfo::FUN_1404cf9f0(Unk_GuildRef* ret,CStringW name)
+MS2Ptr<CGuildMember> CGuildInfo::FUN_1404cf9f0(CStringW name)
 {
-    if(name.IsEmpty()) {
-        FUN_1404ec5f0(ret,0);
-        return ret;
-    }
-    Unk_GuildRef found; FUN_1404ec5f0(&found,0);
+    if(name.IsEmpty())
+        return MS2Ptr<CGuildMember>(0);
+    MS2Ptr<CGuildMember> found(0);
     if(Unk_LockGuard guard=lock) {} else {
-        FUN_1404f6070(&f320,name,&found);
+        FUN_1404f6070(&f320,name,found);
     }
-    FUN_1404ec580(ret,&found);
-    FUN_1404eead0(&found);
-    return ret;
+    return found;
 }
 
 // @0x1404cfb00
-Unk_GuildRef* CGuildInfo::FUN_1404cfb00(Unk_GuildRef* ret,__int64 id)
+MS2Ptr<CGuildMember> CGuildInfo::FUN_1404cfb00(__int64 id)
 {
-    Unk_GuildRef found; FUN_1404ec5f0(&found,0);
+    MS2Ptr<CGuildMember> found(0);
     if(Unk_LockGuard guard=lock) {} else {
-        void* pos=FUN_1404f4510(&f320);
-        while(pos!=0) {
-            Unk_GuildRef ref; FUN_1404ec5b0(&ref,FUN_1404f4f70(&f320,pos));
-            if(FUN_1404f0ab0(&ref)!=0 && FUN_1404f0b80(&ref)->f18==id) {
-                FUN_1404ef970(&found,&ref);
-                FUN_1404eead0(&ref);
+        for(void* pos=FUN_1404f4510(&f320); pos!=0; FUN_1404f4700(&f320,&pos)) {
+            MS2Ptr<CGuildMember> member=reinterpret_cast<MS2Ptr<CGuildMember>&>(*FUN_1404f4f70(&f320,pos));
+            if((member.get() ? true : false) && member->f18==id) {
+                found=member;
                 break;
             }
-            FUN_1404eead0(&ref);
-            FUN_1404f4700(&f320,&pos);
         }
     }
-    FUN_1404ec580(ret,&found);
-    FUN_1404eead0(&found);
-    return ret;
+    return found;
 }
 
 // @0x1404cfc70
@@ -1597,17 +1592,14 @@ void CGuildInfo::FUN_1404d0130(Unk_GuildRef* v)
 }
 
 // @0x1404d01b0
-bool CGuildInfo::FUN_1404d01b0(CStringW name)
+int CGuildInfo::FUN_1404d01b0(CStringW name)
 {
     if(Unk_LockGuard guard=lock) {} else {
-        Unk_GuildRef ref; FUN_1404cf9f0(&ref,name);
-        if(FUN_1404f0020(&ref,0)==0) {
-            if(FUN_1404f0b80(&ref)->data.f08==f78) { FUN_1404eead0(&ref); return true; }
-            FUN_1404eead0(&ref); return false;
-        }
-        FUN_1404eead0(&ref); return false;
+        MS2Ptr<CGuildMember> member=FUN_1404cf9f0(name);
+        if(member==0) return FALSE;
+        if(member->data.f08==f78) return TRUE;
+        else return FALSE;
     }
-    return false;
 }
 
 // @0x1404d0330
@@ -1651,7 +1643,7 @@ int CGuildInfo::FUN_1404d0580()
 }
 
 // @0x1404d0600
-bool CGuildInfo::FUN_1404d0600(CStringW name,unsigned mask)
+int CGuildInfo::FUN_1404d0600(CStringW name,unsigned mask)
 {
     unsigned v=FUN_1404d06a0(name);
     bool none=(v&mask)==0;
@@ -1662,14 +1654,14 @@ bool CGuildInfo::FUN_1404d0600(CStringW name,unsigned mask)
 unsigned CGuildInfo::FUN_1404d06a0(CStringW name)
 {
     if(Unk_LockGuard guard=lock) {} else {
-        Unk_GuildRef ref; FUN_1404cf9f0(&ref,name);
-        if(FUN_1404f0020(&ref,0)==0) {
-            Unk_GuildRef grade; FUN_1404d0860(&grade,FUN_1404f0b80(&ref)->fb4);
-            if(FUN_1404f0aa0(&grade)==0) { FUN_1404eeaa0(&grade); FUN_1404eead0(&ref); return 0; }
+        MS2Ptr<CGuildMember> member=FUN_1404cf9f0(name);
+        if(!(member==0)) {
+            Unk_GuildRef grade; FUN_1404d0860(&grade,member->fb4);
+            if(FUN_1404f0aa0(&grade)==0) { FUN_1404eeaa0(&grade); return 0; }
             unsigned v=FUN_1404f0b70(&grade)->permissions;
-            FUN_1404eeaa0(&grade); FUN_1404eead0(&ref); return v;
+            FUN_1404eeaa0(&grade); return v;
         }
-        FUN_1404eead0(&ref); return 0;
+        return 0;
     }
     return 0;
 }
@@ -2158,14 +2150,12 @@ void CGuildInfo::FUN_1404d25a0(Unk_GuildRef* skill)
 }
 
 // @0x1404d2640
-Unk_GuildRef* CGuildInfo::FUN_1404d2640(Unk_GuildRef* ret,int key)
+MS2Ptr<CGuildSkill> CGuildInfo::FUN_1404d2640(int key)
 {
     Unk_GuildMapLock guard(lock,1);
-    Unk_GuildRef tmp; FUN_1404ec920(&tmp,0);
-    FUN_1404f5f60(&f238,key,&tmp);
-    FUN_1404ec8b0(ret,&tmp);
-    FUN_1404eeb90(&tmp);
-    return ret;
+    MS2Ptr<CGuildSkill> skill(0);
+    FUN_1404f5f60(&f238,key,skill);
+    return skill;
 }
 
 // @0x1404d26f0
@@ -2183,14 +2173,12 @@ int CGuildInfo::FUN_1404d26f0(int key)
 }
 
 // @0x1404d27b0
-Unk_GuildRef* CGuildInfo::FUN_1404d27b0(Unk_GuildRef* ret,int key)
+MS2Ptr<CGuildCustomEvent> CGuildInfo::FUN_1404d27b0(int key)
 {
     Unk_GuildMapLock guard(lock,1);
-    Unk_GuildRef tmp; FUN_1404ec460(&tmp,0);
-    FUN_1404f5ef0(&f280,key,&tmp);
-    FUN_1404ec3f0(ret,&tmp);
-    FUN_1404eea70(&tmp);
-    return ret;
+    MS2Ptr<CGuildCustomEvent> event(0);
+    FUN_1404f5ef0(&f280,key,event);
+    return event;
 }
 
 // @0x1404d2860
@@ -2380,7 +2368,7 @@ void CGuildInfo::FUN_1404d31b0()
 }
 
 // @0x1404d3400
-void CGuildInfo::FUN_1404d3400(void* out)
+int CGuildInfo::FUN_1404d3400(void* out)
 {
     FUN_1404f8b40(out);
     if(Unk_LockGuard guard=lock) {} else {
@@ -2417,7 +2405,7 @@ void CGuildInfo::FUN_1404d3400(void* out)
             FUN_1404f4700(&f320,&pos);
         }
     }
-    FUN_1404f44a0(out);
+    return (int)FUN_1404f44a0(out);
 }
 
 // @0x1404d3600

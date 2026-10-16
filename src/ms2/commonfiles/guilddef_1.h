@@ -22,6 +22,7 @@ struct Unk_GuildArray {
 MS2_CHECK_SIZE(Unk_GuildArray,32);
 
 class CGuildInfo;
+template <class T> class MS2Ptr;
 struct Unk_GuildMapLock { Unk_GuildMapLock(CLockCriticalSection&,int); ~Unk_GuildMapLock(); void* p; };
 MS2_CHECK_SIZE(Unk_GuildMapLock,8);
 struct Unk_GuildNameLock { Unk_GuildNameLock(CLockCriticalSection&,int); ~Unk_GuildNameLock(); void* p; };
@@ -247,7 +248,7 @@ public:
     void FUN_1404cba60(CInPacket& packet);
     int FUN_1404cbb00();
     int FUN_1404cbbf0();
-    int FUN_1404cbcd0();
+    bool FUN_1404cbcd0();
     bool FUN_1404cbd20();
     int f18,f1c; __int64 f20;
 };
@@ -328,18 +329,18 @@ public:
     void FUN_1404cf070(COutputStream& out); void FUN_1404cf1e0(CInPacket& packet);
     void FUN_1404cf390(COutputStream& out); void FUN_1404cf490(CInPacket& packet);
     void FUN_1404cf5f0(COutputStream& out); void FUN_1404cf6c0(CInPacket& packet);
-    Unk_GuildRef* FUN_1404cf9f0(Unk_GuildRef* ret,CStringW name);
-    Unk_GuildRef* FUN_1404cfb00(Unk_GuildRef* ret,__int64 id);
+    MS2Ptr<CGuildMember> FUN_1404cf9f0(CStringW name);   // member by name (sret)
+    MS2Ptr<CGuildMember> FUN_1404cfb00(__int64 id);      // member by character id (sret)
     void FUN_1404cfc70(const CStringW& oldName,const CStringW& newName);
     void FUN_1404cfdb0(const CStringW& name,int value);
     void FUN_1404cfe60(const CStringW& name,__int64 value);
     unsigned __int64 FUN_1404cff20();
     int FUN_1404d0020();
     Unk_GuildRef* FUN_1404d00a0(Unk_GuildRef* ret); void FUN_1404d0130(Unk_GuildRef* v);
-    bool FUN_1404d01b0(CStringW name);
+    int FUN_1404d01b0(CStringW name);
     void FUN_1404d0330(void* out); void FUN_1404d0420(void* out);
     int FUN_1404d0510(); int FUN_1404d0580();
-    bool FUN_1404d0600(CStringW name,unsigned mask);
+    int FUN_1404d0600(CStringW name,unsigned mask);
     unsigned FUN_1404d06a0(CStringW name);
     Unk_GuildRef* FUN_1404d0860(Unk_GuildRef* ret,int index);
     int FUN_1404d0990(int index,Unk_GuildRef* grade);
@@ -373,9 +374,9 @@ public:
     CStringW FUN_1404d2400(int key);
     int FUN_1404d2510(int a,int b);
     void FUN_1404d25a0(Unk_GuildRef* skill);
-    Unk_GuildRef* FUN_1404d2640(Unk_GuildRef* ret,int key);
+    MS2Ptr<CGuildSkill> FUN_1404d2640(int key);           // skill by id (sret)
     int FUN_1404d26f0(int key);
-    Unk_GuildRef* FUN_1404d27b0(Unk_GuildRef* ret,int key);
+    MS2Ptr<CGuildCustomEvent> FUN_1404d27b0(int key);     // custom event by id (sret)
     void FUN_1404d2860(Unk_GuildRef* npc);
     Unk_GuildRef* FUN_1404d28e0(Unk_GuildRef* ret,int key);
     int FUN_1404d2990(int key);
@@ -389,7 +390,7 @@ public:
     void FUN_1404d3140(const Unk_GuildSeason* season);
     Unk_GuildSeason* FUN_1404d3180();
     void FUN_1404d31b0();
-    void FUN_1404d3400(void* out);
+    int FUN_1404d3400(void* out);   // fills a member map, returns its count
     void FUN_1404d3600(int v); int FUN_1404d3620();
     Unk_GuildRef* FUN_1404d3640(Unk_GuildRef* ret);
     void FUN_1404d36d0();
