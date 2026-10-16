@@ -194,6 +194,9 @@ public:
     void FUN_141a01d30(int nMode, const CStringW& strDefault, unsigned int nMax, int a4, int a5);    // text input setup
     void FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)> cb); // result callback
     void FUN_141a01600(__int64 n);                                  // uiugccubepalettedialog.cpp: the item uid
+    void FUN_141a01ca0(int nButton, int nTime, const CStringW& strText);   // guildmanager.cpp: the auto-decline countdown
+    void FUN_141a02460(int n);
+    void FUN_141a02480(int n);
     void FUN_141a024a0(int n);
     void FUN_141a02730(bool b);
     void FUN_141a02770(int nWidth, int nHeight);

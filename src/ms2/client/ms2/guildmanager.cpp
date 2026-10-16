@@ -32,6 +32,7 @@
 #include "worldservice.h"
 #include "ms2/commonfiles/itemgift.h"
 #include "ms2/placeholder/citemdata.h"
+#include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
@@ -78,7 +79,7 @@ class Unk_GuildEventMgr { public: bool FUN_14047e880(); bool FUN_14047eca0(); };
 Unk_GuildEventMgr* FUN_1401c0d90();
 class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
-class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); };
+class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
 class Unk_GuildNotifyCenter {
 public:
@@ -103,8 +104,14 @@ WorldService* FUN_1403ed2d0();
 CGuildManager* FUN_1403ed290();
 CGuildXmlData* FUN_1404f4530();
 // Game event bonus (guild donation bonus rate in 1/10000).
-class Unk_GuildEventBonus { public: int FUN_140423780(); };
-class Unk_GuildGameEventMgr { public: Unk_GuildEventBonus* FUN_1403eea90(); };
+class Unk_GuildEventBonus { public: int FUN_140423780(); int FUN_140423450(); int FUN_140423560(); };
+class Unk_GuildGameEventMgr {
+public:
+    Unk_GuildEventBonus* FUN_1403eea90();
+    Unk_GuildEventBonus* FUN_1403eeab0();
+    Unk_GuildEventBonus* FUN_1403eead0();
+    int FUN_1413cdf60() { return 10000; }                  // the bonus rate scale
+};
 Unk_GuildGameEventMgr* FUN_140302b00();
 // Party/field recall gate.
 class Unk_GuildRecallGate { public: int FUN_140b040a0(int count); };
@@ -150,6 +157,34 @@ class Unk_GuildMsgStrings { public: CStringW FUN_141812290(int buffId, unsigned 
 Unk_GuildMsgStrings* FUN_1401a9d70();
 extern __int64 DAT_143ab2828;                       // the local character id
 extern __int64 DAT_143ad9140;                       // the character the guild notice was last shown to
+extern int DAT_143aaef18;                           // the current guild season id
+class Unk_GuildUiMgr { public: void FUN_141adc5d0(int uiId); };
+Unk_GuildUiMgr* FUN_1403ed2b0();
+CStringW FUN_14052bd00(int id, const CStringW& arg);
+CStringW FUN_140632a60(int id, const CStringW& arg0, const CStringW& arg1);
+bool FUN_141b70f50(const CStringW& left, const CStringW& right);   // the names are equal
+bool FUN_14025cd60(const CStringW& left, const CStringW& right);
+CStringW FUN_1409eec40(int id);
+CStringW FUN_1408116a0(int id, const int& value);
+// Client options (+5: refuse guild invitations).
+struct Unk_GuildClientOptions { bool m_flags[5]; bool m_refuseGuildInvite; };
+class Unk_GuildOptionsMgr;
+Unk_GuildOptionsMgr* FUN_1409a8b10();
+Unk_GuildClientOptions* FUN_140ae6540(Unk_GuildOptionsMgr* mgr);
+// The local player's busy state (a pending party/trade request); see partymanager.cpp.
+class Unk_GuildBusyState { public: bool FUN_140743550(); };
+class Unk_GuildBusyStatePtr {
+public:
+    ~Unk_GuildBusyStatePtr();                               // 0x140964aa0
+    Unk_GuildBusyState* operator->() const;                 // 0x140965970
+private:
+    void* m_00;
+    Unk_GuildBusyState* m_p;
+};
+MS2_CHECK_SIZE(Unk_GuildBusyStatePtr, 0x10);
+class Unk_GuildPlayer { public: Unk_GuildBusyStatePtr FUN_140967420(); };
+MS2Ptr<CMsgBoxData> FUN_140d73d20(int type, CStringW text, void* listener, CStringW tag);
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);
 int FUN_140869470(int days);
 CStringW FUN_14028de60(int id);
 CStringW FUN_14028b8e0(const CStringW& key);
@@ -1472,3 +1507,345 @@ void CGuildManager::FUN_1413bd640(bool show)
         dialog->FUN_14196e230(show);
 }
 MS2_REPLACE_METHOD(0x1413BD640, CGuildManager, FUN_1413bd640, 56, 0xE6D04E64);
+
+// @0x1413bd050
+int CGuildManager::FUN_1413bd050(int skillId, int skillLevel)
+{
+    Unk_PayloadPtr<CGuildXmlData::GuildSkill> skillData = FUN_1404f4530()->FUN_1404d74e0(skillId, skillLevel);
+    if (skillData == 0) return 0;
+    __int64 cost = FUN_1404d2510(skillId, skillLevel);
+    int discount = skillData->FUN_1404d4e80() ? 0 : FUN_140302b00()->FUN_1403eead0()->FUN_140423450();
+    cost -= cost * discount / FUN_140302b00()->FUN_1413cdf60();
+    return (int)cost;
+}
+MS2_REPLACE_METHOD(0x1413BD050, CGuildManager, FUN_1413bd050, 321, 0xACB87D95);
+
+// @0x1413bd1a0
+int CGuildManager::FUN_1413bd1a0(int skillId, int skillLevel)
+{
+    Unk_PayloadPtr<CGuildXmlData::GuildSkill> skillData = FUN_1404f4530()->FUN_1404d74e0(skillId, skillLevel);
+    if (skillData == 0) return 0x7fffffff;
+    if (!skillData->FUN_1404d4e40()) return 0x7fffffff;
+    __int64 duration = skillData->f28;
+    int rate = FUN_140302b00()->FUN_1403eeab0()->FUN_140423560();
+    duration -= duration * rate / FUN_140302b00()->FUN_1413cdf60();
+    return (int)duration;
+}
+MS2_REPLACE_METHOD(0x1413BD1A0, CGuildManager, FUN_1413bd1a0, 304, 0x760524CF);
+
+// @0x1413bd680
+void CGuildManager::FUN_1413bd680(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 1)
+        FUN_1413b5f90();
+    FUN_1404cdda0(packet);
+    DAT_143aaef18 = FUN_1404d3180()->id;
+    m_joinRequestsForGuild.RemoveAll();
+    m_joinRequestsForChar.RemoveAll();
+    if (Unk_LockGuard guard = lock) {} else {
+        for (void* pos = FUN_1404f4510(&f320); pos != 0; FUN_1404f4700(&f320, &pos)) {
+            MS2Ptr<CGuildMember> member = FUN_1404f4f70(&f320, pos);
+            if (member.get() != 0)
+                FUN_1409f7c90()->FUN_14161cd60(member->data.f08);
+        }
+    }
+    if (FUN_1413b6160() && m_noticeAttendance) {
+        if (FUN_1401c0d90()->FUN_14047e880()) {
+            FUN_1412751b0(FUN_14028de60(0x3c3), 0xd);
+            m_noticeAttendance = false;
+        }
+    }
+    m_nextRefreshTime = FUN_140869440();
+}
+MS2_REPLACE_METHOD(0x1413BD680, CGuildManager, FUN_1413bd680, 535, 0x24AB49D2);
+
+// @0x1413bd8a0
+void CGuildManager::FUN_1413bd8a0(CInPacket& packet)
+{
+    int result = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (result != 0) {
+        FUN_1413c66f0(1, result, 0);
+        return;
+    }
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    FUN_141276180(s_strPcGuildMake, "");
+    FUN_140d73aa0(FUN_14052bd00(0x389, guildName), 0, 0, CStringW(L""));
+    FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+}
+MS2_REPLACE_METHOD(0x1413BD8A0, CGuildManager, FUN_1413bd8a0, 344, 0x58CF0D27);
+
+// @0x1413bda00
+void CGuildManager::FUN_1413bda00(CInPacket& packet)
+{
+    int result = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (result != 0) {
+        FUN_1413c66f0(2, result, 0);
+        return;
+    }
+    FUN_1413b5f90();
+    FUN_140d73aa0(FUN_14028de60(0x38a), 0, 0, CStringW(L""));
+    FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+}
+MS2_REPLACE_METHOD(0x1413BDA00, CGuildManager, FUN_1413bda00, 234, 0x5056CD05);
+
+// @0x1413bdaf0
+void CGuildManager::FUN_1413bdaf0(CInPacket& packet)
+{
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    FUN_140d73aa0(FUN_14052bd00(0x38b, guildName), 0, 0, CStringW(L""));
+}
+MS2_REPLACE_METHOD(0x1413BDAF0, CGuildManager, FUN_1413bdaf0, 184, 0x896C70E0);
+
+// @0x1413bdbb0
+void CGuildManager::FUN_1413bdbb0(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 1)
+        return;
+    m_invite.AssignRaw(new CGuildInviteInfo());
+    m_invite->FUN_1404c9230(packet);
+    if (!FUN_141b70f50(m_invite->f38, FUN_1413c7c20())) {
+        m_invite = 0;
+        return;
+    }
+    Unk_GuildPlayer* player = (Unk_GuildPlayer*)FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (FUN_140ae6540(FUN_1409a8b10())->m_refuseGuildInvite) {
+        FUN_1403ed290()->FUN_1413b74f0(0);
+        return;
+    }
+    if (player != 0 && player->FUN_140967420()->FUN_140743550()) {
+        FUN_1403ed290()->FUN_1413b74f0(0);
+    } else {
+        MS2Ptr<CMsgBoxData> box = FUN_140d73d20(1, FUN_140632a60(0x38c, m_invite->f30, m_invite->f20), 0, CStringW(s_strGuildInvite));
+        if (box.get()) {
+            box->FUN_141a01ca0(0x14, 1, FUN_14028de60(0x2b8));
+            box->FUN_141a02460(1);
+            box->FUN_141a02480(1);
+            box->FUN_141a024a0(0);
+            FUN_140d73c60(box);
+            FUN_141276180(s_strSystemGuildInvitation, "");
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413BDBB0, CGuildManager, FUN_1413bdbb0, 1121, 0xAEAA9B1C);
+
+// @0x1413be020
+void CGuildManager::FUN_1413be020(CInPacket& packet)
+{
+    CGuildInviteInfo invite;
+    invite.FUN_1404c9230(packet);
+    int result = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (result == 1) {
+        FUN_1412751b0(FUN_14052bd00(0x38f, invite.f20), 0xd);
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+    } else {
+        FUN_1412751b0(FUN_14052bd00(0x390, invite.f20), 0xd);
+    }
+    FUN_1413b6110();
+}
+MS2_REPLACE_METHOD(0x1413BE020, CGuildManager, FUN_1413be020, 298, 0x38874559);
+
+// @0x1413be150
+void CGuildManager::FUN_1413be150(CInPacket& packet)
+{
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int accepted = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    unsigned char reason = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (accepted == 1) {
+    } else {
+        CStringW text(L"");
+        switch (reason) {
+        case 1: text = FUN_14052bd00(0x392, name); break;
+        case 2: text = FUN_14052bd00(0x393, name); break;
+        case 3: text = FUN_14052bd00(0x394, name); break;
+        }
+        FUN_1412751b0(text, 0xd);
+    }
+}
+MS2_REPLACE_METHOD(0x1413BE150, CGuildManager, FUN_1413be150, 503, 0x92EF0721);
+
+// @0x1413be350
+void CGuildManager::FUN_1413be350(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW guildName(f40);
+    FUN_1413b5f90();
+    FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+    FUN_1412751b0(FUN_14052bd00(0x395, guildName), 0xd);
+}
+MS2_REPLACE_METHOD(0x1413BE350, CGuildManager, FUN_1413be350, 170, 0xB4A3CC27);
+
+// @0x1413be400
+void CGuildManager::FUN_1413be400(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    static_cast<CInputStream&>(packet).vfunc_o8_8();
+}
+MS2_REPLACE_METHOD(0x1413BE400, CGuildManager, FUN_1413be400, 85, 0xB2138CA5);
+
+// @0x1413be460
+void CGuildManager::FUN_1413be460(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (name.IsEmpty())
+        FUN_1412751b0(FUN_1409eec40(0x3aa), 0xd);
+    else
+        FUN_1412751b0(FUN_14052bd00(0x3ab, name), 0xd);
+    if (Unk_LockGuard guard = lock) {} else {
+        for (void* pos = FUN_1404f4510(&f320); pos != 0; FUN_1404f4700(&f320, &pos)) {
+            MS2Ptr<CGuildMember> member = FUN_1404f4f70(&f320, pos);
+            if (member.get() != 0)
+                FUN_1409f7c90()->FUN_14161cd60(member->data.f08);
+        }
+    }
+    FUN_1404cc900();
+    FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+}
+MS2_REPLACE_METHOD(0x1413BE460, CGuildManager, FUN_1413be460, 522, 0x7C89BF43);
+
+// @0x1413be670
+void CGuildManager::FUN_1413be670(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(name);
+    if (member.get() != 0) {
+        FUN_1409f7c90()->FUN_14161cd60(member->data.f08);
+        vfunc_1(name);
+        if (member->fb0 == 1) {
+        } else {
+            member->fb0;            // the exe evaluates member-> and discards it (a compiled-out statement)
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413BE670, CGuildManager, FUN_1413be670, 353, 0x2DEAA79D);
+
+// @0x1413be7e0
+void CGuildManager::FUN_1413be7e0(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int grade = static_cast<CInputStream&>(packet).vfunc_o8_1();
+}
+MS2_REPLACE_METHOD(0x1413BE7E0, CGuildManager, FUN_1413be7e0, 136, 0xC9753032);
+
+// @0x1413be870
+void CGuildManager::FUN_1413be870(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW oldName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW newName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    bool memberRenamed = false;
+    bool requestRenamed = false;
+    if (FUN_1404cf9f0(oldName).get() != 0) {
+        memberRenamed = true;
+        FUN_1404cfc70(oldName, newName);
+    } else {
+        for (size_t i = 0; i < m_joinRequestsForGuild.GetCount(); i++) {
+            MS2Ptr<CGuildJoinRequestForGuild> request = m_joinRequestsForGuild[i];
+            if (request.get() != 0) {
+                if (FUN_14025cd60(request->f38, oldName)) {
+                    request->f38 = newName;
+                    requestRenamed = true;
+                    break;
+                }
+            }
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f)) {
+        if (memberRenamed) {
+            dialog->FUN_141973df0(oldName);
+            dialog->FUN_141973b20(newName);
+        }
+        if (requestRenamed)
+            dialog->FUN_14196da70();
+    }
+}
+MS2_REPLACE_METHOD(0x1413BE870, CGuildManager, FUN_1413be870, 665, 0xD9E44CA6);
+
+// @0x1413beb10
+void CGuildManager::FUN_1413beb10(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int value = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    FUN_1404cfdb0(name, value);
+}
+MS2_REPLACE_METHOD(0x1413BEB10, CGuildManager, FUN_1413beb10, 161, 0xF64DC69A);
+
+// @0x1413bebc0
+void CGuildManager::FUN_1413bebc0(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    FUN_140d73aa0(FUN_14028b8e0(L"s_guild_attend_complete"), 0, 0, CStringW(L""));
+    FUN_1412751b0(FUN_14028b8e0(L"s_guild_attend_complete"), 0xd);
+}
+MS2_REPLACE_METHOD(0x1413BEBC0, CGuildManager, FUN_1413bebc0, 271, 0x92EE0AC3);
+
+// @0x1413bece0
+void CGuildManager::FUN_1413bece0(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    int donationCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 donationTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(FUN_1413c7c20());
+    if (member == 0)
+        return;
+    member->ff0 = donationCount;
+    member->ff8 = donationTime;
+    CStringW key(L"s_guild_donate_complete");
+    FUN_1412751b0(FUN_14028b8e0(key), 0xd);
+}
+MS2_REPLACE_METHOD(0x1413BECE0, CGuildManager, FUN_1413bece0, 390, 0x314F4DBE);
+
+// @0x1413bee70
+void CGuildManager::FUN_1413bee70(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    static_cast<CInputStream&>(packet).vfunc_o8_8();
+}
+MS2_REPLACE_METHOD(0x1413BEE70, CGuildManager, FUN_1413bee70, 85, 0x76DEFDC8);
+
+// @0x1413beed0
+void CGuildManager::FUN_1413beed0(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    int result = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (result == 0) {
+    } else if (result == 1) {
+        FUN_140d73aa0(FUN_1409eec40(0x397), 0, 0, CStringW(L""));
+    }
+}
+MS2_REPLACE_METHOD(0x1413BEED0, CGuildManager, FUN_1413beed0, 270, 0xE0BC5A02);
+
+// @0x1413beff0
+void CGuildManager::FUN_1413beff0(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    static_cast<CInputStream&>(packet).vfunc_o8_8();
+}
+MS2_REPLACE_METHOD(0x1413BEFF0, CGuildManager, FUN_1413beff0, 85, 0x22DAF26D);
+
+// @0x1413bf050
+void CGuildManager::FUN_1413bf050(CInPacket& packet)
+{
+    if (!FUN_1413b6160())
+        return;
+    int capacity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    FUN_1404cd2b0(capacity);
+    FUN_140d73aa0(FUN_1408116a0(0x39f, capacity), 0, 0, CStringW(L""));
+}
+MS2_REPLACE_METHOD(0x1413BF050, CGuildManager, FUN_1413bf050, 216, 0x7E8A5D03);
