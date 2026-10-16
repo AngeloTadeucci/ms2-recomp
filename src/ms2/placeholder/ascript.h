@@ -146,6 +146,11 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, const AScript& a1, const char* a2);  // 0x141aafc10 (inline COMDAT, defined in uiquesteventlistener.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, float a1);                           // 0x14127bfb0 (inline COMDAT, defined in gfxmoviebackground.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, float a1, float a2, float a3);       // 0x14127c050 (inline COMDAT, defined in gfxmoviebackground.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, Scaleform::GFx::Value a3);   // 0x140f0a3f0 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, Scaleform::GFx::Value a2);   // 0x140f0a510 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, const wchar_t* a1, bool a2, bool a3);   // 0x140f0a610 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2, bool a3, bool a4);   // 0x140f0a6f0 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, long a2);   // 0x140f0a830 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
 
 protected:   // cr4: was private; derived AS helpers (ASCommonDepth) read the movie id and the value
     union {
