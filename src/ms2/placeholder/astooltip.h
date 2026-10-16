@@ -18,12 +18,14 @@ public:
     explicit ASTooltip(int nMovieId);                // 0x1409c62e0 (aseffect.cpp)
     ASTooltip(int a1, int a2);
     ASTooltip(void* pOwner, int a1, int a2);
+    ASTooltip(const Scaleform::GFx::Value& root, int nMovieId);     // 0x1409c6350 (uiadventureleveldialog.cpp)
     virtual ~ASTooltip();
     void FUN_1409c6dc0(int n);
     void FUN_1409c6e90(int n);
     int FUN_1409e26b0(const CStringW& strText);
     int FUN_1409e1770(int a1, int a2);
     int FUN_1409e0d40(CItem* pItem);
+    int FUN_1409e2750(void* pSkillAttr, int a1, int a2);                   // skill record tooltip (uiadventureleveldialog.cpp)
     void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem> item);
     void FUN_1409c69b0(const CStringW& strTitle);                        // set the tooltip title line
     void FUN_1409c65f0(const CStringW& strText);                         // set the tooltip text line
