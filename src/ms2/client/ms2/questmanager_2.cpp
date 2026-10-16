@@ -78,6 +78,7 @@ void FUN_1412751f0(const CStringW&, int, int);
 void FUN_1410943b0(Unk_WsC_GameObj*, int);
 class Unk_QgQuestTable {
 public:
+    std::vector<unsigned>& FUN_14074e0d0();   // returns this+0x360
     void FUN_14074d080(int mapId, ATL::CAtlArray<unsigned>& out);
 };
 Unk_QgQuestTable* FUN_1407476c0();
@@ -575,6 +576,54 @@ int CQuestManager::FUN_1416ce340(int value)
 }
 MS2_REPLACE_METHOD(0x1416ce340, CQuestManager, FUN_1416ce340, 128, 0xCDCFD910);
 
+// MS2-FUNCTIONAL: nested-if EH state map and payload-ptr temporaries differ from the exe's per-branch dtor calls.
+// @0x1416cf510
+void CQuestManager::FUN_1416cf510(int questId)
+{
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (!quest.IsNull()) {
+        if (quest->FUN_1407441f0(FUN_1403ed2d0()->FUN_141bd3060()) != 0) {
+            COutPacket packet(0x29, 0);
+            packet.vfunc_o10_1(0xc);
+            packet.vfunc_o10_3(questId);
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416cf510, CQuestManager, FUN_1416cf510, 275, 0x1A371415);
+
+// MS2-FUNCTIONAL: nested-if EH state map and payload-ptr temporaries differ from the exe's per-branch dtor calls.
+// @0x1416cf630
+void CQuestManager::FUN_1416cf630(int questId)
+{
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (!quest.IsNull()) {
+        if (quest->FUN_1407443e0(FUN_1403ed2d0()->FUN_141bd3060()) != 0) {
+            COutPacket packet(0x29, 0);
+            packet.vfunc_o10_1(0xd);
+            packet.vfunc_o10_3(questId);
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416cf630, CQuestManager, FUN_1416cf630, 275, 0x5B9A8BE1);
+
+// MS2-FUNCTIONAL: nested-if EH state map and payload-ptr temporaries differ from the exe's per-branch dtor calls.
+// @0x1416cf750
+void CQuestManager::FUN_1416cf750(int questId)
+{
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (!quest.IsNull()) {
+        if (quest->FUN_140744670(FUN_1403ed2d0()->FUN_141bd3060()) != 0) {
+            COutPacket packet(0x29, 0);
+            packet.vfunc_o10_1(0x13);
+            packet.vfunc_o10_3(questId);
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416cf750, CQuestManager, FUN_1416cf750, 275, 0x3F46AE05);
+
 // @0x1416cfc10
 int CQuestManager::FUN_1416cfc10(int id)
 {
@@ -668,6 +717,20 @@ int CQuestManager::FUN_1416d07c0(int id)
     return count;
 }
 MS2_REPLACE_METHOD(0x1416d07c0, CQuestManager, FUN_1416d07c0, 50, 0x10DEA3FA);
+
+// MS2-FUNCTIONAL: std::vector iterator COMDATs differ from the exe's raw _Myfirst/_Mylast reads.
+// @0x1416d0920
+void CQuestManager::FUN_1416d0920(ATL::CAtlArray<unsigned>& out)
+{
+    std::vector<unsigned>& ids = FUN_1407476c0()->FUN_14074e0d0();
+    for (std::vector<unsigned>::iterator it = ids.begin(); it != ids.end(); ++it) {
+        unsigned id = *it;
+        if (vfunc_1(id, 0) != 0) {
+            out.Add(id);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d0920, CQuestManager, FUN_1416d0920, 161, 0xFE6413A2);
 
 // @0x1416d09d0
 int CQuestManager::FUN_1416d09d0(int mapId, int warn)

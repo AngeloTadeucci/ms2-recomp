@@ -73,6 +73,7 @@ public:
     int FUN_1416d0610();
     int FUN_1416d0e20();
     void FUN_1416d0c10();
+    void FUN_1416d0920(ATL::CAtlArray<unsigned>& out);
     int FUN_1416d09d0(int mapId, int warn);
     void FUN_1416d1d00(PCBase* pc);
     void FUN_1416d3010();
@@ -84,6 +85,9 @@ public:
     void FUN_1416cb260(ATL::CAtlArray<unsigned>&, int, int, int);
     void FUN_1416ce140(int, int);
     int FUN_1416ce340(int);
+    void FUN_1416cf510(int);
+    void FUN_1416cf630(int);
+    void FUN_1416cf750(int);
     int FUN_1416cfc10(int);
     void FUN_1416cfc60(int);
     int FUN_1416d00c0();
