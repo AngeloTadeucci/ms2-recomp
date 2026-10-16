@@ -25,6 +25,7 @@ public:
     void FUN_1409f1de0();                       // clear all four flags
     void FUN_1409f1e20();                       // m_nPaused = 1
     void FUN_1409f1e40();                       // m_nPaused = 0
+    int FUN_141278a40() const { return m_nActive; }   // inline getter (COMDAT 0x141278a40, unit_141274d10)
 
     int m_nActive;                              // +0x08
     int m_nDone;                                // +0x0c
