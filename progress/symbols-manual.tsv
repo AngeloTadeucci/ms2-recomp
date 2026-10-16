@@ -2082,7 +2082,6 @@ D3DXFloat16To32Array	14230396f	func
 ??4NiString@@QEAAAEAV0@PEBD@Z	141d5c0f0	func
 ??1Unk_MyPCFieldRef@@QEAA@XZ	1408850f0	func
 ?IsNull@Unk_MyPCFieldRef@@QEBA_NXZ	1408851f0	func
-??0NotifyCompleteMyPC@@QEAA@XZ	141532780	func
 ?DAT_143ab3288@@3V?$CRBMap@UUnk_MyPCPortalKey@@V?$MS2Ptr@VUnk_MyPCPortalLock@@@@V?$CElementTraits@UUnk_MyPCPortalKey@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_MyPCPortalLock@@@@@4@@ATL@@A	143ab3288	data
 ?AddRef@?$MS2Ptr@VUnk_StateArg22@@@@AEBAXXZ	1408373f0	func
 ?Release@?$MS2Ptr@VUnk_StateArg22@@@@AEAAXXZ	140837470	func
@@ -2100,3 +2099,12 @@ D3DXFloat16To32Array	14230396f	func
 ?ReleaseCaches@NiRenderStep@@UEAAXXZ	141d441e0	func
 ?GetName@NiShaderLibrary@@QEAAPEBDXZ	141d74250	func
 ?DAT_1439f8248@@3MA	1439f8248	data
+?IsOutOfView@EffectSkipMgr@@QEBAHPEAUUnk_SkipCheck@@@Z	1411b86e0	func
+??0Unk_MagicXform@@QEAA@XZ	140a332d0	func
+?DAT_143af25f0@@3_JA	143af25f0	data
+?DAT_143ae0fb0@@3HA	143ae0fb0	data
+?DAT_143ae0fb8@@3HA	143ae0fb8	data
+?DAT_143ae0fbc@@3HA	143ae0fbc	data
+??0Unk_MagicRideeRef@@QEAA@PEAUUnk_MagicRidee@@@Z	140963df0	func
+??1Unk_MagicRideeRef@@QEAA@XZ	1409648b0	func
+?s_instance@?$TSingleton@VItemGachaBoxTable@@@@2PEAVItemGachaBoxTable@@EA	143aaf1d0	data
