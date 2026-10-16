@@ -24,20 +24,6 @@
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
-// MS2-HOOK-DISABLED (mg8, 2026-10-16): with these hooks installed the hooked client shows the blank error box right
-// after start-up (found by ddmin over the merge-8 DLL, work/mg8/ddmin.log); root cause not analysed. Remove this block to re-enable.
-#undef MS2_REPLACE
-#undef MS2_REPLACE_METHOD
-#undef MS2_REPLACE_METHOD_VIA
-#undef MS2_REPLACE_OVERLOAD
-#undef MS2_REPLACE_CTOR
-#undef MS2_REPLACE_DTOR
-#define MS2_REPLACE(va, function, glen, ghash) static_assert(true, "")
-#define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) static_assert(true, "")
-#define MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, glen, ghash) static_assert(true, "")
-#define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash) static_assert(true, "")
-#define MS2_REPLACE_CTOR(va, Class, glen, ghash) static_assert(true, "")
-#define MS2_REPLACE_DTOR(va, Class, glen, ghash) static_assert(true, "")
 
 // ---- globals ----
 extern int DAT_1439f86ac;                                           // nonzero: net streams are enabled
@@ -1099,7 +1085,7 @@ void CNetStreamSound::FUN_1417b5000(CSoundService* pService)
 }
 
 // ---- hooks ----
-MS2_REPLACE_METHOD(0x1417AE6E0, CSoundService, GetDisplayName, 13, 0x8CCE6CD6);
+MS2_REPLACE_METHOD_VIA(0x1417AE6E0, CSoundService, efd::ISystemService, GetDisplayName, 13, 0x8CCE6CD6);
 MS2_REPLACE_METHOD(0x1417AE700, CSoundService, FUN_1417ae700, 15, 0x9BD8F6D9);
 MS2_REPLACE_METHOD(0x1417AE720, CSoundService, FUN_1417ae720, 15, 0xAC153A31);
 MS2_REPLACE_METHOD(0x1417AE740, CSoundService, FUN_1417ae740, 15, 0xAB75D671);
@@ -1119,8 +1105,9 @@ MS2_REPLACE_METHOD(0x1417B0440, CSoundService, FUN_1417b0440, 135, 0x078AD050);
 MS2_REPLACE_METHOD(0x1417B04D0, CSoundService, FUN_1417b04d0, 135, 0x0B935D37);
 MS2_REPLACE_METHOD(0x1417B0560, CSoundService, FUN_1417b0560, 219, 0x360C5E76);
 MS2_REPLACE_METHOD(0x1417B4B20, CSoundService, FUN_1417b4b20, 16, 0x1BE201AE);
-MS2_REPLACE_METHOD(0x1417B0650, CSoundService, OnPreInit, 90, 0xF1E3BB61);
-MS2_REPLACE_METHOD(0x1417B0D70, CSoundService, OnShutdown, 146, 0xC52007DA);
+// ISystemService subobject is at +8 (TSingleton is the primary base): the exe override receives that pointer.
+MS2_REPLACE_METHOD_VIA(0x1417B0650, CSoundService, efd::ISystemService, OnPreInit, 90, 0xF1E3BB61);
+MS2_REPLACE_METHOD_VIA(0x1417B0D70, CSoundService, efd::ISystemService, OnShutdown, 146, 0xC52007DA);
 MS2_REPLACE_METHOD(0x1417B4B70, CNetStreamSound, vfunc_1, 976, 0xF2F6A5E7);
 MS2_REPLACE_METHOD(0x1417B4F40, CNetStreamSound, FUN_1417b4f40, 52, 0xC846719B);
 MS2_REPLACE_METHOD(0x1417B5000, CNetStreamSound, FUN_1417b5000, 172, 0xD6E81C53);

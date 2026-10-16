@@ -1292,9 +1292,11 @@ void* FUN_14025e7c0();                                                          
 CommonString* FUN_14025e7d0();                                                  // the CommonString singleton
 unsigned char FUN_14116d950(void* pObj, int nFlag, bool a, int b);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's singleton and init flags (symbols.tsv); local copies stay false -> "is not initialized" box
 CommonString* TSingleton<CommonString>::s_instance = 0;
 bool CBanTextChecker::s_bInit = false;
 bool CommonString::s_bInit = false;
+#endif
 
 inline TSingleton<CommonString>::TSingleton() { s_instance = static_cast<CommonString*>(this); }
 
