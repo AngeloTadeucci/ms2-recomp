@@ -112,6 +112,7 @@
 #include "ms2/placeholder/tfunctor_small.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
+#include "ms2/placeholder/uivideocontents.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -132,6 +133,7 @@ public:
     void FUN_1422aff10(float f);
     void FUN_1422afec0(int n);
     void FUN_1422aebe0(int nSlot, bool bOn);
+    void FUN_1422aeaa0(int nMode);
 };
 Unk_UisMovieMgr* FUN_14025e7a0();
 
@@ -166,7 +168,6 @@ public:
     void FUN_1419dfd90();
     void FUN_1419dff50(const CStringW& str, int a, int b);
 };
-void* FUN_141aed500(int nClass);
 void* FUN_14151f890();
 void FUN_14151f460(int n);
 void FUN_141a60d40(int n);
@@ -191,8 +192,6 @@ void FUN_1422dbf00(void* p, int a, int b, int c);
 void FUN_1422dc080(void* p);
 void* FUN_14138fd50(int nClass);
 void FUN_14190f180(void* p);
-void* FUN_141aed5a0(int nClass);
-void FUN_14135afa0(void* p, int n);
 class Unk_UisUpperHpBar { public: void FUN_141b4d0a0(); };          // UIUpperHpBar
 Unk_UisUpperHpBar* FUN_14096e340(int nClass);
 class Unk_UisDlg4e52 { public: void FUN_141908690(); };
@@ -231,6 +230,21 @@ CLogString* FUN_140166440();
 template<class T> inline void Unk_UisLog1(CLogString* log, int level, int category, const wchar_t* format, const T& arg) {
     const fmt::internal::ArgArray<1>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(arg)};
     log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(arg), args));
+}
+
+class UILoadingProgressLobby : public UIObject { };                 // RTTI .?AVUILoadingProgressLobby@@ (body not needed here)
+
+// MS2-PIN: ??$Unk_UisFind@VUILoadingProgressLobby@@@@YAPEAVUILoadingProgressLobby@@W4eUIClassID@@@Z 0x141aed500
+// MS2-PIN: ??$Unk_UisFind@VUIVideoContents@@@@YAPEAVUIVideoContents@@W4eUIClassID@@@Z 0x141aed5a0
+template<class T> T* Unk_UisFind(eUIClassID nClass)
+{
+    if (FUN_1403ed2b0() != 0)
+    {
+        MS2Ptr<UIObject> spObj = FUN_1403ed2b0()->FUN_141adcea0(nClass);
+        if (spObj)
+            return dynamic_cast<T*>(spObj.operator->());
+    }
+    return 0;
 }
 
 // ---- the unit's own containers and glue (bodies are unit glue) ----
@@ -619,9 +633,9 @@ void CUIService::FUN_141adbf30()
 // @0x141adbf70
 void CUIService::FUN_141adbf70(int n)
 {
-    void* p = FUN_141aed5a0(0x3ee);
+    UIVideoContents* p = Unk_UisFind<UIVideoContents>(eUI_3ee);
     if (p != 0)
-        FUN_14135afa0(p, n);
+        p->FUN_14135afa0(n);
 }
 
 // @0x141adcb40
@@ -1158,7 +1172,7 @@ void* FUN_140af7da0(void* pWorld);
 void* FUN_140994450();
 void* FUN_14098d8d0(void* pTable, void* p);
 void FUN_1411d7c70(void* p, void (*pfn)(), void* pSelf);
-void FUN_1411d7c10(void* p, void (*pfn)(), void* pSelf);
+void FUN_1411d7c10(void* p, bool (*pfn)(void*), void* pSelf);
 void* FUN_140a44830();
 void FUN_1401ce3d0(void* p, TFunctor<void, EmptyParam>& fn);
 void* FUN_141aee920();
@@ -3773,6 +3787,30 @@ void CUIService::FUN_141adf580()
     }
 }
 
+// @0x141aec8c0
+void CUIService::FUN_141aec8c0(int nMode)
+{
+    FUN_14025e7a0()->FUN_1422aeaa0(nMode);
+}
+MS2_REPLACE_METHOD(0x141aec8c0, CUIService, FUN_141aec8c0, 35, 0x66E851B8);
+
+// @0x141ade400
+void CUIService::FUN_141ade400()
+{
+    if (FUN_1403ed2b0() != 0)
+        FUN_1403ed2b0()->FUN_141ad9350();
+}
+MS2_REPLACE(0x141ade400, CUIService::FUN_141ade400, 32, 0x600272B3);
+
+// @0x141ade2d0
+bool CUIService::FUN_141ade2d0(void* pContext)
+{
+    FUN_1403ed2b0()->FUN_141adcbb0(&CUIService::FUN_141aecf60);
+    return true;
+}
+MS2_REPLACE(0x141ade2d0, CUIService::FUN_141ade2d0, 36, 0xCAD73910);
+
 template class ATL::CAtlMap<eUIClassID, MS2Ptr<UIDialog> >;
 template class ATL::CAtlMap<eUIClassID, MS2Ptr<UIObject> >;
 template class ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraits<CStringA> >;
+template UILoadingProgressLobby* Unk_UisFind<UILoadingProgressLobby>(eUIClassID);

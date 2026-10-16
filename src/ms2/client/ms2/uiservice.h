@@ -24,6 +24,7 @@ class UIObject;
 enum eUIClassID
 {
     eUI_3ed = 0x3ed,
+    eUI_3ee = 0x3ee,
     eUI_2711 = 0x2711,
     eUI_4e2d = 0x4e2d,
     eUI_4e3e = 0x4e3e,
@@ -133,7 +134,10 @@ public:
     void FUN_141adf580();                           // 0x141adf580 create every dialog
     static void FUN_141ade300();                    // 0x141ade300
     static void FUN_141ade1f0();                    // 0x141ade1f0
-    static void FUN_141ade2d0();                    // 0x141ade2d0
+    static bool FUN_141ade2d0(void* pContext);                  // 0x141ade2d0
+    static void FUN_141ade400();                    // 0x141ade400
+    static int FUN_141aecf60(MS2Ptr<UIDialog> spDlg);   // 0x141aecf60
+    int FUN_141adcbb0(int (*pfn)(MS2Ptr<UIDialog>));   // 0x141adcbb0
 
     // ---- generated member decls ----
     void FUN_141adc050();                                                   // 0x141adc050 close the closable dialogs
