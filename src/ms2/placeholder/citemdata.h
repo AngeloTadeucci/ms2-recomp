@@ -31,6 +31,8 @@ struct ItemInstallData {
     CString mapAttribute;     // +0x50 "mapAttribute"
     int propCollisionGroup;   // +0x58 "propCollisionGroup"
     bool useInstancing;       // +0x5c "useInstancing" (default true)
+    bool FUN_140548d10();     // 0x140548d10 (ugccubepalette.cpp)
+    bool FUN_140548cd0();     // 0x140548cd0
 };
 MS2_CHECK_SIZE(ItemInstallData, 0x60);
 MS2_CHECK_OFFSET(ItemInstallData, space, 0x10);
@@ -48,6 +50,12 @@ public:
     bool FUN_14053d510();    // 0x14053d510
     int FUN_14053c6f0();     // 0x14053c6f0
     int FUN_14053c510();     // 0x14053c510 return the item id (+0x20; sb4, clonecube)
+    int FUN_14053fdb0();     // 0x14053fdb0 (ugccubepalette.cpp) required level, 0 when none
+    bool FUN_14053cde0();    // 0x14053cde0 unique (non-stacking) item
+    int FUN_14053dd30();     // 0x14053dd30 the id of the npc the item summons
+    bool FUN_14053d6f0();    // 0x14053d6f0 UGC item
+    bool FUN_14053cb80();    // 0x14053cb80
+    CString FUN_14053fdd0(); // 0x14053fdd0 the item's display name
     unsigned char unknown20[0x68];
     unsigned stackLimit;
     unsigned char unknown8c[0x11c];

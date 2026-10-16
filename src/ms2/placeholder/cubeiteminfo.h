@@ -9,6 +9,7 @@ class CUgcItemLook : public CPtred {
 public:
     CUgcItemLook();
     virtual ~CUgcItemLook();
+    CString FUN_140892ec0();                // 0x140892ec0 the name as an ansi string (ugccubepalette.cpp)
     __int64 ugcId;
     CString name;
     CStringW title;
@@ -25,6 +26,7 @@ MS2_CHECK_OFFSET(CUgcItemLook, resourcePath, 0x58);
 class CubeItemInfo : public CPtred {
 public:
     CubeItemInfo();
+    CubeItemInfo(int itemId, __int64 instanceId, __int64 count, CUgcItemLook* pLook);   // 0x1408b3520
     virtual ~CubeItemInfo();
     void FUN_1408b3700(const CubeItemInfo*);
     int FUN_1408b3860();

@@ -45,6 +45,7 @@ public:
   unsigned __int64 FUN_1405283d0();       // 0x1405283d0 UGC uid of that info (0 when null; avatarcube.cpp)
   CStringW FUN_140527b10();               // 0x140527b10 (uiugccubepalettedialog.cpp)
   void FUN_1405288e0(__int64);            // 0x1405288e0 set the count (uiugccubepalettedialog.cpp)
+  class CUgcItemLook* FUN_140528380();    // 0x140528380 the UGC look of the item (ugccubepalette.cpp)
   void FUN_140528300(class CUgcItemLook*);   // 0x140528300 set the UGC look (uiugccubepalettedialog.cpp)
   bool FUN_140528cc0();                   // 0x140528cc0 can be item-locked (unit_1406125d0)
   bool FUN_140528da0();                   // 0x140528da0 can be item-unlocked (unit_1406125d0)

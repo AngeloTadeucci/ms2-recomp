@@ -4,10 +4,17 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/citemdata.h"
 
+class Unk_IngItem;      // ingredient table row (the unit that owns the table defines it)
+
 struct Unk_CubePaletteFilter {
     Unk_CubePaletteFilter(); // 140df0030
     ~Unk_CubePaletteFilter(); // 140ef04a0
+    bool FUN_140df00b0();                                                         // 0x140df00b0 (ugccubepalette.cpp)
     bool FUN_140df00d0();                                                         // 0x140df00d0 (uiugccubepalettedialog.cpp)
+    bool FUN_140df00f0();                                                         // 0x140df00f0
+    int FUN_140df0110();                                                          // 0x140df0110
+    int FUN_140df0160();                                                          // 0x140df0160
+    int FUN_140df01a0();                                                          // 0x140df01a0
     void FUN_140df0140(int);                                                      // 0x140df0140
     void FUN_140df0180(int);                                                      // 0x140df0180
     bool includeOwned,flag1,flag2;
@@ -22,33 +29,39 @@ class UGCCubePalette : public CPtred {
 public:
     class UGCCube : public CPtred {
     public:
-        virtual ~UGCCube();
+        UGCCube(int itemId);                                                      // 0x140def070
+        UGCCube(int itemId, __int64 uid, __int64 count, CUgcItemLook* pLook);     // 0x140def210
         MS2Ptr<CubeItemInfo> FUN_140def3d0();
         int FUN_140def5a0();
         __int64 FUN_140def5f0();
         int FUN_140defff0();
         // uiugccubepalettedialog.cpp
         __int64 FUN_140defba0();
-        int FUN_140def420();
+        bool FUN_140def420();
         __int64 FUN_140def620();
         __int64 FUN_140def6c0();
         CStringW FUN_140def710();
         CStringW FUN_140def880();
         CStringW FUN_140defd20();
         int FUN_140defcd0();
-        int FUN_140defe70();
-        int FUN_140defed0();
-        int FUN_140def4f0();
+        unsigned FUN_140defe70();
+        unsigned FUN_140defed0();
+        bool FUN_140def4f0();
+        // ugccubepalette.cpp
+        int FUN_140defc30();
+        int FUN_140defc80();
+        bool FUN_140defdd0(int nId);
+        bool FUN_140deff30();
+        void FUN_140df0010(int nIndex);
         int index;
         MS2Ptr<CItemData> itemData;
-        void* unknown30;void* unknown38;
+        MS2Ptr<Unk_IngItem> ingredient;
         MS2Ptr<CubeItemInfo> info;
     };
     typedef MS2Ptr<UGCCube> CubePtr;
     typedef ATL::CAtlArray<CubePtr> CubeArray;
     UGCCubePalette();
-    virtual ~UGCCubePalette();
-    unsigned FUN_140df1a40(CubeArray& out,const Unk_CubePaletteFilter& filter);
+    unsigned FUN_140df1a40(CubeArray& out,Unk_CubePaletteFilter& filter);
     // uiugccubepalettedialog.cpp
     CubePtr FUN_1410b57f0(int);
     CubePtr FUN_1410b57a0();
@@ -66,10 +79,12 @@ public:
     void FUN_1410b6260();
     void FUN_1410b62d0();
 private:
-    // CAtlMap-owned storage, not inspected by this unit.
-    void* unknown18;void* unknown20;void* unknown28;
-    void* unknown30;void* unknown38;void* unknown40;
-    void* unknown48;void* unknown50;void* unknown58;
+    void FUN_140df2250();
+    void FUN_140df23f0(CubeArray& out, Unk_CubePaletteFilter* pFilter);
+    void FUN_140df2bc0(CubeArray& out, Unk_CubePaletteFilter* pFilter);
+    bool FUN_140df3100(const MS2Ptr<class CFieldDataCli>& spField, const MS2Ptr<CItemData>& spData, Unk_CubePaletteFilter* pFilter);
+    typedef ATL::CAtlMap<int, MS2Ptr<CItemData> > ItemMap;
+    ItemMap mapItems;                   // +0x18 the cube items of the item table that are not stocked or owned
 };
 MS2_CHECK_SIZE(UGCCubePalette,0x60);
 MS2_CHECK_SIZE(UGCCubePalette::UGCCube,0x50);
