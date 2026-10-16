@@ -1969,3 +1969,13 @@ D3DXFloat16To32Array	14230396f	func
 ??0Unk_BmNewTag@@QEAA@H@Z	1401b7b90	func
 ??0Unk_ModelMgr@@QEAA@XZ	140a2a0a0	func
 ??1Unk_ModelMgr@@QEAA@XZ	140a2a140	func
+?g_lUniqueSeq@@3JA	143aacf78	data
+??0ItemModelData@@QEAA@XZ	14054ae00	func
+??1Unk_1401e4e10@@QEAA@XZ	1401e4e10	func
+??0Unk_OptionKey@@QEAA@H@Z	140768210	func
+??1Unk_OptionKey@@QEAA@XZ	1401cdc30	func
+??1CItemExtraData@@UEAA@XZ	140598f20	func
+?RenderMeshes@NiShader@@QEAAXPEAVNiVisibleArray@@@Z	141d4d520	func
+?Tick@CSkillCollisionManager@@QEAAXXZ	141755010	func
+?DAT_143d691a8@@3VNiRTTI@@B	143d691a8	data
+?DAT_143ae52a8@@3VNiFixedString@@A	143ae52a8	data
