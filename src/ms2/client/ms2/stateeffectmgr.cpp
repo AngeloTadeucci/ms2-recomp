@@ -30,6 +30,7 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\stateeffectmgr.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "stateeffectmgr.h"
+#include "ms2/placeholder/effectquery.h"
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/ms2recover.h"
@@ -56,16 +57,6 @@ void* FUN_1403ed2d0();                                                   // play
 void* FUN_1403ed280();                                                   // effect manager
 int FUN_141bd1a10(void* pPlayer, GameObject* pObject);
 int FUN_14123c580(GameObject* pObject);
-class Unk_EffectQuery
-{
-public:
-    Unk_EffectQuery();                          // 0x140a52ef0
-    ~Unk_EffectQuery();                         // 0x1405a89e0
-    void FUN_140a53190(int nValue);
-    CString m_strName;                          // +0x00
-    int m_nObject;                              // +0x08
-    int m_nPad0c;                               // +0x0c
-};
 int FUN_1411a49c0(void* pEffectMgr, Unk_EffectQuery* pQuery);
 
 // State name table (the strings the stateType attribute is matched against) and two single names.
