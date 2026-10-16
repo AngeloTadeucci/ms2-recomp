@@ -52,6 +52,7 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/effectquery.h"
 #include "uimasterydialog.h"
+#include <NiColor.h>
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/client/ms2/stateemotionidle.h"
 #include <efd/Helpers.h>
@@ -407,13 +408,31 @@ void FUN_141663500(MyPC* pPC, int nMapId);                 // PC member (0x14166
 // The npc / monster class (class id 0x06200011).
 class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]; int m_n60; };   // the npc table row
 MS2_CHECK_OFFSET(Unk_SSGNpcData, m_n60, 0x60);
-class Unk_SSGNpc : public PCBase
+// The drop item (class id 0x06200011; its members live in client\ms2\dropitem.cpp 0x14118c730-0x141192960). w95: split
+// from Unk_SSGNpc, whose +0x150/+0x1a0 do not fit PCBase.
+class Unk_SSGDropItem : public GameObject
 {
 public:
     static const efd::ClassID CLASS_ID = 0x06200011;
+    int FUN_1411900d0();
+    int FUN_14118fea0();                                    // +0x150 > 0
+    int FUN_14118ff10();                                   // the item (+0x1a0) is 0x55d4a8a
+    void FUN_141190b70(int nOwnerId);
+    void FUN_141192840(int n);                              // +0x294 = n
+    void FUN_14174a5a0(__int64 n) { m_n150 = n; }
+
+    unsigned char m_pad_140[0x150 - 0x140];
+    __int64 m_n150;                                         // +0x150
+    unsigned char m_pad_158[0x294 - 0x158];
+    int m_n294;                                             // +0x294
+};
+MS2_CHECK_OFFSET(Unk_SSGDropItem, m_n150, 0x150);
+MS2_CHECK_OFFSET(Unk_SSGDropItem, m_n294, 0x294);
+class Unk_SSGNpc : public PCBase
+{
+public:
     virtual void vfunc_124();
     virtual void vfunc_125(int n);                          // 125 (called with 1 on packet 0x57)
-    int FUN_1411900d0();
     MS2Ptr<Unk_SSGNpcData> FUN_141093270();                 // the npc table row
     void FUN_1410932c0(int n);
     void FUN_1410918e0(CByteBuffer& buf);                   // apply a sync block
@@ -424,7 +443,7 @@ public:
     char m_ce50;                                            // +0xe50
 };
 MS2_CHECK_OFFSET(Unk_SSGNpc, m_ce50, 0xe50);
-class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); };
+class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); void FUN_140c86450(MS2Ptr<CItem> spItem); };
 // The item event hub (FUN_140a6a840); slots 5/21/23 are item notifications.
 class Unk_SSGItemHub
 {
@@ -435,7 +454,7 @@ public:
     virtual void vfunc_3();
     virtual void vfunc_4();
     virtual void vfunc_5(CItem* pItem);
-    virtual void vfunc_6();
+    virtual void vfunc_6(CItem* pItem);
     virtual void vfunc_7();
     virtual void vfunc_8();
     virtual void vfunc_9();
@@ -451,11 +470,12 @@ public:
     virtual void vfunc_19();
     virtual void vfunc_20();
     virtual void vfunc_21(CItem* pItem);
-    virtual void vfunc_22();
+    virtual void vfunc_22(CItem* pItem);
     virtual void vfunc_23(CItem* pItem);
+    virtual void vfunc_24(CItem* pItem);
 };
 Unk_SSGItemHub* FUN_140a6a840();
-void* FUN_1409613d0(PCBase* pPC);
+MyPC* FUN_1409613d0(PCBase* pPC);                          // efd::DynamicCast<MyPC> (class id 0x6200004)
 int FUN_1422b9e00(Unk_SSGSoundCtl* p);
 
 MyPC* FUN_14096e160(PCBase* pActor);                        // efd::DynamicCast<MyPC> (class id 0x06200004)
@@ -677,7 +697,13 @@ public:
 };
 MS2_CHECK_SIZE(StateFishingData, 0x20);
 
-class Unk_SSGInventory { public: MS2Ptr<CItem> FUN_140a5d680(__int64 nItemUid); };
+class Unk_SSGInventory
+{
+public:
+    MS2Ptr<CItem> FUN_140a5d680(__int64 nItemUid);
+    int FUN_140a621c0(__int64 nItemUid, int a, int b);      // remove an item (packet 0x20 mode 2)
+    void FUN_140a62920(__int64 nItemUid);                   // packet 0x20 mode 3
+};
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
 
 class Unk_SSGCommunityPopup { public: void FUN_140bea390(CStringW strName, CString strText); };
@@ -773,6 +799,32 @@ static CString s_ugcRemoveblock = "ugc_removeblock";
 static CString s_ugcRotateblock = "ugc_rotateblock";
 static CString s_ugcSellland = "ugc_sellland";
 static CString s_ugcSetblock = "ugc_setblock";
+
+// ---- callees of the w95 handlers (names inferred) -----------------------------------------------------------------
+int FUN_140222f60(int nType);                                // 0/1/2 -> same, else 6
+// The EP gauge of the HUD (?\uiepprogress.cpp).
+class Unk_SSGEPGauge { public: void FUN_141931bd0(int nValue, int nMax); };
+// MyPC's vftable as far as slot 88: MyPC overrides slot 88 to return its EP gauge (PCBase declares it as int).
+class Unk_SSGMyPCSlots
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
+    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
+    virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19(); virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23();
+    virtual void vfunc_24(); virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27(); virtual void vfunc_28(); virtual void vfunc_29(); virtual void vfunc_30(); virtual void vfunc_31();
+    virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34(); virtual void vfunc_35(); virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39();
+    virtual void vfunc_40(); virtual void vfunc_41(); virtual void vfunc_42(); virtual void vfunc_43(); virtual void vfunc_44(); virtual void vfunc_45(); virtual void vfunc_46(); virtual void vfunc_47();
+    virtual void vfunc_48(); virtual void vfunc_49(); virtual void vfunc_50(); virtual void vfunc_51(); virtual void vfunc_52(); virtual void vfunc_53(); virtual void vfunc_54(); virtual void vfunc_55();
+    virtual void vfunc_56(); virtual void vfunc_57(); virtual void vfunc_58(); virtual void vfunc_59(); virtual void vfunc_60(); virtual void vfunc_61(); virtual void vfunc_62(); virtual void vfunc_63();
+    virtual void vfunc_64(); virtual void vfunc_65(); virtual void vfunc_66(); virtual void vfunc_67(); virtual void vfunc_68(); virtual void vfunc_69(); virtual void vfunc_70(); virtual void vfunc_71();
+    virtual void vfunc_72(); virtual void vfunc_73(); virtual void vfunc_74(); virtual void vfunc_75(); virtual void vfunc_76(); virtual void vfunc_77(); virtual void vfunc_78(); virtual void vfunc_79();
+    virtual void vfunc_80(); virtual void vfunc_81(); virtual void vfunc_82(); virtual void vfunc_83(); virtual void vfunc_84(); virtual void vfunc_85(); virtual void vfunc_86(); virtual void vfunc_87();
+
+    virtual Unk_SSGEPGauge* vfunc_88();
+};
+NiColor FUN_141b6dea0(unsigned uColor);                     // 0xAARRGGBB -> NiColor
+NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // an entity's scene root
+void FUN_141b6f220(NiAVObject* pRoot, int nSlot, const NiColor& kColor);   // tint the skin/hair materials
 
 // @0x14170bda0
 CSceneStateGame::CSceneStateGame()
@@ -1912,17 +1964,59 @@ void CSceneStateGame::FUN_141712340(CInPacket& packet)
     GameObject* pObj = FUN_1403ed2d0()->FUN_141bd1180(nId);
     if (pObj == 0)
         return;
-    Unk_SSGNpc* pNpc = efd::DynamicCast<Unk_SSGNpc>(pObj);
-    if (pNpc == 0)
+    Unk_SSGDropItem* pDrop = efd::DynamicCast<Unk_SSGDropItem>(pObj);
+    if (pDrop == 0)
         return;
-    if (pNpc->FUN_1411900d0() == 0)
+    if (pDrop->FUN_1411900d0() == 0)
     {
         Unk_SSGWorld* pWorld = FUN_1403ed2d0();
-        pNpc->vfunc_40(1.0f, 0, 0, 0.5f);
+        pDrop->vfunc_40(1.0f, 0, 0, 0.5f);
         pWorld->FUN_141bbbcf0(nId, 1);
     }
 }
 MS2_REPLACE_METHOD(0x141712340, CSceneStateGame, FUN_141712340, 205, 0x49E1B8C7);
+// @0x141712420
+// MS2-FUNCTIONAL: stack temp layout differs (the exe spills the uid and EP reads to expression temps); same calls and args
+void CSceneStateGame::FUN_141712420(CInPacket& packet)
+{
+    int bPicked = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    GameObject* pObj = FUN_1403ed2d0()->FUN_141bd1180(nId);
+    if (pObj == 0)
+        return;
+    Unk_SSGDropItem* pDrop = efd::DynamicCast<Unk_SSGDropItem>(pObj);
+    if (pDrop == 0)
+        return;
+    if (bPicked)
+    {
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (pDrop->FUN_14118fea0())
+        {
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            pDrop->FUN_14174a5a0(nValue);
+        }
+        if (pDrop->FUN_14118ff10())
+        {
+            unsigned __int64 nAdd = (unsigned)static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nOwnerId));
+            if (pMyPC != 0)
+            {
+                // MS2: slot 88 (MyPC's override returns its EP gauge; PCBase declares the slot as int)
+                Unk_SSGMyPCSlots* pSlots = (Unk_SSGMyPCSlots*)pMyPC;
+                pSlots->vfunc_88()->FUN_141931bd0(pMyPC->FUN_141670a00(10) + nAdd, pMyPC->FUN_141670a30(10));
+            }
+        }
+        pDrop->FUN_141190b70(nOwnerId);
+    }
+    else
+    {
+        int nMode = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nMode == 1)
+            pDrop->FUN_141192840(0);
+    }
+}
+MS2_REPLACE_METHOD(0x141712420, CSceneStateGame, FUN_141712420, 617, 0x6508A283);
+
 
 // @0x141712690
 void CSceneStateGame::FUN_141712690(CInPacket& packet)
@@ -1949,6 +2043,39 @@ void CSceneStateGame::FUN_141712710(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141712710, CSceneStateGame, FUN_141712710, 141, 0xA57CCB2D);
 
+// @0x141712fb0
+// MS2-FUNCTIONAL: exe frame 0x20 larger (the uid reads go through extra expression temps); same calls and args
+void CSceneStateGame::FUN_141712fb0(CInPacket& packet)
+{
+    switch (static_cast<CInputStream&>(packet).vfunc_o8_1())
+    {
+    case 2:
+        DAT_143ab2a90.FUN_140a621c0(static_cast<CInputStream&>(packet).vfunc_o8_4(), 0, 0);
+        break;
+    case 3:
+        DAT_143ab2a90.FUN_140a62920(static_cast<CInputStream&>(packet).vfunc_o8_4());
+        break;
+    case 5:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        unsigned char nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nKind = FUN_140222f60(static_cast<CInputStream&>(packet).vfunc_o8_1());
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nId));
+        if (pMyPC == 0)
+            return;
+        MS2Ptr<CEquipItem> spEquip = pMyPC->FUN_1416561a0()->FUN_1411e1580(nItemUid);
+        if (!spEquip)
+            return;
+        pMyPC->FUN_1416561a0()->FUN_1411e4150(nItemUid, nSlot, nKind);
+        Unk_SSGItemHub* pHub = FUN_140a6a840();
+        pHub->vfunc_22(spEquip->FUN_1411dc7a0().get());
+        break;
+    }
+    }
+}
+MS2_REPLACE_METHOD(0x141712fb0, CSceneStateGame, FUN_141712fb0, 748, 0xAE8F8967);
+
 // @0x141716b60
 void CSceneStateGame::FUN_141716b60(CInPacket& packet)
 {
@@ -1972,6 +2099,34 @@ void CSceneStateGame::FUN_141716b60(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141716b60, CSceneStateGame, FUN_141716b60, 415, 0xAD56BCEE);
+// @0x141716d10
+void CSceneStateGame::FUN_141716d10(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    MS2Ptr<CItem> spItem(new CItem());
+    if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+        return;
+    spItem->FUN_140526b30(nId);
+    spItem->FUN_140526a70(nItemUid);
+    spItem->FUN_140526b70(nAmount);
+    spItem->FUN_140524eb0(packet);
+    pPC->FUN_1416561c0()->FUN_140c86450(spItem);
+    void* pHost = FUN_1409613d0(pPC);
+    if (pHost != 0)
+    {
+        Unk_SSGItemHub* pHub = FUN_140a6a840();
+        pHub->vfunc_6(spItem.get());
+    }
+}
+MS2_REPLACE_METHOD(0x141716d10, CSceneStateGame, FUN_141716d10, 740, 0xFABDC7DD);
+
 
 // @0x141717000
 void CSceneStateGame::FUN_141717000(CInPacket& packet)
@@ -2015,6 +2170,30 @@ void CSceneStateGame::FUN_141717140(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141717140, CSceneStateGame, FUN_141717140, 494, 0xF8FCFF09);
+
+// @0x141717340
+void CSceneStateGame::FUN_141717340(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    NiColor aColor[2];
+    aColor[0] = FUN_141b6dea0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    aColor[1] = FUN_141b6dea0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    pPC->FUN_1416591e0(0, aColor[0]);
+    pPC->FUN_1416591e0(1, aColor[1]);
+    FUN_141b6f220(FUN_141b6efc0(pPC->FUN_14123c410()), 0, pPC->FUN_141659220(0));
+    FUN_141b6f220(FUN_141b6efc0(pPC->FUN_14123c410()), 2, pPC->FUN_141659220(1));
+    pPC->FUN_141656780();
+    void* pHost = FUN_1409613d0(pPC);
+    if (pHost != 0)
+    {
+        Unk_SSGItemHub* pHub = FUN_140a6a840();
+        pHub->vfunc_24(0);
+    }
+}
+MS2_REPLACE_METHOD(0x141717340, CSceneStateGame, FUN_141717340, 531, 0xB87F7FB1);
 
 // @0x141717560
 void CSceneStateGame::FUN_141717560(CInPacket& packet)

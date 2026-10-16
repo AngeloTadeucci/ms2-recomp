@@ -3,6 +3,7 @@
 #include <NiFixedString.h>
 class CItem;
 class NiAVObject;
+class NiColor;
 struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 
 // Heap-only views. PC derives PCBase (ctor 14164dfd0), and FittingDollPC
@@ -16,7 +17,7 @@ struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 class Unk_PCArg125;   // MS2Ptr<T> by value (MyPC override destroys it with 0x1409f74e0)
 class Unk_PCActionTimer;   // CPtred-derived, defined by the user unit (avatarpc.cpp)
 class CEquipItem;
-struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
+struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
 class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
 class PC : public PCBase {
@@ -93,6 +94,7 @@ public:
     // non-virtual members called by scenestategame.cpp (w86)
     MS2Ptr<CItem> FUN_141655b80(__int64 nItemUid);          // 0x141655b80 an owned item by uid
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // 0x141655c30 a worn item by uid
+    Unk_PCEquipSet* FUN_1416561a0();                        // 0x1416561a0 &m_kEquipDE0
     class Unk_PCItemCooldowns* FUN_1416561c0();             // 0x1416561c0
     int FUN_1416595d0();                                    // the cube craft mode (scenestategame 0x1417235a0)
     class Unk_PCCubeCraft* FUN_141659700();                 // the cube craft controller
@@ -105,6 +107,9 @@ public:
     void FUN_141661a60(int n);                              // scenestategame packet 0x33
     void FUN_1416619d0(int n);                              // scenestategame packet 0x33
     void FUN_141661370(int a, int b, int c);                // scenestategame packet 0x34 (also on MyPC)
+    void FUN_1416591e0(int nSlot, const NiColor& kColor);   // +0xd98 + nSlot*0xc = kColor (scenestategame 0x30)
+    const NiColor& FUN_141659220(int nSlot);                // the colour at +0xd98 + nSlot*0xc
+    void FUN_141656780();                                   // re-apply the appearance (scenestategame 0x30)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];

@@ -7,6 +7,7 @@
 
 class CInPacket;
 class CEquipItem;
+struct Unk_PCEquipSet;
 
 class MyPC : public PCBase
 {
@@ -22,6 +23,7 @@ public:
     void FUN_141528c30(CInPacket& packet);                  // scenestategame packet 0x135
     void FUN_141662850(__int64 nValue);                     // PC member (scenestategame packet 0xe0)
     void FUN_141662890(__int64 nValue);                     // PC member
+    Unk_PCEquipSet* FUN_1416561a0();                        // PC member: the equip holder (scenestategame 0x141712fb0)
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // PC member: a worn item by uid (scenestategame 0x14173b420)
     void FUN_14152f9e0();                                   // begin bulk update (scenestategame 0x14173d2e0)
     void FUN_14152f530(int nA, int nB, int bBulk);          // set entry nA = nB
