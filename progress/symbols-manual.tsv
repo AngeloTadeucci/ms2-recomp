@@ -1611,3 +1611,15 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ?DAT_143ab2e50@@3VUnk_CubeStock@@A	143ab2e50	data
 ??0ASArray@@QEAA@AEBV0@@Z	140bbf770	func
 ?FUN_140c21fb0@@YAHQEAX_KQEBX1@Z	140c21fb0	func
+??1Unk_EnScrollRef@@QEAA@XZ	14034ed30	func
+?get@?$MS2Ptr@VUnk_BackUpItem@@@@QEBAPEAVUnk_BackUpItem@@XZ	1405a8e70	func
+??0CEnchantOption@@QEAA@XZ	141745c40	func
+??7?$MS2Ptr@VASMovieClip@@@@QEBA_NXZ	140bb6000	func
+??0ICastingEventListener@@QEAA@XZ	140ac2e60	func
+?vfunc_1@UIItemModifyDialogBase@@UEAA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ	1419234e0	func
+??0Unk_ClosingCameraData@@QEAA@XZ	140cb13b0	func
+??YUnk_ClosingVector@@QEAAAEAU0@AEBU0@@Z	140a4e560	func
+??CUnk_ClosingCameraPtr@@QEBAPEAVUnk_ClosingCamera@@XZ	1409f7910	func
+??1Unk_ClosingCameraPtr@@QEAA@XZ	140cb1460	func
+??$GetChild@VASUIComponent@@@UISwfEntity@@QEAA?AV?$MS2Ptr@VASUIComponent@@@@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z	140c02990	func
+?g_ltaTable@@3VUnk_LtaTable@@A	143ab2fc0	data
