@@ -1134,7 +1134,7 @@ unsigned FUN_141662750(Unk_FcActor* p, int nMastery);               // mastery l
 void FUN_14152c280(Unk_FcActor* p, RideOffAction* pAction);         // queue a ride-off action
 static void Unk_FcActorSetState(Unk_FcActor* p, int nState, void* pData, int nArg)
 {
-    p->vfunc_59(nState, pData, nArg, 0);
+    p->vfunc_59(nState, static_cast<StateData*>(pData), nArg, 0);
 }
 void* FUN_1409670e0();                                              // the housing manager
 unsigned char FUN_1410c35c0(void* pHousing);                        // design mode

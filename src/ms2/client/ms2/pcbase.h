@@ -25,6 +25,7 @@
 #include <efd/Point2.h>
 
 // Component types behind the MS2Ptr members/getters (names unknown; MS2Ptr null-ctor VA in brackets).
+class RideOnAction;        // rideonaction.h (+0xb00, slot 121)
 class CSkillRecord;        // slots 100-102 (RTTI CSkillRecord, 0x1c0; ?\skillrecord.cpp)
 class Unk_PCBaseComp_a58;   // slot 80, +0xa58 [0x14108af40]
 class Unk_PCBaseComp_a68;   // slot 81, +0xa68 [0x140e86b20] (null ctor COMDAT in uishieldbar)
@@ -51,6 +52,16 @@ class Unk_PCBaseBody;       // +0x150 physics/controller body (0xf8; ctor 0x1412
 
 // +0xc08: an 11-bit set (commonfiles\bitset.inl instance, the same as unit_140d73aa0's Unk_BitSet11): the reasons the
 // actor is hidden (FUN_14166ca20 / FUN_14166ca80 / FUN_14166cb30).
+// +0x648: CColorBoostManager (0x48; FUN_14109be00 adds a CColorBoostData).
+class CColorBoostData;
+class Unk_PCBaseColorBoostMgr
+{
+public:
+    void FUN_14109be00(const CColorBoostData& kData);
+private:
+    void* m_unk[9];
+};
+
 // +0x748: the actor's buffs (0x1a0; ctor 0x14096ef20(p, owner); unit 0x14096ef20..). FUN_1416749a0 returns it as the
 // Unk_PCBaseBuffs view that ridee.cpp / pcbase.cpp declare.
 class Unk_PCBaseBuffList
@@ -199,7 +210,7 @@ public:
     virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);  // 115 0x141675270
     virtual int vfunc_116() = 0;                            // 116 _purecall (CubeSpawnObject 0x140a4efd0: return 1)
     virtual int vfunc_117();                                // 117 0x1416752a0
-    virtual int vfunc_118(void* a, float* b, CString* c);   // 118 0x1416752f0
+    virtual int vfunc_118(const NiPoint3& kPos, float* pDist, CString* pName);   // 118 0x1416752f0 nearest node in +0xb88
     virtual void vfunc_119();                               // 119 0x141675450
     virtual void vfunc_120(void* p);                        // 120 0x141676b90
     virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x1416773f0 (by value)
@@ -290,9 +301,9 @@ public:
     BOOL FUN_141671b20();
     NiPoint3 FUN_141676020();
     void FUN_141676980(int n);
-    void FUN_1416769a0(void* p);
+    void FUN_1416769a0(__int64 nUid);
     int FUN_1416769d0();
-    void* FUN_1416769f0();
+    __int64 FUN_1416769f0();
     void FUN_1416781a0(int n);
     int FUN_1416782e0();
     void FUN_141678300(int n);
@@ -325,6 +336,40 @@ public:
     float FUN_14166da60();                                  // 0x14166da60
     float FUN_14166dab0();                                  // 0x14166dab0 turn speed
     float FUN_14166dad0(const efd::Point3& kLook, const efd::Point3& kDir);   // 0x14166dad0 yaw (degrees)
+    efd::Point3 FUN_141674a10(efd::Point3 kDir, float* pYaw);   // 0x141674a10 local dir -> world dir (+ its yaw)
+    int FUN_141673b40(MS2Ptr<Unk_PCBaseComp_b18> spItem);   // 0x141673b40 (by value)
+    MS2Ptr<Unk_PCBaseComp_b18> FUN_141673bf0(__int64 nTagId, int nKind);   // 0x141673bf0 find in +0x8e8
+    MS2Ptr<Unk_PCBaseComp_b18> FUN_141673ce0(MS2Ptr<Unk_PCBaseComp_b18> spItem);   // 0x141673ce0 replace +0x8e8 with it
+    MS2Ptr<Unk_PCBaseComp_b18> FUN_141673e10(__int64 nTagId);   // 0x141673e10 find in +0x8e8
+    int FUN_141673ef0();                                     // 0x141673ef0 skill id of the running skill state (avatarpc.cpp)
+    void FUN_141673f70(float a, float b, float c);           // 0x141673f70 color boost (also the ridee)
+    efd::Point3 FUN_141674b60(efd::Point3 kDir);             // 0x141674b60 local dir -> world dir
+    int FUN_141674bc0();                                     // 0x141674bc0 (buffs)
+    NiAVObject* FUN_141675150(const CString& strNode);       // 0x141675150 the named node (the ridee's when riding)
+    void FUN_141675240();                                    // 0x141675240 (buffs)
+    efd::SmartPointer<NiAVObject> FUN_1416757c0(CString strName);   // 0x1416757c0 node of +0xb88
+    efd::SmartPointer<NiAVObject> FUN_1416758a0(CString strName);   // 0x1416758a0 node of +0xbb8
+    efd::SmartPointer<NiAVObject> FUN_141675930();          // 0x141675930 copy of +0xbe8
+    int FUN_141675cd0(const NiPoint3& kPos, CString strUnused, CString* pName, float* pDist);   // 0x141675cd0 nearest node in +0xbb8
+    int FUN_141675e60();                                     // 0x141675e60 +0xbb8 not empty
+    void* FUN_141675eb0();                                   // 0x141675eb0 &m_pushControl (statemanager.cpp)
+    void FUN_141676320(MS2Ptr<RideOnAction> spAction);       // 0x141676320 (by value)
+    MS2Ptr<RideOnAction> FUN_141676370();                    // 0x141676370 copy of +0xb00
+    int FUN_1416763c0();                                     // 0x1416763c0 the ridee's object id
+    int FUN_141676500();                                     // 0x141676500 the ridee's type is 1
+    void FUN_141676670(unsigned int nKey, int nValue);       // 0x141676670 +0xb28
+    void FUN_1416766b0(MS2Ptr<Unk_PCBaseComp_b18> spItem);   // 0x1416766b0 (by value)
+    void FUN_141676700();                                    // 0x141676700 +0xb28 RemoveAll
+    void FUN_141676730(unsigned int nKey);                   // 0x141676730 +0xb28 RemoveKey
+    int FUN_141676760();                                     // 0x141676760 +0xb28 count
+    int FUN_141676790(unsigned int nKey);                    // 0x141676790 +0xb28 lookup (0 if missing)
+    NiPoint3 FUN_1416767d0();                                // 0x1416767d0 vfunc_18 of the ridee when riding
+    NiPoint3 FUN_141676880();                                // 0x141676880 vfunc_20 of the ridee when riding
+    void* FUN_141676a10();                                   // 0x141676a10 (the world object of +0xb70)
+    void FUN_141676a50(__int64 nUid, int n);                 // 0x141676a50 +0xca8 SetAt
+    void FUN_141676ab0(__int64 nUid);                        // 0x141676ab0 +0xca8 RemoveKey
+    int FUN_141676b00(__int64 nUid);                         // 0x141676b00 +0xca8 has it
+    void FUN_141678160(const NiPoint3& kPos);                // 0x141678160 m_posBF4 = kPos
     NiPoint3 FUN_14166dbb0();                               // 0x14166dbb0
     CString FUN_14166dc50();                                // 0x14166dc50 model name
     bool FUN_14166dda0(int nId);                            // 0x14166dda0 play the animation of slot 123
@@ -372,11 +417,11 @@ public:
     efd::Point2 m_unk_620;              // +0x620 (init 0x140a0a600(p, 25.0, 105.0)) model size
     void* m_unk_628[2];                 // +0x628 (init 0x140ae13b0)
     MS2Ptr<Unk_PCBaseEmoPlayer> m_sp638; // +0x638 (init 0x14167e030)
-    void* m_colorBoost[9];              // +0x648 CColorBoostManager (0x48)
+    Unk_PCBaseColorBoostMgr m_colorBoost;   // +0x648 CColorBoostManager (0x48)
     void* m_pushControl[9];             // +0x690 CPushControl (0x48)
     void* m_unk_6d8[14];                // +0x6d8 (init 0x141682e90)
     Unk_PCBaseBuffList m_unk_748;       // +0x748 buffs
-    void* m_unk_8e8[6];                 // +0x8e8 CAtlList-like (init 0x14167de50(p,10)); probed by vfunc_103
+    CAtlList<MS2Ptr<Unk_PCBaseComp_b18> > m_unk_8e8;   // +0x8e8 (init 0x14167de50(p,10)); head probed by vfunc_103
     CStringW m_strW918;                 // +0x918
     NiPoint3 m_pos920;                  // +0x920 = ZERO
     float m_f92c;                       // +0x92c = 1.0
@@ -417,16 +462,16 @@ public:
     NiPoint3 m_posAE8;                  // +0xae8 (= ZERO)
     int m_unk_af4;                      // +0xaf4 = 0x7fffffff
     int m_unk_af8;                      // +0xaf8
-    void* m_unk_b00[2];                 // +0xb00 (init 0x1407810b0(p,0))
+    MS2Ptr<RideOnAction> m_spB00;       // +0xb00 (init 0x1407810b0(p,0)) the pending ride-on action
     efd::SmartPointer<Ridee> m_spB10;   // +0xb10 the mount (ctor 0x140963df0(p,0), dtor 0x1409648b0)
     MS2Ptr<Unk_PCBaseComp_b18> m_spB18; // +0xb18
-    void* m_mapB28[9];                  // +0xb28 CAtlMap (17 bins, .75/.25/2.25, block 10; init 0x140163400)
+    CAtlMap<unsigned int, int> m_mapB28;   // +0xb28 (17 bins, .75/.25/2.25, block 10; init 0x140163400)
     int m_unk_b70;                      // +0xb70
-    void* m_unk_b78;                    // +0xb78
+    __int64 m_nUidB78;                  // +0xb78 (FUN_141676a50: the +0xca8 key)
     int m_unk_b80;                      // +0xb80
     ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> > m_unk_b88;   // +0xb88 (init 0x14167deb0(p,10)); node map per Ridee
-    void* m_unk_bb8[6];                 // +0xbb8 CAtlList-like (init 0x14167deb0(p,10))
-    void* m_unk_be8;                    // +0xbe8 (init 0x14097eba0(p,0))
+    ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> > m_unk_bb8;   // +0xbb8 (init 0x14167deb0(p,10)); second node map
+    efd::SmartPointer<NiAVObject> m_spBE8;   // +0xbe8 (init 0x14097eba0(p,0))
     int m_unk_bf0;                      // +0xbf0
     NiPoint3 m_posBF4;                  // +0xbf4 = ZERO
     int m_unk_c00;                      // +0xc00
@@ -444,7 +489,7 @@ public:
     int m_unk_c64;                      // +0xc64
     int m_unk_c68;                      // +0xc68
     Timer m_timerC70;                   // +0xc70 (armed 1000 ms)
-    void* m_mapCA8[9];                  // +0xca8 CAtlMap (init 0x140c69c80)
+    CAtlMap<__int64, int> m_mapCA8;     // +0xca8 item uid -> n (init 0x140c69c80)
     void* m_unk_cf0[2];                 // +0xcf0 (init 0x14167e4b0)
     void* m_unk_d00[2];                 // +0xd00 (init 0x14094d440); vfunc_123 looks up here (0x14094e040)
     MS2Ptr<Unk_PCBaseFxSource> m_spD10; // +0xd10 (init 0x1411bf870)
@@ -478,7 +523,7 @@ MS2_CHECK_OFFSET(PCBase, m_spA58, 0xa58);
 MS2_CHECK_OFFSET(PCBase, m_spAA8, 0xaa8);
 MS2_CHECK_OFFSET(PCBase, m_spB18, 0xb18);
 MS2_CHECK_OFFSET(PCBase, m_mapB28, 0xb28);
-MS2_CHECK_OFFSET(PCBase, m_unk_be8, 0xbe8);
+MS2_CHECK_OFFSET(PCBase, m_spBE8, 0xbe8);
 MS2_CHECK_OFFSET(PCBase, m_posC28, 0xc28);
 MS2_CHECK_OFFSET(PCBase, m_timerC70, 0xc70);
 MS2_CHECK_OFFSET(PCBase, m_mapCA8, 0xca8);

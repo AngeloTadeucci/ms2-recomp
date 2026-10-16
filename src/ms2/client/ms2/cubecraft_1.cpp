@@ -427,7 +427,7 @@ int CGuideObject::vfunc_124(int nOwnerId, efd::Point3 kPos, efd::Point3 kDir, PC
     vfunc_19(kPos);
     vfunc_21(kDir);
     FUN_14123c5a0(nOwnerId);
-    FUN_141678160(this, FUN_1410a7590(pOwner));
+    ::FUN_141678160(this, FUN_1410a7590(pOwner));
     FUN_1410a12e0(pOwner);
     for (int nPart = 0; nPart < 3; ++nPart)
     {

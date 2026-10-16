@@ -31,6 +31,7 @@ class Unk_PCBaseComp_a58 : public CPtred
 {
 public:
     void FUN_141992140(int bShow);
+    int FUN_141992160();
     void FUN_141992180(__int64 nCur, __int64 nMax);
     void FUN_141992230(__int64 nCur, __int64 nMax);                 // UIHpBar::Entity, set hp
 };
@@ -66,7 +67,58 @@ public:
     virtual void vfunc_3();                                         // hide
     void FUN_140ba8720(int nType);                                  // UIBanner::Entity
 };
-class Unk_PCBaseComp_b18 : public CPtred {};
+class Unk_PCBaseComp_b18 : public CPtred
+{
+public:
+    int FUN_141759960();
+    int FUN_141759e40();
+
+    char m_pad_10[0x28 - sizeof(CPtred)];
+    __int64 m_nTagId;                                               // +0x28
+    char m_pad_30[0x8c - 0x30];
+    int m_n8c;                                                      // +0x8c
+};
+void FUN_1417ea750(PCBase* pActor, MS2Ptr<Unk_PCBaseComp_b18> spItem);
+
+// CColorBoostData (0x20; ?\colorboostdata.cpp).
+class CColorBoostData
+{
+public:
+    CColorBoostData(float a, float b, float c);                     // 0x14109b6b0
+    virtual ~CColorBoostData();                                     // 0x14109b750
+private:
+    bool m_b08;
+    float m_f0c;                                                    // start time
+    float m_f10;
+    float m_f14;                                                    // duration
+    float m_f18;
+    float m_f1c;
+};
+
+// The buffs' extra members (FUN_141674bc0 / FUN_141675240).
+class Unk_PCBaseBuffsEx : public Unk_PCBaseBuffList
+{
+public:
+    int FUN_140970990();
+    void FUN_1409711c0();
+};
+
+int FUN_1417e9330(State* pState);                                 // the skill state's skill id
+
+extern const NiRTTI DAT_143ad1588;                                  // EffectNode::ms_RTTI
+
+// TSingleton<CBattleRecordManager> (vfunc_113).
+class Unk_PCBaseBattleRecord
+{
+public:
+    void FUN_140a04ef0(void* p);
+};
+Unk_PCBaseBattleRecord* FUN_140e09140();
+
+// MS2Ptr members instantiated by other objs.
+template <> MS2Ptr<CSkillRecord>::~MS2Ptr();                                            // 0x140975740
+template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();                                           // 0x140788ed0
+template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;                   // 0x1407895d0
 
 // The argument of vfunc_71/73 (passed as MS2Ptr by value; the callee releases it).
 class Unk_PCBaseFxSet : public CPtred
@@ -255,8 +307,52 @@ class Unk_PCBaseWorld
 {
 public:
     int FUN_141bd1a10(PCBase* pActor);
+    class Unk_PCBaseWorldActor* FUN_141bd13a0(int nId);
+    PCBase* FUN_141bd0cc0();                                        // the local player
+    class Unk_PCBaseWorldObj* FUN_141bd1200(int nId);
 };
 Unk_PCBaseWorld* FUN_1403ed2d0();
+
+// The world object found by id (FUN_141676a10).
+class Unk_PCBaseWorldObj
+{
+public:
+    void* FUN_1409ffc60();
+};
+
+// The actor found by id (vfunc_111).
+class Unk_PCBaseWorldActor
+{
+public:
+    unsigned int FUN_141094f40();                                   // the owner's id
+};
+
+// The damage UIs (vfunc_111/112).
+class Unk_PCBaseDamageUI
+{
+public:
+    void FUN_141911e90(PCBase* pActor, __int64 nValue, int nType, int nTargetId, void* pPos);
+};
+Unk_PCBaseDamageUI* FUN_140b624b0(int nId);
+class Unk_PCBaseDamageLog
+{
+public:
+    int FUN_1419299e0();
+    void FUN_141929a00(__int64 nValue, int nType);
+};
+Unk_PCBaseDamageLog* FUN_14167a900(int nId);
+class Unk_PCBaseTargetUI
+{
+public:
+    void FUN_1419df2a0(PCBase* pActor);
+};
+Unk_PCBaseTargetUI* FUN_141531aa0(int nId);
+class Unk_PCBaseUpperHpBar
+{
+public:
+    void FUN_141b4c510(PCBase* pActor, int nId);                    // UIUpperHpBar
+};
+Unk_PCBaseUpperHpBar* FUN_14096e340(int nId);
 
 // The sound manager (footsteps).
 class Unk_PCBaseSound
@@ -1433,9 +1529,9 @@ void PCBase::FUN_141676980(int n)
 MS2_REPLACE_METHOD(0x141676980, PCBase, FUN_141676980, 25, 0x39A0BC30);
 
 // @0x1416769a0
-void PCBase::FUN_1416769a0(void* p)
+void PCBase::FUN_1416769a0(__int64 nUid)
 {
-    m_unk_b78 = p;
+    m_nUidB78 = nUid;
 }
 MS2_REPLACE_METHOD(0x1416769a0, PCBase, FUN_1416769a0, 28, 0x17093EA8);
 
@@ -1447,9 +1543,9 @@ int PCBase::FUN_1416769d0()
 MS2_REPLACE_METHOD(0x1416769d0, PCBase, FUN_1416769d0, 17, 0xCC36A574);
 
 // @0x1416769f0
-void* PCBase::FUN_1416769f0()
+__int64 PCBase::FUN_1416769f0()
 {
-    return m_unk_b78;
+    return m_nUidB78;
 }
 MS2_REPLACE_METHOD(0x1416769f0, PCBase, FUN_1416769f0, 18, 0x5451CDDE);
 
@@ -1866,3 +1962,499 @@ int PCBase::vfunc_99(int nSlope)
         return 0;
 }
 MS2_REPLACE_METHOD(0x141671b70, PCBase, vfunc_99, 159, 0x1EE7592B);
+
+// @0x141673890
+bool PCBase::vfunc_102(MS2Ptr<CSkillRecord> skill)
+{
+    return true;
+}
+MS2_REPLACE_METHOD(0x141673890, PCBase, vfunc_102, 39, 0xDCF00779);
+
+// @0x1416738c0
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::vfunc_103()
+{
+    if (m_unk_8e8.IsEmpty())
+        return MS2Ptr<Unk_PCBaseComp_b18>(0);
+    MS2Ptr<Unk_PCBaseComp_b18> spItem = m_unk_8e8.GetHead();
+    if (spItem->FUN_141759e40() != 0)
+        return MS2Ptr<Unk_PCBaseComp_b18>(0);
+    else
+        return spItem;
+}
+MS2_REPLACE_METHOD(0x1416738c0, PCBase, vfunc_103, 233, 0xF71E697F);
+
+// @0x1416739c0
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::vfunc_104(bool a, bool b, bool c)
+{
+    return MS2Ptr<Unk_PCBaseComp_b18>(0);
+}
+MS2_REPLACE_METHOD(0x1416739c0, PCBase, vfunc_104, 65, 0x3097854B);
+
+// @0x1416749c0
+bool PCBase::FUN_1416749c0()
+{
+    NiPoint3 kPos = FUN_14123c360();
+    if (kPos != efd::Point3::ZERO)
+        return true;
+    return false;
+}
+MS2_REPLACE_METHOD(0x1416749c0, PCBase, FUN_1416749c0, 59, 0x3D7C4A38);
+
+// @0x141674ec0
+void PCBase::vfunc_113(void* p)
+{
+    FUN_140e09140()->FUN_140a04ef0(p);
+}
+MS2_REPLACE_METHOD(0x141674ec0, PCBase, vfunc_113, 37, 0x2955B135);
+
+// @0x141675270
+float PCBase::vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut)
+{
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141675270, PCBase, vfunc_115, 27, 0x2EA3D17C);
+
+// @0x1416752a0
+int PCBase::vfunc_117()
+{
+    return !m_unk_b88.IsEmpty();
+}
+MS2_REPLACE_METHOD(0x1416752a0, PCBase, vfunc_117, 62, 0x58D030AC);
+
+// @0x141676410
+int PCBase::FUN_141676410()
+{
+    if (m_spB10 == 0)
+        return 0;
+    return m_spB10->FUN_141707750()->m_nNameId;
+}
+MS2_REPLACE_METHOD(0x141676410, PCBase, FUN_141676410, 133, 0x8F2137E9);
+
+// @0x1416764a0
+Ridee* PCBase::FUN_1416764a0()
+{
+    return m_spB10;
+}
+MS2_REPLACE_METHOD(0x1416764a0, PCBase, FUN_1416764a0, 33, 0x3B108532);
+
+// @0x1416764d0
+int PCBase::FUN_1416764d0()
+{
+    return m_spB10 != 0;
+}
+MS2_REPLACE_METHOD(0x1416764d0, PCBase, FUN_1416764d0, 38, 0x78397EF1);
+
+// @0x141676930
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::FUN_141676930()
+{
+    return m_spB18;
+}
+MS2_REPLACE_METHOD(0x141676930, PCBase, FUN_141676930, 67, 0xDAC1A857);
+
+// @0x1416781c0
+int PCBase::vfunc_122(void* p)
+{
+    if (p == 0)
+        return 0;
+    return vfunc_116() != static_cast<PCBase*>(p)->vfunc_116();
+}
+MS2_REPLACE_METHOD(0x1416781c0, PCBase, vfunc_122, 113, 0xCFF8EA1D);
+
+// @0x1416752f0
+int PCBase::vfunc_118(const NiPoint3& kPos, float* pDist, CString* pName)
+{
+    if (vfunc_117() == 0)
+        return 0;
+    *pDist = FLT_MAX;
+    for (POSITION pos = m_unk_b88.GetHeadPosition(); pos != 0; m_unk_b88.GetNext(pos)) {
+        CString strName = m_unk_b88.GetKeyAt(pos);
+        NiAVObject* pNode = m_unk_b88.GetValueAt(pos);
+        float fDist = (pNode->GetWorldTranslate() - kPos).Length();
+        if (fDist < *pDist) {
+            *pDist = fDist;
+            *pName = strName;
+        }
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416752f0, PCBase, vfunc_118, 346, 0x49F5AB68);
+
+// @0x141673a10
+// MS2-FUNCTIONAL: the exe moves the saved z pointer through rcx into rdx for FUN_140970eb0; the source loads rdx directly (register choice only).
+void PCBase::vfunc_105(efd::Point3 kPos, void* b, void* c, int d)
+{
+    float fYaw = 0;
+    *static_cast<efd::Point3*>(b) = FUN_141674a10(kPos, &fYaw);
+    *static_cast<efd::Point3*>(c) = vfunc_20();
+    if (d != 0) {
+        static_cast<efd::Point3*>(c)->y = 0;
+        static_cast<efd::Point3*>(c)->x = 0;
+    }
+    if (*static_cast<efd::Point3*>(b) != efd::Point3::ZERO)
+        static_cast<efd::Point3*>(c)->z = fYaw;
+    float* pRotZ = &static_cast<efd::Point3*>(c)->z;
+    FUN_1416749a0()->FUN_140970eb0(*pRotZ);
+}
+MS2_REPLACE_METHOD(0x141673a10, PCBase, vfunc_105, 288, 0xE5649AD4);
+
+// @0x141674a10
+efd::Point3 PCBase::FUN_141674a10(efd::Point3 kDir, float* pYaw)
+{
+    efd::Point3 kRet = efd::Point3::ZERO;
+    if (kDir != efd::Point3::ZERO) {
+        efd::Point3 kSide;
+        efd::Point3 kFront;
+        vfunc_67(&kSide, &kFront);
+        kRet = kDir.y * kSide + kDir.x * kFront;
+        kRet.Unitize();
+        *pYaw = FUN_14166dad0(kDir, kFront);
+    }
+    return kRet;
+}
+MS2_REPLACE_METHOD(0x141674a10, PCBase, FUN_141674a10, 323, 0xCA310BE2);
+
+// @0x141674c60
+void PCBase::vfunc_111(void* p, int a, int b, void* q)
+{
+    __int64 nValue = abs(reinterpret_cast<__int64>(p));
+    Unk_PCBaseDamageUI* pDamage = FUN_140b624b0(0x4e32);
+    if (pDamage != 0)
+        pDamage->FUN_141911e90(this, nValue, a, b, q);
+    int nOwnerId = b;
+    Unk_PCBaseWorldActor* pTarget = FUN_1403ed2d0()->FUN_141bd13a0(nOwnerId);
+    if (pTarget != 0)
+        nOwnerId = pTarget->FUN_141094f40();
+    PCBase* pLocal = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pLocal != 0) {
+        if (nOwnerId == pLocal->FUN_14123c580()) {
+            Unk_PCBaseDamageLog* pLog = FUN_14167a900(0x4e44);
+            if (pLog != 0) {
+                if (pLog->FUN_1419299e0() != 0)
+                    pLog->FUN_141929a00(nValue, a);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141674c60, PCBase, vfunc_111, 276, 0xDD2381FF);
+
+// @0x141674d80
+void PCBase::vfunc_112(void* p, int n)
+{
+    PCBase* pLocal = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pLocal != 0 && n == pLocal->FUN_14123c580()) {
+        Unk_PCBaseTargetUI* pTargetUI = FUN_141531aa0(0x4e51);
+        if (pTargetUI != 0)
+            pTargetUI->FUN_1419df2a0(this);
+    }
+    Unk_PCBaseUpperHpBar* pUpper = FUN_14096e340(0x4e3d);
+    if (pUpper != 0)
+        pUpper->FUN_141b4c510(this, n);
+    MS2Ptr<Unk_PCBaseComp_a58> spBar = vfunc_80();
+    if (spBar.get() != 0) {
+        if (spBar->FUN_141992160() == 0 && pLocal != 0)
+            spBar->FUN_141992140(pLocal->FUN_14123c580() == n);
+    }
+}
+MS2_REPLACE_METHOD(0x141674d80, PCBase, vfunc_112, 302, 0x0D7211D8);
+
+// @0x141673b40
+int PCBase::FUN_141673b40(MS2Ptr<Unk_PCBaseComp_b18> spItem)
+{
+    if (spItem.IsNull() || spItem->FUN_141759960() == 0)
+        return 0;
+    FUN_1417ea750(this, spItem);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141673b40, PCBase, FUN_141673b40, 158, 0x65CBAB49);
+
+// @0x141673bf0
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::FUN_141673bf0(__int64 nTagId, int nKind)
+{
+    for (POSITION pos = m_unk_8e8.GetHeadPosition(); pos != 0; m_unk_8e8.GetNext(pos)) {
+        Unk_PCBaseComp_b18* pItem = m_unk_8e8.GetAt(pos).get();
+        if (pItem->m_nTagId == nTagId && pItem->m_n8c == nKind)
+            return MS2Ptr<Unk_PCBaseComp_b18>(pItem);
+    }
+    return MS2Ptr<Unk_PCBaseComp_b18>(0);
+}
+MS2_REPLACE_METHOD(0x141673bf0, PCBase, FUN_141673bf0, 231, 0x8DC370DA);
+
+// @0x141673ce0
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::FUN_141673ce0(MS2Ptr<Unk_PCBaseComp_b18> spItem)
+{
+    if (FUN_141673bf0(spItem->m_nTagId, spItem->m_n8c).IsNull()) {
+        m_unk_8e8.RemoveAll();
+        m_unk_8e8.AddTail(spItem);
+        return spItem;
+    }
+    return MS2Ptr<Unk_PCBaseComp_b18>(0);
+}
+MS2_REPLACE_METHOD(0x141673ce0, PCBase, FUN_141673ce0, 287, 0x81523824);
+
+// @0x141673e10
+MS2Ptr<Unk_PCBaseComp_b18> PCBase::FUN_141673e10(__int64 nTagId)
+{
+    for (POSITION pos = m_unk_8e8.GetHeadPosition(); pos != 0; m_unk_8e8.GetNext(pos)) {
+        Unk_PCBaseComp_b18* pItem = m_unk_8e8.GetAt(pos).get();
+        if (pItem->m_nTagId == nTagId)
+            return MS2Ptr<Unk_PCBaseComp_b18>(pItem);
+    }
+    return MS2Ptr<Unk_PCBaseComp_b18>(0);
+}
+MS2_REPLACE_METHOD(0x141673e10, PCBase, FUN_141673e10, 206, 0x44C1FD7A);
+
+// @0x141673ef0
+int PCBase::FUN_141673ef0()
+{
+    if (m_spStateMgr.get() != 0) {
+        if (m_spStateMgr->FUN_1417db270() == 0x10) {
+            State* pState = m_spStateMgr->FUN_1417db1c0();
+            return FUN_1417e9330(pState);
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141673ef0, PCBase, FUN_141673ef0, 116, 0xAEB0C93F);
+
+// @0x141673f70
+void PCBase::FUN_141673f70(float a, float b, float c)
+{
+    CColorBoostData kData(a, b, c);
+    m_colorBoost.FUN_14109be00(kData);
+    Ridee* pRidee = FUN_1416764a0();
+    if (pRidee != 0)
+        pRidee->FUN_141673f70(a, b, c);
+}
+MS2_REPLACE_METHOD(0x141673f70, PCBase, FUN_141673f70, 156, 0xA481120A);
+
+// @0x141674b60
+efd::Point3 PCBase::FUN_141674b60(efd::Point3 kDir)
+{
+    float fYaw = 0;
+    return FUN_141674a10(kDir, &fYaw);
+}
+MS2_REPLACE_METHOD(0x141674b60, PCBase, FUN_141674b60, 87, 0x56E1EF6F);
+
+// @0x141674bc0
+int PCBase::FUN_141674bc0()
+{
+    return static_cast<Unk_PCBaseBuffsEx*>(&m_unk_748)->FUN_140970990();
+}
+MS2_REPLACE_METHOD(0x141674bc0, PCBase, FUN_141674bc0, 33, 0xD3B461DE);
+
+// @0x141675150
+NiAVObject* PCBase::FUN_141675150(const CString& strNode)
+{
+    Ridee* pRidee;
+    if (FUN_14123c660() != 0 && (pRidee = FUN_1416764a0()) != 0)
+        return pRidee->FUN_141675150(strNode);
+    NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+    if (pRoot != 0) {
+        NiFixedString kName((const char*)strNode);
+        return static_cast<NiAVObject*>(NiObject::DynamicCast(&DAT_143ad1588, pRoot->GetObjectByName(kName)));
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141675150, PCBase, FUN_141675150, 219, 0x54BDAE33);
+
+// @0x141675240
+void PCBase::FUN_141675240()
+{
+    static_cast<Unk_PCBaseBuffsEx*>(&m_unk_748)->FUN_1409711c0();
+}
+MS2_REPLACE_METHOD(0x141675240, PCBase, FUN_141675240, 33, 0x084A2064);
+
+// @0x1416757c0
+efd::SmartPointer<NiAVObject> PCBase::FUN_1416757c0(CString strName)
+{
+    efd::SmartPointer<NiAVObject> spNode(0);
+    if (m_unk_b88.IsEmpty())
+        return spNode;
+    m_unk_b88.Lookup(strName, spNode);
+    return spNode;
+}
+MS2_REPLACE_METHOD(0x1416757c0, PCBase, FUN_1416757c0, 217, 0xE4622531);
+
+// @0x1416758a0
+efd::SmartPointer<NiAVObject> PCBase::FUN_1416758a0(CString strName)
+{
+    efd::SmartPointer<NiAVObject> spNode(0);
+    m_unk_bb8.Lookup(strName, spNode);
+    return spNode;
+}
+MS2_REPLACE_METHOD(0x1416758a0, PCBase, FUN_1416758a0, 136, 0xA990BF2D);
+
+// @0x141675930
+efd::SmartPointer<NiAVObject> PCBase::FUN_141675930()
+{
+    return m_spBE8;
+}
+MS2_REPLACE_METHOD(0x141675930, PCBase, FUN_141675930, 67, 0x12297BF2);
+
+// @0x141675cd0
+int PCBase::FUN_141675cd0(const NiPoint3& kPos, CString strUnused, CString* pName, float* pDist)
+{
+    if (FUN_141675e60() == 0)
+        return 0;
+    *pDist = FLT_MAX;
+    for (POSITION pos = m_unk_bb8.GetHeadPosition(); pos != 0; m_unk_bb8.GetNext(pos)) {
+        CString strName = m_unk_bb8.GetKeyAt(pos);
+        NiAVObject* pNode = m_unk_bb8.GetValueAt(pos);
+        float fDist = (pNode->GetWorldTranslate() - kPos).Length();
+        if (fDist < *pDist) {
+            *pDist = fDist;
+            *pName = strName;
+        }
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141675cd0, PCBase, FUN_141675cd0, 382, 0x94FD3298);
+
+// @0x141675e60
+int PCBase::FUN_141675e60()
+{
+    return !m_unk_bb8.IsEmpty();
+}
+MS2_REPLACE_METHOD(0x141675e60, PCBase, FUN_141675e60, 62, 0xF082B080);
+
+// @0x141675eb0
+void* PCBase::FUN_141675eb0()
+{
+    return &m_pushControl;
+}
+MS2_REPLACE_METHOD(0x141675eb0, PCBase, FUN_141675eb0, 17, 0xEE253D79);
+
+// @0x141676320
+void PCBase::FUN_141676320(MS2Ptr<RideOnAction> spAction)
+{
+    m_spB00 = spAction;
+}
+MS2_REPLACE_METHOD(0x141676320, PCBase, FUN_141676320, 63, 0x5F552001);
+
+// @0x141676370
+MS2Ptr<RideOnAction> PCBase::FUN_141676370()
+{
+    return m_spB00;
+}
+MS2_REPLACE_METHOD(0x141676370, PCBase, FUN_141676370, 67, 0x77B23705);
+
+// @0x1416763c0
+int PCBase::FUN_1416763c0()
+{
+    if (m_spB10 == 0)
+        return 0;
+    return m_spB10->FUN_14123c580();
+}
+MS2_REPLACE_METHOD(0x1416763c0, PCBase, FUN_1416763c0, 73, 0x9715FB89);
+
+// @0x141676500
+int PCBase::FUN_141676500()
+{
+    if (m_spB10 == 0)
+        return 0;
+    return m_spB10->FUN_141707750()->m_nType == 1;
+}
+MS2_REPLACE_METHOD(0x141676500, PCBase, FUN_141676500, 158, 0x9A8E329D);
+
+// @0x141676670
+void PCBase::FUN_141676670(unsigned int nKey, int nValue)
+{
+    m_mapB28.SetAt(nKey, nValue);
+}
+MS2_REPLACE_METHOD(0x141676670, PCBase, FUN_141676670, 51, 0x3464AB17);
+
+// @0x1416766b0
+void PCBase::FUN_1416766b0(MS2Ptr<Unk_PCBaseComp_b18> spItem)
+{
+    m_spB18 = spItem;
+}
+MS2_REPLACE_METHOD(0x1416766b0, PCBase, FUN_1416766b0, 63, 0x3B963751);
+
+// @0x141676700
+void PCBase::FUN_141676700()
+{
+    m_mapB28.RemoveAll();
+}
+MS2_REPLACE_METHOD(0x141676700, PCBase, FUN_141676700, 33, 0x8B35E0E0);
+
+// @0x141676730
+void PCBase::FUN_141676730(unsigned int nKey)
+{
+    m_mapB28.RemoveKey(nKey);
+}
+MS2_REPLACE_METHOD(0x141676730, PCBase, FUN_141676730, 41, 0x5ACF4772);
+
+// @0x141676760
+int PCBase::FUN_141676760()
+{
+    return (int)m_mapB28.GetCount();
+}
+MS2_REPLACE_METHOD(0x141676760, PCBase, FUN_141676760, 33, 0xCAABD8C0);
+
+// @0x141676790
+int PCBase::FUN_141676790(unsigned int nKey)
+{
+    int nValue = 0;
+    m_mapB28.Lookup(nKey, nValue);
+    return nValue;
+}
+MS2_REPLACE_METHOD(0x141676790, PCBase, FUN_141676790, 58, 0xC1A3BF59);
+
+// @0x1416767d0
+NiPoint3 PCBase::FUN_1416767d0()
+{
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee != 0)
+        return spRidee->vfunc_18();
+    return vfunc_18();
+}
+MS2_REPLACE_METHOD(0x1416767d0, PCBase, FUN_1416767d0, 168, 0x794ABE09);
+
+// @0x141676880
+NiPoint3 PCBase::FUN_141676880()
+{
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee != 0)
+        return spRidee->vfunc_20();
+    return vfunc_20();
+}
+MS2_REPLACE_METHOD(0x141676880, PCBase, FUN_141676880, 168, 0xF147A9F0);
+
+// @0x141676a10
+void* PCBase::FUN_141676a10()
+{
+    return FUN_1403ed2d0()->FUN_141bd1200(m_unk_b70)->FUN_1409ffc60();
+}
+MS2_REPLACE_METHOD(0x141676a10, PCBase, FUN_141676a10, 46, 0xB9F2C777);
+
+// @0x141676a50
+void PCBase::FUN_141676a50(__int64 nUid, int n)
+{
+    FUN_141676980(n);
+    FUN_1416769a0(nUid);
+    m_mapCA8.SetAt(nUid, n);
+}
+MS2_REPLACE_METHOD(0x141676a50, PCBase, FUN_141676a50, 82, 0x230F5B7A);
+
+// @0x141676ab0
+void PCBase::FUN_141676ab0(__int64 nUid)
+{
+    FUN_141676980(0);
+    FUN_1416769a0(0);
+    m_mapCA8.RemoveKey(nUid);
+}
+MS2_REPLACE_METHOD(0x141676ab0, PCBase, FUN_141676ab0, 67, 0x8D619E4A);
+
+// @0x141676b00
+int PCBase::FUN_141676b00(__int64 nUid)
+{
+    return m_mapCA8.Lookup(nUid) != 0;
+}
+MS2_REPLACE_METHOD(0x141676b00, PCBase, FUN_141676b00, 70, 0xA2EC986C);
+
+// @0x141678160
+void PCBase::FUN_141678160(const NiPoint3& kPos)
+{
+    m_posBF4 = kPos;
+}
+MS2_REPLACE_METHOD(0x141678160, PCBase, FUN_141678160, 43, 0x6EE29682);

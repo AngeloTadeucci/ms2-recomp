@@ -662,7 +662,7 @@ void AvatarPC::FUN_1409f43d0(int nSkillId, short nLevel)
     MS2Ptr<CSkillRecord> spSkill(new CSkillRecord());
     if (spSkill->FUN_1417595d0(kReq))
     {
-        bool bStart = !(FUN_141673ef0(this) == nSkillId && nSkillId != 0);
+        bool bStart = !(::FUN_141673ef0(this) == nSkillId && nSkillId != 0);
         if (bStart)
             vfunc_59(1, 0, 0, 0);
         vfunc_102(MS2Ptr<CSkillRecord>(spSkill));
@@ -684,7 +684,7 @@ void AvatarPC::FUN_1409f45a0(MS2Ptr<CItemData> spData)
         vfunc_59(1, 0, 0, 0);
         StatePlayInstrumentData* pData = new StatePlayInstrumentData(MS2Ptr<CItemData>(spData), 0);
         vfunc_59(0x2f, pData, 0x7d, 0);
-        FUN_14166cc40(this, 0x7f);
+        ::FUN_14166cc40(this, 0x7f);
     }
 }
 
@@ -717,7 +717,7 @@ void AvatarPC::FUN_1409f4750(MS2Ptr<CItemData> spData, MS2Ptr<CItem> spItem)
     }
     vfunc_59(1, 0, 0, 0);
     vfunc_19(m_kPos);
-    FUN_14166d8e0(this, m_kDir);
+    ::FUN_14166d8e0(this, m_kDir);
     if (m_spRidee != 0)
     {
         m_spRidee->vfunc_19(m_kPos);
@@ -871,7 +871,7 @@ bool AvatarPC::vfunc_102(MS2Ptr<CSkillRecord> spSkill)
 // @0x1409f5510
 float AvatarPC::vfunc_95()
 {
-    return FUN_141671940(this);
+    return ::FUN_141671940(this);
 }
 
 // @0x1409f5540
@@ -931,7 +931,7 @@ int AvatarPC::vfunc_10()
 {
     PC::vfunc_10();
     vfunc_109(0);
-    FUN_14166cc40(this, 10);
+    ::FUN_14166cc40(this, 10);
     m_kDir = vfunc_20();
     m_kPos = vfunc_18();
     if (m_pListener != 0)
