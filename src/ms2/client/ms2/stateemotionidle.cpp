@@ -280,7 +280,7 @@ void StateEmotion::vfunc_8(double fTime)
         Unk_BuffMgr* pBuff = FUN_14166d240(pPC);
         Unk_StreamPoint kPos = pBuff->FUN_141683290();
         Unk_StreamPoint kArg = kPos;
-        pPC->vfunc_22(&kArg);
+        pPC->vfunc_22(*reinterpret_cast<const efd::Point3*>(&kArg));
         if (!FUN_1416749c0(m_pOwner))
         {
             if (!pBuff->FUN_141683100(0x30d41))
@@ -789,7 +789,7 @@ void StateEmotionIdle::vfunc_8(double fTime)
         Unk_BuffMgr* pBuff = FUN_14166d240(m_pOwner);
         Unk_StreamPoint kPos = pBuff->FUN_141683290();
         Unk_StreamPoint kArg = kPos;
-        m_pOwner->vfunc_22(&kArg);
+        m_pOwner->vfunc_22(*reinterpret_cast<const efd::Point3*>(&kArg));
         if (pPC == 0 || !pBuff->FUN_141683100(0x30d41))
         {
             if (pPC == 0 || !pBuff->FUN_141683100(0x30d42))

@@ -19,6 +19,8 @@ public:
     float FUN_14176fa50() const;                                // m_fDuration
     bool FUN_14176fa60() const;                                 // m_bActive
     void FUN_14176fa70(NiMeshUpdateProcess* pProcess);          // set the process
+    // @0x14123ef30 (COMDAT in client\ms2\gameobject.cpp)
+    void FUN_14123ef30(float fDuration) { m_fDuration = fDuration; }
 
     float m_fLast;                                              // +0x00 time of the last pass
     float m_fInterval;                                          // +0x04

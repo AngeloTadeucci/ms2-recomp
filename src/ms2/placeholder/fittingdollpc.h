@@ -40,7 +40,7 @@ public:
     virtual void vfunc_33(void* a, void* b);                // 33 0x141652080
     virtual void vfunc_34(void* p);                         // 34 0x1416529f0
     virtual void vfunc_35(void* p);                         // 35 0x141652e20
-    virtual void vfunc_40(float x, float y, float z);       // 40 0x14165d8d0
+    virtual void vfunc_40(float a, float b, float c, float d);   // 40 0x14165d8d0
     virtual void vfunc_42(float f, bool b);                 // 42 0x14165dad0
     virtual void vfunc_44(void* p);                         // 44 0x14165dd80
     virtual void vfunc_52(double fTime);                    // 52 0x141651d80

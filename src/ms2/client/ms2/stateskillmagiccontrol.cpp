@@ -108,7 +108,7 @@ void StateSkillMagicControl::vfunc_8(double fTime)
         return;
     void* pBuffs = FUN_14166d240(m_pOwner);
     NiPoint3 kPos = FUN_141683900(pBuffs);
-    m_pOwner->vfunc_22(&kPos);
+    m_pOwner->vfunc_22(kPos);
 }
 
 // @0x140ac07c0

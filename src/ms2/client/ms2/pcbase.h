@@ -69,7 +69,7 @@ public:
     virtual NiPoint3 vfunc_20();                            // 20 0x14166bc50
     virtual void vfunc_21(efd::Point3 kDir);                // 21 0x14166bb60 (by value)
     virtual void vfunc_23(int n);                           // 23 0x14166c5b0
-    virtual int vfunc_26();                                 // 26 0x14166bd70
+    virtual Unk_GoAttachment* vfunc_26();                   // 26 0x14166bd70
     virtual void vfunc_32(bool b);                          // 32 0x14166bdd0
     virtual NiPoint3 vfunc_37();                            // 37 0x14166bcc0
     virtual void vfunc_52(double fTime);                    // 52 0x14166c640 (update)
