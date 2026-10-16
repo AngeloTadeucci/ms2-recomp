@@ -181,7 +181,10 @@ class Unk_ClosingButton : public ASDisplayObject { public: void FUN_1422c1fe0(un
 class Unk_ClosingClip : public ASUIComponent
 {
 public:
-    virtual void vfunc_24(int);
+    // ASUIComponent slots 16-23 (not declared by the placeholder); vfunc_24 is slot 24 (+0xc0, 0x140e0e3f1)
+    virtual void s16(); virtual void s17(); virtual void s18(); virtual void s19(); virtual void s20();
+    virtual void s21(); virtual void s22(); virtual void s23();
+    virtual void vfunc_24(bool);
     void FUN_1422c00f0(float, float);
     void FUN_1422c0180(unsigned, unsigned);
 };
