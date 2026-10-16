@@ -138,6 +138,7 @@ public:
     int FUN_140225810(const CStringW& str, CStringW& message);
     int FUN_1402258f0(const CStringW& str, CStringW& message);
     int FUN_1402259b0(const CStringW& str, CStringW& message);
+    int FUN_140225a70(const CStringW& str, CStringW& message);
     int FUN_140225c90(const CStringW& str, CStringW& message);
     int FUN_140225de0(const CStringW& str, CStringW& message);
     int FUN_140225f30(const CStringW& str, CStringW& message);
@@ -177,6 +178,11 @@ public:
     void RemoveBanWords(unsigned nKey);                     // 0x140227280
     void ClearTries();                                      // 0x140227890
     void FUN_140229220();                                   // empty
+    int LoadWords(CString strPath, TextFilterUnit* pTrie);  // 0x1402272c0 Table xml of <key name="word[,replacement]"/>
+    int LoadIdSet(CString strPath, std::set<CStringW>* pSet);   // 0x140227670
+    void BuildUrlHashes();                                  // 0x140228740
+    bool ReplaceUrlsWithHashes(CStringW& str);              // 0x140228880
+    bool ReplaceHashesWithUrls(CStringW& str);              // 0x140228970
 
     TextFilterUnit m_trieBanUrl;                            // +0x020 Table/banUrl.xml
     TextFilterUnit m_trieBanWord;                           // +0x098 Table/banWord.xml

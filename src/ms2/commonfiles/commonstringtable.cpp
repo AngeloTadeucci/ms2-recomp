@@ -30,6 +30,7 @@ CStringW FUN_1401ceea0(const wchar_t* pszFormat, const int& nArg);          // f
 void FUN_14025fab0(CStringW& str);                                          // MakeLower
 extern int DAT_143ab2914;                                                   // client build / region level (below 50: checks active)
 extern int DAT_143ab0248;                                                   // client country (0..3)
+void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* pszSep);   // split into the pieces between separators
 
 // The game constants table (FUN_1401d3200()): only the 0x58-byte slots read here.
 class Unk_ConstVal { char m_pad_00[0x58]; };
@@ -551,8 +552,83 @@ int CBanTextChecker::CheckTextOption(const CStringW& str, CheckerOption& opt, CS
 // @0x140228110
 unsigned CBanTextChecker::ScanLimit(const CStringW& str, CheckerLimit& limit)
 {
+    CStringW s(str);
+    // Per client country: 1 hangul counts double, 2 characters are looked up in the char class table, 4 (unused here),
+    // 8 CJK ideographs count double, 0x10 umlauts are fine, 0x20 Portuguese letters are fine.
+    int nFlags = 0;
+    switch (DAT_143ab0248) {
+    case 0: nFlags = 5; break;
+    case 1: nFlags = 6; break;
+    case 2: nFlags = 0x34; break;
+    case 3: nFlags = 0xc; break;
+    default:
+        MS2_ASSERT_AT(0x57d, FALSE);
+        nFlags = 5;
+        break;
+    }
+    if (!limit.m_bSkipTrimCheck) {
+        CStringW trimmed(s);
+        trimmed.Trim();
+        if (trimmed.GetLength() < (limit.m_nMin > 1 ? limit.m_nMin : 1)) return 1;
+        if (trimmed.GetLength() != s.GetLength()) return 3;
+    }
+    int nExtra = 0;
+    int nLen = s.GetLength();
+    if (nLen < (limit.m_nMin > 1 ? limit.m_nMin : 1)) return 1;
+    bool bBad = false;
+    if (!limit.m_bNoCharCheck) {
+        for (int i = 0; i < nLen; ++i) {
+            wchar_t chPrev = i > 0 ? s.GetAt(i - 1) : 0;
+            wchar_t ch = s.GetAt(i);
+            if (limit.m_bAllowSpace && ch == L' ' && chPrev != L' ') continue;
+            if (limit.m_bAllowPunct) {
+                if (ch == L'\'') continue;
+                if (ch == L'-') continue;
+                if (ch == L'_') continue;
+                if (ch == L'.') continue;
+            }
+            if (ch >= 0x30 && ch <= 0x39) continue;
+            if ((ch >= 0x61 && ch <= 0x7a) || (ch >= 0x41 && ch <= 0x5a)) continue;
+            if ((nFlags & 1) && ch >= 0xac00 && ch < 0xd7a4) {
+                if (limit.m_bWideCountsTwice) ++nExtra;
+                continue;
+            }
+            if ((nFlags & 8) && ch >= 0x4e00 && ch < 0x9faf) {
+                if (limit.m_bWideCountsTwice) ++nExtra;
+                continue;
+            }
+            if (nFlags & 2) {
+                unsigned nKey = ch;
+                std::map<unsigned, int>::iterator it = m_mapCharClass.find(nKey);
+                if (it != m_mapCharClass.end()) {
+                    int nClass = it->second;
+                    if (nClass != 0 && limit.m_bWideCountsTwice) ++nExtra;
+                    continue;
+                }
+            }
+            if (nFlags & 0x10) {
+                if (ch == 0xc4) continue;
+                if (ch == 0xe4) continue;
+                if (ch == 0xd6) continue;
+                if (ch == 0xf6) continue;
+                if (ch == 0xdc) continue;
+                if (ch == 0xfc) continue;
+                if (ch == 0xdf) continue;
+            }
+            if (nFlags & 0x20) {
+                switch (ch) {
+                case 0xaa: case 0xba: case 0xc0: case 0xc1: case 0xc2: case 0xc3: case 0xc7: case 0xc9: case 0xca: case 0xcd: case 0xd3: case 0xd4: case 0xd5: case 0xda: case 0xdc: case 0xe0: case 0xe1: case 0xe2: case 0xe3: case 0xe7: case 0xe9: case 0xea: case 0xed: case 0xf3: case 0xf4: case 0xf5: case 0xfa: case 0xfc:
+                    continue;
+                }
+            }
+            bBad = true;
+        }
+    }
+    if (nLen + nExtra > limit.m_nMax) return 2;
+    if (bBad) return 3;
     return 0;
 }
+
 // @0x140225120
 int CBanTextChecker::FUN_140225120(const CStringW& str, CStringW& message)
 {
@@ -647,6 +723,24 @@ int CBanTextChecker::FUN_1402259b0(const CStringW& str, CStringW& message)
 {
     CheckerOption opt(0xd8, true);
     CheckerLimit limit(1, 300, false, false, false, false, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225a70
+int CBanTextChecker::FUN_140225a70(const CStringW& str, CStringW& message)
+{
+    CheckerLimit limit(3, 0xe, true, false, false, false, false);
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(5), static_cast<EBanStringId>(0x8bd));
+        pkg->Add(static_cast<EBanErrKind>(6), static_cast<EBanStringId>(0x8be));
+        pkg->Add(static_cast<EBanErrKind>(7), static_cast<EBanStringId>(0x8bf));
+        pkg->Add(static_cast<EBanErrKind>(8), static_cast<EBanStringId>(0x8c0));
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c1));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c2));
+        limit.m_errs = pkg;
+    }
+    CheckerOption opt(pkg, 0xd1, true);
     return CheckTextWithLimit(str, opt, limit, message);
 }
 
@@ -817,4 +911,182 @@ int CBanTextChecker::CheckTextWithLimit(const CStringW& str, CheckerOption& opt,
 int CBanTextChecker::CheckTypes(const CStringW& str, unsigned nTypes, bool bFlag, CStringW& message)
 {
     return CheckTextOption(str, CheckerOption(nTypes, bFlag), message);
+}
+
+// @0x14025a640
+CStringW FUN_14025a640(const CStringW& str)
+{
+    return str;
+}
+
+// @0x14025a680
+void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* pszSep)
+{
+    int iStart = 0;
+    CStringW tok = src.Tokenize(pszSep, iStart);
+    while (!tok.IsEmpty())
+    {
+        out.Add(FUN_14025a640(tok));
+        tok = src.Tokenize(pszSep, iStart);
+    }
+}
+
+// @0x1402272c0
+int CBanTextChecker::LoadWords(CString strPath, TextFilterUnit* pTrie)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+        if (pRoot == 0)
+        {
+            FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+            return 0;
+        }
+        else
+        {
+            for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+            {
+                CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
+                if (!strName.IsEmpty())
+                {
+                    FUN_14025fab0(strName);
+                    ATL::CAtlArray<CStringW> parts;
+                    FUN_14025a680(strName, parts, L",");
+                    if (parts.GetCount() == 1)
+                    {
+                        pTrie->Insert(parts[0], 0, CStringW(L""));
+                    }
+                    else if (parts.GetCount() == 2)
+                    {
+                        pTrie->Insert(parts[0], 0, CStringW(parts[1]));
+                    }
+                    else if (parts.GetCount() > 2)
+                    {
+                        MS2_ASSERT_AT(0x28f, 0);
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        }
+    }
+}
+
+// @0x140227670
+int CBanTextChecker::LoadIdSet(CString strPath, std::set<CStringW>* pSet)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+        if (pRoot == 0)
+        {
+            FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+            return 0;
+        }
+        else
+        {
+            for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+            {
+                CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
+                if (!strName.IsEmpty())
+                {
+                    FUN_14025fab0(strName);
+                    pSet->insert(strName);
+                }
+            }
+            return 1;
+        }
+    }
+}
+
+// @0x140224b20
+int CBanTextChecker::LoadTables()
+{
+    ClearTries();
+    LoadWords(FUN_14071a5b0(CString("Table"), CString("banUrl.xml")), &m_trieBanUrl);
+    LoadWords(FUN_14071ae20(CString("banWord.xml")), &m_trieBanWord);
+    LoadWords(FUN_14071ae20(CString("reserveWord.xml")), &m_trieReserveWord);
+    LoadIdSet(FUN_14071ae20(CString("reserveIDAll.xml")), &m_setReserveIdAll);
+    LoadWords(FUN_14071ae20(CString("reserveIDAny.xml")), &m_trieReserveIdAny);
+    LoadWords(FUN_14071ae20(CString("ugcBanWord.xml")), &m_trieUgcBanWord);
+    LoadWords(FUN_14071ae20(CString("startWithWord.xml")), &m_trieStartWith);
+    LoadWords(FUN_14071ae20(CString("banWordAll.xml")), &m_trieBanWordAll);
+    BuildUrlHashes();
+    FUN_140263710(true);
+    return 1;
+}
+
+// @0x1402271a0
+void CBanTextChecker::SetBanWords(unsigned nKey, Unk_BanWordList& words)
+{
+    m_mapBanWords.RemoveKey(nKey);
+    Unk_BanWordPtr list((Unk_SocketNew(0)));
+    for (unsigned i = 0; i < words.GetCount(); ++i)
+    {
+        list->Add(words[i]);
+    }
+    m_mapBanWords.SetAt(nKey, list);
+}
+
+// @0x140227280
+void CBanTextChecker::RemoveBanWords(unsigned nKey)
+{
+    m_mapBanWords.RemoveKey(nKey);
+}
+
+// @0x140228740
+void CBanTextChecker::BuildUrlHashes()
+{
+    ATL::CAtlList<CStringW> urls(10);
+    urls.AddTail(CStringW(L"//qq.com"));
+    urls.AddTail(CStringW(L"www.qq.com"));
+    POSITION pos = urls.GetHeadPosition();
+    while (pos != 0)
+    {
+        const CStringW& strUrl = urls.GetAt(pos);
+        CStringW strHash;
+        strHash.Format(L"%d", FUN_14025ed00(strUrl));
+        m_mapUrlHash.SetAt(strUrl, strHash);
+        urls.GetNext(pos);
+    }
+}
+
+// @0x140228880
+bool CBanTextChecker::ReplaceUrlsWithHashes(CStringW& str)
+{
+    int nCount = 0;
+    POSITION pos = m_mapUrlHash.GetHeadPosition();
+    while (pos != 0)
+    {
+        const CStringW& strUrl = m_mapUrlHash.GetKeyAt(pos);
+        CStringW& strHash = m_mapUrlHash.GetValueAt(pos);
+        nCount += str.Replace(strUrl, strHash);
+        m_mapUrlHash.GetNext(pos);
+    }
+    return 0 < nCount;
+}
+
+// @0x140228970
+bool CBanTextChecker::ReplaceHashesWithUrls(CStringW& str)
+{
+    int nCount = 0;
+    POSITION pos = m_mapUrlHash.GetHeadPosition();
+    while (pos != 0)
+    {
+        const CStringW& strUrl = m_mapUrlHash.GetKeyAt(pos);
+        CStringW& strHash = m_mapUrlHash.GetValueAt(pos);
+        nCount += str.Replace(strHash, strUrl);
+        m_mapUrlHash.GetNext(pos);
+    }
+    return 0 < nCount;
 }
