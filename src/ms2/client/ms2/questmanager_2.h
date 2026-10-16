@@ -81,7 +81,6 @@ public:
     void FUN_1416d1d00(PCBase* pc);
     void FUN_1416d3010();
     void FUN_1416d3250();
-    void FUN_1416cef90(int);
     void FUN_1416ca850(NotifyObject*);
     int FUN_1416cae20(int);
     void FUN_1416caec0(Unk_PayloadPtr<CQuest>);
@@ -98,11 +97,17 @@ public:
     int FUN_1416ce6a0(MS2Ptr<CItem>);
     void FUN_1416ce860(MS2Ptr<CItem>, ATL::CAtlArray<Unk_QuestItemLink>&);
     int FUN_1416ce340(int);
+    int FUN_1416cebf0(int);
+    int FUN_1416cede0(int, unsigned*);
+    void FUN_1416cef90(int);
     void FUN_1416cf510(int);
     void FUN_1416cf630(int);
     void FUN_1416cf750(int);
+    void FUN_1416cf870(int);
+    void FUN_1416cf980(int, int);
     int FUN_1416cfc10(int);
     void FUN_1416cfc60(int);
+    void FUN_1416cfc70(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>&, int, int);
     int FUN_1416d00c0();
     int FUN_1416d0100();
     int FUN_1416d0150();

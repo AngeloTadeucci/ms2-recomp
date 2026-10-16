@@ -30,6 +30,9 @@
 #include "ms2/placeholder/cproxygameobject.h"
 #include "ms2/commonfiles/fieldmetatable.h"
 #include "ms2/placeholder/citem.h"
+#include "ms2/client/ms2/uidialog.h"
+#include "ms2/client/ms2/inventory.h"
+#include "ms2/client/ms2/uiquesteventlistener.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -186,6 +189,67 @@ class Unk_IngTable;
 Unk_IngTable* FUN_140281980();
 unsigned FUN_1405575b0(Unk_IngTable* table, int itemId);   // the item's name id
 void FUN_141b1feb0(void*);
+class Unk_QmTalkScript;
+// Boxed talk-script handle (16 bytes), as used by cubespawnobject.cpp.
+class Unk_QmTalkScriptPtr {
+public:
+    ~Unk_QmTalkScriptPtr();                             // 0x14078f140
+    Unk_QmTalkScript* FUN_14078f3a0() const;            // get
+private:
+    void* m_0;
+    Unk_QmTalkScript* m_p;
+};
+Unk_QmTalkScriptPtr FUN_1408564b0(int questId, int n);
+int FUN_14074b0e0(CQuestData* data, int value, int n);
+int IsConditionTypeCounted(int nType);
+extern Unk_Inventory DAT_143ab2a90;
+extern __int64 DAT_143ab2898;
+UIQuestEventDispatcher* FUN_140bfc4b0();
+int FUN_141276180(const CString& sound, const CString& arg);
+void FUN_14138bf00(void*, int, int, int);
+// The dungeon room record looked up by room id (+0x1c: the room's dungeon).
+class Unk_QmRoom {
+public:
+    char m_pad_00[0x1c];
+    int m_1c;
+};
+class Unk_QmRoomPtr {
+public:
+    ~Unk_QmRoomPtr();                                   // 0x14031c0f0
+    bool operator!() const;                             // 0x140e36ca0
+    Unk_QmRoom* operator->() const;                     // 0x1403347d0
+private:
+    void* m_0;
+    Unk_QmRoom* m_p;
+};
+class Unk_QmRoomTable {
+public:
+    Unk_QmRoomPtr FUN_1403206b0(int roomId);
+};
+Unk_QmRoomTable* FUN_14031c2a0();
+int FUN_1402178b0(int roomKind);
+class UIPopupNpcTalkDialog : public UIDialog {
+public:
+    void FUN_140e771e0(int questId);
+};
+class Unk_QmUIManager {
+public:
+    MS2Ptr<UIObject> FUN_141adcea0(int id);
+};
+Unk_QmUIManager* FUN_1403ed2b0();
+// @0x1416d4e40 (UIPopupNpcTalkDialog instance)
+template <class T> T* Unk_QmFindDialog(int id)
+{
+    if (FUN_1403ed2b0()) {
+        MS2Ptr<UIObject> ui = FUN_1403ed2b0()->FUN_141adcea0(id);
+        if (ui.get())
+            return dynamic_cast<T*>((UIObject*)ui);
+    }
+    return 0;
+}
+// Instances of other objects.
+template<> size_t ATL::CAtlArray<__int64>::GetCount() const throw();
+template<> __int64& ATL::CAtlArray<__int64>::operator[](size_t) throw();
 // These array instances were first emitted by astooltip.cpp.
 template<> ATL::CAtlArray<Unk_QuestItemLink>::CAtlArray() throw();
 template<> ATL::CAtlArray<Unk_QuestItemLink>::~CAtlArray() throw();
@@ -950,6 +1014,97 @@ void CQuestManager::FUN_1416ce860(MS2Ptr<CItem> item, ATL::CAtlArray<Unk_QuestIt
 }
 MS2_REPLACE_METHOD(0x1416ce860, CQuestManager, FUN_1416ce860, 896, 0x5366C6FA);
 
+// @0x1416cebf0
+int CQuestManager::FUN_1416cebf0(int npcId)
+{
+    ATL::CAtlArray<Unk_PayloadPtr<CQuest>> quests;
+    FUN_1416cb8b0(quests, 1, 11, -1);
+    for (size_t i = 0; i < quests.GetCount(); i++) {
+        Unk_PayloadPtr<CQuest> quest = quests[i];
+        if (quest->GetData()->m_2e8 == npcId) {
+            Unk_QmTalkScript* script = FUN_1408564b0(quest->FUN_140bfc580(), 200).FUN_14078f3a0();
+            if (script != 0) return 1;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416cebf0, CQuestManager, FUN_1416cebf0, 480, 0x0CA9A6FA);
+
+// @0x1416cede0
+int CQuestManager::FUN_1416cede0(int value, unsigned* questId)
+{
+    *questId = 0;
+    ATL::CAtlArray<Unk_PayloadPtr<CQuest>> quests;
+    FUN_1416cb8b0(quests, 1, 11, -1);
+    FUN_1416cfc70(quests, 1, 0);
+    for (size_t i = 0; i < quests.GetCount(); i++) {
+        Unk_PayloadPtr<CQuest> quest = quests[i];
+        int found = FUN_14074b0e0(quest->GetData().operator->(), value, 1);
+        if (found != 0) {
+            *questId = quest->FUN_140bfc580();
+            return 1;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416cede0, CQuestManager, FUN_1416cede0, 417, 0xCADF5D79);
+
+// @0x1416cef90
+void CQuestManager::FUN_1416cef90(int silent)
+{
+    PCBase* player = static_cast<PCBase*>(FUN_141bd0cc0(FUN_1403ed2d0()));
+    if (player == 0) return;
+    if (FUN_1422b9e00(FUN_1408e57f0()) == 0x620001b) return;
+    for (POSITION pos = m_quests140.GetHeadPosition(); pos != 0; m_quests140.GetNext(pos)) {
+        Unk_PayloadPtr<CQuest> quest = m_quests140.GetValueAt(pos);
+        if (quest->FUN_1407476d0() != 1) continue;
+        MS2Ptr<CQuestData> data = quest->GetData();
+        for (size_t i = 0; i < data->m_conditions.GetCount(); i++) {
+            MS2Ptr<CConditionCommonData> cond = data->m_conditions[i];
+            if (cond.IsNull()) {
+                MS2_ASSERT_AT(0x36e, 0);
+                continue;
+            }
+            if (IsConditionTypeCounted(cond->m_nType) != 0) continue;
+            int code = static_cast<int>(cond->m_code.GetFirstValue());
+            __int64 have = 0;
+            switch (cond->m_nType) {
+            case 3:
+            case 4:
+                have = DAT_143ab2a90.FUN_140a5f180(code, 0);
+                break;
+            case 0x49:
+                have = DAT_143ab2898;
+                break;
+            case 0xad: {
+                ATL::CAtlArray<unsigned> ids;
+                for (size_t j = 0; j < cond->m_code.m_ids.GetCount(); j++)
+                    ids.Add(static_cast<unsigned>(cond->m_code.m_ids[j]));
+                have = FUN_1416d3af0(ids);
+                break;
+            }
+            }
+            if (quest->GetProgress(static_cast<int>(i)) != have) {
+                if (quest->IsConditionComplete(static_cast<int>(i)) != 0 && have > quest->GetProgress(static_cast<int>(i)))
+                    continue;
+                int increased = have > quest->GetProgress(static_cast<int>(i));
+                quest->SetProgress(static_cast<int>(i), have);
+                FUN_140bfc4b0()->vfunc_3(quest.get());
+                FUN_1403ed2d0()->FUN_141bd3860();
+                if (silent == 0 && increased != 0) {
+                    quest->ShowProgress(static_cast<int>(i));
+                    {
+                        CString arg("");
+                        FUN_141276180(quest->IsComplete() ? s_completeSound : s_progressSound, arg);
+                    }
+                    FUN_14138bf00(FUN_1409331e0(), 0x1d, quest->FUN_140bfc580(), static_cast<int>(have));
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416cef90, CQuestManager, FUN_1416cef90, 1381, 0x06014A2F);
+
 // MS2-FUNCTIONAL: nested-if EH state map and payload-ptr temporaries differ from the exe's per-branch dtor calls.
 // @0x1416cf510
 void CQuestManager::FUN_1416cf510(int questId)
@@ -998,6 +1153,47 @@ void CQuestManager::FUN_1416cf750(int questId)
 }
 MS2_REPLACE_METHOD(0x1416cf750, CQuestManager, FUN_1416cf750, 275, 0x3F46AE05);
 
+// @0x1416cf870
+void CQuestManager::FUN_1416cf870(int questId)
+{
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (quest.IsNull()) return;
+    if (quest->FUN_140d738d0() != 0) {
+        UIPopupNpcTalkDialog* dialog = Unk_QmFindDialog<UIPopupNpcTalkDialog>(0x4f4d);
+        if (dialog != 0) dialog->FUN_140e771e0(questId);
+    } else if (quest->FUN_140d738c0() != 0) {
+        quest->FUN_140d738e0();
+    }
+}
+MS2_REPLACE_METHOD(0x1416cf870, CQuestManager, FUN_1416cf870, 255, 0x3C816F04);
+
+// @0x1416cf980
+void CQuestManager::FUN_1416cf980(int questId, int leave)
+{
+    Unk_PayloadPtr<CQuest> quest = FUN_140764020()->vfunc_o10_3(questId);
+    if (quest.IsNull()) return;
+    if (quest->HasMultiUserRoom(FUN_1403ed2d0()->FUN_141bd3060()) == 0) return;
+    MS2Ptr<CQuestData> data = quest->GetData();
+    if (!data) return;
+    Unk_QmRoomPtr room = FUN_14031c2a0()->FUN_1403206b0(data->m_roomId);
+    if (!room) return;
+    if (leave != 0) {
+        COutPacket packet(0x2c, 0);
+        packet.vfunc_o10_1(0x22);
+        packet.vfunc_o10_1(FUN_1402178b0(room->m_1c));
+        FUN_140710590(packet);
+    } else {
+        COutPacket packet(0x2c, 0);
+        packet.vfunc_o10_1(0x20);
+        packet.vfunc_o10_1(FUN_1402178b0(room->m_1c));
+        packet.vfunc_o10_3(1);
+        packet.vfunc_o10_3(data->m_roomId);
+        packet.vfunc_o10_0(false);
+        FUN_140710590(packet);
+    }
+}
+MS2_REPLACE_METHOD(0x1416cf980, CQuestManager, FUN_1416cf980, 642, 0xE6BF41EF);
+
 // @0x1416cfc10
 int CQuestManager::FUN_1416cfc10(int id)
 {
@@ -1010,6 +1206,18 @@ void CQuestManager::FUN_1416cfc60(int)
 {
 }
 MS2_REPLACE_METHOD(0x1416cfc60, CQuestManager, FUN_1416cfc60, 10, 0x96F6F902);
+
+// @0x1416cfc70
+void CQuestManager::FUN_1416cfc70(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>& out, int state, int grade)
+{
+    for (POSITION pos = m_quests50.GetHeadPosition(); pos != 0; m_quests50.GetNext(pos)) {
+        Unk_PayloadPtr<CQuest> quest = m_quests50.GetValueAt(pos);
+        if (state != 4 && state != quest->FUN_1407476d0()) continue;
+        if (grade != 0 && quest->GetData()->m_338.m_value != grade) continue;
+        out.Add(quest);
+    }
+}
+MS2_REPLACE_METHOD(0x1416cfc70, CQuestManager, FUN_1416cfc70, 415, 0x2680E591);
 
 // @0x1416d00c0
 int CQuestManager::FUN_1416d00c0()
