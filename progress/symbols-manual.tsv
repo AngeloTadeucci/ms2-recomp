@@ -2153,3 +2153,6 @@ D3DXFloat16To32Array	14230396f	func
 ??0OutlineRenderStep@@QEAA@_KI@Z	1416263e0	func
 ??0CUGCMapItem@@QEAA@XZ	140dfc1b0	func
 ?SaveToFile@DamageCalculatorInfo@@QEAAXXZ	1402747a0	func
+??0CFreeCameraMode@@QEAA@PEAVUnk_CameraOwner@@V?$MS2Ptr@VCCameraMode@@@@@Z	1412221e0	func
+??0CEditCameraMode@@QEAA@PEAVUnk_CameraOwner@@V?$MS2Ptr@VCCameraMode@@@@@Z	141198830	func
+??0CActionCameraMode@@QEAA@PEAVUnk_CameraOwner@@V?$MS2Ptr@VCCameraMode@@@@@Z	140944f30	func
