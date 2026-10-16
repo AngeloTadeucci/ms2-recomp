@@ -23,6 +23,10 @@ public:
     void FUN_141662850(__int64 nValue);                     // PC member (scenestategame packet 0xe0)
     void FUN_141662890(__int64 nValue);                     // PC member
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // PC member: a worn item by uid (scenestategame 0x14173b420)
+    void FUN_14152f9e0();                                   // begin bulk update (scenestategame 0x14173d2e0)
+    void FUN_14152f530(int nA, int nB, int bBulk);          // set entry nA = nB
+    void FUN_14152fa20();                                   // end bulk update
+    void FUN_14152f620(int nA);                             // remove entry nA
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };

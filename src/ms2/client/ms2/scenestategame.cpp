@@ -698,6 +698,35 @@ public:
     void* m_pad[10];
 };
 
+class StateObserverData : public StateData
+{
+public:
+    StateObserverData(__int64 nTargetUid);                  // 0x140ac3b40
+    __int64 m_nTargetUid;
+};
+MS2_CHECK_SIZE(StateObserverData, 0x20);
+
+class Unk_SSG5b5dd0                                         // packet 0x11b mode 1 entry
+{
+public:
+    Unk_SSG5b5dd0();                                        // 0x140a6ffe0
+    void FUN_1405b5dd0(CInPacket& packet);                  // reads m_nA, m_nB
+    int m_nA;
+    __int64 m_n8;
+    int m_nB;
+};
+MS2_CHECK_SIZE(Unk_SSG5b5dd0, 0x18);
+MS2_CHECK_OFFSET(Unk_SSG5b5dd0, m_nB, 0x10);
+
+class Unk_SSG5b5e70                                         // packet 0x11b mode 2 entry
+{
+public:
+    Unk_SSG5b5e70();                                        // 0x140c5e480
+    void FUN_1405b5e70(CInPacket& packet);                  // reads m_nA
+    int m_nA;
+};
+MS2_CHECK_SIZE(Unk_SSG5b5e70, 4);
+
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
 
@@ -3437,3 +3466,70 @@ void CSceneStateGame::FUN_14173c630(CInPacket& packet)
     FUN_1408e57f0()->FUN_1422b9fd0(0x620001f);
 }
 MS2_REPLACE_METHOD(0x14173c630, CSceneStateGame, FUN_14173c630, 357, 0x2D049D06);
+
+// @0x14173d180
+void CSceneStateGame::FUN_14173d180(CInPacket& packet)
+{
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    if (pWorld == 0)
+        return;
+    MyPC* pPC = pWorld->FUN_141bd0cc0();
+    if (pPC == 0)
+        return;
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 1:
+    {
+        __int64 nTargetUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        pPC->vfunc_59(0x3f, new StateObserverData(nTargetUid), 0, 1);
+        break;
+    }
+    default:
+        MS2_ASSERT_AT(11116, 0);
+    }
+}
+MS2_REPLACE_METHOD(0x14173d180, CSceneStateGame, FUN_14173d180, 0, 0);
+
+// @0x14173d2e0
+void CSceneStateGame::FUN_14173d2e0(CInPacket& packet)
+{
+    MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPC == 0)
+        return;
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+    {
+        pPC->FUN_14152f9e0();
+        unsigned int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (unsigned int i = 0; i < nCount; ++i)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            pPC->FUN_14152f530(nA, nB, 1);
+        }
+        pPC->FUN_14152fa20();
+        FUN_1419f37f0(5);
+        break;
+    }
+    case 1:
+    {
+        Unk_SSG5b5dd0 kEntry;
+        kEntry.FUN_1405b5dd0(packet);
+        pPC->FUN_14152f530(kEntry.m_nA, kEntry.m_nB, 0);
+        FUN_1419f37f0(5);
+        break;
+    }
+    case 2:
+    {
+        Unk_SSG5b5e70 kEntry;
+        kEntry.FUN_1405b5e70(packet);
+        pPC->FUN_14152f620(kEntry.m_nA);
+        FUN_1419f37f0(5);
+        break;
+    }
+    }
+}
+MS2_REPLACE_METHOD(0x14173d2e0, CSceneStateGame, FUN_14173d2e0, 0, 0);
