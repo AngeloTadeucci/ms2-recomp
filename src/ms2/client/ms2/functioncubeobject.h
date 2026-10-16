@@ -128,7 +128,11 @@ struct Unk_FcRow
     Unk_FcStrList m_anims;                                        // +0x40 one animation name per state
     Unk_FcStrList m_sounds;                                       // +0x60 one sound name per state
     int m_aAnim[3];                                               // +0x80
-    char m_pad_8c[0x110 - 0x8c];
+    char m_pad_8c[0xa4 - 0x8c];
+    int m_nA4;                                                    // +0xa4 animation table id (breeding)
+    char m_pad_a8[0x108 - 0xa8];
+    int m_n108;                                                   // +0x108
+    char m_pad_10c[4];
     CString m_strModel;                                           // +0x110
     int m_n118;                                                   // +0x118
     CString m_strStr98;                                           // +0x120
@@ -138,7 +142,10 @@ struct Unk_FcRow
     CString m_strC0;                                              // +0x148
     CString m_strC8;                                              // +0x150
     Unk_FcOptions m_opt;                                          // +0x158
-    char m_pad_170[0x280 - 0x170];
+    int m_n170;                                                   // +0x170
+    char m_pad_174[4];
+    CString m_str178;                                             // +0x178
+    char m_pad_180[0x280 - 0x180];
     Unk_FcSkillText m_skill;                                      // +0x280
     CStringW m_strNotice;                                         // +0x298
 };
@@ -286,3 +293,75 @@ MS2_CHECK_OFFSET(CFunctionCubeObject, m_spItem, 0x68);
 MS2_CHECK_OFFSET(CFunctionCubeObject, m_spData, 0x78);
 MS2_CHECK_OFFSET(CFunctionCubeObject, m_spBooty, 0x90);
 MS2_CHECK_OFFSET(CFunctionCubeObject, m_spNotice, 0xa0);
+
+// ---- Homemade / Breeding / Farming (gathering cubes) ----
+// Homemade: vftable 0x142ec4e20 (18 slots: 16 + vfunc_16 / vfunc_17), listener vftable 0x142ec4eb8.
+class CHomemadeCubeObject : public CFunctionCubeObject
+{
+public:
+    CHomemadeCubeObject();                                        // 0x1412283b0
+    virtual ~CHomemadeCubeObject();                               // 0x141228430
+    virtual void vfunc_3();                                       // 3  0x1412284c0
+    virtual void vfunc_4();                                       // 4  0x1412284d0
+    virtual void vfunc_5(float);                                  // 5  0x141228620
+    virtual CStringW vfunc_6();                                   // 6  0x1412286d0
+    virtual CStringW vfunc_7();                                   // 7  0x141228720
+    virtual void vfunc_8(CString str);                            // 8  0x141228810 start the gathering
+    virtual void vfunc_11(int nState);                            // 11 0x141228e40
+    virtual void vfunc_13();                                      // 13 0x141228640
+    virtual int vfunc_15();                                       // 15 0x141228680
+    virtual int vfunc_16();                                       // 16 0x141228fa0 mastery kind
+    virtual int vfunc_17();                                       // 17 0x1412291e0 mastery is enough
+
+    void FUN_141228fb0(__int64 n);                                // 0x141228fb0
+    __int64 FUN_141228fe0();                                      // 0x141228fe0
+    int FUN_141229000(char bWatch);                               // 0x141229000
+    int FUN_141229080();                                          // 0x141229080
+    int FUN_141229120();                                          // 0x141229120
+    int FUN_140e5cc00();                                          // exe member of another unit
+    __int64 FUN_140e5cbf0();                                      // exe member of another unit
+
+public:
+    MS2_LAYOUT_FRIEND;
+    __int64 m_nB0;                                                // +0xb0
+    __int64 m_nB8;                                                // +0xb8
+    int m_nSoundHandle2;                                          // +0xc0
+    char m_pad_c4[4];
+};
+MS2_CHECK_SIZE(CHomemadeCubeObject, 0xc8);
+
+// Breeding: vftable 0x142ec4ef0.
+class CBreedingCubeObject : public CHomemadeCubeObject
+{
+public:
+    CBreedingCubeObject();                                        // 0x1412291f0
+    virtual ~CBreedingCubeObject();                               // 0x141229270
+    virtual int vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+        CubeItemInfo* pItem);                                     // 2  0x141229360
+    virtual void vfunc_3();                                       // 3  0x1412299f0
+    virtual void vfunc_5(float fArg);                             // 5  0x141229b70
+    virtual CStringW vfunc_6();                                   // 6  0x141229c10
+    virtual void vfunc_10(int nState, bool bFlag);                // 10 0x14122a370
+    virtual int vfunc_16();                                       // 16 0x14122a350 (5)
+    virtual int vfunc_17();                                       // 17 0x14122a670
+
+public:
+    MS2_LAYOUT_FRIEND;
+    CString m_strAnim;                                            // +0xc8
+    Unk_EntRef m_entPet;                                          // +0xd0 the pet entity
+};
+MS2_CHECK_SIZE(CBreedingCubeObject, 0xd8);
+
+// Farming: vftable 0x142ec4fc0.
+class CFarmingCubeObject : public CHomemadeCubeObject
+{
+public:
+    CFarmingCubeObject();                                         // 0x14122a6e0
+    virtual ~CFarmingCubeObject();                                // 0x14122a730
+    virtual int vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+        CubeItemInfo* pItem);                                     // 2  0x14122a770
+    virtual CStringW vfunc_6();                                   // 6  0x14122a900
+    virtual int vfunc_16();                                       // 16 0x14122b040 (6)
+    virtual int vfunc_17();                                       // 17 0x14122b060
+};
+MS2_CHECK_SIZE(CFarmingCubeObject, 0xc8);

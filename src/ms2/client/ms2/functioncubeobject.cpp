@@ -12,6 +12,10 @@
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/imessagelistener.h"
 #include "ms2/gfxui/uiswfentity.h"
+#include <efd/AssetID.h>
+#include <egf/EntityIDFactory.h>
+#include "ms2/commonfiles/rideonaction.h"
+#include "ms2/client/ms2/statedata.h"
 
 // ---- unit-local placeholders ----
 
@@ -906,4 +910,662 @@ void CFunctionCubeObject::FUN_141228340()
         pDlg->FUN_141299eb0(CString(m_strId));
         FUN_141924680(pDlg);
     }
+}
+
+// ---- Homemade / Breeding / Farming ----
+
+// Local player actor and the world / housing singletons (classes of other units; opaque here).
+class Unk_FcActor;
+void* FUN_1403ed2d0();                                              // the world manager
+Unk_FcActor* FUN_141bd0cc0(void* pWorld);                           // the local player actor
+int FUN_1416764d0(Unk_FcActor* p);                                  // is riding
+int FUN_14166c930(Unk_FcActor* p);                                  // current state id
+__int64 FUN_141656ad0(Unk_FcActor* p);                              // account id
+unsigned FUN_141662750(Unk_FcActor* p, int nMastery);               // mastery level
+void FUN_14152c280(Unk_FcActor* p, RideOffAction* pAction);         // queue a ride-off action
+typedef void (*Unk_FcSetStateFn)(Unk_FcActor*, int, void*, int, int);
+static void Unk_FcActorSetState(Unk_FcActor* p, int nState, void* pData, int nArg)
+{
+    (*(Unk_FcSetStateFn*)(*(char**)p + 0x1d8))(p, nState, pData, nArg, 0);
+}
+void* FUN_1409670e0();                                              // the housing manager
+unsigned char FUN_1410c35c0(void* pHousing);                        // design mode
+__int64 FUN_1410c3180(void* pHousing);                              // owner account id
+void* FUN_1410b8b00(void* pHousing, int nObjectId);                 // placed object row
+
+// Housing item rows of the cube (16 / 24 byte smart pointers, destroyed by exe helpers).
+struct Unk_FcSp16 { char m_pad[16]; };
+struct Unk_FcSp24 { char m_pad[24]; };
+struct Unk_FcMasteryRow
+{
+    char m_pad_00[0x24];
+    unsigned m_nLevel;                                              // +0x24
+    __int64 m_nPrice;                                               // +0x28
+};
+struct Unk_FcHmInfo
+{
+    char m_pad_00[0x100];
+    int m_nItemId;                                                  // +0x100
+};
+void* FUN_1409670c0();
+void FUN_14066aa00(void* pSvc, Unk_FcSp16* pOut, int nItemId);
+Unk_FcMasteryRow* FUN_140b6dda0(Unk_FcSp16* p);                     // != NULL
+Unk_FcMasteryRow* FUN_14066d9a0(Unk_FcSp16* p);
+void FUN_14066d5b0(Unk_FcSp16* p);
+Unk_FcSp24* FUN_140ca6580(CHomemadeCubeObject* pThis, Unk_FcSp24* pOut);
+Unk_FcHmInfo* FUN_1409658d0(Unk_FcSp24* p);
+void FUN_140ca62a0(Unk_FcSp24* p);
+extern __int64 DAT_143ab2898;                                       // the player's meso
+__int64 FUN_140869440();                                            // now
+int FUN_14086bd90(int nId);                                         // growth seconds of a table id
+CStringW FUN_14086aec0(__int64 nSpan, int, int, int, int);          // format a time span
+CStringW FUN_14052bd00(int nStringId, const CStringW& strArg);
+CStringW FUN_14086d060(int nStringId, const __int64* pnValue);
+CStringW FUN_14028b8e0(const CStringW& strKey);                     // string table lookup by key
+void FUN_1412751f0(const CStringW& str, int nA, int nB);            // floating notice
+void FUN_140e59ea0(UIObject* pDlg, CHomemadeCubeObject* pCube);
+class UIMasteryObjectMark : public UIDialog { public: char m_pad[8]; };
+
+CFunctionCubeObject* FUN_141225470(int nKind);
+
+// @0x1412283b0
+CHomemadeCubeObject::CHomemadeCubeObject()
+{
+    m_nB8 = 0;
+    m_nSoundHandle2 = 0;
+    m_nB0 = FUN_140869440();
+}
+
+// @0x141228430
+CHomemadeCubeObject::~CHomemadeCubeObject()
+{
+    if (m_nSoundHandle2 != 0)
+    {
+        FUN_1403ed280()->FUN_1411a6060(m_nSoundHandle2);
+        m_nSoundHandle2 = 0;
+    }
+    m_nB0 = 0;
+}
+
+// @0x1412284c0
+void CHomemadeCubeObject::vfunc_3()
+{
+}
+
+// @0x1412284d0
+// MS2-FUNCTIONAL: sound request built with the unit-local request type; frame layout differs
+void CHomemadeCubeObject::vfunc_4()
+{
+    if (m_nSoundHandle2 != 0)
+    {
+        FUN_1403ed280()->FUN_1411a6060(m_nSoundHandle2);
+        m_nSoundHandle2 = 0;
+    }
+    CString strSound = m_spData->m_str108;
+    if (!strSound.IsEmpty())
+    {
+        if (FUN_141229120() != 0)
+        {
+            Unk_FcSoundReq kReq;
+            FUN_140a52ef0(&kReq);
+            kReq.m_strName = strSound;
+            kReq.m_nType = 0;
+            FUN_1409fabf0(kReq.m_unk, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(m_ent.FUN_1408a9090())));
+            m_nSoundHandle2 = FUN_1403ed280()->FUN_1411a49c0(&kReq);
+            FUN_1405a89e0(&kReq);
+        }
+    }
+}
+
+// @0x141228620
+void CHomemadeCubeObject::vfunc_5(float)
+{
+}
+
+// @0x141228640
+void CHomemadeCubeObject::vfunc_13()
+{
+    UIMasteryObjectMark* pMark = Unk_FcDialog<UIMasteryObjectMark>(0x4f3a);
+    if (pMark != 0)
+        FUN_140e59ea0(pMark, this);
+}
+
+// @0x141228680
+int CHomemadeCubeObject::vfunc_15()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    if (FUN_14122e710() == 0)
+        return 0;
+    return 1;
+}
+
+// @0x1412286d0
+CStringW CHomemadeCubeObject::vfunc_6()
+{
+    return CStringW(L"");
+}
+
+// @0x141228720
+// MS2-FUNCTIONAL: string pieces built per branch; frame layout differs
+CStringW CHomemadeCubeObject::vfunc_7()
+{
+    if (m_nState == 1)
+        return CStringW(L"watch");
+    if (vfunc_17() == 0)
+        return CStringW(L"lock");
+    if (FUN_1410c35c0(FUN_1409670e0()) == 0)
+        return CFunctionCubeObject::vfunc_7();
+    return CStringW(L"lock");
+}
+
+// @0x141228810
+// MS2-FUNCTIONAL: ride-off action and state data built with unit-local smart pointer stand-ins; frame layout differs
+void CHomemadeCubeObject::vfunc_8(CString str)
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return;
+    if (FUN_141229000(1) == 0)
+        return;
+    Unk_FcSp24 kInfoRef;
+    int nItemId = FUN_1409658d0(FUN_140ca6580(this, &kInfoRef))->m_nItemId;
+    FUN_140ca62a0(&kInfoRef);
+    if (m_nState == 0)
+    {
+        Unk_FcSp16 kItem;
+        FUN_14066aa00(FUN_1409670c0(), &kItem, nItemId);
+        if (FUN_140b6dda0(&kItem) != 0)
+        {
+            if (DAT_143ab2898 < FUN_14066d9a0(&kItem)->m_nPrice)
+            {
+                FUN_1412751f0(FUN_14028b8e0(CStringW(L"s_mastery_error_lack_meso")), 1, 1);
+            }
+            else if (FUN_1416764d0(pActor) == 0)
+            {
+                MS2Ptr<StateHomemadeData> spData(new StateHomemadeData(vfunc_16(), str, nItemId));
+                Unk_FcActorSetState(pActor, 0x37, spData.get(), 0x8e);
+            }
+            else
+            {
+                MS2Ptr<RideOffActionHomemade> spAct(new RideOffActionHomemade(0));
+                spAct->m_s28 = str;
+                spAct->m_n30 = nItemId;
+                spAct->m_n34 = vfunc_16();
+                spAct->m_n38 = 0x8e;
+                FUN_14152c280(pActor, spAct.get());
+            }
+        }
+        FUN_14066d5b0(&kItem);
+    }
+    else if (m_nState == 2)
+    {
+        if (FUN_1416764d0(pActor) == 0)
+        {
+            if (FUN_14166c930(pActor) != 0x37)
+            {
+                MS2Ptr<StateHomemadeData> spData(new StateHomemadeData(vfunc_16(), str, nItemId));
+                Unk_FcActorSetState(pActor, 0x37, spData.get(), 0x8f);
+            }
+        }
+        else
+        {
+            MS2Ptr<RideOffActionHomemade> spAct(new RideOffActionHomemade(0));
+            spAct->m_s28 = str;
+            spAct->m_n30 = nItemId;
+            spAct->m_n34 = vfunc_16();
+            spAct->m_n38 = 0x8f;
+            FUN_14152c280(pActor, spAct.get());
+        }
+    }
+}
+
+// @0x141228e40
+// MS2-FUNCTIONAL: sound request built with the unit-local request type; frame layout differs
+void CHomemadeCubeObject::vfunc_11(int nState)
+{
+    CFunctionCubeObject::vfunc_11(nState);
+    if (m_nSoundHandle2 != 0)
+    {
+        FUN_1403ed280()->FUN_1411a6060(m_nSoundHandle2);
+        m_nSoundHandle2 = 0;
+    }
+    CString strSound = m_spData->m_str108;
+    if (!strSound.IsEmpty())
+    {
+        if (FUN_141229120() != 0)
+        {
+            Unk_FcSoundReq kReq;
+            FUN_140a52ef0(&kReq);
+            kReq.m_strName = strSound;
+            kReq.m_nType = 0;
+            FUN_1409fabf0(kReq.m_unk, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(m_ent.FUN_1408a9090())));
+            m_nSoundHandle2 = FUN_1403ed280()->FUN_1411a49c0(&kReq);
+            FUN_1405a89e0(&kReq);
+        }
+    }
+}
+
+// @0x141228fa0
+int CHomemadeCubeObject::vfunc_16()
+{
+    return 0;
+}
+
+// @0x141228fb0
+void CHomemadeCubeObject::FUN_141228fb0(__int64 n)
+{
+    m_nB0 = n;
+}
+
+// @0x141228fe0
+__int64 CHomemadeCubeObject::FUN_141228fe0()
+{
+    return m_nB0;
+}
+
+// @0x141229000
+// MS2-FUNCTIONAL: nested conditions folded
+int CHomemadeCubeObject::FUN_141229000(char bWatch)
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    if (bWatch == 0 || m_nState != 1)
+    {
+        if (FUN_1410c35c0(FUN_1409670e0()) == 0)
+            return vfunc_17();
+        return 0;
+    }
+    return 0;
+}
+
+// @0x141229080
+// MS2-FUNCTIONAL: nested conditions folded
+int CHomemadeCubeObject::FUN_141229080()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    if (m_nState == 1)
+        return 0;
+    if (FUN_1410c35c0(FUN_1409670e0()) != 0)
+        return 0;
+    if (FUN_140e5cc00() == 1)
+    {
+        if (FUN_140e5cbf0() != FUN_141656ad0(pActor))
+            return 0;
+    }
+    return 1;
+}
+
+// @0x141229120
+// MS2-FUNCTIONAL: nested conditions folded
+int CHomemadeCubeObject::FUN_141229120()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    if (vfunc_15() == 0)
+        return 0;
+    if (m_nState == 1)
+        return 0;
+    if (FUN_140e5cc00() == 1)
+    {
+        if (FUN_140e5cbf0() != FUN_141656ad0(pActor))
+            return 0;
+    }
+    if (FUN_1410c35c0(FUN_1409670e0()) == 0)
+        return vfunc_17();
+    return 0;
+}
+
+// @0x1412291e0
+int CHomemadeCubeObject::vfunc_17()
+{
+    return 0;
+}
+
+// ---- Breeding ----
+
+// The entity manager (creates / removes the pet entity) and the animation table row of a pet.
+class Unk_FcEntMgr;
+Unk_FcEntMgr* FUN_1409670f0();
+void FUN_1411cf570(Unk_FcEntMgr* pMgr, Unk_Entity* pEntity);        // remove
+void FUN_1411cf2d0(Unk_FcEntMgr* pMgr, Unk_Entity* pEntity, int nFlag);
+Unk_EntRef* FUN_1411cec80(Unk_FcEntMgr* pMgr, Unk_EntRef* pOut, Unk_FcAnimName* pClass, egf::EntityID kId);
+Unk_FcAnimName* FUN_140b7cc50(Unk_FcAnimSvc* pSvc, Unk_FcAnimName* pOut, egf::EntityID kId);  // current animation
+unsigned char FUN_14122e000(Unk_FcAnimName* pName, const char* psz);                         // names are equal
+struct Unk_FcAnimRow
+{
+    char m_pad_00[0x50];
+    CString m_strName;                                              // +0x50 animation / model name
+    void* m_pFx;                                                    // +0x58
+    char m_pad_60[4];
+    Unk_StreamPoint m_vOffset;                                      // +0x64
+};
+MS2_CHECK_OFFSET(Unk_FcAnimRow, m_vOffset, 0x64);
+void FUN_1406cd330(Unk_FcSp16* pOut, int nId);                      // find the row
+unsigned char FUN_1406a9050(Unk_FcSp16* p, int);                    // == NULL
+Unk_FcAnimRow* FUN_14035eb90(Unk_FcSp16* p);
+void FUN_14035e5b0(Unk_FcSp16* p);
+void FUN_140de0cb0(efd::AssetID* pAsset, Unk_FcAnimName* pName);
+void FUN_140de8bd0(Unk_Entity* pEntity, unsigned uHash, efd::AssetID* pAsset);
+void FUN_140ae1240(Unk_Entity* pEntity, unsigned uHash, Unk_FcAnimName* pName);
+void FUN_140a38a50(Unk_Entity* pEntity, unsigned uHash, Unk_StreamPoint* pPoint);
+void FUN_1409457c0(Unk_Entity* pEntity, unsigned uHash, void* p);
+void FUN_14098c6e0(Unk_Entity* pEntity, unsigned uHash, unsigned char* pb);
+CString* FUN_1409a2360(CString* pOut, const char* psz, int nFlag);
+
+// @0x1412291f0
+CBreedingCubeObject::CBreedingCubeObject()
+    : m_strAnim(""), m_entPet(0)
+{
+}
+
+// @0x141229270
+CBreedingCubeObject::~CBreedingCubeObject()
+{
+    m_strAnim = "";
+    if (m_entPet.FUN_1408a9090() != 0)
+    {
+        FUN_1411cf570(FUN_1409670f0(), (Unk_Entity*)m_entPet.FUN_1408a9090());
+        m_entPet.FUN_1408b6ec0(0);
+    }
+}
+
+// @0x141229360
+// MS2-FUNCTIONAL: pet entity built from the animation row with unit-local stand-ins; frame layout differs
+int CBreedingCubeObject::vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+    CubeItemInfo* pItem)
+{
+    if (CFunctionCubeObject::vfunc_2(pEntity, pRow, nCubeId, nArg, pItem) == 0)
+        return 0;
+    Unk_FcSp16 kAnim;
+    FUN_1406cd330(&kAnim, pRow->m_nA4);
+    if (FUN_1406a9050(&kAnim, 0) != 0)
+    {
+        FUN_14035e5b0(&kAnim);
+        return 0;
+    }
+    if (pRow->m_nSub == 1)
+        m_spData->m_bBuff = 1;
+    m_spData->m_n100 = pRow->m_n170;
+    m_spData->m_str108 = pRow->m_str178;
+    m_spData->m_n110 = pRow->m_n108;
+    Unk_FcSp16 kItem;
+    FUN_14066aa00(FUN_1409670c0(), &kItem, pRow->m_n170);
+    if (FUN_140b6dda0(&kItem) != 0)
+        m_spData->m_n104 = FUN_14066d9a0(&kItem)->m_nLevel;
+    if (FUN_1410b8b00(FUN_1409670e0(), m_nArg) != 0)
+    {
+        CString strAsset;
+        strAsset.Format("urn:gamebryo-animation:%s", (const char*)FUN_14035eb90(&kAnim)->m_strName);
+        efd::AssetID kAsset;
+        Unk_FcAnimName kName;
+        FUN_1409989e0(&kName, strAsset);
+        FUN_140de0cb0(&kAsset, &kName);
+        FUN_1408a8900(&kName);
+        egf::EntityID kId = egf::EntityIDFactory::GetNextID();
+        Unk_FcAnimName kClass;
+        FUN_1409989e0(&kClass, "GameObject");
+        Unk_EntRef kTmp(0);
+        m_entPet = *FUN_1411cec80(FUN_1409670f0(), &kTmp, &kClass, kId);
+        FUN_1408a8900(&kClass);
+        if (m_entPet.FUN_1408a9090() != 0)
+        {
+            Unk_StreamPoint vPos = DAT_143b01a60;
+            Unk_StreamPoint vRot = DAT_143b01a60;
+            FUN_1409618c0(pEntity, 0xfd95ca52, &vPos);
+            FUN_1409618c0(pEntity, 0x68c7c29d, &vRot);
+            vPos = vPos.FUN_14097fd50(FUN_14035eb90(&kAnim)->m_vOffset);
+            FUN_140de8bd0(m_entPet.FUN_1408a9280(), 0x12383cea, &kAsset);
+            CString strIdle;
+            FUN_1409a2360(&strIdle, "Idle_A", 0);
+            Unk_FcAnimName kIdle;
+            FUN_1409989e0(&kIdle, strIdle);
+            FUN_140ae1240(m_entPet.FUN_1408a9280(), 0x3ff293c8, &kIdle);
+            FUN_1408a8900(&kIdle);
+            FUN_140a38a50(m_entPet.FUN_1408a9280(), 0xfd95ca52, &vPos);
+            FUN_140a38a50(m_entPet.FUN_1408a9280(), 0x68c7c29d, &vRot);
+            FUN_1409457c0(m_entPet.FUN_1408a9280(), 0x2d7cad2d, &FUN_14035eb90(&kAnim)->m_pFx);
+            unsigned char bFlag = 0;
+            FUN_14098c6e0(m_entPet.FUN_1408a9280(), 0xa0b6b179, &bFlag);
+            FUN_1411cf2d0(FUN_1409670f0(), (Unk_Entity*)m_entPet.FUN_1408a9090(), 0);
+            FUN_14066d5b0(&kItem);
+            FUN_14035e5b0(&kAnim);
+            return 1;
+        }
+    }
+    FUN_14066d5b0(&kItem);
+    FUN_14035e5b0(&kAnim);
+    return 0;
+}
+
+// @0x1412299f0
+// MS2-FUNCTIONAL: entity id copy and the animation name temporaries differ
+void CBreedingCubeObject::vfunc_3()
+{
+    if (!m_entPet.FUN_1408b70b0(0) && !m_strAnim.IsEmpty())
+    {
+        egf::EntityID kId = *FUN_1408b76f0(m_entPet.FUN_1408a9280());
+        Unk_FcAnimName kCur;
+        if (FUN_14122e000(FUN_140b7cc50(FUN_141b6f910(), &kCur, kId), m_strAnim))
+        {
+            Unk_FcAnimName kName;
+            FUN_1409989e0(&kName, m_strAnim);
+            FUN_1409a1fc0(FUN_141b6f910(), kId, &kName, 1.0f);
+            FUN_1408a8900(&kName);
+        }
+        FUN_1408a8900(&kCur);
+    }
+}
+
+// @0x141229b70
+// MS2-FUNCTIONAL: rotation property read-modify-write; frame layout differs
+void CBreedingCubeObject::vfunc_5(float fArg)
+{
+    if (m_entPet.FUN_1408a9090() != 0)
+    {
+        Unk_StreamPoint vRot;
+        FUN_1409618c0(m_entPet.FUN_1408a9280(), 0x68c7c29d, &vRot);
+        vRot.z = fArg;
+        FUN_140a38a50(m_entPet.FUN_1408a9280(), 0x68c7c29d, &vRot);
+    }
+}
+
+// Breeding and Farming build the same tooltip: the strings differ by two ids.
+static CStringW Unk_FcGatherTip(CHomemadeCubeObject* pThis, int nPriceStr, int nTimeStr)
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return CStringW(L"");
+    void* pItemSvc = FUN_1401cd040(&DAT_143b059e8);
+    if (pItemSvc == 0)
+        return CStringW(L"");
+    Unk_FcItemSvcPtr kSvc((Unk_FcItemSvc*)pItemSvc);
+    if (kSvc.FUN_140ef4cb0(0))
+        return CStringW(L"");
+    Unk_FcItemRow* pRow = kSvc.FUN_1401cd1a0()->FUN_1410b8b00(pThis->FUN_14112e110());
+    if (pRow == 0)
+        return CStringW(L"");
+    if (FUN_14166c930(pActor) == 0x37)
+        return CStringW(L"");
+    if (pThis->vfunc_17() == 0)
+        return FUN_14028b8e0(CStringW(L"s_gathering_object_lack_mastery"));
+    if (FUN_1410c35c0(FUN_1409670e0()) != 0)
+        return FUN_14028b8e0(CStringW(L"s_mastery_error_notuse_designmode"));
+    if (pThis->m_nState == 0)
+    {
+        Unk_FcSp24 kInfoRef;
+        int nItemId = FUN_1409658d0(FUN_140ca6580(pThis, &kInfoRef))->m_nItemId;
+        FUN_140ca62a0(&kInfoRef);
+        Unk_FcSp16 kItem;
+        FUN_14066aa00(FUN_1409670c0(), &kItem, nItemId);
+        if (FUN_140b6dda0(&kItem) != 0)
+        {
+            CStringW strPrice = FUN_14086d060(nPriceStr, &FUN_14066d9a0(&kItem)->m_nPrice);
+            CStringW strName = FUN_1401a9d70()->FUN_141811980(1, pRow->FUN_1408b4f20());
+            CStringW strLine;
+            strLine.Format(L"%s %s", (const wchar_t*)strName, (const wchar_t*)strPrice);
+            CStringW strRet = FUN_14052bd00(0x634, strLine);
+            FUN_14066d5b0(&kItem);
+            return strRet;
+        }
+        FUN_14066d5b0(&kItem);
+    }
+    else if (pThis->m_nState == 2)
+    {
+        return FUN_14052bd00(0x634, FUN_14028de60(0x641));
+    }
+    else if (pThis->m_nState == 1)
+    {
+        Unk_FcHmInfo* pInfo = (Unk_FcHmInfo*)pThis->m_spData.operator->();
+        __int64 nEnd = pThis->FUN_141228fe0() + FUN_14086bd90(pThis->m_spData->m_n110);
+        ATL::CTimeSpan kSpan(nEnd - FUN_140869440());
+        (void)pInfo;
+        if (kSpan.GetTotalSeconds() > 59)
+        {
+            CStringW strSpan = FUN_14086aec0(kSpan.GetTimeSpan(), 0, 0, 1, 0);
+            return FUN_14052bd00(nTimeStr, FUN_14052bd00(0x643, strSpan));
+        }
+        if (kSpan.GetTotalSeconds() > 0)
+        {
+            CStringW strSpan = FUN_14086aec0(kSpan.GetTimeSpan(), 0, 0, 0, 1);
+            return FUN_14052bd00(nTimeStr, FUN_14052bd00(0x643, strSpan));
+        }
+    }
+    return CStringW(L"");
+}
+
+// @0x141229c10
+// MS2-FUNCTIONAL: shared tooltip builder instead of the exe's inline copy; frame layout differs
+CStringW CBreedingCubeObject::vfunc_6()
+{
+    return Unk_FcGatherTip(this, 0x63f, 0x644);
+}
+
+// @0x14122a350
+int CBreedingCubeObject::vfunc_16()
+{
+    return 5;
+}
+
+// @0x14122a370
+// MS2-FUNCTIONAL: random pick over the state's animation list; frame layout differs
+void CBreedingCubeObject::vfunc_10(int nState, bool bFlag)
+{
+    if (nState < 0 || nState >= 6)
+        return;
+    Unk_FcStrList arrAnims;
+    arrAnims.Copy(m_spData->m_anims[nState]);
+    if (bFlag)
+    {
+        if (arrAnims.IsEmpty() == false)
+        {
+            vfunc_12(FUN_14122edc0(nState), false);
+            return;
+        }
+    }
+    else if (m_entPet.FUN_1408a9090() != 0)
+    {
+        if (nState == 0)
+        {
+            unsigned char b = 0;
+            FUN_14098c6e0(m_entPet.FUN_1408a9280(), 0xa0b6b179, &b);
+        }
+        else if (nState == 1)
+        {
+            unsigned char b = 1;
+            FUN_14098c6e0(m_entPet.FUN_1408a9280(), 0xa0b6b179, &b);
+        }
+        else if (nState == 2)
+        {
+            unsigned char b = 1;
+            FUN_14098c6e0(m_entPet.FUN_1408a9280(), 0xa0b6b179, &b);
+        }
+        if (arrAnims.GetCount() != 0)
+        {
+            m_strAnim = arrAnims[(unsigned)rand() % arrAnims.GetCount()];
+            Unk_FcAnimName kName;
+            FUN_1409989e0(&kName, m_strAnim);
+            FUN_1409a1fc0(FUN_141b6f910(), *FUN_1408b76f0(m_entPet.FUN_1408a9280()), &kName, 1.0f);
+            FUN_1408a8900(&kName);
+        }
+    }
+    vfunc_11(nState);
+}
+
+// @0x14122a670
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+int CBreedingCubeObject::vfunc_17()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    FunctionCubeData* pData = m_spData.operator->();
+    unsigned nLevel = FUN_141662750(pActor, 5);
+    if (nLevel < (unsigned)pData->m_n104)
+        return 0;
+    return 1;
+}
+
+// ---- Farming ----
+
+// @0x14122a6e0
+CFarmingCubeObject::CFarmingCubeObject()
+{
+}
+
+// @0x14122a730
+CFarmingCubeObject::~CFarmingCubeObject()
+{
+}
+
+// @0x14122a770
+// MS2-FUNCTIONAL: item level lookup through unit-local smart pointer stand-ins; frame layout differs
+int CFarmingCubeObject::vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+    CubeItemInfo* pItem)
+{
+    if (CFunctionCubeObject::vfunc_2(pEntity, pRow, nCubeId, nArg, pItem) == 0)
+        return 0;
+    if (pRow->m_nSub == 1)
+        m_spData->m_bBuff = 1;
+    m_spData->m_n100 = pRow->m_n170;
+    m_spData->m_str108 = pRow->m_str178;
+    m_spData->m_n110 = pRow->m_n108;
+    Unk_FcSp16 kItem;
+    FUN_14066aa00(FUN_1409670c0(), &kItem, pRow->m_n170);
+    if (FUN_140b6dda0(&kItem) != 0)
+        m_spData->m_n104 = FUN_14066d9a0(&kItem)->m_nLevel;
+    FUN_14066d5b0(&kItem);
+    return 1;
+}
+
+// @0x14122a900
+// MS2-FUNCTIONAL: shared tooltip builder instead of the exe's inline copy; frame layout differs
+CStringW CFarmingCubeObject::vfunc_6()
+{
+    return Unk_FcGatherTip(this, 0x640, 0x645);
+}
+
+// @0x14122b040
+int CFarmingCubeObject::vfunc_16()
+{
+    return 6;
+}
+
+// @0x14122b060
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+int CFarmingCubeObject::vfunc_17()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    FunctionCubeData* pData = m_spData.operator->();
+    unsigned nLevel = FUN_141662750(pActor, 6);
+    if (nLevel < (unsigned)pData->m_n104)
+        return 0;
+    return 1;
 }
