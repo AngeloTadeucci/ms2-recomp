@@ -131,3 +131,31 @@ public:
 private:
     DelegateImplBase* m_pImpl;          // +0x00
 };
+
+// ---- three-argument form (appended by the effectservice.cpp agent) ----
+// Delegate<void(unsigned, CString, bool)>: the "effect inserted" callback of Unk_EffectTarget (+0x40), called by
+// CEffectService::FUN_1411a4a00 (IsNull 0x1411b80a0, operator() 0x1411b0e30: null check FUN_140657820, then slot 2).
+template <class R, class A1, class A2, class A3>
+class Delegate<R(A1, A2, A3)>
+{
+public:
+    class DelegateImplBase
+    {
+    public:
+        DelegateImplBase();
+        virtual ~DelegateImplBase();                            // 0
+        virtual DelegateImplBase* vfunc_1() const = 0;          // 1 clone
+        virtual R vfunc_2(A1 a1, A2 a2, A3 a3) = 0;             // 2 Invoke
+        virtual bool vfunc_3(const DelegateImplBase* p) const = 0;     // 3 equals
+    };
+
+    Delegate() : m_pImpl(0) {}
+    Delegate(const Delegate& o);
+    ~Delegate();
+    Delegate& operator=(const Delegate& o);
+    bool IsNull() const { return m_pImpl == 0; }
+    R operator()(A1 a1, A2 a2, A3 a3) const;            // body specialized by the unit that owns the COMDAT
+
+private:
+    DelegateImplBase* m_pImpl;          // +0x00
+};
