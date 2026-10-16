@@ -11,6 +11,9 @@ public:
     MS2EntityLoaderService();                       // 0x1414b3ee0
     virtual ~MS2EntityLoaderService();              // 0x1414b3f20, ??_G 0x1414b4520
     virtual efd::AsyncResult OnTick();              // 0x1414b41a0
+    // Instantiated by EntityWorldManager.
+    // @0x1411d8980
+    void FUN_1411d8980(bool loading) { m_bLoading = loading; }
 
 public:
     bool m_bLoading;   // +0xc8
