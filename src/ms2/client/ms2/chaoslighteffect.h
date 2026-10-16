@@ -8,12 +8,15 @@
 #pragma once
 #include <vector>
 #include <atlcoll.h>
+#include <efd/StdContainers.h>
 #include <NiMesh.h>
 #include <NiColor.h>
 #include <NiMaterial.h>
 #include "ms2/client/ms2/transitioneffectparam.h"
 #include "ms2/client/ms2/layer.h"
 #include "ms2/placeholder/postprocesseffect.h"      // Unk_PPSmartC (texture handle)
+
+class ChaosLightEffectLayer;
 
 // 0x38 bytes. vftable 0x142ea33b8 (2 slots: ~, DeleteThis). ctor 0x1410459c0, implicit dtor 0x141047350, ??_G 0x141047730.
 class ChaosLightTransitionData : public TransitionData
@@ -38,7 +41,7 @@ class ChaosLightEffectParam : public TransitionEffectParam
 {
 public:
     ChaosLightEffectParam();                                    // 0x1410415b0 (type 0xe)
-    virtual ~ChaosLightEffectParam();                           // 0x1410439b0
+    virtual ~ChaosLightEffectParam() = default;                 // 0x1410439b0
     virtual void vfunc_1(Unk_140165cf0* pNode);                 // 1 0x141045a60 load the scalars and the keyframes
     virtual CEffectPtr vfunc_6();                               // 6 0x141046110 new ChaosLightEffect
 
@@ -62,29 +65,37 @@ MS2_CHECK_OFFSET(ChaosLightEffectParam, m_nLayer, 0x88);
 MS2_CHECK_OFFSET(ChaosLightEffectParam, m_bBlink, 0x8c);
 MS2_CHECK_OFFSET(ChaosLightEffectParam, m_strNode, 0x98);
 
-// 0x150 bytes. vftable 0x142ea3?? (all in ?\uichaoslightdialog.cpp). Only the ctor is used by this unit's param.
+// 0x150 bytes. vftable 0x142ea3?? (all in ?\uichaoslightdialog.cpp), GetRTTI 0x141044490, ms_RTTI 0x143acd3d0.
 class ChaosLightEffect : public TransitionEffect
 {
+    NiDeclareRTTI;                                              // 2 GetRTTI 0x141044490
 public:
     ChaosLightEffect();                                         // 0x1410416a0
     virtual ~ChaosLightEffect();                                // 0x141041750
-    virtual int vfunc_12();                                     // 12 0x141044440
+    virtual bool vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget);   // 3 0x1410417c0 collect the owner's nodes
+    virtual void vfunc_4();                                     // 4 0x1410419e0 start: layer on every node
+    virtual void vfunc_7();                                     // 7 0x141041ae0 stop: remove the layers
+    virtual bool vfunc_9();                                     // 9 0x141041e50 blink, then the keyframe step
+    virtual int vfunc_12() { return 0xe; }                      // 12 0x141044440
     virtual void vfunc_13(TransitionData* pFrom, TransitionData* pTo, float fT);   // 13 0x141041c20
+
+    void FUN_1410420d0();                                       // 0x1410420d0 blink step
+    void FUN_1410423d0(NiAVObjectPtr spObject);                 // 0x1410423d0 add a layer per chaos-material mesh
 public:
     MS2_LAYOUT_FRIEND;
-    std::vector<NiPointer<NiAVObject> > m_vecObjects;           // +0x58 the effect's target objects (ctor 0x141043730, dtor 0x141043980; vfunc_3 fills it)
-    ATL::CAtlArray<void*> m_arrLayers;                          // +0x70 the ChaosLightEffectLayer* made per object (vfunc_7 hands them to the layer manager)
+    efd::vector<NiAVObjectPtr> m_vecObjects;                    // +0x58 the effect's target objects (vfunc_3 fills it)
+    ATL::CAtlArray<NiPointer<ChaosLightEffectLayer> > m_arrLayers;   // +0x70 the layer made per mesh
     ChaosLightEffectParam m_param;                              // +0x90 the current (interpolated) values: vfunc_13 writes m_param.m_f* (+0x100..0x114)
-    void* m_130;                                                // +0x130 ctor 0
-    void* m_138;                                                // +0x138 ctor 0 (vfunc_3 stores to +0x130)
-    void* m_140;                                                // +0x140 ctor 0
-    bool m_b148;                                                // +0x148 ctor 0
+    double m_dStartTime2;                                       // +0x130 start of the blink clock
+    double m_dLastTick;                                         // +0x138
+    double m_dPhase;                                            // +0x140 blink phase 0..1
+    bool m_bBlinkOn;                                            // +0x148
 };
 MS2_CHECK_SIZE(ChaosLightEffect, 0x150);
 MS2_CHECK_OFFSET(ChaosLightEffect, m_vecObjects, 0x58);
 MS2_CHECK_OFFSET(ChaosLightEffect, m_arrLayers, 0x70);
 MS2_CHECK_OFFSET(ChaosLightEffect, m_param, 0x90);
-MS2_CHECK_OFFSET(ChaosLightEffect, m_b148, 0x148);
+MS2_CHECK_OFFSET(ChaosLightEffect, m_bBlinkOn, 0x148);
 
 // 0xd8 bytes. vftable 0x142ea33d0 (21 slots; overrides ~, 18, 19, 20). ctor 0x1410461b0, dtor 0x1410472d0, ??_G 0x141047670.
 class ChaosLightEffectLayer : public Layer

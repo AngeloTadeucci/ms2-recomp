@@ -431,7 +431,11 @@ def compare_unwind(obj, unw, exe, va, fstart_obj, fsec_obj, rep, verbose):
         fi_sym = obj.syms[r[1]]
         fi_sec, fi_off = fi_sym[2], fi_sym[1] + struct.unpack_from("<I", osec["data"], lo)[0]
         xfi = struct.unpack_from("<I", exe.img, lx)[0]
-        compare_funcinfo(obj, fi_sec, fi_off, exe, xfi, fstart_obj, fsec_obj, va, eend, rep, verbose)
+        try:
+            compare_funcinfo(obj, fi_sec, fi_off, exe, xfi, fstart_obj, fsec_obj, va, eend, rep, verbose)
+        except struct.error:
+            rep.bad("obj function has EH FuncInfo, exe function has none")
+            return
         if "GSHandlerCheck_EH" in hname:
             go, gx = struct.unpack_from("<I", osec["data"], lo + 4)[0], struct.unpack_from("<I", exe.img, lx + 4)[0]
             if go != gx:
