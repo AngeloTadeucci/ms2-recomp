@@ -26,6 +26,7 @@
 // MS2-PIN: ??_7CMagicService@@6B?$TSingleton@VCMagicService@@@@@ 0x142f171b0
 // MS2-PIN: ??_7?$TSingleton@VCMagicService@@@@6B@ 0x142f17118
 // MS2-PIN: ??_7?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@6B@ 0x142f16df8
+// MS2-PIN: ??_7?$TPtredDummy@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@6B@ 0x142f171d0
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\magicdata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -1081,6 +1082,12 @@ unsigned long long CMagicModel::FUN_141467b60()
 }
 MS2_REPLACE_METHOD(0x141467B60, CMagicModel, FUN_141467b60, 35, 0x7BCCD890);
 
+// @0x141467bc0
+Unk_MagicTagPtr CMagicModel::FUN_141467bc0()
+{
+    return m_spA;
+}
+
 // @0x141467c10
 Unk_StreamPoint CMagicModel::FUN_141467c10()
 {
@@ -1228,6 +1235,75 @@ void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long
         m_mapModels.RemoveKey(nCaster);
 }
 MS2_REPLACE_METHOD(0x14146C4B0, CMagicService, FUN_14146c4b0, 276, 0xFA5B4338);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x14146c5d0
+Unk_SocketPtr<CMagicModel> CMagicService::FUN_14146c5d0(unsigned long long nCaster, unsigned long long nCast)
+{
+    Unk_MagicModelMapPtr spModels(0);
+    if (!m_mapModels.Lookup(nCaster, spModels))
+        return Unk_SocketPtr<CMagicModel>(0);
+    Unk_SocketPtr<CMagicModel> spModel(0);
+    spModels->Lookup(nCast, spModel);
+    return spModel;
+}
+MS2_REPLACE_METHOD(0x14146C5D0, CMagicService, FUN_14146c5d0, 226, 0x6545E771);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x14146c910
+Unk_MagicModelMapPtr CMagicService::FUN_14146c910(unsigned long long nCaster)
+{
+    Unk_MagicModelMapPtr spModels(0);
+    m_mapModels.Lookup(nCaster, spModels);
+    return spModels;
+}
+MS2_REPLACE_METHOD(0x14146C910, CMagicService, FUN_14146c910, 122, 0x48ABCC04);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x14146cbd0
+int CMagicService::FUN_14146cbd0(Unk_SocketPtr<CMagicModel> spModel)
+{
+    unsigned long long nCaster = spModel->FUN_141467bc0()->m_nTagId;
+    Unk_MagicModelMapPtr spModels(0);
+    if (!m_mapModels.Lookup(nCaster, spModels)) {
+        spModels = Unk_MagicModelMapPtr(Unk_SocketNew(0));
+        m_mapModels.SetAt(nCaster, spModels);
+    }
+    spModels->SetAt(spModel->FUN_141467b60(), spModel);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14146CBD0, CMagicService, FUN_14146cbd0, 299, 0x97C3FCB9);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x14146cd10
+void CMagicService::FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel)
+{
+    unsigned long long nCaster = spModel->FUN_141467bc0()->m_nTagId;
+    Unk_MagicModelMapPtr spModels(0);
+    if (m_mapModels.Lookup(nCaster, spModels)) {
+        spModels->RemoveKey(spModel->FUN_141467b60());
+        if (spModels->IsEmpty())
+            m_mapModels.RemoveKey(nCaster);
+    }
+}
+MS2_REPLACE_METHOD(0x14146CD10, CMagicService, FUN_14146cd10, 275, 0x039C5BFC);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x14146ce30
+Unk_SocketPtr<Unk_MagicTag> CMagicService::FUN_14146ce30(unsigned long long nCast)
+{
+    Unk_SocketPtr<Unk_MagicTag> spTag(0);
+    m_mapCasts.Lookup(nCast, spTag);
+    return spTag;
+}
+MS2_REPLACE_METHOD(0x14146CE30, CMagicService, FUN_14146ce30, 122, 0x2C88D630);
+
+// @0x14146ceb0
+void CMagicService::FUN_14146ceb0(unsigned long long nCast)
+{
+    m_mapCasts.RemoveKey(nCast);
+}
+MS2_REPLACE_METHOD(0x14146CEB0, CMagicService, FUN_14146ceb0, 41, 0xBAE22A39);
 
 // @0x14146cee0
 efd::SyncResult CMagicService::OnPreInit(efd::IDependencyRegistrar*)

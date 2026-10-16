@@ -230,6 +230,7 @@ public:
     int FUN_141467b30();                                            // 0x141467b30 the model's own duration
     int FUN_141467a90();                                            // 0x141467a90 state > 2
     int FUN_141467ae0();                                            // 0x141467ae0 state == 4
+    Unk_MagicTagPtr FUN_141467bc0();                                // 0x141467bc0 copy of the cast record handle
     unsigned long long FUN_141467b60();                             // 0x141467b60 the tag's sub id
     Unk_StreamPoint FUN_141467c10();                                // 0x141467c10 projectile position
     Unk_StreamPoint FUN_141467c60();                                // 0x141467c60 projectile direction
