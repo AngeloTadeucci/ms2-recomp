@@ -125,6 +125,16 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+
+// npc table row (commonfiles\\npcdata.cpp), only the kind is read here.
+class Unk_FameNpcData : public CPtred { public: int FUN_1406cd020(); };
+MS2Ptr<Unk_FameNpcData> FUN_1406cd330(int nNpcId);
+void* FUN_140204740(Unk_FameLogFilter* pFilter, unsigned nId, int nFlag);
+void FUN_1401854f0(ATL::CAtlArray<unsigned>& arr, unsigned nValue);                 // Add
+size_t FUN_140186260(ATL::CAtlArray<unsigned>& arr);                                  // GetCount
+unsigned* FUN_1401844d0(ATL::CAtlArray<unsigned>& arr, size_t nIndex);                // operator[]
+unsigned FUN_140767ff0();                                                             // random number
+
 #include <typeinfo>
 
 // Unrecovered helpers (the same xml loader helpers the other table units use).
@@ -715,6 +725,33 @@ int CFameTable::GetGradePoint(Unk_FameAlliance nAlliance, int nGrade)
     return spGrade->m_nRequirePoint;
 }
 
+// MS2-FUNCTIONAL: 64-bit modulo operand load order (mov rcx/rax/rcx before div) differs
+// @0x14035ac50
+unsigned CFameTable::PickRandomLog(Unk_FameAlliance nAlliance, int nGrade, Unk_FameLogFilter* pOwned)
+{
+    CheckInit();
+    ATL::CAtlArray<unsigned> aCandidates;
+    for (POSITION pos = m_mapLog.GetHeadPosition(); pos != 0; m_mapLog.GetNext(pos))
+    {
+        LogPtr spLog = m_mapLog.GetValueAt(pos);
+        if (spLog->m_nAlliance != nAlliance)
+            continue;
+        if (spLog->m_nGrade != nGrade)
+            continue;
+        if (FUN_140204740(pOwned, spLog->m_nId, 0) != 0)
+            continue;
+        FUN_1401854f0(aCandidates, spLog->m_nId);
+    }
+    if (FUN_140186260(aCandidates) == 0)
+        return 0;
+    unsigned long long nRandom = FUN_140767ff0();
+    unsigned long long nCount = FUN_140186260(aCandidates);
+    int nIndex = (int)(nRandom % nCount);
+    if (nIndex >= (int)FUN_140186260(aCandidates))
+        return 0;
+    return *FUN_1401844d0(aCandidates, nIndex);
+}
+
 // @0x14035ae50
 bool CFameTable::IsLogOfAlliance(unsigned nLogId, Unk_FameAlliance nAlliance)
 {
@@ -802,6 +839,22 @@ CStringA CFameTable::GetSymbolByOfficerNpc(int nKind)
             return spDef->m_strSymbol;
     }
     return CStringA();
+}
+
+// @0x14035b3c0
+Unk_FameAlliance CFameTable::GetAllianceByNpc(int nNpcId)
+{
+    CheckInit();
+    MS2Ptr<Unk_FameNpcData> spNpc = FUN_1406cd330(nNpcId);
+    if (!spNpc)
+        return Unk_FameAlliance_None;
+    for (POSITION pos = m_mapDef.GetStartPosition(); pos != 0; m_mapDef.GetNext(pos))
+    {
+        DefPtr spDef = m_mapDef.GetValueAt(pos);
+        if (spDef->m_nOfficerNpcKind == spNpc->FUN_1406cd020())
+            return spDef->m_nAlliance;
+    }
+    return Unk_FameAlliance_None;
 }
 
 // @0x14035b510

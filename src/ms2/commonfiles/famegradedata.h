@@ -12,6 +12,7 @@
 #include "ms2/commonfiles/os.h"
 
 class Unk_140165cf0;    // xml element (declared where the loaders are)
+class Unk_FameLogFilter;    // container of already received log ids (looked up by FUN_140204740)
 
 // The alliance (faction) and season ids. Enums rather than ints: the exe's ATL containers take them by reference
 // (a primitive int key would be passed by value), so the key traits are the default ones.
@@ -169,6 +170,7 @@ public:
     int HasGrades(Unk_FameAlliance nAlliance);                           // 0x14035aad0
     void GetMaxGradePoint(Unk_FameAlliance nAlliance);                   // 0x14035ab40
     int GetGradePoint(Unk_FameAlliance nAlliance, int nGrade);           // 0x14035ab90 points needed for the grade (INT_MAX when none)
+    unsigned PickRandomLog(Unk_FameAlliance nAlliance, int nGrade, Unk_FameLogFilter* pOwned);  // 0x14035ac50 (name invented)
     bool IsLogOfAlliance(unsigned nLogId, Unk_FameAlliance nAlliance);        // 0x14035ae50
     LimitPtr GetLimit(Unk_FameAlliance nAlliance);                       // 0x14035af00
     ATL::CAtlArray<PickPtr>& GetPickMethods();              // 0x14035afc0
@@ -179,6 +181,7 @@ public:
     bool IsReloadOnComplete(unsigned nId);                       // 0x14035b160
     CStringA GetSymbol(Unk_FameAlliance nAlliance);                      // 0x14035b1d0
     CStringA GetSymbolByOfficerNpc(int nKind);              // 0x14035b2a0
+    Unk_FameAlliance GetAllianceByNpc(int nNpcId);          // 0x14035b3c0 (name invented)
     int GetSeasonRequireQuest(Unk_FameAlliance nAlliance);               // 0x14035b510
     int GetSeasonRequireLvBySeason(Unk_FameSeason nSeason);            // 0x14035b590
     SeasonPtr GetSeason(Unk_FameAlliance nAlliance);                     // 0x14035b620
