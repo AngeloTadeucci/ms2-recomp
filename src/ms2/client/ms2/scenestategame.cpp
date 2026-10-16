@@ -314,7 +314,7 @@ class Unk_SSG3ed2a0 { public: void FUN_1407ce240(); };
 Unk_SSG3ed2a0* FUN_1403ed2a0();
 class Unk_SSGHome { public: __int64 FUN_14034a1b0(); };
 Unk_SSGHome* FUN_1414a56d0();
-class Unk_SSGConfig { public: bool FUN_14036e5b0(); };
+class Unk_SSGConfig { public: bool FUN_14036e5b0(); bool FUN_14036d570(int nOption); };
 Unk_SSGConfig* FUN_140166410();
 class Unk_SSGB05bf0 { public: void FUN_140b06450(int n); };
 Unk_SSGB05bf0* FUN_140b05bf0();
@@ -394,7 +394,7 @@ class Unk_SSG967100 { public: void FUN_141b21390(); void FUN_141b1ddd0(CInPacket
 Unk_SSG967100* FUN_140967100();
 class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14138bf00(int nKind, int nId, int nArg); void FUN_14138b280(CInPacket& packet); };
 Unk_SSG9331e0* FUN_1409331e0();
-class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); };
+class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); UISwfEntity* FUN_1422b9e20(int nId); };
 Unk_SSGSoundCtl* FUN_1408e57f0();
 class Unk_SSG931510 { public: void FUN_140d9f710(CInPacket& packet); MS2Ptr<class Unk_SSGDungeonRecord> FUN_140d9f2c0(); MS2Ptr<class Unk_SSGChatEmoticon> FUN_140d9f8f0(); };
 void FUN_1412b9870(int nId, int nType);
@@ -675,6 +675,28 @@ MS2_CHECK_SIZE(StateFishingData, 0x20);
 
 class Unk_SSGInventory { public: MS2Ptr<CItem> FUN_140a5d680(__int64 nItemUid); };
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
+
+class Unk_SSGCommunityPopup { public: void FUN_140bea390(CStringW strName, CString strText); };
+Unk_SSGCommunityPopup* FUN_14136f1f0(int nId);              // GetDialog<UICommunityPopup>
+CString FUN_14016a5c0(const char* psz, int n);
+struct Unk_SSGBeautyReq                                     // FUN_1407a8340 reads it
+{
+    Unk_SSGBeautyReq() : m_nType(0), m_nUid(0) { }
+    int m_nType;
+    __int64 m_nUid;
+};
+MS2_CHECK_OFFSET(Unk_SSGBeautyReq, m_nUid, 8);
+void FUN_1407a8340(Unk_SSGBeautyReq& req, CInputStream& stream);
+class UIBeautyShopDialog : public UIDialog { };
+class Unk_SSGUIMsg : public UIMsg                           // an ActionScript call (ASData)
+{
+public:
+    Unk_SSGUIMsg();                                         // 0x1422e4490
+    ~Unk_SSGUIMsg();                                        // 0x140c30570
+    void FUN_1422b82b0(const char* pszMethod);
+    void FUN_1422b7f70(int n);
+    void* m_pad[10];
+};
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -3370,3 +3392,48 @@ void CSceneStateGame::FUN_14173b420(CInPacket& packet)
     ((CItem*)spItem)->FUN_140524eb0(packet);
 }
 MS2_REPLACE_METHOD(0x14173b420, CSceneStateGame, FUN_14173b420, 372, 0x5E75A989);
+
+// @0x14173c0f0
+void CSceneStateGame::FUN_14173c0f0(CInPacket& packet)
+{
+    if (!FUN_140166410()->FUN_14036d570(0x88))
+        return;
+    CStringW strA = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW strC = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    Unk_SSGCommunityPopup* pPopup = FUN_14136f1f0(0x4f5c);
+    if (pPopup != 0)
+    {
+        CString strTextA = FUN_14016a600(strA, 0);
+        CString strTextC = FUN_14016a600(strC, 0);
+        pPopup->FUN_140bea390(strName, FUN_14016a5c0(strTextA, 0));
+    }
+}
+MS2_REPLACE_METHOD(0x14173c0f0, CSceneStateGame, FUN_14173c0f0, 469, 0x00599B3A);
+
+// @0x14173c630
+void CSceneStateGame::FUN_14173c630(CInPacket& packet)
+{
+    Unk_SSGBeautyReq req;
+    FUN_1407a8340(req, packet);
+    int nType = req.m_nType;
+    if (nType == 0)
+        return;
+    UIBeautyShopDialog* pDlg = Unk_SSGGetDialog<UIBeautyShopDialog>(0x4eee);
+    if (pDlg == 0 || pDlg->FUN_141924630() == 1)
+        return;
+    UISwfEntity* pEntity = FUN_1408e57f0()->FUN_1422b9e20(0x620001f);
+    if (pEntity != 0)
+    {
+        Unk_SSGUIMsg msg;
+        msg.FUN_1422b82b0("openDialog");
+        msg.FUN_1422b7f70(0x4eee);
+        pEntity->OnMessage(0, &msg);
+    }
+    COutPacket out(0x23, 0);
+    out.COutPacket::vfunc_o10_1(0x17);
+    out.COutPacket::vfunc_o10_4(req.m_nUid);
+    FUN_140710590(out);
+    FUN_1408e57f0()->FUN_1422b9fd0(0x620001f);
+}
+MS2_REPLACE_METHOD(0x14173c630, CSceneStateGame, FUN_14173c630, 357, 0x2D049D06);
