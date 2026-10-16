@@ -47,6 +47,20 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+// MS2-HOOK-DISABLED (mg8, 2026-10-16): with these hooks installed the hooked client shows the blank error box right
+// after start-up (found by ddmin over the merge-8 DLL, work/mg8/ddmin.log); root cause not analysed. Remove this block to re-enable.
+#undef MS2_REPLACE
+#undef MS2_REPLACE_METHOD
+#undef MS2_REPLACE_METHOD_VIA
+#undef MS2_REPLACE_OVERLOAD
+#undef MS2_REPLACE_CTOR
+#undef MS2_REPLACE_DTOR
+#define MS2_REPLACE(va, function, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_METHOD(va, Class, Method, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_METHOD_VIA(va, Class, Base, Method, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_OVERLOAD(va, Sig, function, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_CTOR(va, Class, glen, ghash) static_assert(true, "")
+#define MS2_REPLACE_DTOR(va, Class, glen, ghash) static_assert(true, "")
 
 // ---- services reached through globals ----
 WorldService* FUN_1403ed2d0();

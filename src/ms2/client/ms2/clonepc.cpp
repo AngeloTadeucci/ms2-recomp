@@ -218,8 +218,8 @@ void ClonePC::vfunc_139()
 {
     if (m_pSourcePC)
     {
-        FUN_1416591e0(this, 0, FUN_141659220(m_pSourcePC, 0));
-        FUN_1416591e0(this, 1, FUN_141659220(m_pSourcePC, 1));
+        FUN_1416591e0(this, 0, ::FUN_141659220(m_pSourcePC, 0));
+        FUN_1416591e0(this, 1, ::FUN_141659220(m_pSourcePC, 1));
     }
     PC::vfunc_139();
 }
@@ -395,7 +395,7 @@ bool ClonePC::FUN_1410872b0(MS2Ptr<AdditionalCli> spCli)
 {
     if (spCli == 0)
         return false;
-    if (FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spCli)) == 0)
+    if (::FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spCli)) == 0)
         return false;
     m_kClis.push_back(spCli);
     return true;
@@ -574,14 +574,14 @@ void ClonePC::vfunc_151()
 {
     if (!FUN_141088620())
         return;
-    FUN_1416749a0(this)->FUN_140970490();
+    ::FUN_1416749a0(this)->FUN_140970490();
     std::vector<MS2Ptr<AdditionalCli> >::iterator itEnd = m_kClis.end();
     std::vector<MS2Ptr<AdditionalCli> >::iterator it = m_kClis.begin();
     while (it != itEnd)
     {
         MS2Ptr<AdditionalCli> spCli(*it);
         if (!(spCli == 0))
-            FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spCli));
+            ::FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spCli));
         ++it;
     }
     if (m_nSourceId == 0)
@@ -609,7 +609,7 @@ void ClonePC::vfunc_151()
                     {
                         unsigned int nId = pRec->m_kIds[i];
                         unsigned short nSub = pRec->m_kSubIds[i];
-                        if (FUN_140970020(FUN_1416749a0(this), nId, nSub, 0, 1) == 0)
+                        if (FUN_140970020(::FUN_1416749a0(this), nId, nSub, 0, 1) == 0)
                             kHave[std::make_pair(nId, nSub)] = pRec;
                     }
                 }
@@ -620,7 +620,7 @@ void ClonePC::vfunc_151()
     if (!kHave.empty())
     {
         ATL::CAtlList<MS2Ptr<AdditionalCli> > kClis(10);
-        FUN_1416749a0(pSource)->FUN_1409725f0(&kClis);
+        ::FUN_1416749a0(pSource)->FUN_1409725f0(&kClis);
         if (!kClis.IsEmpty())
         {
             POSITION posCli = kClis.GetHeadPosition();
@@ -637,7 +637,7 @@ void ClonePC::vfunc_151()
                         {
                             MS2Ptr<AdditionalCli> spNew(new AdditionalCli());
                             if (spNew.get()->FUN_14096bc20(m_unk_70, MS2Ptr<AdditionalCli>(spSrc)))
-                                FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spNew));
+                                ::FUN_1416749a0(this)->FUN_14096f070(MS2Ptr<AdditionalCli>(spNew));
                         }
                     }
                 }

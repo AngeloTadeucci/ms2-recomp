@@ -604,6 +604,9 @@ def same_code(exe, a, b, depth=8):
     if depth <= 0:
         return False
     na, nb = _fn_size(exe, a), _fn_size(exe, b)
+    if na and nb and na != nb and (_thin_forwarder(exe, a, na, b, depth) or _thin_forwarder(exe, b, nb, a, depth)):
+        _SAME_MEMO[key] = True      # NiPoint3() -> Point3(), NiPoint3::operator= -> Point3::operator=: same effect
+        return True
     if not na or na != nb or na > 0x4000:
         _SAME_MEMO[key] = False
         return False
@@ -611,6 +614,26 @@ def same_code(exe, a, b, depth=8):
     ok = _same_code(exe, a, b, na, depth)
     _SAME_MEMO[key] = ok
     return ok
+
+
+def _thin_forwarder(exe, a, n, b, depth):
+    """Is the function at a a /Od thin wrapper (only mov/sub rsp/add rsp/ret plus one direct call, no branches) whose
+    single callee is b (or a byte-identical copy of b)? Derived-class ctor/assign forwarding to the base one."""
+    if n > 0x60:
+        return False
+    calls = []
+    for ins in _MD2.disasm(exe.read(a, n), a):
+        if ins.mnemonic == "call":
+            if not ins.operands or ins.operands[0].type != x86.X86_OP_IMM:
+                return False
+            calls.append(ins.operands[0].imm)
+        elif ins.mnemonic not in ("mov", "ret", "sub", "add"):
+            return False
+        elif ins.mnemonic in ("sub", "add") and "rsp" not in ins.op_str:
+            return False
+        elif ins.mnemonic == "mov" and "rip" in ins.op_str:
+            return False
+    return len(calls) == 1 and (calls[0] == b or same_code(exe, calls[0], b, depth - 1))
 
 
 def _same_code(exe, a, b, n, depth):

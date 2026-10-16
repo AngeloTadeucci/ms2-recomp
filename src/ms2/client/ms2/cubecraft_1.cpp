@@ -456,8 +456,8 @@ int CGuideObject::vfunc_116()
 void CGuideObject::vfunc_125(double fTime)
 {
     FUN_141683a90(&m_unk_6d8);
-    FUN_14166d820(this);
-    CallSlot<void>(FUN_14166ccb0(this), 8, fTime);
+    ::FUN_14166d820(this);
+    CallSlot<void>(::FUN_14166ccb0(this), 8, fTime);
 }
 
 // @0x1410a1240
@@ -491,17 +491,17 @@ void CGuideObject::vfunc_126()
     MS2Ptr<Unk_GuideRecord> spOld = m_ctrl.FUN_1417b7620();
     if (!spOld.IsNull()
         && spOld->m_pos3c == m_pos98
-        && spOld->m_nType == FUN_14166c930(this)
-        && CallSlot<int>(FUN_14166ccb0(this), 22, FUN_140b8b8e0(spOld)) == 0)
+        && spOld->m_nType == ::FUN_14166c930(this)
+        && CallSlot<int>(::FUN_14166ccb0(this), 22, FUN_140b8b8e0(spOld)) == 0)
         return;
     if (spOld.get() != 0)
         m_ctrl.vfunc_0();
-    MS2Ptr<Unk_GuideRecord> spNew = FUN_140835450(FUN_14166c930(this));
-    spNew->m_nObjId = FUN_14166cc80(this);
+    MS2Ptr<Unk_GuideRecord> spNew = FUN_140835450(::FUN_14166c930(this));
+    spNew->m_nObjId = ::FUN_14166cc80(this);
     spNew->m_pos3c = m_pos98;
     spNew->m_pos20 = vfunc_18();
     spNew->m_pos2c = vfunc_20();
-    spNew->m_n58 = FUN_14166da40(this);
+    spNew->m_n58 = ::FUN_14166da40(this);
     spNew->m_pos48 = NiPoint3::ZERO;
     spNew->m_n54 = FUN_1409478c0()->FUN_140af7e30();
     spNew->m_na4 = FUN_1410a7600(this);
@@ -615,7 +615,7 @@ int CConstructionGuideObject::FUN_1410a1ee0(int nOwnerId, efd::Point3 kPos, efd:
     FUN_1410a77e0(this, 10.0f);
     if (m_spGod.IsNull())
         m_spGod = new CGodModeInfo();
-    m_spGod->FUN_141374d10(FUN_1408a18d0(FUN_141656a80(pOwner)));
+    m_spGod->FUN_141374d10(FUN_1408a18d0(::FUN_141656a80(pOwner)));
     if (m_bLocal)
     {
         m_spBirdHead = new UIBirdHead();
@@ -856,7 +856,7 @@ void CConstructionGuideObject::vfunc_128()
 int CConstructionGuideObject::vfunc_10()
 {
     if (m_bLocal)
-        FUN_14123c680(this, 1);
+        ::FUN_14123c680(this, 1);
     int nResult = PCBase::vfunc_10();
     if (nResult != 0)
     {
@@ -1260,12 +1260,12 @@ void CFishingGuideObject::vfunc_53(float f)
         m_spBirdHead->vfunc_15();
         m_spBirdHead->FUN_1418ce8c0(SP(efd::Point3(vfunc_18()) + efd::Point3(0.0f, 0.0f, 75.0f)));
     }
-    if (pOwner != 0 && FUN_14166c930(pOwner) == 0x2d && FUN_14166cc80(pOwner) != 0x75 && m_nShown == 0)
+    if (pOwner != 0 && ::FUN_14166c930(pOwner) == 0x2d && ::FUN_14166cc80(pOwner) != 0x75 && m_nShown == 0)
         FUN_1410a4cb0();
     pInfo = pOwner ? pOwner->GetClassDesc() : NULL;
     if (efd::ClassInfo::IsKindOf(pInfo, 0x6200004))
     {
-        if (FUN_1416749a0(pOwner)->FUN_1409700d0(7) == 0)
+        if (::FUN_1416749a0(pOwner)->FUN_1409700d0(7) == 0)
         {
             if (m_nEffectB != 0)
             {
@@ -1299,7 +1299,7 @@ void CFishingGuideObject::FUN_1410a5690()
     PCBase* pOwner = FUN_1410a1310();
     if (pOwner == 0)
         return;
-    int nState = FUN_14166cc80(pOwner);
+    int nState = ::FUN_14166cc80(pOwner);
     if (nState == 0x75)
         return;
     efd::Point3 kEndA;

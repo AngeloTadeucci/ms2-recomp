@@ -629,14 +629,14 @@ void AvatarPC::FUN_1409f41d0(Unk_CharEquip kEquip0, Unk_CharEquip kEquip1)
 {
     if (m_pSourcePC == 0)
     {
-        FUN_1416591e0(this, 0, kEquip0);
-        FUN_1416591e0(this, 1, kEquip1);
+        ::FUN_1416591e0(this, 0, kEquip0);
+        ::FUN_1416591e0(this, 1, kEquip1);
         vfunc_139();
     }
     else
     {
-        FUN_1416591e0(m_pSourcePC, 0, kEquip0);
-        FUN_1416591e0(m_pSourcePC, 1, kEquip1);
+        ::FUN_1416591e0(m_pSourcePC, 0, kEquip0);
+        ::FUN_1416591e0(m_pSourcePC, 1, kEquip1);
         m_pSourcePC->vfunc_139();
         vfunc_139();
     }
@@ -658,7 +658,7 @@ void AvatarPC::FUN_1409f43d0(int nSkillId, short nLevel)
 {
     Unk_InventorySkillRequest kReq(nSkillId, nLevel);
     kReq.origin = vfunc_18();
-    kReq.fValue = FUN_14166da40(this);
+    kReq.fValue = ::FUN_14166da40(this);
     MS2Ptr<CSkillRecord> spSkill(new CSkillRecord());
     if (spSkill->FUN_1417595d0(kReq))
     {
@@ -675,9 +675,9 @@ void AvatarPC::FUN_1409f45a0(MS2Ptr<CItemData> spData)
     if (!(spData == 0))
     {
         int nInstrument = FUN_14053de80(spData.operator->());
-        if (FUN_14166c930(this) == 0x2f)
+        if (::FUN_14166c930(this) == 0x2f)
         {
-            Unk_McState* pState = FUN_14166ccb0(this);
+            Unk_McState* pState = ::FUN_14166ccb0(this);
             if (pState != 0 && FUN_140ddfbb0(pState) == nInstrument)
                 return;
         }
@@ -760,7 +760,7 @@ void AvatarPC::FUN_1409f4d80(MS2Ptr<CItem> spItem)
 // @0x1409f4f20
 bool AvatarPC::FUN_1409f4f20()
 {
-    if (FUN_14166c930(this) == 0x21 && m_spRidee != 0 && m_spRidee->FUN_14123bea0() != 0)
+    if (::FUN_14166c930(this) == 0x21 && m_spRidee != 0 && m_spRidee->FUN_14123bea0() != 0)
         return true;
     return false;
 }
@@ -826,9 +826,9 @@ void AvatarPC::vfunc_128(CItem* pItem, int n)
 // @0x1409f5210
 void AvatarPC::vfunc_59(int a, void* b, int c, int d)
 {
-    int nOldAction = FUN_14166c930(this);
+    int nOldAction = ::FUN_14166c930(this);
     PC::vfunc_59(a, b, c, d);
-    if (nOldAction != FUN_14166c930(this))
+    if (nOldAction != ::FUN_14166c930(this))
     {
         vfunc_19(m_kPos);
         FUN_141087390();
@@ -1024,7 +1024,7 @@ void AvatarPC::FUN_1409f5d20()
     }
     if (m_spRidee != 0)
     {
-        if (m_spRidee->FUN_14123bea0() != 0 && FUN_14166c930(this) == 0x21)
+        if (m_spRidee->FUN_14123bea0() != 0 && ::FUN_14166c930(this) == 0x21)
         {
             NiNodePtr spRideeNode(static_cast<NiNode*>(FUN_14098d8d0(&NiNode::ms_RTTI, FUN_141b6efc0(m_spRidee->FUN_14123c410()))));
             if (spRideeNode != 0)
@@ -1170,7 +1170,7 @@ void AvatarPC::FUN_1409f68e0(MS2Ptr<CItem> spItem)
     if (!(spItem == 0))
     {
         FUN_1409f6540(false);
-        FUN_141661ba0(this, 0);
+        ::FUN_141661ba0(this, 0);
         FUN_14165cac0(this);
     }
 }
@@ -1184,9 +1184,9 @@ void AvatarPC::FUN_1409f6950(MS2Ptr<CItem> spItem)
         return;
     }
     int nRod = spItem->FUN_1405276c0();
-    if (FUN_14166c930(this) == 0x2d)
+    if (::FUN_14166c930(this) == 0x2d)
     {
-        Unk_McState* pState = FUN_14166ccb0(this);
+        Unk_McState* pState = ::FUN_14166ccb0(this);
         if (pState != 0 && FUN_140ddb5d0(pState) == nRod)
             return;
     }
@@ -1670,7 +1670,7 @@ void AvatarRidee::FUN_1409fa7c0()
 void AvatarRidee::FUN_1409fa940()
 {
     if (m_pRider != 0 && !(m_spAttach == 0) && !m_spRow.FUN_1407893c0(0) && m_bReloading != true
-        && FUN_14166c930(m_pRider) == 0x21)
+        && ::FUN_14166c930(m_pRider) == 0x21)
     {
         FUN_1417083a0(m_pRider, NiAVObjectPtr(m_spAttach), m_spRow->FUN_140784970());
     }

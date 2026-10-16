@@ -52,7 +52,7 @@ CubeHolderManager::~CubeHolderManager() {}
 void CubeHolderManager::FUN_1410b4f60(const Unk_CubePaletteFilter& filter) {
     if(palette==0) palette.AssignRaw(new UGCCubePalette);
     cubes.RemoveAll();
-    palette->FUN_140df1a40(cubes,filter);
+    palette->FUN_140df1a40(cubes,const_cast<Unk_CubePaletteFilter&>(filter));
 }
 // @0x1410b5030
 int CubeHolderManager::FUN_1410b5030(CubeArray& out) {
