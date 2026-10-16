@@ -66,7 +66,7 @@ public:
     MailPtr FUN_1408e38f0();
     unsigned FUN_1408e3950(__int64 id);
     void FUN_1408e3a60(MailPtr mail);
-    int FUN_1408e3b70(__int64 id, int force);
+    int FUN_1408e3b70(__int64 id, int force, int reason);   // reason (0, 0x41) is not read
     unsigned FUN_1408e3da0();
     int FUN_1408e3dd0(int kind);
     int FUN_1408e3e30();

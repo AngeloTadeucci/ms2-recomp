@@ -129,6 +129,11 @@
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
 #include "interactobject.h"                // CInteractObject (0x63)
 #include "entityworldmanager.h"
+// usermail.h declares FUN_1403ed2d0 over its own Unk_MailSession stand-in; this unit's world type is Unk_SSGWorld,
+// so the header's declaration is renamed out of the way.
+#define FUN_1403ed2d0 FUN_1403ed2d0_UserMail
+#include "ms2/commonfiles/usermail.h"     // CUserMail (DAT_143ab2ee0), CMailInfo (0x54)
+#undef FUN_1403ed2d0
 #include <egf/EntityIDFactory.h>
 // MS2Ptr<CProxyGameObject>::operator-> / get are the exe's out-of-range copies (0x1406c71d0 / 0x1406c71b0); left
 // undefined here so they are not paired with the unit's in-range look-alikes.
@@ -153,6 +158,7 @@ public:
     void FUN_141bbae80(IWorldServiceCallback* cb);          // unregister it
     void FUN_141bbc580(int a, int b);
     int FUN_141bcfd10();                                    // world state (4 = in field)
+    bool FUN_141bcb0a0();                                   // when set, the mail notices are skipped
     int FUN_141bcfbd0();                                    // loading complete
     void FUN_141bdb690();
     void FUN_141bbbcf0(int nMapId, int n);
@@ -782,7 +788,7 @@ GameObject* FUN_140b10320(Unk_SSGCubeObj* pObj);           // the object the sou
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
-    void FUN_141937e00(int nMode); };   // UIGameMenuDialog
+    void FUN_141937e00(int nMode); void FUN_141937e40(int nMode); };   // UIGameMenuDialog
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
@@ -818,7 +824,7 @@ class UIAutoReviveCountDownDialog : public UIDialog { public: void FUN_141284d70
 class UIGlobalPortalDialog : public UIDialog { public: void FUN_1412c3020(CInPacket& packet); };
 class UIQuizDialog : public UIDialog { public: void FUN_14129a930(CInPacket& packet); };
 class UIIndividualPvPDialog : public UIDialog { public: void FUN_1412cacc0(); void FUN_1412cb220(); };
-int FUN_141276180(const CString& strA, const CString& strB);
+void FUN_141276180(const CString& strA, const CString& strB);   // play a sound event
 class Unk_SSGDungeonRecord : public CPtred { public: void FUN_140b20be0(CInPacket& packet); };
 class Unk_SSGGlobalFactor { public: void FUN_1404c18c0(CInPacket& packet); };
 Unk_SSGGlobalFactor* FUN_140302b10();
@@ -9093,3 +9099,296 @@ void CSceneStateGame::FUN_14172f500(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14172F500, CSceneStateGame, FUN_14172f500, 5132, 0xD54955F8);
+
+// 0x54: mail. CCMailPacket payloads (ctors/dtors are this obj's comdats); the readers live in unit_1401f9eb0.
+class CCMailPacket {
+public:
+    class MailNew : public CPtred {
+    public:
+        MailNew() : m_nUnread(0), m_nUnreadAlarm(0), m_bAlarm(true) {}
+        int m_nUnread;                                      // +0x18
+        int m_nUnreadAlarm;                                 // +0x1c
+        bool m_bAlarm;                                      // +0x20
+    };
+    class GiftNew : public CPtred {
+    public:
+        GiftNew() : m_nType(0), m_nItemId(0), m_nRarity(0), m_nCount(0) {}
+        CStringW m_strSender;                               // +0x18
+        unsigned int m_nType;                               // +0x20
+        int m_nItemId;                                      // +0x24
+        unsigned int m_nRarity;                             // +0x28
+        int m_nCount;                                       // +0x2c
+        CString m_strUgcPath;                               // +0x30
+        CStringW m_strUgcTitle;                             // +0x38
+    };
+};
+MS2_CHECK_SIZE(CCMailPacket::MailNew, 0x28);
+MS2_CHECK_SIZE(CCMailPacket::GiftNew, 0x40);
+void FUN_140201b00(unsigned char* payload, void* inputPacket);   // read CCMailPacket::GiftNew
+void FUN_140201db0(unsigned char* payload, void* inputPacket);   // read CCMailPacket::MailNew
+extern CUserMail DAT_143ab2ee0;
+extern int DAT_143af37b0;                                   // the mail list needs a refresh
+extern int DAT_143af37b4;
+extern __int64 DAT_143af37b8;                               // the mail to select when the list opens
+class UIMailListDialog : public UIDialog
+{
+public:
+    static int Id() { return 0x4e49; }
+    void FUN_1419e5000(__int64 nMailId);
+    void FUN_1419e5150();
+};
+class UIMailSendDialog : public UIDialog { public: void FUN_1419ecb80(); };
+class UIWhisperNotifyDialog : public UIDialog { public: void FUN_141b52210(MS2Ptr<CItem> spItem, const CStringW& strMsg, const CString& strUgcPath); };
+// The UGC info behind CItem::FUN_1405278d0 holds its look at +0x18.
+class Unk_SSGItemUgc : public CPtred { public: CUgcItemLook m_look; };
+CStringW FUN_14183e9c0(CStringW strName, int nRank);        // the name coloured by rank
+CString FUN_14072ceb0(int nId);
+int FUN_140718170(const CString& s);
+
+// @0x141721cd0
+void CSceneStateGame::FUN_141721cd0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0x10)
+    {
+        DAT_143ab2ee0.FUN_1408e3030();
+    }
+    else if (nMode == 0)
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; i++)
+        {
+            CUserMail::MailPtr spMail(new CMailInfo(0));
+            spMail->FUN_1406913e0(packet);
+            DAT_143ab2ee0.FUN_1408e3a60(spMail);
+        }
+        DAT_143ab2ee0.FUN_1408e3490(0);
+        DAT_143ab2ee0.FUN_1408e3500(0);
+    }
+    else if (nMode == 0x11)
+    {
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+            DAT_143af37b0 = 1;
+        DAT_143ab2ee0.FUN_1408e4890();
+    }
+    else if (nMode == 1)
+    {
+        FUN_140d73bc0(0x228, 0, 0, L"");
+        DAT_143ab2ee0.FUN_1408e3ff0(0);
+        UIMailSendDialog* pDlg = Unk_SSGGetDialog<UIMailSendDialog>(0x4e4a);
+        if (pDlg != 0)
+            pDlg->FUN_1419ecb80();
+    }
+    else if (nMode == 2)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        DAT_143ab2ee0.FUN_1408e3540(nMailId, nValue);
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+        {
+            UIMailListDialog* pList = Unk_SSGGetDialog<UIMailListDialog>(0x4e49);
+            if (pList != 0)
+                pList->FUN_1419e5000(nMailId);
+        }
+    }
+    else if (nMode == 3)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        FUN_141275260(0x229, 1, 1);
+        DAT_143ab2ee0.FUN_1408e3b70(nMailId, 1, 0);
+    }
+    else if (nMode == 0xa)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int bSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        __int64 nTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        CUserMail::MailPtr spMail = DAT_143ab2ee0.FUN_1408e3720(nMailId);
+        if (spMail == 0)
+            return;
+        if (bSlot != 0)
+            spMail->FUN_1406906c0(nSlot, nTime);
+        else
+            spMail->FUN_140690d60(nTime);
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+            DAT_143af37b8 = nMailId;
+    }
+    else if (nMode == 0xb)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        CUserMail::MailPtr spMail = DAT_143ab2ee0.FUN_1408e3720(nMailId);
+        if (spMail == 0)
+            return;
+        spMail->FUN_140690d60(nTime);
+        spMail->FUN_140690df0(nTime);
+        spMail->FUN_140690e80(nTime);
+        spMail->FUN_140690f10(nTime);
+        for (int i = 0; i < 5; i++)
+            spMail->FUN_1406906c0(i, nTime);
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+        {
+            DAT_143af37b8 = nMailId;
+            DAT_143af37b0 = 1;
+        }
+    }
+    else if (nMode == 0xc)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        CUserMail::MailPtr spMail = DAT_143ab2ee0.FUN_1408e3720(nMailId);
+        if (spMail == 0)
+            return;
+        spMail->FUN_140692420(nTime);
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+        {
+            DAT_143af37b8 = nMailId;
+            DAT_143af37b0 = 1;
+        }
+    }
+    else if (nMode == 0xd)
+    {
+        __int64 nMailId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        DAT_143ab2ee0.FUN_1408e3b70(nMailId, 1, 0x41);
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4e49) == 0)
+            DAT_143af37b4 = 1;
+    }
+    else if (nMode == 0xe)
+    {
+        CCMailPacket::MailNew mailNew;
+        FUN_140201db0(reinterpret_cast<unsigned char*>(&mailNew), &packet);
+        int nUnread = mailNew.m_nUnread;
+        DAT_143ab2ee0.FUN_1408e3490(nUnread);
+        DAT_143ab2ee0.FUN_1408e3500(mailNew.m_nUnreadAlarm);
+        if (nUnread != 0 && !FUN_1403ed2d0()->FUN_141bcb0a0() && mailNew.m_bAlarm)
+            FUN_141275260(0x22b, 8, 1);
+        UIMailListDialog* pList = Unk_SSGGetUI<UIMailListDialog>();
+        if (pList != 0 && pList->FUN_141924630() != 0)
+            pList->FUN_1419e5150();
+    }
+    else if (nMode == 0xf)
+    {
+        if (!FUN_1403ed2d0()->FUN_141bcb0a0())
+            FUN_141275260(0x257, 1, 0);
+        FUN_1412751b0(FUN_14028de60(0x258), 0x14);
+    }
+    else if (nMode == 0x16)
+    {
+        CCMailPacket::GiftNew gift;
+        FUN_140201b00(reinterpret_cast<unsigned char*>(&gift), &packet);
+        if (!FUN_1403ed2d0()->FUN_141bcb0a0())
+        {
+            const CStringW& strSender = gift.m_strSender;
+            FUN_1412751f0(FUN_1405c2690(L"s_mail_notify_recieve_gift", strSender), 8, 1);
+            UIWhisperNotifyDialog* pDlg = Unk_SSGGetDialog<UIWhisperNotifyDialog>(0x4e5e);
+            if (pDlg != 0)
+            {
+                int nItemId = gift.m_nItemId;
+                MS2Ptr<CItem> spItem(new CItem);
+                if (spItem.get() != 0 && spItem->FUN_14052b2e0(nItemId, gift.m_nRarity, 0, gift.m_nCount) != 0)
+                {
+                    CString strUgcPath;
+                    if (spItem->FUN_140525f10() != 0 || spItem->FUN_140526010() != 0)
+                    {
+                        Unk_ItemUgcInfo* pInfo = spItem->FUN_1405278d0();
+                        if (pInfo != 0)
+                        {
+                            CUgcItemLook* pLook = &reinterpret_cast<Unk_SSGItemUgc*>(pInfo)->m_look;
+                            pLook->unknown30 = 1;
+                            pLook->resourcePath = gift.m_strUgcPath;
+                            pLook->title = gift.m_strUgcTitle;
+                        }
+                    }
+                    else if (spItem->FUN_140525680())
+                    {
+                        spItem->FUN_140529500(gift.m_strUgcTitle);
+                        int nId = FUN_140718170(gift.m_strUgcPath);
+                        strUgcPath = FUN_14072ceb0(nId);
+                    }
+                    CStringW strMsg = FUN_1408f71a0(L"s_mail_get_gift_item", FUN_14183e9c0(spItem->FUN_140527b10(), gift.m_nRarity), strSender);
+                    pDlg->FUN_141b52210(spItem, strMsg, strUgcPath);
+                }
+            }
+        }
+    }
+    else if (nMode == 0x14)
+    {
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        CString strUnused;
+        switch (nError)
+        {
+        case 1:
+            FUN_141275260(0x23e, 1, 1);
+            break;
+        case 0x1d:
+            FUN_141275260(0x24f, 1, 1);
+            break;
+        case 0x1e:
+            FUN_141275260(0x250, 1, 1);
+            break;
+        case 2:
+        case 5:
+            FUN_141275260(0x240, 1, 1);
+            break;
+        case 3:
+        case 4:
+            FUN_141275260(0x23f, 1, 1);
+            break;
+        case 0xc:
+            FUN_141275260(0x244, 1, 1);
+            break;
+        case 0x10:
+            FUN_141275260(0x249, 1, 1);
+            break;
+        case 0x11:
+            FUN_141275260(0x241, 1, 1);
+            break;
+        case 0x18:
+            FUN_141275260(0x243, 1, 1);
+            break;
+        case 0x19:
+            FUN_141275260(0x242, 1, 1);
+            break;
+        case 0x14:
+            FUN_141275260(0x24a, 1, 1);
+            FUN_141276180(DAT_143ae7978, "");
+            break;
+        case 0x16:
+            FUN_141275260(0x24a, 1, 1);
+            FUN_141276180(DAT_143ae7978, "");
+            break;
+        case 0x15:
+            FUN_141275260(0x24b, 1, 1);
+            break;
+        case 0x17:
+            FUN_141275260(0x24c, 1, 1);
+            break;
+        case 0x1a:
+            FUN_141275260(0x34, 1, 1);
+            break;
+        case 0x1b:
+            FUN_141275260(0x24d, 1, 1);
+            break;
+        case 0x1c:
+            FUN_141275260(0x24e, 1, 1);
+            break;
+        case 0x1f:
+            FUN_141275260(0x251, 1, 1);
+            break;
+        case 0x20:
+            FUN_141275260(0x252, 1, 1);
+            break;
+        case 0x21:
+            FUN_141275260(0xc07, 1, 1);
+            break;
+        default:
+            Unk_SSGFormatMsg(0x23a, 1, 1, nType, nError);
+            break;
+        }
+    }
+    Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+    if (pMenu != 0 && pMenu->vfunc_55() == 0)
+        pMenu->FUN_141937e40(nMode);
+}
+MS2_REPLACE_METHOD(0x141721CD0, CSceneStateGame, FUN_141721cd0, 4625, 0x92ABA4C9);

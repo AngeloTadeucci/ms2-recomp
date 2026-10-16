@@ -195,7 +195,7 @@ void CUserMail::FUN_1408e3a60(MailPtr mail) {
 }
 
 // @0x1408e3b70
-int CUserMail::FUN_1408e3b70(__int64 id, int force) {
+int CUserMail::FUN_1408e3b70(__int64 id, int force, int reason) {
     MailPtr mail(0);
     Unk_LockGuard guard(m_lock);
     if (guard != 0) {} else {

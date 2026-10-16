@@ -79,6 +79,14 @@ public:
     void FUN_1406910e0(__int64 value);
     bool FUN_140691130();
     int FUN_140691220();
+    // scenestategame 0x54 (mail packet): read the mail and update its read/receive times.
+    void FUN_1406913e0(class CInPacket& packet);              // read the mail body
+    void FUN_1406906c0(int slot, __int64 time);               // per-attachment receive time
+    void FUN_140690d60(__int64 time);
+    void FUN_140690df0(__int64 time);
+    void FUN_140690e80(__int64 time);
+    void FUN_140690f10(__int64 time);
+    void FUN_140692420(__int64 time);
     MS2_LAYOUT_FRIEND;
     void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38; void* m_pad_40;
     void* m_pad_48; void* m_pad_50; void* m_pad_58; void* m_pad_60; void* m_pad_68; void* m_pad_70;
