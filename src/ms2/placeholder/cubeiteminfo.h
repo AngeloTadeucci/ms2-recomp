@@ -23,10 +23,12 @@ public:
 MS2_CHECK_SIZE(CUgcItemLook, 0x68);
 MS2_CHECK_OFFSET(CUgcItemLook, resourcePath, 0x58);
 
+class CInPacket;
 class CubeItemInfo : public CPtred {
 public:
     CubeItemInfo();
     CubeItemInfo(int itemId, __int64 instanceId, __int64 count, CUgcItemLook* pLook);   // 0x1408b3520
+    CubeItemInfo(CInPacket& packet);                                                     // 0x1408b3630 (reads the item)
     virtual ~CubeItemInfo();
     void FUN_1408b3700(const CubeItemInfo*);
     int FUN_1408b3860();

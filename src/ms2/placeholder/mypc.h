@@ -5,6 +5,8 @@
 
 #include "ms2/client/ms2/pcbase.h"
 
+class CInPacket;
+
 class MyPC : public PCBase
 {
 public:
@@ -16,6 +18,8 @@ public:
     class Unk_MyPCSkillSlots* FUN_141523bc0();              // the skill slot set (skillslot.cpp, 0x141765de0 etc.)
     MS2Ptr<class Unk_MyPCStatPoints> FUN_140c25130();       // the stat point manager (statpointmanager.cpp)
     void FUN_141661370(int a, int b, int c);                // PC member (scenestategame packet 0x83)
+    void FUN_141528c30(CInPacket& packet);                  // scenestategame packet 0x135
+    void FUN_141662850(__int64 nValue);                     // PC member (scenestategame packet 0xe0)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };

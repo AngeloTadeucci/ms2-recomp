@@ -87,6 +87,14 @@ public:
     void FUN_14171bad0(CInPacket& packet);                  // 0x117
     void FUN_14171bd90(CInPacket& packet);                  // 0x3b
     void FUN_14171c0b0(CInPacket& packet);                  // 0x3d
+    void FUN_14171c1d0(CInPacket& packet);                  // 0x3d mode 0
+    void FUN_14171cdf0(CInPacket& packet);                  // 0x3d mode 1
+    void FUN_14171d610(CInPacket& packet);                  // 0x3d mode 3
+    void FUN_14171d820(CInPacket& packet);                  // 0x3d mode 4
+    void FUN_14171dc40(CInPacket& packet);                  // 0x3d mode 5
+    void FUN_14171e440(CInPacket& packet);                  // 0x3d mode 6
+    void FUN_14171e860(CInPacket& packet);                  // 0x3d mode 7
+    void FUN_14171e9a0(CInPacket& packet);                  // 0x3d mode 8
     void FUN_14171ee80(CInPacket& packet);                  // 0x48
     void FUN_14171f8a0(CInPacket& packet);                  // 0x49
     void FUN_141720480(CInPacket& packet);                  // 0x47
@@ -107,6 +115,7 @@ public:
     void FUN_141723260(CInPacket& packet);                  // 0x66
     void FUN_1417232a0(CInPacket& packet);                  // 0x67
     void FUN_141723330(CInPacket& packet);                  // 0x70
+    void FUN_1417235a0(CInPacket& packet);                  // (cube item placed by an actor)
     void FUN_141723410(CInPacket& packet);                  // 0x68
     void FUN_141723670(CInPacket& packet);                  // 0x69
     void FUN_141728110(CInPacket& packet);                  // 0x6a
@@ -198,6 +207,7 @@ public:
     void FUN_14173b420(CInPacket& packet);                  // 0x103
     void FUN_14173b5a0(CInPacket& packet);                  // 0x105
     void FUN_14173c090(CInPacket& packet);                  // 0x106
+    void FUN_14173c0f0(CInPacket& packet);                  // 0x106 mode 1
     void FUN_14173c7a0(CInPacket& packet);                  // 0x111
     void FUN_14173c870(CInPacket& packet);                  // 0x115
     void FUN_14173ce30(CInPacket& packet);                  // 0x118

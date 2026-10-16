@@ -94,6 +94,9 @@ public:
     MS2Ptr<CItem> FUN_141655b80(__int64 nItemUid);          // 0x141655b80 an owned item by uid
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // 0x141655c30 a worn item by uid
     class Unk_PCItemCooldowns* FUN_1416561c0();             // 0x1416561c0
+    int FUN_1416595d0();                                    // the cube craft mode (scenestategame 0x1417235a0)
+    class Unk_PCCubeCraft* FUN_141659700();                 // the cube craft controller
+    void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];
