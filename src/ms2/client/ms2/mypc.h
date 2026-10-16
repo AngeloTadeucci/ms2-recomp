@@ -230,6 +230,9 @@ public:
     Unk_MyPCLapenSlot FUN_14152fd50(unsigned nItemId);      // the slot to equip nItemId into
     void FUN_141529c80(int nPortalId, int nA, int nB, __int64 nC, CStringW strPwd);   // password portal move
     void FUN_14152a0c0(int nPortalId, int nD, int nA, int nB, CStringW strA, CStringW strPwd);   // portal move
+    int FUN_1415271e0(PCBase* pActor, struct Unk_MyPCSkillUse* pSkill);   // can the skill be used on pActor
+    void FUN_141529fb0();                                   // request the field leave (packet 0x6c 6)
+    void FUN_141524880(MS2Ptr<Unk_MyPCComp1618> sp);        // set m_sp1618
 
     Unk_MyPCStateCtl m_kStateCtl;                           // +0x12e8
     Unk_MyPCActionKeys m_kActionKeys;                       // +0x1338

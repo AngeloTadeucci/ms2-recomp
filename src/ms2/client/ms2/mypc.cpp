@@ -151,7 +151,7 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: int FUN_141bd3060(); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
@@ -234,7 +234,7 @@ public:
 Unk_MyPCUIMgr* FUN_1403ed2b0();
 class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); };
 Unk_MyPCWidgets* FUN_1409331e0();
-class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); };   // UIMainPlayerInfo (0x4e5f)
+class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
 class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); };
 Unk_MyPCPartyMgr* FUN_14109a6f0();
@@ -1539,3 +1539,123 @@ bool MyPC::vfunc_55(float a, float b)
     return false;
 }
 MS2_REPLACE_METHOD(0x141531450, MyPC, vfunc_55, 20, 0x58A98931);
+
+// The item event dispatcher (broadcasts to the registered UIItemEventListeners); slot 25 takes the item slot.
+class Unk_MyPCItemEvents
+{
+public:
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void v17();
+    virtual void v18(); virtual void v19(); virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24();
+    virtual void vfunc_25(int nSlot);                       // 25: an item was equipped
+};
+Unk_MyPCItemEvents* FUN_140a6a840();
+float FUN_1411e1110(Unk_PCEquipSet* pEquip, int nStat);    // a stat sum of the worn items
+extern float DAT_143aea120;                                 // the local player's stat 0x23 of the worn items
+
+// @0x141522eb0
+void MyPC::vfunc_127(CItem* pItem, int n)
+{
+    if (pItem == 0)
+        return;
+    if (((CItemData*)pItem->FUN_140527840())->FUN_14053ec50() != 0)
+    {
+        PC::vfunc_127(pItem, n);
+        FUN_140a6a840()->vfunc_25(pItem->FUN_1405276c0());
+    }
+    DAT_143aea120 = FUN_1411e1110(&m_kEquipDE0, 0x23);
+}
+
+// @0x141522f60
+void MyPC::vfunc_128(CItem* pItem, int n)
+{
+    if (pItem == 0)
+        return;
+    if (((CItemData*)pItem->FUN_140527840())->FUN_14053ec50() != 0)
+    {
+        PC::vfunc_128(pItem, n);
+        DAT_143ab2a90.FUN_140a674c0(MS2Ptr<CItem>(pItem));
+    }
+    DAT_143aea120 = FUN_1411e1110(&m_kEquipDE0, 0x23);
+}
+
+class Unk_MyPCUpperHpBar { public: void FUN_141b4c510(PCBase* pActor, int nObjectId); };   // UIUpperHpBar (0x4e3d)
+Unk_MyPCUpperHpBar* FUN_14096e340(int nId);
+class Unk_MyPCExpBar { public: void FUN_141910b10(__int64 nDelta); };                       // 0x4e3c
+Unk_MyPCExpBar* FUN_140ac55a0(int nId);
+int FUN_141092ff0(PCBase* pActor);
+
+// @0x1415231f0
+void MyPC::vfunc_112(void* p, int n)
+{
+    if ((__int64)p < 0)
+    {
+        Unk_MyPCPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+        if (pInfo != 0)
+            pInfo->FUN_1419f1820();
+    }
+    Unk_MyPCUpperHpBar* pHpBar = FUN_14096e340(0x4e3d);
+    if (pHpBar != 0)
+    {
+        PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1320(n);
+        if (pActor != 0 && FUN_141092ff0(pActor) != 0 && pActor->FUN_14166ce30() == 0)
+            pHpBar->FUN_141b4c510(pActor, n);
+    }
+    Unk_MyPCExpBar* pExpBar = FUN_140ac55a0(0x4e3c);
+    if (pExpBar != 0)
+        pExpBar->FUN_141910b10((__int64)p);
+}
+MS2_REPLACE_METHOD(0x1415231f0, MyPC, vfunc_112, 204, 0xD8DD069C);
+
+// The skill data fields checked by FUN_1415271e0.
+struct Unk_MyPCSkillUse
+{
+    unsigned char m_pad0[0x38];
+    int m_nKind;                                            // +0x38 (1, 2: always usable)
+    unsigned char m_pad3c[0x4c];
+    int m_n88;                                              // +0x88
+};
+MS2_CHECK_OFFSET(Unk_MyPCSkillUse, m_n88, 0x88);
+int FUN_141675ed0(PCBase* pActor);
+
+// Can the skill be used on the actor.
+// @0x1415271e0
+int MyPC::FUN_1415271e0(PCBase* pActor, Unk_MyPCSkillUse* pSkill)
+{
+    if (pActor == 0 || pSkill == 0)
+        return 0;
+    if (FUN_141675ed0(pActor) == 0)
+        return 1;
+    if (pSkill->m_n88 != 0)
+        return 1;
+    if (pSkill->m_nKind == 1 || pSkill->m_nKind == 2)
+        return 1;
+    if (FUN_1416749a0()->FUN_1409701d0(3) != 0)
+        return 1;
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1415271e0, MyPC, FUN_1415271e0, 151, 0xE24676BA);
+
+class Unk_MyPCFeatures { public: bool FUN_14036d570(int nFeature); };
+Unk_MyPCFeatures* FUN_140166410();
+
+// @0x141529fb0
+void MyPC::FUN_141529fb0()
+{
+    if (!FUN_140166410()->FUN_14036d570(0xe9))
+        return;
+    if (FUN_141529ae0(0, 0, 0, 0) == 0)
+        return;
+    COutPacket packet(0x6c, 0);
+    packet.Encode1(6);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x141529fb0, MyPC, FUN_141529fb0, 138, 0xA61B3F48);
+
+// @0x141524880
+void MyPC::FUN_141524880(MS2Ptr<Unk_MyPCComp1618> sp)
+{
+    m_sp1618 = sp;
+}
