@@ -74,11 +74,11 @@ MS2_CHECK_OFFSET(Unk_GuildConstTable, m_guildNameMinLength, 0x9d60);
 Unk_GuildConstTable* FUN_1401d3200();
 int* FUN_1402056b0(Unk_GuildConstInt* slot);
 
-class Unk_GuildEventMgr { public: bool FUN_14047e880(); };
+class Unk_GuildEventMgr { public: bool FUN_14047e880(); bool FUN_14047eca0(); };
 Unk_GuildEventMgr* FUN_1401c0d90();
 class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
-class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); };
+class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
 class Unk_GuildNotifyCenter {
 public:
@@ -144,6 +144,12 @@ MS2Ptr<CItemData> FUN_14053f870(int itemId);
 CStringW FUN_140938ae0(CStringW key, const int& value);
 void FUN_140d73aa0(CStringW text, int type, void* data, CStringW tag);
 void* FUN_1409613d0(PCBase* pc);
+CStringW FUN_1405c2690(CStringW key, const CStringW& arg);
+void FUN_140d73ff0(CStringW text);
+class Unk_GuildMsgStrings { public: CStringW FUN_141812290(int buffId, unsigned short level, CString key); };
+Unk_GuildMsgStrings* FUN_1401a9d70();
+extern __int64 DAT_143ab2828;                       // the local character id
+extern __int64 DAT_143ad9140;                       // the character the guild notice was last shown to
 int FUN_140869470(int days);
 CStringW FUN_14028de60(int id);
 CStringW FUN_14028b8e0(const CStringW& key);
@@ -1360,3 +1366,109 @@ int CGuildManager::FUN_1413bcbc0(std::map<__int64, PCBase*>& out)
     return 0;
 }
 MS2_REPLACE_METHOD(0x1413BCBC0, CGuildManager, FUN_1413bcbc0, 330, 0x3572C05E);
+
+// @0x1413bcd10
+void CGuildManager::FUN_1413bcd10()
+{
+    if (!FUN_1413b6160())
+        return;
+    if (DAT_143ad9140 != DAT_143ab2828) {
+        CStringW notice = FUN_1404cd0b0();
+        if (!notice.IsEmpty())
+            FUN_1412751b0(FUN_1405c2690(CStringW(L"s_guild_notify_notify_message"), FUN_1404cd0b0()), 0xd);
+        DAT_143ad9140 = DAT_143ab2828;
+    }
+}
+MS2_REPLACE_METHOD(0x1413BCD10, CGuildManager, FUN_1413bcd10, 291, 0xD528D35D);
+
+// @0x1413bce40
+void CGuildManager::FUN_1413bce40(int skillId, unsigned short skillLevel)
+{
+    if (!FUN_1413b6160())
+        return;
+    std::pair<int, int> key(skillId, skillLevel);
+    if (m_470.empty())
+        return;
+    if (m_470.find(key) == m_470.end())
+        return;
+    m_470.erase(key);
+    FUN_1412751b0(FUN_1405c2690(CStringW(L"s_guild_skill_use_skill"), FUN_1401a9d70()->FUN_141812290(skillId, skillLevel, CString("name"))), 0xd);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196f830();
+}
+MS2_REPLACE_METHOD(0x1413BCE40, CGuildManager, FUN_1413bce40, 521, 0x528E31C1);
+
+// @0x1413bd2e0
+void CGuildManager::FUN_1413bd2e0()
+{
+    if (f354 != 0)
+        return;
+    if (f350 != 0) {
+        FUN_140d73ff0(CStringW(L"s_guild_vsGame_another_game_exist"));
+        return;
+    }
+    if (FUN_1404d0600(FUN_1413c7c20(), 0x400) == 0) {
+        FUN_141275260(0x415, 1, 1);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x73);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BD2E0, CGuildManager, FUN_1413bd2e0, 261, 0x8D07E0A5);
+
+// @0x1413bd3f0
+void CGuildManager::FUN_1413bd3f0()
+{
+    if (f354 == 0)
+        return;
+    if (FUN_1404d0600(FUN_1413c7c20(), 0x400) == 0) {
+        FUN_141275260(0x415, 1, 1);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x74);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BD3F0, CGuildManager, FUN_1413bd3f0, 196, 0x79AB3420);
+
+// @0x1413bd4c0
+void CGuildManager::FUN_1413bd4c0()
+{
+    if (!FUN_1413b6160())
+        return;
+    if (FUN_1401c0d90()->FUN_14047eca0()) {
+        CStringW key(L"s_guild_vsGame_can_regist");
+        FUN_1412751f0(FUN_14028b8e0(key), 4, 1);
+    }
+}
+MS2_REPLACE_METHOD(0x1413BD4C0, CGuildManager, FUN_1413bd4c0, 153, 0x031DD505);
+
+// @0x1413bd560
+int CGuildManager::FUN_1413bd560()
+{
+    int count = 0;
+    if (FUN_1413b8460())
+        count++;
+    count += m_joinRequestsForGuild.GetCount();
+    return count;
+}
+MS2_REPLACE_METHOD(0x1413BD560, CGuildManager, FUN_1413bd560, 87, 0xC309A36F);
+
+// @0x1413bd5c0
+void CGuildManager::FUN_1413bd5c0(NotifyObject* notify)
+{
+    if (!FUN_1413b6160())
+        return;
+    if (FUN_1404d0600(FUN_1413c7c20(), 2))
+        FUN_1413bc630();
+}
+MS2_REPLACE_METHOD(0x1413BD5C0, CGuildManager, FUN_1413bd5c0, 107, 0xE57A6F3B);
+
+// @0x1413bd640
+void CGuildManager::FUN_1413bd640(bool show)
+{
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196e230(show);
+}
+MS2_REPLACE_METHOD(0x1413BD640, CGuildManager, FUN_1413bd640, 56, 0xE6D04E64);
