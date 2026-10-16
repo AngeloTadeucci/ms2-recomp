@@ -9,6 +9,7 @@
 #include <afx.h>
 #include <afxwin.h>
 #include "afterimageeffectparam.h"
+#include "afterimageitem.h"
 #include <efd/MemoryDefines.h>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"

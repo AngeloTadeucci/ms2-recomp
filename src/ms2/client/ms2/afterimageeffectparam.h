@@ -3,14 +3,15 @@
 // (0x140987430-0x140987b20). Header name assumed from the RTTI name.
 #pragma once
 #include "ms2/client/ms2/effectparam.h"
+#include <NiColor.h>
 
 // 16-byte RGBA float colour. Ctor(r,g,b,a) 0x14097f1d0, copy ctor 0x140987930 (rep movsb).
-class Unk_AfterImageColor
+class Unk_AfterImageColor : public NiColorA
 {
 public:
+    Unk_AfterImageColor();                                     // 0x14097f220
     Unk_AfterImageColor(float r, float g, float b, float a);   // 0x14097f1d0
     Unk_AfterImageColor(const Unk_AfterImageColor& kOther);    // 0x140987930
-    float m_r, m_g, m_b, m_a;
 };
 MS2_CHECK_SIZE(Unk_AfterImageColor, 0x10);
 
@@ -18,23 +19,22 @@ MS2_CHECK_SIZE(Unk_AfterImageColor, 0x10);
 class Unk_AfterImageRef
 {
 public:
+    Unk_AfterImageRef();                                       // 0x14097eec0
     Unk_AfterImageRef(class CAfterImageEffectParam* pParam);   // 0x140987900
-    Unk_AfterImageRef(const Unk_AfterImageRef& kOther);       // non-trivial: passed by address
-    void FUN_140981190();
+    Unk_AfterImageRef(const Unk_AfterImageRef& kOther);       // 0x14097ee80, non-trivial: passed by address
+    ~Unk_AfterImageRef();                                      // 0x14097f560
+    Unk_AfterImageRef& operator=(const Unk_AfterImageRef& kOther);   // 0x14097fa60
+    class CAfterImageEffectParam* operator->() const;          // 0x14097fc80
+    void FUN_140981190();                                      // add a reference (if set)
+    void FUN_140981230(void*);                                 // add a reference
+    static void FUN_1409811e0(class CAfterImageEffectParam* p);   // CPtred::AddRefPtred
+    void FUN_140981680();                                      // drop the reference (if set), clear
+    void FUN_140981730(void*);                                 // drop the reference, delete at zero
     void* m_unk_00;
     class CAfterImageEffectParam* m_pParam;
 };
 
-// 0x98 bytes; the effect itself is recovered with effectservice.cpp (ctor 0x14097d000).
-class CAfterImageEffect : public CEffect
-{
-public:
-    CAfterImageEffect(Unk_AfterImageRef kRef);   // 0x14097d000
-    virtual ~CAfterImageEffect();
-    virtual int vfunc_12();
-    char m_unk_30[0x68];
-};
-MS2_CHECK_SIZE(CAfterImageEffect, 0x98);
+class CAfterImageEffect;   // 0x98 bytes, defined in afterimageitem.h
 
 // 0x70 bytes. vftable (see ctor) (overrides slots 1 and 6). Implicit virtual dtor 0x1409874f0, ??_G 0x140987990.
 class CAfterImageEffectParam : public CEffectParam
