@@ -124,18 +124,7 @@ CPhysXHelper* TSingleton<CPhysXHelper>::s_instance = 0;
 
 #define PHYSX_FILE MS2_THIS_FILE
 
-// @0x140ad4440
-Unk_RayCastInfo::Unk_RayCastInfo()
-{
-    m_maxDist = 0.0f;
-    m_groups = -1;
-    m_20 = 0;
-    m_28 = 0;
-    m_hitEntity = 0;
-    m_hitActor = 0;
-    m_hitShape = 0;
-    m_hitDist = 0.0f;
-}
+// Unk_RayCastInfo::Unk_RayCastInfo (0x140ad4440) is defined by unit_140ad1860.cpp (MS2-RANGE owner).
 // @0x141689180
 CPhysXHelper::CPhysXHelper()
 {

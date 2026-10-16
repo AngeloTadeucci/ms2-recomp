@@ -118,7 +118,7 @@ void FUN_14098c6e0(egf::Entity*, unsigned, const bool&);
 
 class Unk_GuideState { char m_pad[0x48]; };
 void FUN_1417c8240(Unk_GuideState*, PCBase*);
-void FUN_1417c8300(void*, PCBase*);
+void FUN_140ddbf50(void*, PCBase*);
 void FUN_1408b3810(CubeItemInfo*);
 int FUN_1408b38c0(CubeItemInfo*, CubeItemInfo*);
 void FUN_1410a7800(NiAVObject*, float, float, float);
@@ -208,7 +208,7 @@ class Unk_GemItem : public CPtred { public: char m_pad[0x40]; };
 class CGemFishing : public Unk_GemItem { public: int FUN_1405a5be0(); };
 void* FUN_14165f460(PCBase*);
 MS2Ptr<Unk_GemItem> FUN_141270740(void*, int);
-Unk_GemItem* FUN_140ddc50(MS2Ptr<Unk_GemItem>&);
+Unk_GemItem* FUN_140ddcc50(MS2Ptr<Unk_GemItem>&);
 
 class Unk_MagicTarget : public CPtred { public: char m_pad[0x40]; };
 class Unk_GuideEntity : public CPtred { public: char m_pad[0x40]; };
@@ -1005,7 +1005,7 @@ CFishingGuideObject::CFishingGuideObject()
     m_spStateMgr.AssignRaw(new CStateManager(this));
     StateFishingFloat* pState = (StateFishingFloat*)::operator new(0x40);
     if (pState)
-        FUN_1417c8300(pState, this);
+        FUN_140ddbf50(pState, this);
     m_spStateMgr->FUN_1417daeb0(0x2e, pState);
     m_ctrl.FUN_1417b7b50(1);
     vfunc_59(0x2e, 0, 0, 0);
@@ -1332,7 +1332,7 @@ void CFishingGuideObject::FUN_1410a59f0()
         MS2Ptr<Unk_GemItem> spItem = FUN_141270740(FUN_14165f460(pOwner), 8);
         if (spItem.get() != 0)
         {
-            MS2Ptr<CGemFishing> spGem(dynamic_cast<CGemFishing*>(FUN_140ddc50(spItem)));
+            MS2Ptr<CGemFishing> spGem(dynamic_cast<CGemFishing*>(FUN_140ddcc50(spItem)));
             if (spGem.get() != 0)
             {
                 int nGemId = spGem->FUN_1405a5be0();

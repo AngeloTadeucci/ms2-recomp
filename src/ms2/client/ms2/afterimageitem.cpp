@@ -406,7 +406,7 @@ bool CAfterImageEffect::IsTimeUp() const
     if (m_b2d)
         return false;
     double dNow = FUN_14086d260()->FUN_141473280();
-    if (!FUN_14119f3c0(const_cast<CAfterImageEffect*>(this)))
+    if (!::FUN_14119f3c0(const_cast<CAfterImageEffect*>(this)))
         return false;
     return dNow > m_dStartTime + (double)m_fDuration ? !m_b2c : false;
 }

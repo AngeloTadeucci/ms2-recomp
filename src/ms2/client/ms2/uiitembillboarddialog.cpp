@@ -181,7 +181,7 @@ public:
 };
 Unk_RxGrid* FUN_1401cd040(Unk_EntityAppFramework* p);
 void FUN_1401cd150(Unk_RxGridRef* p);
-Unk_RxGridRef::~Unk_RxGridRef() { FUN_1401cd150(this); }
+// ~Unk_RxGridRef (0x140b7c800) is defined by reactor.cpp (MS2-RANGE owner).
 class Unk_RxMapInfo : public CPtred
 {
 public:

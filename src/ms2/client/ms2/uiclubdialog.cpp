@@ -21,6 +21,10 @@
 #include "ms2/placeholder/asobj.h"
 #include "ms2/placeholder/delegate.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+// clubcli.cpp owns the (non-inline) CClubCli specializations at 0x140b1cda0 / 0x140b1cfa0; call them instead of instantiating.
+class CClubCli;
+template<> void MS2Ptr<CClubCli>::AddRef() const;
+template<> void MS2Ptr<CClubCli>::Release();
 
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
