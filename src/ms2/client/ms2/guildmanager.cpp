@@ -107,6 +107,14 @@ class Unk_GuildBanWordPtr { public: ~Unk_GuildBanWordPtr(); Unk_GuildBanWord* FU
 class Unk_GuildStringMgr { public: Unk_GuildBanWordPtr FUN_140229a50(); };
 Unk_GuildStringMgr* FUN_14025e7d0();
 WorldService* FUN_1403ed2d0();
+// The scoped lock (logstring.cpp's spelling): converts to 0 once the lock is held.
+class Unk_140163940 {
+public:
+    Unk_140163940(CLockCriticalSection&);
+    ~Unk_140163940();
+    operator int() const;
+private: void* m_lock;
+};
 CGuildManager* FUN_1403ed290();
 CGuildXmlData* FUN_1404f4530();
 // Game event bonus (guild donation bonus rate in 1/10000).
@@ -3182,6 +3190,253 @@ void CGuildManager::FUN_1413c6580(CInPacket& packet)
         dialog->FUN_1419381c0();
 }
 MS2_REPLACE_METHOD(0x1413C6580, CGuildManager, FUN_1413c6580, 354, 0xB05B82C0);
+
+// A player's guild name changed: update the name shown over them.
+// @0x1413c7700
+void CGuildManager::FUN_1413c7700(CInPacket& packet)
+{
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    PC* pc = (PC*)FUN_1403ed2d0()->FUN_141bd1420(name);
+    if (pc == 0)
+        return;
+    pc->vfunc_129(guildName);
+}
+MS2_REPLACE_METHOD(0x1413C7700, CGuildManager, FUN_1413c7700, 266, 0xB5100F2C);
+
+// A player left their guild: clear the name shown over them.
+// @0x1413c7810
+void CGuildManager::FUN_1413c7810(CInPacket& packet)
+{
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    PC* pc = (PC*)FUN_1403ed2d0()->FUN_141bd1420(name);
+    if (pc == 0)
+        return;
+    pc->vfunc_129(L"");
+}
+MS2_REPLACE_METHOD(0x1413C7810, CGuildManager, FUN_1413c7810, 227, 0x82EDFDF5);
+
+// The local player's name ("" before the player exists).
+// @0x1413c7c20
+CStringW CGuildManager::FUN_1413c7c20()
+{
+    PC* pc = (PC*)FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pc == 0)
+        return L"";
+    return pc->vfunc_77();
+}
+MS2_REPLACE_METHOD(0x1413C7C20, CGuildManager, FUN_1413c7c20, 129, 0x9BBE6FF2);
+
+// Adds members read from the packet (under the guild lock).
+// MS2-FUNCTIONAL: the member handed to CGuildInfo::vfunc_0 is guilddef_1's POD Unk_GuildRef (the original passes
+// the pointer by value), and the new member's pointer is the 16-byte payload pointer in the original (frame 0x10
+// smaller here); same calls in the same order.
+// @0x1413c7900
+void CGuildManager::FUN_1413c7900(CInPacket& packet)
+{
+    Unk_140163940 guard(lock);
+    if (guard != 0) {
+        // the lock is not held
+    } else {
+        int count = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        for (int i = 0; i < count; i++) {
+            MS2Ptr<CGuildMember> member(new CGuildMember());
+            member->FUN_1404cb450(&packet);
+            Unk_GuildRef copy;
+            FUN_1404ec5b0(&copy, member);
+            vfunc_0(&copy);
+            FUN_1409f7c90()->FUN_14161cd60(member->data.f08);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413C7900, CGuildManager, FUN_1413c7900, 404, 0x35152723);
+
+// @0x1413c7d40
+void CGuildManager::FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out)
+{
+    for (size_t i = 0; i < m_searchResults.GetCount(); i++)
+        out.Add(m_searchResults[i]);
+}
+MS2_REPLACE_METHOD(0x1413C7D40, CGuildManager, FUN_1413c7d40, 108, 0x1219FE27);
+
+// A search result by guild name.
+// @0x1413c7dc0
+MS2Ptr<CSearchGuildJoin> CGuildManager::FUN_1413c7dc0(const CStringW& guildName)
+{
+    for (size_t i = 0; i < m_searchResults.GetCount(); i++) {
+        MS2Ptr<CSearchGuildJoin> result = m_searchResults[i];
+        if (FUN_14025cd60(result->f58, guildName))
+            return result;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1413C7DC0, CGuildManager, FUN_1413c7dc0, 253, 0x45EEAA43);
+
+// @0x1413c7ed0
+void CGuildManager::FUN_1413c7ed0()
+{
+    m_searchResults.RemoveAll();
+}
+MS2_REPLACE_METHOD(0x1413C7ED0, CGuildManager, FUN_1413c7ed0, 33, 0x97C69940);
+
+// @0x1413c7f00
+void CGuildManager::FUN_1413c7f00(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>>& out)
+{
+    for (size_t i = 0; i < m_joinRequestsForChar.GetCount(); i++)
+        out.Add(m_joinRequestsForChar[i]);
+}
+MS2_REPLACE_METHOD(0x1413C7F00, CGuildManager, FUN_1413c7f00, 108, 0xB8FF205B);
+
+// @0x1413c7f80
+void CGuildManager::FUN_1413c7f80(ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForGuild>>& out)
+{
+    for (size_t i = 0; i < m_joinRequestsForGuild.GetCount(); i++)
+        out.Add(m_joinRequestsForGuild[i]);
+}
+MS2_REPLACE_METHOD(0x1413C7F80, CGuildManager, FUN_1413c7f80, 108, 0xBB3279F4);
+
+// A guild error notice: the server's error code to its message (kind is not used).
+// @0x1413c66f0
+void CGuildManager::FUN_1413c66f0(int kind, int code, int arg)
+{
+    CStringW text;
+    switch (code) {
+    case 1:
+        text = FUN_14028de60(0x403);
+        break;
+    case 3:
+        text = FUN_14028de60(0x404);
+        break;
+    case 4:
+        text = FUN_14028de60(0x405);
+        break;
+    case 5:
+        text = FUN_14028de60(0x406);
+        break;
+    case 6:
+        text = FUN_14028de60(0x407);
+        break;
+    case 7:
+        text = FUN_14028de60(0x408);
+        break;
+    case 8:
+        text = FUN_14028de60(0x409);
+        break;
+    case 0xa:
+        text = FUN_14028de60(0x40a);
+        break;
+    case 0xb:
+        text = FUN_14028de60(0x40b);
+        break;
+    case 0xc:
+        text = FUN_14028de60(0x40c);
+        break;
+    case 0xd:
+        text = FUN_14028de60(0x40d);
+        break;
+    case 0xe:
+        text = FUN_14028de60(0x40e);
+        break;
+    case 0xf:
+        text = FUN_14028de60(0x40f);
+        break;
+    case 0x10:
+        text = FUN_14028de60(0x410);
+        break;
+    case 0x11:
+        text = FUN_14028de60(0x411);
+        break;
+    case 0x12:
+        text = FUN_14028de60(0x412);
+        break;
+    case 0x13:
+        text = FUN_1408116a0(0x413, *FUN_1402056b0(&FUN_1401d3200()->m_guildCreateMinLevel));
+        break;
+    case 0x14:
+        text = FUN_14028de60(0x414);
+        break;
+    case 0x15:
+        text = FUN_14028de60(0x415);
+        break;
+    case 0x16:
+        text = FUN_14028de60(0x416);
+        break;
+    case 0x17:
+        text = FUN_14028de60(0x417);
+        break;
+    case 0x18:
+        text = FUN_14028de60(0x418);
+        break;
+    case 0x19:
+        text = FUN_14028de60(0x419);
+        break;
+    case 0x1a:
+        text = FUN_14028de60(0x41a);
+        break;
+    case 0x1b:
+        text = FUN_14028de60(0x41b);
+        break;
+    case 0x1c:
+        text = FUN_14028de60(0x41c);
+        break;
+    case 0x1e:
+        text = FUN_14028de60(0x41d);
+        break;
+    case 0x20:
+        text = FUN_14028de60(0x41e);
+        break;
+    case 0x21:
+        text = FUN_14028de60(0x41f);
+        break;
+    case 0x29:
+        text = FUN_14028de60(0x424);
+        break;
+    case 0x22:
+        text = FUN_14028de60(0x3a0);
+        break;
+    case 0x23:
+        text = FUN_14028de60(0x3a1);
+        break;
+    case 0x24:
+        text = FUN_14028de60(0x3a2);
+        break;
+    case 0x25:
+        text = FUN_14028de60(0x3a3);
+        break;
+    case 0x26:
+        text = FUN_14028de60(0x3a4);
+        break;
+    case 0x27:
+        text = FUN_14028de60(0x3a5);
+        break;
+    case 0x2a:
+        text = FUN_14028b8e0(L"s_guild_err_not_enough_guild_level");
+        break;
+    case 0x2b:
+        text = FUN_14028b8e0(L"s_guild_err_not_enough_guild_fund");
+        break;
+    case 0x2c:
+        text = FUN_14028b8e0(L"s_guild_err_cannot_use_skill");
+        break;
+    case 0x2d:
+        text = FUN_14028b8e0(L"s_guild_err_too_fast_to_search_by_name");
+        break;
+    case 0x2e:
+        text = FUN_14028de60(0x3c2);
+        break;
+    case 0x2f:
+        text = FUN_14028b8e0(L"s_guild_err_isNotVsGameTime");
+        break;
+    case 0x30:
+        text = FUN_14062b4f0(L"s_guild_err_requireOnlineUserCount", &arg);
+        break;
+    default:
+        text = FUN_14028de60(0x420);
+        break;
+    }
+    FUN_1412751f0(text, 1, 1);
+}
+MS2_REPLACE_METHOD(0x1413C66F0, CGuildManager, FUN_1413c66f0, 3906, 0x24209A69);
 
 // The vs-game entry prompt's result: enter on the first button.
 // @0x1413c7cb0
