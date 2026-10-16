@@ -27,6 +27,19 @@ public:
             return;
         m_bits[0] &= (1 << (3 % 8)) - 1;
     }
+    // @0x140afc5a0
+    bool FUN_140afc5a0() const { return FUN_140afca60() == FUN_140afd3f0(); }   // all
+    // @0x140afca60
+    int FUN_140afca60() const                                   // count
+    {
+        int nCount = 0;
+        for (int i = 0; i >= 0; --i)
+            for (unsigned char uc = m_bits[i]; uc != 0; uc >>= 4)
+                nCount += "\0\1\1\2\1\2\2\3\1\2\2\3\2\3\3\4"[uc & 0xf];   // bits per hex digit
+        return nCount;
+    }
+    // @0x140afd3f0
+    int FUN_140afd3f0() const { return 3; }                     // size
 private:
     unsigned char m_bits[1];
 };

@@ -38,6 +38,7 @@
 class GameObject;
 class Camera;
 class CameraMgr;
+class CCameraMoveEffectParam;
 class Unk_GoPickListPtr;
 
 // The current field of view of a NiFOVInterpolator (the camera effect nifs animate "Camera01" with a NiFOVController).
@@ -194,6 +195,8 @@ public:
     void FUN_140af1a90();                                               // stop the camera effects
     void FUN_140af1de0();                                               // apply the camera effects
     void FUN_140af1f70();
+    void FUN_140aefb20(const struct Unk_CameraPathRow* pRow);            // play a camera path nif
+    void FUN_140af0e40(const CCameraMoveEffectParam* pParam);           // play the param's camera nif
     bool FUN_140aed0b0();
     bool FUN_140aed0d0();
     int FUN_140aed0f0();                                                // camera effects enabled

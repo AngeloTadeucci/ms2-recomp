@@ -39,6 +39,13 @@
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@UUnk_CameraSetup@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_CameraSetup@@@std@@@2@$00@std@@QEBAAEBV?$allocator@UUnk_CameraSetup@@@2@XZ 0x140afb6a0 ; unique
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x140afc620 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??9?$SmartPointer@VNiAVObject@@@efd@@QEBA_NPEAVNiAVObject@@@Z 0x140af72f0
+// MS2-PIN: ?GetAnimType@NiTimeController@@QEBA?AW4AnimType@1@XZ 0x140af7db0
+// MS2-PIN: ?GetEndKeyTime@NiTimeController@@QEBAMXZ 0x140af7f50
+// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x140afc240
+// MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140afc6b0
+// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140afcd00
+// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@0@Z 0x140afce20
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\camera.cpp"
 // The exe's memcpy_s copy calls memset/memcpy (no /Oi expansion): the pragma must precede its inline definition.
 #include <vcruntime_string.h>
@@ -70,6 +77,7 @@
 #include "ms2/client/ms2/targetlookcentercameramode.h"
 #include "ms2/client/ms2/flybycameramode.h"
 #include "ms2/placeholder/freecameramode.h"
+#include "ms2/client/ms2/cameramoveeffectparam.h"
 #include "ms2/client/ms2/fielddatacli.h"
 #include <ecr/RenderService.h>
 #include <ecr/RenderSurface.h>
@@ -267,6 +275,48 @@ public:
     void FUN_1411780e0(float f1, float f2);
 };
 Unk_CameraPostEffect* FUN_1416aad00(Unk_1409a8b20* p);
+// A camera path row (as read by CameraMgr::FUN_140aefb20; the trigger camera path data).
+struct Unk_CameraPathRow
+{
+    CString m_strFile;                                                  // +0x00 nif under ./Data/Resource/Model/Camera/
+    float m_f8;                                                         // +0x08
+    int m_c;                                                            // +0x0c
+};
+MS2_CHECK_SIZE(Unk_CameraPathRow, 0x10);
+CString FUN_140298360(const char* psz, const CString& str);              // ATL operator+(const char*, const CString&) (another obj)
+class Unk_CamEffectMgr
+{
+public:
+    NiNode* FUN_1411a6b10();                                            // the effect scene root
+};
+Unk_CamEffectMgr* FUN_1403ed280();                                      // the effect manager
+class Unk_CamNifCache
+{
+public:
+    NiAVObjectPtr FUN_141551ea0(CString strPath, int n1, int n2, int n3, int n4);   // load (cached) nif
+};
+Unk_CamNifCache* FUN_140a0afd0();                                       // the nif cache
+egf::Entity* FUN_14123c410(Unk_CameraTargetEntity* pTarget);            // the target's entity
+NiNode* FUN_141b6efc0(egf::Entity* pEntity);                            // the entity's scene root
+// A NiNode that follows only some parts of its parent's transform (0x138 bytes; unrecovered class).
+class Unk_SeparateNode : public NiNode
+{
+public:
+    Unk_SeparateNode(Unk_CamMoveBits kUpdate);                          // 0x141751470
+    char m_pad_node[0x138 - sizeof(NiNode)];
+};
+MS2_CHECK_SIZE(Unk_SeparateNode, 0x138);
+// Depth-first walker over a scene graph (0x38 bytes; unrecovered class).
+class Unk_SceneWalker
+{
+public:
+    Unk_SceneWalker(NiObject* pkRoot);                                  // 0x14098cb80
+    ~Unk_SceneWalker();                                                 // 0x14098cf00
+    NiAVObject* Next(bool bDescend);                                    // 0x14098e0d0
+private:
+    void* m_pad_00; void* m_pad_08; void* m_pad_10; void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30;
+};
+MS2_CHECK_SIZE(Unk_SceneWalker, 0x38);
 extern unsigned int DAT_143af62d4;                                      // client area width
 extern unsigned int DAT_143af62d8;                                      // client area height
 
@@ -2158,3 +2208,255 @@ void CameraMgr::FUN_140aed750(int nMode, int bKeep)
         pActor->FUN_1416781a0(nNewMode);
 }
 MS2_REPLACE_METHOD(0x140AED750, CameraMgr, FUN_140aed750, 8833, 0x311FE950);
+
+// @0x140af0e40
+// MS2-FUNCTIONAL: the translate goes through NiPoint3(x, y, z) instead of the exe's point copy helpers.
+// Plays the param's camera nif: "Camera01" of the scene animates a "Camera Effect Root" node attached to the effect
+// scene root (or to the parent node of the camera target).
+void CameraMgr::FUN_140af0e40(const CCameraMoveEffectParam* pParam)
+{
+    int bAttach = pParam->m_bAttachToNode;
+    NiNodePtr spCam = 0;
+    NiNodePtr spParent = 0;
+    if (bAttach && !FUN_140a38d60())
+        return;
+    NiNode* pTargetRoot = FUN_141b6efc0(FUN_14123c410(FUN_140a38d60()));
+    m_effect.m_spScene = FUN_140a0afd0()->FUN_141551ea0(FUN_140298360("./Data/Resource/Model/Camera/", pParam->m_strFilePath), 0, 5, 0, 0);
+    if (m_effect.m_spScene != 0)
+    {
+        spCam = static_cast<NiNode*>(m_effect.m_spScene->GetObjectByName("Camera01"));
+        if (!spCam)
+            return;
+    }
+    else
+        return;
+    if (m_effect.m_spCameraNode != 0)
+    {
+        FUN_140af1a90();
+        m_effect.m_spCameraNode = 0;
+    }
+    NiNodePtr spRoot = EE_NEW NiNode;
+    spRoot->SetName("Camera Effect Root");
+    m_effect.m_spCameraNode = spRoot;
+    NiTransform kTransform;
+    kTransform.m_Translate = NiPoint3(pParam->m_kTranslate.x, pParam->m_kTranslate.y, pParam->m_kTranslate.z);
+    kTransform.m_Rotate.FromEulerAnglesXYZ((pParam->m_kRotation.x * 3.1415927f) / 180.0f,
+        (pParam->m_kRotation.y * 3.1415927f) / 180.0f, (pParam->m_kRotation.z * 3.1415927f) / 180.0f);
+    kTransform.m_fScale = 1.0f;
+    spRoot->SetLocalTransform(kTransform);
+    if (pParam->m_bAttachToNode)
+    {
+        if (!pTargetRoot)
+            return;
+        spParent = NiDynamicCast(NiNode, pTargetRoot->GetObjectByName((const char*)pParam->m_strParentNode));
+        if (spParent == 0)
+            spParent = pTargetRoot;
+        if (!pParam->m_update.FUN_140afc5a0())
+        {
+            Unk_SeparateNode* pSeparate = EE_NEW Unk_SeparateNode(pParam->m_update);
+            pSeparate->AttachChild(spRoot, false);
+            m_effect.m_spCameraNode = pSeparate;
+        }
+        if (!pParam->m_bApplyNodeTransform)
+        {
+            bool bParent = spParent ? true : false;
+            if (bParent)
+            {
+                NiTransform kInverse;
+                spParent->GetWorldTransform().Invert(kInverse);
+                NiTransform kLocal = spRoot->GetLocalTransform();
+                m_effect.m_spCameraNode->SetLocalTransform(kInverse * kLocal);
+            }
+        }
+    }
+    else
+    {
+        spParent = FUN_1403ed280()->FUN_1411a6b10();
+        NiAVObject* pNode = 0;
+        if (pTargetRoot)
+            pNode = NiDynamicCast(NiNode, pTargetRoot->GetObjectByName((const char*)pParam->m_strParentNode));
+        if (!pNode)
+            pNode = pTargetRoot;
+        if (pParam->m_bApplyNodeTransform == true && pNode)
+        {
+            NiTransform kLocal = m_effect.m_spCameraNode->GetLocalTransform();
+            m_effect.m_spCameraNode->SetLocalTransform(pNode->GetWorldTransform() * kLocal);
+        }
+    }
+    m_effect.m_28 = bAttach;
+    spRoot->AttachChild(spCam, false);
+    spParent->AttachChild(m_effect.m_spCameraNode, true);
+    m_effect.m_fFOV = FUN_141bcfc50(FUN_1403ed2d0());
+    Unk_SceneWalker kWalker(spCam);
+    NiAVObject* pObj;
+    while ((pObj = kWalker.Next(true)) != 0)
+    {
+        NiTimeController* pCtrl = pObj->GetControllers();
+        while (pCtrl && pCtrl->GetAnimType() == NiTimeController::APP_INIT)
+        {
+            pCtrl->SetAnimType(NiTimeController::APP_TIME);
+            pCtrl = pCtrl->GetNext();
+        }
+        m_effect.m_pCamera = NiDynamicCast(NiCamera, pObj);
+        if (m_effect.m_pCamera)
+        {
+            NiTimeController* pCamCtrl = m_effect.m_pCamera->GetControllers();
+            while (pCamCtrl)
+            {
+                NiFOVController* pFOV = NiDynamicCast(NiFOVController, pCamCtrl);
+                if (pFOV)
+                {
+                    unsigned short usCount = pFOV->GetInterpolatorCount();
+                    for (unsigned short us = 0; us < usCount; us++)
+                    {
+                        m_effect.m_spFOV = NiDynamicCast(NiFOVInterpolator, pFOV->GetInterpolator(us));
+                        if (m_effect.m_spFOV)
+                            break;
+                    }
+                }
+                pCamCtrl = pCamCtrl->GetNext();
+            }
+        }
+    }
+    if (m_effect.m_spCameraNode)
+    {
+        m_effect.m_fStart = FUN_141473280(FUN_14086d260()) + pParam->m_fStartDelay;
+        NiTimeController* pTime = spCam->GetControllers();
+        while (pTime)
+        {
+            if (pTime->GetEndKeyTime() > m_effect.m_fMaxTime)
+                m_effect.m_fMaxTime = pTime->GetEndKeyTime();
+            pTime = pTime->GetNext();
+        }
+        m_effect.m_spCameraNode->Update(0.0f, true);
+    }
+}
+MS2_REPLACE_METHOD(0x140AF0E40, CameraMgr, FUN_140af0e40, 3131, 0xFC2F851F);
+
+// @0x140af1f70
+// MS2-FUNCTIONAL: the mode position goes through NiPoint3(x, y, z) instead of the exe's point copy helpers.
+// Advances the camera effect nif and drives the active camera from its "Camera01"; stops the effect at its end (or
+// when its node was detached) and restores the field of view.
+void CameraMgr::FUN_140af1f70()
+{
+    if (m_effect.m_spCameraNode != 0 && m_effect.m_pCamera)
+    {
+        if (!m_effect.m_spCameraNode->GetParent())
+        {
+            m_spMode->vfunc_11(m_effect.m_fFOV);
+            FUN_140af1a90();
+            FUN_140aeaf40(FUN_141bd0cc0(FUN_1403ed2d0()), 1);
+        }
+        else
+        {
+            double dNow = FUN_141473280(FUN_14086d260());
+            if (dNow < m_effect.m_fStart)
+                return;
+            double dTime = dNow - m_effect.m_fStart;
+            if (dTime > m_effect.m_fMaxTime)
+                dTime = m_effect.m_fMaxTime;
+            m_effect.m_spCameraNode->Update((float)dTime, true);
+            ecr::RenderSurface* pSurface = FUN_1413f9890()->GetActiveRenderSurface();
+            ecr::CameraData* pData = FUN_1413f9910()->GetActiveCamera(pSurface);
+            NiCamera* pCamera;
+            if (pData && (pCamera = pData->GetCamera()) != 0)
+            {
+                if (m_effect.m_28)
+                {
+                    NiTransform kEffect = m_effect.m_pCamera->GetWorldTransform();
+                    pCamera->SetLocalTransform(kEffect);
+                }
+                else
+                {
+                    NiTransform kCamera = pCamera->GetLocalTransform();
+                    Unk_StreamPoint ptPos = FUN_140a17e10();
+                    kCamera.m_Translate = NiPoint3(ptPos.x, ptPos.y, ptPos.z);
+                    Unk_StreamPoint ptRot = FUN_140af8290();
+                    kCamera.m_Rotate.FromEulerAnglesXYZ((-ptRot.x * 3.1415927f) / 180.0f,
+                        (-ptRot.y * 3.1415927f) / 180.0f, (-ptRot.z * 3.1415927f) / 180.0f);
+                    Unk_StreamPoint ptZero = g_143b01a60;
+                    NiTransform kNode = m_effect.m_spCameraNode->GetLocalTransform();
+                    NiTransform kEffect = m_effect.m_pCamera->GetWorldTransform();
+                    NiTransform kAxis;
+                    kAxis.m_Rotate.MakeYRotation(1.5707964f);
+                    kEffect.m_Rotate = NiMatrix3(kAxis.m_Rotate * kEffect.m_Rotate);
+                    float fX = kEffect.m_Translate.x;
+                    kEffect.m_Translate.x = -kEffect.m_Translate.z;
+                    kEffect.m_Translate.z = fX;
+                    kCamera = kCamera * kEffect;
+                    pCamera->SetLocalTransform(kCamera);
+                }
+                if (m_effect.m_spFOV)
+                    m_spMode->vfunc_11((static_cast<Unk_FOVInterpolator*>(m_effect.m_spFOV.operator->())->FUN_141c2f230() * 180.0f) / 3.1415927f);
+            }
+            if (dTime >= m_effect.m_fMaxTime)
+            {
+                m_spMode->vfunc_11(m_effect.m_fFOV);
+                FUN_140af1a90();
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140AF1F70, CameraMgr, FUN_140af1f70, 1388, 0x45606797);
+
+// @0x140aefb20
+// MS2-FUNCTIONAL: the node translation is copied through Unk_StreamPoint(x, y, z) instead of the exe's point
+// assignment straight from the NiPoint3.
+// Plays a camera path nif: its "Camera01" drives the camera directly (no effect root).
+void CameraMgr::FUN_140aefb20(const Unk_CameraPathRow* pRow)
+{
+    m_effect.m_spScene = FUN_140a0afd0()->FUN_141551ea0(FUN_140298360("./Data/Resource/Model/Camera/", pRow->m_strFile), 0, 5, 0, 0);
+    if (m_effect.m_spScene)
+    {
+        m_effect.m_spCameraNode = static_cast<NiNode*>(m_effect.m_spScene->GetObjectByName("Camera01"));
+        m_effect.m_fFOV = FUN_141bcfc50(FUN_1403ed2d0());
+        Unk_SceneWalker kWalker(m_effect.m_spCameraNode);
+        NiAVObject* pObj;
+        while ((pObj = kWalker.Next(true)) != 0)
+        {
+            NiTimeController* pCtrl = pObj->GetControllers();
+            while (pCtrl && pCtrl->GetAnimType() == NiTimeController::APP_INIT)
+            {
+                pCtrl->SetAnimType(NiTimeController::APP_TIME);
+                pCtrl = pCtrl->GetNext();
+            }
+            m_effect.m_pCamera = NiDynamicCast(NiCamera, pObj);
+            if (m_effect.m_pCamera)
+            {
+                NiTimeController* pCamCtrl = m_effect.m_pCamera->GetControllers();
+                while (pCamCtrl)
+                {
+                    NiFOVController* pFOV = NiDynamicCast(NiFOVController, pCamCtrl);
+                    if (pFOV)
+                    {
+                        unsigned short usCount = pFOV->GetInterpolatorCount();
+                        for (unsigned short us = 0; us < usCount; us++)
+                        {
+                            m_effect.m_spFOV = NiDynamicCast(NiFOVInterpolator, pFOV->GetInterpolator(us));
+                            if (m_effect.m_spFOV)
+                                break;
+                        }
+                    }
+                    pCamCtrl = pCamCtrl->GetNext();
+                }
+            }
+        }
+        if (m_effect.m_spCameraNode)
+        {
+            m_effect.m_24 = pRow->m_c;
+            m_effect.m_fStart = 0;
+            m_effect.m_20 = pRow->m_f8;
+            const NiPoint3& kTranslate = m_effect.m_spCameraNode->GetLocalTransform().m_Translate;
+            m_effect.m_ptOffset = Unk_StreamPoint(kTranslate.x, kTranslate.y, kTranslate.z);
+            m_effect.m_fMaxTime = 0;
+            NiTimeController* pTime = m_effect.m_spCameraNode->GetControllers();
+            while (pTime)
+            {
+                if (pTime->GetEndKeyTime() > m_effect.m_fMaxTime)
+                    m_effect.m_fMaxTime = pTime->GetEndKeyTime();
+                pTime = pTime->GetNext();
+            }
+            m_effect.m_spCameraNode->Update(0.0f, true);
+        }
+    }
+}

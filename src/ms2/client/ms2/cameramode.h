@@ -16,6 +16,7 @@ class Unk_CameraPropertyBag
 public:
     void FUN_14098c6e0(unsigned int nHash, const bool& bValue);
     int FUN_1409457c0(unsigned int nHash, const float& fValue);     // egf::Entity::SetPropertyValue<float>
+    int FUN_1408a20a0(unsigned int nHash, bool& bValue) const;      // egf::Entity::GetPropertyValue<bool>
 };
 
 class Unk_CameraOwner
@@ -29,6 +30,14 @@ public:
     {
         if (m_10)
             m_10->FUN_14098c6e0(0x2310d55e, b);
+    }
+    // @0x140af8160
+    bool FUN_140af8160()
+    {
+        bool b = false;
+        if (m_10)
+            m_10->FUN_1408a20a0(0x2310d55e, b);
+        return b;
     }
     // @0x140af9a10
     void FUN_140af9a10(float f)
@@ -202,7 +211,8 @@ public:
     float FUN_140afe2e0();
     float FUN_140afe300();
     void FUN_140afe4b0();
-    bool FUN_140af8140();                                           // owner property 0x2310d55e (set by vfunc_5)
+    // @0x140af8140
+    bool FUN_140af8140() { return m_pOwner->FUN_140af8160(); }      // owner property 0x2310d55e (set by vfunc_5)
 
     // 0x1409f2540 (inline, another obj)
     Unk_StreamPoint FUN_1409f2540() { return m_setting.m_c; }
