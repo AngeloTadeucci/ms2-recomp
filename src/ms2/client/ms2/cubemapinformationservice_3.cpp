@@ -144,6 +144,7 @@ CPhysXHelper* FUN_1409f7ca0();
 int FUN_14168a310(CPhysXHelper*, Unk_CMISPt3*, Unk_StreamPoint*, Unk_CMISRayHit*, float, __int64, int);
 bool FUN_14028d470(float, float);
 extern Unk_StreamPoint DAT_143a08cf8;                                       // up vector
+extern Unk_StreamPoint DAT_143b01a60;                                       // zero / fall-through direction
 Unk_Int3* FUN_14112ca20(Unk_Int3* pA, Unk_Int3* pOut, Unk_Int3* pB);   // point add
 const int* FUN_1402fbd20(const int*, const int*);               // std::min
 const int* FUN_1404eb7e0(const int*, const int*);               // std::max
@@ -468,6 +469,24 @@ Cube* CubeMapInformationService::FUN_1410b8f30(Unk_StreamPoint ptFrom, Unk_Strea
     if (FUN_14168a310(FUN_1409f7ca0(), &ptStart, pHit, &hit, fRange, 0, 0) != 0)
         return FUN_1410b8e60(hit.m_pEntity);
     return 0;
+}
+
+// @0x1410b9150
+Unk_StreamPoint CubeMapInformationService::FUN_1410b9150(Unk_StreamPoint ptIn)
+{
+    static Unk_StreamPoint s_kDown = DAT_143a08cf8.FUN_14097fc90(20.0f);
+    Unk_CMISPt3 ptStart(ptIn.FUN_14097fd50(s_kDown));
+    Unk_StreamPoint ptDir = DAT_143b01a60;
+    Unk_CMISRayHit hit;
+    FUN_140ad4440(&hit);
+    Cube* pCube;
+    if (FUN_14168a310(FUN_1409f7ca0(), &ptStart, &ptDir, &hit, 750.0f, 0, 0) != 0 && (pCube = FUN_1410b8e60(hit.m_pEntity)) != 0 && pCube->field70 != 0) {
+        Unk_StreamPoint ptRes;
+        FUN_1409618c0(FUN_1408a9280(&pCube->entity), 0xfd95ca52, &ptRes);
+        ptRes.z = ptIn.z;
+        return ptRes;
+    }
+    return ptIn;
 }
 
 // @0x1410ce800

@@ -121,6 +121,7 @@ public:
     Cube* FUN_1410b8d90(Cube* pBase, int nOffset, int nField44);
     Cube* FUN_1410b8e60(egf::Entity* pEntity);
     Cube* FUN_1410b8f30(Unk_StreamPoint ptFrom, Unk_StreamPoint* pHit, float fRange);
+    Unk_StreamPoint FUN_1410b9150(Unk_StreamPoint ptIn);
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();
