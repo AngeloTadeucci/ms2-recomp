@@ -2393,3 +2393,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?Get@?$Value@I@Constants@Common@@QEAAPEAIXZ	1401d7c10	func
 ?NextWeekdayStart@@YA_JH_J@Z	14086b190	func
 ?vfunc_1@NotifyOpenDialogByScene@@UEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	140db51c0	func
+??0Unk_QmTalkScriptPtr@@QEAA@AEBV0@@Z	140859bc0	func
+?IsNull@Unk_QmTalkScriptPtr@@QEBA_NXZ	14085a420	func
