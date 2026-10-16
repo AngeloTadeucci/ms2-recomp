@@ -39,3 +39,14 @@ public:
     virtual ~ASArray();
     bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
 };
+
+// ASDataProvider: an ASArray with its own vftable (RTTI ASDataProvider : ASArray : AScript : CPtred), same 0x40 layout.
+// vftable 0x142defc98 (slot 0 = the scalar deleting dtor 0x140bc0740 -> FUN_1422df070, shared with the trivial Unk_*Array
+// subclasses), ctor 0x140bbf7b0. Handed to the AS data-provider properties of list components.
+class ASDataProvider : public ASArray
+{
+public:
+    ASDataProvider(int nType);
+    virtual ~ASDataProvider();
+};
+MS2_CHECK_SIZE(ASDataProvider, 0x40);
