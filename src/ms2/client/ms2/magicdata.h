@@ -164,6 +164,7 @@ public:
     float FUN_141464640();                                          // 0x141464640 move-end hold duration
     int FUN_141464670();                                            // 0x141464670 total duration in ms
     unsigned FUN_141467440();                                       // 0x141467440 the current time for this skill
+    int FUN_141467420();                                            // 0x141467420 the state
 
     void FUN_141462900(unsigned nNow);                              // 0x141462900
     void FUN_141461bd0(unsigned nNow);                              // 0x141461bd0
@@ -226,6 +227,15 @@ public:
     CMagicModel();                                                  // 0x141467480
     virtual ~CMagicModel() = default;                               // 0 0x141468db0
     int FUN_141467b30();                                            // 0x141467b30 the model's own duration
+    int FUN_141467a90();                                            // 0x141467a90 state > 2
+    int FUN_141467ae0();                                            // 0x141467ae0 state == 4
+    unsigned long long FUN_141467b60();                             // 0x141467b60 the tag's sub id
+    Unk_StreamPoint FUN_141467c10();                                // 0x141467c10 projectile position
+    Unk_StreamPoint FUN_141467c60();                                // 0x141467c60 projectile direction
+    Unk_NiMatrix3 FUN_141467cb0();                                  // 0x141467cb0 projectile rotation
+    void FUN_141467d00(Unk_StreamPoint ptNew);                      // 0x141467d00 move the projectile
+    void FUN_141467d50(Unk_StreamPoint ptDirection);                // 0x141467d50 turn the projectile
+    void FUN_141467da0();                                           // 0x141467da0
 
     Unk_SocketPtr<CMagic> m_spMagic;                                // +0x18
     Unk_MagicTagPtr m_spA;                                          // +0x28

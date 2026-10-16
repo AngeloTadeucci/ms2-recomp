@@ -838,6 +838,73 @@ unsigned CMagic::FUN_141467440()
     return (unsigned)FUN_14086d260()->FUN_1414732f0(m_spSkill->m_nTimeMode);
 }
 
+// @0x141467420
+int CMagic::FUN_141467420()
+{
+    return m_nState;
+}
+
+// @0x141467a90
+int CMagicModel::FUN_141467a90()
+{
+    return m_spMagic->m_nState >= 3;
+}
+
+// @0x141467ae0
+int CMagicModel::FUN_141467ae0()
+{
+    return m_spMagic->m_nState == 4;
+}
+
+// @0x141467b30
+int CMagicModel::FUN_141467b30()
+{
+    return m_spMagic->FUN_141464670();
+}
+
+// @0x141467b60
+unsigned long long CMagicModel::FUN_141467b60()
+{
+    return m_spA->m_nTagSub;
+}
+
+// @0x141467c10
+Unk_StreamPoint CMagicModel::FUN_141467c10()
+{
+    return m_spMagic->m_ptCurrent;
+}
+
+// @0x141467c60
+Unk_StreamPoint CMagicModel::FUN_141467c60()
+{
+    return m_spMagic->m_ptDirection;
+}
+
+// @0x141467cb0
+Unk_NiMatrix3 CMagicModel::FUN_141467cb0()
+{
+    return m_spMagic->m_matRotation;
+}
+
+// @0x141467d00
+void CMagicModel::FUN_141467d00(Unk_StreamPoint ptNew)
+{
+    m_spMagic->FUN_141461a80(ptNew);
+}
+
+// @0x141467d50
+void CMagicModel::FUN_141467d50(Unk_StreamPoint ptDirection)
+{
+    Unk_StreamPoint ptCopy = ptDirection;
+    m_spMagic->FUN_141461b60(ptCopy);
+}
+
+// @0x141467da0
+void CMagicModel::FUN_141467da0()
+{
+    m_spMagic->FUN_141467420();
+}
+
 // @0x141467480
 CMagicModel::CMagicModel()
 {
