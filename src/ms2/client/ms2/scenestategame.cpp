@@ -818,9 +818,12 @@ public:
     bool FUN_1417595d0(Unk_InventorySkillRequest& kReq);    // build the record of a request
     char m_pad[0x28 - sizeof(CPtred)];
     __int64 m_nSkillUid;                                    // +0x28
-    char m_pad_30[0x74 - 0x30];
+    char m_pad_30[0x68 - 0x30];
+    Unk_StreamPoint m_kRot;                                 // +0x68 the cast rotation
     float m_fSpeed;                                         // +0x74 the caster's speed scale
-    char m_pad_78[0xa0 - 0x78];
+    char m_pad_78[0x8c - 0x78];
+    unsigned int m_nMotion;                                 // +0x8c the motion index of the cast
+    char m_pad_90[0xa0 - 0x90];
     int m_nA0;                                              // +0xa0 nonzero: the cast is finished (no new projectiles)
     char m_pad_a4[0xb0 - 0xa4];
     int m_nExtra;                                           // +0xb0 option 0xae: the extra id of the cast
@@ -3324,6 +3327,59 @@ void CSceneStateGame::FUN_141717b40(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141717b40, CSceneStateGame, FUN_141717b40, 1544, 0xE568A4B3);
+// The skill state of an actor (?\stateskill.cpp; the state while FUN_14166c930() == 0x10).
+class StateSkill : public State
+{
+public:
+    void FUN_1417ec630(bool bA, bool bB);                   // sync the cast flags
+};
+// @0x141718150
+void CSceneStateGame::FUN_141718150(CInPacket& packet)
+{
+    __int64 nCastUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nActorId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    int nMotion = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kRot = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kMove = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    bool bA = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    bool bB = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    float fSpeed = static_cast<CInputStream&>(packet).vfunc_o8_5();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nActorId);
+    if (pActor != 0)
+    {
+        MS2Ptr<Unk_PCBaseComp_b18> spCast = pActor->vfunc_103();
+        if (!spCast || spCast->m_nSkillUid != nCastUid || spCast->m_nMotion != nMotion || pActor->FUN_14166c930() != 0x10)
+        {
+            Unk_InventorySkillRequest kReq(nSkillId, nLevel);
+            kReq.serial = 0;
+            kReq.tick = nCastUid;
+            kReq.unknown14 = nMotion;
+            kReq.origin = kPos;
+            kReq.direction = kDir;
+            kReq.fValue = kRot.z;
+            MS2Ptr<Unk_PCBaseComp_b18> spSkill(new Unk_PCBaseComp_b18());
+            if (!spSkill->FUN_1417595d0(kReq))
+                return;
+            spSkill->m_fSpeed = fSpeed;
+            pActor->FUN_141673b40(spSkill);
+        }
+        else
+        {
+            spCast->m_kRot = kRot;
+            pActor->vfunc_22(efd::Point3(reinterpret_cast<efd::Point3&>(kMove)));
+            if (pActor->FUN_14166c930() == 0x10)
+            {
+                StateSkill* pState = static_cast<StateSkill*>(pActor->FUN_14166ccb0());
+                pState->FUN_1417ec630(bA, bB);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141718150, CSceneStateGame, FUN_141718150, 1309, 0xDAA82545);
 
 // @0x141718680
 void CSceneStateGame::FUN_141718680(CInPacket& packet)
