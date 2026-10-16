@@ -61884,7 +61884,8 @@ _TI4PEAVGfxExceptionSwfLoad@@	1439df990	data
 ?DAT_143afa980@@3PEAUUnk_RsSceneRoot@@EA	143afa980	data
 ?ms_pkShadowManager@NiShadowManager@@1PEAV1@EA	143afa980	data
 ?s_pInstance@Unk_CameraListOwner@@2PEAV1@EA	143afa980	data
-?ms_RTTI@NiClickRenderStep@@2VNiRTTI@@B	143afaa00	data
+?ms_RTTI@NiRenderStep@@2VNiRTTI@@B	143afaa00	data
+?ms_RTTI@NiClickRenderStep@@2VNiRTTI@@B	143afaa18	data
 ?ms_pkBlockHeader@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa78	data
 ?ms_pkFreeMem@?$NiTAbstractPoolAllocator@_K@@1PEAVAllocNode@1@EA	143afaa80	data
 ?ms_kCriticalSection@?$NiTAbstractPoolAllocator@_K@@1VCriticalSection@efd@@A	143afaa88	data
