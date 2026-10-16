@@ -134,6 +134,12 @@
 // MS2-PIN: ?SetAt@?$CAtlMap@W4Unk_FameAlliance@@HV?$CElementTraits@W4Unk_FameAlliance@@@ATL@@V?$CElementTraits@H@3@@ATL@@QEAAPEAU__POSITION@@AEBW4Unk_FameAlliance@@H@Z 0x140364f30 ; hand: CAtlMap family order follows the ctors (int, Def, Limit)
 // MS2-PIN: ?SetAt@?$CAtlMap@W4Unk_FameAlliance@@V?$MS2Ptr@VCFameDef@@@@V?$CElementTraits@W4Unk_FameAlliance@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCFameDef@@@@@4@@ATL@@QEAAPEAU__POSITION@@AEBW4Unk_FameAlliance@@AEBV?$MS2Ptr@VCFameDef@@@@@Z 0x140364fc0 ; hand: CAtlMap family order follows the ctors (int, Def, Limit)
 // MS2-PIN: ?SetAt@?$CAtlMap@W4Unk_FameAlliance@@V?$MS2Ptr@VCFameLimitData@@@@V?$CElementTraits@W4Unk_FameAlliance@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCFameLimitData@@@@@4@@ATL@@QEAAPEAU__POSITION@@AEBW4Unk_FameAlliance@@AEBV?$MS2Ptr@VCFameLimitData@@@@@Z 0x140365070 ; hand: CAtlMap family order follows the ctors (int, Def, Limit)
+// MS2-PIN: ??1?$CAtlMap@W4Unk_FameSeason@@V?$MS2Ptr@VCFameSeasonDef@@@@V?$CElementTraits@W4Unk_FameSeason@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCFameSeasonDef@@@@@4@@ATL@@QEAA@XZ 0x14035e2c0 ; hand: identical look-alike group (CAtlMap/set family order)
+// MS2-PIN: ??1?$_Tree@V?$_Tset_traits@W4Unk_FameAlliance@@U?$less@W4Unk_FameAlliance@@@std@@V?$allocator@W4Unk_FameAlliance@@@3@$0A@@std@@@std@@QEAA@XZ 0x14035e600 ; hand: identical look-alike group (CAtlMap/set family order)
+// MS2-PIN: ?GetCount@?$CAtlMap@W4Unk_FameAlliance@@HV?$CElementTraits@W4Unk_FameAlliance@@@ATL@@V?$CElementTraits@H@3@@ATL@@QEBA_KXZ 0x1403604b0 ; hand: identical look-alike group (CAtlMap/set family order)
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@HPEAX@std@@@std@@QEAAXQEAU?$_Tree_node@HPEAX@2@_K@Z 0x1403680b0 ; hand: identical look-alike group (CAtlMap/set family order)
+// MS2-PIN: ??1CNode@?$CAtlMap@W4Unk_FameAlliance@@V?$MS2Ptr@VCFameDef@@@@V?$CElementTraits@W4Unk_FameAlliance@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VCFameDef@@@@@4@@ATL@@QEAA@XZ 0x14035e720 ; hand: identical look-alike group (CAtlMap/set family order)
+// MS2-PIN: ?__empty_global_delete@@YAXPEAX@Z 0x14035d130 ; hand: identical look-alike group (CAtlMap/set family order)
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7CFameTable@@6B?$TSingleton@VCFameTable@@@@@ 0x142d2b6d0
 // MS2-PIN: ??_7CFameTable@@6B?$CValidData@VCFameTable@@@@@ 0x142d2b6e0
