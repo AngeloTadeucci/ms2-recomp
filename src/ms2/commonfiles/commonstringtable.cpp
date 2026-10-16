@@ -21,6 +21,9 @@ CString FUN_14071a5b0(const CString& strDir, const CString& strFile);   // retur
 CString FUN_14071ae20(const CString& strFile);                          // path of a Table file
 CStringW FUN_1401bf530(Unk_140165cf0*, const char*, CStringW strDefault);   // string attribute with default (callee destroys the default)
 unsigned FUN_14025ed00(const wchar_t* psz);                             // string hash
+struct Unk_BanFlags { int FUN_1402c4c90(int nFlag); };                          // blocked-action flag set
+struct Unk_BanConfig { unsigned char m_pad_0[8]; Unk_BanFlags m_8; };
+Unk_BanConfig* FUN_14025e7b0();                                                 // global client config
 void FUN_14025d6f0();                                                   // "CBanTextChecker is not initialized" check
 void* FUN_140166410();
 bool FUN_14036e560(void* pService);
@@ -218,7 +221,8 @@ CStringW CBanTextChecker::CheckerErrStringPackage::GetErrString(EBanErrKind nKin
 
 static ATL::CAtlMap<EBanErrKind, EBanStringId> s_mapDefaultErr;   // 0x143aacca0
 
-// The default error kind -> string id table, filled on first use. @0x140224600
+// @0x140224600
+// The default error kind -> string id table, filled on first use.
 static void FUN_140224600()
 {
     if (s_mapDefaultErr.IsEmpty())
@@ -379,6 +383,20 @@ CStringW CBanTextChecker::GetOptionErrString(CheckerOption& opt, EBanErrKind nKi
     }
     }
     return CStringW(L"");
+}
+
+// @0x140228b40
+bool CBanTextChecker::FindReserveIdAny(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nPos = 0;
+    int nLen = 0;
+    CStringW s(str);
+    if (m_trieReserveIdAny.Find(s, 0, true, &nPos, &nLen, NULL)) {
+        matched = s.Mid(nPos, nLen);
+        return true;
+    }
+    return false;
 }
 
 // @0x140228c50
@@ -1081,4 +1099,114 @@ bool CBanTextChecker::ReplaceHashesWithUrls(CStringW& str)
     if (0 < nCount)
         return true;
     return false;
+}
+
+// @0x140226980
+void CBanTextChecker::MaskBannedWords(CStringW& str)
+{
+    FilterBanWords(str);
+    str.Replace(L'\r', L'*');
+    str.Replace(L'\n', L'*');
+    str.Replace(L"&", L"*");
+    for (POSITION pos = m_mapBanWords.GetHeadPosition(); pos != 0; m_mapBanWords.GetNext(pos))
+    {
+        Unk_BanWordPtr words = m_mapBanWords.GetValueAt(pos);
+        if (words == 0)
+            continue;
+        for (unsigned i = 0; i < words->GetCount(); ++i)
+        {
+            CStringW& strWord = (*words)[i];
+            str.Replace(strWord, L"*");
+        }
+    }
+}
+
+// @0x140226b10
+void CBanTextChecker::FilterReservedWords(CStringW& str)
+{
+    FUN_14025d6f0();
+    if (DAT_143ab2914 >= 0x32)
+        return;
+    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x3a) == 0)
+    {
+        bool bHashed = ReplaceUrlsWithHashes(str);
+        int nStart = 0;
+        int nPos = 0;
+        int nLen = 0;
+        CStringW strReplace;
+        while (m_trieBanUrl.Find(str, nStart, true, &nPos, &nLen, &strReplace))
+        {
+            if (strReplace.IsEmpty())
+                strReplace = CStringW(L'*', nLen);
+            str.Delete(nPos, nLen);
+            str.Insert(nPos, strReplace);
+            nStart = nPos + strReplace.GetLength();
+        }
+        if (bHashed)
+            ReplaceHashesWithUrls(str);
+    }
+}
+
+// @0x140226cd0
+void CBanTextChecker::FilterBanWords(CStringW& str)
+{
+    FUN_14025d6f0();
+    if (DAT_143ab2914 >= 0x32)
+        return;
+    unsigned nMask = 0;
+    nMask = 7;
+    switch (DAT_143ab0248)
+    {
+    case 2:
+        nMask ^= 2;
+        break;
+    }
+    int nStart = 0;
+    int nPos = 0;
+    int nLen = 0;
+    CStringW strReplace;
+    while (m_trieBanWord.Find(str, nStart, true, &nPos, &nLen, &strReplace))
+    {
+        if (strReplace.IsEmpty())
+            strReplace = CStringW(L'*', nLen);
+        str.Delete(nPos, nLen);
+        str.Insert(nPos, strReplace);
+        nStart = nPos + strReplace.GetLength();
+    }
+    nStart = nPos = nLen = 0;
+    while ((nMask & 2) != 0 && m_trieStartWith.Find(str, nStart, true, &nPos, &nLen, &strReplace))
+    {
+        if (strReplace.IsEmpty())
+            strReplace = CStringW(L'*', nLen);
+        str.Delete(nPos, nLen);
+        str.Insert(nPos, strReplace);
+        nStart = str.Find(L' ', nPos);
+        if (nStart < 0)
+            break;
+        nStart = nStart + 1;
+    }
+    nStart = nPos = nLen = 0;
+    while (m_trieBanWordAll.Find(str, nStart, true, &nPos, &nLen, &strReplace))
+    {
+        if (strReplace.IsEmpty())
+            strReplace = CStringW(L'*', nLen);
+        bool bWhole = true;
+        int nTok = nStart;
+        CStringW strTok;
+        while (nTok <= nPos)
+        {
+            strTok = str.Tokenize(L" ", nTok);
+        }
+        if (strTok.GetLength() != nLen)
+            bWhole = false;
+        if (bWhole)
+        {
+            str.Delete(nPos, nLen);
+            str.Insert(nPos, strReplace);
+        }
+        nStart = str.Find(L' ', nPos);
+        if (nStart < 0)
+            break;
+        nStart = nStart + 1;
+    }
 }
