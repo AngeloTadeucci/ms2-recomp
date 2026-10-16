@@ -88,6 +88,8 @@
 #include <new>
 #include <string.h>
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/tfunctor.h"
+#include "ms2/placeholder/tfunctor_small.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -359,7 +361,7 @@ void CUIService::FUN_141ad9c10()
 }
 
 // @0x141ad9e20
-bool CUIService::FUN_141ad9e20()
+bool CUIService::FUN_141ad9e20(HWND__*)
 {
     if (!FUN_141ad9b60())
         return false;
@@ -516,8 +518,7 @@ void FUN_1411ab770(void* pRegistrar, int n);
 void FUN_141af1860(void* pMgr, void (*pfn)());
 void FUN_141af1a90(void* pMgr, void (*pfn)());
 void FUN_141b6fc50();
-void* FUN_141aed330(void* pBuf, void* ppSelf, void* pMemFn);
-void FUN_1422aee50(void* pMgr, void* pDelegate);
+void FUN_1422aee50(void* pMgr, TFunctor<bool, ParamList<HWND__*, EmptyParam> >& fn);
 void* FUN_1411d15b0(void* pSvcMgr);
 void* FUN_14168ab40(void* pSvcMgr);
 void* FUN_140af7da0(void* pWorld);
@@ -525,9 +526,8 @@ void* FUN_140994450();
 void* FUN_14098d8d0(void* pTable, void* p);
 void FUN_1411d7c70(void* p, void (*pfn)(), void* pSelf);
 void FUN_1411d7c10(void* p, void (*pfn)(), void* pSelf);
-void* FUN_141aed1c0(void* pBuf, void* ppSelf, void* pMemFn);
 void* FUN_140a44830();
-void FUN_1401ce3d0(void* p, void* pDelegate);
+void FUN_1401ce3d0(void* p, TFunctor<void, EmptyParam>& fn);
 void* FUN_141aee920();
 void FUN_140cf10d0(void* p);
 extern char DAT_143d6eb58[];
@@ -563,13 +563,8 @@ efd::SyncResult CUIService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
     FUN_1411ab770(pRegistrar, 1);
     FUN_141af1860(FUN_14025e7a0(), &CUIService::FUN_141ade300);
     FUN_141af1a90(FUN_14025e7a0(), FUN_141b6fc50);
-    char buf[8];
-    char fn[16] = {0};
-    bool (CUIService::*pmf)() = &CUIService::FUN_141ad9e20;
-    memcpy(fn, &pmf, sizeof(pmf));
-    CUIService* pSelf = this;
-    void* pDelegate = FUN_141aed330(buf, &pSelf, fn);
-    FUN_1422aee50(FUN_14025e7a0(), pDelegate);
+    TFunctor<bool, ParamList<HWND__*, EmptyParam> > fnWndProc(this, &CUIService::FUN_141ad9e20);
+    FUN_1422aee50(FUN_14025e7a0(), fnWndProc);
     return efd::SyncResult_Success;
 }
 
@@ -586,13 +581,8 @@ efd::AsyncResult CUIService::OnInit()
     void* pEvt = FUN_14098d8d0(DAT_143d6eb58, FUN_140994450());
     FUN_1411d7c70(pEvt, &CUIService::FUN_141ade1f0, this);
     FUN_1411d7c10(pEvt, &CUIService::FUN_141ade2d0, this);
-    char buf[8];
-    char fn[16] = {0};
-    void (CUIService::*pmf)() = &CUIService::FUN_141aece70;
-    memcpy(fn, &pmf, sizeof(pmf));
-    CUIService* pSelf = this;
-    void* pDelegate = FUN_141aed1c0(buf, &pSelf, fn);
-    FUN_1401ce3d0(FUN_140a44830(), pDelegate);
+    TFunctor<void, EmptyParam> fnReset(this, &CUIService::FUN_141aece70);
+    FUN_1401ce3d0(FUN_140a44830(), fnReset);
     FUN_140cf10d0(FUN_141aee920());
     return efd::AsyncResult_Pending;
 }

@@ -102,7 +102,7 @@ public:
     void FUN_141ad9b30();                                              // 0x141ad9b30
     bool FUN_141ad9b60();                                              // 0x141ad9b60
     void FUN_141ad9c10();                                              // 0x141ad9c10
-    bool FUN_141ad9e20();                                              // 0x141ad9e20
+    bool FUN_141ad9e20(HWND__* hWnd);                                  // 0x141ad9e20 window-proc style callback (argument unused)
     void FUN_141adbca0(int n);                                         // 0x141adbca0
     void FUN_141adbcd0(char b);                                        // 0x141adbcd0
     void FUN_141adbe00(float fValue, int bRaw);                          // 0x141adbe00
