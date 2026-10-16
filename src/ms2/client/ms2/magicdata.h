@@ -87,10 +87,12 @@ int FUN_14145c4d0();                                                // 0x14145c4
 // ---- the running projectile ----
 struct Unk_MagicTag;
 struct Unk_MagicEntity;
+struct Unk_MagicSkillRow;
 // 16 byte smart pointers shared with the cube/world code (out-of-line members bound by VA in symbols-manual.tsv).
 struct Unk_MagicTagPtr {
     Unk_MagicTagPtr();                                              // 0x141234900
     Unk_MagicTagPtr(int);                                           // 0x1410a6af0
+    Unk_MagicTagPtr(const Unk_MagicTagPtr&);                        // 0x1412348c0
     ~Unk_MagicTagPtr();                                             // 0x1410a6d40
     Unk_MagicTagPtr& operator=(const Unk_MagicTagPtr&);             // 0x141235040
     Unk_MagicTag* operator->() const;                               // 0x141235260
@@ -175,7 +177,9 @@ public:
     void FUN_14145f570(unsigned nNow);                              // 0x14145f570 begin the destroy phase
     void FUN_14145ec50(unsigned nNow);                              // 0x14145ec50 per-frame update while alive
     void FUN_1414609e0();                                           // 0x1414609e0
+    void FUN_141464790(void* pHits, int nHits);                      // 0x141464790 play the hit effect on every hit entity
     void FUN_141464b40();                                           // 0x141464b40
+    void FUN_141466da0(unsigned nNow, const Unk_MagicSkillRow* pRow);  // 0x141466da0 piercing hit tick
     void FUN_141461720(int nFlag);                                  // 0x141461720
     void FUN_1414614d0();                                           // 0x1414614d0
     void FUN_1414607e0();                                           // 0x1414607e0
@@ -242,7 +246,11 @@ public:
     void FUN_141467ed0();                                           // 0x141467ed0 begin the destroy phase of an orphaned model
     void FUN_141467da0();                                           // 0x141467da0
     void FUN_141467800();                                           // 0x141467800
+    int FUN_141467dd0(unsigned long long nTag);                     // 0x141467dd0 can this cast be cancelled
+    void FUN_141467b90();                                           // 0x141467b90
     void FUN_141467860();                                           // 0x141467860 per-tick update
+    void FUN_141467500(Unk_MagicTagPtr spSkill, Unk_MagicTagPtr spCaster, Unk_StreamPoint ptStart,
+        unsigned n530, unsigned n534, unsigned n53c);                // 0x141467500 start a projectile for a cast
 
     Unk_SocketPtr<CMagic> m_spMagic;                                // +0x18
     Unk_MagicTagPtr m_spA;                                          // +0x28

@@ -45,8 +45,10 @@
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/tixmldocument.h"
+#include "ms2/placeholder/coutpacket.h"
 #include <NiNode.h>
 #include <NiFixedString.h>
+#include <cfloat>
 #include <set>
 #include <vector>
 
@@ -103,7 +105,7 @@ static Unk_1402a9d70 s_conditions2(17, 0.75f, 0.25f, 2.25f, 10);
 
 extern Unk_EfdMatrix3 DAT_143a09600;        // identity rotation
 extern Unk_EfdMatrix3 DAT_143b01a90;        // identity rotation (second copy)
-class Unk_MagicEffectMgr { public: void FUN_1411a6060(int nHandle); int FUN_1411a49c0(void* pReq); void FUN_1411a68f0(int nHandle, bool bHidden); NiNode* FUN_1411a6b10(); };    // releases a spawned effect
+class Unk_MagicEffectMgr { public: void FUN_1411a6060(int nHandle); int FUN_1411a49c0(void* pReq); void FUN_1411a4a00(void* pReq); int FUN_1411a5580(int nLevel, int nEffect, int nFlag, Unk_StreamPoint ptAt, float fRange); void FUN_1411a68f0(int nHandle, bool bHidden); NiNode* FUN_1411a6b10(); };    // releases a spawned effect
 Unk_MagicEffectMgr* FUN_1403ed280();
 void* FUN_1409475d0(Unk_NodePtr*);
 void FUN_140a0b2a0(void* pNode);            // detach the node from its parent
@@ -330,10 +332,15 @@ struct Unk_MagicRowFlag { int m_nPad; int m_nValue; int m_nPad2; bool FUN_1407df
 
 // The skill row (skillrecord.cpp); only the members the projectile reads.
 struct Unk_MagicSkillRow {
-    char m_pad00[0x34];
+    char m_pad00[0x30];
+    unsigned m_nMagicId;                                            // +0x30 id into magicPath.xml
     int m_n34;                                                      // +0x34 target-tracking projectile
     int m_n38;                                                      // +0x38 aim type of the projectile
-    char m_pad3c[0xc4];
+    char m_pad3c[0x60];
+    float m_f9c;                                                    // +0x9c height offset
+    char m_pada0[0x10];
+    float m_fb0;                                                    // +0xb0 height offset
+    char m_padb4[0x4c];
     Unk_MagicRowFlag m_flag100;                                     // +0x100 (+0x104: spawn the hit effect)
     int m_n10c;                                                     // +0x10c
     char m_pad10[0x10];
@@ -342,15 +349,22 @@ struct Unk_MagicSkillRow {
     CString m_str148;                                               // +0x148 end effect
     CString m_str150;                                               // +0x150 end effect when the flight was cut short
     CString m_str158;                                               // +0x158 spawn effect
-    char m_pad160[0x28];
+    CString m_str160;                                               // +0x160 piercing hit effect
+    char m_pad168[0x20];
     CString m_str188;                                               // +0x188 hit effect
+    char m_pad190[0x10];
+    int m_n1a0;                                                     // +0x1a0 hit effect id (0: take it from the worn weapon)
 };
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_nMagicId, 0x30);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_f9c, 0x9c);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_fb0, 0xb0);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str148, 0x148);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str158, 0x158);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str160, 0x160);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str188, 0x188);
 
 // The skill cast record behind Unk_MagicTagPtr.
@@ -397,7 +411,7 @@ struct Unk_MagicEntity {
     virtual void vf19(); virtual void vf20(); virtual void vf21(); virtual void vf22(); virtual void vf23();
     virtual void vf24();
     virtual int vf25_IsDead();                                      // MS2: slot 25 (+0xc8)
-    virtual void vf26(); virtual void vf27(); virtual void vf28(); virtual void vf29(); virtual void vf30();
+    virtual void vf26(); virtual void vf27_CollectPartsA(ATL::CAtlArray<void*>* pOut); virtual void vf28_CollectPartsB(ATL::CAtlArray<void*>* pOut); virtual void vf29(); virtual void vf30();
     virtual void vf31(); virtual void vf32();
     virtual void vf33_Hit(Unk_MagicTag* pTag, Unk_StreamPoint ptAt);  // MS2: slot 33 (+0x108)
     virtual void vf34_Cast(Unk_MagicTag* pTag);                     // MS2: slot 34 (+0x110)
@@ -438,7 +452,8 @@ struct Unk_MagicEffectReq {
     int m_nObject;                                                  // +0x08
     char m_pad0c[4];
     Unk_NodePtr m_pNode;                                            // +0x10
-    char m_pad20[0x18];
+    void* m_pXform;                                                 // +0x18 the Unk_MagicXform to play at
+    char m_pad20[0x10];
     int m_bFlag;                                                    // +0x30
     char m_pad34[0x1c];
     void* m_pIds;                                                   // +0x50
@@ -467,8 +482,10 @@ void FUN_1420849a0(Unk_NiMatrix3* pMatrix);                         // efd::Matr
 void FUN_140ddcca0(void* pNode, const Unk_NiMatrix3& matRotation);  // NiAVObject::SetRotate
 
 // The 0x34 byte NiTransform the effect system takes (rotate, translate, scale).
-struct Unk_MagicXform { Unk_NiMatrix3 m_rotate; Unk_NiPoint3 m_translate; float m_fScale; };
+struct Unk_MagicXform { Unk_MagicXform(); /* 0x140a332d0 */ Unk_NiMatrix3 m_rotate; Unk_NiPoint3 m_translate; float m_fScale; };
 MS2_CHECK_SIZE(Unk_MagicXform, 0x34);
+extern Unk_StreamPoint DAT_143a08d08;                               // the forward axis
+void FUN_140a0b1f0(const Unk_NiMatrix3& matRotation, Unk_StreamPoint* pOut);    // rotate a vector by the matrix
 // @0x14146aa10
 static inline void FUN_14146aa10(Unk_EfdMatrix3* pMatrix, unsigned nRow, unsigned nCol, float fValue) { pMatrix->m_afEntry[nRow][nCol] = fValue; }
 
@@ -498,6 +515,18 @@ float FUN_140966f00(const Unk_StreamPoint& a, const Unk_StreamPoint& b);   // di
 Unk_MagicCullCfg* FUN_141bd9c00(Unk_MagicWorld* pWorld);
 bool FUN_1410a82b0(Unk_MagicCullCfg* pCfg);
 CMagicService* FUN_1410a7630();
+
+// The part anchors of an entity (the 16 byte handle of gameobject.cpp's Unk_GoAnchorPtr; names invented, bound by VA).
+struct Unk_MagicAnchorPose { const void* FUN_140a01180(); };        // the position of the anchor
+struct Unk_MagicAnchor { char m_pad00[0xb4]; Unk_MagicAnchorPose m_kPose; };   // pose at +0xb4
+struct Unk_MagicAnchorPtr { void* m_pad; Unk_MagicAnchor* m_p; bool FUN_140a00660(int) const; Unk_MagicAnchor* FUN_140ae1940() const; };
+MS2_CHECK_SIZE(Unk_MagicAnchorPtr, 0x10);
+void FUN_140a00180(Unk_MagicAnchorPtr* pDst, void* pSrc);           // copy (adds a ref)
+void FUN_140a00490(Unk_MagicAnchorPtr* p);                          // release
+bool FUN_140a01900(ATL::CAtlArray<void*>* a);                       // IsEmpty
+unsigned long long FUN_140a01230(ATL::CAtlArray<void*>* a);         // GetCount
+void* FUN_140a010d0(ATL::CAtlArray<void*>* a, unsigned long long i);    // GetAt
+Unk_StreamPoint FUN_141b6e150(const void* pFloat3);                 // the anchor position as a Point3
 
 // @0x14145d5d0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -647,15 +676,38 @@ void CMagic::FUN_14145de80()
 MS2_REPLACE_METHOD(0x14145DE80, CMagic, FUN_14145de80, 794, 0xBB62665B);
 
 // The npc table row and npc object seen by the aim helper (MS2Ptr<Unk_NpcData> members bound by symbol, see uihpbar.cpp).
-class Unk_NpcData { public: bool FUN_1406cd200(int nFlag); };
+class Unk_NpcData { public: bool FUN_1406cd200(int nFlag); char m_pad00[0x70]; int m_nHitEffect; };    // +0x70 hit effect id
 template <> void MS2Ptr<Unk_NpcData>::Reference(Unk_NpcData* p);            // 0x1406d9f40
 template <> void MS2Ptr<Unk_NpcData>::Release();                            // 0x1406db080
 template <> MS2Ptr<Unk_NpcData>::~MS2Ptr();                                 // 0x1406d5390
 template <> Unk_NpcData* MS2Ptr<Unk_NpcData>::operator->() const;           // 0x140965990
-class Unk_MagicNpc { public: MS2Ptr<Unk_NpcData> FUN_141093270(); };
+class Unk_MagicNpc : public Unk_MagicEntity { public: MS2Ptr<Unk_NpcData> FUN_141093270(); };
 Unk_MagicNpc* FUN_140a38a00(Unk_MagicEntity* pEntity);                      // cast to class 0x6200028
 float FUN_14109ace0();                                                      // random in [-1, 1]
 extern Unk_StreamPoint DAT_143a08cf8;                                       // the up axis
+
+// ---- callees of the hit-effect spawner (unit-local; names invented) ----
+struct Unk_MagicConstValue { float FUN_1402bac70(); };
+struct Unk_MagicConstants { char m_pad00[0x13a0]; Unk_MagicConstValue m_hitRange; };      // +0x13a0 effect range
+Unk_MagicConstants* FUN_1401d3200();
+struct Unk_MagicHitRef { void* m_pad; Unk_MagicEntity* m_p; };       // 16 byte smart pointer to a hit entity
+Unk_MagicHitRef* FUN_140a006a0(void* pArray, long long nIndex);     // CAtlArray element
+Unk_MagicEntity* FUN_140965780(Unk_MagicHitRef* pRef);              // SmartPointer get
+void* FUN_140a53610(Unk_MagicEntity* pEntity);                      // cast to class 0x6200004
+class Unk_MagicPC;
+void* FUN_14096e110(Unk_MagicEntity* pEntity);                      // cast to the npc-side class (null for a player)
+Unk_MagicPC* FUN_140974230(Unk_MagicEntity* pEntity);               // cast to the player class
+void* FUN_1416561a0(Unk_MagicPC* pPC);                              // the equip set of the player
+struct Unk_MagicItemHandle { void* m_pad; void* m_p; };             // 16 byte item handle
+struct Unk_MagicItemData { char m_pad00[0x10c]; int m_nEffectId; }; // +0x10c effect id of the weapon
+void* FUN_1411e1860(void* pEquipSet, Unk_MagicItemHandle* pOut, int nSlot, int nA, int nB);    // equipped item of a slot
+void* FUN_1405a8e70(Unk_MagicItemHandle* pHandle);                  // handle.get
+void* FUN_1405a8ed0(Unk_MagicItemHandle* pHandle);
+void* FUN_1411dc7a0(void* pItem, Unk_MagicItemHandle* pOut);
+void* FUN_1401c0180(void* pHandle);
+Unk_MagicItemData* FUN_140527840(void* pItem);
+void FUN_1401bfde0(Unk_MagicItemHandle* pHandle);                   // release
+void FUN_1405a85f0(Unk_MagicItemHandle* pHandle);                   // release
 
 // @0x14145e1a0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -1015,6 +1067,49 @@ void CMagic::FUN_1414607e0()
 MS2_REPLACE_METHOD(0x1414607e0, CMagic, FUN_1414607e0, 496, 0x890BF44E);
 
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141464790
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_141464790(void* pHits, int nHits)
+{
+    if (FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId) != 1)
+        return;
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL)
+        return;
+    int nEffect = m_spSkill->FUN_141759050()->m_n1a0;
+    if (FUN_14096e110(pOwner) == NULL) {
+        Unk_MagicPC* pPC = FUN_140974230(pOwner);
+        if (pPC != NULL && nEffect == 0) {
+            Unk_MagicItemHandle kWeapon;
+            FUN_1411e1860(FUN_1416561a0(pPC), &kWeapon, 5, 6, 0);
+            if (FUN_1405a8e70(&kWeapon) != NULL) {
+                Unk_MagicItemHandle kItem;
+                FUN_1411dc7a0(FUN_1405a8ed0(&kWeapon), &kItem);
+                nEffect = FUN_140527840(FUN_1401c0180(&kItem))->m_nEffectId;
+                FUN_1401bfde0(&kItem);
+            }
+            FUN_1405a85f0(&kWeapon);
+        }
+    }
+    for (int i = 0; i < nHits; ++i) {
+        Unk_MagicEntity* pHit = FUN_140965780(FUN_140a006a0(pHits, i));
+        if (FUN_140a53610(pHit) == NULL) {
+            Unk_MagicNpc* pNpc = FUN_140a38a00(pHit);
+            if (pNpc == NULL) {
+                float fRange = FUN_1401d3200()->m_hitRange.FUN_1402bac70();
+                Unk_StreamPoint ptAt = pHit->vf18_GetPosition();
+                FUN_1403ed280()->FUN_1411a5580(nEffect, 1, 1, ptAt, fRange);
+            } else {
+                float fRange = FUN_1401d3200()->m_hitRange.FUN_1402bac70();
+                Unk_StreamPoint ptAt = pNpc->vf18_GetPosition();
+                MS2Ptr<Unk_NpcData> spData = pNpc->FUN_141093270();
+                FUN_1403ed280()->FUN_1411a5580(nEffect, spData->m_nHitEffect, 1, ptAt, fRange);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141464790, CMagic, FUN_141464790, 929, 0xE9CCCCA8);
+
 // @0x141464b40
 void CMagic::FUN_141464b40()
 {
@@ -1274,6 +1369,84 @@ unsigned CMagic::FUN_141467440()
 }
 MS2_REPLACE_METHOD(0x141467440, CMagic, FUN_141467440, 57, 0x3E76BE86);
 
+// @0x141466da0
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_141466da0(unsigned nNow, const Unk_MagicSkillRow* pRow)
+{
+    if (m_data.m_nPiercingAttackInterval == 0 || (unsigned)(m_n268 + m_data.m_nPiercingAttackInterval) > nNow)
+        return;
+    FUN_140188720(&m_map220);
+    m_n268 = nNow;
+    Unk_MagicTag* pTag = m_spSkill.operator->();
+    bool bLocal = FUN_14161ce60(FUN_1409f7c90(), pTag->m_nOwnerId) == 0;
+    if (bLocal) {
+        Unk_MagicXform kXform;
+        kXform.m_fScale = 1.0f;
+        kXform.m_translate = Unk_NiPoint3(m_ptCurrent);
+        FUN_1420849a0(&kXform.m_rotate);
+        Unk_MagicEffectReq kReq;
+        kReq.m_strName = pRow->m_str160;
+        kReq.m_nObject = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+        kReq.m_pXform = &kXform;
+        FUN_1403ed280()->FUN_1411a4a00(&kReq);
+    }
+    if (m_spSkill->FUN_141759050()->m_n34 != 0) {
+        COutPacket packet(0x20, 0);
+        packet.Encode1(1);
+        packet.Encode1(2);
+        packet.Encode8(m_spSkill->m_nTagId);
+        packet.Encode1(m_spSkill->m_b5c);
+        packet.Encode4(m_spSkill->m_n8c);
+        packet.Encode4(m_spSkill->m_n84);
+        packet.vfunc_o10_10(m_ptCurrent);
+        Unk_StreamPoint ptDir = DAT_143a08d08;
+        FUN_140a0b1f0(m_matRotation, &ptDir);
+        packet.vfunc_o10_10(ptDir);
+        FUN_140710590(packet);
+    }
+}
+
+MS2_REPLACE_METHOD(0x141466DA0, CMagic, FUN_141466da0, 848, 0x980F5959);
+
+// @0x141467100
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+int CMagic::FUN_141467100(Unk_MagicEntity* pEntity, Unk_StreamPoint* pOut)
+{
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL)
+        return 0;
+    ATL::CAtlArray<void*> kParts;
+    if (m_n534 != 0)
+        pEntity->vf28_CollectPartsB(&kParts);
+    if (FUN_140a01900(&kParts))
+        pEntity->vf27_CollectPartsA(&kParts);
+    if (FUN_140a01900(&kParts))
+        return 0;
+    float fMaxZ = m_ptStart.z + pRow->m_f9c + pRow->m_fb0;
+    if (m_data.FUN_14145c180())
+        fMaxZ = fMaxZ + m_data.m_ptControlEnd.z;
+    float fNearest = FLT_MAX;
+    Unk_StreamPoint ptNearest = DAT_143b01a60;
+    for (unsigned i = 0; i < FUN_140a01230(&kParts); ++i) {
+        Unk_MagicAnchorPtr spAnchor;
+        FUN_140a00180(&spAnchor, FUN_140a010d0(&kParts, i));
+        if (!spAnchor.FUN_140a00660(0)) {
+            Unk_StreamPoint ptAnchor = FUN_141b6e150(spAnchor.FUN_140ae1940()->m_kPose.FUN_140a01180());
+            if (fMaxZ < ptAnchor.z)
+                ptAnchor.z = fMaxZ;
+            float fDist = FUN_140966f00(m_ptCurrent, ptAnchor);
+            if (fDist < fNearest) {
+                ptNearest = ptAnchor;
+                fNearest = fDist;
+            }
+        }
+        FUN_140a00490(&spAnchor);
+    }
+    *pOut = ptNearest;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141467100, CMagic, FUN_141467100, 788, 0x479E08E3);
+
 // @0x141467420
 int CMagic::FUN_141467420()
 {
@@ -1394,12 +1567,58 @@ void CMagicModel::FUN_141467ed0()
 }
 MS2_REPLACE_METHOD(0x141467ED0, CMagicModel, FUN_141467ed0, 127, 0xF7EBF49E);
 
+// @0x141467dd0
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+int CMagicModel::FUN_141467dd0(unsigned long long nTag)
+{
+    if (m_spA->m_nTagId == nTag) {
+        if (m_spA->FUN_141759050()->m_n10c == 2)
+            return 0;
+        if (m_spMagic->m_nState == 1 && m_spMagic->m_data.m_nIgnoreCancelAtSpawnTime != 0)
+            return 0;
+        if (m_spMagic->m_nState == 0 || m_spMagic->m_nState == 1) {
+            if (FUN_14028d470(m_spMagic->m_data.m_fDelayTime, 0))
+                return 1;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141467DD0, CMagicModel, FUN_141467dd0, 240, 0x80C3DD27);
+
+// @0x141467b90
+void CMagicModel::FUN_141467b90()
+{
+    m_spMagic.get();
+}
+MS2_REPLACE_METHOD(0x141467B90, CMagicModel, FUN_141467b90, 31, 0x693D9C48);
+
 // @0x141467da0
 void CMagicModel::FUN_141467da0()
 {
     m_spMagic->FUN_141467420();
 }
 MS2_REPLACE_METHOD(0x141467DA0, CMagicModel, FUN_141467da0, 39, 0x0E5A1776);
+
+// @0x141467500
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagicModel::FUN_141467500(Unk_MagicTagPtr spSkill, Unk_MagicTagPtr spCaster, Unk_StreamPoint ptStart,
+    unsigned n530, unsigned n534, unsigned n53c)
+{
+    m_spMagic = new CMagic();
+    m_spA = spSkill;
+    m_spB = spCaster;
+    const Unk_MagicSkillRow* pRow = spSkill->FUN_141759050();
+    if (pRow == NULL)
+        return;
+    Unk_SocketPtr<CMagicData> spData = FUN_14145c300(pRow->m_nMagicId, m_spA->m_n84);
+    if (spData == NULL)
+        return;
+    Unk_StreamPoint ptCopy = ptStart;
+    if (m_spMagic->FUN_14145d5d0(Unk_MagicTagPtr(m_spA), Unk_MagicTagPtr(spCaster), spData.operator->(), ptCopy,
+            n530, n534, n53c) != 0)
+        FUN_1410a7630()->FUN_14146cbd0(Unk_SocketPtr<CMagicModel>(this));
+}
+MS2_REPLACE_METHOD(0x141467500, CMagicModel, FUN_141467500, 754, 0x907E8552);
 
 // @0x141467480
 CMagicModel::CMagicModel()
