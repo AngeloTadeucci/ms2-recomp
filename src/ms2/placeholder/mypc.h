@@ -10,6 +10,7 @@ class CEquipItem;
 struct Unk_PCEquipSet;
 struct Unk_StreamPoint;
 class UserUGCMapInfo;
+class CHomePrivilege;                             // commonfiles\homeprivilege.cpp
 template <class T> class Unk_BmPtr;               // blackmarketitemoption.h
 
 class MyPC : public PCBase
@@ -49,6 +50,7 @@ public:
     void FUN_1416634a0(__int64 nCharId);                    // PC member (scenestategame OnAddUser)
     int FUN_141527eb0();                                    // (scenestategame storage update)
     int FUN_14152e060();                                    // 0x14152e060 the id of the actor held (state 0x20), else 0 (scenestategame 0x79)
+    MS2Ptr<CHomePrivilege> FUN_140967010();                 // 0x140967010 the house privileges (+0x1628; scenestategame taxi)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };

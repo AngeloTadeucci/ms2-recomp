@@ -1080,7 +1080,7 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2c8 - 0xd8]; CString m_str2c8; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; char m_pad_360[0x5b0 - 0x360]; CString m_str5b0; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2c8 - 0xd8]; CString m_str2c8; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; CString m_str360; char m_pad_368[0x380 - 0x368]; CString m_str380; char m_pad_388[0x5b0 - 0x388]; CString m_str5b0; };
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
 int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
 class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
@@ -6114,6 +6114,7 @@ struct Unk_SSGNiPt3
 {
     Unk_SSGNiPt3(const NiPoint3& src);                      // 0x14027dcf0 NiPoint3 from efd::Point3
     Unk_SSGNiPt3(const Unk_StreamPoint& src);               // 0x14027dcf0 (the same ctor)
+    Unk_SSGNiPt3(const efd::Point3& src);                   // 0x14027dcf0 (the same ctor)
     float x, y, z;
 };
 struct Unk_SSGRot { float m[3][3]; };
@@ -6129,6 +6130,7 @@ void FUN_140a332d0(Unk_SSGXform* p);                        // NiTransform defau
 void FUN_14097faa0(Unk_SSGPt3* pDst, const Unk_SSGNiPt3& src);   // NiPoint3::operator=
 void FUN_140a33240(Unk_SSGRot* pDst, const Unk_EfdMatrix3* pSrc);   // NiMatrix3 from efd::Matrix3
 extern Unk_EfdMatrix3 DAT_143a09600;                        // identity rotation
+
 // ---- 0x63: interact objects of the field (create / update / remove, use results) --------------------------------
 MS2Ptr<CInteractObjectData> FUN_14051f670(int nId);          // the interact table row
 EntityWorldManager* FUN_1409670f0();
@@ -11909,6 +11911,7 @@ struct Unk_SSGEntListPtr
 {
     Unk_SSGEntList* get() const { return m_p; }
     Unk_SSGEntList* operator->() const { return m_p; }
+    bool operator==(Unk_SSGEntList* p) const { return m_p == p; }
     ~Unk_SSGEntListPtr() { Release(); }
     void Release()
     {
@@ -11935,6 +11938,124 @@ struct Unk_SSGEntListPtr
     void* m_00;
     Unk_SSGEntList* m_p;
 };
+// ---- taxi-station markers -----------------------------------------------------------------------------------------
+// The house privileges of the local player (MyPC +0x1628; commonfiles\homeprivilege.cpp).
+class CHomePrivilege : public CPtred
+{
+public:
+    int FUN_14050da30();                                    // the player may use the house taxi
+};
+// A property write saved while an entity's property cache is on (id, a heap copy of the value, its class id).
+struct Unk_PropertyCacheEntry
+{
+    unsigned m_id;
+    void* m_pValue;
+    unsigned m_type;
+};
+MS2_CHECK_SIZE(Unk_PropertyCacheEntry, 0x18);
+// A client entity with a property cache (egf::Entity subclass: +0xc8 caching on, +0xd0 the plain writes, +0xe0 the
+// keyed writes). The cached values are written back and freed by FUN_141749ed0.
+class Unk_SSGCachedEntity : public egf::Entity
+{
+public:
+    void FUN_14174a6a0(bool bCaching) { m_bCaching = bCaching; }   // 0x14174a6a0
+    void FUN_141749ed0();                                           // write the cached values back
+
+    bool m_bCaching;                                                        // +0xc8
+    efd::map<unsigned, Unk_PropertyCacheEntry> m_mapCache;                  // +0xd0
+    efd::map<unsigned, efd::map<efd::utf8string, Unk_PropertyCacheEntry> > m_mapKeyedCache;   // +0xe0
+};
+MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_bCaching, 0xc8);
+MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_mapCache, 0xd0);
+MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_mapKeyedCache, 0xe0);
+
+// MS2-FUNCTIONAL: code bytes match; the utf8string map's begin/end COMDATs pair with the in-range set<CString> copies
+// 0x14174b5a0/0x14174b8d0, the exe calls the folded out-of-range 0x1413f5e20/0x1413f7400.
+// @0x141749ed0
+void Unk_SSGCachedEntity::FUN_141749ed0()
+{
+    for (efd::map<unsigned, Unk_PropertyCacheEntry>::iterator it = m_mapCache.begin(); it != m_mapCache.end(); ++it)
+    {
+        SetPropertyValueUnsafe(it->second.m_id, it->second.m_pValue, it->second.m_type);
+        delete it->second.m_pValue;
+    }
+    m_mapCache.clear();
+    for (efd::map<unsigned, efd::map<efd::utf8string, Unk_PropertyCacheEntry> >::iterator it = m_mapKeyedCache.begin();
+         it != m_mapKeyedCache.end(); ++it)
+    {
+        efd::map<efd::utf8string, Unk_PropertyCacheEntry>& kKeyed = it->second;
+        for (efd::map<efd::utf8string, Unk_PropertyCacheEntry>::iterator itKey = kKeyed.begin(); itKey != kKeyed.end();
+             ++itKey)
+        {
+            SetPropertyValueUnsafe(itKey->second.m_id, itKey->first, itKey->second.m_pValue, itKey->second.m_type);
+            delete itKey->second.m_pValue;
+        }
+    }
+    m_mapKeyedCache.clear();
+}
+MS2_REPLACE_METHOD(0x141749ed0, Unk_SSGCachedEntity, FUN_141749ed0, 591, 0x17038293);
+
+// @0x141739450
+void CSceneStateGame::FUN_141739450(bool bFlag)
+{
+    Unk_SSGEntListPtr taxiStations = FUN_1403ed2d0()->FUN_141bd0420(0x85359406);
+    if (taxiStations == 0)
+        return;
+    MS2_ASSERT_AT(0x2088, taxiStations->GetCount() <= 1);
+    int bOpen = 0;
+    if (FUN_1409f24a0()->FUN_14085f730(DAT_143ab2870))
+    {
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        bool bHouseTaxi = pMyPC != 0 && pMyPC->FUN_140967010()->FUN_14050da30() != 0;
+        if (bHouseTaxi)
+            bOpen = 1;
+    }
+    else
+    {
+        bOpen = DAT_143ab3078.FUN_140408410(reinterpret_cast<const unsigned*>(&DAT_143ab2870)) >= 0;
+    }
+    for (POSITION pos = taxiStations->GetHeadPosition(); pos != 0; taxiStations->GetNext(pos))
+    {
+        efd::SmartPointer<egf::Entity> spEntity = taxiStations->GetAt(pos);
+        FUN_141739880();
+        efd::Point3 kPos;
+        Unk_SSGXform xf;
+        FUN_140a332d0(&xf);
+        spEntity->GetPropertyValue(0xfd95ca52, kPos);
+        xf.FUN_141d2fab0();
+        Unk_SSGNiPt3 kNiPos(kPos);
+        FUN_14097faa0(&xf.m_translate, kNiPos);
+        if (bFlag)
+        {
+            Unk_SSGEffectReq req;
+            req.m_strName = FUN_1401d31f0()->m_str380;
+            req.m_nType = 0;
+            req.m_pXform = &xf;
+            FUN_1403ed280()->FUN_1411a4a00(req);
+        }
+        if (bOpen)
+        {
+            static_cast<Unk_SSGCachedEntity*>(static_cast<egf::Entity*>(spEntity))->FUN_141749ed0();
+            Unk_SSGEffectReq req;
+            req.m_strName = FUN_1401d31f0()->m_str360;
+            req.m_nType = 0;
+            req.m_pXform = &xf;
+            m_nTaxiEffect = FUN_1403ed280()->FUN_1411a49c0(req);
+        }
+        else
+        {
+            efd::AssetID kAsset;
+            if (spEntity->GetPropertyValue(0x78cb6d8d, kAsset) == 0)
+            {
+                static_cast<Unk_SSGCachedEntity*>(static_cast<egf::Entity*>(spEntity))->FUN_14174a6a0(true);
+                spEntity->SetPropertyValue(0x770e5fc6, kAsset);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141739450, CSceneStateGame, FUN_141739450, 1057, 0x227E65F0);
+
+
 efd::ID128* FUN_140ae1be0(egf::Entity* pEntity);            // the entity's data file id
 void FUN_140ae1f60(efd::ID128* pId, efd::utf8string& strOut);   // the id as text
 void FUN_1401d3700(CString& str);                           // normalise a name
