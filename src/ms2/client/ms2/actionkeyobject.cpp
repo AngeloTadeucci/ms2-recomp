@@ -202,13 +202,6 @@ public:
     CString m_strTalkScript;                                // +0x460
 };
 MS2_CHECK_OFFSET(Unk_AkoNpcData, m_strTalkScript, 0x460);
-// The player's interact mode (PC +0x1240): while active it picks the kind of object to interact with.
-class Unk_PCInteractMode : public CPtred
-{
-public:
-    bool FUN_140743550();                                   // active
-    int FUN_140743710();                                    // the target kind
-};
 // A world game object as WorldService returns it (an npc here); only the slots used here are named.
 class Unk_WsC_GameObj
 {

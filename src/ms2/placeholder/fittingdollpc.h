@@ -23,6 +23,14 @@ class CMsTime;
 struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); void FUN_1411ea620(const CMsTime& kStart, const CMsTime& kEnd); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
 class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
+// The player's interact mode (PC +0x1240): while active it picks the kind of object to interact with (actionkeyobject.cpp).
+// Defined here because PC::FUN_140967420 copies the MS2Ptr inline.
+class Unk_PCInteractMode : public CPtred
+{
+public:
+    bool FUN_140743550();                                   // active
+    int FUN_140743710();                                    // the target kind
+};
 class PC : public PCBase {
     EE_DECLARE_CLASS1(PC, 0x06200003, PCBase);   // ClassInfo 0x143ae2e20 (setup COMDAT 0x1409f8020 in avatarpc; sb4)
 public:
@@ -107,7 +115,7 @@ public:
     class Unk_PCCubeCraft* FUN_141659700();                 // the cube craft controller
     class Unk_MyPCEmotion* FUN_14165f100();                 // the playing emotion (actionkeyobject.cpp)
     // @0x140967420
-    MS2Ptr<class Unk_PCInteractMode> FUN_140967420() { return m_spInteractMode; }   // COMDAT in actionkeyobject.cpp's range
+    MS2Ptr<Unk_PCInteractMode> FUN_140967420() { return m_spInteractMode; }   // COMDAT in actionkeyobject.cpp's range
     Unk_StreamPoint FUN_1416767d0();                        // PCBase member: the position (the ride's when riding; actionkeyobject.cpp)
     void FUN_141660000(__int64 nValue);
     void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
@@ -138,7 +146,7 @@ public:
     Unk_PCEquipSet m_kEquipDE0;                             // +0xde0 equip holder (FUN_1411e3de0)
     MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
     unsigned char unknownFD8[0x268];
-    MS2Ptr<class Unk_PCInteractMode> m_spInteractMode;      // +0x1240 (actionkeyobject.cpp)
+    MS2Ptr<Unk_PCInteractMode> m_spInteractMode;      // +0x1240 (actionkeyobject.cpp)
     unsigned char unknown1250[0x90];
 };
 MS2_CHECK_OFFSET(PC, m_kListD48, 0xd48);
