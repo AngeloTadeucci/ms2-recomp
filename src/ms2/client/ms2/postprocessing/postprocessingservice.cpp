@@ -16,13 +16,9 @@
 // MS2-PIN: ??_GOuterBlurRenderStep@@UEAAPEAXI@Z 0x1416a2500 ; prop
 // MS2-PIN: ??_GOverdrawRenderStep@@UEAAPEAXI@Z 0x1416a2810 ; unique
 // MS2-PIN: ??9?$SmartPointer@VNiRenderedTexture@@@efd@@QEBA_NPEAVNiRenderedTexture@@@Z 0x1416a2d80 ; unique
-// MS2-PIN: ??$?0AEAHAEAV?$SmartPointer@VPostProcessEffect@@@efd@@$0A@@?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@QEAA@AEAHAEAV?$SmartPointer@VPostProcessEffect@@@efd@@@Z 0x1416ac650 ; unique
-// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBII@std@@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@AEAU?$pair@$$CBII@1@1@Z 0x1416ad030 ; unique
-// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBII@std@@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBII@1@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@@Z 0x1416ad390 ; unique
 // MS2-PIN: ??$_Kfn@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@?$_Tmap_traits@HV?$SmartPointer@VPostProcessEffect@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@2@$0A@@std@@SAAEBHAEBU?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@1@@Z 0x1416ad7a0 ; unique
 // MS2-PIN: ??$forward@AEAV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@YAAEAV?$SmartPointer@VPostProcessEffect@@@efd@@AEAV12@@Z 0x1416adc10 ; prop
 // MS2-PIN: ??$forward@AEAH@std@@YAAEAHAEAH@Z 0x1416adc30 ; prop
-// MS2-PIN: ??$try_emplace@$$V@?$map@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@_N@1@$$QEAI@Z 0x1416adca0 ; unique
 // MS2-PIN: ??0?$SmartPointer@VPostProcessEffect@@@efd@@QEAA@AEBV01@@Z 0x1416ae420 ; prop
 // MS2-PIN: ??1InterpItem@NiGeomMorpherController@@QEAA@XZ 0x1416aeff0 ; prop
 // MS2-PIN: ??4?$SmartPointer@VNiAVObject@@@efd@@QEAAAEAV01@AEBV01@@Z 0x1416af580 ; unique
@@ -58,9 +54,16 @@
 // MS2-PIN: ?HandleMessage@?$MessageHandlerImpl@VPostProcessingService@@VSceneGraphRemovedMessage@ecr@@@efd@@UEAAXPEAVIBase@2@PEBVIMessage@2@VCategory@2@@Z 0x1416b1850 ; hand: exe vftable 0x142f52288
 // MS2-PIN: ??_GSceneGraphRemovedMessage@ecr@@UEAAPEAXI@Z 0x1416b0390 ; hand: exe vftable 0x142f51ff0
 // MS2-PIN: ?GetNumObjectsDrawn@OutlineRenderClick@@UEBAIXZ 0x1416b0df0 ; hand: exe vftable 0x142f52348
+// MS2-PIN: ??_GOutlineRenderClick@@UEAAPEAXI@Z 0x1416b02d0 ; hand: exe vftable 0x142f52348
+// MS2-PIN: ??1OutlineRenderClick@@UEAA@XZ 0x1416af150 ; hand: ??_G 0x1416b02d0 call site
 // MS2-PIN: ?AppendRenderView@NiViewRenderClick@@QEAAXPEAVNiRenderView@@@Z 0x1416b06b0 ; hand: this TU's inline copy
 // MS2-PIN: ?IncRefCount@PostProcessingService@@UEBAXXZ 0x1416b1c90 ; hand: byte-identical look-alikes
-// MS2-PIN: ?SetupClassInfo@ISystemService@efd@@SAXPEAVClassInfo@2@_K@Z 0x1409f30f0
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x1416ac600 ; hand: _Insert_nohint 0x1416ad390 call site
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1416ac6f0 ; hand: _Tree_comp_alloc ctor 0x1416ae5d0 call site
+// MS2-PIN: ??$?0HV?$SmartPointer@VPostProcessEffect@@@efd@@$0A@@?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@QEAA@$$QEAU?$pair@HV?$SmartPointer@VPostProcessEffect@@@efd@@@1@@Z 0x1416ac790 ; hand: _Construct1 0x1416ace00 call site
+// MS2-PIN: ??1SceneGraphRemovedMessage@ecr@@UEAA@XZ 0x1416af170 ; hand: ??_G 0x1416b0390 call site
+// MS2-PIN: ?ErrorMessage@_com_error@@QEBAPEBDXZ 0x1416b0810 ; hand: this TU's copy (FUN_1416a69a0 call site)
+// MS2-PIN: ??$format_arg@_WW4Unk_PPTexture@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4Unk_PPTexture@@@Z 0x1416ada90 ; hand: FormatCustomArg 0x1416adbb0 call site
 // MS2-PIN: ??4Unk_ShaderColor@@QEAAAEAV0@$$QEAV0@@Z 0x14169f1d0
 // MS2-PIN: ??4Unk_ShaderColor@@QEAAAEAV0@AEBV0@@Z 0x14169f200
 // MS2-PIN: ??4Unk_ShaderVec4@@QEAAAEAV0@AEBV0@@Z 0x14169f230
@@ -700,6 +703,12 @@ bool FadeInOutRenderStep::FUN_1416a0cd0(NiRenderClick* pkClick, void* pvData)
     return true;
 }
 
+// Empty; the message boxes call it right before PostQuitMessage (uimessagebox.cpp). Too short to hook.
+// @0x1416a0e70
+void FUN_1416a0e70()
+{
+}
+
 // @0x1416a0fb0
 void PostProcessingService::FUN_1416a0fb0(int nEvent)
 {
@@ -1105,6 +1114,26 @@ bool PostProcessEffect::vfunc_14() { return false; }
 // @0x1416a2ec0
 bool PostProcessEffect::vfunc_13() { return false; }
 
+// The UCRT's `static __inline memcpy_s` of this TU (unreferenced copy).
+// @0x1416a2ed0
+#pragma function(memset, memcpy)
+static __inline errno_t ms2_pps_memcpy_s(void* const d, size_t const dsz, void const* const s, size_t const ssz)
+{
+    if (ssz == 0) { return 0; }
+    { int e = !!(d != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+    if (s == NULL || dsz < ssz)
+    {
+        memset(d, 0, dsz);
+        { int e = !!(s != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+        { int e = !!(dsz >= ssz); if (!e) { errno = ERANGE; _invalid_parameter_noinfo(); return ERANGE; } }
+        return EINVAL;
+    }
+    memcpy(d, s, ssz);
+    return 0;
+}
+#pragma intrinsic(memset, memcpy)
+__declspec(selectany) extern errno_t(__cdecl* const ms2_pfnPpsMemcpyS)(void*, size_t, const void*, size_t) = &ms2_pps_memcpy_s;
+
 // ---- MotionBlurRenderStep
 
 // @0x1400fc470
@@ -1240,7 +1269,6 @@ CLogString* FUN_140166440();                                                // t
 void FUN_1401859c0(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pwszText);
 // The log with two format arguments.
 // @0x1416ac870
-// MS2-FUNCTIONAL: the exe formats the first argument through the by-reference (enum) MakeValue overload; the texture enum is not recovered
 template<class T, class U> inline void Unk_PPLog2(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pwszFormat,
     const T& kFirst, const U& kSecond)
 {
@@ -1637,7 +1665,7 @@ MS2_REPLACE_METHOD(0x1416a4570, PostProcessingService, FUN_1416a4570, 161, 0xDB7
 // @0x1416a4620
 bool PostProcessingService::FUN_1416a4620()
 {
-    return m_spProcessor == m_spDensity;
+    return m_spProcessor != m_spDensity;
 }
 MS2_REPLACE_METHOD(0x1416a4620, PostProcessingService, FUN_1416a4620, 53, 0x7A4B7694);
 
@@ -2150,7 +2178,7 @@ void PostProcessingService::FUN_1416aa450(int nClick, bool bActive)
 MS2_REPLACE_METHOD(0x1416aa450, PostProcessingService, FUN_1416aa450, 579, 0xAE9B339F);
 
 // @0x1416aa6a0
-void PostProcessingService::FUN_1416aa6a0(int nClick, bool bActive)
+void PostProcessingService::FUN_1416aa6a0(Unk_PPTexture nClick, bool bActive)
 {
     if (nClick >= 11 || !m_aspClicks[nClick])
         return;
@@ -2373,7 +2401,7 @@ void PostProcessingService::FUN_1416ab960()
             {
                 if (kStep.second)
                 {
-                    pkFrame->AppendRenderStep(kStep.second);
+                    pkFrame->RemoveRenderStep(kStep.second);
                     kStep.second->vfunc_16();
                     FUN_1416ac060(kStep.second);
                 }
@@ -2507,7 +2535,6 @@ void PostProcessingService::FUN_1416ac440(unsigned int uiWidth, unsigned int uiH
 MS2_REPLACE(0x1416ac440, PostProcessingService::FUN_1416ac440, 306, 0x04D746FF);
 
 // @0x1416a7570
-// MS2-FUNCTIONAL: byte-identical; NiColorA(float,float,float,float) resolves to the 0x14097f050 twin, the exe calls the 0x14097f1d0 copy
 void PostProcessingService::FUN_1416a7570()
 {
     ecr::RenderService* pkRenderService = m_pServiceManager->GetSystemServiceAs<ecr::RenderService>();
@@ -2548,7 +2575,7 @@ void PostProcessingService::FUN_1416a7570()
                 if (m_aspClicks[1] = FUN_1416a8600())
                 {
                     m_aspClicks[1]->SetActive(abActive[1]);
-                    m_aspClicks[1]->SetBackgroundColor(NiColorA(0.0f, 0.0f, 0.0f, 1.0f));
+                    m_aspClicks[1]->SetBackgroundColor(Unk_AfterImageColor(0.0f, 0.0f, 0.0f, 1.0f));
                     pkStep->AppendRenderClick(m_aspClicks[1]);
                 }
                 if (m_aspClicks[6] = FUN_1416a8e50())
@@ -2559,7 +2586,7 @@ void PostProcessingService::FUN_1416a7570()
                 if (m_aspClicks[8] = FUN_1416a92e0())
                 {
                     m_aspClicks[8]->SetActive(abActive[8]);
-                    m_aspClicks[8]->SetBackgroundColor(NiColorA(0.0f, 0.0f, 0.0f, 0.0f));
+                    m_aspClicks[8]->SetBackgroundColor(Unk_AfterImageColor(0.0f, 0.0f, 0.0f, 0.0f));
                     pkStep->AppendRenderClick(m_aspClicks[8]);
                 }
                 if (m_aspClicks[9] = FUN_1416a9a90())

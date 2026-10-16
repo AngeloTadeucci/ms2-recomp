@@ -50,10 +50,14 @@ public:
     static PostProcessingService* s_instance;       // 0x143ab3da0
 };
 
+// A pre-process render-click slot (m_aspClicks index); SetPreprocessRCActiveRef logs it as "texture={0}" through fmt's
+// enum (custom argument) path.
+enum Unk_PPTexture {};
+
 class PostProcessingService : public TSingleton<PostProcessingService>, public efd::ISystemService,
     public IWorldServiceCallback
 {
-    EE_DECLARE_CLASS1(PostProcessingService, 0x06100005, efd::ISystemService);
+    EE_DECLARE_CLASS1(PostProcessingService, 0x06100005, efd::IBase);
     EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
 public:
     PostProcessingService();                        // 0x1416a3020
@@ -111,9 +115,9 @@ public:
     bool FUN_1416aa8b0(NiRenderStep* pkStep);       // is the step one of the fade steps
     void FUN_1416aac60(NiAVObject* pkScene);        // remove a scene from the mirrored view
     CDepthOfFieldManager* FUN_1416aad00();          // m_spDoF
-    void FUN_1416aa6a0(int nClick, bool bActive);   // reference-counted SetActive of a pre-process click
+    void FUN_1416aa6a0(Unk_PPTexture eClick, bool bActive);   // SetPreprocessRCActiveRef: reference-counted SetActive of a pre-process click
     void FUN_1416aa950();                           // attach the reflection texture effect to the reflective nodes
-    void FUN_1416ab960();                           // append the steps to the active render frame
+    void FUN_1416ab960();                           // remove the steps from the active render frame
     static bool FUN_1416ac0b0(NiRenderClick* pkClick, void* pvData);   // save the background colour, clear to grey
     static bool FUN_1416ac150(NiRenderClick* pkClick, void* pvData);   // save the background colour, clear to pvData
     static bool FUN_1416ac1e0(NiRenderClick* pkClick, void* pvData);   // restore the background colour
@@ -140,8 +144,8 @@ public:
     static bool FUN_1416abac0(NiRenderStep* pkStep, void* pvData);   // post-processing callback: copy into the step's texture
 
     efd::SmartPointer<NiMaterial> m_aspMaterials[7];            // +0x30
-    efd::map<NiNode*, int> m_kMap68;                            // +0x68 (only constructed / destroyed)
-    efd::map<NiNode*, int> m_kMap78;                            // +0x78
+    efd::map<NiNodePtr, int> m_kMap68;                          // +0x68 (only constructed / destroyed)
+    efd::map<NiNodePtr, int> m_kMap78;                          // +0x78
     int m_iFrame;                                               // +0x88 (motion blur ping-pong frame)
     int m_aiRefCount[11];                                       // +0x8c
     efd::SmartPointer<NiViewRenderClick> m_aspClicks[11];       // +0xb8 (3 = mirrored, 7 = shimmer, 9 = outline)
