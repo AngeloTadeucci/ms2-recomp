@@ -125,6 +125,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2, int a3, Scaleform::GFx::Value a4);   // 0x140c6db60 (inline COMDAT, defined in uilongtermattendgiftdialog.cpp; a1/a2/a4 by value: the callee destroys them)
     Scaleform::GFx::Value Invoke(const char* szMethod, unsigned int a1, Scaleform::GFx::Value a2);   // 0x140e2b2d0 (inline COMDAT, defined in uiequipiconcontainer.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, CString a2, Scaleform::GFx::Value a3);   // 0x140e2b3d0 (inline COMDAT, defined in uiequipiconcontainer.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, int a2, bool a3);   // 0x140f8f850 (inline COMDAT, defined in uipartysearchdialog.cpp)
 
 protected:   // cr4: was private; derived AS helpers (ASCommonDepth) read the movie id and the value
     union {

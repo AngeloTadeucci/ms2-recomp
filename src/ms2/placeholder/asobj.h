@@ -24,6 +24,8 @@ public:
     void FUN_1409c1180(const char* szName, __int64 n);                   // set a 64-bit member
     void FUN_1409c48f0(const char* szName, short n);                     // set a short member
     void FUN_1409adbe0(const char* szName, Scaleform::GFx::Value v);     // set a member to a value
+    void FUN_140f8f970(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uipartysearchdialog.cpp)
+    void FUN_140f8fa10(const char* szName, unsigned int n);              // same, unsigned
     void FUN_1409c4a30(const char* szName, float f);                     // set a float member (UIRimLightDialog)
     void FUN_140e06d60(const char* szName, double d);                    // set a double member (UIRimLightDialog)
     void FUN_1409adc90(const char* szName, int n);                       // set an int member (item rank; UISnowmanEventDialog)
