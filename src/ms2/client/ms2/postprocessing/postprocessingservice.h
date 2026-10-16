@@ -84,8 +84,8 @@ public:
     LPDIRECT3DSURFACE9 FUN_1416a3cd0(const NiPixelFormat* pkFormat, unsigned int uiWidth, unsigned int uiHeight);
     PostProcessEffect* FUN_1416a3ec0();             // first active step
     efd::SmartPointer<NiRenderTargetGroup> FUN_1416a3fb0();
-    static bool FUN_1416a4000(NiRenderClick* pkClick, void* pvData);                    // re-point the mirrored view at the main camera
-    static bool FUN_1416a40c0(NiRenderClick* pkClick, void* pvData);                    // disable user clip planes
+    static bool FUN_1416a4000(NiRenderStep* pkStep, void* pvData);                    // re-point the mirrored view at the main camera
+    static bool FUN_1416a40c0(NiRenderStep* pkStep, void* pvData);                    // disable user clip planes
     void FUN_1416a4110(const ecr::SceneGraphAddedMessage* pMessage, efd::Category targetChannel);
     void FUN_1416a4240(const ecr::SceneGraphRemovedMessage* pMessage, efd::Category targetChannel);
     void FUN_1416a4350(const egf::EntityChangeMessage* pMessage, efd::Category targetChannel);   // 8196
@@ -126,6 +126,14 @@ public:
     void FUN_1416a0fb0(int nEvent);                 // queue an event (13 = fade-in finished)
     NiRenderedTexture* FUN_1416a23f0(int nIndex);   // m_aspTextures[nIndex]
     void FUN_1416a7050();                           // create the MRT targets
+    static void FUN_1416ac440(unsigned int uiWidth, unsigned int uiHeight);   // texel size + 9-tap blur offsets shader constants
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a8140();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a8600();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a8e50();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a92e0();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a97b0();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a9a90();
+    efd::SmartPointer<NiViewRenderClick> FUN_1416a9e20();
     void FUN_1416aaef0();                           // link the active effects into the post-process render step
     bool FUN_1416ac060(PostProcessEffect* pkEffect);   // (re)create the effect's output over the shared textures
     void FUN_1416abb30(NiTexture* pkTexture);       // copy the m_spTarget190 colour buffer into a texture

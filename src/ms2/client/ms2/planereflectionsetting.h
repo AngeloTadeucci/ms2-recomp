@@ -38,6 +38,8 @@ public:
     efd::Point3 m_vB;                               // +0x34
 
     bool FUN_1416b1d10() { return m_bEnable; }      // inline, emitted in postprocessingservice.cpp
+    efd::Point3& FUN_1416b0e20() { return m_vA; }    // inline, emitted in postprocessingservice.cpp
+    efd::Point3& FUN_1416b0de0() { return m_vB; }    // inline, emitted in postprocessingservice.cpp
 };
 MS2_CHECK_SIZE(CPlaneReflectionSetting, 0x40);
 MS2_CHECK_OFFSET(CPlaneReflectionSetting, m_bEnable, 0x24);

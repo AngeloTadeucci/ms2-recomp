@@ -53,6 +53,13 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@std@@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@std@@@2@XZ 0x1416b3990 ; unique
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$SmartPointer@VPostProcessEffect@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VPostProcessEffect@@@efd@@@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x1416b3a50 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ?HandleMessage@?$MessageHandlerImpl@VPostProcessingService@@VEntityChangeMessage@egf@@@efd@@UEAAXPEAVIBase@2@PEBVIMessage@2@VCategory@2@@Z 0x1416b0fd0 ; hand: byte-identical look-alikes
+// MS2-PIN: ?HandleMessage@?$MessageHandlerImpl@VPostProcessingService@@VSceneGraphAddedMessage@ecr@@@efd@@UEAAXPEAVIBase@2@PEBVIMessage@2@VCategory@2@@Z 0x1416b1410 ; hand: exe vftable 0x142f52268
+// MS2-PIN: ?HandleMessage@?$MessageHandlerImpl@VPostProcessingService@@VSceneGraphRemovedMessage@ecr@@@efd@@UEAAXPEAVIBase@2@PEBVIMessage@2@VCategory@2@@Z 0x1416b1850 ; hand: exe vftable 0x142f52288
+// MS2-PIN: ??_GSceneGraphRemovedMessage@ecr@@UEAAPEAXI@Z 0x1416b0390 ; hand: exe vftable 0x142f51ff0
+// MS2-PIN: ?GetNumObjectsDrawn@OutlineRenderClick@@UEBAIXZ 0x1416b0df0 ; hand: exe vftable 0x142f52348
+// MS2-PIN: ?AppendRenderView@NiViewRenderClick@@QEAAXPEAVNiRenderView@@@Z 0x1416b06b0 ; hand: this TU's inline copy
+// MS2-PIN: ?IncRefCount@PostProcessingService@@UEBAXXZ 0x1416b1c90 ; hand: byte-identical look-alikes
 // MS2-PIN: ?SetupClassInfo@ISystemService@efd@@SAXPEAVClassInfo@2@_K@Z 0x1409f30f0
 // MS2-PIN: ??4Unk_ShaderColor@@QEAAAEAV0@$$QEAV0@@Z 0x14169f1d0
 // MS2-PIN: ??4Unk_ShaderColor@@QEAAAEAV0@AEBV0@@Z 0x14169f200
@@ -86,6 +93,9 @@
 #include <NiRenderObject.h>
 #include <ecr/CoreRuntimeMessages.h>
 #include "ms2/client/ms2/mirrored3drenderview.h"
+#include "ms2/client/ms2/ms2renderlistprocessor.h"
+#include "ms2/client/ms2/ms2overdrawprocessor.h"
+#include "ms2/client/ms2/ms2materialswapprocessor.h"
 #include "ms2/client/ms2/postprocessing/postprocesssetting.h"
 #include "ms2/client/ms2/planereflectionsetting.h"
 #include "ms2/client/ms2/ms2texturedensityprocessor.h"
@@ -119,6 +129,7 @@
 #include <egf/Entity.h>
 #include <egf/FlatModel.h>
 #include <egf/FlatModelManager.h>
+#include "ms2/placeholder/ms2renderprocessors.h"
 #include "hook/ms2hook.h"
 
 extern NiFixedString DAT_143ae53e0;                         // "gakNormalSampleOffsets" (global shader constant name)
@@ -1513,7 +1524,7 @@ MS2_REPLACE_METHOD(0x1416a3fb0, PostProcessingService, FUN_1416a3fb0, 67, 0x78A7
 
 // Re-point the shimmer click's mirrored view at the main view's camera.
 // @0x1416a4000
-bool PostProcessingService::FUN_1416a4000(NiRenderClick* pkClick, void* pvData)
+bool PostProcessingService::FUN_1416a4000(NiRenderStep* pkStep, void* pvData)
 {
     if (DAT_143ae4660 == 0 || (NiViewRenderClick*)DAT_143ae4660->m_aspClicks[7] == 0)
         return false;
@@ -1526,7 +1537,7 @@ bool PostProcessingService::FUN_1416a4000(NiRenderClick* pkClick, void* pvData)
 }
 
 // @0x1416a40c0
-bool PostProcessingService::FUN_1416a40c0(NiRenderClick* pkClick, void* pvData)
+bool PostProcessingService::FUN_1416a40c0(NiRenderStep* pkStep, void* pvData)
 {
     NiDX9RenderState* pkState = NiDX9Renderer::GetRenderer()->GetRenderState();
     pkState->SetRenderState(D3DRS_CLIPPLANEENABLE, 0);
@@ -2297,3 +2308,469 @@ bool PostProcessingService::FUN_1416ac060(PostProcessEffect* pkEffect)
     return pkEffect->vfunc_15(m_nFormat, m_aspTextures);
 }
 MS2_REPLACE_METHOD(0x1416ac060, PostProcessingService, FUN_1416ac060, 70, 0x9865683C);
+
+void FUN_141773ed0(Unk_PPSecondView* pkSoftParticles);      // (softparticlesmanager.cpp) re-bind the soft-particle depth texture (m_aspTextures[1])
+extern NiFixedString DAT_143ae5328;                         // texel-size shader constant name
+extern NiFixedString DAT_143ae5330;                         // horizontal 9-tap offsets
+extern NiFixedString DAT_143ae5338;                         // vertical 9-tap offsets
+
+// @0x1416a7050
+void PostProcessingService::FUN_1416a7050()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    NiRenderTargetGroup* pkRTG = pkRenderer->GetDefaultRenderTargetGroup();
+    unsigned int uiWidth = pkRTG->GetWidth(0);
+    unsigned int uiHeight = pkRTG->GetHeight(0);
+    FUN_1416ac440(uiWidth, uiHeight);
+
+    NiTexture::FormatPrefs kPrefs;
+    for (int i = 0; i < 11; i++)
+    {
+        if (m_aspTextures[i])
+            m_aspTextures[i] = 0;
+    }
+
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(8);
+    m_aspTextures[1] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    FUN_141773ed0(FUN_1409a8b00()->FUN_1409a5160());
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(2);
+    m_aspTextures[2] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(0xd);
+    m_aspTextures[3] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    m_aspTextures[4] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(m_nFormat);
+    m_aspTextures[5] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(2);
+    m_aspTextures[6] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(2);
+    m_aspTextures[7] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+
+    m_spTextureEffect = NiNew NiTextureEffect;
+    m_spTextureEffect->SetEffectTexture(m_aspTextures[7]);
+    m_spTextureEffect->SetTextureFilter(NiTexturingProperty::FILTER_BILERP);
+    m_spTextureEffect->SetTextureClamp(NiTexturingProperty::CLAMP_S_CLAMP_T);
+    m_spTextureEffect->SetTextureType(NiTextureEffect::ENVIRONMENT_MAP);
+    m_spTextureEffect->SetTextureCoordGen(static_cast<NiTextureEffect::CoordGenType>(5));   // MS2 screen-space mode (not in the SDK enum)
+
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(8);
+    m_aspTextures[8] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(2);
+    m_aspTextures[9] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+    kPrefs.m_ePixelLayout = static_cast<NiTexture::FormatPrefs::PixelLayout>(2);
+    m_aspTextures[10] = NiRenderedTexture::Create(uiWidth, uiHeight, pkRenderer, kPrefs, 0x100);
+}
+MS2_REPLACE_METHOD(0x1416a7050, PostProcessingService, FUN_1416a7050, 1299, 0x5577C7E9);
+
+// @0x1416ac440
+void PostProcessingService::FUN_1416ac440(unsigned int uiWidth, unsigned int uiHeight)
+{
+    float afTexel[2] = { 1.0f / (float)uiWidth, 1.0f / (float)uiHeight };
+    FUN_1409a5770(DAT_143ae5328, afTexel, 2);
+
+    const int iTaps = 9;
+    float afOffsetsX[iTaps];
+    float afOffsetsY[iTaps];
+    for (int i = 0; i < iTaps; i++)
+    {
+        int iOffset = i - 4;
+        afOffsetsX[i] = (float)iOffset / (float)uiWidth;
+        afOffsetsY[i] = (float)iOffset / (float)uiHeight;
+    }
+    FUN_1409a5770(DAT_143ae5330, afOffsetsX, iTaps);
+    FUN_1409a5770(DAT_143ae5338, afOffsetsY, iTaps);
+}
+MS2_REPLACE(0x1416ac440, PostProcessingService::FUN_1416ac440, 306, 0x04D746FF);
+
+// @0x1416a7570
+// MS2-FUNCTIONAL: byte-identical; NiColorA(float,float,float,float) resolves to the 0x14097f050 twin, the exe calls the 0x14097f1d0 copy
+void PostProcessingService::FUN_1416a7570()
+{
+    ecr::RenderService* pkRenderService = m_pServiceManager->GetSystemServiceAs<ecr::RenderService>();
+    if (pkRenderService != 0)
+    {
+        NiRenderFrame* pkFrame = pkRenderService->GetActiveRenderSurface()->GetRenderFrame();
+        if (pkFrame != 0)
+        {
+
+            bool abActive[11] = { false };
+            for (int i = 0; i < 11; i++)
+            {
+                abActive[i] = false;
+                if (m_aspClicks[i])
+                {
+                    abActive[i] = m_aspClicks[i]->GetActive();
+                    m_aspClicks[i] = 0;
+                }
+            }
+
+            NiRenderStep* pkOldStep = pkFrame->GetRenderStepByName("PreprocessRenderStep");
+            if (pkOldStep != 0)
+                pkFrame->RemoveRenderStep(pkOldStep);
+
+            FUN_1416a7050();
+
+            NiDefaultClickRenderStep* pkStep = NiNew NiDefaultClickRenderStep;
+            if (pkStep != 0)
+            {
+                pkStep->SetName("PreprocessRenderStep");
+                pkFrame->AppendRenderStep(pkStep);
+
+                if (m_aspClicks[3] = FUN_1416a8140())
+                {
+                    pkStep->AppendRenderClick(m_aspClicks[3]);
+                    m_aspClicks[3]->SetActive(abActive[3]);
+                }
+                if (m_aspClicks[1] = FUN_1416a8600())
+                {
+                    m_aspClicks[1]->SetActive(abActive[1]);
+                    m_aspClicks[1]->SetBackgroundColor(NiColorA(0.0f, 0.0f, 0.0f, 1.0f));
+                    pkStep->AppendRenderClick(m_aspClicks[1]);
+                }
+                if (m_aspClicks[6] = FUN_1416a8e50())
+                {
+                    m_aspClicks[6]->SetActive(abActive[6]);
+                    pkStep->AppendRenderClick(m_aspClicks[6]);
+                }
+                if (m_aspClicks[8] = FUN_1416a92e0())
+                {
+                    m_aspClicks[8]->SetActive(abActive[8]);
+                    m_aspClicks[8]->SetBackgroundColor(NiColorA(0.0f, 0.0f, 0.0f, 0.0f));
+                    pkStep->AppendRenderClick(m_aspClicks[8]);
+                }
+                if (m_aspClicks[9] = FUN_1416a9a90())
+                {
+                    m_aspClicks[9]->SetActive(abActive[9]);
+                    pkStep->AppendRenderClick(m_aspClicks[9]);
+                }
+                if (m_aspClicks[10] = FUN_1416a9e20())
+                {
+                    m_aspClicks[10]->SetActive(abActive[10]);
+                    pkStep->AppendRenderClick(m_aspClicks[10]);
+                }
+            }
+
+            if (m_spMirroredStep)
+                pkFrame->RemoveRenderStep(m_spMirroredStep);
+            FUN_1416aa240();
+
+            if (m_spMirroredStep = NiNew NiDefaultClickRenderStep())
+            {
+                m_spMirroredStep->SetName("MirroredRenderStep");
+                pkFrame->AppendRenderStep(m_spMirroredStep);
+                if (m_aspClicks[7] = FUN_1416a97b0())
+                {
+                    m_aspClicks[7]->SetActive(abActive[7]);
+                    m_spMirroredStep->AppendRenderClick(m_aspClicks[7]);
+                }
+                m_spMirroredStep->SetPreProcessingCallbackFunc(FUN_1416a4000, 0);
+                m_spMirroredStep->SetPostProcessingCallbackFunc(FUN_1416a40c0, 0);
+                m_spMirroredStep->SetActive(true);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416a7570, PostProcessingService, FUN_1416a7570, 3005, 0x5D8FCE97);
+
+extern NiFixedString DAT_143ae5260;     // motion-blur velocity material name
+
+// @0x1416a8140
+// The motion-blur velocity click: renders the main view with the velocity material into the ping-pong frame targets
+// built over the motion-blur history textures (3/4).
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8140()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    NiViewRenderClick* pkClick = NiNew NiViewRenderClick;
+    if (pkClick)
+    {
+        pkClick->SetName("VelocityRenderClick");
+        for (int i = 0; i < 2; i++)
+        {
+            if (m_aspFrameTargets[i])
+            {
+                FUN_1416aade0(m_aspFrameTargets[i]);
+                m_aspFrameTargets[i] = 0;
+            }
+            if (m_aspTextures[i + 3])
+            {
+                Ni2DBuffer* pkBuffer = m_aspTextures[i + 3]->GetBuffer();
+                NiDepthStencilBuffer* pkDepth = NiDepthStencilBuffer::CreateCompatible(pkBuffer, pkRenderer);
+                if (pkDepth == 0)
+                    return 0;
+                m_aspFrameTargets[i] = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, pkDepth);
+                if (!m_aspFrameTargets[i])
+                    return 0;
+            }
+        }
+        m_iFrame = 1;
+        if (m_aspFrameTargets[m_iFrame])
+        {
+            pkClick->SetRenderTargetGroup(m_aspFrameTargets[m_iFrame]);
+            pkClick->SetClearAllBuffers(true);
+            pkClick->AppendRenderView(FUN_1413f9a70());
+            NiMaterialPtr spMaterial = NiMaterial::GetMaterial(DAT_143ae5260);
+            if (!spMaterial)
+                return 0;
+            MS2VelocityMaterialSwapProcessor* pkProcessor = NiNew MS2VelocityMaterialSwapProcessor(spMaterial, 0xffffffff);
+            pkProcessor->FUN_14135e060(1);
+            pkClick->SetProcessor(pkProcessor);
+            pkClick->SetPreProcessingCallbackFunc(FUN_1416ac240, this);
+            pkClick->SetPostProcessingCallbackFunc(FUN_1416ac2e0, this);
+            return pkClick;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a8140, PostProcessingService, FUN_1416a8140, 1198, 0x9DA5D7D5);
+
+// @0x1416a97b0
+// The shimmer source click: renders a mirrored copy of the main view into m_spTarget178.
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a97b0()
+{
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
+    {
+        spClick->SetName("MirroredRenderClick");
+        spClick->SetRenderTargetGroup(m_spTarget178);
+        spClick->SetClearAllBuffers(true);
+        Ni3DRenderView* pkMainView = FUN_1413f9a70();
+        CMirrored3DRenderView* pkView = NiNew CMirrored3DRenderView(pkMainView->GetCamera(),
+            pkMainView->GetCullingProcess(), pkMainView->GetAlwaysUseCameraViewport());
+        spClick->AppendRenderView(pkView);
+        spClick->SetProcessor(NiNew MS2RenderListProcessor);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a97b0, PostProcessingService, FUN_1416a97b0, 729, 0xCC1298A7);
+
+extern NiColorA DAT_143a09680;          // all-zero clear colour
+
+// @0x1416a9a90
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// The overdraw accumulation click: renders the main view with the overdraw processor into texture 9.
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9a90()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    if (!m_aspTextures[9])
+        return 0;
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
+    {
+        spClick->SetName("AccumRenderClick");
+        Ni2DBuffer* pkBuffer = m_aspTextures[9]->GetBuffer();
+        NiRenderTargetGroupPtr spTarget = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, true, true);
+        if (!spTarget)
+            return 0;
+        spClick->SetRenderTargetGroup(spTarget);
+        spClick->SetClearAllBuffers(true);
+        spClick->AppendRenderView(FUN_1413f9a70());
+        MS2OverdrawProcessor* pkProcessor = NiNew MS2OverdrawProcessor;
+        spClick->SetProcessor(pkProcessor);
+        spClick->SetPreProcessingCallbackFunc(FUN_1416ac150, &DAT_143a09680);
+        spClick->SetPostProcessingCallbackFunc(FUN_1416ac1e0, 0);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a9a90, PostProcessingService, FUN_1416a9a90, 896, 0x26CEBED6);
+
+// @0x1416a9e20
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// The outline click: renders the outlined objects with MS2OutlinePreProcessor into texture 10.
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9e20()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    if (!m_aspTextures[10])
+        return 0;
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew OutlineRenderClick())
+    {
+        spClick->SetName("OutlineRenderClick");
+        Ni2DBuffer* pkBuffer = m_aspTextures[10]->GetBuffer();
+        NiRenderTargetGroupPtr spTarget = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, true, true);
+        spClick->SetRenderTargetGroup(spTarget);
+        spClick->SetClearAllBuffers(true);
+        spClick->AppendRenderView(FUN_1413f9a70());
+        efd::SmartPointer<MS2OutlinePreProcessor> spProcessor = NiNew MS2OutlinePreProcessor;
+        spClick->SetProcessor(spProcessor);
+        spClick->SetPreProcessingCallbackFunc(FUN_1416ac150, &DAT_143a09680);
+        spClick->SetPostProcessingCallbackFunc(FUN_1416ac1e0, 0);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a9e20, PostProcessingService, FUN_1416a9e20, 878, 0xCA30F9C3);
+
+// @0x1416a8e50
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// The shimmer click: renders the shimmering objects with MS2ShimmerSortProcessor into texture 6 (m_spTarget170).
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8e50()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    FUN_1416aade0(m_spTarget170);
+    m_spTarget170 = 0;
+    if (!m_aspTextures[6])
+        return 0;
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
+    {
+        spClick->SetName("ShimmerhRenderClick");
+        Ni2DBuffer* pkBuffer = m_aspTextures[6]->GetBuffer();
+        NiDepthStencilBufferPtr spDepth = NiDepthStencilBuffer::CreateCompatible(pkBuffer, pkRenderer);
+        if (!spDepth)
+            return 0;
+        m_spTarget170 = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, spDepth);
+        if (!m_spTarget170)
+            return 0;
+        spClick->SetRenderTargetGroup(m_spTarget170);
+        spClick->SetClearAllBuffers(true);
+        spClick->AppendRenderView(FUN_1413f9a70());
+        efd::SmartPointer<MS2ShimmerSortProcessor> spProcessor = NiNew MS2ShimmerSortProcessor;
+        spClick->SetProcessor(spProcessor);
+        spClick->SetPreProcessingCallbackFunc(FUN_1416ac0b0, this);
+        spClick->SetPostProcessingCallbackFunc(FUN_1416ac1e0, this);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a8e50, PostProcessingService, FUN_1416a8e50, 1149, 0x10C60E57);
+
+extern NiFixedString DAT_143ae51f0;     // glow material name
+int FUN_1414cffc0(NiRenderObject* pkObject);    // glow material-swap predicate
+
+// @0x1416a92e0
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// The glow click: renders the glowing objects with the glow material into texture 8.
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a92e0()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    if (!m_aspTextures[8])
+        return 0;
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
+    {
+        spClick->SetName("GlowRenderClick");
+        Ni2DBuffer* pkBuffer = m_aspTextures[8]->GetBuffer();
+        NiDepthStencilBufferPtr spDepth = NiDepthStencilBuffer::CreateCompatible(pkBuffer, pkRenderer);
+        if (!spDepth)
+            return 0;
+        NiRenderTargetGroupPtr spTarget = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, spDepth);
+        if (!spTarget)
+            return 0;
+        spClick->SetRenderTargetGroup(spTarget);
+        spClick->SetClearAllBuffers(true);
+        spClick->AppendRenderView(FUN_1413f9a70());
+        NiMaterialPtr spMaterial = NiMaterial::GetMaterial(DAT_143ae51f0);
+        if (!spMaterial)
+            return 0;
+        MS2MaterialSwapProcessor* pkProcessor = NiNew MS2MaterialSwapProcessor(spMaterial, FUN_1414cffc0);
+        pkProcessor->FUN_1414cfbc0(0);
+        pkProcessor->DisableOutlineColor();
+        spClick->SetProcessor(pkProcessor);
+        spClick->SetPreProcessingCallbackFunc(FUN_1416ac150, &DAT_143a09680);
+        spClick->SetPostProcessingCallbackFunc(FUN_1416ac1e0, 0);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a92e0, PostProcessingService, FUN_1416a92e0, 1223, 0x392779DD);
+
+extern NiFixedString DAT_143ae5210;     // depth material name (static objects)
+extern NiFixedString DAT_143ae5220;     // depth material name (skinned objects)
+extern NiFixedString DAT_143ae5228;     // depth material name (alpha-tested objects)
+int FUN_1414d0120(NiRenderObject* pkObject);    // depth material-swap predicates
+int FUN_1414cfef0(NiRenderObject* pkObject);
+int FUN_1414d00b0(NiRenderObject* pkObject);
+
+// @0x1416a8600
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// The depth click: renders the scene depth with three predicate-selected depth materials into texture 1.
+efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8600()
+{
+    NiRenderer* pkRenderer = NiRenderer::GetRenderer();
+    if (!m_aspTextures[1])
+        return 0;
+    if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
+    {
+        spClick->SetName("DepthRenderClick");
+        Ni2DBuffer* pkBuffer = m_aspTextures[1]->GetBuffer();
+        NiDepthStencilBufferPtr spDepth = NiDepthStencilBuffer::CreateCompatible(pkBuffer, pkRenderer);
+        if (!spDepth)
+            return 0;
+        NiRenderTargetGroupPtr spTarget = NiRenderTargetGroup::Create(pkBuffer, pkRenderer, spDepth);
+        if (!spTarget)
+            return 0;
+        spClick->SetRenderTargetGroup(spTarget);
+        spClick->SetClearAllBuffers(true);
+        spClick->AppendRenderView(FUN_1413f9a70());
+        spClick->SetPreProcessingCallbackFunc(FUN_1416ac150, &DAT_143a09680);
+        spClick->SetPostProcessingCallbackFunc(FUN_1416ac1e0, 0);
+        NiMaterialPtr spSkinned = NiMaterial::GetMaterial(DAT_143ae5220);
+        if (!spSkinned)
+            return 0;
+        NiMaterialPtr spAlpha = NiMaterial::GetMaterial(DAT_143ae5228);
+        if (!spAlpha)
+            return 0;
+        NiMaterialPtr spStatic = NiMaterial::GetMaterial(DAT_143ae5210);
+        if (!spStatic)
+            return 0;
+        std::vector<NiPointer<MaterialSwapper> > kSwappers;
+        kSwappers.push_back(NiNew MaterialSwapper(FUN_1414d0120, spStatic));
+        kSwappers.push_back(NiNew MaterialSwapper(FUN_1414cfef0, spSkinned));
+        kSwappers.push_back(NiNew MaterialSwapper(FUN_1414d00b0, spAlpha));
+        MS2MaterialSwapProcessor* pkProcessor = NiNew MS2MaterialSwapProcessor(kSwappers);
+        pkProcessor->FUN_1414cfbc0(0);
+        spClick->SetProcessor(pkProcessor);
+        return spClick;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416a8600, PostProcessingService, FUN_1416a8600, 2118, 0xAE544DEE);
+
+// @0x1416aa950
+// MS2-FUNCTIONAL: the exe keeps the GetObjectByName result in an extra slot and uses jne/jmp for the cast test; locals swapped
+// Turn the mirrored (plane reflection) view on: mirror the main view's scenes and attach the reflection texture
+// effect to every entity's "PlaneReflection" node.
+void PostProcessingService::FUN_1416aa950()
+{
+    if (!m_aspClicks[7])
+        return;
+    CMirrored3DRenderView* pkView = NiDynamicCast(CMirrored3DRenderView, m_aspClicks[7]->GetRenderViews().GetHead());
+    if (!pkView)
+        return;
+    pkView->RemoveAllScenes();
+    if (!m_spTextureEffect)
+        return;
+    m_spTextureEffect->DetachAllAffectedNodes();
+    if (!FUN_1409a8b10()->FUN_1409a8ac0()->FUN_1416b0b20())
+        return;
+    if (m_spReflection)
+        pkView->SetMirrorPoints((const NiPoint3&)m_spReflection->FUN_1416b0e20(),
+            (const NiPoint3&)m_spReflection->FUN_1416b0de0());
+    pkView->RemoveAllScenes();
+    Ni3DRenderView* pkMainView = FUN_1413f9a70();
+    if (pkMainView)
+    {
+        NiTPointerList<NiAVObjectPtr>& kScenes = pkMainView->GetScenes();
+        NiTListIterator kPos = kScenes.GetHeadPos();
+        while (kPos)
+        {
+            NiAVObject* pkScene = kScenes.GetNext(kPos);
+            pkView->AppendScene(pkScene);
+        }
+        egf::EntityManager::EntityMap::const_iterator kIter = FUN_1409670f0()->GetFirstEntityPos();
+        egf::Entity* pEntity = 0;
+        while (FUN_1409670f0()->GetNextEntity(kIter, pEntity))
+        {
+            NiNode* pkRoot = NiDynamicCast(NiNode, FUN_141b6efc0(pEntity));
+            if (!pkRoot)
+                continue;
+            NiAVObject* pkObject = pkRoot->GetObjectByName("PlaneReflection");
+            NiNode* pkNode;
+            if (pkObject && (pkNode = NiDynamicCast(NiNode, pkObject)) != 0)
+            {
+                m_spTextureEffect->AttachAffectedNode(pkNode);
+                pkObject->UpdateEffects();
+            }
+        }
+    }
+    m_b210 = true;
+}
+MS2_REPLACE_METHOD(0x1416aa950, PostProcessingService, FUN_1416aa950, 775, 0x502A26EE);
