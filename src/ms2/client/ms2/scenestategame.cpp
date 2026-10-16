@@ -1,0 +1,1004 @@
+// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). CSceneStateGame: the in-field scene state and its field
+// packet handlers (see scenestategame.h). The units.tsv range 0x141703a70-0x14174bd70 holds six objs; the other five
+// (ridee, uirimlightdialog, rpgcameramode, scalemodifier, scenestatebase) are their own units.
+// MS2-UNIT: client\ms2\scenestategame.cpp
+// MS2-RANGE: 0x14170bda0-0x14174bd70 .text$mn
+// MS2-RANGE: 0x1400ff860-0x140100050 .text$di
+// MS2-RANGE: 0x142cb5fd0-0x142cb6450 .text$yd
+// MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
+#include "ms2/placeholder/ms2stdafx.h"
+#include "scenestategame.h"
+#include "networkservice.h"
+#include "ms2/ms2recover.h"
+#include "hook/ms2hook.h"
+#include "ms2/placeholder/cinpacket.h"
+#include "ms2/placeholder/coutpacket.h"
+#include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/unk_1402a9d70.h"
+#include "ms2/placeholder/mypc.h"
+#include "ms2/placeholder/uidialog.h"
+#include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
+#include <efd/Helpers.h>
+
+// ---- singletons and callees (names inferred; unit-local stand-ins) -----------------------------------------------
+CNetworkService* FUN_140714f90();
+
+// The world/field manager (FUN_1403ed2d0).
+class Unk_SSGWorld
+{
+public:
+    void FUN_141bbae40(IWorldServiceCallback* cb);          // register a callback
+    void FUN_141bbae80(IWorldServiceCallback* cb);          // unregister it
+    void FUN_141bbc580(int a, int b);
+    MyPC* FUN_141bd0cc0();                                  // the local player actor
+    int FUN_141bd98d0();                                    // current field id
+    void FUN_141bd9c20(CInPacket& packet);
+};
+Unk_SSGWorld* FUN_1403ed2d0();
+
+// The UI manager (FUN_1403ed2b0).
+class Unk_SSGUIMgr
+{
+public:
+    void FUN_141add040(int nId);
+    void FUN_141adc050();
+    void FUN_141ad93b0();
+    MS2Ptr<UIObject> FUN_141adcea0(int nId);
+};
+Unk_SSGUIMgr* FUN_1403ed2b0();
+
+class Unk_SSGGuildMgr
+{
+public:
+    void FUN_1413bc1f0(__int64 nGuildId, CStringW strName);
+    void FUN_1413bcd10();
+};
+Unk_SSGGuildMgr* FUN_1403ed290();
+
+class Unk_SSGEffectMgr
+{
+public:
+    void FUN_1411a6060(int nHandle);                        // remove an effect
+};
+Unk_SSGEffectMgr* FUN_1403ed280();
+
+class Unk_SSGOption
+{
+public:
+    void FUN_140a1f7f0(bool bInField);
+    void FUN_140a1f8a0();
+    void FUN_140a1f970(const CString& strKey, const CString& strValue);
+};
+Unk_SSGOption* FUN_140d8ee90();
+
+class Unk_SSGInput
+{
+public:
+    void FUN_140ad1ef0();
+    void FUN_140ad1da0(unsigned int nMsg, int wParam, int lParam);
+};
+Unk_SSGInput* FUN_140953f30();
+
+class Unk_SSGKeyState { public: int FUN_1422aeed0(int n); };
+Unk_SSGKeyState* FUN_14025e7a0();
+class Unk_SSGKeyboard { public: bool FUN_14116d950(int nKey, int a, int b); bool FUN_14116d9c0(int nKey, int a, int b); };
+Unk_SSGKeyboard* FUN_14025e7c0();
+
+class Unk_SSGQuery { public: int FUN_140a18070(); void FUN_140aeb1a0(); };
+Unk_SSGQuery* FUN_1409478c0();
+
+// OnEnter/OnLeave service calls
+class Unk_143a09680 { public: void* m_a; void* m_b; };
+class Unk_1409879 : public Unk_143a09680 { };
+Unk_1409879 FUN_140987930(const void*);
+extern char DAT_143a09680[];
+void* FUN_140aae430();
+void FUN_141489ff0(void*, Unk_143a09680);
+void* FUN_14086d260();
+double FUN_141473280(void*);
+void* FUN_140c7a250();
+void FUN_140db8eb0(void*);
+void* FUN_140931510();
+void FUN_140d9f040(void*);
+void FUN_140d9f0c0(void*);
+void* FUN_140e800e0();
+void FUN_140aad0d0(void*);
+void FUN_140aadd70(void*);
+void* FUN_14015a050();
+void FUN_140ceac00(void*);
+void* FUN_1409eed70();
+void FUN_140ad68a0(void*);
+void* FUN_14052d220();
+void FUN_1418894d0(void*);
+void FUN_141889150(void*);
+void* FUN_1409670d0();
+void FUN_14162b790(void*);
+void* FUN_1409a8b00();
+void FUN_1409a4090(void*);
+
+// Reconnect (as CSceneStateMulti/CSceneStateMove::OnUpdate)
+extern CString DAT_143ab2a48;
+extern unsigned short DAT_143ab2848;
+extern int DAT_1439f4a78;
+extern int DAT_143ab285c;
+extern int DAT_143ab2860;
+extern unsigned char DAT_143ab284b;
+extern void (*DAT_143b03490)(short, unsigned char, const char*);
+extern unsigned char DAT_1430c3b20;
+CString FUN_14016a600(const wchar_t*, int);
+CStringW FUN_14062b4f0(CStringW, const int&);
+CStringW FUN_1408116a0(int, const int&);
+void* FUN_141540270(int);
+void FUN_1419e0050(void*, const CStringW&);
+void FUN_141b6fcf0(const CStringW&, const CStringW&, int);
+
+// The player's sub actors (FUN_141662440: ride/pet slots 0..2); slot 126 is their per-frame update.
+class Unk_SSGSubActor : public PCBase
+{
+public:
+    virtual void vfunc_124();
+    virtual void vfunc_125();
+    virtual void vfunc_126();
+};
+class Unk_SSGRidee;
+Unk_SSGRidee* FUN_1416764a0(MyPC* pPC);
+void FUN_141706650(Unk_SSGRidee* pRidee, int n);
+void FUN_141524a80(MyPC* pPC, int n);
+Unk_SSGSubActor* FUN_141662440(MyPC* pPC, int nSlot);
+
+// OnPacket direct dispatch targets
+extern char DAT_143ab2d80[];
+void FUN_140de3480(void* pMgr, CInPacket& packet);
+class Unk_SSGArcade { public: void FUN_140b8c260(CInPacket& packet); };
+Unk_SSGArcade* FUN_140ee0d10();
+void FUN_140ceab50(void* pMgr, CInPacket& packet);
+void FUN_140ad5f00(void* pMgr, CInPacket& packet);
+class Unk_SSGDialog4edc { public: void FUN_1412a53e0(CInPacket& packet); };
+Unk_SSGDialog4edc* FUN_140ce84f0(int nId);
+class Unk_SSGSlotMgr { public: void FUN_141b83750(CInPacket& packet); };
+Unk_SSGSlotMgr* FUN_1409eed90();
+
+// The dialogs this unit looks up by id (GetDialog<T> instances 0x141742310..0x141743690).
+class UINoticeDialog : public UIDialog
+{
+public:
+    void FUN_141009680(CInPacket& packet);
+};
+
+template <class T> T* Unk_SSGGetDialog(int nId)
+{
+    if (FUN_1403ed2b0())
+    {
+        MS2Ptr<UIObject> p = FUN_1403ed2b0()->FUN_141adcea0(nId);
+        if (p.get())
+            return dynamic_cast<T*>((UIObject*)p);
+    }
+    return 0;
+}
+
+// ---- statics (exe .di order) -----------------------------------------------------------------------------------
+class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
+
+EE_IMPLEMENT_CONCRETE_CLASS_INFO(CSceneStateGame);
+
+static CStringW s_confirmChangeCharName(L"confirmChangeCharName");
+static CStringW s_individualArenaJoin(L"individualArenaJoin");
+static CStringW s_maintenanceExit(L"maintenanceExit");
+static CStringW s_recallconfirm(L"recallconfirm");
+static CStringW s_startbypass(L"startbypass");
+static CStringW s_useBindEquipItem(L"useBindEquipItem");
+static CString s_sort8[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd"};
+static CString s_sort7[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_skill = "skill";
+static CString s_stun = "stun";
+static Unk_Handle1401cd100 s_handle(0);
+static Unk_1402a9d70 s_condition(17, 0.75f, 0.25f, 2.25f, 10);
+static UICommon::CMyPCKeyInputController s_keyInput;
+static CString s_jobCode = "jobCode";
+static CString s_sortValue = "sortValue";
+static CString s_tabIndex = "tabIndex";
+static CString s_noticeBattleHp10 = "notice_battle_hp_10percent";
+static CString s_sound02100201 = "02100201";
+static CString s_sound02100200 = "02100200";
+static CString s_sound02100199 = "02100199";
+static CString s_pcBuyHouse = "PC_buy_house";
+static CString s_systemFieldWar = "System_FieldWar";
+static CString s_telescopeFind = "Telescope_Find";
+static CString s_guildBattleApply = "guildBattle_Apply";
+static CString s_noticeWarningBag = "system_notice_error_warningBag";
+static CString s_noticeWarningDanger = "system_notice_warningDanger";
+static CString s_noticeWarningNoBuild = "system_notice_error_warningNoBuild";
+static CString s_systemKillSlayer = "System_KillSlayer";
+static CString s_summonCash = "Summon_Cash";
+static CString s_systemTaxiFind = "system_Taxi_Find";
+static CString s_ugcBuyland = "ugc_buyland";
+static CString s_ugcRemoveblock = "ugc_removeblock";
+static CString s_ugcRotateblock = "ugc_rotateblock";
+static CString s_ugcSellland = "ugc_sellland";
+static CString s_ugcSetblock = "ugc_setblock";
+
+// @0x14170bda0
+CSceneStateGame::CSceneStateGame()
+{
+    m_f20 = 0;
+    m_nOpcode = 0;
+    m_nTaxiEffect = 0;
+    m_b18 = true;
+}
+
+// @0x14170be40
+CSceneStateGame::~CSceneStateGame()
+{
+}
+
+// @0x14170be90
+int CSceneStateGame::vfunc_15()
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14170be90, CSceneStateGame, vfunc_15, 11, 0x30025ED0);
+
+// @0x14170beb0
+// MS2-FUNCTIONAL: the exe keeps the 24-byte FUN_140987930 result slot pointer in a stack temp before the call (same as CSceneStateMove/Multi::OnEnter)
+void CSceneStateGame::OnEnter(int nPrevState)
+{
+    CSceneStateBase::OnEnter(nPrevState);
+    FUN_1403ed2d0()->FUN_141bbae40(this);
+    m_f20 = FUN_141473280(FUN_14086d260());
+    FUN_141489ff0(FUN_140aae430(), static_cast<const Unk_143a09680&>(FUN_140987930(DAT_143a09680)));
+    FUN_140d8ee90()->FUN_140a1f7f0(true);
+    FUN_140db8eb0(FUN_140c7a250());
+    m_bReconnecting = false;
+    m_nRetry = 0;
+    m_reconnectTimer.FUN_1408687f0();
+    FUN_1403ed2b0()->FUN_141add040(0x4e32);
+    FUN_140d9f040(FUN_140931510());
+}
+MS2_REPLACE_METHOD(0x14170beb0, CSceneStateGame, OnEnter, 270, 0x562E95A4);
+
+// @0x14170bfd0
+void CSceneStateGame::OnLeave(int nNextState)
+{
+    CSceneStateBase::OnLeave(nNextState);
+    FUN_140aad0d0(FUN_140e800e0());
+    FUN_140d9f0c0(FUN_140931510());
+    FUN_140ceac00(FUN_14015a050());
+    FUN_140ad68a0(FUN_1409eed70());
+    FUN_1418894d0(FUN_14052d220());
+    FUN_1403ed2d0()->FUN_141bbae80(this);
+    FUN_1403ed2b0()->FUN_141adc050();
+    FUN_1403ed2d0()->FUN_141bbc580(0, 0);
+    FUN_14162b790(FUN_1409670d0());
+    FUN_140d8ee90()->FUN_140a1f7f0(false);
+    FUN_1409a4090(FUN_1409a8b00());
+}
+MS2_REPLACE_METHOD(0x14170bfd0, CSceneStateGame, OnLeave, 220, 0x6782486F);
+
+// @0x14170c0c0
+void CSceneStateGame::OnUpdate(double fTime)
+{
+    CSceneStateBase::OnUpdate(fTime);
+    if (m_bReconnecting)
+    {
+        if (m_nRetry < 5)
+        {
+            if (m_reconnectTimer.FUN_140868c00() != 0)
+            {
+                if (FUN_140714f90()->FUN_1415384e0() == 0)
+                {
+                    FUN_140714f90()->FUN_1415383a0(DAT_143ab2a48, DAT_143ab2848, 1, 1, 0);
+                    m_nRetry = m_nRetry + 1;
+                    CStringW text = FUN_14062b4f0(CStringW(L"s_reconnect_to_server"), m_nRetry);
+                    void* loading = FUN_141540270(0x3ed);
+                    if (loading)
+                        FUN_1419e0050(loading, text);
+                }
+                m_reconnectTimer.FUN_140868750(10000);
+            }
+        }
+        else if (m_nRetry == 5 && m_reconnectTimer.FUN_140868c00() != 0)
+        {
+            m_reconnectTimer.FUN_1408687f0();
+            m_nRetry = 6;
+            if (DAT_143b03490)
+                DAT_143b03490(1, DAT_1430c3b20, efd::LogHelper(FUN_14016a600(FUN_1408116a0(0x20f, 7), 0)));
+            FUN_140d86260()->vfunc_58(0x20f, 7);
+            {
+                CStringW title(L"MS2");
+                FUN_141b6fcf0(FUN_1408116a0(0x20f, 7), title, 0);
+            }
+            TerminateProcess(GetCurrentProcess(), 2);
+        }
+    }
+    MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPC != 0)
+    {
+        Unk_SSGRidee* pRidee = FUN_1416764a0(pPC);
+        if (pRidee != 0)
+            FUN_141706650(pRidee, 0);
+        else
+            FUN_141524a80(pPC, 0);
+        for (unsigned __int64 i = 0; i < 3; i++)
+        {
+            Unk_SSGSubActor* pSub = FUN_141662440(pPC, (int)i);
+            if (pSub != 0)
+                pSub->vfunc_126();
+        }
+    }
+    FUN_140d8ee90()->FUN_140a1f8a0();
+    FUN_140953f30()->FUN_140ad1ef0();
+    if (FUN_140e800e0() != 0)
+        FUN_140aadd70(FUN_140e800e0());
+    FUN_14173fe20();
+}
+MS2_REPLACE_METHOD(0x14170c0c0, CSceneStateGame, OnUpdate, 1244, 0x2C40A545);
+
+// @0x14170c5b0
+void CSceneStateGame::OnPacket(CInPacket& packet)
+{
+    CSceneStateBase::OnPacket(packet);
+    m_nOpcode = packet.FUN_14070fe80();
+    switch (m_nOpcode)
+    {
+    case 0x9:
+        FUN_14170dc90(packet);
+        break;
+    case 0x15:
+        FUN_14170dd60(packet);
+        break;
+    case 0x7d:
+        FUN_14170e800(packet);
+        break;
+    case 0x16:
+        FUN_14170f930(packet);
+        break;
+    case 0x19:
+        FUN_14170fc70(packet);
+        break;
+    case 0x17:
+        FUN_14170fda0(packet);
+        break;
+    case 0x18:
+        FUN_141711dc0(packet);
+        break;
+    case 0x1c:
+        FUN_141712690(packet);
+        break;
+    case 0x7a:
+        FUN_141712710(packet);
+        break;
+    case 0x1f:
+        FUN_141712a90(packet);
+        break;
+    case 0x20:
+        FUN_141712fb0(packet);
+        break;
+    case 0xce:
+        FUN_1417132b0(packet);
+        break;
+    case 0x21:
+        FUN_141713fb0(packet);
+        break;
+    case 0x22:
+        FUN_140de3480(&DAT_143ab2d80, packet);
+        break;
+    case 0x23:
+        FUN_141715bd0(packet);
+        break;
+    case 0x24:
+        FUN_141716200(packet);
+        break;
+    case 0x25:
+        FUN_141716680(packet);
+        break;
+    case 0x26:
+        FUN_141716b60(packet);
+        break;
+    case 0x27:
+        FUN_141716d10(packet);
+        break;
+    case 0x28:
+        FUN_141717000(packet);
+        break;
+    case 0x29:
+        FUN_141717560(packet);
+        break;
+    case 0x2a:
+        FUN_141717140(packet);
+        break;
+    case 0x30:
+        FUN_141717340(packet);
+        break;
+    case 0x2b:
+        FUN_141711e70(packet);
+        break;
+    case 0x2c:
+        FUN_141712340(packet);
+        break;
+    case 0x2d:
+        FUN_141712420(packet);
+        break;
+    case 0x3c:
+        FUN_141717b40(packet);
+        break;
+    case 0x40:
+        FUN_1417187b0(packet);
+        break;
+    case 0x41:
+        FUN_141718b80(packet);
+        break;
+    case 0x2e:
+        FUN_1417176b0(packet);
+        break;
+    case 0x2f:
+        FUN_141717580(packet);
+        break;
+    case 0x34:
+        FUN_14171a900(packet);
+        break;
+    case 0x33:
+        FUN_14171a730(packet);
+        break;
+    case 0x35:
+        FUN_14171aa90(packet);
+        break;
+    case 0x38:
+        FUN_14171aec0(packet);
+        break;
+    case 0xae:
+        FUN_14171b380(packet);
+        break;
+    case 0x37:
+        FUN_14171ab00(packet);
+        break;
+    case 0x39:
+        FUN_14171b630(packet);
+        break;
+    case 0x3a:
+        FUN_14171b750(packet);
+        break;
+    case 0x117:
+        FUN_14171bad0(packet);
+        break;
+    case 0x3b:
+        FUN_14171bd90(packet);
+        break;
+    case 0x32:
+        FUN_14171a6c0(packet);
+        break;
+    case 0x4b:
+        FUN_141719a30(packet);
+        break;
+    case 0x48:
+        FUN_14171ee80(packet);
+        break;
+    case 0x49:
+        FUN_14171f8a0(packet);
+        break;
+    case 0x3d:
+        FUN_14171c0b0(packet);
+        break;
+    case 0x47:
+        FUN_141720480(packet);
+        break;
+    case 0x130:
+        FUN_141720c60(packet);
+        break;
+    case 0x4c:
+        FUN_141720e50(packet);
+        break;
+    case 0x4e:
+        FUN_141721270(packet);
+        break;
+    case 0x4d:
+        FUN_1417212a0(packet);
+        break;
+    case 0x55:
+        FUN_141718cf0(packet);
+        break;
+    case 0x56:
+        FUN_1417195f0(packet);
+        break;
+    case 0x57:
+        FUN_1417197c0(packet);
+        break;
+    case 0x5a:
+        FUN_141719a60(packet);
+        break;
+    case 0x5b:
+        FUN_14171a2e0(packet);
+        break;
+    case 0x58:
+        FUN_141719840(packet);
+        break;
+    case 0x5c:
+        FUN_14171a5f0(packet);
+        break;
+    case 0x59:
+        FUN_141719990(packet);
+        break;
+    case 0x4f:
+        FUN_1417212d0(packet);
+        break;
+    case 0x50:
+        if (FUN_140ee0d10() != 0)
+            FUN_140ee0d10()->FUN_140b8c260(packet);
+        break;
+    case 0x5d:
+        FUN_1417215a0(packet);
+        break;
+    case 0x36:
+        FUN_141721940(packet);
+        break;
+    case 0xfa:
+        FUN_14173b080(packet);
+        break;
+    case 0x3e:
+        FUN_141718150(packet);
+        break;
+    case 0x3f:
+        FUN_141718680(packet);
+        break;
+    case 0x5f:
+        FUN_141721a30(packet);
+        break;
+    case 0x54:
+        FUN_141721cd0(packet);
+        break;
+    case 0x60:
+        FUN_141722f70(packet);
+        break;
+    case 0x61:
+        FUN_141721c50(packet);
+        break;
+    case 0x62:
+        FUN_141721c90(packet);
+        break;
+    case 0x64:
+        FUN_141722fb0(packet);
+        break;
+    case 0x65:
+        FUN_141723050(packet);
+        break;
+    case 0x66:
+        FUN_141723260(packet);
+        break;
+    case 0x68:
+        FUN_141723410(packet);
+        break;
+    case 0x69:
+        FUN_141723670(packet);
+        break;
+    case 0x6a:
+        FUN_141728110(packet);
+        break;
+    case 0x67:
+        FUN_1417232a0(packet);
+        break;
+    case 0x70:
+        FUN_141723330(packet);
+        break;
+    case 0x71:
+        FUN_141728c20(packet);
+        break;
+    case 0x73:
+        FUN_141729250(packet);
+        break;
+    case 0x74:
+        FUN_141729ce0(packet);
+        break;
+    case 0x75:
+        FUN_14172a1c0(packet);
+        break;
+    case 0x76:
+        FUN_14172a7b0(packet);
+        break;
+    case 0x77:
+        FUN_14172a850(packet);
+        break;
+    case 0x79:
+        FUN_14172a8f0(packet);
+        break;
+    case 0x7b:
+        FUN_14172b350(packet);
+        break;
+    case 0x6e:
+        FUN_14172c170(packet);
+        break;
+    case 0x63:
+        FUN_14172d0f0(packet);
+        break;
+    case 0x42:
+        FUN_14172f030(packet);
+        break;
+    case 0x43:
+        FUN_14172f1c0(packet);
+        break;
+    case 0x44:
+        FUN_14172f210(packet);
+        break;
+    case 0x45:
+        FUN_14172f480(packet);
+        break;
+    case 0x7e:
+        FUN_14172f500(packet);
+        break;
+    case 0x7f:
+        FUN_141730920(packet);
+        break;
+    case 0x80:
+        FUN_141731470(packet);
+        break;
+    case 0x81:
+        FUN_141731610(packet);
+        break;
+    case 0x83:
+        FUN_1417316d0(packet);
+        break;
+    case 0x86:
+        FUN_141731730(packet);
+        break;
+    case 0x89:
+        FUN_141731160(packet);
+        break;
+    case 0x94:
+        FUN_141731190(packet);
+        break;
+    case 0x95:
+        FUN_141731350(packet);
+        break;
+    case 0x96:
+        FUN_141731ac0(packet);
+        break;
+    case 0xdb:
+        FUN_141731af0(packet);
+        break;
+    case 0xc:
+        FUN_141731b20(packet);
+        break;
+    case 0x8c:
+        FUN_141731c10(packet);
+        break;
+    case 0xb6:
+        FUN_141732350(packet);
+        break;
+    case 0x9d:
+        FUN_141732ac0(packet);
+        break;
+    case 0x9e:
+        FUN_141732af0(packet);
+        break;
+    case 0x97:
+        FUN_141732b20(packet);
+        break;
+    case 0x9b:
+        FUN_141733140(packet);
+        break;
+    case 0x9f:
+        FUN_141733440(packet);
+        break;
+    case 0xa1:
+        FUN_141733660(packet);
+        break;
+    case 0xa2:
+        FUN_1417337c0(packet);
+        break;
+    case 0xa3:
+        FUN_141733850(packet);
+        break;
+    case 0xa6:
+        FUN_141736880(packet);
+        break;
+    case 0xa8:
+        FUN_141736940(packet);
+        break;
+    case 0x1a:
+        FUN_141737360(packet);
+        break;
+    case 0xaa:
+        FUN_1417373d0(packet);
+        break;
+    case 0xab:
+        FUN_141739910(packet);
+        break;
+    case 0xac:
+        FUN_141739e40(packet);
+        break;
+    case 0xb0:
+        FUN_141733b30(packet);
+        break;
+    case 0xb1:
+        FUN_141733e40(packet);
+        break;
+    case 0xb2:
+        FUN_140ceab50(FUN_14015a050(), packet);
+        break;
+    case 0x137:
+        FUN_140ad5f00(FUN_1409eed70(), packet);
+        break;
+    case 0xb5:
+        FUN_141733f50(packet);
+        break;
+    case 0xb7:
+        FUN_1417340f0(packet);
+        break;
+    case 0xb9:
+        FUN_1417343c0(packet);
+        break;
+    case 0xba:
+        FUN_1417343f0(packet);
+        break;
+    case 0xbc:
+        FUN_141734530(packet);
+        break;
+    case 0xbd:
+        {
+            Unk_SSGDialog4edc* pDlg = FUN_140ce84f0(0x4edc);
+            if (pDlg != 0)
+                pDlg->FUN_1412a53e0(packet);
+        }
+        break;
+    case 0xbe:
+        FUN_141734930(packet);
+        break;
+    case 0xbf:
+        FUN_141734950(packet);
+        break;
+    case 0xc1:
+        FUN_141734b20(packet);
+        break;
+    case 0xc2:
+        FUN_141734b70(packet);
+        break;
+    case 0xc3:
+        FUN_141734bc0(packet);
+        break;
+    case 0xc4:
+        FUN_141734c70(packet);
+        break;
+    case 0xc5:
+        FUN_141734ca0(packet);
+        break;
+    case 0xd8:
+        FUN_141734e00(packet);
+        break;
+    case 0xc7:
+        FUN_1417353b0(packet);
+        break;
+    case 0xca:
+        FUN_1417353e0(packet);
+        break;
+    case 0xcb:
+        FUN_141735410(packet);
+        break;
+    case 0xcd:
+        FUN_141735440(packet);
+        break;
+    case 0xd1:
+        FUN_141737d60(packet);
+        break;
+    case 0xcf:
+        {
+            UINoticeDialog* pDlg = Unk_SSGGetDialog<UINoticeDialog>(0x4ee9);
+            if (pDlg != 0)
+                pDlg->FUN_141009680(packet);
+        }
+        break;
+    case 0xd3:
+        FUN_141737db0(packet);
+        break;
+    case 0xd6:
+        FUN_1417380c0(packet);
+        break;
+    case 0xd7:
+        FUN_141738120(packet);
+        break;
+    case 0xdc:
+        FUN_141738290(packet);
+        break;
+    case 0xdd:
+        FUN_141738380(packet);
+        break;
+    case 0xe8:
+        FUN_141738430(packet);
+        break;
+    case 0xe7:
+        FUN_141738ad0(packet);
+        break;
+    case 0xea:
+        FUN_141738b40(packet);
+        break;
+    case 0xeb:
+        FUN_141739f90(packet);
+        break;
+    case 0xec:
+        FUN_14173a0d0(packet);
+        break;
+    case 0x101:
+        FUN_14173a0f0(packet);
+        break;
+    case 0xe9:
+        FUN_14173a370(packet);
+        break;
+    case 0xf1:
+        FUN_14173a420(packet);
+        break;
+    case 0xf2:
+        FUN_14173a5b0(packet);
+        break;
+    case 0xf3:
+        FUN_14173a5e0(packet);
+        break;
+    case 0xf4:
+        FUN_14173a720(packet);
+        break;
+    case 0xf8:
+        FUN_14173a990(packet);
+        break;
+    case 0xf7:
+        FUN_141735dd0(packet);
+        break;
+    case 0xf9:
+        FUN_141736240(packet);
+        break;
+    case 0xfb:
+        FUN_14173b1d0(packet);
+        break;
+    case 0xfd:
+        FUN_14173b220(packet);
+        break;
+    case 0xfe:
+        FUN_14173b380(packet);
+        break;
+    case 0x103:
+        FUN_14173b420(packet);
+        break;
+    case 0x105:
+        FUN_14173b5a0(packet);
+        break;
+    case 0x106:
+        FUN_14173c090(packet);
+        break;
+    case 0x113:
+        FUN_1403ed2d0()->FUN_141bd9c20(packet);
+        break;
+    case 0x111:
+        FUN_14173c7a0(packet);
+        break;
+    case 0x115:
+        FUN_14173c870(packet);
+        break;
+    case 0x118:
+        FUN_14173ce30(packet);
+        break;
+    case 0x11a:
+        FUN_14173d180(packet);
+        break;
+    case 0x11b:
+        FUN_14173d2e0(packet);
+        break;
+    case 0x11c:
+        FUN_14173d4d0(packet);
+        break;
+        break;  // the exe keeps a dead jmp here (a removed case's leftover break)
+    case 0x120:
+        FUN_14173ddf0(packet);
+        break;
+    case 0x121:
+        FUN_14173de10(packet);
+        break;
+    case 0x91:
+        FUN_14173def0(packet);
+        break;
+    case 0x11f:
+        FUN_14173dfd0(packet);
+        break;
+    case 0x126:
+        FUN_14173e440(packet);
+        break;
+    case 0xef:
+        FUN_14173e4b0(packet);
+        break;
+    case 0xf5:
+        FUN_14173e510(packet);
+        break;
+    case 0x128:
+        FUN_1409eed90()->FUN_141b83750(packet);
+        break;
+    case 0x12b:
+        FUN_14173e5b0(packet);
+        break;
+    case 0x12c:
+        FUN_14173f0c0(packet);
+        break;
+    case 0x12e:
+        FUN_14173f1a0(packet);
+        break;
+    case 0x12f:
+        FUN_14173f280(packet);
+        break;
+    case 0xde:
+        FUN_14173f550(packet);
+        break;
+    case 0x131:
+        FUN_14173f7c0(packet);
+        break;
+    case 0x135:
+        FUN_14173f810(packet);
+        break;
+    case 0x136:
+        FUN_14173f860(packet);
+        break;
+    case 0x138:
+        FUN_14173fc00(packet);
+        break;
+    case 0x139:
+        FUN_14173fc40(packet);
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x14170c5b0, CSceneStateGame, OnPacket, 4075, 0x85D9EB98);
+
+// @0x14170d9f0
+void CSceneStateGame::vfunc_1(int nParam)
+{
+    {
+        COutPacket out(0xf, 0);
+        out.Encode4(FUN_1403ed2d0()->FUN_141bd98d0());
+        FUN_140710590(out);
+    }
+    FUN_141889150(FUN_14052d220());
+    {
+        COutPacket out(0x38, 0);
+        out.Encode1(0x12);
+        out.Encode4(nParam);
+        FUN_140710590(out);
+    }
+    FUN_141739450(false);
+    if (DAT_143ab285c != 0 && DAT_143ab2860 == 3)
+    {
+        DAT_143ab285c = 0;
+        DAT_143ab284b = 0;
+    }
+}
+
+// @0x14170daf0
+void CSceneStateGame::vfunc_4(int)
+{
+    FUN_141739880();
+    if (DAT_1439f4a78 == 1)
+    {
+        m_bReconnecting = true;
+        m_nRetry = 0;
+        m_reconnectTimer.FUN_140868750(10000);
+        FUN_140714f90()->FUN_1415383a0(DAT_143ab2a48, DAT_143ab2848, 1, 1, 0);
+    }
+}
+
+// @0x14170dbc0
+int CSceneStateGame::vfunc_14()
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14170dbc0, CSceneStateGame, vfunc_14, 11, 0x30025ED0);
+
+// @0x14170dbe0
+void CSceneStateGame::OnWndMessage(unsigned int nMsg, int wParam, int lParam)
+{
+    if (nMsg == 0x203)
+    {
+        if (FUN_14025e7a0()->FUN_1422aeed0(2) != 0)
+            return;
+        if (FUN_1409478c0()->FUN_140a18070() != 0)
+            FUN_1409478c0()->FUN_140aeb1a0();
+    }
+    else if (nMsg == 0x200)
+    {
+        if (FUN_14025e7a0()->FUN_1422aeed0(2) != 0)
+            return;
+    }
+    FUN_140953f30()->FUN_140ad1da0(nMsg, wParam, lParam);
+}
+MS2_REPLACE_METHOD(0x14170dbe0, CSceneStateGame, OnWndMessage, 155, 0x19D25A81);
