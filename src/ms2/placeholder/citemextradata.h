@@ -22,3 +22,26 @@ private:
     void* unknown38;void* unknown40;void* unknown48;void* unknown50;
 };
 MS2_CHECK_SIZE(CItemExtraData,0x58);
+
+// The extra-data subclasses CItemData::FUN_14053e6c0 allocates per item kind; only their sizes and constructors are known.
+class CDecalExtraData : public CItemExtraData {     // decal items, 0x68 bytes
+public:
+    CDecalExtraData();                              // 0x14059a400
+private:
+    unsigned char unknown58[0x68 - 0x58];
+};
+MS2_CHECK_SIZE(CDecalExtraData,0x68);
+class CHairExtraData : public CItemExtraData {      // hair items, 0xa0 bytes
+public:
+    CHairExtraData();                               // 0x14059a8a0
+private:
+    unsigned char unknown58[0xa0 - 0x58];
+};
+MS2_CHECK_SIZE(CHairExtraData,0xa0);
+class CCapExtraData : public CItemExtraData {       // cap items, 0x90 bytes
+public:
+    CCapExtraData();                                // 0x14059b350
+private:
+    unsigned char unknown58[0x90 - 0x58];
+};
+MS2_CHECK_SIZE(CCapExtraData,0x90);

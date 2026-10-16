@@ -2,16 +2,139 @@
 // Heap-only placeholder: inventory reads stack limit and function metadata.
 #pragma once
 #include <afx.h>
+#include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cvaliddata.h"
 #include "ms2/placeholder/cobjectcount.h"
 #include "ms2/ms2layout.h"
 #include <efd/Point3.h>
+#include <atlcoll.h>
+#include <set>
+#include "ms2/placeholder/cxmldata.h"
+#include "ms2/placeholder/mstime.h"
+#include "ms2/unnamed/payloadptr_1401f9eb0.h"
+
+class Unk_140165cf0;                // game TinyXML element (declared where the loaders are)
+class ItemModelData;                // itemdata.h
+class CItemExtraData;               // citemextradata.h
+
+// The blocks of an item row. Their constructors, XML readers/writers and comparisons live in
+// commonfiles\itemdatastruct.cpp; the destructors of the blocks that own heap data are in commonfiles\itemdata.cpp.
+// Names of the members that are not read by recovered code are invented from the XML attribute they hold.
+struct alignas(8) ItemPriceData                // <property><price> block, 0x18 bytes (layout not recovered)
+{
+    ItemPriceData();                // 0x140356530
+    ~ItemPriceData();               // 0x1403566d0
+    unsigned char m_raw[0x18];
+};
+MS2_CHECK_SIZE(ItemPriceData, 0x18);
+
+struct ItemSkill                    // <skill skillID skillLevel>
+{
+    ItemSkill();                    // 0x140546740
+    int FUN_140546770(Unk_140165cf0* pElem);        // XML read
+    int FUN_1405467f0(void* pParent);               // XML write
+    bool FUN_140546810(const ItemSkill* pOther);    // operator!=
+    int skillId;
+    unsigned short skillLevel;
+    unsigned short unknown6;
+};
+MS2_CHECK_SIZE(ItemSkill, 0x8);
+
+struct ItemMaterial                 // <material ... attack>
+{
+    ItemMaterial();                 // 0x140547390
+    int FUN_1405473c0(Unk_140165cf0* pElem);
+    int FUN_140547440(void* pParent);
+    bool FUN_140547460(const ItemMaterial* pOther);
+    int unknown0;
+    int attack;
+};
+MS2_CHECK_SIZE(ItemMaterial, 0x8);
+
+struct ItemProperty                 // <property> block: slotMax, collection, price, ...
+{
+    ItemProperty();                 // 0x1405474a0
+    ~ItemProperty();                // 0x140540eb0
+    void FUN_1405475c0(Unk_140165cf0* pElem);       // XML read
+    void FUN_1405479a0(void* pElem);                // XML write (attributes of the <property> element)
+    bool FUN_140547ec0(const ItemProperty* pOther);
+    unsigned long long FUN_1405480f0(int a);        // base price
+    CString* FUN_1405481d0();                       // &slotIcon
+    CString slotIcon;               // +0x00
+    bool flag08;                    // +0x08
+    bool flag09;                    // +0x09 (CItemData +0x79 is set from it)
+    int collection;                 // +0x0c
+    int doNotPreview;               // +0x10
+    int applyFatiguePenalty;        // +0x14
+    unsigned slotMax;               // +0x18 (default 1; clamped to 99999 on read)
+    int unknown1c;
+    CString movie;                  // +0x20
+    CString category;               // +0x28
+    CString blackMarketCategory;    // +0x30
+    unsigned gearScore;             // +0x38
+    bool remakeDisable;             // +0x3c
+    int tradableCountDeduction;     // +0x40
+    int unlimitedEnchantMaxGrade;   // +0x44
+    int socketDataId;               // +0x48
+    int rePackingLimitCount;        // +0x4c
+    int rePackingItemConsumeCount;  // +0x50
+    ATL::CAtlArray<int> rePackingScrollID;  // +0x58
+    bool moveDisable;               // +0x78
+    ItemPriceData price;            // +0x80
+};
+MS2_CHECK_SIZE(ItemProperty, 0x98);
+MS2_CHECK_OFFSET(ItemProperty, slotMax, 0x18);
+MS2_CHECK_OFFSET(ItemProperty, rePackingScrollID, 0x58);
+MS2_CHECK_OFFSET(ItemProperty, price, 0x80);
+
+struct ItemPeriod                   // <usePeriod ...>
+{
+    ItemPeriod();                   // 0x1405460f0
+    ~ItemPeriod();                  // 0x140540db0
+    int FUN_140546150(Unk_140165cf0* pElem);
+    int FUN_140546370(void* pParent);
+    bool FUN_140546620(const ItemPeriod* pOther);
+    int usePeriod;                  // +0x00
+    CMsTime expiration;             // +0x08
+    int expirationType;             // +0x18
+    int numberOfWeeksMonths;        // +0x1c
+    CStringW termTag;               // +0x20
+};
+MS2_CHECK_SIZE(ItemPeriod, 0x28);
+
+struct ItemLimit                    // <limit ...>
+{
+    ItemLimit();                    // 0x140545220
+    ~ItemLimit();                   // 0x140540dd0
+    int FUN_1405452f0(Unk_140165cf0* pElem);
+    int FUN_140545510(void* pParent);
+    bool FUN_140545ad0(const ItemLimit* pOther);
+    bool FUN_140545c80(int nJob);                   // job allowed
+    int FUN_140545f30();
+    unsigned levelLimit;            // +0x00
+    int genderLimit;                // +0x04
+    ATL::CAtlArray<unsigned> jobLimit;          // +0x08
+    ATL::CAtlArray<unsigned> disableJobLimit;   // +0x28
+    std::set<int> recommendJobs;    // +0x48
+    int transferType;               // +0x58
+    int transferTypeVersion;        // +0x5c
+    int shopSell;                   // +0x60
+    int enableBreak;                // +0x64
+    bool enableRegisterMeratMarket; // +0x68
+    bool exceptEnchant;             // +0x69
+    bool flag6a;                    // +0x6a
+    bool wedding;                   // +0x6b
+    int vipLevel;                   // +0x6c
+};
+MS2_CHECK_SIZE(ItemLimit, 0x70);
 
 // <install> element of an item XML (commonfiles\itemdatastruct.cpp): default ctor 0x1405481f0,
 // XML read 0x140548320, XML write 0x1405485b0 (skipped when equal to a static default), operator!= 0x140548aa0
 // (operator== 0x140548a50). Field names are the XML attribute names; the struct name is invented.
 struct ItemInstallData {
+    ItemInstallData();        // 0x1405481f0
+    ~ItemInstallData();       // 0x140540d70
     CString asset;            // +0x00 "asset"
     CString preset;           // +0x08 "preset"
     int space;                // +0x10 "space": placement mask, tested as (space & CFieldData indoor mask) == mask
@@ -31,6 +154,9 @@ struct ItemInstallData {
     CString mapAttribute;     // +0x50 "mapAttribute"
     int propCollisionGroup;   // +0x58 "propCollisionGroup"
     bool useInstancing;       // +0x5c "useInstancing" (default true)
+    int FUN_140548320(Unk_140165cf0* pElem);     // XML read
+    int FUN_1405485b0(void* pParent);            // XML write
+    bool FUN_140548aa0(const ItemInstallData* pOther);   // operator!=
     bool FUN_140548d10();     // 0x140548d10 (ugccubepalette.cpp)
     bool FUN_140548cd0();     // 0x140548cd0
 };
@@ -43,9 +169,93 @@ MS2_CHECK_OFFSET(ItemInstallData, physXdimension, 0x40);
 MS2_CHECK_OFFSET(ItemInstallData, mapAttribute, 0x50);
 MS2_CHECK_OFFSET(ItemInstallData, useInstancing, 0x5c);
 
+class ItemUccMesh : public CString  // <ucc mesh> block: the mesh name (CNifCubeGuide reads it as a CString)
+{
+public:
+    ItemUccMesh();                  // 0x1405495a0
+    ~ItemUccMesh();                 // 0x1405410a0
+    int FUN_1405495d0(Unk_140165cf0* pElem);
+    int FUN_140549630(void* pParent);
+};
+MS2_CHECK_SIZE(ItemUccMesh, 0x8);
+
+struct ItemEffect                   // <effect ...>
+{
+    ItemEffect();                   // 0x1405496c0
+    ~ItemEffect();                  // 0x140540cb0
+    int FUN_140549740(Unk_140165cf0* pElem);
+    int FUN_1405498b0(void* pParent);
+    bool FUN_140549a40(const ItemEffect* pOther);
+    int enchantShape;               // +0x00
+    CString unknown08;              // +0x08
+    CString battleIdle;             // +0x10
+    CString characterIdle;          // +0x18
+    CString characterBattleIdle;    // +0x20
+    bool flag28;                    // +0x28
+    bool flag29;                    // +0x29
+};
+MS2_CHECK_SIZE(ItemEffect, 0x30);
+
+struct ItemFusion                   // <fusion fusionable>
+{
+    ItemFusion();                   // 0x140549500
+    int FUN_140549520(Unk_140165cf0* pElem);
+    int FUN_140549580(void* pParent);
+    int fusionable;
+    int unknown4;
+};
+MS2_CHECK_SIZE(ItemFusion, 0x8);
+
+struct ItemAdditionalEffect         // <AdditionalEffect ...>
+{
+    ItemAdditionalEffect();         // 0x140549bb0
+    ~ItemAdditionalEffect();        // 0x140540c40
+    int FUN_140549c00(Unk_140165cf0* pElem);
+    int FUN_140549d40(void* pParent);
+    bool FUN_140549d60(const ItemAdditionalEffect* pOther);
+    ATL::CAtlArray<unsigned> ids;           // +0x00
+    ATL::CAtlArray<unsigned short> levels;  // +0x20
+    int dropEffect;                 // +0x40
+    int unknown44;
+};
+MS2_CHECK_SIZE(ItemAdditionalEffect, 0x48);
+
+struct ItemFunctionArgs             // the <function> parameter string split into arguments, 0x70 bytes
+{
+    ItemFunctionArgs();
+    ~ItemFunctionArgs();            // 0x140540c00
+    unsigned FUN_1408d1f60(int nIndex, int nDefault);
+    int FUN_1408d1fd0(int nIndex, int nDefault);   // the nIndex-th argument as a number (usercommandcli.h: Unk_CommandArgs)
+    CStringW text;                  // +0x00
+    ATL::CAtlArray<CStringW> args;  // +0x08
+    ATL::CAtlMap<int, int> values;  // +0x28
+};
+MS2_CHECK_SIZE(ItemFunctionArgs, 0x70);
+
+struct ItemFunction                 // <function name parameter ...>
+{
+    ItemFunction();                 // 0x140549e70
+    ~ItemFunction();                // 0x140540d10
+    int FUN_140549f00(Unk_140165cf0* pElem);
+    bool FUN_14054a2b0(const ItemFunction* pOther);
+    CStringW name;                  // +0x00 (functionName)
+    CStringW name2;                 // +0x08
+    int arg0, arg1, arg2;           // +0x10
+    int unknown1c;
+    ItemFunctionArgs parameter;     // +0x20
+    CXmlData xml;                   // +0x90
+};
+MS2_CHECK_SIZE(ItemFunction, 0xf0);
+MS2_CHECK_OFFSET(ItemFunction, parameter, 0x20);
+MS2_CHECK_OFFSET(ItemFunction, xml, 0x90);
+
 class CItemData : public CPtred, public CValidData<CItemData>, public CObjectCount<CItemData> {
 public:
-    virtual ~CItemData();
+    CItemData();             // 0x14053b510
+    virtual ~CItemData();    // 0x14053b730
+    bool FUN_14053b830(Unk_140165cf0* pElem);    // 0x14053b830 XML read
+    bool FUN_14053be30(void* pParent);    // 0x14053be30 XML write
+    bool FUN_14053c170(const CItemData* pOther);    // 0x14053c170 operator!=
     int FUN_14053c560();     // 0x14053c560 (uiitemenchantdialog.cpp)
     bool FUN_14053d510();    // 0x14053d510
     int FUN_14053c6f0();     // 0x14053c6f0
@@ -56,22 +266,168 @@ public:
     bool FUN_14053d6f0();    // 0x14053d6f0 UGC item
     bool FUN_14053cb80();    // 0x14053cb80
     CString FUN_14053fdd0(); // 0x14053fdd0 the item's display name
-    unsigned char unknown20[0x68];
-    unsigned stackLimit;
-    unsigned char unknown8c[0x11c];
+    // @ITEMDATA-MEMBERS-BEGIN (added by itemdata.cpp)
+    void FUN_14053c4f0(int nId);    // 0x14053c4f0
+    void FUN_14053c530();    // 0x14053c530
+    int FUN_14053c5a0();    // 0x14053c5a0
+    int FUN_14053c5c0();    // 0x14053c5c0
+    int FUN_14053c5e0();    // 0x14053c5e0
+    int FUN_14053c600();    // 0x14053c600
+    int FUN_14053c620();    // 0x14053c620
+    int FUN_14053c650();    // 0x14053c650
+    int FUN_14053c670();    // 0x14053c670
+    bool FUN_14053c6b0(int nStringTag);    // 0x14053c6b0
+    bool FUN_14053c710();    // 0x14053c710
+    bool FUN_14053c7c0();    // 0x14053c7c0
+    bool FUN_14053c810();    // 0x14053c810
+    bool FUN_14053c870();    // 0x14053c870
+    bool FUN_14053c8b0();    // 0x14053c8b0
+    bool FUN_14053c8e0(int nJob);    // 0x14053c8e0
+    bool FUN_14053c940(int nGender);    // 0x14053c940
+    bool FUN_14053c9a0(unsigned short nLevel);    // 0x14053c9a0
+    bool FUN_14053c9e0(int nGender, int nB);    // 0x14053c9e0
+    bool FUN_14053cae0(int nGender, int nCategory);    // 0x14053cae0
+    bool FUN_14053cb40();    // 0x14053cb40
+    bool FUN_14053cbc0();    // 0x14053cbc0
+    bool FUN_14053cc00();    // 0x14053cc00
+    bool FUN_14053cc40();    // 0x14053cc40
+    bool FUN_14053cc80();    // 0x14053cc80
+    bool FUN_14053ccc0();    // 0x14053ccc0
+    bool FUN_14053cd10();    // 0x14053cd10
+    bool FUN_14053cd50();    // 0x14053cd50
+    bool FUN_14053cd90();    // 0x14053cd90
+    bool FUN_14053ce20();    // 0x14053ce20
+    bool FUN_14053ce40();    // 0x14053ce40
+    bool FUN_14053ce80();    // 0x14053ce80
+    bool FUN_14053cf00();    // 0x14053cf00
+    bool FUN_14053cf40();    // 0x14053cf40
+    bool FUN_14053cf90();    // 0x14053cf90
+    bool FUN_14053cfd0();    // 0x14053cfd0
+    bool FUN_14053d020();    // 0x14053d020
+    bool FUN_14053d070();    // 0x14053d070
+    bool FUN_14053d0c0();    // 0x14053d0c0
+    int FUN_14053d110();    // 0x14053d110
+    bool FUN_14053d150();    // 0x14053d150
+    bool FUN_14053d1f0();    // 0x14053d1f0
+    bool FUN_14053d210();    // 0x14053d210
+    bool FUN_14053d230();    // 0x14053d230
+    bool FUN_14053d270();    // 0x14053d270
+    bool FUN_14053d2b0();    // 0x14053d2b0
+    bool FUN_14053d2f0();    // 0x14053d2f0
+    bool FUN_14053d340();    // 0x14053d340
+    bool FUN_14053d460();    // 0x14053d460
+    bool FUN_14053d550();    // 0x14053d550
+    bool FUN_14053d5c0();    // 0x14053d5c0
+    bool FUN_14053d600();    // 0x14053d600
+    int FUN_14053d640();    // 0x14053d640
+    bool FUN_14053d660();    // 0x14053d660
+    bool FUN_14053d740();    // 0x14053d740
+    bool FUN_14053d760();    // 0x14053d760
+    bool FUN_14053d7c0();    // 0x14053d7c0
+    bool FUN_14053d800();    // 0x14053d800
+    bool FUN_14053d840();    // 0x14053d840
+    bool FUN_14053d880();    // 0x14053d880
+    bool FUN_14053d8c0();    // 0x14053d8c0
+    bool FUN_14053d900();    // 0x14053d900
+    bool FUN_14053d940();    // 0x14053d940
+    bool FUN_14053d990();    // 0x14053d990
+    int FUN_14053d9d0();    // 0x14053d9d0
+    bool FUN_14053da20();    // 0x14053da20
+    bool FUN_14053dad0();    // 0x14053dad0
+    bool FUN_14053db80();    // 0x14053db80
+    int FUN_14053dc20();    // 0x14053dc20
+    unsigned short FUN_14053dc40();    // 0x14053dc40
+    int FUN_14053dc60();    // 0x14053dc60
+    int FUN_14053dc90();    // 0x14053dc90
+    int FUN_14053dce0();    // 0x14053dce0
+    int FUN_14053dd80();    // 0x14053dd80
+    int FUN_14053ddb0();    // 0x14053ddb0
+    int FUN_14053dde0();    // 0x14053dde0
+    int FUN_14053de10();    // 0x14053de10
+    int FUN_14053de40();    // 0x14053de40
+    int FUN_14053de60();    // 0x14053de60
+    int FUN_14053de80();    // 0x14053de80
+    int FUN_14053dec0();    // 0x14053dec0
+    int FUN_14053df20();    // 0x14053df20
+    int FUN_14053df80();    // 0x14053df80
+    bool FUN_14053dfd0(const CStringW& strName);    // 0x14053dfd0
+    bool FUN_14053e010();    // 0x14053e010
+    bool FUN_14053e070();    // 0x14053e070
+    bool FUN_14053e0d0();    // 0x14053e0d0
+    bool FUN_14053e130();    // 0x14053e130
+    bool FUN_14053e170();    // 0x14053e170
+    int FUN_14053e210();    // 0x14053e210
+    int FUN_14053e260();    // 0x14053e260
+    int FUN_14053e2b0(int nIndex);    // 0x14053e2b0
+    int FUN_14053e310(int nIndex);    // 0x14053e310
+    int FUN_14053e370();    // 0x14053e370
+    int FUN_14053e3c0();    // 0x14053e3c0
+    int FUN_14053e410();    // 0x14053e410
+    bool FUN_14053e460();    // 0x14053e460
+    int FUN_14053e530();    // 0x14053e530
+    bool FUN_14053e670();    // 0x14053e670
+    Unk_PayloadPtr<CItemExtraData> FUN_14053e6c0();    // 0x14053e6c0
+    bool FUN_14053e8e0();    // 0x14053e8e0
+    int FUN_14053e900();    // 0x14053e900
+    bool FUN_14053e940();    // 0x14053e940
+    int FUN_14053e9e0();    // 0x14053e9e0
+    unsigned long long FUN_14053ea00(int nRank);    // 0x14053ea00
+    void FUN_14053eb20();    // 0x14053eb20
+    ItemModelData* FUN_14053eba0();    // 0x14053eba0
+    int FUN_14053ec50();    // 0x14053ec50
+    void FUN_14053ec70();    // 0x14053ec70
+    CString FUN_14053eca0();    // 0x14053eca0
+    bool FUN_14053ecf0();    // 0x14053ecf0 always true
+    void FUN_14053ed00();    // 0x14053ed00
+    int FUN_14053ef40();    // 0x14053ef40
+    int FUN_14053ef80();    // 0x14053ef80
+    int FUN_14053efd0();    // 0x14053efd0
+    int FUN_14053eff0(int nType);    // 0x14053eff0
+    int FUN_14053f080();    // 0x14053f080
+    int FUN_14053f0a0();    // 0x14053f0a0
+    int FUN_14053f0d0(int nRank);    // 0x14053f0d0
+    int FUN_14053f390(int nBase, int nIdx);    // 0x14053f390
+    double FUN_14053f430(int nSub);    // 0x14053f430
+    double FUN_14053f4f0(int nIdx);    // 0x14053f4f0
+    double FUN_14053f620(int nIdx);    // 0x14053f620
+    bool FUN_14053f750(long long nParam);    // 0x14053f750
+    int FUN_14053f7c0();    // 0x14053f7c0
+    void FUN_14053fd90();    // 0x14053fd90
+    // @ITEMDATA-MEMBERS-END
+
+    int id;                  // +0x20
+    int type;                // +0x24 <property type>
+    int subtype;             // +0x28
+    int iconCode;            // +0x2c
+    int itemGroup;           // +0x30
+    int skinType;            // +0x34
+    int rank;                // +0x38
+    int itemPreset;          // +0x3c <tool itemPreset>
+    int originID;            // +0x40 <basic originID>
+    int stringTag;           // +0x44 <basic stringTag> (looked up in the string tag table)
+    int param1;              // +0x48
+    int param2;              // +0x4c
+    ItemSkill skill;         // +0x50 <skill skillID skillLevel>
+    bool bPCBang;            // +0x58 <PCBang>
+    int constantID;          // +0x5c <option constantID>
+    int randomID;            // +0x60
+    int optionLevel;         // +0x64 (default 1)
+    int optionLevelFactor;   // +0x68
+    ItemProperty property;   // +0x70 <property> block
+    ItemMaterial material;   // +0x108 <material>
+    ItemPeriod period;       // +0x110 <usePeriod ...>
+    ItemLimit limit;         // +0x138 <limit ...>
     ItemInstallData install;  // +0x1a8 <install> (CItemData operator!= 0x14053c170 compares it with 0x140548aa0)
-    CString cubeTextureName; // +0x208, read by CNifCubeGuide::FUN_1410b0680
-    unsigned char unknown210[0x80];
-    CStringW functionName;
-    CStringW functionName2;
-    int functionArg0, functionArg1, functionArg2;
-    int unknown2ac;
-    CStringW functionParameter;
-    unsigned char unknown2b8[0xd8];
+    ItemUccMesh cubeTextureName; // +0x208 <ucc mesh>, read by CNifCubeGuide::FUN_1410b0680
+    ItemEffect effect;       // +0x210 <effect ...>
+    ItemFusion fusion;       // +0x240 <fusion>
+    ItemAdditionalEffect additionalEffect;  // +0x248 <AdditionalEffect>
+    ItemFunction function;   // +0x290 <function ...>
+    MS2Ptr<ItemModelData> model;     // +0x380
 };
 MS2_CHECK_SIZE(CItemData, 0x390);
-MS2_CHECK_OFFSET(CItemData, stackLimit, 0x88);
+MS2_CHECK_OFFSET(CItemData, property, 0x70);
 MS2_CHECK_OFFSET(CItemData, install, 0x1a8);
 MS2_CHECK_OFFSET(CItemData, cubeTextureName, 0x208);
-MS2_CHECK_OFFSET(CItemData, functionName, 0x290);
-MS2_CHECK_OFFSET(CItemData, functionParameter, 0x2b0);
+MS2_CHECK_OFFSET(CItemData, function, 0x290);
+MS2_CHECK_OFFSET(CItemData, model, 0x380);

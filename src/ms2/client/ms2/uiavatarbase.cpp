@@ -2398,7 +2398,7 @@ bool FUN_1418bf500(int nDepth, MS2Ptr<CItemData> spData, ATL::CAtlArray<MS2Ptr<C
     if (spData == 0)
         return false;
     int nItemId = spData->FUN_14053c510();
-    int nGroup = FUN_14054a460(&spData->functionName);
+    int nGroup = FUN_14054a460(&spData->function.name);
     if (nGroup == 0)
         return false;
     std::vector<Unk_UabDrop> kDrops;

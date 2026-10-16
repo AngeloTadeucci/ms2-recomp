@@ -510,7 +510,7 @@ bool UIItemPetBoxDialog::FUN_140e4fd60()
     MS2Ptr<CItemData> data = FUN_14053f870(m_boxItemId);
     if (data == 0)
         return false;
-    if (data->functionName != L"OpenPetBox")
+    if (data->function.name != L"OpenPetBox")
         return false;
     Unk_PetBoxIntVec ids = PETBOX_ATTR(data)->FUN_1409e8620(L"unCommonBoxId", Unk_PetBoxIntVec());
     Unk_PetBoxDropVec drops;

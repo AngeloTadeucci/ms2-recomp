@@ -668,7 +668,7 @@ Unk_Inventory::ItemPtr Unk_Inventory::FUN_140a5d9a0(CStringW function, int ignor
         for (POSITION pos = items.GetHeadPosition(); pos != nullptr; items.GetNext(pos)) {
             ItemPtr item = items.GetValueAt(pos);
             if (!item) continue;
-            if (FUN_140527840(item.operator->())->functionName != function) continue;
+            if (FUN_140527840(item.operator->())->function.name != function) continue;
             if (ignoreUsability == 0 && player->FUN_141662eb0(item.get()) == 0) continue;
             found.push_back(item);
         }
@@ -689,8 +689,8 @@ Unk_Inventory::ItemPtr Unk_Inventory::FUN_140a5dca0(CStringW function, CStringW 
         for (POSITION pos = items.GetHeadPosition(); pos != nullptr; items.GetNext(pos)) {
             ItemPtr item = items.GetValueAt(pos);
             if (!item) continue;
-            if (FUN_140527840(item.operator->())->functionName != function) continue;
-            CStringW value(FUN_140527840(item.operator->())->functionParameter);
+            if (FUN_140527840(item.operator->())->function.name != function) continue;
+            CStringW value(FUN_140527840(item.operator->())->function.parameter);
             if (value != parameter) continue;
             if (player->FUN_141662eb0(item.get()) == 0) continue;
             found.push_back(item);
@@ -933,7 +933,7 @@ int Unk_Inventory::FUN_140a5f990(CStringW function) {
             for (unsigned i = 0; i < slots[category].GetCount(); ++i) {
                 ItemPtr item = slots[category][i];
                 if (item == nullptr) continue;
-                if (FUN_140527840(item.operator->())->functionName != function) continue;
+                if (FUN_140527840(item.operator->())->function.name != function) continue;
                 if (player->FUN_141662eb0(item.get()) != 0) count += FUN_140526c50(item.operator->());
             }
         }
@@ -974,7 +974,7 @@ MS2_REPLACE_METHOD(0x140a5fbd0, Unk_Inventory, FUN_140a5fbd0, 653, 0x115EDCE8);
 int Unk_Inventory::FUN_140a5fe70(int category, ItemPtr reference) {
     if (reference == nullptr || category < 0 || category > 14) return 0;
     MS2Ptr<CItemData> data = FUN_14053f870(reference->FUN_1405276c0());
-    if (!data || data->stackLimit == 1) return 0;
+    if (!data || data->property.slotMax == 1) return 0;
     int capacity = 0;
     if (Unk_LockGuard guard = lock) {} else {
         ItemArray& bag = slots[category];
@@ -1262,7 +1262,7 @@ int Unk_Inventory::FUN_140a61b40(int category) {
         data.AssignRaw(FUN_140527840(item.operator->()));
         if (data == nullptr) continue;
         if (FUN_14053c7c0(data.operator->())) {
-            unsigned limit = data->stackLimit;
+            unsigned limit = data->property.slotMax;
             if ((unsigned)FUN_140526c50(item.operator->()) < limit) {
                 unsigned previous;
                 if (seen.Lookup(item->FUN_1405276c0(), previous)) return 1;
@@ -1280,7 +1280,7 @@ int Unk_Inventory::FUN_140a61db0(__int64 id, const CStringW& argument) {
     ItemPtr item = DAT_143ab2a90.FUN_140a5d680(id);
     if (!item) return 0;
     int checkState = 1;
-    CStringW function = FUN_140527840(item.operator->())->functionName;
+    CStringW function = FUN_140527840(item.operator->())->function.name;
     if (FUN_1403b3c40(function, L"OpenItemBox") || FUN_1403b3c40(function, L"OpenItemBoxLullu") ||
         FUN_1403b3c40(function, L"OpenItemBoxLulluSimple")) checkState = 0;
     if (checkState != 0) {

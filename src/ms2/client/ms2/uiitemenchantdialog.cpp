@@ -1875,16 +1875,16 @@ int UIItemEnchantDialog::FUN_1419c86b0(int itemId)
     MS2Ptr<CItemData> data = FUN_14053f870(itemId);
     if (!data)
         return 0;
-    if (FUN_1403b3c40(data->functionName, L"EnchantSuperProtect") == 0) {
-        if (FUN_1403b3c40(data->functionName, L"EnchantScroll") != 0) {
-            unsigned int arg = reinterpret_cast<Unk_CommandArgs*>(&data->functionParameter)->FUN_1408d1f60(0, 0);
+    if (FUN_1403b3c40(data->function.name, L"EnchantSuperProtect") == 0) {
+        if (FUN_1403b3c40(data->function.name, L"EnchantScroll") != 0) {
+            unsigned int arg = reinterpret_cast<Unk_CommandArgs*>(&data->function.parameter)->FUN_1408d1f60(0, 0);
             Unk_EnScrollRef ref = FUN_14034f780()->FUN_14034e360(arg);
             if (ref.get() != 0)
                 return ref.operator->()->FUN_14034d370();
         }
         return 0;
     }
-    return reinterpret_cast<Unk_CommandArgs*>(&data->functionParameter)->FUN_1408d1f60(0, 0);
+    return reinterpret_cast<Unk_CommandArgs*>(&data->function.parameter)->FUN_1408d1f60(0, 0);
 }
 
 // @0x1419c8830
@@ -1893,16 +1893,16 @@ int UIItemEnchantDialog::FUN_1419c8830(int itemId)
     MS2Ptr<CItemData> data = FUN_14053f870(itemId);
     if (!data)
         return 0;
-    if (FUN_1403b3c40(data->functionName, L"EnchantSuperProtect") == 0) {
-        if (FUN_1403b3c40(data->functionName, L"EnchantScroll") != 0) {
-            unsigned int arg = reinterpret_cast<Unk_CommandArgs*>(&data->functionParameter)->FUN_1408d1f60(0, 0);
+    if (FUN_1403b3c40(data->function.name, L"EnchantSuperProtect") == 0) {
+        if (FUN_1403b3c40(data->function.name, L"EnchantScroll") != 0) {
+            unsigned int arg = reinterpret_cast<Unk_CommandArgs*>(&data->function.parameter)->FUN_1408d1f60(0, 0);
             Unk_EnScrollRef ref = FUN_14034f780()->FUN_14034e360(arg);
             if (ref.get() != 0)
                 return ref.operator->()->m_1c;
         }
         return 0;
     }
-    return reinterpret_cast<Unk_CommandArgs*>(&data->functionParameter)->FUN_1408d1f60(1, 0);
+    return reinterpret_cast<Unk_CommandArgs*>(&data->function.parameter)->FUN_1408d1f60(1, 0);
 }
 
 // @0x1419c89b0
