@@ -68,6 +68,7 @@ private:
 
 class ASMovieClip;
 class ASTextField;
+class ASArray;
 class ASArgList;                        // the argument list of the Invoke back end (defined by the units using it)
 
 class AScript : public CPtred
@@ -98,6 +99,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, bool a1);                             // 0x140bfe360 (inline COMDAT, defined in uicoupledanceeventdialog.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, MS2Ptr<AScript> a1);                 // 0x141ac34b0 (inline COMDAT, defined in uirewardnotify.cpp; a1 by value: the callee destroys it)
 
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, AScript a2, ASArray a3);   // 0x140c1f740 (inline COMDAT, defined in uihideandseekresultdialog.cpp; a2/a3 by value: the callee destroys them)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1); // 0x1409ba030 (couple dance HUD)
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, __int64 a2, int a3); // 0x140e98700 (UITamingBar, w4s10)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, int a3, int a4); // 0x140e64f60 (couple dance HUD COMDAT)

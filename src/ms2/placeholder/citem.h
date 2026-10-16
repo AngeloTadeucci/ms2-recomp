@@ -34,6 +34,7 @@ public:
   virtual int vfunc_4();
   virtual void vfunc_5(bool);
   int FUN_1405268f0();
+  CString FUN_140528590();                // 0x140528590 the item's name (uirewardnotify.cpp)
   int FUN_14052b130(int, int, int);   // can the item be combined with this one (ItemInfoSlot exchange scroll)
   // sb4 (clonecube.cpp): UGC look of the item. The callee returns a byte; callers test eax (declared int there).
   int FUN_140525f10();                   // 0x140525f10 item data at +0xe8 is a UGC item
