@@ -1405,3 +1405,10 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?Pick@Unk_IndexPool@@QEAAHXZ	141b90c70	func
 ??0Unk_ObjectRef@@QEAA@PEAVGameObject@@@Z	140a000f0	func
 ??0Unk_SeparateNode@@QEAA@EEE@Z	141751380	func
+??0Unk_TrgNewTag@@QEAA@H@Z	1401b7b90	func
+?ms_RTTI@CMakeupController@@2VNiRTTI@@B	143add968	data
+?DAT_143ae50f8@@3DA	143ae50f8	data
+?Load@TriggerStateCli@@QEAAXPEAX@Z	140de9490	func
+?Save@TriggerStateCli@@QEAAXPEAX@Z	140de9600	func
+?Validate@TriggerStateCli@@QEAA_NPEAH@Z	140de9d40	func
+?DAT_143b059e8@@3UUnk_TrgFramework@@A	143b059e8	data
