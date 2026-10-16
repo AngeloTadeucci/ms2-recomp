@@ -350,6 +350,7 @@ struct Unk_MagicTag : public CPtred {
     Unk_MagicAimInfo* FUN_141759010();
     const Unk_MagicSkillRow* FUN_141759050();
     int FUN_141759090();
+    int FUN_141759190();
     unsigned long long m_nTagId;                                    // +0x18
     unsigned long long m_nTagSub;                                   // +0x20
     int m_nCasterId;                                                // +0x28
@@ -359,7 +360,9 @@ struct Unk_MagicTag : public CPtred {
     Unk_MagicAttackerPtr m_spAttacker;                              // +0x38
     char m_setHit[0x14];                                            // +0x48
     unsigned char m_b5c;                                            // +0x5c
-    char m_pad5d[0x13];
+    char m_pad5d[3];
+    Unk_StreamPoint m_ptDefaultDir;                                  // +0x60
+    char m_pad6c[4];
     Unk_MagicLinkPtr m_spLinked;                                    // +0x70 the cast this one continues
     char m_pad80[4];
     int m_n84;                                                      // +0x84
@@ -368,6 +371,8 @@ struct Unk_MagicTag : public CPtred {
 };
 MS2_CHECK_OFFSET(Unk_MagicTag, m_nTagId, 0x18);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_spAttacker, 0x38);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_ptDefaultDir, 0x60);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_spLinked, 0x70);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_nStartTick, 0x88);
 
 // A scene entity (GameObject). Only the vtable slots the projectile calls are named; the others keep the numbering.
@@ -438,6 +443,17 @@ struct Unk_MagicRandom { Unk_MagicRandom(int nSeedX, int nSeedY, int nSeedZ); ~U
 MS2_CHECK_SIZE(Unk_MagicRandom, 0x48);
 
 
+
+// The target's actor (FUN_1409ffd30): its attach point (0x141678710).
+struct Unk_MagicActor { Unk_StreamPoint FUN_141678710(); };
+Unk_MagicActor* FUN_1409ffd30(Unk_MagicEntity* pEntity);
+extern Unk_StreamPoint DAT_143b01a60;                               // the zero point
+
+extern Unk_StreamPoint DAT_143a08cd8;                                       // the right axis
+bool FUN_14028d530(const Unk_StreamPoint* pA, const Unk_StreamPoint* pB);   // approximately equal
+void FUN_1420849a0(Unk_NiMatrix3* pMatrix);                         // efd::Matrix3::MakeIdentity
+void FUN_14109aa30(Unk_NiMatrix3* pMatrix, int nColumn, const Unk_StreamPoint& pt);   // set one column
+void FUN_140ddcca0(void* pNode, const Unk_NiMatrix3& matRotation);  // NiAVObject::SetRotate
 
 // ---- callees of the projectile logic (unit-local declarations; names invented) ----
 struct Unk_MagicCullCfg { float FUN_1410a71d0(); };                 // the cull distance
@@ -846,6 +862,119 @@ void CMagic::FUN_141460700()
 }
 MS2_REPLACE_METHOD(0x141460700, CMagic, FUN_141460700, 208, 0x262997B3);
 
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141461140
+void CMagic::FUN_141461140()
+{
+    unsigned nNow = FUN_141467440();
+    bool bTrack = true;
+    if (!FUN_14028d470(m_data.m_fTraceTargetDuration, 0) && m_nState > 1
+        && (unsigned)(FUN_14028d260(m_data.m_fTraceTargetDuration) + m_nStateTick) < nNow)
+        bTrack = false;
+    Unk_MagicEntity* pTarget = FUN_141464360();
+    if (pTarget != NULL && bTrack) {
+        if (m_spSkill->FUN_141759050()->m_n34 == 0) {
+            Unk_StreamPoint ptHit = DAT_143b01a60;
+            if (FUN_141467100(pTarget, &ptHit) == 0)
+                m_ptTarget = pTarget->vf18_GetPosition().FUN_14097fd50(pTarget->vf37_GetExtent());
+            else
+                m_ptTarget = ptHit;
+        } else {
+            m_ptTarget = DAT_143b01a60;
+            Unk_StreamPoint ptHit = DAT_143b01a60;
+            if (FUN_141467100(pTarget, &ptHit) == 0) {
+                if (m_data.m_nTraceTargetOffsetPos == 0) {
+                    Unk_MagicActor* pActor = FUN_1409ffd30(pTarget);
+                    if (pActor != NULL)
+                        m_ptTarget = pActor->FUN_141678710();
+                    if (m_ptTarget.FUN_140552690(DAT_143b01a60))
+                        m_ptTarget = pTarget->vf18_GetPosition();
+                } else {
+                    m_ptTarget = pTarget->vf18_GetPosition().FUN_14097fd50(pTarget->vf37_GetExtent());
+                }
+            } else {
+                m_ptTarget = ptHit;
+            }
+        }
+        if (m_data.m_fVelocity != 0.0f)
+            m_fRemainTime = m_ptTarget.FUN_140965c40(m_ptCurrent).FUN_140967ac0() / m_data.m_fVelocity;
+    }
+    FUN_1414614d0();
+}
+MS2_REPLACE_METHOD(0x141461140, CMagic, FUN_141461140, 894, 0x757EDAE5);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x1414614d0
+void CMagic::FUN_1414614d0()
+{
+    if (m_ptTarget.FUN_140552690(m_ptCurrent))
+        return;
+    m_ptDirection = m_ptTarget.FUN_140965c40(m_ptCurrent);
+    m_ptDirection.FUN_140968990();
+    Unk_NiMatrix3 matRotation;
+    FUN_1420849a0(&matRotation);
+    Unk_StreamPoint ptAxis = m_ptDirection.FUN_1409f7960();
+    if (FUN_14028d530(&ptAxis, &DAT_143b01a60))
+        ptAxis = m_spSkill->m_ptDefaultDir;
+    Unk_StreamPoint ptRight = DAT_143b01a60;
+    Unk_StreamPoint ptDown;
+    if (FUN_14028d530(&ptAxis, &DAT_143a08cf8)) {
+        ptRight = DAT_143a08cd8;
+    } else if (FUN_14028d530(&ptAxis, &(ptDown = DAT_143a08cf8.FUN_1409f7960()))) {
+        ptRight = DAT_143a08cd8.FUN_1409f7960();
+    } else {
+        ptRight = ptAxis.FUN_14109adc0(DAT_143a08cf8);
+    }
+    Unk_StreamPoint ptUp = ptRight.FUN_14109adc0(ptAxis);
+    FUN_14109aa30(&matRotation, 0, ptRight);
+    FUN_14109aa30(&matRotation, 1, ptAxis);
+    FUN_14109aa30(&matRotation, 2, ptUp);
+    FUN_141461ba0(matRotation);
+    FUN_141461720(0);
+}
+MS2_REPLACE_METHOD(0x1414614d0, CMagic, FUN_1414614d0, 585, 0x283D7457);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141461720
+void CMagic::FUN_141461720(int nFlag)
+{
+    if (nFlag) {
+        m_ptDirection = m_ptTarget.FUN_140965c40(m_ptCurrent);
+        m_ptDirection.FUN_140968990();
+    }
+    Unk_NiMatrix3 matRotation;
+    Unk_StreamPoint ptAxis = m_ptDirection.FUN_1409f7960();
+    if (m_data.m_nLookAtType == 0) {
+        ptAxis = m_ptDirection.FUN_1409f7960();
+    } else if (m_data.m_nLookAtType == 1) {
+        ptAxis = m_ptDirection.FUN_1409f7960();
+        ptAxis.z = 0;
+        ptAxis.FUN_140968990();
+    } else if (m_data.m_nLookAtType == 2) {
+        Unk_StreamPoint ptMove = m_ptCurrent.FUN_140965c40(m_ptLast);
+        ptMove.FUN_140968990();
+        ptAxis = ptMove.FUN_1409f7960();
+    }
+    if (ptAxis.FUN_140552690(DAT_143b01a60))
+        ptAxis = m_spSkill->m_ptDefaultDir;
+    Unk_StreamPoint ptRight = DAT_143b01a60;
+    if (ptAxis.FUN_140552690(DAT_143a08cf8)) {
+        ptRight = DAT_143a08cd8;
+    } else if (ptAxis.FUN_140552690(DAT_143a08cf8.FUN_1409f7960())) {
+        ptRight = DAT_143a08cd8.FUN_1409f7960();
+    } else {
+        ptRight = ptAxis.FUN_14109adc0(DAT_143a08cf8);
+    }
+    Unk_StreamPoint ptUp = ptRight.FUN_14109adc0(ptAxis);
+    FUN_14109aa30(&matRotation, 0, ptRight);
+    FUN_14109aa30(&matRotation, 1, ptAxis);
+    FUN_14109aa30(&matRotation, 2, ptUp);
+    FUN_140ddcca0(FUN_1409475f0(&m_spScene), matRotation);
+    double dTime = FUN_141473280(FUN_14086d260());
+    static_cast<NiAVObject*>(FUN_1409475f0(&m_spScene))->Update((float)dTime, false);
+}
+MS2_REPLACE_METHOD(0x141461720, CMagic, FUN_141461720, 852, 0x58FA7E4A);
+
 // @0x141461a80
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_141461a80(Unk_StreamPoint ptNew)
@@ -1123,6 +1252,49 @@ void CMagicModel::FUN_141467d50(Unk_StreamPoint ptDirection)
     m_spMagic->FUN_141461b60(ptCopy);
 }
 MS2_REPLACE_METHOD(0x141467D50, CMagicModel, FUN_141467d50, 73, 0x85005B77);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141467800
+void CMagicModel::FUN_141467800()
+{
+    if (!FUN_141467ae0()) {
+        double dTime = FUN_141473280(FUN_14086d260());
+        m_spMagic->FUN_141460640((unsigned)(long long)dTime);
+    }
+}
+MS2_REPLACE_METHOD(0x141467800, CMagicModel, FUN_141467800, 82, 0xDAD81DAA);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141467860
+void CMagicModel::FUN_141467860()
+{
+    if (m_spMagic->m_n53C == 0) {
+        if (m_spA->FUN_141759190() == 0) {
+            if (m_spMagic->m_nState == 0) {
+                if (FUN_1403ed2d0()->FUN_141bd1180(m_spA->m_nOwnerId) == NULL)
+                    FUN_1410a7630()->FUN_14146cd10(Unk_SocketPtr<CMagicModel>(this));
+            }
+        } else {
+            m_spMagic->FUN_14145de80();
+            if (FUN_141467ae0())
+                FUN_1410a7630()->FUN_14146cd10(Unk_SocketPtr<CMagicModel>(this));
+        }
+    } else {
+        m_spMagic->FUN_141463960();
+        if (FUN_1403ed2d0()->FUN_141bd1180(m_spA->m_nOwnerId) == NULL || FUN_141467ae0())
+            FUN_1410a7630()->FUN_14146cd10(Unk_SocketPtr<CMagicModel>(this));
+    }
+}
+MS2_REPLACE_METHOD(0x141467860, CMagicModel, FUN_141467860, 543, 0xFBB38531);
+
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141467ed0
+void CMagicModel::FUN_141467ed0()
+{
+    if (m_spA.m_p == NULL && m_spMagic.get() != NULL)
+        m_spMagic->FUN_14145f570(m_spMagic->FUN_141467440());
+}
+MS2_REPLACE_METHOD(0x141467ED0, CMagicModel, FUN_141467ed0, 127, 0xF7EBF49E);
 
 // @0x141467da0
 void CMagicModel::FUN_141467da0()

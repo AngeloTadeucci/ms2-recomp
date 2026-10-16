@@ -170,6 +170,8 @@ public:
     void FUN_141462900(unsigned nNow);                              // 0x141462900
     void FUN_141461bd0(unsigned nNow);                              // 0x141461bd0
     void FUN_141462490(unsigned nNow);                              // 0x141462490
+    int FUN_141467100(Unk_MagicEntity* pEntity, Unk_StreamPoint* pOut);   // 0x141467100 nearest hit point of the target
+    void FUN_141463960();                                           // 0x141463960
     void FUN_14145f570(unsigned nNow);                              // 0x14145f570 begin the destroy phase
     void FUN_14145ec50(unsigned nNow);                              // 0x14145ec50 per-frame update while alive
     void FUN_1414609e0();                                           // 0x1414609e0
@@ -237,6 +239,7 @@ public:
     Unk_NiMatrix3 FUN_141467cb0();                                  // 0x141467cb0 projectile rotation
     void FUN_141467d00(Unk_StreamPoint ptNew);                      // 0x141467d00 move the projectile
     void FUN_141467d50(Unk_StreamPoint ptDirection);                // 0x141467d50 turn the projectile
+    void FUN_141467ed0();                                           // 0x141467ed0 begin the destroy phase of an orphaned model
     void FUN_141467da0();                                           // 0x141467da0
     void FUN_141467800();                                           // 0x141467800
     void FUN_141467860();                                           // 0x141467860 per-tick update
