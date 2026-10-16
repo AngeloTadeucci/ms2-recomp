@@ -67,6 +67,7 @@ class Unk_RideePtr
 {
 public:
     Unk_RideePtr() { FUN_140788a50(); }
+    Unk_RideePtr(Unk_RideeRow* pNull) { m_p = 0; }                  // 0x1418c10f0 (uiavatarbase.cpp; m_pad_00 left alone)
     Unk_RideePtr(const Unk_RideePtr& o) { FUN_1407889c0(o); }
     ~Unk_RideePtr() { FUN_140788ed0(); }
     Unk_RideePtr& operator=(const Unk_RideePtr& o) { FUN_1407892d0(o); return *this; }
