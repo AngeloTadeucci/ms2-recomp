@@ -242,9 +242,10 @@ MS2_CHECK_OFFSET(CNiStreamLoadThread, m_spPalette, 0x138);
 template <class T> class TCircleList
 {
 public:
-    explicit TCircleList(int nCapacity)                         // 0x14155aad0
-        : m_nWrite(0), m_nStart(0), m_nLast(0), m_nCount(0), m_nCapacity(nCapacity)
+    explicit TCircleList(int nCapacity = 0)                     // 0x14155aad0
+        : m_nWrite(0), m_nStart(0), m_nLast(0), m_nCount(0)
     {
+        m_nCapacity = nCapacity;
         if (nCapacity == 0)
             m_nCapacity = 1;
         m_aItems.reserve(m_nCapacity);
@@ -253,7 +254,10 @@ public:
     virtual ~TCircleList() {}                                   // 0x14155b6c0
     virtual void vfunc_1(int nCapacity)                         // 1 0x14155cd00 empty the ring and resize it
     {
-        m_nCapacity = nCapacity == 0 ? 1 : nCapacity;
+        if (nCapacity == 0)
+            m_nCapacity = 1;
+        else
+            m_nCapacity = nCapacity;
         m_nWrite = 0;
         m_nLast = 0;
         m_nStart = 0;
@@ -266,21 +270,24 @@ public:
     int GetCount() const { return m_nCount; }                   // @0x14155d9d0
     bool Get(int nIndex, T& rOut) const                         // 0x14155d5b0 oldest first
     {
-        bool bValid = nIndex < m_nCapacity && nIndex < m_nCount;
-        if (bValid)
+        int nInCapacity = nIndex < m_nCapacity;
+        int nInCount = nIndex < m_nCount;
+        if (nInCapacity & nInCount)
         {
-            int n = m_nStart + nIndex;
-            int nWrapped = m_nCapacity <= n ? n - m_nCapacity : 0;
-            rOut = m_aItems[nWrapped == 0 ? n : nWrapped];
+            nIndex = m_nStart + nIndex;
+            int nWrapped = (nIndex >= m_nCapacity) * (nIndex - m_nCapacity);
+            nIndex = (nWrapped == 0) * nIndex + nWrapped;
+            rOut = m_aItems[nIndex];
+            return true;
         }
-        return bValid;
+        return false;
     }
     void Push(const T& rItem)                                   // 0x14155cb10 overwrites the oldest when full
     {
         m_aItems[m_nWrite] = rItem;
         int nNext = m_nWrite + 1;
         m_nLast = m_nWrite;
-        m_nCount += m_nCount < m_nCapacity ? 1 : 0;
+        m_nCount += m_nCount < m_nCapacity;
         m_nWrite = (nNext != m_nCapacity) * nNext;
         m_nStart = ((m_nLast + 1) * (m_nCount == m_nCapacity)) % m_nCapacity;
     }
@@ -299,8 +306,8 @@ MS2_CHECK_SIZE(TCircleList<NiAVObjectPtr>, 0x38);
 template <class T> class CCached : public NiRefObject
 {
 public:
-    CCached() : m_spData(0), m_dLastUse(0.0), m_nClass(5) {}    // 0x14155a540 / 0x14155a5c0
-    virtual ~CCached() {}                                       // 0x14155b410 / 0x14155b450
+    CCached() : m_spData(0) { m_dLastUse = 0; m_nClass = 5; }    // 0x14155a540 / 0x14155a5c0
+    virtual ~CCached() = default;                                    // 0x14155b410 / 0x14155b450
     T m_spData;                     // +0x10
     double m_dLastUse;              // +0x18
     int m_nClass;                   // +0x20
@@ -327,14 +334,13 @@ typedef efd::SmartPointer<CCachedTexture> CCachedTexturePtr;
 struct Unk_NifTexKey
 {
     Unk_NifTexKey() : m_nPrefs(0) {}
-    Unk_NifTexKey(const CString& strPath, const NiTexture::FormatPrefs& kPrefs)     // 0x14155b0b0
-        : m_strPath(strPath)
+    Unk_NifTexKey(CString strPath, NiTexture::FormatPrefs kPrefs)     // 0x14155b0b0
     {
-        unsigned char* p = reinterpret_cast<unsigned char*>(&m_nPrefs);
-        p[0] = (unsigned char)kPrefs.m_ePixelLayout;
-        p[1] = (unsigned char)kPrefs.m_eAlphaFmt;
-        p[2] = (unsigned char)kPrefs.m_eMipMapped;
-        p[3] = 0;
+        m_strPath = strPath;
+        m_kBytes.m_cLayout = (unsigned char)kPrefs.m_ePixelLayout;
+        m_kBytes.m_cAlpha = (unsigned char)kPrefs.m_eAlphaFmt;
+        m_kBytes.m_cMipMapped = (unsigned char)kPrefs.m_eMipMapped;
+        m_kBytes.m_cPad = 0;
     }
     bool operator<(const Unk_NifTexKey& r) const                // 0x14155c4d0
     {
@@ -349,10 +355,32 @@ struct Unk_NifTexKey
         return false;
     }
     CString m_strPath;
-    unsigned m_nPrefs;
+    union
+    {
+        unsigned m_nPrefs;
+        struct
+        {
+            unsigned char m_cLayout;
+            unsigned char m_cAlpha;
+            unsigned char m_cMipMapped;
+            unsigned char m_cPad;
+        } m_kBytes;
+    };
     int m_pad;
 };
 MS2_CHECK_SIZE(Unk_NifTexKey, 0x10);
+
+// Entries per cache class (see CNifLoadingService).
+struct Unk_NifCounts
+{
+    int nNotCache;
+    int nForceKeep;
+    int nMySkill;
+    int nOtherSkill;
+    int nNPC;
+    int nDependTime;
+};
+MS2_CHECK_SIZE(Unk_NifCounts, 0x18);
 
 // ---- the loading service ---------------------------------------------------------------------------------------
 class CNifLoadingService;
@@ -407,9 +435,11 @@ public:
     NiAVObjectPtr CloneCached(CString strPath, CCachedNifPtr spCached);     // 0x141556320
     void RefreshTextures();                         // 0x141556410
     void LogCounts();                               // 0x141556610
+    unsigned FUN_14151e770();                       // 0x14151e770 number of cached nifs (defined elsewhere)
+    unsigned FUN_14151e790();                       // 0x14151e790 number of cached textures (defined elsewhere)
 
     static bool OnDeviceReset(char bBefore, void* pRenderer);   // 0x141554df0
-    static bool OnDeviceLost();                                 // 0x141554ee0
+    static bool OnDeviceLost(void* pRenderer);                              // 0x141554ee0
 
 public:
     MS2_LAYOUT_FRIEND;
@@ -423,8 +453,8 @@ public:
     int m_bShutdown;                                            // +0xc8
     int m_bRefreshTextures;                                     // +0xcc
     Unk_McTimer m_kSweepTimer;                                  // +0xd0
-    int m_aNifCount[6];                                         // +0xd8 per cache class
-    int m_aTexCount[6];                                         // +0xf0 per cache class
+    Unk_NifCounts m_kNifCount;                                         // +0xd8 per cache class
+    Unk_NifCounts m_kTexCount;                                         // +0xf0 per cache class
 };
 MS2_CHECK_SIZE(CNifLoadingService, 0x108);
 MS2_CHECK_OFFSET(CNifLoadingService, m_mapNif, 0x28);
@@ -435,5 +465,5 @@ MS2_CHECK_OFFSET(CNifLoadingService, m_mapMyPool, 0xa8);
 MS2_CHECK_OFFSET(CNifLoadingService, m_mapOtherPool, 0xb8);
 MS2_CHECK_OFFSET(CNifLoadingService, m_bShutdown, 0xc8);
 MS2_CHECK_OFFSET(CNifLoadingService, m_kSweepTimer, 0xd0);
-MS2_CHECK_OFFSET(CNifLoadingService, m_aNifCount, 0xd8);
-MS2_CHECK_OFFSET(CNifLoadingService, m_aTexCount, 0xf0);
+MS2_CHECK_OFFSET(CNifLoadingService, m_kNifCount, 0xd8);
+MS2_CHECK_OFFSET(CNifLoadingService, m_kTexCount, 0xf0);

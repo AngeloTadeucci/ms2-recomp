@@ -27,6 +27,7 @@ public:
     virtual TiXmlDocument* Clone() const;                                      // slot 15, 0x140871580 (tinyxmlhelper.cpp)
     virtual bool Accept(void* pVisitor) const;                                 // slot 16, 0x1408714e0 (tinyxmlhelper.cpp)
     bool FUN_140870fc0(const char* filename,int encoding);
+    TiXmlDocument& FUN_140870cf0(const TiXmlDocument& rhs);                   // 0x140870cf0 assign (nifeffectparam.cpp)
 private:
     void* m_08; void* m_10; void* m_18; void* m_20; void* m_28; void* m_30;
     void* m_38; void* m_40; void* m_48; void* m_50; void* m_58; void* m_60; void* m_68;

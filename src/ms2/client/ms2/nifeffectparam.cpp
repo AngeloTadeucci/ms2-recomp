@@ -3,6 +3,109 @@
 // MS2-UNIT: ?\nifeffectparam.cpp
 // MS2-RANGE: 0x1400fa2f0-0x1400fa540 .text$di
 // MS2-RANGE: 0x141548790-0x141562ee0 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$StringFormat@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HV12@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBV01@AEBH1@Z 0x14154dd60 ; unique
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x14154ea70 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@AEAPEAU31@@Z 0x14154eaa0 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@@Z 0x14154eb40 ; prop
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x14154eb50 ; prop
+// MS2-PIN: ??0?$SmartPointer@VNiFloatInterpolator@@@efd@@QEAA@PEAVNiFloatInterpolator@@@Z 0x14154ed60 ; unique
+// MS2-PIN: ??0?$SmartPointer@VUnk_SeparateNode@@@efd@@QEAA@PEAVUnk_SeparateNode@@@Z 0x14154eda0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCBirdMovement@@@@QEAA@PEAVCBirdMovement@@@Z 0x14154ede0 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCNifEffectParam@@@@QEAA@PEAVCNifEffectParam@@@Z 0x14154ee10 ; prop
+// MS2-PIN: ??1?$SmartPointer@VNiAlphaController@@@efd@@QEAA@XZ 0x14154f0b0 ; unique
+// MS2-PIN: ??1?$SmartPointer@VNiFloatInterpolator@@@efd@@QEAA@XZ 0x14154f0e0 ; unique
+// MS2-PIN: ??1?$SmartPointer@VUnk_SeparateNode@@@efd@@QEAA@XZ 0x14154f110 ; unique
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VNiAVObject@@@efd@@V?$allocator@V?$SmartPointer@VNiAVObject@@@efd@@@std@@@std@@@std@@QEAAAEAPEAV?$SmartPointer@VNiAVObject@@@efd@@XZ 0x14154f230 ; prop
+// MS2-PIN: ??1?$_Compressed_pair@V?$allocator@D@std@@V?$_String_val@U?$_Simple_types@D@std@@@2@$00@std@@QEAA@XZ 0x14154f250 ; prop
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCNifEffectParam@@@@QEAAAEAV1@PEAVCNifEffectParam@@@Z 0x14154f2f0 ; unique
+// MS2-PIN: ??8?$SmartPointer@VNiSourceTexture@@@efd@@QEBA_NPEAVNiSourceTexture@@@Z 0x14154f360 ; prop
+// MS2-PIN: ??B?$SmartPointer@VNiFloatInterpolator@@@efd@@QEBAPEAVNiFloatInterpolator@@XZ 0x14154f480 ; unique
+// MS2-PIN: ??B?$SmartPointer@VUnk_SeparateNode@@@efd@@QEBAPEAVUnk_SeparateNode@@XZ 0x14154f490 ; unique
+// MS2-PIN: ??C?$SmartPointer@VNiAlphaController@@@efd@@QEBAPEAVNiAlphaController@@XZ 0x14154f500 ; unique
+// MS2-PIN: ??C?$SmartPointer@VUnk_SeparateNode@@@efd@@QEBAPEAVUnk_SeparateNode@@XZ 0x14154f510 ; unique
+// MS2-PIN: ?GetParent@NiAVObject@@QEAAPEAVNiNode@@XZ 0x14154f9e0 ; unique
+// MS2-PIN: ?AddRef@?$MS2Ptr@VCBirdMovement@@@@AEBAXXZ 0x141550080 ; prop
+// MS2-PIN: ?AddRef@?$MS2Ptr@VCNifEffectParam@@@@AEBAXXZ 0x1415500b0 ; prop
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCBirdMovement@@@@AEBAXPEAX@Z 0x141550120 ; prop
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCNifEffectParam@@@@AEBAXPEAX@Z 0x141550150 ; prop
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@2@XZ 0x141550320 ; prop
+// MS2-PIN: memmove_s 0x141550890 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141556920 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141556970 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@5@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@1@@Z 0x141556d60 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@5@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@1@@Z 0x141556d80 ; unique
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14155a420 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14155a430 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14155a440 ; unique
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14155a450 ; unique
+// MS2-PIN: ??0?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAA@_K@Z 0x14155a6a0 ; unique
+// MS2-PIN: ??0?$CRBMap@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAA@_K@Z 0x14155a6d0 ; unique
+// MS2-PIN: ??0?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@IEAA@_K@Z 0x14155a7c0 ; prop
+// MS2-PIN: ??0?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEAA@_K@Z 0x14155a820 ; prop
+// MS2-PIN: ??0?$SmartPointer@VCCachedNif@@@efd@@QEAA@PEAVCCachedNif@@@Z 0x14155aa10 ; unique
+// MS2-PIN: ??0?$SmartPointer@VNiAVObject@@@efd@@QEAA@PEAVNiAVObject@@@Z 0x14155aa90 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@1@@Z 0x14155ad20 ; unique
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEAA@XZ 0x14155ad60 ; unique
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@1@@Z 0x14155ad80 ; unique
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEAA@XZ 0x14155adc0 ; unique
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@1@@Z 0x14155ae80 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@1@@Z 0x14155aee0 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x14155af20 ; prop
+// MS2-PIN: ??0CCachedNif@@QEAA@XZ 0x14155b020 ; unique
+// MS2-PIN: ??0Unk_NifTexKey@@QEAA@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VFormatPrefs@NiTexture@@@Z 0x14155b0b0 ; unique
+// MS2-PIN: ??0CNode@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAA@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x14155b230 ; unique
+// MS2-PIN: ??0CPair@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEAA@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x14155b380 ; unique
+// MS2-PIN: ??1CCachedNif@@UEAA@XZ 0x14155b890 ; unique
+// MS2-PIN: ??8?$SmartPointer@VCCachedNif@@@efd@@QEBA_NPEAVCCachedNif@@@Z 0x14155bcc0 ; unique
+// MS2-PIN: ??8?$SmartPointer@VNiPixelData@@@efd@@QEBA_NPEAVNiPixelData@@@Z 0x14155bd00 ; unique
+// MS2-PIN: ??9?$SmartPointer@VCCachedNif@@@efd@@QEBA_NPEAVCCachedNif@@@Z 0x14155be00 ; unique
+// MS2-PIN: ??C?$SmartPointer@VCCachedNif@@@efd@@QEBAPEAVCCachedNif@@XZ 0x14155bfe0 ; unique
+// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@1@XZ 0x14155c030 ; prop
+// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@1@XZ 0x14155c050 ; prop
+// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@1@XZ 0x14155c090 ; unique
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14155c0b0 ; prop
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14155c100 ; unique
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14155c120 ; prop
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14155c170 ; unique
+// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c190 ; prop
+// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c220 ; prop
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14155c2b0 ; unique
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14155c2d0 ; unique
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c330 ; prop
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c400 ; prop
+// MS2-PIN: ?Invoke@?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCNifLoadingService@@P82@EAAXXZ@@UEAAXXZ 0x14155c570 ; unique
+// MS2-PIN: ?Add@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@QEAA_KAEBV?$SmartPointer@VNiAVObject@@@efd@@@Z 0x14155ca60 ; unique
+// MS2-PIN: ?Push@?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@QEAAXAEBV?$SmartPointer@VNiAVObject@@@efd@@@Z 0x14155cb10 ; unique
+// MS2-PIN: ?CallConstructors@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@CAXPEAV?$SmartPointer@VNiAVObject@@@efd@@_K@Z 0x14155cc20 ; unique
+// MS2-PIN: ?vfunc_1@?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@UEAAXH@Z 0x14155cd00 ; unique
+// MS2-PIN: ?Find@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@AEBUUnk_NifTexKey@@@Z 0x14155d200 ; unique
+// MS2-PIN: ?GetFormatPreferences@NiTexture@@QEBAAEBVFormatPrefs@1@XZ 0x14155d700 ; unique
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x14155d710 ; unique
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x14155d730 ; prop
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEBAPEAU__POSITION@@XZ 0x14155d750 ; prop
+// MS2-PIN: ?GetNext@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x14155d840 ; prop
+// MS2-PIN: ?GetNext@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x14155d880 ; prop
+// MS2-PIN: ?GetNext@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x14155d8c0 ; prop
+// MS2-PIN: ?GetSize@?$NiTLargeArray@V?$SmartPointer@VNiObject@@@efd@@V?$NiTNewInterface@V?$SmartPointer@VNiObject@@@efd@@@@@@QEBAIXZ 0x14155d9c0 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAPEAVCNode@12@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x14155dfc0 ; unique
+// MS2-PIN: ?LeftRotate@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x14155e4f0 ; unique
+// MS2-PIN: ?Lookup@?$CRBMap@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEBA_NAEBUUnk_NifTexKey@@AEAV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x14155e730 ; unique
+// MS2-PIN: ?Maximum@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14155e8d0 ; unique
+// MS2-PIN: ?Minimum@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14155ea90 ; unique
+// MS2-PIN: ?NewNode@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAPEAVCNode@12@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x14155f220 ; unique
+// MS2-PIN: ?Predecessor@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14155f6f0 ; unique
+// MS2-PIN: ?RBDelete@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAA_NPEAVCNode@12@@Z 0x14155fcd0 ; unique
+// MS2-PIN: ?RBDeleteFixup@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAXPEAVCNode@12@@Z 0x141560810 ; unique
+// MS2-PIN: ?RBInsert@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEAAPEAVCNode@12@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x1415612c0 ; unique
+// MS2-PIN: ?RemoveAll@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@QEAAXXZ 0x141561580 ; unique
+// MS2-PIN: ?RightRotate@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x141561ee0 ; unique
+// MS2-PIN: ?SetAt@?$CRBMap@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAAPEAU__POSITION@@AEBUUnk_NifTexKey@@AEBV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@Z 0x141562140 ; unique
+// MS2-PIN: ?SetNil@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAXPEAPEAVCNode@12@@Z 0x141562490 ; unique
+// MS2-PIN: ?SetupClassInfo@CNifLoadingService@@SAXPEAVClassInfo@efd@@_K@Z 0x141562520 ; unique
+// MS2-PIN: ?Successor@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x1415627f0 ; unique
+// MS2-PIN: ?SwapNode@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141562ce0 ; unique
+// MS2-PINS-END tplpin
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -41,6 +144,7 @@ class Unk_140165cf0
 {
 public:
     Unk_140165cf0* FUN_140165cf0(const char* pszName);              // FirstChildElement(name)
+    Unk_140165cf0* FUN_140168650(const char* pszName);              // NextSiblingElement(name)
 };
 int FUN_1408733e0(Unk_140165cf0* pNode, const char* pszName, CString& strOut);
 int FUN_140873360(Unk_140165cf0* pNode, const char* pszName, float& fOut);
@@ -1157,6 +1261,8 @@ class Unk_NifFileMgr
 public:
     // Reads a file of the data tree into a buffer (freed by the caller); pstrDir receives its directory.
     int FUN_1403972f0(const char* pszPath, void** ppBuf, int* pnSize, std::string* pstrDir);
+    int FUN_1403987d0(std::string strPath);                         // the file exists in the data tree
+    int FUN_1403974b0(TiXmlDocument* pDoc, const char* pszPath, int nA, bool bB, bool bC);   // load an xml file
 };
 Unk_NifFileMgr* FUN_140166420();
 class Unk_NifGate { public: bool FUN_1406af080(); };                 // the loader should read on the caller's thread
@@ -1371,4 +1477,979 @@ NiStream* CNiStreamLoadThread::Load(CString strPath, int bKeep)
     }
     delete pStream;
     return pFound;
+}
+
+// ============================================================================================================
+// CNifLoadingService
+// ============================================================================================================
+#include "ms2/commonfiles/crashmanager.h"
+
+extern CLockCriticalSection DAT_143ae1f28;                          // guards the nif caches
+extern CLockCriticalSection DAT_143ae1f58;                          // guards the texture cache
+extern int DAT_143ae1f20;                                           // the render device is lost
+extern int DAT_1439ed00c;                                           // the caches are enabled
+extern char DAT_143d6eb58;                                          // class descriptor handed to the lookup FUN_14098d8d0
+
+CNifLoadingService* TSingleton<CNifLoadingService>::s_instance = 0;
+inline TSingleton<CNifLoadingService>::TSingleton() { s_instance = static_cast<CNifLoadingService*>(this); }
+EE_IMPLEMENT_CONCRETE_CLASS_INFO(CNifLoadingService);
+
+CCrashManager* FUN_140a44830();
+void* FUN_140994450();
+void FUN_1411d7c70(void* pObj, bool (*pfn)(char, void*), CNifLoadingService* pOwner);
+void FUN_1411d7c10(void* pObj, bool (*pfn)(void*), CNifLoadingService* pOwner);
+void FUN_1414fe370(void* pObj, bool (*pfn)(char, void*));
+void FUN_1414fe240(void* pObj, bool (*pfn)(void*));
+void FUN_1411ab770(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void FUN_1411ab7a0(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void FUN_1411ab740(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void FUN_141556d30(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void FUN_1410db4c0(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void FUN_141556d00(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+void* FUN_1409f7c90();
+__int64 FUN_14161bdc0(void* pObj);                                  // pagefile use, MB
+void* FUN_1414a56c0();
+int FUN_1422e9e50(void* pObj);                                      // graphics allocator bytes in use
+void FUN_1412102e0(void* pObj);                                     // CFilePreload: stop
+CNiStreamLoadThread* FUN_1414a5720();
+void FUN_1414a26b0();
+extern char DAT_143afa930;                                          // NiRTTI table entry: NiSourceTexture
+typedef efd::SmartPointer<NiTexture> NiTexturePtr;
+NiTexture* FUN_14097fbf0(NiTexturePtr* pHandle);                    // handle -> texture pointer
+NiTexture* FUN_140a5acb0(NiTexturePtr* pHandle);                    // handle -> texture pointer (non-const)
+unsigned FUN_14098dea0(NiRefObject* pObject);                       // reference count
+NiTexture* FUN_140a5ac80(NiTexturePtr* pHandle);                    // handle -> texture pointer
+NiPixelData* FUN_140a5ac70(NiPixelDataPtr* pHandle);                // handle -> pixel data pointer
+void FUN_1409fabf0(NiAVObjectPtr* pHandle, void* pNode);            // assign a node to a handle
+NiPixelData* FUN_140980440(NiSourceTexture* pTexture);              // source pixel data
+void FUN_141562500(NiSourceTexture* pTexture, NiPixelData* pPixels);    // set the source pixel data
+void FUN_140399100(CString strPattern, CString strDirectory, ATL::CAtlArray<CString>& aOut, CString strExclude, bool bLocalOnly);
+
+// @0x141551810
+CNifLoadingService::CNifLoadingService() : m_mapNif(10), m_mapTex(10)
+{
+    m_dLifetime = 120.0;
+    m_dConfigLifetime = 0.0;
+    m_bShutdown = 0;
+    m_kNifCount.nNotCache = 0;
+    m_kNifCount.nForceKeep = 0;
+    m_kNifCount.nMySkill = 0;
+    m_kNifCount.nOtherSkill = 0;
+    m_kNifCount.nNPC = 0;
+    m_kNifCount.nDependTime = 0;
+    m_kTexCount.nNotCache = 0;
+    m_kTexCount.nForceKeep = 0;
+    m_kTexCount.nMySkill = 0;
+    m_kTexCount.nOtherSkill = 0;
+    m_kTexCount.nNPC = 0;
+    m_kTexCount.nDependTime = 0;
+    m_bRefreshTextures = 0;
+    m_kSweepTimer.FUN_140268840();
+}
+
+// @0x141551a10
+CNifLoadingService::~CNifLoadingService()
+{
+}
+
+// @0x141551ac0
+const char* CNifLoadingService::GetDisplayName() const
+{
+    return "NifLoadingService";
+}
+
+// @0x141551ae0
+void CNifLoadingService::ClearNifCache()
+{
+    if (Unk_LockGuard kGuard = DAT_143ae1f28)
+    {
+    }
+    else
+    {
+        m_mapOtherPool.clear();
+        m_mapMyPool.clear();
+        m_mapNif.RemoveAll();
+        m_mapWeightDoc.clear();
+    }
+}
+
+// @0x141551b80
+void CNifLoadingService::ClearTextureCache()
+{
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+    {
+    }
+    else
+    {
+        m_mapTex.RemoveAll();
+    }
+}
+
+// @0x141551be0
+void CNifLoadingService::ClearCaches()
+{
+    ClearNifCache();
+    ClearTextureCache();
+}
+
+// @0x141551c10
+void CNifLoadingService::PreloadEffectNifs()
+{
+    ATL::CAtlArray<CString> aFiles;
+    FUN_140399100(CString(".nif"), CString("./Data/Resource/Model/Effect/BG/Perform"), aFiles, CString(""), false);
+    if (m_bShutdown == 0)
+    {
+        for (unsigned i = 0; i < aFiles.GetCount(); ++i)
+            Preload(CString(aFiles[i]), false, 5);
+    }
+}
+
+// @0x141551db0
+bool CNifLoadingService::IsCached(CString strPath)
+{
+    if (strPath == "")
+        return false;
+    FUN_14028e7c0(strPath);
+    Unk_LockGuard kGuard(DAT_143ae1f28);
+    if (kGuard == 0 && DAT_1439ed00c != 0 && m_mapNif.Lookup(strPath) != 0)
+        return true;
+    return false;
+}
+
+// @0x141554ce0
+void CNifLoadingService::LowerLifetime(double dSeconds)
+{
+    if (dSeconds < m_dLifetime)
+        m_dLifetime = dSeconds;
+}
+
+// @0x141554d20
+void CNifLoadingService::ResetLifetime()
+{
+    if (FUN_14028d470((float)m_dConfigLifetime, 0.0f) == 0)
+        m_dLifetime = m_dConfigLifetime;
+    else
+        m_dLifetime = 120.0;
+}
+
+// @0x141554d90
+void CNifLoadingService::SetLifetime(double dSeconds)
+{
+    m_dConfigLifetime = dSeconds;
+    if (!FUN_14028d470((float)dSeconds, 0.0f))
+        m_dLifetime = dSeconds;
+}
+
+// @0x141554df0
+bool CNifLoadingService::OnDeviceReset(char bBefore, void* pRenderer)
+{
+    if (pRenderer != 0)
+    {
+        if (bBefore == 0)
+        {
+            DAT_143ae1f20 = 0;
+            FUN_140a44830()->FUN_1401ce2f0("\n *Reset Device [Pagefile %d MB] [GFXSysAlloc %d MB]",
+                FUN_14161bdc0(FUN_1409f7c90()), FUN_1422e9e50(FUN_1414a56c0()) / 0x100000);
+        }
+        else
+        {
+            FUN_140a44830()->FUN_1401ce2f0("\n *beforeReset Device [Pagefile %d MB] [GFXSysAlloc %d MB]",
+                FUN_14161bdc0(FUN_1409f7c90()), FUN_1422e9e50(FUN_1414a56c0()) / 0x100000);
+        }
+    }
+    return true;
+}
+
+// @0x141554ee0
+bool CNifLoadingService::OnDeviceLost(void* pRenderer)
+{
+    DAT_143ae1f20 = 1;
+    FUN_140a44830()->FUN_1401ce2f0("\n *Lost Device [Pagefile %d MB] [GFXSysAlloc %d MB]",
+        FUN_14161bdc0(FUN_1409f7c90()), FUN_1422e9e50(FUN_1414a56c0()) / 0x100000);
+    return true;
+}
+
+// @0x141555ce0
+efd::SyncResult CNifLoadingService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
+{
+    FUN_1411ab770(pRegistrar, 1);
+    FUN_1411ab7a0(pRegistrar, 1);
+    FUN_1411ab740(pRegistrar, 1);
+    FUN_141556d30(pRegistrar, 1);
+    FUN_1410db4c0(pRegistrar, 1);
+    FUN_141556d00(pRegistrar, 1);
+    return efd::SyncResult_Success;
+}
+
+// @0x141555d60
+efd::AsyncResult CNifLoadingService::OnInit()
+{
+    void* pNotifier = FUN_14098d8d0(&DAT_143d6eb58, FUN_140994450());
+    if (pNotifier != 0)
+    {
+        FUN_1411d7c70(pNotifier, OnDeviceReset, this);
+        FUN_1411d7c10(pNotifier, OnDeviceLost, this);
+    }
+    FUN_140a44830()->FUN_1401ce3d0(TFunctor<void, EmptyParam>(this, &CNifLoadingService::LogCounts));
+    return efd::AsyncResult_Complete;
+}
+
+// @0x141555e60
+efd::AsyncResult CNifLoadingService::OnTick()
+{
+    Sweep();
+    return efd::AsyncResult_Pending;
+}
+
+// @0x141555e90
+efd::AsyncResult CNifLoadingService::OnShutdown()
+{
+    void* pNotifier = FUN_14098d8d0(&DAT_143d6eb58, FUN_140994450());
+    if (pNotifier != 0)
+    {
+        FUN_1414fe370(pNotifier, OnDeviceReset);
+        FUN_1414fe240(pNotifier, OnDeviceLost);
+    }
+    m_bShutdown = 1;
+    if (FUN_140ab7a10() != 0)
+        FUN_1412102e0(FUN_140ab7a10());
+    if (FUN_1414a5720() != 0)
+    {
+        FUN_1414a5720()->Stop();
+        FUN_1414a26b0();
+    }
+    ClearTextureCache();
+    ClearNifCache();
+    return efd::AsyncResult_Complete;
+}
+
+// @0x141556410
+void CNifLoadingService::RefreshTextures()
+{
+    if (m_bRefreshTextures != 0)
+    {
+        if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        {
+        }
+        else
+        {
+            POSITION pos = m_mapTex.GetHeadPosition();
+            while (pos != 0)
+            {
+                POSITION posCur = pos;
+                m_mapTex.GetNext(pos);
+                ATL::CRBMap<Unk_NifTexKey, CCachedTexturePtr>::CPair* pPair = m_mapTex.GetAt(posCur);
+                if (static_cast<CCachedTexture*>(pPair->m_value) != 0)
+                {
+                    if (FUN_1401d1320(&pPair->m_value->m_kFile) && static_cast<CCachedTexture*>(pPair->m_value) != 0)
+                    {
+                        NiSourceTexture* pTexture = static_cast<NiSourceTexture*>(
+                            FUN_14098d8d0(&DAT_143afa930, FUN_14097fbf0(&pPair->m_value->m_spData)));
+                        NiPixelDataPtr spOld = FUN_140980440(pTexture);
+                        if (spOld != 0)
+                            FUN_141562500(pTexture, 0);
+                        pTexture->LoadPixelDataFromFile();
+                        pPair->m_value->m_dLastUse = FUN_14086d260()->FUN_141473280();
+                    }
+                }
+            }
+        }
+    }
+}
+
+// @0x1415543e0
+void CNifLoadingService::Sweep()
+{
+    if (DAT_143ae1f20 != 1)
+    {
+        float fNow = (float)FUN_14086d260()->FUN_141473280();
+        if (m_kSweepTimer.FUN_140268870(60000) != 0)
+        {
+            m_kNifCount.nNotCache = 0;
+            m_kNifCount.nForceKeep = 0;
+            m_kNifCount.nMySkill = 0;
+            m_kNifCount.nOtherSkill = 0;
+            m_kNifCount.nNPC = 0;
+            m_kNifCount.nDependTime = 0;
+            if (Unk_LockGuard kGuard = DAT_143ae1f28)
+            {
+            }
+            else
+            {
+                POSITION pos = m_mapNif.GetHeadPosition();
+                while (pos != 0)
+                {
+                    POSITION posCur = pos;
+                    m_mapNif.GetNext(pos);
+                    ATL::CRBMap<CString, CCachedNifPtr>::CPair* pPair = m_mapNif.GetAt(posCur);
+                    CCachedNif* pEntry = pPair->m_value;
+                    if (FUN_1409849b0(&pEntry->m_spData) == 0)
+                    {
+                        m_mapNif.RemoveAt(posCur);
+                    }
+                    else
+                    {
+                        bool bExpired = false;
+                        switch (pPair->m_value->m_nClass)
+                        {
+                        case 0:
+                            bExpired = true;
+                            ++m_kNifCount.nNotCache;
+                            break;
+                        case 1:
+                            ++m_kNifCount.nForceKeep;
+                            break;
+                        case 2:
+                            ++m_kNifCount.nMySkill;
+                            break;
+                        case 3:
+                            ++m_kNifCount.nOtherSkill;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        case 4:
+                            ++m_kNifCount.nNPC;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        case 5:
+                            ++m_kNifCount.nDependTime;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        }
+                        unsigned nRefs = FUN_14098dea0(FUN_14098d0f0(&pPair->m_value->m_spData));
+                        if (nRefs < 2 && bExpired)
+                        {
+                            const CString& strKey = m_mapNif.GetKeyAt(posCur);
+                            PoolMap::iterator itMy = m_mapMyPool.find(strKey);
+                            if (itMy != m_mapMyPool.end())
+                                m_mapMyPool.erase(itMy);
+                            PoolMap::iterator itOther = m_mapOtherPool.find(strKey);
+                            if (itOther != m_mapOtherPool.end())
+                                m_mapOtherPool.erase(itOther);
+                            m_mapNif.RemoveAt(posCur);
+                        }
+                    }
+                }
+            }
+            m_kTexCount.nNotCache = 0;
+            m_kTexCount.nForceKeep = 0;
+            m_kTexCount.nMySkill = 0;
+            m_kTexCount.nOtherSkill = 0;
+            m_kTexCount.nNPC = 0;
+            m_kTexCount.nDependTime = 0;
+            if (Unk_LockGuard kTexGuard = DAT_143ae1f58)
+            {
+            }
+            else
+            {
+                POSITION pos = m_mapTex.GetHeadPosition();
+                while (pos != 0)
+                {
+                    POSITION posCur = pos;
+                    m_mapTex.GetNext(pos);
+                    ATL::CRBMap<Unk_NifTexKey, CCachedTexturePtr>::CPair* pPair = m_mapTex.GetAt(posCur);
+                    if (FUN_14097fbf0(&pPair->m_value->m_spData) == 0)
+                    {
+                        m_mapTex.RemoveAt(posCur);
+                    }
+                    else
+                    {
+                        int nRefs = FUN_14098dea0(FUN_140a5acb0(&pPair->m_value->m_spData));
+                        if (nRefs > 1)
+                            pPair->m_value->m_dLastUse = (double)fNow;
+                        bool bExpired = false;
+                        switch (pPair->m_value->m_nClass)
+                        {
+                        case 0:
+                            ++m_kTexCount.nNotCache;
+                            bExpired = true;
+                            break;
+                        case 1:
+                            ++m_kTexCount.nForceKeep;
+                            break;
+                        case 2:
+                            ++m_kTexCount.nMySkill;
+                            break;
+                        case 3:
+                            ++m_kTexCount.nOtherSkill;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        case 4:
+                            ++m_kTexCount.nNPC;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        case 5:
+                            ++m_kTexCount.nDependTime;
+                            bExpired = pPair->m_value->m_dLastUse + m_dLifetime < (double)fNow;
+                            break;
+                        }
+                        if (bExpired && nRefs < 2)
+                            m_mapTex.RemoveAt(posCur);
+                    }
+                }
+            }
+            RefreshTextures();
+        }
+    }
+}
+
+// @0x141555600
+void CNifLoadingService::DumpNifs()
+{
+    m_kNifCount.nNotCache = 0;
+    m_kNifCount.nForceKeep = 0;
+    m_kNifCount.nMySkill = 0;
+    m_kNifCount.nOtherSkill = 0;
+    m_kNifCount.nNPC = 0;
+    m_kNifCount.nDependTime = 0;
+    FILE* pFile = fopen("LoadedNifs.txt", "w");
+    if (pFile != 0)
+    {
+        CString strLine;
+        unsigned nIndex = 0;
+        if (Unk_LockGuard kGuard = DAT_143ae1f28)
+        {
+        }
+        else
+        {
+            POSITION pos = m_mapNif.GetHeadPosition();
+            while (pos != 0)
+            {
+                POSITION posCur = pos;
+                m_mapNif.GetNext(pos);
+                ATL::CRBMap<CString, CCachedNifPtr>::CPair* pPair = m_mapNif.GetAt(posCur);
+                CString strPath(m_mapNif.GetKeyAt(posCur));
+                if (FUN_1409849b0(&pPair->m_value->m_spData) == 0)
+                {
+                    m_mapNif.RemoveAt(posCur);
+                }
+                else
+                {
+                    switch (pPair->m_value->m_nClass)
+                    {
+                    case 0:
+                        strLine.Format("[%04d]\teRP_NotCache\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nNotCache;
+                        break;
+                    case 1:
+                        strLine.Format("[%04d]\teRP_ForceKeep\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nForceKeep;
+                        break;
+                    case 2:
+                        strLine.Format("[%04d]\teRP_MySkill\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nMySkill;
+                        break;
+                    case 3:
+                        strLine.Format("[%04d]\teRP_OtherSkill\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nOtherSkill;
+                        break;
+                    case 4:
+                        strLine.Format("[%04d]\teRP_NPC\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nNPC;
+                        break;
+                    case 5:
+                        strLine.Format("[%04d]\teRP_DependTime\t%s", nIndex, (const char*)strPath);
+                        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                        fwrite("\n", 1, 1, pFile);
+                        ++m_kNifCount.nDependTime;
+                        break;
+                    }
+                    ++nIndex;
+                }
+            }
+        }
+        strLine.Format("NotCacheCount %d\nForceKeepCount %d\nForceKeepCount %d\nOtherSkillCount %d\nNPCCount %d\nDependTimeCount %d\n",
+            m_kNifCount.nNotCache, m_kNifCount.nForceKeep, m_kNifCount.nMySkill, m_kNifCount.nOtherSkill, m_kNifCount.nNPC, m_kNifCount.nDependTime);
+        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+        fclose(pFile);
+    }
+}
+
+// @0x141554f60
+void CNifLoadingService::DumpTextures()
+{
+    m_kTexCount.nNotCache = 0;
+    m_kTexCount.nForceKeep = 0;
+    m_kTexCount.nMySkill = 0;
+    m_kTexCount.nOtherSkill = 0;
+    m_kTexCount.nNPC = 0;
+    m_kTexCount.nDependTime = 0;
+    FILE* pFile = fopen("LoadedTextures.txt", "w");
+    if (pFile != 0)
+    {
+        CString strLine;
+        unsigned nIndex = 0;
+        if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        {
+        }
+        else
+        {
+            POSITION pos = m_mapTex.GetHeadPosition();
+            while (pos != 0)
+            {
+                POSITION posCur = pos;
+                m_mapTex.GetNext(pos);
+                ATL::CRBMap<Unk_NifTexKey, CCachedTexturePtr>::CPair* pPair = m_mapTex.GetAt(posCur);
+                const CString& strPath = m_mapTex.GetKeyAt(posCur).m_strPath;
+                switch (pPair->m_value->m_nClass)
+                {
+                case 0:
+                    strLine.Format("[%04d]\teRP_NotCache\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nNotCache;
+                    break;
+                case 1:
+                    strLine.Format("[%04d]\teRP_ForceKeep\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nForceKeep;
+                    break;
+                case 2:
+                    strLine.Format("[%04d]\teRP_MySkill\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nMySkill;
+                    break;
+                case 3:
+                    strLine.Format("[%04d]\teRP_OtherSkill\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nOtherSkill;
+                    break;
+                case 4:
+                    strLine.Format("[%04d]\teRP_NPC\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nNPC;
+                    break;
+                case 5:
+                    strLine.Format("[%04d]\teRP_DependTime\t%s", nIndex, (const char*)strPath);
+                    fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+                    fwrite("\n", 1, 1, pFile);
+                    ++m_kTexCount.nDependTime;
+                    break;
+                }
+                ++nIndex;
+            }
+        }
+        strLine.Format("NotCacheCount %d\nForceKeepCount %d\nMySkillCount %d\nOtherSkillCount %d\nNPCCount %d\nDependTimeCount %d\n",
+            m_kTexCount.nNotCache, m_kTexCount.nForceKeep, m_kTexCount.nMySkill, m_kTexCount.nOtherSkill, m_kTexCount.nNPC, m_kTexCount.nDependTime);
+        fwrite((const char*)strLine, strLine.GetLength(), 1, pFile);
+        fclose(pFile);
+    }
+}
+
+// @0x141556610
+void CNifLoadingService::LogCounts()
+{
+    FUN_140a44830()->FUN_1401ce2b0("\n--- CNifLoadingService Log ---");
+    FUN_140a44830()->FUN_1401ce2f0("NIF cache count : %d", FUN_14151e770());
+    FUN_140a44830()->FUN_1401ce2f0("Nif NotCacheCount %d", m_kNifCount.nNotCache);
+    FUN_140a44830()->FUN_1401ce2f0("Nif ForceKeepCount %d", m_kNifCount.nForceKeep);
+    FUN_140a44830()->FUN_1401ce2f0("Nif MySkillCount %d", m_kNifCount.nMySkill);
+    FUN_140a44830()->FUN_1401ce2f0("Nif OtherSkillCount %d", m_kNifCount.nOtherSkill);
+    FUN_140a44830()->FUN_1401ce2f0("Nif NPCCount %d", m_kNifCount.nNPC);
+    FUN_140a44830()->FUN_1401ce2f0("Nif DependTimeCount %d", m_kNifCount.nDependTime);
+    FUN_140a44830()->FUN_1401ce2f0("Texture cache count : %d", FUN_14151e790());
+    FUN_140a44830()->FUN_1401ce2f0("Texture NotCacheCount %d", m_kTexCount.nNotCache);
+    FUN_140a44830()->FUN_1401ce2f0("Texture ForceKeepCount %d", m_kTexCount.nForceKeep);
+    FUN_140a44830()->FUN_1401ce2f0("Texture MySkillCount %d", m_kTexCount.nMySkill);
+    FUN_140a44830()->FUN_1401ce2f0("Texture OtherSkillCount %d", m_kTexCount.nOtherSkill);
+    FUN_140a44830()->FUN_1401ce2f0("Texture NPCCount %d", m_kTexCount.nNPC);
+    FUN_140a44830()->FUN_1401ce2f0("Texture DependTimeCount %d", m_kTexCount.nDependTime);
+}
+
+extern NiTexture::FormatPrefs DAT_1439fc800;                        // NiSourceTexture's default format preferences
+
+// ---- weights, cloning, creation --------------------------------------------------------------------------------
+extern char DAT_143afa4d8;                                          // NiRTTI table entry: NiNode
+extern char DAT_143afa458;                                          // NiRTTI table entry: NiAVObject
+extern char DAT_143afc918;                                          // NiRTTI table entry: top-level stream object
+extern char DAT_142f2d1c8;                                          // xml element names of the weight file
+extern char DAT_142f2d1d0;
+extern char DAT_142f2d1d8;
+extern char DAT_142f2d1e8;
+extern char DAT_143ae5178;                                          // the weight key
+Unk_140165cf0* FUN_14081b310(TiXmlDocument* pDoc);                  // root element
+const char* FUN_14086f4b0(Unk_140165cf0* pNode, const char* pszName);       // attribute text or 0
+const char* FUN_14086f500(Unk_140165cf0* pNode, const char* pszName, unsigned* pnOut);   // int attribute, 0 when absent
+void FUN_141047ac0(NiAVObject* pObj, const void* pKey, float fWeight);      // set a named float on the object
+unsigned FUN_1409f7c30(NiNode* pNode);                              // child count
+NiAVObject* FUN_14098db40(NiNode* pNode, unsigned nIndex);          // child at index
+void FUN_1415672e0(NiAVObject* pNode, bool bFlag);                  // prepare a loaded nif
+void FUN_14015eb90(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const CString& strArg);
+
+// @0x141556810
+static void SetWeights(NiAVObject* pObj, int nWeight)
+{
+    if (pObj != 0)
+    {
+        NiNode* pNode = static_cast<NiNode*>(FUN_14098d8d0(&DAT_143afa4d8, pObj));
+        if (pNode == 0)
+        {
+            FUN_141047ac0(pObj, &DAT_143ae5178, (float)nWeight / 100.0f);
+        }
+        else
+        {
+            unsigned nCount = FUN_1409f7c30(pNode);
+            for (unsigned i = 0; i < nCount; ++i)
+                SetWeights(FUN_14098db40(pNode, i), nWeight);
+        }
+    }
+}
+
+// @0x141555f50
+void CNifLoadingService::ApplyWeights(CString strNifPath, NiAVObject* pkRoot)
+{
+    NiNode* pRoot = static_cast<NiNode*>(FUN_14098d8d0(&DAT_143afa4d8, pkRoot));
+    if (pRoot == 0)
+        return;
+    CString strXml(strNifPath);
+    strXml.Truncate(strNifPath.GetLength() - 3);
+    strXml += "xml";
+    std::map<CString, TiXmlDocument>::iterator it = m_mapWeightDoc.find(strXml);
+    TiXmlDocument* pDoc = 0;
+    if (it != m_mapWeightDoc.end() && DAT_1439ed00c != 0)
+    {
+        pDoc = &it->second;
+    }
+    else
+    {
+        TiXmlDocument kDoc;
+        m_mapWeightDoc[strXml].FUN_140870cf0(kDoc);
+        pDoc = &m_mapWeightDoc[strXml];
+        if (FUN_140166420()->FUN_1403987d0(std::string(strXml)) == 0)
+            return;
+        if (FUN_140166420()->FUN_1403974b0(pDoc, strXml, 0, true, false) == 0)
+            return;
+    }
+    Unk_140165cf0* pElement = FUN_14081b310(pDoc);
+    if (pElement == 0)
+        return;
+    Unk_140165cf0* pList = pElement->FUN_140165cf0(&DAT_142f2d1c8);
+    if (pList == 0)
+        return;
+    for (Unk_140165cf0* pItem = pList->FUN_140165cf0(&DAT_142f2d1d0); pItem != 0; pItem = pItem->FUN_140168650(&DAT_142f2d1e8))
+    {
+        const char* pszName = FUN_14086f4b0(pItem, &DAT_142f2d1d8);
+        if (pszName != 0)
+        {
+            unsigned nWeight = 0;
+            if (FUN_14086f500(pItem, "weight", &nWeight) != 0)
+            {
+                NiFixedString kName(pszName);
+                SetWeights(pRoot->GetObjectByName(kName), (int)nWeight);
+            }
+        }
+    }
+}
+
+// @0x141556320
+NiAVObjectPtr CNifLoadingService::CloneCached(CString strPath, CCachedNifPtr spCached)
+{
+    NiCloningProcess kCloning(0x25);
+    kCloning.m_eCopyType = NiObjectNET::COPY_EXACT;
+    NiObject* pClone = FUN_14098d0f0(&spCached->m_spData)->Clone(kCloning);
+    NiAVObject* pNode = static_cast<NiAVObject*>(FUN_14098d8d0(&DAT_143afa458, pClone));
+    ApplyWeights(CString(strPath), pNode);
+    return pNode;
+}
+
+// @0x1415527a0
+CCachedNifPtr CNifLoadingService::FindCachedNif(CString strPath, int nClass, bool* pbReloaded)
+{
+    CCachedNifPtr spFound = 0;
+    if (Unk_LockGuard kGuard = DAT_143ae1f28)
+    {
+    }
+    else if (DAT_1439ed00c != 0 && m_mapNif.Lookup(strPath, spFound))
+    {
+        if (FUN_1401d1320(&spFound->m_kFile) == 1)
+        {
+            m_mapNif.RemoveKey(strPath);
+            spFound = 0;
+            *pbReloaded = true;
+        }
+        else
+        {
+            spFound->m_dLastUse = FUN_14086d260()->FUN_141473280();
+            if (nClass < spFound->m_nClass)
+                spFound->m_nClass = nClass;
+        }
+    }
+    return spFound;
+}
+
+// @0x141552920
+CCachedNifPtr CNifLoadingService::CreateCachedNif(CString strPath, int nClass, bool bFlag, bool bReloaded)
+{
+    NiStream* pStream = FUN_1414a5720()->Get(CString(strPath));
+    if (pStream == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"nif \xd30c\xc77c\xc744 \xc77d\xc744 \xc218 \xc5c6\xc2b5\xb2c8\xb2e4" L"CreateCachedNif Stream[{0}]", strPath);
+        return 0;
+    }
+    CCachedNifPtr spEntry = EE_NEW CCachedNif;
+    spEntry->m_kFile.FUN_1401d1160(CString(strPath));
+    spEntry->m_dLastUse = FUN_14086d260()->FUN_141473280();
+    FUN_1409fabf0(&spEntry->m_spData, FUN_14098d8d0(&DAT_143afa458, pStream->GetObjectAt(0)));
+    spEntry->m_nClass = nClass;
+    if (FUN_1409849b0(&spEntry->m_spData) == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"nif \xd30c\xc77c\xc744 \xc77d\xc744 \xc218 \xc5c6\xc2b5\xb2c8\xb2e4" L"CreateCachedNif Object[{0}] GetObjectAt()", strPath);
+        delete pStream;
+        return 0;
+    }
+    FUN_1415672e0(FUN_1409849b0(&spEntry->m_spData), bFlag);
+    for (unsigned i = 1; i < pStream->GetObjectCount(); ++i)
+    {
+        NiAVObjectPtr spExtra = static_cast<NiAVObject*>(FUN_14098d8d0(&DAT_143afc918, pStream->GetObjectAt(i)));
+        if (spExtra != 0)
+            spEntry->m_aClones.Add(spExtra);
+    }
+    delete pStream;
+    if (Unk_LockGuard kGuard = DAT_143ae1f28)
+        return spEntry;
+    CCachedNifPtr spOld = 0;
+    if (!bReloaded && m_mapNif.Lookup(strPath, spOld))
+    {
+        if (nClass < spOld->m_nClass)
+            spOld->m_nClass = nClass;
+        return spOld;
+    }
+    if (DAT_1439ed00c == 1)
+        m_mapNif.SetAt(strPath, spEntry);
+    if (bReloaded)
+    {
+        m_mapMyPool[strPath].vfunc_1(0);
+        m_mapOtherPool[strPath].vfunc_1(0);
+    }
+    return spEntry;
+}
+
+// @0x141551ea0
+NiAVObjectPtr CNifLoadingService::Load(CString strPath, bool bFlag, int nClass, int nMyRefs, int nOtherRefs)
+{
+    if (strPath == "" || m_bShutdown != 0)
+        return 0;
+    FUN_14028e7c0(strPath);
+    bool bReloaded = false;
+    CCachedNifPtr spCached = FindCachedNif(CString(strPath), nClass, &bReloaded);
+    if (spCached != 0 && (nMyRefs != 0 || nOtherRefs != 0))
+    {
+        if (Unk_LockGuard kGuard = DAT_143ae1f28)
+        {
+        }
+        else
+        {
+            int nRefs = nMyRefs == 0 ? nOtherRefs : nMyRefs;
+            TCircleList<NiAVObjectPtr>& rRing = nMyRefs == 0 ? m_mapOtherPool[strPath] : m_mapMyPool[strPath];
+            if (rRing.GetCapacity() != nRefs)
+                rRing.vfunc_1(nRefs);
+            if (rRing.GetCount() == nRefs)
+            {
+                NiAVObjectPtr spOld = 0;
+                if (rRing.Get(0, spOld))
+                {
+                    spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+                    NiNode* pParent = static_cast<NiNode*>(FUN_140a0b000(FUN_14098d0f0(&spOld)));
+                    if (pParent != 0)
+                        pParent->DetachChild(FUN_1409849b0(&spOld));
+                    NiTransform kIdentity;
+                    kIdentity.MakeIdentity();
+                    FUN_140aacb60(FUN_14098d0f0(&spOld), &kIdentity);
+                    FUN_14098d0f0(&spOld)->Update(0.0, true);
+                    rRing.Push(spOld);
+                    return spOld;
+                }
+            }
+            NiAVObjectPtr spClone = CloneCached(CString(strPath), spCached);
+            rRing.Push(spClone);
+            return spClone;
+        }
+    }
+    if (spCached == 0)
+        spCached = CreateCachedNif(CString(strPath), nClass, bFlag, bReloaded);
+    if (Unk_LockGuard kGuard = DAT_143ae1f28)
+    {
+    }
+    else if (spCached != 0 && FUN_1409849b0(&spCached->m_spData) != 0)
+    {
+        return CloneCached(CString(strPath), spCached);
+    }
+    return 0;
+}
+
+// @0x1415525d0
+bool CNifLoadingService::Preload(CString strPath, bool bFlag, int nClass)
+{
+    if (strPath == "" || m_bShutdown != 0)
+        return false;
+    FUN_14028e7c0(strPath);
+    bool bReloaded = false;
+    CCachedNifPtr spCached = FindCachedNif(CString(strPath), nClass, &bReloaded);
+    if (spCached == 0)
+        spCached = CreateCachedNif(CString(strPath), nClass, bFlag, bReloaded);
+    return spCached != 0;
+}
+
+// ---- textures --------------------------------------------------------------------------------------------------
+
+// @0x141552f90
+efd::SmartPointer<NiTexture> CNifLoadingService::GetTexture(CString strPath, int nClass)
+{
+    if (strPath == "" || m_bShutdown != 0)
+        return 0;
+    FUN_14028e7c0(strPath);
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        return 0;
+    int nNewClass = nClass;
+    NiTexturePtr spTexture = 0;
+    CCachedTexturePtr spCached = 0;
+    Unk_NifTexKey kKey(CString(strPath), DAT_1439fc800);
+    if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
+    {
+        if (!FUN_1401d1320(&spCached->m_kFile))
+        {
+            spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+            if (nClass < spCached->m_nClass)
+                spCached->m_nClass = nClass;
+            return spCached->m_spData;
+        }
+        if (nClass < spCached->m_nClass)
+            nNewClass = spCached->m_nClass;
+        spCached = 0;
+    }
+    NiFixedString kName(strPath);
+    spTexture = NiSourceTexture::Create(kName, DAT_1439fc800, false, false, true);
+    if (FUN_140a5ac80(&spTexture) == 0)
+        return 0;
+    spCached = EE_NEW CCachedTexture;
+    spCached->m_kFile.FUN_1401d1160(CString(strPath));
+    spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+    spCached->m_spData = FUN_140a5ac80(&spTexture);
+    spCached->m_nClass = nNewClass;
+    m_mapTex.SetAt(kKey, spCached);
+    return spCached->m_spData;
+}
+
+// @0x141553910
+efd::SmartPointer<NiTexture> CNifLoadingService::GetTextureFrom(CString strKey, CString strFile, int nClass)
+{
+    if (strKey == "" || strFile == "" || m_bShutdown != 0)
+        return 0;
+    FUN_14028e7c0(strKey);
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        return 0;
+    int nNewClass = nClass;
+    NiTexturePtr spTexture = 0;
+    CCachedTexturePtr spCached = 0;
+    Unk_NifTexKey kKey(CString(strKey), DAT_1439fc800);
+    if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
+    {
+        if (!FUN_1401d1320(&spCached->m_kFile))
+        {
+            spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+            if (nClass < spCached->m_nClass)
+                spCached->m_nClass = nClass;
+            return spCached->m_spData;
+        }
+        if (nClass < spCached->m_nClass)
+            nNewClass = spCached->m_nClass;
+        spCached = 0;
+    }
+    NiFixedString kName(strFile);
+    spTexture = NiSourceTexture::Create(kName, DAT_1439fc800, false, false, true);
+    if (FUN_140a5ac80(&spTexture) == 0)
+        return 0;
+    spCached = EE_NEW CCachedTexture;
+    spCached->m_kFile.FUN_1401d1160(CString(strFile));
+    spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+    spCached->m_spData = FUN_140a5ac80(&spTexture);
+    spCached->m_nClass = nNewClass;
+    m_mapTex.SetAt(kKey, spCached);
+    return spCached->m_spData;
+}
+
+// @0x1415534d0
+efd::SmartPointer<NiSourceTexture> CNifLoadingService::CreateTexture(CString strPath, NiPixelDataPtr spPixels, int nClass)
+{
+    if (strPath.IsEmpty() || spPixels == 0)
+        return 0;
+    FUN_14028e7c0(strPath);
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        return 0;
+    CCachedTexturePtr spCached = 0;
+    Unk_NifTexKey kKey(CString(strPath), DAT_1439fc800);
+    if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
+    {
+        spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+        return static_cast<NiSourceTexture*>(static_cast<NiTexture*>(spCached->m_spData));
+    }
+    efd::SmartPointer<NiSourceTexture> spTexture = NiSourceTexture::Create(FUN_140a5ac70(&spPixels), DAT_1439fc800, true);
+    if (spTexture == 0)
+        return 0;
+    spCached = EE_NEW CCachedTexture;
+    spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+    spCached->m_spData = spTexture;
+    spCached->m_nClass = nClass;
+    m_mapTex.SetAt(kKey, spCached);
+    return static_cast<NiSourceTexture*>(static_cast<NiTexture*>(spCached->m_spData));
+}
+
+// @0x141553eb0
+efd::SmartPointer<NiTexture> CNifLoadingService::FindTexture(CString strPath, const NiTexture::FormatPrefs* pPrefs)
+{
+    if (strPath.IsEmpty())
+        return 0;
+    FUN_14028e7c0(strPath);
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        return 0;
+    CCachedTexturePtr spCached = 0;
+    NiTexture::FormatPrefs kPrefs = DAT_1439fc800;
+    if (pPrefs != 0)
+        kPrefs = *pPrefs;
+    Unk_NifTexKey kKey(CString(strPath), kPrefs);
+    if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
+        return spCached->m_spData;
+    return 0;
+}
+
+// @0x1415540f0
+void CNifLoadingService::AddTexture(CString strPath, NiSourceTexture* pTexture)
+{
+    if (strPath.IsEmpty() || pTexture == 0)
+        return;
+    FUN_14028e7c0(strPath);
+    if (Unk_LockGuard kGuard = DAT_143ae1f58)
+        return;
+    CCachedTexturePtr spCached = 0;
+    if (DAT_1439ed00c != 0)
+    {
+        Unk_NifTexKey kKey(CString(strPath), pTexture->GetFormatPreferences());
+        if (!m_mapTex.Lookup(kKey, spCached))
+        {
+            spCached = EE_NEW CCachedTexture;
+            spCached->m_kFile.FUN_1401d1160(CString(strPath));
+            spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+            spCached->m_spData = pTexture;
+            spCached->m_nClass = 5;
+            m_mapTex.SetAt(kKey, spCached);
+        }
+        else
+        {
+            spCached->m_spData = pTexture;
+            spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
+        }
+    }
 }
