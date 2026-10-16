@@ -66,6 +66,7 @@
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@AEBV0@@Z 0x141746e70 ; w125 manual (this obj's copy; mypc has 0x141532e00)
 // MS2-PIN: ?IsNull@?$MS2Ptr@VCInteractObject@@@@QEBA_NXZ 0x140a7b5e0 ; w125 manual (call site 0x14172d0f0; the in-range look-alike 0x141747040 is called only by stubs 0x14171dc40/0x141732b20)
 // MS2-PIN: ?get@?$MS2Ptr@VCInteractObjectData@@@@QEBAPEAVCInteractObjectData@@XZ 0x1411926f0 ; w125 manual (call site 0x14172d0f0; look-alike 0x141747280 is called by stub 0x141732b20)
+// MS2-PIN: ??0?$MS2Ptr@VNotifyChangeBuff@@@@QEAA@PEAVNotifyChangeBuff@@@Z 0x141745880 ; w131 manual (call sites 0x141720480; the look-alike 0x141745850 is called by 0x141746eb0)
 #define NOMINMAX                        // NxPhysics (interactobject.h)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -3246,7 +3247,18 @@ MS2_CHECK_SIZE(NotifyAddNpc, 0x20);
 class CFilePreload { public: void FUN_141210540(unsigned int nId, unsigned short nType, int nPriority); };
 CFilePreload* FUN_140ab7a10();
 template <> bool MS2Ptr<Unk_SSGNpcData>::operator==(Unk_SSGNpcData* p) const;   // 0x1406a9050 (out of unit)
-class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); void FUN_140970ff0(CInPacket& packet); };
+class AdditionalCli;
+struct Unk_SSGBuffOwner;
+class Unk_PCBaseBuffs
+{
+public:
+    void FUN_14096fc00(int nBuffId);
+    void FUN_140970ff0(CInPacket& packet);
+    int FUN_14096f070(MS2Ptr<AdditionalCli> spCli);         // add a buff
+    MS2Ptr<AdditionalCli> FUN_14096fc80(int nBuffId);       // find a buff
+    void FUN_14096f500(int nBuffId, int nLevel);            // remove a buff
+    MS2Ptr<AdditionalCli> FUN_14096f820(Unk_SSGBuffOwner* pOwner, CInPacket& packet);   // update a buff from the packet
+};
 MS2Ptr<Unk_SSGNpcData> FUN_1406cd330(int nNpcId);           // the npc table row
 // @0x141718cf0
 void CSceneStateGame::FUN_141718cf0(CInPacket& packet)
@@ -6749,6 +6761,131 @@ void CSceneStateGame::FUN_14171f8a0(CInPacket& packet)
         pMenu->FUN_141937e00(nMode);
 }
 MS2_REPLACE_METHOD(0x14171f8a0, CSceneStateGame, FUN_14171f8a0, 2952, 0x3E6FD877);
+
+// The owner header of a buff packet (?\additionalcli.cpp; same layout as Unk_AdditionalOwner).
+struct Unk_SSGBuffOwner
+{
+    Unk_SSGBuffOwner();                                     // 0x1409755b0
+    void Decode(CInPacket& packet);                         // 0x140175fe0
+    int m_nObjId;                                           // the actor carrying the buff
+    int m_nBuffId;
+    int m_nLevel;
+};
+MS2_CHECK_SIZE(Unk_SSGBuffOwner, 0xc);
+// A buff record (?\additionalcli.cpp, new(0x78)); only the members the buff handler uses.
+class AdditionalCli : public CPtred
+{
+public:
+    AdditionalCli();                                        // 0x14096bae0
+    void FUN_14096be10(PCBase* pActor, Unk_SSGBuffOwner* pOwner, CInPacket& packet);   // read the buff
+    void FUN_14096c3c0(CStringW strTag, int bMine);         // log the buff
+    unsigned int FUN_14096d2a0();                           // data id
+    unsigned short FUN_14096d2c0();                         // data sub id
+    int m_nCasterId;                                        // +0x18
+    char m_pad_1c[0x78 - 0x1c];
+};
+MS2_CHECK_SIZE(AdditionalCli, 0x78);
+template <> AdditionalCli* MS2Ptr<AdditionalCli>::operator->() const;   // out-of-unit COMDATs (0x14096e8b0, 0x140975b90)
+template <> AdditionalCli* MS2Ptr<AdditionalCli>::get() const;
+// The buff change notification (0x38, ctor 0x140db4720).
+class NotifyChangeBuff : public NotifyObject
+{
+public:
+    NotifyChangeBuff(unsigned int nId, unsigned short nSubId);
+    char m_pad_18[0x20 - 0x18];
+    int m_bAdded;                                           // +0x20
+    MS2Ptr<AdditionalCli> m_spCli;                          // +0x28
+};
+MS2_CHECK_OFFSET(NotifyChangeBuff, m_spCli, 0x28);
+MS2_CHECK_SIZE(NotifyChangeBuff, 0x38);
+
+// 0x47 buffs: mode 0 add (owner header + buff data), mode 1 remove, mode 2 update. The local player's buffs refresh
+// the buff dialog (0x2711) and post a NotifyChangeBuff.
+// @0x141720480
+void CSceneStateGame::FUN_141720480(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_SSGBuffOwner kOwner;
+    kOwner.Decode(packet);
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(kOwner.m_nObjId);
+    if (pActor == 0)
+        return;
+    if (nMode == 0)
+    {
+        MS2Ptr<AdditionalCli> spCli(new AdditionalCli());
+        spCli->FUN_14096be10(pActor, &kOwner, packet);
+        if (pActor->FUN_1416749a0()->FUN_14096f070(spCli) == 0)
+            return;
+        if (FUN_14096e160(pActor) != 0)
+        {
+            Unk_SSGDlg2711* pDlg = FUN_140938c30(0x2711);
+            if (pDlg != 0)
+                pDlg->FUN_141a5a560();
+            if (spCli.get() != 0)
+            {
+                MS2Ptr<NotifyChangeBuff> spNotify(new NotifyChangeBuff(spCli->FUN_14096d2a0(), spCli->FUN_14096d2c0()));
+                spNotify->m_spCli = spCli;
+                spNotify->m_bAdded = 1;
+                FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(spNotify.get()));
+            }
+            spCli->FUN_14096c3c0(CStringW(L"[Add]"), 1);
+        }
+        else
+        {
+            MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pMyPC != 0)
+            {
+                if (pMyPC->FUN_14123c580() == spCli->m_nCasterId)
+                    spCli->FUN_14096c3c0(CStringW(L"[Add]"), 0);
+            }
+        }
+    }
+    else if (nMode == 1)
+    {
+        MS2Ptr<AdditionalCli> spCli = pActor->FUN_1416749a0()->FUN_14096fc80(kOwner.m_nBuffId);
+        pActor->FUN_1416749a0()->FUN_14096f500(kOwner.m_nBuffId, kOwner.m_nLevel);
+        if (FUN_14096e160(pActor) != 0)
+        {
+            Unk_SSGDlg2711* pDlg = FUN_140938c30(0x2711);
+            if (pDlg != 0)
+                pDlg->FUN_141a5a560();
+            if (spCli.get() != 0)
+            {
+                MS2Ptr<NotifyChangeBuff> spNotify(new NotifyChangeBuff(spCli->FUN_14096d2a0(), spCli->FUN_14096d2c0()));
+                spNotify->m_spCli = spCli;
+                spNotify->m_bAdded = 0;
+                FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(spNotify.get()));
+            }
+        }
+    }
+    else if (nMode == 2)
+    {
+        MS2Ptr<AdditionalCli> spCli = pActor->FUN_1416749a0()->FUN_14096f820(&kOwner, packet);
+        if (spCli == 0)
+            return;
+        bool bMine = FUN_14096e160(pActor) != 0;
+        if (bMine)
+        {
+            Unk_SSGDlg2711* pDlg = FUN_140938c30(0x2711);
+            if (pDlg != 0)
+                pDlg->FUN_141a5a560();
+        }
+        if (bMine)
+        {
+            spCli->FUN_14096c3c0(CStringW(L"[Modify]"), 1);
+        }
+        else
+        {
+            MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pMyPC != 0)
+            {
+                if (pMyPC->FUN_14123c580() == spCli->m_nCasterId)
+                    spCli->FUN_14096c3c0(CStringW(L"[Modify]"), 0);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141720480, CSceneStateGame, FUN_141720480, 2008, 0x7964F895);
 
 // @0x141720c60
 // MS2-FUNCTIONAL: code identical; the MS2Ptr<Unk_SSGSkillAttr> copy-ctor COMDAT pairs with the in-range copy 0x1417459d0 (called from 0x141725xxx) instead of 0x140182280
