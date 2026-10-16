@@ -3489,7 +3489,7 @@ void CSceneStateGame::FUN_14173d180(CInPacket& packet)
         MS2_ASSERT_AT(11116, 0);
     }
 }
-MS2_REPLACE_METHOD(0x14173d180, CSceneStateGame, FUN_14173d180, 0, 0);
+MS2_REPLACE_METHOD(0x14173d180, CSceneStateGame, FUN_14173d180, 337, 0xAC8A7984);
 
 // @0x14173d2e0
 void CSceneStateGame::FUN_14173d2e0(CInPacket& packet)
@@ -3532,4 +3532,4 @@ void CSceneStateGame::FUN_14173d2e0(CInPacket& packet)
     }
     }
 }
-MS2_REPLACE_METHOD(0x14173d2e0, CSceneStateGame, FUN_14173d2e0, 0, 0);
+MS2_REPLACE_METHOD(0x14173d2e0, CSceneStateGame, FUN_14173d2e0, 483, 0x21A44490);
