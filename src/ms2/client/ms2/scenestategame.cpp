@@ -24,6 +24,8 @@
 // MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b110 ; prop
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x14174b190 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ?get@?$MS2Ptr@VCDotDamageRecord@@@@QEBAPEAVCDotDamageRecord@@XZ 0x141747270 ; w95 manual
+// MS2-PIN: ?FUN_14174a510@Unk_SSGMyPCScore@@QEAAXH@Z 0x14174a510 ; w95 manual
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
@@ -52,6 +54,8 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/effectquery.h"
 #include "uimasterydialog.h"
+#include "uiupperhuddialog.h"
+#include "ms2/commonfiles/fieldmetatable.h"
 #include <NiColor.h>
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/client/ms2/stateemotionidle.h"
@@ -223,7 +227,12 @@ class Unk_SSGSlotMgr { public: void FUN_141b83750(CInPacket& packet); };
 Unk_SSGSlotMgr* FUN_1409eed90();
 
 // The dialogs this unit looks up by id (GetDialog<T> instances 0x141742310..0x141743690).
-class UINoticeDialog : public UIDialog
+// 0x4e6a / 0x4f40 / 0x4ee9: web browser dialogs (slot 89 navigates).
+class UIWebBrowser : public UIWebBrowserBase { };
+class UIWebBrowserPopup : public UIWebBrowserBase { };
+UIWebBrowser* FUN_140c43790(int nId);                       // GetDialog<UIWebBrowser>
+UIWebBrowserPopup* FUN_140beafe0(int nId);                  // GetDialog<UIWebBrowserPopup>
+class UINoticeDialog : public UIWebBrowserBase
 {
 public:
     void FUN_141009680(CInPacket& packet);
@@ -262,6 +271,7 @@ MS2_CHECK_SIZE(Unk_SSGEnterRequest, 0x20);
 class Unk_SSGMachine { public: const Unk_SSGMachineId& FUN_140d4fdf0(); };
 Unk_SSGMachine* FUN_140aadf70();
 extern __int64 DAT_143ab2820;
+extern __int64 DAT_143ab2920;
 extern int DAT_143ab284c;
 extern int DAT_143ab2850;
 
@@ -306,6 +316,7 @@ public:
     static void FUN_141b77e50(const CString& str);
     static void FUN_141b77e90(const CString& str);
     static void FUN_141b77ed0(const CString& str);
+    void FUN_141b78cf0(int nType, const CString& strUrl);  // open the url externally
 };
 Unk_SSGProfile* FUN_140cc18a0();
 class Unk_SSGChannelDialog { public: void FUN_141ad2ea0(int nChannel); };
@@ -410,6 +421,20 @@ class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]
 MS2_CHECK_OFFSET(Unk_SSGNpcData, m_n60, 0x60);
 // The drop item (class id 0x06200011; its members live in client\ms2\dropitem.cpp 0x14118c730-0x141192960). w95: split
 // from Unk_SSGNpc, whose +0x150/+0x1a0 do not fit PCBase.
+// The DoT damage record (?\skillrecord.cpp; new(0xe0)); only the members the DoT handler uses.
+class CDotDamageRecord : public CPtred
+{
+public:
+    CDotDamageRecord();                                     // 0x14175af90
+    virtual ~CDotDamageRecord();                            // 0x14175b590
+    int FUN_14175aff0(int nSkillId, int nOwnerId, int nTargetId, int nFlag, __int64 nDamage);
+private:
+    char m_pad_18[0xe0 - 0x18];
+};
+MS2_CHECK_SIZE(CDotDamageRecord, 0xe0);
+class Unk_SSGMagicService { public: void FUN_14146bc20(CDotDamageRecord* pRecord); };
+Unk_SSGMagicService* FUN_1410a7630();
+
 class Unk_SSGDropItem : public GameObject
 {
 public:
@@ -477,6 +502,9 @@ public:
 Unk_SSGItemHub* FUN_140a6a840();
 MyPC* FUN_1409613d0(PCBase* pPC);                          // efd::DynamicCast<MyPC> (class id 0x6200004)
 int FUN_1422b9e00(Unk_SSGSoundCtl* p);
+class UISceneEntity { public: virtual ~UISceneEntity(); };
+class UISceneGameBeautyShop : public UISceneEntity { public: void FUN_141ac9270(); };
+UISceneEntity* FUN_1422b9e50(Unk_SSGSoundCtl* p);          // the current scene entity
 
 MyPC* FUN_14096e160(PCBase* pActor);                        // efd::DynamicCast<MyPC> (class id 0x06200004)
 
@@ -526,7 +554,7 @@ extern int DAT_143ab2900;
 extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
-class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
+class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
     unsigned int FUN_141768680(class Unk_SSGSkillRow* pRow); void FUN_141765e70(int nSkillId); };
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
@@ -589,7 +617,7 @@ Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e
 
 class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); };
 Unk_SSGCommandLog* FUN_140166440();
-class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); };
+class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
 class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
 Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
@@ -609,7 +637,13 @@ void FUN_1413612c0(__int64 nDelta, int n);
 class Unk_SSGQuestMgr { public: void FUN_1416ca2f0(); };
 Unk_SSGQuestMgr* FUN_140764020();
 class Unk_SSGGrabState : public State { public: int FUN_141024a30(int nId); };
-class Unk_SSGDlg2711 { public: void FUN_141a5a560(); };
+class Unk_SSGDlg2711
+{
+public:
+    void FUN_141a5a560();
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19(); virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23(); virtual void vfunc_24(); virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27(); virtual void vfunc_28(); virtual void vfunc_29(); virtual void vfunc_30(); virtual void vfunc_31(); virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34(); virtual void vfunc_35(); virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39(); virtual void vfunc_40(); virtual void vfunc_41(); virtual void vfunc_42(); virtual void vfunc_43(); virtual void vfunc_44(); virtual void vfunc_45(); virtual void vfunc_46(); virtual void vfunc_47(); virtual void vfunc_48(); virtual void vfunc_49(); virtual void vfunc_50(); virtual void vfunc_51(); virtual void vfunc_52(); virtual void vfunc_53(); virtual void vfunc_54(); virtual void vfunc_55(); virtual void vfunc_56(); virtual void vfunc_57(); virtual void vfunc_58(); virtual void vfunc_59(); virtual void vfunc_60(); virtual void vfunc_61(); virtual void vfunc_62(); virtual void vfunc_63(); virtual void vfunc_64(); virtual void vfunc_65(); virtual void vfunc_66(); virtual void vfunc_67(); virtual void vfunc_68(); virtual void vfunc_69(); virtual void vfunc_70(); virtual void vfunc_71(); virtual void vfunc_72(); virtual void vfunc_73(); virtual void vfunc_74(); virtual void vfunc_75(); virtual void vfunc_76(); virtual void vfunc_77(); virtual void vfunc_78(); virtual void vfunc_79(); virtual void vfunc_80(); virtual void vfunc_81(); virtual void vfunc_82(); virtual void vfunc_83(); virtual void vfunc_84(); virtual void vfunc_85(); virtual void vfunc_86(); virtual void vfunc_87(); virtual void vfunc_88(); virtual void vfunc_89(); virtual void vfunc_90(); virtual void vfunc_91(); virtual void vfunc_92(); virtual void vfunc_93(); virtual void vfunc_94(); virtual void vfunc_95(); virtual void vfunc_96(); virtual void vfunc_97(); virtual void vfunc_98();
+    virtual void vfunc_99(const CStringW& strName);
+};
 Unk_SSGDlg2711* FUN_140938c30(int nId);
 void FUN_141a60f00(int nObjectId);
 class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
@@ -801,7 +835,40 @@ static CString s_ugcSellland = "ugc_sellland";
 static CString s_ugcSetblock = "ugc_setblock";
 
 // ---- callees of the w95 handlers (names inferred) -----------------------------------------------------------------
-int FUN_140222f60(int nType);                                // 0/1/2 -> same, else 6
+int FUN_140222f60(int nType);
+class Unk_PCWaterGunInfo : public CPtred { public: void FUN_1408fdfe0(CInPacket& packet); };
+// The trophy/achievement counters (std::map<int, map<unsigned short, int>> and a map<unsigned short, int> total;
+// only the clear/operator[] instances this unit calls are named).
+class Unk_SSGCountMap
+{
+public:
+    void FUN_140642910();                                   // clear
+    int& FUN_14063ec70(const int& nKey);                    // operator[]
+};
+class Unk_SSGCountMapMap
+{
+public:
+    void FUN_1409353d0();                                   // clear
+    Unk_SSGCountMap& FUN_140ed3b20(const int& nKey);        // operator[]
+};
+extern int DAT_143ab2954;
+extern Unk_SSGCountMapMap DAT_143ab32e8;
+extern Unk_SSGCountMap DAT_143ab32f8;
+// MyPC +0x179c (MyPC's members are unrecovered; this view only carries the inline setter at 0x14174a510).
+class Unk_SSGMyPCScore
+{
+public:
+    void FUN_14174a510(int n) { m_n179c = n; }
+private:
+    char m_pad_0[0x179c];
+    int m_n179c;
+};
+CFieldMetaTable* FUN_140700390();                          // the field meta table singleton
+CStringW FormatStringId(int id, const fmt::ArgList& args);  // 0x14028dee0
+FMT_VARIADIC_W(CStringW, FormatStringId, int)
+CStringW FUN_14052bd00(int nId, const CStringW& strArg);   // formatted system text
+CStringW FUN_1409404f0(__int64 nAmount);                    // money string
+CStringW FUN_1409eec40(int nId);                                // 0/1/2 -> same, else 6
 // The EP gauge of the HUD (?\uiepprogress.cpp).
 class Unk_SSGEPGauge { public: void FUN_141931bd0(int nValue, int nMax); };
 // MyPC's vftable as far as slot 88: MyPC overrides slot 88 to return its EP gauge (PCBase declares it as int).
@@ -2387,6 +2454,61 @@ void CSceneStateGame::FUN_141732af0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141732af0, CSceneStateGame, FUN_141732af0, 37, 0x8D93BFEE);
 
+// @0x141733440
+void CSceneStateGame::FUN_141733440(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        {
+            CString strUrl = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            unsigned char bInGame = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            int nType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (!bInGame)
+            {
+                FUN_140cc18a0()->FUN_141b78cf0(nType, strUrl);
+            }
+            else
+            {
+                switch (nType)
+                {
+                case 0:
+                    {
+                        UIWebBrowser* pDlg = FUN_140c43790(0x4e6a);
+                        if (pDlg != 0)
+                            pDlg->vfunc_89(strUrl);
+                    }
+                    break;
+                case 1:
+                    {
+                        UIVisitorsBookDialog* pDlg = Unk_SSGGetDialog<UIVisitorsBookDialog>(0x4ed9);
+                        if (pDlg != 0)
+                            pDlg->vfunc_89(strUrl);
+                    }
+                    break;
+                case 2:
+                    {
+                        UINoticeDialog* pDlg = Unk_SSGGetDialog<UINoticeDialog>(0x4ee9);
+                        if (pDlg != 0)
+                            pDlg->vfunc_89(strUrl);
+                    }
+                    break;
+                case 5:
+                    {
+                        UIWebBrowserPopup* pDlg = FUN_140beafe0(0x4f40);
+                        if (pDlg != 0)
+                            pDlg->vfunc_89(strUrl);
+                    }
+                    break;
+                }
+            }
+        }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x141733440, CSceneStateGame, FUN_141733440, 528, 0x7F5A9213);
+
 // @0x141734c70
 void CSceneStateGame::FUN_141734c70(CInPacket& packet)
 {
@@ -2499,6 +2621,42 @@ void CSceneStateGame::FUN_14171aa90(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14171aa90, CSceneStateGame, FUN_14171aa90, 99, 0x3346EE17);
 
+// @0x14171b380
+void CSceneStateGame::FUN_14171b380(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    MyPC* pMyPC = FUN_1409613d0(pPC);
+    if (pMyPC != 0)
+    {
+        int nResult = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CStringW strMsg = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        if (nResult == 0)
+        {
+            pPC->FUN_141661330(strName);
+            Unk_SSGDlg2711* pDlg = FUN_140938c30(0x2711);
+            if (pDlg != 0)
+                pDlg->vfunc_99(strName);
+        }
+        else if (strMsg.IsEmpty() == true)
+        {
+            FUN_140d73aa0(FUN_14052bd00(0x8b9, strName), 0, 0, CStringW(L""));
+        }
+        else
+        {
+            FUN_140d73aa0(strMsg, 0, 0, CStringW(L""));
+        }
+    }
+    else
+    {
+        pPC->FUN_141661330(strName);
+    }
+}
+MS2_REPLACE_METHOD(0x14171b380, CSceneStateGame, FUN_14171b380, 681, 0xC07E2180);
+
 // @0x14172f1c0
 void CSceneStateGame::FUN_14172f1c0(CInPacket& packet)
 {
@@ -2508,6 +2666,35 @@ void CSceneStateGame::FUN_14172f1c0(CInPacket& packet)
     pMyPC->FUN_141523bc0()->FUN_141765de0();
 }
 MS2_REPLACE_METHOD(0x14172f1c0, CSceneStateGame, FUN_14172f1c0, 65, 0xDA4F33D3);
+
+// @0x14172f210
+// MS2-FUNCTIONAL: exe frame 0x10 larger (one extra stack temp shifts the later slots); same reads, calls and stores
+void CSceneStateGame::FUN_14172f210(CInPacket& packet)
+{
+    DAT_143ab2954 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    DAT_143ab32e8.FUN_1409353d0();
+    DAT_143ab32f8.FUN_140642910();
+    int nGroupCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < nGroupCount; i++)
+    {
+        int nGroup = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_SSGCountMap& kGroup = DAT_143ab32e8.FUN_140ed3b20(nGroup);
+        for (int j = 0; j < nCount; j++)
+        {
+            int nKey = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            kGroup.FUN_14063ec70(nKey) = nValue;
+            DAT_143ab32f8.FUN_14063ec70(nKey) += nValue;
+        }
+    }
+    int nScore = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC != 0)
+        ((Unk_SSGMyPCScore*)pMyPC)->FUN_14174a510(nScore);
+    FUN_140aa6d40()->FUN_141b0ce20(0xf, 0);
+}
+MS2_REPLACE_METHOD(0x14172f210, CSceneStateGame, FUN_14172f210, 610, 0xDFC46FA8);
 
 // @0x14172f480
 void CSceneStateGame::FUN_14172f480(CInPacket& packet)
@@ -2618,6 +2805,28 @@ void CSceneStateGame::FUN_141738ad0(CInPacket& packet)
     pNpc->FUN_141092c50(packet);
 }
 MS2_REPLACE_METHOD(0x141738ad0, CSceneStateGame, FUN_141738ad0, 104, 0x158C510C);
+
+// @0x141739220
+void CSceneStateGame::FUN_141739220(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strArg0 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            CStringW strArg1 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            CStringW strArg2 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            CStringW strArg3 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strMsg = FormatStringId(nId, strArg1, strArg2, strArg3, nValue, strArg0);
+            FUN_1412751b0(strMsg, 0x14);
+        }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x141739220, CSceneStateGame, FUN_141739220, 542, 0xE9FA735F);
 
 // @0x141739880
 void CSceneStateGame::FUN_141739880()
@@ -2745,6 +2954,24 @@ void CSceneStateGame::FUN_14171c0b0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14171c0b0, CSceneStateGame, FUN_14171c0b0, 237, 0x1D3E61F8);
 
+// @0x14171d610
+void CSceneStateGame::FUN_14171d610(CInPacket& packet)
+{
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nTargetId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    __int64 nDamage = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1200(nOwnerId);
+    if (pOwner == 0)
+        return;
+    MS2Ptr<CDotDamageRecord> spRecord(new CDotDamageRecord());
+    if (!spRecord->FUN_14175aff0(nSkillId, nOwnerId, nTargetId, nFlag, nDamage))
+        return;
+    FUN_1410a7630()->FUN_14146bc20(spRecord.get());
+}
+MS2_REPLACE_METHOD(0x14171d610, CSceneStateGame, FUN_14171d610, 514, 0xFE149045);
+
 // @0x141721940
 void CSceneStateGame::FUN_141721940(CInPacket& packet)
 {
@@ -2760,6 +2987,30 @@ void CSceneStateGame::FUN_141721940(CInPacket& packet)
         pPC->vfunc_59(nState, 0, 0, 0);
 }
 MS2_REPLACE_METHOD(0x141721940, CSceneStateGame, FUN_141721940, 232, 0x5ADFE327);
+
+// @0x141721a30
+void CSceneStateGame::FUN_141721a30(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kRot = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    MyPC* pMyPC = FUN_1409613d0(pPC);
+    if (pMyPC != 0)
+        pMyPC->FUN_141528e50(kPos, kRot, nFlag);
+    else
+        pPC->FUN_1416629d0(kPos, kRot);
+    if (pMyPC != 0 && FUN_1422b9e00(FUN_1408e57f0()) == 0x620001f)
+    {
+        UISceneGameBeautyShop* pShop = dynamic_cast<UISceneGameBeautyShop*>(FUN_1422b9e50(FUN_1408e57f0()));
+        if (pShop != 0)
+            pShop->FUN_141ac9270();
+    }
+}
+MS2_REPLACE_METHOD(0x141721a30, CSceneStateGame, FUN_141721a30, 536, 0xEC73B912);
 
 // @0x141722fb0
 void CSceneStateGame::FUN_141722fb0(CInPacket& packet)
@@ -3048,6 +3299,51 @@ void CSceneStateGame::FUN_14173f1a0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173f1a0, CSceneStateGame, FUN_14173f1a0, 206, 0xE5A97C8E);
 
+// @0x14173f280
+// MS2-FUNCTIONAL: the exe places the smart pointer below the vtable spill temps (stack slot order); same calls and control flow
+void CSceneStateGame::FUN_14173f280(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+            if (pPC == 0)
+                return;
+            MS2Ptr<Unk_PCWaterGunInfo> spInfo = pPC->FUN_141664250();
+            if (spInfo.get() != 0)
+                spInfo->FUN_1408fdfe0(packet);
+            return;
+        }
+        break;
+    case 1:
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MyPC* pMyPC = dynamic_cast<MyPC*>(FUN_1403ed2d0()->FUN_141bd1290(nId));
+            if (pMyPC == 0)
+                return;
+            pMyPC->FUN_141523bc0()->FUN_141767f80(nSkillId);
+            pMyPC->FUN_141523bc0()->FUN_1417683d0();
+        }
+        break;
+    case 2:
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MyPC* pMyPC = dynamic_cast<MyPC*>(FUN_1403ed2d0()->FUN_141bd1290(nId));
+            if (pMyPC == 0)
+                return;
+            pMyPC->FUN_141523bc0()->FUN_141768100(nSkillId);
+            pMyPC->FUN_141523bc0()->FUN_1417683d0();
+        }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x14173f280, CSceneStateGame, FUN_14173f280, 700, 0xAB64CE43);
+
 // @0x14173fe20
 int CSceneStateGame::FUN_14173fe20()
 {
@@ -3091,6 +3387,41 @@ void CSceneStateGame::FUN_14171b630(CInPacket& packet)
     FUN_140764020()->FUN_1416ca2f0();
 }
 MS2_REPLACE_METHOD(0x14171b630, CSceneStateGame, FUN_14171b630, 272, 0xCC9143A6);
+
+// @0x14171bad0
+void CSceneStateGame::FUN_14171bad0(CInPacket& packet)
+{
+    __int64 nTotal = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    __int64 nDelta = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    FUN_140930af0(nTotal);
+    if (nDelta > 0)
+    {
+        {
+            CString strArg("");
+            CString strEvent("Merat_Get");
+            FUN_141276180(strEvent, strArg);
+        }
+        CStringW strAmount = FUN_1409404f0(nDelta);
+        FUN_1412751b0(FUN_14052bd00(0x2c8, strAmount), 6);
+        Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+        if (pDlg != 0)
+            pDlg->FUN_141ac0990(nDelta);
+    }
+    else if (nDelta < 0)
+    {
+        {
+            CString strArg("");
+            CString strEvent("Merat_Use");
+            FUN_141276180(strEvent, strArg);
+        }
+        CStringW strAmount = FUN_1409404f0(-nDelta);
+        FUN_1412751b0(FUN_14052bd00(0x2da, strAmount), 6);
+        if (FUN_140166410()->FUN_14036d570(0xba))
+            FUN_1412751b0(FUN_1409eec40(0x2db), 6);
+    }
+    FUN_140aa6d40()->FUN_141b0ce20(0xd, (int)nDelta);
+}
+MS2_REPLACE_METHOD(0x14171bad0, CSceneStateGame, FUN_14171bad0, 697, 0x379D3D2D);
 
 // @0x14171e860
 void CSceneStateGame::FUN_14171e860(CInPacket& packet)
@@ -3397,6 +3728,54 @@ void CSceneStateGame::FUN_141733f50(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141733f50, CSceneStateGame, FUN_141733f50, 403, 0xB72802C3);
 
+// @0x1417340f0
+void CSceneStateGame::FUN_1417340f0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 1:
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+            if (pPC == 0)
+                return;
+            pPC->FUN_141662640(nValue);
+            pPC->FUN_141662690(nA);
+            pPC->FUN_141662710(nB);
+            if (pPC->GetClassID() == 0x6200004)
+            {
+                Unk_SSGDlg2711* pDlg = FUN_140938c30(0x2711);
+                if (pDlg != 0)
+                    pDlg->FUN_141a5a560();
+            }
+        }
+        break;
+    case 0:
+        {
+            __int64 nAccountId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            if (DAT_143ab2820 != nAccountId)
+                return;
+            DAT_143ab2920 = nValue;
+        }
+        break;
+    case 2:
+        {
+            __int64 nAccountId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            if (DAT_143ab2820 != nAccountId)
+                return;
+            DAT_143ab2920 = nValue;
+        }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x1417340f0, CSceneStateGame, FUN_1417340f0, 714, 0x6B3B25EC);
+
 // @0x1417343f0
 void CSceneStateGame::FUN_1417343f0(CInPacket& packet)
 {
@@ -3554,6 +3933,36 @@ void CSceneStateGame::FUN_14173a5e0(CInPacket& packet)
         FUN_1403ed2d0()->FUN_141bd9380();
 }
 MS2_REPLACE_METHOD(0x14173a5e0, CSceneStateGame, FUN_14173a5e0, 310, 0xA7D1CD36);
+
+// @0x14173a720
+void CSceneStateGame::FUN_14173a720(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nCount = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        for (int i = 0; i < nCount; i++)
+        {
+            int nFieldId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nNpcId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CMsTime kTime(static_cast<CInputStream&>(packet).vfunc_o8_4());
+            FUN_140700390()->FUN_1406fc480(nFieldId, nNpcId, kTime);
+        }
+    }
+    else if (nMode == 1)
+    {
+        int nFieldId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nNpcId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CMsTime kTime(static_cast<CInputStream&>(packet).vfunc_o8_4());
+        FUN_140700390()->FUN_1406fc480(nFieldId, nNpcId, kTime);
+    }
+    else if (nMode == 2)
+    {
+        int nFieldId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_140700390()->FUN_1406fc590(nFieldId);
+    }
+}
+MS2_REPLACE_METHOD(0x14173a720, CSceneStateGame, FUN_14173a720, 609, 0xCA68677E);
 
 // @0x14173b080
 void CSceneStateGame::FUN_14173b080(CInPacket& packet)

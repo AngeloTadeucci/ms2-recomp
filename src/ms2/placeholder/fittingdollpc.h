@@ -4,6 +4,8 @@
 class CItem;
 class NiAVObject;
 class NiColor;
+class Unk_PCWaterGunInfo;   // MS2Ptr<T> (?\watergunbattleinfo.cpp)
+struct Unk_StreamPoint;
 struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 
 // Heap-only views. PC derives PCBase (ctor 14164dfd0), and FittingDollPC
@@ -65,6 +67,10 @@ public:
     virtual int vfunc_78();                                 // 78 0x1416578f0
     virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141656f80
     virtual MS2Ptr<Unk_PCBaseComp_a98> vfunc_84();          // 84 0x1416572b0
+    virtual int vfunc_64();                                 // 64 0x141654840 (mypc vftable, w97)
+    virtual MS2Ptr<Unk_PCBaseComp_a78> vfunc_82();          // 82 0x141657100
+    virtual MS2Ptr<Unk_PCBaseComp_aa8> vfunc_85();          // 85 0x1416573b0
+    virtual MS2Ptr<Unk_PCBaseComp_ac8> vfunc_87();          // 87 0x1416575b0
     virtual void vfunc_90(void* p);                         // 90 0x141657910
     virtual float vfunc_95();                               // 95 0x14165e4a0 (PCBase 0x141671620)
     virtual int vfunc_99(int n);                            // 99 0x141654850
@@ -110,6 +116,12 @@ public:
     void FUN_1416591e0(int nSlot, const NiColor& kColor);   // +0xd98 + nSlot*0xc = kColor (scenestategame 0x30)
     const NiColor& FUN_141659220(int nSlot);                // the colour at +0xd98 + nSlot*0xc
     void FUN_141656780();                                   // re-apply the appearance (scenestategame 0x30)
+    void FUN_1416629d0(Unk_StreamPoint kPos, Unk_StreamPoint kRot);   // scenestategame 0x141721a30
+    MS2Ptr<Unk_PCWaterGunInfo> FUN_141664250();             // the water gun battle info (+0x1260)
+    void FUN_141662640(__int64 nValue);                      // scenestategame 0x1417340f0
+    void FUN_141662690(int nValue);
+    void FUN_141662710(int nValue);
+    void FUN_141661330(const CStringW& strName);             // set the displayed name (scenestategame)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];
