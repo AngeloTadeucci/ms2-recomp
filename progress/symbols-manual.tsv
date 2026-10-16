@@ -1979,3 +1979,12 @@ D3DXFloat16To32Array	14230396f	func
 ?Tick@CSkillCollisionManager@@QEAAXXZ	141755010	func
 ?DAT_143d691a8@@3VNiRTTI@@B	143d691a8	data
 ?DAT_143ae52a8@@3VNiFixedString@@A	143ae52a8	data
+??0ModelGroup@@QEAA@XZ	140544ca0	func
+?g_pPcBangTable@@3PEAVUnk_PcBangTable@@EA	143aaecf8	data
+??1Unk_TableHandle@@QEAA@XZ	1403b87a0	func
+??1DropNifData@@UEAA@XZ	140552480	func
+??1ItemDropEffect@@UEAA@XZ	1405524c0	func
+??1ItemColorEx@@UEAA@XZ	1405524a0	func
+??0UGCMapDesignInfo@@QEAA@XZ	140898780	func
+??0UGCMapBlueprintInfo@@QEAA@XZ	1408987f0	func
+??0Unk_SSGHouseRule@@QEAA@XZ	140b68e60	func
