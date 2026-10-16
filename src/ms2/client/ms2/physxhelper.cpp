@@ -111,7 +111,10 @@ void FUN_141bc8e00(void*);
 extern int DAT_143ae2b30;
 extern const Unk_StreamPoint g_143b01a60;
 extern const Unk_StreamPoint g_143a08cf8;
-NxVec3 FUN_140ae1df0(const Unk_StreamPoint* pPoint);
+struct Unk_PointView
+{
+    NxVec3 FUN_140ae1df0() const;                           // game point to NxVec3 (this = the point, result in the hidden slot)
+};
 
 // The PhysX character kit entry points are DLL imports of the exe (IAT slots 0x142ccec98 / 0x142ccec90).
 extern "C" __declspec(dllimport) NxControllerManager* NxCreateControllerManager(NxUserAllocator*);
@@ -122,7 +125,17 @@ CPhysXHelper* TSingleton<CPhysXHelper>::s_instance = 0;
 #define PHYSX_FILE MS2_THIS_FILE
 
 // @0x140ad4440
-Unk_RayCastInfo::Unk_RayCastInfo() {}
+Unk_RayCastInfo::Unk_RayCastInfo()
+{
+    m_maxDist = 0.0f;
+    m_groups = -1;
+    m_20 = 0;
+    m_28 = 0;
+    m_hitEntity = 0;
+    m_hitActor = 0;
+    m_hitShape = 0;
+    m_hitDist = 0.0f;
+}
 // @0x141689180
 CPhysXHelper::CPhysXHelper()
 {
@@ -166,8 +179,8 @@ bool CPhysXHelper::FUN_1416892f0(Unk_RayCastInfo* pInfo, const NxGroupsMask* pMa
         fMaxDist = fMaxDist * (1.0f / fScale);
     else
         fMaxDist = FLT_MAX;
-    ray.orig = FUN_140ae1df0(&pInfo->m_origin);
-    ray.dir = FUN_140ae1df0(&pInfo->m_dir);
+    ray.orig = reinterpret_cast<const Unk_PointView&>(pInfo->m_origin).FUN_140ae1df0();
+    ray.dir = reinterpret_cast<const Unk_PointView&>(pInfo->m_dir).FUN_140ae1df0();
     ray.orig *= 1.0f / fScale;
     ray.dir.normalize();
     if (ray.dir == NxVec3(0, 0, 0))
@@ -609,16 +622,8 @@ bool ClosestHitReport::onHit(const NxRaycastHit& kHit)
 MS2_REPLACE_METHOD(0x1416892A0, CPhysXHelper, FUN_1416892a0, 61, 0x19AF2D89);
 MS2_REPLACE_METHOD(0x14168A1C0, CPhysXHelper, FUN_14168a1c0, 63, 0x5C1A7CCA);
 MS2_REPLACE_METHOD(0x14168A210, CPhysXHelper, FUN_14168a210, 14, 0xE4E8D95F);
-
-// Not hooked: still the blank error box after login with the exe-bound statics (sb5 bisect); DLL Unk_RayCastInfo/CastRay copy.
-#if 0
 MS2_REPLACE_METHOD(0x14168A310, CPhysXHelper, FUN_14168a310, 302, 0x52623978);
-#endif
-
-// Not hooked: still the blank error box after login with the exe-bound statics (sb5 bisect); DLL Unk_RayCastInfo/CastRay copy.
-#if 0
 MS2_REPLACE_METHOD(0x14168A450, CPhysXHelper, FUN_14168a450, 232, 0x8C3C8D12);
-#endif
 MS2_REPLACE_METHOD(0x14168A540, CPhysXHelper, FUN_14168a540, 32, 0xEC94BD02);
 MS2_REPLACE_METHOD(0x14168A570, CPhysXHelper, FUN_14168a570, 28, 0xC37B47B6);
 MS2_REPLACE_METHOD(0x14168A5A0, CPhysXHelper, FUN_14168a5a0, 349, 0x880CE577);
