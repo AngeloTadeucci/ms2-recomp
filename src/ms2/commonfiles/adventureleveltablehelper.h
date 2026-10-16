@@ -4,6 +4,7 @@
 #pragma once
 #include <afx.h>
 #include <map>
+#include <set>
 #include <vector>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
@@ -95,6 +96,8 @@ public:
     const CAdventureLevelMission* GetMission(unsigned nMissionId);  // 0x140196090
     std::vector<unsigned>& GetLevels();         // 0x140195eb0
     std::vector<unsigned>& GetAbilityIds();     // 0x140195f50
+    int CountClaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed);    // 0x140195f70
+    void CollectMissionIds(std::set<unsigned>& setOut);         // 0x140196110
 
     std::map<unsigned, unsigned> m_map10;       // +0x10 placeholder, never filled
     std::map<unsigned, unsigned> m_map20;       // +0x20 placeholder, never filled
