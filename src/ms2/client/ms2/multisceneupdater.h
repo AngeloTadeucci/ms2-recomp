@@ -47,7 +47,7 @@ public:
     static SceneUpdateCallback s_pfnCallback;           // 0x143ac3d10
     static void* s_pCallbackContext;                    // 0x143ac3d18
 
-private:
+public:     // the job fields and thread array are driven by MS2SceneGraphService::FUN_1414f1f50
     MS2_LAYOUT_FRIEND;
     UpdateSceneTProc* m_pProcs;                         // +0x08, array of m_nThreads (count stored in front)
     efd::LoopedThread** m_ppThreads;                    // +0x10

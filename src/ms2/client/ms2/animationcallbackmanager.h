@@ -144,6 +144,8 @@ public:
     void FUN_14099c030();                                               // 0x14099c030 delete all bridges
     // @0x14099d0d0
     int GetQueueMode() { return m_nQueue; }
+    // @0x1414fe550 (COMDAT emitted in ms2scenegraphservice.cpp)
+    void SetQueueMode(int nQueue) { m_nQueue = nQueue; }
 
 public:
     MS2_LAYOUT_FRIEND;
