@@ -870,7 +870,12 @@ def main():
             continue
         bm.HARVEST.clear()
         print(f"matching {u.rel} ...", flush=True)
+        nconf0 = len(bm.CONFLICTS)
         res = process_unit(u, exe, starts, finfo, bases, vft, a.verbose)
+        # in-unit conflicts (one mangled name paired to two non-identical exe functions inside this unit) are kept in
+        # the unit's cache entry so that they survive cached runs and carry the unit name; the global stage reports them
+        res["conflicts"] = [list(c) for c in bm.CONFLICTS[nconf0:]]
+        del bm.CONFLICTS[nconf0:]
         cache[u.rel] = {"key": key, "failed": False, "res": res}
         if a.verbose:
             for n, p in res["pairs"].items():
@@ -899,6 +904,13 @@ def main():
     except (OSError, IndexError):
         pass
     seen = {}                       # name -> {va: [unit rel, ...]}
+    STALE = []                      # (name, win, va, units): conflicts whose losing side is only blocked/todo/claimed units
+    for rel, c in sorted(cache.items()):
+        for n, x, y in (c.get("res") or {}).get("conflicts", []):
+            if rel in done_rels:
+                bm.CONFLICTS.append((f"{n} [inside {rel}: 0x{x:x} and 0x{y:x}]", x, y))
+            else:
+                STALE.append((n, x, y, [rel]))
     for rel, c in sorted(cache.items()):
         if c.get("res"):
             for n, va in c["res"]["harvest"].items():
@@ -921,6 +933,10 @@ def main():
         for va, us in by_va.items():
             if va != win and bm.same_code(exe, win, va):
                 bm.MULTICOPY.append((n, win, va))
+            elif va != win and not any(r in done_rels for r in us):
+                # only blocked/todo/claimed units (stale or work-in-progress pins) disagree with the done units: the
+                # done binding stands and the disagreement is listed as info (re-check when those units are finished)
+                STALE.append((n, win, va, us))
             elif va != win:
                 bm.CONFLICTS.append((f"{n} [0x{win:x} from {', '.join(by_va[win])}; 0x{va:x} from {', '.join(us)}]",
                                      win, va))
@@ -1037,6 +1053,13 @@ def main():
                 print(f"note {rel}: {nline}")
     for n, x, y in bm.CONFLICTS:
         print(f"CONFLICT symbol {n}: 0x{x:x} vs 0x{y:x}")
+    if STALE:
+        with open(os.path.join(OUT, "stale-conflicts.tsv"), "w") as fo:
+            fo.write("#symbol\tbound va\tother va\tnot-done units that use the other va\n")
+            for n, x, y, us in sorted(STALE):
+                fo.write(f"{n}\t{x:x}\t{y:x}\t{','.join(us)}\n")
+        print(f"stale: {len(STALE)} symbol disagreements involve only blocked/todo/claimed units (info; "
+              f"{os.path.relpath(OUT, ROOT)}/stale-conflicts.tsv)")
     mc = sorted(set(bm.MULTICOPY) | {tuple(t) for c in cache.values() if c.get("res")
                                      for t in c["res"].get("multicopy", [])})
     with open(os.path.join(OUT, "multicopy.tsv"), "w") as fo:
