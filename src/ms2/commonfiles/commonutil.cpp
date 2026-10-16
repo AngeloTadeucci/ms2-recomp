@@ -970,3 +970,138 @@ Unk_XmlElementList* FUN_14028f8d0(Unk_XmlElement* pParent)
     }
     return pResult;
 }
+
+// Shows a modal error box: caption + Format(fmt, nCode) + the suffix text.
+// MS2-FUNCTIONAL: not yet byte-matched (by-value CString params destroyed by callee)
+// @0x14028bfb0
+void FUN_14028bfb0(CString strCaption, CString strFormat, unsigned int nCode, CString strSuffix)
+{
+    CString strText;
+    strText.Format((const char*)strFormat, nCode);
+    strText += FUN_140298360(" ", strSuffix);
+    const char* pszCaption = strCaption;
+    MessageBoxA(0, (const char*)strText, pszCaption, MB_ICONERROR);
+}
+
+// @0x14028c0b0
+void FUN_14028c0b0()
+{
+    PostQuitMessage(0);
+}
+
+CStringW FUN_140292b10(int nId, const int* pHour, const int* pMin, const CStringW& strArg);   // formats string id nId with hour/minute
+
+// Wraps the text with the current-time prefix when flag 8 is set and the time converts.
+// @0x14028ee20
+CStringW FUN_14028ee20(unsigned int nFlags, CStringW strText)
+{
+    if (nFlags & 8)
+    {
+        __time64_t tNow = FUN_140869440();
+        tm* pTm = FUN_14028b820(&tNow);
+        if (pTm)
+            return FUN_140292b10(0xa9, &pTm->tm_hour, &pTm->tm_min, strText);
+    }
+    return strText;
+}
+
+// "x,y,z" of a float triple.
+// @0x14028ef00
+CString FUN_14028ef00(const Unk_CommonVec3* pVec)
+{
+    CString strOut;
+    strOut.Format("%f,%f,%f", (double)pVec->x, (double)pVec->y, (double)pVec->z);
+    return strOut;
+}
+
+// @0x14028efb0
+CStringW FUN_14028efb0(const Unk_CommonVec3* pVec)
+{
+    CStringW strOut;
+    strOut.Format(L"%f,%f,%f", (double)pVec->x, (double)pVec->y, (double)pVec->z);
+    return strOut;
+}
+
+extern const Unk_CommonVec3 g_vCommonZero;                      // 0x143b01a60
+void FUN_1401780b0(const CString& strText, CAtlArray<float>& arrOut, const char* pszDelim);
+void FUN_1402928e0(const CStringW& strText, CAtlArray<float>& arrOut, const wchar_t* pszDelim);
+
+// Parses "x,y,z"; anything else gives the zero vector.
+// MS2-FUNCTIONAL: not yet byte-matched (struct copy lowering)
+// @0x14028f060
+Unk_CommonVec3 FUN_14028f060(CString strText)
+{
+    Unk_CommonVec3 vResult = g_vCommonZero;
+    CAtlArray<float> arrParts;
+    FUN_1401780b0(strText, arrParts, ",");
+    if (arrParts.GetCount() == 3)
+    {
+        vResult.x = arrParts[0];
+        vResult.y = arrParts[1];
+        vResult.z = arrParts[2];
+    }
+    return vResult;
+}
+
+// @0x14028f190
+Unk_CommonVec3 FUN_14028f190(CStringW strText)
+{
+    Unk_CommonVec3 vResult = g_vCommonZero;
+    CAtlArray<float> arrParts;
+    FUN_1402928e0(strText, arrParts, L",");
+    if (arrParts.GetCount() == 3)
+    {
+        vResult.x = arrParts[0];
+        vResult.y = arrParts[1];
+        vResult.z = arrParts[2];
+    }
+    return vResult;
+}
+
+// Maps a locale/region id to its group id.
+// @0x14028f2c0
+int FUN_14028f2c0(int nKind, int nUnused)
+{
+    switch (nKind)
+    {
+    case 1:
+        return 9;
+    case 3:
+    case 7:
+        return 11;
+    case 4:
+    case 6:
+        return 12;
+    default:
+        return 0;
+    }
+}
+
+// @0x14028f460
+void FUN_14028f460(void* pUnused, CString strUnused)
+{
+}
+
+// @0x14028f490
+int FUN_14028f490(unsigned int nId, CString strError)
+{
+    CString strText;
+    strText.Format("ADDITIONALEFFECT [%d] ERROR[%s]", nId, (const char*)strError);
+    MessageBoxA(0, (const char*)strText, "ExcelTaskSkill", 0);
+    return 0;
+}
+
+// Escapes the angle brackets for XML text.
+// @0x14028f530
+void FUN_14028f530(CString& strText)
+{
+    strText.Replace("<", "&lt;");
+    strText.Replace(">", "&gt;");
+}
+
+// @0x14028f580
+void FUN_14028f580(CStringW& strText)
+{
+    strText.Replace(L"<", L"&lt;");
+    strText.Replace(L">", L"&gt;");
+}
