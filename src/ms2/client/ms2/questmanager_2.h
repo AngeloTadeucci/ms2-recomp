@@ -25,6 +25,31 @@ struct Unk_QuestItemLink
     int m_kind = 2;            // 0 start item, 1 progress item
 };
 MS2_CHECK_SIZE(Unk_QuestItemLink, 0xc);
+// Quest marker state of an npc (ctor 0x140964630 calls Reset 0x1409669c0; dtor 0x140964e40). Filled by
+// FUN_1416d12d0. cproxygameobject.h's Unk_ProxyValue88 (CProxyGameObject+0x88) is this record with +0x10..+0x1c opaque.
+struct Unk_QmNpcQuestState
+{
+    Unk_QmNpcQuestState();
+    ~Unk_QmNpcQuestState();
+    void FUN_1409669c0();               // Reset: icon 11, state 4, quest 0, text "", npc 0
+    int m_icon;                         // +0x00 quest kind of the best quest (FUN_14074bc90)
+    int m_state;                        // +0x04 0 completable, 1 in progress, 2 acceptable, 4 none
+    unsigned m_questId;                 // +0x08
+    CStringW m_text;                    // +0x10 tooltip list of the npc's quests
+    int m_npcId;                        // +0x18
+    int m_wantText;                     // +0x1c build m_text
+};
+MS2_CHECK_SIZE(Unk_QmNpcQuestState, 0x20);
+MS2_CHECK_OFFSET(Unk_QmNpcQuestState, m_text, 0x10);
+MS2_CHECK_OFFSET(Unk_QmNpcQuestState, m_wantText, 0x1c);
+// One quest of an npc while FUN_1416d12d0 builds the tooltip list (12 bytes, ctor 0x1416dbba0).
+struct Unk_QmNpcQuestEntry
+{
+    int m_score = 0;                    // FUN_1416d1100 flags
+    unsigned m_questId = 0;
+    int m_state = 4;
+};
+MS2_CHECK_SIZE(Unk_QmNpcQuestEntry, 0xc);
 
 class CQuestManager : public TSingleton<CQuestManager>, public UIItemEventListener,
                       public CQuestManagerCommon {
@@ -112,8 +137,13 @@ public:
     int FUN_1416cff70();
     int FUN_1416d0260(MS2Ptr<class CLearningQuestData>, int);
     int FUN_1416d0530();
+    struct Unk_StreamPoint FUN_1416d0690();
+    void FUN_1416d0c90(int);
     int FUN_1416d0f60(int);
     unsigned FUN_1416d1100(int, int, int*);
+    int FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all);
+    void FUN_1416d16c0(int group, ATL::CAtlList<unsigned>& out);
+    void FUN_1416d1800(int group, Unk_QmNpcQuestState* best);
     int FUN_1416d00c0();
     int FUN_1416d0100();
     int FUN_1416d0150();

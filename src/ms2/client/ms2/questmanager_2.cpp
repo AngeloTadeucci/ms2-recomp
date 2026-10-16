@@ -6,6 +6,10 @@
 // MS2-PIN: ??_7CQuestManager@@6B?$TSingleton@VCQuestManager@@@@@ 0x142f57498
 // MS2-PIN: ??R<lambda_ec77cf7c45e6dcfdc158975356cf22e0>@@QEBA_NH@Z 0x1416dcd00
 // MS2-PIN: ?FUN_1416cb4d0@CQuestManager@@QEAAXAEAV?$vector@IV?$allocator@I@std@@@std@@V?$vector@HV?$allocator@H@std@@@3@HH@Z 0x1416cb4d0
+// MS2-PIN: ??0<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEAA@I@Z 0x1416dbb80
+// MS2-PIN: ??R<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEBA_NAEBUUnk_QmNpcQuestEntry@@0@Z 0x1416dcda0
+// MS2-PIN: ?_Unchecked_begin@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIXZ 0x1416e1dd0
+// MS2-PIN: ?_Unchecked_end@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIXZ 0x1416e1e70
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\questmanager.cpp"
@@ -35,6 +39,8 @@
 #include "ms2/client/ms2/uiquesteventlistener.h"
 #include "ms2/commonfiles/learningquesttable.h"
 #include "ms2/commonfiles/chapterbooktable.h"
+#include "ms2/commonfiles/contentshutdown.h"
+#include "ms2/placeholder/nipoint3.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -104,6 +110,8 @@ public:
     void FUN_14074cfd0(int group, ATL::CAtlArray<unsigned>& out);
     Unk_QmQuestIdList FUN_14074df70(int itemId, int kind);   // quests started (0) / advanced (1) by an item
     int FUN_14074e510(unsigned questId);
+    void FUN_14074d360(int id, ATL::CAtlArray<unsigned>& out);
+    std::vector<unsigned>* FUN_14074e0f0(int npcId);   // quests of an npc (null when none)
 };
 Unk_QgQuestTable* FUN_1407476c0();
 class Unk_QuestDungeonRecord {
@@ -183,6 +191,24 @@ CChapterBookTable* FUN_140e0a9f0();
 bool FUN_140764040(CQuestData*);
 bool FUN_140764080(CQuestData*);
 bool FUN_1407640c0(CQuestData*);
+// Field object handle filled by WorldService::FUN_141bc2800 (16 bytes, Unk_WsP16 layout).
+class Unk_QmFieldObject { public: Unk_StreamPoint FUN_14169d2f0() const; };
+struct Unk_QmFieldHandle : Unk_WsP16 {
+    ~Unk_QmFieldHandle();                       // 0x140964a70
+    bool IsNull() const;                        // 0x140965190
+    Unk_QmFieldObject* operator->() const;      // 0x140965960
+};
+extern Unk_StreamPoint DAT_143b01a60;           // NiPoint3::ZERO
+class Unk_QmClientConfig { public: void* m_0; CContentShutdown m_shutdown; };
+Unk_QmClientConfig* FUN_14025e7b0();
+void FUN_141275260(int stringId, int, int);
+class Unk_QmNpcTable { public: int FUN_140764e40(int group, unsigned npcId); };
+Unk_QmNpcTable* FUN_14109a710();
+class Unk_QmQuestFilter { public: int FUN_141261b90(unsigned questId); };
+class Unk_QmOptions { public: Unk_QmQuestFilter* FUN_140c9b8b0(); };
+Unk_QmOptions* FUN_1409a8b10();
+CStringW FUN_140763550(unsigned questId, int state);     // one tooltip line of a quest
+CStringW FUN_14052bd00(int stringId, const CStringW& arg);
 int FUN_14074b210(CQuestData* data);
 int FUN_1407474d0(const ATL::CAtlArray<int>* values, const int* value);   // index of value, or -1
 void FUN_140d73bc0(int id, int a, void* b, CStringW text);
@@ -1348,6 +1374,18 @@ int CQuestManager::FUN_1416d0610()
 }
 MS2_REPLACE_METHOD(0x1416d0610, CQuestManager, FUN_1416d0610, 111, 0x70EBE08B);
 
+// MS2-FUNCTIONAL: the exe receives the field object handle as a by-value return (EH state starts after the
+// call); worldservice.h declares FUN_141bc2800 with an out parameter, so the handle is live from its declaration.
+// @0x1416d0690
+Unk_StreamPoint CQuestManager::FUN_1416d0690()
+{
+    Unk_QmFieldHandle target;
+    FUN_1403ed2d0()->FUN_141bc2800(&target, m_targetObject);
+    if (target.IsNull()) return DAT_143b01a60;
+    return target->FUN_14169d2f0();
+}
+MS2_REPLACE_METHOD(0x1416d0690, CQuestManager, FUN_1416d0690, 158, 0x580CD80D);
+
 // @0x1416d0740
 void CQuestManager::FUN_1416d0740()
 {
@@ -1394,6 +1432,22 @@ void CQuestManager::FUN_1416d0920(ATL::CAtlArray<unsigned>& out)
 }
 MS2_REPLACE_METHOD(0x1416d0920, CQuestManager, FUN_1416d0920, 161, 0xFE6413A2);
 
+// @0x1416d0800
+int CQuestManager::FUN_1416d0800(int id)
+{
+    ATL::CAtlArray<unsigned> ids;
+    FUN_1407476c0()->FUN_14074d360(id, ids);
+    for (size_t i = 0; i < ids.GetCount(); i++) {
+        unsigned questId = ids[i];
+        if (FUN_140745630(questId) == 0) continue;
+        MS2Ptr<CQuestData> data = FUN_14074bc40(questId);
+        if (data.IsNull()) continue;
+        return data->m_4c;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416d0800, CQuestManager, FUN_1416d0800, 272, 0x289A6E7D);
+
 // @0x1416d09d0
 int CQuestManager::FUN_1416d09d0(int mapId, int warn)
 {
@@ -1437,6 +1491,28 @@ int CQuestManager::FUN_1416d0e20()
     return *FUN_1401d3200()->FameContentsMissionAttackCount.Get() - m_refreshCount;
 }
 MS2_REPLACE_METHOD(0x1416d0e20, CQuestManager, FUN_1416d0e20, 48, 0x5BDD4442);
+
+// @0x1416d0c90
+void CQuestManager::FUN_1416d0c90(int id)
+{
+    if (FUN_14025e7b0()->m_shutdown.Get(static_cast<CContentShutdown::Content>(0x53)) != 0) {
+        FUN_141275260(0x2f7, 1, 1);
+        return;
+    }
+    if (FUN_1416d09d0(id, 1) == 0) return;
+    if (FUN_1416d0e60(id) == 0) return;
+    if (m_refreshCount >= *FUN_1401d3200()->FameContentsMissionAttackCount.Get()) {
+        CStringW key(L"s_sky_fortress_warn_attack");
+        FUN_1412751f0(FUN_14028b8e0(key), 1, 1);
+        return;
+    }
+    m_refreshCount++;
+    COutPacket packet(0x29, 0);
+    packet.vfunc_o10_1(0xf);
+    packet.vfunc_o10_3(id);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1416d0c90, CQuestManager, FUN_1416d0c90, 381, 0x1C198416);
 
 // @0x1416d0e60
 int CQuestManager::FUN_1416d0e60(int id)
@@ -1513,6 +1589,100 @@ void CQuestManager::FUN_1416d1060(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>& out)
     }
 }
 MS2_REPLACE_METHOD(0x1416d1060, CQuestManager, FUN_1416d1060, 152, 0xCE32F7F4);
+
+// @0x1416d12d0
+int CQuestManager::FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all)
+{
+    std::vector<unsigned>* quests = FUN_1407476c0()->FUN_14074e0f0(npcId);
+    if (quests == 0) return 0;
+    state->FUN_1409669c0();
+    state->m_npcId = npcId;
+    std::vector<Unk_QmNpcQuestEntry> entries;
+    int best = 0;
+    for (unsigned questId : *quests) {
+        int questState = 4;
+        if (all == 0 && FUN_1409a8b10()->FUN_140c9b8b0()->FUN_141261b90(questId) == 0) continue;
+        int score = FUN_1416d1100(npcId, questId, &questState);
+        if (score > best) {
+            best = score;
+            state->m_state = questState;
+            state->m_questId = questId;
+            state->m_icon = FUN_14074bc90(questId);
+        }
+        if (score != 0 && state->m_wantText != 0) {
+            Unk_QmNpcQuestEntry entry;
+            entry.m_score = score;
+            entry.m_questId = questId;
+            entry.m_state = questState;
+            entries.push_back(entry);
+        }
+    }
+    if (state->m_wantText != 0) {
+        std::sort(entries.begin(), entries.end(), [bestQuest = state->m_questId](const Unk_QmNpcQuestEntry& a, const Unk_QmNpcQuestEntry& b) {
+            if (a.m_questId == bestQuest) return true;
+            if (b.m_questId == bestQuest) return false;
+            if (a.m_score == b.m_score) {
+                MS2Ptr<CQuestData> dataA = FUN_14074bc40(a.m_questId);
+                MS2Ptr<CQuestData> dataB = FUN_14074bc40(b.m_questId);
+                if (dataA.IsNull() || dataB.IsNull()) return false;
+                return dataA->m_level > dataB->m_level;
+            }
+            return a.m_score > b.m_score;
+        });
+        CStringW text;
+        for (auto it = entries.begin(); it != entries.end(); ++it) {
+            if (it != entries.begin()) text.Append(L"\n");
+            text.Append(FUN_140763550(it->m_questId, it->m_state));
+        }
+        state->m_text = FUN_14052bd00(0x73f, text);
+    }
+    return state->m_state != 4;
+}
+MS2_REPLACE_METHOD(0x1416d12d0, CQuestManager, FUN_1416d12d0, 987, 0x181F2CD6);
+
+// @0x1416d16c0
+void CQuestManager::FUN_1416d16c0(int group, ATL::CAtlList<unsigned>& out)
+{
+    Unk_FieldIdList npcs(10);
+    FUN_140700390()->FUN_1406fb900(FUN_1403ed2d0()->FUN_141bd3060(), group, npcs);
+    ATL::CAtlArray<Unk_QmNpcQuestState> states;
+    for (POSITION pos = npcs.GetHeadPosition(); pos != 0; npcs.GetNext(pos)) {
+        unsigned npcId = npcs.GetAt(pos);
+        if (FUN_14109a710()->FUN_140764e40(group, npcId) == 0) continue;
+        Unk_QmNpcQuestState state;
+        if (FUN_1416d12d0(npcId, &state, 0) != 0) out.AddTail(npcId);
+    }
+}
+MS2_REPLACE_METHOD(0x1416d16c0, CQuestManager, FUN_1416d16c0, 306, 0x0FAF77D9);
+
+// @0x1416d1800
+void CQuestManager::FUN_1416d1800(int group, Unk_QmNpcQuestState* best)
+{
+    Unk_FieldIdList npcs(10);
+    FUN_140700390()->FUN_1406fb900(FUN_1403ed2d0()->FUN_141bd3060(), group, npcs);
+    ATL::CAtlArray<Unk_QmNpcQuestState> states;
+    for (POSITION pos = npcs.GetHeadPosition(); pos != 0; npcs.GetNext(pos)) {
+        unsigned npcId = npcs.GetAt(pos);
+        if (FUN_14109a710()->FUN_140764e40(group, npcId) == 0) continue;
+        Unk_QmNpcQuestState state;
+        if (FUN_1416d12d0(npcId, &state, 0) != 0) states.Add(state);
+    }
+    int bestScore = 0;
+    for (size_t i = 0; i < states.GetCount(); i++) {
+        int npcId = states[i].m_npcId;
+        unsigned questId = states[i].m_questId;
+        int state = states[i].m_state;
+        int score = FUN_1416d1100(npcId, questId, &state);
+        if (score > bestScore) {
+            bestScore = score;
+            best->m_npcId = npcId;
+            best->m_state = state;
+            best->m_questId = questId;
+            best->m_icon = FUN_14074bc90(questId);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d1800, CQuestManager, FUN_1416d1800, 553, 0x44156FC6);
 
 // @0x1416d1d00
 void CQuestManager::FUN_1416d1d00(PCBase* pc)
