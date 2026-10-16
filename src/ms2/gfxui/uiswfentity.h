@@ -117,6 +117,7 @@ public:
     int FUN_1422dc410();                                    // m_48
     int FUN_1422dc430();                                    // m_54
     void FUN_1422dc450();                                   // after load/show: focus handling, m_60 = 0
+    void FUN_141904ad0(const int* pnDepth) { m_2c = *pnDepth; }    // 0x141904ad0 (inline, uicommon.cpp)
 
     // Optional override of FUN_1422db790 (set from 0x141629ed0): (name, debug) -> swf file name.
     static Delegate<CString(CString, bool)> s_swfNameDelegate;      // 0x143b0d2f0

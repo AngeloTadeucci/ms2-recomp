@@ -7,6 +7,8 @@
 #include <efd/ISystemService.h>
 #include "ms2/commonfiles/os.h"
 #include <queue>
+#include "ms2/placeholder/ascript.h"
+class CUserReportData;
 class Unk_NetworkCallbacks {
 public:
     virtual void vfunc_0();
@@ -49,15 +51,15 @@ public:
     virtual void vfunc_37();
     virtual void vfunc_38(CInPacket&);
     virtual void vfunc_39();
-    virtual void vfunc_40();
-    virtual void vfunc_41();
+    virtual bool vfunc_40(__int64 nCharacterId);   // uicommon.cpp: character is on the block list
+    virtual bool vfunc_41(__int64 nCharacterId);   // uicommon.cpp: character is a friend / contact
     virtual void vfunc_42(CInPacket&);
     virtual void vfunc_43();
     virtual void vfunc_44();
     virtual void vfunc_45();
     virtual void vfunc_46();
     virtual void vfunc_47();
-    virtual void vfunc_48();
+    virtual void vfunc_48(MS2Ptr<CUserReportData> spReport);   // uicommon.cpp: send a user report (callee releases the reference)
     virtual void vfunc_49();
     virtual void vfunc_50();
     virtual void vfunc_51();

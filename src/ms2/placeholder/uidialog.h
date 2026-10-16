@@ -99,6 +99,7 @@ public:
     void FUN_141925ec0(CString strName);                     // bind close button (UILoginNotice)
     void FUN_141925fa0(CString strName);                     // bind drag bar (UIDungeonPopupRewardDialog)
     int FUN_141924630();                                    // vfunc_55() == 0 (UICoupleDanceEventDialog)
+    void FUN_141904ab0(const int* pnLayer) { m_e0 = *pnLayer; }    // 0x141904ab0 (inline, uicommon.cpp)
     void FUN_1419260d0(CString strName, int n);             // takes the child name by value (UIDungeonLobby: "m_webGuideButton", 0)
 
 protected:

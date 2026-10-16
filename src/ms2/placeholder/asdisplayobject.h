@@ -21,7 +21,7 @@ class ASDisplayObject : public ASEventDispatcher
 {
 public:
     virtual ~ASDisplayObject();                                 // 0
-    virtual void vfunc_1(int a1, int a2, int a3);               // 1 0x1422bf8c0
+    virtual void vfunc_1(int a1, int a2, int a3, int a4, int a5); // 1 0x1422bf8c0 (5 ints: alignment, x, y, width, height)
     virtual void vfunc_2(int a1, int a2, int a3);               // 2 0x1422bf840 (UISwfEntity::vfunc_44: resize)
     virtual void vfunc_3(int nVisible);                         // 3 0x1422bfc60 SetVisible
     virtual void vfunc_4(bool b);                               // 4 0x1422bfbd0
