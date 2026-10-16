@@ -109,6 +109,19 @@ public:
 void FUN_14015f050(const CString& strText, CAtlArray<CString>& arrOut, const char* pszDelim);
 bool FUN_14036e510(void* pFeatures);
 void* FUN_140166410();
+
+struct Unk_XmlElement;                                          // XML element node
+CStringW FUN_1401bf530(Unk_XmlElement* pElem, const char* pszName, CStringW strDefault);
+CString FUN_14015f710(Unk_XmlElement* pElem, const char* pszName, CString strDefault);
+bool FUN_14036d4b0(void* pFeatures, const CStringW& strFeature);   // feature enabled
+CString FUN_14036d8e0(void* pFeatures);                            // current locale name
+bool FUN_1401647e0(const CString& strLeft, const CString& strRight);
+Unk_XmlElement* FUN_140165cf0(Unk_XmlElement* pParent, const char* pszName);       // first child
+Unk_XmlElement* FUN_140168650(Unk_XmlElement* pElem, const char* pszName);         // next sibling
+void FUN_140873420(Unk_XmlElement* pElem, const char* pszName, CStringW& strOut);
+void FUN_1408733e0(Unk_XmlElement* pElem, const char* pszName, CString& strOut);
+struct Unk_XmlElementList;
+Unk_XmlElementList* FUN_14036e160(void* pFeatures, Unk_XmlElementList* pList, Unk_XmlElement* pElem);
 int FUN_1406516b0();
 CStringW FUN_14028dee0(int nId, const fmt::ArgList& args);
 CStringW FUN_140298ea0(CStringW strKey);
@@ -902,4 +915,58 @@ IDistanceCalculator* FUN_14028e960(int nType)
         return new EaseInCalculator();
     else
         return 0;
+}
+
+// True when the element's "feature" attribute is empty or enabled.
+// @0x14028f650
+bool FUN_14028f650(Unk_XmlElement* pElem)
+{
+    CStringW strFeature = FUN_1401bf530(pElem, "feature", CStringW(L""));
+    if (!strFeature.IsEmpty())
+    {
+        if (!FUN_14036d4b0(FUN_140166410(), strFeature))
+            return false;
+    }
+    return true;
+}
+
+// True when the element's "locale" matches the current locale and its "feature" is enabled.
+// MS2-FUNCTIONAL: wide default-string temp and EH cookie slot placement differ
+// @0x14028f710
+bool FUN_14028f710(Unk_XmlElement* pElem)
+{
+    CString strLocale = FUN_14015f710(pElem, "locale", CString(""));
+    bool bMatch = !strLocale.IsEmpty() && FUN_1401647e0(strLocale, FUN_14036d8e0(FUN_140166410()));
+    if (bMatch)
+        return false;
+    CStringW strFeature = FUN_1401bf530(pElem, "feature", CStringW(L""));
+    if (!strFeature.IsEmpty())
+    {
+        if (!FUN_14036d4b0(FUN_140166410(), strFeature))
+            return false;
+    }
+    return true;
+}
+
+// Collects the <environment> children whose locale/feature conditions pass.
+// MS2-FUNCTIONAL: not yet byte-matched (temp lifetime flags)
+// @0x14028f8d0
+Unk_XmlElementList* FUN_14028f8d0(Unk_XmlElement* pParent)
+{
+    Unk_XmlElementList* pResult = 0;
+    for (Unk_XmlElement* pElem = FUN_140165cf0(pParent, "environment"); pElem; pElem = FUN_140168650(pElem, "environment"))
+    {
+        CStringW strFeature;
+        CString strLocale;
+        FUN_140873420(pElem, "feature", strFeature);
+        FUN_1408733e0(pElem, "locale", strLocale);
+        bool bLocale = !strLocale.IsEmpty() && FUN_1401647e0(strLocale, FUN_14036d8e0(FUN_140166410()));
+        if (!bLocale)
+        {
+            if (!FUN_14036d4b0(FUN_140166410(), strFeature))
+                continue;
+            pResult = FUN_14036e160(FUN_140166410(), pResult, pElem);
+        }
+    }
+    return pResult;
 }
