@@ -18,15 +18,12 @@
 #include "ms2/placeholder/gfxvalue.h"
 
 template <class T> class MS2Ptr;
-class CCameraEffect;
-void FUN_140af7ba0(MS2Ptr<CCameraEffect>& spEffect);    // camera.cpp: Release on the camera effect list element
 
 template <class T>
 class MS2Ptr
 {
     template <class U> friend class MS2Ptr;
     friend struct Unk_TePtrAccess;      // taileffectobject.cpp: ResetNew on the tail info list element
-    friend void ::FUN_140af7ba0(MS2Ptr<CCameraEffect>& spEffect);
 
 public:
     MS2Ptr();
@@ -55,6 +52,9 @@ public:
     // `MS2Ptr tmp(p); swap(m_p, tmp.m_p);` - assignment from a raw pointer (0x140a4fd30 for T = CStateManager).
     // A named member, not operator=(T*), so that existing `p = q` / `p = 0` call sites keep their overloads.
     MS2Ptr& AssignRaw(T* p);
+    // Drops the reference (`it->Reset()` on the camera effect list element; 0x140af7ba0 for
+    // T = CCameraEffect, camera.cpp). Real name unknown.
+    void Reset() { Release(); }
 
 private:
     void AddRef() const;                // if (m_p) <add a reference> (0x140d03270 for T = ASDisplayObject)

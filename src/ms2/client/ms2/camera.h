@@ -298,8 +298,8 @@ public:
     Unk_CameraSetting m_savedSetting;                                   // +0x250
     float m_278;                                                        // +0x278
     bool m_27c;                                                         // +0x27c
-    std::map<int, std::vector<Unk_CameraSetup>> m_setups;               // +0x280
-    std::map<int, int> m_290;                                           // +0x290
+    std::map<DWORD, std::vector<Unk_CameraSetup>> m_setups;               // +0x280
+    std::map<DWORD, DWORD> m_290;                                                 // +0x290
     MS2Ptr<CMapCameraData> m_spMapCameraData;                           // +0x2a0
     Unk_EntityCameraSetupMap m_entitySetups;                            // +0x2b0
     CCacheData m_testCache;                                             // +0x2e0

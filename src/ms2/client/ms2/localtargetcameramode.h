@@ -7,13 +7,15 @@
 
 #include "targetcameramode.h"
 
-// A camera setup (0x70 bytes, the camera manager's "setup" row): the base setting plus the blend parameters. The
-// ctor (0x140ae8aa0) and the copy assignment (0x140af6fc0) belong to another obj.
-struct Unk_CameraSetup : public Unk_CameraSetting
+// A camera setup (0x70 bytes, the camera manager's "setup" row): the setting (a member at +0: the exe's implicit
+// copy/move code passes it through a register copy, not a base adjustment) plus the blend parameters. The
+// ctor (0x140ae8aa0) and the implicit copy assignment (0x140af6fc0), copy ctor (0x140af6580) and move ctor
+// (0x140af6440) are COMDATs of the camera.cpp obj (w116: the copy assignment is implicit, so the move ctor exists).
+struct Unk_CameraSetup
 {
     Unk_CameraSetup();                                          // 0x140ae8aa0
-    Unk_CameraSetup& operator=(const Unk_CameraSetup& o);       // 0x140af6fc0
 
+    Unk_CameraSetting m_setting;        // +0x00
     int m_28;                           // +0x28 kind (1: follow, 3: ...)
     int m_2c;
     float m_30;                         // +0x30 abort distance
