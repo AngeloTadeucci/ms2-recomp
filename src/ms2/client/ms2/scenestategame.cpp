@@ -4477,6 +4477,76 @@ void CSceneStateGame::FUN_141737db0(CInputStream& in)
 }
 MS2_REPLACE_METHOD(0x141737DB0, CSceneStateGame, FUN_141737db0, 769, 0x55485FD5);
 
+extern int DAT_143ab2904;                                   // the pending invite (0: none; the first one opens a message box)
+extern CStringW DAT_143ae79f8;                              // the invite message box tag
+
+// @0x141731c10
+// 0x8c: invite results (system messages by mode and result).
+void CSceneStateGame::FUN_141731c10(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CStringW strMsg;
+    if (nMode == 4)
+    {
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        int nInvite = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (DAT_143ab2904 == 0)
+        {
+            DAT_143ab2904 = nInvite;
+            MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(1, FUN_14052bd00(0x902, strName), 0, DAT_143ae79f8);
+            if (spBox.get() != 0)
+            {
+                spBox->FUN_141a01ca0(0x14, 1, FUN_14028de60(0x2b8));
+                spBox->FUN_141a02460(1);
+                spBox->FUN_141a02480(1);
+                spBox->FUN_141a024a0(0);
+                FUN_140d73c60(spBox);
+            }
+        }
+        else
+            FUN_140714f90()->FUN_141538bb0(strName, 4);
+    }
+    else if (nMode == 5)
+    {
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        int nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nResult == 0 || nResult == 2)
+            strMsg = FUN_14052bd00(0x8fb, strName);
+        else if (nResult == 1 || nResult == 3)
+            strMsg = FUN_14052bd00(0x8fc, strName);
+        FUN_1412751b0(strMsg, 0x14);
+    }
+    else if (nMode == 6)
+    {
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        strMsg = FUN_14052bd00(0x8fd, strName);
+        FUN_1412751b0(strMsg, 0x14);
+    }
+    else if (nMode == 7)
+    {
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        int nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        switch (nResult)
+        {
+        case 2:
+            strMsg = FUN_14052bd00(0x8ff, strName);
+            break;
+        case 4:
+            strMsg = FUN_14052bd00(0x901, strName);
+            break;
+        case 6:
+            strMsg = FUN_14052bd00(0x8fe, strName);
+            break;
+        default:
+            strMsg = FUN_14052bd00(0x900, strName);
+            break;
+        }
+        FUN_1412751b0(strMsg, 0x14);
+    }
+}
+MS2_REPLACE_METHOD(0x141731C10, CSceneStateGame, FUN_141731c10, 1838, 0x26AB7A52);
+
 // Socket gem packet records (decoders in itemsocketsystemutil.cpp).
 class TSocketGemStoneInfo : public CPtred { };   // 0x48 (ctor 0x14061f790, itemsocket.cpp), opaque here
 // The exe calls the itemsocket copy (0x140623630); a local COMDAT would take the CEnchantOption dtor slot here.
