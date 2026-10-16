@@ -5,6 +5,7 @@ class Unk_UserProxyItemData;
 class COutputStream;
 class CInputStream;
 class Unk_ItemUgcInfo;
+class Unk_ItemEquipData;
 class CItem : public CPtred {
 public:
   CItem();
@@ -22,6 +23,7 @@ public:
   void FUN_140526c70(int);
   int FUN_140526bd0();
   int FUN_1405276c0();
+  Unk_ItemEquipData* FUN_140527840();   // 0x140527840 the item's data record (equip flags; uiequipiconcontainer.cpp)
   // Inventory ordering accessors, a1 (inventory.cpp).
   int FUN_140525c60();
   __int64 FUN_140528910();
