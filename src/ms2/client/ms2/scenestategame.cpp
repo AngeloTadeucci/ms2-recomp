@@ -108,6 +108,10 @@
 #include "ms2/commonfiles/ugcmappackageinfo.h"   // Unk_Int3
 #include "ms2/unnamed/unit_140fa9eb0.h"
 #include "uiugccubepalettedialog.h"
+#include "ms2/commonfiles/userproxy.h"
+#include "ms2/placeholder/tptr.h"
+#include "ms2/commonfiles/itemgem.h"
+#include "ms2/commonfiles/rideonaction.h"
 
 // ---- singletons and callees (names inferred; unit-local stand-ins) -----------------------------------------------
 CNetworkService* FUN_140714f90();
@@ -127,6 +131,7 @@ public:
     void FUN_141bbae80(IWorldServiceCallback* cb);          // unregister it
     void FUN_141bbc580(int a, int b);
     int FUN_141bcfd10();                                    // world state (4 = in field)
+    int FUN_141bcfbd0();                                    // loading complete
     void FUN_141bdb690();
     void FUN_141bbbcf0(int nMapId, int n);
     GameObject* FUN_141bd1180(int nId);
@@ -446,6 +451,8 @@ public:
     void FUN_1410c4e20(__int64 nItemUid, Unk_Int3 kPos, const CubeItemInfo& info, float fRot, bool bFlag, int nA, int nB);
     void FUN_1410caf20(Cube* pCube, int nValue);
     __int64 FUN_1410c3180();                                // the house owner
+    bool FUN_1410c35c0();                                   // the player is in a house
+    void FUN_1410d5350();
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     void FUN_1410c7a50(int nA, int nB, int nC, __int64 nD);
     unsigned int FUN_1410c3470();
@@ -508,7 +515,7 @@ class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14
 Unk_SSG9331e0* FUN_1409331e0();
 class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); UISwfEntity* FUN_1422b9e20(int nId); UISwfEntity* FUN_1422b9e80(); };
 Unk_SSGSoundCtl* FUN_1408e57f0();
-class Unk_SSG931510 { public: void FUN_140d9f710(CInPacket& packet); MS2Ptr<class Unk_SSGDungeonRecord> FUN_140d9f2c0(); MS2Ptr<class Unk_SSGChatEmoticon> FUN_140d9f8f0(); };
+class Unk_SSG931510 { public: void FUN_140d9f310(__int64 nValue); void FUN_140d9f710(CInPacket& packet); MS2Ptr<class Unk_SSGDungeonRecord> FUN_140d9f2c0(); MS2Ptr<class Unk_SSGChatEmoticon> FUN_140d9f8f0(); };
 void FUN_1412b9870(int nId, int nType);
 
 // 0x18..0x41: actor packets
@@ -580,7 +587,7 @@ public:
     char m_ce50;                                            // +0xe50
 };
 MS2_CHECK_OFFSET(Unk_SSGNpc, m_ce50, 0xe50);
-class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); void FUN_140c86450(MS2Ptr<CItem> spItem); };
+class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); void FUN_140c86450(MS2Ptr<CItem> spItem); void FUN_140c860b0(CInputStream& stream, int nObjId); };
 // The item event hub (FUN_140a6a840); slots 5/21/23 are item notifications.
 class Unk_SSGItemHub
 {
@@ -955,6 +962,7 @@ public:
     void FUN_140a62920(__int64 nItemUid);                   // packet 0x20 mode 3
     int FUN_140a5d120(CItem* pItem);                        // add an item
     void FUN_140a66990(unsigned short nLevel);              // packet 0x2f: level changed
+    void FUN_140a66c00();                                   // OnAddUser: the local player entered
 };
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
 
@@ -3689,7 +3697,7 @@ void CSceneStateGame::FUN_14171d610(CInPacket& packet)
 MS2_REPLACE_METHOD(0x14171d610, CSceneStateGame, FUN_14171d610, 514, 0xFE149045);
 
 // 0x3d mode 4: a buff/effect update between two actors (ids, buff id, three effect values, effect flag).
-class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); };
+class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); void FUN_140970ff0(CInPacket& packet); };
 // Picks an effect value: when nValue is set, it becomes the (type, value) pair to show.
 static int FUN_1417403b0(const __int64& nValue, const int& nType, int& nOutType, __int64& nOutValue);
 
@@ -5974,7 +5982,14 @@ public:
     unsigned short m_nOldLevel;                             // +0x1a
 };
 MS2_CHECK_SIZE(NotifyChangeMyLevel, 0x20);
-class Unk_SSGSkillBook { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(unsigned short nLevel); };
+class Unk_SSGSkillBook
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(unsigned short nLevel);
+    virtual void vfunc_5(); virtual void vfunc_6();
+    virtual void vfunc_7(CInPacket& packet);                // decode the skill book
+    void FUN_140a6e240();
+};
 Unk_SSGSkillBook* FUN_1416546d0(PC* pPC);                  // the actor's skill book
 void FUN_141b16550(unsigned short nLevel);
 UIExpBar* FUN_14125b200(int nId);                           // GetDialog<UIExpBar> (another unit's COMDAT)
@@ -6232,7 +6247,7 @@ public:
 Unk_SSGUgcEvents* FUN_140bc09f0();
 class Unk_SSGTaxiTable { public: bool FUN_14085f730(int nMapId); };
 Unk_SSGTaxiTable* FUN_1409f24a0();
-class Unk_SSGHouseCfg { public: void FUN_141262180(); void FUN_141262650(); };
+class Unk_SSGHouseCfg { public: void FUN_141262180(); void FUN_141262650(); void FUN_141261e90(int n); };
 int FUN_14151f6e0();                                        // messageboxqueue.cpp
 void FUN_140ee8190(CInPacket& packet);
 void FUN_140ee83f0(CInPacket& packet);
@@ -7246,3 +7261,288 @@ void CSceneStateGame::FUN_141723670(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141723670, CSceneStateGame, FUN_141723670, 18808, 0xE92E47F8);
+
+// ---- 0x17: a user (player character) entered the field ---------------------------------------------------------
+// TPtr<PC>::operator=(PC*) is an inline COMDAT in this unit's range (0x141746d10).
+template <> inline TPtr<PC>& TPtr<PC>::operator=(PC* p)
+{
+    if (m_p != p)
+    {
+        if (m_p)
+            m_p->DecRefCount();
+        m_p = p;
+        if (m_p)
+            m_p->IncRefCount();
+    }
+    return *this;
+}
+MyPC* FUN_14161e580(const TPtr<PC>& spPC);                  // DynamicCast<MyPC>
+// The members of physxhelper.h used here (that header needs NOMINMAX, which this unit's includes cannot take).
+struct Unk_RayCastInfo;
+class CPhysXHelper
+{
+public:
+    int FUN_14168a310(const Unk_StreamPoint& ptFrom, Unk_StreamPoint& ptHit, Unk_RayCastInfo* pInfo, float fLen,
+                      Unk_StreamPoint* pNormal, int nMask);
+    bool FUN_14168a770(const Unk_StreamPoint* pPoint);
+};
+CPhysXHelper* FUN_1409f7ca0();
+// The compressed sub packet (efd RTTI "CZlibPacket"; ctor 0x141746040, vftable 0x142f5f9e8).
+class CZlibPacket final : public CPtred
+{
+public:
+    CZlibPacket() : m_stream(true, 0x28) { m_bDirty = true; }
+    CByteBuffer& FUN_14083b6b0(CInputStream& stream);       // decode; the decompressed buffer
+private:
+    Unk_CompressedStream m_stream;                          // +0x18
+    bool m_bDirty;                                          // +0xa0
+};
+MS2_CHECK_SIZE(CZlibPacket, 0xa8);
+// The equipment (PC::FUN_14165f460; members in mypc.cpp's neighbours).
+class Unk_MyPCEquip
+{
+public:
+    void FUN_14126fea0(CInputStream& stream, int nObjId);   // decode the worn items
+    MS2Ptr<CItem> FUN_141270140(int nSlot);
+    MS2Ptr<CGemBase> FUN_141270740(int nSlot);
+};
+class Unk_SSG535320 { public: void FUN_140c8b300(__int64 nValue); };
+Unk_SSG535320* FUN_140535320();
+void FUN_141425610();
+extern __int64 DAT_143ab2840;                               // the platform account id
+extern CString DAT_143ab2a40;                               // the platform account name
+extern bool DAT_143ab2942;                                  // the game began
+extern int DAT_143ab0248;                                   // client country (0..3)
+extern "C" const wchar_t* DAT_1439f8350;                    // L"ACCOUNT_ID"
+extern "C" const wchar_t* DAT_1439f8358;                    // L"CHAR_NAME"
+extern "C" void (__cdecl* __imp_CrashReporter_SetStrInfoA)(const wchar_t*, const char*);
+extern "C" void (__cdecl* __imp_CrashReporter_SetStrInfoW)(const wchar_t*, const wchar_t*);
+extern "C" void (__cdecl* __imp_CrashReporter_SetInt64Info)(const wchar_t*, __int64*);
+
+// @0x14170fda0
+void CSceneStateGame::FUN_14170fda0(CInPacket& packet)
+{
+    int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    if (!pWorld->FUN_141bcfbd0())
+    {
+        MessageBoxA(0, "Error - !world.IsLoadingComplete()", "CSceneStateGame::OnAddUser()", 0);
+        throw 13;
+    }
+    Unk_UserProxy proxy;
+    proxy.FUN_1408eeb60(&packet);
+    Unk_StreamPoint kPos;
+    Unk_StreamPoint kDir;
+    CString strAnim;
+    if (proxy.m_14 == 0)
+        strAnim = "urn:gamebryo-animation:Male";
+    else
+        strAnim = "urn:gamebryo-animation:Female";
+    TPtr<PC> spPC(0);
+    int bMyPC = 0;
+    if (DAT_143ab2828 == proxy.m_8)
+    {
+        spPC = static_cast<PC*>(static_cast<PCBase*>(new (efd::MemHint(efd::MemHint::NONE)) MyPC));
+        bMyPC = 1;
+        DAT_143ab2840 = proxy.FUN_141748180();
+        DAT_143ab2a40 = FUN_14016a5c0(proxy.FUN_1417480a0(), 0);
+        DAT_143ab2a90.FUN_140a66c00();
+        CString strAccount;
+        strAccount.Format("%d", DAT_143ab2820);
+        __imp_CrashReporter_SetStrInfoA(DAT_1439f8350, strAccount.GetBuffer());
+        __int64 nNexonId = proxy.FUN_141748180();
+        __imp_CrashReporter_SetInt64Info(L"NEXON_ID", &nNexonId);
+        __imp_CrashReporter_SetStrInfoW(DAT_1439f8358, proxy.FUN_1408f19e0().GetBuffer());
+    }
+    else
+    {
+        spPC = new (efd::MemHint(efd::MemHint::NONE)) PC;
+    }
+    FUN_1416546d0(spPC.operator->())->vfunc_7(packet);
+    kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    kPos.z += 25.0f;
+    spPC->FUN_14123c5a0(nObjId);
+    spPC->FUN_141656aa0(proxy.m_0);
+    spPC->FUN_141656a50(proxy.m_8);
+    spPC->FUN_141658e40(proxy.m_14);
+    spPC->vfunc_131(proxy.m_34);
+    spPC->vfunc_76(proxy.FUN_1408f19e0());
+    spPC->FUN_14123bb80(strAnim);
+    spPC->vfunc_19(reinterpret_cast<efd::Point3&>(kPos));
+    spPC->vfunc_21(reinterpret_cast<efd::Point3&>(kDir));
+    spPC->vfunc_129(proxy.FUN_1408f1b60());
+    spPC->FUN_141661330(proxy.FUN_1408f1ae0());
+    spPC->FUN_141658e80(proxy.m_70);
+    spPC->FUN_141658ed0(proxy.FUN_1408f2000());
+    spPC->FUN_141662850(proxy.m_b0);
+    spPC->FUN_141662890(proxy.m_b8);
+    spPC->FUN_14174a340(proxy.m_78);
+    spPC->FUN_14165ffc0(proxy.m_180);
+    spPC->FUN_141660000(proxy.m_188);
+    spPC->FUN_141663a00(proxy.m_190);
+    spPC->FUN_141663a70(proxy.m_194);
+    spPC->FUN_141663a90(proxy.m_198);
+    spPC->FUN_141663b10(proxy.m_1ac);
+    if (DAT_143ab0248 == 3 && proxy.m_330.get() != 0)
+    {
+        spPC->FUN_141663060(proxy.m_330->vfunc_37());
+        spPC->FUN_1416630a0(proxy.m_330->vfunc_38());
+        if (bMyPC)
+        {
+            int nPlatform = proxy.m_330->vfunc_60();
+            FUN_1409a8b10()->FUN_140a46860()->FUN_141261e90(nPlatform);
+        }
+    }
+    for (size_t i = 0; i < 12; i++)
+        spPC->FUN_141662790((int)i, proxy.m_140[i]);
+
+    // snap the spawn point to the ground
+    Unk_StreamPoint kHit;
+    if (FUN_1409f7ca0()->FUN_14168a310(kPos, kHit, 0, 0.0f, 0, 0))
+    {
+        kHit.z += 25.0f;
+        if (!FUN_1409f7ca0()->FUN_14168a770(&kHit))
+            spPC->vfunc_19(reinterpret_cast<efd::Point3&>(kHit));
+    }
+
+    spPC->m_unk_1bc = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    spPC->vfunc_91(&packet);
+    if (spPC->FUN_141670a00(4) == 0)
+        spPC->FUN_14166ce50(1);
+    int nEmotion = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    spPC->FUN_14166ce70(nEmotion);
+    int nCubeA = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CubeItemInfo kCube(packet);
+    int nCubeB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    spPC->vfunc_135(nCubeA, nCubeB, &kCube);
+    NiColor aColor[2];
+    aColor[0] = FUN_141b6dea0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    aColor[1] = FUN_141b6dea0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    spPC->FUN_1416591e0(0, aColor[0]);
+    spPC->FUN_1416591e0(1, aColor[1]);
+    CString strTitle = static_cast<CInputStream&>(packet).vfunc_o8_6();
+    spPC->FUN_141660fc0(strTitle);
+    bool bRide = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    if (bRide)
+    {
+        MS2Ptr<RideOnAction> spRide = FUN_14077deb0(&static_cast<CInputStream&>(packet));
+        spPC->FUN_141676320(spRide);
+        spPC->FUN_141676700();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        for (int i = 0; i < nCount; i++)
+        {
+            int nKey = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spPC->FUN_141676670(nKey, nValue);
+        }
+    }
+    if (pWorld->FUN_141bbb1e0(spPC.get(), 0, 1) == 0)
+        return;
+
+    int nTitleId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    spPC->FUN_14165f090(nTitleId);
+    __int64 nA = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    spPC->FUN_141662640(nA);
+    spPC->FUN_141662690(nB);
+    spPC->FUN_141662710(nC);
+
+    // the owned items
+    CZlibPacket kItems;
+    CByteBuffer& buf = kItems.FUN_14083b6b0(static_cast<CInputStream&>(packet));
+    int nItems = static_cast<CInputStream&>(buf).vfunc_o8_1();
+    for (int i = 0; i < nItems; i++)
+    {
+        int nItemId = static_cast<CInputStream&>(buf).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(buf).vfunc_o8_4();
+        int nSlot = static_cast<CInputStream&>(buf).vfunc_o8_1();
+        int nRarity = static_cast<CInputStream&>(buf).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem);
+        if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+            break;
+        spItem->FUN_140526c10(nSlot);
+        spItem->FUN_140524eb0(static_cast<CInputStream&>(buf));
+        spItem->FUN_140526a70(nItemUid);
+        spItem->FUN_140526b30(nObjId);
+        spPC->FUN_141653d10(spItem);
+    }
+    bool bTime = static_cast<CInputStream&>(buf).vfunc_o8_0();
+    __int64 nStart = static_cast<CInputStream&>(buf).vfunc_o8_4();
+    __int64 nEnd = static_cast<CInputStream&>(buf).vfunc_o8_4();
+    spPC->FUN_1416561a0()->FUN_1411ea620(nStart, nEnd);
+    int nOutfits = static_cast<CInputStream&>(buf).vfunc_o8_1();
+    for (int i = 0; i < nOutfits; i++)
+    {
+        int nItemId = static_cast<CInputStream&>(buf).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(buf).vfunc_o8_4();
+        int nSlot = static_cast<CInputStream&>(buf).vfunc_o8_1();
+        int nRarity = static_cast<CInputStream&>(buf).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem);
+        if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+            break;
+        spItem->FUN_140526c10(nSlot);
+        spItem->FUN_140524eb0(static_cast<CInputStream&>(buf));
+        spItem->FUN_140526a70(nItemUid);
+        spItem->FUN_140526b30(nObjId);
+        spItem->FUN_14052a130(2);
+        spPC->FUN_141653d10(spItem);
+    }
+
+    // the item cooldowns and the worn equipment
+    CZlibPacket kCooldowns;
+    CByteBuffer& kCooldownBuf = kCooldowns.FUN_14083b6b0(static_cast<CInputStream&>(packet));
+    spPC->FUN_1416561c0()->FUN_140c860b0(kCooldownBuf, nObjId);
+    CZlibPacket kEquip;
+    CByteBuffer& kEquipBuf = kEquip.FUN_14083b6b0(static_cast<CInputStream&>(packet));
+    spPC->FUN_14165f460()->FUN_14126fea0(kEquipBuf, nObjId);
+    MS2Ptr<CGemBase> spGem = spPC->FUN_14165f460()->FUN_141270740(1);
+    if (spGem.get())
+        spGem->vfunc_6(spPC.get(), spPC->FUN_14165f460()->FUN_141270140(1));
+
+    spPC->FUN_1416749a0()->FUN_140970ff0(packet);
+    FUN_1416546d0(spPC.operator->())->FUN_140a6e240();
+    spPC->FUN_141661b20(packet);
+    spPC->FUN_141661ba0(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    spPC->FUN_140967420()->FUN_140743a10(packet);
+    spPC->FUN_141661c00(packet);
+    spPC->FUN_141661d40(packet);
+    spPC->FUN_141676980(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    spPC->FUN_141663150(packet);
+    spPC->FUN_141662d60(static_cast<CInputStream&>(packet).vfunc_o8_4());
+    spPC->FUN_141678300(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    spPC->FUN_141678340(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    spPC->FUN_141662e30((unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2());
+
+    MyPC* pMyPC = FUN_14161e580(spPC);
+    if (pMyPC)
+    {
+        FUN_140535320()->FUN_140c8b300(proxy.FUN_1408f1330());
+        FUN_140931510()->FUN_140d9f310(proxy.m_50);
+        pMyPC->FUN_141699a20();
+        pMyPC->FUN_1416561a0()->FUN_1411ea7c0();
+        pMyPC->vfunc_88();
+        DAT_143ab2942 = true;
+        FUN_140d86260()->vfunc_22(0x2d0, "GameBegin");
+        efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+        if (spService ? true : false)
+        {
+            if (!spService->FUN_1410c35c0())
+            {
+                if (spService->FUN_1410c3180() == DAT_143ab2820)
+                    spService->FUN_1410d5350();
+            }
+        }
+        FUN_141425610();
+        pMyPC->FUN_14152ed60(&proxy);
+    }
+    MyPC* pLocal = pWorld->FUN_141bd0cc0();
+    if (pLocal)
+        pLocal->FUN_1416634a0(proxy.m_8);
+    if (bMyPC)
+        FUN_140d86260()->vfunc_61();
+    spPC->vfunc_140(proxy.m_1a8);
+    spPC->FUN_141663550();
+}
+MS2_REPLACE_METHOD(0x14170FDA0, CSceneStateGame, FUN_14170fda0, 8209, 0xDFA14B88);

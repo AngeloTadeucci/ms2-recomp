@@ -20,7 +20,7 @@ class Unk_PCArg125;   // MS2Ptr<T> by value (MyPC override destroys it with 0x14
 class Unk_PCActionTimer;   // CPtred-derived, defined by the user unit (avatarpc.cpp)
 class CEquipItem;
 class CMsTime;
-struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); void FUN_1411ea620(const CMsTime& kStart, const CMsTime& kEnd); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
+struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); void FUN_1411ea620(const CMsTime& kStart, const CMsTime& kEnd); void FUN_1411ea7c0(); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
 class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
 // The player's interact mode (PC +0x1240): while active it picks the kind of object to interact with (actionkeyobject.cpp).
@@ -29,6 +29,7 @@ class Unk_PCInteractMode : public CPtred
 {
 public:
     bool FUN_140743550();                                   // active
+    void FUN_140743a10(CInPacket& packet);                  // decode (scenestategame OnAddUser)
     int FUN_140743710();                                    // the target kind
 };
 class PC : public PCBase {
@@ -138,6 +139,32 @@ public:
     void FUN_141661330(const CStringW& strName);             // set the displayed name (scenestategame)
     class Unk_MyPCEquip* FUN_14165f460();                   // the equipment (mypc.cpp, w97)
     void FUN_141670540(int nIndex, int nType, __int64 nValue);   // PCBase: set a stat value (mypc.cpp, w97)
+    // scenestategame OnAddUser (0x14170fda0); argument kinds from the callee prologues
+    void FUN_141656aa0(__int64 nAccountId);
+    void FUN_141656a50(__int64 nCharId);
+    void FUN_141658e40(int nGender);
+    void FUN_141658e80(__int64 nValue);
+    void FUN_14174a340(int n) { m_n11c8 = n; }              // @0x14174a340
+    void FUN_14165ffc0(int n);
+    void FUN_141663a00(int n);
+    void FUN_141663a70(int n);
+    void FUN_141663a90(__int64 n);
+    void FUN_141663b10(short n);
+    void FUN_141663060(int n);
+    void FUN_1416630a0(int n);
+    void FUN_141662790(int nIndex, int nValue);
+    void FUN_141660fc0(CString str);
+    void FUN_14165f090(int n);
+    void FUN_141653d10(MS2Ptr<CItem> spItem);
+    void FUN_141661b20(CInPacket& packet);
+    void FUN_141661c00(CInPacket& packet);
+    void FUN_141661d40(CInPacket& packet);
+    void FUN_141663150(CInPacket& packet);
+    void FUN_141662e30(int n);
+    void FUN_1416634a0(__int64 nCharId);
+    void FUN_141663550();
+    void FUN_141662850(__int64 nValue);
+    void FUN_141662890(__int64 nValue);
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];
@@ -148,7 +175,9 @@ public:
     MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
     unsigned char unknownFD8[0x48];
     class Unk_PCCubeCraft* m_pCubeCraft;                    // +0x1020 (FUN_141659700; cube craft mode only)
-    unsigned char unknown1028[0x218];
+    unsigned char unknown1028[0x1a0];
+    int m_n11c8;                                            // +0x11c8 (FUN_14174a340)
+    unsigned char unknown11cc[0x74];
     MS2Ptr<Unk_PCInteractMode> m_spInteractMode;      // +0x1240 (actionkeyobject.cpp)
     unsigned char unknown1250[0x90];
 };

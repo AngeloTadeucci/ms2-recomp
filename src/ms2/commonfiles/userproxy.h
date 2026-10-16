@@ -39,6 +39,8 @@ public:
   }
   T *get() const { return m_p; }
   T *operator->() const { return m_p; }
+  // @0x1417470e0 (T = CPlatformProxy; scenestategame.cpp)
+  bool operator==(T *p) const { return m_p == p; }
   void AddRef() const {
     if (m_p)
       AddRefImpl(0);
@@ -265,6 +267,10 @@ public:
   void FUN_1408f0950(const CStringW &p);
   void FUN_1408f0850(const CString &p);
   void FUN_1408f07e0(const CStringW &p);
+  // @0x141748180 (scenestategame.cpp): the platform account id
+  __int64 FUN_141748180() { return m_330 == 0 ? 0 : m_330->vfunc_8(); }
+  // @0x1417480a0 (scenestategame.cpp): the platform account name
+  CString FUN_1417480a0() { return m_330 == 0 ? "" : (const char *)m_330->vfunc_10(); }
   __int64 m_0, m_8;
   int m_10;
   unsigned char m_14;

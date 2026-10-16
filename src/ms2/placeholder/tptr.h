@@ -10,6 +10,8 @@ class TPtr
 {
 public:
     TPtr(const TPtr& o);
+    TPtr(T* p);                         // 0x140aac040 for T = PC (scenestategame OnAddUser)
+    TPtr& operator=(T* p);              // 0x141746d10 for T = PC (inline COMDAT, defined by scenestategame.cpp)
     ~TPtr();
     T* get() const;
     T* operator->() const;
