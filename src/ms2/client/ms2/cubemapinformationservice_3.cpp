@@ -2,6 +2,7 @@
 // MS2-RANGE: 0x1410b68a0-0x1410d5bc0 .text$mn
 // MS2-RANGE: 0x1400e6230-0x1400e6420 .text$di
 // MS2-PIN: ??0Unk_CMISFlags3@@QEAA@XZ 0x140b68e60
+// MS2-PIN: ??0Unk_CMISPt3@@QEAA@AEBUUnk_StreamPoint@@@Z 0x14027dcf0
 // MS2-PIN: ??_7CubeMapInformationService@@6BISystemService@efd@@@ 0x142eb3960
 // MS2-PIN: ??_7CubeMapInformationService@@6B?$TSingleton@VCubeMapInformationService@@@@@ 0x142eb39e8
 // MS2-PIN: ??_7?$TSingleton@VCubeMapInformationService@@@@6B@ 0x142eb3950
@@ -132,6 +133,17 @@ Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // e
 bool FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+const Unk_CMISEntityRef* FUN_1408b76f0(egf::Entity*);                   // &entity id
+egf::Entity* FUN_1408a9280(const void* pSp);
+void FUN_1409618c0(egf::Entity*, unsigned, Unk_StreamPoint*);   // GetProperty(Point3)
+struct Unk_CMISPt3 { float x, y, z; Unk_CMISPt3(const Unk_StreamPoint&); };   // efd::Point3 copy (0x14027dcf0)
+struct Unk_CMISRayHit { __int64 m_q0, m_q1, m_q2, m_q3, m_q4, m_q5; egf::Entity* m_pEntity; __int64 m_q7, m_q8, m_q9, m_q10, m_q11, m_q12; };
+void FUN_140ad4440(Unk_CMISRayHit*);
+class CPhysXHelper;
+CPhysXHelper* FUN_1409f7ca0();
+int FUN_14168a310(CPhysXHelper*, Unk_CMISPt3*, Unk_StreamPoint*, Unk_CMISRayHit*, float, __int64, int);
+bool FUN_14028d470(float, float);
+extern Unk_StreamPoint DAT_143a08cf8;                                       // up vector
 Unk_Int3* FUN_14112ca20(Unk_Int3* pA, Unk_Int3* pOut, Unk_Int3* pB);   // point add
 const int* FUN_1402fbd20(const int*, const int*);               // std::min
 const int* FUN_1404eb7e0(const int*, const int*);               // std::max
@@ -427,6 +439,35 @@ Cube* CubeMapInformationService::FUN_1410b9080(Cube* pBase, int nOffset)
             return 0;
     }
     return pCube;
+}
+
+// @0x1410b8e60
+Cube* CubeMapInformationService::FUN_1410b8e60(egf::Entity* pEntity)
+{
+    if (pEntity != 0) {
+        Unk_StreamPoint pt;
+        FUN_1409618c0(pEntity, 0xfd95ca52, &pt);
+        Cube* pCube = FUN_1410b8ab0(pt);
+        if (pCube != 0 && pCube->field70 != 0) {
+            if (FUN_1408b76f0(FUN_1408a9280(&pCube->entity))->FUN_140965410(*reinterpret_cast<const Unk_1401cd100*>(FUN_1408b76f0(pEntity))))
+                return pCube;
+        }
+    }
+    return 0;
+}
+
+// @0x1410b8f30
+Cube* CubeMapInformationService::FUN_1410b8f30(Unk_StreamPoint ptFrom, Unk_StreamPoint* pHit, float fRange)
+{
+    static Unk_StreamPoint s_kDown = DAT_143a08cf8.FUN_14097fc90(20.0f);
+    Unk_CMISPt3 ptStart(ptFrom.FUN_14097fd50(s_kDown));
+    if (FUN_14028d470(fRange, 0.0f))
+        fRange = 150.0f;
+    Unk_CMISRayHit hit;
+    FUN_140ad4440(&hit);
+    if (FUN_14168a310(FUN_1409f7ca0(), &ptStart, pHit, &hit, fRange, 0, 0) != 0)
+        return FUN_1410b8e60(hit.m_pEntity);
+    return 0;
 }
 
 // @0x1410ce800
