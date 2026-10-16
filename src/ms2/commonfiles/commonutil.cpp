@@ -15,14 +15,12 @@
 // MS2-PIN: ??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@QEBD@Z 0x140296f90 ; unique
 // MS2-PIN: ??0_Bxty@?$_String_val@U?$_Simple_types@D@std@@@std@@QEAA@XZ 0x140297240 ; probe
 // MS2-PIN: ??1CAtlWinModule@ATL@@QEAA@XZ 0x140297790 ; prop
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEBAAEBQEAHXZ 0x140297a40 ; prop
 // MS2-PIN: ??4?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAAEAV01@$$QEAV01@@Z 0x140297ae0 ; unique
 // MS2-PIN: ??A?$vector@HV?$allocator@H@std@@@std@@QEAAAEAH_K@Z 0x140297cb0 ; unique
 // MS2-PIN: ??H?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEBA?AV01@_J@Z 0x140298290 ; unique
 // MS2-PIN: ?deallocate@?$allocator@D@std@@QEAAXQEAD_K@Z 0x1402984d0 ; unique
 // MS2-PIN: ??Y?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEAAAEAV01@_J@Z 0x140298530 ; prop
 // MS2-PIN: ??_GCAtlStringMgr@ATL@@UEAAPEAXI@Z 0x140298680 ; unique
-// MS2-PIN: ?Clone@CAtlStringMgr@ATL@@UEAAPEAUIAtlStringMgr@2@XZ 0x140298fc0 ; probe
 // MS2-PIN: ?_Assign_rv_contents@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAX$$QEAV12@U?$integral_constant@_N$00@2@@Z 0x140299e60 ; unique
 // MS2-PIN: ?_Check_offset@?$_String_val@U?$_Simple_types@D@std@@@std@@QEBAX_K@Z 0x14029a5b0 ; unique
 // MS2-PIN: ?_Clamp_suffix_size@?$_String_val@U?$_Simple_types@D@std@@@std@@QEBA_K_K0@Z 0x14029a5e0 ; unique
@@ -2037,6 +2035,222 @@ void Unk_BindHostPtr::FUN_140299e30()
 {
     if (m_pHost)
         m_pHost->FUN_140298720();
+}
+
+// BSTR-concatenation helper family (ATL CComBSTR-like holders, 0x18-byte heap blocks: BSTR, spare, refcount).
+struct Unk_BstrBlock
+{
+    void* m_pData;
+    void* m_unk08;
+    int m_nRefs;
+};
+
+extern void FUN_14016ad80(void* pThis, void* pArg);
+void* FUN_140297a40(size_t nBytes);
+extern void FUN_140297790(void* p);
+extern void FUN_1402978c0(void* p);
+extern void FUN_1402986c0(void* p, int nFlag);
+extern void** FUN_140298fc0(void* pHolder);
+extern void FUN_14028b5b0(void* pDst, unsigned long long nDstBytes, const void* pSrc, unsigned long long nCount);
+extern void* FUN_140183290(void* pOut);
+extern unsigned long long* FUN_14029dcd0();
+extern void FUN_14029b680(void** pp);
+extern void FUN_140297a20(void** pp);
+extern void* FUN_140297620(void** pp, void* pArg);
+extern void* FUN_140298560(void** pp, void* pArg);
+
+// MS2-FUNCTIONAL: three identical template-instantiation bodies (look-alike siblings), written once per address
+// @0x1402969f0
+void** FUN_1402969f0(void** p, void* pVtbl, void* pArg)
+{
+    *p = pVtbl;
+    FUN_14016ad80(p, pArg);
+    return p;
+}
+
+// @0x140296c30
+void** FUN_140296c30(void** p, void* pVtbl, void* pArg)
+{
+    *p = pVtbl;
+    FUN_14016ad80(p, pArg);
+    return p;
+}
+
+// @0x140296c90
+void** FUN_140296c90(void** p, void* pVtbl, void* pArg)
+{
+    *p = pVtbl;
+    FUN_14016ad80(p, pArg);
+    return p;
+}
+
+// @0x140297a40
+void* FUN_140297a40(size_t nBytes)
+{
+    return operator new(nBytes);
+}
+
+// @0x1402973e0
+Unk_BstrBlock* FUN_1402973e0(Unk_BstrBlock* p, void* pArg)
+{
+    p->m_unk08 = NULL;
+    p->m_nRefs = 1;
+    p->m_pData = SysAllocString((BSTR)pArg);   // 0x14274c0f0 is an import thunk
+    return p;
+}
+
+// @0x140297430
+Unk_BstrBlock* FUN_140297430(Unk_BstrBlock* p, const wchar_t* pszText)
+{
+    p->m_unk08 = NULL;
+    p->m_nRefs = 1;
+    p->m_pData = SysAllocString(pszText);
+    if (p->m_pData == NULL && pszText != NULL)
+        AtlThrow(E_OUTOFMEMORY);
+    return p;
+}
+
+// @0x140297250
+Unk_BstrBlock* FUN_140297250(Unk_BstrBlock* p, Unk_BstrHolderRef* pA, Unk_BstrHolderRef* pB)
+{
+    p->m_unk08 = NULL;
+    p->m_nRefs = 1;
+    unsigned nLenA = pA->FUN_14029d4b0();
+    unsigned nLenB = pB->FUN_14029d4b0();
+    int nTotal;
+    unsigned nBytes;
+    if (FUN_14028b840(nLenA, nLenB, &nTotal) < 0 || FUN_14028b890(nTotal, 2, &nBytes) < 0)
+        AtlThrow(E_OUTOFMEMORY);
+    BSTR bstr = SysAllocStringLen(NULL, nLenA + nLenB);
+    p->m_pData = bstr;
+    if (bstr == NULL)
+    {
+        if (nLenA + nLenB != 0)
+            AtlThrow(E_OUTOFMEMORY);
+    }
+    else
+    {
+        const void* pSrcA = pA->m_pHolder ? *FUN_140298fc0(pA->m_pHolder) : NULL;
+        if (pSrcA)
+            FUN_14028b5b0(bstr, (unsigned long long)(nLenA + 1 + nLenB) << 1, pSrcA, (unsigned long long)(nLenA + 1) << 1);
+        const void* pSrcB = pB->m_pHolder ? *FUN_140298fc0(pB->m_pHolder) : NULL;
+        if (pSrcB)
+            FUN_14028b5b0(bstr + nLenA, (unsigned long long)(nLenB + 1) << 1, pSrcB, (unsigned long long)(nLenB + 1) << 1);
+    }
+    return p;
+}
+
+// @0x140297550
+Unk_BindHostPtr* FUN_140297550(Unk_BindHostPtr* pThis, const Unk_BindHostPtr* pOther)
+{
+    pThis->m_pHost = pOther->m_pHost;
+    pThis->FUN_140299e30();
+    return pThis;
+}
+
+// @0x140297590
+Unk_BstrBlock** FUN_140297590(Unk_BstrBlock** pp, void* pArg)
+{
+    void* pMem = FUN_140297a40(0x18);
+    *pp = pMem ? FUN_1402973e0((Unk_BstrBlock*)pMem, pArg) : NULL;
+    if (*pp == NULL)
+        AtlThrow(E_OUTOFMEMORY);
+    return pp;
+}
+
+// @0x140297620
+void* FUN_140297620(void** pp, void* pArg)
+{
+    void* pMem = FUN_140297a40(0x18);
+    *pp = pMem ? FUN_140297430((Unk_BstrBlock*)pMem, (const wchar_t*)pArg) : NULL;
+    if (*pp == NULL)
+        AtlThrow(E_OUTOFMEMORY);
+    return pp;
+}
+
+// @0x140298560
+void* FUN_140298560(void** pp, void* pArg)
+{
+    void* pMem = FUN_140297a40(0x18);
+    void* pNew = pMem ? FUN_140297250((Unk_BstrBlock*)pMem, (Unk_BstrHolderRef*)pp, (Unk_BstrHolderRef*)pArg) : NULL;
+    if (pNew == NULL)
+        AtlThrow(E_OUTOFMEMORY);
+    FUN_14029b680(pp);
+    *pp = pNew;
+    return pp;
+}
+
+// @0x1402982e0
+Unk_BindHostPtr* FUN_1402982e0(Unk_BindHostPtr* pOut, void* pA, void* pB, void* pC)
+{
+    void* pTmp[1];
+    FUN_140297620(pTmp, pA);
+    FUN_140298560(pTmp, pB);
+    FUN_140297550(pOut, (Unk_BindHostPtr*)pTmp);
+    FUN_140297a20(pTmp);
+    return pOut;
+}
+
+// @0x1402978a0
+void FUN_1402978a0(void* p)
+{
+    FUN_140297790(p);
+}
+
+// @0x140297a20
+void FUN_140297a20(void** pp)
+{
+    FUN_14029b680(pp);
+}
+
+// @0x140297d20
+void* FUN_140297d20(Unk_BstrHolderRef* p)
+{
+    if (p->m_pHolder == NULL)
+        return NULL;
+    return *FUN_140298fc0(p->m_pHolder);
+}
+
+// @0x1402979b0
+void FUN_1402979b0(void* p)
+{
+    ((CLockCriticalSection*)((char*)p + 0x168))->~CLockCriticalSection();
+    for (int i = 14; i >= 0; --i)
+        FUN_1402978c0((char*)p + i * 0x18);
+}
+
+// @0x1402999c0
+unsigned long FUN_1402999c0(Unk_BindHost* p)
+{
+    long nRefs = InterlockedDecrement(&p->m_nRefs);
+    if (nRefs == 0 && p)
+        FUN_1402986c0(p, 1);
+    return nRefs;
+}
+
+// @0x14029b680
+void FUN_14029b680(void** pp)
+{
+    if (*pp)
+    {
+        FUN_1402999c0((Unk_BindHost*)*pp);
+        *pp = NULL;
+    }
+}
+
+// @0x140298ea0
+void* FUN_140298ea0(void* pOut, CStringW* pStr, void* pUnused, void* pArgs)
+{
+    char buf[24];
+    CStringW strOut = FUN_14028dfa0(*pStr, *(const fmt::ArgList*)FUN_140183290(buf));
+    (void)pOut; (void)pUnused; (void)pArgs; (void)strOut;
+    return pOut;
+}
+
+// @0x14029dce0
+void FUN_14029dce0(const char* pszBuf, const char* pszFormat, _locale_t pLocale, va_list args)
+{
+    __stdio_common_vsscanf(*FUN_14029dcd0() | 1, pszBuf, (size_t)-1, pszFormat, pLocale, args);
 }
 
 MS2_REPLACE(0x14028B820, FUN_14028b820, 25, 0x5B243679);
