@@ -1173,7 +1173,7 @@ int CItemData::FUN_14053de40()
 // @0x14053de60
 int CItemData::FUN_14053de60()
 {
-    return property.applyFatiguePenalty;
+    return property.slotMax;
 }
 
 // @0x14053de80
