@@ -1176,7 +1176,7 @@ void* PCBase::FUN_14166d240()
 }
 
 // @0x14166cf40
-// MS2-FUNCTIONAL: byte-exact; only the shared symbols.tsv binds efd::Point3::Cross to 0x14109adc0 (UnitCross); the manual row 0x140a00e10 fixes it at merge.
+// MS2-FUNCTIONAL: byte-exact, but the shared symbols.tsv binds efd::Point3::Cross to 0x14109adc0 (UnitCross; the exe Cross is 0x140a00e10). Same result here (unit horizontal x UNIT_Z).
 void PCBase::vfunc_67(efd::Point3* pDir, efd::Point3* pSide)
 {
     if (m_unk_c00 == 0xe)
