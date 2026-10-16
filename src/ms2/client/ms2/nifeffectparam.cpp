@@ -138,6 +138,9 @@
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@PEAVNiAVObject@@VNiString@@U?$less@PEAVNiAVObject@@@std@@V?$allocator@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@4@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@2@XZ 0x141550790 ; hand: identical look-alike group
 // MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@2@@Z 0x141550410 ; hand: identical look-alike group
 // MS2-PINS-END tplpin
+// MS2-PIN: ??_7CNiStreamLoadThread@@6B?$TSingleton@VCNiStreamLoadThread@@@@@ 0x142f2e158
+// MS2-PIN: ??_7CNifLoadingService@@6BISystemService@efd@@@ 0x142f2e1a8
+// MS2-PIN: ??_7CNifLoadingService@@6B?$TSingleton@VCNifLoadingService@@@@@ 0x142f2e230
 // hand pins (w98): scalar deleting destructors
 // MS2-PIN: ??$forward@AEAVNiString@@@std@@YAAEAVNiString@@AEAV1@@Z 0x14154eb80 ; unique: caller ??$?0AEAPEAVNiAVObject@@AEAVNiString@@$0A@@?$pair@QEAVNiAVObject@@...
 // MS2-PIN: ??0?$CCached@V?$SmartPointer@VNiAVObject@@@efd@@@@QEAA@XZ 0x14155a540 ; unique: single byte-identical candidate
