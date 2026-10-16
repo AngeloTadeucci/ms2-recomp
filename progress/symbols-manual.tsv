@@ -2152,3 +2152,4 @@ D3DXFloat16To32Array	14230396f	func
 ?DetermineD3DFormat@NiDX9PixelFormat@@SA?AW4_D3DFORMAT@@AEBVNiPixelFormat@@@Z	1427e8210	func
 ??0OutlineRenderStep@@QEAA@_KI@Z	1416263e0	func
 ??0CUGCMapItem@@QEAA@XZ	140dfc1b0	func
+?SaveToFile@DamageCalculatorInfo@@QEAAXXZ	1402747a0	func
