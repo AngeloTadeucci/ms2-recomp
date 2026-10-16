@@ -20,7 +20,6 @@
 // MS2-PIN: ??1?$SmartPointer@VNiAlphaController@@@efd@@QEAA@XZ 0x14154f0b0 ; unique
 // MS2-PIN: ??1?$SmartPointer@VNiFloatInterpolator@@@efd@@QEAA@XZ 0x14154f0e0 ; unique
 // MS2-PIN: ??1?$SmartPointer@VUnk_SeparateNode@@@efd@@QEAA@XZ 0x14154f110 ; unique
-// MS2-PIN: ??1?$_String_alloc@U?$_String_base_types@DV?$allocator@D@std@@@std@@@std@@QEAA@XZ 0x14154f250 ; prop
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCNifEffectParam@@@@QEAAAEAV1@PEAVCNifEffectParam@@@Z 0x14154f2f0 ; unique
 // MS2-PIN: ??B?$SmartPointer@VNiFloatInterpolator@@@efd@@QEBAPEAVNiFloatInterpolator@@XZ 0x14154f480 ; unique
 // MS2-PIN: ??B?$SmartPointer@VUnk_SeparateNode@@@efd@@QEBAPEAVUnk_SeparateNode@@XZ 0x14154f490 ; unique
@@ -84,6 +83,43 @@
 // MS2-PIN: ?Successor@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x1415627f0 ; unique
 // MS2-PIN: ?SwapNode@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141562ce0 ; unique
 // MS2-PINS-END tplpin
+// hand pins (w98): scalar deleting destructors
+// MS2-PIN: ??$forward@AEAVNiString@@@std@@YAAEAVNiString@@AEAV1@@Z 0x14154eb80 ; unique: caller ??$?0AEAPEAVNiAVObject@@AEAVNiString@@$0A@@?$pair@QEAVNiAVObject@@...
+// MS2-PIN: ??0?$CCached@V?$SmartPointer@VNiAVObject@@@efd@@@@QEAA@XZ 0x14155a540 ; unique: single byte-identical candidate
+// MS2-PIN: ??1?$SmartPointer@VNiAVObject@@@efd@@QEAA@XZ 0x14155b690 ; prop: caller ??_G?$SmartPointer@VNiAVObject@@@efd@@QEAAPEAXI@Z
+// MS2-PIN: ??$?0AEAPEAVNiAVObject@@AEAVNiString@@$0A@@?$pair@QEAVNiAVObject@@VNiString@@@std@@QEAA@AEAPEAVNiAVObject@@AEAVNiString@@@Z 0x14154d910 ; unique: single byte-identical candidate
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@1@PEAU01@@Z 0x14154e260 ; prop: 0x141556f90 taken by ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@D...
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14154eb70 ; unique: caller ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pa...
+// MS2-PIN: ??0?$CAtlArray@V?$SmartPointer@VDuplicatedAlphaController@@@efd@@V?$CElementTraits@V?$SmartPointer@VDuplicatedAlphaController@@@efd@@@ATL@@@ATL@@QEAA@XZ 0x14154ec10 ; unique: caller ??0CNifEffect@@QEAA@XZ
+// MS2-PIN: ??0?$pair@QEAVNiAVObject@@VNiString@@@std@@QEAA@$$QEAU01@@Z 0x14154ef20 ; unique: caller ??$construct@U?$pair@QEAVNiAVObject@@VNiString@@@std@@U12@@?$_Defa...
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@PEAVNiAVObject@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@PEAVNiAVObject@@@2@XZ 0x1415502d0 ; unique: caller ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@PEAVNiAVObject@@VNiSt...
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@2@XZ 0x1415502e0 ; unique: caller ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@PEAVNiAVObject@@VNiStri...
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@2@XZ 0x141550320 ; unique: caller ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@PEAVNiAVObject@@VNiS...
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@2@_K@Z 0x141550800 ; prop: caller ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@V...
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@2@_K@Z 0x141550830 ; prop: 0x141550800 taken by ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node...
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@2@@Z 0x141550860 ; unique: caller ?max_size@?$_Tree@V?$_Tmap_traits@PEAVNiAVObject@@VNiString@@U?$le...
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@1@PEAU01@@Z 0x141556f90 ; prop: callee ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTrait...
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@1@PEAU01@@Z 0x141557020 ; prop: callee ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMF...
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x141559f60 ; prop: caller ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@D...
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@0@AEAPEAU10@@Z 0x141559f70 ; prop: caller ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@D...
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@AEAPEAU31@@Z 0x141559fc0 ; prop: symbols.tsv
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@1@AEAPEAU31@@Z 0x14155a010 ; prop: symbols.tsv
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@1@@Z 0x14155a200 ; prop: symbols.tsv
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@1@@Z 0x14155a210 ; prop: symbols.tsv
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x14155a3e0 ; prop: symbols.tsv
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@PEAX@0@AEAPEAU10@@Z 0x14155a3f0 ; prop: symbols.tsv
+// MS2-PIN: ??0?$CRBMap@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAA@_K@Z 0x14155a6d0 ; unique: caller ??0CNifLoadingService@@QEAA@XZ
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c330 ; unique: caller ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pa...
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VTiXmlDocument@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14155c400 ; unique: caller ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pa...
+// MS2-PIN: ??_G?$TSingleton@VCNiStreamLoadThread@@@@UEAAPEAXI@Z 0x14155c760
+// MS2-PIN: ??_GCNiStreamLoadThread@@UEAAPEAXI@Z 0x14155c8c0
+// MS2-PIN: ??_G?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@UEAAPEAXI@Z 0x14155c720
+// MS2-PIN: ??_G?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@UEAAPEAXI@Z 0x14155c620
+// MS2-PIN: ??_G?$CCached@V?$SmartPointer@VNiAVObject@@@efd@@@@UEAAPEAXI@Z 0x14155c5c0
+// MS2-PIN: ??_GCCachedNif@@UEAAPEAXI@Z 0x14155c860
+// MS2-PIN: ??_G?$TSingleton@VCNifLoadingService@@@@UEAAPEAXI@Z 0x14155c7a0
+// MS2-PIN: ??_GCNifLoadingService@@UEAAPEAXI@Z 0x14155c900
+// MS2-PIN: ??_G?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCNifLoadingService@@P82@EAAXXZ@@UEAAPEAXI@Z 0x14155c680
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -104,6 +140,7 @@
 #include <NiSearchPath.h>
 #include <NiMaterialProperty.h>
 #include <NiStringExtraData.h>
+#include <NiString.h>
 #include <NiFloatData.h>
 #include <NiLinFloatKey.h>
 #include <NiFloatInterpolator.h>
@@ -433,7 +470,28 @@ void* FUN_1409a8b00();
 void* FUN_1409a5160(void* p);
 void FUN_141773a90(void* pRegistry, void* pNode);                   // register a model
 void FUN_141773cc0(void* pRegistry, void* pNode);                   // unregister a model
-void FUN_141550050(void* pNode, const char* pszPath);               // remember the nif path of the node (0x141550050)
+
+// Registry of the nif path each loaded node came from. It is the object FUN_141d6fd90 returns (the renderer's shader
+// context in ms2renderservice.cpp); only its path map at +0x08 matters here.
+class Unk_NifPathRegistry
+{
+public:
+    void Register(NiAVObject* pNode, const char* pszPath)           // @0x14154ff90
+    {
+        NiString kPath;
+        kPath = pszPath;
+        m_mapPath.insert(std::pair<NiAVObject* const, NiString>(pNode, kPath));
+    }
+    char m_pad_0[8];
+    std::map<NiAVObject*, NiString> m_mapPath;                      // +0x08
+};
+Unk_NifPathRegistry* FUN_141d6fd90_np();                            // the same function as FUN_141d6fd90 (see symbols-manual)
+// remember the nif path of the node
+// @0x141550050
+inline void FUN_141550050(void* pNode, const char* pszPath)
+{
+    FUN_141d6fd90_np()->Register(static_cast<NiAVObject*>(pNode), pszPath);
+}
 
 // Query passed to the culler (ctor 0x1411b8570: kind 9, default position).
 struct Unk_NifCullQuery

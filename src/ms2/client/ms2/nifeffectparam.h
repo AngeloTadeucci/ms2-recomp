@@ -44,7 +44,7 @@ class DuplicatedAlphaController : public NiAlphaController
     NiDeclareRTTI;
 public:
     explicit DuplicatedAlphaController(NiSingleInterpController* pkSource);        // 0x141548790
-    virtual ~DuplicatedAlphaController();                                   // 0x14154f230
+    virtual ~DuplicatedAlphaController() = default;                // 0x14154f230
     virtual void Update(float fTime);                                       // 0x141548880
     // @0x141548850
     void SetScale(float fScale) { m_fScale = fScale; }
@@ -62,7 +62,7 @@ class CNifEffectParam : public CEffectParam
 {
 public:
     CNifEffectParam();                                          // 0x141548990
-    virtual ~CNifEffectParam();                                 // 0x14154f1c0
+    virtual ~CNifEffectParam() = default;                       // 0x14154f1c0
     virtual void vfunc_1(Unk_140165cf0* pNode);                 // 1 0x141548b90 parse the <nif> element
     virtual bool vfunc_2();                                     // 2 0x1415491c0 validate
     virtual bool vfunc_3();                                     // 3 0x1415491f0 preload the nif (true when none)
@@ -306,7 +306,7 @@ MS2_CHECK_SIZE(TCircleList<NiAVObjectPtr>, 0x38);
 template <class T> class CCached : public NiRefObject
 {
 public:
-    CCached() : m_spData(0) { m_dLastUse = 0; m_nClass = 5; }    // 0x14155a540 / 0x14155a5c0
+    CCached() : m_spData(0), m_dLastUse(0), m_nClass(5) {}    // 0x14155a540 / 0x14155a5c0
     virtual ~CCached() = default;                                    // 0x14155b410 / 0x14155b450
     T m_spData;                     // +0x10
     double m_dLastUse;              // +0x18
