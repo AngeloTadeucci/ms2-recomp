@@ -15,6 +15,23 @@
 class CInPacket;
 class NotifyObject;
 class CMsgBoxData;
+class PCBase;
+struct ItemEntity;
+// The guild a notice points at (the second base at +8 carries the id and the name).
+class Unk_GuildTargetInfo {
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();
+    virtual __int64 vfunc_4();                                  // the guild id
+    virtual void vfunc_5();
+    virtual void vfunc_6();
+    virtual void vfunc_7();
+    virtual CStringW vfunc_8();                                 // the guild name
+};
+class Unk_GuildTargetBase { public: virtual void vfunc_0(); };
+class Unk_GuildTarget : public Unk_GuildTargetBase, public Unk_GuildTargetInfo {};
 
 class CGuildManager : public TSingleton<CGuildManager>, public CGuildInfo {
 public:
@@ -48,7 +65,31 @@ public:
     void FUN_1413b9ac0(int skillId);
     void FUN_1413ba080(int eventId);
     void FUN_1413ba310(int eventId);
+    void FUN_1413ba4b0();
+    void FUN_1413ba820(int level, int theme);
+    void FUN_1413babf0(int theme);
+    void FUN_1413baef0(int posterId, unsigned char show);
+    void FUN_1413bb000(Unk_GuildNpcKind kind);
+    bool FUN_1413bb490(ItemEntity& item, const CStringW& receiver);
+    void FUN_1413bbb80();
+    bool FUN_1413bbc10(const CStringW& title, const CStringW& body);
+    void FUN_1413bbe80();
+    void FUN_1413bbf70(ATL::CAtlArray<MS2Ptr<CGuildPVPHistoryData>>& out);
+    void FUN_1413bbfe0(ATL::CAtlArray<MS2Ptr<CGuildPVPSeasonHistoryData>>& out);
+    void FUN_1413bc050();
+    void FUN_1413bc190();
+    void FUN_1413bc1f0(__int64 guildId, CStringW guildName);
+    void FUN_1413bc250(Unk_GuildTarget* target);
+    int FUN_1413bc390();
+    void FUN_1413bc4a0(__int64 guildId);
+    void FUN_1413bc540(__int64 guildId);
+    void FUN_1413bc5b0(__int64 characterId, int accept);
     void FUN_1413bc630();
+    void FUN_1413bc6a0();
+    void FUN_1413bc710(bool anyFocus);
+    bool FUN_1413bc860(CStringW name);
+    int FUN_1413bca70(std::map<__int64, PCBase*>& out);
+    int FUN_1413bcbc0(std::map<__int64, PCBase*>& out);
     int FUN_1413bd050(int skillId, int skillLevel);
     int FUN_1413bd1a0(int skillId, int skillLevel);
     void FUN_1413bd5c0(NotifyObject* notify);
@@ -156,8 +197,8 @@ public:
     bool m_3e0;
     bool m_noticeAttendance;                                            // +0x3e1 (cleared after the first notice)
     __int64 m_nextRefreshTime;                                          // +0x3e8
-    __int64 m_3f0;
-    CStringW m_3f8;
+    __int64 m_targetGuildId;                                            // +0x3f0 (the guild of a pending join / guild-house visit)
+    CStringW m_targetGuildName;
     bool m_400;
     ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>> m_searchResults;             // +0x408
     ATL::CAtlArray<MS2Ptr<CGuildJoinRequestForChar>> m_joinRequestsForChar; // +0x428
@@ -168,7 +209,7 @@ public:
 MS2_CHECK_OFFSET(CGuildManager, m_invite, 0x378);
 MS2_CHECK_OFFSET(CGuildManager, m_pvpHistory, 0x388);
 MS2_CHECK_OFFSET(CGuildManager, m_pvpSeasonHistory, 0x3b8);
-MS2_CHECK_OFFSET(CGuildManager, m_3f8, 0x3f8);
+MS2_CHECK_OFFSET(CGuildManager, m_targetGuildName, 0x3f8);
 MS2_CHECK_OFFSET(CGuildManager, m_searchResults, 0x408);
 MS2_CHECK_OFFSET(CGuildManager, m_468, 0x468);
 MS2_CHECK_SIZE(CGuildManager, 0x480);

@@ -23,11 +23,15 @@
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@AEBV0@@Z 0x1404ec5b0
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@H@Z 0x1404ec5f0
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@$$QEAV0@@Z 0x1404ec580
+#define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\guildmanager.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "guildmanager.h"
 #include "pcbase.h"
+#include "interactobject.h"
 #include "worldservice.h"
+#include "ms2/commonfiles/itemgift.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
@@ -74,7 +78,7 @@ class Unk_GuildEventMgr { public: bool FUN_14047e880(); };
 Unk_GuildEventMgr* FUN_1401c0d90();
 class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
-class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); };
+class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
 class Unk_GuildNotifyCenter {
 public:
@@ -89,6 +93,7 @@ class Unk_GuildBanWord {
 public:
     int FUN_140225720(const CStringW& text, CStringW& message);
     int FUN_1402259b0(const CStringW& text, CStringW& message);
+    int FUN_140225c90(const CStringW& text, CStringW& message);
     int FUN_140225de0(const CStringW& text, CStringW& message);
 };
 class Unk_GuildBanWordPtr { public: ~Unk_GuildBanWordPtr(); Unk_GuildBanWord* FUN_14025cea0() const; void* m_00; void* m_08; };
@@ -120,6 +125,25 @@ public:
     Unk_GuildBuffRef FUN_14096fe60(int buffId, unsigned short level, int a, bool b, int c);
 };
 CStringW FUN_14062b4f0(CStringW key, const int* value);
+// The housing service, looked up from its registry cell.
+class Unk_GuildHousingSvc { public: int FUN_1410d2f10(); };
+class Unk_GuildHousingSvcPtr {
+public:
+    Unk_GuildHousingSvcPtr(Unk_GuildHousingSvc* p);           // 0x1401cd0b0
+    ~Unk_GuildHousingSvcPtr();                                 // 0x1401cd150
+    Unk_GuildHousingSvc* FUN_140885310() const;                // get
+    Unk_GuildHousingSvc* FUN_1401cd1a0() const;                // operator->
+    Unk_GuildHousingSvc* m_p;
+};
+Unk_GuildHousingSvc* FUN_1401cd040(char* cell);
+extern char DAT_143b059e8;
+// Content switches (feature ids).
+class Unk_GuildFeatures { public: bool FUN_14036d570(int feature); };
+Unk_GuildFeatures* FUN_140166410();
+MS2Ptr<CItemData> FUN_14053f870(int itemId);
+CStringW FUN_140938ae0(CStringW key, const int& value);
+void FUN_140d73aa0(CStringW text, int type, void* data, CStringW tag);
+void* FUN_1409613d0(PCBase* pc);
 int FUN_140869470(int days);
 CStringW FUN_14028de60(int id);
 CStringW FUN_14028b8e0(const CStringW& key);
@@ -147,8 +171,8 @@ CGuildManager::CGuildManager()
     m_3e0 = false;
     m_400 = false;
     m_nextRefreshTime = 0;
-    m_3f0 = 0;
-    m_3f8 = L"";
+    m_targetGuildId = 0;
+    m_targetGuildName = L"";
     m_468 = 0;
     FUN_140939a10()->FUN_140da4e40(L"NotifyCompleteMyPC", Delegate<void(NotifyObject*)>(this, &CGuildManager::FUN_1413bd5c0));
 }
@@ -844,3 +868,495 @@ void CGuildManager::FUN_1413ba310(int eventId)
     FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x1413BA310, CGuildManager, FUN_1413ba310, 403, 0xD386C619);
+
+// @0x1413ba4b0
+void CGuildManager::FUN_1413ba4b0()
+{
+    if (!FUN_1413b6160()) return;
+    PCBase* pc = (PCBase*)FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pc == 0) return;
+    if (pc->FUN_14166ce30() == 1) {
+        FUN_141275260(0x279, 1, 1);
+        return;
+    }
+    if (pc->vfunc_65() == 1) {
+        FUN_141275260(0x27a, 1, 1);
+        return;
+    }
+    int houseLevel = FUN_1404d1f90();
+    int houseTheme = FUN_1404d2030();
+    Unk_PayloadPtr<CGuildXmlData::GuildHouse> house = FUN_1404f4530()->FUN_1404d79b0(houseLevel, houseTheme);
+    if (house == 0) return;
+    if (FUN_1403ed2d0()->FUN_141bd3060() == house->f50) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_common_cant_move_from_here"), 1, 1);
+        return;
+    }
+    if (FUN_1403ed2d0()->FUN_141bd30a0()->m_5c == 0) {
+        Unk_GuildHousingSvcPtr housing(FUN_1401cd040(&DAT_143b059e8));
+        if ((housing.FUN_140885310() ? true : false) && housing.FUN_1401cd1a0()->FUN_1410d2f10()) {
+        } else {
+            FUN_1412751f0(FUN_14028b8e0(L"s_common_cant_move_from_here"), 1, 1);
+            return;
+        }
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x67);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BA4B0, CGuildManager, FUN_1413ba4b0, 860, 0x926C7D25);
+
+// @0x1413ba820
+void CGuildManager::FUN_1413ba820(int level, int theme)
+{
+    if (!FUN_140166410()->FUN_14036d570(0x5b)) return;
+    if (!FUN_1413b6160()) return;
+    int nextLevel = FUN_1404d1f90() + 1;
+    if (level != nextLevel) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_need_pre_house_level"), 1, 1);
+        return;
+    }
+    Unk_PayloadPtr<CGuildXmlData::GuildHouse> house = FUN_1404f4530()->FUN_1404d79b0(nextLevel, theme);
+    if (house == 0) return;
+    if (!FUN_1404d01b0(FUN_1413c7c20())) {
+        FUN_1412751f0(FUN_14028de60(0x416), 1, 1);
+        return;
+    }
+    if (house->f2c > FUN_1404d1ad0()) {
+        FUN_1412751f0(FUN_14062b4f0(CStringW(L"s_guild_err_need_guild_level"), &house->f2c), 1, 1);
+        return;
+    }
+    if (house->f28 > FUN_1404d1df0()) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_not_enough_guild_fund"), 1, 1);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x65);
+    packet.vfunc_o10_3(theme);
+    FUN_1407105c0(&packet, 0x65, 1000);
+}
+MS2_REPLACE_METHOD(0x1413BA820, CGuildManager, FUN_1413ba820, 956, 0x590A86BA);
+
+// @0x1413babf0
+void CGuildManager::FUN_1413babf0(int theme)
+{
+    if (!FUN_140166410()->FUN_14036d570(0x5b)) return;
+    if (!FUN_1413b6160()) return;
+    int level = FUN_1404d1f90();
+    Unk_PayloadPtr<CGuildXmlData::GuildHouse> house = FUN_1404f4530()->FUN_1404d79b0(level, theme);
+    if (house == 0) return;
+    if (!FUN_1404d01b0(FUN_1413c7c20())) {
+        FUN_1412751f0(FUN_14028de60(0x416), 1, 1);
+        return;
+    }
+    int currentTheme = FUN_1404d2030();
+    if (currentTheme == theme) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_same_guild_house_theme"), 1, 1);
+        return;
+    }
+    if (house->f30 > FUN_1404d1df0()) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_not_enough_guild_fund"), 1, 1);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x66);
+    packet.vfunc_o10_3(theme);
+    FUN_1407105c0(&packet, 0x66, 1000);
+}
+MS2_REPLACE_METHOD(0x1413BABF0, CGuildManager, FUN_1413babf0, 754, 0x4477F79B);
+
+// @0x1413baef0
+void CGuildManager::FUN_1413baef0(int posterId, unsigned char show)
+{
+    if (!FUN_140166410()->FUN_14036d570(0x5b)) return;
+    ATL::CAtlArray<MS2Ptr<CInteractObject>> objects;
+    FUN_1403ed2d0()->FUN_141bc5fb0(&objects, 7);
+    for (size_t i = 0; i < objects.GetCount(); i++) {
+        CInteractGuildPosterObject* poster = dynamic_cast<CInteractGuildPosterObject*>(objects[i].get());
+        if (poster == 0) continue;
+        if (poster->FUN_141402e60() != posterId) continue;
+        poster->FUN_141402eb0(show);
+    }
+}
+MS2_REPLACE_METHOD(0x1413BAEF0, CGuildManager, FUN_1413baef0, 262, 0x193C7769);
+
+// @0x1413bb000
+void CGuildManager::FUN_1413bb000(Unk_GuildNpcKind kind)
+{
+    if (!FUN_1413b6160()) return;
+    int level = FUN_1404d2990(kind);
+    int nextLevel = level + 1;
+    Unk_PayloadPtr<CGuildXmlData::GuildNpc> npc = FUN_1404f4530()->FUN_1404d7b40(kind, nextLevel);
+    if (npc == 0) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_max_level"), 1, 1);
+        return;
+    }
+    if (!FUN_1404d01b0(FUN_1413c7c20())) {
+        FUN_1412751f0(FUN_14028de60(0x416), 1, 1);
+        return;
+    }
+    if (npc->f28 > FUN_1404d1ad0()) {
+        FUN_1412751f0(FUN_14062b4f0(CStringW(L"s_guild_err_need_guild_level"), &npc->f28), 1, 1);
+        return;
+    }
+    if (npc->f2c > FUN_1404d1f90()) {
+        FUN_1412751f0(FUN_14062b4f0(CStringW(L"s_guild_err_need_guild_level"), &npc->f2c), 1, 1);
+        return;
+    }
+    if (npc->f20 > FUN_1404d1df0()) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_not_enough_guild_fund"), 1, 1);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x72);
+    packet.vfunc_o10_3(kind);
+    FUN_1407105c0(&packet, 0x72, 1000);
+}
+MS2_REPLACE_METHOD(0x1413BB000, CGuildManager, FUN_1413bb000, 1152, 0xB931FFA8);
+
+// @0x1413bb490
+bool CGuildManager::FUN_1413bb490(ItemEntity& item, const CStringW& receiver)
+{
+    if (!FUN_1413b6160()) return false;
+    if (!FUN_1404d01b0(FUN_1413c7c20())) {
+        FUN_1412751f0(FUN_14028de60(0x416), 1, 1);
+        return false;
+    }
+    if (receiver.IsEmpty()) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_empty_member"), 1, 1);
+        return false;
+    }
+    MS2Ptr<CGuildMember> member = FUN_1404cf9f0(receiver);
+    if (member == 0) {
+        FUN_1412751f0(FUN_14028de60(0x40d), 1, 1);
+        return false;
+    }
+    if (item.m_count == 0) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_empty_count"), 1, 1);
+        return false;
+    }
+    int stored = FUN_1404d2db0(item.vfunc_o18_0(), item.vfunc_o18_1());
+    if (stored < 0) stored = 0;
+    MS2Ptr<CItemData> itemData = FUN_14053f870(item.vfunc_o18_0());
+    if (itemData == 0) return false;
+    if ((unsigned)itemData->FUN_14053de60() < item.m_count) {
+        int maxCount = itemData->FUN_14053de60();
+        FUN_1412751f0(FUN_140938ae0(CStringW(L"s_guild_err_storage_over_slot_max_count"), maxCount), 1, 1);
+        return false;
+    }
+    if ((unsigned)stored < item.m_count) {
+        FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_storage_not_enough_count"), 1, 1);
+        return false;
+    }
+    if (itemData->FUN_14053c6b0(0xd7)) {
+        if (receiver == FUN_1413c7c20()) {
+            FUN_1412751f0(FUN_14028b8e0(L"s_guild_err_storage_send_only_to_me"), 1, 1);
+            return false;
+        }
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x6d);
+    item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(static_cast<COutputStream&>(packet)));   // itemgift.h types the stream as Unk_GiftOutput
+    packet.vfunc_o10_8(receiver);
+    FUN_1407105c0(&packet, 0x6d, 1000);
+    return true;
+}
+MS2_REPLACE_METHOD(0x1413BB490, CGuildManager, FUN_1413bb490, 1766, 0x29FDE838);
+
+// @0x1413bbb80
+void CGuildManager::FUN_1413bbb80()
+{
+    if (!m_400) {
+        COutPacket packet(0x4b, 0);
+        packet.vfunc_o10_1(0x70);
+        FUN_140710590(packet);
+    } else {
+        if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+            dialog->FUN_1419729d0();
+    }
+}
+MS2_REPLACE_METHOD(0x1413BBB80, CGuildManager, FUN_1413bbb80, 129, 0x0AB11C34);
+
+// @0x1413bbc10
+bool CGuildManager::FUN_1413bbc10(const CStringW& title, const CStringW& body)
+{
+    if (title.GetLength() > 100) {
+        FUN_141275260(0x244, 1, 1);
+        return false;
+    }
+    if (body.GetLength() > 2000) {
+        FUN_141275260(0x244, 1, 1);
+        return false;
+    }
+    if (body.GetLength() < 1 || title.GetLength() < 1) {
+        FUN_141275260(0x244, 1, 1);
+        return false;
+    }
+    if (Unk_GuildBanWord* banWord = FUN_14025e7d0()->FUN_140229a50().FUN_14025cea0()) {
+        CStringW message;
+        if (banWord->FUN_140225c90(title, message) || banWord->FUN_140225de0(body, message)) {
+            FUN_1412751f0(message, 1, 1);
+            return false;
+        }
+    }
+    if (!FUN_1404d0600(FUN_1413c7c20(), 0x80)) {
+        FUN_141275260(0x415, 1, 1);
+        return false;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x47);
+    packet.vfunc_o10_8(title);
+    packet.vfunc_o10_8(body);
+    FUN_140710590(packet);
+    return true;
+}
+MS2_REPLACE_METHOD(0x1413BBC10, CGuildManager, FUN_1413bbc10, 609, 0xBC0EAAEE);
+
+// @0x1413bbe80
+void CGuildManager::FUN_1413bbe80()
+{
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x4a);
+    packet.vfunc_o10_4(m_lastPvpHistoryId);
+    FUN_140710590(packet);
+    if (!m_3e0) {
+        COutPacket seasonPacket(0x4b, 0);
+        seasonPacket.vfunc_o10_1(0x4b);
+        FUN_140710590(seasonPacket);
+        m_3e0 = true;
+    } else {
+        if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+            dialog->FUN_141974640();
+    }
+}
+MS2_REPLACE_METHOD(0x1413BBE80, CGuildManager, FUN_1413bbe80, 226, 0xCC07F015);
+
+// @0x1413bbf70
+void CGuildManager::FUN_1413bbf70(ATL::CAtlArray<MS2Ptr<CGuildPVPHistoryData>>& out)
+{
+    for (int i = (int)m_pvpHistory.size() - 1; i >= 0; i--)
+        out.Add(m_pvpHistory[i]);
+}
+MS2_REPLACE_METHOD(0x1413BBF70, CGuildManager, FUN_1413bbf70, 103, 0x37334414);
+
+// @0x1413bbfe0
+void CGuildManager::FUN_1413bbfe0(ATL::CAtlArray<MS2Ptr<CGuildPVPSeasonHistoryData>>& out)
+{
+    for (int i = (int)m_pvpSeasonHistory.size() - 1; i >= 0; i--)
+        out.Add(m_pvpSeasonHistory[i]);
+}
+MS2_REPLACE_METHOD(0x1413BBFE0, CGuildManager, FUN_1413bbfe0, 103, 0xB4A0F13B);
+
+// @0x1413bc050
+void CGuildManager::FUN_1413bc050()
+{
+    if (FUN_1404d10d0() != 2) {
+        CStringW message = FUN_14028de60(0x3c5);
+        FUN_1412751f0(message, 1, 1);
+        return;
+    }
+    if (FUN_1404ccbd0() != m_targetGuildId) {
+        CStringW message = FUN_14028de60(0x3c7);
+        FUN_1412751f0(message, 1, 1);
+        return;
+    }
+    PCBase* pc = (PCBase*)FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pc == 0) return;
+    if (pc->FUN_14166ce30() == 1) {
+        FUN_141275260(0x279, 1, 1);
+        return;
+    }
+    COutPacket packet(0x61, 0);
+    packet.vfunc_o10_1(3);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC050, CGuildManager, FUN_1413bc050, 314, 0x235DE993);
+
+// @0x1413bc190
+void CGuildManager::FUN_1413bc190()
+{
+    COutPacket packet(0x61, 0);
+    packet.vfunc_o10_1(4);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC190, CGuildManager, FUN_1413bc190, 75, 0x5F2CD8B4);
+
+// @0x1413bc1f0
+void CGuildManager::FUN_1413bc1f0(__int64 guildId, CStringW guildName)
+{
+    m_targetGuildId = guildId;
+    m_targetGuildName = guildName;
+}
+MS2_REPLACE_METHOD(0x1413BC1F0, CGuildManager, FUN_1413bc1f0, 87, 0xF179820B);
+
+// @0x1413bc250
+void CGuildManager::FUN_1413bc250(Unk_GuildTarget* target)
+{
+    __int64 guildId = target->vfunc_4();
+    CStringW guildName = target->vfunc_8();
+    m_targetGuildId = guildId;
+    m_targetGuildName = guildName;
+    FUN_140d73aa0(FUN_14028de60(0x3c8), 0, 0, CStringW(L""));
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196cf80();
+}
+MS2_REPLACE_METHOD(0x1413BC250, CGuildManager, FUN_1413bc250, 314, 0xDB1C9312);
+
+// @0x1413bc390
+int CGuildManager::FUN_1413bc390()
+{
+    int count = 0;
+    if (Unk_LockGuard guard = lock) {} else {
+        for (void* pos = FUN_1404f4510(&f320); pos != 0; FUN_1404f4700(&f320, &pos)) {
+            MS2Ptr<CGuildMember> member = FUN_1404f4f70(&f320, pos);
+            if ((member.get() ? true : false) && member->f158 == 0)
+                count++;
+        }
+    }
+    return count;
+}
+MS2_REPLACE_METHOD(0x1413BC390, CGuildManager, FUN_1413bc390, 263, 0xCC512A9E);
+
+// @0x1413bc4a0
+void CGuildManager::FUN_1413bc4a0(__int64 guildId)
+{
+    if (m_joinRequestsForChar.GetCount() >= 10) {
+        FUN_1413c66f0(0x52, 0x25, 0);
+        return;
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x52);
+    packet.vfunc_o10_4(guildId);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC4A0, CGuildManager, FUN_1413bc4a0, 146, 0x3573EDB9);
+
+// @0x1413bc540
+void CGuildManager::FUN_1413bc540(__int64 guildId)
+{
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x53);
+    packet.vfunc_o10_4(guildId);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC540, CGuildManager, FUN_1413bc540, 95, 0x24398D36);
+
+// @0x1413bc5b0
+void CGuildManager::FUN_1413bc5b0(__int64 characterId, int accept)
+{
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x54);
+    packet.vfunc_o10_4(characterId);
+    packet.vfunc_o10_1((unsigned char)accept);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC5B0, CGuildManager, FUN_1413bc5b0, 118, 0x2ED3EDDE);
+
+// @0x1413bc630
+void CGuildManager::FUN_1413bc630()
+{
+    if (!FUN_1413b6160())
+        return;
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x55);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC630, CGuildManager, FUN_1413bc630, 91, 0xF18B1323);
+
+// @0x1413bc6a0
+void CGuildManager::FUN_1413bc6a0()
+{
+    if (FUN_1413b6160())
+        return;
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x56);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC6A0, CGuildManager, FUN_1413bc6a0, 91, 0xD33A197F);
+
+// @0x1413bc710
+void CGuildManager::FUN_1413bc710(bool anyFocus)
+{
+    if (FUN_1413b6160())
+        return;
+    int focus = m_468;
+    if (focus == 0) {
+        if (!anyFocus) {
+            FUN_140d73aa0(FUN_14028de60(0x3c9), 0, 0, CStringW(L""));
+            return;
+        }
+        focus = 0x7fffffff;
+    }
+    CGuildJoinRequestSchCond cond;
+    cond.f18 = focus;
+    cond.f1c = 1;
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x57);
+    cond.FUN_1404c84e0(&packet);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x1413BC710, CGuildManager, FUN_1413bc710, 321, 0xF2C69BB4);
+
+// @0x1413bc860
+bool CGuildManager::FUN_1413bc860(CStringW name)
+{
+    if (FUN_1413b6160())
+        return false;
+    if (name.GetLength() < 2) {
+        {
+            CStringW key(L"s_guild_err_too_short_to_search");
+            FUN_1412751f0(FUN_14028b8e0(key), 1, 1);
+        }
+        return false;
+    }
+    if (Unk_GuildBanWord* banWord = FUN_14025e7d0()->FUN_140229a50().FUN_14025cea0()) {
+        CStringW message;
+        if (banWord->FUN_140225720(name, message) != 0) {
+            FUN_1412751f0(message, 1, 1);
+            return false;
+        }
+    }
+    COutPacket packet(0x4b, 0);
+    packet.vfunc_o10_1(0x58);
+    packet.vfunc_o10_8(name);
+    FUN_140710590(packet);
+    return true;
+}
+MS2_REPLACE_METHOD(0x1413BC860, CGuildManager, FUN_1413bc860, 516, 0x09853FD9);
+
+// @0x1413bca70
+int CGuildManager::FUN_1413bca70(std::map<__int64, PCBase*>& out)
+{
+    if (FUN_1413b6160()) {
+        if (Unk_LockGuard guard = lock) {} else {
+            for (void* pos = FUN_1404f4510(&f320); pos != 0; FUN_1404f4700(&f320, &pos)) {
+                MS2Ptr<CGuildMember> member = FUN_1404f4f70(&f320, pos);
+                if (member.get() != 0) {
+                    PCBase* pc = (PCBase*)FUN_1403ed2d0()->FUN_141bd1530(member->data.f08);
+                    if (pc != 0)
+                        out[member->data.f08] = pc;
+                }
+            }
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1413BCA70, CGuildManager, FUN_1413bca70, 315, 0x9513FE17);
+
+// @0x1413bcbc0
+int CGuildManager::FUN_1413bcbc0(std::map<__int64, PCBase*>& out)
+{
+    if (FUN_1413b6160()) {
+        if (Unk_LockGuard guard = lock) {} else {
+            for (void* pos = FUN_1404f4510(&f320); pos != 0; FUN_1404f4700(&f320, &pos)) {
+                MS2Ptr<CGuildMember> member = FUN_1404f4f70(&f320, pos);
+                if (member.get() != 0) {
+                    PCBase* pc = (PCBase*)FUN_1403ed2d0()->FUN_141bd1530(member->data.f08);
+                    if (pc != 0 && FUN_1409613d0(pc) == 0)
+                        out[member->data.f08] = pc;
+                }
+            }
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1413BCBC0, CGuildManager, FUN_1413bcbc0, 330, 0x3572C05E);

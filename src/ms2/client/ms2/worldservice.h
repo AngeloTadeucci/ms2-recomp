@@ -187,7 +187,9 @@ class Unk_WsPtred : public CPtred {};
 class Unk_WsPtred298 : public CPtred       // one class per MS2Ptr member (distinct ctor/dtor COMDATs in the exe)
 {
 public:                                        // the local player (fields as accessed by WorldService; helper C)
-    unsigned char m_pad18[0x1c8 - 0x18];
+    unsigned char m_pad18[0x5c - 0x18];
+    int m_5c;                                  // 0: the map needs the housing service's check before a guild-house move (CGuildManager::FUN_1413ba4b0)
+    unsigned char m_pad60[0x1c8 - 0x60];
     int m_1c8;                                 // passed to a manager setter by FUN_141bcda90
     unsigned char m_pad1cc[0x1e4 - 0x1cc];
     int m_1e4;                                 // ditto
