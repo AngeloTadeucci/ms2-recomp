@@ -7,29 +7,29 @@
 // MS2-PIN: ??_7?$TPtredDummy@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@6B@ 0x142ced0f0
 // MS2-PIN: ?GetCount@?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEBA_KXZ 0x1401b8910
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??0?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@_K@Z 0x1401b7950 ; unique
-// MS2-PIN: ??0?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@_K@Z 0x1401b79b0 ; unique
+// MS2-PIN: ??0?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@_K@Z 0x1401b7950 ; unique
+// MS2-PIN: ??0?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@_K@Z 0x1401b79b0 ; unique
 // MS2-PIN: ??0?$TPtredDummy@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@QEAA@XZ 0x1401b7b50 ; unique
-// MS2-PIN: ??0CNode@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@HAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b7ba0 ; unique
-// MS2-PIN: ??0CNode@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAA@HAEBVUnk_BannerPtr@@@Z 0x1401b7bf0 ; unique
-// MS2-PIN: ??0CPair@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@HAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b7c40 ; prop
-// MS2-PIN: ??0CPair@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@HAEBVUnk_BannerPtr@@@Z 0x1401b7c80 ; prop
+// MS2-PIN: ??0CNode@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@IAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b7ba0 ; unique
+// MS2-PIN: ??0CNode@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAA@IAEBVUnk_BannerPtr@@@Z 0x1401b7bf0 ; unique
+// MS2-PIN: ??0CPair@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@IAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b7c40 ; prop
+// MS2-PIN: ??0CPair@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@IAEBVUnk_BannerPtr@@@Z 0x1401b7c80 ; prop
 // MS2-PIN: ??1?$TPtredDummy@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@UEAA@XZ 0x1401b7e80 ; unique
-// MS2-PIN: ??1CNode@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@XZ 0x1401b7eb0 ; prop
-// MS2-PIN: ??1CNode@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAA@XZ 0x1401b7ed0 ; prop
-// MS2-PIN: ??1CPair@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@XZ 0x1401b7ef0 ; prop
-// MS2-PIN: ??1CPair@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@XZ 0x1401b7f10 ; prop
+// MS2-PIN: ??1CNode@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAA@XZ 0x1401b7eb0 ; prop
+// MS2-PIN: ??1CNode@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAA@XZ 0x1401b7ed0 ; prop
+// MS2-PIN: ??1CPair@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEAA@XZ 0x1401b7ef0 ; prop
+// MS2-PIN: ??1CPair@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEAA@XZ 0x1401b7f10 ; prop
 // MS2-PIN: ??_G?$TPtredDummy@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@UEAAPEAXI@Z 0x1401b8140 ; prop
-// MS2-PIN: ??_GCNode@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAXI@Z 0x1401b81c0 ; prop
-// MS2-PIN: ??_GCNode@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAAPEAXI@Z 0x1401b8200 ; prop
+// MS2-PIN: ??_GCNode@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAXI@Z 0x1401b81c0 ; prop
+// MS2-PIN: ??_GCNode@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@QEAAPEAXI@Z 0x1401b8200 ; prop
 // MS2-PIN: ??4?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@QEAAAEAV0@AEBUUnk_SocketNew@@@Z 0x1401b82f0 ; unique
-// MS2-PIN: ?Find@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEBAPEAVCNode@12@H@Z 0x1401b84e0 ; unique
-// MS2-PIN: ?Find@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEBAPEAVCNode@12@H@Z 0x1401b85d0 ; unique
-// MS2-PIN: ?FreeNode@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x1401b86c0 ; unique
-// MS2-PIN: ?FreeNode@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x1401b8760 ; unique
+// MS2-PIN: ?Find@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x1401b84e0 ; unique
+// MS2-PIN: ?Find@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x1401b85d0 ; unique
+// MS2-PIN: ?FreeNode@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x1401b86c0 ; unique
+// MS2-PIN: ?FreeNode@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x1401b8760 ; unique
 // MS2-PIN: ??A?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAAAEAH_K@Z 0x1401b8840 ; unique
-// MS2-PIN: ?InsertImpl@?$CRBTree@HV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@HAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b8c60 ; unique
-// MS2-PIN: ?InsertImpl@?$CRBTree@HVUnk_BannerPtr@@V?$CElementTraits@H@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@AEAAPEAVCNode@12@HAEBVUnk_BannerPtr@@@Z 0x1401b8d60 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@IV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@@Z 0x1401b8c60 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@IVUnk_BannerPtr@@V?$CElementTraits@I@ATL@@V?$CElementTraits@VUnk_BannerPtr@@@3@@ATL@@AEAAPEAVCNode@12@IAEBVUnk_BannerPtr@@@Z 0x1401b8d60 ; unique
 // MS2-PIN: ?ResetNew@?$Unk_SocketPtr@V?$CAtlArray@VUnk_BannerPtr@@V?$CElementTraits@VUnk_BannerPtr@@@ATL@@@ATL@@@@AEAAXXZ 0x1401ba6a0 ; unique
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\unknown_1401b6d10.cpp"
@@ -75,9 +75,9 @@ MS2_CHECK_SIZE(Unk_DateParts, 0x30);
 Unk_DateParts* FUN_14088dfa0(Unk_DateParts* out, __int64 t, int nHourOffset);
 
 // Function-level statics (.text$di): the two banner maps and their lock.
-typedef ATL::CRBMap<int, Unk_BannerPtr> Unk_BannerMap;
+typedef ATL::CRBMap<unsigned, Unk_BannerPtr> Unk_BannerMap;
 typedef Unk_SocketPtr<Unk_BannerList> Unk_BannerListPtr;
-typedef ATL::CRBMap<int, Unk_BannerListPtr> Unk_FieldMap;
+typedef ATL::CRBMap<unsigned, Unk_BannerListPtr> Unk_FieldMap;
 
 #ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CFieldBannerData::s_bInit;
@@ -210,7 +210,7 @@ Unk_BannerPtr CFieldBannerData::GetBanner(int nId)
 }
 
 // @0x1401b76c0
-void CFieldBannerData::GetBannersOfField(int nFieldId, ATL::CRBMap<int, Unk_BannerPtr>& out)
+void CFieldBannerData::GetBannersOfField(int nFieldId, ATL::CRBMap<unsigned, Unk_BannerPtr>& out)
 {
     CheckInit();
     Unk_BannerListPtr list(0);

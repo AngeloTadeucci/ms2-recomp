@@ -54,7 +54,7 @@ public:
 
     static int LoadTable();                                // 0x1401b7260 Table/banner.xml into the two maps
     static Unk_BannerPtr GetBanner(int nId);                // 0x1401b7610
-    static void GetBannersOfField(int nFieldId, ATL::CRBMap<int, Unk_BannerPtr>& out);    // 0x1401b76c0
+    static void GetBannersOfField(int nFieldId, ATL::CRBMap<unsigned, Unk_BannerPtr>& out);    // 0x1401b76c0
     static void CheckInit();                                // 0x1401b8430
     static void SetInit(bool b);                            // 0x1401ba590
 

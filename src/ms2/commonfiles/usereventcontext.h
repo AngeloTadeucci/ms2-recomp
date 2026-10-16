@@ -66,11 +66,16 @@ struct Unk_EventItem {
     int id,count; unsigned char rarity; int kind; __int64 time;
 };
 MS2_CHECK_SIZE(Unk_EventItem, 0x18);
+// 16-byte element of UserEventContext::extras (the exe's Add copies 0x10 bytes; fields unrecovered)
+struct Unk_EventExtra {
+    __int64 m_0, m_8;
+};
+MS2_CHECK_SIZE(Unk_EventExtra, 0x10);
 class UserEventContext {
 public:
     void FUN_1408d5470(const Unk_EventCore&);
     bool FUN_1408d54a0(int,int,unsigned char,int,__int64);
-    bool FUN_1408d55e0(__int64);
+    bool FUN_1408d55e0(Unk_EventExtra);
     bool FUN_1408d5630(const CStringW&);
     bool FUN_1408d57c0(const CStringW&);
     void FUN_1408d58d0(int);
@@ -84,7 +89,7 @@ public:
     const ATL::CAtlArray<Unk_EventItem>& FUN_1408d59f0() const;
     Unk_EventCore data;
     ATL::CAtlArray<Unk_EventItem> items;
-    ATL::CAtlArray<__int64> extras;
+    ATL::CAtlArray<Unk_EventExtra> extras;
 };
 MS2_CHECK_OFFSET(UserEventContext, items, 0x50);
 MS2_CHECK_OFFSET(UserEventContext, extras, 0x70);

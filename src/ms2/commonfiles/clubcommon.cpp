@@ -8,13 +8,14 @@
 // MS2-PIN: ??8?$MS2Ptr@VCClubMember@@@@QEBA_NPEAVCClubMember@@@Z 0x1402125d0 ; unique
 // MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCClubMember@@@@V?$CElementTraits@V?$MS2Ptr@VCClubMember@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCClubMember@@@@@Z 0x140212a90 ; unique
 // MS2-PIN: ?Add@?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEAA_K_J@Z 0x140212bf0 ; unique
-// MS2-PIN: ?Find@?$CRBTree@IV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x140212ea0 ; unique
+// MS2-PIN: ?Find@?$CRBTree@IV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@UUnk_BuffKeyTraits@CClubDataTable@@V?$CElementTraits@V?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@ATL@@@ATL@@IEBAPEAVCNode@12@I@Z 0x140212ea0 ; unique
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCClubMember@@@@V?$CElementTraits@V?$MS2Ptr@VCClubMember@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1402138c0 ; unique
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@AEAA_N_K@Z 0x140213c00 ; unique
-// MS2-PIN: ?InsertImpl@?$CRBTree@IV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@Z 0x140213da0 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@IV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@UUnk_BuffKeyTraits@CClubDataTable@@V?$CElementTraits@V?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@ATL@@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VClubBuffData@CClubDataTable@@@@@Z 0x140213da0 ; unique
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCClubMember@@@@@ATL@@SAXPEAV?$MS2Ptr@VCClubMember@@@@0_K@Z 0x1402163a0 ; unique
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@_J@ATL@@SAXPEA_J0_K@Z 0x140216420 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ?CompareElementsOrdered@Unk_BuffKeyTraits@CClubDataTable@@SAHAEBI0@Z 0x140212de0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\clubcommon.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 
@@ -1544,17 +1545,6 @@ void* Unk_BuffPtrGet(void** pThis)
 void* Unk_BuffPtrArrow(void** pThis)
 {
     return pThis[1];
-}
-
-// @0x140212de0
-// MS2-FUNCTIONAL: CompareElementsOrdered<unsigned>
-int Unk_CompareUInt(const int* a, const int* b)
-{
-    if (*a < *b)
-        return -1;
-    if (*a == *b)
-        return 0;
-    return 1;
 }
 
 // @0x140212e20

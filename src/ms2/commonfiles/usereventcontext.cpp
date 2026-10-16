@@ -26,7 +26,7 @@ bool UserEventContext::FUN_1408d54a0(int id, int count, unsigned char rarity, in
 }
 MS2_REPLACE_METHOD(0x1408D54A0, UserEventContext, FUN_1408d54a0, 300, 0xBCB6825C);
 // @0x1408d55e0
-bool UserEventContext::FUN_1408d55e0(__int64 id) {
+bool UserEventContext::FUN_1408d55e0(Unk_EventExtra id) {
     if (extras.GetCount() >= 4) return false;
     extras.Add(id);
     return true;

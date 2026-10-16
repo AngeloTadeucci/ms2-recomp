@@ -285,7 +285,12 @@ public:
         int m_effectLevel;                              // +0x2c "additionalEffectLevel"
     };
     typedef MS2Ptr<ClubBuffData> BuffPtr;
-    typedef ATL::CRBMap<unsigned, BuffPtr> BuffMap;
+    // CRBMap<unsigned> whose ordering is the exe's signed int compare (0x140212de0)
+    struct Unk_BuffKeyTraits : public ATL::CElementTraits<unsigned>
+    {
+        static int CompareElementsOrdered(const unsigned& a, const unsigned& b) { return ((int)a < (int)b) ? -1 : (((int)a == (int)b) ? 0 : 1); }
+    };
+    typedef ATL::CRBMap<unsigned, BuffPtr, Unk_BuffKeyTraits> BuffMap;
     CClubDataTable();                               // 0x1402112f0
     virtual ~CClubDataTable();                      // 0x140211360
     bool FUN_1402113c0();                           // load (thunk of FUN_1402113f0)
