@@ -1,8 +1,18 @@
 // MS2-UNIT: commonfiles\item.cpp
 // MS2-RANGE: 0x140523790-0x140530640 .text$mn
 // MS2-RANGE: 0x1400b9290-0x1400b9410 .text$di
+// MS2-RANGE: 0x142c9ab10-0x142c9ab70 .text$yd
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??8?$MS2Ptr@VCItemUgc@@@@QEBA_NPEAVCItemUgc@@@Z 0x14052cc40 ; unique
+// MS2-PIN: ??1?$MS2Ptr@VUnk_IngItem@@@@QEAA@XZ 0x14052c480 ; unique
+// MS2-PIN: ?get@?$MS2Ptr@VUnk_PetRow@@@@QEBAPEAVUnk_PetRow@@XZ 0x14052cde0 ; unique
+// MS2-PIN: ??B?$MS2Ptr@VUnk_IngItem@@@@QEBAPEAVUnk_IngItem@@XZ 0x14052cdf0 ; unique
+// MS2-PIN: ??C?$MS2Ptr@VUnk_IngItem@@@@QEBAPEAVUnk_IngItem@@XZ 0x14052ced0 ; unique
+// MS2-PIN: ?Reference@?$MS2Ptr@VCItemData@@@@CAXPEAVCItemData@@@Z 0x14052d520 ; prop
+// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x14052ea30 ; unique
+// MS2-PIN: ??8?$MS2SvrPtr@VCIngredientContainer@@@@QEBA_NPEAVCIngredientContainer@@@Z 0x14052f040 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2SvrPtr@VCIngredientContainer@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCIngredientContainer@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14052f400 ; unique
+// MS2-PIN: ??1?$MS2Ptr@VUnk_PetRow@@@@QEAA@XZ 0x14052c420 ; prop: symbols.tsv (hand)
+// MS2-PIN: ?Release@?$MS2Ptr@VUnk_PetRow@@@@AEAAXXZ 0x14052d920 ; prop (hand)
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\item.cpp"
 // item.cpp - CItem (commonfiles\item.cpp; the wassert path is e:\build\kr\22_04\ms2code\commonfiles\item.cpp).
@@ -20,6 +30,15 @@
 #include "ms2/ms2recover.h"
 #include "ms2/fmt/format.h"
 #include "ms2/commonfiles/stream.h"
+// commonstruct_wa.h gives NpcShopItemLife the real handle type; this unit only sees the 16-byte m_slot188, so keep its local stand-in.
+#define NpcShopItemLife Unk_WaNpcShopItemLife
+#define Unk_ShopLifeRef Unk_WaShopLifeRef
+#include "ms2/commonfiles/commonstruct_wa.h"
+#undef NpcShopItemLife
+#undef Unk_ShopLifeRef
+#include "ms2/placeholder/tixmldocument.h"
+#include "ms2/ms2format.h"
+#include <vector>
 #include "hook/ms2hook.h"
 
 class Unk_ItemEquipData : public CItemData
@@ -43,11 +62,13 @@ class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); int FUN_14054a
 class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405565f0(int); CString FUN_140557270(int, int, int, unsigned); };
 extern Unk_IngTable* FUN_140281980();
 extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
+CStringW FUN_1401d0080(const CStringW& strA, const CStringW& strB); // strA + strB
 extern void* FUN_140166410();
 extern unsigned short FUN_14036dc40(void*);
 extern MS2Ptr<CItemData> FUN_14053f870(int);
 // @0x14052d230 TSingleton<ItemGachaBoxTable>::GetInstance (s_instance is the exe's DAT_143aaf1d0)
 ItemGachaBoxTable* FUN_14052d230();
+class NpcShopItemLife : public CPtred { public: Unk_ItemSlot188 FUN_14026eab0(); };   // commonstruct_wa.h has the full class
 class Unk_SingletonObj {};
 // The UGC model download manager behind DAT_143aaf1d8 (avatarpc.cpp declares the same class).
 struct Unk_UgcNullKey { Unk_UgcNullKey(int n); void* m_pad; };   // ctor 0x1401cd100
@@ -62,7 +83,6 @@ class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsig
 extern Unk_MusicBookTable* DAT_143aaf1a8;
 class Unk_EnchantRates { public: int FUN_140594720(int); int FUN_140594750(int); int FUN_1405947c0(int); };
 extern Unk_EnchantRates* DAT_143aaf1b0;
-class NpcShopItemLife : public CPtred { public: Unk_ItemSlot188 FUN_14026eab0(); };   // commonstruct_wa.h has the full class
 // The pet row table behind DAT_143aaf1c8 (tabcontentspetevolution.cpp declares the same lookup).
 class Unk_PetRow : public CPtred { public: int m_n18; };
 class Unk_PetRowTable : public Unk_SingletonObj { public: MS2Ptr<Unk_PetRow> FUN_1407290f0(int); };
@@ -2314,7 +2334,7 @@ CStringW CItem::FUN_140527b10()
         {
             CStringW strGem = FUN_140529de0();
             if (!strGem.IsEmpty())
-                return strName + strGem;
+                return FUN_1401d0080(strName, strGem); // strName + strGem (exe operator+; clang would import MFC CopyChars)
         }
         unsigned short nUnlimited = FUN_1405278a0()->FUN_140630d90()->FUN_1408bbc50();
         if (nUnlimited != 0)
@@ -2498,6 +2518,85 @@ int FUN_14052a620(MS2Ptr<CItem> spFirst, MS2Ptr<CItem> spSecond)
             return 0;
     }
     return 1;
+}
+
+// @0x14052a7e0
+// MS2-FUNCTIONAL: behaviour-equivalent; exe keeps the two equip-data pointers in different frame slots (0xa8/0x50 vs 0x50/0x30), frame 0xd8 vs 0xc8
+// item ordering (inventory sort comparator): empty first, then category, equip level, enchant level, id, count
+int FUN_14052a7e0(MS2Ptr<CItem> spFirst, MS2Ptr<CItem> spSecond)
+{
+    if (spFirst == 0)
+    {
+        if (spSecond == 0)
+            return 0;
+        else
+            return 1;
+    }
+    else if (spSecond == 0)
+        return -1;
+    Unk_ItemEquipData* pFirst = spFirst->FUN_140527840();
+    Unk_ItemEquipData* pSecond = spSecond->FUN_140527840();
+    if (pFirst == 0)
+    {
+        if (pSecond == 0)
+            return 0;
+        else
+            return 1;
+    }
+    else if (pSecond == 0)
+        return -1;
+    unsigned nKind[2];
+    nKind[0] = spFirst->FUN_14052afe0();
+    nKind[1] = spSecond->FUN_14052afe0();
+    if (nKind[0] < nKind[1])
+        return -1;
+    else if (nKind[1] < nKind[0])
+        return 1;
+    int nLevel[2];
+    nLevel[0] = pFirst->FUN_14053c620();
+    nLevel[1] = pSecond->FUN_14053c620();
+    if (nLevel[0] < nLevel[1])
+        return -1;
+    else if (nLevel[1] < nLevel[0])
+        return 1;
+    if (nKind[0] == 2)
+    {
+        if ((int)pFirst->limit.levelLimit < (int)pSecond->limit.levelLimit)
+            return -1;
+        if ((int)pSecond->limit.levelLimit < (int)pFirst->limit.levelLimit)
+            return 1;
+        int nRarity[2];
+        nRarity[0] = spFirst->FUN_140526bd0();
+        nRarity[1] = spSecond->FUN_140526bd0();
+        if (nRarity[0] < nRarity[1])
+            return -1;
+        if (nRarity[1] < nRarity[0])
+            return 1;
+    }
+    unsigned nId[2];
+    nId[0] = spFirst->FUN_1405276c0();
+    nId[1] = spSecond->FUN_1405276c0();
+    if (nId[0] < nId[1])
+        return -1;
+    else if (nId[1] < nId[0])
+        return 1;
+    if (nKind[0] != 1)
+    {
+        int nCount[2];
+        nCount[0] = spFirst->FUN_140526c50();
+        nCount[1] = spSecond->FUN_140526c50();
+        if (nCount[1] < nCount[0])
+            return -1;
+        if (nCount[0] < nCount[1])
+            return 1;
+    }
+    unsigned nIdTie[2];
+    nIdTie[0] = spFirst->FUN_1405276c0();
+    nIdTie[1] = spSecond->FUN_1405276c0();
+    if (nIdTie[0] < nIdTie[1])
+        return -1;
+    else
+        return 1;
 }
 
 // @0x140529aa0
@@ -2807,6 +2906,162 @@ void CItemCoupleInfo::FUN_14052d130(COutputStream& out)
     }
 }
 MS2_REPLACE_METHOD(0x14052D130, CItemCoupleInfo, FUN_14052d130, 118, 0xAC4AF148);
+
+// Two copies of the market sort-key names (the exe emits both arrays in this unit's initializers; names are invented).
+static const CString s_sortNames[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+static const CString s_sortNamesCopy[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+
+// ---- w106: CItemBreakIngredientTable (itemBreakIngredient.xml and the gacha box coin costs)
+// Unrecovered helpers (the same xml loader helpers the other table units use).
+class Unk_140165cf0 { public: Unk_140165cf0* FUN_140165cf0(const char*); Unk_140165cf0* FUN_140168650(const char*); };
+class Unk_140166420 { public: int FUN_1403974b0(TiXmlDocument* doc, const char* path, int a, bool b, bool c); };
+Unk_140166420* FUN_140166420();
+void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
+CString FUN_14071a5b0(const CString& strDir, const CString& strFile);   // returns its hidden pointer in rax
+void FUN_140873220(Unk_140165cf0*, const char*, int&);
+bool FUN_14028f710(Unk_140165cf0*);                                       // the element is usable
+void FUN_14059ec70(ItemGachaBoxTable*, std::vector<GachaBoxDataPtr>&);   // every box of the table
+void FUN_140530c90(MS2Ptr<CItemData> spItem, int nGrade, int nEnchant, CIngredientContainer& output);
+// Scoped lock helper shared with banktable / logstring: locks on construction when asked, unlocks on exit.
+class Unk_1401b4ec0
+{
+public:
+    Unk_1401b4ec0(CLockCriticalSection& lock, int bLock);   // 0x1401b4ec0
+    ~Unk_1401b4ec0();                                       // 0x1401b5120
+private:
+    void* m_p;
+};
+MS2_CHECK_SIZE(Unk_1401b4ec0, 8);
+
+// @0x14052de30
+CItemBreakIngredientTable::CItemBreakIngredientTable()
+{
+    Reload();
+}
+
+// @0x14052df20
+CItemBreakIngredientTable::~CItemBreakIngredientTable()
+{
+}
+
+// @0x14052dfa0
+int CItemBreakIngredientTable::Reload()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    LoadBreakItems();
+    LoadGachaBoxes();
+    return 1;
+}
+
+// @0x14052e010
+// MS2-FUNCTIONAL: EH-state/temp-CString layout of the XML loader differs from the exe (precedent itemdata.cpp); behaviour matches the decompile
+int CItemBreakIngredientTable::LoadBreakItems()
+{
+    m_mapBreak.RemoveAll();
+    CString strPath = FUN_14071a5b0(CString("Table"), CString("itemBreakIngredient.xml"));
+    m_spCache = new CCacheData;
+    m_spCache->FUN_1401d1160(CString(strPath));
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return 0;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", strPath);
+        return 0;
+    }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("item"); pNode != 0; pNode = pNode->FUN_140168650("item"))
+    {
+        if (!FUN_14028f710(pNode))
+            continue;
+        int nItemId = 0;
+        FUN_140873220(pNode, "ItemID", nItemId);
+        if (nItemId == 0)
+            continue;
+        IngredientPtr spIngredients(new CIngredientContainer);
+        int n = 1;
+        while (true)
+        {
+            int nIngredientId = 0;
+            int nCount = 0;
+            CString strId = StringFormat("IngredientItemID{0}", n);
+            CString strCount = StringFormat("IngredientCount{0}", n);
+            FUN_140873220(pNode, strId, nIngredientId);
+            FUN_140873220(pNode, strCount, nCount);
+            if (nIngredientId == 0 || nCount == 0)
+                break;
+            spIngredients->FUN_14026bbf0(nIngredientId, nCount);
+            n++;
+        }
+        m_mapBreak.SetAt(nItemId, spIngredients);
+    }
+    return 1;
+}
+
+// @0x14052e490
+int CItemBreakIngredientTable::LoadGachaBoxes()
+{
+    if (FUN_14052d230() == 0)
+        return 0;
+    m_mapGacha.RemoveAll();
+    std::vector<GachaBoxDataPtr> boxes;
+    FUN_14059ec70(FUN_14052d230(), boxes);
+    for (size_t i = 0; i < boxes.size(); i++)
+    {
+        if (boxes[i] == 0)
+            continue;
+        IngredientPtr spIngredients(new CIngredientContainer);
+        spIngredients->FUN_14026bbf0(boxes[i]->m_nCoinItemID, boxes[i]->m_nCoinItemAmount);
+        m_mapGacha.SetAt(boxes[i]->m_nRandomBoxID, spIngredients);
+    }
+    return 1;
+}
+
+// @0x14052e650
+CItemBreakIngredientTable::IngredientPtr CItemBreakIngredientTable::GetBreakItem(int nItemId)
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    if (FUN_1401d1320(m_spCache.get()) != 0)
+        LoadBreakItems();
+    IngredientPtr spResult(0);
+    m_mapBreak.Lookup(nItemId, spResult);
+    return spResult;
+}
+MS2_REPLACE_METHOD(0x14052E650, CItemBreakIngredientTable, GetBreakItem, 203, 0xF14D16F6);
+
+// @0x14052e730
+CItemBreakIngredientTable::IngredientPtr CItemBreakIngredientTable::GetGachaBox(int nBoxId)
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    if (FUN_1401d1320(m_spCache.get()) != 0)
+        LoadGachaBoxes();
+    IngredientPtr spResult(0);
+    m_mapGacha.Lookup(nBoxId, spResult);
+    return spResult;
+}
+
+// @0x14052e810
+CItemBreakIngredientTable::IngredientPtr CItemBreakIngredientTable::GetIngredients(int nItemId, int nGrade, int nEnchant)
+{
+    IngredientPtr spResult = GetBreakItem(nItemId);
+    if (spResult == 0)
+    {
+        MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+        if (spItem.get() != 0)
+        {
+            if (spItem->limit.enableBreak == 0 || spItem->limit.enableBreak == 2)
+                return spResult;
+            if (spItem->FUN_14053cf90())
+            {
+                spResult = new CIngredientContainer;
+                if (spResult.get() != 0)
+                    FUN_140530c90(spItem, nGrade, nEnchant, *spResult);
+            }
+        }
+    }
+    return spResult;
+}
+MS2_REPLACE_METHOD(0x14052E810, CItemBreakIngredientTable, GetIngredients, 493, 0x57327929);
 
 // ---- w101 batch 11: MS2Ptr glue instances
 template class MS2Ptr<CItemCoupleInfo>;

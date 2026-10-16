@@ -8,6 +8,11 @@
 #include "ms2/placeholder/citem.h"
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include <atlcoll.h>
+#include "ms2/commonfiles/os.h"
+#include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/placeholder/ccachedata.h"
+#include "ms2/placeholder/ms2svrptr.h"
 
 // Opaque parts defined in their own units; only the allocation sizes and constructors are known here.
 // The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the checks CItem makes.
@@ -138,3 +143,36 @@ public:
     char m_pad70[8];
 };
 MS2_CHECK_SIZE(CItemCustomMusicScore, 0x78);
+
+// CItemBreakIngredientTable (RTTI name), 0xd8 bytes: what breaking an item (itemBreakIngredient.xml) or a gacha box
+// yields. Member and method names are invented. TSingleton at +0 (DAT_143aaf1e0); vftable holds the deleting
+// destructor only. Both maps are CAtlMap<int, MS2SvrPtr<CIngredientContainer>> with ATL's default sizing.
+class CIngredientContainer;
+class CItemBreakIngredientTable : public TSingleton<CItemBreakIngredientTable>
+{
+public:
+    typedef MS2SvrPtr<CIngredientContainer> IngredientPtr;
+    typedef ATL::CAtlMap<int, IngredientPtr> IngredientMap;
+
+    CItemBreakIngredientTable();            // 0x14052de30
+    virtual ~CItemBreakIngredientTable();   // 0x14052df20 (??_G 0x14052f160)
+
+    int Reload();                           // 0x14052dfa0: locked reload of both maps
+    int LoadBreakItems();                   // 0x14052e010 itemBreakIngredient.xml
+    int LoadGachaBoxes();                   // 0x14052e490 coin cost of every gacha box
+    IngredientPtr GetBreakItem(int nItemId);    // 0x14052e650
+    IngredientPtr GetGachaBox(int nBoxId);      // 0x14052e730
+    IngredientPtr GetIngredients(int nItemId, int nGrade, int nEnchant);    // 0x14052e810
+
+private:
+    MS2_LAYOUT_FRIEND;
+    CLockCriticalSection m_lock;            // +0x08
+    MS2Ptr<CCacheData> m_spCache;           // +0x38
+    IngredientMap m_mapBreak;               // +0x48 itemID -> ingredients
+    IngredientMap m_mapGacha;               // +0x90 gacha box id -> coin cost
+};
+MS2_CHECK_SIZE(CItemBreakIngredientTable, 0xd8);
+MS2_CHECK_OFFSET(CItemBreakIngredientTable, m_lock, 0x08);
+MS2_CHECK_OFFSET(CItemBreakIngredientTable, m_spCache, 0x38);
+MS2_CHECK_OFFSET(CItemBreakIngredientTable, m_mapBreak, 0x48);
+MS2_CHECK_OFFSET(CItemBreakIngredientTable, m_mapGacha, 0x90);
