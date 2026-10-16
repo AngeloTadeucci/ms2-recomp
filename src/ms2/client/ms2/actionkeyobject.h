@@ -21,9 +21,9 @@ class CInteractObject;
 class CInteractGatheringObject;
 class CHomemadeCubeObject;
 class CReactor;
+class PCBase;
 namespace egf { class Entity; }
 class Unk_AkoPortal;
-class Unk_AkoCell;
 class Unk_WsC_GameObj;
 class CMsgBoxData;
 
@@ -129,10 +129,10 @@ public:
     void FUN_140956160(int nTarget, int nPortalId);     // move through the portal by its type
     void FUN_140956290(int nPortalId);                  // the dungeon room dialog (type 8)
     void FUN_140956310();                               // request the home move (type 9)
-    void FUN_140956370(int nTarget, int nPortalId);     // move to another field (confirmation box when asked)
+    void FUN_140956370(unsigned nTarget, unsigned nPortalId);     // move to another field (confirmation box when asked)
     void FUN_1409569a0(int nPortalId, int nMode);       // the dungeon room dialog in a mode (types 0xc, 0xe)
     void FUN_140956a20(int nPortalId, int nArg);        // the dungeon room dialog (type 0x11)
-    void FUN_140956aa0(Unk_AkoCell* pCell, int nTarget, int nPortalId);   // move inside a house
+    void FUN_140956aa0(Cube* pCell, int nTarget, int nPortalId);   // move inside a house
     bool FUN_140956be0(int nButton, const CMsgBoxData& data);   // the move confirmation box answer
     CStringW FUN_140956e40();                           // the portal's name
 
@@ -172,6 +172,7 @@ public:
     void vfunc_2() override;
     int vfunc_5() override;
     CStringW vfunc_6() override;
+    class Unk_WsB_Lift* FUN_140957890();                // the liftable object in reach
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -278,6 +279,7 @@ public:
     int vfunc_5() override;
     CStringW vfunc_6() override;
     Unk_AkoTarget vfunc_12() override;
+    int FUN_140959eb0();                                // find the object weapon cube ahead
 
     MS2Ptr<Cube> m_spCube;                              // +0x18
     MS2Ptr<Cube> m_spCube28;                            // +0x28
@@ -395,6 +397,7 @@ public:
     int vfunc_5() override;
     CStringW vfunc_6() override;
     int vfunc_13(CInteractObject* pObject) override;
+    CInteractGatheringObject* FUN_14095d840();          // the selected gathering object
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -424,6 +427,7 @@ public:
     CStringW vfunc_6() override;
     CStringW vfunc_8() override;
     int vfunc_10() override;
+    int FUN_14095e440(MS2Ptr<CHomemadeCubeObject> spCube);   // the cube may be used
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -458,6 +462,7 @@ public:
     void vfunc_2() override;
     int vfunc_5() override;
     CStringW vfunc_6() override;
+    PCBase* FUN_14095edf0();                            // the nearest dancer in micro-game range
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -479,6 +484,7 @@ public:
     CStringW vfunc_7() override;
     Unk_AkoTarget vfunc_12() override;
     virtual int vfunc_13(efd::SmartPointer<CReactor> spReactor);  // 13: the local player may use the reactor
+    CReactor* FUN_14095fcb0();                          // the reactor at the player's position
 
 private:
     MS2_LAYOUT_FRIEND;

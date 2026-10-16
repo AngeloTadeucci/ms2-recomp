@@ -269,6 +269,8 @@ public:
     void FUN_141226c20(bool bFlag);                               // 0x141226c20
     int FUN_141226cd0();                                          // 0x141226cd0 item id
     Unk_StreamPoint FUN_141226d00();                                     // 0x141226d00 position property
+    // @0x140967140 (inline; COMDAT in actionkeyobject.cpp's range)
+    unsigned char FUN_140967140() { return m_bAlt; }
     Unk_EntRef FUN_141226e60();                                   // 0x141226e60 copy of the entity handle
     egf::EntityID FUN_141226eb0();                               // 0x141226eb0 the entity id (or 0)
     MS2Ptr<CBoxCollision> FUN_141226f90();                        // 0x141226f90 refresh the box pose, return it

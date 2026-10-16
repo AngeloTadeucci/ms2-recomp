@@ -358,3 +358,43 @@ public:
 MS2_CHECK_SIZE(StateDash, 0xa0);
 MS2_CHECK_OFFSET(StateDash, m_timerStop, 0x60);
 MS2_CHECK_OFFSET(StateDash, m_tick, 0x98);
+
+// 0x38. The interact object being used (built by InteractAction::vfunc_2; the state itself is in another unit).
+class StateInteractData : public StateData
+{
+public:
+    StateInteractData();                                        // 0x1417d0be0
+
+    int m_nObjectId;                                            // +0x18
+    int m_pad_1c;
+    CString m_strObjectId;                                      // +0x20
+    int m_pad_28[2];
+    int m_nFlag;                                                // +0x30
+    int m_pad_34;
+};
+MS2_CHECK_SIZE(StateInteractData, 0x38);
+
+// 0x30. The hold target (built by HoldAction::vfunc_2; the state itself is in another unit).
+class StateHoldData : public StateSkillData
+{
+public:
+    StateHoldData();                                            // 0x1417cb9c0 (skill 20000031 level 1)
+
+    int m_nTargetId;                                            // +0x20
+    int m_pad_24;
+    CString m_strTargetName;                                    // +0x28
+};
+MS2_CHECK_SIZE(StateHoldData, 0x30);
+
+// 0x30. The reactor being used (built by ReactorAction::vfunc_2; the state itself is in another unit).
+class StateReactData : public StateData
+{
+public:
+    StateReactData(int nReactorId, CString strName, CString strAnim);   // 0x140b8d3e0
+
+    int m_nReactorId;                                           // +0x18
+    int m_pad_1c;
+    CString m_strName;                                          // +0x20
+    CString m_strAnim;                                          // +0x28
+};
+MS2_CHECK_SIZE(StateReactData, 0x30);

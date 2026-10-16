@@ -73,6 +73,8 @@ public:
     CString FUN_140967060();                                    // 0x140967060 copy of the name
     int FUN_140967110();                                        // 0x140967110 id of the entity's template
     Unk_StreamPoint FUN_1409673c0();                            // 0x1409673c0 position copy
+    // @0x140967150
+    int FUN_140967150() { return m_nVisible; }
 
     Unk_EntRef FUN_1413fd890();                                 // copy of the entity handle
     egf::EntityID FUN_1413fd8e0();                              // id of the entity (0 when unbound)

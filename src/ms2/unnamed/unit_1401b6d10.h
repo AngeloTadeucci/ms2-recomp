@@ -27,6 +27,7 @@ public:
     Unk_BannerPtr& operator=(const Unk_BannerPtr& v);       // 0x1401b7f70
     CFieldBannerData* get() const;                          // 0x1401b8040
     CFieldBannerData* operator->() const;                   // 0x1401b80a0
+    bool operator==(const CFieldBannerData* p) const;       // 0x140899ca0 (folded TPtr<T>::operator==)
 
 private:
     void AddRef() const;                                    // 0x1401ba5d0
