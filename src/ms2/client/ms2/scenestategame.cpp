@@ -501,7 +501,8 @@ extern int DAT_143ab2900;
 extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
-class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet); };
+class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
+    void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue); };
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
 class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
@@ -557,7 +558,7 @@ Unk_SSGDlg4e47* FUN_140de48d0(int nId);                     // GetDialog<T>(0x4e
 class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); void FUN_1412c54e0(int n); };
 Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4ed8)
 
-class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); };
+class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); void FUN_141a3a780(int nId); };
 Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e29)
 
 class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); };
@@ -617,6 +618,18 @@ class Unk_SSGMyPCV : public PC
 public:
     virtual void vfunc_147(); virtual void vfunc_148(); virtual void vfunc_149();
 };
+
+extern Unk_StreamPoint DAT_143b01a60;                      // efd::Point3::ZERO
+int FUN_1417692f0(__int64 nUid);                            // skill id from the low half of an item uid
+void FUN_1419f37f0(unsigned int n);
+
+CInputStream& FUN_14070f300(CInputStream& stream, bool& b);   // stream >> bool
+extern CString DAT_143ae79e8;
+class Unk_SSGTaxiStation { public: void FUN_1409f1970(); };
+Unk_SSGTaxiStation* FUN_1412787a0();                        // TSingleton<CAutoFindTaxiStation>
+CStringW FUN_14028b8e0(const CStringW& strKey);              // localized text for a string key
+class Unk_SSGDlgShop { public: void FUN_141afb720(int nType); };
+Unk_SSGDlgShop* FUN_140534780(int nId);                     // Unk_BreakDialog<UIShopDialog>
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -2978,3 +2991,104 @@ void CSceneStateGame::FUN_141723410(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141723410, CSceneStateGame, FUN_141723410, 384, 0xE64CE8BE);
+
+// @0x14172f030
+// MS2-FUNCTIONAL: exe passes nSkillId to FUN_141768530 as mov ecx,[x]; mov edx,ecx (unrecovered argument conversion)
+void CSceneStateGame::FUN_14172f030(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    for (int i = 0; i < nCount; i++)
+    {
+        __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nSlot == 0)
+            pMyPC->FUN_141523bc0()->FUN_141765f60(nUid);
+        else
+            pMyPC->FUN_141523bc0()->FUN_141766900(nUid, nSlot);
+        int nSkillId = FUN_1417692f0(nUid);
+        pMyPC->FUN_141523bc0()->FUN_141768530(nSkillId, nValue);
+    }
+    FUN_1419f37f0(5);
+}
+MS2_REPLACE_METHOD(0x14172f030, CSceneStateGame, FUN_14172f030, 382, 0xAA5F3F51);
+
+// @0x141731190
+void CSceneStateGame::FUN_141731190(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nValue = (unsigned int)static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+    if (pActor == 0)
+        return;
+    if (nType == 4)
+    {
+        Unk_StreamPoint kPos = DAT_143b01a60;
+        pActor->vfunc_111(reinterpret_cast<void*>(nValue), 5, nId, &kPos);
+    }
+    if (nType == 7)
+    {
+        Unk_StreamPoint kPos = DAT_143b01a60;
+        pActor->vfunc_111(reinterpret_cast<void*>(nValue), 6, nId, &kPos);
+    }
+    if (nType == 0xa)
+    {
+        Unk_StreamPoint kPos = DAT_143b01a60;
+        pActor->vfunc_111(reinterpret_cast<void*>(nValue), 7, nId, &kPos);
+    }
+}
+MS2_REPLACE_METHOD(0x141731190, CSceneStateGame, FUN_141731190, 436, 0x6F315244);
+
+// @0x141731470
+void CSceneStateGame::FUN_141731470(CInPacket& packet)
+{
+    bool bOpen = false;
+    CAtlArray<unsigned int> arrIds;
+    FUN_1403d7440(packet, arrIds);
+    FUN_14070f300(packet, bOpen);
+    if (arrIds.IsEmpty())
+        return;
+    for (unsigned int i = 0; i < arrIds.GetCount(); i++)
+        DAT_143ab3078.FUN_1401855a0(arrIds[i]);
+    if (bOpen)
+    {
+        int nFirst = arrIds[0];
+        FUN_141275260(0x7c8, 3, 1);
+        FUN_141276180(DAT_143ae79e8, "");
+        Unk_SSGDlg4e29* pDlg = FUN_140c9b540(0x4e29);
+        if (pDlg != 0)
+            pDlg->FUN_141a3a780(nFirst);
+        FUN_141739450(true);
+        FUN_1409331e0()->FUN_14138bf00(0x10, 0, 0);
+    }
+    FUN_1412787a0()->FUN_1409f1970();
+}
+MS2_REPLACE_METHOD(0x141731470, CSceneStateGame, FUN_141731470, 407, 0x5515C134);
+
+// @0x141733660
+void CSceneStateGame::FUN_141733660(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    bool bOk = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    if (nType == 0)
+        return;
+    if (!bOk)
+    {
+        if (nType == 8)
+        {
+            FUN_140d73aa0(FUN_14028b8e0(L"s_shop_no_star_point_event"), 0, 0, CStringW(L""));
+        }
+    }
+    else
+    {
+        FUN_1403ed2b0()->FUN_141adc530(0x4e3b);
+        Unk_SSGDlgShop* pDlg = FUN_140534780(0x4e3b);
+        if (pDlg != 0)
+            pDlg->FUN_141afb720(nType);
+    }
+}
+MS2_REPLACE_METHOD(0x141733660, CSceneStateGame, FUN_141733660, 340, 0x89D2A43C);
