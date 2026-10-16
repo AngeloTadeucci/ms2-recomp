@@ -23,6 +23,7 @@ public:
     CItemStatus(unsigned, unsigned, unsigned);   // 0x14062fa00
     class CItemEnchantInfo* FUN_140630d60();     // the enchant record (null when absent)
     class Unk_ItemPlusInfo* FUN_140630d90();
+    void FUN_1406306f0(int, int, int);
     MS2Ptr<CItemOption> m_spOption;             // +0x18
     char m_pad28[0x20];
 };

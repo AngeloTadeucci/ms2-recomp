@@ -38,7 +38,7 @@ extern unsigned FUN_14054b400(ItemModelData*);
 extern unsigned __int64 FUN_140632030(CItemUgc*);
 
 // w101 additions: unit-local record types for the table lookups CItem makes (names are descriptive, not original).
-class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); int FUN_14054ace0(); CStringW FUN_14054ad20(); };
+class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); int FUN_14054ace0(); CStringW FUN_14054ad20(); int FUN_14054ad00(); };
 class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405565f0(int); CString FUN_140557270(int, int, int, unsigned); };
 extern Unk_IngTable* FUN_140281980();
 extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
@@ -2169,6 +2169,37 @@ CStringW FormatStringId(int nId, const fmt::ArgList& args);   // 0x14028dee0
 FMT_VARIADIC_W(CStringW, FormatStringId, int)
 template CStringW FormatStringId<CStringW>(int, const CStringW&);   // 0x14052bd00
 
+// The key based back end FUN_14028dfa0 with this unit's own (ushort, CStringW) instance.
+CStringW FUN_14028dfa0(const CStringW&, const fmt::ArgList&);
+namespace fmt { namespace internal {
+struct Unk_WcFormatter { typedef wchar_t Char; };
+template <typename T> inline ULongLong wc_make_type(const T& arg) { return MakeValue<Unk_WcFormatter>::type(arg); }
+struct Unk_WcArgType {
+    ULongLong type;
+    Unk_WcArgType() : type(0) {}
+    template <typename T> Unk_WcArgType(const T& arg) : type(wc_make_type(arg)) {}
+};
+inline ULongLong wc_make_type(Unk_WcArgType t0 = Unk_WcArgType(), Unk_WcArgType t1 = Unk_WcArgType(), Unk_WcArgType t2 = Unk_WcArgType(),
+                              Unk_WcArgType t3 = Unk_WcArgType(), Unk_WcArgType t4 = Unk_WcArgType(), Unk_WcArgType t5 = Unk_WcArgType(),
+                              Unk_WcArgType t6 = Unk_WcArgType(), Unk_WcArgType t7 = Unk_WcArgType(), Unk_WcArgType t8 = Unk_WcArgType(),
+                              Unk_WcArgType t9 = Unk_WcArgType(), Unk_WcArgType t10 = Unk_WcArgType(), Unk_WcArgType t11 = Unk_WcArgType(),
+                              Unk_WcArgType t12 = Unk_WcArgType(), Unk_WcArgType t13 = Unk_WcArgType(), Unk_WcArgType t14 = Unk_WcArgType()) {
+    return t0.type | (t1.type << 4) | (t2.type << 8) | (t3.type << 12) | (t4.type << 16) | (t5.type << 20) |
+           (t6.type << 24) | (t7.type << 28) | (t8.type << 32) | (t9.type << 36) | (t10.type << 40) |
+           (t11.type << 44) | (t12.type << 48) | (t13.type << 52) | (t14.type << 56);
+}
+} }
+#define WC_REF(n) fmt::internal::MakeValue<fmt::internal::Unk_WcFormatter>(v##n)
+#define WC_WRAP(n) \
+    template <FMT_GEN(n, FMT_MAKE_TEMPLATE_ARG)> \
+    inline CStringW FUN_14028dfa0(CStringW arg1, FMT_GEN(n, FMT_MAKE_ARG)) { \
+        const fmt::internal::ArgArray<n>::Type array = {FMT_GEN(n, WC_REF)}; \
+        return FUN_14028dfa0(arg1, fmt::ArgList(fmt::internal::wc_make_type(FMT_GEN(n, FMT_MAKE_REF2)), array)); \
+    }
+WC_WRAP(1)
+WC_WRAP(2)
+template CStringW FUN_14028dfa0<unsigned short, CStringW>(CStringW, const unsigned short&, const CStringW&);   // 0x14052b9d0
+
 extern int FUN_14052a7e0(MS2Ptr<CItem>, MS2Ptr<CItem>);
 
 // @0x14052b5e0
@@ -2424,3 +2455,57 @@ CStringW CItem::FUN_140529aa0()
     return spIng->FUN_14054ad20();
 }
 MS2_REPLACE_METHOD(0x140529AA0, CItem, FUN_140529aa0, 516, 0x85FDBEFF);
+
+// ---- w101 batch 10: item kind, create, bind
+// @0x14052afe0
+int CItem::FUN_14052afe0()
+{
+    int nKind = 0;
+    if (m_spData->FUN_14053ce20())
+        nKind = 6;
+    else if (m_spData->FUN_14053d1f0())
+        nKind = 5;
+    else if (m_spData->FUN_14053e130())
+        nKind = 0;
+    else if (m_spData->FUN_14053cf90())
+        nKind = 1;
+    else if (m_spData->FUN_14053c5c0() == 2)
+        nKind = 2;
+    else if (m_spData->FUN_14053c5c0() == 4)
+        nKind = 4;
+    else
+        nKind = 3;
+    return nKind;
+}
+MS2_REPLACE_METHOD(0x14052AFE0, CItem, FUN_14052afe0, 303, 0xB587E3F4);
+
+// @0x14052b130
+int CItem::FUN_14052b130(int nItemId, int nRarity, int nAmount)
+{
+    if (!FUN_140523c40(nItemId, nRarity, nAmount))
+        return 0;
+    m_19c = 1;
+    m_spStatus->FUN_1406306f0(nItemId, FUN_140526bd0(), nAmount);
+    if (FUN_140527840()->FUN_14053cd10())
+    {
+        MS2Ptr<Unk_IngItem> spIng = FUN_140281980()->FUN_1405565f0(nItemId);
+        if (static_cast<Unk_IngItem*>(spIng) != 0)
+            FUN_140527320(spIng->FUN_14054ad00());
+    }
+    if (FUN_140525a30() != 0 && (static_cast<CItemGem*>(m_spGem) != 0 ? true : false))
+        m_spGem->FUN_1405a7020(m_spData->FUN_14053e900(), m_spData->FUN_14053c650());
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14052B130, CItem, FUN_14052b130, 416, 0xB502F344);
+
+// @0x14052b760
+bool CItem::FUN_14052b760(MS2Ptr<CItem> spItem)
+{
+    if (spItem == NULL || spItem->FUN_140527930() == 0)
+        return false;
+    m_spTransfer = spItem->FUN_140527930()->FUN_140634b30();
+    if (static_cast<CItemTransfer*>(m_spTransfer) != 0)
+        m_spTransfer->FUN_140634970(this);
+    return true;
+}
+MS2_REPLACE_METHOD(0x14052B760, CItem, FUN_14052b760, 252, 0x53E6689C);
