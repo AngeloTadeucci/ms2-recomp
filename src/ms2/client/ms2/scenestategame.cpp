@@ -725,6 +725,7 @@ public:
     void FUN_14174a4f0(int n) { m_nea8 = n; }
     void FUN_141095190(const CString& strName);
     void FUN_141094f90(CString strModel);
+    void FUN_1410951d0(const CString& strScript);           // 0xe8 mode 2
     void FUN_141095290(int n);
     void FUN_141095240(__int64 n);
     void FUN_1410952b0(bool b);
@@ -8461,6 +8462,75 @@ void CSceneStateGame::FUN_14173dfd0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14173dfd0, CSceneStateGame, FUN_14173dfd0, 1121, 0x0D03AAC3);
+
+// The online patch manager (FUN_140a87680) owns the text filter at +0xd0.
+class Unk_SSGTextFilter { public: CStringW FUN_14087ede0(const CStringW& strText); };
+class Unk_SSGPatchMgr
+{
+public:
+    Unk_SSGTextFilter* FUN_141747b40() { return &m_kFilter; }
+private:
+    char m_pad0[0xd0];
+    Unk_SSGTextFilter m_kFilter;                            // +0xd0
+};
+Unk_SSGPatchMgr* FUN_140a87680();
+void FUN_141275360(const CStringW& strMsg, int nType, int nArg);
+
+// @0x141738430
+// 0xe8: npc talk: a system notice, npc model/script changes and the side popup talk.
+void CSceneStateGame::FUN_141738430(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        CStringW strMsg = FUN_140a87680()->FUN_141747b40()->FUN_14087ede0(static_cast<CInputStream&>(packet).vfunc_o8_8());
+        int nArg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_141275360(strMsg, 0xc, nArg);
+        FUN_1412751b0(strMsg, 0x14);
+    }
+    else if (nMode == 1)
+    {
+        int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CString strModel = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nObjId);
+        if (pNpc == 0)
+            return;
+        pNpc->FUN_141094f90(strModel);
+    }
+    else if (nMode == 2)
+    {
+        int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CString strScript = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nObjId);
+        if (pNpc == 0)
+            return;
+        pNpc->FUN_1410951d0(strScript);
+    }
+    else if (nMode == 3)
+    {
+        int nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nNpcId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CString strIcon = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CString strSound = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CString strScript = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CStringW strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        Unk_SSGSidePopupTalk* pUi = FUN_1413868b0(0x4f57);
+        if (pUi != 0)
+        {
+            MS2Ptr<SidePopupTalkParam> spParam(new SidePopupTalkParam);
+            spParam->m_nKind = nKind;
+            spParam->m_strName = strName;
+            spParam->m_strIcon = strIcon;
+            spParam->m_nNpcId = nNpcId;
+            spParam->m_strText = FUN_140a87680()->FUN_141747b40()->FUN_14087ede0(strText);
+            spParam->m_strSound = strSound;
+            spParam->m_strScript = strScript;
+            pUi->FUN_140e879a0(spParam);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141738430, CSceneStateGame, FUN_141738430, 1684, 0x1D689E6E);
 
 // 0x24: the housing cube stock (UGC map items).
 class CUGCMapItem : public CPtred
