@@ -85,6 +85,7 @@ int FUN_14145c4d0();                                                // 0x14145c4
 
 // ---- the running projectile ----
 struct Unk_MagicTag;
+struct Unk_MagicEntity;
 // 16 byte smart pointers shared with the cube/world code (out-of-line members bound by VA in symbols-manual.tsv).
 struct Unk_MagicTagPtr {
     Unk_MagicTagPtr();                                              // 0x141234900
@@ -137,6 +138,44 @@ public:
     CMagic();                                                       // 0x14145d120
     virtual ~CMagic();                                              // 0 0x14145d390
 
+    // Start the projectile: bind the skill and caster records, copy the move data, build the scene root and prime the effects.
+    int FUN_14145d5d0(Unk_MagicTagPtr spSkill, Unk_MagicTagPtr spCaster, const CMagicData* pData,
+        const Unk_StreamPoint& ptStart, unsigned n530, unsigned n534, unsigned n53c);   // 0x14145d5d0
+    void FUN_14145d9d0();                                           // 0x14145d9d0 flight time and the random landing point
+    void FUN_14145ddd0(const Unk_StreamPoint& ptStart);             // 0x14145ddd0 restart from a new start point
+    void FUN_14145de80();                                           // 0x14145de80 per-frame state machine
+    void FUN_14145e960(unsigned nNow);                              // 0x14145e960 spawn the main effect
+    void FUN_141460640();                                           // 0x141460640 release every spawned effect
+    void FUN_141460700();                                           // 0x141460700 restart the flight from the current point
+    void FUN_141461140();                                           // 0x141461140 pick the target point
+    void FUN_141461a80(Unk_StreamPoint ptNew);                      // 0x141461a80 move the projectile and its scene root
+    void FUN_141461b60(const Unk_StreamPoint& ptDirection);         // 0x141461b60 set the direction and rotate
+    void FUN_141461ba0(const Unk_NiMatrix3& matRotation);           // 0x141461ba0 set the rotation matrix
+    void FUN_141463fb0(unsigned nNow);                              // 0x141463fb0 end-of-flight transitions
+    void FUN_141464160();                                           // 0x141464160 show/hide the scene root by distance
+    bool FUN_141464220();                                           // 0x141464220 is the projectile out of the visible range
+    Unk_MagicEntity* FUN_141464360();                               // 0x141464360 the target entity
+    bool FUN_141464410();                                           // 0x141464410 the caster's lock-on entity
+    bool FUN_141464490();                                           // 0x141464490 has an attacker record
+    void FUN_1414644d0(int bHide);                                  // 0x1414644d0 show or hide the scene root
+    Unk_StreamPoint FUN_141464520();                                // 0x141464520 rotation matrix column 0
+    Unk_StreamPoint FUN_141464580();                                // 0x141464580 rotation matrix column 1
+    Unk_StreamPoint FUN_1414645e0();                                // 0x1414645e0 rotation matrix column 2
+    float FUN_141464640();                                          // 0x141464640 move-end hold duration
+    int FUN_141464670();                                            // 0x141464670 total duration in ms
+    unsigned FUN_141467440();                                       // 0x141467440 the current time for this skill
+
+    void FUN_141462900(unsigned nNow);                              // 0x141462900
+    void FUN_141461bd0(unsigned nNow);                              // 0x141461bd0
+    void FUN_141462490(unsigned nNow);                              // 0x141462490
+    void FUN_14145f570(unsigned nNow);                              // 0x14145f570 begin the destroy phase
+    void FUN_14145ec50(unsigned nNow);                              // 0x14145ec50 per-frame update while alive
+    void FUN_1414609e0();                                           // 0x1414609e0
+    void FUN_141464b40();                                           // 0x141464b40
+    void FUN_141461720(int nFlag);                                  // 0x141461720
+    void FUN_1414614d0();                                           // 0x1414614d0
+    void FUN_1414607e0();                                           // 0x1414607e0
+
     int m_nState;                                                   // +0x18
     unsigned m_nStateTick;                                          // +0x1c
     Unk_MagicTagPtr m_spSkill;                                      // +0x20
@@ -186,6 +225,7 @@ class CMagicModel : public CPtred
 public:
     CMagicModel();                                                  // 0x141467480
     virtual ~CMagicModel() = default;                               // 0 0x141468db0
+    int FUN_141467b30();                                            // 0x141467b30 the model's own duration
 
     Unk_SocketPtr<CMagic> m_spMagic;                                // +0x18
     Unk_MagicTagPtr m_spA;                                          // +0x28
