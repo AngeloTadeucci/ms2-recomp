@@ -21,6 +21,10 @@ public:
     ASTooltip(const Scaleform::GFx::Value& root, int nMovieId);     // 0x1409c6350 (uiadventureleveldialog.cpp)
     virtual ~ASTooltip();
     void FUN_1409c6dc0(int n);
+    void FUN_1409c6d70(const CString& strClass);                         // set the AS class name
+    void FUN_1409c6e00(int n);
+    void FUN_1409c6e60(int n);
+    void FUN_1409c6cb0(const CStringW& strText);                         // set the text
     void FUN_1409c6e90(int n);
     int FUN_1409e26b0(const CStringW& strText);
     int FUN_1409e1770(int a1, int a2);
