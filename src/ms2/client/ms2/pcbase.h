@@ -229,6 +229,8 @@ public:
     int FUN_1416765b0();                                    // 0x1416765b0 the ridee has a free seat
     void FUN_141676060(NiPoint3 kPos);                      // 0x141676060 set +0xc10 (forwarded to the ridee)
     void FUN_14166ebf0(PCBase* pOther);                     // 0x14166ebf0 copy pOther's +0xae0 entity position
+    int FUN_141675ed0();                                    // 0x141675ed0 standing on a kind-8 (water) entity
+    void FUN_141676140();                                   // 0x141676140 send the fall damage since +0xc10
     void FUN_141678f50();                                   // 0x141678f50 detach +0xc40 from "Eff_UI"
     // clonepc.cpp (w69)
     bool FUN_14166ed10();                                   // 0x14166ed10 the value ClonePC copies into m_b9d0
@@ -307,7 +309,7 @@ public:
     float FUN_141671940();
     void FUN_141671990(float fScale);
     BOOL FUN_141671b20();
-    NiPoint3 FUN_141676020();
+    efd::Point3 FUN_141676020();
     void FUN_141676980(int n);
     void FUN_1416769a0(__int64 nUid);
     int FUN_1416769d0();
@@ -317,7 +319,7 @@ public:
     void FUN_141678300(int n);
     int FUN_141678320();
     void FUN_141678340(int n);
-    NiPoint3 FUN_141678710();
+    efd::Point3 FUN_141678710();
     int FUN_141679070();
     void FUN_141679090(int n);
     int FUN_14166c960();                                    // 0x14166c960 queued state (m_unk_c48)
@@ -454,7 +456,7 @@ public:
     int m_unk_968;                      // +0x968
     Timer m_timer970;                   // +0x970
     int m_unk_9a8;                      // +0x9a8
-    NiPoint3 m_pos9ac;                  // +0x9ac = ZERO
+    efd::Point3 m_pos9ac;               // +0x9ac = ZERO (shadow ground point)
     NiPoint3 m_pos9b8;                  // +0x9b8 (init 0x1402bd040)
     unsigned short m_unk_9c4;           // +0x9c4 ground material kind
     float m_f9c8;                       // +0x9c8 (FLT_MAX / 0; shadow argument)
@@ -496,7 +498,7 @@ public:
     int m_unk_c04;                      // +0xc04 = 1
     Unk_PCBaseFlags m_unk_c08;          // +0xc08 hide reasons
     int m_unk_c0c;                      // +0xc0c
-    NiPoint3 m_posC10;                  // +0xc10 = ZERO
+    efd::Point3 m_posC10;               // +0xc10 = ZERO (fall start height)
     NiPoint3 m_posC1C;                  // +0xc1c
     NiPoint3 m_posC28;                  // +0xc28
     efd::SmartPointer<NiAVObject> m_spC38;  // +0xc38 (init 0x14097eba0(p,0))

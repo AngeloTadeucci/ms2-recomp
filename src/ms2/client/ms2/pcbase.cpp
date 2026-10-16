@@ -11,6 +11,7 @@
 #include "pcbase.h"
 #include "ms2/client/ms2/ridee.h"
 #include "ms2/placeholder/cinpacket.h"
+#include "ms2/placeholder/coutpacket.h"
 #include "ms2/client/ms2/fielddatacli.h"
 #include "ms2/client/ms2/statemanager.h"
 #include "ms2/client/ms2/animationmanager.h"
@@ -149,6 +150,11 @@ class Unk_PCBaseState0b : public State
 public:
     int FUN_1417c4320();
 };
+class Unk_PCBaseState0d : public State                              // ?\statehit.cpp
+{
+public:
+    int FUN_1417cb160();
+};
 class Unk_PCBaseState0f : public State
 {
 public:
@@ -181,8 +187,18 @@ public:
 class Unk_PCBaseHitReport
 {
 public:
+    egf::EntityID FUN_140cfaf70();                                  // id of the entity stood on
     Unk_PCBaseEntity* FUN_140cfaff0();                              // the entity stood on
 };
+
+// The fall-damage request (packet 0x34).
+struct Unk_PCBaseFallDamage
+{
+    Unk_PCBaseFallDamage() : m_fHeight(0.0f) {}                     // 0x14167e4e0
+    void FUN_1401fc710(COutPacket& kPacket);                        // encode
+    float m_fHeight;
+};
+void FUN_140710590(COutPacket& kPacket);                            // send
 
 // A physics ray query (physxhelper.h's Unk_RayCastInfo; 0x68).
 struct Unk_PCBaseRayHit
@@ -205,7 +221,7 @@ MS2_CHECK_SIZE(Unk_PCBaseRayHit, 0x68);
 class Unk_PCBasePhysX
 {
 public:
-    int FUN_14168a310(const NiPoint3& kFrom, NiPoint3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, NiPoint3* pNormal, int nB);
+    int FUN_14168a310(const NiPoint3& kFrom, efd::Point3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, NiPoint3* pNormal, int nB);
 };
 Unk_PCBasePhysX* FUN_1409f7ca0();
 float FUN_14028d380(float fValue);                                  // percent (x100)
@@ -269,7 +285,7 @@ class CObjectShadow : public NiRefObject
 {
 public:
     void FUN_14160fe50(bool b);
-    void FUN_14160feb0(int n, const NiPoint3& kPos, const efd::Point3& kUp, float f, bool b);
+    void FUN_14160feb0(int n, const efd::Point3& kPos, const efd::Point3& kUp, float f, bool b);
 };
 
 // An effect request handed to the effect manager (0x70; ctor 0x140a52ef0 / dtor 0x1405a89e0, same functions as
@@ -1549,7 +1565,7 @@ Unk_PCBaseBuffs* PCBase::FUN_1416749a0()
 MS2_REPLACE_METHOD(0x1416749a0, PCBase, FUN_1416749a0, 17, 0xD57792A0);
 
 // @0x141676020
-NiPoint3 PCBase::FUN_141676020()
+efd::Point3 PCBase::FUN_141676020()
 {
     return m_posC10;
 }
@@ -1633,7 +1649,7 @@ void PCBase::FUN_141678340(int n)
 MS2_REPLACE_METHOD(0x141678340, PCBase, FUN_141678340, 25, 0x758EB519);
 
 // @0x141678710
-NiPoint3 PCBase::FUN_141678710()
+efd::Point3 PCBase::FUN_141678710()
 {
     return m_pos9ac;
 }
@@ -1894,7 +1910,6 @@ void PCBase::FUN_141670ed0(Unk_PCBaseEntity* pEntity)
 MS2_REPLACE_METHOD(0x141670ed0, PCBase, FUN_141670ed0, 247, 0xF98BBCFA);
 
 // @0x141671130
-// MS2-FUNCTIONAL: the exe assigns efd::Point3::ZERO to the NiPoint3 member directly; here it goes through a temporary.
 void PCBase::vfunc_93(bool bMaterial)
 {
     if (FUN_141671a30() != 0) {
@@ -1907,7 +1922,7 @@ void PCBase::vfunc_93(bool bMaterial)
         Unk_PCBaseRayHit kHit;
         m_unk_9a8 = FUN_1409f7ca0()->FUN_14168a310(vfunc_18(), &m_pos9ac, &kHit, 0.0f, &m_pos9b8, 0);
         if (m_unk_9a8 == 0) {
-            m_pos9ac = NiPoint3::ZERO;
+            m_pos9ac = efd::Point3::ZERO;
             m_f9c8 = FLT_MAX;
         }
         else {
@@ -1917,7 +1932,7 @@ void PCBase::vfunc_93(bool bMaterial)
     if (bMaterial) {
         m_unk_9c4 = 0;
         m_str958.Empty();
-        Unk_PCBaseEntity* pEntity = FUN_14166d220()->FUN_141240f20()->FUN_140cfaff0();
+        Unk_PCBaseEntity* pEntity = m_unk_150->FUN_141240f20()->FUN_140cfaff0();
         if (pEntity != 0)
             FUN_141670ed0(pEntity);
     }
@@ -2734,3 +2749,52 @@ void PCBase::FUN_141678f50()
     m_spC40 = 0;
 }
 MS2_REPLACE_METHOD(0x141678f50, PCBase, FUN_141678f50, 279, 0x6D1CA468);
+
+// @0x141675ed0
+int PCBase::FUN_141675ed0()
+{
+    efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
+    if (spRidee)
+        return spRidee->FUN_141675ed0();
+    if (m_unk_150 == 0)
+        return 0;
+    egf::EntityID kId = m_unk_150->FUN_141240f20()->FUN_140cfaf70();
+    if (kId != egf::kENTITY_INVALID) {
+        Unk_PCBaseEntity* pEntity = m_unk_150->FUN_141240f20()->FUN_140cfaff0();
+        if (pEntity != 0) {
+            unsigned short nKind = 0;
+            pEntity->FUN_140ae1160(0xada5c5d2, &nKind);
+            if (nKind == 8)
+                return 1;
+        }
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141675ed0, PCBase, FUN_141675ed0, 320, 0x703C9673);
+
+// @0x141676140
+void PCBase::FUN_141676140()
+{
+    if (m_posC10 == efd::Point3::ZERO)
+        return;
+    if (FUN_141671a30() == 0)
+        return;
+    MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+    if (spField.get() != 0 && spField->m_nFallDamage == 0)
+        return;
+    Unk_PCBaseState0d* pState;
+    if (FUN_14166c930() == 0xd && (pState = static_cast<Unk_PCBaseState0d*>(FUN_14166ccb0())) != 0 && pState->FUN_1417cb160() == 0)
+        return;
+    if (FUN_141675ed0() == 0) {
+        float fHeight = m_posC10.z - vfunc_18().z;
+        if (fHeight > 0.0f) {
+            Unk_PCBaseFallDamage kFall;
+            kFall.m_fHeight = fHeight;
+            COutPacket kPacket(0x34, 0);
+            kFall.FUN_1401fc710(kPacket);
+            FUN_140710590(kPacket);
+        }
+    }
+    m_posC10 = efd::Point3::ZERO;
+}
+MS2_REPLACE_METHOD(0x141676140, PCBase, FUN_141676140, 443, 0x505E464D);
