@@ -134,6 +134,57 @@
 // MS2-PIN: ??_GTreeWatering_EmotionDay@@UEAAPEAXI@Z 0x1403eb990
 // MS2-PIN: ??_GTreeWatering_TreeResource@@UEAAPEAXI@Z 0x1403eb9d0
 // MS2-PIN: ??_GTreeWatering_TreeStep@@UEAAPEAXI@Z 0x1403eba10
+// MS2-PIN: ??_G?$MS2Ptr@UCard@GalleryContext@@@@QEAAPEAXI@Z 0x1403e9650
+// MS2-PIN: ??_G?$MS2Ptr@UReward@StampEventContext@@@@QEAAPEAXI@Z 0x1403e9690
+// MS2-PIN: ??_G?$MS2Ptr@URewardData@RpsContext@@@@QEAAPEAXI@Z 0x1403e96d0
+// MS2-PIN: ??_G?$MS2Ptr@USnowman@SnowmanContext@@@@QEAAPEAXI@Z 0x1403e9710
+// MS2-PIN: ??_G?$MS2Ptr@UStamp@StampEventContext@@@@QEAAPEAXI@Z 0x1403e9750
+// MS2-PIN: ??_G?$MS2Ptr@VEventTimeLimitDungeonContext@@@@QEAAPEAXI@Z 0x1403e9790
+// MS2-PIN: ??_G?$MS2Ptr@VTreeWatering_EmotionDay@@@@QEAAPEAXI@Z 0x1403e97d0
+// MS2-PIN: ??_GUnk_GameEventStrPair@@QEAAPEAXI@Z 0x1403eb4d0
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@UCard@GalleryContext@@@@V?$CElementTraits@V?$MS2Ptr@UCard@GalleryContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@UCard@GalleryContext@@@@@Z 0x1403eba50
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@UCard@GalleryContext@@@@V?$CElementTraits@V?$MS2Ptr@UCard@GalleryContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403edbb0
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@UCard@GalleryContext@@@@@ATL@@SAXPEAV?$MS2Ptr@UCard@GalleryContext@@@@0_K@Z 0x1403f1780
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@@Z 0x1403ebb00
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403edd50
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@@ATL@@SAXPEAV?$MS2Ptr@UReward@LongTermAttendGiftContext@@@@0_K@Z 0x1403f17c0
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@UReward@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@StampEventContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@UReward@StampEventContext@@@@@Z 0x1403ebbb0
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@UReward@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@StampEventContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403edef0
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@UReward@StampEventContext@@@@@ATL@@SAXPEAV?$MS2Ptr@UReward@StampEventContext@@@@0_K@Z 0x1403f1800
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@URewardData@RpsContext@@@@V?$CElementTraits@V?$MS2Ptr@URewardData@RpsContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@URewardData@RpsContext@@@@@Z 0x1403ebc60
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@URewardData@RpsContext@@@@V?$CElementTraits@V?$MS2Ptr@URewardData@RpsContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403ee090
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@URewardData@RpsContext@@@@@ATL@@SAXPEAV?$MS2Ptr@URewardData@RpsContext@@@@0_K@Z 0x1403f1840
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@USnowman@SnowmanContext@@@@V?$CElementTraits@V?$MS2Ptr@USnowman@SnowmanContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@USnowman@SnowmanContext@@@@@Z 0x1403ebd10
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@USnowman@SnowmanContext@@@@V?$CElementTraits@V?$MS2Ptr@USnowman@SnowmanContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403ee230
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@USnowman@SnowmanContext@@@@@ATL@@SAXPEAV?$MS2Ptr@USnowman@SnowmanContext@@@@0_K@Z 0x1403f1880
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@UStamp@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UStamp@StampEventContext@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@UStamp@StampEventContext@@@@@Z 0x1403ebdc0
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@UStamp@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UStamp@StampEventContext@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403ee3d0
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@UStamp@StampEventContext@@@@@ATL@@SAXPEAV?$MS2Ptr@UStamp@StampEventContext@@@@0_K@Z 0x1403f18c0
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VTreeWatering_EmotionDay@@@@@Z 0x1403ebe70
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403ee570
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@@ATL@@SAXPEAV?$MS2Ptr@VTreeWatering_EmotionDay@@@@0_K@Z 0x1403f1900
+// MS2-PIN: ?Add@?$CAtlArray@UUnk_GameEventTokenId@@V?$CElementTraits@UUnk_GameEventTokenId@@@ATL@@@ATL@@QEAA_KAEBUUnk_GameEventTokenId@@@Z 0x1403ebf20
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@UUnk_GameEventTokenId@@V?$CElementTraits@UUnk_GameEventTokenId@@@ATL@@@ATL@@AEAA_N_K@Z 0x1403ee710
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@UUnk_GameEventTokenId@@@ATL@@SAXPEAUUnk_GameEventTokenId@@0_K@Z 0x1403f1940
+// MS2-PIN: ??_GCNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeResource@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeResource@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9890
+// MS2-PIN: ??_GCNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeStep@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeStep@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e98d0
+// MS2-PIN: ??_GCNode@?$CAtlMap@IV?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9910
+// MS2-PIN: ??_GCNode@?$CAtlMap@IV?$MS2Ptr@VUnk_DungeonCtx_1403e5240@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_DungeonCtx_1403e5240@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9950
+// MS2-PIN: ?SetAt@?$CRBMap@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403f2ad0
+// MS2-PIN: ?Find@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x1403ec830
+// MS2-PIN: ?InsertImpl@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403eefd0
+// MS2-PIN: ?RBInsert@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@IEAAPEAVCNode@12@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403f09c0
+// MS2-PIN: ?NewNode@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403f0050
+// MS2-PIN: ?IsNil@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEBA_NPEAVCNode@12@@Z 0x1403ef330
+// MS2-PIN: ?LeftRotate@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x1403ef3d0
+// MS2-PIN: ?RightRotate@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x1403f25d0
+// MS2-PIN: ?IsNil@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEBA_NPEAVCNode@12@@Z 0x1403ef2f0
+// MS2-PIN: ?Minimum@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x1403ef730
+// MS2-PIN: ?Successor@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x1403f32b0
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1403ed240
+// MS2-PIN: ?GetNext@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x1403ed420
+// MS2-PIN: ?GetValueAt@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@PEAU__POSITION@@@Z 0x1403edaf0
+// MS2-PIN: ?GetKeyAt@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x1403ed370
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameevent.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>
@@ -286,6 +337,8 @@ template void Unk_GameEventCopy<TreeWatering_EmotionDay>(void*, const TreeWateri
 template void Unk_GameEventCopy<TreeWatering_TreeResource>(void*, const TreeWatering_TreeResource&);
 template void Unk_GameEventCopy<TreeWatering_TreeStep>(void*, const TreeWatering_TreeStep&);
 
+enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
+
 // The non-virtual ??_G of the container elements (allocator<T>::destroy / CAtlMap::FreeNode call `??_G(p, 0)`); the
 // maps are destroyed whole (CNode is private), which emits the ??_GCNode through RemoveAll / FreeNode.
 template <class T>
@@ -303,7 +356,49 @@ template void Unk_GameEventDestroyElem<MS2Ptr<TreeWatering_EmotionDay> >(MS2Ptr<
 template void Unk_GameEventDestroyElem<std::vector<ItemEntity> >(std::vector<ItemEntity>*);
 template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >*);
 template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >*);
-template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TimeRunEventContext::QuestContext> >>(CAtlMap<int, MS2Ptr<TimeRunEventContext::QuestContext> >*);
-template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<Unk_DungeonCtx_1403e5240> >>(CAtlMap<int, MS2Ptr<Unk_DungeonCtx_1403e5240> >*);
-template void Unk_GameEventDestroyElem<CRBMap<int, MS2Ptr<SaleCube> > >(CRBMap<int, MS2Ptr<SaleCube> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >>(CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >>(CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >*);
+template void Unk_GameEventDestroyElem<CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> > >(CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> >*);
 template void Unk_GameEventDestroyElem<Unk_GameEventStrPair>(Unk_GameEventStrPair*);
+
+// The container instantiations behind the context Read/Write and lookup paths (SetAt / Lookup / RemoveKey / Add /
+// SetCount / CallDestructors / Rehash).  gameevent.cpp's own bodies are not written yet, so the members are emitted
+// through explicit instantiations; the exe keeps only the ones those bodies use.
+// (Explicit class instantiations also emit members the exe never kept; they stay unpaired.)
+// BlueMarbleEventContext holds two trees over one MS2Ptr value (AddRef 0x1403f3830, dtor 0x1403e4e20): +0x38 (key
+// type unknown, int assumed) and the "reward"/"distance" map at +0xa8 (unsigned compare).  The value is assumed to be
+// BonusGameBlueMarbleSlot (unconfirmed).
+enum Unk_ItemTradeRestrictionType : int {};  // GameEventItemTradeRestriction::vfunc_5 adds the literals 4 / 5
+struct Unk_GameEventTokenId { int m_0; };  // 1403d7eb0 tokenizes a string into these (copied as a class)
+MS2_CHECK_SIZE(Unk_GameEventTokenId, 4);
+
+template class ATL::CAtlArray<MS2Ptr<GalleryContext::Card> >;
+template class ATL::CAtlArray<MS2Ptr<LongTermAttendGiftContext::Reward> >;
+template class ATL::CAtlArray<MS2Ptr<StampEventContext::Reward> >;
+template class ATL::CAtlArray<MS2Ptr<RpsContext::RewardData> >;
+template class ATL::CAtlArray<MS2Ptr<SnowmanContext::Snowman> >;
+template class ATL::CAtlArray<MS2Ptr<StampEventContext::Stamp> >;
+template class ATL::CAtlArray<MS2Ptr<EventTimeLimitDungeonContext> >;
+template class ATL::CAtlArray<MS2Ptr<TreeWatering_EmotionDay> >;
+template class ATL::CAtlArray<Unk_GameEventTokenId>;
+template class ATL::CAtlArray<Unk_ItemTradeRestrictionType>;
+template class ATL::CAtlArray<CStringW>;
+template class ATL::CAtlArray<unsigned __int64>;
+template class ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >;
+template class ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >;
+template class ATL::CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >;
+template class ATL::CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >;
+template class ATL::CRBTree<unsigned int, MS2Ptr<BonusGameBlueMarbleSlot> >;
+template class ATL::CRBMap<unsigned int, MS2Ptr<BonusGameBlueMarbleSlot> >;
+template class ATL::CRBTree<int, MS2Ptr<BonusGameBlueMarbleSlot> >;
+template class ATL::CRBMap<int, MS2Ptr<BonusGameBlueMarbleSlot> >;
+template class ATL::CRBTree<Unk_SaleHousingKey, MS2Ptr<SaleCube> >;
+template class ATL::CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> >;
+
+// The pair's own ??_G (sized delete 0x10 around its out-of-line dtor) comes from a scalar delete.
+template <class T>
+void Unk_GameEventDelete(T* p)
+{
+    delete p;
+}
+template void Unk_GameEventDelete<Unk_GameEventStrPair>(Unk_GameEventStrPair*);

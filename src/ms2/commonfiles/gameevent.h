@@ -89,7 +89,7 @@ class EventQuestContext : public CPtred {
 MS2_CHECK_SIZE(EventQuestContext, 0x38);
 class GalleryContext : public CPtred {
 public:
-    class Card : public CPtred {
+    struct Card : public CPtred {
         char m_pad_18[0x8];
     };  // vftable 0x142d41528, ??_G 0x1403e99d0, dtor 0x1403e5b00
 private:
@@ -1266,19 +1266,19 @@ private:
     char m_pad_d0[0x8];
 };  // vftable 0x142d402f0, ??_G 0x1403eb490, dtor 0x1403e6d70
 MS2_CHECK_SIZE(GameEventWorldmapIcon, 0xd8);
-class MesoRevivalEventContext : public CPtred {
+struct MesoRevivalEventContext : public CPtred {
     char m_pad_18[0x8];
 };  // vftable 0x142d41488, ??_G 0x1403eb510, dtor 0x1403e6dd0
 MS2_CHECK_SIZE(MesoRevivalEventContext, 0x20);
-class NpcEventDropEventContext : public CPtred {
+struct NpcEventDropEventContext : public CPtred {
     char m_pad_18[0x48];
 };  // vftable 0x142d414b8, ??_G 0x1403eb550, dtor 0x1403e6df0
 MS2_CHECK_SIZE(NpcEventDropEventContext, 0x60);
-class OntimeEventContext : public CPtred {
+struct OntimeEventContext : public CPtred {
     char m_pad_18[0x48];
 };  // vftable 0x142d41498, ??_G 0x1403eb590, dtor 0x1403e6e30
 MS2_CHECK_SIZE(OntimeEventContext, 0x60);
-class PreminmMarketSaleEventContext : public CPtred {
+struct PreminmMarketSaleEventContext : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d41620, ??_G 0x1403eb5d0, dtor 0x1403e6e50
 MS2_CHECK_SIZE(PreminmMarketSaleEventContext, 0x38);
@@ -1288,14 +1288,14 @@ class ReactorContext : public CPtred {
 MS2_CHECK_SIZE(ReactorContext, 0x50);
 class RpsContext : public CPtred {
 public:
-    class RewardData : public CPtred {
+    struct RewardData : public CPtred {
         char m_pad_18[0x28];
     };  // vftable 0x142d41580, ??_G 0x1403eb710, dtor 0x1403e6f50
 private:
     char m_pad_18[0x50];
 };  // vftable 0x142d41590, ??_G 0x1403eb750, dtor 0x1403e6f80
 MS2_CHECK_SIZE(RpsContext, 0x68);
-class SAHotTimeEventContext : public CPtred {
+struct SAHotTimeEventContext : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d41478, ??_G 0x1403eb790, dtor 0x1403e6fd0
 MS2_CHECK_SIZE(SAHotTimeEventContext, 0x38);
@@ -1303,13 +1303,13 @@ class SaleCube : public CPtred {
     char m_pad_18[0x10];
 };  // vftable 0x142d3f098, ??_G 0x1403eb7d0, dtor 0x1403e7010
 MS2_CHECK_SIZE(SaleCube, 0x28);
-class SkillUpgradeSaleEventContext : public CPtred {
+struct SkillUpgradeSaleEventContext : public CPtred {
     char m_pad_18[0x10];
 };  // vftable 0x142d414a8, ??_G 0x1403eb810, dtor 0x1403e7030
 MS2_CHECK_SIZE(SkillUpgradeSaleEventContext, 0x28);
 class SnowmanContext : public CPtred {
 public:
-    class Snowman : public CPtred {
+    struct Snowman : public CPtred {
         char m_pad_18[0x50];
     };  // vftable 0x142d41548, ??_G 0x1403eb850, dtor 0x1403e7050
 private:
@@ -1318,10 +1318,10 @@ private:
 MS2_CHECK_SIZE(SnowmanContext, 0x50);
 class StampEventContext : public CPtred {
 public:
-    class Reward : public CPtred {
+    struct Reward : public CPtred {
         char m_pad_18[0x68];
     };  // vftable 0x142d414e8, ??_G 0x1403eb6d0, dtor 0x1403e6f10
-    class Stamp : public CPtred {
+    struct Stamp : public CPtred {
         char m_pad_18[0x10];
     };  // vftable 0x142d414d8, ??_G 0x1403eb8d0, dtor 0x1403e70d0
 private:
@@ -1347,14 +1347,14 @@ MS2_CHECK_SIZE(TreeWatering_TreeStep, 0x40);
 // TimeRunEventContext: only the nested class (the outer class is a gameeventcontext.cpp type, not recovered here).
 class TimeRunEventContext : public CPtred {
 public:
-    class QuestContext : public CPtred {
+    struct QuestContext : public CPtred {
         char m_pad_18[0x10];
     };  // vftable 0x142d41518, ??_G 0x1403eb610, dtor 0x1403e6e80
 };
 // LongTermAttendGiftContext: only the nested class (the outer class is a gameeventcontext.cpp type, not recovered here).
 class LongTermAttendGiftContext : public CPtred {
 public:
-    class Reward : public CPtred {
+    struct Reward : public CPtred {
         char m_pad_18[0x68];
     };  // vftable 0x142d41610, ??_G 0x1403eb690, dtor 0x1403e6ed0
 };
@@ -1371,6 +1371,12 @@ class EventTimeLimitDungeonContext : public CPtred {   // operator new(0x28) in 
     char m_pad_18[0x10];
 };
 MS2_CHECK_SIZE(EventTimeLimitDungeonContext, 0x28);
+// The CRBMap<unsigned int, MS2Ptr<.>> value of BlueMarbleEventContext (+0x38); vftable 0x142d44130, ??_G 0x140411ac0
+// (operator delete 0x28, dtor 0x1404105a0), both in gameeventcontext.cpp.
+class BonusGameBlueMarbleSlot : public CPtred {
+    char m_pad_18[0x10];
+};
+MS2_CHECK_SIZE(BonusGameBlueMarbleSlot, 0x28);
 // The CAtlMap value of the CNode ??_G 0x1403e9950 (MS2Ptr<T> dtor 0x1403e5240, sorted between
 // MS2Ptr<DungeonBonusRewardCtx> and MS2Ptr<EnchantRateEventContext>; one of the Dungeon*Ctx classes). Name unknown.
 class Unk_DungeonCtx_1403e5240 : public CPtred {
