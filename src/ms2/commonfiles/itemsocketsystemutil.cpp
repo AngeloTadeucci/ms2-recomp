@@ -21,6 +21,21 @@
 // MS2-PIN: ??D?$MS2Ptr@VCItemTransfer@@@@QEBAAEAVCItemTransfer@@XZ 0x140635e70 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7CItemSocketTable@@6B?$TSingleton@VCItemSocketTable@@@@@ 0x142d6bd60
+// MS2-PIN: ?at@?$vector@_JV?$allocator@_J@std@@@std@@QEAAAEA_J_K@Z 0x14062c480
+// MS2-PIN: ??$_Assign_range@PEB_J@?$vector@_JV?$allocator@_J@std@@@std@@AEAAXPEB_J0Uforward_iterator_tag@1@@Z 0x14062b9b0
+// MS2-PIN: ?clear@?$vector@_JV?$allocator@_J@std@@@std@@QEAAXXZ 0x14062c520
+// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VCItem@@@@V?$allocator@V?$MS2Ptr@VCItem@@@@@std@@@std@@QEBA_KXZ 0x14062c650
+// MS2-PIN: ??$FormatStringId@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V12@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HAEBV01@0@Z 0x140632a60
+// MS2-PIN: ?AssignRaw@?$Unk_EnchantPtr@VCItemEnchantInfo@@@@QEAAAEAV1@PEAVCItemEnchantInfo@@@Z 0x1406332d0
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VUnlimitedEnchantInfo@@@@QEAAAEAV1@PEAVUnlimitedEnchantInfo@@@Z 0x140633340
+// MS2-PIN: ??D?$MS2Ptr@VCItemBinding@CItemTransfer@@@@QEBAAEAVCItemBinding@CItemTransfer@@XZ 0x140635e60
+// MS2-PIN: ??D?$MS2Ptr@VCItemTransfer@@@@QEBAAEAVCItemTransfer@@XZ 0x140635e70
+// MS2-PIN: ?_Buy@?$vector@_JV?$allocator@_J@std@@@std@@AEAA_N_K@Z 0x14062c290
+// MS2-PIN: memmove_s 0x14062c690
+// MS2-PIN: ??$StringFormat@M@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBM@Z 0x1406329c0
+// MS2-PIN: ??$FUN_14028dfa0@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V12@G@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBV01@1AEBG@Z 0x140632d70
+// MS2-PIN: ??A?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAAAEAH_K@Z 0x1406333e0
+// MS2-PIN: ??C?$MS2Ptr@VCItemSocketDataContainer@@@@QEBAPEAVCItemSocketDataContainer@@XZ 0x14062e170
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemsocketsystemutil.cpp"
 
 #include "ms2/placeholder/ms2stdafx.h"
@@ -41,6 +56,9 @@
 #include "ms2/fmt/format.h"
 #include "ms2/ms2format.h"
 #include "ms2/client/ms2/randomeffectparam.h"
+#include "ms2/client/ms2/uimessageboxdata.h"
+#include "ms2/placeholder/coutpacket.h"
+#include "ms2/placeholder/wcformat.h"
 
 // The header statics of this unit: the sort-name tables of two headers, header_statics_a.h's four, then a second
 // copy of the four (two more headers that carry the same statics).
@@ -629,6 +647,8 @@ struct Unk_SSGGemUnequip
 };
 struct Unk_SockUidCountSlot
 {
+    // @0x14062c130
+    Unk_SockUidCountSlot() : m_nUid(0), m_nCount(0), m_nSlot(0) {}
     __int64 m_nUid;
     __int64 m_nCount;
     int m_nSlot;
@@ -723,7 +743,6 @@ void FUN_140628be0(Unk_SSGGemUnequip& v, CInPacket& in)
 MS2_REPLACE(0x140628BE0, FUN_140628be0, 149, 0x24338E7B);
 
 // @0x140628c80
-// MS2-FUNCTIONAL: not byte-identical yet (temp/branch layout differs from the exe)
 void FUN_140628c80(Unk_SockUidList& v, COutputStream& out)
 {
     out.vfunc_o10_4(v.m_nUid);
@@ -731,7 +750,7 @@ void FUN_140628c80(Unk_SockUidList& v, COutputStream& out)
     out.vfunc_o10_1(nCount);
     for (unsigned char i = 0; i < nCount; i++)
     {
-        __int64 nUid = v.m_aUids[i];
+        __int64 nUid = v.m_aUids.at(i);
         out.vfunc_o10_4(nUid);
     }
 }
@@ -1171,6 +1190,116 @@ void FUN_14062a230(Unk_SockItemOne& v, CInPacket& in)
 }
 MS2_REPLACE(0x14062A230, FUN_14062a230, 405, 0x1D985FE6);
 
+class Unk_CmnStrings
+{
+public:
+    CStringW FUN_141811980(int nTable, int nIndex);
+    CStringW FUN_141812290(int nBuffId, unsigned short nLevel, CString strKey);
+};
+Unk_CmnStrings* FUN_1401a9d70();
+MS2Ptr<CItem> FUN_141425750(__int64 nUid, bool* pbEquipped);   // the inventory item with this uid
+MS2Ptr<CMsgBoxData> FUN_140d73d20(int nType, CStringW text, int nUnk, CStringW tag);   // create a message box
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);                      // show it
+class Unk_IngTable;
+Unk_IngTable* FUN_140281980();
+unsigned FUN_1405575b0(Unk_IngTable*, int);                       // the item's name id
+void FUN_1412752d0(const CStringW& strKey, int nType);           // system notice by string key
+class Unk_ItemEquipData : public CItemData
+{
+};
+int FUN_140620ac0(void* pSocket, unsigned nIndex);                // the gem in socket nIndex (0: empty)
+bool FUN_140621020(void* pSocket, int nIndex);                    // socket nIndex is open and empty
+
+// @0x14062a3d0
+// Put a gemstone into a socket of spItem (nSlot -1: the first free one): checks, then the confirm box (free, or with
+// the fee item and count) whose result goes to cb.
+bool FUN_14062a3d0(MS2Ptr<CItem> spItem, int nSlot, MS2Ptr<CItem> spGem, Delegate<bool(int, const CMsgBoxData&)> cb)
+{
+    if (spItem == (CItem*)0 || spItem->FUN_140527840() == 0 || spGem == (CItem*)0)
+        return false;
+    void* pSocket = spItem->FUN_1405279c0();
+    if (pSocket == 0)
+        return false;
+    if (FUN_140620a50(pSocket) == 0)
+        return false;
+    int nMax = FUN_140620a20(pSocket);
+    if (nMax == 0) {
+        FUN_1412752d0(L"s_itemsocketsystem_error_socket_lock_all", 1);
+        return false;
+    }
+    if (nSlot >= nMax) {
+        FUN_1412752d0(L"s_itemsocketsystem_error_socket_lock", 1);
+        return false;
+    }
+    int nTarget = -1;
+    if (nSlot == -1) {
+        for (unsigned i = 0; i < nMax; i++) {
+            int nGem = FUN_140620ac0(pSocket, i);
+            if (nGem == 0) {
+                nTarget = i;
+                break;
+            }
+        }
+    } else {
+        if (!FUN_140621020(pSocket, nSlot)) {
+            FUN_1412752d0(L"s_itemsocketsystem_error_socket_used", 1);
+            return false;
+        }
+        nTarget = nSlot;
+    }
+    if (nTarget == -1) {
+        FUN_1412752d0(L"s_itemsocketsystem_error_socket_used", 1);
+        return false;
+    }
+    unsigned short nRate = FUN_140626f20(spGem->FUN_1405276c0());
+    int nFeeItem = 0;
+    int nFeeCount = 0;
+    FUN_1406284f0(nRate, spItem->FUN_140527840()->FUN_14053de40(), &nFeeItem, &nFeeCount);
+    CStringW strMsg;
+    int nSocketNo = nTarget + 1;
+    unsigned nFeeName = FUN_1405575b0(FUN_140281980(), nFeeItem);
+    if (nFeeCount > 0)
+        strMsg = FUN_14028dfa0(L"s_itemsocketsystem_msg_ask_gemstone_put_on", nSocketNo,
+                               FUN_1401a9d70()->FUN_141811980(1, nFeeName), nFeeCount);
+    else
+        strMsg = FUN_14028dfa0(L"s_itemsocketsystem_msg_ask_gemstone_put_on_free", nSocketNo);
+    MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(1, strMsg, 0, L"");
+    if (spBox == (CMsgBoxData*)0)
+        return false;
+    spBox->FUN_141a027c0(cb);
+    spBox->FUN_141a024a0(0);
+    spBox->FUN_1405340b0(spGem->FUN_140526a50());
+    spBox->FUN_140533ff0(nTarget);
+    FUN_140d73c60(spBox);
+    return true;
+}
+MS2_REPLACE(0x14062A3D0, FUN_14062a3d0, 2007, 0xA6CFDB87);
+
+// @0x14062abb0
+// The socket unlock confirm box result: request the unlock (packet 0x88, mode 8) with the box's count and slot.
+bool FUN_14062abb0(MS2Ptr<CItem> spItem, const CMsgBoxData& box)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    __int64 nUid = spItem->FUN_140526a50();
+    if (FUN_141425750(nUid, 0) == (CItem*)0) {
+        FUN_1412752d0(L"s_itemsocketsystem_error_invalid_target", 1);
+        return false;
+    }
+    __int64 nCount = box.FUN_141a02f10(0, 0);
+    int nSlot = box.FUN_141a02e50(1, 0);
+    Unk_SockUidCountSlot kMsg;
+    kMsg.m_nCount = nCount;
+    kMsg.m_nUid = nUid;
+    kMsg.m_nSlot = nSlot;
+    COutPacket packet(0x88, 0);
+    packet.Encode1(8);
+    FUN_140628840(kMsg, packet);
+    FUN_140710590(packet);
+    return true;
+}
+MS2_REPLACE(0x14062ABB0, FUN_14062abb0, 443, 0xB6C836FB);
+
 // @0x14062c7b0
 CItemSocketData::CItemSocketData() : m_nGrade(0), m_nMaxCount(0), m_nOpenType(0)
 {
@@ -1350,18 +1479,9 @@ int FUN_141654700(Unk_Actor*);                          // its job
 class Unk_JobTable { };
 Unk_JobTable* FUN_1401d7a50();
 int FUN_140644bb0(Unk_JobTable*, int nJob);             // the job's name id
-class Unk_CmnStrings
-{
-public:
-    CStringW FUN_141811980(int nTable, int nIndex);
-    CStringW FUN_141812290(int nBuffId, unsigned short nLevel, CString strKey);
-};
-Unk_CmnStrings* FUN_1401a9d70();
 CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
 CStringW FormatStringId(int nId, const fmt::ArgList& args);                 // 0x14028dee0
 FMT_VARIADIC_W(CStringW, FormatStringId, int)
-CStringW FUN_14028dfa0(const CStringW& strKey, const fmt::ArgList& args);        // the localized formatter
-FMT_VARIADIC_W(CStringW, FUN_14028dfa0, const CStringW&)
 class Unk_OptionFactory
 {
 public:
