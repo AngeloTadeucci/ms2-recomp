@@ -113,7 +113,7 @@ public:
     virtual void vfunc_14() override;                       // 14  0x1410a2a30
     virtual void vfunc_23(int n) override;                  // 23  0x1410a3d70
     virtual void vfunc_53(float f) override;                // 53  0x1410a3e70
-    virtual void vfunc_67(void* a, void* b) override;       // 67  0x1410a3a60
+    virtual void vfunc_67(efd::Point3* pDir, efd::Point3* pSide) override;   // 67  0x1410a3a60
     virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d) override;   // 68 0x1410a3b20
     virtual void vfunc_125(double fTime) override;          // 125 0x1410a23c0
     virtual void vfunc_127() override;                      // 127 0x1410a34f0

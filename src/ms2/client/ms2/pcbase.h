@@ -163,7 +163,7 @@ public:
     virtual int vfunc_64();                                 // 64  0x14166cec0
     virtual int vfunc_65();                                 // 65  0x14166ced0
     virtual void vfunc_66(int n);                           // 66  0x14166cef0
-    virtual void vfunc_67(void* a, void* b);                // 67  0x14166cf40
+    virtual void vfunc_67(efd::Point3* pDir, efd::Point3* pSide);   // 67  0x14166cf40 facing and side vectors
     virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d);  // 68 0x14166e100
     virtual int vfunc_69();                                 // 69  0x14166f9f0
     virtual Unk_PCBaseFxLib* vfunc_70();                    // 70  0x14166fa00

@@ -142,7 +142,7 @@ public:
     virtual void vfunc_53(float f);                         // 53  0x1417079f0
     virtual int vfunc_57();                                 // 57  0x141705560
     virtual int vfunc_58();                                 // 58  0x141705220
-    virtual void vfunc_67(void* a, void* b);                // 67  0x141706180
+    virtual void vfunc_67(efd::Point3* pDir, efd::Point3* pSide);   // 67  0x141706180
     virtual int vfunc_69();                                 // 69  0x141707070
     virtual Unk_PCBaseFxLib* vfunc_70();                    // 70  0x141705880
     virtual MS2Ptr<Unk_PCBaseComp_a58> vfunc_80();          // 80  0x1417077a0

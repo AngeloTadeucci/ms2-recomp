@@ -921,17 +921,17 @@ void CConstructionGuideObject::EndOfSequence(NiActorManager*, NiActorManager::Se
 }
 
 // @0x1410a3a60
-void CConstructionGuideObject::vfunc_67(void* a, void* b)
+void CConstructionGuideObject::vfunc_67(efd::Point3* pDir, efd::Point3* pSide)
 {
     PCBase* pOwner = FUN_1410a1310();
     if (pOwner != 0)
-        pOwner->vfunc_67(a, b);
+        pOwner->vfunc_67(pDir, pSide);
     if (m_unk_c00 == 0x11)
     {
         if (FUN_140af0210(FUN_1409478c0()) != 0)
         {
-            *(NiPoint3*)b = NiPoint3(-1.0f, 0.0f, 0.0f);
-            *(NiPoint3*)a = NiPoint3(0.0f, 1.0f, 0.0f);
+            *pSide = NiPoint3(-1.0f, 0.0f, 0.0f);
+            *pDir = NiPoint3(0.0f, 1.0f, 0.0f);
         }
     }
 }

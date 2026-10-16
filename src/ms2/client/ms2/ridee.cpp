@@ -846,10 +846,10 @@ bool Ridee::FUN_1417060d0()
 MS2_REPLACE_METHOD(0x1417060d0, Ridee, FUN_1417060d0, 165, 0x6A0276AB);
 
 // @0x141706180
-void Ridee::vfunc_67(void* a, void* b)
+void Ridee::vfunc_67(efd::Point3* pDir, efd::Point3* pSide)
 {
     m_posBF4 = FUN_1409478c0()->FUN_140af8290();
-    PCBase::vfunc_67(a, b);
+    PCBase::vfunc_67(pDir, pSide);
 }
 MS2_REPLACE_METHOD(0x141706180, Ridee, vfunc_67, 82, 0xB163C752);
 

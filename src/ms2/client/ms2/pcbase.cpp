@@ -678,6 +678,13 @@ private:
 };
 MS2_CHECK_SIZE(Unk_SceneWalker, 0x38);
 extern NiFixedString DAT_143ae5470[9][30];
+float FUN_14059d930(float f);                                       // fabs
+class Unk_PCBaseCameraMgr
+{
+public:
+    int FUN_140af0210();                                            // the guide (top-down) camera is on
+};
+Unk_PCBaseCameraMgr* FUN_1409478c0();
 extern NiFixedString DAT_143ae5ce0[50];                             // "Hold_PointNN" dummy names (unit_1416bc380)
 PCBase* FUN_1409ffd30(GameObject* pObj);                            // efd::DynamicCast<PCBase> (class id 0x06200013)
 bool FUN_14028d470(float fA, float fB);                             // float equality
@@ -1167,6 +1174,41 @@ void* PCBase::FUN_14166d240()
 {
     return m_unk_6d8;
 }
+
+// @0x14166cf40
+// MS2-FUNCTIONAL: byte-exact; only the shared symbols.tsv binds efd::Point3::Cross to 0x14109adc0 (UnitCross); the manual row 0x140a00e10 fixes it at merge.
+void PCBase::vfunc_67(efd::Point3* pDir, efd::Point3* pSide)
+{
+    if (m_unk_c00 == 0xe)
+    {
+        NiPoint3 kRot = vfunc_20();
+        NiMatrix3 kMat;
+        kMat.MakeZRotation((kRot.z * 3.1415927f) / 180.0f);
+        *pDir = -efd::Point3::UNIT_Y * kMat;
+        *pSide = -pDir->UnitCross(efd::Point3::UNIT_Z);
+    }
+    else
+    {
+        efd::Point3 kAngles = m_posBF4;
+        kAngles = (kAngles * 3.1415927f) / 180.0f;
+        efd::Matrix3 kMat;
+        kMat.FromEulerAnglesXYZ(kAngles.x, kAngles.y, kAngles.z);
+        kMat.GetCol(0, *pDir);
+        pDir->z = 0.0f;
+        if (FUN_14059d930(pDir->x) < 0.001f)
+            pDir->x = 0.0f;
+        if (FUN_14059d930(pDir->y) < 0.001f)
+            pDir->y = 0.0f;
+        pDir->Unitize();
+        *pSide = -pDir->Cross(efd::Point3::UNIT_Z);
+    }
+    if (m_unk_c00 == 0x11 && FUN_1409478c0()->FUN_140af0210() != 0)
+    {
+        *pSide = NiPoint3(-1.0f, 0.0f, 0.0f);
+        *pDir = NiPoint3(0.0f, 1.0f, 0.0f);
+    }
+}
+MS2_REPLACE_METHOD(0x14166cf40, PCBase, vfunc_67, 730, 0x7C8F1331);
 
 // @0x14166d260
 void PCBase::FUN_14166d260()
