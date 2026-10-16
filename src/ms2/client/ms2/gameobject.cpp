@@ -726,7 +726,7 @@ float GameObject::FUN_14123cd50(efd::Point3 kDir)
     kDir.Unitize();
     NiMatrix3 kMat;
     efd::Point3 kBack = -kDir;
-    efd::Point3 kSide = kBack.Cross(efd::Point3::UNIT_Z);
+    efd::Point3 kSide = kBack.UnitCross(efd::Point3::UNIT_Z);
     efd::Point3 kAngles;
     kMat.SetCol(0, kSide);
     kMat.SetCol(1, kBack);
