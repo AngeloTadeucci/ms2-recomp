@@ -16,6 +16,7 @@
 #include "ms2/ms2layout.h"
 
 class CItemData;
+class CEquipItem;
 
 class CItemUgcMesh : public CPtred
 {
@@ -44,6 +45,12 @@ public:
     bool FUN_141426540(MS2Ptr<CItemData> spData, NiAVObjectPtr spRoot);   // 0x141426540
     void FUN_141426980();                                   // 0x141426980 re-applies the texture of every mesh
     NiTexturePtr FUN_141426d40();                           // 0x141426d40 texture of the first mesh (or null)
+    // itemugcmesh.cpp (appended by w79): rebuild from an equip item's parts, helpers
+    bool FUN_141426170(MS2Ptr<CEquipItem> spItem);          // 0x141426170
+    void FUN_141426750(CAtlArray<CString>& aNames, void* pItemData);   // 0x141426750 part names of the item data
+    void FUN_141426810(NiTexturePtr spTexture);             // 0x141426810 sets the texture on every mesh
+    MS2Ptr<CItemUgcMesh> FUN_141426af0(const CString& strName, NiAVObjectPtr spRoot);   // 0x141426af0
+    NiTexturePtr FUN_141426e30();                           // 0x141426e30 decal texture of the first mesh's object
 
     MS2_LAYOUT_FRIEND;
     ATL::CAtlArray<MS2Ptr<CItemUgcMesh> > m_meshes;         // +0x18
