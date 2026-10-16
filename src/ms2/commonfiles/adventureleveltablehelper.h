@@ -1,8 +1,10 @@
 // adventureleveltablehelper.h - CAdventureLevelTableHelper / CAdventureLevelTable / CAdventureLevelMissionData (RTTI names).
-// Header name assumed. Member and helper names are invented from use; the table's containers (std::map / list glue
-// at +0x10..+0x88) are not recovered yet and are kept as opaque storage.
+// Header name assumed. Member and helper names are invented from use. The maps at +0x10 / +0x20 are never filled
+// by any recovered function (their loaders are stubs returning true), so their element types are placeholders.
 #pragma once
 #include <afx.h>
+#include <map>
+#include <vector>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cvaliddata.h"
@@ -22,6 +24,44 @@ public:
 MS2_CHECK_SIZE(CAdventureLevelMissionData, 0x28);
 MS2_CHECK_OFFSET(CAdventureLevelMissionData, m_p20, 0x20);
 
+// AdventureLevelReward.xml row (the value of the map at +0x48, keyed by level).
+struct CAdventureLevelReward
+{
+    int m_nType;                                // 0 none, 1 "item", 2 "statPoint"
+    int m_nId;
+    int m_nRank;
+    int m_nValue;
+};
+MS2_CHECK_SIZE(CAdventureLevelReward, 0x10);
+
+// AdventureLevelAbility.xml row (the value of the map at +0x70, keyed by additionalEffectId). 0x1c bytes.
+struct CAdventureLevelAbility
+{
+    unsigned m_nEffectId;                       // +0x00
+    int m_nId;                                  // +0x04 "id"; 0 means no ability
+    unsigned m_nRequireLevel;                   // +0x08
+    int m_nInterval;                            // +0x0c level step per extra count
+    int m_nMaxCount;                            // +0x10 (read as a ushort)
+    float m_fStartValue;                        // +0x14
+    float m_fAddValue;                          // +0x18
+
+    unsigned short GetCount(unsigned nLevel) const;         // 0x140195910
+    int GetLevelOfCount(unsigned nLevel) const;             // 0x1401959d0
+    float GetPercent(unsigned nLevel) const;                // 0x140195a20
+};
+MS2_CHECK_SIZE(CAdventureLevelAbility, 0x1c);
+
+// AdventureLevelMission.xml row (the value of the map at +0x80, keyed by missionId). 0x14 bytes.
+struct CAdventureLevelMission
+{
+    int m_nCount;                               // missionCount
+    int m_nOne;                                 // always 1
+    unsigned m_nItemId;
+    int m_nItemRank;
+    int m_nItemCount;
+};
+MS2_CHECK_SIZE(CAdventureLevelMission, 0x14);
+
 // Singleton wrapper over the table; +8 caches a pointer to the current level row.
 class CAdventureLevelTableHelper : public TSingleton<CAdventureLevelTableHelper>
 {
@@ -29,7 +69,11 @@ public:
     CAdventureLevelTableHelper();               // 0x140195470
     virtual ~CAdventureLevelTableHelper();      // 0x1401954b0
 
-    void* m_pCurrent;                           // +0x08
+    void FindCurrent();                         // 0x1401954e0
+    bool IsReached(unsigned nLevel);            // 0x1401955f0
+    CAdventureLevelAbility* GetCurrent();       // 0x140195640
+
+    CAdventureLevelAbility* m_pCurrent;         // +0x08
 };
 MS2_CHECK_SIZE(CAdventureLevelTableHelper, 0x10);
 MS2_CHECK_OFFSET(CAdventureLevelTableHelper, m_pCurrent, 0x08);
@@ -40,13 +84,25 @@ public:
     CAdventureLevelTable();                     // 0x140195b80
     virtual ~CAdventureLevelTable();            // 0x140195c60
 
-    char m_c10[0x10];                           // +0x10 container (FUN_14019bd90 / dtor FUN_14019c7d0)
-    char m_c20[0x10];                           // +0x20 container (FUN_14019bd60 / dtor FUN_14019c7b0)
-    char m_c30[0x18];                           // +0x30 container (FUN_140182830 / dtor FUN_14018ddf0)
-    char m_c48[0x10];                           // +0x48 container (FUN_14019bd30 / dtor FUN_14019c5d0)
-    char m_c58[0x18];                           // +0x58 container (FUN_140182830 / dtor FUN_14018ddf0)
-    char m_c70[0x10];                           // +0x70 container (FUN_14019bcd0 / dtor FUN_14019c570)
-    char m_c80[0x10];                           // +0x80 container (FUN_14019bd00 / dtor FUN_14019c5a0)
+    bool LoadAll();                              // 0x140195d30
+    bool LoadUnused1();                          // 0x1401961b0
+    bool LoadUnused2();                          // 0x1401961a0
+    bool LoadReward();                           // 0x1401961c0
+    bool LoadAbility();                          // 0x140196550
+    bool LoadMission();                          // 0x1401968b0
+    const CAdventureLevelReward* GetReward(unsigned nLevel);        // 0x140195e30
+    const CAdventureLevelAbility* GetAbility(unsigned nEffectId);   // 0x140195ed0
+    const CAdventureLevelMission* GetMission(unsigned nMissionId);  // 0x140196090
+    std::vector<unsigned>& GetLevels();         // 0x140195eb0
+    std::vector<unsigned>& GetAbilityIds();     // 0x140195f50
+
+    std::map<unsigned, unsigned> m_map10;       // +0x10 placeholder, never filled
+    std::map<unsigned, unsigned> m_map20;       // +0x20 placeholder, never filled
+    std::vector<unsigned> m_vecLevels;          // +0x30 reward levels in file order
+    std::map<unsigned, CAdventureLevelReward> m_mapReward;      // +0x48
+    std::vector<unsigned> m_vecAbilityIds;      // +0x58 sorted by required level
+    std::map<unsigned, CAdventureLevelAbility> m_mapAbility;    // +0x70
+    std::map<unsigned, CAdventureLevelMission> m_mapMission;    // +0x80
 };
 MS2_CHECK_SIZE(CAdventureLevelTable, 0x90);
-MS2_CHECK_OFFSET(CAdventureLevelTable, m_c80, 0x80);
+MS2_CHECK_OFFSET(CAdventureLevelTable, m_mapMission, 0x80);
