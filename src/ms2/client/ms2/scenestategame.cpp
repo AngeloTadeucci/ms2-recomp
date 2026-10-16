@@ -695,6 +695,7 @@ public:
     void FUN_14146bc80(CSplashDamageRecord* pRecord);
     void FUN_14146b440(CDamageRecord* pRecord, int bTracked, Unk_MagicXform* pXform, Unk_StreamPoint kDir);
     void FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast);   // drop the cast's model
+    Unk_SocketPtr<CMagicModel> FUN_14146c5d0(unsigned long long nCaster, unsigned long long nCast);   // find one
 };
 Unk_SSGMagicService* FUN_1410a7630();
 
@@ -5476,7 +5477,7 @@ MS2_REPLACE_METHOD(0x14171c0b0, CSceneStateGame, FUN_14171c0b0, 237, 0x1D3E61F8)
 class Unk_SSGSkillLevel : public CPtred { };                // the skill level row behind the record's +0x48 handle
 struct Unk_MagicTag : public CPtred
 {
-    Unk_MagicTag();
+    Unk_MagicTag() = default;                                       // 0x141746440 (implicit: 0x3d mode 8 value-inits it)
     virtual ~Unk_MagicTag() = default;                              // 0x141746cb0 (pinned)
     bool FUN_141758d70(unsigned long long nTagId, unsigned long long nTagSub, int nOwnerId, int nCasterId, int nSkillId,
         short nLevel, int nSrcLevel, Unk_StreamPoint ptDir, int n80, int n84, int nSrcIndex, int n8c);   // 0x141758d70 fill in
@@ -5502,11 +5503,6 @@ MS2_CHECK_OFFSET(Unk_MagicTag, m_spSkill, 0x38);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_spLinked, 0x70);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_mapHit, 0x90);
 MS2_CHECK_SIZE(Unk_MagicTag, 0xd8);
-
-// @0x141746440
-Unk_MagicTag::Unk_MagicTag()
-{
-}
 
 // @0x14171c1d0
 void CSceneStateGame::FUN_14171c1d0(CInPacket& packet)
@@ -5553,7 +5549,7 @@ void CSceneStateGame::FUN_14171c1d0(CInPacket& packet)
                 Unk_MagicTagPtr spParent(0);
                 if (mapTags.Lookup(nParent, spParent))
                 {
-                    Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                    Unk_MagicTagPtr spTag(new Unk_MagicTag);
                     if (spTag->FUN_141758d70(nTagId, nTagSub, nOwnerId, nCasterId, nSkillId, nLevel, nSrcLevel, ptDir,
                             n80, n84, nSrcIndex, 0))
                     {
@@ -5564,7 +5560,7 @@ void CSceneStateGame::FUN_14171c1d0(CInPacket& packet)
             }
             else
             {
-                Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                Unk_MagicTagPtr spTag(new Unk_MagicTag);
                 if (spTag->FUN_141758d70(nTagId, nTagSub, nOwnerId, nCasterId, nSkillId, nLevel, nSrcLevel, ptDir,
                         n80, n84, nSrcIndex, 0))
                 {
@@ -7177,6 +7173,41 @@ void CSceneStateGame::FUN_14171e860(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171e860, CSceneStateGame, FUN_14171e860, 308, 0x3B1A059E);
+
+// @0x14171e9a0
+void CSceneStateGame::FUN_14171e9a0(CInPacket& packet)
+{
+    unsigned long long nTagId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int bCreate = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (bCreate)
+    {
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nLevel = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCasterId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_MagicTagPtr spTag(new Unk_MagicTag());
+        if (!spTag->FUN_141758d70(nTagId, 0, nOwnerId, nCasterId, nSkillId, nLevel, 0, Unk_StreamPoint(0, 0, 0), 0, 0,
+                0, 0))
+            return;
+        PCBase* pOwner = FUN_1403ed2d0()->FUN_141bd1200(nOwnerId);
+        int nTimeMode = FUN_1403ed2d0()->FUN_141bd1a10(pOwner);
+        int nStartTick = Unk_ServerClock::GetInstance()->FUN_1414732f0(nTimeMode);
+        spTag->m_nStartTick = nStartTick;
+        Unk_SocketPtr<CMagicModel> spModel = FUN_1410a7630()->FUN_14146c5d0(nTagId, 0);
+        if (spModel == 0)
+        {
+            spModel = new CMagicModel();
+            spModel->FUN_141467500(spTag, Unk_MagicTagPtr(0), Unk_StreamPoint(0, 0, 0), 0, 1, 1);
+        }
+    }
+    else
+    {
+        if (FUN_1410a7630() == 0)
+            return;
+        FUN_1410a7630()->FUN_14146c4b0(nTagId, 0);
+    }
+}
+MS2_REPLACE_METHOD(0x14171e9a0, CSceneStateGame, FUN_14171e9a0, 1232, 0x81595E1A);
 
 // A field object placed by the server (portal, field-entry object); RTTI CPortal, 0x1b8 bytes. Same layout as
 // worldservice_1.cpp's Unk_WsE_FieldObject; only the fields set by packet 0x48 are named.
@@ -12203,7 +12234,7 @@ void CSceneStateGame::FUN_14172c170(CInPacket& packet)
             {
                 __int64 nTagSub = static_cast<CInputStream&>(packet).vfunc_o8_4();
                 unsigned char n84 = static_cast<CInputStream&>(packet).vfunc_o8_1();
-                Unk_MagicTagPtr spTag(new Unk_MagicTag());
+                Unk_MagicTagPtr spTag(new Unk_MagicTag);
                 if (spTag->FUN_141758d70(spInfo->m_nTagId, nTagSub, pOwner->FUN_14123c580(), 0, spInfo->m_nSkillId,
                         spInfo->m_nLevel, spInfo->m_nSrcLevel, ptDir, 0, n84, spInfo->m_nSrcIndex, 0))
                 {
