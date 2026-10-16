@@ -207,6 +207,7 @@ public:
     void FUN_141a02670(bool b);
     void FUN_141a024e0(CStringW str, int n);
     void FUN_140533ff0(int n);                                      // appends an int argument (COMDAT outside this class' range)
+    void FUN_1405340b0(__int64 n);                                  // appends an __int64 argument (scenestategame.cpp, w97)
     void FUN_140b76940(CStringW str);                               // appends a string argument (the callee destroys it)
 
     // Accessors uimessagebox.cpp calls (0x141a01570-0x141a03470 and outside COMDATs).

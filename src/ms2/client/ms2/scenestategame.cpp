@@ -29,6 +29,7 @@
 // MS2-PIN: ??4?$MS2Ptr@VUnk_StateArg22@@@@QEAAAEAV0@AEBV0@@Z 0x141746f20 ; w95 manual
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
+// MS2-PIN: ??1Unk_SSGCharNameResult@@QEAA@XZ 0x141746aa0 ; w97 manual
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -864,7 +865,7 @@ static CString s_sort8[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "C
 static CString s_sort7[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_skill = "skill";
 static CString s_stun = "stun";
-static Unk_Handle1401cd100 s_handle(0);
+static Unk_Handle1401cd100 s_handle(0);                     // @0x1400ffb90
 static Unk_1402a9d70 s_condition(17, 0.75f, 0.25f, 2.25f, 10);
 static UICommon::CMyPCKeyInputController s_keyInput;
 static CString s_jobCode = "jobCode";
@@ -2970,6 +2971,103 @@ void CSceneStateGame::FUN_141737d60(CInPacket& packet)
     pMyPC->FUN_141523bc0()->FUN_141767ae0(packet);
 }
 MS2_REPLACE_METHOD(0x141737d60, CSceneStateGame, FUN_141737d60, 70, 0x9CE84DE8);
+
+// 0xd3: the character name change result (an error text, or the confirm box with the name change item).
+struct Unk_SSGCharNameResult
+{
+    Unk_SSGCharNameResult() : m_bFailed(false), m_nItemUid(0) {}   // @0x141745f30
+    bool m_bFailed;                                         // +0x00
+    __int64 m_nItemUid;                                     // +0x08
+    CStringW m_strName;                                     // +0x10
+};
+void FUN_1407a5fd0(Unk_SSGCharNameResult& v, CInputStream& in);     // decode (unit_1407a4f20.cpp)
+void FUN_14151f200();                                       // show the next queued message box (messageboxqueue.cpp)
+MS2Ptr<CMsgBoxData> FUN_140d73d20(int nType, CStringW text, int nUnk, CStringW tag);
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);
+
+// MS2-FUNCTIONAL: same code; the exe keeps kResult low in the frame (rsp+0x60, ours +0xf8), so every slot differs.
+// @0x141737db0
+void CSceneStateGame::FUN_141737db0(CInputStream& in)
+{
+    Unk_SSGCharNameResult kResult;
+    FUN_1407a5fd0(kResult, in);
+    __int64 nItemUid = kResult.m_nItemUid;
+    const CStringW& strName = kResult.m_strName;
+    if (kResult.m_bFailed == true)
+    {
+        CStringW strMsg = FUN_14052bd00(0x2a, strName);
+        FUN_140d73aa0(strMsg, 0, 0, CStringW(L""));
+    }
+    else
+    {
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0)
+        {
+            CStringW strMsg = FUN_140632a60(0x28, pMyPC->vfunc_77(), strName);
+            FUN_14151f200();
+            MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(1, strMsg, 0, s_confirmChangeCharName);
+            if (spBox.get() != 0)
+            {
+                spBox->FUN_1405340b0(nItemUid);
+                spBox->FUN_140b76940(strName);
+                FUN_140d73c60(spBox);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141737DB0, CSceneStateGame, FUN_141737db0, 769, 0x55485FD5);
+
+// Socket gem packet records (decoders in itemsocketsystemutil.cpp).
+class TSocketGemStoneInfo : public CPtred { };   // 0x48 (ctor 0x14061f790, itemsocket.cpp), opaque here
+// The exe calls the itemsocket copy (0x140623630); a local COMDAT would take the CEnchantOption dtor slot here.
+template<> MS2Ptr<TSocketGemStoneInfo>::~MS2Ptr();
+struct Unk_SSGGemEquip {
+    Unk_SSGGemEquip();                      // 0x140c4de50
+    ~Unk_SSGGemEquip();                     // 0x140c4e0b0
+    __int64 m_nItemUid; int m_nSlot; MS2Ptr<TSocketGemStoneInfo> m_spGem; };
+struct Unk_SSGGemUnequip {
+    Unk_SSGGemUnequip();                    // 0x140c4de20
+    __int64 m_nItemUid; __int64 m_nGemUid; int m_nSlot; };
+void FUN_140628a00(Unk_SSGGemEquip& v, CInPacket& packet);
+void FUN_140628be0(Unk_SSGGemUnequip& v, CInPacket& packet);
+MS2Ptr<CItem> FUN_141425750(__int64 nUid, bool* pbEquipped);
+// The item's socket record (CItemSocket, opaque in item.h).
+class Unk_SSGItemSocket {
+public:
+    bool FUN_140621600(int nSlot, MS2Ptr<TSocketGemStoneInfo> spGem);
+    MS2Ptr<TSocketGemStoneInfo> FUN_140621830(int nSlot);
+};
+
+// Socket gem update: 9 = a gem went into a slot, 11 = a gem came out.
+// @0x14173f550
+void CSceneStateGame::FUN_14173f550(CInPacket& packet)
+{
+    int nMode = static_cast<unsigned char>(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    if (nMode == 9)
+    {
+        Unk_SSGGemEquip kInfo;
+        FUN_140628a00(kInfo, packet);
+        MS2Ptr<CItem> spItem = FUN_141425750(kInfo.m_nItemUid, 0);
+        if (spItem == 0 || spItem->FUN_1405279c0() == 0)
+            return;
+        MS2Ptr<TSocketGemStoneInfo> spGem = kInfo.m_spGem;
+        if (spGem == 0)
+            return;
+        Unk_SSGItemSocket* pSocket = (Unk_SSGItemSocket*)spItem->FUN_1405279c0();
+        pSocket->FUN_140621600(kInfo.m_nSlot, spGem);
+    }
+    else if (nMode == 11)
+    {
+        Unk_SSGGemUnequip kInfo;
+        FUN_140628be0(kInfo, packet);
+        MS2Ptr<CItem> spItem = FUN_141425750(kInfo.m_nItemUid, 0);
+        if (spItem == 0 || spItem->FUN_1405279c0() == 0)
+            return;
+        Unk_SSGItemSocket* pSocket = (Unk_SSGItemSocket*)spItem->FUN_1405279c0();
+        pSocket->FUN_140621830(kInfo.m_nSlot);
+    }
+}
+MS2_REPLACE_METHOD(0x14173F550, CSceneStateGame, FUN_14173f550, 614, 0xF7B4DFEF);
 
 // @0x1417380c0
 void CSceneStateGame::FUN_1417380c0(CInPacket& packet)
