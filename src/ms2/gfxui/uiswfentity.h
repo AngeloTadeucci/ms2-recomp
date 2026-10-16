@@ -73,7 +73,7 @@ public:
     virtual void vfunc_36(void* p, float x, float y);                                                   // 36
     virtual void vfunc_37(void* p, float x, float y);                                                   // 37
     virtual void vfunc_38(void* p, float x, float y);                                                   // 38
-    virtual void vfunc_39(void* p, float x, float y);                                                   // 39
+    virtual void vfunc_39(void* p, float x, float y, float f);                                         // 39 (4th arg: UIUGCCubePaletteDialog forwards it)
     virtual void vfunc_40();                                                                            // 40
     virtual void vfunc_41(const Scaleform::GFx::Value& root);                                           // 41 movie loaded: m_30 = root object
     virtual void vfunc_42(GfxException* pException);                                                    // 42 load error (UIObject: MessageBox(e->what()))

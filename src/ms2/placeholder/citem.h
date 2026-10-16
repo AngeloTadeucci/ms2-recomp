@@ -43,6 +43,9 @@ public:
   int FUN_140525f10();                   // 0x140525f10 item data at +0xe8 is a UGC item
   Unk_ItemUgcInfo* FUN_1405278d0();       // 0x1405278d0 operator-> of the MS2Ptr at +0x118 (UGC info)
   unsigned __int64 FUN_1405283d0();       // 0x1405283d0 UGC uid of that info (0 when null; avatarcube.cpp)
+  CStringW FUN_140527b10();               // 0x140527b10 (uiugccubepalettedialog.cpp)
+  void FUN_1405288e0(__int64);            // 0x1405288e0 set the count (uiugccubepalettedialog.cpp)
+  void FUN_140528300(class CUgcItemLook*);   // 0x140528300 set the UGC look (uiugccubepalettedialog.cpp)
   bool FUN_140528cc0();                   // 0x140528cc0 can be item-locked (unit_1406125d0)
   bool FUN_140528da0();                   // 0x140528da0 can be item-unlocked (unit_1406125d0)
   // uiitemenchantdialog.cpp: enchant-related accessors.

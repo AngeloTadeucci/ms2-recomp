@@ -561,7 +561,7 @@ void UISwfEntity::vfunc_38(void* p, float x, float y)
 MS2_REPLACE_METHOD(0x1422DC870, UISwfEntity, vfunc_38, 23, 0xAB83DBEC);
 
 // @0x1422dc890
-void UISwfEntity::vfunc_39(void* p, float x, float y)
+void UISwfEntity::vfunc_39(void* p, float x, float y, float f)
 {
 }
 MS2_REPLACE_METHOD(0x1422DC890, UISwfEntity, vfunc_39, 23, 0xAB83DBEC);

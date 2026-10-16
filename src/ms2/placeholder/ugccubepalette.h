@@ -7,6 +7,9 @@
 struct Unk_CubePaletteFilter {
     Unk_CubePaletteFilter(); // 140df0030
     ~Unk_CubePaletteFilter(); // 140ef04a0
+    bool FUN_140df00d0();                                                         // 0x140df00d0 (uiugccubepalettedialog.cpp)
+    void FUN_140df0140(int);                                                      // 0x140df0140
+    void FUN_140df0180(int);                                                      // 0x140df0180
     bool includeOwned,flag1,flag2;
     int category;
     CStringW text;
@@ -24,6 +27,18 @@ public:
         int FUN_140def5a0();
         __int64 FUN_140def5f0();
         int FUN_140defff0();
+        // uiugccubepalettedialog.cpp
+        __int64 FUN_140defba0();
+        int FUN_140def420();
+        __int64 FUN_140def620();
+        __int64 FUN_140def6c0();
+        CStringW FUN_140def710();
+        CStringW FUN_140def880();
+        CStringW FUN_140defd20();
+        int FUN_140defcd0();
+        int FUN_140defe70();
+        int FUN_140defed0();
+        int FUN_140def4f0();
         int index;
         MS2Ptr<CItemData> itemData;
         void* unknown30;void* unknown38;
@@ -34,6 +49,22 @@ public:
     UGCCubePalette();
     virtual ~UGCCubePalette();
     unsigned FUN_140df1a40(CubeArray& out,const Unk_CubePaletteFilter& filter);
+    // uiugccubepalettedialog.cpp
+    CubePtr FUN_1410b57f0(int);
+    CubePtr FUN_1410b57a0();
+    CubePtr FUN_1410b5930(int);
+    CubePtr FUN_1410b5a70(unsigned __int64);
+    MS2Ptr<CubeItemInfo> FUN_1410b55b0();
+    void FUN_1410b54d0(unsigned __int64);
+    void FUN_1410b5030(CubeArray&);
+    void FUN_1410b4f60(Unk_CubePaletteFilter*);
+    int FUN_1410b5460(int);
+    int FUN_1410b5d70();
+    int FUN_1410b6060(int);
+    int FUN_1410b5bc0();
+    void FUN_1410b6210();
+    void FUN_1410b6260();
+    void FUN_1410b62d0();
 private:
     // CAtlMap-owned storage, not inspected by this unit.
     void* unknown18;void* unknown20;void* unknown28;
