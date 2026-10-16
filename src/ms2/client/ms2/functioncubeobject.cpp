@@ -68,6 +68,25 @@
 // MS2-PIN: ??$Unk_FcDialog@VUIMasteryObjectMark@@@@YAPEAVUIMasteryObjectMark@@H@Z 0x14122d430
 // MS2-PIN: ??$Unk_FcDialog@VUIObjectStoreDialog@@@@YAPEAVUIObjectStoreDialog@@H@Z 0x14122d4d0
 // MS2-PIN: ??$Unk_FcDialog@VUITriggerEditorDialog@@@@YAPEAVUITriggerEditorDialog@@H@Z 0x14122d570
+// MS2-PIN: ??1?$MS2Ptr@VRideOffActionHomemade@@@@QEAA@XZ 0x14122daf0
+// MS2-PIN: ?AddRef@?$MS2Ptr@VStateHomemadeData@@@@AEBAXXZ 0x14122e9b0
+// MS2-PIN: ?Reference@?$MS2Ptr@VUIBootyPopup@@@@CAXPEAVUIBootyPopup@@@Z 0x14122ea80
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VUIBootyPopup@@@@AEBAXPEAX@Z 0x14122eb20
+// MS2-PIN: ?Release@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXXZ 0x14122ebc0
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x1412329c0
+// MS2-PIN: ??0CPair@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@IEAA@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEBV?$MS2Ptr@VCFunctionCubeObject@@@@@Z 0x141234bf0
+// MS2-PIN: ??1CPair@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@IEAA@XZ 0x141234fa0
+// MS2-PIN: ?GetKeyAt@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@QEBAAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@PEAU__POSITION@@@Z 0x141235df0
+// MS2-PIN: ?GetKeyAt@?$CRBTree@V?$MS2Ptr@VUnk_FcTag@@@@V?$MS2Ptr@VUnk_FcArea@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcArea@@@@@4@@ATL@@QEBAAEBV?$MS2Ptr@VUnk_FcTag@@@@PEAU__POSITION@@@Z 0x141235e50
+// MS2-PIN: ?GetNext@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141235f00
+// MS2-PIN: ?GetNext@?$CRBTree@V?$MS2Ptr@VUnk_FcTag@@@@V?$MS2Ptr@VUnk_FcArea@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcArea@@@@@4@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141235f40
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@SAXPEAV?$MS2Ptr@VCNurturingCubeObject@@@@0_K@Z 0x1412380a0
+// MS2-PIN: ?Successor@?$CRBTree@V?$MS2Ptr@VUnk_FcTag@@@@V?$MS2Ptr@VUnk_FcArea@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcArea@@@@@4@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x141238830
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@H@2@XZ 0x1412394f0
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x1412395d0
+// MS2-PIN: ??4?$MS2Ptr@VUIBootyPopup@@@@QEAAAEAV0@H@Z 0x14122ddb0
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@QEAA@XZ 0x141234b10
+// MS2-PIN: ?IsEmpty@?$CRBTree@V?$MS2Ptr@VUnk_FcTag@@@@V?$MS2Ptr@VUnk_FcArea@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcArea@@@@@4@@ATL@@QEBA_NXZ 0x141236a30
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\functioncubeobject.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "functioncubeobject.h"
@@ -84,6 +103,8 @@
 #include "ms2/client/ms2/statedata.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/cequipitem.h"
+#include "ms2/placeholder/citem.h"
 
 // ---- unit-local placeholders ----
 
@@ -217,7 +238,7 @@ struct Unk_FcUseInfo
 {
     CString m_strId;                                                // +0x00
     int m_nCount;                                                   // +0x08
-    char m_pad_0c[4];
+    int m_nPad0c;
 };
 void FUN_140ac2e80(Unk_FcUseInfo* p);                               // construct
 void FUN_140ac3050(Unk_FcUseInfo* p);                               // destroy
@@ -2231,6 +2252,14 @@ extern __int64 DAT_143ab2820;                                       // the local
 int FUN_141527920(Unk_FcActor* pActor, __int64 nId);
 unsigned char FUN_1401c0090(const CString& strA, const CString& strB);
 
+// The local player's equip holder and the colliding tag areas (classes of other units; only what is called).
+struct Unk_FcEquipData { char m_pad_00[0x10c]; int m_n10c; };
+Unk_FcEquipData* FUN_140527840(CItem* pItem);                       // the item's data record
+class Unk_FcEquipSet { public: MS2Ptr<CEquipItem> FUN_1411e1860(int nSlot, int nA, int nB); };
+Unk_FcEquipSet* FUN_1416561a0(Unk_FcActor* pActor);
+char FUN_1409ff0d0(Unk_FcArea* pArea, CBoxCollision* pBox);         // does the box touch the area
+void FUN_1417591b0(Unk_FcTag* pTag);                                // the tag's owner reacts
+
 // ---- the service ----
 
 // @0x1400e9e00
@@ -2768,6 +2797,84 @@ void CFunctionCubeService::FUN_1412314e0(Unk_StreamPoint pt, ATL::CAtlArray<MS2P
         }
         m_mapCubes.GetNext(pos);
     }
+}
+
+// Register a tag (owner) and the area it was seen in.
+// @0x1412316a0
+void CFunctionCubeService::FUN_1412316a0(MS2Ptr<Unk_FcArea> spArea, MS2Ptr<Unk_FcTag> spTag)
+{
+    if (spArea == 0)
+        return;
+    m_mapTags.SetAt(spTag, spArea);
+}
+
+// Per tick: check the worn item, then send a use request for every cube whose box touches a registered tag area.
+// @0x141231730
+// MS2-FUNCTIONAL: owner-id compare and MS2Ptr<Unk_FcArea> temporaries differ in frame layout (1220 vs 1190 bytes)
+void CFunctionCubeService::FUN_141231730()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return;
+    int nEquipField = 0;
+    if (!m_mapTags.IsEmpty())
+    {
+        MS2Ptr<CEquipItem> spEquip = FUN_1416561a0(pActor)->FUN_1411e1860(5, 6, 0);
+        if (spEquip.get() != 0)
+            nEquipField = FUN_140527840(spEquip->FUN_1411dc7a0().operator->())->m_n10c;
+    }
+    for (POSITION pos = m_mapCubes.GetHeadPosition(); pos; m_mapCubes.GetNext(pos))
+    {
+        CString strKey = m_mapCubes.GetKeyAt(pos);
+        CFunctionCubeObject* pCube = m_mapCubes.GetValueAt(pos).get();
+        if (pCube->FUN_14122e710() == 0)
+            continue;
+        if (pCube->FUN_140e5cc00() == 1)
+        {
+            if (pCube->FUN_140e5cbf0() != FUN_141656ad0(pActor))
+                continue;
+        }
+        int bFound = 0;
+        MS2Ptr<CBoxCollision> spBox = pCube->FUN_141226f90();
+        MS2Ptr<Unk_FcArea> spArea(0);
+        MS2Ptr<Unk_FcTag> spTag;
+        for (POSITION posTag = m_mapTags.GetHeadPosition(); posTag; m_mapTags.GetNext(posTag))
+        {
+            spTag = m_mapTags.GetKeyAt(posTag);
+            MS2Ptr<Unk_FcArea> spCur(m_mapTags.GetValueAt(posTag));
+            int nHit = FUN_1409ff0d0(spCur.get(), spBox.get());
+            if (nHit != 0)
+            {
+                spArea = spCur;
+                bFound = 1;
+                FUN_1417591b0(spTag.get());
+                break;
+            }
+        }
+        if (bFound)
+        {
+            int nSound = 1;
+            int nAreaValue;
+            if (spArea.get() != 0)
+            {
+                nAreaValue = spArea->m_n18;
+                if (nAreaValue == 0)
+                    nAreaValue = nEquipField;
+            }
+            pCube->FUN_141227100(nSound);
+            Unk_FcUseInfo kInfo;
+            FUN_140ac2e80(&kInfo);
+            kInfo.m_strId = strKey;
+            kInfo.m_nCount = 2;
+            COutPacket kPacket(0x2e, 0);
+            kPacket.vfunc_o10_1(5);
+            kPacket.vfunc_o10_3(1);
+            FUN_1401fc610(&kInfo, &kPacket);
+            FUN_140710590(kPacket);
+            FUN_140ac3050(&kInfo);
+        }
+    }
+    m_mapTags.RemoveAll();
 }
 
 // Every cube loses its entity, the tables are cleared.

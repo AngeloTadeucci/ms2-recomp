@@ -473,7 +473,8 @@ public:
 class Unk_FcArea : public CPtred
 {
 public:
-    char m_pad_18[0x28];
+    int m_n18;                                                    // +0x18 (read by the tick check)
+    char m_pad_1c[0x24];
 };
 
 class CFunctionCubeService;
