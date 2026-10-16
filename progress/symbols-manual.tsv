@@ -1798,3 +1798,15 @@ FMOD_EventSystem_Create	142303b13	func
 ??3TransparencyStandardMaterial@@SAXPEAXI@Z	14097f700	func
 ?DAT_143d69198@@3DA	143d69198	data
 ??0Unk_DecoPoint3@@QEAA@XZ	1405522f0	func
+??0Unk_CubeIdVec@@QEAA@XZ	140182ed0	func
+??1Unk_CubeIdVec@@QEAA@XZ	140183b90	func
+?DAT_143ae51e8@@3DA	143ae51e8	data
+?DAT_143ae5278@@3DA	143ae5278	data
+?DAT_143afbef0@@3VNiRTTI@@A	143afbef0	data
+??0PaintBrush@@QEAA@XZ	141197500	func
+??0NoiseBrush@@QEAA@XZ	141197a50	func
+??0PC@@QEAA@XZ	14164dfd0	func
+??0AdditionalCli@@QEAA@XZ	14096bae0	func
+??1Unk_EmoItemPtr@@QEAA@XZ	1401b50d0	func
+??1Unk_EmoDataPtr@@QEAA@XZ	1401f0530	func
+?vfunc_1@UIDialog@@UEAA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ	1419234e0	func
