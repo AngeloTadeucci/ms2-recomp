@@ -173,7 +173,8 @@ Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
-    void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0(); };
+    void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
+    egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
@@ -344,9 +345,21 @@ extern Unk_MyPCNoticeSound DAT_143ae14c8;                   // the blocked-actio
 void FUN_1411e1b80(Unk_PCEquipSet* pSet, ATL::CAtlList<MS2Ptr<CEquipItem> >& aOut);   // the worn items
 class Unk_MyPCItemArray { public: size_t FUN_140720ca0() const; MS2Ptr<CItem>& FUN_140a69ee0(size_t i); };
 // The MS2Ptr at Unk_PCEquipSet+0x1d8 (PC+0xfb8): the skill point book.
+// The buddy list (buddymanager.h's CBuddyManager) and an actor's guild name.
+class Unk_MyPCBuddies { public: bool FUN_140ae4d70(__int64 nCharId); };
+Unk_MyPCBuddies* FUN_14097a780();
+const CStringW& FUN_141656be0(PCBase* pPC);                  // PCBase member: the guild name
+// The burning event (UIBurningEventWidgetDialog+0x198) and its widget (UI id 0x4f6a).
+class Unk_MyPCBurningEvent : public CPtred { public: bool FUN_140ce64e0(short nKind); };
+class Unk_MyPCBurningDlg { public: MS2Ptr<Unk_MyPCBurningEvent> FUN_140c5ab80(); };
+Unk_MyPCBurningDlg* FUN_140ce8090(int nUiId);                  // the open UIBurningEventWidgetDialog
+// A learned skill's level row (uimessagebox.cpp's name for the same MS2Ptr instantiation).
+class Unk_InventorySkillLevel : public CPtred {};
+unsigned short FUN_140803df0(Unk_InventorySkillLevel* pLevel); // the row's level
 class Unk_MyPCSkillBook : public CPtred
 {
 public:
+    virtual MS2Ptr<Unk_InventorySkillLevel> vfunc_1(int nSkillId); // slot 1: the learned row of nSkillId
     int FUN_140639b40(int nId);                             // points spent on nId
     static int FUN_140639260(unsigned short nJob, int nId); // the job's base points of nId
 };
@@ -370,9 +383,16 @@ void FUN_141240730(Unk_PCBaseBody* pBody);                  // reset the body
 void* FUN_141240f20(Unk_PCBaseBody* pBody);                 // the body's actor
 void FUN_140cfaf30(void* pActor);                           // sync the actor to the body
 // The collision queries.
-class Unk_MyPCCollision { public: int FUN_14168a310(const efd::Point3& kFrom, efd::Point3& kHit, int nMask, float fLen, void* pIgnore, int bAll); };
+class Unk_MyPCCollision
+{
+public:
+    int FUN_14168a310(const efd::Point3& kFrom, efd::Point3& kHit, int nMask, float fLen, void* pIgnore, int bAll);
+    int FUN_14168a230(efd::Point3 kFrom, efd::Point3& kTo, efd::Point3 kDir, float fLen, int nMask); // 0 = no blocker
+};
 Unk_MyPCCollision* FUN_1409f7ca0();
 NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // the entity's scene node
+int FUN_1408a2060(egf::Entity* pEntity, unsigned nPropId, efd::utf8string* pOut);   // read a string property
+void FUN_140177de0(const CString& str, ATL::CAtlArray<int>& aOut, const char* pszSep); // split into ints
 
 // The npc table row (MS2Ptr<T>; see cubespawnobject.h).
 class Unk_NpcData : public CPtred
@@ -553,8 +573,8 @@ Unk_MyPCExpBar* FUN_140ac55a0(int nId);
 class UIObserveDialog : public UIDialog { public: void FUN_141a735d0(CStringW strName); void FUN_141a736c0(bool b); };   // 0x4e8a
 class UIPvPObserverDialog : public UIDialog {};             // 0x4e96
 class UIPvPGuildTeamDialog : public UIDialog { public: void FUN_14133b0b0(); };              // 0x4ec4
-class Unk_SSGad4b90 { public: void FUN_141863460(float f); void FUN_1418631c0(); void FUN_1418631f0(int n, int b); };
-Unk_SSGad4b90* FUN_140ad4b90();
+class Unk_MyPCad4b90 { public: void FUN_141863460(float f); void FUN_1418631c0(); void FUN_1418631f0(int n, int b); void FUN_141863340(const ATL::CAtlArray<int>& aIds, unsigned nFlags); };
+Unk_MyPCad4b90* FUN_140ad4b90();
 PCBase* FUN_14099eef0(PCBase* pActor);                      // the pc-side view (null for a non-pc)
 
 // A dialog by UI id.
@@ -867,10 +887,10 @@ int MyPC::vfunc_58()
 MS2_REPLACE_METHOD(0x141522CC0, MyPC, vfunc_58, 11, 0x30025ED0);
 
 // @0x141522ce0
-void MyPC::vfunc_67(void* a, void* b)
+void MyPC::vfunc_67(efd::Point3* pDir, efd::Point3* pSide)
 {
     m_posBF4 = FUN_1409478c0()->FUN_140af8290();
-    PCBase::vfunc_67(a, b);
+    PCBase::vfunc_67(pDir, pSide);
 }
 MS2_REPLACE_METHOD(0x141522CE0, MyPC, vfunc_67, 82, 0xFA41F6FD);
 
@@ -1032,6 +1052,19 @@ bool MyPC::FUN_141527280()
 }
 MS2_REPLACE_METHOD(0x141527280, MyPC, FUN_141527280, 27, 0x3FAC08A6);
 
+// @0x1415275b0
+bool MyPC::FUN_1415275b0(short nKind)
+{
+    Unk_MyPCBurningDlg* pDlg = ::FUN_140ce8090(0x4f6a);
+    if (!pDlg)
+        return false;
+    MS2Ptr<Unk_MyPCBurningEvent> spEvent = pDlg->FUN_140c5ab80();
+    if (spEvent == 0)
+        return false;
+    return spEvent->FUN_140ce64e0(nKind);
+}
+MS2_REPLACE_METHOD(0x1415275b0, MyPC, FUN_1415275b0, 154, 0x89FCA369);
+
 // @0x141527650
 int MyPC::FUN_141527650(int nKind)
 {
@@ -1111,6 +1144,54 @@ int MyPC::FUN_141527960()
 MS2_REPLACE_METHOD(0x141527960, MyPC, FUN_141527960, 91, 0x43AD2A6D);
 
 // No house.
+// @0x1415279d0
+// MS2-FUNCTIONAL: the exe loads the buddy id as `mov rcx, [id]; mov rdx, rcx` (3 bytes longer, same value); not reproduced.
+int MyPC::FUN_1415279d0(PCBase* pOther)
+{
+    if (!pOther)
+        return 0;
+    if (!pOther->FUN_1416764a0())
+        return 0;
+    if (!pOther->FUN_1416765b0())
+        return 0;
+    if (!FUN_141527b50(pOther))
+        return 0;
+    if (::FUN_140166410()->FUN_14036d570(0xad) == true)
+    {
+        __int64 nCharId = pOther->FUN_141656a80();
+        if (::FUN_14097a780()->FUN_140ae4d70(nCharId) == true)
+            return 1;
+        if (FUN_1415278d0(reinterpret_cast<void*>(pOther->FUN_141656a80())) == 1)
+            return 1;
+        {
+            CStringW strGuild = ::FUN_141656be0(this);
+            if (!strGuild.IsEmpty())
+            {
+                if ((::FUN_141656be0(this) == ::FUN_141656be0(pOther)) == true)
+                    return 1;
+            }
+        }
+        return 0;
+    }
+    else
+        return 1;
+}
+MS2_REPLACE_METHOD(0x1415279d0, MyPC, FUN_1415279d0, 373, 0x24BD4BFC);
+
+// @0x141527b50
+int MyPC::FUN_141527b50(PCBase* pOther)
+{
+    NiPoint3 kFrom = vfunc_18();
+    NiPoint3 kTo = pOther->vfunc_18();
+    efd::Point3 kDir = reinterpret_cast<efd::Point3&>(kTo) - reinterpret_cast<efd::Point3&>(kFrom);
+    kDir.z = 0;
+    float fLen = kDir.Unitize();
+    if (::FUN_1409f7ca0()->FUN_14168a230(reinterpret_cast<efd::Point3&>(kFrom), reinterpret_cast<efd::Point3&>(kTo), kDir, fLen, 0) != 0)
+        return 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141527b50, MyPC, FUN_141527b50, 247, 0xD0E5635C);
+
 // @0x141527c50
 int MyPC::FUN_141527c50(int nItemId)
 {
@@ -1263,6 +1344,16 @@ void MyPC::FUN_141528c30(CInPacket& packet)
     m_pos1790 = packet.vfunc_o8_11();
 }
 MS2_REPLACE_METHOD(0x141528C30, MyPC, FUN_141528c30, 78, 0xE53AF5C9);
+
+// @0x141528b80
+unsigned short MyPC::FUN_141528b80(int nSkillId)
+{
+    MS2Ptr<Unk_InventorySkillLevel> spLevel = reinterpret_cast<Unk_MyPCEquipSetView&>(m_kEquipDE0).m_spSkillBook->vfunc_1(nSkillId);
+    if (spLevel.get())
+        return ::FUN_140803df0(spLevel.operator->());
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141528b80, MyPC, FUN_141528b80, 158, 0xB55D0601);
 
 // @0x141528c90
 void MyPC::FUN_141528c90(efd::Point3 kPos, efd::Point3 kDir)
@@ -1493,6 +1584,43 @@ int MyPC::FUN_141529a50(int nNpcId)
     return 1;
 }
 MS2_REPLACE_METHOD(0x141529a50, MyPC, FUN_141529a50, 123, 0x33B013F2);
+
+// @0x141529750
+// MS2-FUNCTIONAL: the exe passes the range as `movss xmm0, [f]; movaps xmm3, xmm0` (3 bytes longer, same value); not reproduced.
+egf::Entity* MyPC::FUN_141529750()
+{
+    float fRange = FUN_1401d3200()->TelescopeFindDistance.Read();
+    egf::Entity* pEntity = FUN_1403ed2d0()->FUN_141bcfd30(0x62f7a42c, FUN_1416767d0(), fRange, 1, 0);
+    if (!pEntity)
+        return 0;
+    efd::utf8string kValue;
+    FUN_1408a2060(pEntity, 0x5aec4213, &kValue);
+    CString strValue(kValue.c_str());
+    ATL::CAtlArray<int> aIds;
+    FUN_140177de0(strValue, aIds, ",");
+    if (aIds.IsEmpty())
+        return 0;
+    return pEntity;
+}
+MS2_REPLACE_METHOD(0x141529750, MyPC, FUN_141529750, 420, 0x1F0FF1A2);
+
+// @0x141529900
+egf::Entity* MyPC::FUN_141529900()
+{
+    egf::Entity* pEntity = FUN_141529750();
+    if (!pEntity)
+        return 0;
+    efd::utf8string kValue;
+    FUN_1408a2060(pEntity, 0x5aec4213, &kValue);
+    CString strValue(kValue.c_str());
+    ATL::CAtlArray<int> aIds;
+    FUN_140177de0(strValue, aIds, ",");
+    if (aIds.IsEmpty())
+        return 0;
+    FUN_140ad4b90()->FUN_141863340(aIds, 0);
+    return pEntity;
+}
+MS2_REPLACE_METHOD(0x141529900, MyPC, FUN_141529900, 320, 0x23F98F0C);
 
 // @0x141529ae0
 int MyPC::FUN_141529ae0(int nMapId, int nA, int nB, __int64 nC)

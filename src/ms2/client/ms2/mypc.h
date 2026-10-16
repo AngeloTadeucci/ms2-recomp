@@ -133,7 +133,7 @@ public:
     virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);     // 102 0x141521fc0
     virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59 0x141522c60
     virtual int vfunc_58();                                 // 58 0x141522cc0
-    virtual void vfunc_67(void* a, void* b);                // 67 0x141522ce0
+    virtual void vfunc_67(efd::Point3* pDir, efd::Point3* pSide);// 67 0x141522ce0
     virtual void vfunc_125(MS2Ptr<Unk_PCArg125> p);         // 125 0x141522d40
     virtual void vfunc_127(CItem* pItem, int n);            // 127 0x141522eb0
     virtual void vfunc_128(CItem* pItem, int n);            // 128 0x141522f60
@@ -201,6 +201,12 @@ public:
     void FUN_14152e240(int n);
     int FUN_14152e280(int n);
     int FUN_14152e950();
+    bool FUN_1415275b0(short nKind);                         // the burning event is active for nKind
+    int FUN_1415279d0(PCBase* pOther);                       // can ride along with pOther (buddy, party or guild)
+    egf::Entity* FUN_141529750();                            // the telescope in reach (with a view list)
+    egf::Entity* FUN_141529900();                            // the telescope in reach, its views opened
+    int FUN_141527b50(PCBase* pOther);                       // nothing blocks the flat line to pOther
+    unsigned short FUN_141528b80(int nSkillId);             // the learned level of nSkillId (1 when not learned)
     int FUN_14152e970(int nId);                             // the free skill points of nId
     bool FUN_14152e7f0();                                   // a worn item still counts (not expired)
     size_t FUN_14152eb20();
