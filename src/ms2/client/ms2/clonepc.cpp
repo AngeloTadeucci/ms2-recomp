@@ -218,8 +218,8 @@ void ClonePC::vfunc_139()
 {
     if (m_pSourcePC)
     {
-        FUN_1416591e0(this, 0, ::FUN_141659220(m_pSourcePC, 0));
-        FUN_1416591e0(this, 1, ::FUN_141659220(m_pSourcePC, 1));
+        ::FUN_1416591e0(this, 0, ::FUN_141659220(m_pSourcePC, 0));
+        ::FUN_1416591e0(this, 1, ::FUN_141659220(m_pSourcePC, 1));
     }
     PC::vfunc_139();
 }
@@ -321,7 +321,7 @@ void ClonePC::vfunc_149()
             FUN_1408f3a80(m_kListD48);
             FUN_1411e3de0(&m_kEquipDE0, 1);
             ATL::CAtlList<MS2Ptr<CEquipItem> > kEquips(10);
-            vfunc_152(&kEquips, FUN_1416561a0(m_pSourcePC));
+            vfunc_152(&kEquips, ::FUN_1416561a0(m_pSourcePC));
             for (POSITION pos = kEquips.GetHeadPosition(); pos; kEquips.GetNext(pos))
             {
                 MS2Ptr<CEquipItem> spEquip(kEquips.GetAt(pos));
@@ -339,9 +339,9 @@ void ClonePC::vfunc_149()
                 }
             }
             vfunc_143();
-            void* pSrc = FUN_14165f460(m_pSourcePC);
-            FUN_141270e00(FUN_14165f460(this), pSrc);
-            FUN_141270610(FUN_14165f460(this));
+            void* pSrc = ::FUN_14165f460(m_pSourcePC);
+            FUN_141270e00(::FUN_14165f460(this), pSrc);
+            FUN_141270610(::FUN_14165f460(this));
         }
         else
         {

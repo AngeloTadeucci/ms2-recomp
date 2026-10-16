@@ -745,7 +745,7 @@ void AvatarPC::FUN_1409f4d80(MS2Ptr<CItem> spItem)
     {
         if (FUN_140527840(spItem.operator->()) != 0)
         {
-            FUN_141270bf0(FUN_14165f460(this), MS2Ptr<CItem>(spItem));
+            FUN_141270bf0(::FUN_14165f460(this), MS2Ptr<CItem>(spItem));
             int nKind = FUN_14053e900(FUN_140527840(spItem.operator->()));
             if (nKind == 5)
                 FUN_1409f68e0(MS2Ptr<CItem>(spItem));
