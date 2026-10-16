@@ -2178,3 +2178,6 @@ D3DXFloat16To32Array	14230396f	func
 ??0Unk_MagicHitHolder@@QEAA@H@Z	140963df0	func
 ??1Unk_MagicHitHolder@@QEAA@XZ	140964870	func
 ??1Unk_MagicSkillStateRef@@QEAA@XZ	140975740	func
+??0Unk_ConstCacheRef@@QEAA@PEAVCCacheData@@@Z	1401e0d50	func
+??0Unk_ConstCacheRef@@QEAA@AEBU0@@Z	1401ef790	func
+??1Unk_ConstCacheRef@@QEAA@XZ	1401e1170	func
