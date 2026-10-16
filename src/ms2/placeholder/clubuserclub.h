@@ -3,11 +3,13 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/commonfiles/stream.h"
+#include <atlcoll.h>
 namespace Club {
 class NameInfo : public CPtred {
 public:
   NameInfo();
   virtual ~NameInfo();
+  void FUN_14020c900();
   __int64 m_18;
   CStringW m_20;
 };
@@ -28,13 +30,9 @@ public:
   void FUN_14020ce50(COutputStream &);
   void FUN_14020cfc0(CInputStream &);
 
+  typedef ATL::CRBMap<__int64, MS2Ptr<NameInfo> > JoinMap;
 private:
-  void *m_18;
-  void *m_20;
-  void *m_28;
-  void *m_30;
-  void *m_38;
-  void *m_40;
+  JoinMap m_18;                    // +0x18 joined clubs by id (CRBMap ctor 0x140211be0, dtor 0x140212220)
 };
 MS2_CHECK_SIZE(UserClub, 0x48);
 } // namespace Club
