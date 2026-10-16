@@ -756,7 +756,7 @@ int GFxMovieBackground::FUN_14127b100()
             pClick = NiDynamicCast(NiViewRenderClick, kClicks.GetNext(pos));
         } while (pClick == 0);
     } while (!(pClick->GetName() == "SceneGraphClick"));
-    pClick->AppendRenderView(m_spRenderView);
+    pClick->PrependRenderView(m_spRenderView);
     return 1;
 }
 // MS2-FUNCTIONAL: click list iteration temporaries differ
@@ -949,7 +949,9 @@ CString GFxMovieBackground::FUN_14127be10()
 MS2_REPLACE_METHOD(0x141279a70, GFxMovieBackground, vfunc_4, 867, 0x92EB49D0);
 MS2_REPLACE_METHOD(0x141279df0, GFxMovieBackground, vfunc_6, 403, 0x0B550B3D);
 MS2_REPLACE_METHOD(0x141279f90, GFxMovieBackground, vfunc_7, 208, 0xB81D68B0);
-MS2_REPLACE_METHOD(0x14127a070, GFxMovieBackground, vfunc_8, 801, 0x5D425703);
+// MS2-HOOK-DISABLED (fx1, 2026-10-16): this per-frame hook alone leaves the hooked client stuck at 0% on the field loading screen with the
+// blank error box (found by ddmin over the HEAD DLL, field entry smoke); the divergence from the exe body is not found yet.
+// MS2_REPLACE_METHOD(0x14127a070, GFxMovieBackground, vfunc_8, 801, 0x5D425703);
 MS2_REPLACE_METHOD(0x14127a3a0, GFxMovieBackground, vfunc_9, 472, 0x3C2A21F4);
 MS2_REPLACE_METHOD(0x14127a580, GFxMovieBackground, vfunc_11, 312, 0xAC06DE3B);
 MS2_REPLACE_METHOD(0x14127a6c0, GFxMovieBackground, vfunc_12, 270, 0x426155A0);

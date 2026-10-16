@@ -491,7 +491,9 @@ void ClonePC::FUN_141087790()
     for (efd::list<NiAVObject*>::iterator it = m_kList1300.begin(); it != m_kList1300.end(); ++it)
         FUN_141ab6e80(*it);
 }
-MS2_REPLACE_METHOD(0x141087790, ClonePC, FUN_141087790, 176, 0x3A6C589C);
+// MS2-HOOK-DISABLED (fx1, 2026-10-16): hooking this alone crashes field entry (null-this page fault at 0x14160e608 in the exe's list
+// iterator check, found by ddmin over the HEAD DLL); the exe's list<NiAVObject*> clear/iterate path is not reproduced by efd::list. Root cause open.
+// MS2_REPLACE_METHOD(0x141087790, ClonePC, FUN_141087790, 176, 0x3A6C589C);
 
 // Keeps the clone's look in step with its source PC.
 // MS2-FUNCTIONAL: behaviour-equivalent; the exe spills the PCBase::FUN_14166f740 CString return once where the compiler spills it twice
