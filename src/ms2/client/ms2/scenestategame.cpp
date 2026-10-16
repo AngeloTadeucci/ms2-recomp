@@ -246,6 +246,7 @@ public:
     void FUN_141ad9b30();
     bool FUN_141ad9b60();
     void FUN_141ad9c10();
+    void FUN_141ad9c40(MS2Ptr<class CGemBase> spGem);       // show a socketed gem
 };
 Unk_SSGUIMgr* FUN_1403ed2b0();
 
@@ -751,6 +752,12 @@ public:
     virtual void vfunc_22(CItem* pItem);
     virtual void vfunc_23(CItem* pItem);
     virtual void vfunc_24(CItem* pItem);
+    virtual void vfunc_25();
+    virtual void vfunc_26();
+    virtual void vfunc_27();
+    virtual void vfunc_28();
+    virtual void vfunc_29(CItem* pItem);                    // gem socketed
+    virtual void vfunc_30(CItem* pItem);                    // gem taken out
 };
 Unk_SSGItemHub* FUN_140a6a840();
 MyPC* FUN_1409613d0(PCBase* pPC);                          // efd::DynamicCast<MyPC> (class id 0x6200004)
@@ -9729,6 +9736,8 @@ public:
     void FUN_14126fea0(CInputStream& stream, int nObjId);   // decode the worn items
     MS2Ptr<CItem> FUN_141270140(int nSlot);
     MS2Ptr<CGemBase> FUN_141270740(int nSlot);
+    void FUN_141270bf0(MS2Ptr<CItem> spItem);               // socket the item (gemslot)
+    MS2Ptr<CItem> FUN_141270ab0(int nSlot);                 // take the item out of a gem slot
 };
 void FUN_141425610();
 extern __int64 DAT_143ab2840;                               // the platform account id
@@ -9740,6 +9749,104 @@ extern "C" const wchar_t* DAT_1439f8358;                    // L"CHAR_NAME"
 extern "C" void (__cdecl* __imp_CrashReporter_SetStrInfoA)(const wchar_t*, const char*);
 extern "C" void (__cdecl* __imp_CrashReporter_SetStrInfoW)(const wchar_t*, const wchar_t*);
 extern "C" void (__cdecl* __imp_CrashReporter_SetInt64Info)(const wchar_t*, __int64*);
+
+// The item a state is told about in its slots 29/30 (state.h passes it as MS2Ptr<Unk_StateArg29>).
+class Unk_StateArg29 : public CItem { };
+
+// 0x7f gem slots: mode 0 socket an item (owner, item id/uid/rarity, slot, item data), mode 1 take it out (owner,
+// slot), mode 4 an error code.
+// MS2-FUNCTIONAL: the states' slots 29/30 take MS2Ptr<Unk_StateArg29>, so the item is passed through a pointer
+// ctor instead of the exe's MS2Ptr<CItem> copy ctor.
+// @0x141730920
+void CSceneStateGame::FUN_141730920(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        unsigned char nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        MS2Ptr<CItem> spItem(new CItem());
+        if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+        {
+            spItem->FUN_140526b30(nObjId);
+            spItem->FUN_140526a70(nItemUid);
+            spItem->FUN_140526b70(nSlot);
+            spItem->FUN_140524eb0(packet);
+            PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nObjId);
+            if (pPC != 0)
+            {
+                pPC->FUN_14165f460()->FUN_141270bf0(spItem);
+                pPC->FUN_14166ccb0()->vfunc_29(MS2Ptr<Unk_StateArg29>(static_cast<Unk_StateArg29*>(spItem.get())));
+            }
+            bool bMine = efd::ClassInfo::IsKindOf(pPC != NULL ? pPC->GetClassDesc() : NULL, 0x6200004);
+            bool bShow = false;
+            if (spItem->FUN_140527900() != 0)
+            {
+                if (spItem->FUN_140527900()->vfunc_1() == 2)
+                    bShow = pPC->vfunc_65() == 1 || bMine;
+            }
+            if (bMine)
+                FUN_140a6a840()->vfunc_29(spItem.get());
+            if (bShow)
+                FUN_1403ed2b0()->FUN_141ad9c40(spItem->FUN_140527900()->FUN_140d41400());
+        }
+    }
+    else if (nMode == 1)
+    {
+        int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nObjId);
+        if (pPC != 0)
+        {
+            MS2Ptr<CItem> spItem = pPC->FUN_14165f460()->FUN_141270ab0(nSlot);
+            if (spItem.get() != 0)
+            {
+                pPC->FUN_14166ccb0()->vfunc_30(MS2Ptr<Unk_StateArg29>(static_cast<Unk_StateArg29*>(spItem.get())));
+                if (FUN_1409613d0(pPC) != 0)
+                    FUN_140a6a840()->vfunc_30(spItem.get());
+            }
+        }
+    }
+    else if (nMode == 4)
+    {
+        short nError = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        switch (nError)
+        {
+        case 0:
+            FUN_141275260(0xaa9, 1, 1);
+            break;
+        case 2:
+            FUN_141275260(0xaab, 1, 1);
+            break;
+        case 1:
+            FUN_141275260(0xaaa, 1, 1);
+            break;
+        case 3:
+            FUN_141275260(0xaac, 1, 1);
+            break;
+        case 4:
+            FUN_141275260(0xaad, 1, 1);
+            break;
+        case 5:
+            if (FUN_140166410()->FUN_14036d570(0x4a))
+            {
+                FUN_1412751f0(FUN_14028b8e0(L"s_gem_error_VIP"), 1, 1);
+            }
+            else
+            {
+                FUN_141275260(0xaae, 1, 1);
+                break;
+            }
+            break;
+        default:
+            FUN_141275260(0xaae, 1, 1);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141730920, CSceneStateGame, FUN_141730920, 2066, 0x0E9ABD5A);
 
 // @0x14170fda0
 void CSceneStateGame::FUN_14170fda0(CInPacket& packet)
