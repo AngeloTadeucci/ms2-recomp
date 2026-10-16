@@ -270,27 +270,27 @@ typedef TabContentsPetEvolution::IdCount IdCount;
 // ---- glue: AS child control binding ----
 
 // @0x140acd480
-template <> MS2Ptr<ASUIComponent>::MS2Ptr(MS2Ptr<ASUIComponent>&& o)
+template <> inline MS2Ptr<ASUIComponent>::MS2Ptr(MS2Ptr<ASUIComponent>&& o)
 {
     m_p = o.m_p;
     o.m_p = 0;
 }
 
 // @0x140acd4b0
-template <> MS2Ptr<ASUIComponent>::MS2Ptr(int)
+template <> inline MS2Ptr<ASUIComponent>::MS2Ptr(int)
 {
     m_p = 0;
 }
 
 // @0x140acd4d0
-template <> MS2Ptr<ASUIComponent>::MS2Ptr(ASUIComponent* p)
+template <> inline MS2Ptr<ASUIComponent>::MS2Ptr(ASUIComponent* p)
 {
     m_p = p;
     AddRef();
 }
 
 // @0x140acd940
-template <> bool MS2Ptr<ASUIComponent>::operator==(ASUIComponent* p) const
+template <> inline bool MS2Ptr<ASUIComponent>::operator==(ASUIComponent* p) const
 {
     return m_p == p;
 }
