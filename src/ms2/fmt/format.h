@@ -19,6 +19,7 @@
 extern "C" size_t (__cdecl* __imp_wcslen)(const wchar_t*);
 
 #include <cstddef>
+#include <memory>
 #include <type_traits>
 
 namespace fmt {
@@ -98,6 +99,7 @@ public:
 
     void set_string(const CStringW& str)
     {
+        Convert(0);                                                 // MS2: 0x1401d0dd0 (wide instance) calls Convert(0)
         wstring.value = str;
         wstring.size = str.GetLength();
     }
@@ -193,12 +195,46 @@ public:
     ArgList(ULongLong types, const internal::Value* values) : types_(types), values_(values) {}
 };
 
+template <typename Char, typename Allocator>
+class BasicWriter;
+
+// A string reference: a pointer and a length (0 = not computed yet), as in cppformat 1.x.
 template <typename Char>
-class BasicFormatter
+class BasicStringRef
+{
+public:
+    BasicStringRef(const Char* s, std::size_t size = 0) : data_(s), size_(size) {}   // 0x1401cfc90 (wide)
+    const Char* data_;
+    std::size_t size_;
+};
+typedef BasicStringRef<wchar_t> WStringRef;
+
+namespace internal {
+
+// MS2: base of BasicFormatter, 0x18 bytes (the argument list and the next automatic argument index);
+// the default constructor 0x1401cff40 only default-constructs the ArgList (0x140183290 stores types_ = 0).
+class FormatterBase
+{
+public:
+    FormatterBase() : args_() {}
+    ArgList args_;
+    int next_arg_index_;
+};
+
+}  // namespace internal
+
+template <typename Char>
+class BasicFormatter : private internal::FormatterBase
 {
 public:
     typedef Char Char;
+    explicit BasicFormatter(BasicWriter<Char, std::allocator<Char> >& w) : writer_(w) {}   // 0x1401cfc60 (wide)
     const Char* format(const Char*&, const internal::Arg&);
+    // MS2: BasicFormatter<wchar_t>::format(WStringRef, const ArgList&) 0x1402daa70, not recovered.
+    void FUN_1402daa70(BasicStringRef<Char> format, const ArgList& args);
+private:
+    BasicWriter<Char, std::allocator<Char> >& writer_;              // +0x18
+    const Char* start_;                                             // +0x20
 };
 
 // MS2-FUNCTIONAL: enum customization preserves numeric rendering without unused scratch storage.

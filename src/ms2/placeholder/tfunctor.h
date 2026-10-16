@@ -92,7 +92,11 @@ public:
     }
     void Clear() { if (implementation) { delete implementation; implementation = nullptr; } }
 private:
-    static Impl* Clone(Impl* source) { return source ? static_cast<Impl*>(source->Clone()) : nullptr; }
+    static Impl* Clone(Impl* source) {
+        if (!source) return nullptr;
+        Impl* pClone = static_cast<Impl*>(source->Clone());
+        return pClone;
+    }
     Impl* implementation;
 };
 template<class R, class Object, class Method>
