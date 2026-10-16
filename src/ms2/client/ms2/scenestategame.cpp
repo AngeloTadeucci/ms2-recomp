@@ -56,6 +56,7 @@
 #include "uimasterydialog.h"
 #include "uiupperhuddialog.h"
 #include "ms2/commonfiles/fieldmetatable.h"
+#include "ms2/placeholder/stringidinterface.h"
 #include <NiColor.h>
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/client/ms2/stateemotionidle.h"
@@ -520,6 +521,42 @@ public:
 MS2_CHECK_SIZE(NotifyRemoveNpc, 0x20);
 class Unk_SSGNotifyCenter { public: void FUN_140da4fe0(MS2Ptr<NotifyObject> spNotify); };
 Unk_SSGNotifyCenter* FUN_140939a10();
+// 0x141733850: the pvp kill notification (ctor/dtor are emitted in this unit; vfunc_1 lives in the notify unit).
+class NotifyKillPlayer : public NotifyObject
+{
+public:
+    NotifyKillPlayer(const CStringW& strKiller, const CStringW& strVictim) : m_strKiller(strKiller), m_strVictim(strVictim) {}
+    virtual ~NotifyKillPlayer() {}
+    virtual CStringW vfunc_1();                             // 0x140db5220
+    CStringW m_strKiller;                                   // +0x18
+    CStringW m_strVictim;                                   // +0x20
+};
+MS2_CHECK_SIZE(NotifyKillPlayer, 0x28);
+class UIPvPKillLogDialog : public UIDialog { public: void FUN_141342880(CStringW strKiller, CStringW strVictim); };
+extern CString DAT_143ae7a10;                               // the kill sound event name
+// 0x14171bd90: the token money change notification (ctor/dtor are emitted in this unit; vfunc_1 lives in the notify unit).
+class NotifyChangedTokenMoney : public NotifyObject
+{
+public:
+    NotifyChangedTokenMoney(int nType, __int64 nValue, __int64 nDelta) : m_nType(nType), m_nValue(nValue), m_nDelta(nDelta) {}
+    virtual ~NotifyChangedTokenMoney() {}
+    virtual CStringW vfunc_1();                             // 0x140db4610
+    int m_nType;                                            // +0x18
+    __int64 m_nValue;                                       // +0x20
+    __int64 m_nDelta;                                       // +0x28
+};
+MS2_CHECK_SIZE(NotifyChangedTokenMoney, 0x30);
+void FUN_141361460(int nType, __int64 nDelta, int nX);
+int FUN_1403bb010(int nType, int nColor);
+class Unk_SSGStrTable { public: CStringW FUN_141811980(int nTable, int nIndex); };
+Unk_SSGStrTable* FUN_1401a9d70();
+void FUN_141275460(int nStringId, int nA, int nB, const fmt::ArgList& args);
+// 0x141740df0: fmt message with two arguments (a template over the argument types in the original).
+template <class A, class B> void Unk_SSGFormatMsg(int nStringId, int nA, int nB, const A& a, const B& b)
+{
+    const fmt::internal::ArgArray<2>::Type values = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(a), fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(b)};
+    FUN_141275460(nStringId, nA, nB, fmt::ArgList(fmt::internal::make_type(a, b), values));
+}
 
 // 0x4d..0xf2: forwarders to the feature managers
 class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_141861f60(CInPacket& packet); void FUN_141863630(int nId, bool bHas, CString strName); };
@@ -2728,6 +2765,31 @@ void CSceneStateGame::FUN_1417337c0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x1417337c0, CSceneStateGame, FUN_1417337c0, 134, 0x0C0969CE);
 
+// @0x141733850
+void CSceneStateGame::FUN_141733850(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (FUN_1403ed2b0()->FUN_141adc940(0x4ea0) != 0)
+        FUN_1403ed2b0()->FUN_141adc530(0x4ea0);
+    if (nMode == 0)
+    {
+        CStringW strKiller = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW strVictim = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyKillPlayer(strKiller, strVictim)));
+        UIPvPKillLogDialog* pDlg = Unk_SSGGetDialog<UIPvPKillLogDialog>(0x4ea0);
+        if (pDlg != 0)
+            pDlg->FUN_141342880(strKiller, strVictim);
+    }
+    else if (nMode == 1)
+    {
+        CStringW strMsg = StringIdInterface(packet).FUN_141024e60();
+        FUN_1412751f0(strMsg, 4, 1);
+        CString strArg("");
+        FUN_141276180(DAT_143ae7a10, strArg);
+    }
+}
+MS2_REPLACE_METHOD(0x141733850, CSceneStateGame, FUN_141733850, 729, 0x5BEE76B4);
+
 // @0x141734b20
 void CSceneStateGame::FUN_141734b20(CInPacket& packet)
 {
@@ -3198,6 +3260,44 @@ void CSceneStateGame::FUN_14173a990(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173a990, CSceneStateGame, FUN_14173a990, 116, 0x91EABDAC);
 
+// @0x14173ad60
+void CSceneStateGame::FUN_14173ad60(CInPacket& packet)
+{
+    int nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    switch (nResult)
+    {
+    case 1:
+        FUN_1412751f0(FUN_14052bd00(0x880, strName), 1, 1);
+        break;
+    case 2:
+        FUN_1412751f0(FUN_14052bd00(0x881, strName), 1, 1);
+        break;
+    case 3:
+        FUN_141275260(0x882, 1, 1);
+        break;
+    case 4:
+        FUN_1412751f0(FUN_14052bd00(0x883, strName), 1, 1);
+        break;
+    case 5:
+        FUN_1412751f0(FUN_14052bd00(0x884, strName), 1, 1);
+        break;
+    case 6:
+        FUN_1412751f0(FUN_14052bd00(0x885, strName), 1, 1);
+        break;
+    case 7:
+        {
+            FUN_141275260(0x886, 1, 1);
+            break;
+        }
+        break;
+    case 9:
+        FUN_1412751f0(FUN_14052bd00(0x887, strName), 1, 1);
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x14173ad60, CSceneStateGame, FUN_14173ad60, 740, 0x9F113A47);
+
 // @0x14173b380
 void CSceneStateGame::FUN_14173b380(CInPacket& packet)
 {
@@ -3422,6 +3522,44 @@ void CSceneStateGame::FUN_14171bad0(CInPacket& packet)
     FUN_140aa6d40()->FUN_141b0ce20(0xd, (int)nDelta);
 }
 MS2_REPLACE_METHOD(0x14171bad0, CSceneStateGame, FUN_14171bad0, 697, 0x379D3D2D);
+
+#ifdef __clang__
+// Keep the exe token-money globals referenced in code, not in an absolute-address switch table.
+#pragma clang optimize off
+#endif
+// @0x14171bd90
+void CSceneStateGame::FUN_14171bd90(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    __int64 nDelta = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nX = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nShow = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    switch (static_cast<unsigned int>(nType))
+    {
+    case 3: DAT_143ab28b0 = nValue; break;
+    case 4: DAT_143ab28b8 = nValue; break;
+    case 5: DAT_143ab28c0 = nValue; break;
+    case 6: DAT_143ab28c8 = nValue; break;
+    case 9: DAT_143ab28d0 = nValue; break;
+    case 10: DAT_143ab28d8 = nValue; break;
+    case 11: DAT_143ab28e0 = nValue; break;
+    case 12: DAT_143ab28e8 = nValue; break;
+    case 13: DAT_143ab28f0 = nValue; break;
+    }
+    FUN_141361460(nType, nDelta, nX);
+    FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyChangedTokenMoney(nType, nValue, nDelta)));
+    if (nShow != 0)
+    {
+        int nIndex = FUN_1403bb010(nType, 99);
+        CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nIndex);
+        Unk_SSGFormatMsg(0x2f6, 1, 1, strName, nShow);
+    }
+}
+MS2_REPLACE_METHOD(0x14171bd90, CSceneStateGame, FUN_14171bd90, 740, 0xBC7B1ED3);
+#ifdef __clang__
+#pragma clang optimize on
+#endif
 
 // @0x14171e860
 void CSceneStateGame::FUN_14171e860(CInPacket& packet)
