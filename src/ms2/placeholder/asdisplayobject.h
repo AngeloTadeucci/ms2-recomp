@@ -9,6 +9,7 @@
 #include <afx.h>
 
 #include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/delegate.h"
 
 class ASEventDispatcher : public AScript
 {
@@ -30,15 +31,36 @@ public:
     void FUN_1422bfe00(float fAlpha);                           // set the alpha (100 = opaque)
     int FUN_1422c1340();                                        // ceil(width)
     int FUN_1422c13b0();                                        // ceil(height)
+    void FUN_1422bffe0(int x, int y);                           // set the position
+    // Registers an AS -> C++ callback under a name (the list lives at +0x60; aseffect.cpp "GetTooltipCallback").
+    void FUN_1422c3180(CString strName, const Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)>& cb);
 };
 
 class ASInteractiveObject : public ASDisplayObject {};
-class ASDisplayObjectContainer : public ASInteractiveObject {};
+class ASDisplayObjectContainer : public ASInteractiveObject
+{
+public:
+    Scaleform::GFx::Value FUN_1422c6900(Scaleform::GFx::Value child);   // addChild (the argument is destroyed by the callee)
+    Scaleform::GFx::Value FUN_1422c6b70(Scaleform::GFx::Value child);   // removeChild
+};
 class ASSprite : public ASDisplayObjectContainer {};
 class ASMovieClip : public ASSprite
 {
 public:
     ASMovieClip(Scaleform::GFx::Value v, int nMovieId);         // 0x1422c1e90 (the Value is destroyed by the callee)
+    virtual ~ASMovieClip();                                     // 0 deleting 0x1422c2de0, dtor 0x1422c1fb0
+    // 6-11 invoke the AS MovieClip method of the same name, 12-15 forward to the value's object interface
+    virtual void vfunc_6();                                     // 6 0x1422c20a0 play
+    virtual void vfunc_7();                                     // 7 0x1422c20e0 stop
+    virtual void vfunc_8();                                     // 8 0x1422c2120 prevFrame
+    virtual void vfunc_9();                                     // 9 0x1422c2160 nextFrame
+    virtual void vfunc_10();                                    // 10 0x1422c21a0 prevScene
+    virtual void vfunc_11();                                    // 11 0x1422c21e0 nextScene
+    virtual void vfunc_12(int nFrame);                          // 12 0x1422c2260
+    virtual void vfunc_13(const CString& strLabel);             // 13 0x1422c2220
+    virtual void vfunc_14(int nFrame);                          // 14 0x1422c22d0
+    virtual void vfunc_15(const CString& strLabel);             // 15 0x1422c2290
+    int FUN_1422c2300();                                        // the "currentFrame" member
 private:
     unsigned char m_unrecovered_40[0x40];                       // exe allocates 0x80 bytes (asequipicon 0x1409b93ed)
 };

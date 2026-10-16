@@ -15,6 +15,7 @@ class Unk_GalleryItem;
 class ASTooltip : public AScript
 {
 public:
+    explicit ASTooltip(int nMovieId);                // 0x1409c62e0 (aseffect.cpp)
     ASTooltip(int a1, int a2);
     ASTooltip(void* pOwner, int a1, int a2);
     virtual ~ASTooltip();
@@ -32,6 +33,6 @@ public:
     void FUN_1409db7b0(MS2Ptr<CItem> spItem);                            // compare against this item (by value: callee destroys)
 
 private:
-    void* m_pad_40; void* m_pad_48; void* m_pad_50; void* m_pad_58;
+    void* m_pad_40; void* m_pad_48; CStringW m_50; void* m_pad_58;   // m_50: text (destroyed by ~ASTooltip, aseffect.cpp)
 };
 MS2_CHECK_SIZE(ASTooltip, 0x60);
