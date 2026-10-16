@@ -55,6 +55,8 @@
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIWatchAGameDialog@@@@YAPEAVUIWatchAGameDialog@@H@Z 0x141743690 ; w120 manual (RTTI)
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIHideAndSeekResultDialog@@@@YAPEAVUIHideAndSeekResultDialog@@H@Z 0x141742b40 ; w120 manual (RTTI)
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIApartmentDialog@@@@YAPEAVUIApartmentDialog@@H@Z 0x141742450 ; w131 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIAdventureLevelDialog@@@@YAPEAVUIAdventureLevelDialog@@H@Z 0x141742310 ; w131 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIAdventureLevelOldDialog@@@@YAPEAVUIAdventureLevelOldDialog@@H@Z 0x1417423b0 ; w131 manual (RTTI)
 // MS2-PIN: ??0?$Unk_BmPtr@VUserUGCMapInfo@@@@QEAA@AEBV0@@Z 0x1417459d0 ; w120 manual (call site)
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
 // MS2-PIN: ??_GNotifyChangeMyJob@@UEAAPEAXI@Z 0x141747850 ; w125 manual
@@ -118,6 +120,7 @@
 #include <atlcoll.h>
 #include <map>
 #include <set>
+#include "ms2/placeholder/csadventurelevelmission.h"
 #include "ms2/commonfiles/ugcmappackageinfo.h"   // Unk_Int3
 #include "ms2/commonfiles/ugcmapdata.h"          // CubeOwner
 #include "ms2/unnamed/unit_140fa9eb0.h"
@@ -261,6 +264,7 @@ public:
     void FUN_1411a4f40(CString strName, const NiPoint3& kPos);
     void FUN_1411a4a00(Unk_EffectQuery* pQuery);                    // play once
     int FUN_1411a4a00(struct Unk_SSGEffectReq& req);                // the same, with the full 0x70 request
+    int FUN_1411a49c0(struct Unk_SSGEffectReq& req);                // play, returns the handle
     void FUN_1411a5110(CString strPath, CString strName, CString strBone, int a, struct Unk_SSGXform* pXform, float fScale, int b);   // play a sound
 };
 Unk_SSGEffectMgr* FUN_1403ed280();
@@ -824,7 +828,7 @@ public:
 MS2_CHECK_SIZE(CPet, 0x10b0);
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
-class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
+class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141938ae0(int nId, int n); void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
     void FUN_141937e00(int nMode); void FUN_141937e40(int nMode); };   // UIGameMenuDialog
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
@@ -834,6 +838,7 @@ class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_14
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
 class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
+class Unk_BSConstInt { public: int FUN_140ec2b60(); };   // a constant row (uibeautyshopstyledialog.cpp's name)
 class Unk_SSGConstants
 {
 public:
@@ -847,7 +852,9 @@ public:
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
     char m_pad_66d1[0x67e0 - 0x66d1];
     Unk_SSGConstValue2 m_67e0;                              // +0x67e0
-    char m_pad_67e1[0x9718 - 0x67e1];
+    char m_pad_67e1[0x9190 - 0x67e1];
+    Unk_BSConstInt m_9190;                                  // +0x9190 adventure level-up chat notice id
+    char m_pad_9191[0x9718 - 0x9191];
     unsigned short m_n9718;                                 // +0x9718 skill point level cap (the larger of the two)
     unsigned short m_n971a;                                 // +0x971a
 };
@@ -951,7 +958,7 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2c8 - 0xd8]; CString m_str2c8; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2c8 - 0xd8]; CString m_str2c8; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; char m_pad_360[0x5b0 - 0x360]; CString m_str5b0; };
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
 int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
 class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
@@ -5272,6 +5279,7 @@ struct Unk_SSGEffectReq
 {
     Unk_SSGEffectReq();                                     // 0x140a52ef0
     ~Unk_SSGEffectReq();                                    // 0x1405a89e0
+    void FUN_140a53190(int nOwnerId);                       // the owner object
     CString m_strName;                                      // +0x00
     int m_nType;                                            // +0x08
     int m_pad_0c;
@@ -7576,6 +7584,179 @@ void CSceneStateGame::FUN_14173d2e0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14173d2e0, CSceneStateGame, FUN_14173d2e0, 483, 0x21A44490);
+
+// Packet 0xd4: adventure level (prestige): exp, level-up, claimed rewards and missions.
+// The payload (unit_1407a4f20's tagged body; kind 0: exp + claimed set, 1: exp gain, 2: level of a player, 4: new claims).
+struct Unk_1407a8820
+{
+    Unk_1407a8820() : m_00(8), m_08(0), m_10(0), m_18(0), m_30(0), m_38(0), m_3c(0), m_40(0) {}
+    int m_00;                                               // kind
+    __int64 m_08;                                           // exp
+    int m_10;                                               // level threshold reached
+    __int64 m_18;
+    std::set<unsigned int> m_20;                            // claimed reward levels
+    __int64 m_30;                                           // exp gained
+    int m_38;                                               // level
+    int m_3c;                                               // player id
+    int m_40;                                               // 1: the claim succeeded
+};
+void FUN_1407a8b20(Unk_1407a8820& v, CInputStream& in);
+extern __int64 DAT_143ab2958;                               // current adventure exp
+extern unsigned int DAT_143ab2960;                          // adventure level threshold reached
+extern __int64 DAT_143ab2968;
+extern std::set<unsigned int> DAT_143ab3308;                // the claimed level rewards
+extern std::map<unsigned int, CAdventureLevelMissionData> DAT_143ab3318;   // the mission progress
+class UIAdventureLevelDialog : public UIDialog { public: void FUN_140ba31c0(); void FUN_140ba3200(); };   // refresh rewards / missions
+class UIAdventureLevelOldDialog : public UIDialog { public: void FUN_140ba5a70(); };                    // refresh rewards
+class UIAdventureLevelExpBar { public: void FUN_140ba6cf0(__int64 nGain); };
+UIAdventureLevelExpBar* FUN_14125b160(int nId);             // GetDialog<UIAdventureLevelExpBar> (gameoptionstruct.cpp)
+void FUN_1413610f0(__int64 nGain);                          // the exp gain notice
+void FUN_141b16580(int nLevel);                             // system text 0xd22 (level up)
+// @0x14173d4d0
+// MS2-FUNCTIONAL: code bytes match; symbols-manual binds ??1CAdventureLevelMissionData to 0x140195820 (that is the ??_G
+// deleting dtor; it calls the real dtor 0x140195700, which the exe calls here)
+void CSceneStateGame::FUN_14173d4d0(CInPacket& packet)
+{
+    unsigned int nOffset = packet.vfunc_0();
+    Unk_1407a8820 kPayload;
+    FUN_1407a8b20(kPayload, packet);
+    __int64 nGain = 0;
+    switch (kPayload.m_00)
+    {
+    case 1:
+        nGain = kPayload.m_30;
+        DAT_143ab2958 = kPayload.m_08;
+        FUN_140aa6d40()->FUN_141b0ce20(0x12, 0);
+        FUN_1413610f0(nGain);
+        break;
+    case 2:
+    {
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(kPayload.m_3c);
+        if (pPC == 0)
+            break;
+        {
+            unsigned int nOldLevel = pPC->vfunc_141();
+            pPC->vfunc_140(kPayload.m_38);
+            if (nOldLevel < pPC->vfunc_141())
+            {
+                Unk_SSGEffectReq req;
+                req.m_strName = FUN_1401d31f0()->m_str5b0;
+                req.m_nType = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
+                if (pPC->FUN_1416764a0() != 0)
+                {
+                    efd::SmartPointer<Ridee> spRidee(pPC->FUN_1416764a0());
+                    req.FUN_140a53190(spRidee->FUN_14123c580());
+                }
+                else
+                    req.FUN_140a53190(pPC->FUN_14123c580());
+                FUN_1403ed280()->FUN_1411a49c0(req);
+            }
+            MyPC* pMyPC = FUN_1409613d0(pPC);
+            if (pMyPC == 0)
+                break;
+            {
+                if (nOldLevel == 0)
+                    DAT_143ab2960 = 1;
+                Unk_SSGChatDialog* pChat;
+                if (nOldLevel < pPC->vfunc_141() && (pChat = FUN_140938cd0(0x4e5d)) != 0)
+                    pChat->FUN_141abf6e0(FUN_1401d3200()->m_9190.FUN_140ec2b60(), 1);
+                FUN_140aa6d40()->FUN_141b0ce20(0x11, 0);
+                FUN_141b16580(kPayload.m_38);
+            }
+        }
+    }
+        break;
+    case 0:
+        DAT_143ab2958 = kPayload.m_08;
+        DAT_143ab2960 = kPayload.m_10;
+        DAT_143ab2968 = kPayload.m_18;
+        DAT_143ab3308 = kPayload.m_20;
+        break;
+    case 4:
+    {
+        if (kPayload.m_40 != 1)
+            return;
+        DAT_143ab3308.insert(kPayload.m_20.begin(), kPayload.m_20.end());
+        if (FUN_140166410()->FUN_14036d570(0xfb))
+        {
+            UIAdventureLevelDialog* pDlg = Unk_SSGGetDialog<UIAdventureLevelDialog>(0x4f67);
+            if (pDlg == 0)
+                return;
+            pDlg->FUN_140ba31c0();
+            Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+            if (pMenu == 0)
+                return;
+            pMenu->FUN_141938ae0(0x4f67, 0);
+        }
+        else
+        {
+            UIAdventureLevelOldDialog* pOld = Unk_SSGGetDialog<UIAdventureLevelOldDialog>(0x4f87);
+            if (pOld == 0)
+                return;
+            pOld->FUN_140ba5a70();
+            Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+            if (pMenu == 0)
+                return;
+            pMenu->FUN_141938ae0(0x4f87, 0);
+        }
+        return;
+    }
+    case 7:
+    {
+        if (!FUN_140166410()->FUN_14036d570(0xfb))
+            return;
+        packet.FUN_140715280(nOffset);
+        CSAdventureLevelMission kMission;
+        kMission.FUN_1407a90e0(packet);
+        DAT_143ab3318.clear();
+        const std::map<unsigned int, CAdventureLevelMissionData*>& missions = kMission.GetMissions();
+        for (std::map<unsigned int, CAdventureLevelMissionData*>::const_iterator it = missions.begin(); it != missions.end(); ++it)
+        {
+            CAdventureLevelMissionData kData;
+            kData.m_progress = it->second->m_progress;
+            kData.m_complete = it->second->m_complete;
+            DAT_143ab3318.insert(std::make_pair(it->first, kData));
+        }
+        UIAdventureLevelDialog* pDlg = Unk_SSGGetDialog<UIAdventureLevelDialog>(0x4f67);
+        if (pDlg == 0)
+            return;
+        pDlg->FUN_140ba3200();
+        Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+        if (pMenu == 0)
+            return;
+        pMenu->FUN_141938ae0(0x4f67, 0);
+    }
+        break;
+    case 6:
+    {
+        if (!FUN_140166410()->FUN_14036d570(0xfb))
+            return;
+        packet.FUN_140715280(nOffset);
+        CSAdventureLevelMission kMission;
+        kMission.FUN_1407a90e0(packet);
+        if (kMission.m_0c != 1)
+            return;
+        DAT_143ab3318.clear();
+        const std::map<unsigned int, CAdventureLevelMissionData*>& missions = kMission.GetMissions();
+        for (std::map<unsigned int, CAdventureLevelMissionData*>::const_iterator it = missions.begin(); it != missions.end(); ++it)
+        {
+            CAdventureLevelMissionData kData;
+            kData.m_progress = it->second->m_progress;
+            kData.m_complete = it->second->m_complete;
+            DAT_143ab3318.insert(std::make_pair(it->first, kData));
+        }
+        UIAdventureLevelDialog* pDlg = Unk_SSGGetDialog<UIAdventureLevelDialog>(0x4f67);
+        if (pDlg == 0)
+            return;
+        pDlg->FUN_140ba3200();
+    }
+        break;
+    }
+    UIAdventureLevelExpBar* pBar = FUN_14125b160(0x4f66);
+    if (pBar != 0)
+        pBar->FUN_140ba6cf0(nGain);
+}
+MS2_REPLACE_METHOD(0x14173D4D0, CSceneStateGame, FUN_14173d4d0, 2295, 0xD65FBD22);
 
 // @0x14173fc40
 void CSceneStateGame::FUN_14173fc40(CInPacket& packet)
