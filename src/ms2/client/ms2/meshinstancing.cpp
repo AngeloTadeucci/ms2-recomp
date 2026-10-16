@@ -188,8 +188,8 @@ void MeshInstancing::FUN_14147ccf0() {
 }
 MS2_REPLACE_METHOD(0x14147ccf0, MeshInstancing, FUN_14147ccf0, 226, 0x553DF4FC);
 // @0x14147cde0
-bool MeshInstancing::FUN_14147cde0(const egf::EntityID& id) {
-    for (std::list<egf::EntityID>::iterator it = config.ids.begin(); it != config.ids.end(); ++it) {
+bool MeshInstancing::FUN_14147cde0(egf::EntityID id) {
+    for (std::list<egf::EntityID>::iterator it = config.ids.m_list.begin(); it != config.ids.m_list.end(); ++it) {
         if (*it == id) return true;
     }
     return false;

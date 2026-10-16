@@ -184,6 +184,7 @@
 // MS2-PIN: ?push_back@?$list@VEntityID@egf@@V?$allocator@VEntityID@egf@@@std@@@std@@QEAAXAEBVEntityID@egf@@@Z 0x1411cb170 ; prop
 // MS2-PIN: ?push_back@?$vector@V?$SmartPointer@VNiMeshHWInstance@@@efd@@V?$CustomAllocator@V?$SmartPointer@VNiMeshHWInstance@@@efd@@@2@@std@@QEAAX$$QEAV?$SmartPointer@VNiMeshHWInstance@@@efd@@@Z 0x1411cb1e0 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1?$CustomAllocator@V?$SmartPointer@VNiMeshHWInstance@@@efd@@@efd@@QEAA@XZ 0x1411c9180
 
 
 #include "entityinstancing.h"
