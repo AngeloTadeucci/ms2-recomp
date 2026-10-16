@@ -1988,3 +1988,10 @@ D3DXFloat16To32Array	14230396f	func
 ??0UGCMapDesignInfo@@QEAA@XZ	140898780	func
 ??0UGCMapBlueprintInfo@@QEAA@XZ	1408987f0	func
 ??0Unk_SSGHouseRule@@QEAA@XZ	140b68e60	func
+??0Unk_MagicEffectReq@@QEAA@XZ	140a52ef0	func
+??1Unk_MagicEffectReq@@QEAA@XZ	1405a89e0	func
+??0Unk_MagicRandom@@QEAA@HHH@Z	140768290	func
+??1Unk_MagicRandom@@QEAA@XZ	1401cdc30	func
+??0Unk_MagicEffectFile@@QEAA@XZ	140a90100	func
+??1Unk_MagicEffectFile@@QEAA@XZ	140a90120	func
+??0NotifyRemoveNpc@@QEAA@V?$SmartPointer@VUnk_SSGNpc@@@efd@@@Z	140db4930	func
