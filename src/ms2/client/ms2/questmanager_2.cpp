@@ -10,6 +10,7 @@
 #include "questmanager_2.h"
 #include "questmanager_1.h"
 #include "pcbase.h"
+#include "guildmanager.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/delegate.h"
 #include "ms2/placeholder/header_statics_a.h"
@@ -141,6 +142,20 @@ int CQuestManager::vfunc_o10_9()
     return FUN_1413b6160(FUN_1403ed290());
 }
 MS2_REPLACE_METHOD_VIA(0x1416c9a20, CQuestManager, CQuestManagerCommon, vfunc_o10_9, 27, 0x11B98314);
+
+// @0x1416c9a50
+int CQuestManager::vfunc_o10_10()
+{
+    return static_cast<CGuildInfo&>(*FUN_1403ed290()).FUN_1404d1a80();
+}
+MS2_REPLACE_METHOD_VIA(0x1416c9a50, CQuestManager, CQuestManagerCommon, vfunc_o10_10, 31, 0xEF9C0B93);
+
+// @0x1416c9a80
+int CQuestManager::vfunc_o10_11()
+{
+    return static_cast<CGuildInfo&>(*FUN_1403ed290()).FUN_1404d2990(6);
+}
+MS2_REPLACE_METHOD_VIA(0x1416c9a80, CQuestManager, CQuestManagerCommon, vfunc_o10_11, 36, 0xA08F10BC);
 
 // @0x1416c9b90
 __int64 CQuestManager::vfunc_o10_8()
