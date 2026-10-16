@@ -198,6 +198,7 @@ public:
     void FUN_141a02460(int n);
     void FUN_141a02480(int n);
     void FUN_141a024a0(int n);
+    void FUN_141a024c0();                                           // m_20f = true
     void FUN_141a02730(bool b);
     void FUN_141a02770(int nWidth, int nHeight);
     void FUN_141a01ee0(MS2Ptr<CItem> spItem, const CStringW& strName, int nA, int nB, int nC, int nD, int nE);   // item entry

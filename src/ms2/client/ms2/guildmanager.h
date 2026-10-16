@@ -102,6 +102,7 @@ public:
     void FUN_1413bd640(bool show);
     void FUN_1413c66f0(int kind, int code, int arg);
     CStringW FUN_1413c7c20();
+    bool FUN_1413c7cb0(int result, const CMsgBoxData& box);
 
     // packet handlers dispatched by FUN_1413b6370 (exe order)
     void FUN_1413bd680(CInPacket& packet);
