@@ -7,7 +7,6 @@
 // MS2-PIN: ??$?0VCGuildManager@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAVCGuildManager@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x1413c8480 ; unique
 // MS2-PIN: ??$?8PEAVCGuildManager@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x1413c8640 ; prop
 // MS2-PIN: ??$?8PEAVCGuildManager@@P80@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA_NAEBU?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@0@Z 0x1413c86b0 ; prop
-// MS2-PIN: ??$destroy@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@1@QEAV?$MS2Ptr@VCGuildPVPHistoryData@@@@@Z 0x1413cb690 ; unique
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1413cba30 ; unique
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCGuildMember@@@@QEAAAEAV1@PEAVCGuildMember@@@Z 0x1413cc9b0 ; unique
 // MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1413d1ec0 ; unique
@@ -21,6 +20,16 @@
 // MS2-PIN: ?pop_back@?$deque@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@V?$allocator@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@std@@@std@@QEAAXXZ 0x1413d29d0 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7CGuildManager@@6B?$TSingleton@VCGuildManager@@@@@ 0x142f0a5d8
+// MS2-PIN: ??__EkENTITY_INVALID@egf@@YAXXZ 0x1400f4980
+// MS2-PIN: ?pop_back@?$deque@V?$MS2Ptr@VCGuildPVPHistoryData@@@@V?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@std@@@std@@QEAAXXZ 0x1413d28f0
+// MS2-PIN: ?pop_front@?$deque@V?$MS2Ptr@VCGuildPVPHistoryData@@@@V?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@std@@@std@@QEAAXXZ 0x1413d2ab0
+// MS2-PIN: ??$destroy@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCGuildPVPHistoryData@@@@@1@QEAV?$MS2Ptr@VCGuildPVPHistoryData@@@@@Z 0x1413cb670
+// MS2-PIN: ??$destroy@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@1@QEAV?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@@Z 0x1413cb690
+// MS2-PIN: ??1?$MS2Ptr@VCGuildPVPHistoryData@@@@QEAA@XZ 0x1413cc6a0
+// MS2-PIN: ??1?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@QEAA@XZ 0x1413cc6d0
+// MS2-PIN: ??_G?$MS2Ptr@VCGuildPVPHistoryData@@@@QEAAPEAXI@Z 0x1413cd620
+// MS2-PIN: ??_G?$MS2Ptr@VCGuildPVPSeasonHistoryData@@@@QEAAPEAXI@Z 0x1413cd660
+// MS2-PIN: ?get@?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@QEBAPEAUGuildNpc@CGuildXmlData@@XZ 0x1413cce40
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@AEBV0@@Z 0x1404ec5b0
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@H@Z 0x1404ec5f0
 // MS2-PIN: ??0?$MS2Ptr@VCGuildMember@@@@QEAA@$$QEAV0@@Z 0x1404ec580
@@ -88,6 +97,7 @@ class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
 class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); void FUN_14196b620(); void FUN_14196e590(); void FUN_14196e2c0(); void FUN_14196c1d0(); void FUN_141970900(); void FUN_141971490(); void FUN_141971ac0(); void FUN_141972520(); void FUN_141972fc0(); void FUN_141973220(); void FUN_14196e0a0(); void FUN_141974930(); void FUN_141973fd0(int gradeIndex); void FUN_141974120(const CString& code); void FUN_141974190(const CStringW& guildName); void FUN_14196d0c0(int search); void FUN_14196d660(); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
+void FUN_140506ca0(Unk_GuildMapC* history);   // std::deque<Unk_PayloadPtr<CGuildStorage::CGuildStroageHistory>>::clear over the opaque guilddef_1 spelling
 class Unk_GuildNotifyCenter {
 public:
     void FUN_140da4e40(CStringW name, Delegate<void(NotifyObject*)> handler);
@@ -2938,8 +2948,6 @@ void CGuildManager::FUN_1413c5000(CInPacket& packet)
 MS2_REPLACE_METHOD(0x1413C5000, CGuildManager, FUN_1413c5000, 428, 0x307F6644);
 
 // Guild pvp season history entries.
-// MS2-FUNCTIONAL: byte-identical; only the pairing differs (MS2Ptr<CGuildPVPSeasonHistoryData>'s dtor resolves to
-// the PVPHistoryData copy at 0x1413cc6a0, and pinning it moves other look-alikes).
 // @0x1413c51c0
 void CGuildManager::FUN_1413c51c0(CInPacket& packet)
 {
@@ -3092,6 +3100,32 @@ void CGuildManager::FUN_1413c5c00(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x1413C5C00, CGuildManager, FUN_1413c5c00, 430, 0xA019B758);
+
+// The guild storage history list (sent when the storage window opens).
+// @0x1413c5dc0
+void CGuildManager::FUN_1413c5dc0(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    {
+        m_400 = true;
+        FUN_140506ca0(&storage.f38);
+        int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < count; i++) {
+            ItemEntity item;
+            Unk_GuildHist from;
+            Unk_GuildHist to;
+            from.FUN_1404c5be0(packet);
+            to.FUN_1404c5be0(packet);
+            item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+            __int64 time = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            FUN_1404d2e90(&from, &to, &item, time);
+        }
+        if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+            dialog->FUN_1419729d0();
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5DC0, CGuildManager, FUN_1413c5dc0, 455, 0x4E448C8B);
 
 // A join request this character sent was cancelled or answered.
 // @0x1413c5f90
@@ -3254,6 +3288,26 @@ void CGuildManager::FUN_1413c7900(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x1413C7900, CGuildManager, FUN_1413c7900, 404, 0x35152723);
+
+// Replaces the grade list with the grades in the packet.
+// @0x1413c7aa0
+void CGuildManager::FUN_1413c7aa0(CInPacket& packet)
+{
+    Unk_140163940 guard(lock);
+    if (guard != 0) {
+        // the lock is not held
+    } else {
+        fa0.RemoveAll();
+        int count = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        fa0.SetCount(count, -1);
+        for (int i = 0; i < count; i++) {
+            Unk_PayloadPtr<CGuildGrade> grade(new CGuildGrade());
+            grade->FUN_1404c71d0(packet);
+            fa0.SetAt(i, grade);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413C7AA0, CGuildManager, FUN_1413c7aa0, 370, 0x00926961);
 
 // @0x1413c7d40
 void CGuildManager::FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out) const

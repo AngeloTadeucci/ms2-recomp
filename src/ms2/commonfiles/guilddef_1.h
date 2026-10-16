@@ -9,6 +9,7 @@
 #include "ms2/placeholder/coutpacket.h"
 #include <atlcoll.h>
 #include "ms2/commonfiles/itemgift.h"
+#include "ms2/unnamed/payloadptr_1401f9eb0.h"
 struct Unk_GuildTriple {
     Unk_GuildTriple(); void FUN_140267bd0(); int FUN_140267c10(); void FUN_140267ea0(const Unk_GuildTriple&);
     void FUN_140267f50(COutputStream&); void FUN_140267fb0(CInputStream&);
@@ -269,7 +270,9 @@ void FUN_1404ef230(void*); void FUN_1404ef270(void*); void FUN_1404ef120(void*);
 struct Unk_GuildMapA { __int64 q[2]; Unk_GuildMapA(){FUN_1404edfa0(this);} ~Unk_GuildMapA(){FUN_1404ef230(this);} };
 struct Unk_GuildMapB { __int64 q[2]; Unk_GuildMapB(){FUN_1404ee000(this);} ~Unk_GuildMapB(){FUN_1404ef270(this);} };
 struct Unk_GuildMapC { __int64 q[5]; Unk_GuildMapC(){FUN_1404ede30(this);} ~Unk_GuildMapC(){FUN_1404ef120(this);} };
-struct Unk_GuildHist { __int64 q[3]; Unk_GuildHist(){FUN_1404ee5f0(this);} ~Unk_GuildHist(){FUN_1404ef6a0(this);} };
+struct Unk_GuildHist { __int64 a,b,text;   /* MS2: no array (the exe frames have no /GS cookie); text is the CStringW the out-of-line ctor/dtor manage */ Unk_GuildHist(){FUN_1404ee5f0(this);} ~Unk_GuildHist(){FUN_1404ef6a0(this);}
+    void FUN_1404c5be0(CInputStream& in);   // MS2: reads a, b (8 bytes each) and the text (CGuildManager 0x1413c5dc0)
+};
 struct Unk_GuildPtr { void* p; };   // distinct element type so the CAtlArray instantiation has a guild-only mangled name
 class CGuildStorage;
 // Nested record type name (sic) comes from the RTTI: CGuildStorage::CGuildStroageHistory.
@@ -385,7 +388,7 @@ public:
     bool FUN_1404d2c60(); int FUN_1404d2ca0();
     void FUN_1404d2cc0(ItemEntity* item);
     int FUN_1404d2db0(int a,int b);
-    void FUN_1404d2e90(const Unk_GuildBlob<0x18>* a,const Unk_GuildBlob<0x18>* b,const ItemEntity* item,__int64 c);
+    void FUN_1404d2e90(const Unk_GuildHist* a,const Unk_GuildHist* b,const ItemEntity* item,__int64 c);   // MS2: the callers pass Unk_GuildHist (ctor 0x1404ee5f0)
     void FUN_1404d3050(void* list);
     void FUN_1404d3140(const Unk_GuildSeason* season);
     Unk_GuildSeason* FUN_1404d3180();
@@ -398,7 +401,7 @@ public:
     void FUN_1404d3e70();
     // @0x1404d3fe0 / 0x1404d4060: the Unk_GuildStrRec (de)serializers are free helpers in guilddef_1.cpp.
     CLockCriticalSection lock; __int64 f38; CStringW f40; CString f48; int f50; CStringW f58,f60; __int64 f68,f70,f78; CStringW f80; __int64 f88,f90; CStringW f98;
-    ATL::CAtlArray<Unk_GuildPtr> fa0; int fc0,fc4; __int64 fc8,fd0; CStringW fd8; Unk_GuildSeason season;
+    ATL::CAtlArray<Unk_PayloadPtr<CGuildGrade> > fa0; int fc0,fc4; __int64 fc8,fd0; CStringW fd8; Unk_GuildSeason season;   // MS2: fa0 holds the grades (CAtlArray<Unk_PayloadPtr<CGuildGrade>> RemoveAll 0x1404f86e0 / SetCount 0x1404f9b50 / SetAt 0x1404f9730)
     int f130,f134,f138,f13c,f140,f144,f148,f14c,f150,f154,f158,f15c,f160,f164,f168,f16c;
     Unk_GuildBlob<0x48> f170; CGuildStorage storage; Unk_GuildBlob<0x48> f238,f280,f2c8; Unk_GuildRef f310; Unk_GuildBlob<0x30> f320;
     int f350; unsigned char f354; int f358; Unk_GuildRef f360;   // f360: MS2Ptr<CGuildNpcShopMgr> (new 0x28, ctor 0x1404ee230)

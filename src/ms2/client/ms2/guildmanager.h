@@ -104,6 +104,7 @@ public:
     CStringW FUN_1413c7c20();
     bool FUN_1413c7cb0(int result, const CMsgBoxData& box);
     void FUN_1413c7900(CInPacket& packet);
+    void FUN_1413c7aa0(CInPacket& packet);                                 // reload the grade list
     void FUN_1413c7d40(ATL::CAtlArray<MS2Ptr<CSearchGuildJoin>>& out) const;
     MS2Ptr<CSearchGuildJoin> FUN_1413c7dc0(const CStringW& guildName) const;
     void FUN_1413c7ed0();

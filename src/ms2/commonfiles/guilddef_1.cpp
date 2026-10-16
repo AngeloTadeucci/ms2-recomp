@@ -2283,7 +2283,7 @@ int CGuildInfo::FUN_1404d2db0(int a,int b)
 }
 
 // @0x1404d2e90
-void CGuildInfo::FUN_1404d2e90(const Unk_GuildBlob<0x18>* a,const Unk_GuildBlob<0x18>* b,const ItemEntity* item,__int64 c)
+void CGuildInfo::FUN_1404d2e90(const Unk_GuildHist* a,const Unk_GuildHist* b,const ItemEntity* item,__int64 c)
 {
     Unk_GuildMapLock guard(lock,1);
     CGuildStorage::CGuildStroageHistory* h=new CGuildStorage::CGuildStroageHistory;
