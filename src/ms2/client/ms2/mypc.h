@@ -207,7 +207,13 @@ public:
     int FUN_14152c280(class RideOffAction* pAction);        // get off the ride
     void FUN_141530200();                                   // leave the cube build mode
     class Unk_PCCubeCraft* FUN_141530290();                 // the cube craft controller in the cube craft mode
-    void FUN_141529a50(int nNpcId);                         // talk to the npc
+    int FUN_141529a50(int nNpcId);                          // talk to the npc (0: the nearest talkable one)
+    PCBase* FUN_141529640();                                // the nearest talkable npc
+    void FUN_141529d90();                                   // request the house design mode (packet 0x6c 4)
+    void FUN_141529e90();                                   // request the blueprint mode (packet 0x6c 5)
+    void FUN_14152dee0(int nId);                            // packet 0x40 3
+    void FUN_14152df80();                                   // packet 0x40 4 (camera reset first)
+    void FUN_14152dff0(unsigned char n);                    // packet 0x40 6
     // @0x140967010
     MS2Ptr<CHomePrivilege> FUN_140967010() { return m_spHomePrivilege; }   // COMDAT in actionkeyobject.cpp's range
     static void FUN_1415308d0();                            // reset the debug switches

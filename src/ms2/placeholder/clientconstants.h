@@ -86,6 +86,7 @@ public:
         Value() : Object(TypeName<T>()) { FUN_1401d3200()->Register(this); }
         T* Define(const char* key, const T& def);
         T* Get();
+        const T& Get(const T& kDefault);                    // 0x140967520 (float): the value once loaded, else kDefault
         T Read() { return *Get(); }   // 0x1402bac50 (uint) / bac70 (float) / bac90 (__int64)
         T* Set(const T& v);
         T m_value;                                          // +0x50

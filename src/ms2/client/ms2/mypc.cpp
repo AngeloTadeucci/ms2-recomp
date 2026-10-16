@@ -55,6 +55,7 @@
 #include "ms2/client/ms2/inventory.h"
 #include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/placeholder/clientconstants.h"
 #include <algorithm>
 #include "ms2/ms2format.h"
 #include "hook/ms2hook.h"
@@ -139,6 +140,11 @@ void FUN_14025a680(const CStringW& str, ATL::CAtlArray<CStringW>& aOut, const wc
 int FUN_140718200(const CStringW& str);                     // _wtoi
 int FUN_1407181a0(const CStringW& str);
 void FUN_140d73bc0(int nStringId, int nA, void* pListener, CStringW strArg);   // system notice by string id
+void FUN_141275260(int nStringId, int nA, int nB);          // a blocked-feature notice
+void FUN_1412751f0(const CStringW& strText, int nA, int nB);   // a notice text
+CStringW FUN_140298ea0(CStringW strKey);                    // the client string of a key
+class Unk_MyPCFeatures { public: bool FUN_14036d570(int nFeature); };
+Unk_MyPCFeatures* FUN_140166410();
 
 // The field data of a map id (MS2Ptr view; dtor 0x1408850f0, IsNull 0x1408851f0).
 class Unk_MyPCFieldRef
@@ -151,7 +157,7 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
@@ -232,7 +238,7 @@ public:
     void FUN_141ad9c40(MS2Ptr<Unk_MyPCEquipItem> spItem);
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
-class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); };
+class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); int FUN_14138c900(int nKind); };
 Unk_MyPCWidgets* FUN_1409331e0();
 class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
@@ -253,7 +259,7 @@ int FUN_14086ace0(__int64 nTime);                           // the time has pass
 class Unk_MyPCPartyUI { public: void FUN_141b1fcf0(int nObjectId); };
 class Unk_MyPCStatusMgr { public: void FUN_141b0ce20(int nKind, int n); };
 Unk_MyPCStatusMgr* FUN_140aa6d40();
-class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); };   // the camera target position
+class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); };   // the camera target position
 Unk_MyPCCamera* FUN_1409478c0();
 class Unk_MyPCSingleton { public: bool FUN_141b89990(); };
 Unk_MyPCSingleton* FUN_1409eed90();
@@ -969,6 +975,67 @@ int MyPC::FUN_141529620()
 }
 MS2_REPLACE_METHOD(0x141529620, MyPC, FUN_141529620, 17, 0xACFFB766);
 
+// @0x141529640
+PCBase* MyPC::FUN_141529640()
+{
+    PCBase* pNpc = FUN_1403ed2d0()->FUN_141bd2170(2, FUN_1401d3200()->TalkableDistance.Get(400.0f),
+        FUN_1401d3200()->TalkableFrontOnly.Read(), 1);
+    if (!pNpc)
+        pNpc = FUN_1403ed2d0()->FUN_141bd2170(1, FUN_1401d3200()->TalkableDistance.Get(400.0f),
+            FUN_1401d3200()->TalkableFrontOnly.Read(), 1);
+    return pNpc;
+}
+MS2_REPLACE_METHOD(0x141529640, MyPC, FUN_141529640, 253, 0xF2B93DB0);
+
+// @0x141529a50
+int MyPC::FUN_141529a50(int nNpcId)
+{
+    PCBase* pNpc = 0;
+    if (nNpcId == 0)
+        pNpc = FUN_141529640();
+    else
+        pNpc = FUN_1403ed2d0()->FUN_141bd1320(nNpcId);
+    if (!pNpc)
+        return 0;
+    FUN_140967100()->FUN_141b1fcf0(pNpc->FUN_14123c580());
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141529a50, MyPC, FUN_141529a50, 123, 0x33B013F2);
+
+// @0x141529d90
+void MyPC::FUN_141529d90()
+{
+    if (FUN_1409331e0()->FUN_14138c900(0x17) != 0)
+    {
+        FUN_1412751f0(FUN_140298ea0(L"s_tutorial_designHome_limit"), 1, 1);
+        return;
+    }
+    if (FUN_141529ae0(0, 0, 0, 0) == 0)
+        return;
+    COutPacket packet(0x6c, 0);
+    packet.Encode1(4);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x141529d90, MyPC, FUN_141529d90, 237, 0xAC200C52);
+
+// @0x141529e90
+void MyPC::FUN_141529e90()
+{
+    if (!FUN_140166410()->FUN_14036d570(0xe9))
+        return;
+    if (FUN_1409331e0()->FUN_14138c900(0x18) != 0)
+    {
+        FUN_1412751f0(FUN_140298ea0(L"s_tutorial_blueprint_limit"), 1, 1);
+        return;
+    }
+    if (FUN_141529ae0(0, 0, 0, 0) == 0)
+        return;
+    COutPacket packet(0x6c, 0);
+    packet.Encode1(5);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x141529e90, MyPC, FUN_141529e90, 267, 0xB1DDB26B);
+
 // @0x14152a040
 void MyPC::FUN_14152a040()
 {
@@ -1029,6 +1096,43 @@ int MyPC::FUN_14152e060()
     return 0;
 }
 MS2_REPLACE_METHOD(0x14152E060, MyPC, FUN_14152e060, 87, 0x29ABFAAD);
+
+// @0x14152dee0
+void MyPC::FUN_14152dee0(int nId)
+{
+    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x57) == 1)
+    {
+        FUN_141275260(0x2f7, 1, 1);
+    }
+    else
+    {
+        COutPacket packet(0x40, 0);
+        packet.Encode1(3);
+        packet.Encode4(nId);
+        FUN_140710590(packet);
+    }
+}
+MS2_REPLACE_METHOD(0x14152dee0, MyPC, FUN_14152dee0, 143, 0x264E7D90);
+
+// @0x14152df80
+void MyPC::FUN_14152df80()
+{
+    FUN_1409478c0()->FUN_140aeaf40(this, 1);
+    COutPacket packet(0x40, 0);
+    packet.Encode1(4);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152df80, MyPC, FUN_14152df80, 99, 0x34257BF8);
+
+// @0x14152dff0
+void MyPC::FUN_14152dff0(unsigned char n)
+{
+    COutPacket packet(0x40, 0);
+    packet.Encode1(6);
+    packet.Encode1(n);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152dff0, MyPC, FUN_14152dff0, 94, 0xD49EC510);
 
 // @0x14152e240
 void MyPC::FUN_14152e240(int n)
@@ -1638,8 +1742,6 @@ int MyPC::FUN_1415271e0(PCBase* pActor, Unk_MyPCSkillUse* pSkill)
 }
 MS2_REPLACE_METHOD(0x1415271e0, MyPC, FUN_1415271e0, 151, 0xE24676BA);
 
-class Unk_MyPCFeatures { public: bool FUN_14036d570(int nFeature); };
-Unk_MyPCFeatures* FUN_140166410();
 
 // @0x141529fb0
 void MyPC::FUN_141529fb0()
