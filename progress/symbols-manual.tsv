@@ -2410,3 +2410,6 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??C?$MS2Ptr@VAdditionalCli@@@@QEBAPEAVAdditionalCli@@XZ	14096e8b0	func
 ?get@?$MS2Ptr@VAdditionalCli@@@@QEBAPEAVAdditionalCli@@XZ	140975b90	func
 ?get@?$MS2Ptr@VCube@@@@QEBAPEAVCube@@XZ	140885330	func
+??0CubeItemInfo@@QEAA@AEBV0@@Z	1408b34b0	func
+?DAT_143acf6c0@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143acf6c0	data
+?DAT_143acf6b8@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143acf6b8	data
