@@ -125,6 +125,7 @@
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/commonfiles/rideonaction.h"
 #include "ms2/placeholder/cproxygameobject.h"
+#include "cubemapinformationservice_3.h"   // FittingDollData
 #include "magicdata.h"                    // CMagicModel, Unk_MagicTagPtr (0x3d mode 0)
 #include "ms2/commonfiles/timeutil.h"     // Unk_ServerClock
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
@@ -485,6 +486,7 @@ class NoticeCubeInfo;
 class Unk_Service6100017 : public efd::ISystemService
 {
 public:
+    void FUN_1410cb4c0(MS2Ptr<FittingDollData> spDoll);    // add a fitting doll (0x7b)
     // 0x69 (UGC housing) results
     void FUN_1410c4240(int nA, int nB, const CStringW& strName, __int64 nC, __int64 nCharId);
     void FUN_1410d6590(int nError);                         // report a housing error code
@@ -9497,6 +9499,138 @@ Unk_SkillMagicInfo::Unk_SkillMagicInfo()
 }
 
 CSkillMagicControlGuide* FUN_141662610(PCBase* pOwner);   // the owner's skill-magic control guide
+
+extern int DAT_143af25f8;                                    // set after a fitting doll's equipment changed
+FittingDollPC* FUN_140884db0(PCBase* pObj);                 // the object as a fitting doll (class 0x6200046) or 0
+void FUN_14121b840(int nId);                                // FittingDollPC: packet 0x7b mode 0xb
+
+// Packet 0x7b: fitting dolls (housing mannequins).
+// @0x14172b350
+void CSceneStateGame::FUN_14172b350(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 4)
+        return;
+    if (nMode == 5)
+        return;
+    if (nMode == 0)
+    {
+        MS2Ptr<FittingDollData> spDoll(new FittingDollData());
+        spDoll->kind = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spDoll->instanceId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        spDoll->field28 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        reinterpret_cast<Unk_StreamPoint&>(spDoll->position) = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        reinterpret_cast<Unk_StreamPoint&>(spDoll->rotation) = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        spDoll->field44 = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (spDoll->field44 != 0)
+        {
+            spDoll->field48 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            for (unsigned __int64 i = 0; i < static_cast<unsigned int>(spDoll->field48); i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+                int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                MS2Ptr<CItem> spItem(new CItem());
+                if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+                    return;
+                spItem->FUN_140524eb0(packet);
+                spItem->FUN_140526b30(spDoll->kind);
+                spItem->FUN_140526a70(nItemUid);
+                spItem->FUN_140526c10(nSlot);
+                spDoll->items.Add(spItem);
+            }
+        }
+        Unk_Service6100017* pCubeMap = FUN_1401cd040(&DAT_143b059e8);
+        pCubeMap->FUN_1410cb4c0(spDoll);
+    }
+    else if (nMode == 1)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_1403ed2d0()->FUN_141bbbcf0(nId, 0);
+    }
+    else if (nMode == 6)
+    {
+        __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem());
+        if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+            return;
+        FittingDollPC* pDoll = FUN_140884db0(FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid));
+        if (pDoll != 0)
+        {
+            spItem->FUN_140526b30(pDoll->FUN_14123c580());
+            spItem->FUN_140526a70(nItemUid);
+            spItem->FUN_140526c10(nSlot);
+            spItem->FUN_140524eb0(packet);
+            pDoll->vfunc_127(spItem.get(), 0);
+        }
+        DAT_143af25f8 = 1;
+    }
+    else if (nMode == 7)
+    {
+        __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        FittingDollPC* pDoll = FUN_140884db0(FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid));
+        if (pDoll != 0)
+        {
+            int nKind = 0;
+            if (pDoll->FUN_14121c710() != 0)
+                nKind = 1;
+            MS2Ptr<CEquipItem> spEquip = pDoll->FUN_141655e80(nSlot, nKind);
+            bool bSame = static_cast<bool>(spEquip.get()) && spEquip->FUN_1411dc7a0()->FUN_140527a20() == nSlot;
+            if (bSame)
+                pDoll->vfunc_128(spEquip->FUN_1411dc7a0().get(), 0);
+        }
+        DAT_143af25f8 = 1;
+    }
+    else if (nMode == 8)
+    {
+        if (FUN_140166410()->FUN_14036d570(0xd4))
+        {
+            __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            bool bPose = true;
+            int nResult = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            switch (nResult)
+            {
+            case 0x17:
+                FUN_140d73bc0(0x86c, 0, 0, L"");
+                break;
+            case 0x18:
+                FUN_140d73bc0(0x86d, 0, 0, L"");
+                break;
+            case 0x19:
+                bPose = false;
+                break;
+            default:
+                MS2_ASSERT_AT(0x1d7d, 0);
+            }
+            if (bPose)
+            {
+                FittingDollPC* pDoll = FUN_140884db0(FUN_1403ed2d0()->FUN_141bd1530(nOwnerUid));
+                if (pDoll != 0)
+                {
+                    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+                    if (pMyPC != 0)
+                    {
+                        pMyPC->vfunc_59(0x22, 0, 0, 0);
+                        if (pDoll->FUN_14166c930() != 0x22)
+                            pDoll->vfunc_59(0x22, 0, 0, 0);
+                    }
+                }
+            }
+        }
+    }
+    else if (nMode == 0xb)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_14121b840(nId);
+    }
+}
+MS2_REPLACE_METHOD(0x14172B350, CSceneStateGame, FUN_14172b350, 3596, 0x220A03F9);
 
 // @0x14172c170
 void CSceneStateGame::FUN_14172c170(CInPacket& packet)

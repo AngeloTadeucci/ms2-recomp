@@ -112,6 +112,7 @@ public:
     // non-virtual members called by scenestategame.cpp (w86)
     MS2Ptr<CItem> FUN_141655b80(__int64 nItemUid);          // 0x141655b80 an owned item by uid
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // 0x141655c30 a worn item by uid
+    MS2Ptr<CEquipItem> FUN_141655e80(int nSlot, int nKind); // 0x141655e80 the worn item of a slot (scenestategame 0x7b)
     Unk_PCEquipSet* FUN_1416561a0();                        // 0x1416561a0 &m_kEquipDE0
     int FUN_141654700();                                    // 0x141654700 the job
     int FUN_141662eb0(class CItem* pItem);                  // 0x141662eb0 the item may be used (mypc)
@@ -199,6 +200,7 @@ class FittingDollPC : public PC {
 public:
     virtual ~FittingDollPC();
     void FUN_14121c170(NiFixedString parentName);
+    int FUN_14121c710();                                    // 0x14121c710 (scenestategame 0x7b mode 7: 1 selects the equip set)
     int type, index, unknown12e8;
     void* unknown12f0;
     NiFixedString parentName;
