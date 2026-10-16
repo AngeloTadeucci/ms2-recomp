@@ -227,6 +227,8 @@ bool IsInstalled(uintptr_t va) {
     return false;
 }
 
+extern "C" IMAGE_DOS_HEADER __ImageBase;
+
 // MS2HOOK_AVLOG=1: log the first access violations (rip, module+offset, fault address, a few stack qwords).
 static LONG CALLBACK AvLogHandler(EXCEPTION_POINTERS* ep) {
     static volatile LONG count = 0;
@@ -245,12 +247,21 @@ static LONG CALLBACK AvLogHandler(EXCEPTION_POINTERS* ep) {
     describe(ep->ContextRecord->Rip, d, sizeof d);
     Log("EXC code=%08lx rip=%s addr=%p rw=%llu", ep->ExceptionRecord->ExceptionCode, d, reinterpret_cast<void*>(ep->ExceptionRecord->ExceptionInformation[1]),
         (unsigned long long)ep->ExceptionRecord->ExceptionInformation[0]);
-    auto* sp = reinterpret_cast<uintptr_t*>(ep->ContextRecord->Rsp);
+    const CONTEXT* c = ep->ContextRecord;
+    Log("   rax=%llx rbx=%llx rcx=%llx rdx=%llx rsi=%llx rdi=%llx rbp=%llx rsp=%llx", c->Rax, c->Rbx, c->Rcx, c->Rdx,
+        c->Rsi, c->Rdi, c->Rbp, c->Rsp);
+    Log("   r8=%llx r9=%llx r10=%llx r11=%llx r12=%llx r13=%llx r14=%llx r15=%llx", c->R8, c->R9, c->R10, c->R11,
+        c->R12, c->R13, c->R14, c->R15);
+    // the hook DLL's whole image (its .text is larger than 4 MB, a fixed window dropped the upper frames)
+    const uintptr_t dllLo = reinterpret_cast<uintptr_t>(&__ImageBase);
+    const uintptr_t dllHi = dllLo + reinterpret_cast<const IMAGE_NT_HEADERS*>(
+        reinterpret_cast<const char*>(&__ImageBase) + __ImageBase.e_lfanew)->OptionalHeader.SizeOfImage;
+    auto* sp = reinterpret_cast<uintptr_t*>(c->Rsp);
     for (int i = 0; i < 700; ++i) {
         uintptr_t v = 0;
         __try { v = sp[i]; } __except (EXCEPTION_EXECUTE_HANDLER) { break; }
         if (v >= 0x140000000ull && v < 0x143c00000ull) { Log("   stack[%d] exe 0x%llx", i, (unsigned long long)v); }
-        else if (v >= 0x100000000ull && v < 0x100400000ull) { describe(v, d, sizeof d); Log("   stack[%d] %s", i, d); }
+        else if (v >= dllLo + 0x1000 && v < dllHi) { describe(v, d, sizeof d); Log("   stack[%d] %s", i, d); }
     }
     return EXCEPTION_CONTINUE_SEARCH;
 }
