@@ -38,6 +38,9 @@
 // MS2-PIN: ??0?$MS2Ptr@VUGCMapDesignInfo@@@@QEAA@PEAVUGCMapDesignInfo@@@Z 0x1417458f0 ; w109 manual (was auto-order)
 // MS2-PIN: ??_GNotifyChangeMyLevel@@UEAAPEAXI@Z 0x141747890 ; w109 manual
 // MS2-PIN: ??1NotifyChangeMyLevel@@UEAA@XZ 0x141746be0 ; w109 manual
+// MS2-PIN: ?Reference@?$MS2Ptr@VCDotDamageRecord@@@@CAXPEAVCDotDamageRecord@@@Z 0x14174a850 ; w109 manual (was auto-order)
+// MS2-PIN: ?Reference@?$MS2Ptr@VCMsgBoxData@@@@CAXPEAVCMsgBoxData@@@Z 0x14174a870 ; w109 manual (was auto-order)
+// MS2-PIN: ?Ref@?$Unk_BmBoxPtr@USpecialNPCInfo@@@@CAXPEAVCPtred@@@Z 0x14174a8b0 ; w109 manual (byte-identical look-alike slot)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -79,6 +82,8 @@
 #include "uisnowmaneventdialog.h"
 #include "ms2/placeholder/sidepopuptalkparam.h"
 #include "ms2/placeholder/dropitem.h"
+#include "ms2/commonfiles/blackmarketitemoption.h"   // Unk_BmBoxPtr / Unk_BmNewTag
+#include "ms2/placeholder/tptreddummy.h"
 #include "ms2/ms2format.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
@@ -171,6 +176,7 @@ public:
     void FUN_1411a6060(int nHandle);                        // remove an effect
     void FUN_1411a4f40(CString strName, const NiPoint3& kPos);
     void FUN_1411a4a00(Unk_EffectQuery* pQuery);                    // play once
+    void FUN_1411a5110(CString strPath, CString strName, CString strBone, int a, struct Unk_SSGXform* pXform, float fScale, int b);   // play a sound
 };
 Unk_SSGEffectMgr* FUN_1403ed280();
 
@@ -324,6 +330,7 @@ class Unk_SSGIntList
 public:
     void FUN_1402c2830();                                   // clear
     void FUN_1401855a0(int n);                              // push_back
+    int FUN_140408410(const unsigned* pValue);              // index of a value (-1: absent)
 };
 extern Unk_SSGIntList DAT_143ab3058;
 extern Unk_SSGIntList DAT_143ab3078;
@@ -464,7 +471,7 @@ class Unk_SSG9f7c90 { public: int FUN_1409f7ea0(); };
 Unk_SSG9f7c90* FUN_1409f7c90();
 void FUN_141663500(MyPC* pPC, int nMapId);                 // PC member (0x141663500), called on the local MyPC
 // The npc / monster class (class id 0x06200011).
-class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]; int m_n60; };   // the npc table row
+class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]; int m_n60; char m_pad_64[0x8c - 0x64]; bool m_b8c; };   // the npc table row
 MS2_CHECK_OFFSET(Unk_SSGNpcData, m_n60, 0x60);
 // The drop item (class id 0x06200011; its members live in client\ms2\dropitem.cpp 0x14118c730-0x141192960). w95: split
 // from Unk_SSGNpc, whose +0x150/+0x1a0 do not fit PCBase.
@@ -650,7 +657,15 @@ Unk_SSGDlg4e52* FUN_14136f290(int nId);                     // GetDialog<T>(0x4e
 void FUN_140930fe0(CInPacket& packet);
 
 // 0x1a..0xe7: feature manager / dialog handlers
-class Unk_SSGCubeObj { public: void FUN_140b107f0(int n); void FUN_140b10a10(__int64 n); };
+class Unk_SSGCubeObj : public Unk_SSGNpc
+{
+public:
+    virtual void vfunc_126();
+    virtual int vfunc_127();                                // 127 (0x3f8): plays the removal sound
+    void FUN_140b107f0(int n);
+    void FUN_140b10a10(__int64 n);
+};
+GameObject* FUN_140b10320(Unk_SSGCubeObj* pObj);           // the object the sound plays at
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 { public: void FUN_141939620(); void FUN_140ea5f80(); };
@@ -3937,7 +3952,7 @@ MS2_REPLACE_METHOD(0x14173a990, CSceneStateGame, FUN_14173a990, 116, 0x91EABDAC)
 
 // Guild/party invite request (mode 2): ask the player unless invites are blocked in the options (then answer 5).
 class Unk_SSGGameOpt { public: bool m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6, m_b7, m_b8; bool m_bBlockInvite; };   // +9
-class Unk_SSGCfg { public: Unk_SSGGameOpt* FUN_140ae6540(); };
+class Unk_SSGCfg { public: Unk_SSGGameOpt* FUN_140ae6540(); class Unk_SSGAdvCfg* FUN_140b123b0(); };
 Unk_SSGCfg* FUN_1409a8b10();
 
 // @0x14173aa10
@@ -5682,3 +5697,101 @@ void CSceneStateGame::FUN_141711e70(CInPacket& packet)
         return;
 }
 MS2_REPLACE_METHOD(0x141711e70, CSceneStateGame, FUN_141711e70, 1221, 0x738FBD8D);
+
+// NiTransform (rotation, translation, scale) for the sound call (same free-function placeholders as uimessagebox.cpp).
+struct Unk_SSGPt3 { float x, y, z; };
+struct Unk_SSGNiPt3 { Unk_SSGNiPt3(const NiPoint3& src); /* 0x14027dcf0 NiPoint3 from efd::Point3 */ float x, y, z; };
+struct Unk_SSGRot { float m[3][3]; };
+struct Unk_SSGXform
+{
+    Unk_SSGRot m_rotate;                                    // +0x00
+    Unk_SSGPt3 m_translate;                                 // +0x24
+    float m_fScale;                                         // +0x30
+};
+MS2_CHECK_SIZE(Unk_SSGXform, 0x34);
+void FUN_140a332d0(Unk_SSGXform* p);                        // NiTransform default ctor
+void FUN_14097faa0(Unk_SSGPt3* pDst, const Unk_SSGNiPt3& src);   // NiPoint3::operator=
+void FUN_140a33240(Unk_SSGRot* pDst, const Unk_EfdMatrix3* pSrc);   // NiMatrix3 from efd::Matrix3
+extern Unk_EfdMatrix3 DAT_143a09600;                        // identity rotation
+extern CString DAT_143ae7990;                               // the cube removal sound name
+
+// @0x14171a2e0
+void CSceneStateGame::FUN_14171a2e0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    Unk_SSGCubeObj* pObj = pWorld->FUN_141bd13a0(nId);
+    if (pObj == 0)
+        return;
+    int n = pObj->FUN_141093270()->m_n60;
+    if (n != 0)
+        pObj->vfunc_40(1.0f, 0.0f, 0.0f, 0.5f);
+    pObj->FUN_1410932c0(0);
+    pWorld->FUN_141bbbcf0(nId, 1);
+    GameObject* pTarget = FUN_140b10320(pObj);
+    if (pTarget != 0 && pObj->vfunc_127() != 0)
+    {
+        Unk_SSGXform xf;
+        FUN_140a332d0(&xf);
+        xf.m_fScale = 1.0f;
+        Unk_SSGNiPt3 pos(pTarget->vfunc_18());
+        FUN_14097faa0(&xf.m_translate, pos);
+        Unk_SSGRot rot;
+        FUN_140a33240(&rot, &DAT_143a09600);
+        xf.m_rotate = rot;
+        FUN_1403ed280()->FUN_1411a5110(CString("ms2sound/sound/system"), CString(DAT_143ae7990), CString(""), 1, &xf, 1.0f, 0);
+    }
+}
+MS2_REPLACE_METHOD(0x14171a2e0, CSceneStateGame, FUN_14171a2e0, 765, 0x54213933);
+
+// A special (event) npc announced by packet 0x?? (boxed in TPtredDummy<SpecialNPCInfo>; its unit is near 0x14092c0a0).
+struct SpecialNPCInfo
+{
+    SpecialNPCInfo();                                       // 0x14092c0a0
+    void FUN_14092c190(CInputStream& in);                   // read
+    int m_nNpcId;                                           // +0x00
+    unsigned m_nFieldId;                                    // +0x04
+    short m_n08;                                            // +0x08
+    __int64 m_n10;                                          // +0x10
+    int m_n18;                                              // +0x18
+};
+MS2_CHECK_SIZE(SpecialNPCInfo, 0x20);
+MS2Ptr<Unk_SSGNpcData> FUN_1406cd330(int nNpcId);           // the npc table row
+class Unk_SSGFieldInfo : public CPtred { public: char m_pad_18[0x21 - 0x18]; bool m_b21; };
+class Unk_SSGFieldTable { public: MS2Ptr<Unk_SSGFieldInfo> FUN_141b978e0(unsigned nFieldId); };
+Unk_SSGFieldTable* FUN_140cb17d0();
+class Unk_SSGAdvCfg { public: int FUN_14125c5d0(int nNpcId, int* pA, int* pB); };
+class Unk_SSGSpecialNpcUI { public: virtual void vfunc_0(); virtual void vfunc_1(SpecialNPCInfo* pInfo, int nA, int nB); };
+Unk_SSGSpecialNpcUI* FUN_140e898d0();
+bool FUN_140930b10();
+
+// @0x141733b30
+void CSceneStateGame::FUN_141733b30(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        Unk_BmBoxPtr<SpecialNPCInfo> spInfo(Unk_BmNewTag(0));
+        spInfo->FUN_14092c190(static_cast<CInputStream&>(packet));
+        MS2Ptr<Unk_SSGNpcData> spNpc = FUN_1406cd330(spInfo->m_nNpcId);
+        if (!spNpc)
+            return;
+        if (!spNpc->m_b8c)
+            return;
+        MS2Ptr<Unk_SSGFieldInfo> spField = FUN_140cb17d0()->FUN_141b978e0(spInfo->m_nFieldId);
+        if (spField == 0)
+            return;
+        if (!spField->m_b21)
+            return;
+        if (DAT_143ab3058.FUN_140408410(&spInfo->m_nFieldId) == -1)
+            return;
+        if (FUN_140930b10())
+            return;
+        int nA = 2;
+        int nB = 0;
+        if (FUN_1409a8b10()->FUN_140b123b0()->FUN_14125c5d0(spInfo->m_nNpcId, &nA, &nB) == 0)
+            return;
+        FUN_140e898d0()->vfunc_1(spInfo.get(), nA, nB);
+    }
+}
+MS2_REPLACE_METHOD(0x141733b30, CSceneStateGame, FUN_141733b30, 768, 0x4F3DB91A);
