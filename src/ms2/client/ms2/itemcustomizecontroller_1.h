@@ -130,6 +130,7 @@ public:
     static float GetHighlightScale(NiAVObject* pNode);              // 0x141412990
     void SetDragging(int bDragging) { m_bDragging = bDragging; }    // 0x141413190 (inline COMDAT)
     // inline COMDATs first emitted by TU B (factory/registry, itemcustomizecontroller_1b.cpp)
+    int IsEnabled() const { return m_bEnabled; }                    // 0x141478000 (inline COMDAT first emitted by ?\makeupcontroller.cpp)
     int GetSlot() const { return m_nSlot; }                         // 0x141414920
     int IsDragging1() const { return m_bDragging1; }                // 0x141414930
     int IsDragging2() const { return m_bDragging2; }                // 0x141414950

@@ -49,6 +49,7 @@ struct Unk_PickMeshPtr
     ~Unk_PickMeshPtr();                                         // 0x141419840
     Unk_PickMeshPtr& FUN_141418a00(NiAVObject* p);              // assignment (0x141418a00)
     NiAVObject* FUN_141412c90() const { return m_p; }           // get (inline COMDAT 0x141412c90, emitted by #1)
+    NiAVObject* operator->() const { return m_p; }              // inline COMDAT 0x141477f60, first emitted by ?\makeupcontroller.cpp
     NiAVObject* m_p;
 };
 MS2_CHECK_SIZE(Unk_PickMeshPtr, 8);
@@ -88,6 +89,7 @@ public:
     CAtlArray<MS2Ptr<Unk_PickTarget> >& GetTargets() { return m_targets; }              // 0x141412e60
     int GetMode() { return m_nMode; }                                                   // 0x141412e70
     void SetMode(int nMode) { m_nMode = nMode; }                                        // 0x1414131c0
+    void SetPrevMesh(NiAVObject* pMesh) { m_spLast.FUN_141418a00(pMesh); }              // 0x141478060 (first emitted by ?\makeupcontroller.cpp)
 
     Unk_PickMeshPtr m_spMesh;                                   // +0x10 mesh hit by the last successful pick
     int m_nMode;                                                // +0x18 (w22: m_nUnk18) 0 = idle, 1 = dragging
