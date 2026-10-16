@@ -4,11 +4,11 @@
 // MS2-RANGE: 0x1400ec6a0-0x1400ec950 .text$di
 // MS2-RANGE: 0x141286410-0x14128e7f0 .text$mn
 // MS2-PIN: ??__Fs_unk1402a9d70@@YAXXZ 0x142caed40 ; hand: atexit of header-statics map
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0BN@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BN@$$CBDAEBV01@@Z 0x141289220
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??__Es_unk1402a9d70@@YAXXZ 0x1400ec900 ; unique
 // MS2-PIN: ??$?8PEAVUIDebugGuideDialog@@P80@EAAXAEAVCInPacket@@@Z@std@@YA_NAEBU?$pair@PEAVUIDebugGuideDialog@@P81@EAAXAEAVCInPacket@@@Z@0@0@Z 0x141289140 ; prop
 // MS2-PIN: ??$?8PEAVUIDebugGuideDialog@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVUIDebugGuideDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x1412891b0 ; prop
-// MS2-PIN: ??$StringFormat@$$BY0BN@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BN@$$CBDAEBV01@@Z 0x141289220 ; unique
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVUIDebugGuideDialog@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z 0x14128bc70 ; prop
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVUIDebugGuideDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBV01@@Z 0x14128bd10 ; prop
 // MS2-PIN: ??_GUIDebugGuideDialog@@UEAAPEAXI@Z 0x14128c9b0 ; unique
@@ -230,7 +230,7 @@ void UIDebugGuideDialog::OnLoadInit()
     UIObject::OnLoadInit();
     m_groups.clear();
     LoadXml("./Data/XmlDebug/DebugCommandCustom.xml");
-    CString strPath = StringFormat("{0}_{1}.xml", "./Data/XmlDebug/DebugCommand", FUN_140651350());
+    CString strPath = Unk_SocketFormat("{0}_{1}.xml", "./Data/XmlDebug/DebugCommand", FUN_140651350());
     if (FUN_140166420()->FUN_1403987d0(std::string(strPath)) == 0)
         strPath = FUN_1411c0aa0("./Data/XmlDebug/DebugCommand.xml");
     LoadXml(strPath);

@@ -5,8 +5,8 @@
 // MS2-RANGE: 0x1400b59f0-0x1400b5a20 .text$di
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ?Read@?$Value@M@Constants@Common@@QEAAMXZ 0x1402bac70 ; unique: single byte-identical candidate
-// MS2-PIN: ??$StringFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00 ; unique: caller ?Test@Constants@Common@@SA_NXZ
-// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0 ; prop: symbol ?StringFormat@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT...
+// MS2-PIN: ??$Unk_SocketFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00 ; unique: caller ?Test@Constants@Common@@SA_NXZ
+// MS2-PIN: ??$Unk_SocketFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0 ; prop: symbol ?StringFormat@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT...
 // MS2-PIN: ??$_Pocca@V?$allocator@I@std@@@std@@YAXAEAV?$allocator@I@0@AEBV10@U?$integral_constant@_N$0A@@0@@Z 0x1402bc150 ; unique: single byte-identical candidate
 // MS2-PIN: ??0?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@QEAA@XZ 0x1402bc4b0 ; unique: caller ?LoadFiles@Constants@Common@@QEAA_NXZ
 // MS2-PIN: ??0?$CAtlArray@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x1402bc4f0 ; order: name order
@@ -136,7 +136,7 @@
 // MS2-PIN: ?Define@?$Values@I@Constants@Common@@QEAA_NPEBDPEAV?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@Z 0x1402c0a80
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@AEAA_N_K@Z 0x1402c12b0
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@UUnk_ConstColor@@@ATL@@SAXPEAUUnk_ConstColor@@0_K@Z 0x1402c26b0
-// MS2-PIN: ??$StringFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00
+// MS2-PIN: ??$Unk_SocketFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00
 // MS2-PIN: ??0?$Values@UUnk_ConstColor@@@Constants@Common@@QEAA@XZ 0x1402bcd90
 // MS2-PIN: ?Define@?$Value@M@Constants@Common@@QEAAPEAMPEBDAEBM@Z 0x1402bfe90
 // MS2-PIN: ?SetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c2d10
@@ -144,7 +144,7 @@
 // MS2-PIN: ?vfunc_1@?$Values@_J@Constants@Common@@UEAAXXZ 0x1402c3730
 // MS2-PIN: ??1?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEAA@XZ 0x1402bd150
 // MS2-PIN: ?vfunc_1@?$Values@UUnk_ConstColor@@@Constants@Common@@UEAAXXZ 0x1402c36d0
-// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0
+// MS2-PIN: ??$Unk_SocketFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/ms2recover.h"
@@ -231,7 +231,7 @@ bool Constants::Test()
         Object* obj = s_objects[i];
         if (!obj->IsValid())
         {
-            CString msg = StringFormat("Constants::Test() failed with key : {0}, is_set : {1}, has_key: {2}, order : {3}",
+            CString msg = Unk_SocketFormat("Constants::Test() failed with key : {0}, is_set : {1}, has_key: {2}, order : {3}",
                                        obj->GetKey(), obj->IsDefined(), obj->HasKey(), i + 1);
             MessageBoxA(NULL, msg, "Constants error", 0);
         }
@@ -915,7 +915,7 @@ void Common::Constants::vfunc_0()
     PvpFFAAdditionRewardRate.Define("PvpFFAAdditionRewardRate", 0);
     for (int i = 0; i < 10; i++)
     {
-        CString key = StringFormat("PvpFFAReward{0}Count", i + 1);
+        CString key = Unk_SocketFormat("PvpFFAReward{0}Count", i + 1);
         PvpFFARewardCount[i].Define(key, 0);
     }
     pvpBtiRewardItem.Define("pvpBtiRewardItem", 90000006);
@@ -1205,7 +1205,7 @@ void Common::Constants::vfunc_0()
     PvpOnePunchRewardItem.Define("PvpOnePunchRewardItem", 0);
     for (int i = 0; i < 10; i++)
     {
-        CString key = StringFormat("PvpOnePunchReward{0}Count", i + 1);
+        CString key = Unk_SocketFormat("PvpOnePunchReward{0}Count", i + 1);
         PvpOnePunchRewardCount[i].Define(key, 0);
     }
     PvpOnePunchScoreNpcKill.Define("PvpOnePunchScoreNpcKill", -7);

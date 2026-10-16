@@ -5,7 +5,7 @@
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0AEAIAEAPEAVCAdventureLevelMissionData@@$0A@@?$pair@IPEAVCAdventureLevelMissionData@@@std@@QEAA@AEAIAEAPEAVCAdventureLevelMissionData@@@Z 0x1407a97b0 ; unique
 // MS2-PIN: ??$?0IPEAVCAdventureLevelMissionData@@$0A@@?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@QEAA@$$QEAU?$pair@IPEAVCAdventureLevelMissionData@@@1@@Z 0x1407a98a0 ; unique
-// MS2-PIN: ??$StringFormat@HHHHHH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH11111@Z 0x1407a9970 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@HHHHHH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH11111@Z 0x1407a9970 ; unique
 // MS2-PIN: ??$_Emplace_back_with_unused_capacity@U?$pair@HH@std@@@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@AEAAX$$QEAU?$pair@HH@1@@Z 0x1407a9e70 ; unique
 // MS2-PIN: ??$_Emplace_reallocate@U?$pair@HH@std@@@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@QEAAPEAU?$pair@HH@1@QEAU21@$$QEAU21@@Z 0x1407a9f30 ; unique
 // MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAVCAdventureLevelMissionData@@@std@@@std@@@0@AEBV10@@Z 0x1407aaa30 ; prop
@@ -92,7 +92,7 @@ CString FUN_1407a4f20(CMsTime& time)
     int hour = time.GetHour();
     int minute = time.GetMinute();
     int second = time.GetSecond();
-    return StringFormat("{0:04d}:{1:02d}:{2:02d} {3:02d}:{4:02d}:{5:02d}", year, month, day, hour, minute, second);
+    return Unk_SocketFormat("{0:04d}:{1:02d}:{2:02d} {3:02d}:{4:02d}:{5:02d}", year, month, day, hour, minute, second);
 }
 // @0x1407a4ff0
 unsigned int FUN_1407a4ff0(CString& name)

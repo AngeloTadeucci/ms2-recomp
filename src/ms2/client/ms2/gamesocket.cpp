@@ -13,8 +13,6 @@
 #include "hook/ms2hook.h"
 #pragma comment(lib,"ws2_32.lib")
 // This unit uses the three-argument forwarding formatter at 0x1402bf9a0.
-CString Unk_SocketFormat(const char*,const fmt::ArgList&);
-FMT_VARIADIC(CString, Unk_SocketFormat, const char*)
 template CString Unk_SocketFormat<CString,unsigned long>(const char*,const CString&,const unsigned long&);
 static CStringW s_forceLogin=L"forcelogin";
 static CStringW s_gameExit=L"gameexit";

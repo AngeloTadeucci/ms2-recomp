@@ -4,7 +4,7 @@
 // MS2-RANGE: 0x1400cd360-0x1400cd660 .text$di
 // MS2-RANGE: 0x142ca2c70-0x142ca2db0 .text$yd
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$StringFormat@_K@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_K@Z 0x140c43630 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@_K@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_K@Z 0x140c43630 ; unique
 // MS2-PIN: ??$_Buy_if_not_node@AEBUItemEntity@@@?$_Tree@V?$_Tset_traits@UItemEntity@@UUnk_GachaLess@@V?$allocator@UItemEntity@@@std@@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@UItemEntity@@PEAX@1@U_Not_a_node_tag@1@AEBUItemEntity@@@Z 0x140c438d0 ; unique
 // MS2-PIN: ??$_Buynode@AEBUItemEntity@@@?$_Tree_comp_alloc@V?$_Tset_traits@UItemEntity@@UUnk_GachaLess@@V?$allocator@UItemEntity@@@std@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@UItemEntity@@PEAX@1@AEBUItemEntity@@@Z 0x140c43900 ; unique
 // MS2-PIN: ??$_Insert_at@AEBUItemEntity@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@UItemEntity@@UUnk_GachaLess@@V?$allocator@UItemEntity@@@std@@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UItemEntity@@@std@@@std@@@1@_NPEAU?$_Tree_node@UItemEntity@@PEAX@1@AEBUItemEntity@@U_Not_a_node_tag@1@@Z 0x140c43bd0 ; unique
@@ -353,9 +353,9 @@ void UIItemGachaBoxDialog::FUN_140c40ad0()
     param->m_nFlags = 0x800;
     param->m_bEnabled = true;
     for (size_t k = 0; k < 3; ++k) {
-        CString bagName = StringFormat("ItemGachaBoxBag{0}", k);
+        CString bagName = Unk_SocketFormat("ItemGachaBoxBag{0}", k);
         FUN_14141f860(bagName, (int)bags[k].GetCount(), &bags[k], param);
-        obj.FUN_1407cba60(StringFormat("bagId{0}", k), bagName);
+        obj.FUN_1407cba60(Unk_SocketFormat("bagId{0}", k), bagName);
         GACHA_BAGS.FUN_1403b0310(bagName);
     }
     m_30->Invoke("initData", obj.FUN_1422bb870());
@@ -624,7 +624,7 @@ void UIItemGachaBoxDialog::FUN_140c42160()
     } else {
         for (size_t i = 0; i < 10; ++i) {
             size_t k = i + 1;
-            CString nm = StringFormat("m_multi{0}", k);
+            CString nm = Unk_SocketFormat("m_multi{0}", k);
             MS2Ptr<ASMovieClip> multi = m_resultItem->FUN_1409b4560(nm);
             if (multi == 0)
                 continue;
