@@ -1509,3 +1509,13 @@ __imp_CrashReporter_SetClientExit	142cce1c0	data
 ??1Unk_AdvHolderRef@@QEAA@XZ	1409648b0	func
 ??1Unk_AdvMountPtr@@QEAA@XZ	140788ed0	func
 ?DAT_143ab2958@@3_JA	143ab2958	data
+??0Unk_UtilNiPoint3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
+??4Unk_UtilNiPoint3@@QEAAAEAU0@$$QEAU0@@Z	14097faa0	func
+?g_unkMissionStates@@3V?$map@IVUnk_ALMissionState@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIVUnk_ALMissionState@@@std@@@3@@std@@A	143ab3318	data
+?g_unkClaimed@@3VUnk_ALClaimed@@A	143ab3308	data
+?DAT_143ae5120@@3VNiFixedString@@A	143ae5120	data
+?DAT_143ae5128@@3VNiFixedString@@A	143ae5128	data
+?FUN_1410479a0@@YAXPEAVNiAVObject@@PEAXAEBUUnk_Colc@@@Z	1410479a0	func
+??0Unk_ChaosTick@@QEAA@XZ	140517b00	func
+??0Unk_ChaosChat@@QEAA@XZ	140acd570	func
+??1Unk_ChaosChat@@QEAA@XZ	140acd770	func
