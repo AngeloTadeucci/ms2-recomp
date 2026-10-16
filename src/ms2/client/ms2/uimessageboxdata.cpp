@@ -9,6 +9,10 @@
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VValue@GFx@Scaleform@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x141a07b10 ; prop
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VValue@GFx@Scaleform@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141a07b60 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VValue@GFx@Scaleform@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VValue@GFx@Scaleform@@@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VValue@GFx@Scaleform@@@std@@@std@@@2@XZ 0x141a08610 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@XZ 0x141a07330 ; look-alike group (CItem/Unk_MsgCheck/Unk_MsgInput default ctors)
+// MS2-PIN: ??8?$MS2Ptr@VCItem@@@@QEBA_NPEAVCItem@@@Z 0x141a07980 ; unique
+// MS2-PIN: ??1?$MS2Ptr@VCItem@@@@QEAA@XZ 0x141a07950 ; unique
+// MS2-PIN: ??R?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEBA_NHAEBVCMsgBoxData@@@Z 0x141a07c10 ; unique
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uimessageboxdata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -872,6 +876,42 @@ Unk_MsgBoxItems::~Unk_MsgBoxItems()
 
 // @0x141a07810
 Unk_MsgBoxTimer::~Unk_MsgBoxTimer()
+{
+}
+
+// @0x141a07850
+template <> inline Delegate<bool(int, const CMsgBoxData&)>& Delegate<bool(int, const CMsgBoxData&)>::operator=(const Delegate& o)
+{
+    if (this == &o)
+        return *this;
+    if (m_pImpl)
+        delete m_pImpl;
+    if (!o.m_pImpl)
+        m_pImpl = 0;
+    else
+        m_pImpl = o.m_pImpl->vfunc_1();
+    return *this;
+}
+
+// The exe's tail of this unit holds COMDAT glue that the (unrecovered) CMsgBoxData members at 0x141a00db0-0x141a034d0
+// instantiate: the std::map of extra values (ctor/dtor/erase), the item array copy and the result callback.
+// This unit-local function stands in for those instantiations so the glue gets paired.
+void Unk_MsgBoxGlueAnchor(CMsgBoxData* pData, Delegate<bool(int, const CMsgBoxData&)>& cbDst,
+                          const Delegate<bool(int, const CMsgBoxData&)>& cbSrc, ATL::CAtlArray<ItemEntity>& dst,
+                          const ATL::CAtlArray<ItemEntity>& src)
+{
+    std::map<CString, Scaleform::GFx::Value> values;
+    MS2Ptr<CItem> spItem;
+    spItem == (CItem*)0;
+    cbDst = cbSrc;
+    cbDst(1, *pData);
+    dst.Copy(src);
+    delete pData;
+}
+
+// 0x141a01170 (outside this unit's range): defining it here emits the vftable and the scalar deleting destructor
+// (0x141a07ca0) in this unit's COMDAT tail.
+CMsgBoxData::~CMsgBoxData()
 {
 }
 
