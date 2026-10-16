@@ -270,6 +270,7 @@ public:
     int FUN_1411a4a00(struct Unk_SSGEffectReq& req);                // the same, with the full 0x70 request
     int FUN_1411a49c0(struct Unk_SSGEffectReq& req);                // play, returns the handle
     void FUN_1411a5110(CString strPath, CString strName, CString strBone, int a, struct Unk_SSGXform* pXform, float fScale, int b);   // play a sound
+    void FUN_1411a8e50(int nSerial);                        // a skill cast object serial was used
 };
 Unk_SSGEffectMgr* FUN_1403ed280();
 
@@ -794,16 +795,43 @@ class Unk_SSGStBody { public: void FUN_141240730(); Unk_SSGHitReport* FUN_141240
 Unk_SSGStBody* FUN_14166d220(PCBase* pActor);
 
 // 0x3f..0x5a: npc / actor state packets
-class Unk_PCBaseComp_b18 : public CPtred   // the casting skill
+// The skill request a skill record is built from (0x48; avatarpc.cpp's view, points as Unk_StreamPoint).
+struct Unk_InventorySkillRequest
+{
+    Unk_InventorySkillRequest(int nSkillId, unsigned short nLevel);   // 0x141763fa0
+    int skill;
+    unsigned short level;
+    unsigned __int64 tick;                                  // +0x08 the cast uid
+    unsigned serial, unknown14;                             // +0x10 / +0x14
+    Unk_StreamPoint origin;                                 // +0x18
+    Unk_StreamPoint direction;                              // +0x24
+    float fValue;                                           // +0x30
+    unsigned unknown34;
+    bool remap, suppressDispatch, itemUse;
+    __int64 item;
+};
+MS2_CHECK_SIZE(Unk_InventorySkillRequest, 0x48);
+class Unk_PCBaseComp_b18 : public CPtred   // the casting skill (CSkillRecord, 0x1c0)
 {
 public:
+    Unk_PCBaseComp_b18();                                   // 0x141759260
+    bool FUN_1417595d0(Unk_InventorySkillRequest& kReq);    // build the record of a request
     char m_pad[0x28 - sizeof(CPtred)];
     __int64 m_nSkillUid;                                    // +0x28
-    char m_pad_30[0xa0 - 0x30];
+    char m_pad_30[0x74 - 0x30];
+    float m_fSpeed;                                         // +0x74 the caster's speed scale
+    char m_pad_78[0xa0 - 0x78];
     int m_nA0;                                              // +0xa0 nonzero: the cast is finished (no new projectiles)
-    char m_pad_a4[0x108 - 0xa4];
+    char m_pad_a4[0xb0 - 0xa4];
+    int m_nExtra;                                           // +0xb0 option 0xae: the extra id of the cast
+    CString m_strExtra;                                     // +0xb8 option 0xae: its name
+    char m_pad_c0[0x108 - 0xc0];
     ATL::CAtlList<Unk_SocketPtr<CMagicModel> > m_listModels;   // +0x108 the projectiles started by this cast
+    char m_pad_tail[0x1c0 - 0x108 - sizeof(ATL::CAtlList<Unk_SocketPtr<CMagicModel> >)];
 };
+MS2_CHECK_SIZE(Unk_PCBaseComp_b18, 0x1c0);
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_fSpeed, 0x74);
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_strExtra, 0xb8);
 MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_nSkillUid, 0x28);
 MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_nA0, 0xa0);
 MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_listModels, 0x108);
@@ -916,6 +944,7 @@ class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket&
 class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
 class Unk_BSConstInt { public: int FUN_140ec2b60(); };   // a constant row (uibeautyshopstyledialog.cpp's name)
+class Unk_SSGConstStr { public: CString& FUN_140298f80(); };   // a string constant row (commonutil.cpp's Unk_StringOptionEntry)
 class Unk_SSGConstants
 {
 public:
@@ -929,7 +958,9 @@ public:
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
     char m_pad_66d1[0x67e0 - 0x66d1];
     Unk_SSGConstValue2 m_67e0;                              // +0x67e0
-    char m_pad_67e1[0x9190 - 0x67e1];
+    char m_pad_67e1[0x7f48 - 0x67e1];
+    Unk_SSGConstStr m_7f48;                                 // +0x7f48 the effect of a remote cast with the effect flag
+    char m_pad_7f49[0x9190 - 0x7f49];
     Unk_BSConstInt m_9190;                                  // +0x9190 adventure level-up chat notice id
     char m_pad_9191[0x9718 - 0x9191];
     unsigned short m_n9718;                                 // +0x9718 skill point level cap (the larger of the two)
@@ -960,7 +991,7 @@ void FUN_140e146f0(CInPacket& packet);
 class Unk_SSGHomeBlocks { public: void FUN_140a46b90(CInPacket& packet); };                     // HomeBlockManager
 Unk_SSGHomeBlocks* FUN_1414a5830();
 
-class Unk_SSGStatusListener { public: void FUN_141b0ce20(int a, int b); void FUN_141b0e050(); };
+class Unk_SSGStatusListener { public: void FUN_141b0ce20(int a, int b); void FUN_141b0e050(); void FUN_141b0e1d0(int nSkillId); };
 Unk_SSGStatusListener* FUN_140aa6d40();
 void FUN_140930150(int n);
 class Unk_PCCubeCraft { public: void FUN_1410aa5c0(CubeItemInfo* pInfo); void FUN_1410aa550(int n); void FUN_1410aa380(bool b); void FUN_1410aa590(); };
@@ -3228,6 +3259,71 @@ void CSceneStateGame::FUN_141717580(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141717580, CSceneStateGame, FUN_141717580, 297, 0xF8FFE207);
+
+// The object an actor is linked to (FUN_141676a10: a DynamicCast to class 0x06200074 of the world object of +0xb70).
+class Unk_SSGLinkedActor : public PCBase
+{
+public:
+    void FUN_140b11760(CString strEffect);                  // play an effect on the object
+};
+// @0x141717b40
+void CSceneStateGame::FUN_141717b40(CInPacket& packet)
+{
+    __int64 nCastUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nSerial = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nActorId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    int nMotion = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_11();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kRot = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    float fSpeed = static_cast<CInputStream&>(packet).vfunc_o8_15();
+    bool bEffect = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    int nExtra = 0;
+    CString strExtra;
+    if (FUN_140166410()->FUN_14036d570(0xae))
+    {
+        bool bHasExtra = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        if (bHasExtra)
+        {
+            nExtra = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            strExtra = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        }
+    }
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nActorId);
+    if (pActor != 0)
+    {
+        Unk_InventorySkillRequest kReq(nSkillId, nLevel);
+        kReq.serial = nSerial;
+        kReq.tick = nCastUid;
+        kReq.unknown14 = nMotion;
+        kReq.origin = kPos;
+        kReq.direction = kDir;
+        kReq.fValue = kRot.z;
+        MS2Ptr<Unk_PCBaseComp_b18> spSkill(new Unk_PCBaseComp_b18());
+        if (!spSkill->FUN_1417595d0(kReq))
+            return;
+        if (FUN_140166410()->FUN_14036d570(0xae))
+        {
+            spSkill->m_nExtra = nExtra;
+            spSkill->m_strExtra = strExtra;
+        }
+        spSkill->m_fSpeed = fSpeed;
+        FUN_1403ed280()->FUN_1411a8e50(nSerial);
+        pActor->FUN_141673b40(spSkill);
+        Unk_SSGLinkedActor* pLinked;
+        if (bEffect && (pLinked = static_cast<Unk_SSGLinkedActor*>(pActor->FUN_141676a10())) != 0)
+        {
+            pLinked->FUN_140b11760(FUN_1401d3200()->m_7f48.FUN_140298f80());
+            pLinked->FUN_14166cc40(0x10);
+        }
+        MyPC* pMyPC = FUN_14096e160(pActor);
+        if (pMyPC != 0)
+            FUN_140aa6d40()->FUN_141b0e1d0(nSkillId);
+    }
+}
+MS2_REPLACE_METHOD(0x141717b40, CSceneStateGame, FUN_141717b40, 1544, 0xE568A4B3);
 
 // @0x141718680
 void CSceneStateGame::FUN_141718680(CInPacket& packet)
