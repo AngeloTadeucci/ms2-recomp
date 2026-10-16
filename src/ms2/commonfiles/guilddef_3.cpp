@@ -16,7 +16,6 @@
 // MS2-PIN: ??$_Lbound@H@?$_Tree@V?$_Tmap_traits@HV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@PEAX@1@AEBH@Z 0x1404e7fa0 ; prop
 // MS2-PIN: ??$_Lbound@I@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@PEAX@1@AEBI@Z 0x1404e8040 ; prop
 // MS2-PIN: ??$_Lbound@I@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@VCGuildNpcShop@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@@3@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@PEAX@1@AEBI@Z 0x1404e80e0 ; prop
-// MS2-PIN: ??$_Lbound@U?$pair@W4Unk_GuildNpcKind@@H@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@U?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@PEAX@1@AEBU?$pair@W4Unk_GuildNpcKind@@H@1@@Z 0x1404e82c0 ; prop
 // MS2-PIN: ??$_Unfancy@U?$pair@HH@std@@@std@@YAPEAU?$pair@HH@0@PEAU10@@Z 0x1404e90c0 ; prop
 // MS2-PIN: ??$_Unfancy@U_Container_proxy@std@@@std@@YAPEAU_Container_proxy@0@PEAU10@@Z 0x1404e90d0 ; prop
 // MS2-PIN: ??$_Uninitialized_move@PEAUItemEntity@@PEAU1@V?$allocator@UItemEntity@@@std@@@std@@YAPEAUItemEntity@@QEAU1@0PEAU1@AEAV?$allocator@UItemEntity@@@0@@Z 0x1404e94c0 ; prop
@@ -60,6 +59,11 @@
 // MS2-PIN: ??$try_emplace@$$V@?$map@U?$pair@IH@std@@UItemEntity@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@std@@@std@@@std@@_N@1@AEBU?$pair@IH@1@@Z 0x1404eb9f0 ; prop
 // MS2-PIN: ??$try_emplace@$$V@?$map@U?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@U?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@std@@@std@@@std@@_N@1@AEBU?$pair@W4Unk_GuildNpcKind@@H@1@@Z 0x1404eba30 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??$construct@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1404e9fe0
+// MS2-PIN: ??$_Lbound@U?$pair@W4Unk_GuildNpcKind@@H@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@U?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@PEAX@1@AEBU?$pair@W4Unk_GuildNpcKind@@H@1@@Z 0x1404e8360
+// MS2-PIN: ??$_Lbound@U?$pair@IH@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@IH@std@@UItemEntity@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@PEAX@1@AEBU?$pair@IH@1@@Z 0x1404e82c0
+// MS2-PIN: ??$_Pocs@V?$allocator@W4Unk_GuildNpcKind@@@std@@@std@@YAXAEAV?$allocator@W4Unk_GuildNpcKind@@@0@0@Z 0x1404e8470
+// MS2-PIN: ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@W4Unk_GuildNpcKind@@U?$less@W4Unk_GuildNpcKind@@@std@@V?$allocator@W4Unk_GuildNpcKind@@@3@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@W4Unk_GuildNpcKind@@@std@@@std@@@std@@_N@1@AEBW4Unk_GuildNpcKind@@@Z 0x1404eb7a0
 // Hand pins from exe callers (call sites of matched #2/#4 functions, aligned with their obj relocs):
 // MS2-PIN: ??$addressof@U?$pair@$$CBU?$pair@_JH@std@@UItemEntity@@@std@@@std@@YAPEAU?$pair@$$CBU?$pair@_JH@std@@UItemEntity@@@0@AEAU10@@Z 0x1404e9b50 ; w73 evidence
 // MS2-PIN: ??$destroy@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@1@@Z 0x1404eab20 ; w73 evidence
@@ -286,7 +290,7 @@ void Unk_GuildDriveContainers(Unk_PropertyMap& a,Unk_SkillMap& b,Unk_EventMap& c
     Unk_DriveMap(a,0); Unk_DriveMap(b,0); Unk_DriveMap(c,0); Unk_DriveMap(d,std::pair<int,int>());
     Unk_DriveMap(e,std::pair<Unk_GuildNpcKind,int>()); Unk_DriveMap(f,0u); Unk_DriveMap(g,0u);
     Unk_DriveMap(h,std::pair<unsigned,int>());
-    i.insert(Unk_GuildNpcKind_None); i.find(Unk_GuildNpcKind_None); i.clear();
+    { const Unk_GuildNpcKind none=Unk_GuildNpcKind_None; i.insert(none); } i.insert(Unk_GuildNpcKind_None); i.find(Unk_GuildNpcKind_None); i.clear();
     std::vector<int> vi; std::vector<std::pair<int,int>> vp; std::vector<void*> vv;
     std::vector<Unk_PayloadPtr<CGuildXmlData::GuildSkill>> vs; std::vector<ItemEntity> ve; std::vector<Unk_GuildNpcKind> vk;
     Unk_DriveVector(vi,0); Unk_DriveVector(vp,std::pair<int,int>()); Unk_DriveVector(vv,(void*)0);
@@ -348,3 +352,17 @@ void Unk_GuildDriveForward(Unk_StorageMap& storage, Unk_StorageMap::const_iterat
     (void)std::forward<Unk_GuildNpcKind&>(kind);
     (void)kinds;
 }
+
+// ICF'd address-of / no-op helpers: the exe keeps one copy of each byte-identical template instance, so the
+// instances of this unit's tree containers fold into these (their callers live in the other guilddef.cpp parts).
+// @0x1404e99d0
+// MS2-FUNCTIONAL: folded std::addressof<const _Tree_val<...CGuildNpcShop...>> instance; written as a plain function
+const std::_Tree_val<std::_Tree_simple_types<Unk_NpcShopMap::value_type>>*
+Unk_AddressOfShopTree(const std::_Tree_val<std::_Tree_simple_types<Unk_NpcShopMap::value_type>>& tree) { return &tree; }
+// @0x1404e9b60
+// MS2-FUNCTIONAL: folded std::addressof<const _Tree_val<...pair<IH>,ItemEntity...>> instance; written as a plain function
+const std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<unsigned,int>,ItemEntity>>>*
+Unk_AddressOfStorageTree(const std::_Tree_val<std::_Tree_simple_types<std::pair<const std::pair<unsigned,int>,ItemEntity>>>& tree) { return &tree; }
+// @0x1404eaa10
+// MS2-FUNCTIONAL: folded empty two-argument std helper; the original template instance cannot be named
+void Unk_EmptyHelper2(std::_Container_base0*, const void*) {}
