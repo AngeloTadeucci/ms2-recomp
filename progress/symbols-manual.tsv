@@ -2364,3 +2364,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??1Unk_MyPCBlockPtr@@QEAA@XZ	1401cb250	func
 ??1Unk_MyPCRideePtr@@QEAA@XZ	140788ed0	func
 ??0Unk_MyPCPollTimer@@QEAA@XZ	140517b00	func
+?DAT_143abe318@@3PEAUUnk_UisSingleton@@EA	143abe318	data
+?DAT_143afaa18@@3DA	143afaa18	data
