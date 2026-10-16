@@ -12,7 +12,7 @@
 // MS2-PIN: ??1?$Unk_SocketPtr@VCMagicData@@@@QEAA@XZ 0x141468cd0 ; unique
 // MS2-PIN: ??C?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@QEBAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@XZ 0x141469310 ; unique
 // MS2-PIN: ??C?$Unk_SocketPtr@VCMagicData@@@@QEBAPEAVCMagicData@@XZ 0x141469350 ; unique
-// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@CAXPEAV?$Unk_SocketPtr@VCMagicData@@@@_K@Z 0x1414696d0 ; prop
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@CAXPEAV?$Unk_SocketPtr@VCMagicData@@@@_K@Z 0x141469730 ; prop
 // MS2-PIN: ?CreateNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x141469790 ; unique
 // MS2-PIN: ?FreeNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141469850 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141469aa0 ; unique
@@ -24,7 +24,10 @@
 // MS2-PIN: ?RemoveNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x14146a8a0 ; prop
 // MS2-PIN: ?SetAt@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@Z 0x14146a960 ; unique
 // MS2-PIN: ?Create@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@PEAX@Z 0x14146ae90 ; unique
+// MS2-PIN: ?Release@?$Unk_SocketPtr@VCMagic@@@@AEAAXXZ 0x14146af80 ; unique
+// MS2-PIN: ?Release@?$Unk_SocketPtr@VCMagicData@@@@AEAAXXZ 0x14146afc0 ; prop
 // MS2-PIN: ?Rehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXI@Z 0x141470db0 ; unique
+// MS2-PIN: ?Reference@?$Unk_SocketPtr@VCMagicData@@@@CAXPEAVCPtred@@@Z 0x141472260 ; prop
 // MS2-PIN: ?AddRefImpl@?$Unk_SocketPtr@VCMagicData@@@@AEBAXPEAX@Z 0x141472280 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??_7?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@6B@ 0x142f16df8
@@ -88,6 +91,15 @@ static CString s_skill2("skill");
 static CString s_stun2("stun");
 static Unk_1402a9d70 s_conditions2(17, 0.75f, 0.25f, 2.25f, 10);
 
+
+extern Unk_EfdMatrix3 DAT_143a09600;        // identity rotation
+extern Unk_EfdMatrix3 DAT_143b01a90;        // identity rotation (second copy)
+class Unk_MagicEffectMgr { public: void FUN_1411a6060(int nHandle); };    // releases a spawned effect
+Unk_MagicEffectMgr* FUN_1403ed280();
+void* FUN_1409475d0(Unk_NodePtr*);
+void FUN_140a0b2a0(void* pNode);            // detach the node from its parent
+class CSkillCollisionManager { public: void Touch(__int64 nHandle); };    // 0x141755bd0
+CSkillCollisionManager* FUN_141469a90();
 extern float FUN_1407680d0(void* pRandom);
 extern void FUN_140965c40(Unk_StreamPoint* pRange, Unk_StreamPoint* pOut, Unk_StreamPoint* pBase, void* pCtx, float x, float z);
 
@@ -259,8 +271,66 @@ int FUN_14145c4d0()
     return 1;
 }
 
-// @0x141468d80
-// MS2-FUNCTIONAL: dtor chain differs in the exe's COMDAT/unwind form
-CMagicData::~CMagicData()
+// @0x14145d120
+CMagic::CMagic()
+    : m_matRotation(DAT_143a09600)
+    , m_ptB8(DAT_143b01a60)
+    , m_nD0(0)
+    , m_spScene(0)
+    , m_map1D8(17, .75f, .25f, 2.25f, 10)
+    , m_map220(17, .75f, .25f, 2.25f, 10)
+    , m_n268(0)
+    , m_n538(0)
+    , m_pCollision(0)
+{
+}
+
+// @0x14145d390
+CMagic::~CMagic()
+{
+    if (m_pCollision) {
+        FUN_141469a90()->Touch((__int64)m_pCollision);
+        m_pCollision = 0;
+    }
+    FUN_1403ed280()->FUN_1411a6060(m_nEffectId);
+    m_nEffectId = 0;
+    for (int i = 0; i < 16; ++i) {
+        if (m_slots[i].m_nEffect != 0) {
+            FUN_1403ed280()->FUN_1411a6060(m_slots[i].m_nEffect);
+            m_slots[i].m_nEffect = 0;
+        }
+    }
+    FUN_140a0b2a0(FUN_1409475d0(&m_spScene));
+    FUN_1403ed280()->FUN_1411a6060(m_nEffectId2);
+    m_nEffectId2 = 0;
+}
+
+// @0x141467480
+CMagicModel::CMagicModel()
+{
+}
+
+// @0x1414689b0
+CArrowFillTargetContext::CArrowFillTargetContext()
+    : m_spOwner(0)
+    , m_p28(0)
+    , m_ptFrom(DAT_143b01a60)
+    , m_ptTo(DAT_143b01a60)
+    , m_matAim(DAT_143b01a90)
+    , m_n8C(0)
+    , m_spVal(0)
+    , m_nA0(0)
+    , m_nA4(0)
+{
+}
+
+// @0x141468b30
+Unk_MagicSlot::Unk_MagicSlot()
+    : m_nEffect(0)
+{
+}
+
+// @0x141468e40
+Unk_MagicSlot::~Unk_MagicSlot()
 {
 }

@@ -9,6 +9,7 @@
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/socketptr.h"
+#include "ms2/placeholder/unk_nodeptr.h"
 
 class Unk_140165cf0;    // game TinyXML element
 
@@ -17,7 +18,7 @@ class CMagicData : public CPtred
 {
 public:
     CMagicData();                                                   // 0x14145bd70
-    virtual ~CMagicData();                                          // 0 0x141468d80
+    virtual ~CMagicData() = default;                                // 0 0x141468d80
     // A position between the two control points (random fractions per axis).
     Unk_StreamPoint FUN_14145c030(void* pRandom);                   // 0x14145c030
     bool FUN_14145c180();                                           // 0x14145c180 any control point is not the zero point
@@ -79,3 +80,132 @@ MS2_CHECK_OFFSET(TPtredDummy<Unk_MagicList>, value, 0x18);
 Unk_MagicListPtr FUN_14145c250(unsigned nMagicId);                  // 0x14145c250 all moves of one id
 Unk_SocketPtr<CMagicData> FUN_14145c300(unsigned nMagicId, int nIndex); // 0x14145c300 one move, index wraps
 int FUN_14145c4d0();                                                // 0x14145c4d0 loads ./data/xml/table/magicPath.xml
+
+// ---- the running projectile ----
+struct Unk_MagicTag;
+// 16 byte smart pointers shared with the cube/world code (out-of-line members bound by VA in symbols-manual.tsv).
+struct Unk_MagicTagPtr {
+    Unk_MagicTagPtr();                                              // 0x141234900
+    Unk_MagicTagPtr(int);                                           // 0x1410a6af0
+    ~Unk_MagicTagPtr();                                             // 0x1410a6d40
+    Unk_MagicTagPtr& operator=(const Unk_MagicTagPtr&);             // 0x141235040
+    Unk_MagicTag* operator->() const;                               // 0x141235260
+    void* m_pad;
+    Unk_MagicTag* m_p;
+};
+MS2_CHECK_SIZE(Unk_MagicTagPtr, 0x10);
+struct Unk_MagicValPtr {
+    Unk_MagicValPtr() : m_p(0) {}                                   // 0x1414687c0 (inline)
+    Unk_MagicValPtr(int);                                           // 0x141234840
+    Unk_MagicValPtr(const Unk_MagicValPtr&);                        // 0x141234800
+    ~Unk_MagicValPtr();                                             // 0x141234e70
+    Unk_MagicValPtr& operator=(const Unk_MagicValPtr&);             // 0x141235000
+    void* m_pad;
+    void* m_p;
+};
+MS2_CHECK_SIZE(Unk_MagicValPtr, 0x10);
+
+// Element types of the 8 byte pointer arrays (distinct instantiations in the exe, so distinct types; names invented).
+struct Unk_MagicNodeLink;
+struct Unk_MagicTargetRef;
+struct Unk_MagicArrowRef;
+
+// One of the 16 effect slots of a CMagic: the ids spawned for it and the live effect handle.
+struct Unk_MagicSlot {
+    Unk_MagicSlot();                                                // 0x141468b30
+    ~Unk_MagicSlot();                                               // 0x141468e40
+    ATL::CAtlArray<Unk_MagicNodeLink*> m_ids;
+    int m_nEffect;
+};
+MS2_CHECK_SIZE(Unk_MagicSlot, 0x28);
+
+// An id -> id hash map whose members live out of line in the exe (additionalactionadditional.cpp); 0x48 bytes.
+class Unk_MagicUIntMap {
+public:
+    Unk_MagicUIntMap(unsigned nBins, float fOptimalLoad, float fLowThreshold, float fHighThreshold, unsigned nBlockSize);  // 0x140181eb0
+    ~Unk_MagicUIntMap();                                            // 0x1401835e0
+private:
+    void* m_raw[9];
+};
+MS2_CHECK_SIZE(Unk_MagicUIntMap, 0x48);
+
+class CMagic : public CPtred
+{
+public:
+    CMagic();                                                       // 0x14145d120
+    virtual ~CMagic();                                              // 0 0x14145d390
+
+    int m_nState;                                                   // +0x18
+    unsigned m_nStateTick;                                          // +0x1c
+    Unk_MagicTagPtr m_spSkill;                                      // +0x20
+    Unk_MagicTagPtr m_spCaster;                                     // +0x30
+    Unk_StreamPoint m_ptStart;                                      // +0x40
+    Unk_StreamPoint m_ptTarget;                                     // +0x4c
+    Unk_StreamPoint m_ptCurrent;                                    // +0x58
+    Unk_StreamPoint m_ptDirection;                                  // +0x64
+    Unk_StreamPoint m_ptLast;                                       // +0x70
+    Unk_StreamPoint m_ptPredicted;                                  // +0x7c
+    Unk_NiMatrix3 m_matRotation;                                    // +0x88
+    Unk_StreamPoint m_ptAc;                                         // +0xac
+    Unk_StreamPoint m_ptB8;                                         // +0xb8
+    float m_fTotalTime;                                             // +0xc4
+    float m_fRemainTime;                                            // +0xc8
+    unsigned m_nLastTick;                                           // +0xcc
+    int m_nD0;                                                      // +0xd0
+    Unk_NodePtr m_spScene;                                          // +0xd8 "Scene Root"
+    unsigned m_nEffectId;                                           // +0xe0
+    unsigned m_nEffectId2;                                          // +0xe4
+    CMagicData m_data;                                              // +0xe8 working copy of the move
+    ATL::CAtlArray<Unk_MagicNodeLink*> m_arr1A8;                                 // +0x1a8
+    int m_n1C8;
+    int m_n1CC;
+    int m_n1D0;
+    Unk_MagicUIntMap m_map1D8;                                      // +0x1d8
+    Unk_MagicUIntMap m_map220;                                      // +0x220
+    int m_n268;
+    int m_n26C;
+    Unk_MagicValPtr m_spVal;                                        // +0x270
+    int m_n280;
+    int m_n284;
+    ATL::CAtlArray<Unk_MagicTargetRef*> m_arr288;                                 // +0x288
+    Unk_MagicSlot m_slots[16];                                      // +0x2a8
+    int m_n528;
+    int m_n52C;
+    int m_n530;
+    int m_n534;
+    int m_n538;
+    int m_n53C;
+    void* m_pCollision;                                             // +0x540
+};
+MS2_CHECK_SIZE(CMagic, 0x548);
+
+class CMagicModel : public CPtred
+{
+public:
+    CMagicModel();                                                  // 0x141467480
+    virtual ~CMagicModel() = default;                               // 0 0x141468db0
+
+    Unk_SocketPtr<CMagic> m_spMagic;                                // +0x18
+    Unk_MagicTagPtr m_spA;                                          // +0x28
+    Unk_MagicTagPtr m_spB;                                          // +0x38
+};
+MS2_CHECK_SIZE(CMagicModel, 0x48);
+
+class CArrowFillTargetContext : public CPtred
+{
+public:
+    CArrowFillTargetContext();                                      // 0x1414689b0
+    virtual ~CArrowFillTargetContext() = default;                   // 0 0x141468d30
+
+    Unk_MagicTagPtr m_spOwner;                                      // +0x18
+    void* m_p28;
+    ATL::CAtlArray<Unk_MagicArrowRef*> m_arr30;
+    Unk_StreamPoint m_ptFrom;                                       // +0x50
+    Unk_StreamPoint m_ptTo;                                         // +0x5c
+    Unk_NiMatrix3 m_matAim;                                         // +0x68
+    int m_n8C;
+    Unk_MagicValPtr m_spVal;                                        // +0x90
+    int m_nA0;
+    int m_nA4;
+};
+MS2_CHECK_SIZE(CArrowFillTargetContext, 0xa8);
