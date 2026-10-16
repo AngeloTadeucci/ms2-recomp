@@ -3,13 +3,20 @@
 // MS2-RANGE: 0x1416c7fd0-0x1416e3800 .text$mn
 // MS2-RANGE: 0x1400fe8a0-0x1400feaa0 .text$di
 // MS2-RANGE: 0x142cb5990-0x142cb5aa0 .text$yd
+// MS2-PIN: ?FUN_1416d2910@CQuestManager@@QEAAHIAEAV?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@std@@H@Z 0x1416d2910
+// MS2-PIN: ??0<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEAA@I@Z 0x1416dbb80
+// MS2-PIN: ??R<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEBA_NAEBUUnk_QmNpcQuestEntry@@0@Z 0x1416dcda0
+// MS2-PIN: ??R<lambda_ffd9fd9b7ed9f8dca7c54b6016c3fa67>@@QEBAXV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z 0x1416dcb40
+// MS2-PIN: ??R<lambda_bff28b45a42954530307e5b624f5a235>@@QEBAXAEBV?$list@IV?$allocator@I@std@@@std@@@Z 0x1416dcb90
+// MS2-PIN: ??R<lambda_832e90266cbc1c25f66c2f4ce9c7fe9e>@@QEBAXH@Z 0x1416dcd40
+// MS2-PIN: ??0<lambda_832e90266cbc1c25f66c2f4ce9c7fe9e>@@QEAA@AEAV?$list@IV?$allocator@I@std@@@std@@AEAV?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@2@AEBQEAV32@@Z 0x1416dad60
+// MS2-PIN: ??0<lambda_ffd9fd9b7ed9f8dca7c54b6016c3fa67>@@QEAA@AEBH@Z 0x1416dad20
+// MS2-PIN: ??0<lambda_bff28b45a42954530307e5b624f5a235>@@QEAA@AEBH@Z 0x1416dad40
 // MS2-PIN: ??_7CQuestManager@@6B?$TSingleton@VCQuestManager@@@@@ 0x142f57498
 // MS2-PIN: ??R<lambda_ec77cf7c45e6dcfdc158975356cf22e0>@@QEBA_NH@Z 0x1416dcd00
 // MS2-PIN: ?FUN_1416cb4d0@CQuestManager@@QEAAXAEAV?$vector@IV?$allocator@I@std@@@std@@V?$vector@HV?$allocator@H@std@@@3@HH@Z 0x1416cb4d0
-// MS2-PIN: ??0<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEAA@I@Z 0x1416dbb80
-// MS2-PIN: ??R<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEBA_NAEBUUnk_QmNpcQuestEntry@@0@Z 0x1416dcda0
-// MS2-PIN: ?_Unchecked_begin@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIXZ 0x1416e1dd0
-// MS2-PIN: ?_Unchecked_end@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIXZ 0x1416e1e70
+// MS2-PIN: ?_Unchecked_begin@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1dd0
+// MS2-PIN: ?_Unchecked_end@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1e70
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\questmanager.cpp"
@@ -41,6 +48,8 @@
 #include "ms2/commonfiles/chapterbooktable.h"
 #include "ms2/commonfiles/contentshutdown.h"
 #include "ms2/placeholder/nipoint3.h"
+#include "ms2/commonfiles/fielddata.h"
+#include "ms2/ms2format.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -111,7 +120,7 @@ public:
     Unk_QmQuestIdList FUN_14074df70(int itemId, int kind);   // quests started (0) / advanced (1) by an item
     int FUN_14074e510(unsigned questId);
     void FUN_14074d360(int id, ATL::CAtlArray<unsigned>& out);
-    std::vector<unsigned>* FUN_14074e0f0(int npcId);   // quests of an npc (null when none)
+    const std::vector<unsigned>* FUN_14074e0f0(int npcId);   // quests of an npc (null when none)
 };
 Unk_QgQuestTable* FUN_1407476c0();
 class Unk_QuestDungeonRecord {
@@ -180,11 +189,14 @@ Unk_QmGameEventMgr* FUN_1401c0d90();
 class Unk_QmWorld {
 public:
     MS2Ptr<CProxyGameObject> FUN_141bc9be0(unsigned id);   // proxy object by id
+    PCBase* FUN_141bd1530(__int64 id);                     // player by user id
 };
 int FUN_14123c580(PCBase* pc);
 MS2Ptr<CQuestData> FUN_14074bc40(int questId);
 int FUN_14074b050(CQuestData* data);
 int FUN_14074b030(CQuestData* data);
+float FUN_140966f00(NiPoint3 a, NiPoint3 b);   // distance
+void FUN_1412751b0(const CStringW& text, int type);   // system chat line
 int FUN_14074b070(CQuestData* data);
 CFieldMetaTable* FUN_140700390();
 CLearningQuestTable* FUN_140ea4060();
@@ -1600,7 +1612,7 @@ MS2_REPLACE_METHOD(0x1416d1060, CQuestManager, FUN_1416d1060, 152, 0xCE32F7F4);
 // @0x1416d12d0
 int CQuestManager::FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all)
 {
-    std::vector<unsigned>* quests = FUN_1407476c0()->FUN_14074e0f0(npcId);
+    const std::vector<unsigned>* quests = FUN_1407476c0()->FUN_14074e0f0(npcId);
     if (quests == 0) return 0;
     state->FUN_1409669c0();
     state->m_npcId = npcId;
@@ -1733,6 +1745,65 @@ void CQuestManager::FUN_1416d1d00(PCBase* pc)
 }
 MS2_REPLACE_METHOD(0x1416d1d00, CQuestManager, FUN_1416d1d00, 389, 0x1360BBF1);
 
+// @0x1416d1e90
+std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
+{
+    std::pair<unsigned, __int64> best(0, 0);
+    WorldService* world = FUN_1403ed2d0();
+    if (world == 0) return best;
+    if (CFieldData::FUN_1403744a0(world->FUN_141bd3060())) return best;
+    PCBase* player = static_cast<PCBase*>(world->FUN_141bd0cc0());
+    if (player == 0) return best;
+    float bestDistance = FLT_MAX;
+    const NiPoint3& playerPos = player->vfunc_18();
+    std::list<unsigned> stale;
+    for (std::map<int, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+        const unsigned questId = it->first;
+        Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+        if (quest.IsNull()) {
+            stale.push_back(questId);
+            continue;
+        }
+        if (quest->IsActive() == 0) {
+            stale.push_back(questId);
+            continue;
+        }
+        if (quest->IsComplete() != 0) {
+            stale.push_back(questId);
+            continue;
+        }
+        std::list<__int64> gone;
+        std::set<__int64>& users = it->second;
+        for (std::set<__int64>::iterator user = users.begin(); user != users.end(); ++user) {
+            const __int64 userId = *user;
+            if (userId == player->FUN_141656a80()) {
+                gone.push_back(questId);
+                continue;
+            }
+            PCBase* pc = reinterpret_cast<Unk_QmWorld*>(world)->FUN_141bd1530(userId);
+            if (pc == 0) {
+                gone.push_back(questId);
+                continue;
+            }
+            if (quest->CheckUserFind(pc) == 0) {
+                gone.push_back(questId);
+                continue;
+            }
+            if (pc->FUN_141670a00(4) <= 0) continue;
+            if (pc->FUN_141674bc0() != 0) continue;
+            float distance = FUN_140966f00(playerPos, pc->vfunc_18());
+            if (distance < bestDistance) {
+                bestDistance = distance;
+                best = std::pair<unsigned, __int64>(questId, userId);
+            }
+        }
+        MS2_FOR_EACH(__int64 id, gone) users.erase(id);
+    }
+    MS2_FOR_EACH(int id, stale) m_targets250.erase(id);
+    return best;
+}
+MS2_REPLACE_METHOD(0x1416d1e90, CQuestManager, FUN_1416d1e90, 1657, 0x68DA91B1);
+
 // @0x1416d2510
 const std::set<__int64>& CQuestManager::FUN_1416d2510(int questId)
 {
@@ -1770,6 +1841,57 @@ int CQuestManager::FUN_1416d26c0(int questId, std::list<unsigned>& out, int chec
     return 1;
 }
 MS2_REPLACE_METHOD(0x1416d26c0, CQuestManager, FUN_1416d26c0, 583, 0xE822ACDB);
+// @0x1416d2910
+// Debug trace of the follow-up quest paths from each progressing epic quest to toQuestId.
+int CQuestManager::FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigned>>& paths, int verbose)
+{
+    if (toQuestId == 0) return 0;
+    auto log = [verbose](CStringW text) {
+        if (verbose) FUN_1412751b0(text, 0x14);
+    };
+    auto logPath = [verbose](const std::list<unsigned>& path) {
+        if (verbose) {
+            CStringW text(L"[S]");
+            for (__int64 questId : path) {
+                int level = -1;
+                MS2Ptr<CQuestData> data = FUN_14074bc40(static_cast<int>(questId));
+                if (data.get()) level = data->m_28;
+                text += StringFormat(L" -> [{0}] {1}", level, questId);
+            }
+            text += L"-> [E]";
+            FUN_1412751b0(text, 0x14);
+        }
+    };
+    std::vector<unsigned> epics;
+    FUN_140764020()->FUN_1416cb4d0(epics, {0, 1, 3}, 0, -1);
+    if (epics.empty()) {
+        log(L"There is none progressEpicQuest.");
+        return 0;
+    }
+    int found = 0;
+    for (unsigned fromQuestId : epics) {
+        std::list<unsigned> path;
+        path.emplace_back(fromQuestId);
+        log(StringFormat(L"Start trace fromQuestID({0}) toQuestID({1})", fromQuestId, toQuestId));
+        std::list<std::list<unsigned>> reached;
+        std::list<std::list<unsigned>> notReached;
+        int result = FUN_1416d40a0(0, fromQuestId, toQuestId, path, reached, &notReached);
+        if (found == 0 && result == 1) found = result;
+        log(StringFormat(L"-- Reached path count({0})) --", reached.size()));
+        if (!reached.empty()) {
+            for (const std::list<unsigned>& p : reached) logPath(p);
+            paths.insert(paths.end(), reached.begin(), reached.end());
+        }
+        log(StringFormat(L"-- Not reached path count({0})) --", notReached.size()));
+        if (!notReached.empty()) {
+            for (const std::list<unsigned>& p : notReached) logPath(p);
+        }
+        log(StringFormat(L"End trace fromQuestID({0}) toQuestID({1})", fromQuestId, toQuestId));
+    }
+    return found;
+}
+MS2_REPLACE_METHOD(0x1416d2910, CQuestManager, FUN_1416d2910, 1561, 0xD75123E5);
+
 // @0x1416d3010
 void CQuestManager::FUN_1416d3010()
 {
@@ -1872,6 +1994,40 @@ int CQuestManager::FUN_1416d3ed0(MS2Ptr<CQuestData> data, int checkAccept, int j
     return 1;
 }
 MS2_REPLACE_METHOD(0x1416d3ed0, CQuestManager, FUN_1416d3ed0, 456, 0x455541D4);
+
+// @0x1416d40a0
+// Depth-first walk of the follow-up quests; each finished path goes to reached (toQuestId hit) or notReached.
+int CQuestManager::FUN_1416d40a0(int depth, unsigned fromQuestId, unsigned toQuestId, std::list<unsigned>& path,
+    std::list<std::list<unsigned>>& reached, std::list<std::list<unsigned>>* notReached)
+{
+    auto finish = [&path, &reached, notReached](int ok) {
+        if (ok == 1) reached.push_back(path);
+        else if (notReached != 0) notReached->push_back(path);
+    };
+    if (++depth >= 30000) {
+        finish(0);
+        return 0;
+    }
+    if (fromQuestId == toQuestId) {
+        finish(1);
+        return 1;
+    }
+    int result = 0;
+    std::list<unsigned> next;
+    if (FUN_1416d26c0(fromQuestId, next, 0) == 0 || next.empty()) {
+        finish(0);
+        return 0;
+    }
+    int found = 0;
+    for (unsigned questId : next) {
+        std::list<unsigned> branch(path);
+        branch.emplace_back(questId);
+        int r = FUN_1416d40a0(depth, questId, toQuestId, branch, reached, notReached);
+        if (found == 0 && r == 1) found = 1;
+    }
+    return found;
+}
+MS2_REPLACE_METHOD(0x1416d40a0, CQuestManager, FUN_1416d40a0, 574, 0x977F811D);
 
 // @0x1416dbb50
 CQuestManagerCommon::CQuestManagerCommon() : m_selector(0) {}
