@@ -41,7 +41,6 @@ public:
     void FUN_1409d46a0(CItem* pItem);
     void FUN_1409d5530(unsigned nId);
     void FUN_1409d55a0(CItem* pItem, int n);
-    void FUN_1409d74a0(int n);
     void FUN_1409d8300(int n);
     void FUN_1409d77b0(int n);
     void FUN_1409d5160(unsigned nItemId);
@@ -50,6 +49,11 @@ public:
     void FUN_1409d5340(unsigned nItemId);
     void FUN_1409d53f0(unsigned nItemId);
     void FUN_1409d5490(unsigned nItemId);
+    void FUN_1409d8c80(const CStringW& str);
+    void FUN_1409d8ce0(CStringW str);                                    // itemDamage (by value: the callee destroys it)
+    void FUN_1409d8d50(bool b);
+    void FUN_1409dbc30(const CStringW& str);                             // set m_50
+    void FUN_1409d74a0(int nItemId);
     __int64 FUN_1409c6540();                                             // m_40
     unsigned FUN_1409c6560();                                            // m_48 (flags; 0x100 = no extra buttons)
     void FUN_1409c6580(unsigned n);

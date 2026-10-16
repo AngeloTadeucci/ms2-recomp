@@ -421,3 +421,59 @@ void ASTooltip::FUN_1409d5490(unsigned nItemId)
     FUN_1407cbbe0(DAT_143ab45e0, sp->FUN_14053d210());
 }
 MS2_REPLACE_METHOD(0x1409D5490, ASTooltip, FUN_1409d5490, 139, 0x00739E47);
+
+short FUN_140626f20(int nItemId);
+extern CString DAT_143ab45b8;
+extern CString DAT_143ab4608;
+
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
+// @0x1409d74a0
+void ASTooltip::FUN_1409d74a0(int nItemId)
+{
+    MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
+    if (!(sp == NULL))
+    {
+        if (sp->FUN_14053d840())
+        {
+            short sLevel = FUN_140626f20(sp->FUN_14053c510());
+            if (sLevel == 0)
+                return;
+            FUN_1409c48f0("gemstoneLevel", sLevel);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1409D74A0, ASTooltip, FUN_1409d74a0, 183, 0xB7CB9094);
+
+// @0x1409d8c80
+void ASTooltip::FUN_1409d8c80(const CStringW& str)
+{
+    FUN_1407cbb20(DAT_143ab45b8, str);
+}
+MS2_REPLACE_METHOD(0x1409D8C80, ASTooltip, FUN_1409d8c80, 81, 0xD3C1BF91);
+
+// @0x1409d8ce0
+void ASTooltip::FUN_1409d8ce0(CStringW str)
+{
+    FUN_1407cbb20("itemDamage", str);
+}
+MS2_REPLACE_METHOD(0x1409D8CE0, ASTooltip, FUN_1409d8ce0, 93, 0x134D71AB);
+
+// @0x1409d8d50
+void ASTooltip::FUN_1409d8d50(bool b)
+{
+    FUN_1407cbbe0(DAT_143ab4608, b);
+}
+MS2_REPLACE_METHOD(0x1409D8D50, ASTooltip, FUN_1409d8d50, 50, 0x9E275AA4);
+
+// @0x1409dbc30
+void ASTooltip::FUN_1409dbc30(const CStringW& str)
+{
+    m_50 = str;
+}
+MS2_REPLACE_METHOD(0x1409DBC30, ASTooltip, FUN_1409dbc30, 42, 0xA6EBFD24);
+
+// @0x1409e5450
+bool FUN_1409e5450(int n)
+{
+    return n == 4;
+}
