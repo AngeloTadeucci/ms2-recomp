@@ -193,6 +193,10 @@ public:
     void FUN_141678360();                                   // 0x141678360
     class Ridee* FUN_1416764a0();                           // 0x1416764a0 the ridee this actor rides (scenestategame, w86)
     void FUN_14166ce70(int nEmotion);                       // 0x14166ce70 (scenestategame packet 0x3f, w86)
+    // mypc.cpp (w99)
+    unsigned short FUN_141661e00();                         // 0x141661e00 the channel the actor is on
+    int FUN_141661e20();                                    // 0x141661e20
+    int FUN_1416764d0();                                    // 0x1416764d0 riding
 
 public:
     MS2_LAYOUT_FRIEND;

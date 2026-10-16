@@ -26,6 +26,17 @@
 // MS2-PIN: ??_7MyPC@@6BIBase@efd@@@ 0x142f29f88
 // MS2-PIN: ??_7MyPC@@6BCallbackObject@NiActorManager@@@ 0x142f2a428
 // MS2-PIN: ??_7MyPC@@6B@ 0x142f2a460
+// MS2-PIN: ??1NotifyCompleteMyPC@@UEAA@XZ 0x141532ce0
+// MS2-PIN: ??1NotifyUseSKill@@UEAA@XZ 0x141532d00
+// MS2-PIN: ??_GNotifyCompleteMyPC@@UEAAPEAXI@Z 0x141533490
+// MS2-PIN: ??_GNotifyUseSKill@@UEAAPEAXI@Z 0x1415334d0
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseComp_a68@@@@QEAA@AEBV0@@Z 0x141532160
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@AEBV0@@Z 0x141532430
+// MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_a68@@@@QEAAAEAV0@AEBV0@@Z 0x141532dc0
+// MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@AEBV0@@Z 0x141532e00
+// MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@H@Z 0x141532e40
+// MS2-PIN: ??4?$MS2Ptr@VUnk_MyPCComp1618@@@@QEAAAEAV0@H@Z 0x141532ef0
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -39,6 +50,12 @@
 #include "ms2/client/ms2/uimessagebox.h"
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/cinpacket.h"
+#include "ms2/placeholder/citemdata.h"
+#include "ms2/placeholder/cequipitem.h"
+#include "ms2/client/ms2/inventory.h"
+#include "ms2/client/ms2/networkservice.h"
+#include "ms2/placeholder/cubeiteminfo.h"
+#include <algorithm>
 #include "ms2/ms2format.h"
 #include "hook/ms2hook.h"
 
@@ -91,7 +108,14 @@ public:
 };
 
 // A service pointer from the service lookup cell (ctor 0x1401cd0b0, dtor 0x1401cd150, -> 0x1401cd1a0).
-class Unk_MyPCHousingSvc { public: int FUN_1410d33a0(int nPlotId, efd::Point3& kPos); };
+class Unk_MyPCHousingSvc
+{
+public:
+    int FUN_1410d33a0(int nPlotId, efd::Point3& kPos);
+    void FUN_1410cd440();
+    int FUN_1410cdd80(NiPoint3 kFrom, NiPoint3 kTo, float fRange, efd::Point3 kDir);   // the build reach test
+    void FUN_1410d6590(int nNoticeId);
+};
 class Unk_MyPCSvcPtr
 {
 public:
@@ -127,7 +151,8 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: int FUN_141bd3060(); void FUN_141bca240(); };
+class Unk_MyPCWorld { public: int FUN_141bd3060(); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+    void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
@@ -233,6 +258,93 @@ Unk_MyPCCamera* FUN_1409478c0();
 class Unk_MyPCSingleton { public: bool FUN_141b89990(); };
 Unk_MyPCSingleton* FUN_1409eed90();
 CStringW FUN_140b8f730(const Unk_StreamPoint& kPos);           // "x,y,z"
+
+// The lapenshard table (FUN_1409c4b30): the record of an item id (MS2Ptr view; ==0 0x1405b7050, -> 0x1405b70e0,
+// dtor 0x1405b6e60) and its group.
+class Unk_MyPCLapenData : public CPtred
+{
+public:
+    int m_n18;
+    int m_n1c;
+    int m_n20;
+    int m_nKind;                                            // +0x24 (1: counts towards the grade map)
+};
+MS2_CHECK_OFFSET(Unk_MyPCLapenData, m_nKind, 0x24);
+class Unk_MyPCLapenTable
+{
+public:
+    MS2Ptr<Unk_MyPCLapenData> FUN_1405b56a0(unsigned nItemId);
+    void FUN_1405b5910(unsigned nItemId, ATL::CAtlArray<Unk_MyPCLapenSlot>& aSlots);   // the slots of the item
+    int FUN_1405b59d0(unsigned nItemId);                    // the group of the item
+};
+Unk_MyPCLapenTable* FUN_1409c4b30();
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+class Unk_MyPCChannelTable { public: int FUN_1406c5d60(unsigned short nChannel); };
+Unk_MyPCChannelTable* FUN_14131e120();
+struct Unk_MyPCBlockFlags { int FUN_1402c4c90(int nFlag); };   // blocked-feature flag set
+struct Unk_MyPCConfig { void* m_p0; Unk_MyPCBlockFlags m_8; };
+Unk_MyPCConfig* FUN_14025e7b0();
+
+// The field entry data of the local character (a stack record of CSceneStateGame's field entry; only the mark
+// lists are read here).
+struct Unk_MyPCGameBegin
+{
+    unsigned char m_body[0x1b0];
+    __int64 m_nMarkTime;                                    // +0x1b0
+    ATL::CAtlList<__int64> m_listA;                         // +0x1b8
+    ATL::CAtlList<__int64> m_listB;                         // +0x1e8
+};
+MS2_CHECK_OFFSET(Unk_MyPCGameBegin, m_listB, 0x1e8);
+
+// The house plots (the housing service): the plot of an actor and the owner account of a plot.
+struct Unk_MyPCPlot
+{
+    unsigned char m_pad0[0x18];
+    __int64 m_nOwnerId;                                     // +0x18
+    unsigned char m_pad20[0x30];
+    int m_n50;                                              // +0x50
+    int m_n54;                                              // +0x54
+};
+MS2_CHECK_OFFSET(Unk_MyPCPlot, m_n54, 0x54);
+class Unk_MyPCPlotSvc
+{
+public:
+    Unk_MyPCPlot* FUN_1410b8c90(egf::EntityID kId);
+    __int64 FUN_1410c8030(int nA, int nB);
+};
+// A PC on a house plot (class id 0x6200046).
+class Unk_MyPCPlotPC : public PC
+{
+public:
+    enum { CLASS_ID = 0x6200046 };
+};
+Unk_MyPCPlotPC* FUN_140884db0(efd::IBase* pObj);           // efd::DynamicCast<Unk_MyPCPlotPC>
+__int64 FUN_141656ad0(PCBase* pPC);                         // +0xdc0 the account id
+__int64 FUN_14121c6c0(PCBase* pPC);                         // +0x12f0
+void FUN_1411e1b80(Unk_PCEquipSet* pEquip, ATL::CAtlList<MS2Ptr<CEquipItem> >& aOut);
+extern __int64 DAT_143af25f0;                               // the actor id of the house owner
+extern Unk_Inventory DAT_143ab2a90;
+CNetworkService* FUN_140714f90();
+
+// The cube palette (the selected cube to place).
+class Unk_MyPCCubePalette
+{
+public:
+    int FUN_1410b50d0(MS2Ptr<CubeItemInfo>& spOut);
+    MS2Ptr<CubeItemInfo> FUN_1410b55b0();
+};
+Unk_MyPCCubePalette* FUN_140ef0b20();
+void FUN_1408b39c0(CubeItemInfo* pInfo, COutPacket& packet);   // encode the cube
+bool FUN_1408a07b0(int nMapId, int nA, __int64 nB);          // build-forbidden map
+extern int DAT_143ae0fb0;                                   // the debug switches (reset by 0x1415308d0)
+extern int DAT_143ae0fb4;
+extern int DAT_143ae0fb8;
+extern int DAT_143ae0fbc;
+extern int DAT_143ae0fc0;
+class Unk_PCCubeCraft { public: int FUN_1410aa1f0(); };   // the cube craft controller (in the build mode)
+extern int DAT_1439f4a7c;
+extern __int64 DAT_143ab2820;
+extern efd::Point3 DAT_143ab2398;                           // down vector
 
 // The notify of a scheduled actor event (0x20; ctor 0x140db4c10).
 class Unk_MyPCNotify113 : public NotifyObject
@@ -1010,12 +1122,241 @@ int MyPC::FUN_14152ed10(__int64 n)
 }
 MS2_REPLACE_METHOD(0x14152ED10, MyPC, FUN_14152ed10, 68, 0x3ACAF3BF);
 
+// @0x14152ed60
+void MyPC::FUN_14152ed60(const Unk_MyPCGameBegin* pData)
+{
+    FUN_14152eb80();
+    m_n1648 = pData->m_nMarkTime;
+    for (POSITION pos = pData->m_listA.GetHeadPosition(); pos != 0; pData->m_listA.GetNext(pos))
+        FUN_14152ec40(pData->m_listA.GetAt(pos));
+    for (POSITION pos = pData->m_listB.GetHeadPosition(); pos != 0; pData->m_listB.GetNext(pos))
+        FUN_14152ec80(pData->m_listB.GetAt(pos));
+}
+MS2_REPLACE_METHOD(0x14152ED60, MyPC, FUN_14152ed60, 247, 0xCB824A2C);
+
+// @0x14152ee60
+void MyPC::FUN_14152ee60(CInPacket& packet)
+{
+    FUN_14152eb80();
+    m_n1648 = packet.vfunc_o8_4();
+    unsigned nCountA = packet.vfunc_o8_3();
+    for (unsigned i = 0; i < nCountA; i++)
+        FUN_14152ec40(packet.vfunc_o8_4());
+    unsigned nCountB = packet.vfunc_o8_3();
+    for (unsigned i = 0; i < nCountB; i++)
+        FUN_14152ec80(packet.vfunc_o8_4());
+}
+MS2_REPLACE_METHOD(0x14152EE60, MyPC, FUN_14152ee60, 309, 0xA4DF11E6);
+
+// The item of the house owner on this account's plot.
+// @0x14152efa0
+CItem* MyPC::FUN_14152efa0(__int64 nItemUid, __int64* pOwner)
+{
+    Unk_MyPCPlotPC* pPC = FUN_140884db0(FUN_1403ed2d0()->FUN_141bd1530(DAT_143af25f0));
+    if (pPC == 0)
+        return 0;
+    Unk_MyPCPlotSvc* pSvc = static_cast<Unk_MyPCPlotSvc*>(FUN_1401cd040(&DAT_143b059e8));
+    Unk_MyPCPlot* pPlot = pSvc->FUN_1410b8c90(pPC->FUN_14123c460());
+    if (pPlot == 0)
+        return 0;
+    if (pSvc->FUN_1410c8030(pPlot->m_n50, pPlot->m_n54) != FUN_141656ad0(this))
+        return 0;
+    MS2Ptr<CEquipItem> spItem = pPC->FUN_1416561a0()->FUN_1411e1580(nItemUid);
+    if (!spItem)
+        return 0;
+    *pOwner = FUN_14121c6c0(pPC);
+    return spItem->FUN_1411dc7a0().get();
+}
+MS2_REPLACE_METHOD(0x14152EFA0, MyPC, FUN_14152efa0, 408, 0x53442F11);
+
+// Return the locked items of a PC on this account's plot.
+// @0x14152f140
+void MyPC::FUN_14152f140(__int64 nOwnerId)
+{
+    Unk_MyPCPlotPC* pPC = FUN_140884db0(FUN_1403ed2d0()->FUN_141bd1530(nOwnerId));
+    if (pPC == 0)
+        return;
+    Unk_MyPCPlotSvc* pSvc = static_cast<Unk_MyPCPlotSvc*>(FUN_1401cd040(&DAT_143b059e8));
+    Unk_MyPCPlot* pPlot = pSvc->FUN_1410b8c90(pPC->FUN_14123c460());
+    if (pPlot == 0)
+        return;
+    if (pSvc->FUN_1410c8030(pPlot->m_n50, pPlot->m_n54) != FUN_141656ad0(this))
+        return;
+    ATL::CAtlList<MS2Ptr<CEquipItem> > aItems(10);
+    FUN_1411e1b80(pPC->FUN_1416561a0(), aItems);
+    for (POSITION pos = aItems.GetHeadPosition(); pos != 0; aItems.GetNext(pos))
+    {
+        CEquipItem* pEquip = aItems.GetAt(pos).get();
+        CItem* pItem = pEquip->FUN_1411dc7a0().get();
+        int nReason;
+        CStringW strName;
+        if (DAT_143ab2a90.FUN_140a66200(pItem, &nReason, strName) == 0 && (nReason == 4 || nReason == 5))
+            FUN_140714f90()->FUN_141538a90(nOwnerId, pItem->FUN_140526a50());
+    }
+    COutPacket packet(0x42, 0);
+    packet.Encode1(10);
+    packet.Encode8(nOwnerId);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152F140, MyPC, FUN_14152f140, 630, 0xB5C6F78E);
+
+// Return the locked items of every PC on this account's plot.
+// @0x14152f3c0
+void MyPC::FUN_14152f3c0()
+{
+    ATL::CAtlList<efd::SmartPointer<GameObject> > aObjs(10);
+    FUN_1403ed2d0()->FUN_141bd1750(aObjs);
+    Unk_MyPCPlotSvc* pSvc = static_cast<Unk_MyPCPlotSvc*>(FUN_1401cd040(&DAT_143b059e8));
+    for (POSITION pos = aObjs.GetHeadPosition(); pos != 0; aObjs.GetNext(pos))
+    {
+        efd::SmartPointer<GameObject> spObj = aObjs.GetAt(pos);
+        Unk_MyPCPlotPC* pPC = efd::DynamicCast<Unk_MyPCPlotPC>(spObj);
+        if (pPC != 0)
+        {
+            Unk_MyPCPlot* pPlot = pSvc->FUN_1410b8c90(pPC->FUN_14123c460());
+            if (pPlot != 0)
+            {
+                if (pSvc->FUN_1410c8030(pPlot->m_n50, pPlot->m_n54) != FUN_141656ad0(this))
+                    continue;
+                FUN_14152f140(pPlot->m_nOwnerId);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14152F3C0, MyPC, FUN_14152f3c0, 349, 0xE2E5430C);
+
+// Request the cube build mode (packet 0x36) with the selected cube.
+// @0x14152feb0
+int MyPC::FUN_14152feb0(int nMode, bool bPalette)
+{
+    if (FUN_14166ce30() != 0 && (nMode == 1 || nMode == 2))
+        return 0;
+    Unk_MyPCSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+    spSvc.FUN_1401cd1a0()->FUN_1410cd440();
+    bool bFree = false;
+    if (DAT_143ae0fb4 != 0)
+        bFree = true;
+    if (FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820))
+        bFree = true;
+    if (!bFree)
+    {
+        if (spSvc.FUN_1401cd1a0()->FUN_1410cdd80(vfunc_18(), vfunc_20(), 0.0f, DAT_143ab2398) == 0)
+        {
+            spSvc.FUN_1401cd1a0()->FUN_1410d6590(0x3c);
+            return 0;
+        }
+    }
+    if (FUN_1416764d0() != 0 && FUN_14152c280(0) == 0)
+        return 0;
+    if (FUN_141527960() != 0)
+        return 0;
+    COutPacket packet(0x36, 0);
+    packet.Encode1((unsigned char)nMode);
+    MS2Ptr<CubeItemInfo> spInfo;
+    if (bPalette)
+        spInfo = FUN_140ef0b20()->FUN_1410b55b0();
+    else
+        FUN_140ef0b20()->FUN_1410b50d0(spInfo);
+    if (spInfo.get() != 0)
+    {
+        packet.Encode1(1);
+        FUN_1408b39c0(spInfo.operator->(), packet);
+    }
+    else
+        packet.Encode1(0);
+    FUN_140710590(packet);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14152FEB0, MyPC, FUN_14152feb0, 835, 0x46F24B2B);
+
+// @0x14152f530
+void MyPC::FUN_14152f530(Unk_MyPCLapenSlot nSlot, unsigned nItemId, int bBulk)
+{
+    MS2Ptr<Unk_MyPCLapenData> spData = FUN_1409c4b30()->FUN_1405b56a0(nItemId);
+    if (spData == 0)
+        return;
+    if (spData->m_nKind == 1)
+        m_bMapDirty = 1;
+    m_map16b0.SetAt(nSlot, nItemId);
+    unsigned nCount = 0;
+    m_map16f8.Lookup(nItemId, nCount);
+    m_map16f8.SetAt(nItemId, nCount + 1);
+}
+MS2_REPLACE_METHOD(0x14152F530, MyPC, FUN_14152f530, 232, 0xA737BD4F);
+
+// @0x14152f620
+void MyPC::FUN_14152f620(Unk_MyPCLapenSlot nSlot)
+{
+    unsigned nItemId = 0;
+    if (m_map16b0.Lookup(nSlot, nItemId))
+    {
+        m_map16b0.RemoveKey(nSlot);
+        unsigned nCount = 0;
+        m_map16f8.Lookup(nItemId, nCount);
+        if (nCount == 1)
+            m_map16f8.RemoveKey(nItemId);
+        else
+            m_map16f8.SetAt(nItemId, (int)nCount - 1 < 0 ? 0 : nCount - 1);
+        MS2Ptr<Unk_MyPCLapenData> spData = FUN_1409c4b30()->FUN_1405b56a0(nItemId);
+        if (spData == 0)
+            return;
+        if (spData->m_nKind == 1)
+            m_bMapDirty = 1;
+    }
+}
+MS2_REPLACE_METHOD(0x14152F620, MyPC, FUN_14152f620, 321, 0xA926CC13);
+
+// @0x14152f770
+unsigned MyPC::FUN_14152f770(Unk_MyPCLapenSlot nSlot)
+{
+    unsigned nItemId = 0;
+    m_map16b0.Lookup(nSlot, nItemId);
+    return nItemId;
+}
+MS2_REPLACE_METHOD(0x14152F770, MyPC, FUN_14152f770, 59, 0x20E71A5C);
+
+// @0x14152f7c0
+Unk_MyPCLapenSlot MyPC::FUN_14152f7c0(unsigned nItemId)
+{
+    for (POSITION pos = m_map16b0.GetStartPosition(); pos != 0; m_map16b0.GetNext(pos))
+    {
+        unsigned nValue = m_map16b0.GetValueAt(pos);
+        if (nValue == nItemId)
+            return m_map16b0.GetKeyAt(pos);
+    }
+    return MYPC_LAPEN_SLOT_NONE;
+}
+MS2_REPLACE_METHOD(0x14152F7C0, MyPC, FUN_14152f7c0, 148, 0xCEF4D1B7);
+
 // @0x14152f860
 int MyPC::FUN_14152f860(unsigned int nKey)
 {
     return m_map16f8.Lookup(nKey) != 0;
 }
 MS2_REPLACE_METHOD(0x14152F860, MyPC, FUN_14152f860, 68, 0x4D1CFBE8);
+
+// @0x14152f8b0
+int MyPC::FUN_14152f8b0(unsigned nItemId)
+{
+    int nGroup = FUN_1409c4b30()->FUN_1405b59d0(nItemId);
+    for (POSITION pos = m_map16f8.GetStartPosition(); pos != 0; m_map16f8.GetNext(pos))
+    {
+        unsigned nKey = m_map16f8.GetAt(pos)->m_key;
+        int nOther = FUN_1409c4b30()->FUN_1405b59d0(nKey);
+        if (nGroup == nOther)
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14152F8B0, MyPC, FUN_14152f8b0, 169, 0xDB6FD580);
+
+// @0x14152f960
+void MyPC::FUN_14152f960(ATL::CAtlArray<unsigned int>& aOut)
+{
+    for (POSITION pos = m_map16f8.GetStartPosition(); pos != 0; m_map16f8.GetNext(pos))
+        aOut.Add(m_map16f8.GetAt(pos)->m_key);
+}
+MS2_REPLACE_METHOD(0x14152F960, MyPC, FUN_14152f960, 115, 0x7FE231F7);
 
 // @0x14152f9e0
 void MyPC::FUN_14152f9e0()
@@ -1025,9 +1366,176 @@ void MyPC::FUN_14152f9e0()
 }
 MS2_REPLACE_METHOD(0x14152F9E0, MyPC, FUN_14152f9e0, 52, 0x27FFF569);
 
+// The highest grade per item group of the equipped lapenshards of kind 1.
+// @0x14152fa20
+void MyPC::FUN_14152fa20()
+{
+    if (m_bMapDirty == 0)
+        return;
+    m_map1740.RemoveAll();
+    m_bMapDirty = 0;
+    for (POSITION pos = m_map16f8.GetStartPosition(); pos != 0; m_map16f8.GetNext(pos))
+    {
+        unsigned nItemId = m_map16f8.GetAt(pos)->m_key;
+        MS2Ptr<Unk_MyPCLapenData> spData = FUN_1409c4b30()->FUN_1405b56a0(nItemId);
+        if (spData == 0)
+            continue;
+        if (spData->m_nKind != 1)
+            continue;
+        MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+        if (spItem == 0)
+            continue;
+        unsigned short nGrade = 0;
+        m_map1740.Lookup(spItem->FUN_14053dc20(), nGrade);
+        m_map1740.SetAt(spItem->FUN_14053dc20(),
+                        spItem->FUN_14053dc40() > nGrade ? spItem->FUN_14053dc40() : nGrade);
+    }
+}
+MS2_REPLACE_METHOD(0x14152FA20, MyPC, FUN_14152fa20, 498, 0x6E396E9C);
+
+// @0x14152fc20
+void MyPC::FUN_14152fc20()
+{
+    if (m_timer1788.FUN_140268870(1000) != 0)
+    {
+        int nChannel = FUN_14131e120()->FUN_1406c5d60(FUN_141661e00());
+        if (nChannel != FUN_141661e20())
+        {
+            COutPacket packet(0x6b, 0);
+            packet.Encode2(FUN_141661e00());
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14152FC20, MyPC, FUN_14152fc20, 186, 0x23189891);
+
+// @0x14152fce0
+unsigned short MyPC::FUN_14152fce0(unsigned nGroup)
+{
+    unsigned short nGrade = 0;
+    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x5b) != 0)
+        return nGrade;
+    m_map1740.Lookup(nGroup, nGrade);
+    return nGrade;
+}
+MS2_REPLACE_METHOD(0x14152FCE0, MyPC, FUN_14152fce0, 91, 0x15BFF890);
+
+// The first free slot of the item (or its first slot when all are taken).
+// @0x14152fd50
+Unk_MyPCLapenSlot MyPC::FUN_14152fd50(unsigned nItemId)
+{
+    ATL::CAtlArray<Unk_MyPCLapenSlot> aSlots;
+    FUN_1409c4b30()->FUN_1405b5910(nItemId, aSlots);
+    if (aSlots.IsEmpty())
+        return MYPC_LAPEN_SLOT_NONE;
+    Unk_MyPCLapenSlot nFirst = (Unk_MyPCLapenSlot)7;
+    Unk_MyPCLapenSlot nFree = (Unk_MyPCLapenSlot)7;
+    for (unsigned i = 0; i < aSlots.GetCount(); i++)
+    {
+        nFirst = (std::min)(nFirst, aSlots[i]);
+        if (FUN_14152f770(aSlots[i]) == 0)
+            nFree = (std::min)(nFree, aSlots[i]);
+    }
+    if (nFree != 7)
+        return nFree;
+    return nFirst;
+}
+MS2_REPLACE_METHOD(0x14152FD50, MyPC, FUN_14152fd50, 335, 0xD6277F5F);
+
 // @0x141530700
 void MyPC::FUN_141530700(int n)
 {
     m_n15e4 = n;
 }
 MS2_REPLACE_METHOD(0x141530700, MyPC, FUN_141530700, 25, 0x3C9E62E6);
+
+// Leave the cube build mode (packet 0x36 with mode 0).
+// @0x141530200
+void MyPC::FUN_141530200()
+{
+    if (FUN_141530290() == 0)
+        return;
+    if (FUN_141530290()->FUN_1410aa1f0() == 0)
+        return;
+    COutPacket packet(0x36, 0);
+    packet.Encode1(0);
+    packet.Encode1(0);
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x141530200, MyPC, FUN_141530200, 128, 0x3E56095B);
+
+// The cube craft controller while in the cube craft mode.
+// @0x141530290
+Unk_PCCubeCraft* MyPC::FUN_141530290()
+{
+    if (FUN_14166ce30() != 0)
+        return 0;
+    if (FUN_1416595d0() == 0)
+        return 0;
+    return FUN_141659700();
+}
+MS2_REPLACE_METHOD(0x141530290, MyPC, FUN_141530290, 60, 0x717F35CD);
+
+// Reset the debug switches.
+// @0x1415308d0
+void MyPC::FUN_1415308d0()
+{
+    DAT_143ae0fb0 = 0;
+    DAT_143ae0fb4 = 0;
+    DAT_143ae0fb8 = 0;
+    DAT_143ae0fbc = 0;
+    DAT_143ae0fc0 = 0;
+}
+MS2_REPLACE(0x1415308D0, MyPC::FUN_1415308d0, 51, 0x1D1AFDAD);
+
+// @0x141530910
+void MyPC::FUN_141530910(int n)
+{
+    DAT_143ae0fbc = n;
+}
+MS2_REPLACE(0x141530910, MyPC::FUN_141530910, 15, 0x2F579261);
+
+// The local player.
+// @0x141530930
+PCBase* MyPC::FUN_141530930()
+{
+    return FUN_1403ed2d0()->FUN_141bd0cc0();
+}
+MS2_REPLACE(0x141530930, MyPC::FUN_141530930, 22, 0xD4B3D5CA);
+
+// @0x141530d70
+void MyPC::FUN_141530d70(double dTime)
+{
+    if (FUN_14166ce30() != 0)
+        return;
+    FUN_141530db0();
+}
+MS2_REPLACE_METHOD(0x141530D70, MyPC, FUN_141530d70, 46, 0x86EA458A);
+
+// @0x1415313f0
+void MyPC::vfunc_144()
+{
+    PC::vfunc_144();
+}
+MS2_REPLACE_METHOD(0x1415313F0, MyPC, vfunc_144, 24, 0xB835305A);
+
+// @0x141531410
+void MyPC::vfunc_47(bool b)
+{
+    m_bUnk138 = 0;
+}
+MS2_REPLACE_METHOD(0x141531410, MyPC, vfunc_47, 22, 0x8C0F335D);
+
+// @0x141531430
+bool MyPC::vfunc_56(float f)
+{
+    return false;
+}
+MS2_REPLACE_METHOD(0x141531430, MyPC, vfunc_56, 14, 0xF328456E);
+
+// @0x141531450
+bool MyPC::vfunc_55(float a, float b)
+{
+    return false;
+}
+MS2_REPLACE_METHOD(0x141531450, MyPC, vfunc_55, 20, 0x58A98931);

@@ -83,21 +83,26 @@ struct Unk_MyPCPortalMove
 class NotifyCompleteMyPC : public NotifyObject
 {
 public:
-    NotifyCompleteMyPC();                                   // 0x141532780
-    virtual ~NotifyCompleteMyPC();                          // 0x141532ce0
-    virtual CStringW vfunc_1();                             // 0x140db4550
+    // @0x141532780
+    NotifyCompleteMyPC() {}
+    // implicit virtual dtor 0x141532ce0 (no vptr store; pinned)
+    virtual CStringW vfunc_1();                             // 0x140db4550 (notify name, other unit)
 };
 
 // The notify of a used skill (0x20).
 class NotifyUseSKill : public NotifyObject
 {
 public:
-    NotifyUseSKill(int nSkillId, short nLevel);             // 0x1415327b0
-    virtual ~NotifyUseSKill();                              // 0x141532d00
-    virtual CStringW vfunc_1();                             // 0x140db4670
+    // @0x1415327b0
+    NotifyUseSKill(int nSkillId, short nLevel) : m_nSkillId(nSkillId), m_nLevel(nLevel) {}
+    // implicit virtual dtor 0x141532d00 (pinned)
+    virtual CStringW vfunc_1();                             // 0x140db4670 (notify name, other unit)
     int m_nSkillId;                                         // +0x18
     short m_nLevel;                                         // +0x1c
 };
+
+// The key of the lapenshard slot maps at +0x16b0 / +0x17c0 (an enum: CAtlMap passes it by reference).
+enum Unk_MyPCLapenSlot { MYPC_LAPEN_SLOT_NONE = 0 };
 
 class MyPC : public PC, public IMessageListener
 {
@@ -193,15 +198,36 @@ public:
     int FUN_14152ebd0();
     void FUN_14152ec40(__int64 n);
     void FUN_14152ec80(__int64 n);
+    void FUN_14152ed60(const struct Unk_MyPCGameBegin* pData);   // the mark lists from the field entry data
+    void FUN_14152ee60(CInPacket& packet);                  // the mark lists from a packet
+    class CItem* FUN_14152efa0(__int64 nItemUid, __int64* pOwner);   // an item of the house owner on this account's plot
+    void FUN_14152f140(__int64 nOwnerId);                   // return the locked items of a plot PC
+    void FUN_14152f3c0();                                   // the same for every plot PC
+    int FUN_14152feb0(int nMode, bool bPalette);            // request the cube build mode (packet 0x36)
+    int FUN_14152c280(class RideOffAction* pAction);        // get off the ride
+    void FUN_141530200();                                   // leave the cube build mode
+    class Unk_PCCubeCraft* FUN_141530290();                 // the cube craft controller in the cube craft mode
+    static void FUN_1415308d0();                            // reset the debug switches
+    static void FUN_141530910(int n);
+    static PCBase* FUN_141530930();                         // the local player
+    void FUN_141530d70(double dTime);
+    void FUN_141530db0();
     int FUN_14152ecc0(__int64 n);
     int FUN_14152ed10(__int64 n);
     void FUN_141528c30(CInPacket& packet);
     int FUN_14152f860(unsigned int nKey);
     void FUN_141530700(int n);
     void FUN_14152f9e0();                                   // begin bulk update
-    void FUN_14152f530(int nA, int nB, int bBulk);          // set entry nA = nB
+    void FUN_14152f530(Unk_MyPCLapenSlot nSlot, unsigned nItemId, int bBulk);   // equip nItemId in nSlot
+    void FUN_14152f620(Unk_MyPCLapenSlot nSlot);            // unequip nSlot
+    unsigned FUN_14152f770(Unk_MyPCLapenSlot nSlot);        // the item in nSlot
+    Unk_MyPCLapenSlot FUN_14152f7c0(unsigned nItemId);      // the slot of nItemId
+    int FUN_14152f8b0(unsigned nItemId);                    // an item of the same group is equipped
+    void FUN_14152f960(ATL::CAtlArray<unsigned int>& aOut); // the equipped item ids
     void FUN_14152fa20();                                   // end bulk update
-    void FUN_14152f620(int nA);                             // remove entry nA
+    void FUN_14152fc20();                                   // poll the channel once a second
+    unsigned short FUN_14152fce0(unsigned nGroup);          // the highest grade equipped in nGroup
+    Unk_MyPCLapenSlot FUN_14152fd50(unsigned nItemId);      // the slot to equip nItemId into
     void FUN_141529c80(int nPortalId, int nA, int nB, __int64 nC, CStringW strPwd);   // password portal move
     void FUN_14152a0c0(int nPortalId, int nD, int nA, int nB, CStringW strA, CStringW strPwd);   // portal move
 
@@ -230,14 +256,14 @@ public:
     __int64 m_n1648;                                        // +0x1648
     ATL::CAtlList<__int64> m_list1650;                      // +0x1650
     ATL::CAtlList<__int64> m_list1680;                      // +0x1680
-    ATL::CAtlMap<int, unsigned int> m_map16b0;              // +0x16b0 entry -> counted key
-    ATL::CAtlMap<unsigned int, unsigned int> m_map16f8;     // +0x16f8 key -> count
-    ATL::CAtlMap<unsigned int, unsigned short> m_map1740;   // +0x1740
+    ATL::CAtlMap<Unk_MyPCLapenSlot, unsigned int> m_map16b0;   // +0x16b0 slot -> item id
+    ATL::CAtlMap<unsigned int, unsigned int> m_map16f8;     // +0x16f8 item id -> equipped count
+    ATL::CAtlMap<unsigned int, unsigned short> m_map1740;   // +0x1740 item group -> highest grade
     Unk_CloneTimer m_timer1788;                             // +0x1788
     Unk_StreamPoint m_pos1790;                              // +0x1790
     int m_n179c;                                            // +0x179c
     Unk_MyPCPortalMove m_kPortalMove;                       // +0x17a0
-    ATL::CAtlMap<int, DWORD> m_map17c0;                     // +0x17c0 key -> tick of the last change
+    ATL::CAtlMap<Unk_MyPCLapenSlot, DWORD> m_map17c0;      // +0x17c0 slot -> tick of the last change
 };
 MS2_CHECK_OFFSET(MyPC, m_kStateCtl, 0x12e8);
 MS2_CHECK_OFFSET(MyPC, m_kActionKeys, 0x1338);
