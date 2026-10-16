@@ -153,18 +153,27 @@ class Unk_MyPCFeatures { public: bool FUN_14036d570(int nFeature); };
 Unk_MyPCFeatures* FUN_140166410();
 
 // The field data of a map id (MS2Ptr view; dtor 0x1408850f0, IsNull 0x1408851f0).
+struct Unk_MyPCFieldData
+{
+    char m_pad_000[0x120];
+    int m_n120;                                             // +0x120 the field allows it outright
+    int m_n124;                                             // +0x124
+};
 class Unk_MyPCFieldRef
 {
 public:
     ~Unk_MyPCFieldRef();                                    // 0x1408850f0
     bool IsNull() const;                                    // 0x1408851f0
-    void* m_p;
+    Unk_MyPCFieldData* FUN_1409657a0() const;               // get
+    Unk_MyPCFieldData* FUN_140885340() const;               // operator->
+    void* m_pad_00;
+    Unk_MyPCFieldData* m_p;
 };
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
-    void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
+    void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0(); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
@@ -326,6 +335,36 @@ void FUN_141676140(PCBase* pActor);                         // move update
 // PC members fittingdollpc.h does not declare.
 void* FUN_141659b80(PC* pPC, int nSide, unsigned nType, float fRange);   // the nearest object of nType on a side
 extern Unk_StreamPoint DAT_143b01a60;                       // the zero point
+int FUN_14165b500(PCBase* pPC, int nKind);                  // PCBase member: holds a usable item of nKind
+int FUN_14165c1b0(PCBase* pPC, int* pOut, CString& strOut, float f);   // PCBase member
+extern int DAT_143ab2914;                                   // the local character level
+class Unk_MyPCNoticeSound { public: void FUN_141276180(const CString& str); };
+extern Unk_MyPCNoticeSound DAT_143ae14c8;                   // the blocked-action notice sound
+// The worn items of PC::m_kEquipDE0 and the item array at PC::m_kListD48.
+void FUN_1411e1b80(Unk_PCEquipSet* pSet, ATL::CAtlList<MS2Ptr<CEquipItem> >& aOut);   // the worn items
+class Unk_MyPCItemArray { public: size_t FUN_140720ca0() const; MS2Ptr<CItem>& FUN_140a69ee0(size_t i); };
+// The MS2Ptr at Unk_PCEquipSet+0x1d8 (PC+0xfb8): the skill point book.
+class Unk_MyPCSkillBook : public CPtred
+{
+public:
+    int FUN_140639b40(int nId);                             // points spent on nId
+    static int FUN_140639260(unsigned short nJob, int nId); // the job's base points of nId
+};
+int FUN_140ed47e0(PCBase* pPC);                             // PCBase member: the bonus points
+// PC::m_kEquipDE0 with its MS2Ptr at +0x1d8 (the placeholder keeps it opaque).
+struct Unk_MyPCEquipSetView
+{
+    unsigned char m_pad_000[0x1d8];
+    MS2Ptr<Unk_MyPCSkillBook> m_spSkillBook;                // +0x1d8 (PC+0xfb8)
+};
+// The trophy point totals by id (scenestategame.cpp's view of the same global).
+class Unk_SSGCountMap { public: int& FUN_14063ec70(const int& nKey); };
+extern Unk_SSGCountMap DAT_143ab32f8;
+struct Unk_EquipItemData
+{
+    char m_pad_000[0x13c];
+    int m_n13c;                                             // +0x13c 2: not counted
+};
 // The physics body helpers of PCBase::FUN_14166d220 (pcbase.h's Unk_PCBaseBody does not declare them).
 void FUN_141240730(Unk_PCBaseBody* pBody);                  // reset the body
 void* FUN_141240f20(Unk_PCBaseBody* pBody);                 // the body's actor
@@ -993,6 +1032,51 @@ bool MyPC::FUN_141527280()
 }
 MS2_REPLACE_METHOD(0x141527280, MyPC, FUN_141527280, 27, 0x3FAC08A6);
 
+// @0x141527650
+int MyPC::FUN_141527650(int nKind)
+{
+    int nNotice = 0;
+    if (nKind == 0x1d) {
+        do {
+            if (::FUN_14165b500(this, 1) == 0 && ::FUN_14165b500(this, 2) == 0) {
+                nNotice = 0x53;
+                break;
+            }
+            Unk_MyPCFieldRef spField = FUN_1403ed2d0()->FUN_141bd30a0();
+            if (static_cast<bool>(spField.FUN_1409657a0()) && spField.FUN_140885340()->m_n124 == 0) {
+                nNotice = 0x53;
+                break;
+            }
+        } while (0);
+    } else if (nKind == 0x1c) {
+        if (FUN_14166c930() != 0x1b)
+            nNotice = 0x53;
+    } else if (nKind == 0x1e) {
+        Unk_MyPCFieldRef spField = FUN_1403ed2d0()->FUN_141bd30a0();
+        if (static_cast<bool>(spField.FUN_1409657a0()) && spField.FUN_140885340()->m_n120 != 0)
+            return 1;
+        MyPC* pMyPC = efd::DynamicCast<MyPC>(this);
+        if (pMyPC != 0 && DAT_143ab2914 >= 0x32)
+            return 1;
+        nNotice = 0x53;
+    } else if (nKind == 0x20) {
+        int nOut = 0;
+        CString strOut;
+        if (::FUN_14165c1b0(this, &nOut, strOut, 0.0f) == 0)
+            nNotice = 0x53;
+    }
+    if (nNotice > 0) {
+        FUN_141275260(nNotice, 1, 1);
+        {
+            CString strEmpty("");
+            DAT_143ae14c8.FUN_141276180(strEmpty);
+        }
+        return 0;
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x141527650, MyPC, FUN_141527650, 629, 0xCBAB10E5);
+
 // @0x1415278d0
 int MyPC::FUN_1415278d0(void* p)
 {
@@ -1027,6 +1111,25 @@ int MyPC::FUN_141527960()
 MS2_REPLACE_METHOD(0x141527960, MyPC, FUN_141527960, 91, 0x43AD2A6D);
 
 // No house.
+// @0x141527c50
+int MyPC::FUN_141527c50(int nItemId)
+{
+    ATL::CAtlList<MS2Ptr<CEquipItem> > aEquips(10);
+    ::FUN_1411e1b80(FUN_1416561a0(), aEquips);
+    for (POSITION pos = aEquips.GetHeadPosition(); pos != NULL; aEquips.GetNext(pos)) {
+        MS2Ptr<CEquipItem> spEquip = aEquips.GetAt(pos);
+        if (spEquip->FUN_1411dc820() == nItemId)
+            return 1;
+    }
+    for (size_t i = 0; i < reinterpret_cast<Unk_MyPCItemArray*>(m_kListD48)->FUN_140720ca0(); i++) {
+        MS2Ptr<CItem> spItem = reinterpret_cast<Unk_MyPCItemArray*>(m_kListD48)->FUN_140a69ee0(i);
+        if (spItem->FUN_1405276c0() == nItemId)
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x141527c50, MyPC, FUN_141527c50, 420, 0x91669C66);
+
 // @0x141527e00
 int MyPC::FUN_141527e00()
 {
@@ -1727,12 +1830,43 @@ int MyPC::FUN_14152e280(int n)
 }
 MS2_REPLACE_METHOD(0x14152E280, MyPC, FUN_14152e280, 93, 0x57F0C973);
 
+// @0x14152e7f0
+bool MyPC::FUN_14152e7f0()
+{
+    ATL::CAtlList<MS2Ptr<CEquipItem> > aEquips(10);
+    ::FUN_1411e1b80(&m_kEquipDE0, aEquips);
+    for (POSITION pos = aEquips.GetHeadPosition(); pos != NULL; aEquips.GetNext(pos)) {
+        MS2Ptr<CEquipItem>& spEquip = aEquips.GetAt(pos);
+        const MS2Ptr<CItem>& spItem = spEquip->FUN_1411dc7a0();
+        if (static_cast<bool>(spItem.get()) && spItem->FUN_140525cf0() == 0) {
+            Unk_EquipItemData* pData = spEquip->FUN_1411dc7f0();
+            if (pData != 0 && pData->m_n13c != 2)
+                return true;
+        }
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x14152e7f0, MyPC, FUN_14152e7f0, 344, 0xE7E11E95);
+
 // @0x14152e950
 int MyPC::FUN_14152e950()
 {
     return m_n1640;
 }
 MS2_REPLACE_METHOD(0x14152E950, MyPC, FUN_14152e950, 17, 0x2D2FE849);
+
+// @0x14152e970
+int MyPC::FUN_14152e970(int nId)
+{
+    int nSpent = reinterpret_cast<Unk_MyPCEquipSetView&>(m_kEquipDE0).m_spSkillBook->FUN_140639b40(nId);
+    int nBase = DAT_143ab32f8.FUN_14063ec70(nId);
+    int nTotal = nBase
+        + reinterpret_cast<Unk_MyPCEquipSetView&>(m_kEquipDE0).m_spSkillBook->FUN_140639260(vfunc_78(), nId)
+        + ::FUN_140ed47e0(this);
+    return nTotal - nSpent > 0 ? nTotal - nSpent : 0;
+}
+MS2_REPLACE_METHOD(0x14152e970, MyPC, FUN_14152e970, 206, 0x8D074AD5);
+
 
 // @0x14152eb20
 size_t MyPC::FUN_14152eb20()
