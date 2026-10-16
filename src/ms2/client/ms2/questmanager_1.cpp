@@ -453,15 +453,13 @@ void CQuest::DecodeProgress(CInPacket& packet)
     PlayProgressSound();
 }
 MS2_REPLACE_METHOD(0x1416C7A60, CQuest, DecodeProgress, 354, 0xAA353D3D);
-// MS2-FUNCTIONAL: pointer null-test expression uses different temporary placement.
 // @0x1416c7bd0
-void CQuest::Complete()
+void CQuest::Complete(CInPacket& packet)
 {
-    if (!(m_data == (CQuestData*)0)) {
-        m_completeTime = FUN_140869440();
-        ShowRewards(1);
-        PlayRewardSound();
-    }
+    if (m_data == (CQuestData*)0) return;
+    m_completeTime = FUN_140869440();
+    ShowRewards(1);
+    PlayRewardSound();
 }
 MS2_REPLACE_METHOD(0x1416C7BD0, CQuest, Complete, 98, 0x87AAF937);
 // @0x1416c7c40

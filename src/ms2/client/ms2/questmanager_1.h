@@ -64,7 +64,7 @@ public:
     virtual int GetQuestType() = 0;
     virtual void DecodeStart(CInPacket& packet);
     virtual void DecodeProgress(CInPacket& packet);
-    virtual void Complete();
+    virtual void Complete(CInPacket& packet);
     virtual void ShowExpired();
 
     MS2Ptr<CQuestData> GetData() override;
@@ -87,6 +87,9 @@ public:
     int FUN_1407476d0() const;
     int FUN_140bfc580();
     void SetState(int state) { m_state = state; }   // COMDAT 0x1416dee60
+    void SetStartTime(__int64 time) { m_startTime = time; }         // COMDAT 0x1416ded20
+    void SetCompleteTime(__int64 time) { m_completeTime = time; }   // COMDAT 0x1416dedd0
+    void Set68(int value) { m_68 = value; }                         // COMDAT 0x1416dedb0
 
     int m_state;
     MS2Ptr<CQuestData> m_data;

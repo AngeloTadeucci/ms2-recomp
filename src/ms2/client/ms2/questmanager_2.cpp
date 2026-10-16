@@ -52,6 +52,9 @@
 #include "ms2/ms2format.h"
 #include "ms2/placeholder/fittingdollpc.h"
 #include "ms2/placeholder/cequipitem.h"
+#include "ms2/placeholder/sidepopuptalkparam.h"
+#include "ms2/client/ms2/uirewardnotify.h"
+#include "ms2/commonfiles/timeutil.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -73,10 +76,31 @@ void FUN_140936640(void*, int, int);
 class Unk_QmTalkManager {
 public:
     int FUN_141b213f0(class Unk_QmTalkScriptPtr script, int npcId, int mode, int n);   // open the talk
+    void FUN_141b217b0();
 };
 Unk_QmTalkManager* FUN_140967100();
 void FUN_141b217e0(void*, int);
-void* FUN_140d738f0();
+// The group reward table (FUN_140d738f0) and its 16-byte row handle.
+class Unk_QmRewardGrade { public: virtual void vfunc_0(); virtual int vfunc_1(); };
+class Unk_QmGroupReward {
+public:
+    char m_pad_00[0x18];
+    int m_kind;                                 // +0x18 1 = item
+    char m_pad_1c[0x38 - 0x1c];
+    Unk_QmRewardGrade m_reward;                 // +0x38
+    int m_itemId;                               // +0x40
+};
+class Unk_QmGroupRewardPtr {
+public:
+    ~Unk_QmGroupRewardPtr();                    // 0x14037ea60
+    Unk_QmGroupReward* get() const;             // 0x140d73770
+    Unk_QmGroupReward* operator->() const;      // 0x14037ebf0
+private:
+    void* m_0;
+    Unk_QmGroupReward* m_p;
+};
+class Unk_QmGroupTable { public: Unk_QmGroupRewardPtr FUN_14037c3d0(int group); };
+Unk_QmGroupTable* FUN_140d738f0();
 int FUN_14037c510(void*, int);
 int FUN_14037c610(void*);
 int FUN_140408410(const ATL::CAtlArray<unsigned>*, const int&);
@@ -215,7 +239,12 @@ bool FUN_140764040(CQuestData*);
 bool FUN_140764080(CQuestData*);
 bool FUN_1407640c0(CQuestData*);
 // Field object handle filled by WorldService::FUN_141bc2800 (16 bytes, Unk_WsP16 layout).
-class Unk_QmFieldObject { public: Unk_StreamPoint FUN_14169d2f0() const; };
+class Unk_QmFieldObject {
+public:
+    Unk_StreamPoint FUN_14169d2f0() const;
+    char m_pad_00[0x38];
+    float m_rotX, m_rotY, m_rotZ;               // +0x38 euler angles in degrees
+};
 struct Unk_QmFieldHandle : Unk_WsP16 {
     ~Unk_QmFieldHandle();                       // 0x140964a70
     bool IsNull() const;                        // 0x140965190
@@ -298,13 +327,54 @@ public:
     void FUN_140e77300();
 };
 class UIQuestDialog : public UIDialog {};
-class UIWorldMapDialog : public UIDialog {};
+class UIWorldMapDialog : public UIDialog { public: void FUN_141b5be10(); };
 UIQuestGuideDialog* FUN_140e888d0(int uiType);                          // GetDialog<UIQuestGuideDialog>
 UIQuestDialog* FUN_14131f1e0(int uiType);                               // GetDialog<UIQuestDialog>
 UIWorldMapDialog* FUN_140961730(int uiType);                            // Unk_GetUI<UIWorldMapDialog>
+UIRewardNotify* FUN_140938cd0(int uiType);                              // GetDialog<UIRewardNotify>
+class Unk_QmSidePopupTalk { public: void FUN_140e879a0(MS2Ptr<SidePopupTalkParam> param); };
+Unk_QmSidePopupTalk* FUN_1413868b0(int uiType);
+CString FUN_14021a6b0(int alliance);                                    // the alliance's string key
+CStringW FUN_14016a730(const char* text, int codePage);
+extern int DAT_143abdf50;
+// The quest portal effect (?\questmanager.cpp case 0x12): NiTransform and the effect request.
+struct Unk_QmNiPoint3 {
+    Unk_QmNiPoint3(const Unk_StreamPoint& pt);                         // 0x14027dcf0 NiPoint3(const efd::Point3&)
+    Unk_QmNiPoint3& FUN_14097faa0(const Unk_QmNiPoint3& o);             // NiPoint3::operator=
+    float x, y, z;
+};
+struct Unk_QmXform {
+    Unk_QmXform();                                                      // 0x140a332d0 NiTransform()
+    Unk_EfdMatrix3 m_rotate;
+    Unk_QmNiPoint3 m_translate;
+    float m_fScale;
+};
+MS2_CHECK_SIZE(Unk_QmXform, 0x34);
+struct Unk_QmEffectRequest {                                            // Unk_EffectTarget (effectparam.h)
+    Unk_QmEffectRequest();                                              // 0x140a52ef0
+    ~Unk_QmEffectRequest();                                             // 0x1405a89e0
+    CString m_strName;
+    int m_nKind;
+    int m_0c;
+    void* m_10;
+    Unk_QmXform* m_pXform;                                              // +0x18
+    char m_pad_20[0x70 - 0x20];
+};
+MS2_CHECK_SIZE(Unk_QmEffectRequest, 0x70);
+class Unk_QmEffectService { public: unsigned FUN_1411a49c0(Unk_QmEffectRequest& request); };
+Unk_QmEffectService* FUN_1403ed280();
+class Unk_QmEffectCfg {
+public:
+    char m_pad_00[0x5a0];
+    CString m_portalEffect;                     // +0x5a0
+    char m_pad_5a8[0x5b8 - 0x5a8];
+    CString m_allianceIcons[8];                 // +0x5b8
+};
+Unk_QmEffectCfg* FUN_1401d31f0();
 class Unk_QmUIManager {
 public:
     MS2Ptr<UIObject> FUN_141adcea0(int id);
+    void FUN_141adc5d0(int uiType);             // close the dialog if open
 };
 Unk_QmUIManager* FUN_1403ed2b0();
 // @0x1416d4e40 (UIPopupNpcTalkDialog instance)
@@ -933,6 +1003,256 @@ void CQuestManager::FUN_1416cbb20(std::vector<Unk_PayloadPtr<CQuest>>& out, int 
     }
 }
 MS2_REPLACE_METHOD(0x1416cbb20, CQuestManager, FUN_1416cbb20, 603, 0x95FC889F);
+
+// The quest packet (opcode handled by the field packet dispatcher at 0x141539a05): one mode byte, then the payload.
+// MS2-FUNCTIONAL: WorldService::FUN_141bc2800 returns the field handle by value in the exe (out-param in
+// worldservice.h).
+// @0x1416cbd90
+void CQuestManager::FUN_1416cbd90(CInPacket& packet)
+{
+    int refresh = 0;
+    int mode = packet.vfunc_o8_1();
+    if (mode == 0) {
+        FUN_1416cde50(packet.vfunc_o8_3());
+    } else if (mode == 0x15) {
+        m_group = packet.vfunc_o8_3();
+        m_refreshCount = packet.vfunc_o8_3();
+        m_quests20.RemoveAll();
+        m_pinnedQuests.RemoveAll();
+        m_quests50.RemoveAll();
+        m_quests80.RemoveAll();
+        m_questsb0.RemoveAll();
+        m_questse0.RemoveAll();
+        m_quests110.RemoveAll();
+        m_quests140.RemoveAll();
+    } else if (mode == 0x16) {
+        int count = packet.vfunc_o8_3();
+        for (int i = 0; i < count; i++) {
+            int questId = packet.vfunc_o8_3();
+            int state = packet.vfunc_o8_3();
+            int value68 = packet.vfunc_o8_3();
+            __int64 startTime = packet.vfunc_o8_4();
+            __int64 completeTime = packet.vfunc_o8_4();
+            int tracking = packet.vfunc_o8_1();
+            Unk_PayloadPtr<CQuest> quest(FUN_1416ca9d0(questId));
+            if (static_cast<bool>(quest.get())) {
+                if (quest->Init(questId, state) != 0) {
+                    quest->Set68(value68);
+                    quest->SetCompleteTime(completeTime);
+                    quest->SetStartTime(startTime);
+                    quest->SetTrackingState(tracking);
+                    int progressCount = packet.vfunc_o8_3();
+                    for (int j = 0; j < progressCount; j++) {
+                        int progress = packet.vfunc_o8_3();
+                        quest->SetProgress(j, progress);
+                    }
+                    FUN_1416caec0(quest);
+                }
+            }
+        }
+        FUN_14138d7e0(FUN_1409331e0(), 7, 0);
+        FUN_14138d7e0(FUN_1409331e0(), 8, 0);
+        FUN_1416cef90(1);
+        refresh = 1;
+        FUN_1416d37c0();
+    } else if (mode == 0x17) {
+        int count = packet.vfunc_o8_3();
+        for (int i = 0; i < count; i++) {
+            unsigned questId = packet.vfunc_o8_3();
+            m_pinnedQuests.Add(questId);
+        }
+        FUN_1416cef90(1);
+    } else if (mode == 1) {
+        FUN_140967100()->FUN_141b217b0();
+        int npcId = packet.vfunc_o8_3();
+        int count = packet.vfunc_o8_3();
+        for (int i = 0; i < count; i++) {
+            int questId = packet.vfunc_o8_3();
+            FUN_1416ce140(questId, npcId);
+        }
+    } else if (mode == 2) {
+        int questId = packet.vfunc_o8_3();
+        __int64 startTime = packet.vfunc_o8_4();
+        int tracking = packet.vfunc_o8_1();
+        Unk_PayloadPtr<CQuest> quest(FUN_1416ca9d0(questId));
+        if (static_cast<bool>(quest.get())) {
+            if (quest->Init(questId, 1) != 0) {
+                quest->SetStartTime(startTime);
+                quest->DecodeStart(packet);
+                quest->SetTrackingState(tracking);
+                FUN_1416caec0(quest);
+                FUN_1416cfc60(questId);
+                FUN_1416ca2f0();
+                FUN_140bfc4b0()->vfunc_1(quest.get());
+            }
+        }
+        refresh = 1;
+        FUN_14138d7e0(FUN_1409331e0(), 7, questId);
+        FUN_14138bf00(FUN_1409331e0(), 0x1c, questId, 0);
+    } else if (mode == 3) {
+        int questId = packet.vfunc_o8_3();
+        Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+        if (quest.IsNull()) return;
+        quest->SetState(1);
+        quest->DecodeProgress(packet);
+        refresh = quest->IsComplete();
+        FUN_140bfc4b0()->vfunc_3(quest.get());
+        int progress = static_cast<int>(quest->GetProgress(0));
+        FUN_14138bf00(FUN_1409331e0(), 0x1d, questId, progress);
+        FUN_14138d7e0(FUN_1409331e0(), 7, questId);
+    } else if (mode == 4) {
+        int questId = packet.vfunc_o8_3();
+        int value68 = packet.vfunc_o8_3();
+        __int64 completeTime = packet.vfunc_o8_4();
+        Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+        if (quest.IsNull()) return;
+        quest->SetState(2);
+        quest->Set68(value68);
+        quest->SetCompleteTime(completeTime);
+        quest->Complete(packet);
+        FUN_140bfc4b0()->vfunc_2(quest.get());
+        m_levelDirty = 1;
+        m_availableDirty = 1;
+        refresh = 1;
+        FUN_14138bf00(FUN_1409331e0(), 0x1e, questId, 0);
+        FUN_14138d7e0(FUN_1409331e0(), 8, questId);
+    } else if (mode == 5) {
+        int questId = packet.vfunc_o8_3();
+        int result = packet.vfunc_o8_3();
+        if (result == 0) FUN_1416cb0d0(questId, 1);
+        FUN_140bfc4b0()->vfunc_7(questId, result);
+        FUN_14138d7e0(FUN_1409331e0(), 7, 0);
+        FUN_14138d7e0(FUN_1409331e0(), 8, 0);
+        refresh = 1;
+    } else if (mode == 6) {
+        int questId = packet.vfunc_o8_3();
+        Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+        if (quest.IsNull()) return;
+        FUN_1416cb0d0(questId, 0);
+        FUN_140bfc4b0()->vfunc_5(quest.get());
+        refresh = 1;
+    } else if (mode == 7) {
+        int count = packet.vfunc_o8_3();
+        for (int i = 0; i < count; i++) {
+            int questId = packet.vfunc_o8_3();
+            Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+            if (quest.IsNull()) continue;
+            quest->ShowExpired();
+            FUN_1416cb0d0(questId, 0);
+            FUN_140bfc4b0()->vfunc_5(quest.get());
+        }
+        refresh = 1;
+    } else if (mode == 9) {
+        int questId = packet.vfunc_o8_3();
+        int tracking = packet.vfunc_o8_1();
+        Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+        if (quest.IsNull()) return;
+        quest->SetTrackingState(tracking);
+        FUN_140bfc4b0()->vfunc_6(quest.get());
+    } else if (mode == 0x19) {
+        __int64 now = packet.vfunc_o8_4();
+        POSITION pos = m_quests50.GetHeadPosition();
+        while (pos != 0) {
+            POSITION cur = pos;
+            m_quests50.GetNext(pos);
+            Unk_PayloadPtr<CQuest> quest = m_quests50.GetValueAt(cur);
+            MS2Ptr<CQuestData> data = quest->GetData();
+            if (!data) continue;
+            int expired = 0;
+            switch (data->m_338.m_value) {
+            case 3:
+            case 4:
+                expired = 1;
+                break;
+            case 5:
+                expired = now >= NextWeekdayStart(6, quest->GetStartTime());
+                break;
+            }
+            if (expired != 0) {
+                m_quests50.RemoveAt(cur);
+                m_quests140.RemoveKey(FUN_14074b030(data.operator->()));
+            }
+        }
+        DAT_143abdf50 = 7;
+    } else if (mode == 0x1a) {
+        m_group = packet.vfunc_o8_3();
+        UIWorldMapDialog* worldMap = FUN_140961730(0x4e42);
+        if (worldMap) worldMap->FUN_141b5be10();
+        UIRewardNotify* notify = FUN_140938cd0(0x4e5d);
+        if (notify) {
+            Unk_QmGroupRewardPtr reward = FUN_140d738f0()->FUN_14037c3d0(m_group);
+            if (reward.get() != 0) {
+                switch (reward->m_kind) {
+                case 1: {
+                    Unk_QmRewardGrade& grade = reward->m_reward;
+                    notify->FUN_141abf6e0(reward->m_itemId, grade.vfunc_1());
+                    break;
+                }
+                }
+            }
+        }
+    } else if (mode == 0x12) {
+        m_field190 = packet.vfunc_o8_3();
+        m_targetObject = packet.vfunc_o8_3();
+        m_requestTick = packet.vfunc_o8_3();
+        Unk_QmFieldHandle target;
+        FUN_1403ed2d0()->FUN_141bc2800(&target, m_targetObject);
+        if (target.IsNull()) return;
+        Unk_QmXform xform;
+        xform.m_translate.FUN_14097faa0(Unk_QmNiPoint3(target->FUN_14169d2f0().FUN_14097fd50(Unk_StreamPoint(0.0f, 0.0f, 1.0f))));
+        xform.m_rotate.FUN_142083d40((target->m_rotX * 3.1415927f) / 180.0f, (target->m_rotY * 3.1415927f) / 180.0f,
+            (target->m_rotZ * 3.1415927f) / 180.0f);
+        xform.m_fScale = 1.0f;
+        Unk_QmEffectRequest request;
+        request.m_strName = FUN_1401d31f0()->m_portalEffect;
+        request.m_nKind = 0;
+        request.m_pXform = &xform;
+        FUN_1403ed280()->FUN_1411a49c0(request);
+        FUN_14138bf00(FUN_1409331e0(), 0x1a, 0, 0);
+        m_field178 = 1;
+    } else if (mode == 0x1e) {
+        FUN_1416d38a0(8, 2, 0);
+        refresh = 1;
+    } else if (mode == 0x1f) {
+        m_dailyCounts.RemoveAll();
+        int drop = packet.vfunc_o8_1();
+        size_t count = static_cast<unsigned>(packet.vfunc_o8_3());
+        for (size_t i = 0; i < count; i++) m_dailyCounts.SetAt(packet.vfunc_o8_3(), 1);
+        if (drop != 0) FUN_1416d38a0(9, 2, 1);
+        refresh = 1;
+    } else if (mode == 0x20) {
+        m_weeklyCounts.RemoveAll();
+        int drop = packet.vfunc_o8_1();
+        size_t count = static_cast<unsigned>(packet.vfunc_o8_3());
+        for (size_t i = 0; i < count; i++) m_weeklyCounts.SetAt(packet.vfunc_o8_3(), 1);
+        if (drop != 0) FUN_1416d38a0(9, 3, 1);
+        refresh = 1;
+    } else if (mode == 0x22 || mode == 0x23) {
+        int alliance = static_cast<unsigned short>(packet.vfunc_o8_2());
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4f50);
+        Unk_QmSidePopupTalk* popup = FUN_1413868b0(0x4f57);
+        if (popup) {
+            CStringW format(mode == 0x22 ? L"s_quest_alliance_accept_all_{0}" : L"s_quest_alliance_complete_all_{0}");
+            MS2Ptr<SidePopupTalkParam> param(new SidePopupTalkParam);
+            param->m_nKind = 0;
+            param->m_strIcon = FUN_1401d31f0()->m_allianceIcons[alliance];
+            param->m_nNpcId = 3000;
+            param->m_strText = FUN_14028b8e0(StringFormat(format, FUN_14016a730(FUN_14021a6b0(alliance), 0)));
+            popup->FUN_140e879a0(param);
+        }
+    } else if (mode == 0x26) {
+        POSITION pos = m_quests110.GetHeadPosition();
+        while (pos != 0) {
+            POSITION cur = pos;
+            m_quests110.GetNext(pos);
+            Unk_PayloadPtr<CQuest> quest = m_quests110.GetValueAt(cur);
+            m_quests110.RemoveAt(cur);
+            m_quests140.RemoveKey(quest->FUN_140bfc580());
+        }
+    }
+    if (refresh != 0) FUN_1403ed2d0()->FUN_141bd3860();
+}
+MS2_REPLACE_METHOD(0x1416cbd90, CQuestManager, FUN_1416cbd90, 8375, 0xAF27A1D5);
 
 // @0x1416cde50
 void CQuestManager::FUN_1416cde50(int error)
@@ -2166,5 +2486,15 @@ MS2_REPLACE_METHOD(0x1416d40a0, CQuestManager, FUN_1416d40a0, 574, 0x977F811D);
 
 // @0x1416dbb50
 CQuestManagerCommon::CQuestManagerCommon() : m_selector(0) {}
+
+// CAllianceQuest is defined in this file (the quest factory's type 9); its vftable and destructors are emitted here.
+// @0x1416dba50
+CAllianceQuest::CAllianceQuest() {}
+
+// @0x1416dd670
+int CAllianceQuest::GetQuestType()
+{
+    return 9;
+}
 
 MS2_EMIT_CRT_MEMMOVE_S();
