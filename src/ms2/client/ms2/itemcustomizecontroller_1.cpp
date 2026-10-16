@@ -100,7 +100,7 @@ NiCamera* FUN_1409a8a60(void* pCameraManager);                  // active camera
 class CMeshUVPicker
 {
 public:
-    bool FUN_14147ea50(NiAVObject* pMesh, NiCamera* pCamera, float x, float y, NiPoint3* pHit, NiPoint3* pNormal,
+    bool FUN_14147ea50(NiAVObject* pMesh, NiCamera* pCamera, float x, float y, efd::Point3* pHit, efd::Point3* pNormal,
                        NiPoint2* pUV, float* pT, void* pSkins);
 };
 
@@ -460,8 +460,8 @@ void CItemCustomizeController::UpdateDrag()
     for (unsigned j = 0; j < aMeshes.GetCount(); j++)
     {
         NiAVObject* pMesh = aMeshes.GetAt(j);
-        NiPoint3 kHit;
-        NiPoint3 kNormal;
+        efd::Point3 kHit;
+        efd::Point3 kNormal;
         NiPoint2 kUV;
         float fT;
         NiPoint2 kDelta = kCursor - m_kCursorStart;
@@ -469,7 +469,7 @@ void CItemCustomizeController::UpdateDrag()
         if (m_spPicker->GetUVPicker()->FUN_14147ea50(pMesh, FUN_1409a8a60(pCameraManager), kScreen.x, kScreen.y, &kHit,
                                                      &kNormal, &kUV, &fT, 0))
         {
-            vfunc_32(kHit, kNormal, kUV, fT);
+            vfunc_32(*(NiPoint3*)&kHit, *(NiPoint3*)&kNormal, kUV, fT);
             break;
         }
     }

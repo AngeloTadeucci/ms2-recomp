@@ -30,7 +30,7 @@ class CMeshUVPicker : public efd::MemObject
 public:
     CMeshUVPicker();                                                    // 0x14147e6e0
     int FUN_14147e900();                                                // init
-    bool FUN_14147ea50(NiAVObject* pMesh, NiCamera* pCam, float x, float y, NiPoint3* pHit, NiPoint3* pNormal,
+    bool FUN_14147ea50(NiAVObject* pMesh, NiCamera* pCam, float x, float y, efd::Point3* pHit, efd::Point3* pNormal,
                        NiPoint2* pUV, unsigned __int64* pTri, CAtlArray<NiRenderObject*>* pSkins);   // pick
     char m_pad[0x98];
 };
@@ -139,10 +139,10 @@ int CItemPickingHelper::Pick(efd::Point3* pHit, CAtlArray<CString>& parts)
             continue;
         for (unsigned j = 0; j < parts.GetCount(); j++)
         {
-            NiPoint3 hit;
-            if (PickTarget(spTarget.get(), &((CAtlArray<Unk_PickPartName>&)parts)[j], &hit) != 0)
+            efd::Point3 hit;
+            if (PickTarget(spTarget.get(), &((CAtlArray<Unk_PickPartName>&)parts)[j], (NiPoint3*)&hit) != 0)
             {
-                float fDist = (hit - camPos).Length();
+                float fDist = (*(NiPoint3*)&hit - camPos).Length();
                 if (fDist < fBest)
                 {
                     fBest = fDist;
@@ -157,9 +157,9 @@ int CItemPickingHelper::Pick(efd::Point3* pHit, CAtlArray<CString>& parts)
     }
     if (m_nPicked == -1 && (m_spLast.FUN_141412c90() != 0 ? true : false))
     {
-        NiPoint3 hit;
+        efd::Point3 hit;
         CAtlArray<NiRenderObject*> skins;
-        int r = PickMesh(m_spLast.FUN_141412c90(), skins, &hit);
+        int r = PickMesh(m_spLast.FUN_141412c90(), skins, (NiPoint3*)&hit);
         *pHit = hit;
         return r;
     }
@@ -217,13 +217,13 @@ int CItemPickingHelper::PickMesh(NiAVObject* pMesh, CAtlArray<NiRenderObject*>& 
     if (pRenderer->FUN_141419be0())
         return 0;
     void* pCamMgr = FUN_1413f9a70();
-    NiPoint3 hit;
-    NiPoint3 normal;
+    efd::Point3 hit;
+    efd::Point3 normal;
     NiPoint2 uv;
     if (m_spPicker.FUN_141286290()->FUN_14147ea50(pMesh, FUN_1409a8a60(pCamMgr), xy.x, xy.y, &hit, &normal, &uv, &tri, &skins))
     {
         if (pHit != 0)
-            *pHit = hit;
+            *pHit = *(NiPoint3*)&hit;
         m_spMesh.FUN_141418a00(pMesh);
         return 1;
     }
