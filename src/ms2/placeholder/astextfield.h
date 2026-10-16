@@ -15,6 +15,7 @@ public:
     virtual ~ASTextField();
     void FUN_1422c4cd0(const CStringW& strText);                        // set the text
     void FUN_1422c4f00(const CStringW& strText);                        // set the html text
+    void FUN_1422c4eb0(const CString& strText);                         // set the html text (narrow)
 
 private:
     unsigned char m_unrecovered_40[0x40];                               // exe allocates 0x80 bytes

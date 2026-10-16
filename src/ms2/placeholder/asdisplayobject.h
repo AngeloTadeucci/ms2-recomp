@@ -34,6 +34,7 @@ public:
     void FUN_1422bffe0(int x, int y);                           // set the position
     // Registers an AS -> C++ callback under a name (the list lives at +0x60; aseffect.cpp "GetTooltipCallback").
     void FUN_1422c3180(CString strName, const Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)>& cb);
+    void FUN_1422c00f0(float x, float y);                       // set the position (float)
 };
 
 class ASInteractiveObject : public ASDisplayObject {};
