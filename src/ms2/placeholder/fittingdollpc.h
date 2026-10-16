@@ -15,11 +15,17 @@ struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 // prologue homing + PC/ClonePC/MyPC/FittingDollPC/PortraitPC overrides). ClonePC (clonepc.h) adds 147..152.
 class Unk_PCArg125;   // MS2Ptr<T> by value (MyPC override destroys it with 0x1409f74e0)
 class Unk_PCActionTimer;   // CPtred-derived, defined by the user unit (avatarpc.cpp)
+struct Unk_PCEquipSet { unsigned char unknown0[0x1e8]; };   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
+class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
 class PC : public PCBase {
     EE_DECLARE_CLASS1(PC, 0x06200003, PCBase);   // ClassInfo 0x143ae2e20 (setup COMDAT 0x1409f8020 in avatarpc; sb4)
 public:
+    PC();                                                   // 0x14164dfd0 (called by ClonePC::ClonePC)
     virtual ~PC();
+    virtual void vfunc_9(void* p);                          // 9 0x141651300 (PCBase 0x14166b470)
+    virtual void vfunc_12();                                // 12 0x1416515a0 (PCBase 0x14166b810)
+    virtual void vfunc_14();                                // 14 0x141651bb0 (PCBase 0x14166b880)
     virtual int vfunc_10();                                 // 10 0x141651370 (PCBase 0x14166b550)
     virtual void vfunc_53(float f);                         // 53 0x141660240
     virtual void vfunc_59(int a, void* b, int c, int d);    // 59 0x1416537d0
@@ -58,6 +64,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141656f80
     virtual MS2Ptr<Unk_PCBaseComp_a98> vfunc_84();          // 84 0x1416572b0
     virtual void vfunc_90(void* p);                         // 90 0x141657910
+    virtual float vfunc_95();                               // 95 0x14165e4a0 (PCBase 0x141671620)
     virtual int vfunc_99(int n);                            // 99 0x141654850
     virtual int vfunc_124(int a, int b);                    // 124 0x141653840 (1/0; homes edx and r8d)
     virtual void vfunc_125(MS2Ptr<Unk_PCArg125> p);         // 125 0x141654900 (MyPC 0x141522d40)
@@ -83,10 +90,18 @@ public:
     virtual int vfunc_145();                                // 145 0x141661be0: return 1 (ClonePC: 0)
     virtual bool vfunc_146();                               // 146 0x141662e50
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
-    unsigned char unknownD40[0x288];
+    // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
+    unsigned char unknownD40[8];
+    unsigned char m_kListD48[0x40];                         // +0xd48 (reset by FUN_1408f3a80)
+    MS2Ptr<Unk_PCD88> m_spD88;                              // +0xd88
+    unsigned char unknownD98[0x48];
+    Unk_PCEquipSet m_kEquipDE0;                             // +0xde0 equip holder (FUN_1411e3de0)
     MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
     unsigned char unknownFD8[0x308];
 };
+MS2_CHECK_OFFSET(PC, m_kListD48, 0xd48);
+MS2_CHECK_OFFSET(PC, m_spD88, 0xd88);
+MS2_CHECK_OFFSET(PC, m_kEquipDE0, 0xde0);
 MS2_CHECK_OFFSET(PC, m_spFC8, 0xfc8);
 MS2_CHECK_SIZE(PC, 0x12e0); // deleting dtor 1416678b0
 

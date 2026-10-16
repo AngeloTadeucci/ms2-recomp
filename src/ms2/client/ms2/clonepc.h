@@ -15,15 +15,21 @@
 #include <efd/StdContainers.h>
 #include <atlcoll.h>
 #include <efd/SmartPointer.h>
+#include <vector>
+#include "ms2/placeholder/delegate.h"
 #include "ms2/placeholder/fittingdollpc.h"
 
 class UIModelView;   // NiRefObject-derived (UIRenderView); smart pointer COMDATs: ctor 0x14108aea0, dtor 0x140cb1460
 class NiAVObject;
+class CEquipItem;       // RTTI CPtred-derived, ?\equipitem.cpp
+class AdditionalCli;    // RTTI CPtred-derived buff record (0x78), ?\additionalcli.cpp
 class NiActorManager;   // the equip model records are NiActorManagers (GetNIFRoot() = COMDAT 0x1409f7cb0)
 
 // The 8-byte poll timer of the preview refresh (FUN_140268870: true once nMs have passed since the last true).
 struct Unk_CloneTimer
 {
+    // @0x140517b00 (COMDAT in client\ms2\clonepc.cpp)
+    Unk_CloneTimer() { m_nA = 0; m_nB = 0; }
     int FUN_140268870(unsigned int nMs);                    // 0x140268870
     int m_nA;
     int m_nB;
@@ -42,25 +48,49 @@ public:
     virtual void vfunc_12();                                // 12 0x1410875f0
     virtual void vfunc_14();                                // 14 0x1410876b0
     // slots AvatarPC inherits from here (declared so the vftable resolves to the exe slots)
-    virtual int vfunc_26();                                 // 26 0x141086e60
+    virtual Unk_GoAttachment* vfunc_26();                   // 26 0x141086e60
+    virtual void vfunc_49();                                // 49 0x141086cb0
     virtual bool vfunc_55(float a, float b);                // 55 0x141087cd0
     virtual bool vfunc_56(float f);                         // 56 0x141087c90
     virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d);// 68 0x141086ea0
+    virtual MS2Ptr<Unk_PCBaseComp_a58> vfunc_80();          // 80 0x141086ce0
+    virtual MS2Ptr<Unk_PCBaseComp_a78> vfunc_82();          // 82 0x141086d20
+    virtual MS2Ptr<Unk_PCBaseComp_a88> vfunc_83();          // 83 0x141086d60
+    virtual MS2Ptr<Unk_PCBaseComp_aa8> vfunc_85();          // 85 0x141086da0
+    virtual MS2Ptr<Unk_PCBaseComp_ab8> vfunc_86();          // 86 0x141086de0
+    virtual MS2Ptr<Unk_PCBaseComp_ac8> vfunc_87();          // 87 0x141086e20
+    virtual int vfunc_88();                                 // 88 0x141086e70
     virtual void vfunc_93(bool b);                          // 93 0x141087290
     virtual void vfunc_9(void* p);                          // 9 0x141086b70
+    virtual int vfunc_133(CItem* pItem, bool b);            // 133 0x141086e80
+    virtual void vfunc_139();                               // 139 0x141086c30
+    virtual void vfunc_143();                               // 143 0x141086cc0
+    virtual int vfunc_145();                                // 145 0x1410872a0
     // new virtuals
     virtual void vfunc_147(UIModelView* pView);             // 147 0x141086bc0 m_spModelView = pView
     virtual UIModelView* vfunc_148();                       // 148 0x141086c00
     virtual void vfunc_149();                               // 149 0x141086ec0 (PortraitPC 0x141699d60)
     virtual int vfunc_150();                                // 150 0x141087280 return 0
     virtual void vfunc_151();                               // 151 0x141087d20
-    // pList: CAtlList of equip smart pointers; pEquip: 0x1416561a0(m_pSourcePC)'s result. Types unproven.
-    virtual void vfunc_152(void* pList, void* pEquip);      // 152 0x1410884f0
+    // pList receives the equip records of pEquip (the source PC's holder or this clone's own, +0xde0)
+    virtual void vfunc_152(ATL::CAtlList<MS2Ptr<CEquipItem> >* pList, Unk_PCEquipSet* pEquip);   // 152 0x1410884f0
 
     // non-virtual (out of line in the unrecovered clonepc unit; called by AvatarPC)
+    void FUN_141087220(bool b);                             // 0x141087220 m_b12fa = b, then vfunc_47(b)
+    bool FUN_141087260();                                   // 0x141087260 m_b12fa
+    bool FUN_1410872b0(MS2Ptr<AdditionalCli> spCli);        // 0x1410872b0 adds a buff record to the PC's list and m_kClis
     void FUN_141087390();                                   // 0x141087390 marks the model view dirty (m_b12f9 = 1)
+    void FUN_1410873b0();                                   // 0x1410873b0 m_b12f8 = 1
+    void FUN_1410873d0();                                   // 0x1410873d0 forgets the source PC
+    static void FUN_141087400(bool b);                      // 0x141087400 DAT_143acdb20 = b
     void FUN_141087770();                                   // 0x141087770 pre-update hook of the view refresh
     void FUN_141087790();                                   // 0x141087790 post-update hook of the view refresh
+    void FUN_141087850();                                   // 0x141087850 syncs the name/job from the source PC (by m_unk_12fc)
+    bool FUN_141088620();                                   // 0x141088620 m_b12fb
+    void FUN_141088640(bool b);                             // 0x141088640 m_b12fb = b
+    bool FUN_141088590();                                   // 0x141088590 m_b1338
+    void FUN_1410885b0(bool b);                             // 0x1410885b0 m_b1338 = b
+    void FUN_1410885d0(Delegate<void(ATL::CAtlList<MS2Ptr<CEquipItem> >*, Unk_PCEquipSet*)> kFilter);   // 0x1410885d0 m_kEquipFilter = kFilter (callee-destroyed)
     void FUN_1410879c0(ATL::CAtlArray<efd::SmartPointer<NiActorManager>>& kOut);   // 0x1410879c0 collects the equip records
 
 public:
@@ -74,9 +104,9 @@ public:
     bool m_b12fb;                                           // +0x12fb = 1
     int m_unk_12fc;                                         // +0x12fc = 1
     efd::list<NiAVObject*> m_kList1300;                     // +0x1300 (ctor 0x141043710, dtor 0x141043950)
-    void* m_pOwned1310;                                     // +0x1310 owned polymorphic object (dtor 0x14108b370 deletes it)
+    Delegate<void(ATL::CAtlList<MS2Ptr<CEquipItem> >*, Unk_PCEquipSet*)> m_kEquipFilter;   // +0x1310 (ctor 0x14108ae80, dtor 0x14108b370)
     Unk_CloneTimer m_unk_1318;                              // +0x1318 8-byte timer value (ctor 0x140517b00 zeroes it)
-    void* m_unk_1320[3];                                    // +0x1320 std::vector<?> (ctor 0x14108b300, dtor 0x14108b4c0)
+    std::vector<MS2Ptr<AdditionalCli> > m_kClis;            // +0x1320 (ctor 0x14108b300, dtor 0x14108b4c0)
     bool m_b1338;                                           // +0x1338 = 0
 };
 MS2_CHECK_SIZE(ClonePC, 0x1340);
@@ -85,6 +115,6 @@ MS2_CHECK_OFFSET(ClonePC, m_spModelView, 0x12f0);
 MS2_CHECK_OFFSET(ClonePC, m_b12fa, 0x12fa);
 MS2_CHECK_OFFSET(ClonePC, m_unk_12fc, 0x12fc);
 MS2_CHECK_OFFSET(ClonePC, m_kList1300, 0x1300);
-MS2_CHECK_OFFSET(ClonePC, m_pOwned1310, 0x1310);
-MS2_CHECK_OFFSET(ClonePC, m_unk_1320, 0x1320);
+MS2_CHECK_OFFSET(ClonePC, m_kEquipFilter, 0x1310);
+MS2_CHECK_OFFSET(ClonePC, m_kClis, 0x1320);
 MS2_CHECK_OFFSET(ClonePC, m_b1338, 0x1338);

@@ -155,6 +155,12 @@ public:
     void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
     void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
     MS2Ptr<CStateManager> FUN_141678750();                  // 0x141678750 copy of m_spStateMgr (w17)
+    // clonepc.cpp (w69)
+    bool FUN_14166ed10();                                   // 0x14166ed10 the value ClonePC copies into m_b9d0
+    void FUN_14166ed70(int n);                              // 0x14166ed70
+    void FUN_14166ef10(const CString& str, bool bA, int nB, int nC);   // 0x14166ef10
+    int FUN_14166f6d0();                                    // 0x14166f6d0
+    CString FUN_14166f740();                                // 0x14166f740 (returns a string)
 
 public:
     MS2_LAYOUT_FRIEND;
