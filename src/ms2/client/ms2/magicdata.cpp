@@ -33,7 +33,34 @@
 // MS2-PIN: ??0Unk_MagicValPtr@@QEAA@XZ 0x14146d4a0 ; unique: single byte-identical candidate
 // MS2-PIN: ??0CPair@?$CAtlMap@_KV?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@@3@@ATL@@IEAA@_K@Z 0x14146d790 ; unique: caller ??0CNode@?$CAtlMap@_KV?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr...
 // hand pins (w114)
+// MS2-PIN: ??1?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@XZ 0x141468cd0
+// MS2-PIN: ??0CMagic@@QEAA@XZ 0x14145d120 ; unique: caller ?FUN_141467500@CMagicModel@@QEAAXUUnk_MagicTagPtr@@0UUnk_StreamPoi...
+// MS2-PIN: ??0?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@QEAA@XZ 0x1414687c0 ; unique: single byte-identical candidate
+// MS2-PIN: ??0?$Unk_SocketPtr@UUnk_FillTargetCtx@@@@QEAA@AEBV0@@Z 0x1414687e0 ; unique: single byte-identical candidate
+// MS2-PIN: ??0?$Unk_SocketPtr@UUnk_FillTargetCtx@@@@QEAA@PEAUUnk_FillTargetCtx@@@Z 0x141468820 ; prop: callee ?AddRef@?$Unk_SocketPtr@UUnk_FillTargetCtx@@@@AEBAXXZ
+// MS2-PIN: ??1?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@UEAA@XZ 0x141468d00 ; unique: caller ??_G?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$...
+// MS2-PIN: ??8?$Unk_SocketPtr@VCMagicData@@@@QEBA_NPEAVCMagicData@@@Z 0x141469250 ; unique: caller ?FUN_141467500@CMagicModel@@QEAAXUUnk_MagicTagPtr@@0UUnk_StreamPoi...
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@QEBAAEAPEAU?$_Tree_node@HPEAX@2@XZ 0x141469300 ; unique: single byte-identical candidate
+// MS2-PIN: ??C?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@QEBAPEAV?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@XZ 0x141469310 ; unique: caller ?FUN_14145c4d0@@YAHXZ
+// MS2-PIN: ??_G?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAAPEAXI@Z 0x141469370 ; unique: caller ?CallDestructors@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_D...
+// MS2-PIN: ?CreateNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x141469790 ; unique: single byte-identical candidate
+// MS2-PIN: ?DisableAutoRehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXXZ 0x141469810 ; unique: caller ?RemoveAll@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketP...
+// MS2-PIN: ?EnableAutoRehash@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXXZ 0x141469830 ; unique: caller ?RemoveAll@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketP...
+// MS2-PIN: ?FreeNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141469850 ; unique: caller ?RemoveAll@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketP...
+// MS2-PIN: ?FreePlexes@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXXZ 0x141469950 ; unique: caller ?RemoveAll@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketP...
+// MS2-PIN: ?GetNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141469aa0 ; unique: caller ?Lookup@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@...
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAXPEAU__POSITION@@@Z 0x14146a7b0 ; unique: single byte-identical candidate
+// MS2-PIN: ?RemoveNode@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@AEAAXPEAVCNode@12@0@Z 0x14146a8a0 ; unique: single byte-identical candidate
+// MS2-PIN: ?SetAt@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@Z 0x14146a960 ; unique: caller ?FUN_14145c4d0@@YAHXZ
+// MS2-PIN: ??8?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@QEBA_NPEAV?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@Z 0x14146db80 ; unique: caller ?FUN_14146c6c0@CMagicService@@QEAAX_KHH@Z
+// MS2-PIN: ?GetClassDesc@CMagicService@@UEBAPEBVClassInfo@efd@@XZ 0x14146e650 ; unique: vftable slot 6 of ??_7CMagicService@@6BISystemService@efd@@@
 // MS2-PIN: ?IsEmpty@?$CAtlArray@PEAUUnk_MagicHitRef@@V?$CElementTraits@PEAUUnk_MagicHitRef@@@ATL@@@ATL@@QEBA_NXZ 0x14146ee40
+// MS2-PIN: ??0?$Unk_SocketPtr@VCArrowFillTargetContext@@@@QEAA@PEAVCArrowFillTargetContext@@@Z 0x141468790
+// MS2-PIN: ??0?$Unk_SocketPtr@VCArrowFillTargetContext@@@@QEAA@AEBV0@@Z 0x141468750
+// MS2-PIN: ??1?$Unk_SocketPtr@VCArrowFillTargetContext@@@@QEAA@XZ 0x141468c40
+// MS2-PIN: ??C?$Unk_SocketPtr@VCArrowFillTargetContext@@@@QEBAPEAVCArrowFillTargetContext@@XZ 0x141469320
+// MS2-PIN: ??1?$Unk_SocketPtr@UUnk_FillTargetCtx@@@@QEAA@XZ 0x141468c70
+// MS2-PIN: ??C?$Unk_SocketPtr@UUnk_FillTargetCtx@@@@QEBAPEAUUnk_FillTargetCtx@@XZ 0x141469330
 // hand pins (w98): tplpin unique proposals
 // MS2-PIN: ?New@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@PEAX@Z 0x1414683b0 ; unique
 // MS2-PIN: ??0?$Unk_SocketPtr@VCMagicData@@@@QEAA@H@Z 0x1414688e0 ; unique
@@ -351,7 +378,9 @@ struct Unk_MagicRowFlag { int m_nPad; int m_nValue; int m_nPad2; bool FUN_1407df
 struct Unk_MagicSkillRow {
     int FUN_1407e1a10() const;
     const CString& FUN_1407e1a30() const;                           // the beam effect name                                      // the cast mode (2: the projectile follows the caster's hand)
-    char m_pad00[0x30];
+    char m_pad00[0x28];
+    int m_n28;                                                      // +0x28 skill state key
+    char m_pad2c[4];
     unsigned m_nMagicId;                                            // +0x30 id into magicPath.xml
     int m_n34;                                                      // +0x34 target-tracking projectile
     int m_n38;                                                      // +0x38 aim type of the projectile
@@ -363,10 +392,13 @@ struct Unk_MagicSkillRow {
     float m_fb0;                                                    // +0xb0 height offset
     Unk_StreamPoint m_ptB4;                                         // +0xb4 collision offset
     float m_fC0;                                                    // +0xc0 collision offset z
-    char m_padc4[0x3c];
+    char m_padc4[8];
+    unsigned m_nCC;                                                 // +0xcc flags (2: sort the hits)
+    char m_padd0[0x30];
     Unk_MagicRowFlag m_flag100;                                     // +0x100 (+0x104: spawn the hit effect)
     int m_n10c;                                                     // +0x10c
-    char m_pad110[0xc];
+    int m_n110;                                                     // +0x110 hit count limit
+    char m_pad114[8];
     int m_n11c;                                                     // +0x11c beam mode (0: from the caster, 1: chained, 2: along the aim)
     int m_n120;                                                     // +0x120
     Unk_StreamPoint m_ptBox;                                        // +0x124 box collision size
@@ -376,13 +408,21 @@ struct Unk_MagicSkillRow {
     CString m_str150;                                               // +0x150 end effect when the flight was cut short
     CString m_str158;                                               // +0x158 spawn effect
     CString m_str160;                                               // +0x160 piercing hit effect
-    char m_pad168[0x20];
+    char m_pad168[0x18];
+    int m_n180;                                                     // +0x180 throttle key of the hit effect
+    char m_pad184[4];
     CString m_str188;                                               // +0x188 hit effect
-    char m_pad190[0x10];
+    char m_pad190[0xc];
+    char m_b19c;                                                    // +0x19c hit effect flag
+    char m_pad19d[3];
     int m_n1a0;                                                     // +0x1a0 hit effect id (0: take it from the worn weapon)
-    char m_pad1a4[0xcc];
+    char m_pad1a4[0x5c];
+    int m_n200;                                                     // +0x200 entity type that is skipped
+    char m_pad204[0x6c];
     CString m_str270;                                               // +0x270 beam effect
 };
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n28, 0x28);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_nCC, 0xcc);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_nMagicId, 0x30);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n40, 0x40);
@@ -1125,7 +1165,10 @@ struct Unk_FillTargetCtx : public CPtred {
     int m_n60;
     int m_nSrcLevel;                                                // +0x64
     int m_nSrcIndex;                                                // +0x68
-    char m_pad6c[0x1c];
+    char m_pad6c[4];
+    Unk_MagicValPtr m_spVal;                                        // +0x70
+    int m_n80;                                                      // +0x80
+    int m_n84;                                                      // +0x84
 };
 MS2_CHECK_SIZE(Unk_FillTargetCtx, 0x88);
 MS2_CHECK_OFFSET(Unk_FillTargetCtx, m_aHits, 0x30);
@@ -1678,6 +1721,335 @@ void CMagic::FUN_141464790(void* pHits, int nHits)
     }
 }
 MS2_REPLACE_METHOD(0x141464790, CMagic, FUN_141464790, 929, 0xE9CCCCA8);
+
+// ---- callees of the piercing pick (unit-local; names invented) ----
+bool FUN_140a018d0(void* pArray);                                   // CAtlArray::IsEmpty
+void FUN_140a020e0(void* pArray);                                   // CAtlArray::RemoveAll
+void FUN_140a00cb0(void* pDst, void* pSrc);                         // CAtlArray::Copy
+void FUN_140a00a20(void* pArray, Unk_MagicHitRef* pRef);            // CAtlArray::Add
+void FUN_1417ea310(Unk_MagicEntity* pEntity, void* pHits);          // sort the hits by distance
+void FUN_14152e0c0(void* pPC);
+float FUN_14123cd50(Unk_StreamPoint ptDir);                         // yaw of a facing
+class Unk_MagicHitHolder {
+public:
+    Unk_MagicHitHolder(int nNull);                                  // 0x140963df0
+    ~Unk_MagicHitHolder();                                          // 0x140964870
+    void FUN_140a00530(Unk_MagicHitRef* pRef);                      // assign
+    Unk_MagicEntity* FUN_140965780() const;                         // get
+private:
+    Unk_MagicHitRef* m_p;
+};
+// The target's skill state (pierce counts per skill key).
+struct Unk_MagicSkillState { int FUN_14175a360(int nKey, unsigned nId); void FUN_14175a280(int nKey, unsigned nId); };
+class Unk_MagicSkillStateRef {
+public:
+    Unk_MagicSkillStateRef() : m_pad(0), m_p(0) {}                  // filled by FUN_141673e10 (the exe leaves it uninitialised)
+    ~Unk_MagicSkillStateRef();                                      // 0x140975740
+    Unk_MagicSkillState* FUN_140975ba0() const;                     // get
+    Unk_MagicSkillState* FUN_140975bd0() const;                     // operator->
+private:
+    void* m_pad;
+    Unk_MagicSkillState* m_p;
+};
+void FUN_141673e10(Unk_MagicEntity* pEntity, Unk_MagicSkillStateRef* pOut, unsigned long long nTagId);   // the target's state for a cast
+void FUN_1417591b0(Unk_MagicTag* pTag);                             // mark the cast as having hit
+
+// @0x141464d00
+// MS2-FUNCTIONAL: first-pass source; frame layout, temp order and the point-array glue not byte-compared
+void CMagic::FUN_141464d00(unsigned nNow, const Unk_MagicSkillRow* pRow)
+{
+    if (!FUN_141464410())
+        return;
+    int nEnd = m_spSkill->FUN_141759190() + FUN_14028d260(m_data.m_fDelayTime);
+    unsigned nDue = nEnd - FUN_14086d260()->FUN_1414734a0();
+    if (nDue > nNow)
+        return;
+    m_n1CC = 1;
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL || FUN_14166ce30(pOwner) != 0)
+        return;
+    if (FUN_1409709d0(FUN_1416749a0(pOwner)))
+        return;
+    void* pMemory = operator new(0x88);
+    Unk_FillTargetCtx* pNew = pMemory != NULL ? FUN_1417e4e80(pMemory) : NULL;
+    Unk_SocketPtr<Unk_FillTargetCtx> spCtx(pNew);
+    spCtx->m_pOwner = pOwner;
+    spCtx->m_ptOwner = pOwner->vf18_GetPosition();
+    FUN_1407ebb20(&spCtx->m_spSrc, &m_spSkill->m_spSrc);
+    spCtx->m_n60 = 0;
+    spCtx->m_nSrcLevel = m_spSkill->m_nSrcLevel;
+    spCtx->m_nSrcIndex = m_spSkill->m_nSrcIndex;
+    spCtx->m_n80 = 4;
+    spCtx->m_n84 = m_n534;
+    if (FUN_1417e95a0(spCtx) == 0)
+        return;
+    m_spVal = spCtx->m_spVal;
+    if (FUN_140a018d0(&spCtx->m_aHits))
+        return;
+    if (pRow->m_n120 != 0) {
+        ATL::CAtlArray<void*> aKeep;
+        for (unsigned i = 0; i < (unsigned)FUN_140a01220(&spCtx->m_aHits); ++i) {
+            Unk_MagicEntity* pHit = FUN_140965780(FUN_140a006a0(&spCtx->m_aHits, i));
+            if (FUN_14123c580(pHit) == FUN_14123c580(pOwner)) {
+                FUN_140a00a20(&aKeep, FUN_140a006a0(&spCtx->m_aHits, i));
+            } else {
+                Unk_StreamPoint ptHit(0.0f, 0.0f, 0.0f);
+                if (FUN_141467100(pHit, &ptHit) == 0)
+                    ptHit = pHit->vf18_GetPosition();
+                Unk_StreamPoint ptDelta = ptHit.FUN_140965c40(pOwner->vf18_GetPosition());
+                ptDelta.z = 0.0f;
+                float fLen = ptDelta.FUN_140968990();
+                if (fLen > 0.0f) {
+                    Unk_StreamPoint ptBlock(0.0f, 0.0f, 0.0f);
+                    Unk_StreamPoint ptFrom = pOwner->vf18_GetPosition();
+                    if (FUN_1409f7ca0()->FUN_14168a230(ptFrom, ptBlock, ptDelta, fLen, 0x201) == 0)
+                        FUN_140a00a20(&aKeep, FUN_140a006a0(&spCtx->m_aHits, i));
+                }
+            }
+        }
+        FUN_140a020e0(&spCtx->m_aHits);
+        if (!FUN_140a018d0(&aKeep))
+            FUN_140a00cb0(&spCtx->m_aHits, &aKeep);
+    }
+    ATL::CAtlArray<void*> aHits;
+    Unk_MagicSkillStateRef spState;
+    FUN_141673e10(pOwner, &spState, m_spSkill->m_nTagId);
+    if (spState.FUN_140975ba0() == NULL || pRow->m_n28 == 0) {
+        FUN_140a00cb0(&aHits, &spCtx->m_aHits);
+    } else {
+        for (unsigned i = 0; i < (unsigned)FUN_140a01220(&spCtx->m_aHits); ++i) {
+            unsigned nId = FUN_14123c580(FUN_140965780(FUN_140a006a0(&spCtx->m_aHits, i)));
+            if (spState.FUN_140975bd0()->FUN_14175a360(pRow->m_n28, nId) == 0)
+                FUN_140a00a20(&aHits, FUN_140a006a0(&spCtx->m_aHits, i));
+        }
+    }
+    if (FUN_140a018d0(&aHits))
+        return;
+    if ((pRow->m_nCC & 2) != 0)
+        FUN_1417ea310(pOwner, &aHits);
+    if (!pRow->m_flag100.FUN_1407dfbb0()) {
+        Unk_MagicHitHolder spFirst(0);
+        for (unsigned i = 0; i < (unsigned)FUN_140a01220(&aHits); ++i) {
+            if (FUN_14123c580(FUN_140965780(FUN_140a006a0(&aHits, i))) == m_spSkill->m_nOwnerId) {
+                spFirst.FUN_140a00530(FUN_140a006a0(&aHits, i));
+                break;
+            }
+        }
+        FUN_140a020e0(&aHits);
+        if (spFirst.FUN_140965780() != NULL)
+            FUN_140a00a20(&aHits, reinterpret_cast<Unk_MagicHitRef*>(&spFirst));
+        if (FUN_140a018d0(&aHits))
+            return;
+    }
+    int nLimit = FUN_141769410(pOwner, pRow, FUN_140803dc0(FUN_1407ebbf0(&m_spSkill->m_spSrc)));
+    int nHits = FUN_140a01220(&aHits) < nLimit ? FUN_140a01220(&aHits) : nLimit;
+    FUN_141464790(&aHits, nHits);
+    Unk_MagicEntity* pReporter = pOwner;
+    Unk_MagicRideeRef kRidee(FUN_141468360(pOwner));
+    if (kRidee.FUN_140ba7bb0(0))
+        pReporter = FUN_141706540(kRidee.FUN_140975bc0());
+    void* pPC = FUN_14096e160(pReporter);
+    if (pPC != NULL)
+        FUN_14152e0c0(pPC);
+    COutPacket packet(0x20, 0);
+    packet.Encode1(1);
+    packet.Encode1(1);
+    packet.Encode8(m_spSkill->m_nTagId);
+    packet.Encode8(m_spSkill->m_nTagSub);
+    packet.vfunc_o10_10(m_ptStart);
+    packet.vfunc_o10_10(pOwner->vf18_GetPosition());
+    Unk_StreamPoint ptFace = pOwner->FUN_14123cc20();
+    packet.vfunc_o10_10(Unk_StreamPoint(0.0f, 0.0f, FUN_14123cd50(ptFace)));
+    packet.Encode1(m_spSkill->m_b5c);
+    packet.Encode1((unsigned char)nHits);
+    packet.Encode4(m_spSkill->m_n8c);
+    for (int i = 0; i < nHits; ++i) {
+        unsigned nId = FUN_14123c580(FUN_140965780(FUN_140a006a0(&aHits, i)));
+        packet.Encode4(nId);
+        packet.Encode1(0);
+        if (spState.FUN_140975ba0() != NULL && pRow->m_n28 != 0)
+            spState.FUN_140975bd0()->FUN_14175a280(pRow->m_n28, nId);
+    }
+    FUN_140710590(packet);
+    if (nHits > 0)
+        FUN_1417591b0(m_spSkill.operator->());
+}
+
+// ---- callees of the box piercing pick (unit-local; names invented) ----
+int FUN_1401862e0(Unk_MagicUIntMap* pMap);                          // count
+void FUN_140188ca0(Unk_MagicUIntMap* pMap, unsigned nId, int nValue = 0);   // insert / mark
+float FUN_141198810();                                              // random in [0, 1]
+Unk_MagicEntity* FUN_140961420(Unk_MagicHitRef* pRef);              // the hit entity (null when gone)
+int FUN_14166c930(Unk_MagicEntity* pEntity);                        // the entity type
+Unk_MagicEntity* FUN_1409ffcb0(Unk_MagicHitRef* pRef);              // the hit entity
+int FUN_140970af0(void* pSub);                                      // the entity's reaction kind
+int FUN_1417e9d20(Unk_SocketPtr<CArrowFillTargetContext> spCtx);    // run the pick (callee releases the pointer)
+
+// @0x141465b30
+// MS2-FUNCTIONAL: first-pass source; frame layout, temp order and the point-array glue not byte-compared
+void CMagic::FUN_141465b30(unsigned nNow, const Unk_MagicSkillRow* pRow)
+{
+    int nMax = pRow->m_n110;
+    if (nMax < 1)
+        nMax = 1;
+    int nMode = pRow->m_n10c;
+    if (nMode == 2) {
+        if (!FUN_14028d470(m_fRemainTime, 0))
+            return;
+    } else if (nMode > 2 && nMode < 5) {
+        if (nMax <= FUN_1401862e0(&m_map1D8))
+            return;
+        FUN_141466da0(nNow, pRow);
+    }
+    CArrowFillTargetContext* pNew = new CArrowFillTargetContext;
+    Unk_SocketPtr<CArrowFillTargetContext> spCtx(pNew);
+    spCtx->m_spOwner = m_spSkill;
+    spCtx->m_p28 = &m_map220;
+    spCtx->m_ptFrom = m_ptLast;
+    spCtx->m_ptTo = m_ptCurrent;
+    spCtx->m_matAim = m_matRotation;
+    spCtx->m_n8C = 0;
+    spCtx->m_nA0 = 4;
+    spCtx->m_nA4 = m_n534;
+    if (FUN_1417e9d20(spCtx) == 0)
+        return;
+    m_spVal = spCtx->m_spVal;
+    if (FUN_140a018d0(&spCtx->m_arr30))
+        return;
+    if (!pRow->m_flag100.FUN_1407dfbb0()) {
+        if (pRow->m_flag100.m_nPad2 == 0) {
+            Unk_MagicHitHolder spFirst(0);
+            for (unsigned i = 0; i < (unsigned)FUN_140a01220(&spCtx->m_arr30); ++i) {
+                if ((int)FUN_14123c580(FUN_140965780(FUN_140a006a0(&spCtx->m_arr30, i))) == m_spSkill->m_nCasterId) {
+                    spFirst.FUN_140a00530(FUN_140a006a0(&spCtx->m_arr30, i));
+                    break;
+                }
+            }
+            FUN_140a020e0(&spCtx->m_arr30);
+            if (spFirst.FUN_140965780() != NULL)
+                FUN_140a00a20(&spCtx->m_arr30, reinterpret_cast<Unk_MagicHitRef*>(&spFirst));
+            if (FUN_140a018d0(&spCtx->m_arr30))
+                return;
+        }
+    } else if (pRow->m_n200 != 0) {
+        ATL::CAtlArray<void*> aKeep;
+        for (unsigned i = 0; i < (unsigned)FUN_140a01220(&spCtx->m_arr30); ++i) {
+            Unk_MagicEntity* pHit = FUN_140961420(FUN_140a006a0(&spCtx->m_arr30, i));
+            if (pHit == NULL || FUN_14166c930(pHit) != pRow->m_n200)
+                FUN_140a00a20(&aKeep, FUN_140a006a0(&spCtx->m_arr30, i));
+        }
+        FUN_140a020e0(&spCtx->m_arr30);
+        if (!FUN_140a018d0(&aKeep))
+            FUN_140a00cb0(&spCtx->m_arr30, &aKeep);
+    }
+    int nRoom = nMax - FUN_1401862e0(&m_map1D8);
+    int nHits = nRoom < FUN_140a01220(&spCtx->m_arr30) ? nRoom : FUN_140a01220(&spCtx->m_arr30);
+    if (nMode > 2 && nMode < 5 && m_data.m_nPiercingAttackMaxTargetCount != 0
+        && (unsigned long long)m_data.m_nPiercingAttackMaxTargetCount < (unsigned long long)(FUN_1401862e0(&m_map220) + nHits))
+        nHits = m_data.m_nPiercingAttackMaxTargetCount - FUN_1401862e0(&m_map220);
+    m_n528 = 0;
+    for (int i = 0; i < nHits; ++i) {
+        Unk_MagicEntity* pHit = FUN_1409ffcb0(FUN_140a006a0(&spCtx->m_arr30, i));
+        if (pHit != NULL) {
+            int nKind = FUN_140970af0(FUN_1416749a0(pHit));
+            if (nKind != 0) {
+                m_n528 = nKind;
+                break;
+            }
+        }
+    }
+    if (FUN_141464410()) {
+        FUN_141464790(&spCtx->m_arr30, nHits);
+        COutPacket packet(0x20, 0);
+        packet.Encode1(1);
+        packet.Encode1(1);
+        packet.Encode8(m_spSkill->m_nTagId);
+        packet.Encode8(m_spSkill->m_nTagSub);
+        packet.vfunc_o10_10(m_ptLast);
+        packet.vfunc_o10_10(m_ptCurrent);
+        packet.vfunc_o10_10(FUN_141464580());
+        packet.Encode1(m_spSkill->m_b5c);
+        packet.Encode1((unsigned char)nHits);
+        packet.Encode4(m_spSkill->m_n8c);
+        for (int i = 0; i < nHits; ++i) {
+            unsigned nId = FUN_14123c580(FUN_140965780(FUN_140a006a0(&spCtx->m_arr30, i)));
+            packet.Encode4(nId);
+            packet.Encode1((unsigned char)FUN_1401862e0(&m_map1D8));
+            FUN_140188ca0(&m_map1D8, nId, 0);
+            FUN_140188ca0(&m_map220, nId);
+        }
+        FUN_140710590(packet);
+    }
+    if (!FUN_141464490() && m_n528 == 2) {
+        m_n1CC = 1;
+        Unk_StreamPoint ptSide = m_ptDirection.FUN_1409f7960();
+        float fAngle = FUN_14109ace0() * (FUN_141198810() * 1.5707964f * 0.5f + 0.7853982f);
+        Unk_NiMatrix3 matRot;
+        matRot.FUN_142084c10(fAngle);
+        ptSide = matRot.FUN_140a00720(ptSide);
+        ptSide.FUN_140968990();
+        m_data.m_fVelocity = m_data.m_fVelocity * 1.2f;
+        m_ptTarget = m_ptCurrent.FUN_14097fd50(ptSide.FUN_14097fc90(m_data.m_fVelocity).FUN_14097fc90(m_fRemainTime));
+        m_n26C = 0;
+        if (FUN_14025e7b0()->m_flags.FUN_1402c4c90(0x73) == 0) {
+            Unk_MagicXform kXform;
+            kXform.m_fScale = 1.0f;
+            kXform.m_translate = Unk_NiPoint3(m_ptCurrent);
+            FUN_1420849a0(&kXform.m_rotate);
+            int nKey = pRow->m_n180;
+            Unk_MagicTag* pTag = m_spSkill.operator->();
+            Unk_MagicEntity* pCaster = FUN_1403ed2d0()->FUN_141bd1180(pTag->m_nCasterId);
+            int nType;
+            std::pair<bool, bool> kPlay = FUN_1410a7630()->FUN_14146c990(&nKey, &kXform.m_translate, pTag->m_nOwnerId, pCaster, &nType);
+            if (kPlay.first) {
+                Unk_MagicEffectReq kReq;
+                kReq.m_strName = pRow->m_str188;
+                kReq.m_nObject = nType;
+                kReq.m_pXform = &kXform;
+                kReq.m_bFlag31 = pRow->m_b19c;
+                FUN_1403ed280()->FUN_1411a4a00(&kReq);
+                if (!FUN_141464410())
+                    FUN_141464790(&spCtx->m_arr30, nHits);
+            }
+        } else {
+            int nObject = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+            bool bLocal = FUN_14161ce60(FUN_1409f7c90(), m_spSkill->m_nOwnerId) == 0;
+            if (bLocal) {
+                Unk_MagicXform kXform;
+                kXform.m_fScale = 1.0f;
+                kXform.m_translate = Unk_NiPoint3(m_ptCurrent);
+                FUN_1420849a0(&kXform.m_rotate);
+                Unk_MagicEffectReq kReq;
+                kReq.m_strName = pRow->m_str188;
+                kReq.m_nObject = nObject;
+                kReq.m_pXform = &kXform;
+                kReq.m_bFlag31 = pRow->m_b19c;
+                if (FUN_14161d0f0(FUN_1409f7c90()) == 0) {
+                    int bSend = 0;
+                    if (nObject == 1)
+                        bSend = 1;
+                    else if (FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nCasterId) == 1)
+                        bSend = 1;
+                    if (bSend != 0)
+                        FUN_1403ed280()->FUN_1411a4a00(&kReq);
+                } else {
+                    FUN_1403ed280()->FUN_1411a4a00(&kReq);
+                }
+                if (!FUN_141464410())
+                    FUN_141464790(&spCtx->m_arr30, nHits);
+            }
+        }
+    } else {
+        int nLeft = nMax - FUN_1401862e0(&m_map1D8) < nMax ? nMax - FUN_1401862e0(&m_map1D8) : nMax;
+        if (nLeft == 0) {
+            m_n1CC = 1;
+            if (nMode != 3 && nMode != 4 && nMax == 1) {
+                m_ptTarget = m_ptCurrent;
+                m_fRemainTime = 0.0f;
+            }
+        }
+    }
+}
 
 // @0x141461bd0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared (the shape handle / pose temporaries differ)
