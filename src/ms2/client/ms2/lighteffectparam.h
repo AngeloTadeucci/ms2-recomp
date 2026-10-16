@@ -27,6 +27,7 @@ struct Unk_BitRef                                                   // proxy ret
 {
     Unk_BitRef(Unk_LightUpdateBits* pBits, unsigned nPos);          // 0x14144b240
     Unk_BitRef& operator=(bool bValue);                             // 0x14144b2f0
+    operator bool() const;                                          // 0x14154f4b0 (nifeffectparam.cpp)
     Unk_LightUpdateBits* m_pBits;
     unsigned m_nPos;
 };
