@@ -231,7 +231,7 @@ MS2_REPLACE_METHOD(0x1410b0460, CNifCubeGuide, vfunc_11, 195, 0xD6C61EF1);
 void CNifCubeGuide::vfunc_12() { node->UpdateProperties(); node->UpdateEffects(); node->Update(0.0f, true); }
 MS2_REPLACE_METHOD(0x1410b0530, CNifCubeGuide, vfunc_12, 95, 0x610F8674);
 // @0x1410b05a0
-NiTransform CNifCubeGuide::vfunc_13() { return node->GetWorldTransform(); }
+NiTransform CNifCubeGuide::vfunc_13() { return node->GetLocalTransform(); }
 MS2_REPLACE_METHOD(0x1410b05a0, CNifCubeGuide, vfunc_13, 68, 0x529AED5F);
 // @0x1410b05f0
 void CNifCubeGuide::vfunc_14(const NiTransform& transform) { node->SetLocalTransform(transform); }
