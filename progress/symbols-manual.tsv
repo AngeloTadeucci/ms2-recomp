@@ -1404,3 +1404,4 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?Shuffle@Unk_IndexPool@@QEAAXXZ	141b90c20	func
 ?Pick@Unk_IndexPool@@QEAAHXZ	141b90c70	func
 ??0Unk_ObjectRef@@QEAA@PEAVGameObject@@@Z	140a000f0	func
+??0Unk_SeparateNode@@QEAA@EEE@Z	141751380	func
