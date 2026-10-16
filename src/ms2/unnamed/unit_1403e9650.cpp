@@ -185,6 +185,21 @@
 // MS2-PIN: ?GetNext@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x1403ed420
 // MS2-PIN: ?GetValueAt@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@PEAU__POSITION@@@Z 0x1403edaf0
 // MS2-PIN: ?GetKeyAt@?$CRBTree@HV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x1403ed370
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@UCard@GalleryContext@@@@V?$CElementTraits@V?$MS2Ptr@UCard@GalleryContext@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@UCard@GalleryContext@@@@_K@Z 0x1403ec170
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@UReward@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@StampEventContext@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@UReward@StampEventContext@@@@_K@Z 0x1403ec1d0
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@URewardData@RpsContext@@@@V?$CElementTraits@V?$MS2Ptr@URewardData@RpsContext@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@URewardData@RpsContext@@@@_K@Z 0x1403ec230
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@USnowman@SnowmanContext@@@@V?$CElementTraits@V?$MS2Ptr@USnowman@SnowmanContext@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@USnowman@SnowmanContext@@@@_K@Z 0x1403ec290
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_EmotionDay@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VTreeWatering_EmotionDay@@@@_K@Z 0x1403ec350
+// MS2-PIN: ?GetCount@?$CAtlArray@UUnk_GameEventTokenId@@V?$CElementTraits@UUnk_GameEventTokenId@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed0c0
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@UCard@GalleryContext@@@@V?$CElementTraits@V?$MS2Ptr@UCard@GalleryContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed0e0
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@UReward@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UReward@StampEventContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed100
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@URewardData@RpsContext@@@@V?$CElementTraits@V?$MS2Ptr@URewardData@RpsContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed110
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@USnowman@SnowmanContext@@@@V?$CElementTraits@V?$MS2Ptr@USnowman@SnowmanContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed120
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@UStamp@StampEventContext@@@@V?$CElementTraits@V?$MS2Ptr@UStamp@StampEventContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed130
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$CElementTraits@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@ATL@@@ATL@@QEBA_KXZ 0x1403ed9e0
+// MS2-PIN: ?RemoveAll@?$CAtlArray@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@2@@ATL@@QEAAXXZ 0x1403f19c0
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeResource@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeResource@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1403ed4a0
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeStep@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeStep@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1403ed590
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameevent.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>
