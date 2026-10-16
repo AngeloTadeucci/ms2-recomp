@@ -804,7 +804,9 @@ void FUN_140b7b7a0(int nError)
 // ---------------------------------------------------------------------------------------------------------------
 struct Unk_GlueVec { Unk_Int3* first; Unk_Int3* last; Unk_Int3* end; };    // std::vector<Unk_Int3> storage
 struct Unk_GluePair { void* first; void* second; };
-struct Unk_GlueNode { Unk_GlueNode* left; Unk_GlueNode* parent; Unk_GlueNode* right; };   // std::_Tree_node header
+// CAtlRBTree CNode: key +0, value +8, color +0x10, left +0x18, right +0x20, parent +0x28 (nil node at tree +0x28,
+// 0x140b7d0c0; 0x140b7d300 walks [node+0x18])
+struct Unk_GlueNode { char m_pad_00[0x18]; Unk_GlueNode* left; Unk_GlueNode* right; Unk_GlueNode* parent; };
 
 __declspec(noreturn) void FUN_140159b70(unsigned int hr);
 bool FUN_140b7d0c0(void* pTree, Unk_GlueNode* pNode);
@@ -924,7 +926,7 @@ Unk_GlueNode* FUN_140b7cec0(void* pTree, Unk_GlueNode** ppIt)
 void* FUN_140b7cf00(void* pTree, Unk_GlueNode* pNode)
 {
     if (pNode)
-        return &pNode->left + 1;
+        return reinterpret_cast<char*>(pNode) + 8;
     FUN_140159b70(0x80004005);
 }
 
@@ -935,8 +937,8 @@ Unk_GlueNode* FUN_140b7d300(void* pTree, Unk_GlueNode* pNode)
     Unk_GlueNode* pCur;
     if (!pNode || (pCur = pNode, FUN_140b7d0c0(pTree, pNode)))
         return 0;
-    while (!FUN_140b7d0c0(pTree, pCur->right))
-        pCur = pCur->right;
+    while (!FUN_140b7d0c0(pTree, pCur->left))
+        pCur = pCur->left;
     return pCur;
 }
 
