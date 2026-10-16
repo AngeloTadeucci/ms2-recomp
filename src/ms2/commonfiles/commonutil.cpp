@@ -111,12 +111,14 @@ class EaseOutCalculator : public IDistanceCalculator
 {
 public:
     virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance);
+    float Calc(float fTime, float fDuration, float fDistance);  // 0x1402921d0
 };
 
 class EaseInCalculator : public IDistanceCalculator
 {
 public:
     virtual float vfunc_0(float fDelta, float fTime, float fDuration, float fDistance);
+    float Calc(float fTime, float fDuration, float fDistance); // 0x1402922c0
 };
 
 void FUN_14015f050(const CString& strText, CAtlArray<CString>& arrOut, const char* pszDelim);
@@ -1471,4 +1473,184 @@ std::string FUN_140291f90(const std::string& strToken, int nWhich)
         return std::string(strToken, 0, nPos);
     else
         return std::string(strToken, nPos + 1, std::string::npos);
+}
+
+// @0x140292110
+float LinearCalculator::vfunc_0(float fDelta, float fTime, float fDuration, float fDistance)
+{
+    return fDistance * (fDelta / fDuration);
+}
+
+// @0x140292150
+float EaseOutCalculator::vfunc_0(float fDelta, float fTime, float fDuration, float fDistance)
+{
+    return Calc(fTime, fDuration, fDistance) - Calc(fTime - fDelta, fDuration, fDistance);
+}
+
+// MS2-FUNCTIONAL: exe imports powf/sqrtf from the CRT DLL (indirect calls); this build links them statically
+// @0x1402921d0
+float EaseOutCalculator::Calc(float fTime, float fDuration, float fDistance)
+{
+    return fDistance * sqrtf(FUN_14029d220(1.0f - powf((fTime - fDuration) / fDuration, 2.0f)));
+}
+
+// @0x140292240
+float EaseInCalculator::vfunc_0(float fDelta, float fTime, float fDuration, float fDistance)
+{
+    return Calc(fTime, fDuration, fDistance) - Calc(fTime - fDelta, fDuration, fDistance);
+}
+
+// MS2-FUNCTIONAL: exe imports powf/sqrtf from the CRT DLL (indirect calls); this build links them statically
+// @0x1402922c0
+float EaseInCalculator::Calc(float fTime, float fDuration, float fDistance)
+{
+    return fDistance * (1.0f - sqrtf(FUN_14029d220(1.0f - powf(fTime / fDuration, 2.0f))));
+}
+
+// Wide text as a float.
+// @0x1402928b0
+float FUN_1402928b0(const CStringW& strText)
+{
+    return (float)_wtof((const wchar_t*)strText);
+}
+
+// Icon name of a currency/token kind (kind 2 is the item-id icon).
+// @0x1402918a0
+CStringW FUN_1402918a0(int nKind, int nItemId)
+{
+    switch (nKind)
+    {
+    case 0:
+        return CStringW(L"");
+    case 1:
+        return CStringW(L"icon_0");
+    case 2:
+        return StringFormat(L"icon_{0}", nItemId);
+    case 3:
+        return CStringW(L"icon_merat");
+    case 4:
+        return CStringW(L"icon_30000252");
+    case 5:
+        return CStringW(L"icon_30000193");
+    case 6:
+        return CStringW(L"export_common_icon_lu");
+    case 7:
+        return CStringW(L"export_common_icon_habi");
+    case 8:
+        return CStringW(L"");
+    case 9:
+        return CStringW(L"icon_redmerat");
+    case 10:
+        return CStringW(L"icon_rbmerat");
+    case 12:
+        return CStringW(L"export_common_icon_reverse_coin");
+    case 13:
+        return CStringW(L"export_common_icon_mentor_token");
+    case 14:
+        return CStringW(L"export_common_icon_mentee_token");
+    default:
+        return CStringW(L"");
+    }
+}
+
+#include <map>
+#include <set>
+
+typedef std::pair<int, Unk_XmlElement*> Unk_XmlSlot;           // document position + element
+typedef std::map<CStringW, Unk_XmlSlot> Unk_XmlSlotMap;
+typedef std::set<Unk_XmlSlot> Unk_XmlSlotSet;
+
+// Keeps one element per key (a later element replaces the earlier one when the locale filter prefers it).
+static void Unk_XmlSlotAdd(Unk_XmlSlotMap& mapByKey, Unk_XmlSlotSet& setOrdered, const CStringW& strKey, int nIndex, Unk_XmlElement* pElem)
+{
+    if (mapByKey.find(strKey) != mapByKey.end())
+    {
+        Unk_XmlElement* pPick = reinterpret_cast<Unk_XmlElement*>(FUN_14036e160(FUN_140166410(), reinterpret_cast<Unk_XmlElementList*>(mapByKey[strKey].second), pElem));
+        if (pPick == pElem)
+        {
+            setOrdered.erase(mapByKey[strKey]);
+            mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+            setOrdered.insert(mapByKey[strKey]);
+        }
+    }
+    else
+    {
+        mapByKey[strKey] = Unk_XmlSlot(nIndex, pElem);
+        setOrdered.insert(mapByKey[strKey]);
+    }
+}
+
+static void Unk_XmlSlotFlush(Unk_XmlSlotSet& setOrdered, std::vector<Unk_XmlElement*>& arrOut)
+{
+    arrOut.reserve(setOrdered.size());
+    for (Unk_XmlSlotSet::iterator it = setOrdered.begin(); it != setOrdered.end(); ++it)
+        arrOut.push_back(it->second);
+}
+
+// Collects the passing children <pszChild>, one per pszKeyAttr value, in document order.
+// MS2-FUNCTIONAL: not yet byte-matched (inlined map/set code is a separate function in the exe)
+// @0x14028faa0
+void FUN_14028faa0(Unk_XmlElement* pParent, const char* pszChild, const char* pszKeyAttr, std::vector<Unk_XmlElement*>& arrOut)
+{
+    Unk_XmlSlotMap mapByKey;
+    Unk_XmlSlotSet setOrdered;
+    int nIndex = 0;
+    for (Unk_XmlElement* pElem = FUN_140165cf0(pParent, pszChild); pElem; pElem = FUN_140168650(pElem, pszChild))
+    {
+        if (FUN_14028f710(pElem))
+        {
+            ++nIndex;
+            CStringW strKey;
+            FUN_140873420(pElem, pszKeyAttr, strKey);
+            Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+        }
+    }
+    Unk_XmlSlotFlush(setOrdered, arrOut);
+}
+
+// Same, keyed by "<attr1>_<attr2>".
+// MS2-FUNCTIONAL: not yet byte-matched (inlined map/set code is a separate function in the exe)
+// @0x14028fd90
+void FUN_14028fd90(Unk_XmlElement* pParent, const char* pszChild, const char* pszKeyAttr1, const char* pszKeyAttr2, std::vector<Unk_XmlElement*>& arrOut)
+{
+    Unk_XmlSlotMap mapByKey;
+    Unk_XmlSlotSet setOrdered;
+    int nIndex = 0;
+    for (Unk_XmlElement* pElem = FUN_140165cf0(pParent, pszChild); pElem; pElem = FUN_140168650(pElem, pszChild))
+    {
+        if (FUN_14028f710(pElem))
+        {
+            ++nIndex;
+            CStringW strKey1;
+            CStringW strKey2;
+            FUN_140873420(pElem, pszKeyAttr1, strKey1);
+            FUN_140873420(pElem, pszKeyAttr2, strKey2);
+            CStringW strKey = (const wchar_t*)((const wchar_t*)strKey1 + CStringW(L"_")) + strKey2;
+            Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+        }
+    }
+    Unk_XmlSlotFlush(setOrdered, arrOut);
+}
+
+// Same, keyed by an attribute of the sub-element <pszSub> of each child.
+// MS2-FUNCTIONAL: not yet byte-matched (inlined map/set code is a separate function in the exe)
+// @0x140290150
+void FUN_140290150(Unk_XmlElement* pParent, const char* pszChild, const char* pszSub, const char* pszKeyAttr, std::vector<Unk_XmlElement*>& arrOut)
+{
+    Unk_XmlSlotMap mapByKey;
+    Unk_XmlSlotSet setOrdered;
+    int nIndex = 0;
+    for (Unk_XmlElement* pElem = FUN_140165cf0(pParent, pszChild); pElem; pElem = FUN_140168650(pElem, pszChild))
+    {
+        if (!FUN_14028f710(pElem))
+            continue;
+        Unk_XmlElement* pSub = FUN_140165cf0(pElem, pszSub);
+        if (!pSub)
+            continue;
+        ++nIndex;
+        CStringW strKey;
+        FUN_140873420(pSub, pszKeyAttr, strKey);
+        Unk_XmlSlotAdd(mapByKey, setOrdered, strKey, nIndex, pElem);
+    }
+    Unk_XmlSlotFlush(setOrdered, arrOut);
 }
