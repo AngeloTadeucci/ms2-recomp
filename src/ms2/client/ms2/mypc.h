@@ -32,6 +32,7 @@ public:
     ~Unk_MyPCStateCtl();                                    // 0x1410a6dc0
     void FUN_1417b7430(PCBase* pOwner);                     // init with the owner
     void FUN_1417b7450();                                   // drop the current and queued records
+    void FUN_1417b76b0(float fTime);                        // advance with the game time
     unsigned char m_body[0x48];                             // +0x08 records list, current record, owner
 };
 
@@ -159,6 +160,8 @@ public:
     // non-virtual members used by other units (placeholder mypc.h)
     void FUN_14152a4a0(PCBase* pTarget);                    // observe pTarget
     void FUN_14152a960();                                   // stop observing
+    void FUN_14152a360(PCBase* pTarget);                     // point the construction guide camera at pTarget
+    void FUN_14152a640(int nTeam);                          // observe a guild team
     void FUN_14152a2f0(int n);
     CSkillSystem* FUN_141523bc0();                          // the skill system
     void FUN_141523ba0();
@@ -212,6 +215,9 @@ public:
     PCBase* FUN_141529640();
     void FUN_1415293b0();
     void FUN_14152dbc0();
+    void FUN_14152e0c0();
+    void FUN_14152e170(int nMode, int nArg);
+    int FUN_14152ea50();
     void FUN_1415294f0(int nObjectId, __int64 nExp);                                // the nearest talkable npc
     void FUN_141529d90();                                   // request the house design mode (packet 0x6c 4)
     void FUN_141529e90();                                   // request the blueprint mode (packet 0x6c 5)

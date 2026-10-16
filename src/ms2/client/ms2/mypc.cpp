@@ -162,7 +162,7 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
@@ -241,6 +241,8 @@ class Unk_MyPCUIMgr
 public:
     MS2Ptr<UIObject> FUN_141adcea0(int nId);
     void FUN_141ad9c40(MS2Ptr<Unk_MyPCEquipItem> spItem);
+    void FUN_141adc5d0(int nId);                            // hide
+    void FUN_141adc530(int nId);                            // close
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
 class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
@@ -276,15 +278,19 @@ public:
 };
 Unk_QualityTable* FUN_140ae1c00();
 
-// The pc record handed to vfunc_125 (the character the pc mirrors; avatarpc.cpp names +0x30 the pc id).
+// The pc record handed to vfunc_125 (RTTI PCInfo, 0x558; the character the pc mirrors; avatarpc.cpp names +0x30
+// the pc id).
 class Unk_PCArg125 : public CPtred
 {
 public:
+    Unk_PCArg125();                                         // 0x140db9e30 (PCInfo::PCInfo)
     char m_pad_18[0x28];
     ATL::CAtlArray<unsigned int> m_aIds;                    // +0x40
     char m_pad_60[0x360];
     int m_bLocal;                                           // +0x3c0
-    char m_pad_3c4[0x170];
+    char m_pad_3c4[4];
+    int m_n3c8;                                             // +0x3c8
+    char m_pad_3cc[0x168];
     int m_nGuildRank;                                       // +0x534
     CStringW m_strGuildName;                                // +0x538
     CStringW m_strGuildEmblemPath;                          // +0x540
@@ -292,7 +298,12 @@ public:
     __int64 m_nGuildEmblem;                                 // +0x550
 };
 MS2_CHECK_OFFSET(Unk_PCArg125, m_nGuildEmblem, 0x550);
+MS2_CHECK_SIZE(Unk_PCArg125, 0x558);
 extern ATL::CAtlArray<unsigned int> DAT_143ab3268;          // the local character's id list
+
+// The game clock (FUN_14086d260).
+class Unk_MyPCGameClock { public: float FUN_141473230(); unsigned int FUN_141473390(); };
+Unk_MyPCGameClock* FUN_14086d260();
 
 // The per-frame tick of the client managers MyPC::vfunc_53 drives.
 class Unk_SSG953f20 { public: void FUN_140cdb450(); };
@@ -346,7 +357,7 @@ void FUN_1401fc610(Unk_MyPCFurnitureUse& kUse, COutPacket& packet);
 Unk_MyPCPartyMgr* FUN_14109a6f0();
 int FUN_14082f1a0(int nType);
 class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); };
-class Unk_MyPCPetMgr { public: bool FUN_14162ab20(); int FUN_14162ae20(void* p); int FUN_14162ae90(void* p); };
+class Unk_MyPCPetMgr { public: bool FUN_14162ab20(); int FUN_14162ae20(void* p); int FUN_14162ae90(void* p); void FUN_14162b560(CStringW strName); void FUN_14162b740(); };
 Unk_MyPCPetMgr* FUN_1409670d0();
 class Unk_MyPCSurvival { public: int FUN_141b21220(); void FUN_141b1fcf0(int nObjectId); };
 Unk_MyPCSurvival* FUN_140967100();
@@ -360,7 +371,8 @@ class Unk_MyPCPartyUI { public: void FUN_141b1fcf0(int nObjectId); };
 class Unk_MyPCStatusMgr { public: void FUN_141b0ce20(int nKind, int n); };
 Unk_MyPCStatusMgr* FUN_140aa6d40();
 class Unk_CameraTarget;
-class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); };   // the camera target position
+class Unk_MyPCCameraCtl { public: void FUN_14183c3b0(float fZoomVelocity); void FUN_14183cc80(int n); };   // the active camera controller
+class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); void FUN_140af9b40(float fDistance); Unk_MyPCCameraCtl* FUN_140af2520(); };   // the camera target position
 Unk_MyPCCamera* FUN_1409478c0();
 // The local character's guild summary (FUN_140d295d0; the guild reading of the fields is a guess).
 struct Unk_MyPCGuildSummary
@@ -480,6 +492,18 @@ class UIKillCount : public UIDialog
 public:
     void FUN_1419df220();
 };
+
+// The exp bar (ui 0x4e3c).
+class Unk_MyPCExpBar { public: void FUN_141910b10(__int64 nDelta); void FUN_141910660(); void FUN_141910700(); };   // 0x4e3c
+Unk_MyPCExpBar* FUN_140ac55a0(int nId);
+
+// The observer mode dialogs.
+class UIObserveDialog : public UIDialog { public: void FUN_141a735d0(CStringW strName); void FUN_141a736c0(bool b); };   // 0x4e8a
+class UIPvPObserverDialog : public UIDialog {};             // 0x4e96
+class UIPvPGuildTeamDialog : public UIDialog { public: void FUN_14133b0b0(); };              // 0x4ec4
+class Unk_SSGad4b90 { public: void FUN_141863460(float f); void FUN_1418631c0(); void FUN_1418631f0(int n, int b); };
+Unk_SSGad4b90* FUN_140ad4b90();
+PCBase* FUN_14099eef0(PCBase* pActor);                      // the pc-side view (null for a non-pc)
 
 // A dialog by UI id.
 template <class T> T* MyPCDialog(int nId)
@@ -1421,6 +1445,141 @@ void MyPC::FUN_14152dff0(unsigned char n)
 }
 MS2_REPLACE_METHOD(0x14152dff0, MyPC, FUN_14152dff0, 94, 0xD49EC510);
 
+// @0x14152e0c0
+void MyPC::FUN_14152e0c0()
+{
+    efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
+    if (spRidee)
+        spRidee->FUN_141706590();
+    else
+    {
+        m_kStateCtl.FUN_1417b76b0(FUN_14086d260()->FUN_141473230());
+        m_kStateCtl.vfunc_0();
+    }
+}
+MS2_REPLACE_METHOD(0x14152E0C0, MyPC, FUN_14152e0c0, 166, 0x0ECA53F5);
+
+// @0x14152e170
+void MyPC::FUN_14152e170(int nMode, int nArg)
+{
+    FUN_14152e0c0();
+    COutPacket packet(0x80, 0);
+    packet.Encode1(nMode);
+    packet.Encode1(nArg);
+    packet.Encode4(FUN_14086d260()->FUN_141473390());
+    if (nMode == 0)
+        packet.vfunc_o10_10(reinterpret_cast<const Unk_StreamPoint&>(static_cast<const NiPoint3&>(vfunc_18())));
+    FUN_140710590(packet);
+}
+MS2_REPLACE_METHOD(0x14152E170, MyPC, FUN_14152e170, 199, 0xEDEFDAF6);
+
+// @0x14152ea50
+int MyPC::FUN_14152ea50()
+{
+    MS2Ptr<Unk_PCArg125> spInfo(new Unk_PCArg125());
+    vfunc_125(spInfo);
+    return spInfo->m_n3c8;
+}
+MS2_REPLACE_METHOD(0x14152EA50, MyPC, FUN_14152ea50, 198, 0x6D06C724);
+
+// @0x14152a4a0
+void MyPC::FUN_14152a4a0(PCBase* pTarget)
+{
+    if (!pTarget)
+        return;
+    UIObserveDialog* pObserve = MyPCDialog<UIObserveDialog>(0x4e8a);
+    if (!pObserve)
+        return;
+    UIPvPObserverDialog* pObserver = MyPCDialog<UIPvPObserverDialog>(0x4e96);
+    if (pObserver && pObserver->FUN_141924630())
+        FUN_140ad4b90()->FUN_141863460(0.0f);
+    FUN_1409478c0()->FUN_140aeaf40(pTarget, 0);
+    FUN_1403ed2d0()->FUN_141bdb5a0(1);
+    Unk_MyPCExpBar* pExpBar = FUN_140ac55a0(0x4e3c);
+    if (pExpBar)
+        pExpBar->FUN_141910660();
+    FUN_1403ed2b0()->FUN_141adc530(0x4e8a);
+    PCBase* pPlayer = FUN_14099eef0(pTarget);
+    if (pPlayer)
+    {
+        pObserve->FUN_141a735d0(pPlayer->vfunc_77());
+        FUN_1409670d0()->FUN_14162b560(pPlayer->vfunc_77());
+        m_pObserved = pPlayer;
+    }
+}
+MS2_REPLACE_METHOD(0x14152A4A0, MyPC, FUN_14152a4a0, 396, 0x27797A65);
+
+// @0x14152a960
+void MyPC::FUN_14152a960()
+{
+    m_pObserved = 0;
+    FUN_1409478c0()->FUN_140aeaf40(this, 1);
+    FUN_1403ed2d0()->FUN_141bdb5a0(0);
+    Unk_MyPCExpBar* pExpBar = FUN_140ac55a0(0x4e3c);
+    if (pExpBar)
+        pExpBar->FUN_141910700();
+    UIObserveDialog* pObserve = MyPCDialog<UIObserveDialog>(0x4e8a);
+    if (pObserve)
+    {
+        pObserve->FUN_141a735d0(L"");
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4e8a);
+    }
+    UIPvPObserverDialog* pObserver = MyPCDialog<UIPvPObserverDialog>(0x4e96);
+    if (pObserver)
+    {
+        if (pObserver->FUN_141924630())
+            FUN_140ad4b90()->FUN_141863460(0.0f);
+    }
+    FUN_1409670d0()->FUN_14162b740();
+    UIPvPGuildTeamDialog* pTeam = MyPCDialog<UIPvPGuildTeamDialog>(0x4ec4);
+    if (pTeam)
+        pTeam->FUN_14133b0b0();
+}
+MS2_REPLACE_METHOD(0x14152A960, MyPC, FUN_14152a960, 290, 0x402A4FC1);
+
+// @0x14152a360
+void MyPC::FUN_14152a360(PCBase* pTarget)
+{
+    if (!pTarget)
+    {
+        MS2_ASSERT_AT(0x95b, FALSE);
+        return;
+    }
+    NiPoint3 kPos = pTarget->vfunc_18();
+    float fZoomVelocity = FUN_1401d3200()->ConstructionGuideCamZoomVelocity.Read();
+    FUN_1409478c0()->FUN_140af9b40(FUN_1401d3200()->ConstructionGuideCamDistance.Read());
+    if (FUN_1409478c0()->FUN_140af7e30() == 2)
+    {
+        FUN_1409478c0()->FUN_140aeaf40(pTarget, 0);
+        Unk_MyPCCameraCtl* pCtl = FUN_1409478c0()->FUN_140af2520();
+        pCtl->FUN_14183c3b0(-fZoomVelocity);
+        pCtl->FUN_14183cc80(0);
+    }
+    else
+        FUN_1409478c0()->FUN_140aeaf40(pTarget, 1);
+    FUN_1403ed2d0()->FUN_141bdb5a0(1);
+}
+MS2_REPLACE_METHOD(0x14152A360, MyPC, FUN_14152a360, 301, 0xE622FBE9);
+
+// @0x14152a640
+void MyPC::FUN_14152a640(int nTeam)
+{
+    FUN_14152a960();
+    FUN_1403ed2d0()->FUN_141bdb5a0(2);
+    Unk_MyPCExpBar* pExpBar = FUN_140ac55a0(0x4e3c);
+    if (pExpBar)
+        pExpBar->FUN_141910660();
+    UIObserveDialog* pObserve = MyPCDialog<UIObserveDialog>(0x4e8a);
+    if (!pObserve)
+        return;
+    if (!pObserve->FUN_141924630())
+        FUN_1403ed2b0()->FUN_141adc530(0x4e8a);
+    pObserve->FUN_141a736c0(true);
+    FUN_140ad4b90()->FUN_1418631c0();
+    FUN_140ad4b90()->FUN_1418631f0(nTeam, 1);
+}
+MS2_REPLACE_METHOD(0x14152A640, MyPC, FUN_14152a640, 184, 0x28252192);
+
 // @0x14152e240
 void MyPC::FUN_14152e240(int n)
 {
@@ -1974,8 +2133,6 @@ void MyPC::vfunc_128(CItem* pItem, int n)
 
 class Unk_MyPCUpperHpBar { public: void FUN_141b4c510(PCBase* pActor, int nObjectId); };   // UIUpperHpBar (0x4e3d)
 Unk_MyPCUpperHpBar* FUN_14096e340(int nId);
-class Unk_MyPCExpBar { public: void FUN_141910b10(__int64 nDelta); };                       // 0x4e3c
-Unk_MyPCExpBar* FUN_140ac55a0(int nId);
 int FUN_141092ff0(PCBase* pActor);
 
 // @0x1415231f0
