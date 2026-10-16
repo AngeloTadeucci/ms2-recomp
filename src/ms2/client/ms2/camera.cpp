@@ -42,6 +42,7 @@
 // MS2-PIN: ??9?$SmartPointer@VNiAVObject@@@efd@@QEBA_NPEAVNiAVObject@@@Z 0x140af72f0
 // MS2-PIN: ?GetAnimType@NiTimeController@@QEBA?AW4AnimType@1@XZ 0x140af7db0
 // MS2-PIN: ?GetEndKeyTime@NiTimeController@@QEBAMXZ 0x140af7f50
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@2@_K@Z 0x140afc650
 // MS2-PIN: ??$?0VEntityID@egf@@UUnk_CameraSetting@@$0A@@?$pair@VEntityID@egf@@UUnk_CameraSetting@@@std@@QEAA@AEBVEntityID@egf@@AEBUUnk_CameraSetting@@@Z 0x140af26b0
 // MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140af27a0
 // MS2-PIN: ?push_back@?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@QEAAXAEBUUnk_CameraSetup@@@Z 0x140afd3c0
@@ -2494,3 +2495,4 @@ void CameraMgr::FUN_140aefb20(const Unk_CameraPathRow* pRow)
         }
     }
 }
+MS2_REPLACE_METHOD(0x140AEFB20, CameraMgr, FUN_140aefb20, 1189, 0x2179FBDC);
