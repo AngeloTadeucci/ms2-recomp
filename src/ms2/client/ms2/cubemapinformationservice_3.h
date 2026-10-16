@@ -142,6 +142,8 @@ public:
     bool FUN_1410bbab0(int nKey);
     void FUN_1410bbc00(int nKey, int nUnused);
     void FUN_1410bbcd0(int nKey, int nFlag);
+    void FUN_1410bc1c0();
+    void FUN_1410bc320();
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();

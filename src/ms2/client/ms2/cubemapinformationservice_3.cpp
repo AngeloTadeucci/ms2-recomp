@@ -172,6 +172,27 @@ Unk_CMISListEnd* FUN_1411522d0(Unk_CMISIntList*, Unk_CMISListEnd*);         // e
 bool FUN_14035ea60(Unk_CMISListIter*, Unk_CMISListEnd*);                   // operator!=
 int* FUN_1403e8d70(Unk_CMISListIter*);                                      // operator*
 void FUN_14035ebf0(Unk_CMISListIter*);                                      // operator++
+struct Unk_CMISHouseInfo;
+struct Unk_CMISHousePtr { void* m_p; };                                     // MS2Ptr<house info>
+struct Unk_CMISHouseNode { int first; Unk_CMISHousePtr second; };
+class Unk_CMISHouseMark { public: void FUN_14198cb00(const Unk_CMISHouseInfo& info); void FUN_14198cf50(); };
+Unk_CMISHouseMark* FUN_1410dc020();
+bool FUN_1411516e0(Unk_CMISTree<274>*);                                     // empty
+void FUN_14114dc90(Unk_CMISTree<274>*, Unk_CMISIter<274>*);                 // begin
+Unk_CMISIter<274>* FUN_141151a30(Unk_CMISTree<274>*, Unk_CMISIter<274>*);   // end
+bool FUN_141127440(Unk_CMISIter<274>*, Unk_CMISIter<274>*);                 // operator!=
+Unk_CMISHouseNode* FUN_1411285a0(Unk_CMISIter<274>*);                       // operator*
+void FUN_141129ac0(Unk_CMISIter<274>*);                                     // operator++
+bool FUN_141126b10(Unk_CMISHousePtr*, int);                                 // operator==(0)
+Unk_CMISHouseInfo* FUN_141128800(Unk_CMISHousePtr*);                        // operator*
+class Unk_CMISPolyObj { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); };
+struct Unk_CMISPolyNode { int first; Unk_CMISHousePtr second; };
+void FUN_14114dde0(Unk_CMISTree<273>*, Unk_CMISIter<273>*);                 // begin
+Unk_CMISIter<273>* FUN_141151b50(Unk_CMISTree<273>*, Unk_CMISIter<273>*);   // end
+bool FUN_141127500(Unk_CMISIter<273>*, Unk_CMISIter<273>*);                 // operator!=
+Unk_CMISPolyNode* FUN_141128600(Unk_CMISIter<273>*);                        // operator*
+void FUN_141129b70(Unk_CMISIter<273>*);                                     // operator++
+Unk_CMISPolyObj* FUN_1411284c0(Unk_CMISHousePtr*);                          // operator->
 struct Unk_CMISPair { int m_a, m_b; };
 extern Unk_CMISPair DAT_143b02320;                                          // initial cursor pair
 float FUN_14029d220(float f);                                               // fabsf
@@ -813,6 +834,39 @@ void CubeMapInformationService::FUN_1410bbc00(int nKey, int nUnused)
         FUN_141126700(FUN_141127e10(&fd8, &nKey), &kEmpty);
     }
     FUN_1410bbcd0(nKey, 0);
+}
+
+// @0x1410bc1c0
+void CubeMapInformationService::FUN_1410bc1c0()
+{
+    if (!FUN_1411516e0(&f238)) {
+        Unk_CMISHouseMark* pHouse = FUN_1410dc020();
+        if (pHouse != 0) {
+            Unk_CMISIter<274> it, itEnd;
+            for (FUN_14114dc90(&f238, &it); FUN_141127440(&it, FUN_141151a30(&f238, &itEnd)); FUN_141129ac0(&it)) {
+                if (FUN_141126b10(&FUN_1411285a0(&it)->second, 0))
+                    continue;
+                pHouse->FUN_14198cb00(*FUN_141128800(&FUN_1411285a0(&it)->second));
+            }
+        }
+    }
+    Unk_CMISIter<273> itMark, itMarkEnd;
+    for (FUN_14114dde0(&f228, &itMark); FUN_141127500(&itMark, FUN_141151b50(&f228, &itMarkEnd)); FUN_141129b70(&itMark)) {
+        Unk_CMISPolyObj* pObj = FUN_1411284c0(&FUN_141128600(&itMark)->second);
+        pObj->vfunc_2();
+    }
+}
+// @0x1410bc320
+void CubeMapInformationService::FUN_1410bc320()
+{
+    Unk_CMISHouseMark* pHouse = FUN_1410dc020();
+    if (pHouse != 0)
+        pHouse->FUN_14198cf50();
+    Unk_CMISIter<273> itMark, itMarkEnd;
+    for (FUN_14114dde0(&f228, &itMark); FUN_141127500(&itMark, FUN_141151b50(&f228, &itMarkEnd)); FUN_141129b70(&itMark)) {
+        Unk_CMISPolyObj* pObj = FUN_1411284c0(&FUN_141128600(&itMark)->second);
+        pObj->vfunc_3();
+    }
 }
 
 // @0x1410ce800
