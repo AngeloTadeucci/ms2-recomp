@@ -56,6 +56,20 @@
 #include "ms2/commonfiles/filesystem.h"
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/client/ms2/targetcameramode.h"
+#include "ms2/client/ms2/lockcameramode.h"
+#include "ms2/client/ms2/toolcameramode.h"
+#include "ms2/client/ms2/toolsmoothcameramode.h"
+#include "ms2/client/ms2/tpscameramode.h"
+#include "ms2/client/ms2/fpscameramode.h"
+#include "ms2/client/ms2/target2dcameramode.h"
+#include "ms2/client/ms2/rpgcameramode.h"
+#include "ms2/unnamed/unit_1416c4de0.h"
+#include "ms2/client/ms2/consolecameramode.h"
+#include "ms2/client/ms2/homecameramode.h"
+#include "ms2/client/ms2/bosstargetcamera.h"
+#include "ms2/client/ms2/targetlookcentercameramode.h"
+#include "ms2/client/ms2/flybycameramode.h"
+#include "ms2/placeholder/freecameramode.h"
 #include "ms2/client/ms2/fielddatacli.h"
 #include <ecr/RenderService.h>
 #include <ecr/RenderSurface.h>
@@ -181,6 +195,7 @@ public:
     void FUN_1416781a0(int nMode);                                      // tells the actor the camera mode id
 };
 Unk_CameraActor* FUN_1409ffd30(Unk_CameraTargetEntity* pTarget);
+Unk_CameraActor* FUN_14099eef0(Unk_CameraTargetEntity* pTarget);       // the rpg object of a target (or null)
 ecr::RenderService* FUN_1413f9890();                                    // the render service
 ecr::CameraService* FUN_1413f9910();                                    // the camera service
 class Unk_SceneApp;
@@ -1943,3 +1958,203 @@ void CameraMgr::FUN_140aea7f0()
     }
 }
 MS2_REPLACE_METHOD(0x140AEA7F0, CameraMgr, FUN_140aea7f0, 1392, 0x0B60B36B);
+
+// @0x140aed750
+// Switches the camera mode. During a fly-by request the new mode only becomes the fly-by's destination: its view is
+// stored in m_flyBy.m_to and a CFlyByCameraMode that blends into it is installed instead.
+void CameraMgr::FUN_140aed750(int nMode, int bKeep)
+{
+    if (nMode == 3)
+        return;
+    if (m_spMode == 0)
+        return;
+    m_nPendingMode = 0;
+    int nNewMode = 0;
+    if (m_bFlyBy)
+    {
+        nNewMode = 3;
+        m_setting.m_0 = m_spMode->FUN_140ad4b30();
+        m_setting.m_4 = m_spMode->FUN_140af7ef0();
+        m_setting.m_8 = m_spMode->FUN_140af7e90();
+        m_setting.m_18 = m_spMode->FUN_140af8260();
+        m_setting.m_c = m_spMode->FUN_1409f2540();
+        m_setting.m_24 = m_spMode->FUN_140af8140();
+        MS2Ptr<CCameraMode> spNext;
+        switch (nMode)
+        {
+        case 1:
+            spNext.AssignRaw(new CFreeCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 2:
+            spNext = m_spTargetMode;
+            break;
+        case 5:
+            spNext.AssignRaw(new CActionCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            spNext->vfunc_3(spNext->vfunc_26());
+            break;
+        case 4:
+            spNext.AssignRaw(new CLockCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 6:
+            spNext.AssignRaw(new CToolCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 8:
+            spNext.AssignRaw(new CEditCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 9:
+            spNext.AssignRaw(new CTPSCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 10:
+            spNext.AssignRaw(new CFPSCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xb:
+            spNext.AssignRaw(new CTarget2DCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xc:
+            spNext.AssignRaw(new CRPGCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xd:
+            spNext.AssignRaw(new CPVPCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 7:
+            spNext.AssignRaw(new CToolSmoothCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xe:
+            spNext.AssignRaw(new CConsoleCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x10:
+            spNext.AssignRaw(new CLocalTargetCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x11:
+            spNext.AssignRaw(new CHomeCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x12:
+            spNext.AssignRaw(new CBossTargetCamera((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        }
+        if (bKeep)
+        {
+            m_flyBy.m_to.m_0 = spNext->FUN_140ad4b30();
+            m_flyBy.m_to.m_4 = spNext->FUN_140af7ef0();
+            m_flyBy.m_to.m_8 = spNext->FUN_140af7e90();
+            m_flyBy.m_to.m_c = spNext->FUN_1409f2540();
+            m_flyBy.m_to.m_24 = spNext->FUN_140af8140();
+            if (spNext->vfunc_28())
+            {
+                if (FUN_140a38d60())
+                {
+                    Unk_StreamPoint ptTarget = FUN_140a38d60()->vfunc_17();
+                    ptTarget.z += m_spTargetMode->vfunc_27();
+                    if (FUN_140af7e30() == 2)
+                        m_flyBy.m_to.m_c = ptTarget.FUN_14097fd50(((CTargetCameraMode*)m_spTargetMode.get())->FUN_14183c370());
+                    else if (FUN_140af7e30() == 0x11)
+                        m_flyBy.m_to.m_c = ptTarget.FUN_14097fd50(((CHomeCameraMode*)m_spTargetMode.get())->FUN_140b66660());
+                }
+                else
+                    m_flyBy.m_to.m_c = spNext->vfunc_26();
+            }
+            else
+                m_flyBy.m_to.m_c = spNext->vfunc_26();
+        }
+        if (m_spMode.get())
+            m_spMode->vfunc_7();
+        m_spMode.AssignRaw(new CFlyByCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode, nMode));
+        m_bFlyBy = 0;
+    }
+    else
+    {
+        if (m_spMode.get())
+            m_spMode->vfunc_7();
+        nNewMode = nMode;
+        switch (nNewMode)
+        {
+        case 1:
+            m_spMode.AssignRaw(new CFreeCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 2:
+            m_spMode = m_spTargetMode;
+            m_setting.m_0 = m_spMode->FUN_140ad4b30();
+            m_setting.m_4 = m_spMode->FUN_140af7ef0();
+            m_setting.m_8 = m_spMode->FUN_140af7e90();
+            m_setting.m_18 = m_spMode->FUN_140af8260();
+            m_setting.m_c = m_spMode->FUN_1409f2540();
+            m_setting.m_24 = m_spMode->FUN_140af8140();
+            break;
+        case 5:
+            m_spMode.AssignRaw(new CActionCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 6:
+            m_spMode.AssignRaw(new CToolCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 8:
+            m_spMode.AssignRaw(new CEditCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 4:
+            m_spMode.AssignRaw(new CLockCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 9:
+            m_spMode.AssignRaw(new CTPSCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 10:
+            m_spMode.AssignRaw(new CFPSCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xb:
+            m_spMode.AssignRaw(new CTarget2DCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xc:
+            m_spMode.AssignRaw(new CRPGCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xd:
+            m_spMode.AssignRaw(new CPVPCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 7:
+            m_spMode.AssignRaw(new CToolSmoothCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0xe:
+            m_spMode.AssignRaw(new CConsoleCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x10:
+            m_spMode.AssignRaw(new CLocalTargetCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x11:
+            m_setting.m_0 = m_spMode->FUN_140ad4b30();
+            m_setting.m_4 = m_spMode->FUN_140af7ef0();
+            m_setting.m_8 = m_spMode->FUN_140af7e90();
+            m_setting.m_c = m_homeSetting.m_c;
+            m_setting.m_18 = m_homeSetting.m_18;
+            m_spMode.AssignRaw(new CHomeCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x12:
+            m_spMode.AssignRaw(new CBossTargetCamera((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        case 0x13:
+            m_spMode.AssignRaw(new CTargetLookCenterCameraMode((Unk_CameraOwner*)m_pCamera, m_spMode));
+            break;
+        }
+        m_spMode->vfunc_11(m_setting.m_0);
+        m_spMode->FUN_140af99d0(m_setting.m_4);
+        m_spMode->FUN_140af9950(m_setting.m_8);
+        m_spMode->vfunc_4(m_setting.m_18);
+        m_spMode->vfunc_3(m_setting.m_c);
+        m_spMode->vfunc_5(m_setting.m_24);
+    }
+    if (m_spMode.get())
+    {
+        if (m_1b8)
+        {
+            if (m_spMode == m_spTargetMode.get())
+            {
+                m_1b4 = 0;
+                m_1b8 = 0;
+                Unk_CameraPostEffect* pPostEffect = FUN_1416aad00(FUN_1409a8b20());
+                if (pPostEffect)
+                    pPostEffect->FUN_1411780e0(m_spMode->FUN_140af7ef0(), m_spMode->FUN_140af7e90());
+            }
+        }
+        m_spMode->vfunc_6(1);
+    }
+    Unk_CameraActor* pActor = FUN_14099eef0(m_pTarget);
+    if (pActor)
+        pActor->FUN_1416781a0(nNewMode);
+}
+MS2_REPLACE_METHOD(0x140AED750, CameraMgr, FUN_140aed750, 8833, 0x311FE950);
