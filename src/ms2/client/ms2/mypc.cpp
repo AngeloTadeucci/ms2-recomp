@@ -56,6 +56,8 @@
 #include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/clientconstants.h"
+#include "ms2/placeholder/state.h"
+#include "ms2/client/ms2/ridee.h"
 #include <algorithm>
 #include "ms2/ms2format.h"
 #include "hook/ms2hook.h"
@@ -69,9 +71,12 @@ class CGetExp
 public:
     CGetExp();                                              // 0x141273920
     virtual ~CGetExp();
-    void FUN_1412739d0(void* p);
+    void FUN_1412739d0(float fDelta);                        // per-frame update
     void FUN_141273b60(int nA, __int64 nExp);
+private:
+    unsigned char m_data[0x48];                             // +0x8 (opaque here)
 };
+MS2_CHECK_SIZE(CGetExp, 0x50);
 
 // The house privilege record of the local character (RTTI CHomePrivilege, 0x20; commonfiles\homeprivilege.cpp).
 class CHomePrivilege : public CPtred
@@ -157,7 +162,7 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
@@ -221,7 +226,7 @@ public:
     virtual void vfunc_3();
 };
 Unk_MyPCSwfMgr* FUN_140b632f0();
-class Unk_MyPCQuestMgr { public: void FUN_1416cef90(int n); };
+class Unk_MyPCQuestMgr { public: void FUN_1416cef90(int n); void FUN_1416ca440(); };
 Unk_MyPCQuestMgr* FUN_140764020();
 class Unk_MyPCOptimizer { public: void FUN_14161c8c0(); };
 Unk_MyPCOptimizer* FUN_1409f7c90();
@@ -238,11 +243,106 @@ public:
     void FUN_141ad9c40(MS2Ptr<Unk_MyPCEquipItem> spItem);
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
-class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); int FUN_14138c900(int nKind); };
+class Unk_MyPCWidgets { public: void FUN_14138d7e0(int nKind, int n); int FUN_14138c900(int nKind); int FUN_14138cc20(); void FUN_14138b170(); void FUN_14138baf0(); };
 Unk_MyPCWidgets* FUN_1409331e0();
 class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
-class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); };
+class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); void FUN_14117e560(__int64 nExp); };
+
+// The world object the exp came from (an npc/monster actor; ?\unit_14108e1e0 range).
+class Unk_MyPCExpSource : public PCBase
+{
+public:
+    void FUN_141094dc0(__int64 nExp);
+    void FUN_141093910();
+};
+
+// The actor's ground shadow (unit_14160fb10).
+class CObjectShadow : public NiRefObject
+{
+public:
+    CObjectShadow(void* pOwner, int nLodHi, int nLodLo);    // 0x14160fb10
+    bool FUN_141534300();                                   // visible
+private:
+    char m_pad[0x58 - sizeof(NiRefObject)];
+};
+
+// The graphics quality table: shadow LOD levels per actor kind.
+class Unk_QualityTable
+{
+public:
+    int FUN_141376880(bool bOther);
+    int FUN_1413769d0(bool bOther);
+};
+Unk_QualityTable* FUN_140ae1c00();
+
+// The pc record handed to vfunc_125 (the character the pc mirrors; avatarpc.cpp names +0x30 the pc id).
+class Unk_PCArg125 : public CPtred
+{
+public:
+    char m_pad_18[0x28];
+    ATL::CAtlArray<unsigned int> m_aIds;                    // +0x40
+    char m_pad_60[0x360];
+    int m_bLocal;                                           // +0x3c0
+    char m_pad_3c4[0x170];
+    int m_nGuildRank;                                       // +0x534
+    CStringW m_strGuildName;                                // +0x538
+    CStringW m_strGuildEmblemPath;                          // +0x540
+    __int64 m_nGuildId;                                     // +0x548
+    __int64 m_nGuildEmblem;                                 // +0x550
+};
+MS2_CHECK_OFFSET(Unk_PCArg125, m_nGuildEmblem, 0x550);
+extern ATL::CAtlArray<unsigned int> DAT_143ab3268;          // the local character's id list
+
+// The per-frame tick of the client managers MyPC::vfunc_53 drives.
+class Unk_SSG953f20 { public: void FUN_140cdb450(); };
+Unk_SSG953f20* FUN_140953f20();
+class Unk_SSGc8dac0 { public: void FUN_140d07080(); };
+Unk_SSGc8dac0* FUN_140c8dac0();
+class Unk_SSGcea070 { public: void FUN_140dd8440(); };
+Unk_SSGcea070* FUN_140cea070();
+class Unk_QgNavi { public: void FUN_140c99ee0(); };
+Unk_QgNavi* FUN_140e7c990();
+class Unk_14025e7c0 { public: bool FUN_14116d720(); };     // the locale selection (true: the dev locale)
+Unk_14025e7c0* FUN_14025e7c0();
+// PCBase members pcbase.h does not declare yet: the queue at +0x6d8 (typed void* there) and the move update.
+void FUN_141683a90(void* pQueue);                           // flush the queue
+bool FUN_141682f80(void* pQueue, int nId);                  // the queue holds nId
+void FUN_141676140(PCBase* pActor);                         // move update
+NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // the entity's scene node
+
+// The npc table row (MS2Ptr<T>; see cubespawnobject.h).
+class Unk_NpcData : public CPtred
+{
+public:
+    bool FUN_1406cd200(int nFlag);                          // the row carries the flag
+};
+
+// The npc-side view of a world object (FUN_14096e110 returns null for a player).
+class Unk_MyPCNpc : public PCBase
+{
+public:
+    MS2Ptr<Unk_NpcData> FUN_141093270();                    // the npc's table row
+};
+Unk_MyPCNpc* FUN_14096e110(PCBase* pObject);
+
+// RTTI StateUseFurniture: the sit-on-furniture state.
+class StateUseFurniture : public State
+{
+public:
+    CStringA FUN_141284620();                               // the furniture key of the state
+};
+
+// The furniture use request (packet 0x2e): key + flag.
+struct Unk_MyPCFurnitureUse
+{
+    Unk_MyPCFurnitureUse();                                 // 0x140ac2e80
+    ~Unk_MyPCFurnitureUse();                                // 0x140ac3050
+    CStringA m_strKey;                                      // +0x0
+    int m_nFlag;                                            // +0x8 (written as a byte)
+};
+MS2_CHECK_SIZE(Unk_MyPCFurnitureUse, 0x10);
+void FUN_1401fc610(Unk_MyPCFurnitureUse& kUse, COutPacket& packet);
 Unk_MyPCPartyMgr* FUN_14109a6f0();
 int FUN_14082f1a0(int nType);
 class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); };
@@ -259,9 +359,23 @@ int FUN_14086ace0(__int64 nTime);                           // the time has pass
 class Unk_MyPCPartyUI { public: void FUN_141b1fcf0(int nObjectId); };
 class Unk_MyPCStatusMgr { public: void FUN_141b0ce20(int nKind, int n); };
 Unk_MyPCStatusMgr* FUN_140aa6d40();
-class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); };   // the camera target position
+class Unk_CameraTarget;
+class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); };   // the camera target position
 Unk_MyPCCamera* FUN_1409478c0();
-class Unk_MyPCSingleton { public: bool FUN_141b89990(); };
+// The local character's guild summary (FUN_140d295d0; the guild reading of the fields is a guess).
+struct Unk_MyPCGuildSummary
+{
+    char m_pad_00[0x20];
+    int m_nRank;                                            // +0x20
+    __int64 m_nGuildId;                                     // +0x28
+    __int64 m_nEmblem;                                      // +0x30
+    char m_pad_38[0x40];
+    CStringW m_strName;                                     // +0x78
+    char m_pad_80[0x48];
+    CStringW m_strEmblemPath;                               // +0xc8
+};
+MS2_CHECK_OFFSET(Unk_MyPCGuildSummary, m_strEmblemPath, 0xc8);
+class Unk_MyPCSingleton { public: bool FUN_141b89990(); Unk_MyPCGuildSummary* FUN_140d295d0(); void FUN_141b89030(); };
 Unk_MyPCSingleton* FUN_1409eed90();
 CStringW FUN_140b8f730(const Unk_StreamPoint& kPos);           // "x,y,z"
 
@@ -347,7 +461,7 @@ extern int DAT_143ae0fb4;
 extern int DAT_143ae0fb8;
 extern int DAT_143ae0fbc;
 extern int DAT_143ae0fc0;
-class Unk_PCCubeCraft { public: int FUN_1410aa1f0(); };   // the cube craft controller (in the build mode)
+class Unk_PCCubeCraft { public: int FUN_1410aa1f0(); void FUN_1410ac9b0(); };   // the cube craft controller (in the build mode)
 extern int DAT_1439f4a7c;
 extern __int64 DAT_143ab2820;
 extern efd::Point3 DAT_143ab2398;                           // down vector
@@ -651,9 +765,9 @@ void MyPC::vfunc_91(void* p)
 MS2_REPLACE_METHOD(0x1415219A0, MyPC, vfunc_91, 34, 0x5BC77B81);
 
 // @0x141522c60
-void MyPC::vfunc_59(int a, void* b, int c, int d)
+void MyPC::vfunc_59(int nState, StateData* pData, int nSub, int bForce)
 {
-    PC::vfunc_59(a, b, c, d);
+    PC::vfunc_59(nState, pData, nSub, bForce);
     FUN_140aa6d40()->FUN_141b0ce20(9, 0);
 }
 MS2_REPLACE_METHOD(0x141522C60, MyPC, vfunc_59, 81, 0x58DC11CF);
@@ -985,7 +1099,180 @@ PCBase* MyPC::FUN_141529640()
             FUN_1401d3200()->TalkableFrontOnly.Read(), 1);
     return pNpc;
 }
-MS2_REPLACE_METHOD(0x141529640, MyPC, FUN_141529640, 253, 0xF2B93DB0);
+// @0x1415293b0
+void MyPC::FUN_1415293b0()
+{
+    if (FUN_1409331e0()->FUN_14138cc20() != 0)
+        FUN_1409331e0()->FUN_14138b170();
+    if (FUN_14166c930() == 0x29)
+    {
+        StateUseFurniture* pState = dynamic_cast<StateUseFurniture*>(FUN_14166ccb0());
+        if (pState)
+        {
+            Unk_MyPCFurnitureUse kUse;
+            kUse.m_strKey = pState->FUN_141284620();
+            kUse.m_nFlag = 1;
+            COutPacket packet(0x2e, 0);
+            packet.Encode1(5);
+            packet.Encode4(1);
+            FUN_1401fc610(kUse, packet);
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1415293B0, MyPC, FUN_1415293b0, 313, 0x4DB1487F);
+
+// @0x1415294f0
+void MyPC::FUN_1415294f0(int nObjectId, __int64 nExp)
+{
+    if (nExp == 0)
+        return;
+    if (nObjectId != 0)
+    {
+        Unk_MyPCExpSource* pSource = static_cast<Unk_MyPCExpSource*>(FUN_1403ed2d0()->FUN_141bd1320(nObjectId));
+        if (pSource)
+        {
+            pSource->FUN_141094dc0(nExp);
+            pSource->FUN_141093910();
+        }
+        if (!m_pGetExp)
+            m_pGetExp = new CGetExp();
+        if (m_pGetExp)
+            m_pGetExp->FUN_141273b60(nObjectId, nExp);
+    }
+    FUN_14109a6f0()->FUN_14117e560(nExp);
+}
+MS2_REPLACE_METHOD(0x1415294F0, MyPC, FUN_1415294f0, 261, 0x48310D34);
+
+// @0x141531310
+void MyPC::vfunc_49()
+{
+    Unk_QualityTable* pTable = FUN_140ae1c00();
+    int nLodHi = pTable->FUN_141376880(false);
+    int nLodLo = pTable->FUN_1413769d0(false);
+    m_spShadow = NiNew CObjectShadow(this, nLodHi, nLodLo);
+    FUN_14123cb20(m_bUnkB8);
+}
+MS2_REPLACE_METHOD(0x141531310, MyPC, vfunc_49, 207, 0x2E248981);
+
+// @0x141522d40
+void MyPC::vfunc_125(MS2Ptr<Unk_PCArg125> sp)
+{
+    if (sp == 0)
+        return;
+    PC::vfunc_125(sp);
+    sp->m_bLocal = 1;
+    sp->m_aIds.Copy(DAT_143ab3268);
+    Unk_MyPCGuildSummary* pGuild = FUN_1409eed90()->FUN_140d295d0();
+    sp->m_nGuildId = pGuild->m_nGuildId;
+    sp->m_nGuildRank = pGuild->m_nRank;
+    sp->m_nGuildEmblem = pGuild->m_nEmblem;
+    sp->m_strGuildName = pGuild->m_strName;
+    sp->m_strGuildEmblemPath = pGuild->m_strEmblemPath;
+}
+MS2_REPLACE_METHOD(0x141522D40, MyPC, vfunc_125, 357, 0x3E09E636);
+
+// @0x141523010
+// MS2-FUNCTIONAL: the exe passes the face-to point by value (pcbase.h declares const&) and tests an extra always-true
+// local next to nObjectId
+void MyPC::vfunc_94(int nObjectId)
+{
+    if (nObjectId != 0)
+    {
+        PCBase* pTarget = FUN_1403ed2d0()->FUN_141bd1200(nObjectId);
+        if (pTarget)
+        {
+            bool bFace = true;
+            Unk_MyPCNpc* pNpc = FUN_14096e110(pTarget);
+            bool bFixed = pNpc && pNpc->FUN_141093270()->FUN_1406cd200(8);
+            if (bFixed)
+                bFace = false;
+            if (bFace)
+                FUN_14166d2d0(pTarget->vfunc_18(), 0);
+            static_cast<PCBase*>(this)->vfunc_59(0x16, 0, 0, 0);
+        }
+    }
+    else
+    {
+        State* pState = FUN_14166ccb0();
+        if (pState)
+            pState->vfunc_21(nObjectId);
+    }
+}
+MS2_REPLACE_METHOD(0x141523010, MyPC, vfunc_94, 463, 0x1FC34F5D);
+
+// @0x141530950
+// MS2-FUNCTIONAL: the exe calls the PCBase member FUN_141676140 through spRidee's operator->; with the free stand-in
+// (qualified: pcbase.h is gaining the member in w112's pcbase work) the pointer comes from operator Ridee*
+void MyPC::vfunc_53(float fDelta)
+{
+    efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
+    if (spRidee == 0)
+        FUN_141683a90(m_unk_6d8);
+    PC::vfunc_53(fDelta);
+    if (spRidee && spRidee->FUN_14123bea0())
+        ::FUN_141676140(spRidee);
+    else
+        ::FUN_141676140(this);
+    FUN_141530d70(fDelta);
+    FUN_14152dbc0();
+    State* pState = FUN_14166ccb0();
+    if (pState->vfunc_18())
+        FUN_14166d820();
+    if (m_unk_c00 == 0xe)
+        FUN_1409478c0()->FUN_140af0cc0((360.0f - m_f934) * 3.1415927f / 180.0f);
+    int nCameraMode = FUN_1409478c0()->FUN_140af7e30();
+    switch (nCameraMode)
+    {
+    case 6:
+    case 7:
+        break;
+    default:
+        FUN_14166ccb0()->vfunc_8(fDelta);
+        break;
+    }
+    if (FUN_1416595d0())
+        m_pCubeCraft->FUN_1410ac9b0();
+    if (m_pGetExp)
+        m_pGetExp->FUN_1412739d0(fDelta);
+    m_kActionKeys.FUN_140952ef0();
+    m_kSkillSystem.FUN_141766af0(fDelta);
+    FUN_140953f20()->FUN_140cdb450();
+    FUN_1409331e0()->FUN_14138baf0();
+    FUN_140c8dac0()->FUN_140d07080();
+    FUN_140764020()->FUN_1416ca440();
+    FUN_140cea070()->FUN_140dd8440();
+    FUN_140e7c990()->FUN_140c99ee0();
+    FUN_1409eed90()->FUN_141b89030();
+    if (m_pObserved)
+    {
+        if (m_pObserved->FUN_141674bc0() && FUN_1409478c0()->FUN_140a38d60())
+            FUN_1409478c0()->FUN_140aeaf40(0, 0);
+        else if (!m_pObserved->FUN_141674bc0() && !FUN_1409478c0()->FUN_140a38d60())
+            FUN_1409478c0()->FUN_140aeaf40(m_pObserved, 0);
+    }
+    if (m_spShadow)
+    {
+        if (m_spShadow->FUN_141534300())
+        {
+            NiAVObject* pNode = FUN_141b6efc0(FUN_14123c410());
+            if (pNode)
+                pNode->UpdateEffects();
+        }
+    }
+    if (!FUN_14025e7c0()->FUN_14116d720() && m_n15ec != 0)
+    {
+        if (!FUN_141682f80(FUN_14166d240(), m_n15ec) && FUN_14166c930() != 0x10 && m_n15f0 != 0)
+        {
+            m_n15f0 = 0;
+            m_n15ec = 0;
+        }
+    }
+    FUN_14152fa20();
+    FUN_14152fc20();
+    DAT_143ab2a90.FUN_140a675c0();
+}
+MS2_REPLACE_METHOD(0x141530950, MyPC, vfunc_53, 1046, 0x5930FD7F);
 
 // @0x141529a50
 int MyPC::FUN_141529a50(int nNpcId)
@@ -1730,7 +2017,7 @@ int MyPC::FUN_1415271e0(PCBase* pActor, Unk_MyPCSkillUse* pSkill)
 {
     if (pActor == 0 || pSkill == 0)
         return 0;
-    if (FUN_141675ed0(pActor) == 0)
+    if (::FUN_141675ed0(pActor) == 0)
         return 1;
     if (pSkill->m_n88 != 0)
         return 1;

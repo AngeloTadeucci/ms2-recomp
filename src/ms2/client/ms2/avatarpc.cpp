@@ -344,8 +344,8 @@ public:
 };
 MS2_CHECK_SIZE(CSkillRecord, 0x1c0);
 
-// State payloads (CPtred-derived; created with new and handed to vfunc_59, which takes the reference).
-class StateGlideData : public CPtred
+// State payloads (StateData-derived; created with new and handed to vfunc_59, which takes the reference).
+class StateGlideData : public StateData
 {
 public:
     StateGlideData();                                       // 0x1417c10e0
@@ -353,20 +353,20 @@ public:
     short m_nLevel;                                         // +0x1c
     int m_nItemId;                                          // +0x20
 };
-class StateSkillData : public CPtred
+class StateSkillData : public StateData
 {
 public:
     StateSkillData();                                       // 0x1417c0ff0
     int m_nSkillId;                                         // +0x18
     short m_nLevel;                                         // +0x1c
 };
-class StateFishingData : public CPtred
+class StateFishingData : public StateData
 {
 public:
     StateFishingData(int nRod);                             // 0x140dda2c0
     int m_nRod;
 };
-class StatePlayInstrumentData : public CPtred
+class StatePlayInstrumentData : public StateData
 {
 public:
     StatePlayInstrumentData(MS2Ptr<CItemData> spData, int n);   // 0x140dde0b0
@@ -824,10 +824,10 @@ void AvatarPC::vfunc_128(CItem* pItem, int n)
 }
 
 // @0x1409f5210
-void AvatarPC::vfunc_59(int a, void* b, int c, int d)
+void AvatarPC::vfunc_59(int nState, StateData* pData, int nSub, int bForce)
 {
     int nOldAction = ::FUN_14166c930(this);
-    PC::vfunc_59(a, b, c, d);
+    PC::vfunc_59(nState, pData, nSub, bForce);
     if (nOldAction != ::FUN_14166c930(this))
     {
         vfunc_19(m_kPos);

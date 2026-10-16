@@ -52,6 +52,7 @@ public:
     CSkillSystem();                                         // 0x1417646d0
     ~CSkillSystem();                                        // 0x141764900
     void FUN_141764a80(class MyPC* pOwner);                 // init with the owner
+    void FUN_141766af0(float fDelta);                       // per-frame update
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
     unsigned char m_body[0x1e8];
 };
@@ -126,7 +127,7 @@ public:
     virtual void vfunc_91(void* p);                         // 91 0x1415219a0
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b, bool c);  // 104 0x1415219d0
     virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);     // 102 0x141521fc0
-    virtual void vfunc_59(int a, void* b, int c, int d);    // 59 0x141522c60
+    virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59 0x141522c60
     virtual int vfunc_58();                                 // 58 0x141522cc0
     virtual void vfunc_67(void* a, void* b);                // 67 0x141522ce0
     virtual void vfunc_125(MS2Ptr<Unk_PCArg125> p);         // 125 0x141522d40
@@ -145,7 +146,7 @@ public:
     virtual CStringW vfunc_134();                           // 134 0x141523ae0
     virtual bool vfunc_146();                               // 146 0x141523b70
     virtual void vfunc_120(void* p);                        // 120 0x14152c460
-    virtual void vfunc_121(void* p);                        // 121 0x14152c670
+    virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x14152c670
     virtual void vfunc_53(float f);                         // 53 0x141530950
     virtual void vfunc_49();                                // 49 0x141531310
     virtual void vfunc_144();                               // 144 0x1415313f0
@@ -208,7 +209,10 @@ public:
     void FUN_141530200();                                   // leave the cube build mode
     class Unk_PCCubeCraft* FUN_141530290();                 // the cube craft controller in the cube craft mode
     int FUN_141529a50(int nNpcId);                          // talk to the npc (0: the nearest talkable one)
-    PCBase* FUN_141529640();                                // the nearest talkable npc
+    PCBase* FUN_141529640();
+    void FUN_1415293b0();
+    void FUN_14152dbc0();
+    void FUN_1415294f0(int nObjectId, __int64 nExp);                                // the nearest talkable npc
     void FUN_141529d90();                                   // request the house design mode (packet 0x6c 4)
     void FUN_141529e90();                                   // request the blueprint mode (packet 0x6c 5)
     void FUN_14152dee0(int nId);                            // packet 0x40 3

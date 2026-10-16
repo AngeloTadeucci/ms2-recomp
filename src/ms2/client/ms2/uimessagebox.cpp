@@ -36,6 +36,7 @@
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/uiswfentitymanager.h"
 #include "ms2/ms2recover.h"
+#include "ms2/placeholder/state.h"
 #include "hook/ms2hook.h"
 
 // ---- statics (.text$di): the box tags, in the exe's initializer order ----
@@ -353,14 +354,14 @@ public:
 MS2_CHECK_OFFSET(CSkillRecord, m_bItemSkill, 0xac);
 MS2_CHECK_SIZE(CSkillRecord, 0x1c0);
 class Unk_MessageBoxSkills { public: MS2Ptr<CSkillRecord> FUN_141765570(Unk_InventorySkillRequest& req); };
-class StateMicroGameRpsData : public CPtred
+class StateMicroGameRpsData : public StateData
 {
 public:
     StateMicroGameRpsData(int nTarget);                         // 0x1417c1520
     char m_pad_18[0x18];
 };
 MS2_CHECK_SIZE(StateMicroGameRpsData, 0x30);
-class StateMicroGameCoupleDanceData : public CPtred
+class StateMicroGameCoupleDanceData : public StateData
 {
 public:
     StateMicroGameCoupleDanceData(int nTarget);                 // 0x1417c1830

@@ -41,16 +41,16 @@ public:
     virtual void vfunc_14();                                // 14 0x141651bb0 (PCBase 0x14166b880)
     virtual int vfunc_10();                                 // 10 0x141651370 (PCBase 0x14166b550)
     virtual void vfunc_53(float f);                         // 53 0x141660240
-    virtual void vfunc_59(int a, void* b, int c, int d);    // 59 0x1416537d0
+    virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59 0x1416537d0
     virtual int vfunc_116();                                // 116 0x14165ebe0 (PCBase's is pure)
     // slots AvatarPC inherits from here (declared so the vftable resolves to the exe slots)
     virtual void vfunc_107(void* p, float f);               // 107 0x14165f720
     virtual void vfunc_113(void* p);                        // 113 0x14165fec0
     virtual void vfunc_114(void*);                          // 114 0x14165c4e0
     virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);// 115 0x14165e500
-    virtual int vfunc_118(void* a, float* b, CString* c);   // 118 0x141655a30
+    virtual int vfunc_118(const NiPoint3& kPos, float* pDist, CString* pName);   // 118 0x141655a30 (PCBase signature)
     virtual void vfunc_120(void* p);                        // 120 0x1416561e0
-    virtual void vfunc_121(void* p);                        // 121 0x1416562d0
+    virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x1416562d0
     virtual int vfunc_122(void* p);                         // 122 0x14165f5d0
     virtual void vfunc_15();                                // 15 0x141651d00
     virtual void vfunc_16();                                // 16 0x141651d40
@@ -69,7 +69,7 @@ public:
     virtual bool vfunc_62();                                // 62 0x141658c40
     virtual void vfunc_66(int n);                           // 66 0x1416544f0
     virtual int vfunc_69();                                 // 69 0x14165f480
-    virtual void vfunc_71(void* p);                         // 71 0x14165ff00
+    virtual void vfunc_71(MS2Ptr<Unk_PCBaseFxSet> spSet);   // 71 0x14165ff00
     virtual void vfunc_72();                                // 72 0x14165ff80
     virtual void vfunc_74(__int64 nCur, __int64 nMax);      // 74 0x141656af0
     virtual CStringW vfunc_77();                            // 77 0x141656c70
@@ -145,7 +145,9 @@ public:
     unsigned char unknownD98[0x48];
     Unk_PCEquipSet m_kEquipDE0;                             // +0xde0 equip holder (FUN_1411e3de0)
     MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
-    unsigned char unknownFD8[0x268];
+    unsigned char unknownFD8[0x48];
+    class Unk_PCCubeCraft* m_pCubeCraft;                    // +0x1020 (FUN_141659700; cube craft mode only)
+    unsigned char unknown1028[0x218];
     MS2Ptr<Unk_PCInteractMode> m_spInteractMode;      // +0x1240 (actionkeyobject.cpp)
     unsigned char unknown1250[0x90];
 };
@@ -153,6 +155,7 @@ MS2_CHECK_OFFSET(PC, m_kListD48, 0xd48);
 MS2_CHECK_OFFSET(PC, m_spD88, 0xd88);
 MS2_CHECK_OFFSET(PC, m_kEquipDE0, 0xde0);
 MS2_CHECK_OFFSET(PC, m_spFC8, 0xfc8);
+MS2_CHECK_OFFSET(PC, m_pCubeCraft, 0x1020);
 MS2_CHECK_OFFSET(PC, m_spInteractMode, 0x1240);
 MS2_CHECK_SIZE(PC, 0x12e0); // deleting dtor 1416678b0
 

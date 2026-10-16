@@ -162,7 +162,7 @@ public:
     virtual void vfunc_14();                                // 14  0x1409f5090
     virtual void vfunc_53(float f);                         // 53  0x1409f5c00
     virtual int vfunc_58();                                 // 58  0x1409f5540 return 1
-    virtual void vfunc_59(int a, void* b, int c, int d);    // 59  0x1409f5210
+    virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59  0x1409f5210
     virtual float vfunc_95();                               // 95  0x1409f5510
     virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);     // 102 0x1409f5340 plays the skill's state
     virtual void vfunc_127(CItem* pItem, int n);            // 127 0x1409f5150

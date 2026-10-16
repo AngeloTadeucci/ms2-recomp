@@ -49,6 +49,7 @@
 #include "hook/ms2hook.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
+#include "ms2/placeholder/state.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/placeholder/mypc.h"
@@ -859,12 +860,12 @@ class UIItemMultiOpenBoxDialog { public: void FUN_140c3fa80(int nA, int nB); };
 UIItemMultiOpenBoxDialog* FUN_140d27580(int nId);           // GetDialog<UIItemMultiOpenBoxDialog>
 class UIVIPDialog : public UIDialog { public: void FUN_140fb87d0(CInPacket& packet, int nMode); };
 
-class StateFishingData : public CPtred
+class StateFishingData : public StateData
 {
 public:
     StateFishingData(int nRod);                             // 0x140dda2c0
     int m_nRod;
-    char m_pad[0x20 - sizeof(CPtred) - sizeof(int)];
+    char m_pad[0x20 - sizeof(StateData) - sizeof(int)];
 };
 MS2_CHECK_SIZE(StateFishingData, 0x20);
 
