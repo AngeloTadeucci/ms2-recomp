@@ -3706,6 +3706,90 @@ void CSceneStateGame::FUN_14173b1d0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173b1d0, CSceneStateGame, FUN_14173b1d0, 67, 0x30E383DD);
 
+// ---- 0x105: red envelope (hongbao) and massive box-opening notices ----
+// FUN_14028dfa0 is the localized string-key formatter (its <CStringW, CStringW, CStringW, int>, <CStringW, CStringW,
+// int, CStringW> and <CStringW, CStringW, CStringW, CStringW, int> instances sit after the handlers); the
+// <CStringW, CStringW> and <int, int> instances belong to ?\vipgoods.cpp and ?\astooltip.cpp.
+CStringW FUN_14028dfa0(const CStringW& sFormat, const fmt::ArgList& args);
+FMT_VARIADIC_W(CStringW, FUN_14028dfa0, CStringW)
+CStringW FUN_1408f71a0(CStringW sFormat, const CStringW& v0, const CStringW& v1);
+CStringW FUN_1409e9890(CStringW sFormat, const unsigned& v0, const unsigned& v1);
+// "<a href={0}><FONT color='{1}'>[{2}]</FONT></a>" (the text is escaped first).
+CStringW FUN_140d2ef00(CStringW strHref, CStringW strColor, CStringW strText);
+
+// @0x14173b5a0
+void CSceneStateGame::FUN_14173b5a0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nEnvelopeId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nRewardId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nTotal = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW strCreate = FUN_14028dfa0(CStringW(L"s_special_item_hongbao_create"), strName,
+            FUN_1401a9d70()->FUN_141811980(1, nItemId), FUN_1401a9d70()->FUN_141811980(1, nRewardId), nCount);
+        FUN_1412751b0(strCreate, 0x11);
+        CStringW strLink = StringFormat(L"'event:itemSelect,HongBao,{0}'", nEnvelopeId);
+        CStringW strHref = FUN_140d2ef00(strLink, CStringW(L"#ff8c37"), FUN_1401a9d70()->FUN_141811980(1, nItemId));
+        CStringW strAnnounce = FUN_14028dfa0(CStringW(L"s_speical_item_hongbao_announce"), strName, strHref, nTotal,
+            FUN_1401a9d70()->FUN_141811980(1, nRewardId));
+        FUN_1412751b0(strAnnounce, 0x11);
+    }
+    else if (nMode == 2)
+    {
+        bool bGot = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        if (bGot == true)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nRewardId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            CStringW strOwner = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            CStringW strMsg = FUN_14028dfa0(CStringW(L"s_special_item_hongbao_getitem"), strName,
+                FUN_1401a9d70()->FUN_141811980(1, nItemId), strOwner, FUN_1401a9d70()->FUN_141811980(1, nRewardId),
+                nCount);
+            FUN_1412751b0(strMsg, 0x11);
+        }
+        else
+        {
+            CStringW strMsg = FUN_14028b8e0(L"s_special_item_hongbao_cantget");
+            FUN_1412751b0(strMsg, 0x11);
+        }
+    }
+    else if (nMode == 3)
+    {
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CStringW strMsg = FUN_1408f71a0(CStringW(L"s_msg_item_open_massive_open_message"), strName,
+            FUN_1401a9d70()->FUN_141811980(3, nItemId));
+        FUN_1412751b0(strMsg, 0x11);
+    }
+    else if (nMode == 4)
+    {
+        unsigned nStart = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        unsigned nEnd = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nStart > nEnd)
+            return;
+        unsigned nLeft = nEnd - nStart;
+        CStringW strMsg = FUN_1409e9890(CStringW(L"s_msg_item_open_massive_extra_reward_start"), nStart, nLeft);
+        FUN_1412751b0(strMsg, 0x11);
+    }
+    else if (nMode == 5)
+    {
+        unsigned nStart = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        unsigned nEnd = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nStart > nEnd)
+            return;
+        unsigned nLeft = nEnd - nStart;
+        CStringW strMsg = FUN_1409e9890(CStringW(L"s_msg_item_open_massive_extra_reward_clear"), nStart, nLeft);
+        FUN_1412751b0(strMsg, 0x11);
+    }
+}
+MS2_REPLACE_METHOD(0x14173b5a0, CSceneStateGame, FUN_14173b5a0, 2782, 0xE2711461);
+
 // @0x14173c090
 void CSceneStateGame::FUN_14173c090(CInPacket& packet)
 {
