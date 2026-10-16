@@ -38,6 +38,7 @@ public:
   void FUN_140526b70(int);
   void FUN_140526c70(int);
   int FUN_140526bd0();
+  int FUN_140528840();                    // 0x140528840 (astooltip.cpp)
   int FUN_1405276c0();
   Unk_ItemEquipData* FUN_1405277b0();   // 0x1405277b0
   int FUN_140527760();                  // 0x140527760

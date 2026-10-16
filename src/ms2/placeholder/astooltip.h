@@ -7,12 +7,14 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/asobj.h"
 
 class CItem;
+class CItemData;
 template <class T> class Unk_GalleryPtr;     // unit-local smart pointer of uigalleryeventdialog.h
 class Unk_GalleryItem;
 
-class ASTooltip : public AScript
+class ASTooltip : public ASObj
 {
 public:
     explicit ASTooltip(int nMovieId);                // 0x1409c62e0 (aseffect.cpp)
@@ -20,6 +22,45 @@ public:
     ASTooltip(void* pOwner, int a1, int a2);
     ASTooltip(const Scaleform::GFx::Value& root, int nMovieId);     // 0x1409c6350 (uiadventureleveldialog.cpp)
     virtual ~ASTooltip();
+    void FUN_1409c7b10(CItem* pItem);                                    // itemDamage (sum of the damage lines)
+    void FUN_1409c7c10(CItem* pItem);
+    void FUN_1409c7c70(CItem* pItem);
+    void FUN_1409c7f70(CItem* pItem);
+    void FUN_1409c7fc0(CItem* pItem);                                    // picks the plain or the extended item layout
+    void FUN_1409c9170(CItem* pItem);
+    void FUN_1409cc090(CItem* pItem);
+    void FUN_1409d95f0(CItem* pItem, CStringW& strOut);
+    void FUN_1409d8d90(CItem* pItem, CStringW& strOut);
+    void FUN_1409d9330(CItem* pItem, CStringW& strOut);
+    void FUN_1409d99a0(CItem* pItem, CStringW& strOut);
+    void FUN_1409d9aa0(CItem* pItem, CStringW& strOut);
+    void FUN_1409d4350(CItemData* pData);
+    void FUN_1409d43b0(CItem* pItem);
+    void FUN_1409d43e0(CItem* pItem);
+    void FUN_1409d4460(CItem* pItem);
+    void FUN_1409d46a0(CItem* pItem);
+    void FUN_1409d5530(unsigned nId);
+    void FUN_1409d55a0(CItem* pItem, int n);
+    void FUN_1409d74a0(int n);
+    void FUN_1409d8300(int n);
+    void FUN_1409d77b0(int n);
+    void FUN_1409d5160(unsigned nItemId);
+    void FUN_1409d5200(unsigned nItemId);
+    void FUN_1409d52a0(unsigned nItemId);
+    void FUN_1409d5340(unsigned nItemId);
+    void FUN_1409d53f0(unsigned nItemId);
+    void FUN_1409d5490(unsigned nItemId);
+    __int64 FUN_1409c6540();                                             // m_40
+    unsigned FUN_1409c6560();                                            // m_48 (flags; 0x100 = no extra buttons)
+    void FUN_1409c6580(unsigned n);
+    void FUN_1409c65a0();                                                // enableUseDbClick = string 0x762
+    void FUN_1409c6880();                                                // enablePuton = string 0x751 (unless flag 0x100)
+    void FUN_1409c68e0();                                                // enableCompareSwap = string 0x765 (unless flag 0x100)
+    void FUN_1409c6940(const CStringW& strText);                         // enableLClick (unless flag 0x100)
+    void FUN_1409c6c80();                                                // closeButton = true
+    void FUN_1409c6d10(const CString& str);                              // string member DAT_143ab45a8
+    void FUN_1409c6e30(int n);
+    void FUN_1409c6ec0(int n);
     void FUN_1409c6dc0(int n);
     void FUN_1409c6d70(const CString& strClass);                         // set the AS class name
     void FUN_1409c6e00(int n);
@@ -33,12 +74,15 @@ public:
     void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem> item);
     void FUN_1409c69b0(const CStringW& strTitle);                        // set the tooltip title line
     void FUN_1409c65f0(const CStringW& strText);                         // set the tooltip text line
+    void FUN_1409e13a0(CItem* pCompare, CItem* pItem);                  // item tooltip with the default flags
+    bool FUN_1409e25e0(CItem* pItem, unsigned n);
+    void FUN_1409cf010(CItem* pItem, unsigned n);
     int FUN_1409e13f0(CItem* pCompare, CItem* pItem, int a1, int a2);   // item tooltip with a comparison item (ItemInfoSlot)
     void FUN_1409c6a20(const CStringW& strA, const CStringW& strB);     // set a tooltip text pair (ItemInfoSlot exchange scroll)
     void FUN_1409c7060(const CStringW& strKey, const CStringW& strB);   // set a keyed tooltip text pair (ItemInfoSlot exchange scroll)
     void FUN_1409db7b0(MS2Ptr<CItem> spItem);                            // compare against this item (by value: callee destroys)
 
 private:
-    void* m_pad_40; void* m_pad_48; CStringW m_50; void* m_pad_58;   // m_50: text (destroyed by ~ASTooltip, aseffect.cpp)
+    __int64 m_40; unsigned m_48; unsigned m_pad_4c; CStringW m_50; void* m_pad_58;   // m_50: text (destroyed by ~ASTooltip, aseffect.cpp)
 };
 MS2_CHECK_SIZE(ASTooltip, 0x60);
