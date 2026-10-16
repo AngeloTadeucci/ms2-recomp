@@ -10,6 +10,7 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/socketptr.h"
 #include "ms2/placeholder/unk_nodeptr.h"
+#include <efd/ISystemService.h>
 
 class Unk_140165cf0;    // game TinyXML element
 CPtred* FUN_1404efd80(CPtred* pThis, const CPtred* pOther);      // the exe's CPtred assignment (ICF-folded `return this`)
@@ -145,7 +146,7 @@ public:
     void FUN_14145ddd0(const Unk_StreamPoint& ptStart);             // 0x14145ddd0 restart from a new start point
     void FUN_14145de80();                                           // 0x14145de80 per-frame state machine
     void FUN_14145e960(unsigned nNow);                              // 0x14145e960 spawn the main effect
-    void FUN_141460640();                                           // 0x141460640 release every spawned effect
+    void FUN_141460640(unsigned nNow);                              // 0x141460640 release every spawned effect (nNow unused)
     void FUN_141460700();                                           // 0x141460700 restart the flight from the current point
     void FUN_141461140();                                           // 0x141461140 pick the target point
     void FUN_141461a80(Unk_StreamPoint ptNew);                      // 0x141461a80 move the projectile and its scene root
@@ -236,6 +237,8 @@ public:
     void FUN_141467d00(Unk_StreamPoint ptNew);                      // 0x141467d00 move the projectile
     void FUN_141467d50(Unk_StreamPoint ptDirection);                // 0x141467d50 turn the projectile
     void FUN_141467da0();                                           // 0x141467da0
+    void FUN_141467800();                                           // 0x141467800
+    void FUN_141467860();                                           // 0x141467860 per-tick update
 
     Unk_SocketPtr<CMagic> m_spMagic;                                // +0x18
     Unk_MagicTagPtr m_spA;                                          // +0x28
@@ -261,3 +264,63 @@ public:
     int m_nA4;
 };
 MS2_CHECK_SIZE(CArrowFillTargetContext, 0xa8);
+
+// ---- the service ----
+// The running projectiles of the field, boxed so the tables can share them: caster id -> (skill id -> CMagicModel).
+typedef ATL::CRBMap<unsigned long long, Unk_SocketPtr<CMagicModel> > Unk_MagicModelMap;
+template<> struct Unk_SocketRef<Unk_MagicModelMap> {
+    static CPtred* Base(Unk_MagicModelMap* p) {
+        CPtred* result;
+        if (p == NULL) result = NULL;
+        else result = CONTAINING_RECORD(p, TPtredDummy<Unk_MagicModelMap>, value);
+        return result;
+    }
+    static TPtredDummy<Unk_MagicModelMap>* New(void*) { return new TPtredDummy<Unk_MagicModelMap>(); }
+    static Unk_MagicModelMap* Value(CPtred* p) {
+        Unk_MagicModelMap* result;
+        if (p == NULL) result = NULL;
+        else result = &static_cast<TPtredDummy<Unk_MagicModelMap>*>(p)->value;
+        return result;
+    }
+    static Unk_MagicModelMap* Create(void*) { return Value(FUN_1401ba820(New(NULL))); }
+};
+typedef Unk_SocketPtr<Unk_MagicModelMap> Unk_MagicModelMapPtr;
+MS2_CHECK_SIZE(TPtredDummy<Unk_MagicModelMap>, 0x48);
+MS2_CHECK_OFFSET(TPtredDummy<Unk_MagicModelMap>, value, 0x18);
+
+class CMagicService;
+template <class T> class TSingleton;
+template <> class TSingleton<CMagicService>
+{
+public:
+    TSingleton();                                   // 0x14146d630 (inline, in the .cpp)
+    virtual ~TSingleton() { s_instance = 0; }       // 0x14146d9c0
+    static CMagicService* s_instance;               // 0x143acf618
+};
+
+// The efd system service (class id 0x06100010) that owns every running projectile.
+class CMagicService : public efd::ISystemService, public TSingleton<CMagicService>
+{
+    EE_DECLARE_CLASS1(CMagicService, 0x06100010, efd::ISystemService);
+    EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
+public:
+    CMagicService();                                // 0x14146b2e0
+    virtual ~CMagicService();                       // 0x14146b3b0
+    virtual const char* GetDisplayName() const;     // 0x14146b420
+    virtual efd::SyncResult OnPreInit(efd::IDependencyRegistrar* pRegistrar);   // 0x14146cee0
+    virtual efd::AsyncResult OnInit();              // 0x14146cf00
+    virtual efd::AsyncResult OnTick();              // 0x14146cf20
+    virtual efd::AsyncResult OnShutdown();          // 0x14146d0b0
+
+    // Members below are the table accessors (names invented): casts are keyed by (caster id, cast id).
+    void FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast);       // 0x14146c4b0 drop one model
+    Unk_SocketPtr<CMagicModel> FUN_14146c5d0(unsigned long long nCaster, unsigned long long nCast);  // 0x14146c5d0 find one model
+    Unk_MagicModelMapPtr FUN_14146c910(unsigned long long nCaster);                // 0x14146c910 all models of a caster
+    int FUN_14146cbd0(Unk_SocketPtr<CMagicModel> spModel);                         // 0x14146cbd0 register a model
+    void FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel);                        // 0x14146cd10 unregister a model
+    Unk_SocketPtr<Unk_MagicTag> FUN_14146ce30(unsigned long long nCast);          // 0x14146ce30 find a cast record
+    void FUN_14146ceb0(unsigned long long nCast);                                  // 0x14146ceb0 forget a cast record
+
+    ATL::CRBMap<unsigned long long, Unk_SocketPtr<Unk_MagicTag> > m_mapCasts;     // +0x28 cast id -> cast record
+    ATL::CAtlMap<unsigned long long, Unk_MagicModelMapPtr> m_mapModels;            // +0x58 caster id -> (cast id -> model)
+};

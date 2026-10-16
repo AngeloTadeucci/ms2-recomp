@@ -30,6 +30,9 @@
 // MS2-PIN: ?Reference@?$Unk_SocketPtr@VCMagicData@@@@CAXPEAVCPtred@@@Z 0x141472260 ; prop
 // MS2-PIN: ?AddRefImpl@?$Unk_SocketPtr@VCMagicData@@@@AEBAXPEAX@Z 0x141472280 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??_7CMagicService@@6BISystemService@efd@@@ 0x142f17128
+// MS2-PIN: ??_7CMagicService@@6B?$TSingleton@VCMagicService@@@@@ 0x142f171b0
+// MS2-PIN: ??_7?$TSingleton@VCMagicService@@@@6B@ 0x142f17118
 // MS2-PIN: ??_7?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@6B@ 0x142f16df8
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\magicdata.cpp"
@@ -88,6 +91,8 @@ static CCacheData s_magicCache;
 static CLockCriticalSection s_magicLock;
 static Unk_MagicTable s_magics(17, .75f, .25f, 2.25f, 10);
 #include "ms2/placeholder/header_statics_a.h"
+// @0x1400f7660
+EE_IMPLEMENT_CONCRETE_CLASS_INFO(CMagicService);
 static CString s_sortNames2[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_skill2("skill");
 static CString s_stun2("stun");
@@ -333,10 +338,9 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
 
 // The skill cast record behind Unk_MagicTagPtr.
-struct Unk_MagicTag {
+struct Unk_MagicTag : public CPtred {
     Unk_MagicSkillRow* FUN_141759050();
     int FUN_141759090();
-    char m_pad00[0x18];
     unsigned long long m_nTagId;                                    // +0x18
     unsigned long long m_nTagSub;                                   // +0x20
     int m_nCasterId;                                                // +0x28
@@ -375,7 +379,9 @@ struct Unk_MagicEntity {
     virtual bool vf108_GetLockOn();                                 // MS2: slot 108 (+0x360)
 };
 
-struct Unk_MagicTagLookup { void* m_pad; void* m_p; };
+struct Unk_MagicTagLookup { void* m_p; void* m_pad; };
+// @0x1414691d0
+static inline bool FUN_1414691d0(Unk_MagicTagLookup* p, void* pNull) { return p->m_p == pNull; }
 // The world manager (FUN_1403ed2d0).
 class Unk_MagicWorld {
 public:
@@ -418,10 +424,8 @@ MS2_CHECK_SIZE(Unk_MagicRandom, 0x48);
 
 
 // ---- callees of the projectile logic (unit-local declarations; names invented) ----
-struct Unk_MagicModelPtr { void* m_pad; CMagicModel* m_p; };
 struct Unk_MagicCullCfg { float FUN_1410a71d0(); };                 // the cull distance
 class Unk_MagicEffectFiles { public: Unk_MagicEffectFile FUN_14119f870(const CString& strName); };
-class Unk_MagicModels { public: Unk_MagicModelPtr FUN_14146c5d0(unsigned long long nTag, unsigned long long nSub); };
 void FUN_14101ac20(void* pSet);                                     // clear the hit set
 int FUN_14028d260(float fMs);                                       // float -> int (rounds)
 bool FUN_14028d470(float a, float b);                               // approx equal
@@ -442,9 +446,7 @@ Unk_MagicTime* FUN_14086d260();
 float FUN_140966f00(const Unk_StreamPoint& a, const Unk_StreamPoint& b);   // distance
 Unk_MagicCullCfg* FUN_141bd9c00(Unk_MagicWorld* pWorld);
 bool FUN_1410a82b0(Unk_MagicCullCfg* pCfg);
-int FUN_1414691d0(Unk_MagicTagLookup* p, int nNull);
-CMagicModel* FUN_1414692b0(Unk_MagicModelPtr* p);
-Unk_MagicModels* FUN_1410a7630();
+CMagicService* FUN_1410a7630();
 
 // @0x14145d5d0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
@@ -585,7 +587,7 @@ void CMagic::FUN_14145de80()
         m_nStateTick = (int)FUN_14028d260(m_data.m_fDestroyTime) + m_nStateTick;
         m_nLastTick = m_nStateTick;
         m_nState = 4;
-        FUN_141460640();
+        FUN_141460640(nNow);
     }
     m_nLastTick = nNow;
 }
@@ -622,11 +624,10 @@ void CMagic::FUN_14145e960(unsigned nNow)
 }
 
 // @0x141460640
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
-void CMagic::FUN_141460640()
+void CMagic::FUN_141460640(unsigned nNow)
 {
     FUN_1403ed280()->FUN_1411a6060(m_nEffectId);
-    for (unsigned i = 0; i < 16; ++i) {
+    for (int i = 0; i < 16; ++i) {
         if (m_slots[i].m_nEffect != 0) {
             FUN_1403ed280()->FUN_1411a6060(m_slots[i].m_nEffect);
             m_slots[i].m_nEffect = 0;
@@ -821,8 +822,8 @@ int CMagic::FUN_141464670()
     if (m_spCaster.m_p != NULL) {
         Unk_MagicTag* pCaster = m_spCaster.operator->();
         Unk_MagicTag* pTag = m_spCaster.operator->();
-        Unk_MagicModelPtr spModel = FUN_1410a7630()->FUN_14146c5d0(pTag->m_nTagId, pCaster->m_nTagSub);
-        CMagicModel* pModel = FUN_1414692b0(&spModel);
+        Unk_SocketPtr<CMagicModel> spModel = FUN_1410a7630()->FUN_14146c5d0(pTag->m_nTagId, pCaster->m_nTagSub);
+        CMagicModel* pModel = spModel.get();
         if (pModel != NULL)
             nExtra = pModel->FUN_141467b30();
     }
@@ -968,4 +969,79 @@ CMagicData& CMagicData::operator=(const CMagicData& kOther)
     m_nIgnorePhysxTestInitPosition = kOther.m_nIgnorePhysxTestInitPosition;
     m_nTraceTargetOffsetPos = kOther.m_nTraceTargetOffsetPos;
     return *this;
+}
+
+// ---- CMagicService ----
+CMagicService* TSingleton<CMagicService>::s_instance = 0;
+inline TSingleton<CMagicService>::TSingleton() { s_instance = static_cast<CMagicService*>(this); }
+
+// @0x14146b2e0
+CMagicService::CMagicService()
+    : m_mapCasts(10)
+    , m_mapModels(17, 0.75f, 0.25f, 2.25f, 10)
+{
+}
+
+// @0x14146b3b0
+CMagicService::~CMagicService()
+{
+}
+
+// @0x14146b420
+const char* CMagicService::GetDisplayName() const
+{
+    return "MagicService";
+}
+MS2_REPLACE_METHOD(0x14146B420, CMagicService, GetDisplayName, 13, 0xE5D35438);
+
+// @0x14146c4b0
+void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast)
+{
+    Unk_MagicModelMapPtr spModels(0);
+    if (!m_mapModels.Lookup(nCaster, spModels))
+        return;
+    Unk_SocketPtr<CMagicModel> spModel(0);
+    if (!spModels->Lookup(nCast, spModel))
+        return;
+    spModel->FUN_141467800();
+    spModels->RemoveKey(nCast);
+    if (spModels->IsEmpty())
+        m_mapModels.RemoveKey(nCaster);
+}
+
+// @0x14146cee0
+efd::SyncResult CMagicService::OnPreInit(efd::IDependencyRegistrar*)
+{
+    return efd::SyncResult_Success;
+}
+
+// @0x14146cf00
+efd::AsyncResult CMagicService::OnInit()
+{
+    return efd::AsyncResult_Complete;
+}
+
+// @0x14146cf20
+efd::AsyncResult CMagicService::OnTick()
+{
+    ATL::CAtlList<Unk_SocketPtr<CMagicModel> > aModels(10);
+    for (POSITION posCaster = m_mapModels.GetStartPosition(); posCaster != 0; m_mapModels.GetNext(posCaster))
+    {
+        Unk_MagicModelMapPtr spModels(m_mapModels.GetValueAt(posCaster));
+        for (POSITION posModel = spModels->GetHeadPosition(); posModel != 0; spModels->GetNext(posModel))
+            aModels.AddTail(spModels->GetValueAt(posModel));
+    }
+    for (POSITION posOut = aModels.GetHeadPosition(); posOut != 0; aModels.GetNext(posOut))
+    {
+        Unk_SocketPtr<CMagicModel> spModel(aModels.GetAt(posOut));
+        spModel->FUN_141467860();
+    }
+    return efd::AsyncResult_Pending;
+}
+
+// @0x14146d0b0
+efd::AsyncResult CMagicService::OnShutdown()
+{
+    m_mapModels.RemoveAll();
+    return efd::AsyncResult_Complete;
 }
