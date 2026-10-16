@@ -66,7 +66,7 @@ public:
     virtual void vfunc_52();
     virtual void vfunc_53();
     virtual void vfunc_54();
-    virtual void vfunc_55();
+    virtual void vfunc_55(float fHpPercent);   // 0x1b8: scenestategame 0x2e passes the hp percentage
     virtual void vfunc_56();
     virtual void vfunc_57();
     virtual void vfunc_58(int,int);

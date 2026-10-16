@@ -96,7 +96,7 @@ public:
     virtual void vfunc_71(void* p);                         // 71  0x14166fa30
     virtual void vfunc_72();                                // 72  0x14166fa60
     virtual void vfunc_73(void* p, int n);                  // 73  0x14166fa70
-    virtual void vfunc_74(void* a, void* b);                // 74  0x14166fbf0
+    virtual void vfunc_74(__int64 nCur, __int64 nMax);      // 74  0x14166fbf0 (scenestategame 0x2e: hp current/max)
     virtual void vfunc_75(void* a, void* b);                // 75  0x14166fc70
     virtual void vfunc_76(CStringW str);                    // 76  0x14166fcf0 (by value: the callee destroys it)
     virtual CStringW vfunc_77();                            // 77  0x14166fd50
@@ -193,6 +193,7 @@ public:
     void FUN_141678360();                                   // 0x141678360
     class Ridee* FUN_1416764a0();                           // 0x1416764a0 the ridee this actor rides (scenestategame, w86)
     void FUN_14166ce70(int nEmotion);                       // 0x14166ce70 (scenestategame packet 0x3f, w86)
+    __int64 FUN_141670990(int nKind, int nStat);            // 0x141670990 stat value (kind 0..2, stat 0..0x22; scenestategame w109)
     // mypc.cpp (w99)
     unsigned short FUN_141661e00();                         // 0x141661e00 the channel the actor is on
     int FUN_141661e20();                                    // 0x141661e20

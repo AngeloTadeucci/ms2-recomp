@@ -36,6 +36,8 @@
 // MS2-PIN: ??0?$MS2Ptr@VCSplashDamageRecord@@@@QEAA@PEAVCSplashDamageRecord@@@Z 0x141745850 ; w109 manual (was auto-order)
 // MS2-PIN: ??0?$MS2Ptr@VUGCMapBlueprintInfo@@@@QEAA@PEAVUGCMapBlueprintInfo@@@Z 0x141745880 ; w109 manual (was auto-order)
 // MS2-PIN: ??0?$MS2Ptr@VUGCMapDesignInfo@@@@QEAA@PEAVUGCMapDesignInfo@@@Z 0x1417458f0 ; w109 manual (was auto-order)
+// MS2-PIN: ??_GNotifyChangeMyLevel@@UEAAPEAXI@Z 0x141747890 ; w109 manual
+// MS2-PIN: ??1NotifyChangeMyLevel@@UEAA@XZ 0x141746be0 ; w109 manual
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -76,6 +78,7 @@
 #include "uilongtermattendgiftdialog.h"
 #include "uisnowmaneventdialog.h"
 #include "ms2/placeholder/sidepopuptalkparam.h"
+#include "ms2/placeholder/dropitem.h"
 #include "ms2/ms2format.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
@@ -106,6 +109,7 @@ public:
     GameObject* FUN_141bd1180(int nId);
     PC* FUN_141bd1290(int nId);
     PCBase* FUN_141bd1200(int nId);
+    int FUN_141bbb1e0(GameObject* pObj, int nA, int nB);    // add an object to the world
     int FUN_141bd1a10(PCBase* pActor);
     PCBase* FUN_141bd3620();
     void FUN_141bd92c0(float fX, float fY, float fZ, int n);
@@ -649,7 +653,7 @@ void FUN_140930fe0(CInPacket& packet);
 class Unk_SSGCubeObj { public: void FUN_140b107f0(int n); void FUN_140b10a10(__int64 n); };
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
-class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
+class Unk_SSGDlg4e28 { public: void FUN_141939620(); void FUN_140ea5f80(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
@@ -669,8 +673,12 @@ public:
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
     char m_pad_66d1[0x67e0 - 0x66d1];
     Unk_SSGConstValue2 m_67e0;                              // +0x67e0
+    char m_pad_67e1[0x9718 - 0x67e1];
+    unsigned short m_n9718;                                 // +0x9718 skill point level cap (the larger of the two)
+    unsigned short m_n971a;                                 // +0x971a
 };
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_67e0, 0x67e0);
+MS2_CHECK_OFFSET(Unk_SSGConstants, m_n971a, 0x971a);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_2970, 0x2970);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_3680, 0x3680);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_66d0, 0x66d0);
@@ -694,7 +702,7 @@ void FUN_140e146f0(CInPacket& packet);
 class Unk_SSGHomeBlocks { public: void FUN_140a46b90(CInPacket& packet); };                     // HomeBlockManager
 Unk_SSGHomeBlocks* FUN_1414a5830();
 
-class Unk_SSGStatusListener { public: void FUN_141b0ce20(int a, int b); };
+class Unk_SSGStatusListener { public: void FUN_141b0ce20(int a, int b); void FUN_141b0e050(); };
 Unk_SSGStatusListener* FUN_140aa6d40();
 void FUN_140930150(int n);
 class Unk_PCCubeCraft { public: void FUN_1410aa5c0(CubeItemInfo* pInfo); };
@@ -727,7 +735,7 @@ public:
     }
 };
 Unk_SSGCommandLog* FUN_140166440();
-class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
+class Unk_SSGChatDialog { public: void FUN_141ac0210(MyPC* pPlayer); void FUN_141ac14b0(); void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
 class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
 Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
@@ -760,7 +768,7 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2d0 - 0xd8]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x78]; CString m_str358; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2d0 - 0xd8]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; };
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
 int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
 class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
@@ -852,6 +860,7 @@ public:
     int FUN_140a621c0(__int64 nItemUid, int a, int b);      // remove an item (packet 0x20 mode 2)
     void FUN_140a62920(__int64 nItemUid);                   // packet 0x20 mode 3
     int FUN_140a5d120(CItem* pItem);                        // add an item
+    void FUN_140a66990(unsigned short nLevel);              // packet 0x2f: level changed
 };
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
 
@@ -5483,3 +5492,193 @@ void CSceneStateGame::FUN_141716200(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141716200, CSceneStateGame, FUN_141716200, 1144, 0x21D35F8C);
+
+extern CString DAT_143ae7968;                               // the low-hp sound event name
+extern CString DAT_143ae7970;
+
+// @0x1417176b0
+// MS2-FUNCTIONAL: the exe spills the world singleton to a temp slot before the actor lookup (one extra stack temp); everything else matches.
+void CSceneStateGame::FUN_1417176b0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+    if (pActor == 0)
+        return;
+    __int64 aBefore[3][0x23];
+    for (int i = 0; i < 0x23; i++)
+    {
+        for (int j = 0; j < 3; j++)
+            aBefore[j][i] = pActor->FUN_141670990(j, i);
+    }
+    pActor->m_unk_1bc = nFlag;
+    pActor->vfunc_90(&packet);
+    __int64 nHp = pActor->FUN_141670a00(4);
+    __int64 nMaxHp = pActor->FUN_141670a30(4);
+    pActor->vfunc_74(nHp, nMaxHp);
+    if (FUN_14096e160(pActor) == 0)
+        return;
+    int bHp = 0;
+    int bSp = 0;
+    int bEp = 0;
+    int bOther = 0;
+    __int64 aAfter[3][0x23];
+    for (int i = 0; i < 0x23; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            aAfter[j][i] = pActor->FUN_141670990(j, i);
+            if (aBefore[j][i] != aAfter[j][i])
+            {
+                if (i == 4)
+                    bHp = 1;
+                else if (i == 7)
+                    bSp = 1;
+                else if (i == 10)
+                    bEp = 1;
+                else
+                    bOther = 1;
+            }
+        }
+    }
+    if (bHp != 0)
+    {
+        if (nHp > 0)
+        {
+            float fThreshold = nMaxHp * 0.3f;
+            if (fThreshold <= aBefore[2][4] && fThreshold >= nHp)
+                FUN_141276180(DAT_143ae7968, "");
+            else if (nHp <= fThreshold)
+                FUN_141276180(DAT_143ae7970, "");
+            float fPercent = (float)nHp / nMaxHp * 100.0f;
+            FUN_140d86260()->vfunc_55(fPercent);
+        }
+        else
+        {
+            FUN_140d86260()->vfunc_55(0);
+        }
+        FUN_140aa6d40()->FUN_141b0ce20(0, 0);
+    }
+    if (bSp != 0)
+        FUN_140aa6d40()->FUN_141b0ce20(1, 0);
+    if (bEp != 0)
+        FUN_140aa6d40()->FUN_141b0ce20(2, 0);
+    if (bOther != 0)
+        FUN_140aa6d40()->FUN_141b0e050();
+}
+MS2_REPLACE_METHOD(0x1417176b0, CSceneStateGame, FUN_1417176b0, 1160, 0xBADC93AA);
+
+// 0x141746230: the level change notification (ctor/dtor are emitted in this unit; vfunc_1 lives in the notify unit).
+class NotifyChangeMyLevel : public NotifyObject
+{
+public:
+    NotifyChangeMyLevel(unsigned short nLevel, unsigned short nOldLevel) : m_nLevel(nLevel), m_nOldLevel(nOldLevel) {}
+    virtual ~NotifyChangeMyLevel() = default;
+    virtual CStringW vfunc_1();                             // 0x140db43d0
+    unsigned short m_nLevel;                                // +0x18
+    unsigned short m_nOldLevel;                             // +0x1a
+};
+MS2_CHECK_SIZE(NotifyChangeMyLevel, 0x20);
+class Unk_SSGSkillBook { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(unsigned short nLevel); };
+Unk_SSGSkillBook* FUN_1416546d0(PC* pPC);                  // the actor's skill book
+void FUN_141b16550(unsigned short nLevel);
+UIExpBar* FUN_14125b200(int nId);                           // GetDialog<UIExpBar> (another unit's COMDAT)
+
+// @0x14171aec0
+// MS2-FUNCTIONAL: stack layout only: the shared Unk_EffectQuery placeholder is 0x10 bytes but the exe object is 0x70 (ctor 0x140a52ef0 writes up to +0x68), so the frame is 0x60 smaller and slots shift.
+void CSceneStateGame::FUN_14171aec0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    int nOldLevel = (unsigned short)pPC->vfunc_78();
+    pPC->vfunc_131(nLevel);
+    if (nLevel > nOldLevel)
+    {
+        Unk_EffectQuery query;
+        query.m_strName = FUN_1401d31f0()->m_str328;
+        query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
+        if (pPC->FUN_1416764a0() != 0)
+        {
+            efd::SmartPointer<Ridee> spRidee(pPC->FUN_1416764a0());
+            query.FUN_140a53190(spRidee->FUN_14123c580());
+        }
+        else
+        {
+            query.FUN_140a53190(pPC->FUN_14123c580());
+        }
+        Unk_SSGDlgInv* pInv = FUN_1405344f0(0x4e2d);
+        if (pInv != 0)
+            pInv->FUN_141999f60();
+        Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+        if (pMenu != 0)
+            pMenu->FUN_140ea5f80();
+        FUN_1403ed280()->FUN_1411a4a00(&query);
+    }
+    Unk_SSGSkillBook* pBook = FUN_1416546d0(pPC);
+    pBook->vfunc_4(nLevel);
+    MyPC* pMyPC = FUN_1409613d0(pPC);
+    if (pMyPC == 0)
+        return;
+    FUN_141b16550(nLevel);
+    Unk_SSGChatDialog* pNotify = FUN_140938cd0(0x4e5d);
+    if (pNotify != 0)
+    {
+        pNotify->FUN_141ac0210(pMyPC);
+        if ((unsigned short)pMyPC->vfunc_78() >= 10 && nLevel > nOldLevel)
+        {
+            unsigned short nCap = FUN_1401d3200()->m_n9718 > FUN_1401d3200()->m_n971a ? FUN_1401d3200()->m_n9718 : FUN_1401d3200()->m_n971a;
+            if (nLevel <= nCap)
+            {
+                if (FUN_1403ed2b0()->FUN_141adc940(0x4f2d) != 0)
+                    pNotify->FUN_141ac14b0();
+                FUN_1412751b0(FUN_14028b8e0(L"s_msg_skillbook_add_skillpoint"), 0x14);
+            }
+        }
+    }
+    FUN_140aa6d40()->FUN_141b0ce20(6, 0);
+    FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyChangeMyLevel((unsigned short)pMyPC->vfunc_78(), nOldLevel)));
+    DAT_143ab2a90.FUN_140a66990(nLevel);
+    UIExpBar* pBar = FUN_14125b200(0x4e27);
+    if (pBar != 0)
+        pBar->FUN_141932080(3);
+}
+MS2_REPLACE_METHOD(0x14171aec0, CSceneStateGame, FUN_14171aec0, 1199, 0xEAC30A37);
+
+unsigned char FUN_14053f8c0(unsigned nItemId);              // the item id is a currency (no item record)
+
+// @0x141711e70
+void CSceneStateGame::FUN_141711e70(CInPacket& packet)
+{
+    int nObjectId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nOwnerUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    ATL::CAtlList<__int64> kOwners(10);
+    kOwners.AddTail(nOwnerUid);
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nRarity = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+    int bFlag1 = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    int bFlag2 = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    efd::SmartPointer<CDropItem> spDrop = EE_NEW CDropItem(nType, nRarity);
+    if (spDrop->FUN_14118d1c0(nObjectId, nItemId, nAmount, nA, nB, kOwners) == 0)
+        return;
+    spDrop->FUN_14118fe60(bFlag1);
+    spDrop->FUN_14118fe80(bFlag2);
+    if (!FUN_14053f8c0(nItemId))
+    {
+        spDrop->FUN_140b12380()->FUN_14052a040(nObjectId);
+        spDrop->FUN_140b12380()->FUN_140524eb0(static_cast<CInputStream&>(packet));
+    }
+    kPos.z += 70.0f;
+    spDrop->vfunc_19(reinterpret_cast<efd::Point3&>(kPos));
+    if (pWorld->FUN_141bbb1e0(spDrop, 0, 1) == 0)
+        return;
+}
+MS2_REPLACE_METHOD(0x141711e70, CSceneStateGame, FUN_141711e70, 1221, 0x738FBD8D);

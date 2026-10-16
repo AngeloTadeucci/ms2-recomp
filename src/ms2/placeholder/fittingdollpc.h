@@ -63,7 +63,7 @@ public:
     virtual int vfunc_69();                                 // 69 0x14165f480
     virtual void vfunc_71(void* p);                         // 71 0x14165ff00
     virtual void vfunc_72();                                // 72 0x14165ff80
-    virtual void vfunc_74(void* a, void* b);                // 74 0x141656af0
+    virtual void vfunc_74(__int64 nCur, __int64 nMax);      // 74 0x141656af0
     virtual CStringW vfunc_77();                            // 77 0x141656c70
     virtual int vfunc_78();                                 // 78 0x1416578f0
     virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141656f80
