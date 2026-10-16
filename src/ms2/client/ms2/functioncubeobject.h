@@ -116,15 +116,8 @@ MS2_CHECK_SIZE(FunctionCubeData, 0x138);
 // ---- unit-local views of exe classes this unit calls into ----
 
 // The nurturing pet data of a cube row (class of objectdata.cpp, unrecovered): owner name, then three hash maps.
-struct Unk_FcMapU64
-{
-    unsigned __int64 FUN_14122e460() const;                       // 0x14122e460 count
-    void* FUN_140709db0();                                        // first position (0 when empty)
-    unsigned __int64* FUN_14122e4c0(void* pos);                   // 0x14122e4c0 value at a position
-    void* FUN_14122e470(void** ppos);                             // 0x14122e470 step to the next position
-    bool FUN_14122e740(unsigned short nKey, unsigned __int64* pnValue);   // 0x14122e740 lookup
-    char m_pad[0x48];
-};
+typedef ATL::CAtlMap<unsigned short, unsigned __int64> Unk_FcMapU64;
+MS2_CHECK_SIZE(Unk_FcMapU64, 0x48);
 struct Unk_FcMapInt
 {
     unsigned char FUN_1405b9580(unsigned short nKey, int* pnValue);       // lookup
@@ -307,6 +300,8 @@ public:
     int FUN_14112e110();                                          // item id
     int FUN_14122e6d0();                                          // 0x14122e6d0
     int FUN_14122e710();                                          // 0x14122e710
+    int FUN_141236a60();                                          // 0x141236a60 m_bLike
+    unsigned char FUN_141236b10();                                // 0x141236b10 m_b21
 
 public:
     MS2_LAYOUT_FRIEND;

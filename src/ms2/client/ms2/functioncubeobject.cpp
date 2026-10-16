@@ -59,6 +59,37 @@
 // MS2-PIN: ?RegisterMessageFactory@?$MessageHandlerImpl@VCFunctionCubeService@@VEntityChangeMessage@egf@@@efd@@UEAAXPEAV?$GenericFactory@V?$SmartPointer@VIMessage@efd@@@efd@@I@2@@Z 0x141237fc0 ; unique
 // MS2-PIN: ?RegisterMessageFactory@?$MessageSubclassHandler@VCFunctionCubeService@@VEntityChangeMessage@egf@@V23@@efd@@UEAAXPEAV?$GenericFactory@V?$SmartPointer@VIMessage@efd@@@efd@@I@2@@Z 0x141238000 ; unique
 // MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXPEAX@Z 0x141238b50 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@$$QEAV0@@Z 0x141234860
+// MS2-PIN: ??_7CFunctionCubeService@@6BISystemService@efd@@@ 0x142ec58b0
+// MS2-PIN: ?TypeCast@CFunctionCubeService@@UEBA_NIPEAPEAX@Z 0x141238a60
+// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@2@@Z 0x141239460
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x141238d20
+// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x141235340
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@H@2@XZ 0x141239500
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x1412395f0
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x1412352d0
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@2@AEBH@Z 0x141239d60
+// MS2-PIN: ?TypeCast@CFunctionCubeService@@UEBA_NIPEAPEBX@Z 0x141238ab0
+// MS2-PIN: ??_7CFunctionCubeService@@6B?$TSingleton@VCFunctionCubeService@@@@@ 0x142ec5938
+// MS2-PIN: ??B?$MS2Ptr@VUnk_FcArea@@@@QEBAPEAVUnk_FcArea@@XZ 0x141235230
+// MS2-PIN: ??C?$MS2Ptr@VUnk_FcArea@@@@QEBAPEAVUnk_FcArea@@XZ 0x141235250
+// MS2-PIN: ??B?$MS2Ptr@VUnk_FcTag@@@@QEBAPEAVUnk_FcTag@@XZ 0x141235260
+// MS2-PIN: ?Lookup@?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@QEBA_NAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEAV?$MS2Ptr@VCFunctionCubeObject@@@@@Z 0x141236d70
+// MS2-PIN: ?SetAt@?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VCFunctionCubeObject@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VCFunctionCubeObject@@@@@2@@ATL@@QEAAPEAU__POSITION@@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEBV?$MS2Ptr@VCFunctionCubeObject@@@@@Z 0x141238540
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCFunctionCubeObject@@@@@ATL@@SAXPEAV?$MS2Ptr@VCFunctionCubeObject@@@@0_K@Z 0x141238060
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@SAXPEAV?$MS2Ptr@VCHomemadeCubeObject@@@@0_K@Z 0x141238060
+// MS2-PIN: ??8?$MS2Ptr@VUnk_FcTag@@@@QEBA_NPEAVUnk_FcTag@@@Z 0x141235120
+// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@SA_NAEBV?$MS2Ptr@VUnk_FcTag@@@@0@Z 0x1412358e0
+// MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@SAHAEBV?$MS2Ptr@VUnk_FcTag@@@@0@Z 0x141235930
+// MS2-PIN: ??0?$CComPtrBase@VUnk_FcNetSvc@@@ATL@@IEAA@PEAVUnk_FcNetSvc@@@Z 0x1412347b0
+// MS2-PIN: ??1?$CComPtrBase@VUnk_FcNetSvc@@@ATL@@QEAA@XZ 0x141234e30
+// MS2-PIN: ??C?$CComPtrBase@VUnk_FcNetSvc@@@ATL@@QEBAPEAV?$_NoAddRefReleaseOnCComPtr@VUnk_FcNetSvc@@@1@XZ 0x141235240
+// MS2-PIN: ??0?$SmartPointer@VCubeSpawnObject@@@efd@@QEAA@PEAVCubeSpawnObject@@@Z 0x14122d6a0
+// MS2-PIN: ??4?$SmartPointer@VCubeSpawnObject@@@efd@@QEAAAEAV01@PEAVCubeSpawnObject@@@Z 0x14122dc90
+// MS2-PIN: ??8?$SmartPointer@VCubeSpawnObject@@@efd@@QEBA_NPEAVCubeSpawnObject@@@Z 0x14122df80
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VUIBootyPopup@@@@QEAAAEAV1@PEAVUIBootyPopup@@@Z 0x14122dde0
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VUIUGCCubeNoticePopup@@@@QEAAAEAV1@PEAVUIUGCCubeNoticePopup@@@Z 0x14122de80
+// MS2-PIN: ??0?$MS2Ptr@VCNurturingCubeObject@@@@QEAA@PEAVCNurturingCubeObject@@@Z 0x141234890
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@XZ 0x141239540 ; prop
 // MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@2@XZ 0x1412395a0 ; unique
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@SAPEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@AEAU32@@Z 0x141239f20 ; unique
@@ -85,6 +116,19 @@
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@H@2@XZ 0x1412394f0
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x1412395d0
 // MS2-PIN: ??4?$MS2Ptr@VUIBootyPopup@@@@QEAAAEAV0@H@Z 0x14122ddb0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141232990
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x141232a10
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@1@@Z 0x141233080
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@1@@Z 0x141233cc0
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x141234180
+// MS2-PIN: ??B?$MS2Ptr@VRideOffActionHomemade@@@@QEBAPEAVRideOffActionHomemade@@XZ 0x14122e080
+// MS2-PIN: ??B?$MS2Ptr@VRideOffActionNurturing@@@@QEBAPEAVRideOffActionNurturing@@XZ 0x14122e090
+// MS2-PIN: ??B?$MS2Ptr@VUIBootyPopup@@@@QEBAPEAVUIBootyPopup@@XZ 0x14122e0a0
+// MS2-PIN: ??B?$MS2Ptr@VUIUGCCubeNoticePopup@@@@QEBAPEAVUIUGCCubeNoticePopup@@XZ 0x14122e0b0
+// MS2-PIN: ??C?$MS2Ptr@VRideOffActionHomemade@@@@QEBAPEAVRideOffActionHomemade@@XZ 0x14122e0c0
+// MS2-PIN: ??C?$MS2Ptr@VRideOffActionNurturing@@@@QEBAPEAVRideOffActionNurturing@@XZ 0x14122e0d0
+// MS2-PIN: ??C?$MS2Ptr@VUIBootyPopup@@@@QEBAPEAVUIBootyPopup@@XZ 0x14122e0e0
+// MS2-PIN: ??C?$MS2Ptr@VUIUGCCubeNoticePopup@@@@QEBAPEAVUIUGCCubeNoticePopup@@XZ 0x14122e0f0
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$list@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@PEAX@std@@@std@@QEAA@XZ 0x141234b10
 // MS2-PIN: ?IsEmpty@?$CRBTree@V?$MS2Ptr@VUnk_FcTag@@@@V?$MS2Ptr@VUnk_FcArea@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcTag@@@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_FcArea@@@@@4@@ATL@@QEBA_NXZ 0x141236a30
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\functioncubeobject.cpp"
@@ -275,7 +319,16 @@ public:
     void FUN_141adc5d0(int nId);                                    // close
 };
 Unk_FcUIMgr* FUN_1403ed2b0();
-class UITriggerEditorDialog : public UIDialog { public: void FUN_141b2b9a0(CString str, int n); void FUN_141b2b930(); CString FUN_141235d60(); };
+class UITriggerEditorDialog : public UIDialog
+{
+public:
+    void FUN_141b2b9a0(CString str, int n);
+    void FUN_141b2b930();
+    CString FUN_141235d60();                                        // the edited cube id
+    char m_pad_178[0x18];
+    CString m_strCubeId;                                            // +0x190
+};
+MS2_CHECK_OFFSET(UITriggerEditorDialog, m_strCubeId, 0x190);
 class UIHomePasswordDialog : public UIDialog { public: void FUN_1412c9680(CString str); };
 class UIHomeSummonDialog : public UIDialog { public: void FUN_141299eb0(CString str); };
 class UIObjectStoreDialog : public UIDialog { public: virtual void vfunc_84(CString* pId, int nItemId); };
@@ -390,11 +443,11 @@ CFunctionCubeObject::~CFunctionCubeObject()
     m_ent = 0;
     m_spItem = 0;
     m_spData = 0;
-    if (m_spBooty.get() != 0)
-        FUN_1410315f0(m_spBooty.get());
+    if (m_spBooty)
+        FUN_1410315f0(m_spBooty.operator->());
     m_spBooty = 0;
-    if (m_spNotice.get() != 0)
-        FUN_140fb4be0(m_spNotice.get());
+    if (m_spNotice)
+        FUN_140fb4be0(m_spNotice.operator->());
     m_spNotice = 0;
 }
 
@@ -417,6 +470,49 @@ void CFunctionCubeObject::vfunc_4()
 // @0x141226320
 void CFunctionCubeObject::vfunc_5(float)
 {
+}
+
+// @0x14122e6d0
+int CFunctionCubeObject::FUN_14122e6d0()
+{
+    return m_nState == 2 || m_nState == 5;
+}
+
+// @0x14122e710
+int CFunctionCubeObject::FUN_14122e710()
+{
+    return m_spData->m_bBuff;
+}
+
+// @0x14122e7a0
+void CFunctionCubeObject::vfunc_13()
+{
+}
+
+// @0x141235d60
+CString UITriggerEditorDialog::FUN_141235d60()
+{
+    return m_strCubeId;
+}
+
+// @0x141236a60
+int CFunctionCubeObject::FUN_141236a60()
+{
+    return m_spData->m_bLike;
+}
+
+// @0x141236b10
+unsigned char CFunctionCubeObject::FUN_141236b10()
+{
+    return m_b21;
+}
+
+// @0x14122def0
+// MS2-FUNCTIONAL: the exe keeps the string assignment in an out-of-line CStringT::operator= wrapper
+CStringW& FUN_14122def0(CStringW& strDst, const CStringW& strSrc)
+{
+    strDst = strSrc;
+    return strDst;
 }
 
 // @0x141225610
@@ -448,7 +544,7 @@ int CFunctionCubeObject::vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int
     m_spData->m_nF4 = pRow->m_nF4;
     m_spData->m_nF8 = pRow->m_nF8;
     m_spData->m_skill = pRow->m_skill;
-    m_spData->m_strNotice = pRow->m_strNotice;
+    FUN_14122def0(m_spData->m_strNotice, pRow->m_strNotice);
     m_spItem->FUN_1408b3700(pItem);
     if (pRow->m_nKind == 3 && pRow->m_nSub == 1)
         m_spData->m_bBuff = 1;
@@ -1036,10 +1132,9 @@ int FUN_14166c930(Unk_FcActor* p);                                  // current s
 __int64 FUN_141656ad0(Unk_FcActor* p);                              // account id
 unsigned FUN_141662750(Unk_FcActor* p, int nMastery);               // mastery level
 void FUN_14152c280(Unk_FcActor* p, RideOffAction* pAction);         // queue a ride-off action
-typedef void (*Unk_FcSetStateFn)(Unk_FcActor*, int, void*, int, int);
 static void Unk_FcActorSetState(Unk_FcActor* p, int nState, void* pData, int nArg)
 {
-    (*(Unk_FcSetStateFn*)(*(char**)p + 0x1d8))(p, nState, pData, nArg, 0);
+    p->vfunc_59(nState, pData, nArg, 0);
 }
 void* FUN_1409670e0();                                              // the housing manager
 unsigned char FUN_1410c35c0(void* pHousing);                        // design mode
@@ -1048,7 +1143,13 @@ void* FUN_1410b8b00(void* pHousing, int nObjectId);                 // placed ob
 
 // Housing item rows of the cube (16 / 24 byte smart pointers, destroyed by exe helpers).
 struct Unk_FcSp16 { char m_pad[16]; };
-struct Unk_FcSp24 { char m_pad[24]; };
+struct Unk_FcHmInfo;
+struct Unk_FcSp24
+{
+    void* m_pad_00;
+    Unk_FcHmInfo* m_pInfo;                                          // +0x08
+    void* m_pad_10;
+};
 struct Unk_FcMasteryRow
 {
     char m_pad_00[0x1c];
@@ -1070,6 +1171,13 @@ Unk_FcMasteryRow* FUN_140b6dda0(Unk_FcSp16* p);                     // != NULL
 Unk_FcMasteryRow* FUN_14066d9a0(Unk_FcSp16* p);
 void FUN_14066d5b0(Unk_FcSp16* p);
 Unk_FcSp24* FUN_140ca6580(CHomemadeCubeObject* pThis, Unk_FcSp24* pOut);
+
+// @0x141235220
+// MS2-FUNCTIONAL: the exe reads the pointer through a smart pointer conversion that it keeps out of line
+Unk_FcHmInfo* FUN_141235220(Unk_FcSp24* p)
+{
+    return p->m_pInfo;
+}
 Unk_FcHmInfo* FUN_1409658d0(Unk_FcSp24* p);
 void FUN_140ca62a0(Unk_FcSp24* p);
 extern __int64 DAT_143ab2898;                                       // the player's meso
@@ -1211,7 +1319,7 @@ void CHomemadeCubeObject::vfunc_8(CString str)
                 spAct->m_n30 = nItemId;
                 spAct->m_n34 = vfunc_16();
                 spAct->m_n38 = 0x8e;
-                FUN_14152c280(pActor, spAct.get());
+                FUN_14152c280(pActor, spAct);
             }
         }
         FUN_14066d5b0(&kItem);
@@ -1233,7 +1341,7 @@ void CHomemadeCubeObject::vfunc_8(CString str)
             spAct->m_n30 = nItemId;
             spAct->m_n34 = vfunc_16();
             spAct->m_n38 = 0x8f;
-            FUN_14152c280(pActor, spAct.get());
+            FUN_14152c280(pActor, spAct);
         }
     }
 }
@@ -1353,7 +1461,14 @@ void FUN_1411cf570(Unk_FcEntMgr* pMgr, Unk_Entity* pEntity);        // remove
 void FUN_1411cf2d0(Unk_FcEntMgr* pMgr, Unk_Entity* pEntity, int nFlag);
 Unk_EntRef* FUN_1411cec80(Unk_FcEntMgr* pMgr, Unk_EntRef* pOut, Unk_FcAnimName* pClass, egf::EntityID kId);
 Unk_FcAnimName* FUN_140b7cc50(Unk_FcAnimSvc* pSvc, Unk_FcAnimName* pOut, egf::EntityID kId);  // current animation
-unsigned char FUN_14122e000(Unk_FcAnimName* pName, const char* psz);                         // names are equal
+unsigned char FUN_140de8e30(Unk_FcAnimName* pName, const char* psz);                         // names are equal
+
+// @0x14122e000
+// MS2-FUNCTIONAL: negated name compare; the exe keeps this out of line
+unsigned char FUN_14122e000(Unk_FcAnimName* pName, const char* psz)
+{
+    return !FUN_140de8e30(pName, psz);
+}
 struct Unk_FcAnimRow
 {
     char m_pad_00[0x50];
@@ -1715,12 +1830,12 @@ float* FUN_140298f40(Unk_FcCellFloat* p);
 // MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
 CNurturingCubeObject::CNurturingCubeObject()
     : m_entPet(0)
+    , m_spPet((CubeSpawnObject*)0)
 {
     m_bNear = 0;
     m_bNotice = 0;
     m_nTime = 0;
     m_nC0 = 0;
-    m_spPet = 0;
     m_nE0 = 0;
     m_nE8 = 0;
     m_nLevel = 1;
@@ -1799,15 +1914,15 @@ int CNurturingCubeObject::vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, in
     if (pRow->m_nSub == 1)
         m_spData->m_bBuff = 1;
     m_obj.FUN_140704bd0(&pRow->m_objData);
-    void* pos = m_obj.m_map.FUN_140709db0();
+    POSITION pos = m_obj.m_map.GetStartPosition();
     while (pos != 0)
     {
-        __int64 nValue = *m_obj.m_map.FUN_14122e4c0(pos);
+        __int64 nValue = m_obj.m_map.GetValueAt(pos);
         __int64 nMax = nValue;
         if (nValue <= m_nE8)
             nMax = m_nE8;
         m_nE8 = nMax;
-        m_obj.m_map.FUN_14122e470(&pos);
+        m_obj.m_map.GetNext(pos);
     }
     FUN_14122cbc0(m_nLevel, Unk_EntRef(pEntity));
     return 1;
@@ -1897,7 +2012,7 @@ void CNurturingCubeObject::vfunc_8(CString str)
         {
             MS2Ptr<RideOffActionNurturing> spAct(new RideOffActionNurturing(0));
             spAct->m_s28 = str;
-            FUN_14152c280(pActor, spAct.get());
+            FUN_14152c280(pActor, spAct);
         }
     }
 }
@@ -2092,12 +2207,12 @@ void CNurturingCubeObject::FUN_14122cbc0(unsigned short nLevel, Unk_EntRef ent)
     if (!ent.FUN_1408b70b0(0))
     {
         m_entPet = ent;
-        if (m_obj.m_map.FUN_14122e460() >= 3)
+        if (m_obj.m_map.GetCount() >= 3)
         {
             unsigned __int64 nGaugeA = 300;
             unsigned __int64 nGaugeB = 500;
-            m_obj.m_map.FUN_14122e740(1, &nGaugeA);
-            m_obj.m_map.FUN_14122e740(2, &nGaugeB);
+            m_obj.m_map.Lookup((unsigned short)1, nGaugeA);
+            m_obj.m_map.Lookup((unsigned short)2, nGaugeB);
             int nNpc = 0;
             if (m_obj.m_mapNpc.FUN_1405b9580(nLevel, &nNpc))
             {
@@ -2116,12 +2231,17 @@ void CNurturingCubeObject::FUN_14122cbc0(unsigned short nLevel, Unk_EntRef ent)
 // MS2-FUNCTIONAL: pet respawn through new / world calls; frame layout differs
 void CNurturingCubeObject::FUN_14122ce80(unsigned short nLevel)
 {
-    if (((CubeSpawnObject*)m_spPet) != 0 && m_nLevel != nLevel && m_obj.m_map.FUN_14122e460() > 2)
+    if (m_spPet == 0)
+        return;
+    if (m_nLevel == nLevel)
+        return;
+    if (m_obj.m_map.GetCount() < 3)
+        return;
     {
         unsigned __int64 nGaugeA = 300;
         unsigned __int64 nGaugeB = 500;
-        m_obj.m_map.FUN_14122e740(1, &nGaugeA);
-        m_obj.m_map.FUN_14122e740(2, &nGaugeB);
+        m_obj.m_map.Lookup((unsigned short)1, nGaugeA);
+        m_obj.m_map.Lookup((unsigned short)2, nGaugeB);
         int nNpc = 0;
         if (m_obj.m_mapNpc.FUN_1405b9580(nLevel, &nNpc))
         {
@@ -2162,7 +2282,7 @@ int CNurturingCubeObject::FUN_14122d200()
     Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
     if (pActor == 0)
         return 0;
-    if (((CubeSpawnObject*)m_spPet) == 0)
+    if (m_spPet == 0)
         return 0;
     if (FUN_1410c3180(FUN_1409670e0()) == FUN_141656ad0(pActor))
     {
@@ -2225,7 +2345,14 @@ CFunctionCubeObject* FUN_141225470(int nKind)
 
 // Service plumbing the OnPreInit / OnInit / OnShutdown bodies call (same helpers as CTriggerService).
 efd::MessageService* FUN_1411d1530(efd::ServiceManager* pManager);
-class Unk_FcNetSvc { public: efd::Category FUN_142156c20(); };
+class Unk_FcNetSvc
+{
+public:
+    virtual ~Unk_FcNetSvc();
+    virtual unsigned long AddRef();
+    virtual unsigned long Release();
+    efd::Category FUN_142156c20();
+};
 Unk_FcNetSvc* FUN_140ae1200(efd::ServiceManager* pManager);
 void FUN_1410db4c0(efd::IDependencyRegistrar* pRegistrar, unsigned n);
 void FUN_1411ab6e0(efd::IDependencyRegistrar* pRegistrar, unsigned n);
@@ -2323,7 +2450,7 @@ efd::Category Unk_FcAnimSvc::FUN_141235eb0()
 efd::AsyncResult CFunctionCubeService::OnInit()
 {
     efd::MessageService* pMessages = FUN_1411d1530(m_pServiceManager);
-    Unk_FcNetSvc* pNet = FUN_140ae1200(m_pServiceManager);
+    ATL::CComPtr<Unk_FcNetSvc> pNet(FUN_140ae1200(m_pServiceManager));
     m_catGlobal = pMessages->GetGloballyUniqueCategory();
     pMessages->Subscribe(this, DAT_143ad4348, 0, false);
     pMessages->Subscribe(this, m_catGlobal, 0, false);
@@ -2353,7 +2480,7 @@ efd::AsyncResult CFunctionCubeService::OnTick()
 efd::AsyncResult CFunctionCubeService::OnShutdown()
 {
     efd::MessageService* pMessages = FUN_1411d1530(m_pServiceManager);
-    Unk_FcNetSvc* pNet = FUN_140ae1200(m_pServiceManager);
+    ATL::CComPtr<Unk_FcNetSvc> pNet(FUN_140ae1200(m_pServiceManager));
     pMessages->Unsubscribe(this, DAT_143ad4348, 0);
     pMessages->Unsubscribe(this, m_catGlobal, 0);
     efd::Category catNet = pNet->FUN_142156c20();
@@ -2512,7 +2639,7 @@ void CFunctionCubeService::FUN_14122f270(CInPacket* pPacket)
             {
                 Unk_FcSp24 kInfo;
                 FUN_140ca6580(pHome, &kInfo);
-                if (*(void**)((char*)&kInfo + 8) != 0)
+                if (FUN_141235220(&kInfo) != 0)
                 {
                     pHome->FUN_141228fb0(nArg);
                     MS2Ptr<StateHomemadeData> spData(new StateHomemadeData(pHome->vfunc_16(), CString(), 0));
@@ -2651,7 +2778,7 @@ void CFunctionCubeService::FUN_141230580(CString strId, MS2Ptr<CFunctionCubeObje
     MS2Ptr<CFunctionCubeObject> spOld(0);
     if (m_mapPending.Lookup(strId, spOld))
     {
-        if (spOld->m_b21)
+        if (spOld->FUN_141236b10())
         {
             MS2Ptr<Unk_FcStateMsg> spMsg(reinterpret_cast<Unk_FcStateMsg*>(spOld.get()));
             spObject->vfunc_14(spMsg);
@@ -2842,12 +2969,12 @@ void CFunctionCubeService::FUN_141231730()
         {
             spTag = m_mapTags.GetKeyAt(posTag);
             MS2Ptr<Unk_FcArea> spCur(m_mapTags.GetValueAt(posTag));
-            int nHit = FUN_1409ff0d0(spCur.get(), spBox.get());
+            int nHit = FUN_1409ff0d0(spCur, spBox.get());
             if (nHit != 0)
             {
                 spArea = spCur;
                 bFound = 1;
-                FUN_1417591b0(spTag.get());
+                FUN_1417591b0(spTag);
                 break;
             }
         }
@@ -2855,7 +2982,7 @@ void CFunctionCubeService::FUN_141231730()
         {
             int nSound = 1;
             int nAreaValue;
-            if (spArea.get() != 0)
+            if (spArea != 0)
             {
                 nAreaValue = spArea->m_n18;
                 if (nAreaValue == 0)
@@ -2920,7 +3047,7 @@ void CFunctionCubeService::FUN_141231ce0(int nKey, CString str, int bAppend)
 // @0x141231eb0
 int CFunctionCubeService::FUN_141231eb0(int nKey, int* pnItem)
 {
-    for (std::map<int, std::list<CString> >::iterator it = m_mapStrings.begin(); it != m_mapStrings.end(); ++it)
+    for (std::map<int, std::list<CString> >::iterator it = m_mapStrings.begin(); it != m_mapStrings.end(); it++)
     {
         if (it->first != nKey)
             continue;
@@ -3047,7 +3174,7 @@ void CFunctionCubeService::FUN_141232660(ATL::CAtlArray<MS2Ptr<CHomemadeCubeObje
                 if (spCube->FUN_140966fc0() == 7 || spCube->FUN_140966fc0() == 8)
                 {
                     MS2Ptr<CHomemadeCubeObject> spHome(dynamic_cast<CHomemadeCubeObject*>(spCube.get()));
-                    if (!(spHome == 0))
+                    if ((!spHome) == 0)
                         aOut.Add(spHome);
                 }
             }
@@ -3069,10 +3196,73 @@ void CFunctionCubeService::FUN_141232810(ATL::CAtlArray<MS2Ptr<CNurturingCubeObj
             if (spCube->FUN_140e5cc00() != 1 && spCube->FUN_140966fc0() == 0xd)
             {
                 MS2Ptr<CNurturingCubeObject> spNurture(dynamic_cast<CNurturingCubeObject*>(spCube.get()));
-                if (!(spNurture == 0))
+                if ((!spNurture) == 0)
                     aOut.Add(spNurture);
             }
         }
         m_mapCubes.GetNext(pos);
     }
 }
+
+
+// ---- hooks (byte-exact members) ----
+MS2_REPLACE_METHOD(0x1412255C0, CFunctionCubeObject, vfunc_1, 61, 0x4CD742F6);
+MS2_REPLACE_METHOD(0x141226300, CFunctionCubeObject, vfunc_3, 6, 0xA9AF6E37);
+MS2_REPLACE_METHOD(0x141226310, CFunctionCubeObject, vfunc_4, 6, 0xA9AF6E37);
+MS2_REPLACE_METHOD(0x141226320, CFunctionCubeObject, vfunc_5, 12, 0x90591540);
+MS2_REPLACE_METHOD(0x141226B20, CFunctionCubeObject, vfunc_14, 88, 0x2063E5F2);
+MS2_REPLACE_METHOD(0x141226B80, CFunctionCubeObject, FUN_141226b80, 63, 0xE18B625C);
+MS2_REPLACE_METHOD(0x141226BD0, CFunctionCubeObject, FUN_141226bd0, 66, 0xBB932E49);
+MS2_REPLACE_METHOD(0x141226CD0, CFunctionCubeObject, FUN_141226cd0, 34, 0x9D097096);
+MS2_REPLACE_METHOD(0x141226D00, CFunctionCubeObject, FUN_141226d00, 93, 0x773D38C8);
+MS2_REPLACE_METHOD(0x141226E60, CFunctionCubeObject, FUN_141226e60, 65, 0x1741F7DD);
+MS2_REPLACE_METHOD(0x141226EB0, CFunctionCubeObject, FUN_141226eb0, 115, 0x9567809B);
+MS2_REPLACE_METHOD(0x141226F30, CFunctionCubeObject, vfunc_15, 78, 0xC045165D);
+MS2_REPLACE_METHOD(0x1412271C0, CFunctionCubeObject, FUN_1412271c0, 31, 0x808A9532);
+MS2_REPLACE_METHOD(0x1412271F0, CFunctionCubeObject, FUN_1412271f0, 107, 0xFAC255D5);
+MS2_REPLACE_METHOD(0x1412272B0, CFunctionCubeObject, FUN_1412272b0, 79, 0xE517C2E2);
+MS2_REPLACE_METHOD(0x141227310, CFunctionCubeObject, FUN_141227310, 70, 0x6A3DCAD3);
+MS2_REPLACE_METHOD(0x141227360, CFunctionCubeObject, FUN_141227360, 67, 0x8E0B30F4);
+MS2_REPLACE_METHOD(0x141227780, CFunctionCubeObject, FUN_141227780, 67, 0x09164966);
+MS2_REPLACE_METHOD(0x1412282D0, CFunctionCubeObject, FUN_1412282d0, 100, 0x8C091D17);
+MS2_REPLACE_METHOD(0x141228340, CFunctionCubeObject, FUN_141228340, 100, 0x5ADD4F01);
+MS2_REPLACE_METHOD(0x1412284C0, CHomemadeCubeObject, vfunc_3, 6, 0xA9AF6E37);
+MS2_REPLACE_METHOD(0x141228620, CHomemadeCubeObject, vfunc_5, 12, 0x90591540);
+MS2_REPLACE_METHOD(0x141228640, CHomemadeCubeObject, vfunc_13, 52, 0xC4CAF607);
+MS2_REPLACE_METHOD(0x141228680, CHomemadeCubeObject, vfunc_15, 67, 0x70BF2C53);
+MS2_REPLACE_METHOD(0x141228FA0, CHomemadeCubeObject, vfunc_16, 8, 0x7F371472);
+MS2_REPLACE_METHOD(0x141228FB0, CHomemadeCubeObject, FUN_141228fb0, 28, 0xB2D30D8F);
+MS2_REPLACE_METHOD(0x141228FE0, CHomemadeCubeObject, FUN_141228fe0, 18, 0xC378DD21);
+MS2_REPLACE_METHOD(0x141229080, CHomemadeCubeObject, FUN_141229080, 142, 0xEE0CE48F);
+MS2_REPLACE_METHOD(0x1412291E0, CHomemadeCubeObject, vfunc_17, 8, 0x7F371472);
+MS2_REPLACE_METHOD(0x141229B70, CBreedingCubeObject, vfunc_5, 140, 0xFD503B0A);
+MS2_REPLACE_METHOD(0x14122A350, CBreedingCubeObject, vfunc_16, 11, 0xCA9EB45C);
+MS2_REPLACE_METHOD(0x14122B040, CFarmingCubeObject, vfunc_16, 11, 0xFCA8E685);
+MS2_REPLACE_METHOD(0x14122BBE0, CNurturingCubeObject, vfunc_7, 61, 0xB75CABA3);
+MS2_REPLACE_METHOD(0x14122C410, CNurturingCubeObject, FUN_14122c410, 62, 0xAC6D2807);
+MS2_REPLACE_METHOD(0x14122CAB0, CNurturingCubeObject, GetValue, 67, 0xA5E0F545);
+MS2_REPLACE_METHOD(0x14122CB00, CNurturingCubeObject, FUN_14122cb00, 18, 0x82D58831);
+MS2_REPLACE_METHOD(0x14122CB20, CNurturingCubeObject, FUN_14122cb20, 18, 0xEE0EE69A);
+MS2_REPLACE_METHOD(0x14122CB40, CNurturingCubeObject, FUN_14122cb40, 18, 0xF75FCC54);
+MS2_REPLACE_METHOD(0x14122CB60, CNurturingCubeObject, FUN_14122cb60, 17, 0xE3FAF62F);
+MS2_REPLACE_METHOD(0x14122CB80, CNurturingCubeObject, FUN_14122cb80, 18, 0xADEC8FD1);
+MS2_REPLACE_METHOD(0x14122CBA0, CNurturingCubeObject, FUN_14122cba0, 18, 0x8E3D0C09);
+MS2_REPLACE_METHOD(0x14122D2A0, CNurturingCubeObject, FUN_14122d2a0, 69, 0xF518EAE5);
+MS2_REPLACE_METHOD(0x14122E6D0, CFunctionCubeObject, FUN_14122e6d0, 55, 0x77C2E1A9);
+MS2_REPLACE_METHOD(0x14122E710, CFunctionCubeObject, FUN_14122e710, 34, 0xBA111604);
+MS2_REPLACE_METHOD(0x14122E7A0, CFunctionCubeObject, vfunc_13, 6, 0xA9AF6E37);
+MS2_REPLACE_METHOD(0x14122F0F0, CFunctionCubeService, GetDisplayName, 13, 0x5D5FE58E);
+MS2_REPLACE_METHOD(0x14122F240, CFunctionCubeService, FUN_14122f240, 34, 0x6617611D);
+MS2_REPLACE_METHOD(0x141230670, CFunctionCubeService, OnPreInit, 54, 0xC1765B69);
+MS2_REPLACE_METHOD(0x1412316A0, CFunctionCubeService, FUN_1412316a0, 126, 0x31D444B2);
+MS2_REPLACE_METHOD(0x1412359A0, CFunctionCubeService, DecRefCount, 50, 0xFB01D42A);
+MS2_REPLACE_METHOD(0x141235D50, CFunctionCubeService, GetClassDesc, 13, 0x421533FA);
+MS2_REPLACE_METHOD(0x141235D60, UITriggerEditorDialog, FUN_141235d60, 68, 0x72F60FFC);
+MS2_REPLACE_METHOD(0x141235F80, CFunctionCubeService, GetRefCount, 31, 0xCB147065);
+MS2_REPLACE_METHOD(0x1412367E0, CFunctionCubeService, IncRefCount, 31, 0xB50696AD);
+MS2_REPLACE_METHOD(0x141236A60, CFunctionCubeObject, FUN_141236a60, 34, 0x87CCAF30);
+MS2_REPLACE_METHOD(0x141236B10, CFunctionCubeObject, FUN_141236b10, 15, 0x22B700A4);
+
+// The CRT memmove_s the first original TU of this range carries (0x141239f60 is the second TU copy).
+// @0x14122ee00
+MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
