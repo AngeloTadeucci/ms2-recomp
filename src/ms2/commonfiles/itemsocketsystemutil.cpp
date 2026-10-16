@@ -34,6 +34,9 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/fmt/format.h"
+#include "ms2/ms2format.h"
+#include "ms2/client/ms2/randomeffectparam.h"
 
 // The statics of the common header.
 #include "ms2/placeholder/header_statics_a.h"
@@ -276,6 +279,492 @@ EnableSocketUnlockFunction::~EnableSocketUnlockFunction() = default;
 CItemSocketTable* FUN_14052d200();
 void* FUN_140166410();
 bool FUN_14036d570(void* pThis, int nId);      // item.cpp: the socket table singleton (TSingleton<CItemSocketTable>::s_instance)
+
+// ---- CItemStatus ------------------------------------------------------------------------------------------------
+// Unrecovered helpers of the option / stat text code.
+class Unk_SaInfo { };
+struct Unk_SaTable { };                                 // the special ability table (0x20 byte rows, DAT_143ab1a40)
+extern Unk_SaTable DAT_143ab1a40;
+struct Unk_SaRow
+{
+    void* m_00;
+    int m_nValueType;                                   // +0x08 eOptionValue (0 none, 2 percent)
+    int m_0c;
+    CStringW m_strFormat;                               // +0x10
+    CStringW m_strName;                                 // +0x18
+};
+Unk_SaRow* FUN_140184750(Unk_SaTable* pTable, __int64 nIndex);
+bool FUN_14081dcd0(int nSaType);                        // the SA value is a percent
+int FUN_14081d9e0(int nSaType);                         // the SA is a skill level up tier (0x4d - 0x5a)
+int FUN_14081da20(int nSaType);                         // the tier of it
+bool FUN_14082f250(int nStat);                          // the stat value is a percent
+CStringW FUN_14082f000(unsigned nStat);                 // the stat name
+CStringW FUN_1409e0900(int nValue);
+CStringW FUN_1409e0a90(float fValue);
+CStringW FUN_1409e0970(int nStat, int nValue);
+CStringW FUN_1409e0bf0(int nStat, int nValue);
+bool FUN_14080c370(unsigned nTier, unsigned nJob, ATL::CAtlArray<unsigned>& aSa);   // the SA types a tier grants a job
+void FUN_140222be0(ATL::CAtlArray<int>& aJobs);         // the job ids
+bool FUN_140187930(ATL::CAtlArray<unsigned>& a);        // IsEmpty
+unsigned __int64 FUN_140186270(ATL::CAtlArray<unsigned>& a);   // GetCount
+unsigned* FUN_140184510(ATL::CAtlArray<unsigned>& a, unsigned __int64 n);   // operator[]
+class Unk_ObjTable { };
+Unk_ObjTable* FUN_1403ed2d0();
+class Unk_Actor { };
+Unk_Actor* FUN_141bd0cc0(Unk_ObjTable*);                // the player's actor
+int FUN_141654700(Unk_Actor*);                          // its job
+class Unk_JobTable { };
+Unk_JobTable* FUN_1401d7a50();
+int FUN_140644bb0(Unk_JobTable*, int nJob);             // the job's name id
+class Unk_CmnStrings
+{
+public:
+    CStringW FUN_141811980(int nTable, int nIndex);
+    CStringW FUN_141812290(int nBuffId, unsigned short nLevel, CString strKey);
+};
+Unk_CmnStrings* FUN_1401a9d70();
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
+CStringW FormatStringId(int nId, const fmt::ArgList& args);                 // 0x14028dee0
+FMT_VARIADIC_W(CStringW, FormatStringId, int)
+CStringW FUN_14028dfa0(const CStringW& strKey, const fmt::ArgList& args);        // the localized formatter
+FMT_VARIADIC_W(CStringW, FUN_14028dfa0, const CStringW&)
+class Unk_OptionFactory
+{
+public:
+    MS2Ptr<CItemOption> FUN_1405f4ff0(MS2Ptr<CItemData> spData, int nRank, Unk_Random& kRandom);
+};
+Unk_OptionFactory* FUN_140166430();
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+CStringW FUN_140631830(int nStat, int nValue, CItemData* pData);
+CStringW FUN_140630ea0(int nSaType, unsigned short nValue, CItemData* pData);
+__int64 FUN_140632990(__int64 nValue, float fRate);
+void FUN_1406334d0(CStringW& str);
+
+// @0x14062fa00
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CItemStatus::CItemStatus(unsigned nItemId, unsigned nRarity, unsigned nArg)
+{
+    m_spOption.AssignRaw(new CItemOption(nItemId));
+    m_spEnchant.AssignRaw(new CItemEnchantInfo(nItemId, nRarity));
+    m_spUnlimited.AssignRaw(new UnlimitedEnchantInfo(nItemId, nRarity));
+}
+
+// @0x140631ce0
+CItemStatus::CItemStatus(CItemOption* pOption, CItemEnchantInfo* pEnchant, UnlimitedEnchantInfo* pUnlimited)
+    : m_spOption(pOption), m_spEnchant(pEnchant), m_spUnlimited(pUnlimited)
+{
+}
+
+// @0x140633280
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CItemStatus::~CItemStatus()
+{
+}
+
+// @0x14062fbc0
+MS2Ptr<CItemStatus> CItemStatus::FUN_14062fbc0()
+{
+    return MS2Ptr<CItemStatus>(new CItemStatus(m_spOption->FUN_1405caf90(), m_spEnchant->FUN_14058c3b0(), m_spUnlimited->FUN_1408bba60()));
+}
+MS2_REPLACE_METHOD(0x14062FBC0, CItemStatus, FUN_14062fbc0, 473, 0x2DCD2F3E);
+
+// @0x14062fda0
+void CItemStatus::FUN_14062fda0(COutputStream& out)
+{
+    m_spOption->FUN_1405cbeb0(out);
+    m_spEnchant->FUN_14058c9c0(reinterpret_cast<Unk_EnchantWrite&>(out));
+    m_spUnlimited->FUN_1408bbd30(out);
+}
+MS2_REPLACE_METHOD(0x14062FDA0, CItemStatus, FUN_14062fda0, 109, 0x4F2E960D);
+
+// @0x14062fe20
+void CItemStatus::FUN_14062fe20(CInputStream& in)
+{
+    m_spOption->FUN_1405cc190(in);
+    m_spEnchant->FUN_14058cb20(reinterpret_cast<Unk_EnchantRead&>(in));
+    m_spUnlimited->FUN_1408bbef0(in);
+}
+MS2_REPLACE_METHOD(0x14062FE20, CItemStatus, FUN_14062fe20, 109, 0xBA262CEC);
+
+// @0x14062fea0
+int CItemStatus::FUN_14062fea0(unsigned nType)
+{
+    int nValue = m_spOption->FUN_1405cb3a0(nType);
+    if (FUN_140630dc0(nType))
+    {
+        int nEnchant = FUN_14062ffb0(nType, 1, 5);
+        int nExtra = nEnchant + FUN_14062ffb0(nType, 2, 5);
+        if (nType == 0x14)
+            nExtra = (int)((float)nExtra * 0.159f);
+        nValue += nExtra;
+    }
+    return nValue;
+}
+MS2_REPLACE_METHOD(0x14062FEA0, CItemStatus, FUN_14062fea0, 189, 0x47444B3B);
+
+// @0x14062ff70
+void CItemStatus::FUN_14062ff70(unsigned nType)
+{
+    m_spOption->FUN_1405cb440(nType);
+}
+MS2_REPLACE_METHOD(0x14062FF70, CItemStatus, FUN_14062ff70, 47, 0x04A83391);
+
+// @0x14062ffb0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+int CItemStatus::FUN_14062ffb0(unsigned nType, int nWhich, int nSub)
+{
+    int nResult = 0;
+    if (nWhich == 3 || nWhich == 0)
+    {
+        if (nSub == 5)
+        {
+            nResult = m_spOption->FUN_1405cb3a0(nType);
+        }
+        else
+        {
+            Unk_EnchantPtr<BaseOption> spBase = m_spOption->FUN_1405cb760(nSub, nType);
+            if (spBase.get() != 0)
+                nResult = spBase->FUN_140266e30();
+        }
+    }
+    if (nWhich == 3 || nWhich == 1)
+    {
+        Unk_EnchantPtr<BaseOption> spBase = m_spEnchant->FUN_14058cde0(nType);
+        if (spBase.get() != 0)
+        {
+            if (!FUN_140630dc0(nType))
+            {
+                nResult += spBase->FUN_140266e30();
+            }
+            else
+            {
+                __int64 nBase = FUN_14062ffb0(nType, 0, 0);
+                __int64 nScaled = FUN_140632990(nBase, spBase->FUN_140266e10());
+                nResult += (int)nScaled;
+            }
+        }
+    }
+    if (nWhich == 3 || nWhich == 2)
+    {
+        Unk_EnchantPtr<BaseOption> spBase = m_spUnlimited->FUN_1408bc210(nType);
+        if (spBase.get() != 0)
+        {
+            if (!FUN_140630dc0(nType))
+            {
+                nResult += spBase->FUN_140266e30();
+            }
+            else
+            {
+                __int64 nBase = FUN_14062ffb0(nType, 0, 0);
+                __int64 nScaled = FUN_140632990(nBase, spBase->FUN_140266e10());
+                nResult += (int)nScaled;
+            }
+        }
+    }
+    return nResult;
+}
+
+// @0x140630290
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+int CItemStatus::FUN_140630290(unsigned nType, int nWhich, int nSub)
+{
+    int nResult = 0;
+    if (nWhich == 3 || nWhich == 0)
+    {
+        if (nSub == 5)
+        {
+            nResult = m_spOption->FUN_1405cb440(nType);
+        }
+        else
+        {
+            Unk_EnchantPtr<BaseOption> spBase = m_spOption->FUN_1405cb800(nSub, nType);
+            if (spBase.get() != 0)
+                nResult = spBase->FUN_140266e30();
+        }
+    }
+    if ((nWhich == 3 || nWhich == 2) && nSub == 5)
+    {
+        Unk_EnchantPtr<BaseOption> spBase = m_spUnlimited->FUN_1408bc2f0(nType);
+        if (spBase.get() != 0)
+            nResult += spBase->FUN_140266e30();
+    }
+    return nResult;
+}
+
+// @0x1406303e0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+float CItemStatus::FUN_1406303e0(unsigned nType)
+{
+    Unk_EnchantPtr<BaseOption> spBase = m_spEnchant->FUN_14058cde0(nType);
+    if (spBase == 0)
+    {
+        if (FUN_140630dc0(nType))
+            return spBase->FUN_140266e10();
+    }
+    return 0;
+}
+
+// @0x1406304b0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+bool CItemStatus::FUN_1406304b0(int nSub, int nWhich, unsigned nType)
+{
+    if (nSub != 5)
+    {
+        if (nWhich == 0)
+        {
+            BaseOption* pBase = m_spOption->FUN_1405cb760(nSub, nType).get();
+            if (pBase != 0)
+                return true;
+        }
+        else if (nWhich == 1)
+        {
+            BaseOption* pBase = m_spOption->FUN_1405cb800(nSub, nType).get();
+            if (pBase != 0)
+                return true;
+        }
+    }
+    return false;
+}
+
+// @0x1406305e0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW CItemStatus::FUN_1406305e0(int nSub, unsigned nType, void* pData)
+{
+    CStringW str;
+    Unk_EnchantPtr<BaseOption> spBase = m_spOption->FUN_1405cb800(nSub, nType);
+    if (spBase.get() != 0)
+    {
+        int nValue = spBase->FUN_140266e30();
+        str = FUN_140631830(nType, nValue, reinterpret_cast<CItemData*>(pData));
+    }
+    return str;
+}
+
+// @0x1406306f0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+void CItemStatus::FUN_1406306f0(int nItemId, int nRank, int nSeed)
+{
+    MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+    if (spData.get() == 0)
+        return;
+    Unk_Random kRandom(nSeed);
+    m_spOption = FUN_140166430()->FUN_1405f4ff0(spData, nRank, kRandom);
+}
+
+// @0x140630810
+bool CItemStatus::FUN_140630810()
+{
+    return m_spOption->FUN_1405cc410();
+}
+MS2_REPLACE_METHOD(0x140630810, CItemStatus, FUN_140630810, 39, 0xEC3C6A18);
+
+// @0x140630840
+void CItemStatus::FUN_140630840()
+{
+    if (FUN_140630810())
+    {
+        m_spOption->FUN_1405cb190(4);
+        m_spOption->FUN_1405cb360(0);
+    }
+}
+MS2_REPLACE_METHOD(0x140630840, CItemStatus, FUN_140630840, 88, 0x4E3181F8);
+
+// @0x140630d00
+unsigned short CItemStatus::FUN_140630d00()
+{
+    return m_spEnchant->FUN_14058c5f0();
+}
+MS2_REPLACE_METHOD(0x140630D00, CItemStatus, FUN_140630d00, 39, 0x3E09AE77);
+
+// @0x140630d30
+CItemOption* CItemStatus::FUN_140630d30()
+{
+    return m_spOption;
+}
+MS2_REPLACE_METHOD(0x140630D30, CItemStatus, FUN_140630d30, 31, 0xF8C26528);
+
+// @0x140630d60
+CItemEnchantInfo* CItemStatus::FUN_140630d60()
+{
+    return m_spEnchant;
+}
+MS2_REPLACE_METHOD(0x140630D60, CItemStatus, FUN_140630d60, 31, 0xA4FF07D8);
+
+// @0x140630d90
+Unk_ItemPlusInfo* CItemStatus::FUN_140630d90()
+{
+    return reinterpret_cast<Unk_ItemPlusInfo*>(static_cast<UnlimitedEnchantInfo*>(m_spUnlimited));
+}
+MS2_REPLACE_METHOD(0x140630D90, CItemStatus, FUN_140630d90, 31, 0x7F01B568);
+
+// @0x140630dc0
+bool CItemStatus::FUN_140630dc0(int nType)
+{
+    return nType == 0x1b || nType == 0x1c || nType == 0x14;
+}
+MS2_REPLACE_METHOD(0x140630DC0, CItemStatus, FUN_140630dc0, 59, 0x69FAA13A);
+
+// @0x140630e10
+CStringW FUN_140630e10(int nSaType)
+{
+    CStringW str;
+    str = FUN_140184750(&DAT_143ab1a40, nSaType)->m_strName;
+    return str;
+}
+MS2_REPLACE(0x140630E10, FUN_140630e10, 128, 0x6BB2121D);
+
+// @0x140630ea0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_140630ea0(int nSaType, unsigned short nValue, CItemData* pData)
+{
+    CStringW strResult;
+    Unk_Actor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor != 0)
+    {
+        if (FUN_14081d9e0(nSaType) != 0)
+        {
+            ATL::CAtlArray<int> aJobs;
+            FUN_140222be0(aJobs);
+            for (unsigned i = 0; i < aJobs.GetCount(); i++)
+            {
+                int nJob = aJobs[i];
+                bool bMyJob = FUN_141654700(pActor) == nJob;
+                if (pData == 0 || pData->FUN_14053c8e0(nJob) != 0)
+                {
+                    ATL::CAtlArray<unsigned> aSa;
+                    FUN_14080c370(FUN_14081da20(nSaType), nJob, aSa);
+                    if (!FUN_140187930(aSa))
+                    {
+                        int nJobName = FUN_140644bb0(FUN_1401d7a50(), nJob);
+                        CStringW strJob = FUN_1401a9d70()->FUN_141811980(6, nJobName);
+                        CStringW strList;
+                        for (unsigned k = 0; k < FUN_140186270(aSa); k++)
+                        {
+                            unsigned* pSa = FUN_140184510(aSa, k);
+                            strList.Append(StringFormat(L", {0}", FUN_1401a9d70()->FUN_141811980(4, *pSa)));
+                        }
+                        FUN_1406334d0(strList);
+                        if (strResult.IsEmpty())
+                            strResult.Append(FUN_140630e10(nSaType));
+                        CStringW strLine;
+                        if (!strResult.IsEmpty())
+                            strLine.Append(L"\n   -");
+                        unsigned short nTier = nValue;
+                        strLine.Append(FUN_14028dfa0(CStringW(L"s_item_opt_sa_skill_levelup_tier_v"), strJob, strList, nTier));
+                        if (bMyJob)
+                            strLine = FUN_1405c2690(CStringW(L"s_item_opt_sa_skill_levelup_tier_v_active"), strLine);
+                        strResult.Append(strLine);
+                    }
+                }
+            }
+        }
+    }
+    return strResult;
+}
+
+// @0x1406313f0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_1406313f0(int nStat, BaseOption* pBase)
+{
+    CStringW str;
+    if (!FUN_14082f250(nStat))
+        str = FormatStringId(0x48b, FUN_14082f000(nStat), FUN_1409e0900(pBase->FUN_140266e30()));
+    else
+        str = FormatStringId(0x48b, FUN_14082f000(nStat), FUN_1409e0a90(pBase->FUN_140266e10()));
+    return str;
+}
+
+// @0x140631600
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_140631600(int nStat, BaseOption* pBase)
+{
+    CStringW str;
+    if (!FUN_14082f250(nStat))
+        str = FUN_1409e0970(nStat, pBase->FUN_140266e30());
+    else
+        str = FUN_1409e0bf0(nStat, pBase->FUN_140266e30());
+    return str;
+}
+
+// @0x140631720
+CStringW FUN_140631720(int nStat, int nValue, bool bPercent)
+{
+    CStringW str;
+    if (bPercent)
+        str = FUN_1409e0bf0(nStat, nValue);
+    else
+        str = FUN_1409e0970(nStat, nValue);
+    return str;
+}
+MS2_REPLACE(0x140631720, FUN_140631720, 256, 0x7787FE96);
+
+// @0x140631830
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_140631830(int nStat, int nValue, CItemData* pData)
+{
+    CStringW str;
+    if (!FUN_14081dcd0(nStat))
+    {
+        if (FUN_14081d9e0(nStat) != 0)
+            return FUN_140630ea0(nStat, nValue, pData);
+        str = StringFormat(FUN_140184750(&DAT_143ab1a40, nStat)->m_strFormat, nValue);
+    }
+    else
+    {
+        float fValue = (float)nValue / 10.0f;
+        str = StringFormat(FUN_140184750(&DAT_143ab1a40, nStat)->m_strFormat, fValue);
+    }
+    return str;
+}
+
+// @0x1406319f0
+CStringW FUN_1406319f0(int nBuffId, unsigned short nLevel)
+{
+    CStringW str;
+    str = FUN_1401a9d70()->FUN_141812290(nBuffId, nLevel, CString("name"));
+    return str;
+}
+MS2_REPLACE(0x1406319F0, FUN_1406319f0, 240, 0xFB0E0A77);
+
+// @0x140631af0
+// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
+CStringW FUN_140631af0(int nStat, Unk_EnchantPtr<BaseOption> spBase, CItemStatus* pStatus)
+{
+    CStringW strResult;
+    if (spBase->FUN_140266ce0())
+    {
+        __int64 nBase = pStatus->FUN_14062ffb0(nStat, 0, 0);
+        float fBase = (float)nBase;
+        unsigned __int64 nExtra = (unsigned __int64)(fBase * spBase->FUN_140266e10());
+        CStringW strUnused;
+        if (nExtra == 0)
+            strResult = FormatStringId(0x48c, FUN_14082f000(nStat));
+        else
+            strResult = FUN_1409e0970(nStat, (int)nExtra);
+    }
+    return strResult;
+}
+
+// @0x1406334d0
+void FUN_1406334d0(CStringW& str)
+{
+    if (str.IsEmpty())
+        return;
+    if (str[0] == L',')
+        str = str.Mid(1);
+    if (str.IsEmpty())
+        return;
+    if (str[str.GetLength() - 1] == L',')
+        str = str.Mid(0, str.GetLength() - 1);
+}
+MS2_REPLACE(0x1406334D0, FUN_1406334d0, 264, 0x8473584E);
+
+// @0x140632990
+__int64 FUN_140632990(__int64 nValue, float fRate)
+{
+    return (__int64)((double)nValue * (double)fRate + 0.5);
+}
+MS2_REPLACE(0x140632990, FUN_140632990, 42, 0xC9ADCF11);
 
 // @0x1406346a0
 void CItemTransfer::CItemBinding::FUN_1406346a0(COutputStream& out)

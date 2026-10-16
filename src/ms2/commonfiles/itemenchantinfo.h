@@ -31,6 +31,9 @@ public:
     Unk_EnchantPtr& operator=(const Unk_EnchantPtr&);
     T* operator->() const { return p; }
     bool operator==(T* value) const { return p == value; }   // 0x1419ca6e0 (CItemEnchantInfo; uiitemenchantdialog.cpp)
+    operator T*() const { return p; }       // 0x140633420 (CItemEnchantInfo)
+    T* get() const { return p; }            // 0x1405c4950 (BaseOption; itemsocketsystemutil.cpp)
+    Unk_EnchantPtr& AssignRaw(T* value) { Unk_EnchantPtr tmp(value); T* old = p; p = tmp.p; tmp.p = old; return *this; }   // 0x1406332d0 (CItemEnchantInfo)
 private:
     void AddRef() const { if (p) AddRefImpl(0); }
     static void AddRefObject(T* value) { reinterpret_cast<Unk_EnchantRef*>(value)->FUN_14015b020(); }
@@ -48,6 +51,7 @@ public:
     BaseOption();
     bool FUN_140266ce0() const;             // 0x140266ce0 (uiitemenchantdialog.cpp)
     float FUN_140266e10() const;            // 0x140266e10 (float)[+0x18] / divisor
+    int FUN_140266e30() const;              // 0x140266e30 the value [+0x18] (itemsocketsystemutil.cpp)
     void FUN_140266d20(Unk_EnchantWrite&) const;
     void FUN_140266d60(Unk_EnchantRead&);
 private: void* p0; void* p8; void* p10; void* p18;

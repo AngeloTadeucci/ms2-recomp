@@ -8,32 +8,65 @@
 #include "ms2/placeholder/citem.h"
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/commonfiles/itemenchantinfo.h"
+#include "ms2/placeholder/unlimitedenchantinfo.h"
 #include <atlcoll.h>
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/ms2svrptr.h"
 
+class Unk_ItemPlusInfo;
+
 // Opaque parts defined in their own units; only the allocation sizes and constructors are known here.
-// The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the checks CItem makes.
+// The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the members CItem and
+// CItemStatus call. Names are by address.
 class CItemOption : public CPtred
 {
 public:
+    CItemOption(unsigned nItemId);              // 0x1405caed0
     int FUN_1405cbbb0(int nSlot);               // 0x1405cbbb0
     int FUN_1405cbc90();                        // 0x1405cbc90
+    int FUN_1405cb3a0(unsigned nType);          // 0x1405cb3a0 the summed value of a stat type
+    int FUN_1405cb440(unsigned nType);          // 0x1405cb440
+    Unk_EnchantPtr<BaseOption> FUN_1405cb760(int nSub, unsigned nType);     // 0x1405cb760
+    Unk_EnchantPtr<BaseOption> FUN_1405cb800(int nSub, unsigned nType);     // 0x1405cb800
+    void FUN_1405cb190(int);                    // 0x1405cb190
+    void FUN_1405cb360(int);                    // 0x1405cb360
+    bool FUN_1405cc410();                       // 0x1405cc410
+    MS2Ptr<CItemOption> FUN_1405caf90();        // 0x1405caf90 copy
+    void FUN_1405cbeb0(COutputStream&);         // 0x1405cbeb0 write
+    void FUN_1405cc190(CInputStream&);          // 0x1405cc190 read
 };
+// The status block of an item (CItem +0xf8): the option record, the enchant record and the unlimited-enchant record.
 class CItemStatus : public CPtred
 {
 public:
     CItemStatus(unsigned, unsigned, unsigned);   // 0x14062fa00
-    class CItemEnchantInfo* FUN_140630d60();     // the enchant record (null when absent)
-    class Unk_ItemPlusInfo* FUN_140630d90();
+    CItemStatus(CItemOption* pOption, CItemEnchantInfo* pEnchant, UnlimitedEnchantInfo* pUnlimited);   // 0x140631ce0
+    virtual ~CItemStatus();                      // 0x140633280 (??_G 0x140633450)
+    CItemEnchantInfo* FUN_140630d60();           // the enchant record (null when absent)
+    Unk_ItemPlusInfo* FUN_140630d90();           // the unlimited-enchant record
+    CItemOption* FUN_140630d30();                // the option record
     void FUN_1406306f0(int, int, int);
     void FUN_14062fda0(COutputStream&);
     MS2Ptr<CItemStatus> FUN_14062fbc0();
     void FUN_14062fe20(CInputStream&);
+    int FUN_14062fea0(unsigned nType);
+    void FUN_14062ff70(unsigned nType);
+    int FUN_14062ffb0(unsigned nType, int nWhich, int nSub);
+    int FUN_140630290(unsigned nType, int nWhich, int nSub);
+    unsigned short FUN_140630d00();
+    float FUN_1406303e0(unsigned nType);
+    bool FUN_1406304b0(int nSub, int nWhich, unsigned nType);
+    CStringW FUN_1406305e0(int nSub, unsigned nType, void* pArg);
+    bool FUN_140630dc0(int nType);
+    bool FUN_140630810();
+    void FUN_140630840();
+
     MS2Ptr<CItemOption> m_spOption;             // +0x18
-    char m_pad28[0x20];
+    Unk_EnchantPtr<CItemEnchantInfo> m_spEnchant;   // +0x28
+    MS2Ptr<UnlimitedEnchantInfo> m_spUnlimited;     // +0x38
 };
 MS2_CHECK_SIZE(CItemStatus, 0x48);
 class CItemUgc : public CPtred
