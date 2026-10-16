@@ -5,6 +5,8 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/nipoint3.h"
 
+class CInputStream;
+
 // +0x18: 16-byte handle (second word is the object pointer). Ctor is the inline 0x1416c2ba0.
 class Unk_ProxyHandle18
 {
@@ -50,6 +52,7 @@ public:
     Unk_ProxyValueD0();
     void FUN_140267c10();
     void FUN_140267bd0();               // clear to zero (_FillZeroMan)
+    void FUN_140267e70(CInputStream& s);   // decode (the Unk_UserProxyColor body; scenestategame 0x7e)
     int m_pad_00;
     int m_pad_04;
     int m_pad_08;
@@ -91,8 +94,8 @@ public:
     Unk_ProxyHandle28 m_28;
     int m_proxyId;                                      // +0x38 (object id)
     int m_pad_3c;
-    void* m_40;
-    void* m_48;
+    __int64 m_40;                                       // owner character id (scenestategame 0x7e)
+    __int64 m_48;
     CString m_50;
     CStringW m_58;
     CStringW m_60;

@@ -112,6 +112,11 @@
 #include "ms2/placeholder/tptr.h"
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/commonfiles/rideonaction.h"
+#include "ms2/placeholder/cproxygameobject.h"
+// MS2Ptr<CProxyGameObject>::operator-> / get are the exe's out-of-range copies (0x1406c71d0 / 0x1406c71b0); left
+// undefined here so they are not paired with the unit's in-range look-alikes.
+template <> CProxyGameObject* MS2Ptr<CProxyGameObject>::operator->() const;
+template <> CProxyGameObject* MS2Ptr<CProxyGameObject>::get() const;
 
 // ---- singletons and callees (names inferred; unit-local stand-ins) -----------------------------------------------
 CNetworkService* FUN_140714f90();
@@ -151,6 +156,9 @@ public:
     void FUN_141bd3d70(Unk_StreamPoint pos, Unk_StreamPoint rot);
     void FUN_141bbbe40(int nMapId, int a, int nPortal);
     MyPC* FUN_141bd0cc0();                                  // the local player actor
+    void FUN_141bc9aa0(MS2Ptr<CProxyGameObject> spProxy);   // add a field object proxy
+    void FUN_141bc9b30(int nId);                            // remove one
+    MS2Ptr<CProxyGameObject> FUN_141bc9be0(int nId);        // find one
     int FUN_141bd98d0();                                    // current field id
     void FUN_141bd9c20(CInPacket& packet);
     void FUN_141bdb6a0();                                   // hide the world tooltips
@@ -251,7 +259,7 @@ void* FUN_14015a050();
 void FUN_140ceac00(void*);
 void* FUN_1409eed70();
 void FUN_140ad68a0(void*);
-class Unk_SSGUgcMgr { public: void FUN_1418894d0(); void FUN_141889150(); void FUN_14188ff10(CInPacket& packet); };   // UGC manager
+class Unk_SSGUgcMgr { public: int FUN_14187f3b0(); void FUN_1418894d0(); void FUN_141889150(); void FUN_14188ff10(CInPacket& packet); };   // UGC manager
 Unk_SSGUgcMgr* FUN_14052d220();
 void* FUN_1409670d0();
 void FUN_14162b790(void*);
@@ -7546,3 +7554,131 @@ void CSceneStateGame::FUN_14170fda0(CInPacket& packet)
     spPC->FUN_141663550();
 }
 MS2_REPLACE_METHOD(0x14170FDA0, CSceneStateGame, FUN_14170fda0, 8209, 0xDFA14B88);
+
+// ---- 0x7e: field object proxies (mode 3..5 players, 6..8 template objects, 9..11 spawn points) -----------------
+class Unk_Svc6d6e90 { public: Unk_ProxyHandle28 FUN_140a7cab0(int id); };
+Unk_Svc6d6e90* FUN_1406d6e90();
+class Unk_SSGProxyListener
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(MS2Ptr<CProxyGameObject> spProxy, int nFlags);   // a proxy changed
+};
+Unk_SSGProxyListener* FUN_140c607b0();
+
+// @0x14172f500
+void CSceneStateGame::FUN_14172f500(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 3)
+    {
+        MS2Ptr<CProxyGameObject> spProxy(new CProxyGameObject);
+        spProxy->m_proxyId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_40 = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        spProxy->m_48 = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        spProxy->m_58 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        spProxy->m_50 = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        spProxy->m_60 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        spProxy->m_a8 = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        spProxy->m_ac = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        spProxy->m_b0 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_b4 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_b8 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_bc = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_c0 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        spProxy->m_c8 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_cc = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        spProxy->m_d0.FUN_140267e70(static_cast<CInputStream&>(packet));
+        if (FUN_14052d220()->FUN_14187f3b0() == 1)
+            spProxy->m_50 = "";
+        FUN_1403ed2d0()->FUN_141bc9aa0(spProxy);
+    }
+    else if (nMode == 4)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_1403ed2d0()->FUN_141bc9b30(nId);
+    }
+    else if (nMode == 5)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CProxyGameObject> spProxy = FUN_1403ed2d0()->FUN_141bc9be0(nId);
+        if (spProxy.get())
+        {
+            int nFlags = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (nFlags & 1)
+                spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (nFlags & 2)
+                spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+            if (nFlags & 4)
+                spProxy->m_a8 = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            if (nFlags & 8)
+            {
+                spProxy->m_ac = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+                spProxy->m_b0 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            }
+            if (nFlags & 0x10)
+                spProxy->m_60 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            if (nFlags & 0x20)
+                spProxy->m_c8 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (nFlags & 0x40)
+                spProxy->m_cc = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+            FUN_140c607b0()->vfunc_5(spProxy, nFlags);
+        }
+    }
+    else if (nMode == 6)
+    {
+        MS2Ptr<CProxyGameObject> spProxy(new CProxyGameObject);
+        spProxy->m_proxyId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nTemplateId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        spProxy->m_7c = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        if (spProxy->FUN_1416c2990(nTemplateId))
+            FUN_1403ed2d0()->FUN_141bc9aa0(spProxy);
+    }
+    else if (nMode == 7)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_1403ed2d0()->FUN_141bc9b30(nId);
+    }
+    else if (nMode == 8)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CProxyGameObject> spProxy = FUN_1403ed2d0()->FUN_141bc9be0(nId);
+        if (spProxy.get())
+        {
+            spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        }
+    }
+    else if (nMode == 9)
+    {
+        MS2Ptr<CProxyGameObject> spProxy(new CProxyGameObject);
+        spProxy->m_proxyId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_84 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->m_78 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        spProxy->m_28.FUN_140a4fe50(FUN_1406d6e90()->FUN_140a7cab0(spProxy->m_78));
+        if (spProxy->m_28.FUN_140a4ff10())
+            FUN_1403ed2d0()->FUN_141bc9aa0(spProxy);
+    }
+    else if (nMode == 10)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_1403ed2d0()->FUN_141bc9b30(nId);
+    }
+    else if (nMode == 11)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CProxyGameObject> spProxy = FUN_1403ed2d0()->FUN_141bc9be0(nId);
+        if (spProxy.get())
+        {
+            spProxy->kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spProxy->m_6c = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14172F500, CSceneStateGame, FUN_14172f500, 5132, 0xD54955F8);
