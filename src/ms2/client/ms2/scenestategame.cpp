@@ -596,7 +596,7 @@ class Unk_SSG9f7c90 { public: int FUN_1409f7ea0(); };
 Unk_SSG9f7c90* FUN_1409f7c90();
 void FUN_141663500(MyPC* pPC, int nMapId);                 // PC member (0x141663500), called on the local MyPC
 // The npc / monster class (class id 0x06200011).
-class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]; int m_n60; char m_pad_64[0x8c - 0x64]; bool m_b8c; };   // the npc table row
+class Unk_SSGNpcData : public CPtred { public: bool FUN_1406ccf40(); bool FUN_1406cd200(int nFlag); char m_pad[0x60 - sizeof(CPtred)]; int m_n60; char m_pad_64[0x8c - 0x64]; bool m_b8c; };   // the npc table row
 MS2_CHECK_OFFSET(Unk_SSGNpcData, m_n60, 0x60);
 // The drop item (class id 0x06200011; its members live in client\ms2\dropitem.cpp 0x14118c730-0x141192960). w95: split
 // from Unk_SSGNpc, whose +0x150/+0x1a0 do not fit PCBase.
@@ -660,6 +660,12 @@ public:
     void FUN_141094790(__int64 n);
     void FUN_14174a580(unsigned short n) { m_ne58 = n; }
     void FUN_14174a4f0(int n) { m_nea8 = n; }
+    void FUN_141095190(const CString& strName);
+    void FUN_141094f90(CString strModel);
+    void FUN_141095290(int n);
+    void FUN_141095240(__int64 n);
+    void FUN_1410952b0(bool b);
+    int FUN_141092ff0();                                    // nonzero: the npc carries a custom model block
 
     char m_pad_d40[0xe50 - 0xd40];
     char m_ce50;                                            // +0xe50
@@ -3167,6 +3173,81 @@ void CSceneStateGame::FUN_141718b80(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141718b80, CSceneStateGame, FUN_141718b80, 347, 0x325308DD);
 
+// Packet 0x55: an npc enters the field.
+// The npc object (RTTI CNpc, 0xf40; ctor 0x14108e420 in unit_14108e1e0). Unk_SSGNpc is its member view.
+class CNpc : public Unk_SSGNpc
+{
+public:
+    CNpc();
+    char m_pad_eb0[0xf40 - 0xeb0];
+};
+MS2_CHECK_SIZE(CNpc, 0xf40);
+class NotifyAddNpc : public NotifyObject
+{
+public:
+    NotifyAddNpc(efd::SmartPointer<Unk_SSGNpc> spNpc);      // 0x140db4860
+    efd::SmartPointer<Unk_SSGNpc> m_spNpc;                  // +0x18
+};
+MS2_CHECK_SIZE(NotifyAddNpc, 0x20);
+class CFilePreload { public: void FUN_141210540(unsigned int nId, unsigned short nType, int nPriority); };
+CFilePreload* FUN_140ab7a10();
+template <> bool MS2Ptr<Unk_SSGNpcData>::operator==(Unk_SSGNpcData* p) const;   // 0x1406a9050 (out of unit)
+class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); void FUN_140970ff0(CInPacket& packet); };
+MS2Ptr<Unk_SSGNpcData> FUN_1406cd330(int nNpcId);           // the npc table row
+// @0x141718cf0
+void CSceneStateGame::FUN_141718cf0(CInPacket& packet)
+{
+    int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nNpcId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    kPos.z += 4.0f;
+    efd::SmartPointer<Unk_SSGNpc> spNpc = new (efd::MemHint(efd::MemHint::NONE)) CNpc;
+    MS2Ptr<Unk_SSGNpcData> spData = FUN_1406cd330(nNpcId);
+    if (spData == 0)
+        return;
+    if (spData->FUN_1406ccf40())
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        spNpc->FUN_141095190(strName);
+    }
+    spNpc->FUN_14123c5a0(nObjId);
+    spNpc->vfunc_19(reinterpret_cast<efd::Point3&>(kPos));
+    spNpc->vfunc_21(reinterpret_cast<efd::Point3&>(kDir));
+    if (spNpc->vfunc_124(nNpcId) == 0)
+        return;
+    spNpc->vfunc_90(&packet);
+    int bHidden = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (bHidden != 0)
+        spNpc->vfunc_125(0);
+    spNpc->FUN_1416749a0()->FUN_140970ff0(packet);
+    spNpc->FUN_141094790(static_cast<CInputStream&>(packet).vfunc_o8_4());
+    spNpc->FUN_14174a560(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    spNpc->FUN_14174a580(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    spNpc->FUN_14174a4f0(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    if (spNpc->FUN_141092ff0() != 0)
+    {
+        spNpc->FUN_141094f90(static_cast<CInputStream&>(packet).vfunc_o8_6());
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; i++)
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            short nType = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            FUN_140ab7a10()->FUN_141210540(nId, nType, 4);
+        }
+        spNpc->FUN_141095290(static_cast<CInputStream&>(packet).vfunc_o8_3());
+    }
+    if (spData->FUN_1406cd200(5) == true)
+        spNpc->FUN_141095240(static_cast<CInputStream&>(packet).vfunc_o8_4());
+    bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1() == 1;
+    spNpc->FUN_1410952b0(bFlag);
+    if (pWorld->FUN_141bbb1e0(spNpc, 0, 1) == 0)
+        return;
+    FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyAddNpc(spNpc)));
+}
+MS2_REPLACE_METHOD(0x141718CF0, CSceneStateGame, FUN_141718cf0, 2289, 0x593CABAD);
+
 // @0x1417195f0
 void CSceneStateGame::FUN_1417195f0(CInPacket& packet)
 {
@@ -4999,7 +5080,6 @@ void CSceneStateGame::FUN_14171d610(CInPacket& packet)
 MS2_REPLACE_METHOD(0x14171d610, CSceneStateGame, FUN_14171d610, 514, 0xFE149045);
 
 // 0x3d mode 4: a buff/effect update between two actors (ids, buff id, three effect values, effect flag).
-class Unk_PCBaseBuffs { public: void FUN_14096fc00(int nBuffId); void FUN_140970ff0(CInPacket& packet); };
 // Picks an effect value: when nValue is set, it becomes the (type, value) pair to show.
 static int FUN_1417403b0(const __int64& nValue, const int& nType, int& nOutType, __int64& nOutValue);
 
