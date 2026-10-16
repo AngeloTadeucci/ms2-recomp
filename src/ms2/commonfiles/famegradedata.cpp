@@ -125,6 +125,7 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include <typeinfo>
 
 // Unrecovered helpers (the same xml loader helpers the other table units use).
 class Unk_140165cf0 { public: Unk_140165cf0* FUN_140165cf0(const char*); Unk_140165cf0* FUN_140168650(const char*); };
@@ -142,10 +143,10 @@ int FUN_1408733e0(Unk_140165cf0*, const char*, CStringA&);
 int FUN_140873890(Unk_140165cf0*, const char*, int&);
 void FUN_140178570(Unk_140165cf0*, const char*, ATL::CAtlArray<int>&);      // comma separated ints
 void FUN_1401788f0(Unk_140165cf0*, const char*, ATL::CAtlArray<CStringA>&);  // comma separated strings
-int FUN_14021a330(const CStringA& str);     // alliance name -> id (0 when unknown)
-int FUN_14021a480(const CStringA& str);     // season name -> id
+Unk_FameAlliance FUN_14021a330(const CStringA& str);     // alliance name -> id (0 when unknown)
+Unk_FameSeason FUN_14021a480(const CStringA& str);     // season name -> id
 void FUN_1401d3700(CStringA& str);          // normalises the symbol name
-void FUN_1403655a0(bool b);                 // the table's init flag
+CString FUN_14016a5c0(const char* psz, int n);
 
 // The type enum of a famePickMethod <method>.
 // @0x14035b710
@@ -180,7 +181,7 @@ int FUN_14035baa0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
 }
 
 // @0x14035bb60
-int FUN_14035bb60(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+int FUN_14035bb60(Unk_140165cf0* pElem, const char* pszName, Unk_FameSeason* pOut)
 {
     CStringA str;
     int nRet = FUN_1408733e0(pElem, pszName, str);
@@ -190,7 +191,7 @@ int FUN_14035bb60(Unk_140165cf0* pElem, const char* pszName, int* pOut)
 }
 
 // @0x14035bc20
-int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, Unk_FameAlliance* pOut)
 {
     CStringA str;
     int nRet = FUN_1408733e0(pElem, pszName, str);
@@ -201,7 +202,7 @@ int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, int* pOut)
 
 // Index of a value in an int array (-1 when it is not there).
 // @0x14035b9a0
-int FUN_14035b9a0(ATL::CAtlArray<int>* pArray, int* pnValue)
+int FUN_14035b9a0(ATL::CAtlArray<Unk_FameAlliance>* pArray, Unk_FameAlliance* pnValue)
 {
     for (int i = 0; i < (int)pArray->GetCount(); i++)
     {
@@ -215,7 +216,7 @@ int FUN_14035b9a0(ATL::CAtlArray<int>* pArray, int* pnValue)
 CFameGradeData::CFameGradeData()
 {
     m_nGrade = 0;
-    m_nAlliance = 0;
+    m_nAlliance = Unk_FameAlliance_None;
     m_nRequirePoint = 0;
     m_nAdditionalEffectId = 0;
     m_nAdditionalEffectLevel = 0;
@@ -244,7 +245,7 @@ CFameLogData::CFameLogData()
 {
     m_nGrade = 0;
     m_nId = 0;
-    m_nAlliance = 0;
+    m_nAlliance = Unk_FameAlliance_None;
 }
 
 // @0x140358aa0
@@ -288,7 +289,7 @@ int CFameLimitData::Read(Unk_140165cf0* pElem)
         return 0;
     for (size_t i = 0; i < aAlliance.GetCount(); i++)
     {
-        int nAlliance = FUN_14021a330(aAlliance[i]);
+        Unk_FameAlliance nAlliance = FUN_14021a330(aAlliance[i]);
         if (nAlliance == 0)
             continue;
         m_mapGrade.SetAt(nAlliance, aGrade[i]);
@@ -301,7 +302,7 @@ int CFameLimitData::Read(Unk_140165cf0* pElem)
 // @0x140358de0
 CFamePickAlliance::CFamePickAlliance()
 {
-    m_nAlliance = 0;
+    m_nAlliance = Unk_FameAlliance_None;
     m_nMaxCount = 0;
 }
 
@@ -356,7 +357,7 @@ int CFamePickMethod::Read(Unk_140165cf0* pElem)
 }
 
 // @0x1403591e0
-bool CFamePickMethod::HasAlliance(int nAlliance)
+int CFamePickMethod::HasAlliance(Unk_FameAlliance nAlliance)
 {
     return m_setAlliance.find(nAlliance) != m_setAlliance.end();
 }
@@ -364,7 +365,7 @@ bool CFamePickMethod::HasAlliance(int nAlliance)
 // @0x140359240
 CFameDef::CFameDef()
 {
-    m_nAlliance = 0;
+    m_nAlliance = Unk_FameAlliance_None;
     m_nOfficerNpcKind = 0;
     m_nIsExped = 0;
 }
@@ -421,7 +422,7 @@ CFameTable::~CFameTable()
 // @0x140359840
 int CFameTable::Load()
 {
-    FUN_1403655a0(true);
+    SetInit(true);
     if (!LoadFame())
         return 0;
     if (!LoadFameLog())
@@ -634,4 +635,227 @@ int CFameTable::LoadFameDef()
             return 1;
         }
     }
+}
+
+// @0x14035a870
+int CFameTable::GetGradeByPoint(Unk_FameAlliance nAlliance, int nPoint)
+{
+    CheckInit();
+    if (nAlliance <= 0 || nAlliance >= 10)
+        return 0;
+    ATL::CRBMap<int, GradePtr>& rMap = m_aGrades[nAlliance];
+    for (POSITION pos = rMap.GetHeadPosition(); pos != 0; rMap.GetNext(pos))
+    {
+        GradePtr spGrade = rMap.GetValueAt(pos);
+        if (nPoint < spGrade->m_nRequirePoint)
+            return spGrade->m_nGrade - 1;
+    }
+    return GetMaxGrade(nAlliance);
+}
+
+// @0x14035a960
+int CFameTable::GetNextGradePoint(Unk_FameAlliance nAlliance, int nGrade)
+{
+    CheckInit();
+    if (nAlliance <= 0 || nAlliance >= 10)
+        return 0x7fffffff;
+    GradePtr spGrade(0);
+    if (!m_aGrades[nAlliance].Lookup(nGrade + 1, spGrade))
+        return 0x7fffffff;
+    return spGrade->m_nRequirePoint;
+}
+
+// @0x14035aa20
+int CFameTable::GetMaxGrade(Unk_FameAlliance nAlliance)
+{
+    CheckInit();
+    int nRet;
+    if (nAlliance <= 0 || nAlliance >= 10)
+    {
+        nRet = 0;
+    }
+    else
+    {
+        ATL::CRBMap<int, GradePtr>& rMap = m_aGrades[nAlliance];
+        POSITION pos = rMap.GetTailPosition();
+        if (pos == 0)
+        {
+            nRet = 0;
+        }
+        else
+        {
+            GradePtr spGrade = rMap.GetValueAt(pos);
+            nRet = spGrade->m_nGrade;
+        }
+    }
+    return nRet;
+}
+
+// @0x14035aad0
+int CFameTable::HasGrades(Unk_FameAlliance nAlliance)
+{
+    CheckInit();
+    if (nAlliance <= 0 || nAlliance >= 10)
+        return 0;
+    ATL::CRBMap<int, GradePtr>& rMap = m_aGrades[nAlliance];
+    return rMap.GetCount() > 0 ? 1 : 0;
+}
+
+// @0x14035ab40
+void CFameTable::GetMaxGradePoint(Unk_FameAlliance nAlliance)
+{
+    CheckInit();
+    int nGrade = GetMaxGrade(nAlliance);
+    GetGradePoint(nAlliance, nGrade);
+}
+
+// @0x14035ab90
+int CFameTable::GetGradePoint(Unk_FameAlliance nAlliance, int nGrade)
+{
+    CheckInit();
+    if (nAlliance <= 0 || nAlliance >= 10)
+        return 0x7fffffff;
+    GradePtr spGrade(0);
+    if (!m_aGrades[nAlliance].Lookup(nGrade, spGrade))
+        return 0x7fffffff;
+    return spGrade->m_nRequirePoint;
+}
+
+// @0x14035ae50
+bool CFameTable::IsLogOfAlliance(unsigned nLogId, Unk_FameAlliance nAlliance)
+{
+    CheckInit();
+    LogPtr spLog(0);
+    if (!m_mapLog.Lookup(nLogId, spLog))
+        return false;
+    return spLog->m_nAlliance == nAlliance;
+}
+
+// @0x14035af00
+CFameTable::LimitPtr CFameTable::GetLimit(Unk_FameAlliance nAlliance)
+{
+    CheckInit();
+    LimitPtr spLimit(0);
+    if (!m_mapLimit.Lookup(nAlliance, spLimit))
+        return LimitPtr(0);
+    return spLimit;
+}
+
+// @0x14035afc0
+ATL::CAtlArray<CFameTable::PickPtr>& CFameTable::GetPickMethods()
+{
+    CheckInit();
+    return m_aPick;
+}
+
+// @0x14035aff0
+ATL::CAtlArray<Unk_FameAlliance>& CFameTable::GetAllianceIds()
+{
+    return m_aAllianceId;
+}
+
+// @0x14035b010
+int CFameTable::IsExped(Unk_FameAlliance nAlliance)
+{
+    DefPtr spDef(0);
+    int nRet;
+    if (m_mapDef.Lookup(nAlliance, spDef))
+        nRet = spDef->m_nIsExped;
+    else
+        nRet = 0;
+    return nRet;
+}
+
+// @0x14035b0a0
+int CFameTable::IsNotOfficerNpc(int nKind)
+{
+    return m_setOfficerNpc.find(nKind) == m_setOfficerNpc.end();
+}
+
+// @0x14035b110
+int CFameTable::GetReloadFlag(unsigned nId)
+{
+    CheckInit();
+    int nValue = 0;
+    return m_mapReload.Lookup(nId, nValue) ? nValue : 0;
+}
+
+// @0x14035b160
+bool CFameTable::IsReloadOnComplete(unsigned nId)
+{
+    CheckInit();
+    int nValue = 0;
+    return m_mapReload.Lookup(nId, nValue) && nValue == 0;
+}
+
+// @0x14035b1d0
+CStringA CFameTable::GetSymbol(Unk_FameAlliance nAlliance)
+{
+    DefPtr spDef(0);
+    if (m_mapDef.Lookup(nAlliance, spDef))
+        return spDef->m_strSymbol;
+    return CStringA();
+}
+
+// @0x14035b2a0
+CStringA CFameTable::GetSymbolByOfficerNpc(int nKind)
+{
+    CheckInit();
+    for (POSITION pos = m_mapDef.GetStartPosition(); pos != 0; m_mapDef.GetNext(pos))
+    {
+        DefPtr spDef = m_mapDef.GetValueAt(pos);
+        if (spDef->m_nOfficerNpcKind == nKind)
+            return spDef->m_strSymbol;
+    }
+    return CStringA();
+}
+
+// @0x14035b510
+int CFameTable::GetSeasonRequireQuest(Unk_FameAlliance nAlliance)
+{
+    SeasonPtr spSeason = GetSeason(nAlliance);
+    if (spSeason.get() != 0)
+        return spSeason->m_nRequireQuest;
+    return 0;
+}
+
+// @0x14035b590
+int CFameTable::GetSeasonRequireLvBySeason(Unk_FameSeason nSeason)
+{
+    SeasonPtr spSeason(0);
+    if (!m_mapSeason.Lookup(nSeason, spSeason))
+        return 0;
+    return spSeason->m_nRequireQuest;
+}
+
+// @0x14035b620
+CFameTable::SeasonPtr CFameTable::GetSeason(Unk_FameAlliance nAlliance)
+{
+    DefPtr spDef(0);
+    if (!m_mapDef.Lookup(nAlliance, spDef))
+        return SeasonPtr(0);
+    SeasonPtr spSeason(0);
+    m_mapSeason.Lookup(spDef->m_nSeason, spSeason);
+    return spSeason;
+}
+
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
+bool CFameTable::s_bInit;
+#endif
+
+// @0x14035f740
+void CFameTable::CheckInit()
+{
+    if (!s_bInit)
+    {
+        CString msg;
+        msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(CFameTable).name(), 0));
+        MessageBoxA(0, msg, "Error", 0);
+    }
+}
+
+// @0x1403655a0
+void CFameTable::SetInit(bool b)
+{
+    s_bInit = b;
 }

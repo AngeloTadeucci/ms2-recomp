@@ -13,6 +13,11 @@
 
 class Unk_140165cf0;    // xml element (declared where the loaders are)
 
+// The alliance (faction) and season ids. Enums rather than ints: the exe's ATL containers take them by reference
+// (a primitive int key would be passed by value), so the key traits are the default ones.
+enum Unk_FameAlliance { Unk_FameAlliance_None };    // 1..9 are alliances, 10 ends the table
+enum Unk_FameSeason { Unk_FameSeason_None };
+
 // One <fame> row of fame.xml (a grade of one alliance), 0x30 bytes.
 class CFameGradeData : public CPtred
 {
@@ -23,7 +28,7 @@ public:
     int Read(Unk_140165cf0* pElem);     // 0x140358970 (name invented)
 
     int m_nGrade;                       // +0x18 "grade"
-    int m_nAlliance;                    // +0x1c "alliance" (1..9)
+    Unk_FameAlliance m_nAlliance;       // +0x1c "alliance" (1..9)
     int m_nRequirePoint;                // +0x20 "requirePoint"
     unsigned m_nAdditionalEffectId;     // +0x24 "additionalEffectID"
     unsigned short m_nAdditionalEffectLevel;    // +0x28 "additionalEffectLevel"
@@ -43,7 +48,7 @@ public:
 
     int m_nGrade;                       // +0x18 "grade"
     unsigned m_nId;                     // +0x1c "id"
-    int m_nAlliance;                    // +0x20 "alliance" (1..9)
+    Unk_FameAlliance m_nAlliance;       // +0x20 "alliance" (1..9)
 };
 MS2_CHECK_SIZE(CFameLogData, 0x28);
 MS2_CHECK_OFFSET(CFameLogData, m_nAlliance, 0x20);
@@ -57,8 +62,8 @@ public:
 
     int Read(Unk_140165cf0* pElem);     // 0x140358c10 (name invented)
 
-    int m_nAlliance;                    // +0x18 "alliance"
-    ATL::CAtlMap<int, int> m_mapGrade;  // +0x20 requireAlliance -> requireGrade
+    Unk_FameAlliance m_nAlliance;       // +0x18 "alliance"
+    ATL::CAtlMap<Unk_FameAlliance, int> m_mapGrade;  // +0x20 requireAlliance -> requireGrade
 };
 MS2_CHECK_SIZE(CFameLimitData, 0x68);
 MS2_CHECK_OFFSET(CFameLimitData, m_mapGrade, 0x20);
@@ -72,7 +77,7 @@ public:
 
     int Read(Unk_140165cf0* pElem);     // 0x140358e60 (name invented)
 
-    int m_nAlliance;                    // +0x18 "id"
+    Unk_FameAlliance m_nAlliance;       // +0x18 "id"
     int m_nMaxCount;                    // +0x1c "maxCount"
 };
 MS2_CHECK_SIZE(CFamePickAlliance, 0x20);
@@ -87,7 +92,7 @@ public:
     virtual ~CFamePickMethod();         // 0x140358f90
 
     int Read(Unk_140165cf0* pElem);     // 0x140358ff0 (name invented)
-    bool HasAlliance(int nAlliance);    // 0x1403591e0 (name invented)
+    int HasAlliance(Unk_FameAlliance nAlliance);    // 0x1403591e0 (name invented)
 
     int m_nType;                        // +0x18 "type": 1 rankalliancecombination, 2 fixedcountperalliance
     int m_nRepeatType;                  // +0x1c "repeatType" (default 2)
@@ -95,7 +100,7 @@ public:
     unsigned m_nReloadOnComplete;       // +0x24
     ATL::CAtlArray<int> m_aPickCountByRank;     // +0x28
     ATL::CAtlArray<AlliancePtr> m_aAlliances;   // +0x48
-    std::set<int> m_setAlliance;        // +0x68
+    std::set<Unk_FameAlliance> m_setAlliance;        // +0x68
 };
 MS2_CHECK_SIZE(CFamePickMethod, 0x78);
 MS2_CHECK_OFFSET(CFamePickMethod, m_aAlliances, 0x48);
@@ -110,7 +115,7 @@ public:
 
     int Read(Unk_140165cf0* pElem);     // 0x140359460 (name invented)
 
-    int m_nSeason;                      // +0x18 "name"
+    Unk_FameSeason m_nSeason;           // +0x18 "name"
     unsigned m_nRequireQuest;           // +0x1c "requireQuest"
     unsigned short m_nRequireLv;        // +0x20 "requireLv"
     CStringA m_strLimitNpcScriptTag;    // +0x28 "limitNpcScriptTag"
@@ -127,11 +132,11 @@ public:
 
     int Read(Unk_140165cf0* pElem);     // 0x1403592f0 (name invented)
 
-    int m_nAlliance;                    // +0x18 "alliance" (1..9)
+    Unk_FameAlliance m_nAlliance;       // +0x18 "alliance" (1..9)
     CStringA m_strSymbol;               // +0x20 "symbol"
     int m_nOfficerNpcKind;              // +0x28 "officerNpcKind"
     int m_nIsExped;                     // +0x2c "isExped"
-    int m_nSeason;                      // +0x30 "season"
+    Unk_FameSeason m_nSeason;           // +0x30 "season"
 };
 MS2_CHECK_SIZE(CFameDef, 0x38);
 MS2_CHECK_OFFSET(CFameDef, m_strSymbol, 0x20);
@@ -158,17 +163,42 @@ public:
     int LoadPickMethod();               // 0x14035a0f0 famePickMethod.xml
     int LoadFameDef();                  // 0x14035a460 fameDef.xml
 
+    int GetGradeByPoint(Unk_FameAlliance nAlliance, int nPoint);         // 0x14035a870 (names below invented from use)
+    int GetNextGradePoint(Unk_FameAlliance nAlliance, int nGrade);       // 0x14035a960 points needed for grade + 1 (INT_MAX when none)
+    int GetMaxGrade(Unk_FameAlliance nAlliance);                         // 0x14035aa20
+    int HasGrades(Unk_FameAlliance nAlliance);                           // 0x14035aad0
+    void GetMaxGradePoint(Unk_FameAlliance nAlliance);                   // 0x14035ab40
+    int GetGradePoint(Unk_FameAlliance nAlliance, int nGrade);           // 0x14035ab90 points needed for the grade (INT_MAX when none)
+    bool IsLogOfAlliance(unsigned nLogId, Unk_FameAlliance nAlliance);        // 0x14035ae50
+    LimitPtr GetLimit(Unk_FameAlliance nAlliance);                       // 0x14035af00
+    ATL::CAtlArray<PickPtr>& GetPickMethods();              // 0x14035afc0
+    ATL::CAtlArray<Unk_FameAlliance>& GetAllianceIds();                  // 0x14035aff0
+    int IsExped(Unk_FameAlliance nAlliance);                             // 0x14035b010
+    int IsNotOfficerNpc(int nKind);                        // 0x14035b0a0
+    int GetReloadFlag(unsigned nId);                             // 0x14035b110
+    bool IsReloadOnComplete(unsigned nId);                       // 0x14035b160
+    CStringA GetSymbol(Unk_FameAlliance nAlliance);                      // 0x14035b1d0
+    CStringA GetSymbolByOfficerNpc(int nKind);              // 0x14035b2a0
+    int GetSeasonRequireQuest(Unk_FameAlliance nAlliance);               // 0x14035b510
+    int GetSeasonRequireLvBySeason(Unk_FameSeason nSeason);            // 0x14035b590
+    SeasonPtr GetSeason(Unk_FameAlliance nAlliance);                     // 0x14035b620
+
+    static void CheckInit();            // 0x14035f740
+    static void SetInit(bool b);        // 0x1403655a0
+
+    static bool s_bInit;                // 0x143aaeb18
+
 private:
     MS2_LAYOUT_FRIEND;
     ATL::CRBMap<int, GradePtr> m_aGrades[10];       // +0x10 per alliance (1..9): grade -> row
-    ATL::CRBMap<int, LogPtr> m_mapLog;              // +0x1f0 id -> row
-    ATL::CAtlMap<int, LimitPtr> m_mapLimit;         // +0x220
+    ATL::CRBMap<unsigned, LogPtr> m_mapLog;              // +0x1f0 id -> row
+    ATL::CAtlMap<Unk_FameAlliance, LimitPtr> m_mapLimit;         // +0x220
     ATL::CAtlArray<PickPtr> m_aPick;                // +0x268
-    ATL::CAtlArray<int> m_aAllianceId;              // +0x288 the alliances that have grades
-    ATL::CAtlMap<int, DefPtr> m_mapDef;             // +0x2a8 alliance -> def
-    ATL::CAtlMap<int, SeasonPtr> m_mapSeason;       // +0x2f0 season -> def
+    ATL::CAtlArray<Unk_FameAlliance> m_aAllianceId;              // +0x288 the alliances that have grades
+    ATL::CAtlMap<Unk_FameAlliance, DefPtr> m_mapDef;             // +0x2a8 alliance -> def
+    ATL::CAtlMap<Unk_FameSeason, SeasonPtr> m_mapSeason;       // +0x2f0 season -> def
     std::set<int> m_setOfficerNpc;                  // +0x338
-    ATL::CAtlMap<int, int> m_mapReload;             // +0x348 pick method reload flags
+    ATL::CAtlMap<unsigned, int> m_mapReload;             // +0x348 pick method reload flags
 };
 MS2_CHECK_SIZE(CFameTable, 0x390);
 MS2_CHECK_OFFSET(CFameTable, m_aGrades, 0x10);
