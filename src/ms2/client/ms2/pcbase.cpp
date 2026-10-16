@@ -339,7 +339,8 @@ public:
     Unk_PCBaseHitReport* FUN_141240f20();
     int FUN_141240f40();                                            // grounded
     void FUN_14123fe70(NiPoint3 kPos);
-    NiPoint3 FUN_14123fd90();
+    efd::Point3 FUN_14123fd90();
+    void FUN_14123ff80(efd::Point3 kMove, unsigned int nFlags);     // move the controller
 private:
     char m_pad[0xf8];
 };
@@ -677,9 +678,12 @@ private:
 };
 MS2_CHECK_SIZE(Unk_SceneWalker, 0x38);
 extern NiFixedString DAT_143ae5470[9][30];
+extern NiFixedString DAT_143ae5ce0[50];                             // "Hold_PointNN" dummy names (unit_1416bc380)
 PCBase* FUN_1409ffd30(GameObject* pObj);                            // efd::DynamicCast<PCBase> (class id 0x06200013)
 bool FUN_14028d470(float fA, float fB);                             // float equality
-float FUN_140966f00(NiPoint3 kA, NiPoint3 kB);                      // distance                         // "<part>NN" dummy names (unit_1416bc380)
+float FUN_140966f00(NiPoint3 kA, NiPoint3 kB);                      // distance
+bool FUN_140a33ff0(const efd::Point3& kPt);                         // a usable (non-sentinel) point
+float FUN_141224f30(float fX, float fY);                            // atan2-style heading                         // "<part>NN" dummy names (unit_1416bc380)
 static CString s_partNames[] = {"Head", "Body", "Back", "RHand", "LHand", "RFoot", "LFoot", "Tail", "Hold_Point"};
 static egf::EntityID s_kNoEntity(0ull);
 static ATL::CAtlMap<unsigned int, CString> s_conditions(17, .75f, .25f, 2.25f, 10);
@@ -762,6 +766,27 @@ void PCBase::vfunc_19(efd::Point3 kPos)
     FUN_14166d260();
 }
 MS2_REPLACE_METHOD(0x14166bb10, PCBase, vfunc_19, 68, 0x8E98DEA5);
+
+// @0x14166b550
+int PCBase::vfunc_10()
+{
+    GameObject::vfunc_10();
+    FUN_14166d8b0(vfunc_20().z);
+    FUN_141671960(m_fMoveSpeed);
+    m_unk_150 = new Unk_PCBaseBody();
+    m_unk_150->FUN_14123f5b0(this, m_unk_80, static_cast<const efd::Point3&>(vfunc_18()), m_unk_620.y, m_unk_620.x);
+    FUN_14166d260();
+    m_unk_150->FUN_14123fd30(0x389);
+    vfunc_109(1);
+    m_spD10 = vfunc_70()->FUN_1411bde10(vfunc_69());
+    FUN_141679760();
+    vfunc_120(FUN_141676370());
+    FUN_1416795e0();
+    FUN_14166cb30();
+    m_unk_c0c = 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14166b550, PCBase, vfunc_10, 696, 0x7DE0F435);
 
 // @0x14166bb60
 void PCBase::vfunc_21(efd::Point3 kDir)
@@ -2574,6 +2599,59 @@ efd::SmartPointer<NiAVObject> PCBase::FUN_141675930()
 }
 MS2_REPLACE_METHOD(0x141675930, PCBase, FUN_141675930, 67, 0x12297BF2);
 
+// @0x141675450
+void PCBase::vfunc_119()
+{
+    m_unk_b88.RemoveAll();
+    if (FUN_1409f7c90()->FUN_14109a9d0() != 0)
+    {
+        NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+        if (pRoot != 0)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                NiAVObject* pNode = pRoot->GetObjectByName(DAT_143ae5ce0[i]);
+                if (pNode != 0)
+                {
+                    efd::SmartPointer<NiAVObject> spNode(pNode);
+                    m_unk_b88.SetAt(FUN_140188f50(pNode->GetName(), 0), spNode);
+                }
+            }
+            {
+                NiFixedString kRide("Ride_A");
+                m_spBE8 = pRoot->GetObjectByName(kRide);
+            }
+        }
+    }
+    else
+    {
+        NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+        if (pRoot != 0)
+        {
+            for (int i = 0; i < 50; i++)
+            {
+                CString strName;
+                strName.Format("Hold_Point%02d", i);
+                NiAVObject* pNode;
+                {
+                    NiFixedString kName(strName);
+                    pNode = pRoot->GetObjectByName(kName);
+                }
+                if (pNode != 0)
+                {
+                    efd::SmartPointer<NiAVObject> spNode(pNode);
+                    m_unk_b88.SetAt(FUN_140188f50(pNode->GetName(), 0), spNode);
+                }
+            }
+            {
+                NiFixedString kRide("Ride_A");
+                m_spBE8 = pRoot->GetObjectByName(kRide);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141675450, PCBase, vfunc_119, 874, 0x7584E738);
+
 // @0x141675980
 void PCBase::FUN_141675980()
 {
@@ -3470,6 +3548,32 @@ void PCBase::FUN_1416788d0()
     }
 }
 MS2_REPLACE_METHOD(0x1416788d0, PCBase, FUN_1416788d0, 504, 0xE79706B1);
+
+// @0x141674750
+void PCBase::vfunc_106(const efd::Point3& kMove, double dTime, int nFlags)
+{
+    if (m_unk_150 != 0)
+    {
+        efd::Point3 kOld = m_unk_150->FUN_14123fd90();
+        if (!FUN_140a33ff0(kMove))
+            m_unk_150->FUN_14123ff80(efd::Point3::ZERO, nFlags);
+        else
+            m_unk_150->FUN_14123ff80(kMove, nFlags);
+        efd::Point3 kNew = m_unk_150->FUN_14123fd90();
+        if (!FUN_140a33ff0(kNew))
+        {
+            vfunc_19(kOld);
+            kNew = kOld;
+        }
+        vfunc_19(kNew);
+        float fHeading = FUN_141224f30(kMove.x, kMove.y);
+        NiPoint3 kRot = vfunc_20();
+        kRot.z = -((fHeading * 180.0f) / 3.1415927f);
+        vfunc_21(static_cast<efd::Point3&>(kRot));
+        FUN_14166d8b0(kRot.z);
+    }
+}
+MS2_REPLACE_METHOD(0x141674750, PCBase, vfunc_106, 577, 0x913C575A);
 
 // @0x141674ef0
 bool PCBase::FUN_141674ef0(const CEffectDummy& kDummy)

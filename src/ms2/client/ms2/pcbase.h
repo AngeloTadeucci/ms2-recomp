@@ -205,7 +205,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_103();         // 103 0x1416738c0 (checks +0x8e8 list)
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b, bool c);  // 104 0x1416739c0 (base: null; 3 bools per Ridee)
     virtual void vfunc_105(efd::Point3 kPos, void* b, void* c, int d);   // 105 0x141673a10 (kPos by value per Ridee)
-    virtual void vfunc_106(void* p, double t, int n);       // 106 0x141674750
+    virtual void vfunc_106(const efd::Point3& kMove, double dTime, int nFlags);   // 106 0x141674750 move by a delta
     virtual void vfunc_107(void* p, float f);               // 107 0x141674020
     virtual int vfunc_108();                                // 108 0x141674bf0
     virtual void vfunc_109(int n);                          // 109 0x141674c00
@@ -222,7 +222,7 @@ public:
     virtual int vfunc_117();                                // 117 0x1416752a0
     virtual int vfunc_118(const NiPoint3& kPos, float* pDist, CString* pName);   // 118 0x1416752f0 nearest node in +0xb88
     virtual void vfunc_119();                               // 119 0x141675450
-    virtual void vfunc_120(void* p);                        // 120 0x141676b90
+    virtual void vfunc_120(MS2Ptr<RideOnAction> spAction);  // 120 0x141676b90 (by value)
     virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x1416773f0 (by value)
     virtual int vfunc_122(void* p);                         // 122 0x1416781c0
     virtual const char* vfunc_123(int n);                   // 123 0x1416790b0 (looks up in +0xd00; a string per Ridee)
@@ -436,7 +436,15 @@ public:
     float m_f174;                       // +0x174
     float m_f178;                       // +0x178
     float m_f17c;                       // +0x17c
-    float m_unk_180[4];                 // +0x180 (init 0x140266620; [0] = 1800.0)
+    union {
+        float m_unk_180[4];             // +0x180 (init 0x140266620; [0] = 1800.0)
+        struct {
+            float m_f180;
+            float m_f184;
+            float m_fMoveSpeed;         // +0x188 (vfunc_10 -> FUN_141671960)
+            float m_f18c;
+        };
+    };
     union {
         float m_unk_190[4];             // +0x190 (init 0x140266620; [0] = 1800.0)
         struct {

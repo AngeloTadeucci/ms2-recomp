@@ -49,7 +49,7 @@ public:
     virtual void vfunc_114(void*);                          // 114 0x14165c4e0
     virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);// 115 0x14165e500
     virtual int vfunc_118(const NiPoint3& kPos, float* pDist, CString* pName);   // 118 0x141655a30 (PCBase signature)
-    virtual void vfunc_120(void* p);                        // 120 0x1416561e0
+    virtual void vfunc_120(MS2Ptr<RideOnAction> spAction);  // 120 0x1416561e0 (by value)
     virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x1416562d0
     virtual int vfunc_122(void* p);                         // 122 0x14165f5d0
     virtual void vfunc_15();                                // 15 0x141651d00

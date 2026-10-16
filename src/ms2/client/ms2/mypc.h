@@ -149,7 +149,7 @@ public:
     virtual void vfunc_135(int a, int b, void* p);          // 135 0x1415238d0
     virtual CStringW vfunc_134();                           // 134 0x141523ae0
     virtual bool vfunc_146();                               // 146 0x141523b70
-    virtual void vfunc_120(void* p);                        // 120 0x14152c460
+    virtual void vfunc_120(MS2Ptr<RideOnAction> spAction);  // 120 0x14152c460 (by value)
     virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x14152c670
     virtual void vfunc_53(float f);                         // 53 0x141530950
     virtual void vfunc_49();                                // 49 0x141531310
@@ -174,9 +174,11 @@ public:
     int FUN_141527120();
     int FUN_141527160(int nNext);
     bool FUN_141527280();
+    int FUN_141527650(int nKind);                           // the skill condition nKind holds (else a notice)
     int FUN_1415278d0(void* p);
     int FUN_141527920(void* p);
     int FUN_141527960();
+    int FUN_141527c50(int nItemId);                         // the item is worn or in the item list
     int FUN_141527e00();                                    // no house
     int FUN_141527e60();
     int FUN_141527eb0();
@@ -199,6 +201,8 @@ public:
     void FUN_14152e240(int n);
     int FUN_14152e280(int n);
     int FUN_14152e950();
+    int FUN_14152e970(int nId);                             // the free skill points of nId
+    bool FUN_14152e7f0();                                   // a worn item still counts (not expired)
     size_t FUN_14152eb20();
     size_t FUN_14152eb50();
     void FUN_14152eb80();
