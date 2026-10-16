@@ -4,6 +4,7 @@
 #pragma once
 #include <afx.h>
 #include <atlcoll.h>
+#include <utility>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/nipoint3.h"
@@ -336,6 +337,9 @@ public:
     void FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel);                        // 0x14146cd10 unregister a model
     Unk_SocketPtr<Unk_MagicTag> FUN_14146ce30(unsigned long long nCast);          // 0x14146ce30 find a cast record
     void FUN_14146ceb0(unsigned long long nCast);                                  // 0x14146ceb0 forget a cast record
+    std::pair<bool, bool> FUN_14146c990(int* pKey, Unk_NiPoint3* pPoint, unsigned nOwner, Unk_MagicEntity* pCaster, int* pType);   // 0x14146c990 may the cast and end effects of a hit play
+    void FUN_14146bc20(Unk_MagicTag* pTag);          // 0x14146bc20 the cast animation of a cast record
+    void FUN_14146bc80(Unk_MagicTag* pTag);          // 0x14146bc80 play the end of a cast record
     void FUN_14146b440(Unk_MagicTag* pTag, int bTracked, Unk_MagicXform* pXform, Unk_StreamPoint ptDirection);   // 0x14146b440 play the hit of a cast record
 
     ATL::CRBMap<unsigned long long, Unk_SocketPtr<Unk_MagicTag> > m_mapCasts;     // +0x28 cast id -> cast record
