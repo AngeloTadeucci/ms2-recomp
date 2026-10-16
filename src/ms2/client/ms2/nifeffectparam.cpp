@@ -20,6 +20,7 @@
 #include <NiTimeController.h>
 #include <NiInterpolator.h>
 #include <NiStream.h>
+#include <NiSearchPath.h>
 #include <NiMaterialProperty.h>
 #include <NiStringExtraData.h>
 #include <NiFloatData.h>
@@ -47,15 +48,8 @@ int FUN_1408731e0(Unk_140165cf0* pNode, const char* pszName, int& nOut);
 int FUN_1408730a0(Unk_140165cf0* pNode, const char* pszName, bool& bOut);
 int FUN_140874670(Unk_140165cf0* pNode, const char* pszName, Unk_StreamPoint& kOut);
 
-// The resource manager (singleton, instance pointer at 0x143ab5bc8): model / texture cache by path.
-class Unk_ResourceMgr
-{
-public:
-    NiAVObjectPtr FUN_141551ea0(CString strPath, bool bA, int nB, int nC, int nD);   // load a nif
-    bool FUN_141551db0(CString strPath);                                        // model is available
-    bool FUN_1415525d0(CString strPath, int nA, int nB);                        // preload
-};
-Unk_ResourceMgr* FUN_140a0afd0();
+// The nif / texture cache service (CNifLoadingService::s_instance).
+CNifLoadingService* FUN_140a0afd0();
 class Unk_ModelCache { public: void FUN_141210ac0(CString strPath); };           // release by path
 Unk_ModelCache* FUN_140ab7a10();
 CString FUN_140cc2ba0(const CString& strDir, const CString& strName);
@@ -229,7 +223,7 @@ bool CNifEffectParam::vfunc_3()
     if (m_strFilePath.IsEmpty())
         return true;
     CString strDir("Effect");
-    return FUN_140a0afd0()->FUN_141551db0(FUN_140cc2ba0(strDir, m_strFilePath));
+    return FUN_140a0afd0()->IsCached(FUN_140cc2ba0(strDir, m_strFilePath));
 }
 
 // @0x1415492a0
@@ -250,7 +244,7 @@ bool CNifEffectParam::vfunc_5(int n)
         if (FUN_140a0afd0() != 0)
         {
             CString strDir("Effect");
-            if (!FUN_140a0afd0()->FUN_1415525d0(FUN_140cc2ba0(strDir, m_strFilePath), 0, n))
+            if (!FUN_140a0afd0()->Preload(FUN_140cc2ba0(strDir, m_strFilePath), false, n))
                 return false;
         }
     }
@@ -1078,7 +1072,7 @@ void CNifEffect::FUN_14154cf20(NiAVObject* pkRoot)
 Unk_NodePtr CNifEffect::FUN_14154d0d0(const CString& strPath, int nA, int nB)
 {
     Unk_NodePtr kWrapper(new (efd::MemHint(efd::MemHint::NONE)) NiNode(0));
-    NiAVObjectPtr spModel = FUN_140a0afd0()->FUN_141551ea0(CString(strPath), false, 5, nA, nB);
+    NiAVObjectPtr spModel = FUN_140a0afd0()->Load(CString(strPath), false, 5, nA, nB);
     Unk_NodePtr kNode(FUN_14098d8d0(&NiNode::ms_RTTI, FUN_1409849b0(&spModel)));
     if (FUN_1409475d0(&kNode) != 0)
     {
@@ -1153,4 +1147,228 @@ NiAVObjectPtr CNifEffect::FUN_14154d410(Unk_EffectTarget* pTarget, const char* p
         }
     }
     return spFound;
+}
+
+// ============================================================================================================
+// CNiStreamLoadThread / CNifLoadingService (0x1415509b0-0x141556920)
+// ============================================================================================================
+class Unk_NifFileMgr
+{
+public:
+    // Reads a file of the data tree into a buffer (freed by the caller); pstrDir receives its directory.
+    int FUN_1403972f0(const char* pszPath, void** ppBuf, int* pnSize, std::string* pstrDir);
+};
+Unk_NifFileMgr* FUN_140166420();
+class Unk_NifGate { public: bool FUN_1406af080(); };                 // the loader should read on the caller's thread
+Unk_NifGate* FUN_1406aeee0();
+void FUN_140659080(Unk_140659080& kStartup, unsigned nError);        // record the start-up error
+unsigned FUN_140869420();                                            // random seed
+void FUN_14028e7c0(CString& strPath);                                // normalize a path in place
+void FUN_1403a1280(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const char* const& pszArg);
+
+CNiStreamLoadThread* TSingleton<CNiStreamLoadThread>::s_instance = 0;
+inline TSingleton<CNiStreamLoadThread>::TSingleton() { s_instance = static_cast<CNiStreamLoadThread*>(this); }
+
+// @0x1415509b0
+CNiStreamLoadThread::CNiStreamLoadThread() : m_mapQueued(10), m_lstQueue(10), m_mapDone(10), m_spPalette(0)
+{
+    m_nPause = 0;
+    m_hStop = 0;
+    m_nStop = 0;
+    m_hWork = CreateSemaphoreA(0, 0, 0x7fffffff, 0);
+    m_pParam = 0;
+}
+
+// MS2-FUNCTIONAL: map walk / lock scope temporaries differ from the exe
+// @0x141550af0
+CNiStreamLoadThread::~CNiStreamLoadThread()
+{
+    if (Unk_LockGuard kGuard = m_kDoneLock)
+    {
+    }
+    else
+    {
+        POSITION pos = m_mapDone.GetHeadPosition();
+        while (pos != 0)
+        {
+            NiStream* pStream = m_mapDone.GetValueAt(pos);
+            delete pStream;
+            m_mapDone.GetNext(pos);
+        }
+        m_mapDone.RemoveAll();
+    }
+    if (m_hWork != 0)
+        CloseHandle(m_hWork);
+    if (m_hStop != 0)
+        CloseHandle(m_hStop);
+    m_spPalette = 0;
+}
+
+// MS2-FUNCTIONAL: the wait loop is restructured
+// @0x141550cf0
+unsigned CNiStreamLoadThread::vfunc_1(void* pParam, Unk_140659080& kStartup)
+{
+    m_pParam = pParam;
+    m_hStop = CreateEventA(0, 0, 0, 0);
+    if (m_hStop == 0)
+    {
+        FUN_140659080(kStartup, 0x80004005);
+        return 0xffffffff;
+    }
+    kStartup.FUN_1401d42d0();
+    srand(FUN_140869420());
+    for (;;)
+    {
+        if (m_nPause == 0)
+        {
+            WaitForSingleObject(m_hWork, 0xffffffff);
+            if (m_nStop != 0)
+                break;
+            CString strPath;
+            if (Unk_LockGuard kGuard = m_kQueueLock)
+            {
+            }
+            else
+            {
+                if (m_lstQueue.IsEmpty())
+                    continue;
+                strPath = m_lstQueue.RemoveHead();
+                m_mapQueued.RemoveKey(strPath);
+            }
+            Load(CString(strPath), 1);
+        }
+        if (WaitForSingleObject(m_hStop, 10) == 0)
+            break;
+    }
+    return 0;
+}
+
+// @0x141550f20
+void CNiStreamLoadThread::Stop()
+{
+    if (m_hStop != 0)
+        SetEvent(m_hStop);
+    if (m_hWork != 0)
+    {
+        m_nStop = 1;
+        ReleaseSemaphore(m_hWork, 1, 0);
+        FUN_1401d3510(0xffffffff);
+    }
+}
+
+// MS2-FUNCTIONAL: lock scope and list/map call order differ from the exe
+// @0x141550f90
+void CNiStreamLoadThread::Enqueue(CString strPath)
+{
+    if (!strPath.IsEmpty())
+    {
+        FUN_14028e7c0(strPath);
+        if (Unk_LockGuard kGuard = m_kQueueLock)
+        {
+        }
+        else
+        {
+            if (FUN_1406aeee0()->FUN_1406af080())
+            {
+                Load(CString(strPath), 1);
+                return;
+            }
+            if (m_mapQueued.Lookup(strPath) == 0)
+            {
+                POSITION pos = m_lstQueue.AddTail(strPath);
+                m_mapQueued.SetAt(strPath, pos);
+                ReleaseSemaphore(m_hWork, 1, 0);
+            }
+        }
+    }
+}
+
+// @0x1415510f0
+void CNiStreamLoadThread::SetTexturePalette(NiPointer<NiTexturePalette> spPalette)
+{
+    m_spPalette = spPalette;
+}
+
+// MS2-FUNCTIONAL: lock scope and temporaries differ from the exe
+// @0x141551140
+NiStream* CNiStreamLoadThread::Get(CString strPath)
+{
+    FUN_14028e7c0(strPath);
+    Dequeue(CString(strPath));
+    NiStream* pStream = 0;
+    if (Unk_LockGuard kGuard = m_kDoneLock)
+    {
+    }
+    else if (m_mapDone.Lookup(strPath, pStream))
+    {
+        m_mapDone.RemoveKey(strPath);
+        return pStream;
+    }
+    return Load(CString(strPath), 0);
+}
+
+// @0x1415512c0
+void CNiStreamLoadThread::Pause() { m_nPause = 1; }
+// @0x1415512e0
+void CNiStreamLoadThread::Resume() { m_nPause = 0; }
+
+// @0x141551300
+void CNiStreamLoadThread::Dequeue(CString strPath)
+{
+    if (!strPath.IsEmpty())
+    {
+        FUN_14028e7c0(strPath);
+        if (Unk_LockGuard kGuard = m_kQueueLock)
+        {
+        }
+        else
+        {
+            ATL::CRBMap<CString, POSITION>::CPair* pPair = m_mapQueued.Lookup(strPath);
+            if (pPair != 0)
+            {
+                m_lstQueue.RemoveAt(pPair->m_value);
+                m_mapQueued.RemoveAt(pPair);
+            }
+        }
+    }
+}
+
+// MS2-FUNCTIONAL: big function: codegen (temporaries / branch layout) not byte-identical to the exe
+// @0x1415513e0
+NiStream* CNiStreamLoadThread::Load(CString strPath, int bKeep)
+{
+    FUN_14028e7c0(strPath);
+    NiStream* pStream = EE_NEW NiStream;
+    pStream->SetTexturePalette(m_spPalette);
+    std::string strDir;
+    void* pBuf;
+    int nSize;
+    if (FUN_140166420()->FUN_1403972f0(strPath, &pBuf, &nSize, &strDir))
+    {
+        pStream->GetSearchPath()->SetReferencePath(strDir.c_str());
+        if (!pStream->Load(static_cast<char*>(pBuf), nSize))
+        {
+            delete pStream;
+            const char* pszPath = strDir.c_str();
+            FUN_1403a1280(FUN_140166440(), 1, 0x13, L"\xd30c\xc77c\xc744 \xc77d\xc744 \xc218 \xc5c6\xc2b5\xb2c8\xb2e4[{0}]", pszPath);
+            return 0;
+        }
+        NiFree(pBuf);
+    }
+    NiStream* pFound = 0;
+    if (pStream != 0 && pStream->GetObjectCount() != 0)
+    {
+        if (bKeep == 0)
+            return pStream;
+        if (Unk_LockGuard kGuard = m_kDoneLock)
+        {
+        }
+        else if (!m_mapDone.Lookup(strPath, pFound))
+        {
+            m_mapDone.SetAt(strPath, pStream);
+            return pStream;
+        }
+    }
+    delete pStream;
+    return pFound;
 }
