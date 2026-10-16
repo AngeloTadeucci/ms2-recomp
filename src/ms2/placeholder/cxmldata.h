@@ -3,14 +3,18 @@
 // destructor is called by recovered code so far (CItemData's <function> block holds one at +0x90).
 #pragma once
 
+#include <afx.h>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
 
 class CXmlData : public CPtred
 {
 public:
-    CXmlData();
+    CXmlData();                         // 0x14092c230
     virtual ~CXmlData();                // 0x14092c2a0
+    bool FUN_14092c370(CXmlData* pOther);           // differs from pOther (additionalactionadditional.cpp)
+    void FUN_14092c590();                           // clears the parsed values
+    void FUN_14092c400(const CStringW& strValues);  // parses "key=value" text
 private:
     unsigned char m_unknown18[0x48];    // +0x18
 };
