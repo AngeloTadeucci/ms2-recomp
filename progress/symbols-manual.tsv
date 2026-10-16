@@ -2264,3 +2264,8 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??8?$MS2Ptr@VTreeWateringContext@@@@QEBA_NPEAVTreeWateringContext@@@Z	1403e8610	func
 ??C?$MS2Ptr@VTreeWateringContext@@@@QEBAPEAVTreeWateringContext@@XZ	1403e8cf0	func
 ?FUN_1404038c0@TreeWateringContext@@QEAA_NAEBVCMsTime@@@Z	1404038c0	func
+?get@?$MS2Ptr@VUnk_PCSkillTree@@@@QEBAPEAVUnk_PCSkillTree@@XZ	1409ee2c0	func
+??1?$MS2Ptr@VUnk_PCSkillTree@@@@QEAA@XZ	1409ed920	func
+??0Unk_MagicTagPtr@@QEAA@PEAUUnk_MagicTag@@@Z	1410a6b10	func
+?get@Unk_MagicTagPtr@@QEBAPEAUUnk_MagicTag@@XZ	1410a7150	func
+??0TSocketGemStoneInfo@@QEAA@XZ	14061f790	func
