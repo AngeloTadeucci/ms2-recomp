@@ -446,13 +446,13 @@ template<class T> static int FindElement(const ATL::CAtlArray<T>& arr, const T& 
 }
 template<class T> bool Constants::Values<T>::Contains(T v)
 {
-    if (!m_loaded)
+    if (m_loaded)
     {
-        if (!HasKey())
-            Error("constants has no key");
-        return false;
+        return FindElement(m_values, v) != -1;
     }
-    return FindElement(m_values, v) != -1;
+    if (!HasKey())
+        Error("constants has no key");
+    return false;
 }
 
 
