@@ -295,7 +295,13 @@ int FUN_1402178b0(int roomKind);
 class UIPopupNpcTalkDialog : public UIDialog {
 public:
     void FUN_140e771e0(int questId);
+    void FUN_140e77300();
 };
+class UIQuestDialog : public UIDialog {};
+class UIWorldMapDialog : public UIDialog {};
+UIQuestGuideDialog* FUN_140e888d0(int uiType);                          // GetDialog<UIQuestGuideDialog>
+UIQuestDialog* FUN_14131f1e0(int uiType);                               // GetDialog<UIQuestDialog>
+UIWorldMapDialog* FUN_140961730(int uiType);                            // Unk_GetUI<UIWorldMapDialog>
 class Unk_QmUIManager {
 public:
     MS2Ptr<UIObject> FUN_141adcea0(int id);
@@ -1988,6 +1994,18 @@ int CQuestManager::FUN_1416d3430()
 }
 MS2_REPLACE_METHOD(0x1416d3430, CQuestManager, FUN_1416d3430, 216, 0x2CD58E85);
 
+// @0x1416d2f30
+int CQuestManager::FUN_1416d2f30(int chapter, std::list<std::list<unsigned>>& paths, int verbose)
+{
+    if (chapter == 0) return 0;
+    ATL::CAtlArray<unsigned> ids;
+    FUN_1407476c0()->FUN_14074cfd0(chapter, ids);
+    if (ids.IsEmpty()) return 0;
+    unsigned lastQuestId = ids[ids.GetCount() - 1];
+    return FUN_1416d2910(lastQuestId, paths, verbose);
+}
+MS2_REPLACE_METHOD(0x1416d2f30, CQuestManager, FUN_1416d2f30, 205, 0x89CBA6E5);
+
 // @0x1416d3510
 // Opens the start talk of the first acceptable quest that auto-talks on this map (m_320: 1, map id or 0 for any).
 int CQuestManager::FUN_1416d3510()
@@ -2011,6 +2029,44 @@ int CQuestManager::FUN_1416d3510()
 }
 MS2_REPLACE_METHOD(0x1416d3510, CQuestManager, FUN_1416d3510, 668, 0x62D747D2);
 
+// @0x1416d37c0
+void CQuestManager::FUN_1416d37c0()
+{
+    UIQuestGuideDialog* guide = FUN_140e888d0(0x4e43);
+    if (guide && guide->FUN_141924630()) guide->FUN_141aacf20();
+    UIQuestDialog* questDialog = FUN_14131f1e0(0x4e3e);
+    if (questDialog && questDialog->FUN_141924630()) questDialog->vfunc_67();
+    UIWorldMapDialog* worldMap = FUN_140961730(0x4e42);
+    if (worldMap && worldMap->FUN_141924630()) worldMap->vfunc_67();
+    UIPopupNpcTalkDialog* talk = Unk_QmFindDialog<UIPopupNpcTalkDialog>(0x4f4d);
+    if (talk) talk->FUN_140e77300();
+}
+MS2_REPLACE_METHOD(0x1416d37c0, CQuestManager, FUN_1416d37c0, 206, 0xF1709327);
+
+// @0x1416d38a0
+void CQuestManager::FUN_1416d38a0(int type, int state, int skipGrouped)
+{
+    POSITION pos = m_quests20.GetHeadPosition();
+    while (pos != 0) {
+        POSITION cur = pos;
+        m_quests20.GetNext(pos);
+        Unk_PayloadPtr<CQuest> quest = m_quests20.GetValueAt(cur);
+        MS2Ptr<CQuestData> data = quest->GetData();
+        if (!data) continue;
+        if (FUN_14074b050(data.operator->()) != type) continue;
+        if (FUN_14074b070(data.operator->()) != state) continue;
+        if (skipGrouped != 0 && data->m_require.m_groupId != 0) continue;
+        if (quest->GetTrackingState() != 0) {
+            UIQuestGuideDialog* guide = FUN_140e888d0(0x4e43);
+            if (guide) guide->FUN_141aacef0(quest->FUN_140bfc580());
+        }
+        m_quests20.RemoveAt(cur);
+        m_quests140.RemoveKey(quest->FUN_140bfc580());
+    }
+    FUN_1416d37c0();
+}
+MS2_REPLACE_METHOD(0x1416d38a0, CQuestManager, FUN_1416d38a0, 582, 0x32F648BB);
+
 // @0x1416d3af0
 // Number of distinct worn item ids that are in itemIds.
 int CQuestManager::FUN_1416d3af0(const ATL::CAtlArray<unsigned>& itemIds)
@@ -2033,6 +2089,27 @@ int CQuestManager::FUN_1416d3af0(const ATL::CAtlArray<unsigned>& itemIds)
     return count;
 }
 MS2_REPLACE_METHOD(0x1416d3af0, CQuestManager, FUN_1416d3af0, 596, 0x3F41CBCE);
+
+// @0x1416d3d50
+void CQuestManager::FUN_1416d3d50(Unk_PayloadPtr<CQuest> quest)
+{
+    if (quest.IsNull()) return;
+    unsigned questId = quest->FUN_140bfc580();
+    MS2Ptr<CQuestData> data = quest->GetData();
+    for (size_t i = 0; i < data->m_conditions.GetCount(); i++) {
+        MS2Ptr<CConditionCommonData> cond = data->m_conditions[i];
+        if (cond.IsNull()) {
+            MS2_ASSERT_AT(0xa0a, 0);
+            continue;
+        }
+        switch (cond->m_nType) {
+        case 0x11f:
+            FUN_1416d1a30(questId);
+            break;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d3d50, CQuestManager, FUN_1416d3d50, 370, 0x172647AE);
 
 // @0x1416d3ed0
 int CQuestManager::FUN_1416d3ed0(MS2Ptr<CQuestData> data, int checkAccept, int job)

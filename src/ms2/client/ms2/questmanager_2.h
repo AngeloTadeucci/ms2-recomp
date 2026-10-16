@@ -151,6 +151,9 @@ public:
     unsigned FUN_1416d2600(int questId, int checkAccept);   // first available follow-up quest
     int FUN_1416d26c0(int questId, std::list<unsigned>& out, int checkAccept);
     int FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigned>>& paths, int verbose);
+    int FUN_1416d2f30(int chapter, std::list<std::list<unsigned>>& paths, int verbose);
+    void FUN_1416d37c0();                                   // refresh the quest guide, close the quest/world map dialogs
+    void FUN_1416d38a0(int type, int state, int skipGrouped);   // drop the matching quests from the active map
     int FUN_1416d40a0(int depth, unsigned fromQuestId, unsigned toQuestId, std::list<unsigned>& path,
         std::list<std::list<unsigned>>& reached, std::list<std::list<unsigned>>* notReached);
     int FUN_1416d3ed0(MS2Ptr<class CQuestData> data, int checkAccept, int job);   // job 200 = the player's
