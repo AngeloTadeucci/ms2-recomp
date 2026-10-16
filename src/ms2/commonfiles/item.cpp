@@ -1532,7 +1532,7 @@ bool CItem::FUN_140527360()
 MS2_REPLACE_METHOD(0x140527360, CItem, FUN_140527360, 50, 0x6B1F3D35);
 
 // @0x1405273a0
-__int64 CItem::FUN_1405273a0()
+int CItem::FUN_1405273a0()
 {
     if (m_spTransfer.get() != 0)
         return m_spTransfer->FUN_140634fa0();
@@ -1549,7 +1549,7 @@ void CItem::FUN_1405273f0(unsigned n)
 MS2_REPLACE_METHOD(0x1405273F0, CItem, FUN_1405273f0, 73, 0x5F564C20);
 
 // @0x140527440
-__int64 CItem::FUN_140527440()
+int CItem::FUN_140527440()
 {
     if (m_spTransfer.get() != 0)
         return m_spTransfer->FUN_140634fe0();

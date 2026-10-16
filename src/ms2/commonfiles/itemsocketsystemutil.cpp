@@ -5,8 +5,7 @@
 // MS2-RANGE: 0x1400baa10-0x1400bae70 .text$di
 // MS2-RANGE: 0x140626a20-0x140635ec0 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??8?$MS2Ptr@VCItem@@@@QEBA_NPEAVCItem@@@Z 0x14062c1f0 ; unique
-// MS2-PIN: ??_GEnableSocketUnlockFunction@@UEAAPEAXI@Z 0x14062c240 ; unique
+// MS2-PIN: ??_GEnableSocketUnlockFunction@CItemSocketSystemUtil@@UEAAPEAXI@Z 0x14062c240 ; unique
 // MS2-PIN: memmove_s 0x14062c690 ; unique
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCItemSocketDataContainer@@@@QEAAAEAV1@PEAVCItemSocketDataContainer@@@Z 0x14062e0b0 ; prop
 // MS2-PIN: ??C?$MS2Ptr@VCItemSocketData@@@@QEBAPEAVCItemSocketData@@XZ 0x14062e160 ; prop
@@ -21,6 +20,7 @@
 // MS2-PIN: ??D?$MS2Ptr@VCItemBinding@CItemTransfer@@@@QEBAAEAVCItemBinding@CItemTransfer@@XZ 0x140635e60 ; unique
 // MS2-PIN: ??D?$MS2Ptr@VCItemTransfer@@@@QEBAAEAVCItemTransfer@@XZ 0x140635e70 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??_7CItemSocketTable@@6B?$TSingleton@VCItemSocketTable@@@@@ 0x142d6bd60
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemsocketsystemutil.cpp"
 
 #include "ms2/placeholder/ms2stdafx.h"
@@ -65,70 +65,56 @@ void* FUN_140527840(CItem* pItem);          // the item's data record
 void* FUN_1405279c0(CItem* pItem);          // the item's enhance record (null for none)
 int FUN_140620a20(void* pEnhance);          // enhance level
 int FUN_140620a50(void* pEnhance);
-char FUN_1406211f0(void* pEnhance);
-char FUN_140528980(CItem* pItem);
+unsigned char FUN_1406211f0(void* pEnhance);
+unsigned char FUN_140528980(CItem* pItem);
 int FUN_140525ca0(CItem* pItem);
 int FUN_140525db0(CItem* pItem);
-char FUN_140528e20(CItem* pItem);
+unsigned char FUN_140528e20(CItem* pItem);
 
 // @0x140626aa0
-// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
-bool EnableSocketUnlockFunction::Init(MS2Ptr<CItem> pItem, int nSocketMode, int nUnlockMode)
+bool CItemSocketSystemUtil::EnableSocketUnlockFunction::Init(MS2Ptr<CItem> pItem, int nSocketMode, int nUnlockMode)
 {
-    if (!(pItem == 0))
-    {
-        if (FUN_1405279c0(pItem.get()) != 0)
-        {
-            m_n18 = FUN_14053c560(FUN_140527840(pItem.get()));
-            m_n1C = pItem.get()->FUN_140526bd0();
-            m_n20 = pItem.get()->FUN_140526a50();
-            m_n28 = FUN_140620a20(FUN_1405279c0(pItem.get()));
-            m_nSocketMode = nSocketMode;
-            m_nUnlockMode = nUnlockMode;
-            return true;
-        }
-    }
-    return false;
+    if (pItem == (CItem*)0 || FUN_1405279c0(pItem.get()) == 0)
+        return false;
+    m_n18 = FUN_14053c560(FUN_140527840(pItem.get()));
+    m_n1C = pItem.get()->FUN_140526bd0();
+    m_n20 = pItem.get()->FUN_140526a50();
+    m_n28 = FUN_140620a20(FUN_1405279c0(pItem.get()));
+    m_nSocketMode = nSocketMode;
+    m_nUnlockMode = nUnlockMode;
+    return true;
 }
 
 // @0x140626bc0
-// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
-bool EnableSocketUnlockFunction::Matches(MS2Ptr<CItem> pItem)
+bool CItemSocketSystemUtil::EnableSocketUnlockFunction::Matches(MS2Ptr<CItem> pItem)
 {
-    if (!(pItem == 0))
-    {
-        if (m_n20 != (unsigned __int64)pItem.get()->FUN_140526a50())
-        {
-            if (m_n18 == FUN_14053c560(FUN_140527840(pItem.get())))
-            {
-                if (m_n1C == pItem.get()->FUN_140526bd0())
-                {
-                    void* pEnhance = FUN_1405279c0(pItem.get());
-                    if (pEnhance == 0 || FUN_140620a50(pEnhance) == 0)
-                        return false;
-                    if (m_n28 != FUN_140620a20(pEnhance))
-                        return false;
-                    if (FUN_140528980(pItem.get()) == 0)
-                        return false;
-                    if (FUN_140525ca0(pItem.get()) != 0 && m_nSocketMode == 0)
-                        return false;
-                    if (FUN_140525db0(pItem.get()) != 0 && m_nUnlockMode == 0)
-                        return false;
-                    if (FUN_140528e20(pItem.get()) != 0)
-                        return false;
-                    if (FUN_1406211f0(pEnhance) != 0)
-                        return false;
-                    return true;
-                }
-            }
-        }
-    }
-    return false;
+    if (pItem == (CItem*)0)
+        return false;
+    if (m_n20 == (unsigned __int64)pItem.get()->FUN_140526a50())
+        return false;
+    if (m_n18 != FUN_14053c560(FUN_140527840(pItem.get())) || m_n1C != pItem.get()->FUN_140526bd0())
+        return false;
+    void* pEnhance = FUN_1405279c0(pItem.get());
+    if (pEnhance == 0 || FUN_140620a50(pEnhance) == 0)
+        return false;
+    if (m_n28 != FUN_140620a20(pEnhance))
+        return false;
+    if (FUN_140528980(pItem.get()) == 0)
+        return false;
+    if (FUN_140525ca0(pItem.get()) != 0 && m_nSocketMode == 0)
+        return false;
+    if (FUN_140525db0(pItem.get()) != 0 && m_nUnlockMode == 0)
+        return false;
+    if (FUN_140528e20(pItem.get()) != 0)
+        return false;
+    if (FUN_1406211f0(pEnhance) != 0)
+        return false;
+    return true;
 }
 
 // @0x140626e20
 // MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
-bool EnableSocketUnlockFunction::InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOther, int nSocketMode, int nUnlockMode)
+bool CItemSocketSystemUtil::EnableSocketUnlockFunction::InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOther, int nSocketMode, int nUnlockMode)
 {
     if (!Init(pItem, nSocketMode, nUnlockMode))
         return false;
@@ -136,11 +122,8 @@ bool EnableSocketUnlockFunction::InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOt
 }
 
 // @0x14062c7b0
-// MS2-FUNCTIONAL: member init order/ctor shape differs
 CItemSocketData::CItemSocketData() : m_nGrade(0), m_nMaxCount(0), m_nOpenType(0)
 {
-    m_range.m_nMin = 0;
-    m_range.m_nMax = 0;
 }
 
 // @0x14062c830
@@ -154,9 +137,9 @@ CItemSocketDataContainer::CItemSocketDataContainer()
 }
 
 // @0x14062c8b0
-// MS2-FUNCTIONAL: dtor shape differs
 CItemSocketDataContainer::~CItemSocketDataContainer()
 {
+    m_rows.RemoveAll();
 }
 
 // @0x14062c900
@@ -165,17 +148,17 @@ MS2Ptr<CItemSocketData> CItemSocketDataContainer::Find(int nGrade)
 {
     if (m_rows.IsEmpty())
         return MS2Ptr<CItemSocketData>(0);
+    size_t nRows = m_rows.GetCount();
     MS2Ptr<CItemSocketData> spDefault(0);
-    for (size_t i = 0; i < m_rows.GetCount(); i++)
+    for (size_t i = 0; i < nRows; i++)
     {
         MS2Ptr<CItemSocketData> spRow = m_rows[i];
-        if (!spRow.IsNull())
-        {
-            if (spRow->m_nGrade == nGrade)
-                return spRow;
-            if (spRow->m_nGrade == 0)
-                spDefault = spRow;
-        }
+        if (spRow == (CItemSocketData*)0)
+            continue;
+        if (spRow->m_nGrade == nGrade)
+            return spRow;
+        if (spRow->m_nGrade == 0)
+            spDefault = spRow;
     }
     return spDefault;
 }
@@ -251,30 +234,28 @@ int CItemSocketTable::Load()
 }
 
 // @0x14062d330
-// MS2-FUNCTIONAL: Find temp/Ptr order differs from the exe
+// MS2-FUNCTIONAL: exe branches 'if (guard) skip' as je+jmp (not jne); rest identical
 MS2Ptr<CItemSocketData> CItemSocketTable::Find(unsigned nItemId, int nGrade)
 {
     if (m_items.IsEmpty())
         return MS2Ptr<CItemSocketData>(0);
     MS2Ptr<CItemSocketData> spResult(0);
     ContainerPtr spContainer(0);
-    Unk_LockGuard guard(m_lock);
-    if (guard == 0 && m_items.Lookup(nItemId, spContainer))
-        spResult = spContainer->Find(nGrade);
+    {
+        Unk_LockGuard guard(m_lock);
+        if (guard == 0 && m_items.Lookup(nItemId, spContainer))
+            spResult = spContainer->Find(nGrade);
+    }
     return spResult;
 }
 
 // @0x140626a20
-EnableSocketUnlockFunction::EnableSocketUnlockFunction()
+CItemSocketSystemUtil::EnableSocketUnlockFunction::EnableSocketUnlockFunction()
     : m_n18(0), m_n1C(0), m_n20(0), m_n28(0), m_nSocketMode(0), m_nUnlockMode(0)
 {
 }
 
 // @0x14062c160
-// MS2-FUNCTIONAL: dtor shape differs
-// MS2-PIN: ??1EnableSocketUnlockFunction@@UEAA@XZ 0x14062c160
-EnableSocketUnlockFunction::~EnableSocketUnlockFunction() = default;
-
 // ---- CItemTransfer / CItemTransfer::CItemBinding ----------------------------------------------------------------
 CItemSocketTable* FUN_14052d200();
 void* FUN_140166410();
@@ -911,8 +892,7 @@ void CItemTransfer::vfunc_2(CInputStream& in)
 }
 
 // @0x140634fa0
-// MS2-FUNCTIONAL: exe returns int; item.cpp wrappers declare __int64
-__int64 CItemTransfer::FUN_140634fa0()
+int CItemTransfer::FUN_140634fa0()
 {
     return m_nCount;
 }
@@ -925,8 +905,7 @@ void CItemTransfer::FUN_140634fc0(unsigned n)
 MS2_REPLACE_METHOD(0x140634FC0, CItemTransfer, FUN_140634fc0, 22, 0x16BC4503);
 
 // @0x140634fe0
-// MS2-FUNCTIONAL: exe returns int; item.cpp wrappers declare __int64
-__int64 CItemTransfer::FUN_140634fe0()
+int CItemTransfer::FUN_140634fe0()
 {
     return m_nMax;
 }

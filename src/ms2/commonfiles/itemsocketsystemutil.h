@@ -18,6 +18,8 @@ class Unk_140165cf0;    // xml element (declared where the loader is)
 // A min / max pair (the exe's ctor is 0x1402fc100, the setter 0x140303060 in dungeonmatch.cpp).
 struct Unk_SocketRange
 {
+    // @0x1402fc100
+    Unk_SocketRange() : m_nMin(0), m_nMax(0) {}
     int m_nMin;
     int m_nMax;
 };
@@ -77,11 +79,13 @@ MS2_CHECK_OFFSET(CItemSocketTable, m_lock, 0x30);
 MS2_CHECK_OFFSET(CItemSocketTable, m_items, 0x60);
 
 // The unlock record of the socket system (CItemSocketSystemUtil::EnableSocketUnlockFunction), 0x38 bytes.
-class EnableSocketUnlockFunction : public CPtred
+namespace CItemSocketSystemUtil
+{
+struct EnableSocketUnlockFunction : public CPtred
 {
 public:
     EnableSocketUnlockFunction();           // 0x140626a20
-    virtual ~EnableSocketUnlockFunction();  // 0x14062c160
+    virtual ~EnableSocketUnlockFunction() = default;    // 0x14062c160 (implicit: the exe stores no vftable)
 
     bool Init(MS2Ptr<CItem> pItem, int nSocketMode, int nUnlockMode);   // 0x140626aa0 take the item's identity
     bool Matches(MS2Ptr<CItem> pItem);      // 0x140626bc0 the item is another one of the same kind and can be unlocked
@@ -95,3 +99,4 @@ public:
     int m_nUnlockMode;                      // +0x30
 };
 MS2_CHECK_SIZE(EnableSocketUnlockFunction, 0x38);
+}

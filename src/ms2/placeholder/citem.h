@@ -25,9 +25,9 @@ public:
     virtual void vfunc_2(CInputStream&);                // 0x140634e30 read
     unsigned char FUN_1406352b0();
     unsigned char FUN_1406351f0(void*, void*);
-    __int64 FUN_140634fa0();
+    int FUN_140634fa0();
     void FUN_140634fc0(unsigned);
-    __int64 FUN_140634fe0();
+    int FUN_140634fe0();
     void FUN_140635000(unsigned);
     void FUN_140635300();
     MS2Ptr<CItemTransfer> FUN_140634b30();
@@ -266,7 +266,7 @@ public:
   int FUN_140525a30();
   int FUN_140525c00();
   bool FUN_140527360();                  // w98
-  __int64 FUN_1405273a0();               // w98
+  int FUN_1405273a0();               // w98
   void FUN_1405290b0();                  // w98
   bool FUN_140526e60(int, bool);
   bool FUN_140527180(int, bool);
@@ -285,7 +285,7 @@ public:
   unsigned FUN_140526cc0(int);
   int FUN_140526d30();
   void FUN_140526f50(unsigned, bool);
-  __int64 FUN_140527440();
+  int FUN_140527440();
   void FUN_1405273f0(unsigned);
   void FUN_140527490(unsigned);
   unsigned FUN_1405274e0();
