@@ -1831,3 +1831,5 @@ FMOD_EventSystem_Create	142303b13	func
 ?DAT_143ab2928@@3_JA	143ab2928	data
 ?DAT_143ab2988@@3_JA	143ab2988	data
 ?DAT_143ab32b8@@3V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@A	143ab32b8	data
+??0Unk_DsNode@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422c6570	func
+??1Unk_DsNode@@QEAA@XZ	1422c65c0	func
