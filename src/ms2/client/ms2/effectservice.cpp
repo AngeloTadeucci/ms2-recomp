@@ -121,6 +121,8 @@ class Unk_EsWorld
 {
 public:
     GameObject* FUN_141bd0cc0();
+    GameObject* FUN_141bd0fa0(egf::EntityID id);                // the object of an entity
+    void FUN_141bbae40(IWorldServiceCallback* pCallback);       // add a map callback
 };
 Unk_EsWorld* FUN_1403ed2d0();
 NiAVObject* FUN_141b6ef70(egf::EntityID id);            // scene node of an entity
@@ -936,9 +938,114 @@ MS2_REPLACE_METHOD(0x1411a4040, EffectNode, FUN_1411a4040, 60, 0xFFB13170);
 #include <ecr/SceneGraphService.h>
 #include <ecr/RenderService.h>
 #include <ecr/LightService.h>
+#include <NiRenderObject.h>
+#include "ms2/client/ms2/gameobject.h"
 
 extern int DAT_143ae2b30;                                       // 1: the scene is split over several effect roots
 efd::MessageService* FUN_1413f9830();
+int FUN_140ad0d60(int n, int nMin, int nMax);                  // clamp
+struct Unk_EsOptionData
+{
+    char m_pad_00[0x12];
+    bool m_bHide12;                                             // +0x12 hides type-4 effects
+    bool m_bHide13;                                             // +0x13 hides type-2 effects
+};
+class Unk_EsOption { public: Unk_EsOptionData* FUN_140b123b0(); };
+Unk_EsOption* FUN_1409a8b10();
+// The client config (FUN_1401d31f0, declared void* in postprocesseffect.h): sky object files at +0x208, area effect files at +0x3c0.
+struct Unk_EsConfig
+{
+    char m_pad_000[0x208];
+    CString m_astrSky[7];                                       // +0x208
+    char m_pad_240[0x180];
+    CString m_strArea3c0;                                       // +0x3c0
+    CString m_strArea3c8;
+    CString m_strArea3d0;
+    CString m_strArea3d8;
+    CString m_strArea3e0;
+    CString m_strArea3e8;
+    CString m_strArea3f0;
+};
+// The camera (FUN_1409478c0) and its target.
+class Unk_EsCamera
+{
+public:
+    int FUN_140a18070();
+    GameObject* FUN_140a38d60();
+};
+Unk_EsCamera* FUN_1409478c0();
+// The field data of a map (MS2Ptr<CFieldDataCli>, FUN_140a55460).
+struct Unk_EsFieldData
+{
+    char m_pad_000[0x1a0];
+    CString m_strEffect1a0;                                     // +0x1a0 the field effect
+    char m_pad_1a8[0x28];
+    CString m_strAreaEffect;                                    // +0x1d0 the area (weather) effect
+};
+class Unk_EsFieldPtr
+{
+public:
+    ~Unk_EsFieldPtr();                                          // 0x1408850f0
+    Unk_EsFieldData* FUN_1409657a0() const;                     // get
+    Unk_EsFieldData* FUN_140885340() const;                     // operator->
+private:
+    void* m_pad_00;
+    Unk_EsFieldData* m_p;
+};
+Unk_EsFieldPtr FUN_140a55460(int nMapId);
+// A map override row (FUN_140302b00()->FUN_1403ed1d0()->FUN_140428a90()).
+struct Unk_EsMapRow
+{
+    int FUN_1404054d0(int nMapId);                              // applies to the map
+    char m_pad_00[0x38];
+    CStringW m_strAreaEffect;                                   // +0x38
+};
+class Unk_EsMapRowPtr
+{
+public:
+    ~Unk_EsMapRowPtr();                                         // 0x1403e5330
+    void* FUN_1403e8a60() const;                                // get
+    Unk_EsMapRow* FUN_1403e8c40() const;                        // operator->
+private:
+    void* m_pad_00;
+    void* m_p;
+};
+class Unk_EsMapTable { public: Unk_EsMapRowPtr FUN_140428a90(); };
+class Unk_EsMapMgr { public: Unk_EsMapTable* FUN_1403ed1d0(); };
+Unk_EsMapMgr* FUN_140302b00();
+CString FUN_1401d4330(const wchar_t* psz, int n);              // wide to multi-byte
+void* FUN_1409ffd30(GameObject* pObject);                       // the actor of an object
+// Depth-first walker over a scene graph (0x38 bytes; unrecovered class, same as util.cpp).
+class Unk_SceneWalker
+{
+public:
+    Unk_SceneWalker(NiObject* pkRoot);                          // 0x14098cb80
+    ~Unk_SceneWalker();                                         // 0x14098cf00
+    NiAVObject* Next(bool bDescend);                            // 0x14098e0d0
+private:
+    void* m_pad_00; void* m_pad_08; void* m_pad_10; void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30;
+};
+MS2_CHECK_SIZE(Unk_SceneWalker, 0x38);
+// Objects with a "fade" virtual (slot 41).
+class Unk_EsFadeObject
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
+    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
+    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
+    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
+    virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
+    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23();
+    virtual void vfunc_24(); virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27();
+    virtual void vfunc_28(); virtual void vfunc_29(); virtual void vfunc_30(); virtual void vfunc_31();
+    virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34(); virtual void vfunc_35();
+    virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39();
+    virtual void vfunc_40();
+    virtual void SetFadeValue(float fValue);                    // slot 41
+};
+extern char DAT_143afbfb8;                                      // RTTI descriptor of Unk_EsFadeObject
+Unk_EsFadeObject* FUN_14098d8d0(char* pRtti, NiAVObject* pObject);
+void FUN_141d2c900(NiAVObject* pObject, bool bFlag);
 
 // The application service (class id 0x06100001, physxhelper.cpp); only its dependency id is used here.
 struct Unk_EsAppService { static const efd::ClassID CLASS_ID = 0x06100001; };
@@ -1109,6 +1216,51 @@ void CEffectService::FUN_1411a69e0(unsigned nId)
 }
 MS2_REPLACE_METHOD(0x1411a69e0, CEffectService, FUN_1411a69e0, 288, 0x15C3A538);
 
+#undef MS2_THIS_FILE
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.h"
+// @0x1411b2df0
+inline std::list<CEffectPtr>::iterator Unk_EsEffectGroup::FUN_1411b2df0(std::list<CEffectPtr>::iterator it)
+{
+    --m_sTotalEffectCount;
+    MS2_ASSERT_AT(0x28, m_sTotalEffectCount >= 0);
+    return m_listEffects.erase(it);
+}
+
+// @0x1411b2720
+inline bool Unk_EsEffectGroup::FUN_1411b2720() { return m_listEffects.empty(); }
+#undef MS2_THIS_FILE
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.cpp"
+
+// @0x1411a6490
+void CEffectService::FUN_1411a6490()
+{
+    EffectSkipMgr* pSkip = TSingleton<EffectSkipMgr>::GetInstance();
+    Unk_EsGroupMap::iterator it = m_mapGroups.begin();
+    Unk_EsGroupMap::iterator itEnd = m_mapGroups.end();
+    while (it != itEnd) {
+        Unk_EsEffectGroup* pGroup = it->second;
+        std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280();
+        std::list<CEffectPtr>::iterator itEffectEnd = pGroup->FUN_1410443f0();
+        while (itEffect != itEffectEnd) {
+            CEffectPtr spEffect = *itEffect;
+            if (spEffect->FUN_14119f400()) {
+                pSkip->RemoveCount(spEffect->GetName());
+                spEffect->vfunc_7();
+                itEffect = pGroup->FUN_1411b2df0(itEffect);
+            } else {
+                ++itEffect;
+            }
+        }
+        if (pGroup->FUN_1411b2720()) {
+            it = m_mapGroups.erase(it);
+            delete pGroup;
+        } else {
+            ++it;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6490, CEffectService, FUN_1411a6490, 556, 0x40B935F8);
+
 // @0x1411a6b10
 NiNode* CEffectService::FUN_1411a6b10()
 {
@@ -1128,6 +1280,40 @@ NiNode* CEffectService::FUN_1411a6b10()
 }
 MS2_REPLACE_METHOD(0x1411a6b10, CEffectService, FUN_1411a6b10, 193, 0x5DC1F652);
 
+// @0x1411a6be0
+void CEffectService::FUN_1411a6be0()
+{
+    if (DAT_143ae2b30 != 0) {
+        for (unsigned i = 0; i < m_nRoots; i++) {
+            for (unsigned n = m_ppRoots[i]->GetArrayCount(); n > 0; n--)
+                m_ppRoots[i]->DetachChildAt(n - 1);
+        }
+    } else {
+        if (m_spRoot) {
+            for (unsigned n = m_spRoot->GetArrayCount(); n > 0; n--)
+                m_spRoot->DetachChildAt(n - 1);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6be0, CEffectService, FUN_1411a6be0, 362, 0x5B05E66E);
+
+// @0x1411a6d50
+void CEffectService::FUN_1411a6d50(NiAVObject* pChild)
+{
+    if (DAT_143ae2b30 != 0) {
+        for (unsigned i = 0; i < m_nRoots; i++) {
+            for (unsigned n = m_ppRoots[i]->GetArrayCount(); n > 0; n--)
+                m_ppRoots[i]->DetachChild(pChild);
+        }
+    } else {
+        if (m_spRoot) {
+            for (unsigned n = m_spRoot->GetArrayCount(); n > 0; n--)
+                m_spRoot->DetachChild(pChild);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6d50, CEffectService, FUN_1411a6d50, 322, 0x64E3F501);
+
 // @0x1411a6ea0
 void CEffectService::FUN_1411a6ea0(Unk_EsTracked* p)
 {
@@ -1137,6 +1323,24 @@ void CEffectService::FUN_1411a6ea0(Unk_EsTracked* p)
     }
 }
 MS2_REPLACE_METHOD(0x1411a6ea0, CEffectService, FUN_1411a6ea0, 85, 0xBF19BC72);
+
+// @0x1411a6f00
+void CEffectService::FUN_1411a6f00(const egf::EntityID& id)
+{
+    POSITION pos = m_listTracked.GetHeadPosition();
+    while (pos != NULL) {
+        POSITION posCur = pos;
+        Unk_EsTrackedPtr& spTracked = m_listTracked.GetNext(pos);
+        if (spTracked->FUN_1411b1ee0() == id) {
+            GameObject* pObject = FUN_1403ed2d0()->FUN_141bd0fa0(id);
+            if (pObject != NULL)
+                pObject->vfunc_39();
+            m_listTracked.RemoveAt(posCur);
+            return;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6f00, CEffectService, FUN_1411a6f00, 245, 0xD3ECCB7F);
 
 // @0x1411a7000
 void CEffectService::FUN_1411a7000(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel)
@@ -1283,6 +1487,58 @@ MS2_REPLACE_METHOD(0x1411a7830, CEffectService, FUN_1411a7830, 15, 0x43A40A0D);
 void CEffectService::FUN_1411a7850(bool bEnabled) { m_bEnabled = bEnabled; }
 MS2_REPLACE_METHOD(0x1411a7850, CEffectService, FUN_1411a7850, 23, 0x2A7F450D);
 
+// @0x1411a7870
+void CEffectService::FUN_1411a7870(int nIndex)
+{
+    if (m_spF8) {
+        if (nIndex != 0)
+            return;
+        for (unsigned i = 0; i < m_aPreloaded.GetCount(); i++) {
+            if (m_spF8 == m_aPreloaded[i])
+                m_unk_130 = i;
+        }
+    }
+    if (nIndex != 0)
+        FUN_1411a7960(m_unk_130);
+    else
+        FUN_1411a7960(0);
+}
+MS2_REPLACE_METHOD(0x1411a7870, CEffectService, FUN_1411a7870, 223, 0x28EB4850);
+
+// @0x1411a7960
+void CEffectService::FUN_1411a7960(unsigned nIndex)
+{
+    unsigned nCount = m_aPreloaded.GetCount();
+    if (nCount == 0 || nIndex >= nCount)
+        return;
+    if (m_spF8) {
+        if (DAT_143ae2b30 != 0)
+            m_ppRoots[0]->DetachChild(m_spF8);
+        else
+            m_spRoot->DetachChild(m_spF8);
+    }
+    m_spF8 = m_aPreloaded[nIndex];
+    if (m_spF8) {
+        Unk_SceneWalker kWalker(m_spF8);
+        NiAVObject* pObject;
+        while ((pObject = kWalker.Next(true)) != NULL) {
+            NiRenderObject* pRender = NiDynamicCast(NiRenderObject, pObject);
+            if (pRender != NULL) {
+                FUN_141d2c900(pRender, true);
+                Unk_EsFadeObject* pFade = FUN_14098d8d0(&DAT_143afbfb8, pRender);
+                if (pFade != NULL)
+                    pFade->SetFadeValue(-FLT_MAX);
+            }
+        }
+        if (DAT_143ae2b30 != 0)
+            m_ppRoots[0]->AttachChild(m_spF8, true);
+        else
+            m_spRoot->AttachChild(m_spF8, true);
+    }
+    FUN_1411a7ce0(nIndex >= 3 && nIndex <= 4);
+}
+MS2_REPLACE_METHOD(0x1411a7960, CEffectService, FUN_1411a7960, 878, 0x67F5DF8E);
+
 // @0x1411a7ce0
 void CEffectService::FUN_1411a7ce0(bool bRain)
 {
@@ -1302,6 +1558,116 @@ void CEffectService::FUN_1411a7db0()
 }
 MS2_REPLACE_METHOD(0x1411a7db0, CEffectService, FUN_1411a7db0, 65, 0x253E07BD);
 
+// @0x1411a7e00
+void CEffectService::FUN_1411a7e00(const CString& strName)
+{
+    if (m_nAreaEffect != 0) {
+        FUN_1411a6060(m_nAreaEffect);
+        m_nAreaEffect = 0;
+    }
+    m_strAreaEffect = strName;
+    m_strAreaEffectCur = strName;
+}
+MS2_REPLACE_METHOD(0x1411a7e00, CEffectService, FUN_1411a7e00, 119, 0xFEB155A4);
+
+// @0x1411a7e80
+void CEffectService::FUN_1411a7e80(int nType)
+{
+    if (m_nAreaEffect != 0) {
+        FUN_1411a6060(m_nAreaEffect);
+        m_nAreaEffect = 0;
+        m_strAreaEffectNext.Empty();
+    }
+    m_bAreaEffect = nType != 0;
+    switch (nType) {
+    case 0:
+        m_strAreaEffect = m_strAreaEffectCur;
+        break;
+    case 1:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3d0;
+        break;
+    case 2:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3d8;
+        break;
+    case 3:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3c0;
+        break;
+    case 4:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3c8;
+        break;
+    case 5:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3e0;
+        break;
+    case 6:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3e8;
+        break;
+    case 7:
+        m_strAreaEffectNext = static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strArea3f0;
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x1411a7e80, CEffectService, FUN_1411a7e80, 454, 0x4C74E821);
+
+// @0x1411a8070
+// MS2-FUNCTIONAL: same calls and control flow; the exe frame is 0x10 smaller (field/row ptrs above the temporaries)
+void CEffectService::vfunc_1(int nMap)
+{
+    Unk_EsFieldPtr spField = FUN_140a55460(nMap);
+    if (spField.FUN_1409657a0() != NULL) {
+        CString strArea = spField.FUN_140885340()->m_strAreaEffect;
+        Unk_EsMapRowPtr spRow = FUN_140302b00()->FUN_1403ed1d0()->FUN_140428a90();
+        if (spRow.FUN_1403e8a60() != NULL) {
+            if (spRow.FUN_1403e8c40()->FUN_1404054d0(nMap) != 0)
+                strArea = FUN_1401d4330(spRow.FUN_1403e8c40()->m_strAreaEffect, 0);
+        }
+        FUN_1411a7e00(strArea);
+        if (spField.FUN_140885340()->m_strEffect1a0.GetLength() > 0)
+            FUN_1411a5a60(spField.FUN_140885340()->m_strEffect1a0, CString(""));
+    }
+}
+MS2_REPLACE_METHOD_VIA(0x1411a8070, CEffectService, IWorldServiceCallback, vfunc_1, 0, 0);
+
+// @0x1411a8210
+void CEffectService::vfunc_3(int nMap)
+{
+    ecr::LightService* pLightService = GetServiceManager()->GetSystemServiceAs<ecr::LightService>();
+    if (DAT_143ae2b30 != 0) {
+        if (pLightService != NULL) {
+            for (std::map<egf::EntityID, NiLightPtr>::iterator it = m_mapLights.begin(); it != m_mapLights.end(); ++it) {
+                NiLight* pLight = pLightService->GetLightFromEntity(it->first);
+                if (pLight != NULL) {
+                    for (unsigned i = 0; i < m_nRoots; i++)
+                        m_ppRoots[i]->DetachEffect(pLight);
+                }
+            }
+            m_mapLights.clear();
+            for (unsigned i = 0; i < m_nRoots; i++)
+                m_ppRoots[i]->UpdateEffects();
+        }
+    } else {
+        if (pLightService != NULL && m_spRoot) {
+            for (std::map<egf::EntityID, NiLightPtr>::iterator it = m_mapLights.begin(); it != m_mapLights.end(); ++it) {
+                NiLight* pLight = pLightService->GetLightFromEntity(it->first);
+                if (pLight != NULL)
+                    m_spRoot->DetachEffect(pLight);
+            }
+            m_mapLights.clear();
+            m_spRoot->UpdateEffects();
+        }
+    }
+    if (m_nAreaEffect != 0) {
+        FUN_1411a6060(m_nAreaEffect);
+        m_nAreaEffect = 0;
+    }
+    m_strAreaEffect.Empty();
+    m_strAreaEffectCur.Empty();
+    FUN_1411a7960(0);
+    FUN_1411a67c0();
+    FUN_1411a6490();
+    FUN_1411a6be0();
+}
+MS2_REPLACE_METHOD_VIA(0x1411a8210, CEffectService, IWorldServiceCallback, vfunc_3, 0, 0);
+
 // @0x1411a85a0
 unsigned CEffectService::FUN_1411a85a0() { return Unk_EsEffectGroup::FUN_1411b1f50(); }
 MS2_REPLACE_METHOD(0x1411a85a0, CEffectService, FUN_1411a85a0, 19, 0xAD1E06D6);
@@ -1318,6 +1684,65 @@ MS2_REPLACE_METHOD(0x1411a85c0, CEffectService, FUN_1411a85c0, 61, 0xAC303898);
 // @0x1411a88c0
 int CEffectService::FUN_1411a88c0() { return m_unk_188; }
 MS2_REPLACE_METHOD(0x1411a88c0, CEffectService, FUN_1411a88c0, 17, 0x116875E2);
+
+// @0x1411a8880
+void CEffectService::FUN_1411a8880(int n)
+{
+    m_unk_188 = FUN_140ad0d60(n, 1, 3);
+}
+MS2_REPLACE_METHOD(0x1411a8880, CEffectService, FUN_1411a8880, 49, 0x40BB776A);
+
+// @0x1411a8cb0
+void CEffectService::FUN_1411a8cb0(const CString& strName)
+{
+    if (strName.IsEmpty())
+        return;
+    if (FUN_1409478c0()->FUN_140a18070() == 0)
+        return;
+    GameObject* pTarget = FUN_1409478c0()->FUN_140a38d60();
+    if (pTarget == NULL)
+        return;
+    Unk_EffectTarget kTarget;
+    kTarget.m_strName = strName;
+    kTarget.m_nKind = 0;
+    kTarget.FUN_140a53190(pTarget->FUN_14123c580());
+    void* pActor = FUN_1409ffd30(pTarget);
+    if (pActor != NULL)
+        kTarget.m_b30 = true;
+    unsigned nId = FUN_1411a49c0(kTarget);
+    m_list140.AddTail(nId);
+}
+MS2_REPLACE_METHOD(0x1411a8cb0, CEffectService, FUN_1411a8cb0, 260, 0x48703B45);
+
+// @0x1411a8dc0
+void CEffectService::FUN_1411a8dc0()
+{
+    for (POSITION pos = m_list140.GetHeadPosition(); pos != NULL; m_list140.GetNext(pos)) {
+        unsigned nId = m_list140.GetAt(pos);
+        FUN_1411a6060(nId);
+    }
+    m_list140.RemoveAll();
+}
+MS2_REPLACE_METHOD(0x1411a8dc0, CEffectService, FUN_1411a8dc0, 137, 0x2C9D2F1A);
+
+// @0x1411a8e50
+void CEffectService::FUN_1411a8e50(unsigned nTick) { m_nTick = nTick; }
+MS2_REPLACE_METHOD(0x1411a8e50, CEffectService, FUN_1411a8e50, 25, 0xE801286E);
+
+// @0x1411a8e70
+unsigned CEffectService::FUN_1411a8e70() { return m_nTick; }
+MS2_REPLACE_METHOD(0x1411a8e70, CEffectService, FUN_1411a8e70, 17, 0xFA964832);
+
+// @0x1411a91d0
+bool CEffectService::FUN_1411a91d0(int nType)
+{
+    if (FUN_1409a8b10()->FUN_140b123b0()->m_bHide12 == true && nType == 4)
+        return false;
+    if (FUN_1409a8b10()->FUN_140b123b0()->m_bHide13 == true && nType == 2)
+        return false;
+    return true;
+}
+MS2_REPLACE_METHOD(0x1411a91d0, CEffectService, FUN_1411a91d0, 86, 0x70658B4B);
 
 // @0x1411a9230
 unsigned CEffectService::FUN_1411a9230()

@@ -179,6 +179,8 @@ struct Unk_EsEffectGroup
     std::list<CEffectPtr>::iterator FUN_141044280() { return m_listEffects.begin(); }
     // @0x1410443f0
     std::list<CEffectPtr>::iterator FUN_1410443f0() { return m_listEffects.end(); }
+    std::list<CEffectPtr>::iterator FUN_1411b2df0(std::list<CEffectPtr>::iterator it);   // erase one effect
+    bool FUN_1411b2720();                                       // no effects left
 
     unsigned m_nId;                                             // +0x00
     std::list<CEffectPtr> m_listEffects;                        // +0x08
@@ -230,6 +232,7 @@ public:
 
     unsigned FUN_1411a49c0(Unk_EffectTarget& kTarget);          // insert, not detached (+0x34 = 0)
     unsigned FUN_1411a4a00(Unk_EffectTarget& kTarget);          // insert an effect: its id, 0 on failure
+    unsigned FUN_1411a5a60(const CString& strName, const CString& strArg);  // play a field effect
     void FUN_1411a6060(unsigned nId);                           // stop (vfunc_5) the effects of an id
     void FUN_1411a66d0(unsigned nId);                           // drop the pending requests of an id
     void FUN_1411a67c0();                                       // drop every pending request
@@ -237,6 +240,9 @@ public:
     void FUN_1411a68f0(unsigned nId, bool b);                   // vfunc_10 on the effects of an id
     void FUN_1411a69e0(unsigned nId);                           // stop the id once every effect is done (vfunc_11)
     NiNode* FUN_1411a6b10();                                    // the root with the fewest children
+    void FUN_1411a6490();                                       // drop the finished effects and the empty groups
+    void FUN_1411a6be0();                                       // detach every child of the roots
+    void FUN_1411a6d50(NiAVObject* pChild);                     // detach pChild from the roots
     void FUN_1411a6ea0(Unk_EsTracked* p);                       // keep p
     void FUN_1411a6f00(const egf::EntityID& id);                // drop the kept object of an entity
     void FUN_1411a7000(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8253 added
@@ -248,11 +254,21 @@ public:
     void FUN_1411a7760(unsigned nId, std::vector<CEffectPtr>& vOut);    // the effects of an id
     bool FUN_1411a7830();                                       // enabled
     void FUN_1411a7850(bool bEnabled);
+    void FUN_1411a7870(int nIndex);                             // re-show the sky object (0 = the first)
+    void FUN_1411a7960(unsigned nIndex);                        // show preloaded sky object nIndex on the root
     void FUN_1411a7ce0(bool bRain);                             // create / drop the rain
     void FUN_1411a7db0();
+    void FUN_1411a7e00(const CString& strName);                 // set the area effect (stops the playing one)
+    void FUN_1411a7e80(int nType);                              // pick the area effect of a weather type
     unsigned FUN_1411a85a0();                                   // the effect count
     unsigned FUN_1411a85c0();
     int FUN_1411a88c0();
+    void FUN_1411a8880(int n);                                  // m_unk_188 = clamp(n, 1, 3)
+    void FUN_1411a8cb0(const CString& strName);                 // play strName on the camera target, keep the id
+    void FUN_1411a8dc0();                                       // stop every id of m_list140
+    void FUN_1411a8e50(unsigned nTick);
+    unsigned FUN_1411a8e70();
+    bool FUN_1411a91d0(int nType);                              // false when the option hides that effect type
     static unsigned FUN_1411a9230();                            // next effect id (never 0)
 
     MS2_LAYOUT_FRIEND;
