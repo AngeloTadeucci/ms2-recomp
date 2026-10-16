@@ -3,37 +3,13 @@
 // MS2-UNIT: commonfiles\commonutil.cpp
 // MS2-RANGE: 0x14028b820-0x14029dff0 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$_Pocma@V?$allocator@D@std@@@std@@YAXAEAV?$allocator@D@0@0@Z 0x140295930 ; prop
-// MS2-PIN: ??$_Pocma@V?$allocator@D@std@@@std@@YAXAEAV?$allocator@D@0@0U?$integral_constant@_N$00@0@@Z 0x140295960 ; unique
 // MS2-PIN: ?SetManager@CNilStringData@ATL@@QEAAXPEAUIAtlStringMgr@2@@Z 0x140295c10 ; unique
-// MS2-PIN: ??$destroy@PEAD@?$_Default_allocator_traits@V?$allocator@D@std@@@std@@SAXAEAV?$allocator@D@1@QEAPEAD@Z 0x140296570 ; order
 // MS2-PIN: ?_Adopt@_Iterator_base0@std@@QEAAXPEBX@Z 0x140296580 ; order
-// MS2-PIN: ?_Compat@?$_String_const_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEBAXAEBV12@@Z 0x1402965b0 ; order
-// MS2-PIN: ??0?$allocator@D@std@@QEAA@XZ 0x140296de0 ; order
 // MS2-PIN: ??0?$allocator@H@std@@QEAA@XZ 0x140296df0 ; order
-// MS2-PIN: ??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@AEBV01@_K1AEBV?$allocator@D@1@@Z 0x140296f30 ; unique
-// MS2-PIN: ??0?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA@QEBD@Z 0x140296f90 ; unique
-// MS2-PIN: ??0_Bxty@?$_String_val@U?$_Simple_types@D@std@@@std@@QEAA@XZ 0x140297240 ; probe
-// MS2-PIN: ??1CAtlWinModule@ATL@@QEAA@XZ 0x140297790 ; prop
-// MS2-PIN: ??4?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAAEAV01@$$QEAV01@@Z 0x140297ae0 ; unique
 // MS2-PIN: ??A?$vector@HV?$allocator@H@std@@@std@@QEAAAEAH_K@Z 0x140297cb0 ; unique
-// MS2-PIN: ??H?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEBA?AV01@_J@Z 0x140298290 ; unique
-// MS2-PIN: ?deallocate@?$allocator@D@std@@QEAAXQEAD_K@Z 0x1402984d0 ; unique
-// MS2-PIN: ??Y?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEAAAEAV01@_J@Z 0x140298530 ; prop
-// MS2-PIN: ??_GCAtlStringMgr@ATL@@UEAAPEAXI@Z 0x140298680 ; unique
-// MS2-PIN: ?_Assign_rv_contents@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAX$$QEAV12@U?$integral_constant@_N$00@2@@Z 0x140299e60 ; unique
-// MS2-PIN: ?_Check_offset@?$_String_val@U?$_Simple_types@D@std@@@std@@QEBAX_K@Z 0x14029a5b0 ; unique
-// MS2-PIN: ?_Clamp_suffix_size@?$_String_val@U?$_Simple_types@D@std@@@std@@QEBA_K_K0@Z 0x14029a5e0 ; unique
 // MS2-PIN: ?__empty_global_delete@@YAXPEAX_K@Z 0x14029a660 ; order
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@std@@V?$_Vector_val@U?$_Simple_types@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@std@@@2@$00@std@@QEBAAEBV?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@XZ 0x14029b920 ; prop
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@@std@@QEBAAEBV?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@XZ 0x14029bad0 ; unique
-// MS2-PIN: ?_Move_alloc@?$_String_alloc@U?$_String_base_types@DV?$allocator@D@std@@@std@@@std@@QEAAXAEAV?$allocator@D@2@@Z 0x14029bf60 ; prop
-// MS2-PIN: ?_Xran@?$_String_val@U?$_Simple_types@D@std@@@std@@SAXXZ 0x14029c710 ; prop
-// MS2-PIN: ?assign@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAAAEAV12@QEBD@Z 0x14029c870 ; unique
-// MS2-PIN: ?begin@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEAA?AV?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@2@XZ 0x14029c990 ; unique
-// MS2-PIN: ?move@?$char_traits@D@std@@SAPEADQEADQEBD_K@Z 0x14029cb80 ; unique
-// MS2-PIN: ?get_allocator@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA?AV?$allocator@D@2@XZ 0x14029d460 ; unique
-// MS2-PIN: ?substr@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA?AV12@_K0@Z 0x14029dc60 ; unique
 // MS2-PINS-END tplpin
 // hand pins (w98): tplpin unique proposals
 // MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@PEAX@2@_K@Z 0x14029cc90 ; unique
@@ -48,13 +24,10 @@
 // MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x140298180 ; unique
 // hand pins (w98): tplpin unique proposals
 // MS2-PIN: ??$?0AEAHAEAPEAUUnk_XmlElement@@$0A@@?$pair@HPEAUUnk_XmlElement@@@std@@QEAA@AEAHAEAPEAUUnk_XmlElement@@@Z 0x1402923f0 ; unique
-// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH@Z 0x140292a70 ; unique
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@PEAX@0@AEAPEAU10@@Z 0x140296790 ; unique
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@HPEAUUnk_XmlElement@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@HPEAUUnk_XmlElement@@@std@@PEAX@0@AEAPEAU10@@Z 0x1402967a0 ; unique
 // MS2-PIN: ??$forward@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140296830 ; unique
 // MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140296840 ; unique
-// MS2-PIN: ??0?$_String_const_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEAA@PEBDPEBU_Container_base0@1@@Z 0x1402969f0 ; unique
-// MS2-PIN: ??0?$_String_iterator@V?$_String_val@U?$_Simple_types@D@std@@@std@@@std@@QEAA@PEADPEBU_Container_base0@1@@Z 0x140296a30 ; unique
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@@std@@QEAA@XZ 0x140296cd0 ; unique
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@std@@QEAA@XZ 0x140296d00 ; unique
 // MS2-PIN: ?GetTimeSpan@CTimeSpan@ATL@@QEBA_JXZ 0x140297d10 ; unique
@@ -69,12 +42,10 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@HPEAUUnk_XmlElement@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@2@XZ 0x14029b990 ; unique
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@HPEAUUnk_XmlElement@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@HPEAUUnk_XmlElement@@@std@@@std@@@2@XZ 0x14029b9a0 ; unique
 // MS2-PIN: ?_Has_unused_capacity@?$vector@PEAUUnk_XmlElement@@V?$allocator@PEAUUnk_XmlElement@@@std@@@std@@AEBA_NXZ 0x14029bb70 ; unique
-// MS2-PIN: ?_Has_unused_capacity@?$vector@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@V?$allocator@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@@std@@AEBA_NXZ 0x14029bbc0 ; unique
-// MS2-PIN: ?find@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA_KQEBD_K@Z 0x14029d350 ; unique
 // hand pins (w108)
+// MS2-PIN: ??$StringFormat@I@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBI@Z 0x140292a70
 // MS2-PIN: ??G?$_String_const_iterator@V?$_String_val@U?$_Simple_types@_W@std@@@std@@@std@@QEBA_JAEBV01@@Z 0x140298250
 // MS2-PIN: ?size@?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@QEBA_KXZ 0x14029d490
-// MS2-PIN: ?size@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBA_KXZ 0x14029dc00
 
 // MS2-PIN: ??0Unk_CommonVec2@@QEAA@XZ 0x140297240
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp"
@@ -1727,7 +1698,7 @@ void FUN_1402929a0(const CStringW& strText, std::vector<int>& arrOut, const wcha
 
 // Icon name of a currency/token kind (kind 2 is the item-id icon).
 // @0x1402918a0
-CStringW FUN_1402918a0(int nKind, int nItemId)
+CStringW FUN_1402918a0(int nKind, unsigned nItemId)
 {
     switch (nKind)
     {
