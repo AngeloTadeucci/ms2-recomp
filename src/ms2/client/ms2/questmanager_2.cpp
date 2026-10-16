@@ -50,6 +50,8 @@
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/commonfiles/fielddata.h"
 #include "ms2/ms2format.h"
+#include "ms2/placeholder/fittingdollpc.h"
+#include "ms2/placeholder/cequipitem.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -67,7 +69,12 @@ static CString s_progressSound = "quest_progress";
 // External services use declarations until their classes are recovered.
 CAchieveManager* FUN_1406c7600();
 void FUN_140936640(void*, int, int);
-void* FUN_140967100();
+// The npc talk manager.
+class Unk_QmTalkManager {
+public:
+    int FUN_141b213f0(class Unk_QmTalkScriptPtr script, int npcId, int mode, int n);   // open the talk
+};
+Unk_QmTalkManager* FUN_140967100();
 void FUN_141b217e0(void*, int);
 void* FUN_140d738f0();
 int FUN_14037c510(void*, int);
@@ -116,6 +123,7 @@ class Unk_QgQuestTable {
 public:
     std::vector<unsigned>& FUN_14074e0d0();   // returns this+0x360
     void FUN_14074d080(int mapId, ATL::CAtlArray<unsigned>& out);
+    void FUN_14074d410(ATL::CAtlArray<unsigned>& out);   // quests that open a talk on entering a map
     void FUN_14074cfd0(int group, ATL::CAtlArray<unsigned>& out);
     Unk_QmQuestIdList FUN_14074df70(int itemId, int kind);   // quests started (0) / advanced (1) by an item
     int FUN_14074e510(unsigned questId);
@@ -197,6 +205,8 @@ int FUN_14074b050(CQuestData* data);
 int FUN_14074b030(CQuestData* data);
 float FUN_140966f00(NiPoint3 a, NiPoint3 b);   // distance
 void FUN_1412751b0(const CStringW& text, int type);   // system chat line
+int FUN_1418fd280();
+void FUN_1411e1b80(Unk_PCEquipSet* equipSet, ATL::CAtlList<MS2Ptr<CEquipItem>>& out);   // the worn items
 int FUN_14074b070(CQuestData* data);
 CFieldMetaTable* FUN_140700390();
 CLearningQuestTable* FUN_140ea4060();
@@ -245,7 +255,9 @@ class Unk_QmTalkScript;
 // Boxed talk-script handle (16 bytes), as used by cubespawnobject.cpp.
 class Unk_QmTalkScriptPtr {
 public:
+    Unk_QmTalkScriptPtr(const Unk_QmTalkScriptPtr& o);  // 0x140859bc0
     ~Unk_QmTalkScriptPtr();                             // 0x14078f140
+    bool IsNull() const;                                // 0x14085a420
     Unk_QmTalkScript* FUN_14078f3a0() const;            // get
 private:
     void* m_0;
@@ -1975,6 +1987,52 @@ int CQuestManager::FUN_1416d3430()
     return 0;
 }
 MS2_REPLACE_METHOD(0x1416d3430, CQuestManager, FUN_1416d3430, 216, 0x2CD58E85);
+
+// @0x1416d3510
+// Opens the start talk of the first acceptable quest that auto-talks on this map (m_320: 1, map id or 0 for any).
+int CQuestManager::FUN_1416d3510()
+{
+    ATL::CAtlArray<unsigned> ids;
+    FUN_1407476c0()->FUN_14074d410(ids);
+    int mapId = FUN_1403ed2d0()->FUN_141bd3060();
+    for (size_t i = 0; i < ids.GetCount(); i++) {
+        MS2Ptr<CQuestData> data = FUN_14074bc40(ids[i]);
+        if (!data) continue;
+        if (data->m_320.m_0 != 1) continue;
+        if (data->m_320.m_4 != 0 && data->m_320.m_4 != mapId) continue;
+        if (data->m_320.m_4 == 62000000 && FUN_1418fd280() == 0) continue;
+        if (vfunc_1(FUN_14074b030(data.operator->()), 0) == 0) continue;
+        Unk_QmTalkScriptPtr script = FUN_1408564b0(FUN_14074b030(data.operator->()), 100);
+        if (script.IsNull()) continue;
+        FUN_140967100()->FUN_141b213f0(script, data->m_2e8, 4, 0);
+        return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1416d3510, CQuestManager, FUN_1416d3510, 668, 0x62D747D2);
+
+// @0x1416d3af0
+// Number of distinct worn item ids that are in itemIds.
+int CQuestManager::FUN_1416d3af0(const ATL::CAtlArray<unsigned>& itemIds)
+{
+    PC* player = static_cast<PC*>(FUN_141bd0cc0(FUN_1403ed2d0()));
+    if (player == 0) return 0;
+    ATL::CAtlList<MS2Ptr<CEquipItem>> equips(10);
+    FUN_1411e1b80(player->FUN_1416561a0(), equips);
+    std::set<unsigned> found;
+    int count = 0;
+    for (POSITION pos = equips.GetHeadPosition(); pos != 0; equips.GetNext(pos)) {
+        MS2Ptr<CEquipItem> equip = equips.GetAt(pos);
+        MS2Ptr<CItem> item = equip->FUN_1411dc7a0();
+        if (item->FUN_140529620()) continue;
+        if (FUN_140408410(&itemIds, item->FUN_1405276c0()) == -1) continue;
+        if (found.find(item->FUN_1405276c0()) != found.end()) continue;
+        found.insert(item->FUN_1405276c0());
+        count++;
+    }
+    return count;
+}
+MS2_REPLACE_METHOD(0x1416d3af0, CQuestManager, FUN_1416d3af0, 596, 0x3F41CBCE);
 
 // @0x1416d3ed0
 int CQuestManager::FUN_1416d3ed0(MS2Ptr<CQuestData> data, int checkAccept, int job)
