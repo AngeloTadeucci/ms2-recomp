@@ -5739,6 +5739,141 @@ template <class A, class B> void Unk_AkoMessage(int nStringId, int nA, int nB, c
         fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(y)};
     FUN_141275460(nStringId, nA, nB, fmt::ArgList(fmt::internal::make_type(x, y), values));
 }
+
+// 0x97: item enchant (UIItemEnchantDialog 0x4e92).
+class CEnchantOption : public CPtred                         // the enchant result options (0x68)
+{
+public:
+    CEnchantOption();
+    void FUN_14058d5c0(CInPacket& packet);                  // decode
+    char m_pad_18[0x68 - 0x18];
+};
+class UIItemEnchantDialog : public UIDialog
+{
+public:
+    void FUN_1419c1f20(CInPacket& packet);
+    void FUN_1419c2e30(CItem* pItem, int nPrevLevel, CInPacket& packet);
+    void FUN_1419c3390(CItem* pItem, CEnchantOption* pOption, int nPrevLevel);
+    void FUN_1419c37f0(unsigned __int64 nItemUid, CInPacket& packet);   // re-read the item
+    void FUN_1419c3950(CInPacket& packet);
+    void FUN_1419c3b90(CInPacket& packet);
+    void FUN_1419c3e70(CInPacket& packet);
+    void FUN_1419c3fd0();                                   // request the exp refund list again
+    void FUN_1419c41b0();
+};
+UIItemEnchantDialog* FUN_1413b1bc0(int nId);
+MS2Ptr<CItem> FUN_1419be700(unsigned __int64 nItemUid);    // inventory or equipped item
+class CItemEnchantInfo { public: int FUN_14058c5f0(); };    // the enchant level
+class Unk_ItemEnchantData { public: CItemEnchantInfo* FUN_140630d60(); };   // CItemStatus
+void FUN_140d73ff0(CStringW strKey);                        // system message box by string key
+enum Unk_SSGEnchantExpError { };                            // the 0x97 mode 12 error code
+
+// @0x141732b20
+void CSceneStateGame::FUN_141732b20(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 5)
+    {
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0)
+            pDlg->FUN_1419c1f20(packet);
+    }
+    else if (nMode == 10)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = FUN_1419be700(nItemUid);
+        if (spItem.get() != 0)
+        {
+            int nPrevLevel = spItem->FUN_1405278a0()->FUN_140630d60()->FUN_14058c5f0();
+            UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+            if (pDlg != 0)
+            {
+                pDlg->FUN_1419c37f0(nItemUid, packet);
+                MS2Ptr<CEnchantOption> spOption(new CEnchantOption);
+                spOption->FUN_14058d5c0(packet);
+                pDlg->FUN_1419c3390(spItem.get(), spOption.get(), nPrevLevel);
+            }
+        }
+    }
+    else if (nMode == 15)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = FUN_1419be700(nItemUid);
+        if (spItem.get() != 0)
+        {
+            spItem->FUN_140524eb0(packet);
+            Unk_SSGDlgInv* pInv = FUN_1405344f0(0x4e2d);
+            if (pInv != 0)
+                pInv->FUN_141999e00();
+        }
+    }
+    else if (nMode == 16)
+    {
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0)
+            pDlg->FUN_1419c41b0();
+    }
+    else if (nMode == 11)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = FUN_1419be700(nItemUid);
+        if (spItem.get() != 0)
+        {
+            int nPrevLevel = spItem->FUN_1405278a0()->FUN_140630d60()->FUN_14058c5f0();
+            UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+            if (pDlg != 0)
+            {
+                pDlg->FUN_1419c37f0(nItemUid, packet);
+                pDlg->FUN_1419c2e30(spItem.get(), nPrevLevel, packet);
+            }
+        }
+    }
+    else if (nMode == 6)
+    {
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0)
+            pDlg->FUN_1419c3950(packet);
+    }
+    else if (nMode == 7)
+    {
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0)
+            pDlg->FUN_1419c3b90(packet);
+    }
+    else if (nMode == 8)
+    {
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0)
+            pDlg->FUN_1419c3e70(packet);
+    }
+    else if (nMode == 9)
+    {
+        FUN_140d73ff0(L"s_itemenchant_enchant_exp_refund_ok");
+        UIItemEnchantDialog* pDlg = FUN_1413b1bc0(0x4e92);
+        if (pDlg != 0 && pDlg->FUN_141924630() != 0)
+            pDlg->FUN_1419c3fd0();
+    }
+    else if (nMode == 12)
+    {
+        Unk_SSGEnchantExpError nError = (Unk_SSGEnchantExpError)(unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        switch (nError)
+        {
+        case 1:
+            FUN_141275260(0x94d, 1, 1);
+            break;
+        case 2:
+            FUN_141275260(0x94f, 1, 1);
+            break;
+        case 3:
+            FUN_141275260(0x950, 1, 1);
+            break;
+        default:
+            Unk_AkoMessage(0x94c, 1, 1, nError);
+            break;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141732B20, CSceneStateGame, FUN_141732b20, 1550, 0x20409A41);
 // The effect play request (0x70 bytes; effectquery.h declares only its first 0x10).
 struct Unk_SSGEffectReq
 {
