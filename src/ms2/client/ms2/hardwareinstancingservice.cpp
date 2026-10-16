@@ -60,6 +60,23 @@
 // MS2-PIN: ??0?$map@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@@std@@QEAA@XZ 0x1413e8700 ; prop
 // MS2-PIN: ??0?$map@_KPEAVMeshInstancing@@U?$less@_K@std@@V?$allocator@U?$pair@$$CB_KPEAVMeshInstancing@@@std@@@3@@std@@QEAA@XZ 0x1413e8780 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHUUnk_HwiMapData@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x1413d97a0 ; hand: tplpin unique
+// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x1413e7a80 ; hand: tplpin unique
+// MS2-PIN: ??0?$map@IIU?$less@I@std@@@efd@@QEAA@XZ 0x1413e8730 ; hand: tplpin prop
+// MS2-PIN: ??0?$map@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@@std@@QEAA@XZ 0x1413e8750 ; hand: tplpin unique
+// MS2-PIN: ??E?$_List_iterator@V?$_List_val@U?$_List_simple_types@UUnk_HwiCreated@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1413ea1c0 ; hand: tplpin unique
+// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEAAXXZ 0x1413eec10 ; hand: tplpin unique
+// MS2-PIN: ??0Unk_HwiMapData@@QEAA@XZ 0x1413e8850 ; hand: only caller of the list<Unk_HwiNearby> ctor 0x1413e8550
+// MS2-PIN: ??$_Lbound@VEntityID@egf@@@?$_Tree@V?$_Tmap_traits@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@PEAX@1@AEBVEntityID@egf@@@Z 0x1413e3ed0 ; hand: tplpin unique
+// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@0@AEBV10@@Z 0x1413e4da0 ; hand: tplpin unique
+// MS2-PIN: ??$make_pair@_KAEAPEAVEntityInstancing@@@std@@YA?AU?$pair@_KPEAVEntityInstancing@@@0@$$QEA_KAEAPEAVEntityInstancing@@@Z 0x1413e6ac0 ; hand: tplpin unique
+// MS2-PIN: ??1?$map@IIU?$less@I@std@@@efd@@QEAA@XZ 0x1413e9200 ; hand: tplpin prop
+// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1413e96d0 ; hand: tplpin unique
+// MS2-PIN: ??C?$_List_iterator@V?$_List_val@U?$_List_simple_types@UUnk_HwiCreated@@@std@@@std@@@std@@QEBAPEAUUnk_HwiCreated@@XZ 0x1413e9be0 ; hand: tplpin unique
+// MS2-PIN: ?GetHandle@SceneGraphMessage@ecr@@UEBAIXZ 0x1413ebb90 ; hand: tplpin unique
+// MS2-PIN: ?GetMultiplicity@AssetID@efd@@UEBAEXZ 0x1413ec890 ; hand: tplpin unique
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@$0A@@std@@@std@@IEBA_NAEBVEntityID@egf@@0@Z 0x1413eea90 ; hand: tplpin prop
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@std@@@2@XZ 0x1413f2390 ; hand: tplpin prop
 // MS2-PIN: ??_7HardwareInstancingService@@6BISystemService@efd@@@ 0x142f0c198 ; w102 manual
 // MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBII@std@@@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBII@1@@Z 0x1413d9fc0 ; w102 manual prop
 // MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBII@std@@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@AEAU?$pair@$$CBII@1@1@Z 0x1413dd340 ; w102 manual prop

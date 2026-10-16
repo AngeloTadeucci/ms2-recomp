@@ -62,6 +62,8 @@ MS2_CHECK_SIZE(Unk_HwiCreated, 0x10);
 // The instancing state of one map.
 struct Unk_HwiMapData
 {
+    Unk_HwiMapData() : m_bLoaded(false), m_nCellSize(0), m_nVisited(0) {}  // 0x1413e8850
+
     bool m_bLoaded;                                                 // +0
     int m_nCellSize;                                                // +4
     size_t m_nVisited;                                              // +8 entries of m_mapExcluded marked visited
