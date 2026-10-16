@@ -2,6 +2,9 @@
 // MS2-RANGE: 0x1410b68a0-0x1410d5bc0 .text$mn
 // MS2-RANGE: 0x1400e6230-0x1400e6420 .text$di
 // MS2-PIN: ??0Unk_CMISFlags3@@QEAA@XZ 0x140b68e60
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCube@@@@QEAAAEAV1@PEAVCube@@@Z 0x140965090 ; unique
+// MS2-PIN: ??0Unk_CMISIntList@@QEAA@XZ 0x1411229d0
+// MS2-PIN: ??1Unk_CMISIntList@@QEAA@XZ 0x141125b70
 // MS2-PIN: ??0Unk_CMISPt3@@QEAA@AEBUUnk_StreamPoint@@@Z 0x14027dcf0
 // MS2-PIN: ??_7CubeMapInformationService@@6BISystemService@efd@@@ 0x142eb3960
 // MS2-PIN: ??_7CubeMapInformationService@@6B?$TSingleton@VCubeMapInformationService@@@@@ 0x142eb39e8
@@ -155,6 +158,20 @@ __int64 FUN_1408b4f50(Cube*);
 int FUN_14053fc10(int);                                                     // the item category
 struct Unk_CMISCubeOwner { char m_pad[0x18]; __int64 m_nId; };
 Unk_CMISCubeOwner* FUN_1408b4f80(Cube*);                                    // the owner record of a cube
+struct Unk_CMISIntList { Unk_CMISIntList(); ~Unk_CMISIntList(); void* m_pFirst; void* m_pLast; void* m_pEnd; };   // 0x18 bytes: the cube keys of a column
+Unk_CMISIter<262>* FUN_141151c70(Unk_CMISTree<262>*, Unk_CMISIter<262>*);   // end
+Unk_CMISIter<262>* FUN_141157900(Unk_CMISTree<262>*, Unk_CMISIter<262>*, const int*);   // find
+bool FUN_1411275c0(Unk_CMISIter<262>*, Unk_CMISIter<262>*);                 // operator!=
+bool FUN_141126e90(Unk_CMISIter<262>*, Unk_CMISIter<262>*);                 // operator==
+Unk_CMISIntList* FUN_141127e10(Unk_CMISTree<262>*, const int*);             // operator[]
+void FUN_141126700(Unk_CMISIntList*, Unk_CMISIntList*);                     // operator=
+struct Unk_CMISListIter { void* m_p; };
+void FUN_14114e630(Unk_CMISIntList*, Unk_CMISListIter*);                    // begin
+struct Unk_CMISListEnd { void* m_p; void* m_a; };
+Unk_CMISListEnd* FUN_1411522d0(Unk_CMISIntList*, Unk_CMISListEnd*);         // end
+bool FUN_14035ea60(Unk_CMISListIter*, Unk_CMISListEnd*);                   // operator!=
+int* FUN_1403e8d70(Unk_CMISListIter*);                                      // operator*
+void FUN_14035ebf0(Unk_CMISListIter*);                                      // operator++
 struct Unk_CMISPair { int m_a, m_b; };
 extern Unk_CMISPair DAT_143b02320;                                          // initial cursor pair
 float FUN_14029d220(float f);                                               // fabsf
@@ -250,9 +267,9 @@ bool CubeMapInformationService::FUN_1410b7ed0(int nKey)
     return true;
 }
 // @0x1410b7f90
-bool CubeMapInformationService::FUN_1410b7f90(const Unk_Int3* pCell)
+bool CubeMapInformationService::FUN_1410b7f90(Unk_Int3 cell)
 {
-    return FUN_1410b7ed0(FUN_1408a0370(pCell->x, pCell->y, pCell->z));
+    return FUN_1410b7ed0(FUN_1408a0370(cell.x, cell.y, cell.z));
 }
 
 // @0x1410b7fe0
@@ -747,6 +764,55 @@ Unk_Int3 CubeMapInformationService::FUN_1410bac00(Unk_StreamPoint ptDir)
     else if (kSouth.FUN_140a00f20(kForward) == 1.0f)
         return Unk_Int3(0, -1, 0);
     return Unk_Int3(0, 0, 0);
+}
+
+// @0x1410bb950
+int CubeMapInformationService::FUN_1410bb950(Unk_Int3 pt)
+{
+    MS2Ptr<Cube> spCube(FUN_1410b8a60(pt));
+    while (spCube.get() != 0) {
+        if (spCube->field50 != 0)
+            return spCube->field50;
+        pt.z = pt.z - 1;
+        spCube.AssignRaw(FUN_1410b8a60(pt));
+    }
+    return 0;
+}
+// @0x1410bba60
+void CubeMapInformationService::FUN_1410bba60(int nKey)
+{
+    Unk_Int3 pt = FUN_1408a0400(nKey);
+    FUN_1410bb950(pt);
+}
+
+// @0x1410bbab0
+// MS2-FUNCTIONAL: behaviour-equivalent; frame layout / local order differs from the exe (0x10 of temporaries placed differently)
+bool CubeMapInformationService::FUN_1410bbab0(int nKey)
+{
+    Unk_CMISIter<262> itEnd, itFind;
+    if (FUN_1411275c0(FUN_141157900(&fd8, &itFind, &nKey), FUN_141151c70(&fd8, &itEnd))) {
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nKey);
+        Unk_CMISListIter it;
+        Unk_CMISListEnd itListEnd;
+        for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+            Unk_Int3 pt = FUN_1408a0400(*FUN_1403e8d70(&it));
+            pt.z = pt.z + 1;
+            if (FUN_1410b7f90(pt))
+                return true;
+        }
+    }
+    return false;
+}
+// @0x1410bbc00
+// MS2-FUNCTIONAL: identical code and slot layout, but the frame is 0x10 larger than the exe (unreferenced temporary)
+void CubeMapInformationService::FUN_1410bbc00(int nKey, int nUnused)
+{
+    Unk_CMISIter<262> itEnd, itFind;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind, &nKey), FUN_141151c70(&fd8, &itEnd))) {
+        Unk_CMISIntList kEmpty;
+        FUN_141126700(FUN_141127e10(&fd8, &nKey), &kEmpty);
+    }
+    FUN_1410bbcd0(nKey, 0);
 }
 
 // @0x1410ce800

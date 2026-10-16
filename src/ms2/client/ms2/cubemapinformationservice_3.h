@@ -105,7 +105,7 @@ public:
     bool FUN_1410b7da0(Unk_StreamPoint pt);
     bool FUN_1410b7e80(Unk_StreamPoint pt);
     bool FUN_1410b7ed0(int nKey);
-    bool FUN_1410b7f90(const Unk_Int3* pCell);
+    bool FUN_1410b7f90(Unk_Int3 cell);
     Unk_CMISTree<287>* FUN_1410b7fe0(int nKey);
     Cube* FUN_1410b80d0(MS2Ptr<Cube> spCube, int nZ);
     bool FUN_1410b82c0(MS2Ptr<Cube> spCube);
@@ -137,6 +137,11 @@ public:
     int FUN_1410ba4a0(Unk_StreamPoint ptDir);
     Unk_Int3 FUN_1410bab50(Unk_Int3 pt, int nDir);
     Unk_Int3 FUN_1410bac00(Unk_StreamPoint ptDir);
+    int FUN_1410bb950(Unk_Int3 pt);
+    void FUN_1410bba60(int nKey);
+    bool FUN_1410bbab0(int nKey);
+    void FUN_1410bbc00(int nKey, int nUnused);
+    void FUN_1410bbcd0(int nKey, int nFlag);
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();
