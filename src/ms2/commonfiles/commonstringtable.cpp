@@ -30,6 +30,7 @@ CStringW FUN_1401ceea0(const wchar_t* pszFormat, const int& nArg);          // f
 void FUN_14025fab0(CStringW& str);                                          // MakeLower
 extern int DAT_143ab2914;                                                   // client build / region level (below 50: checks active)
 extern int DAT_143ab0248;                                                   // client country (0..3)
+void FUN_140165320(Unk_BanWordList* pList, const CStringW& str);               // append a string to an array
 void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* pszSep);   // split into the pieces between separators
 
 // The game constants table (FUN_1401d3200()): only the 0x58-byte slots read here.
@@ -939,42 +940,35 @@ int CBanTextChecker::LoadWords(CString strPath, TextFilterUnit* pTrie)
     {
         return 0;
     }
-    else
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
     {
-        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-        if (pRoot == 0)
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return 0;
+    }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+    {
+        CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
+        if (strName.IsEmpty())
+            continue;
+        FUN_14025fab0(strName);
+        ATL::CAtlArray<CStringW> parts;
+        FUN_14025a680(strName, parts, L",");
+        if (parts.GetCount() == 1)
         {
-            FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+            pTrie->Insert(parts[0], 0, CStringW(L""));
+        }
+        else if (parts.GetCount() == 2)
+        {
+            pTrie->Insert(parts[0], 0, CStringW(parts[1]));
+        }
+        else if (parts.GetCount() > 2)
+        {
+            MS2_ASSERT_AT(0x28f, 0);
             return 0;
         }
-        else
-        {
-            for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
-            {
-                CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
-                if (!strName.IsEmpty())
-                {
-                    FUN_14025fab0(strName);
-                    ATL::CAtlArray<CStringW> parts;
-                    FUN_14025a680(strName, parts, L",");
-                    if (parts.GetCount() == 1)
-                    {
-                        pTrie->Insert(parts[0], 0, CStringW(L""));
-                    }
-                    else if (parts.GetCount() == 2)
-                    {
-                        pTrie->Insert(parts[0], 0, CStringW(parts[1]));
-                    }
-                    else if (parts.GetCount() > 2)
-                    {
-                        MS2_ASSERT_AT(0x28f, 0);
-                        return 0;
-                    }
-                }
-            }
-            return 1;
-        }
     }
+    return 1;
 }
 
 // @0x140227670
@@ -985,42 +979,35 @@ int CBanTextChecker::LoadIdSet(CString strPath, std::set<CStringW>* pSet)
     {
         return 0;
     }
-    else
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
     {
-        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-        if (pRoot == 0)
-        {
-            FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
-            return 0;
-        }
-        else
-        {
-            for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
-            {
-                CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
-                if (!strName.IsEmpty())
-                {
-                    FUN_14025fab0(strName);
-                    pSet->insert(strName);
-                }
-            }
-            return 1;
-        }
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return 0;
     }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+    {
+        CStringW strName = FUN_1401bf530(pNode, "name", CStringW(L""));
+        if (strName.IsEmpty())
+            continue;
+        FUN_14025fab0(strName);
+        pSet->insert(strName);
+    }
+    return 1;
 }
 
 // @0x140224b20
 int CBanTextChecker::LoadTables()
 {
     ClearTries();
-    LoadWords(FUN_14071a5b0(CString("Table"), CString("banUrl.xml")), &m_trieBanUrl);
-    LoadWords(FUN_14071ae20(CString("banWord.xml")), &m_trieBanWord);
-    LoadWords(FUN_14071ae20(CString("reserveWord.xml")), &m_trieReserveWord);
-    LoadIdSet(FUN_14071ae20(CString("reserveIDAll.xml")), &m_setReserveIdAll);
-    LoadWords(FUN_14071ae20(CString("reserveIDAny.xml")), &m_trieReserveIdAny);
-    LoadWords(FUN_14071ae20(CString("ugcBanWord.xml")), &m_trieUgcBanWord);
-    LoadWords(FUN_14071ae20(CString("startWithWord.xml")), &m_trieStartWith);
-    LoadWords(FUN_14071ae20(CString("banWordAll.xml")), &m_trieBanWordAll);
+    LoadWords(FUN_14071a5b0("Table", "banUrl.xml"), &m_trieBanUrl);
+    LoadWords(FUN_14071ae20("banWord.xml"), &m_trieBanWord);
+    LoadWords(FUN_14071ae20("reserveWord.xml"), &m_trieReserveWord);
+    LoadIdSet(FUN_14071ae20("reserveIDAll.xml"), &m_setReserveIdAll);
+    LoadWords(FUN_14071ae20("reserveIDAny.xml"), &m_trieReserveIdAny);
+    LoadWords(FUN_14071ae20("ugcBanWord.xml"), &m_trieUgcBanWord);
+    LoadWords(FUN_14071ae20("startWithWord.xml"), &m_trieStartWith);
+    LoadWords(FUN_14071ae20("banWordAll.xml"), &m_trieBanWordAll);
     BuildUrlHashes();
     FUN_140263710(true);
     return 1;
@@ -1033,7 +1020,8 @@ void CBanTextChecker::SetBanWords(unsigned nKey, Unk_BanWordList& words)
     Unk_BanWordPtr list((Unk_SocketNew(0)));
     for (unsigned i = 0; i < words.GetCount(); ++i)
     {
-        list->Add(words[i]);
+        const CStringW& strWord = words[i];
+        FUN_140165320(list.operator->(), strWord);
     }
     m_mapBanWords.SetAt(nKey, list);
 }
@@ -1047,17 +1035,21 @@ void CBanTextChecker::RemoveBanWords(unsigned nKey)
 // @0x140228740
 void CBanTextChecker::BuildUrlHashes()
 {
-    ATL::CAtlList<CStringW> urls(10);
-    urls.AddTail(CStringW(L"//qq.com"));
-    urls.AddTail(CStringW(L"www.qq.com"));
-    POSITION pos = urls.GetHeadPosition();
-    while (pos != 0)
+    ATL::CAtlList<CStringW, ATL::CElementTraitsBase<CStringW> > urls(10);
+    {
+        CStringW strUrl1(L"//qq.com");
+        urls.AddTail(strUrl1);
+    }
+    {
+        CStringW strUrl2(L"www.qq.com");
+        urls.AddTail(strUrl2);
+    }
+    for (POSITION pos = urls.GetHeadPosition(); pos != 0; urls.GetNext(pos))
     {
         const CStringW& strUrl = urls.GetAt(pos);
         CStringW strHash;
         strHash.Format(L"%d", FUN_14025ed00(strUrl));
         m_mapUrlHash.SetAt(strUrl, strHash);
-        urls.GetNext(pos);
     }
 }
 
@@ -1065,28 +1057,28 @@ void CBanTextChecker::BuildUrlHashes()
 bool CBanTextChecker::ReplaceUrlsWithHashes(CStringW& str)
 {
     int nCount = 0;
-    POSITION pos = m_mapUrlHash.GetHeadPosition();
-    while (pos != 0)
+    for (POSITION pos = m_mapUrlHash.GetHeadPosition(); pos != 0; m_mapUrlHash.GetNext(pos))
     {
         const CStringW& strUrl = m_mapUrlHash.GetKeyAt(pos);
         CStringW& strHash = m_mapUrlHash.GetValueAt(pos);
         nCount += str.Replace(strUrl, strHash);
-        m_mapUrlHash.GetNext(pos);
     }
-    return 0 < nCount;
+    if (0 < nCount)
+        return true;
+    return false;
 }
 
 // @0x140228970
 bool CBanTextChecker::ReplaceHashesWithUrls(CStringW& str)
 {
     int nCount = 0;
-    POSITION pos = m_mapUrlHash.GetHeadPosition();
-    while (pos != 0)
+    for (POSITION pos = m_mapUrlHash.GetHeadPosition(); pos != 0; m_mapUrlHash.GetNext(pos))
     {
         const CStringW& strUrl = m_mapUrlHash.GetKeyAt(pos);
         CStringW& strHash = m_mapUrlHash.GetValueAt(pos);
         nCount += str.Replace(strHash, strUrl);
-        m_mapUrlHash.GetNext(pos);
     }
-    return 0 < nCount;
+    if (0 < nCount)
+        return true;
+    return false;
 }
