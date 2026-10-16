@@ -86,6 +86,7 @@ int FUN_14145c4d0();                                                // 0x14145c4
 
 // ---- the running projectile ----
 struct Unk_MagicTag;
+struct Unk_MagicXform;
 struct Unk_MagicEntity;
 struct Unk_MagicSkillRow;
 // 16 byte smart pointers shared with the cube/world code (out-of-line members bound by VA in symbols-manual.tsv).
@@ -249,7 +250,7 @@ public:
     void FUN_141467da0();                                           // 0x141467da0
     void FUN_141467800();                                           // 0x141467800
     int FUN_141467dd0(unsigned long long nTag);                     // 0x141467dd0 can this cast be cancelled
-    void FUN_141467b90();                                           // 0x141467b90
+    CMagic* FUN_141467b90();                                        // 0x141467b90 the projectile
     void FUN_141467860();                                           // 0x141467860 per-tick update
     void FUN_141467500(Unk_MagicTagPtr spSkill, Unk_MagicTagPtr spCaster, Unk_StreamPoint ptStart,
         unsigned n530, unsigned n534, unsigned n53c);                // 0x141467500 start a projectile for a cast
@@ -334,6 +335,7 @@ public:
     void FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel);                        // 0x14146cd10 unregister a model
     Unk_SocketPtr<Unk_MagicTag> FUN_14146ce30(unsigned long long nCast);          // 0x14146ce30 find a cast record
     void FUN_14146ceb0(unsigned long long nCast);                                  // 0x14146ceb0 forget a cast record
+    void FUN_14146b440(Unk_MagicTag* pTag, int bTracked, Unk_MagicXform* pXform, Unk_StreamPoint ptDirection);   // 0x14146b440 play the hit of a cast record
 
     ATL::CRBMap<unsigned long long, Unk_SocketPtr<Unk_MagicTag> > m_mapCasts;     // +0x28 cast id -> cast record
     ATL::CAtlMap<unsigned long long, Unk_MagicModelMapPtr> m_mapModels;            // +0x58 caster id -> (cast id -> model)

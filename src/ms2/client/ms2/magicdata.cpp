@@ -52,6 +52,7 @@
 #include <NiFixedString.h>
 #include <cfloat>
 #include <set>
+#include <utility>
 #include <vector>
 
 extern Unk_StreamPoint DAT_143b01a60;       // the zero point
@@ -335,7 +336,8 @@ struct Unk_MagicRowFlag { int m_nPad; int m_nValue; int m_nPad2; bool FUN_1407df
 
 // The skill row (skillrecord.cpp); only the members the projectile reads.
 struct Unk_MagicSkillRow {
-    int FUN_1407e1a10() const;                                      // the cast mode (2: the projectile follows the caster's hand)
+    int FUN_1407e1a10() const;
+    const CString& FUN_1407e1a30() const;                           // the beam effect name                                      // the cast mode (2: the projectile follows the caster's hand)
     char m_pad00[0x30];
     unsigned m_nMagicId;                                            // +0x30 id into magicPath.xml
     int m_n34;                                                      // +0x34 target-tracking projectile
@@ -351,7 +353,8 @@ struct Unk_MagicSkillRow {
     char m_padc4[0x3c];
     Unk_MagicRowFlag m_flag100;                                     // +0x100 (+0x104: spawn the hit effect)
     int m_n10c;                                                     // +0x10c
-    char m_pad10[0x10];
+    char m_pad110[0xc];
+    int m_n11c;                                                     // +0x11c beam mode (0: from the caster, 1: chained, 2: along the aim)
     int m_n120;                                                     // +0x120
     Unk_StreamPoint m_ptBox;                                        // +0x124 box collision size
     Unk_StreamPoint m_ptBoxSize;                                    // +0x130 box collision extent (y, z)
@@ -377,6 +380,7 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_ptBox, 0x124);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_ptBoxSize, 0x130);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n11c, 0x11c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str148, 0x148);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str158, 0x158);
@@ -532,6 +536,8 @@ void FUN_140981070(void* pNode, Unk_NiPoint3* pPoint);              // NiAVObjec
 bool FUN_14098dad0(void* pNode);                                    // NiAVObject::GetAppCulled
 void FUN_140a0b300(void* pNode, char bCulled);                      // set app-culled
 void FUN_1409fabf0(Unk_NodePtr* pDst, void* pNode);                 // Unk_NodePtr::Reset
+void FUN_141467f60(const Unk_StreamPoint& ptPos, const Unk_StreamPoint* pDirection, Unk_MagicXform* pOut);
+const Unk_NiMatrix3& FUN_1410b23c0(void* pNode);                      // NiAVObject::GetRotate
 const CString* FUN_1417590d0(Unk_MagicTag* pTag);                   // the effect name of the skill
 Unk_MagicEffectFiles* FUN_1411b1dd0();
 int FUN_14119f5f0(void* pFile);
@@ -956,6 +962,307 @@ void CMagic::FUN_14145ec50(unsigned nNow)
     }
 }
 MS2_REPLACE_METHOD(0x14145EC50, CMagic, FUN_14145ec50, 2316, 0x13251CBB);
+
+// @0x14145f570
+// MS2-FUNCTIONAL: first-pass source; frame layout, temp order and the std::pair/make_pair glue not byte-compared
+void CMagic::FUN_14145f570(unsigned nNow)
+{
+    typedef std::pair<CString, int> FxPair;
+    Unk_SocketPtr<Unk_MagicTag> spRecord = FUN_1410a7630()->FUN_14146ce30(m_spSkill->m_nTagSub);
+    if (spRecord.get() == NULL) {
+        const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+        if (pRow == NULL)
+            return;
+        bool bLocal = FUN_14161ce60(FUN_1409f7c90(), m_spSkill->m_nOwnerId) == 0;
+        if (bLocal && !FUN_141464220()) {
+            ATL::CAtlArray<FxPair> aFx;
+            if (m_n52C == 0) {
+                if (pRow->m_flag100.m_nValue != 0 && !pRow->m_str188.IsEmpty()) {
+                    int nHitKind = 1;
+                    aFx.Add(std::make_pair(pRow->m_str188, nHitKind));
+                }
+                CString strEnd;
+                int nKind = 1;
+                if (m_n1C8 == 0) {
+                    strEnd = pRow->m_str148;
+                    nKind = 0;
+                } else {
+                    strEnd = pRow->m_str150;
+                }
+                if (!strEnd.IsEmpty())
+                    aFx.Add(std::make_pair(strEnd, nKind));
+            } else {
+                if (pRow->m_flag100.m_nValue != 0) {
+                    CString strHit(pRow->m_str188);
+                    if (!strHit.IsEmpty()) {
+                        int nHitKind = 1;
+                        aFx.Add(std::make_pair(strHit, nHitKind));
+                    }
+                }
+                int nKind = 0;
+                aFx.Add(std::make_pair(pRow->m_str148, nKind));
+            }
+            if (!aFx.IsEmpty()) {
+                Unk_MagicEffectReq kReq;
+                kReq.m_nObject = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+                for (unsigned i = 0; i < aFx.GetCount(); ++i) {
+                    FxPair kFx = aFx[i];
+                    kReq.m_strName = kFx.first;
+                    Unk_MagicXform kXform;
+                    if (kFx.second == 0) {
+                        kXform.m_fScale = 1.0f;
+                        kXform.m_rotate = FUN_1410b23c0(FUN_1409475f0(&m_spScene));
+                        kXform.m_translate = Unk_NiPoint3(m_ptCurrent);
+                    } else {
+                        FUN_141467f60(m_ptCurrent, &m_ptDirection, &kXform);
+                    }
+                    kReq.m_pXform = &kXform;
+                    FUN_1403ed280()->FUN_1411a4a00(&kReq);
+                }
+            }
+        }
+    } else {
+        Unk_StreamPoint ptEnd = m_ptCurrent;
+        if (m_spSkill->FUN_141759090() == 0) {
+            FUN_14145e1a0(m_spSkill->m_nCasterId, m_spSkill->m_nOwnerId, m_spSkill->FUN_141759010(),
+                m_spSkill->FUN_141759050(), &ptEnd, &m_ptDirection);
+        } else {
+            Unk_MagicEntity* pTarget = FUN_141464360();
+            if (pTarget != NULL) {
+                Unk_StreamPoint ptAim = pTarget->vf18_GetPosition().FUN_14097fd50(pTarget->vf37_GetExtent());
+                Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1180(m_spSkill->m_nOwnerId);
+                if (pOwner != NULL) {
+                    float fHeight;
+                    if (pTarget->vf37_GetExtent().z <= pOwner->vf37_GetExtent().z)
+                        fHeight = pTarget->vf37_GetExtent().z;
+                    else
+                        fHeight = pOwner->vf37_GetExtent().z;
+                    fHeight = fHeight * (FUN_14109ace0() * 0.2f + 1.0f);
+                    ptAim = pTarget->vf18_GetPosition().FUN_14097fd50(Unk_StreamPoint(0, 0, fHeight));
+                }
+                ptEnd = pTarget->vf38_Trace(m_ptDirection, ptAim, 2000.0f);
+            }
+        }
+        Unk_MagicXform kXform;
+        FUN_141467f60(ptEnd, &m_ptDirection, &kXform);
+        FUN_1410a7630()->FUN_14146b440(spRecord.get(), 1, &kXform, m_ptDirection);
+        FUN_1410a7630()->FUN_14146ceb0(m_spSkill->m_nTagSub);
+    }
+    if (m_spSkill->m_spLinked.FUN_1410a7150() != NULL) {
+        Unk_MagicTag* pLinked = m_spSkill->m_spLinked.FUN_1410a7150();
+        Unk_SocketPtr<CMagicModel> spModel = FUN_1410a7630()->FUN_14146c5d0(pLinked->m_nTagId, pLinked->m_nTagSub);
+        if (spModel.get() != NULL) {
+            if (FUN_1403ed2d0()->FUN_141bd1180(pLinked->m_nCasterId) != NULL) {
+                spModel->FUN_141467b90()->FUN_14145ddd0(m_ptCurrent);
+                pLinked->m_nStartTick = nNow;
+            }
+        }
+    }
+    int nExplosion = m_data.m_nExplosionByDestroy;
+    if (nExplosion == 0 && (m_n1C8 != 0 || m_n1CC != 0))
+        nExplosion = 1;
+    if (FUN_141464410()) {
+        if (m_spSkill->FUN_141759050()->m_n34 != 0 && nExplosion != 0) {
+            COutPacket packet(0x20, 0);
+            packet.Encode1(1);
+            packet.Encode1(2);
+            packet.Encode8(m_spSkill->m_nTagId);
+            packet.Encode1(m_spSkill->m_b5c);
+            packet.Encode4(m_spSkill->m_n8c);
+            packet.Encode4(m_spSkill->m_n84);
+            packet.vfunc_o10_10(m_ptCurrent);
+            Unk_StreamPoint ptDir = DAT_143a08d08;
+            FUN_140a0b1f0(m_matRotation, &ptDir);
+            packet.vfunc_o10_10(ptDir);
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14145F570, CMagic, FUN_14145f570, 4298, 0x191156C3);
+
+// The fill-target (area pick) context a beam cast builds (stateskill.cpp's CFillTargetContext: 0x88 bytes, ctor 0x1417e4e80).
+struct Unk_FillTargetCtx : public CPtred {
+    Unk_MagicEntity* m_pOwner;                                      // +0x18 the caster
+    Unk_StreamPoint m_ptOwner;                                      // +0x20 the caster's position
+    char m_pad2c[4];
+    char m_aHits[0x20];                                             // +0x30 CAtlArray<Unk_MagicHitRef> of the picked entities
+    Unk_MagicSrcPtr m_spSrc;                                        // +0x50 the skill source
+    int m_n60;
+    int m_nSrcLevel;                                                // +0x64
+    int m_nSrcIndex;                                                // +0x68
+    char m_pad6c[0x1c];
+};
+MS2_CHECK_SIZE(Unk_FillTargetCtx, 0x88);
+MS2_CHECK_OFFSET(Unk_FillTargetCtx, m_aHits, 0x30);
+MS2_CHECK_OFFSET(Unk_FillTargetCtx, m_spSrc, 0x50);
+Unk_FillTargetCtx* FUN_1417e4e80(void* pMemory);                    // the ctor
+int FUN_1417e95a0(Unk_SocketPtr<Unk_FillTargetCtx> spCtx);          // run the pick (callee releases the pointer)
+void FUN_1407ebb20(Unk_MagicSrcPtr* pDst, const Unk_MagicSrcPtr* pSrc);     // handle assignment
+Unk_SkillSrc* FUN_1407ebbf0(Unk_MagicSrcPtr* pSrc);                 // handle.get
+unsigned FUN_140803dc0(Unk_SkillSrc* pSrc);
+int FUN_141769410(Unk_MagicEntity* pEntity, const Unk_MagicSkillRow* pRow, unsigned nArg);   // the row's pick limit
+void* FUN_1416749a0(Unk_MagicEntity* pEntity);                      // the entity's +0x748 sub-object
+bool FUN_1409709d0(void* pSub);
+int FUN_140a01220(void* pArray);                                    // CAtlArray::GetCount (int)
+int FUN_140186270(void* pArray);                                    // CAtlArray<unsigned>::GetCount
+unsigned* FUN_140184510(void* pArray, long long nIndex);   // CAtlArray<unsigned>::GetAt
+unsigned long long FUN_1401855a0(void* pArray, unsigned nValue);    // CAtlArray<unsigned>::Add
+float FUN_140966ea0(Unk_StreamPoint ptA, Unk_StreamPoint ptB);      // planar distance
+
+// @0x141462900
+// MS2-FUNCTIONAL: first-pass source; frame layout, temp order and the point-array glue not byte-compared
+void CMagic::FUN_141462900(unsigned nNow)
+{
+    if (m_n53C == 1)
+        return;
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL || pRow->FUN_1407e1a10() != 2)
+        return;
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL || FUN_14166ce30(pOwner) != 0)
+        return;
+    if (FUN_1409709d0(FUN_1416749a0(pOwner)))
+        return;
+    FUN_1414609e0();
+    unsigned nEnd = (unsigned)(m_spSkill->FUN_141759190() - FUN_14086d260()->FUN_1414734a0());
+    if (m_n284 != 0) {
+        bool bPick = false;
+        if (!FUN_141464410() || nNow < nEnd) {
+            if (!FUN_141464410())
+                bPick = true;
+        } else {
+            bPick = true;
+        }
+        if (bPick) {
+            m_n284 = 0;
+            void* pMemory = operator new(0x88);
+            Unk_FillTargetCtx* pNew = pMemory != NULL ? FUN_1417e4e80(pMemory) : NULL;
+            Unk_SocketPtr<Unk_FillTargetCtx> spCtx(pNew);
+            spCtx->m_pOwner = pOwner;
+            spCtx->m_ptOwner = pOwner->vf18_GetPosition();
+            FUN_1407ebb20(&spCtx->m_spSrc, &m_spSkill->m_spSrc);
+            spCtx->m_n60 = 0;
+            spCtx->m_nSrcIndex = m_spSkill->m_nSrcIndex;
+            spCtx->m_nSrcLevel = m_spSkill->m_nSrcLevel;
+            if (FUN_1417e95a0(spCtx) == 0)
+                return;
+            int nPicked = FUN_140a01220(&spCtx->m_aHits);
+            int nLimit = FUN_141769410(pOwner, pRow, FUN_140803dc0(FUN_1407ebbf0(&m_spSkill->m_spSrc)));
+            int nCount;
+            if (nPicked < nLimit)
+                nCount = FUN_140a01220(&spCtx->m_aHits);
+            else
+                nCount = FUN_141769410(pOwner, pRow, FUN_140803dc0(FUN_1407ebbf0(&m_spSkill->m_spSrc)));
+            for (int i = 0; i < nCount; ++i) {
+                Unk_MagicEntity* pHit = FUN_140965780(FUN_140a006a0(&spCtx->m_aHits, i));
+                FUN_1401855a0(&m_arr288, FUN_14123c580(pHit));
+            }
+        }
+    }
+    if (m_n280 == 0 && nEnd <= nNow) {
+        m_n280 = 1;
+        ATL::CAtlArray<Unk_StreamPoint> aPoints;
+        FUN_1410a7400(&aPoints, &m_ptStart);
+        for (int i = 0; i < FUN_140186270(&m_arr288); ++i) {
+            unsigned* pId = FUN_140184510(&m_arr288, i);
+            Unk_MagicEntity* pEnt = FUN_1403ed2d0()->FUN_141bd1200(*pId);
+            if (pEnt != NULL) {
+                Unk_StreamPoint ptHit = DAT_143b01a60;
+                if (FUN_141467100(pEnt, &ptHit) == 0)
+                    ptHit = pEnt->vf18_GetPosition().FUN_14097fd50(pEnt->vf37_GetExtent());
+                if (pRow->m_n11c == 2) {
+                    float fDist = FUN_140966ea0(m_ptStart, ptHit);
+                    ptHit = m_ptStart.FUN_14097fd50(m_ptDirection.FUN_14097fc90(fDist));
+                }
+                FUN_1410a7400(&aPoints, &ptHit);
+            }
+        }
+        bool bSingle = false;
+        Unk_StreamPoint ptLast = m_ptTarget;
+        if (FUN_140a0afb0(&aPoints) == 1) {
+            if (pRow->m_n11c == 0) {
+                FUN_1410a7400(&aPoints, &m_ptStart);
+                ptLast = m_ptStart;
+            } else {
+                FUN_1410a7400(&aPoints, &m_ptTarget);
+            }
+            bSingle = true;
+        }
+        int nSegments = (int)FUN_140a0afb0(&aPoints) - 1;
+        int nOwnerType = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+        bool bLocal = FUN_14161ce60(FUN_1409f7c90(), m_spSkill->m_nOwnerId) == 0;
+        if (bLocal && !FUN_141464220()) {
+            for (int i = 0; i < nSegments; ++i) {
+                if (pRow->m_n11c == 1)
+                    FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, i));
+                else
+                    FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, 0));
+                FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, i + 1));
+                Unk_MagicEffectReq kReq;
+                kReq.m_strName = pRow->FUN_1407e1a30();
+                kReq.m_nObject = nOwnerType;
+                FUN_1409fabf0(&kReq.m_pNode, FUN_1409475d0(&m_spScene));
+                kReq.m_bFlag = 1;
+                kReq.m_pIds = &m_slots[i].m_ids;
+                m_slots[i].m_nEffect = FUN_1403ed280()->FUN_1411a49c0(&kReq);
+            }
+            if (bSingle) {
+                Unk_MagicXform kXform;
+                kXform.m_fScale = 1.0f;
+                kXform.m_translate = Unk_NiPoint3(ptLast);
+                FUN_1420849a0(&kXform.m_rotate);
+                Unk_MagicEffectReq kReq;
+                kReq.m_strName = pRow->m_str148;
+                kReq.m_nObject = nOwnerType;
+                kReq.m_pXform = &kXform;
+                FUN_1403ed280()->FUN_1411a4a00(&kReq);
+            }
+        }
+    }
+    if (m_n280 != 0 && nEnd <= nNow) {
+        ATL::CAtlArray<Unk_StreamPoint> aPoints;
+        FUN_1410a7400(&aPoints, &m_ptStart);
+        for (int i = 0; i < FUN_140186270(&m_arr288); ++i) {
+            unsigned* pId = FUN_140184510(&m_arr288, i);
+            Unk_MagicEntity* pEnt = FUN_1403ed2d0()->FUN_141bd1200(*pId);
+            if (pEnt != NULL) {
+                Unk_StreamPoint ptHit = DAT_143b01a60;
+                if (FUN_141467100(pEnt, &ptHit) == 0)
+                    ptHit = pEnt->vf18_GetPosition().FUN_14097fd50(pEnt->vf37_GetExtent());
+                if (pRow->m_n11c == 2) {
+                    float fDist = FUN_140966ea0(m_ptStart, ptHit);
+                    ptHit = m_ptStart.FUN_14097fd50(m_ptDirection.FUN_14097fc90(fDist));
+                }
+                FUN_1410a7400(&aPoints, &ptHit);
+            }
+        }
+        if (FUN_140a0afb0(&aPoints) == 1) {
+            if (pRow->m_n11c == 0)
+                FUN_1410a7400(&aPoints, &m_ptStart);
+            else
+                FUN_1410a7400(&aPoints, &m_ptTarget);
+        }
+        int nSegments = (int)FUN_140a0afb0(&aPoints) - 1;
+        int i;
+        for (i = 0; i < nSegments; ++i) {
+            FUN_1410a76c0(&m_slots[i].m_ids);
+            if (pRow->m_n11c == 1)
+                FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, i));
+            else
+                FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, 0));
+            FUN_1410a7400(&m_slots[i].m_ids, FUN_14144dcb0(&aPoints, i + 1));
+        }
+        if (pRow->m_n11c != 2) {
+            for (; i < 16; ++i) {
+                if (m_slots[i].m_nEffect != 0) {
+                    FUN_1403ed280()->FUN_1411a6060(m_slots[i].m_nEffect);
+                    m_slots[i].m_nEffect = 0;
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141462900, CMagic, FUN_141462900, 4176, 0x4E7508B0);
 
 // @0x141460640
 void CMagic::FUN_141460640(unsigned nNow)
@@ -1882,9 +2189,9 @@ int CMagicModel::FUN_141467dd0(unsigned long long nTag)
 MS2_REPLACE_METHOD(0x141467DD0, CMagicModel, FUN_141467dd0, 240, 0x80C3DD27);
 
 // @0x141467b90
-void CMagicModel::FUN_141467b90()
+CMagic* CMagicModel::FUN_141467b90()
 {
-    m_spMagic.get();
+    return m_spMagic.get();
 }
 MS2_REPLACE_METHOD(0x141467B90, CMagicModel, FUN_141467b90, 31, 0x693D9C48);
 
