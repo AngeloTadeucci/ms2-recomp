@@ -22,7 +22,7 @@ public:
     virtual void vfunc_2();                                                 //  2 0x141986cc0 show: m_68 = 1; FUN_1422dbf00(m_2c, m_44, 0)
     virtual void vfunc_3();                                                 //  3 0x141986d00 hide: m_68 = 0; FUN_1422dc080()
     virtual void vfunc_41(const Scaleform::GFx::Value& root);               // 41 0x141986c50 m_30 = AS object of root (type m_28)
-    virtual int vfunc_48();                                                 // 48 0x141986d80 returns 0x4e67 (20071)
+    virtual int vfunc_48() { return 0x4e67; }                               // 48 0x141986d80 (inline: emitted after ??_G)
     // ---- agents: append non-virtual UIHeadUpDisplay members below this line (sorted by address) ----
     int FUN_141986d30();                                                    // m_68 (shown)
 
