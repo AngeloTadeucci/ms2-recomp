@@ -200,6 +200,8 @@ public:
     void FUN_14173a5e0(CInPacket& packet);                  // 0xf3
     void FUN_14173a720(CInPacket& packet);                  // 0xf4
     void FUN_14173a990(CInPacket& packet);                  // 0xf8
+    void FUN_14173aa10(CInPacket& packet);                  // mode 2
+    void FUN_14173ad60(CInPacket& packet);                  // mode 0
     void FUN_14173b080(CInPacket& packet);                  // 0xfa
     void FUN_14173b1d0(CInPacket& packet);                  // 0xfb
     void FUN_14173b220(CInPacket& packet);                  // 0xfd
@@ -239,6 +241,8 @@ public:
     void FUN_1417398d0();                                   // refresh the individual pvp dialog
     void FUN_141739880();                                   // drop the taxi effect (m_nTaxiEffect)
     int FUN_14173fe20();                                    // Ctrl+Alt+... debug key combination
+    void FUN_14173feb0();                                   // the debug key action
+    void FUN_141740200(const CStringW& strName, int nType); // send packet 0x51 (mode 0, name, type)
 
 public:   // members (names inferred)
     bool m_b18;                                             // +0x18 (true)

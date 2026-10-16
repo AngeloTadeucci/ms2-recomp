@@ -89,6 +89,7 @@ public:
     MS2Ptr<UIObject> FUN_141adcea0(int nId);
     void FUN_141adc400();
     int FUN_141adc940(int nId);
+    void FUN_141ad9a60(CString strName);
     void FUN_141adc530(int nId);
 };
 Unk_SSGUIMgr* FUN_1403ed2b0();
@@ -127,10 +128,10 @@ Unk_SSGInput* FUN_140953f30();
 
 class Unk_SSGKeyState { public: int FUN_1422aeed0(int n); };
 Unk_SSGKeyState* FUN_14025e7a0();
-class Unk_SSGKeyboard { public: bool FUN_14116d950(int nKey, int a, int b); bool FUN_14116d9c0(int nKey, int a, int b); };
+class Unk_SSGKeyboard { public: bool FUN_14116d950(int nKey, bool bA, int b); bool FUN_14116d9c0(int nKey, bool bA, int b); };
 Unk_SSGKeyboard* FUN_14025e7c0();
 
-class Unk_SSGQuery { public: int FUN_140a18070(); void FUN_140aeb1a0(); };
+class Unk_SSGQuery { public: int FUN_140a18070(); void FUN_140aeb1a0(); void FUN_140aecbb0(int a, int b, bool c); };
 Unk_SSGQuery* FUN_1409478c0();
 
 // OnEnter/OnLeave service calls
@@ -497,7 +498,10 @@ public:
     Unk_SSGConstValue m_3680;                               // +0x3680
     char m_pad_3681[0x66d0 - 0x3681];
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
+    char m_pad_66d1[0x67e0 - 0x66d1];
+    Unk_SSGConstValue2 m_67e0;                              // +0x67e0
 };
+MS2_CHECK_OFFSET(Unk_SSGConstants, m_67e0, 0x67e0);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_3680, 0x3680);
 MS2_CHECK_OFFSET(Unk_SSGConstants, m_66d0, 0x66d0);
 Unk_SSGConstants* FUN_1401d3200();
@@ -533,8 +537,25 @@ extern CStringW DAT_143ae79f0;
 bool FUN_14028d780(unsigned char n);
 class Unk_SSGDlg4e47 { public: void FUN_141b10ba0(int n); };
 Unk_SSGDlg4e47* FUN_140de48d0(int nId);                     // GetDialog<T>(0x4e47)
-class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); };
+class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); void FUN_1412c54e0(int n); };
 Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4ed8)
+
+class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); };
+Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e29)
+
+class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); };
+Unk_SSGCommandLog* FUN_140166440();
+class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); };
+Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
+class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
+Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
+class UIUnlimitedEnchantDialog : public UIDialog
+{
+public:
+    void FUN_140fb6310(CInPacket& packet);
+    void FUN_140fb6b00(CInPacket& packet);
+    void FUN_140fb6c30(int n);
+};
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -2529,3 +2550,169 @@ void CSceneStateGame::FUN_141738290(CInPacket& packet)
         pDlg2->FUN_1412c5330(*FUN_1401d3200()->m_66d0.FUN_1401d7c10());
 }
 MS2_REPLACE_METHOD(0x141738290, CSceneStateGame, FUN_141738290, 226, 0xEA7CE9F9);
+
+// @0x141738380
+void CSceneStateGame::FUN_141738380(CInPacket& packet)
+{
+    __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_141662890(nValue);
+    Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+    if (pDlg != 0)
+        pDlg->FUN_1412c54e0(*FUN_1401d3200()->m_67e0.FUN_1401d7c10());
+}
+MS2_REPLACE_METHOD(0x141738380, CSceneStateGame, FUN_141738380, 155, 0xA0FA9FF3);
+
+// @0x14173a370
+void CSceneStateGame::FUN_14173a370(CInPacket& packet)
+{
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (FUN_1409478c0() != 0)
+        FUN_1409478c0()->FUN_140aecbb0(nA, nB, bFlag);
+}
+MS2_REPLACE_METHOD(0x14173a370, CSceneStateGame, FUN_14173a370, 170, 0x0E98F324);
+
+// @0x14173a990
+void CSceneStateGame::FUN_14173a990(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 2:
+        FUN_14173aa10(packet);
+        break;
+    case 0:
+        FUN_14173ad60(packet);
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x14173a990, CSceneStateGame, FUN_14173a990, 116, 0x91EABDAC);
+
+// @0x14173b380
+void CSceneStateGame::FUN_14173b380(CInPacket& packet)
+{
+    CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+    FUN_1403ed2b0()->FUN_141ad9a60(strName);
+}
+MS2_REPLACE_METHOD(0x14173b380, CSceneStateGame, FUN_14173b380, 140, 0x9A5D042E);
+
+// @0x14173c7a0
+void CSceneStateGame::FUN_14173c7a0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 1)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC != 0)
+            pPC->FUN_141660000(nValue);
+    }
+}
+MS2_REPLACE_METHOD(0x14173c7a0, CSceneStateGame, FUN_14173c7a0, 189, 0x0673F946);
+
+// @0x14173de10
+void CSceneStateGame::FUN_14173de10(CInPacket& packet)
+{
+    __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    Unk_NiPoint3 kPos(static_cast<CInputStream&>(packet).vfunc_o8_10());
+    Unk_SSGDlg4e29* pDlg = FUN_140c9b540(0x4e29);
+    if (pDlg != 0)
+        pDlg->FUN_141a3b130(nUid, nType, kPos);
+}
+MS2_REPLACE_METHOD(0x14173de10, CSceneStateGame, FUN_14173de10, 217, 0x968A66BC);
+
+// @0x14173def0
+void CSceneStateGame::FUN_14173def0(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    CStringW strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (FUN_140166440() != 0)
+        FUN_140166440()->FUN_1401859c0(nType, nValue, strText);
+}
+MS2_REPLACE_METHOD(0x14173def0, CSceneStateGame, FUN_14173def0, 215, 0x136244C6);
+
+// @0x14173e510
+void CSceneStateGame::FUN_14173e510(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode != 4)
+        return;
+    int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+    if (pDlg != 0)
+        pDlg->FUN_141ac1d10(nValue);
+}
+MS2_REPLACE_METHOD(0x14173e510, CSceneStateGame, FUN_14173e510, 144, 0xC2688D81);
+
+// @0x14173f0c0
+void CSceneStateGame::FUN_14173f0c0(CInPacket& packet)
+{
+    Unk_SSGMessengerBrowser* pDlg = FUN_140a3ab70(0x4e61);
+    if (pDlg == 0)
+        return;
+    pDlg->FUN_141a265d0();
+    unsigned int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (unsigned int i = 0; i < nCount; i++)
+    {
+        const unsigned int& nId = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        pDlg->FUN_141a26560(nId);
+    }
+    pDlg->FUN_141a26600();
+}
+MS2_REPLACE_METHOD(0x14173f0c0, CSceneStateGame, FUN_14173f0c0, 205, 0x3BC94772);
+
+// @0x14173f1a0
+void CSceneStateGame::FUN_14173f1a0(CInPacket& packet)
+{
+    UIUnlimitedEnchantDialog* pDlg = Unk_SSGGetDialog<UIUnlimitedEnchantDialog>(0x4f97);
+    if (pDlg == 0)
+        return;
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        pDlg->FUN_140fb6310(packet);
+        break;
+    case 1:
+        pDlg->FUN_140fb6b00(packet);
+        break;
+    case 2:
+    {
+        int nValue = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        pDlg->FUN_140fb6c30(nValue);
+        break;
+    }
+    }
+}
+MS2_REPLACE_METHOD(0x14173f1a0, CSceneStateGame, FUN_14173f1a0, 206, 0xE5A97C8E);
+
+// @0x14173fe20
+int CSceneStateGame::FUN_14173fe20()
+{
+    if (FUN_14025e7c0()->FUN_14116d950(0x1d, true, 0) && FUN_14025e7c0()->FUN_14116d950(0x38, true, 0)
+        && FUN_14025e7c0()->FUN_14116d9c0(0x43, true, 0))
+    {
+        FUN_14173feb0();
+        return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14173fe20, CSceneStateGame, FUN_14173fe20, 126, 0x98F76DA5);
+
+// @0x141740200
+void CSceneStateGame::FUN_141740200(const CStringW& strName, int nType)
+{
+    COutPacket out(0x51, 0);
+    out.COutPacket::vfunc_o10_1(0);
+    out.COutPacket::vfunc_o10_8(strName);
+    out.COutPacket::vfunc_o10_1(nType);
+    FUN_140710590(out);
+}
+MS2_REPLACE_METHOD(0x141740200, CSceneStateGame, FUN_141740200, 118, 0x74A0A5D8);

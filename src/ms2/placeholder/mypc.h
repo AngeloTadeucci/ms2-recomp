@@ -20,6 +20,7 @@ public:
     void FUN_141661370(int a, int b, int c);                // PC member (scenestategame packet 0x83)
     void FUN_141528c30(CInPacket& packet);                  // scenestategame packet 0x135
     void FUN_141662850(__int64 nValue);                     // PC member (scenestategame packet 0xe0)
+    void FUN_141662890(__int64 nValue);                     // PC member
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };
