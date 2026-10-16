@@ -12,6 +12,7 @@
 #include "ms2/placeholder/unk_nodeptr.h"
 
 class Unk_140165cf0;    // game TinyXML element
+CPtred* FUN_1404efd80(CPtred* pThis, const CPtred* pOther);      // the exe's CPtred assignment (ICF-folded `return this`)
 
 // One <move> element of magicPath.xml (0xc0 bytes, RTTI base CPtred).
 class CMagicData : public CPtred
@@ -21,6 +22,7 @@ public:
     virtual ~CMagicData() = default;                                // 0 0x141468d80
     // A position between the two control points (random fractions per axis).
     Unk_StreamPoint FUN_14145c030(void* pRandom);                   // 0x14145c030
+    CMagicData& operator=(const CMagicData& kOther);                // 0x141468f10 (the implicit copy assignment)
     bool FUN_14145c180();                                           // 0x14145c180 any control point is not the zero point
 
     Unk_StreamPoint m_ptFireOffset;                                 // +0x18 fireOffsetPosition

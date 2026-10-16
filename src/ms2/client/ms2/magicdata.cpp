@@ -334,3 +334,38 @@ Unk_MagicSlot::Unk_MagicSlot()
 Unk_MagicSlot::~Unk_MagicSlot()
 {
 }
+
+// @0x141468f10
+CMagicData& CMagicData::operator=(const CMagicData& kOther)
+{
+    FUN_1404efd80(this, &kOther);
+    m_ptFireOffset = kOther.m_ptFireOffset;
+    m_ptFireFixed = kOther.m_ptFireFixed;
+    m_strFireNode = kOther.m_strFireNode;
+    m_nRotation = kOther.m_nRotation;
+    m_fLifeTime = kOther.m_fLifeTime;
+    m_fDelayTime = kOther.m_fDelayTime;
+    m_fSpawnTime = kOther.m_fSpawnTime;
+    m_ptDirection = kOther.m_ptDirection;
+    m_fDirRotZ = kOther.m_fDirRotZ;
+    m_fVelocity = kOther.m_fVelocity;
+    m_fDistance = kOther.m_fDistance;
+    m_fSpeed = kOther.m_fSpeed;
+    m_fNonTargetMoveDistance = kOther.m_fNonTargetMoveDistance;
+    m_fTraceTargetDuration = kOther.m_fTraceTargetDuration;
+    m_fDestroyTime = kOther.m_fDestroyTime;
+    for (unsigned long long i = 0; i < 2; ++i)
+        m_ptControl[i] = kOther.m_ptControl[i];
+    m_fControlRate = kOther.m_fControlRate;
+    m_ptControlEnd = kOther.m_ptControlEnd;
+    m_nCatmullRom = kOther.m_nCatmullRom;
+    m_nMoveEndHoldDuration = kOther.m_nMoveEndHoldDuration;
+    m_nExplosionByDestroy = kOther.m_nExplosionByDestroy;
+    m_nPiercingAttackInterval = kOther.m_nPiercingAttackInterval;
+    m_nPiercingAttackMaxTargetCount = kOther.m_nPiercingAttackMaxTargetCount;
+    m_nLookAtType = kOther.m_nLookAtType;
+    m_nIgnoreCancelAtSpawnTime = kOther.m_nIgnoreCancelAtSpawnTime;
+    m_nIgnorePhysxTestInitPosition = kOther.m_nIgnorePhysxTestInitPosition;
+    m_nTraceTargetOffsetPos = kOther.m_nTraceTargetOffsetPos;
+    return *this;
+}
