@@ -9,12 +9,13 @@
 #include "ms2/ms2layout.h"
 #include <vector>
 #include <efd/StdContainers.h>
+#include <efd/MemObject.h>
 
 class NiAVObject;
 class NiRenderObject;
 class NiPoint3;
 
-class AlphaComponent
+class AlphaComponent : public efd::MemObject
 {
 public:
     virtual void vfunc_0() = 0;                             // 0 apply
