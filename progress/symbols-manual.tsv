@@ -1361,3 +1361,5 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?Create@TriggerObject@@SA?AV?$MS2Ptr@VTriggerObject@@@@PEAVEntity@egf@@@Z	140de6260	func
 ?Contains@TriggerObject@@QEAA_NUUnk_StreamPoint@@@Z	140de5f60	func
 ?DAT_143a08cf8@@3DA	143a08cf8	data
+?GetReactorData@CReactorDataTable@@QEAA?AV?$MS2Ptr@VReactorData@@@@H@Z	14076bbd0	func
+??0Unk_Int3@@QEAA@HHH@Z	1408a85a0	func
