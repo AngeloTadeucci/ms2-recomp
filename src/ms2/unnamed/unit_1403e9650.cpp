@@ -1,0 +1,309 @@
+// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The COMDAT tail of commonfiles/gameevent.cpp (sorted by
+// mangled name): the ??_G deleting dtors of the GameEvent subclasses / *Context types (slot 0 of their vftables), the
+// non-virtual ??_G of the smart pointer / container members gameevent.cpp deletes, and the CAtlArray / CAtlMap /
+// std:: glue over the context element types. w116 partial, see the note in progress/queue.tsv.
+// MS2-UNIT: unit_1403e9650
+// MS2-RANGE: 0x1403e9650-0x1403f37d0 .text$mn
+// MS2-PIN: ??_GBurningLevelupContext@@UEAAPEAXI@Z 0x1403e9850
+// MS2-PIN: ??_GCard@GalleryContext@@UEAAPEAXI@Z 0x1403e99d0
+// MS2-PIN: ??_GCoupleDanceContext@@UEAAPEAXI@Z 0x1403e9a10
+// MS2-PIN: ??_GEnchantRateEventContext@@UEAAPEAXI@Z 0x1403e9a50
+// MS2-PIN: ??_GEventQuestContext@@UEAAPEAXI@Z 0x1403e9a90
+// MS2-PIN: ??_GGalleryContext@@UEAAPEAXI@Z 0x1403e9ad0
+// MS2-PIN: ??_GGameEventAdventureLevelBonusExpRate@@UEAAPEAXI@Z 0x1403e9b10
+// MS2-PIN: ??_GGameEventArcadeOpen@@UEAAPEAXI@Z 0x1403e9b50
+// MS2-PIN: ??_GGameEventBattlePetSpawn@@UEAAPEAXI@Z 0x1403e9b90
+// MS2-PIN: ??_GGameEventBingoEvent@@UEAAPEAXI@Z 0x1403e9bd0
+// MS2-PIN: ??_GGameEventBlackMarketFeeDiscount@@UEAAPEAXI@Z 0x1403e9c10
+// MS2-PIN: ??_GGameEventBlueMarble@@UEAAPEAXI@Z 0x1403e9c50
+// MS2-PIN: ??_GGameEventBurningLevelup@@UEAAPEAXI@Z 0x1403e9c90
+// MS2-PIN: ??_GGameEventChatFiltering@@UEAAPEAXI@Z 0x1403e9cd0
+// MS2-PIN: ??_GGameEventCollectItemGroup@@UEAAPEAXI@Z 0x1403e9d10
+// MS2-PIN: ??_GGameEventConstructShowItem@@UEAAPEAXI@Z 0x1403e9d50
+// MS2-PIN: ??_GGameEventCoupleDance@@UEAAPEAXI@Z 0x1403e9d90
+// MS2-PIN: ??_GGameEventCustomTriggerString@@UEAAPEAXI@Z 0x1403e9dd0
+// MS2-PIN: ??_GGameEventDeleteUrlCache@@UEAAPEAXI@Z 0x1403e9e10
+// MS2-PIN: ??_GGameEventDungeonBonusReward@@UEAAPEAXI@Z 0x1403e9e50
+// MS2-PIN: ??_GGameEventDungeonEnterTimeLimit@@UEAAPEAXI@Z 0x1403e9e90
+// MS2-PIN: ??_GGameEventDungeonExtraReward@@UEAAPEAXI@Z 0x1403e9ed0
+// MS2-PIN: ??_GGameEventDungeonOpenPeriod@@UEAAPEAXI@Z 0x1403e9f10
+// MS2-PIN: ??_GGameEventDungeonRoomShutdown@@UEAAPEAXI@Z 0x1403e9f50
+// MS2-PIN: ??_GGameEventEnchantRate@@UEAAPEAXI@Z 0x1403e9f90
+// MS2-PIN: ??_GGameEventEpicRestart@@UEAAPEAXI@Z 0x1403e9fd0
+// MS2-PIN: ??_GGameEventEventFieldPopup@@UEAAPEAXI@Z 0x1403ea010
+// MS2-PIN: ??_GGameEventExchangeScrollSale@@UEAAPEAXI@Z 0x1403ea050
+// MS2-PIN: ??_GGameEventFestival@@UEAAPEAXI@Z 0x1403ea090
+// MS2-PIN: ??_GGameEventFieldEffect@@UEAAPEAXI@Z 0x1403ea0d0
+// MS2-PIN: ??_GGameEventFieldShutdown@@UEAAPEAXI@Z 0x1403ea110
+// MS2-PIN: ??_GGameEventFindDungeonHelperBonus@@UEAAPEAXI@Z 0x1403ea150
+// MS2-PIN: ??_GGameEventFinishPayback@@UEAAPEAXI@Z 0x1403ea190
+// MS2-PIN: ??_GGameEventFreeAirTaxi@@UEAAPEAXI@Z 0x1403ea1d0
+// MS2-PIN: ??_GGameEventGallery@@UEAAPEAXI@Z 0x1403ea210
+// MS2-PIN: ??_GGameEventGameMenuPopup@@UEAAPEAXI@Z 0x1403ea250
+// MS2-PIN: ??_GGameEventGuildChampionship@@UEAAPEAXI@Z 0x1403ea290
+// MS2-PIN: ??_GGameEventGuildCoin@@UEAAPEAXI@Z 0x1403ea2d0
+// MS2-PIN: ??_GGameEventGuildEventFund@@UEAAPEAXI@Z 0x1403ea310
+// MS2-PIN: ??_GGameEventGuildExp@@UEAAPEAXI@Z 0x1403ea350
+// MS2-PIN: ??_GGameEventGuildFund@@UEAAPEAXI@Z 0x1403ea390
+// MS2-PIN: ??_GGameEventGuildPersonalSkillSale@@UEAAPEAXI@Z 0x1403ea3d0
+// MS2-PIN: ??_GGameEventGuildSkillSale@@UEAAPEAXI@Z 0x1403ea410
+// MS2-PIN: ??_GGameEventGuildVsGameOpen@@UEAAPEAXI@Z 0x1403ea450
+// MS2-PIN: ??_GGameEventIgnoreConstructionLockEvent@@UEAAPEAXI@Z 0x1403ea490
+// MS2-PIN: ??_GGameEventItemBox@@UEAAPEAXI@Z 0x1403ea4d0
+// MS2-PIN: ??_GGameEventItemBuff@@UEAAPEAXI@Z 0x1403ea510
+// MS2-PIN: ??_GGameEventItemTradeRestriction@@UEAAPEAXI@Z 0x1403ea550
+// MS2-PIN: ??_GGameEventLevelUpPackage@@UEAAPEAXI@Z 0x1403ea590
+// MS2-PIN: ??_GGameEventLongTermAttendGift@@UEAAPEAXI@Z 0x1403ea5d0
+// MS2-PIN: ??_GGameEventMassiveConstructionEvent@@UEAAPEAXI@Z 0x1403ea610
+// MS2-PIN: ??_GGameEventMasteryReduce@@UEAAPEAXI@Z 0x1403ea650
+// MS2-PIN: ??_GGameEventMasteryReward@@UEAAPEAXI@Z 0x1403ea690
+// MS2-PIN: ??_GGameEventMeratMarketNotice@@UEAAPEAXI@Z 0x1403ea6d0
+// MS2-PIN: ??_GGameEventMeratMarketOpenTab@@UEAAPEAXI@Z 0x1403ea710
+// MS2-PIN: ??_GGameEventMesoRevival@@UEAAPEAXI@Z 0x1403ea750
+// MS2-PIN: ??_GGameEventNpcEventDrop@@UEAAPEAXI@Z 0x1403ea790
+// MS2-PIN: ??_GGameEventNpcShopGivePoint@@UEAAPEAXI@Z 0x1403ea7d0
+// MS2-PIN: ??_GGameEventNpcShopResetPriceSale@@UEAAPEAXI@Z 0x1403ea810
+// MS2-PIN: ??_GGameEventNpcShopTalk@@UEAAPEAXI@Z 0x1403ea850
+// MS2-PIN: ??_GGameEventOntime@@UEAAPEAXI@Z 0x1403ea890
+// MS2-PIN: ??_GGameEventPCBangSAHotTime@@UEAAPEAXI@Z 0x1403ea8d0
+// MS2-PIN: ??_GGameEventPetBattleExp@@UEAAPEAXI@Z 0x1403ea910
+// MS2-PIN: ??_GGameEventPetComposeSale@@UEAAPEAXI@Z 0x1403ea950
+// MS2-PIN: ??_GGameEventPetMastery@@UEAAPEAXI@Z 0x1403ea990
+// MS2-PIN: ??_GGameEventPremiumMarketSale@@UEAAPEAXI@Z 0x1403ea9d0
+// MS2-PIN: ??_GGameEventPublicTest@@UEAAPEAXI@Z 0x1403eaa10
+// MS2-PIN: ??_GGameEventQuestAdditionalReward@@UEAAPEAXI@Z 0x1403eaa50
+// MS2-PIN: ??_GGameEventQuestTag@@UEAAPEAXI@Z 0x1403eaa90
+// MS2-PIN: ??_GGameEventRankDuel@@UEAAPEAXI@Z 0x1403eaad0
+// MS2-PIN: ??_GGameEventReactor@@UEAAPEAXI@Z 0x1403eab10
+// MS2-PIN: ??_GGameEventRps@@UEAAPEAXI@Z 0x1403eab50
+// MS2-PIN: ??_GGameEventSAHotTime@@UEAAPEAXI@Z 0x1403eab90
+// MS2-PIN: ??_GGameEventSale@@UEAAPEAXI@Z 0x1403eabd0
+// MS2-PIN: ??_GGameEventSaleAutoFishing@@UEAAPEAXI@Z 0x1403eac10
+// MS2-PIN: ??_GGameEventSaleAutoPlayInstrument@@UEAAPEAXI@Z 0x1403eac50
+// MS2-PIN: ??_GGameEventSaleBeautyShop@@UEAAPEAXI@Z 0x1403eac90
+// MS2-PIN: ??_GGameEventSaleChat@@UEAAPEAXI@Z 0x1403eacd0
+// MS2-PIN: ??_GGameEventSaleEnchant@@UEAAPEAXI@Z 0x1403ead10
+// MS2-PIN: ??_GGameEventSaleGemStoneUpgrade@@UEAAPEAXI@Z 0x1403ead50
+// MS2-PIN: ??_GGameEventSaleHousing@@UEAAPEAXI@Z 0x1403ead90
+// MS2-PIN: ??_GGameEventSaleItemsRestricted@@UEAAPEAXI@Z 0x1403eadd0
+// MS2-PIN: ??_GGameEventSaleLapenshardUpgradeRGB@@UEAAPEAXI@Z 0x1403eae10
+// MS2-PIN: ??_GGameEventSalePetCrystal@@UEAAPEAXI@Z 0x1403eae50
+// MS2-PIN: ??_GGameEventSaleRemake@@UEAAPEAXI@Z 0x1403eae90
+// MS2-PIN: ??_GGameEventSaleSkillUpgrade@@UEAAPEAXI@Z 0x1403eaed0
+// MS2-PIN: ??_GGameEventSaleUGCDesign@@UEAAPEAXI@Z 0x1403eaf10
+// MS2-PIN: ??_GGameEventShutdownBillboard@@UEAAPEAXI@Z 0x1403eaf50
+// MS2-PIN: ??_GGameEventShutdownDummy@@UEAAPEAXI@Z 0x1403eaf90
+// MS2-PIN: ??_GGameEventShutdownFunctionItem@@UEAAPEAXI@Z 0x1403eafd0
+// MS2-PIN: ??_GGameEventShutdownInteractObjectId@@UEAAPEAXI@Z 0x1403eb010
+// MS2-PIN: ??_GGameEventShutdownSkillItem@@UEAAPEAXI@Z 0x1403eb050
+// MS2-PIN: ??_GGameEventShutdownUGCBanner@@UEAAPEAXI@Z 0x1403eb090
+// MS2-PIN: ??_GGameEventShutdownUGCUpload@@UEAAPEAXI@Z 0x1403eb0d0
+// MS2-PIN: ??_GGameEventSnowman@@UEAAPEAXI@Z 0x1403eb110
+// MS2-PIN: ??_GGameEventStampEvent@@UEAAPEAXI@Z 0x1403eb150
+// MS2-PIN: ??_GGameEventStampEventChar@@UEAAPEAXI@Z 0x1403eb190
+// MS2-PIN: ??_GGameEventStarShop@@UEAAPEAXI@Z 0x1403eb1d0
+// MS2-PIN: ??_GGameEventTimeRunEvent@@UEAAPEAXI@Z 0x1403eb210
+// MS2-PIN: ??_GGameEventTrafficOptimizer@@UEAAPEAXI@Z 0x1403eb250
+// MS2-PIN: ??_GGameEventTransferItemBound@@UEAAPEAXI@Z 0x1403eb290
+// MS2-PIN: ??_GGameEventTreeWatering@@UEAAPEAXI@Z 0x1403eb2d0
+// MS2-PIN: ??_GGameEventUGCMapContractSale@@UEAAPEAXI@Z 0x1403eb310
+// MS2-PIN: ??_GGameEventUGCMapExtensionSale@@UEAAPEAXI@Z 0x1403eb350
+// MS2-PIN: ??_GGameEventUGCMapSaleCoupon@@UEAAPEAXI@Z 0x1403eb390
+// MS2-PIN: ??_GGameEventUgcMapCommendationGM@@UEAAPEAXI@Z 0x1403eb3d0
+// MS2-PIN: ??_GGameEventUpdateString@@UEAAPEAXI@Z 0x1403eb410
+// MS2-PIN: ??_GGameEventUserCondition@@UEAAPEAXI@Z 0x1403eb450
+// MS2-PIN: ??_GGameEventWorldmapIcon@@UEAAPEAXI@Z 0x1403eb490
+// MS2-PIN: ??_GMesoRevivalEventContext@@UEAAPEAXI@Z 0x1403eb510
+// MS2-PIN: ??_GNpcEventDropEventContext@@UEAAPEAXI@Z 0x1403eb550
+// MS2-PIN: ??_GOntimeEventContext@@UEAAPEAXI@Z 0x1403eb590
+// MS2-PIN: ??_GPreminmMarketSaleEventContext@@UEAAPEAXI@Z 0x1403eb5d0
+// MS2-PIN: ??_GQuestContext@TimeRunEventContext@@UEAAPEAXI@Z 0x1403eb610
+// MS2-PIN: ??_GReactorContext@@UEAAPEAXI@Z 0x1403eb650
+// MS2-PIN: ??_GReward@LongTermAttendGiftContext@@UEAAPEAXI@Z 0x1403eb690
+// MS2-PIN: ??_GReward@StampEventContext@@UEAAPEAXI@Z 0x1403eb6d0
+// MS2-PIN: ??_GRewardData@RpsContext@@UEAAPEAXI@Z 0x1403eb710
+// MS2-PIN: ??_GRpsContext@@UEAAPEAXI@Z 0x1403eb750
+// MS2-PIN: ??_GSAHotTimeEventContext@@UEAAPEAXI@Z 0x1403eb790
+// MS2-PIN: ??_GSaleCube@@UEAAPEAXI@Z 0x1403eb7d0
+// MS2-PIN: ??_GSkillUpgradeSaleEventContext@@UEAAPEAXI@Z 0x1403eb810
+// MS2-PIN: ??_GSnowman@SnowmanContext@@UEAAPEAXI@Z 0x1403eb850
+// MS2-PIN: ??_GSnowmanContext@@UEAAPEAXI@Z 0x1403eb890
+// MS2-PIN: ??_GStamp@StampEventContext@@UEAAPEAXI@Z 0x1403eb8d0
+// MS2-PIN: ??_GStampEventContext@@UEAAPEAXI@Z 0x1403eb910
+// MS2-PIN: ??_GTreeWateringContext@@UEAAPEAXI@Z 0x1403eb950
+// MS2-PIN: ??_GTreeWatering_EmotionDay@@UEAAPEAXI@Z 0x1403eb990
+// MS2-PIN: ??_GTreeWatering_TreeResource@@UEAAPEAXI@Z 0x1403eb9d0
+// MS2-PIN: ??_GTreeWatering_TreeStep@@UEAAPEAXI@Z 0x1403eba10
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameevent.cpp"
+#include "ms2/placeholder/ms2stdafx.h"
+#include <afx.h>
+#include <atlcoll.h>
+#include <new>
+#include <vector>
+#include "ms2/ms2layout.h"
+#include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/commonfiles/gameevent.h"
+#include "ms2/commonfiles/itemgift.h"
+#include "ms2/ms2recover.h"
+
+// The vftables (and with them the ??_G deleting dtors) of these classes are emitted by gameevent.cpp's out-of-line
+// ctors, which are not part of this unit. Instantiating the implicit copy ctors emits the same COMDATs here (a ctor
+// stores the vftable pointer, so the vftable and its slot-0 ??_G come with it) without defining an exe symbol: the exe
+// has no copy ctors of these classes. Not exe code.
+template <class T>
+void Unk_GameEventCopy(void* p, const T& o)
+{
+    new (p) T(o);
+}
+template void Unk_GameEventCopy<BurningLevelupContext>(void*, const BurningLevelupContext&);
+template void Unk_GameEventCopy<GalleryContext::Card>(void*, const GalleryContext::Card&);
+template void Unk_GameEventCopy<CoupleDanceContext>(void*, const CoupleDanceContext&);
+template void Unk_GameEventCopy<EnchantRateEventContext>(void*, const EnchantRateEventContext&);
+template void Unk_GameEventCopy<EventQuestContext>(void*, const EventQuestContext&);
+template void Unk_GameEventCopy<GalleryContext>(void*, const GalleryContext&);
+template void Unk_GameEventCopy<GameEventAdventureLevelBonusExpRate>(void*, const GameEventAdventureLevelBonusExpRate&);
+template void Unk_GameEventCopy<GameEventArcadeOpen>(void*, const GameEventArcadeOpen&);
+template void Unk_GameEventCopy<GameEventBattlePetSpawn>(void*, const GameEventBattlePetSpawn&);
+template void Unk_GameEventCopy<GameEventBingoEvent>(void*, const GameEventBingoEvent&);
+template void Unk_GameEventCopy<GameEventBlackMarketFeeDiscount>(void*, const GameEventBlackMarketFeeDiscount&);
+template void Unk_GameEventCopy<GameEventBlueMarble>(void*, const GameEventBlueMarble&);
+template void Unk_GameEventCopy<GameEventBurningLevelup>(void*, const GameEventBurningLevelup&);
+template void Unk_GameEventCopy<GameEventChatFiltering>(void*, const GameEventChatFiltering&);
+template void Unk_GameEventCopy<GameEventCollectItemGroup>(void*, const GameEventCollectItemGroup&);
+template void Unk_GameEventCopy<GameEventConstructShowItem>(void*, const GameEventConstructShowItem&);
+template void Unk_GameEventCopy<GameEventCoupleDance>(void*, const GameEventCoupleDance&);
+template void Unk_GameEventCopy<GameEventCustomTriggerString>(void*, const GameEventCustomTriggerString&);
+template void Unk_GameEventCopy<GameEventDeleteUrlCache>(void*, const GameEventDeleteUrlCache&);
+template void Unk_GameEventCopy<GameEventDungeonBonusReward>(void*, const GameEventDungeonBonusReward&);
+template void Unk_GameEventCopy<GameEventDungeonEnterTimeLimit>(void*, const GameEventDungeonEnterTimeLimit&);
+template void Unk_GameEventCopy<GameEventDungeonExtraReward>(void*, const GameEventDungeonExtraReward&);
+template void Unk_GameEventCopy<GameEventDungeonOpenPeriod>(void*, const GameEventDungeonOpenPeriod&);
+template void Unk_GameEventCopy<GameEventDungeonRoomShutdown>(void*, const GameEventDungeonRoomShutdown&);
+template void Unk_GameEventCopy<GameEventEnchantRate>(void*, const GameEventEnchantRate&);
+template void Unk_GameEventCopy<GameEventEpicRestart>(void*, const GameEventEpicRestart&);
+template void Unk_GameEventCopy<GameEventEventFieldPopup>(void*, const GameEventEventFieldPopup&);
+template void Unk_GameEventCopy<GameEventExchangeScrollSale>(void*, const GameEventExchangeScrollSale&);
+template void Unk_GameEventCopy<GameEventFestival>(void*, const GameEventFestival&);
+template void Unk_GameEventCopy<GameEventFieldEffect>(void*, const GameEventFieldEffect&);
+template void Unk_GameEventCopy<GameEventFieldShutdown>(void*, const GameEventFieldShutdown&);
+template void Unk_GameEventCopy<GameEventFindDungeonHelperBonus>(void*, const GameEventFindDungeonHelperBonus&);
+template void Unk_GameEventCopy<GameEventFinishPayback>(void*, const GameEventFinishPayback&);
+template void Unk_GameEventCopy<GameEventFreeAirTaxi>(void*, const GameEventFreeAirTaxi&);
+template void Unk_GameEventCopy<GameEventGallery>(void*, const GameEventGallery&);
+template void Unk_GameEventCopy<GameEventGameMenuPopup>(void*, const GameEventGameMenuPopup&);
+template void Unk_GameEventCopy<GameEventGuildChampionship>(void*, const GameEventGuildChampionship&);
+template void Unk_GameEventCopy<GameEventGuildCoin>(void*, const GameEventGuildCoin&);
+template void Unk_GameEventCopy<GameEventGuildEventFund>(void*, const GameEventGuildEventFund&);
+template void Unk_GameEventCopy<GameEventGuildExp>(void*, const GameEventGuildExp&);
+template void Unk_GameEventCopy<GameEventGuildFund>(void*, const GameEventGuildFund&);
+template void Unk_GameEventCopy<GameEventGuildPersonalSkillSale>(void*, const GameEventGuildPersonalSkillSale&);
+template void Unk_GameEventCopy<GameEventGuildSkillSale>(void*, const GameEventGuildSkillSale&);
+template void Unk_GameEventCopy<GameEventGuildVsGameOpen>(void*, const GameEventGuildVsGameOpen&);
+template void Unk_GameEventCopy<GameEventIgnoreConstructionLockEvent>(void*, const GameEventIgnoreConstructionLockEvent&);
+template void Unk_GameEventCopy<GameEventItemBox>(void*, const GameEventItemBox&);
+template void Unk_GameEventCopy<GameEventItemBuff>(void*, const GameEventItemBuff&);
+template void Unk_GameEventCopy<GameEventItemTradeRestriction>(void*, const GameEventItemTradeRestriction&);
+template void Unk_GameEventCopy<GameEventLevelUpPackage>(void*, const GameEventLevelUpPackage&);
+template void Unk_GameEventCopy<GameEventLongTermAttendGift>(void*, const GameEventLongTermAttendGift&);
+template void Unk_GameEventCopy<GameEventMassiveConstructionEvent>(void*, const GameEventMassiveConstructionEvent&);
+template void Unk_GameEventCopy<GameEventMasteryReduce>(void*, const GameEventMasteryReduce&);
+template void Unk_GameEventCopy<GameEventMasteryReward>(void*, const GameEventMasteryReward&);
+template void Unk_GameEventCopy<GameEventMeratMarketNotice>(void*, const GameEventMeratMarketNotice&);
+template void Unk_GameEventCopy<GameEventMeratMarketOpenTab>(void*, const GameEventMeratMarketOpenTab&);
+template void Unk_GameEventCopy<GameEventMesoRevival>(void*, const GameEventMesoRevival&);
+template void Unk_GameEventCopy<GameEventNpcEventDrop>(void*, const GameEventNpcEventDrop&);
+template void Unk_GameEventCopy<GameEventNpcShopGivePoint>(void*, const GameEventNpcShopGivePoint&);
+template void Unk_GameEventCopy<GameEventNpcShopResetPriceSale>(void*, const GameEventNpcShopResetPriceSale&);
+template void Unk_GameEventCopy<GameEventNpcShopTalk>(void*, const GameEventNpcShopTalk&);
+template void Unk_GameEventCopy<GameEventOntime>(void*, const GameEventOntime&);
+template void Unk_GameEventCopy<GameEventSAHotTime>(void*, const GameEventSAHotTime&);
+template void Unk_GameEventCopy<GameEventPCBangSAHotTime>(void*, const GameEventPCBangSAHotTime&);
+template void Unk_GameEventCopy<GameEventPetBattleExp>(void*, const GameEventPetBattleExp&);
+template void Unk_GameEventCopy<GameEventPetComposeSale>(void*, const GameEventPetComposeSale&);
+template void Unk_GameEventCopy<GameEventPetMastery>(void*, const GameEventPetMastery&);
+template void Unk_GameEventCopy<GameEventPremiumMarketSale>(void*, const GameEventPremiumMarketSale&);
+template void Unk_GameEventCopy<GameEventPublicTest>(void*, const GameEventPublicTest&);
+template void Unk_GameEventCopy<GameEventQuestAdditionalReward>(void*, const GameEventQuestAdditionalReward&);
+template void Unk_GameEventCopy<GameEventQuestTag>(void*, const GameEventQuestTag&);
+template void Unk_GameEventCopy<GameEventRankDuel>(void*, const GameEventRankDuel&);
+template void Unk_GameEventCopy<GameEventReactor>(void*, const GameEventReactor&);
+template void Unk_GameEventCopy<GameEventRps>(void*, const GameEventRps&);
+template void Unk_GameEventCopy<GameEventSaleAutoFishing>(void*, const GameEventSaleAutoFishing&);
+template void Unk_GameEventCopy<GameEventSaleAutoPlayInstrument>(void*, const GameEventSaleAutoPlayInstrument&);
+template void Unk_GameEventCopy<GameEventSaleBeautyShop>(void*, const GameEventSaleBeautyShop&);
+template void Unk_GameEventCopy<GameEventSaleChat>(void*, const GameEventSaleChat&);
+template void Unk_GameEventCopy<GameEventSaleEnchant>(void*, const GameEventSaleEnchant&);
+template void Unk_GameEventCopy<GameEventSaleGemStoneUpgrade>(void*, const GameEventSaleGemStoneUpgrade&);
+template void Unk_GameEventCopy<GameEventSaleHousing>(void*, const GameEventSaleHousing&);
+template void Unk_GameEventCopy<GameEventSaleItemsRestricted>(void*, const GameEventSaleItemsRestricted&);
+template void Unk_GameEventCopy<GameEventSaleLapenshardUpgradeRGB>(void*, const GameEventSaleLapenshardUpgradeRGB&);
+template void Unk_GameEventCopy<GameEventSalePetCrystal>(void*, const GameEventSalePetCrystal&);
+template void Unk_GameEventCopy<GameEventSaleRemake>(void*, const GameEventSaleRemake&);
+template void Unk_GameEventCopy<GameEventSaleSkillUpgrade>(void*, const GameEventSaleSkillUpgrade&);
+template void Unk_GameEventCopy<GameEventSaleUGCDesign>(void*, const GameEventSaleUGCDesign&);
+template void Unk_GameEventCopy<GameEventShutdownBillboard>(void*, const GameEventShutdownBillboard&);
+template void Unk_GameEventCopy<GameEventShutdownDummy>(void*, const GameEventShutdownDummy&);
+template void Unk_GameEventCopy<GameEventShutdownFunctionItem>(void*, const GameEventShutdownFunctionItem&);
+template void Unk_GameEventCopy<GameEventShutdownInteractObjectId>(void*, const GameEventShutdownInteractObjectId&);
+template void Unk_GameEventCopy<GameEventShutdownSkillItem>(void*, const GameEventShutdownSkillItem&);
+template void Unk_GameEventCopy<GameEventShutdownUGCBanner>(void*, const GameEventShutdownUGCBanner&);
+template void Unk_GameEventCopy<GameEventShutdownUGCUpload>(void*, const GameEventShutdownUGCUpload&);
+template void Unk_GameEventCopy<GameEventSnowman>(void*, const GameEventSnowman&);
+template void Unk_GameEventCopy<GameEventStampEvent>(void*, const GameEventStampEvent&);
+template void Unk_GameEventCopy<GameEventStampEventChar>(void*, const GameEventStampEventChar&);
+template void Unk_GameEventCopy<GameEventStarShop>(void*, const GameEventStarShop&);
+template void Unk_GameEventCopy<GameEventTimeRunEvent>(void*, const GameEventTimeRunEvent&);
+template void Unk_GameEventCopy<GameEventTrafficOptimizer>(void*, const GameEventTrafficOptimizer&);
+template void Unk_GameEventCopy<GameEventTransferItemBound>(void*, const GameEventTransferItemBound&);
+template void Unk_GameEventCopy<GameEventTreeWatering>(void*, const GameEventTreeWatering&);
+template void Unk_GameEventCopy<GameEventUGCMapContractSale>(void*, const GameEventUGCMapContractSale&);
+template void Unk_GameEventCopy<GameEventUGCMapExtensionSale>(void*, const GameEventUGCMapExtensionSale&);
+template void Unk_GameEventCopy<GameEventUGCMapSaleCoupon>(void*, const GameEventUGCMapSaleCoupon&);
+template void Unk_GameEventCopy<GameEventUgcMapCommendationGM>(void*, const GameEventUgcMapCommendationGM&);
+template void Unk_GameEventCopy<GameEventUpdateString>(void*, const GameEventUpdateString&);
+template void Unk_GameEventCopy<GameEventUserCondition>(void*, const GameEventUserCondition&);
+template void Unk_GameEventCopy<GameEventWorldmapIcon>(void*, const GameEventWorldmapIcon&);
+template void Unk_GameEventCopy<MesoRevivalEventContext>(void*, const MesoRevivalEventContext&);
+template void Unk_GameEventCopy<NpcEventDropEventContext>(void*, const NpcEventDropEventContext&);
+template void Unk_GameEventCopy<OntimeEventContext>(void*, const OntimeEventContext&);
+template void Unk_GameEventCopy<PreminmMarketSaleEventContext>(void*, const PreminmMarketSaleEventContext&);
+template void Unk_GameEventCopy<TimeRunEventContext::QuestContext>(void*, const TimeRunEventContext::QuestContext&);
+template void Unk_GameEventCopy<ReactorContext>(void*, const ReactorContext&);
+template void Unk_GameEventCopy<LongTermAttendGiftContext::Reward>(void*, const LongTermAttendGiftContext::Reward&);
+template void Unk_GameEventCopy<StampEventContext::Reward>(void*, const StampEventContext::Reward&);
+template void Unk_GameEventCopy<RpsContext::RewardData>(void*, const RpsContext::RewardData&);
+template void Unk_GameEventCopy<RpsContext>(void*, const RpsContext&);
+template void Unk_GameEventCopy<SAHotTimeEventContext>(void*, const SAHotTimeEventContext&);
+template void Unk_GameEventCopy<SaleCube>(void*, const SaleCube&);
+template void Unk_GameEventCopy<SkillUpgradeSaleEventContext>(void*, const SkillUpgradeSaleEventContext&);
+template void Unk_GameEventCopy<SnowmanContext::Snowman>(void*, const SnowmanContext::Snowman&);
+template void Unk_GameEventCopy<SnowmanContext>(void*, const SnowmanContext&);
+template void Unk_GameEventCopy<StampEventContext::Stamp>(void*, const StampEventContext::Stamp&);
+template void Unk_GameEventCopy<StampEventContext>(void*, const StampEventContext&);
+template void Unk_GameEventCopy<TreeWateringContext>(void*, const TreeWateringContext&);
+template void Unk_GameEventCopy<TreeWatering_EmotionDay>(void*, const TreeWatering_EmotionDay&);
+template void Unk_GameEventCopy<TreeWatering_TreeResource>(void*, const TreeWatering_TreeResource&);
+template void Unk_GameEventCopy<TreeWatering_TreeStep>(void*, const TreeWatering_TreeStep&);
+
+// The non-virtual ??_G of the container elements (allocator<T>::destroy / CAtlMap::FreeNode call `??_G(p, 0)`); the
+// maps are destroyed whole (CNode is private), which emits the ??_GCNode through RemoveAll / FreeNode.
+template <class T>
+void Unk_GameEventDestroyElem(T* p)
+{
+    p->~T();
+}
+template void Unk_GameEventDestroyElem<MS2Ptr<GalleryContext::Card> >(MS2Ptr<GalleryContext::Card>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<StampEventContext::Reward> >(MS2Ptr<StampEventContext::Reward>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<RpsContext::RewardData> >(MS2Ptr<RpsContext::RewardData>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<SnowmanContext::Snowman> >(MS2Ptr<SnowmanContext::Snowman>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<StampEventContext::Stamp> >(MS2Ptr<StampEventContext::Stamp>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<EventTimeLimitDungeonContext> >(MS2Ptr<EventTimeLimitDungeonContext>*);
+template void Unk_GameEventDestroyElem<MS2Ptr<TreeWatering_EmotionDay> >(MS2Ptr<TreeWatering_EmotionDay>*);
+template void Unk_GameEventDestroyElem<std::vector<ItemEntity> >(std::vector<ItemEntity>*);
+template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TimeRunEventContext::QuestContext> >>(CAtlMap<int, MS2Ptr<TimeRunEventContext::QuestContext> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<Unk_DungeonCtx_1403e5240> >>(CAtlMap<int, MS2Ptr<Unk_DungeonCtx_1403e5240> >*);
+template void Unk_GameEventDestroyElem<CRBMap<int, MS2Ptr<SaleCube> > >(CRBMap<int, MS2Ptr<SaleCube> >*);
+template void Unk_GameEventDestroyElem<Unk_GameEventStrPair>(Unk_GameEventStrPair*);
