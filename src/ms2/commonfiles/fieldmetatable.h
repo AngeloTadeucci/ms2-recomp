@@ -43,6 +43,8 @@ public:
     Unk_FieldPtr& operator=(const Unk_FieldPtr& o);
     Unk_FieldPtr& operator=(const Unk_FieldNewTag&);        // 0x1406ffb10
     T* get() const;                                         // 0x140448220
+    T* operator->() const;                                  // same bytes as get() (0x1402a5ca0 for the Dict box)
+    bool operator!() const;                                 // m_p == NULL (0x1402a5b10 for the Dict box)
     bool operator==(T* p) const;
 
 private:
@@ -75,6 +77,8 @@ template <class T> Unk_FieldPtr<T>& Unk_FieldPtr<T>::operator=(const Unk_FieldPt
 }
 template <class T> Unk_FieldPtr<T>& Unk_FieldPtr<T>::operator=(const Unk_FieldNewTag&) { Make(); return *this; }
 template <class T> T* Unk_FieldPtr<T>::get() const { return m_p; }
+template <class T> T* Unk_FieldPtr<T>::operator->() const { return m_p; }
+template <class T> bool Unk_FieldPtr<T>::operator!() const { return m_p == 0 ? 1 : 0; }
 template <class T> bool Unk_FieldPtr<T>::operator==(T* p) const { return m_p == p; }
 template <class T> void Unk_FieldPtr<T>::AddRef() const { if (m_p) AddRefImpl(0); }
 template <class T> void Unk_FieldPtr<T>::Make() { Release(); m_p = Create(0); }
