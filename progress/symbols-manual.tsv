@@ -2248,3 +2248,14 @@ D3DXFloat16To32Array	14230396f	func
 ?DAT_143ae5ce0@@3PAVNiFixedString@@A	143ae5ce0	data
 ?DAT_1439ed030@@3PAY0CA@EA	1439ed030	data
 ?DAT_1439ee030@@3PAY0BA@EA	1439ee030	data
+__imp_CrashReporter_SetInt64Info	142cce198	data
+__imp_CrashReporter_SetStrInfoW	142cce1b8	data
+?DAT_143ab3078@@3VUnk_AkoTaxiList@@A	143ab3078	data
+?DAT_143ab3098@@3VUnk_AkoTaxiList@@A	143ab3098	data
+??0StateInteractData@@QEAA@XZ	1417d0be0	func
+?Find@CFieldDataCli@@SA?AV?$MS2Ptr@VCFieldDataCli@@@@H@Z	140a55460	func
+??C?$MS2Ptr@VCProxyGameObject@@@@QEBAPEAVCProxyGameObject@@XZ	1406c71d0	func
+?get@?$MS2Ptr@VCProxyGameObject@@@@QEBAPEAVCProxyGameObject@@XZ	1406c71b0	func
+??0?$Unk_PayloadPtr@VNoticeCubeInfo@@@@QEAA@XZ	1408b6740	func
+?get@?$Unk_PayloadPtr@VCubeOwner@@@@QEBAPEAVCubeOwner@@XZ	140965820	func
+?get@?$MS2Ptr@VUnk_HsInfo@@@@QEBAPEAVUnk_HsInfo@@XZ	141371260	func
