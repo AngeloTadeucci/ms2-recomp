@@ -2183,4 +2183,16 @@ D3DXFloat16To32Array	14230396f	func
 ??1Unk_ConstCacheRef@@QEAA@XZ	1401e1170	func
 ??0Unk_PCBaseRayHit@@QEAA@XZ	140ad4440	func
 ?DAT_143af62e0@@3DA	143af62e0	data
+?Get@?$Value@H@Constants@Common@@QEAAPEAHXZ	1402056b0	func
+?s_instance@?$TSingleton@VUnk_AkoCutscene@@@@2PEAV1@EA	143ab3900	data
+?s_instance@?$TSingleton@VCFishingManager@@@@2PEAV1@EA	143ab3848	data
+?s_instance@?$TSingleton@VUnk_AkoHouseSvc@@@@2PEAV1@EA	143ab3908	data
+?DAT_143ab288c@@3HA	143ab288c	data
+??0CColorBoostData@@QEAA@MMM@Z	14109b6b0	func
+??1CColorBoostData@@UEAA@XZ	14109b750	func
+?Get@?$Value@M@Constants@Common@@QEAAPEAMXZ	140298f40	func
+??0CItemOption@@QEAA@I@Z	1405caed0	func
+??0UnlimitedEnchantInfo@@QEAA@HH@Z	1408bb9d0	func
+??0?$Unk_EnchantPtr@VCItemEnchantInfo@@@@QEAA@XZ	140633170	func
+?Get@?$Value@M@Constants@Common@@QEAAAEBMAEBM@Z	140967520	func
 ?DAT_143ae9a98@@3PEAVCSkillCollisionManager@@EA	143ae9a98	data
