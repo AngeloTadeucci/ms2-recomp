@@ -54,6 +54,7 @@
 #include "ms2/placeholder/gfxexception.h"
 #include "ms2/placeholder/astooltip.h"
 #include "ms2/placeholder/citem.h"
+#include "pcbase.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -108,7 +109,6 @@ void* FUN_141bd0cc0(void*);
 class Unk_DhRewardList { public: Unk_DhRewardList(); ~Unk_DhRewardList(); void* m_p[6]; };
 class Unk_DhRewardManager { public: bool FUN_140770e40(int, short, Unk_DhRewardList&); };
 Unk_DhRewardManager* FUN_140764030();
-class Unk_DhAvatar { public: virtual short vfunc_78(); };
 void FUN_140cff840(const Scaleform::GFx::Value& root, CString strName, int nValue);
 void FUN_140d01670(const Scaleform::GFx::Value& root, CString strName, int nValue);
 void FUN_140cff4e0(const Scaleform::GFx::Value& root, CString strName, CStringW strText);
@@ -291,7 +291,9 @@ MS2_REPLACE_METHOD(0x140E12E40, UIDungeonSearchUnitedReward, Init, 3377, 0x93D91
 // @0x140e13c00
 void UIDungeonSearchUnitedReward::FUN_140e13c00()
 {
-    // MS2-FUNCTIONAL: locals and temporaries are ordered differently
+    // MS2-FUNCTIONAL: locals and temporaries are ordered differently; the exe also fills each reward slot from the first
+    // reward item (rewards+0x18 not empty: slot->FUN_1409ba630(&item[0] + 0x18)) and passes the reward meso/exp
+    // (rewards+0/+8) to FUN_140e12780, the recovered body passes 0, 0
     void* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
     if (pActor == NULL)
         return;
@@ -310,11 +312,11 @@ void UIDungeonSearchUnitedReward::FUN_140e13c00()
         if (mission.get()) {
             unsigned nDaily = mission->FUN_14031b9d0(FUN_140869440());
             unsigned nDailyMax = mission->FUN_14031ba10();
-            m_daily->vfunc_4(true);
+            m_daily->vfunc_3(1);
             m_daily->FUN_1422c4cd0(FUN_1409e9890(L"s_dungeonSearch_reward_daily", nDaily, nDailyMax));
         }
     } else {
-        m_daily->vfunc_4(false);
+        m_daily->vfunc_3(0);
     }
     unsigned nGauge = 0;
     const size_t count = FUN_14031c2a0()->FUN_140321bc0();
@@ -323,7 +325,7 @@ void UIDungeonSearchUnitedReward::FUN_140e13c00()
         if (entry == NULL)
             continue;
         Unk_DhRewardList rewards;
-        short nJob = static_cast<Unk_DhAvatar*>(pActor)->vfunc_78();
+        short nJob = (short)static_cast<PCBase*>(pActor)->vfunc_78();     // slot 78 (+0x270)
         FUN_140764030()->FUN_140770e40(entry->m_nRewardId, nJob, rewards);
         m_slots[i]->FUN_140e12780(0, 0);
         const bool bReached = entry->m_nNeed <= nWeekly;
