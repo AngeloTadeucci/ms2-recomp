@@ -1,0 +1,253 @@
+// mypc.h - MyPC (efd RTTI "MyPC", class id 0x06200004): the local player's character actor. Derives PC and
+// IMessageListener (+0x12e0, the message box answers). Owning unit: ?\mypc.cpp (0x141520680-0x141538060).
+// Header name assumed from the unit path.
+//
+// Size 0x1808 (??_G 0x141533430). vftables: primary 0x142f29f88 (147 slots, PC's), CallbackObject 0x142f2a428
+// (dtor thunk 0x1415333dc), IMessageListener 0x142f2a460 (OnMessage 0x141520cc0).
+// Members: proven types where known, otherwise unit-local views named after their ctor VA. Heap-only.
+#pragma once
+#include <set>
+#include <atlcoll.h>
+#include "ms2/placeholder/fittingdollpc.h"
+#include "ms2/placeholder/imessagelistener.h"
+#include "ms2/placeholder/notifyobject.h"
+#include "ms2/client/ms2/cubecraft_1.h"     // StateLocalController
+#include "ms2/client/ms2/clonepc.h"         // Unk_CloneTimer
+
+class CInPacket;
+class CEquipItem;
+class CItem;
+class CGetExp;              // RTTI CGetExp (0x50): the exp gain popup (?\getexp.cpp)
+class CHomePrivilege;       // commonfiles\homeprivilege.cpp (0x20, CPtred)
+class Unk_MyPCSkillSlots;   // = CSkillSystem (scenestategame.cpp / placeholder mypc.h view)
+class Unk_MyPCStatPoints;
+class Unk_MyPCComp1618;     // MS2Ptr at +0x1618 (null ctor 0x1415324e0, dtor 0x14050de40)
+
+// The member at +0x12e8: a StateLocalController whose records live on the base (state.cpp declares them on the
+// PcGuide subclass). Ctor 0x1417b73c0, implicit dtor 0x1410a6dc0 (COMDAT in cubecraft_1).
+class Unk_MyPCStateCtl : public StateLocalController
+{
+public:
+    Unk_MyPCStateCtl();                                     // 0x1417b73c0
+    ~Unk_MyPCStateCtl();                                    // 0x1410a6dc0
+    void FUN_1417b7430(PCBase* pOwner);                     // init with the owner
+    void FUN_1417b7450();                                   // drop the current and queued records
+    unsigned char m_body[0x48];                             // +0x08 records list, current record, owner
+};
+
+// The member at +0x1338: the action key table (ctor 0x140951c70 in ?\actionkeyobject.cpp, dtor 0x140952e70).
+class Unk_MyPCActionKeys
+{
+public:
+    Unk_MyPCActionKeys();                                   // 0x140951c70
+    ~Unk_MyPCActionKeys();                                  // 0x140952e70
+    void FUN_140952ef0();
+    unsigned char m_body[0xa0];                             // three CAtlMaps of actions by key
+};
+
+// The skill system at +0x13d8 (RTTI CSkillSystem, ?\skillslot.cpp; ctor 0x1417646d0, dtor 0x141764900).
+class CSkillSystem
+{
+public:
+    CSkillSystem();                                         // 0x1417646d0
+    ~CSkillSystem();                                        // 0x141764900
+    void FUN_141764a80(class MyPC* pOwner);                 // init with the owner
+    void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
+    unsigned char m_body[0x1e8];
+};
+
+// The pending portal move at +0x17a0 (0x20; ctor 0x1415328a0).
+struct Unk_MyPCPortalMove
+{
+    // @0x1415328a0
+    Unk_MyPCPortalMove() : m_nPortalId(0), m_nA(0), m_nB(0), m_nC(0), m_nD(0), m_bWithPwd(0) {}
+    // @0x1415335d0
+    void Reset()
+    {
+        m_nPortalId = 0;
+        m_nA = 0;
+        m_nB = 0;
+        m_nC = 0;
+        m_nD = 0;
+        m_bWithPwd = 0;
+    }
+    int m_nPortalId;                                        // +0x00
+    int m_nA;                                               // +0x04
+    int m_nB;                                               // +0x08
+    __int64 m_nC;                                           // +0x10
+    int m_nD;                                               // +0x18
+    int m_bWithPwd;                                         // +0x1c
+};
+
+// The notify sent once the local character is ready (0x18).
+class NotifyCompleteMyPC : public NotifyObject
+{
+public:
+    NotifyCompleteMyPC();                                   // 0x141532780
+    virtual ~NotifyCompleteMyPC();                          // 0x141532ce0
+    virtual CStringW vfunc_1();                             // 0x140db4550
+};
+
+// The notify of a used skill (0x20).
+class NotifyUseSKill : public NotifyObject
+{
+public:
+    NotifyUseSKill(int nSkillId, short nLevel);             // 0x1415327b0
+    virtual ~NotifyUseSKill();                              // 0x141532d00
+    virtual CStringW vfunc_1();                             // 0x140db4670
+    int m_nSkillId;                                         // +0x18
+    short m_nLevel;                                         // +0x1c
+};
+
+class MyPC : public PC, public IMessageListener
+{
+    EE_DECLARE_CLASS1(MyPC, 0x06200004, PC);   // ClassInfo 0x143ae10b0 (setup 0x141536810)
+
+public:
+    MyPC();                                                 // 0x141520680
+    virtual ~MyPC();                                        // 0x141520ab0
+
+    virtual int OnMessage(UISwfEntity* pSender, UIMsg* pMsg);   // IMessageListener 0x141520cc0
+
+    virtual void vfunc_22(const efd::Point3& kPos);         // 22 0x1415213b0
+    virtual int vfunc_10();                                 // 10 0x141521430
+    virtual void vfunc_12();                                // 12 0x141521560
+    virtual void vfunc_14();                                // 14 0x141521630
+    virtual int vfunc_108();                                // 108 0x141521650
+    virtual int vfunc_63();                                 // 63 0x141521670
+    virtual void vfunc_110();                               // 110 0x1415216a0
+    virtual void vfunc_66(int n);                           // 66 0x1415216c0
+    virtual void vfunc_90(void* p);                         // 90 0x141521760
+    virtual void vfunc_91(void* p);                         // 91 0x1415219a0
+    virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b, bool c);  // 104 0x1415219d0
+    virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);     // 102 0x141521fc0
+    virtual void vfunc_59(int a, void* b, int c, int d);    // 59 0x141522c60
+    virtual int vfunc_58();                                 // 58 0x141522cc0
+    virtual void vfunc_67(void* a, void* b);                // 67 0x141522ce0
+    virtual void vfunc_125(MS2Ptr<Unk_PCArg125> p);         // 125 0x141522d40
+    virtual void vfunc_127(CItem* pItem, int n);            // 127 0x141522eb0
+    virtual void vfunc_128(CItem* pItem, int n);            // 128 0x141522f60
+    virtual void vfunc_94(int n);                           // 94 0x141523010
+    virtual void vfunc_112(void* p, int n);                 // 112 0x1415231f0
+    virtual void vfunc_113(void* p);                        // 113 0x1415232d0
+    virtual MS2Ptr<Unk_PCBaseComp_a58> vfunc_80();          // 80 0x141523390
+    virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141523480
+    virtual MS2Ptr<Unk_PCBaseComp_a88> vfunc_83();          // 83 0x141523570
+    virtual MS2Ptr<Unk_PCBaseComp_ab8> vfunc_86();          // 86 0x141523630
+    virtual int vfunc_88();                                 // 88 0x141523670
+    virtual int vfunc_137();                                // 137 0x141523720
+    virtual void vfunc_135(int a, int b, void* p);          // 135 0x1415238d0
+    virtual CStringW vfunc_134();                           // 134 0x141523ae0
+    virtual bool vfunc_146();                               // 146 0x141523b70
+    virtual void vfunc_120(void* p);                        // 120 0x14152c460
+    virtual void vfunc_121(void* p);                        // 121 0x14152c670
+    virtual void vfunc_53(float f);                         // 53 0x141530950
+    virtual void vfunc_49();                                // 49 0x141531310
+    virtual void vfunc_144();                               // 144 0x1415313f0
+    virtual void vfunc_47(bool b);                          // 47 0x141531410
+    virtual bool vfunc_56(float f);                         // 56 0x141531430
+    virtual bool vfunc_55(float a, float b);                // 55 0x141531450
+    // @0x141536690
+    virtual void vfunc_24(int) { m_unk_40 = 0; }            // 24 (inline)
+
+    // non-virtual members used by other units (placeholder mypc.h)
+    void FUN_14152a4a0(PCBase* pTarget);                    // observe pTarget
+    void FUN_14152a960();                                   // stop observing
+    void FUN_14152a2f0(int n);
+    CSkillSystem* FUN_141523bc0();                          // the skill system
+    void FUN_141523ba0();
+    Unk_MyPCStateCtl* FUN_141523be0();                      // the state controller
+    MS2Ptr<Unk_PCBaseComp_b18> FUN_141523c00();
+    Unk_MyPCComp1618* FUN_141523c50();
+    int FUN_141527120();
+    int FUN_141527160(int nNext);
+    bool FUN_141527280();
+    int FUN_1415278d0(void* p);
+    int FUN_141527920(void* p);
+    int FUN_141527960();
+    int FUN_141527e00();                                    // no house
+    int FUN_141527e60();
+    int FUN_141527eb0();
+    int FUN_141527ed0();
+    int FUN_141527f60();
+    int FUN_141527f80(int* pMapId);
+    int FUN_141528020(efd::Point3& kPos);
+    int FUN_141528140();
+    int FUN_141528160();
+    CStringW FUN_1415281c0();
+    CStringW FUN_141528330();
+    int FUN_141529620();
+    int FUN_141529ae0(int nPortalId, int nA, int nB, __int64 nC);
+    void FUN_14152a040();
+    void FUN_14152a240(int nId);
+    void FUN_14152a2b0(int n);
+    void FUN_14152a2d0(int n);
+    void FUN_14152a310(MS2Ptr<Unk_PCBaseComp_b18> sp);
+    int FUN_14152e060();
+    void FUN_14152e240(int n);
+    int FUN_14152e280(int n);
+    int FUN_14152e950();
+    size_t FUN_14152eb20();
+    size_t FUN_14152eb50();
+    void FUN_14152eb80();
+    int FUN_14152ebd0();
+    void FUN_14152ec40(__int64 n);
+    void FUN_14152ec80(__int64 n);
+    int FUN_14152ecc0(__int64 n);
+    int FUN_14152ed10(__int64 n);
+    void FUN_141528c30(CInPacket& packet);
+    int FUN_14152f860(unsigned int nKey);
+    void FUN_141530700(int n);
+    void FUN_14152f9e0();                                   // begin bulk update
+    void FUN_14152f530(int nA, int nB, int bBulk);          // set entry nA = nB
+    void FUN_14152fa20();                                   // end bulk update
+    void FUN_14152f620(int nA);                             // remove entry nA
+    void FUN_141529c80(int nPortalId, int nA, int nB, __int64 nC, CStringW strPwd);   // password portal move
+    void FUN_14152a0c0(int nPortalId, int nD, int nA, int nB, CStringW strA, CStringW strPwd);   // portal move
+
+    Unk_MyPCStateCtl m_kStateCtl;                           // +0x12e8
+    Unk_MyPCActionKeys m_kActionKeys;                       // +0x1338
+    CSkillSystem m_kSkillSystem;                            // +0x13d8
+    CGetExp* m_pGetExp;                                     // +0x15c8 (created on the first exp gain)
+    int m_n15d0;                                            // +0x15d0 = 0x7fffffff
+    bool m_b15d4;                                           // +0x15d4
+    bool m_b15d5;                                           // +0x15d5 (set by vfunc_110)
+    bool m_b15d6;                                           // +0x15d6
+    int m_n15d8;                                            // +0x15d8 (vfunc_22: not at the origin)
+    int m_n15dc;
+    int m_n15e0;                                            // +0x15e0
+    int m_n15e4;                                            // +0x15e4
+    int m_bMapDirty;                                        // +0x15e8 (set when a counted entry changes)
+    int m_n15ec;                                            // +0x15ec
+    int m_n15f0;                                            // +0x15f0
+    std::set<int> m_set15f8;                                // +0x15f8
+    MS2Ptr<Unk_PCBaseComp_b18> m_sp1608;                    // +0x1608
+    MS2Ptr<Unk_MyPCComp1618> m_sp1618;                      // +0x1618
+    MS2Ptr<CHomePrivilege> m_spHomePrivilege;               // +0x1628
+    PCBase* m_pObserved;                                    // +0x1638 the observed actor
+    int m_n1640;                                            // +0x1640
+    int m_n1644;                                            // +0x1644
+    __int64 m_n1648;                                        // +0x1648
+    ATL::CAtlList<__int64> m_list1650;                      // +0x1650
+    ATL::CAtlList<__int64> m_list1680;                      // +0x1680
+    ATL::CAtlMap<int, unsigned int> m_map16b0;              // +0x16b0 entry -> counted key
+    ATL::CAtlMap<unsigned int, unsigned int> m_map16f8;     // +0x16f8 key -> count
+    ATL::CAtlMap<unsigned int, unsigned short> m_map1740;   // +0x1740
+    Unk_CloneTimer m_timer1788;                             // +0x1788
+    Unk_StreamPoint m_pos1790;                              // +0x1790
+    int m_n179c;                                            // +0x179c
+    Unk_MyPCPortalMove m_kPortalMove;                       // +0x17a0
+    ATL::CAtlMap<int, DWORD> m_map17c0;                     // +0x17c0 key -> tick of the last change
+};
+MS2_CHECK_OFFSET(MyPC, m_kStateCtl, 0x12e8);
+MS2_CHECK_OFFSET(MyPC, m_kActionKeys, 0x1338);
+MS2_CHECK_OFFSET(MyPC, m_kSkillSystem, 0x13d8);
+MS2_CHECK_OFFSET(MyPC, m_pGetExp, 0x15c8);
+MS2_CHECK_OFFSET(MyPC, m_set15f8, 0x15f8);
+MS2_CHECK_OFFSET(MyPC, m_pObserved, 0x1638);
+MS2_CHECK_OFFSET(MyPC, m_list1650, 0x1650);
+MS2_CHECK_OFFSET(MyPC, m_map16b0, 0x16b0);
+MS2_CHECK_OFFSET(MyPC, m_timer1788, 0x1788);
+MS2_CHECK_OFFSET(MyPC, m_kPortalMove, 0x17a0);
+MS2_CHECK_OFFSET(MyPC, m_map17c0, 0x17c0);
+MS2_CHECK_SIZE(MyPC, 0x1808);

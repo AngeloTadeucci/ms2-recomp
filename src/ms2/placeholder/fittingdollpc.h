@@ -122,6 +122,8 @@ public:
     void FUN_141662690(int nValue);
     void FUN_141662710(int nValue);
     void FUN_141661330(const CStringW& strName);             // set the displayed name (scenestategame)
+    class Unk_MyPCEquip* FUN_14165f460();                   // the equipment (mypc.cpp, w97)
+    void FUN_141670540(int nIndex, int nType, __int64 nValue);   // PCBase: set a stat value (mypc.cpp, w97)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];
