@@ -77,7 +77,7 @@ public:
     int FUN_1403987d0(std::string path);
     bool FUN_14039a160(const char* directory, const char* reference, char* result, unsigned capacity);
     void FUN_14039a640();
-    void FUN_14039a660(CString path);
+    void FUN_14039a660(CString path, void* pUnused);
     unsigned FUN_14039a720();
     void FUN_14039a740();
     unsigned long FUN_14039a790(unsigned long magic, unsigned char* data, unsigned long size,

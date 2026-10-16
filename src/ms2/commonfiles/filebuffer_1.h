@@ -18,7 +18,10 @@ public:
     void* m_pBuffer;
     unsigned m_nSize;
     int m_field2c, m_field30, m_field34, m_field38, m_field3c;
-    unsigned char m_key[8];
+    union {
+        unsigned char m_key[8];
+        __time64_t m_tLastAccess;   // CFileSystem cache timestamp (FUN_1403a9480/FUN_1403ab1a0)
+    };
 };
 MS2_CHECK_SIZE(CFileBuffer, 0x48);
 MS2_CHECK_OFFSET(CFileBuffer,m_ownership,0x18);

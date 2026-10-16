@@ -170,11 +170,12 @@
 // MS2-PIN: ??_7?$CipherModeFinalTemplate_CipherHolder@V?$BlockCipherFinal@$0A@VEnc@Rijndael@CryptoPP@@@CryptoPP@@V?$ConcretePolicyHolder@VEmpty@CryptoPP@@V?$AdditiveCipherTemplate@V?$AbstractPolicyHolder@UAdditiveCipherAbstractPolicy@CryptoPP@@VCTR_ModePolicy@2@@CryptoPP@@@2@UAdditiveCipherAbstractPolicy@2@@2@@CryptoPP@@6BStreamTransformation@1@@ 0x142d33b78
 // MS2-PIN: ??_7?$CipherModeFinalTemplate_CipherHolder@V?$BlockCipherFinal@$0A@VEnc@Rijndael@CryptoPP@@@CryptoPP@@V?$ConcretePolicyHolder@VEmpty@CryptoPP@@V?$AdditiveCipherTemplate@V?$AbstractPolicyHolder@UAdditiveCipherAbstractPolicy@CryptoPP@@VCTR_ModePolicy@2@@CryptoPP@@@2@UAdditiveCipherAbstractPolicy@2@@2@@CryptoPP@@6B?$AbstractPolicyHolder@UAdditiveCipherAbstractPolicy@CryptoPP@@VCTR_ModePolicy@2@@1@@ 0x142d33bf0
 // MS2-PIN: ??_7?$CipherModeFinalTemplate_CipherHolder@V?$BlockCipherFinal@$0A@VEnc@Rijndael@CryptoPP@@@CryptoPP@@V?$ConcretePolicyHolder@VEmpty@CryptoPP@@V?$AdditiveCipherTemplate@V?$AbstractPolicyHolder@UAdditiveCipherAbstractPolicy@CryptoPP@@VCTR_ModePolicy@2@@CryptoPP@@@2@UAdditiveCipherAbstractPolicy@2@@2@@CryptoPP@@6BRandomNumberGenerator@1@@ 0x142d33c58
+// MS2-PIN: ?StaticGetValidKeyLength@?$VariableKeyLength@$0BA@$0BA@$0CA@$07$03$0A@@CryptoPP@@SA_K_K@Z 0x1403ab430
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\filesystem.cpp"
 #include <vcruntime_string.h>
 #pragma function(memcpy, memset)
 #include "ms2/placeholder/ms2stdafx.h"
-#pragma intrinsic(memset)
+#pragma intrinsic(memset, memcpy)
 #include "filesystem.h"
 #include <algorithm>
 #include <ctime>
@@ -254,8 +255,8 @@ extern unsigned char DAT_1439f3030[2048];
 extern unsigned char DAT_143aad2d0[2048];
 extern unsigned char DAT_143aadad0[2048];
 extern unsigned char DAT_143aae2d0[2048];
-extern unsigned char DAT_1439ed030[4096];
-extern unsigned char DAT_1439ee030[2048];
+extern unsigned char DAT_1439ed030[128][32];
+extern unsigned char DAT_1439ee030[128][16];
 extern unsigned char** DAT_143aaead0;
 extern unsigned char** DAT_143aaead8;
 extern unsigned char** DAT_143aaeae0;
@@ -336,7 +337,6 @@ CFileSystem::CFileSystem() : cache(10), packed(false), alternatePaths(false), mo
     characterMask = 0;
     FUN_140351890();
 }
-// MS2-FUNCTIONAL: typed vector iterators and ordinary delete preserve archive cleanup.
 // @0x140396460
 CFileSystem::~CFileSystem() {
     for (auto it = archives.begin(); it != archives.end(); ++it) {
@@ -428,14 +428,15 @@ int CFileSystem::FUN_140396d00(const char* directory) {
     }
     return 1;
 }
-// MS2-FUNCTIONAL: keeps validation, optional output path and local-before-archive retry behavior.
 // @0x1403972f0
 int CFileSystem::FUN_1403972f0(const char* path, void** data, unsigned __int64* size, std::string* actualPath) {
-    if (path == nullptr || data == nullptr || size == nullptr) return 0;
-    if (actualPath != nullptr) *actualPath = static_cast<const char*>(FUN_140188f50(path, 0));
-    if (FUN_14039bf70() && FUN_1403a0320(path, data, size, actualPath) == 1) return 1;
-    if (FUN_140398190() && !FUN_14039f3b0(CString(path))) return FUN_14039f4b0(path, data, size, true);
-    return FUN_1403a0320(path, data, size, actualPath);
+    if (path != nullptr && data != nullptr && size != nullptr) {
+        if (actualPath != nullptr) *actualPath = static_cast<const char*>(FUN_140188f50(path, 0));
+        if (FUN_14039bf70() && FUN_1403a0320(path, data, size, actualPath) == 1) return 1;
+        if (FUN_140398190() && !FUN_14039f3b0(CString(path))) return FUN_14039f4b0(path, data, size, true);
+        return FUN_1403a0320(path, data, size, actualPath);
+    }
+    return 0;
 }
 MS2_REPLACE_METHOD(0x1403972f0, CFileSystem, FUN_1403972f0, 431, 0x9C7E8407);
 // MS2-FUNCTIONAL: preserves XML fallback order and local-only success semantics; frees archive bytes through efd.
@@ -474,15 +475,13 @@ int CFileSystem::FUN_1403974b0(TiXmlDocument* document, const char* path, int en
     return 1;
 }
 MS2_REPLACE_METHOD(0x1403974b0, CFileSystem, FUN_1403974b0, 1311, 0x73EE0E90);
+// MS2-FUNCTIONAL: exe stages the size argument through ecx (mov ecx,[size]; mov r8d,ecx), 2 bytes longer; source form not found.
 // @0x1403979e0
 int CFileSystem::FUN_1403979e0(TiXmlDocument* document, BufferPtr buffer) {
-    if (!buffer.IsNull()) {
-        unsigned size = buffer->GetSize();
-        const void* data = buffer->GetBuffer();
-        if (!FUN_140870d70(document, data, size, 0)) return 0;
-        return 1;
-    }
-    return 0;
+    if (buffer.IsNull()) return 0;
+    unsigned size = buffer->GetSize();
+    if (!FUN_140870d70(document, buffer->GetBuffer(), size, 0)) return 0;
+    return 1;
 }
 MS2_REPLACE_METHOD(0x1403979e0, CFileSystem, FUN_1403979e0, 190, 0xB229CEED);
 // @0x140397ab0
@@ -536,9 +535,8 @@ MS2_REPLACE_METHOD(0x140398190, CFileSystem, FUN_140398190, 15, 0x3367C6B5);
 // @0x1403981b0
 bool CFileSystem::FUN_1403981b0() { return alternatePaths; }
 MS2_REPLACE_METHOD(0x1403981b0, CFileSystem, FUN_1403981b0, 15, 0x5368A4AC);
-// MS2-FUNCTIONAL: Equivalent boolean result for the archive mode test.
 // @0x1403981d0
-bool CFileSystem::FUN_1403981d0() { return mode != 0; }
+bool CFileSystem::FUN_1403981d0() { return mode ? true : false; }
 MS2_REPLACE_METHOD(0x1403981d0, CFileSystem, FUN_1403981d0, 39, 0x6C197E5C);
 // MS2-FUNCTIONAL: typed archive iteration preserves prefix checks and directory attribute semantics.
 // @0x140398200
@@ -615,7 +613,6 @@ int CFileSystem::FUN_1403987d0(std::string path) {
 }
 MS2_REPLACE_METHOD(0x1403987d0, CFileSystem, FUN_1403987d0, 2332, 0xDC492B22);
 
-// MS2-FUNCTIONAL: the vector result is appended in iteration order to the caller's ATL array.
 // @0x140399100
 void FUN_140399100(CString pattern, CString directory, ATL::CAtlArray<CString>& output, CString exclude, bool localOnly) {
     std::vector<CString> paths;
@@ -778,9 +775,8 @@ MS2_REPLACE_METHOD(0x14039a160, CFileSystem, FUN_14039a160, 1230, 0x093E08A9);
 // @0x14039a640
 void CFileSystem::FUN_14039a640() { packed = false; }
 MS2_REPLACE_METHOD(0x14039a640, CFileSystem, FUN_14039a640, 15, 0xCAF8FB9C);
-// MS2-FUNCTIONAL: Typed lock scope and CString comparisons preserve the character mask bits.
 // @0x14039a660
-void CFileSystem::FUN_14039a660(CString path) {
+void CFileSystem::FUN_14039a660(CString path, void*) {
     Unk_FileSystemLock guard(characterLock, 1);
     if (path == "./data/resource/model/character/female/female.xml") characterMask |= 2;
     else if (path == "./data/resource/model/character/male/male.xml") characterMask |= 1;
@@ -795,79 +791,92 @@ void CFileSystem::FUN_14039a740() {
     characterMask = 0;
 }
 MS2_REPLACE_METHOD(0x14039a740, CFileSystem, FUN_14039a740, 69, 0x60D6BBDC);
-// MS2-FUNCTIONAL: Direct dispatch preserves all four magic values and the unknown-format assertion.
 // @0x14039a790
 unsigned long CFileSystem::FUN_14039a790(unsigned long magic, unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long capacity) {
     if (magic == 0x4632534d) return FUN_14039a8a0(data, size, output, capacity);
-    if (magic == 0x4632534e) return FUN_14039aba0(data, size, output, capacity);
-    if (magic == 0x4632534f) return FUN_14039ae90(data, size, output, capacity);
-    if (magic == 0x46325350) return FUN_14039b180(data, size, output, capacity);
-    MS2_ASSERT_AT(0x4e, 0);
+    else if (magic == 0x4632534e) return FUN_14039aba0(data, size, output, capacity);
+    else if (magic == 0x4632534f) return FUN_14039ae90(data, size, output, capacity);
+    else if (magic == 0x46325350) return FUN_14039b180(data, size, output, capacity);
+    else MS2_ASSERT_AT(0x4e, 0);
     return 0;
 }
 // Not hooked: constructs Crypto++ objects with DLL-local RTTI.
-// MS2-FUNCTIONAL: Vendor AES-CTR/Base64 pipeline retains 32-byte keys, IV selection and output ownership.
+// MS2-FUNCTIONAL: the exe's CTR_Mode<AES>::Encryption is 8 bytes larger than the vendored Crypto++ one, so the frame is 0x10 smaller (code otherwise identical).
 // @0x14039a8a0
 unsigned long CFileSystem::FUN_14039a8a0(unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long selector) {
     unsigned index = selector & 0x7f;
-    CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption cipher(DAT_1439ed030 + index * 32, 32,
-                                                       DAT_1439ee030 + index * 16);
+    CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption cipher(DAT_1439ed030[index], 32, DAT_1439ee030[index]);
     std::string result;
-    CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
-        new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
-                                                 CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    try {
+        CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
+            new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
+                                                     CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    } catch (...) {
+        return 0;
+    }
     *output = new unsigned char[result.length()];
     memcpy(*output, result.data(), result.length());
     return static_cast<unsigned long>(result.length());
 }
 // Not hooked: constructs Crypto++ objects with DLL-local RTTI.
-// MS2-FUNCTIONAL: Vendor AES-CTR/Base64 pipeline retains indexed key/IV pointers and output ownership.
+// MS2-FUNCTIONAL: the exe's CTR_Mode<AES>::Encryption is 8 bytes larger than the vendored Crypto++ one, so the frame is 0x10 smaller (code otherwise identical).
 // @0x14039aba0
 unsigned long CFileSystem::FUN_14039aba0(unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long selector) {
     unsigned index = selector & 0x7f;
     CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption cipher(DAT_143aaead0[index], 32, DAT_143aaead8[index]);
     std::string result;
-    CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
-        new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
-                                                 CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    try {
+        CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
+            new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
+                                                     CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    } catch (...) {
+        return 0;
+    }
     *output = new unsigned char[result.length()];
     memcpy(*output, result.data(), result.length());
     return static_cast<unsigned long>(result.length());
 }
 // Not hooked: constructs Crypto++ objects with DLL-local RTTI.
-// MS2-FUNCTIONAL: Vendor AES-CTR/Base64 pipeline retains indexed key/IV pointers and output ownership.
+// MS2-FUNCTIONAL: the exe's CTR_Mode<AES>::Encryption is 8 bytes larger than the vendored Crypto++ one, so the frame is 0x10 smaller (code otherwise identical).
 // @0x14039ae90
 unsigned long CFileSystem::FUN_14039ae90(unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long selector) {
     unsigned index = selector & 0x7f;
     CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption cipher(DAT_143aaeae0[index], 32, DAT_143aaeae8[index]);
     std::string result;
-    CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
-        new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
-                                                 CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    try {
+        CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
+            new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
+                                                     CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    } catch (...) {
+        return 0;
+    }
     *output = new unsigned char[result.length()];
     memcpy(*output, result.data(), result.length());
     return static_cast<unsigned long>(result.length());
 }
 // Not hooked: constructs Crypto++ objects with DLL-local RTTI.
-// MS2-FUNCTIONAL: Vendor AES-CTR/Base64 pipeline retains indexed key/IV pointers and output ownership.
+// MS2-FUNCTIONAL: the exe's CTR_Mode<AES>::Encryption is 8 bytes larger than the vendored Crypto++ one, so the frame is 0x10 smaller (code otherwise identical).
 // @0x14039b180
 unsigned long CFileSystem::FUN_14039b180(unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long selector) {
     unsigned index = selector & 0x7f;
     CryptoPP::CTR_Mode<CryptoPP::AES>::Encryption cipher(DAT_143aaeaf0[index], 32, DAT_143aaeaf8[index]);
     std::string result;
-    CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
-        new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
-                                                 CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    try {
+        CryptoPP::StringSource(data, size, true, new CryptoPP::Base64Decoder(
+            new CryptoPP::StreamTransformationFilter(cipher, new CryptoPP::StringSink(result),
+                                                     CryptoPP::StreamTransformationFilter::NO_PADDING, false)));
+    } catch (...) {
+        return 0;
+    }
     *output = new unsigned char[result.length()];
     memcpy(*output, result.data(), result.length());
     return static_cast<unsigned long>(result.length());
 }
-// MS2-FUNCTIONAL: memcpy expresses the original unaligned 32-bit XOR without aliasing violations.
 #ifdef __clang__
 // Keep imported key-array references in code, not in an absolute-address table.
 #pragma clang optimize off
@@ -876,24 +885,30 @@ unsigned long CFileSystem::FUN_14039b180(unsigned char* data, unsigned long size
 unsigned long CFileSystem::FUN_14039b470(unsigned long magic, unsigned char* data, unsigned long size,
                                        unsigned char** output, unsigned long capacity) {
     const unsigned char* key = DAT_1439f3030;
-    if (magic == 0x4632534d) key = DAT_1439f3030;
-    else if (magic == 0x4632534e) key = DAT_143aad2d0;
-    else if (magic == 0x4632534f) key = DAT_143aadad0;
-    else if (magic == 0x46325350) key = DAT_143aae2d0;
-    else MS2_ASSERT_AT(0xdd, 0);
-    unsigned index = 0, word;
-    for (word = 0; word < (size >> 2); ++word) {
-        unsigned value, mask;
-        memcpy(&value, data + word * 4, 4);
-        memcpy(&mask, key + index * 4, 4);
-        value ^= mask;
-        memcpy(data + word * 4, &value, 4);
-        index = (index + 1) & 0x1ff;
+    switch (magic) {
+    case 0x4632534d: key = DAT_1439f3030; break;
+    case 0x4632534e: key = DAT_143aad2d0; break;
+    case 0x4632534f: key = DAT_143aadad0; break;
+    case 0x46325350: key = DAT_143aae2d0; break;
+    default: MS2_ASSERT_AT(0xdd, 0);
     }
+    unsigned wordCount = size >> 2;
+    unsigned byteCount = size & 3;
+    unsigned* words = reinterpret_cast<unsigned*>(data);
+    const unsigned* keyWords = reinterpret_cast<const unsigned*>(key);
+    unsigned index = 0;
+    unsigned pos;
+    for (pos = 0; pos < wordCount; ++pos) {
+        words[pos] ^= keyWords[index];
+        ++index;
+        index &= 0x1ff;
+    }
+    pos <<= 2;
     index = 0;
-    for (unsigned tail = 0; tail < (size & 3); ++tail) {
-        data[word * 4 + tail] ^= key[index];
-        index = (index + 1) & 0x7ff;
+    for (unsigned tail = 0; tail < byteCount; ++tail) {
+        data[pos + tail] ^= key[index];
+        ++index;
+        index &= 0x7ff;
     }
     *output = data;
     return size;
@@ -908,27 +923,24 @@ void CFileSystem::FUN_14039b660() {
     cache.RemoveAll();
 }
 MS2_REPLACE_METHOD(0x14039b660, CFileSystem, FUN_14039b660, 69, 0x68A6E2C2);
-// MS2-FUNCTIONAL: typed ATL traversal retains advance-before-remove order and inclusive expiry.
 // @0x14039b6b0
 void CFileSystem::FUN_14039b6b0() {
-    if (cache.GetCount() != 0) {
-        __time64_t now;
-        FUN_140396290(&now);
-        Unk_FileSystemLock guard(cacheLock, 1);
-        POSITION position = cache.GetHeadPosition();
-        while (position != nullptr) {
-            POSITION current = position;
-            cache.GetNext(position);
-            const BufferPtr& buffer = cache.GetValueAt(current);
-            double age = FUN_140396260(now, FUN_1403a9480(buffer.operator->()));
-            if (DAT_1439f4830 <= age) cache.RemoveAt(current);
-        }
+    if (cache.GetCount() == 0) return;
+    __time64_t now;
+    FUN_140396290(&now);
+    Unk_FileSystemLock guard(cacheLock, 1);
+    POSITION position = cache.GetHeadPosition();
+    while (position != nullptr) {
+        POSITION current = position;
+        cache.GetNext(position);
+        const BufferPtr& buffer = cache.GetValueAt(current);
+        double age = FUN_140396260(now, FUN_1403a9480(buffer.operator->()));
+        if (age >= DAT_1439f4830) cache.RemoveAt(current);
     }
 }
 MS2_REPLACE_METHOD(0x14039b6b0, CFileSystem, FUN_14039b6b0, 272, 0x26CFCE3D);
-// MS2-FUNCTIONAL: Equivalent int-to-bool conversion for the alternate-path flag.
 // @0x14039b7d0
-void CFileSystem::FUN_14039b7d0(int enabled) { alternatePaths = enabled != 0; }
+void CFileSystem::FUN_14039b7d0(int enabled) { alternatePaths = enabled ? true : false; }
 MS2_REPLACE_METHOD(0x14039b7d0, CFileSystem, FUN_14039b7d0, 47, 0x717FD09C);
 // MS2-FUNCTIONAL: Typed string operations preserve the alternate-prefix insertion position.
 // @0x14039b810
@@ -979,15 +991,15 @@ MS2_REPLACE_METHOD(0x14039bb50, CFileSystem, FUN_14039bb50, 1047, 0xEF6B46BF);
 // @0x14039bf70
 bool CFileSystem::FUN_14039bf70() { return true; }
 MS2_REPLACE_METHOD(0x14039bf70, CFileSystem, FUN_14039bf70, 8, 0x71679366);
-// MS2-FUNCTIONAL: String erase operations preserve trimming of ASCII space only.
 // @0x14039bf80
 void CFileSystem::FUN_14039bf80(std::string& path) {
-    size_t last = path.find_last_not_of(' ');
-    if (last == std::string::npos) path.erase(path.begin(), path.end());
-    else {
-        path.erase(last + 1);
-        size_t first = path.find_first_not_of(' ');
-        if (first != std::string::npos) path.erase(0, first);
+    size_t pos = path.find_last_not_of(' ');
+    if (pos != std::string::npos) {
+        path.erase(pos + 1);
+        pos = path.find_first_not_of(' ');
+        if (pos != std::string::npos) path.erase(0, pos);
+    } else {
+        path.erase(path.begin(), path.end());
     }
 }
 MS2_REPLACE_METHOD(0x14039bf80, CFileSystem, FUN_14039bf80, 190, 0xA7F44878);
@@ -1354,24 +1366,16 @@ bool CFileSystem::FUN_1403ab490(const std::string& path, const std::string& pref
     return path.compare(0, prefix.length(), prefix, 0, prefix.length()) == 0;
 }
 
-// CFileBuffer's existing header calls this 8-byte field m_key; cache callers
-// establish that it also stores the last-access time. Keep its shared layout.
 // @0x1403a93e0
 Unk_FileArchiveIndex& Unk_FileArchive::FUN_1403a93e0() { return index; }
-// MS2-FUNCTIONAL: memcpy preserves the original 64-bit timestamp without changing the shared buffer layout.
 // @0x1403a9480
-__time64_t FUN_1403a9480(CFileBuffer* buffer) {
-    __time64_t result;
-    memcpy(&result, buffer->m_key, sizeof result);
-    return result;
-}
+__time64_t FUN_1403a9480(CFileBuffer* buffer) { return buffer->m_tLastAccess; }
 // @0x1403a9490
 const std::string& Unk_FileArchive::FUN_1403a9490() { return path; }
 // @0x1403a9580
 Unk_FileArchiveIndex::Entries& Unk_FileArchiveIndex::FUN_1403a9580() { return entries; }
-// MS2-FUNCTIONAL: memcpy preserves the original 64-bit timestamp store in the shared buffer layout.
 // @0x1403ab1a0
-void FUN_1403ab1a0(CFileBuffer* buffer, __time64_t time) { memcpy(buffer->m_key, &time, sizeof time); }
+void FUN_1403ab1a0(CFileBuffer* buffer, __time64_t time) { buffer->m_tLastAccess = time; }
 
 
 
