@@ -14,6 +14,7 @@ public:
     ASTextField(const Scaleform::GFx::Value& v, int nMovieId);          // 0x1422c4c00 (the Value is not copied: const&)
     virtual ~ASTextField();
     void FUN_1422c4cd0(const CStringW& strText);                        // set the text
+    void FUN_1422c4f00(const CStringW& strText);                        // set the html text
 
 private:
     unsigned char m_unrecovered_40[0x40];                               // exe allocates 0x80 bytes

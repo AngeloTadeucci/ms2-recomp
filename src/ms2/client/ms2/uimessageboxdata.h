@@ -192,6 +192,8 @@ public:
     void FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)> cb); // result callback
     void FUN_141a01600(__int64 n);                                  // uiugccubepalettedialog.cpp: the item uid
     void FUN_141a024a0(int n);
+    void FUN_141a02730(bool b);
+    void FUN_141a02770(int nWidth, int nHeight);
     void FUN_141a01ee0(MS2Ptr<CItem> spItem, const CStringW& strName, int nA, int nB, int nC, int nD, int nE);   // item entry
     void FUN_141a01700(int nA, int nB, int nC);
     void FUN_141a01c70(const CStringW& str);
