@@ -256,6 +256,7 @@ public:
     static PCBase* FUN_141530930();                         // the local player
     void FUN_141530d70(double dTime);
     void FUN_141530db0();
+    bool FUN_1415272b0();                                   // the worn weapon fits the job
     void FUN_1415310e0(std::list<class Unk_MyPCDropItem*>& lstDrops);   // pick up the drop items (packet 0x1d)
     int FUN_14152ecc0(__int64 n);
     int FUN_14152ed10(__int64 n);

@@ -127,7 +127,9 @@ MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_bNoSwap, 0xad);
 class Unk_PCBaseComp_b18 : public CPtred
 {
 public:
-    char m_pad_18[0x30 - 0x18];
+    char m_pad_18[0x20 - 0x18];
+    __int64 m_nItemUid;                                     // +0x20 the item of an item cast (ride-on)
+    char m_pad_28[0x30 - 0x28];
     MS2Ptr<Unk_MyPCSkillRow> m_spRow;                       // +0x30
 };
 MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_spRow, 0x30);
@@ -266,12 +268,15 @@ struct Unk_MyPCOptionData
 };
 // The house settings (the flags shown on the house info).
 class Unk_MyPCHouseCfg { public: void FUN_141261e40(int bSet, int nFlag); void FUN_141261dd0(int nFlag); };
+// The ride options of the account settings (+2: the ride-on flag sent with a ride-on item).
+struct Unk_MyPCRideOpt { unsigned char m_pad_0[2]; bool m_b2; };
 // The auto loot options (+0x14c of the account settings).
 class Unk_MyPCAutoLoot { public: bool FUN_141261340(void* pItem, bool bMeso); bool FUN_141261510(); };
 class Unk_MyPCAdvCfg
 {
 public:
     unsigned char* FUN_140af7de0(); Unk_MyPCOptionData* FUN_140b123b0(); Unk_MyPCHouseCfg* FUN_140a46860();
+    struct Unk_MyPCRideOpt* FUN_14124ab20();
     // @0x141533e20
     Unk_MyPCAutoLoot* FUN_141533e20() { return &m_kAutoLoot; }
 
@@ -488,10 +493,17 @@ struct Unk_MyPCEquipSetView
 // The trophy point totals by id (scenestategame.cpp's view of the same global).
 class Unk_SSGCountMap { public: int& FUN_14063ec70(const int& nKey); };
 extern Unk_SSGCountMap DAT_143ab32f8;
+// The job limits of an item (+0x138 of its table data).
+struct Unk_MyPCItemJobLimit { bool FUN_140545da0(int nJob); };
 struct Unk_EquipItemData
 {
-    char m_pad_000[0x13c];
-    int m_n13c;                                             // +0x13c 2: not counted
+    bool FUN_14053d460();                                   // CItemData: a two-handed weapon
+    char m_pad_000[0x138];
+    union
+    {
+        Unk_MyPCItemJobLimit m_kJobLimit;                   // +0x138
+        struct { int m_n138; int m_n13c; };                 // +0x13c 2: not counted
+    };
 };
 // The physics body helpers of PCBase::FUN_14166d220 (pcbase.h's Unk_PCBaseBody does not declare them).
 void FUN_141240730(Unk_PCBaseBody* pBody);                  // reset the body
@@ -1262,6 +1274,31 @@ int MyPC::FUN_141527160(int nNext)
     return 0;
 }
 MS2_REPLACE_METHOD(0x141527160, MyPC, FUN_141527160, 108, 0x0459A682);
+
+// @0x1415272b0
+// Whether the worn weapon (and the off-hand item of a one-handed weapon) may be used by the job.
+bool MyPC::FUN_1415272b0()
+{
+    MS2Ptr<CEquipItem> spWeapon = FUN_1416561a0()->FUN_1411e1780(5, 0);
+    if (spWeapon == 0)
+        return false;
+    if (FUN_141662eb0(spWeapon->FUN_1411dc7a0().get()) == 0)
+        return false;
+    if (!spWeapon->FUN_1411dc7f0()->m_kJobLimit.FUN_140545da0(FUN_141654700()))
+        return false;
+    if (!spWeapon->FUN_1411dc7f0()->FUN_14053d460())
+    {
+        MS2Ptr<CEquipItem> spOffHand = FUN_1416561a0()->FUN_1411e1780(4, 0);
+        if (spOffHand == 0)
+            return false;
+        if (FUN_141662eb0(spOffHand->FUN_1411dc7a0().get()) == 0)
+            return false;
+        if (!spOffHand->FUN_1411dc7f0()->m_kJobLimit.FUN_140545da0(FUN_141654700()))
+            return false;
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x1415272b0, MyPC, FUN_1415272b0, 750, 0xD54A0604);
 
 // @0x141527280
 bool MyPC::FUN_141527280()
@@ -3008,6 +3045,45 @@ public:
 };
 Unk_MyPCRideePtr FUN_1407844b0(unsigned nRideeId);
 class Unk_MyPCBuffMgr { public: bool FUN_141682fe0(int nBuffId); bool FUN_141683100(int nBuffId); };
+
+// @0x14152dbc0
+// Ride on with the item of the pending item cast (packet 0x40 0), if the state allows it and the ridee may be used.
+void MyPC::FUN_14152dbc0()
+{
+    int nState = FUN_14166c930();
+    if (nState != 1 && nState != 2)
+        return;
+    if (FUN_14166cc80() == 7)
+        return;
+    MS2Ptr<Unk_PCBaseComp_b18> spCast = FUN_141523c00();
+    if (spCast.get() != 0)
+    {
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(spCast->m_nItemUid);
+        if (spItem.get() != 0)
+        {
+            int nRideeId = ((CItemData*)spItem->FUN_140527840())->FUN_14053dd80();
+            Unk_MyPCRideePtr spRidee = FUN_1407844b0(nRideeId);
+            if (spRidee.FUN_1409f78a0() != 0)
+            {
+                if (FUN_1415271e0(this, (Unk_MyPCSkillUse*)spRidee.FUN_1409f78a0()) == 0)
+                {
+                    FUN_14152a310(MS2Ptr<Unk_PCBaseComp_b18>(0));
+                    return;
+                }
+                MS2Ptr<RideOnActionUseItem> spAction(new RideOnActionUseItem());
+                spAction->m_n1c = nRideeId;
+                spAction->m_n38 = spItem->FUN_140526a50();
+                spAction->m_b28 = FUN_1409a8b10()->FUN_14124ab20()->m_b2;
+                COutPacket packet(0x40, 0);
+                packet.COutPacket::vfunc_o10_1(0);
+                spAction->vfunc_1(&packet);
+                FUN_140710590(packet);
+                FUN_14152a310(MS2Ptr<Unk_PCBaseComp_b18>(0));
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14152dbc0, MyPC, FUN_14152dbc0, 779, 0x4A93BF97);
 
 // @0x141530db0
 // Auto loot: flag the drop items the auto loot options take, pick up the mesos, and the pet pickup buff.
