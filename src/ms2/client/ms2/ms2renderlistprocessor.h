@@ -67,7 +67,7 @@ public:
 protected:
     AlphaComponent** m_ppkSortedAlpha;                      // +0xb0 NiAlloc'd, m_uiAllocatedAlpha entries
     AlphaObject* m_pkAlphaObjects;                          // +0xb8 NiNew[] m_uiAllocatedAlpha
-    efd::list<AlphaObject> m_kExtraAlphaObjects;            // +0xc0 alpha objects with an explicit sort mode
+    std::list<AlphaObject> m_kExtraAlphaObjects;             // +0xc0 alpha objects with an explicit sort mode
     unsigned int m_uiAllocatedAlpha;                        // +0xd0
     NiMaterialPtr m_spMaterial;                             // +0xd8
     bool m_bOutlineColor;                                   // +0xe0

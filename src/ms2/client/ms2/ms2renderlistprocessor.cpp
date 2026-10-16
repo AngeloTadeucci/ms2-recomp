@@ -104,7 +104,7 @@ MS2RenderListProcessor::MS2RenderListProcessor()
     m_pkAlphaObjects = 0;
     m_uiAllocatedAlpha = 0;
     m_bOutlineColor = true;
-    SetObserveNoSortHint(true);
+    SetSortByClosestPoint(true);
 }
 
 // @0x1414dc020
@@ -605,8 +605,8 @@ void MS2RenderListProcessor::RenderAlphaList(unsigned int uiCount, MS2AlphaShell
     }
     std::sort(m_ppkSortedAlpha, m_ppkSortedAlpha + ui, CompareAlpha);
     m_kExtraAlphaObjects.sort();
-    for (efd::list<AlphaObject>::reverse_iterator it = m_kExtraAlphaObjects.rbegin(); it != m_kExtraAlphaObjects.rend(); ++it)
-        (*it).vfunc_0();
+    for (std::list<AlphaObject>::reverse_iterator it = m_kExtraAlphaObjects.rbegin(); it != m_kExtraAlphaObjects.rend(); ++it)
+        it->vfunc_0();
     for (unsigned int uj = 0; uj < ui; uj++)
         m_ppkSortedAlpha[uj]->vfunc_0();
 }
@@ -850,8 +850,8 @@ void MS2RenderViewRenderListProcessor::PreRenderProcessList(const NiVisibleArray
     }
     std::sort(m_ppkSortedAlpha, m_ppkSortedAlpha + uiSorted, CompareAlpha);
     m_kExtraAlphaObjects.sort();
-    for (efd::list<AlphaObject>::reverse_iterator it = m_kExtraAlphaObjects.rbegin(); it != m_kExtraAlphaObjects.rend(); ++it)
-        (*it).vfunc_0();
+    for (std::list<AlphaObject>::reverse_iterator it = m_kExtraAlphaObjects.rbegin(); it != m_kExtraAlphaObjects.rend(); ++it)
+        it->vfunc_0();
     for (unsigned int uj = 0; uj < uiSorted; uj++)
         m_ppkSortedAlpha[uj]->vfunc_0();
 
@@ -898,9 +898,11 @@ static bool IsUnderEffectNode(NiAVObject* pkObject)
     }
     return false;
 }
+MS2_REPLACE(0x1414DEDB0, IsUnderEffectNode, 69, 0x5A60BE20);
 
 // @0x1414dee00
 static bool CompareAlpha(AlphaComponent* pkA, AlphaComponent* pkB)
 {
     return pkA->GetAlpha() > pkB->GetAlpha();
 }
+MS2_REPLACE(0x1414DEE00, CompareAlpha, 79, 0x89149BAE);
