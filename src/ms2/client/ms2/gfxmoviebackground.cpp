@@ -287,7 +287,7 @@ void FUN_14257ec50(Unk_BgDispHandle* p);
 void FUN_1422bcd70(Scaleform::GFx::Value* pValue, float f);
 class Unk_BgWorldMgr { public: void* FUN_141bd0cc0(); const NiPoint3& FUN_141bd3dc0(); };
 Unk_BgWorldMgr* FUN_1403ed2d0();
-bool* FUN_1422dad70(void* pThis, int n);
+bool* FUN_1422dad70(void* pThis, void* pOut, char n);   // pOut: caller temp (key-state flags), returned
 NiMaterial* FUN_141d284a0(char* szName);
 void FUN_14116d500(void* pMat, const NiColor& kColor);
 void FUN_140980f20(void* p, int v);
@@ -606,7 +606,8 @@ int GFxMovieBackground::vfunc_14(void* hwnd, unsigned msg, unsigned __int64 wPar
     {
         if (msg == 0x102)
         {
-            vfunc_39(0, 0, (unsigned)wParam, 1, *FUN_1422dad70(this, 0));
+            char aTmp[16];
+            vfunc_39(0, 0, (unsigned)wParam, 1, *FUN_1422dad70(this, aTmp, 0));
             return 0;
         }
         if (msg == 5)
