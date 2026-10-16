@@ -62,6 +62,16 @@
 // MS2-PIN: ?vfunc_1@?$Values@UUnk_ConstColor@@@Constants@Common@@UEAAXXZ 0x1402c36d0 ; prop: 0x1402c36a0 taken by ?vfunc_1@?$Values@I@Constants@Common@@UEAAXXZ
 // MS2-PIN: ?vfunc_1@?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@UEAAXXZ 0x1402c3700 ; unique: vftable slot 1 of ??_7?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL...
 // MS2-PIN: ?vfunc_1@?$Values@_J@Constants@Common@@UEAAXXZ 0x1402c3730 ; unique: vftable slot 1 of ??_7?$Values@_J@Constants@Common@@6B@
+// MS2-PIN: ??1?$Values@H@Constants@Common@@UEAA@XZ 0x1402bd4d0 ; manual: named in the exe symbol dump
+// MS2-PIN: ??1?$Values@I@Constants@Common@@UEAA@XZ 0x1402bd510 ; manual: named in the exe symbol dump
+// MS2-PIN: ??1?$Values@UUnk_ConstColor@@@Constants@Common@@UEAA@XZ 0x1402bd550 ; manual: named in the exe symbol dump
+// MS2-PIN: ??1?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@UEAA@XZ 0x1402bd590 ; manual: named in the exe symbol dump
+// MS2-PIN: ??1?$Values@_J@Constants@Common@@UEAA@XZ 0x1402bd5d0 ; manual: named in the exe symbol dump
+// MS2-PIN: ??1?$Value@UMS2Colors@@@Constants@Common@@UEAA@XZ 0x1402bd310 ; manual: named in the exe symbol dump
+// MS2-PIN: ??_G?$Value@UMS2Colors@@@Constants@Common@@UEAAPEAXI@Z 0x1402be790 ; manual: named in the exe symbol dump
+// MS2-PIN: ??0?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@QEAA@XZ 0x1402bcdf0 ; manual: named in the exe symbol dump
+// MS2-PIN: ?Read@?$Value@I@Constants@Common@@QEAAIXZ 0x1402bac50 ; manual: named in the exe symbol dump
+// MS2-PIN: ?Read@?$Value@_J@Constants@Common@@QEAA_JXZ 0x1402bac90 ; manual: named in the exe symbol dump
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
@@ -239,6 +249,8 @@ static void FormatKey(char* out, const char* fmt, ...)
 // @0x1402c2d10
 // @0x1402c3030
 // MS2-FUNCTIONAL: the Values<T> collectors, Add/SetCount/ctor/vfunc_1 instantiations for colour/string/int64 elements differ from the exe in temporaries; same behaviour
+template unsigned int Constants::Value<unsigned int>::Read();
+template __int64 Constants::Value<__int64>::Read();
 // Values<T>::Define(key): collect key0, key1, ... until one is missing.
 template<class T> bool Constants::Values<T>::Define(const char* key)
 {
