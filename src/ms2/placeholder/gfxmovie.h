@@ -14,6 +14,7 @@
 
 #include <afx.h>
 #include <NiRefObject.h>
+#include <NiRTTI.h>
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
@@ -89,6 +90,7 @@ MS2_CHECK_OFFSET(GFxMovie, m_78, 0x78);
 class GFxMovieEventHandler : public GFxMovie
 {
 public:
+    static const NiRTTI ms_RTTI;                                    // 0x143b0d2e0 (symbols-manual data row; vfunc_2 returns it)
     GFxMovieEventHandler();                                         // 0x1422d8dc0
     virtual ~GFxMovieEventHandler();                                //  0 0x1422d8e20 (scalar deleting 0x1422db0b0)
     virtual void* vfunc_2();                                        //  2 0x1422db110 returns &DAT_143b0d2e0

@@ -139,6 +139,13 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, __int64 a2);              // 0x140cb6990 (UIPvPGuildTeamDialog setHpBar)
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2, __int64 a3, __int64 a4);   // 0x14133c8c0 (inline COMDAT, defined in uipvpguildteamdialog.cpp; a1/a2 by value: the callee destroys them)
     bool FUN_1422ba9f0(const char* szMember);                                               // the AS object has the member (uipvpguildteamdialog)
+    Scaleform::GFx::Value FUN_1409ba0d0(const char* szMethod, int a1, int a2);               // 0x1409ba0d0 (UIQuestGuideDialog setMaxEntity)
+    Scaleform::GFx::Value FUN_140bd2cb0(const char* szMethod, const ASArray& a1);           // 0x140bd2cb0 (UIQuestGuideDialog buildAll)
+    Scaleform::GFx::Value FUN_140ed0fd0(const char* szMethod, int a1, bool a2);             // 0x140ed0fd0 (UIQuestGuideDialog setTracingEntity)
+    Scaleform::GFx::Value FUN_1422bb3c0();                                                   // 0x1422bb3c0 call the AS function this object wraps
+    Scaleform::GFx::Value Invoke(const char* szMethod, const AScript& a1, const char* a2);  // 0x141aafc10 (inline COMDAT, defined in uiquesteventlistener.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, float a1);                           // 0x14127bfb0 (inline COMDAT, defined in gfxmoviebackground.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, float a1, float a2, float a3);       // 0x14127c050 (inline COMDAT, defined in gfxmoviebackground.cpp)
 
 protected:   // cr4: was private; derived AS helpers (ASCommonDepth) read the movie id and the value
     union {
