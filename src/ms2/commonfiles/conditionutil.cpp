@@ -20,6 +20,9 @@
 // MS2-PIN: ??__Fg_strSkill@@YAXXZ 0x142c9a530 ; unique
 // MS2-PIN: ??__Fg_strStun@@YAXXZ 0x142c9a550 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1?$CAtlMap@IV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@I@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x1402aa1d0
+// MS2-PIN: ?RemoveAll@?$CAtlMap@IV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@I@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAAXXZ 0x1402aafd0
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VCConditionDef@CConditionCommon@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCConditionDef@CConditionCommon@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1402a66f0
 // MS2-PIN: memmove_s 0x1402a8fc0
 // MS2-PIN: ??A?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEAAAEA_J_K@Z 0x1402a5c10
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\conditionutil.cpp"
