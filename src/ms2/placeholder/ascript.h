@@ -112,8 +112,10 @@ public:
     template<class T> MS2Ptr<T> FUN_140bc71c0(const CString&, MS2Ptr<T>&); // bind display object
     template<class T> MS2Ptr<T> FUN_140bbe7c0(const CString&, MS2Ptr<T>&); // bind combo box (party search register)
     template<class T> MS2Ptr<T> FUN_140bbe940(const CString&, MS2Ptr<T>&); // bind input box (party search register)
+    template<class T> MS2Ptr<T> FUN_140bc7340(const CString&, MS2Ptr<T>&); // bind list (debug guide)
     template<class T> MS2Ptr<T> FUN_140c12010(const CString&, MS2Ptr<T>&); // bind check box (party search register)
     template<class T> MS2Ptr<T> FUN_140bc7100(const CString&, MS2Ptr<T>&); // bind icon (DT attendance)
+    template<class T> MS2Ptr<T> FUN_140e159f0(const CString&);               // child control by name, one COMDAT per wrapper class (dungeon helper)
     template<class F> void FUN_1422c2a70(const F&, int); // click callback (DT attendance)
     Scaleform::GFx::Value& FUN_1422bb890(); // root value forwarding accessor
     MS2Ptr<ASMovieClip> FUN_1409b4560(const CString& strName); // bind a movie clip child (w4s10; units may hide it)
