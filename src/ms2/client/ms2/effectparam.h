@@ -23,11 +23,13 @@ class Unk_140165cf0;     // game TinyXML element
 class NiAVObject;
 class NiTransform;
 // Effect owner/target context passed to CEffectParam::vfunc_7 and CEffect::vfunc_3 (getters 0x140a53110/53010/53050/
-// 53420). Partial layout: only the fields read directly by recovered code; never allocate it from here.
+// 53420). 0x70 bytes; only the fields read directly by recovered code are named (CEffectService::OnTick builds one).
 class Unk_EffectTarget
 {
 public:
-    void* m_unk_00;
+    Unk_EffectTarget();             // 0x140a52ef0 (0x70 bytes)
+    ~Unk_EffectTarget();            // 0x1405a89e0
+    CString m_strName;              // +0x00 the effect file name
     int m_nKind;                    // +0x08 (CPostEffectParam::vfunc_7: 3 passes; copied to CEffect +0x18)
     int m_unk_0c;
     NiPointer<NiAVObject> m_spObject;   // +0x10 the node the effect is attached to (effectservice: skip position)
@@ -39,6 +41,7 @@ public:
     bool m_b34;                     // +0x34 copied to CEffect::m_b2f
     char m_unk_35[0x17];
     unsigned int m_nRandomIndex;    // +0x4c CRandomEffect: forced child index (mod count); 0 = weighted random
+    char m_unk_50[0x20];
 
     class GameObject* FUN_140a533b0();  // 0x140a533b0 return the GameObject* at +0x58 (the effect's owner actor)
     // ?\unit_140a52ef0.cpp getters (owner = the GameObject at +0x58; 2 = "any" for gender/job).
@@ -54,6 +57,7 @@ MS2_CHECK_OFFSET(Unk_EffectTarget, m_spObject, 0x10);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b30, 0x30);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b34, 0x34);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nRandomIndex, 0x4c);
+MS2_CHECK_SIZE(Unk_EffectTarget, 0x70);
 
 class CEffectParam;
 

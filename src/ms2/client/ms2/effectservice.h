@@ -148,3 +148,148 @@ MS2_CHECK_OFFSET(EffectNode, m_pTarget, 0x138);
 MS2_CHECK_OFFSET(EffectNode, m_kTranslate, 0x14c);
 MS2_CHECK_OFFSET(EffectNode, m_kRotate, 0x158);
 MS2_CHECK_OFFSET(EffectNode, m_spMovement, 0x180);
+
+// ---- CEffectService ----
+#include <list>
+#include <string>
+#include <vector>
+#include <map>
+#include <efd/ISystemService.h>
+#include <efd/SmartPointer.h>
+#include <egf/EntityID.h>
+#include <NiDynamicEffect.h>
+#include <NiLight.h>
+#include <efd/Category.h>
+namespace egf { class EntityChangeMessage; class Entity; }
+#include "ms2/placeholder/iworldservicecallback.h"
+class PendingEffect;
+class RainDropSystem;
+
+// The live effects of one owner id (0x20 bytes; plain new/delete, ??_G 0x1411b1330, dtor 0x1411b0140).
+struct Unk_EsEffectGroup
+{
+    explicit Unk_EsEffectGroup(unsigned nId) : m_nId(nId) {}   // 0x1411af8b0
+    ~Unk_EsEffectGroup();                                       // 0x1411b0140: FUN_1411a42b0, then the members
+    void FUN_1411a42b0();                                       // drop every effect (vfunc_7) and the skip counts
+
+    static int FUN_1411b1f50();                                 // m_sTotalEffectCount
+    static int m_sTotalEffectCount;                             // 0x143ad15a0 live effects of every group
+
+    // @0x141044280
+    std::list<CEffectPtr>::iterator FUN_141044280() { return m_listEffects.begin(); }
+    // @0x1410443f0
+    std::list<CEffectPtr>::iterator FUN_1410443f0() { return m_listEffects.end(); }
+
+    unsigned m_nId;                                             // +0x00
+    std::list<CEffectPtr> m_listEffects;                        // +0x08
+    std::string m_strName;                                      // +0x18 the effect file name
+};
+MS2_CHECK_SIZE(Unk_EsEffectGroup, 0x38);
+typedef std::map<unsigned int, Unk_EsEffectGroup*> Unk_EsGroupMap;
+
+// A ref-counted object the service keeps while vfunc_2 says it is alive (CAtlList +0x68); +0x28 is its entity.
+class Unk_EsTracked : public NiRefObject
+{
+public:
+    virtual bool vfunc_2();                                     // still alive
+    egf::EntityID FUN_1411b1ee0();                              // the entity (+0x28)
+};
+typedef efd::SmartPointer<Unk_EsTracked> Unk_EsTrackedPtr;
+
+class CEffectService;
+template <class T> class TSingleton;
+template <> class TSingleton<CEffectService>
+{
+public:
+    TSingleton();                                   // 0x1411aeeb0 (inline, effectservice.cpp)
+    virtual ~TSingleton() { s_instance = 0; }       // 0x1411afd50
+    static CEffectService* GetInstance() { return s_instance; }     // 0x1403ed280 (COMDAT of another unit)
+    static CEffectService* s_instance;              // 0x143aaee08
+};
+
+// CEffectService (RTTI name; 0x1d0 bytes, class id 0x0610000c): owns the "World Effect Root" node(s), creates the
+// runtime effects of effect files for a target (pending until their resources are loaded), ticks and removes them,
+// plays the hit/voice sounds and keeps the area weather (rain) and the map's light list.
+bool FUN_1411a4800(const CString& strName, int nArg);           // preload an effect file
+
+class CEffectService : public efd::ISystemService, public IWorldServiceCallback, public TSingleton<CEffectService>
+{
+    EE_DECLARE_CLASS1(CEffectService, 0x0610000c, efd::ISystemService);
+    EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
+public:
+    CEffectService();                                           // 0x1411a4400
+    virtual ~CEffectService();                                  // 0x1411a4650, ??_G 0x1411b1370
+    virtual const char* GetDisplayName() const;                 // 0x1411a47e0
+    virtual efd::SyncResult OnPreInit(efd::IDependencyRegistrar* pRegistrar);   // 0x1411a9260
+    virtual efd::AsyncResult OnInit();                          // 0x1411a92f0
+    virtual efd::AsyncResult OnTick();                          // 0x1411a9e90
+    virtual efd::AsyncResult OnShutdown();                      // 0x1411aa690
+    // IWorldServiceCallback
+    virtual void vfunc_1(int nMap);                             // 0x1411a8070 map entered: area weather and sounds
+    virtual void vfunc_3(int nMap);                             // 0x1411a8210 map left: drop lights and effects
+
+    unsigned FUN_1411a49c0(Unk_EffectTarget& kTarget);          // insert, not detached (+0x34 = 0)
+    unsigned FUN_1411a4a00(Unk_EffectTarget& kTarget);          // insert an effect: its id, 0 on failure
+    void FUN_1411a6060(unsigned nId);                           // stop (vfunc_5) the effects of an id
+    void FUN_1411a66d0(unsigned nId);                           // drop the pending requests of an id
+    void FUN_1411a67c0();                                       // drop every pending request
+    void FUN_1411a67f0(unsigned nId, float f);                  // vfunc_6 on the effects of an id
+    void FUN_1411a68f0(unsigned nId, bool b);                   // vfunc_10 on the effects of an id
+    void FUN_1411a69e0(unsigned nId);                           // stop the id once every effect is done (vfunc_11)
+    NiNode* FUN_1411a6b10();                                    // the root with the fewest children
+    void FUN_1411a6ea0(Unk_EsTracked* p);                       // keep p
+    void FUN_1411a6f00(const egf::EntityID& id);                // drop the kept object of an entity
+    void FUN_1411a7000(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8253 added
+    void FUN_1411a7070(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8254 removed
+    void FUN_1411a7330(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8196 updated
+    void FUN_1411a7420(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);
+    void FUN_1411a74a0(egf::EntityID id, egf::Entity* pEntity);  // attach the light of a light entity
+    void FUN_1411a76d0();                                       // UpdateEffects on the roots
+    void FUN_1411a7760(unsigned nId, std::vector<CEffectPtr>& vOut);    // the effects of an id
+    bool FUN_1411a7830();                                       // enabled
+    void FUN_1411a7850(bool bEnabled);
+    void FUN_1411a7ce0(bool bRain);                             // create / drop the rain
+    void FUN_1411a7db0();
+    unsigned FUN_1411a85a0();                                   // the effect count
+    unsigned FUN_1411a85c0();
+    int FUN_1411a88c0();
+    static unsigned FUN_1411a9230();                            // next effect id (never 0)
+
+    MS2_LAYOUT_FRIEND;
+    NiNode** m_ppRoots;                                         // +0x30 the roots of the split mode (DAT_143ae2b30)
+    NiNodePtr m_spRoot;                                         // +0x38 "World Effect Root"
+    bool m_bEnabled;                                            // +0x40
+    Unk_EsGroupMap m_mapGroups;                                 // +0x48 id -> live effects
+    std::list<MS2Ptr<PendingEffect> > m_listPending;            // +0x58
+    ATL::CAtlList<Unk_EsTrackedPtr> m_listTracked;              // +0x68
+    std::map<egf::EntityID, NiLightPtr> m_mapLights;          // +0x98 the light entities on the roots
+    ATL::CAtlList<CEffect*> m_listLooping;                      // +0xa8 refreshed by OnTick
+    ATL::CAtlArray<NiAVObjectPtr> m_aPreloaded;                 // +0xd8
+    NiAVObjectPtr m_spF8;                                       // +0xf8
+    efd::SmartPointer<RainDropSystem> m_spRain;                 // +0x100
+    unsigned m_nAreaEffect;                                     // +0x108 the area effect id (not initialised)
+    CString m_strAreaEffect;                                    // +0x110 queued area effect
+    CString m_strAreaEffectCur;                                 // +0x118
+    CString m_strAreaEffectNext;                                // +0x120
+    int m_unk_128;                                              // +0x128 = 1
+    bool m_bAreaEffect;                                         // +0x12c
+    int m_unk_130;                                              // +0x130
+    unsigned m_nRoots;                                          // +0x134
+    unsigned m_nTick;                                           // +0x138
+    ATL::CAtlList<unsigned int> m_list140;                      // +0x140
+    int m_unk_170;                                              // +0x170
+    std::map<int, int> m_map178;                                // +0x178 (element type unknown: unused in the own code)
+    int m_unk_188;                                              // +0x188 = 3
+    ATL::CAtlArray<CString> m_a190;                             // +0x190
+    ATL::CAtlArray<CString> m_a1b0;                             // +0x1b0
+};
+MS2_CHECK_SIZE(CEffectService, 0x1d0);
+MS2_CHECK_OFFSET(CEffectService, m_ppRoots, 0x30);
+MS2_CHECK_OFFSET(CEffectService, m_mapGroups, 0x48);
+MS2_CHECK_OFFSET(CEffectService, m_mapLights, 0x98);
+MS2_CHECK_OFFSET(CEffectService, m_aPreloaded, 0xd8);
+MS2_CHECK_OFFSET(CEffectService, m_spRain, 0x100);
+MS2_CHECK_OFFSET(CEffectService, m_strAreaEffect, 0x110);
+MS2_CHECK_OFFSET(CEffectService, m_list140, 0x140);
+MS2_CHECK_OFFSET(CEffectService, m_map178, 0x178);
+MS2_CHECK_OFFSET(CEffectService, m_a1b0, 0x1b0);

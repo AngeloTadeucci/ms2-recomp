@@ -924,3 +924,449 @@ MS2_REPLACE_METHOD(0x1411a4000, EffectNode, FUN_1411a4000, 64, 0x244D07F7);
 // @0x1411a4040
 void EffectNode::FUN_1411a4040(const NiPoint3& kPos) { m_kLocal.m_Translate = m_kTranslate = kPos; }
 MS2_REPLACE_METHOD(0x1411a4040, EffectNode, FUN_1411a4040, 60, 0xFFB13170);
+
+// ======== second CU: CEffectService ========
+#include "ms2/commonfiles/timeutil.h"
+#include "pendingeffect.h"
+#include "raindroponcubeemitter.h"
+#include "afterimageitem.h"
+#include <efd/MessageService.h>
+#include <egf/EntityChangeMessage.h>
+#include <egf/EntityManager.h>
+#include <ecr/SceneGraphService.h>
+#include <ecr/RenderService.h>
+#include <ecr/LightService.h>
+
+extern int DAT_143ae2b30;                                       // 1: the scene is split over several effect roots
+efd::MessageService* FUN_1413f9830();
+
+// The application service (class id 0x06100001, physxhelper.cpp); only its dependency id is used here.
+struct Unk_EsAppService { static const efd::ClassID CLASS_ID = 0x06100001; };
+// egfPhysX::SceneService (kCLASSID_SceneService; its header pulls in PhysX).
+struct Unk_EsSceneService { static const efd::ClassID CLASS_ID = 0x07001008; };
+
+// @0x1400e7a30
+EE_IMPLEMENT_CONCRETE_CLASS_INFO(CEffectService);
+#ifndef MS2_HOOK_DLL
+// @0x1400e7a50
+EE_HANDLER_WRAP(CEffectService, FUN_1411a7330, egf::EntityChangeMessage, 8196);
+// @0x1400e7ab0
+EE_HANDLER_WRAP(CEffectService, FUN_1411a7000, egf::EntityChangeMessage, 8253);
+// @0x1400e7b10
+EE_HANDLER_WRAP(CEffectService, FUN_1411a7070, egf::EntityChangeMessage, 8254);
+#endif
+// @0x1400e7c90
+static const efd::Category s_catEffectChannel(efd::UniversalID::ECU_Any, 0xfff, 0x07f00004);
+
+int Unk_EsEffectGroup::m_sTotalEffectCount = 0;
+
+// @0x1411a42b0
+void Unk_EsEffectGroup::FUN_1411a42b0()
+{
+    EffectSkipMgr* pSkip = TSingleton<EffectSkipMgr>::GetInstance();
+    for (std::list<CEffectPtr>::iterator it = m_listEffects.begin(); it != m_listEffects.end(); ++it) {
+        pSkip->RemoveCount((*it)->GetName());
+        (*it)->vfunc_7();
+    }
+    m_sTotalEffectCount -= m_listEffects.size();
+    MS2_ASSERT_AT(0x5b, m_sTotalEffectCount >= 0);
+    m_listEffects.clear();
+}
+MS2_REPLACE_METHOD(0x1411a42b0, Unk_EsEffectGroup, FUN_1411a42b0, 325, 0x1C4B21DE);
+
+inline TSingleton<CEffectService>::TSingleton() { s_instance = static_cast<CEffectService*>(this); }
+
+// @0x1411a4400
+CEffectService::CEffectService()
+    : m_spRoot(0), m_bEnabled(true), m_listTracked(10), m_listLooping(10), m_spF8(0), m_spRain(0), m_unk_128(1),
+      m_bAreaEffect(false), m_unk_130(0), m_list140(10), m_unk_170(0), m_unk_188(3)
+{
+    m_nTick = GetTickCountMs2();
+}
+
+// @0x1411a4650
+CEffectService::~CEffectService()
+{
+}
+
+// @0x1411a47e0
+const char* CEffectService::GetDisplayName() const
+{
+    return "EffectService";
+}
+MS2_REPLACE_METHOD(0x1411a47e0, CEffectService, GetDisplayName, 13, 0x9D4B06A7);
+
+// @0x1411a4800
+bool FUN_1411a4800(const CString& strName, int nArg)
+{
+    if (strName.IsEmpty())
+        return true;
+    CEffectDataPtr spData = TSingleton<EffectDataManager>::GetInstance()->FUN_14119f870(strName);
+    if (spData == 0)
+        return false;
+    bool bError = false;
+    for (POSITION pos = spData->FUN_14119f540().GetHeadPosition(); pos != 0; spData->FUN_14119f540().GetNext(pos)) {
+        if (!spData->FUN_14119f540().GetAt(pos)->vfunc_5(nArg))
+            bError = true;
+    }
+    if (bError)
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"CEffectService::PreLoad Found Error effectID:{0}", strName);
+    return true;
+}
+MS2_REPLACE(0x1411a4800, FUN_1411a4800, 405, 0x3BC9D76A);
+
+// @0x1411a49c0
+unsigned CEffectService::FUN_1411a49c0(Unk_EffectTarget& kTarget)
+{
+    kTarget.m_b34 = false;
+    return FUN_1411a4a00(kTarget);
+}
+MS2_REPLACE_METHOD(0x1411a49c0, CEffectService, FUN_1411a49c0, 43, 0xA316FB5D);
+
+// @0x1411a6060
+void CEffectService::FUN_1411a6060(unsigned nId)
+{
+    if (nId == 0)
+        return;
+    FUN_1411a66d0(nId);
+    Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
+    if (it == m_mapGroups.end())
+        return;
+    Unk_EsEffectGroup* pGroup = it->second;
+    for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect) {
+        CEffectPtr& spEffect = *itEffect;
+        spEffect->vfunc_5();
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6060, CEffectService, FUN_1411a6060, 247, 0x8944F06E);
+
+// @0x1411a66d0
+void CEffectService::FUN_1411a66d0(unsigned nId)
+{
+    std::list<MS2Ptr<PendingEffect> >::iterator it = m_listPending.begin();
+    while (it != m_listPending.end()) {
+        MS2Ptr<PendingEffect> spPending = *it;
+        if (spPending->GetId() == nId)
+            it = m_listPending.erase(it);
+        else
+            it++;
+    }
+}
+MS2_REPLACE_METHOD(0x1411a66d0, CEffectService, FUN_1411a66d0, 224, 0xC6448A04);
+
+// @0x1411a67c0
+void CEffectService::FUN_1411a67c0() { m_listPending.clear(); }
+MS2_REPLACE_METHOD(0x1411a67c0, CEffectService, FUN_1411a67c0, 31, 0x55C7EEBD);
+
+// @0x1411a67f0
+void CEffectService::FUN_1411a67f0(unsigned nId, float f)
+{
+    FUN_1411a66d0(nId);
+    Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
+    if (it == m_mapGroups.end())
+        return;
+    Unk_EsEffectGroup* pGroup = it->second;
+    for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect) {
+        CEffectPtr& spEffect = *itEffect;
+        spEffect->vfunc_6(f);
+    }
+}
+MS2_REPLACE_METHOD(0x1411a67f0, CEffectService, FUN_1411a67f0, 250, 0xE419866B);
+
+// @0x1411a68f0
+void CEffectService::FUN_1411a68f0(unsigned nId, bool b)
+{
+    Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
+    if (it == m_mapGroups.end())
+        return;
+    Unk_EsEffectGroup* pGroup = it->second;
+    for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect) {
+        CEffectPtr& spEffect = *itEffect;
+        spEffect->vfunc_10(b);
+    }
+}
+MS2_REPLACE_METHOD(0x1411a68f0, CEffectService, FUN_1411a68f0, 234, 0x3612B374);
+
+// @0x1411a69e0
+void CEffectService::FUN_1411a69e0(unsigned nId)
+{
+    if (nId != 0) {
+        FUN_1411a66d0(nId);
+        int bDone = 1;
+        Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
+        if (it == m_mapGroups.end())
+            return;
+        Unk_EsEffectGroup* pGroup = it->second;
+        for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect) {
+            CEffectPtr& spEffect = *itEffect;
+            bDone = spEffect->vfunc_11();
+            if (bDone == 0)
+                break;
+        }
+        if (bDone == 0)
+            FUN_1411a6060(nId);
+    }
+}
+MS2_REPLACE_METHOD(0x1411a69e0, CEffectService, FUN_1411a69e0, 288, 0x15C3A538);
+
+// @0x1411a6b10
+NiNode* CEffectService::FUN_1411a6b10()
+{
+    if (DAT_143ae2b30 != 0) {
+        unsigned nBest = 0;
+        unsigned nMin = m_ppRoots[0]->GetChildCount();
+        for (unsigned i = 0; i < m_nRoots; i++) {
+            unsigned nCount = m_ppRoots[i]->GetChildCount();
+            if (nMin > nCount) {
+                nBest = i;
+                nMin = nCount;
+            }
+        }
+        return m_ppRoots[nBest];
+    }
+    return m_spRoot;
+}
+MS2_REPLACE_METHOD(0x1411a6b10, CEffectService, FUN_1411a6b10, 193, 0x5DC1F652);
+
+// @0x1411a6ea0
+void CEffectService::FUN_1411a6ea0(Unk_EsTracked* p)
+{
+    if (p != 0) {
+        Unk_EsTrackedPtr spTracked(p);
+        m_listTracked.AddTail(spTracked);
+    }
+}
+MS2_REPLACE_METHOD(0x1411a6ea0, CEffectService, FUN_1411a6ea0, 85, 0xBF19BC72);
+
+// @0x1411a7000
+void CEffectService::FUN_1411a7000(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel)
+{
+    FUN_1411a7420(pMsg, targetChannel);
+}
+MS2_REPLACE_METHOD(0x1411a7000, CEffectService, FUN_1411a7000, 94, 0x625BA2B9);
+
+// @0x1411a7070
+void CEffectService::FUN_1411a7070(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel)
+{
+    if (!m_mapLights.empty())
+    {
+        egf::Entity* pEntity = pMsg->GetEntity();
+        const egf::EntityID& id = pEntity->GetEntityID();
+        const egf::FlatModel* pModel = pEntity->GetModel();
+        if (!pModel->ContainsModel(0x2c4767f5))
+            return;
+        std::map<egf::EntityID, NiLightPtr>::iterator it = m_mapLights.find(id);
+        if (it != m_mapLights.end())
+        {
+            if (DAT_143ae2b30 != 0)
+            {
+                NiLightPtr spLight = it->second;
+                if (spLight)
+                {
+                    for (unsigned i = 0; i < m_nRoots; i++)
+                    {
+                        if (m_ppRoots[i]->DetachEffect(spLight))
+                            m_ppRoots[i]->UpdateEffects();
+                    }
+                }
+            }
+            else
+            {
+                NiLightPtr spLight = it->second;
+                if (spLight && m_spRoot)
+                {
+                    if (m_spRoot->DetachEffect(spLight))
+                        m_spRoot->UpdateEffects();
+                }
+            }
+            m_mapLights.erase(it);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a7070, CEffectService, FUN_1411a7070, 690, 0x516E4B1D);
+
+// @0x1411a7330
+void CEffectService::FUN_1411a7330(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel)
+{
+    egf::Entity* pEntity = pMsg->GetEntity();
+    const egf::FlatModel* pModel = pEntity->GetModel();
+    if (!pModel->ContainsModel(0x2c4767f5))
+        return;
+    if (DAT_143ae2b30 != 0)
+    {
+        for (unsigned i = 0; i < m_nRoots; i++)
+            m_ppRoots[i]->UpdateEffects();
+    }
+    else
+    {
+        if (m_spRoot)
+            m_spRoot->UpdateEffects();
+    }
+}
+MS2_REPLACE_METHOD(0x1411a7330, CEffectService, FUN_1411a7330, 230, 0xA7DD3079);
+
+// @0x1411a7420
+void CEffectService::FUN_1411a7420(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel)
+{
+    FUN_1411a74a0(pMsg->GetEntity()->GetEntityID(), pMsg->GetEntity());
+}
+MS2_REPLACE_METHOD(0x1411a7420, CEffectService, FUN_1411a7420, 121, 0x829EF2EC);
+
+// @0x1411a74a0
+void CEffectService::FUN_1411a74a0(egf::EntityID id, egf::Entity* pEntity)
+{
+    if (pEntity != NULL)
+    {
+        const egf::FlatModel* pModel = pEntity->GetModel();
+        if (!pModel->ContainsModel(0x2c4767f5))
+            return;
+        ecr::LightService* pLightService = GetServiceManager()->GetSystemServiceAs<ecr::LightService>();
+        if (pLightService != NULL)
+        {
+            NiLight* pLight = pLightService->GetLightFromEntity(id);
+            if (DAT_143ae2b30 != 0)
+            {
+                if (pLight != NULL)
+                {
+                    for (unsigned i = 0; i < m_nRoots; i++)
+                    {
+                        if (m_ppRoots[i]->AttachEffect(pLight))
+                            m_ppRoots[i]->UpdateEffects();
+                    }
+                    m_mapLights.insert(std::make_pair(id, pLight));
+                }
+            }
+            else
+            {
+                if (pLight != NULL && m_spRoot)
+                {
+                    if (m_spRoot->AttachEffect(pLight))
+                        m_spRoot->UpdateEffects();
+                    m_mapLights.insert(std::make_pair(id, pLight));
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1411a74a0, CEffectService, FUN_1411a74a0, 539, 0xEE8C2006);
+
+// @0x1411a76d0
+void CEffectService::FUN_1411a76d0()
+{
+    if (DAT_143ae2b30 != 0) {
+        for (unsigned i = 0; i < m_nRoots; i++)
+            m_ppRoots[i]->UpdateEffects();
+    } else {
+        if (m_spRoot)
+            m_spRoot->UpdateEffects();
+    }
+}
+MS2_REPLACE_METHOD(0x1411a76d0, CEffectService, FUN_1411a76d0, 133, 0xF7D68405);
+
+// @0x1411a7760
+void CEffectService::FUN_1411a7760(unsigned nId, std::vector<CEffectPtr>& vOut)
+{
+    Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
+    if (it == m_mapGroups.end())
+        return;
+    Unk_EsEffectGroup* pGroup = it->second;
+    for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect)
+        vOut.push_back(*itEffect);
+}
+MS2_REPLACE_METHOD(0x1411a7760, CEffectService, FUN_1411a7760, 200, 0x1C64A78D);
+
+// @0x1411a7830
+bool CEffectService::FUN_1411a7830() { return m_bEnabled; }
+MS2_REPLACE_METHOD(0x1411a7830, CEffectService, FUN_1411a7830, 15, 0x43A40A0D);
+
+// @0x1411a7850
+void CEffectService::FUN_1411a7850(bool bEnabled) { m_bEnabled = bEnabled; }
+MS2_REPLACE_METHOD(0x1411a7850, CEffectService, FUN_1411a7850, 23, 0x2A7F450D);
+
+// @0x1411a7ce0
+void CEffectService::FUN_1411a7ce0(bool bRain)
+{
+    m_spRain = 0;
+    if (bRain) {
+        m_spRain = new (efd::MemHint(efd::MemHint::NONE)) RainDropSystem();
+        m_spRain->Create();
+    }
+}
+MS2_REPLACE_METHOD(0x1411a7ce0, CEffectService, FUN_1411a7ce0, 195, 0xBA8FACC7);
+
+// @0x1411a7db0
+void CEffectService::FUN_1411a7db0()
+{
+    if (m_spRain)
+        m_spRain->Destroy();
+}
+MS2_REPLACE_METHOD(0x1411a7db0, CEffectService, FUN_1411a7db0, 65, 0x253E07BD);
+
+// @0x1411a85a0
+unsigned CEffectService::FUN_1411a85a0() { return Unk_EsEffectGroup::FUN_1411b1f50(); }
+MS2_REPLACE_METHOD(0x1411a85a0, CEffectService, FUN_1411a85a0, 19, 0xAD1E06D6);
+
+// @0x1411a85c0
+unsigned CEffectService::FUN_1411a85c0()
+{
+    if (m_mapGroups.empty())
+        return 0;
+    return (unsigned)m_listLooping.GetCount();
+}
+MS2_REPLACE_METHOD(0x1411a85c0, CEffectService, FUN_1411a85c0, 61, 0xAC303898);
+
+// @0x1411a88c0
+int CEffectService::FUN_1411a88c0() { return m_unk_188; }
+MS2_REPLACE_METHOD(0x1411a88c0, CEffectService, FUN_1411a88c0, 17, 0x116875E2);
+
+// @0x1411a9230
+unsigned CEffectService::FUN_1411a9230()
+{
+    static unsigned s_nId;
+    if (++s_nId == 0)
+        s_nId = 1;
+    return s_nId;
+}
+
+// @0x1411a9260
+efd::SyncResult CEffectService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
+{
+    pRegistrar->AddDependency<egf::EntityManager>(3);
+    pRegistrar->AddDependency<ecr::RenderService>(1);
+    pRegistrar->AddDependency<ecr::SceneGraphService>(1);
+    pRegistrar->AddDependency<ecr::LightService>(1);
+    pRegistrar->AddDependency<Unk_EsAppService>(1);
+    pRegistrar->AddDependency<efd::MessageService>(1);
+    pRegistrar->AddDependency<Unk_EsSceneService>(1);
+    return efd::SyncResult_Success;
+}
+MS2_REPLACE_METHOD(0x1411a9260, CEffectService, OnPreInit, 129, 0xC8E52EC1);
+
+// @0x1411aa690
+efd::AsyncResult CEffectService::OnShutdown()
+{
+    m_ppRoots = 0;
+    m_aPreloaded.RemoveAll();
+    m_spF8 = 0;
+    m_spRain = 0;
+    for (Unk_EsGroupMap::iterator it = m_mapGroups.begin(); it != m_mapGroups.end(); ++it) {
+        it->second->FUN_1411a42b0();
+        delete it->second;
+    }
+    m_mapGroups.clear();
+    m_listTracked.RemoveAll();
+    FUN_1413f9830()->Unsubscribe(this, s_catEffectChannel, 0);
+    if (TSingleton<CAfterImageEffectManager>::GetInstance())
+        TSingleton<CAfterImageEffectManager>::DestroyInstance();
+    return efd::AsyncResult_Complete;
+}
+MS2_REPLACE_METHOD(0x1411aa690, CEffectService, OnShutdown, 354, 0xA9225F85);
+
+// @0x1411b0140
+Unk_EsEffectGroup::~Unk_EsEffectGroup()
+{
+    FUN_1411a42b0();
+}
+
+// @0x1411b1f50
+int Unk_EsEffectGroup::FUN_1411b1f50() { return m_sTotalEffectCount; }
