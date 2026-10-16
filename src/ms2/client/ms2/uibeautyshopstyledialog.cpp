@@ -82,15 +82,7 @@ static CString s_strItemSortNames[] = {"None", "Buy", "PriceLow", "PriceHigh", "
 // ---- local stand-ins for classes whose units are not recovered yet ----
 
 // The notifications the page listens to (NotifyObject subclasses, dispatched by name).
-class NotifyGameEventChanged : public NotifyObject
-{
-public:
-    NotifyGameEventChanged();
-    virtual ~NotifyGameEventChanged();
-    unsigned __int64 m_18;
-    CStringW m_eventName;                       // +0x20
-    int m_type;                                 // +0x28
-};
+#include "ms2/placeholder/notifygameeventchanged.h"
 class NotifyChangeActiveMyCodiTab : public NotifyObject
 {
 public:

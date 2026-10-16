@@ -309,16 +309,7 @@ public:
     char m_pad_48[0x68 - 0x48];
 };
 
-class NotifyGameEventChanged : public NotifyObject
-{
-public:
-    NotifyGameEventChanged();
-    virtual ~NotifyGameEventChanged();
-    virtual CStringW vfunc_1();
-    unsigned long long m_pad18;
-    CStringW m_eventName;                                   // +0x20
-    int m_type;                                             // +0x28
-};
+#include "ms2/placeholder/notifygameeventchanged.h"
 
 // The message box record (MS2Ptr<CMsgBoxData> members are bound to the exe copies in symbols.tsv).
 class CMsgBoxData : public CPtred

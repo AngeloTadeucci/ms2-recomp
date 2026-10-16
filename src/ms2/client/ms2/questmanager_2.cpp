@@ -17,6 +17,13 @@
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "worldservice.h"
+#include "statemanager.h"
+#include "achievemanager.h"
+#include "ms2/placeholder/clientconstants.h"
+#include "ms2/placeholder/notifygameeventchanged.h"
+#include "ms2/placeholder/notifychange.h"
+#include "ms2/placeholder/questkinds.h"
 
 // These instances belong to earlier objects, not the look-alike destructors
 // for other quest pointer types in this object's COMDAT tail.
@@ -32,7 +39,7 @@ static CString s_completeSound = "quest_complete";
 static CString s_progressSound = "quest_progress";
 
 // External services use declarations until their classes are recovered.
-void* FUN_1406c7600();
+CAchieveManager* FUN_1406c7600();
 void FUN_140936640(void*, int, int);
 void* FUN_140967100();
 void FUN_141b217e0(void*, int);
@@ -42,7 +49,7 @@ int FUN_14037c610(void*);
 int FUN_140408410(const ATL::CAtlArray<unsigned>*, const int&);
 void* FUN_1408e57f0();
 int FUN_1422b9e00(void*);
-void* FUN_1403ed2d0();
+WorldService* FUN_1403ed2d0();
 void* FUN_141bd0cc0(void*);
 int FUN_141654700(PCBase*);
 int FUN_141654730(PCBase*);
@@ -54,6 +61,26 @@ int FUN_14035a870(void*, int, int);
 unsigned FUN_141662750(PCBase*, int);
 void* FUN_1409670c0();
 int FUN_14066af60(void*, int, unsigned);
+CQuestManager* FUN_140764020();
+void* FUN_140764010();
+unsigned FUN_14035b590(void*, int);
+CStateService* FUN_140aa6d30();
+unsigned FUN_141472bc0();
+unsigned FUN_140869420();
+int FUN_14074bc90(int questId);
+int FUN_1409312f0();
+void* FUN_1409331e0();
+void FUN_14138d7e0(void*, int, int);
+CStringW FUN_1416e4df0(int);
+CStringW FUN_1405c2690(CStringW, const CStringW&);
+CStringW FUN_14028b8e0(CStringW);
+void FUN_1412751f0(const CStringW&, int, int);
+void FUN_1410943b0(Unk_WsC_GameObj*, int);
+class Unk_QgQuestTable {
+public:
+    void FUN_14074d080(int mapId, ATL::CAtlArray<unsigned>& out);
+};
+Unk_QgQuestTable* FUN_1407476c0();
 class Unk_QuestDungeonRecord {
 public:
     int FUN_140b22890(int);
@@ -301,6 +328,64 @@ void CQuestManager::vfunc_33(int type, int)
 }
 MS2_REPLACE_METHOD_VIA(0x1416ca400, CQuestManager, UIItemEventListener, vfunc_33, 50, 0x790979EE);
 
+// @0x1416ca440
+void CQuestManager::FUN_1416ca440()
+{
+    if (m_counter198.FUN_140268870(1000)) {
+        FUN_1416d3010();
+        FUN_1416d3430();
+        POSITION pos = m_quests20.GetHeadPosition();
+        while (pos != 0) {
+            Unk_PayloadPtr<CQuest> quest = m_quests20.GetValueAt(pos);
+            quest->FUN_140d73960();
+            m_quests20.GetNext(pos);
+        }
+    }
+    if (m_levelDirty != 0) {
+        if (FUN_1422b9e00(FUN_1408e57f0()) == 0x620001d) {
+            m_levelDirty = 0;
+            FUN_1416d3510();
+        }
+    }
+    if (m_itemsDirty != 0) {
+        m_itemsDirty = 0;
+        FUN_1416cef90(0);
+    }
+    if (m_availableDirty != 0) {
+        m_availableDirty = 0;
+        FUN_1416d3250();
+    }
+    if (m_field178 != 0) {
+        Unk_WsC_GameObj* target = FUN_1403ed2d0()->FUN_141bd1320(m_targetObject);
+        if (target == 0) return;
+        FUN_1410943b0(target, 10);
+        m_field178 = 0;
+    }
+    if (m_requestTick != 0) {
+        unsigned now = FUN_140869420();
+        if (m_requestTick + *FUN_1401d3200()->QuestPortalSummonTime.Get() < now) {
+            m_requestTick = 0;
+            m_targetObject = 0;
+            m_field190 = 0;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416ca440, CQuestManager, FUN_1416ca440, 544, 0x39656FEB);
+
+// @0x1416ca670
+void CQuestManager::FUN_1416ca670()
+{
+    m_field180 = 0;
+    POSITION pos = m_quests20.GetHeadPosition();
+    while (pos != 0) {
+        Unk_PayloadPtr<CQuest> quest = m_quests20.GetValueAt(pos);
+        quest->FUN_140d73950();
+        m_quests20.GetNext(pos);
+    }
+    FUN_1416d3220();
+}
+MS2_REPLACE_METHOD(0x1416ca670, CQuestManager, FUN_1416ca670, 182, 0x5F112B69);
+
 // @0x1416ca730
 void CQuestManager::FUN_1416ca730(NotifyObject*)
 {
@@ -330,12 +415,86 @@ void CQuestManager::FUN_1416ca7a0(NotifyObject*)
 }
 MS2_REPLACE_METHOD(0x1416ca7a0, CQuestManager, FUN_1416ca7a0, 26, 0x3D36B1A4);
 
+// @0x1416ca7c0
+void CQuestManager::FUN_1416ca7c0(NotifyObject* pNotify)
+{
+    NotifyGameEventChanged* ev = dynamic_cast<NotifyGameEventChanged*>(pNotify);
+    if (ev != 0 && ev->m_type != 1) {
+        m_availableDirty = 1;
+    }
+}
+MS2_REPLACE_METHOD(0x1416ca7c0, CQuestManager, FUN_1416ca7c0, 96, 0xF957FBFF);
+
 // @0x1416ca830
 void CQuestManager::FUN_1416ca830(CInPacket&)
 {
     m_refreshCount = 0;
 }
 MS2_REPLACE_METHOD(0x1416ca830, CQuestManager, FUN_1416ca830, 26, 0x5A297EAB);
+
+// @0x1416ca850
+void CQuestManager::FUN_1416ca850(NotifyObject* pNotify)
+{
+    NotifyChangeJob* job = dynamic_cast<NotifyChangeJob*>(pNotify);
+    if (job != 0) {
+        FUN_1416d1d00(job->m_pc);
+    } else {
+        NotifyChangeEquipment* equip = dynamic_cast<NotifyChangeEquipment*>(pNotify);
+        if (equip != 0) {
+            FUN_1416d1d00(equip->m_pc);
+        } else {
+            NotifyChangeLevel* level = dynamic_cast<NotifyChangeLevel*>(pNotify);
+            if (level != 0) {
+                FUN_1416d1d00(level->m_pc);
+            } else {
+                NotifyChangeTitle* title = dynamic_cast<NotifyChangeTitle*>(pNotify);
+                if (title != 0) {
+                    FUN_1416d1d00(title->m_pc);
+                } else {
+                    NotifyChangePcRidee* ridee = dynamic_cast<NotifyChangePcRidee*>(pNotify);
+                    if (ridee != 0) {
+                        FUN_1416d1d00(ridee->m_pc);
+                    }
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416ca850, CQuestManager, FUN_1416ca850, 366, 0x15773725);
+
+// @0x1416ca9d0
+CQuest* CQuestManager::FUN_1416ca9d0(int questId)
+{
+    CQuest* quest;
+    int type = FUN_14074bc90(questId);
+    if (type == 0) {
+        quest = new CEpicQuest();
+    } else if (type == 1) {
+        quest = new CWorldQuest();
+    } else if (type == 2) {
+        quest = new CEventQuest();
+    } else if (type == 6) {
+        quest = new CGuildQuest();
+    } else if (type == 8) {
+        quest = new CFieldQuest();
+    } else if (type == 9) {
+        quest = new CAllianceQuest();
+    } else if (type == 3) {
+        quest = new CDailyMission();
+    } else if (type == 4) {
+        quest = new CFieldMission();
+    } else if (type == 5) {
+        quest = new CEventMission();
+    } else if (type == 7) {
+        quest = new CMentoringMission();
+    } else if (type == 10) {
+        quest = new CWeddingMission();
+    } else {
+        quest = 0;
+    }
+    return quest;
+}
+MS2_REPLACE_METHOD(0x1416ca9d0, CQuestManager, FUN_1416ca9d0, 1049, 0x486EE340);
 
 // @0x1416cae20
 int CQuestManager::FUN_1416cae20(int id)
@@ -363,6 +522,28 @@ void CQuestManager::FUN_1416caec0(Unk_PayloadPtr<CQuest> quest)
     FUN_1416d3d50(quest);
 }
 MS2_REPLACE_METHOD(0x1416caec0, CQuestManager, FUN_1416caec0, 511, 0x74E17A65);
+
+// @0x1416cb0d0
+void CQuestManager::FUN_1416cb0d0(int questId, int force)
+{
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (!quest.IsNull()) {
+        FUN_14138d7e0(FUN_1409331e0(), 7, 0);
+        FUN_14138d7e0(FUN_1409331e0(), 8, 0);
+        if (FUN_140745590(questId) == 0 || force != 0) {
+            m_quests20.RemoveKey(questId);
+            m_quests140.RemoveKey(questId);
+            m_quests50.RemoveKey(questId);
+            m_questsb0.RemoveKey(questId);
+            m_questse0.RemoveKey(questId);
+            m_quests80.RemoveKey(questId);
+            m_quests110.RemoveKey(questId);
+        } else {
+            quest->SetState(2);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416cb0d0, CQuestManager, FUN_1416cb0d0, 390, 0x79B0B7B3);
 
 // MS2-FUNCTIONAL: equivalent short-circuit filters; temporary lifetime differs.
 // @0x1416cb260
@@ -445,6 +626,17 @@ int CQuestManager::FUN_1416d0210()
 }
 MS2_REPLACE_METHOD(0x1416d0210, CQuestManager, FUN_1416d0210, 62, 0xD8B73C66);
 
+// @0x1416d0610
+int CQuestManager::FUN_1416d0610()
+{
+    if (m_requestTick == 0) return 0;
+    unsigned now = FUN_141472bc0();
+    if (m_requestTick + *FUN_1401d3200()->QuestPortalSummonTime.Get() < now) return 0;
+    if (now < m_requestTick) return 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416d0610, CQuestManager, FUN_1416d0610, 111, 0x70EBE08B);
+
 // @0x1416d0740
 void CQuestManager::FUN_1416d0740()
 {
@@ -476,6 +668,50 @@ int CQuestManager::FUN_1416d07c0(int id)
     return count;
 }
 MS2_REPLACE_METHOD(0x1416d07c0, CQuestManager, FUN_1416d07c0, 50, 0x10DEA3FA);
+
+// @0x1416d09d0
+int CQuestManager::FUN_1416d09d0(int mapId, int warn)
+{
+    unsigned questId = FUN_14035b590(FUN_140764010(), 1);
+    if (FUN_140764020()->FUN_140745590(questId) == 0) {
+        if (warn != 0) {
+            FUN_1412751f0(FUN_1405c2690(CStringW(L"s_sky_fortress_warn_quest"), FUN_1416e4df0(questId)), 1, 1);
+        }
+        return 0;
+    }
+    if (FUN_1403ed2d0()->FUN_141bd3060() == mapId) {
+        if (warn != 0) {
+            FUN_1412751f0(FUN_14028b8e0(CStringW(L"s_sky_fortress_warn_field")), 1, 1);
+        }
+        return 0;
+    }
+    if (FUN_1403ed2d0()->FUN_141bd3060() != 62000000 && FUN_1409312f0() == 0) {
+        if (warn != 0) {
+            FUN_1412751f0(FUN_14028b8e0(CStringW(L"s_sky_fortress_warn_field")), 1, 1);
+        }
+        return 0;
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416d09d0, CQuestManager, FUN_1416d09d0, 570, 0xAE4283FA);
+
+// @0x1416d0c10
+void CQuestManager::FUN_1416d0c10()
+{
+    if (FUN_1416d09d0(*FUN_1401d3200()->FameContentsSkyFortressGotoMapID.Get(), 1) != 0) {
+        COutPacket packet(0x29, 0);
+        packet.vfunc_o10_1(0xe);
+        FUN_140710590(packet);
+    }
+}
+MS2_REPLACE_METHOD(0x1416d0c10, CQuestManager, FUN_1416d0c10, 118, 0xAC4E24C6);
+
+// @0x1416d0e20
+int CQuestManager::FUN_1416d0e20()
+{
+    return *FUN_1401d3200()->FameContentsMissionAttackCount.Get() - m_refreshCount;
+}
+MS2_REPLACE_METHOD(0x1416d0e20, CQuestManager, FUN_1416d0e20, 48, 0x5BDD4442);
 
 // @0x1416d0e60
 int CQuestManager::FUN_1416d0e60(int id)
@@ -509,6 +745,56 @@ void CQuestManager::FUN_1416d1060(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>& out)
 }
 MS2_REPLACE_METHOD(0x1416d1060, CQuestManager, FUN_1416d1060, 152, 0xCE32F7F4);
 
+// @0x1416d1d00
+void CQuestManager::FUN_1416d1d00(PCBase* pc)
+{
+    if (pc != 0) {
+        for (std::map<int, std::set<__int64> >::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+            int questId = it->first;
+            Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+            if (!quest.IsNull()) {
+                if (quest->CheckUserFind(pc) != 0) {
+                    m_targets250[questId].insert(pc->FUN_141656a80());
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d1d00, CQuestManager, FUN_1416d1d00, 389, 0x1360BBF1);
+
+// @0x1416d3010
+void CQuestManager::FUN_1416d3010()
+{
+    if (FUN_140aa6d30()->FUN_1417e2610() == 0x620000c) {
+        ATL::CAtlArray<unsigned> changed;
+        POSITION pos = m_quests140.GetHeadPosition();
+        while (pos != 0) {
+            Unk_PayloadPtr<CQuest> quest = m_quests140.GetValueAt(pos);
+            if (quest->FUN_1407476d0() == 1) {
+                CQuestCommon* common = quest.operator->();
+                int tracked = common->FUN_1407447c0();
+                if (tracked != 0) {
+                    if (quest->GetTrackedValue() != tracked) {
+                        quest->SetTrackedValue(tracked);
+                        changed.Add(quest->FUN_140bfc580());
+                    }
+                }
+            }
+            m_quests140.GetNext(pos);
+        }
+        if (changed.GetCount() != 0) {
+            COutPacket packet(0x29, 0);
+            packet.vfunc_o10_1(7);
+            packet.vfunc_o10_3(static_cast<int>(changed.GetCount()));
+            for (size_t i = 0; i < changed.GetCount(); i = i + 1) {
+                packet.vfunc_o10_3(changed[i]);
+            }
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d3010, CQuestManager, FUN_1416d3010, 521, 0x13087605);
+
 // @0x1416d3220
 void CQuestManager::FUN_1416d3220()
 {
@@ -516,6 +802,32 @@ void CQuestManager::FUN_1416d3220()
     FUN_1416d3510();
 }
 MS2_REPLACE_METHOD(0x1416d3220, CQuestManager, FUN_1416d3220, 40, 0xAE052B5E);
+
+// @0x1416d3250
+void CQuestManager::FUN_1416d3250()
+{
+    if (FUN_140aa6d30()->FUN_1417e2610() == 0x620000c) {
+        ATL::CAtlArray<unsigned> candidates;
+        FUN_1407476c0()->FUN_14074d080(FUN_1403ed2d0()->FUN_141bd3060(), candidates);
+        ATL::CAtlArray<unsigned> available;
+        for (size_t i = 0; i < candidates.GetCount(); i = i + 1) {
+            unsigned questId = candidates[i];
+            if (vfunc_o10_1(questId) != 0 && FUN_140746e60(questId) != 0) {
+                available.Add(questId);
+            }
+        }
+        if (available.GetCount() != 0) {
+            COutPacket packet(0x29, 0);
+            packet.vfunc_o10_1(8);
+            packet.vfunc_o10_3(static_cast<int>(available.GetCount()));
+            for (size_t i = 0; i < available.GetCount(); i = i + 1) {
+                packet.vfunc_o10_3(available[i]);
+            }
+            FUN_140710590(packet);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416d3250, CQuestManager, FUN_1416d3250, 469, 0x108875E9);
 
 // @0x1416d3430
 int CQuestManager::FUN_1416d3430()

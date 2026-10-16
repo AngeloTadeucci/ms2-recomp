@@ -9,8 +9,9 @@
 #include "ms2/placeholder/cquestmanagercommon.h"
 class CInPacket;
 class NotifyObject;
+class PCBase;
 // Original counter constructor 0x140517b00; zeroes both 32-bit fields.
-struct Unk_QuestCounter { Unk_QuestCounter(); int first, second; };
+struct Unk_QuestCounter { Unk_QuestCounter(); int FUN_140268870(int interval); int first, second; };
 MS2_CHECK_SIZE(Unk_QuestCounter, 8);
 // The +260 tree is constructed/destroyed here but no recovered method accesses
 // its elements yet. Keep its representation explicit until its key/value types
@@ -65,6 +66,18 @@ public:
     void FUN_1416ca7a0(NotifyObject*);
     void FUN_1416ca7c0(NotifyObject*);
     void FUN_1416ca830(CInPacket&);
+    void FUN_1416ca440();
+    void FUN_1416ca670();
+    CQuest* FUN_1416ca9d0(int questId);
+    void FUN_1416cb0d0(int questId, int force);
+    int FUN_1416d0610();
+    int FUN_1416d0e20();
+    void FUN_1416d0c10();
+    int FUN_1416d09d0(int mapId, int warn);
+    void FUN_1416d1d00(PCBase* pc);
+    void FUN_1416d3010();
+    void FUN_1416d3250();
+    void FUN_1416cef90(int);
     void FUN_1416ca850(NotifyObject*);
     int FUN_1416cae20(int);
     void FUN_1416caec0(Unk_PayloadPtr<CQuest>);

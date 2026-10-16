@@ -215,15 +215,7 @@ class Unk_LobbyChar;
 void* FUN_14123c410(void*);
 void FUN_1413fb630(void*, std::vector<unsigned long long>&);
 void* FUN_140a53610(void*);
-class NotifyGameEventChanged : public NotifyObject
-{
-public:
-    NotifyGameEventChanged();
-    virtual ~NotifyGameEventChanged();
-    virtual CStringW vfunc_1();
-    unsigned long long m_pad18;
-    CStringW m_eventName;                                   // +0x20
-};
+#include "ms2/placeholder/notifygameeventchanged.h"
 struct Unk_Settings { char m_pad[0xe258]; unsigned m_nLobbyMap; };
 Unk_Settings* FUN_1401d3200();
 void* FUN_1401c0d90();

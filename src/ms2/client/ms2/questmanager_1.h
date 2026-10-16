@@ -86,6 +86,7 @@ public:
     int HasMultiUserRoom(int field);
     int FUN_1407476d0() const;
     int FUN_140bfc580();
+    void SetState(int state) { m_state = state; }   // COMDAT 0x1416dee60
 
     int m_state;
     MS2Ptr<CQuestData> m_data;
