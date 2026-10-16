@@ -16,6 +16,9 @@
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/ascript.h"
 
+#include <NiSmartPointer.h>
+class NiDebugVisualizationClick;
+class NiAVObject;
 class GFxMovieBackground;
 class UIDialog;
 class CGemBase;
@@ -25,6 +28,7 @@ enum eUIClassID
 {
     eUI_3ed = 0x3ed,
     eUI_3ee = 0x3ee,
+    eUI_3ef = 0x3ef,
     eUI_2711 = 0x2711,
     eUI_4e2d = 0x4e2d,
     eUI_4e3e = 0x4e3e,
@@ -75,10 +79,8 @@ struct Unk_UisPtr8
 {
     char m_pad[8];
 };
-struct Unk_UisList
-{
-    char m_pad[0x30];
-};
+typedef ATL::CAtlList<eUIClassID> Unk_UisList;                // class ids still to open / close, handed out three per tick
+MS2_CHECK_SIZE(Unk_UisList, 0x30);
 
 // Scaleform log sink member (class of an unrecovered unit).
 struct Unk_UisLogger
@@ -114,6 +116,19 @@ public:
     void FUN_141ada610(int nScene);                 // 0x141ada610 leave a scene: clear the flag
     void FUN_141ada6f0(int nScene);                 // 0x141ada6f0
     void FUN_141adad20(int nScene);                 // 0x141adad20
+    void FUN_141add1f0();                           // 0x141add1f0
+    void FUN_141add210();                           // 0x141add210 "not enough merat" confirm box
+    void FUN_141add390();                           // 0x141add390 "not enough meso market token" confirm box
+    void FUN_141add520(CStringW strText, CStringW strArg);   // 0x141add520 market confirm box with one argument
+    void FUN_141aec8f0(char bOn, NiAVObject* pRoot);   // 0x141aec8f0 debug visualization click on / off
+    void FUN_141aebed0();                           // 0x141aebed0 register the camera dialog and the callbacks
+    static int FUN_141aed0a0(MS2Ptr<UIDialog> spDlg);   // 0x141aed0a0 log one dialog
+    void FUN_141aecd70();                           // 0x141aecd70 close-request every dialog that is open
+    void FUN_141adafd0(int nScene);                 // 0x141adafd0 hide the world UI for a scene change
+    void FUN_141adb2a0(int nScene);                 // 0x141adb2a0 show it again (argument unused)
+    void FUN_141adbbb0();                           // 0x141adbbb0
+    bool FUN_141adcd40();                           // 0x141adcd40 close the dialogs that can be closed
+    bool FUN_141aec1f0(MS2Ptr<UIDialog> spDlg);     // 0x141aec1f0 dialog may be closed in bulk
     void FUN_141adb4c0(int bOn);                    // 0x141adb4c0 enable / disable every hot key slot
     void FUN_141adb7b0(int bOn);                    // 0x141adb7b0
     void FUN_141adbb40();                           // 0x141adbb40 step the cursor mode 0..3
@@ -135,8 +150,8 @@ public:
     void FUN_141aece70();                           // 0x141aece70 reset the input handlers
     void FUN_141adf250();                           // 0x141adf250 create the click render steps
     void FUN_141adf580();                           // 0x141adf580 create every dialog
-    static void FUN_141ade300();                    // 0x141ade300
-    static void FUN_141ade1f0();                    // 0x141ade1f0
+    static void FUN_141ade300(CString strName, void* pUnused, void* pArg1, void* pArg2);   // 0x141ade300
+    static bool FUN_141ade1f0(char bFlag);          // 0x141ade1f0
     static bool FUN_141ade2d0(void* pContext);                  // 0x141ade2d0
     static void FUN_141ade400();                    // 0x141ade400
     static int FUN_141aecf60(MS2Ptr<UIDialog> spDlg);   // 0x141aecf60
@@ -160,7 +175,7 @@ public:
     bool FUN_141ad9e20(HWND__* hWnd);                                  // 0x141ad9e20 window-proc style callback (argument unused)
     void FUN_141adbca0(int n);                                         // 0x141adbca0
     void FUN_141adbcd0(char b);                                        // 0x141adbcd0
-    void FUN_141adbe00(float fValue, int bRaw);                          // 0x141adbe00
+    int FUN_141adbe00(float fValue, int bRaw);                           // 0x141adbe00
     void FUN_141adbe70();                                              // 0x141adbe70
     void FUN_141adbf30();                                              // 0x141adbf30
     void FUN_141adbf70(int n);                                         // 0x141adbf70
@@ -206,7 +221,7 @@ public:
     Unk_UisPtr8 m_x38;                              // +0x38 ctor 0x1416ae2a0, dtor 0x1416aecf0
     ATL::CAtlMap<eUIClassID, MS2Ptr<UIObject> > m_mapA;                                       // +0x40 ctor 0x141aed9e0, clear 0x141af0f00, dtor 0x141aee190
     ATL::CAtlMap<eUIClassID, MS2Ptr<UIDialog> > m_mapDlg;                            // +0x88 class id -> dialog, ctor 0x141aed8f0, clear 0x141af0df0
-    ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraits<CStringA> > m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
+    ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraitsI<CStringA> > m_mapC;                              // +0xd0 name -> dialog, ctor 0x141aed800, clear 0x141af0ce0
     int m_nMode;                                    // +0x118 initial 0x3ed
     int m_n11c;                                     // +0x11c
     bool m_b120;                                    // +0x120
@@ -223,5 +238,5 @@ public:
     Unk_UisLogger m_log;                            // +0x228 GFxLogger
     CStringA m_strTable;                            // +0x238
     CCacheData m_cache;                             // +0x240
-    Unk_UisPtr8 m_x268;                             // +0x268 ctor 0x141aedd80, dtor 0x141aee240
+    NiPointer<NiDebugVisualizationClick> m_spDebugClick;   // +0x268 NiPointer glue 0x141aedd80 / 0x141aee240 / 0x141aee3b0
 };

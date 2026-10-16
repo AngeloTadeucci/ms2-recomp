@@ -3,8 +3,8 @@
 // MS2-RANGE: 0x14011d200-0x14011d540 .text$di
 // MS2-RANGE: 0x141ad8bc0-0x141af2110 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ?AddRef@?$MS2Ptr@VUIObject@@@@AEBAXXZ 0x141af1e50 ; unique
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VUIObject@@@@AEBAXPEAX@Z 0x141af1e80 ; unique
+// MS2-PIN: ??$?0PEAVCUIService@@P80@EAA_NPEAUHWND__@@@Z@?$TFunctor@_NV?$ParamList@PEAUHWND__@@VEmptyParam@@@@@@QEAA@AEBQEAVCUIService@@P81@EAA_NPEAUHWND__@@@Z@Z 0x141aed330 ; unique
+// MS2-PIN: ??8?$SmartPointer@VNiDebugVisualizationClick@@@efd@@QEBA_NPEAVNiDebugVisualizationClick@@@Z 0x141aee4d0 ; unique
 // MS2-PINS-END tplpin
 // hand pins (w107): m_mapA (last copy) and m_mapC (first copy) CAtlMap members
 // MS2-PIN: ??0?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIObject@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@4@@ATL@@QEAA@IMMMI@Z 0x141aed9e0
@@ -31,32 +31,32 @@
 // MS2-PIN: ??1?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIObject@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@4@@ATL@@QEAA@XZ 0x141aee190
 // MS2-PIN: ??0CNode@?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIObject@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@4@@ATL@@QEAA@AEBW4eUIClassID@@I@Z 0x141aedfe0
 // MS2-PIN: ??_GCNode@?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIObject@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@4@@ATL@@QEAAPEAXI@Z 0x141aee770
-// MS2-PIN: ??0?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@IMMMI@Z 0x141aed800
-// MS2-PIN: ?Lookup@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBA_NPEBDAEAV?$MS2Ptr@VUIObject@@@@@Z 0x141aefc00
-// MS2-PIN: ?SetAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAU__POSITION@@PEBDAEBV?$MS2Ptr@VUIObject@@@@@Z 0x141af1650
-// MS2-PIN: ?RemoveAll@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXXZ 0x141af0ce0
-// MS2-PIN: ?RemoveAtPos@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141af1010
-// MS2-PIN: ?GetStartPosition@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141aef6d0
-// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
-// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
-// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAAEBV?$MS2Ptr@VUIObject@@@@PEAU__POSITION@@@Z 0x141aef740
-// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAAEAV?$MS2Ptr@VUIObject@@@@PEAU__POSITION@@@Z 0x141aef740
-// MS2-PIN: ?InitHashTable@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA_NI_N@Z 0x141aef7e0
-// MS2-PIN: ?Rehash@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXI@Z 0x141af0650
-// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXMMM_N@Z 0x141af1880
-// MS2-PIN: ?IsLocked@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBA_NXZ 0x141aefb70
-// MS2-PIN: ?PickSize@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBAI_K@Z 0x141af0380
-// MS2-PIN: ?NewNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aefd50
-// MS2-PIN: ?FreeNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXPEAVCNode@12@@Z 0x141aeef10
-// MS2-PIN: ?FreePlexes@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXXZ 0x141aef210
-// MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBAPEAVCNode@12@PEBDAEAI1AEAPEAV312@@Z 0x141aef3c0
-// MS2-PIN: ?CreateNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aeea20
-// MS2-PIN: ?RemoveNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141af13a0
-// MS2-PIN: ??1?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@XZ 0x141aee130
-// MS2-PIN: ??0CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@IEAA@PEBD@Z 0x141aee020
-// MS2-PIN: ??1CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@XZ 0x141aee320
-// MS2-PIN: ??0CNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@PEBDI@Z 0x141aedf60
-// MS2-PIN: ??_GCNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAXI@Z 0x141aee6f0
+// MS2-PIN: ??0?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@IMMMI@Z 0x141aed800
+// MS2-PIN: ?Lookup@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBA_NPEBDAEAV?$MS2Ptr@VUIObject@@@@@Z 0x141aefc00
+// MS2-PIN: ?SetAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAU__POSITION@@PEBDAEBV?$MS2Ptr@VUIObject@@@@@Z 0x141af1650
+// MS2-PIN: ?RemoveAll@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXXZ 0x141af0ce0
+// MS2-PIN: ?RemoveAtPos@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141af1010
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141aef6d0
+// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetNext@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141aef370
+// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAAEBV?$MS2Ptr@VUIObject@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?GetValueAt@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAAEAV?$MS2Ptr@VUIObject@@@@PEAU__POSITION@@@Z 0x141aef740
+// MS2-PIN: ?InitHashTable@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA_NI_N@Z 0x141aef7e0
+// MS2-PIN: ?Rehash@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXI@Z 0x141af0650
+// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAXMMM_N@Z 0x141af1880
+// MS2-PIN: ?IsLocked@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBA_NXZ 0x141aefb70
+// MS2-PIN: ?PickSize@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBAI_K@Z 0x141af0380
+// MS2-PIN: ?NewNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aefd50
+// MS2-PIN: ?FreeNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXPEAVCNode@12@@Z 0x141aeef10
+// MS2-PIN: ?FreePlexes@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXXZ 0x141aef210
+// MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEBAPEAVCNode@12@PEBDAEAI1AEAPEAV312@@Z 0x141aef3c0
+// MS2-PIN: ?CreateNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAPEAVCNode@12@PEBDII@Z 0x141aeea20
+// MS2-PIN: ?RemoveNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@AEAAXPEAVCNode@12@0@Z 0x141af13a0
+// MS2-PIN: ??1?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@XZ 0x141aee130
+// MS2-PIN: ??0CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@IEAA@PEBD@Z 0x141aee020
+// MS2-PIN: ??1CPair@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@XZ 0x141aee320
+// MS2-PIN: ??0CNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAA@PEBDI@Z 0x141aedf60
+// MS2-PIN: ??_GCNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEAAPEAXI@Z 0x141aee6f0
 // hand pins (w107): middle copy of the 3 identical CAtlMap member COMDATs = m_mapDlg
 // MS2-PIN: ??0?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@4@@ATL@@QEAA@IMMMI@Z 0x141aed8f0
 // MS2-PIN: ?RemoveAll@?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@4@@ATL@@QEAAXXZ 0x141af0df0
@@ -94,7 +94,7 @@
 // MS2-PIN: ?Clone@?$ClassFunHandler@V?$TFunctor@_NV?$ParamList@PEAUHWND__@@VEmptyParam@@@@@@PEAVCUIService@@P82@EAA_NPEAUHWND__@@@Z@@UEBAPEAV1@XZ 0x141aeeda0
 // MS2-PIN: ?Lookup@?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@4@@ATL@@QEBA_NAEBW4eUIClassID@@AEAV?$MS2Ptr@VUIDialog@@@@@Z 0x141aefc70
 // MS2-PIN: ?SetAt@?$CAtlMap@W4eUIClassID@@V?$MS2Ptr@VUIDialog@@@@V?$CElementTraits@W4eUIClassID@@@ATL@@V?$CElementTraits@V?$MS2Ptr@VUIDialog@@@@@4@@ATL@@QEAAPEAU__POSITION@@AEBW4eUIClassID@@AEBV?$MS2Ptr@VUIDialog@@@@@Z 0x141af1700
-// MS2-PIN: ?GetHash@CNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAIXZ 0x141aef340
+// MS2-PIN: ?GetHash@CNode@?$CAtlMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VUIObject@@@@V?$CStringElementTraitsI@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CDefaultCharTraits@D@2@@2@V?$CElementTraits@V?$MS2Ptr@VUIObject@@@@@2@@ATL@@QEBAIXZ 0x141aef340
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uiservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "uiservice.h"
@@ -115,8 +115,25 @@
 #include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/client/ms2/networkservice.h"
 #include "ms2/placeholder/uivideocontents.h"
+#include "ms2/placeholder/notifyobject.h"
+#include <NiRenderer.h>
+#include <NiDebugVisualizationClick.h>
+#include <NiRenderTargetGroup.h>
+#include <NiRenderFrame.h>
+#include <NiDefaultClickRenderStep.h>
+#include <NiFixedString.h>
+#include <new>
+#include "ms2/client/ms2/pcbase.h"
+#include "ms2/placeholder/clientconstants.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "roomtimermanager.h"
+#include "ms2/fmt/format.h"
+#include "ms2/ms2format.h"
+#include <sstream>
+#include <direct.h>
+#include "ms2/placeholder/asdata.h"
+#include "ms2/placeholder/asobj.h"
 
 // ---- unit-local placeholders ----
 
@@ -132,10 +149,18 @@ public:
     int FUN_1422af2d0(int n);
     void FUN_1422ae960(int n);
     int FUN_1422aeed0(int n);
-    void FUN_1422aff10(float f);
+    int FUN_1422aff10(float f);
     void FUN_1422afec0(int n);
     void FUN_1422aebe0(int nSlot, bool bOn);
     void FUN_1422aeaa0(int nMode);
+    void FUN_1422b0060(float f);
+    void FUN_1422aef20(int n, char b);
+    char FUN_1422b2760();
+    void FUN_1422b27e0(char b);
+    char FUN_1422b27c0();
+    void FUN_1422afb00();
+    void FUN_1422b24f0();
+    int FUN_1422af090();
 };
 Unk_UisMovieMgr* FUN_14025e7a0();
 
@@ -146,17 +171,51 @@ class Unk_UisWorld                                                  // world ser
 public:
     PCBase* FUN_141bd0cc0();                                        // the player character
     MS2Ptr<CFieldDataCli> FUN_141bd30a0();                          // the current field data
+    void FUN_141bdb7a0();
+    void FUN_141bdb6a0();
 };
 Unk_UisWorld* FUN_1403ed2d0();
 class Unk_UisBgSource { public: CString FUN_140a72cc0(); };     // background movie name override
 Unk_UisBgSource* FUN_1414a5840();
 CUIService* FUN_1403ed2b0();                                        // the UI service
-class Unk_UisMovie { public: bool FUN_142571030(const char* szMethod, Scaleform::GFx::Value* pResult, const Scaleform::GFx::Value* pArgs, int nArgs); };
+class Unk_UisRootsSub { public: void* FUN_14151e180(); };
+class Unk_UisRootsOwner { public: char m_unk00[0x20]; Unk_UisRootsSub m_sub; };
+class Unk_UisMovieObj
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9();
+    virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14();
+    virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
+    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23(); virtual void vfunc_24();
+    virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27(); virtual void vfunc_28(); virtual void vfunc_29();
+    virtual void vfunc_30(); virtual void vfunc_31(); virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34();
+    virtual void vfunc_35(); virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39();
+    virtual void vfunc_40(); virtual void vfunc_41(); virtual void vfunc_42(); virtual void vfunc_43(); virtual void vfunc_44();
+    virtual void vfunc_45(); virtual void vfunc_46(); virtual void vfunc_47(); virtual void vfunc_48();
+    virtual Unk_UisRootsOwner* vfunc_49();                          // MS2: slot 49 (0x188)
+};
+class Unk_UisMovieSlot { public: char FUN_14151e150(); Unk_UisMovieObj* FUN_14151e170(); };
+class Unk_UisMovie
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9();
+    virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14();
+    virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
+    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23(); virtual void vfunc_24();
+    virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27(); virtual void vfunc_28(); virtual void vfunc_29();
+    virtual void vfunc_30(); virtual void vfunc_31(); virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34();
+    virtual void vfunc_35(); virtual void vfunc_36();
+    virtual char vfunc_37(int x, int y, int n, int m);              // MS2: slot 37 (0x128) hit test
+    char m_unk08[0x10];
+    Unk_UisMovieSlot m_slot;                                        // +0x18
+    bool FUN_142571030(const char* szMethod, Scaleform::GFx::Value* pResult, const Scaleform::GFx::Value* pArgs, int nArgs);
+};
 Unk_UisMovie* FUN_1422bb8b0(int nMovieId);
 class Unk_UisPlayerInfo { public: void FUN_1410c3330(CStringW& strOut); };   // the local player's name
 Unk_UisPlayerInfo* FUN_1409670e0();
 char FUN_1410c3600(void* p, int n);
-void* FUN_1401d3200();
 void* FUN_140166410();
 unsigned char FUN_14036d570(void* p, int n);
 class UIMeratMarketDialog;                                          // unit-local in uichatemoticondialog.cpp; only used by pointer here
@@ -170,8 +229,10 @@ class UIGroupMessengerBrowser;                                      // unit-loca
 class UIAdPushDialog;
 UIGroupMessengerBrowser* FUN_140a3aad0(eUIClassID nClass);          // find the dialog (dynamic_cast)
 int FUN_141952840(UIGroupMessengerBrowser* pDlg);
+void FUN_141952780(UIGroupMessengerBrowser* pDlg);
 UIAdPushDialog* FUN_140d61c00(eUIClassID nClass);                   // find the dialog (dynamic_cast)
 char FUN_140e41110(UIAdPushDialog* pDlg);
+void FUN_140e411d0(UIAdPushDialog* pDlg);
 void* FUN_140939a00();
 void FUN_140d5a290(void* p);
 void FUN_141a8a010(float x, float y);      // right mouse button down at (x, y)
@@ -209,7 +270,7 @@ void* FUN_14138fd50(int nClass);
 void FUN_14190f180(void* p);
 class Unk_UisUpperHpBar { public: void FUN_141b4d0a0(); };          // UIUpperHpBar
 Unk_UisUpperHpBar* FUN_14096e340(int nClass);
-class Unk_UisDlg4e52 { public: void FUN_141908690(); };
+class Unk_UisDlg4e52 { public: void FUN_141908690(); void FUN_141908720(unsigned uTime); };
 Unk_UisDlg4e52* FUN_14136f290(int nClass);
 class Unk_UisCursor                                                 // IME / cursor controller
 {
@@ -236,6 +297,7 @@ Unk_UisBrowserMgr* FUN_140cc18a0();
 int FUN_141b78650(Unk_UisBrowserMgr* p);
 float FUN_141276490(float f, float g);
 extern unsigned DAT_143af62d4;
+extern unsigned DAT_143af62d8;
 extern int DAT_143af62e0;
 
 CLogString* FUN_140166440();
@@ -272,23 +334,19 @@ void FUN_140163400(void* p, int nBins, float fOpt, float fLow, float fHigh, int 
 void FUN_141926ff0(void* p, int nBlock);
 void FUN_141927180(void* p);
 void FUN_1401642a0(void* p);
-void FUN_141aedd80(void* p, int n);
-void FUN_141aee240(void* p);
 void FUN_141aee130(void* p);
 void FUN_141aee160(void* p);
 void FUN_141aee190(void* p);
 void FUN_141af0f00(void* p);
 void FUN_141af0df0(void* p);
 void FUN_141af0ce0(void* p);
-void FUN_141aee3b0(void* p, int n);
-void FUN_141aee9a0();
+void* FUN_141aee9a0();
 void FUN_141aeec30();
 void FUN_141aeec90();
 void FUN_140a5bb80(void* p);
 void FUN_140a5bba0(void* p);
 unsigned char FUN_140361ab0(void* pMap, int nKey, int* pVal);                // CAtlMap<int,int>::Lookup
 void FUN_14016a050(void* pMap, int nKey, int nVal);                 // CAtlMap<int,int>::SetAt
-void* FUN_141aee850(void* pList, const int* pVal);                  // CAtlList<int>::AddTail
 CStringA FUN_14071a5b0(const CStringA& strKey, const CStringA& strFile);
 
 // A weak dialog reference (vptr / pointer pair, 0x20 bytes of storage in the callers).
@@ -346,7 +404,6 @@ CUIService::CUIService()
     FUN_140163400(&m_mapOpen2, 0x11, 0.75f, 0.25f, 2.25f, 10);
     FUN_141926ff0(&m_listOpen, 10);
     FUN_141926ff0(&m_listClose, 10);
-    FUN_141aedd80(&m_x268, 0);
     FUN_140a5bb80(&m_log);
     FUN_14016a050(&m_mapOpen, 0x6200018, 0);
     FUN_14016a050(&m_mapOpen, 0x620001d, 0);
@@ -364,7 +421,7 @@ CUIService::CUIService()
     FUN_14016a050(&m_mapOpen2, 0x6200022, 0);
     FUN_14016a050(&m_mapOpen2, 0x620007f, 0);
     FUN_14016a050(&m_mapOpen2, 0x6200086, 0);
-    FUN_141aee3b0(&m_x268, 0);
+    m_spDebugClick = 0;
     FUN_141aee9a0();
     m_strTable = FUN_14071a5b0(CStringA("Table"), CStringA("alignWidget.xml"));
     m_cache.FUN_1401d1160(CString(m_strTable));
@@ -377,7 +434,6 @@ CUIService::~CUIService()
     FUN_140a5bba0(&m_log);
     FUN_141aeec30();
     FUN_141aeec90();
-    FUN_141aee240(&m_x268);
     FUN_141927180(&m_listClose);
     FUN_141927180(&m_listOpen);
     FUN_1401642a0(&m_mapOpen2);
@@ -390,6 +446,7 @@ const char* CUIService::GetDisplayName() const
 {
     return "CUIService";
 }
+MS2_REPLACE_METHOD(0x141ad9330, CUIService, GetDisplayName, 13, 0xDFB7B125);
 MS2_REPLACE_METHOD(0x141AD9330, CUIService, GetDisplayName, 13, 0xDFB7B125);
 
 // ---- more exe helpers (chunk 2) ----
@@ -492,6 +549,7 @@ void CUIService::FUN_141ad9b30()
 {
     FUN_14025e7a0()->FUN_1422addb0();
 }
+MS2_REPLACE_METHOD(0x141ad9b30, CUIService, FUN_141ad9b30, 27, 0x0C5983B1);
 
 // @0x141ad9b60
 // MS2-FUNCTIONAL: EH frame of the unrecovered temporaries differs
@@ -509,6 +567,7 @@ void CUIService::FUN_141ad9c10()
 {
     FUN_14025e7a0()->FUN_1422adf30();
 }
+MS2_REPLACE_METHOD(0x141ad9c10, CUIService, FUN_141ad9c10, 27, 0xD41E04A3);
 
 // @0x141ad93b0
 // Checks the saved UI layout version (version.xml, "ms2" version 0x15) and rewrites the file.
@@ -576,6 +635,422 @@ bool CUIService::FUN_141ad9e20(HWND__*)
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x141ad9e20, CUIService, FUN_141ad9e20, 42, 0x11F37F9D);
+
+class Unk_ConfigString { public: CString* FUN_140298f80(); };      // Value<CString>::Get
+
+// ---- scene entry helpers ----
+void* FUN_1409a8b10();
+void* FUN_1409a8ac0(void* p);
+void* FUN_140ee0d10();
+void FUN_140b8cbe0(void* p);
+bool FUN_141527280(void* pPlayer);
+struct Unk_UisInfo { char m_unk00[8]; float m_fValue; };
+Unk_UisInfo* FUN_140e09150(void* p);
+bool FUN_14125bb90(void* p);
+bool FUN_14125bbe0(void* p);
+void* FUN_1409670d0();
+bool FUN_14162ab20(void* p);
+void* FUN_14041beb0();
+int FUN_1408d7e60(void* p, unsigned short n);
+void* FUN_1401c0d90();
+int FUN_1404795e0(void* p);
+bool FUN_141bcb1a0(void* pWorld);
+bool FUN_141bcb150(void* pWorld);
+void* FUN_14047d050(void* pOwner, void* pOut);
+void* FUN_1417472c0(void* p);
+void FUN_1403e54e0(void* p);
+void FUN_140c59350();
+void* FUN_140938f40(void* pHolder, void* pNotify);
+void* FUN_140939a10();
+void FUN_140da4fe0(void* pMgr, void* pNotify);
+
+// Posted to the global notify manager when a scene's dialogs have been opened.
+class NotifyOpenDialogByScene : public NotifyObject
+{
+public:
+    NotifyOpenDialogByScene(int nScene);                // 0x141aee0f0
+    virtual ~NotifyOpenDialogByScene();                 // 0x141aee390
+    virtual CStringW vfunc_1();                         // 0x140db51c0
+    int m_nScene;                                       // +0x18
+};
+MS2_CHECK_SIZE(NotifyOpenDialogByScene, 0x20);
+
+static void AddOpenId(Unk_UisList& list, int nId)
+{
+    list.AddTail((eUIClassID)nId);
+}
+
+// @0x141ad9e50
+// MS2-FUNCTIONAL: per-call id temporaries and notify holder layout differ
+void CUIService::FUN_141ad9e50(int nScene)
+{
+    int nOpen = 0;
+    if (!FUN_140361ab0(&m_mapOpen, nScene, &nOpen) || nOpen != 0)
+        return;
+    FUN_14016a050(&m_mapOpen, nScene, 1);
+    if (nScene == 0x620001d) {
+        FUN_141adbd60(0);
+        if (FUN_1412755a0() != 0)
+            return;
+        PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (!pPlayer)
+            return;
+        AddOpenId(m_listOpen, 0x4e29);
+        bool bTab2 = FUN_1410c3600(FUN_1409670e0(), 2) == 1;
+        if (!FUN_1410c3600(FUN_1409670e0(), 3))
+            AddOpenId(m_listOpen, 0x4ed8);
+        AddOpenId(m_listOpen, 0x4e61);
+        AddOpenId(m_listOpen, 0x4e43);
+        AddOpenId(m_listOpen, 0x4e5e);
+        AddOpenId(m_listOpen, 0x4e93);
+        AddOpenId(m_listOpen, 0x4edd);
+        AddOpenId(m_listOpen, 0x4ea1);
+        if (!bTab2) {
+            AddOpenId(m_listOpen, 0x4e28);
+            AddOpenId(m_listOpen, 0x4e5f);
+        }
+        if (!reinterpret_cast<Unk_ConfigString*>(&static_cast<Client::Constants*>(FUN_1401d3200())->NoticeDialogUrl)->FUN_140298f80()->IsEmpty())
+            AddOpenId(m_listOpen, 0x4ee9);
+        if (*(char*)FUN_1409a8ac0(FUN_1409a8b10()) != 0)
+            AddOpenId(m_listOpen, 0x4e7d);
+        if (FUN_140ee0d10() != 0)
+            FUN_140b8cbe0(FUN_140ee0d10());
+        if (FUN_141527280(pPlayer))
+            AddOpenId(m_listOpen, 0x4e45);
+        if (FUN_14125bb90(FUN_140e09150(FUN_1409a8b10())))
+            AddOpenId(m_listOpen, 0x4edf);
+        if (FUN_14125bbe0(FUN_140e09150(FUN_1409a8b10()))) {
+            if (FUN_14162ab20(FUN_1409670d0()))
+                AddOpenId(m_listOpen, 0x4f23);
+        }
+        if (FUN_1408d7e60(FUN_14041beb0(), (unsigned short)pPlayer->vfunc_78()) != 0)
+            AddOpenId(m_listOpen, 0x4f01);
+        if (FUN_1404795e0(FUN_1401c0d90()) != 0)
+            AddOpenId(m_listOpen, 0x4f00);
+        if (FUN_1418fd280() != 0) {
+            AddOpenId(m_listOpen, 0x4f7d);
+            if (FUN_1410c3600(FUN_1409670e0(), 3))
+                AddOpenId(m_listOpen, 0x4f7e);
+            else if (!bTab2)
+                AddOpenId(m_listOpen, 0x4f28);
+        }
+        if (FUN_141bcb1a0(FUN_1403ed2d0())) {
+            AddOpenId(m_listOpen, 0x4f7c);
+            if (bTab2)
+                AddOpenId(m_listOpen, 0x4f7f);
+        }
+        if (FUN_141bcb150(FUN_1403ed2d0()))
+            AddOpenId(m_listOpen, 0x4f36);
+        char tmpRef[16];
+        void* pRef = FUN_14047d050(FUN_1401c0d90(), tmpRef);
+        void* pObj = FUN_1417472c0(pRef);
+        FUN_1403e54e0(tmpRef);
+        if (pObj != 0)
+            AddOpenId(m_listOpen, 0x4f5d);
+        AddOpenId(m_listOpen, eUI_4f34);
+        FUN_140c59350();
+        if (FUN_14036d570(FUN_140166410(), 0xdd) && !bTab2)
+            AddOpenId(m_listOpen, 0x4f75);
+        char notifyHolder[32];
+        NotifyOpenDialogByScene* pNotify = new NotifyOpenDialogByScene(0x620001d);
+        void* pHolder = FUN_140938f40(notifyHolder, pNotify);
+        FUN_140da4fe0(FUN_140939a10(), pHolder);
+    } else if (nScene == 0x620001f) {
+        AddOpenId(m_listOpen, eUI_4ef2);
+        if (FUN_1418fd280() != 0) {
+            void* pDlg = FUN_140ef49b0(0x4f7c);
+            if (pDlg)
+                FUN_140c296e0(pDlg, true);
+        }
+    }
+}
+
+// @0x141ada6f0
+// MS2-FUNCTIONAL: per-call id temporaries differ
+void CUIService::FUN_141ada6f0(int nScene)
+{
+    int nOpen = 0;
+    if (!FUN_140361ab0(&m_mapOpen2, nScene, &nOpen) || nOpen != 0)
+        return;
+    FUN_14016a050(&m_mapOpen2, nScene, 1);
+    if (nScene == 0x6200018) {
+        AddOpenId(m_listClose, 0x4e55);
+    } else if (nScene == 0x620000d) {
+        AddOpenId(m_listClose, 0x4e41);
+    } else if (nScene == 0x620001d) {
+        FUN_141a60d40(1);
+        static const int s_ids[] = {0x4e27, 0x4f66, 0x4e51, 0x4e3d, 0x4e53, 0x4e3c, 0x4e4c, 0x4e5c, 0x4ea8, 0x4e39, 0x4e5d,
+            0x4e72, 0x4ebe, 0x4f06, 0x4f3a, 0x4f3c, 0x4f5c, 0x4f60, 0x4f70, 0x4f72, 0x4e88, 0x4f9a};
+        for (int i = 0; i < sizeof(s_ids) / sizeof(s_ids[0]); ++i)
+            AddOpenId(m_listClose, s_ids[i]);
+        FUN_141add1b0(8, true);
+    } else if (nScene == 0x620001f) {
+        FUN_141add1b0(0xb, true);
+        FUN_141add1b0(0x24, true);
+        FUN_141add1b0(0x25, true);
+    } else if (nScene == 0x6200031) {
+        FUN_141add1b0(0x24, true);
+        FUN_141add1b0(0x25, true);
+        FUN_141add1b0(0x21, true);
+        FUN_141add1b0(0x1c, true);
+        FUN_141add1b0(10, true);
+        FUN_141add1b0(1, true);
+        FUN_141add1b0(0x1b, true);
+        FUN_141add040((eUIClassID)0x4e40);
+    } else if (nScene == 0x6200041) {
+        FUN_141add1b0(0x24, true);
+        FUN_141add1b0(7, true);
+        FUN_141add040((eUIClassID)0x4e52);
+    } else if (nScene == 0x6200022) {
+        FUN_141add1b0(0xb, true);
+        FUN_141add1b0(0x24, true);
+        FUN_141add1b0(0x25, true);
+    } else if (nScene == 0x620007f) {
+        FUN_141add1b0(0x24, true);
+        FUN_141add1b0(7, true);
+    } else if (nScene == 0x6200086) {
+        FUN_141add1b0(0x19, true);
+    }
+}
+
+// @0x141adad20
+// MS2-FUNCTIONAL: the exe reads the scene id once per comparison
+void CUIService::FUN_141adad20(int nScene)
+{
+    int nOpen = 0;
+    if (!FUN_140361ab0(&m_mapOpen2, nScene, &nOpen) || nOpen == 0)
+        return;
+    FUN_14016a050(&m_mapOpen2, nScene, 0);
+    if (nScene == 0x6200018) {
+        FUN_141add0b0((eUIClassID)0x4e55);
+    } else if (nScene == 0x620000d) {
+        FUN_141add0b0((eUIClassID)0x4e41);
+    } else if (nScene == 0x620001d) {
+        static const int s_ids[] = {0x4e27, 0x4f66, 0x4e51, 0x4e3d, 0x4e53, 0x4e3c, 0x4e4c, 0x4e5c, 0x4ea8, 0x4e39, 0x4e5d,
+            0x4e72, 0x4ebe, 0x4ef7, 0x4f06, 0x4f3a, 0x4f3c, 0x4f57, 0x4f5a, 0x4f5c, 0x4f60, 0x4f70, 0x4f72, 0x4f73, 0x4e88, 0x4f9a};
+        for (int i = 0; i < sizeof(s_ids) / sizeof(s_ids[0]); ++i)
+            FUN_141add0b0((eUIClassID)s_ids[i]);
+    } else if (nScene != 0x620001f) {
+        if (nScene == 0x6200031) {
+            FUN_141add0b0((eUIClassID)0x4e40);
+        } else if (nScene == 0x6200041) {
+            FUN_141a60d40(1);
+            FUN_141add0b0((eUIClassID)0x4e52);
+        } else if (nScene != 0x6200022 && nScene == 0x620007f) {
+            FUN_141a60d40(1);
+        }
+    }
+}
+
+class Unk_UisSlot6
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5();
+    virtual void vfunc_6();                                         // MS2: slot 6 (0x30)
+};
+
+// Slots 2 and 3 of the dialogs and movie objects the service shows / hides in bulk.
+class Unk_UisToggle
+{
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();                                         // MS2: slot 2 (0x10) hide
+    virtual void vfunc_3();                                         // MS2: slot 3 (0x18) show
+};
+// @0x141adafd0
+void CUIService::FUN_141adafd0(int nScene)
+{
+    if (UIObject* p = FUN_141540270(0x3ed))
+        reinterpret_cast<Unk_UisToggle*>(p)->vfunc_2();
+    if (UILoadingProgressLobby* p = Unk_UisFind<UILoadingProgressLobby>(eUI_3ef))
+        reinterpret_cast<Unk_UisToggle*>(p)->vfunc_2();
+    if (void* p = FUN_14151f890())
+        static_cast<Unk_UisToggle*>(p)->vfunc_2();
+    if (void* p = FUN_141742c80(0x4e36))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (void* p = FUN_140e86a50(0x4f77))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (void* p = FUN_140e98660(0x4f3b))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (void* p = FUN_141994a90(0x4e64))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (void* p = FUN_141a62100(0x4e5a))
+        FUN_1422dbf00(p, 2, 0, 0);
+    if (void* p = FUN_141930440(0x4e2f))
+        FUN_1422dbf00(p, 4, 0, 0);
+    if (void* p = FUN_14128f650(0x4ea4))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (void* p = FUN_1418fc4e0(0x4e2e))
+        FUN_1422dbf00(p, 7, 0, 0);
+    if (void* p = FUN_141a90250(0x4e57))
+        FUN_1422dbf00(p, 7, 0, 0);
+    if (void* p = FUN_1409614b0(0x4e30))
+        FUN_1422dbf00(p, 7, 0, 0);
+    if (void* p = FUN_1419949f0(0x4e65))
+        FUN_1422dbf00(p, 3, 0, 0);
+    if (nScene != 0x6200009 && nScene != 0x620000b) {
+        if (Unk_UisSysText* p = FUN_141278110(0x4e41))
+            reinterpret_cast<Unk_UisToggle*>(p)->vfunc_2();
+    }
+}
+MS2_REPLACE_METHOD(0x141adafd0, CUIService, FUN_141adafd0, 712, 0x9D512FEF);
+
+// @0x141adb2a0
+void CUIService::FUN_141adb2a0(int nScene)
+{
+    if (UIObject* p = FUN_141540270(0x3ed))
+        reinterpret_cast<Unk_UisToggle*>(p)->vfunc_3();
+    if (UILoadingProgressLobby* p = Unk_UisFind<UILoadingProgressLobby>(eUI_3ef))
+        reinterpret_cast<Unk_UisToggle*>(p)->vfunc_3();
+    if (void* p = FUN_14151f890())
+        static_cast<Unk_UisToggle*>(p)->vfunc_3();
+    if (void* p = FUN_141742c80(0x4e36))
+        FUN_1422dc080(p);
+    if (void* p = FUN_140e86a50(0x4f77))
+        FUN_1422dc080(p);
+    if (void* p = FUN_140e98660(0x4f3b))
+        FUN_1422dc080(p);
+    if (void* p = FUN_141994a90(0x4e64))
+        FUN_1422dc080(p);
+    if (void* p = FUN_141a62100(0x4e5a))
+        FUN_1422dc080(p);
+    if (void* p = FUN_141930440(0x4e2f))
+        FUN_1422dc080(p);
+    if (void* p = FUN_14128f650(0x4ea4))
+        FUN_1422dc080(p);
+    if (void* p = FUN_1418fc4e0(0x4e2e))
+        FUN_1422dc080(p);
+    if (void* p = FUN_141a90250(0x4e57))
+        FUN_1422dc080(p);
+    if (void* p = FUN_1409614b0(0x4e30))
+        FUN_1422dc080(p);
+    if (Unk_UisSysText* p = FUN_141278110(0x4e41))
+        reinterpret_cast<Unk_UisToggle*>(p)->vfunc_3();
+}
+MS2_REPLACE_METHOD(0x141adb2a0, CUIService, FUN_141adb2a0, 523, 0x1DF58595);
+
+// @0x141aec1f0
+bool CUIService::FUN_141aec1f0(MS2Ptr<UIDialog> spDlg)
+{
+    if (!spDlg)
+        return false;
+    if (spDlg->vfunc_56() != 0)
+        return false;
+    if (spDlg->vfunc_55() != 0)
+        return false;
+    if (spDlg->FUN_1419244c0(1) != 0)
+        return false;
+    return spDlg->vfunc_48() != 0x4eec;
+}
+
+// @0x141adcd40
+// MS2-FUNCTIONAL: the MS2Ptr copies for the FUN_141aec1f0 argument are built through the unit's ref glue
+bool CUIService::FUN_141adcd40()
+{
+    for (POSITION pos = m_mapDlg.GetStartPosition(); pos != 0; m_mapDlg.GetNext(pos))
+    {
+        MS2Ptr<UIDialog> spDlg = m_mapDlg.GetValueAt(pos);
+        if (spDlg && FUN_141aec1f0(spDlg))
+            spDlg->vfunc_67();
+    }
+    if (UIGroupMessengerBrowser* pBrowser = FUN_140a3aad0(eUI_4e93))
+        FUN_141952780(pBrowser);
+    if (UIAdPushDialog* pAd = FUN_140d61c00(eUI_4f34))
+        FUN_140e411d0(pAd);
+    return true;
+}
+
+// ---- player toggles ----
+char FUN_14036e510(void* p);
+char FUN_1410af770(void* p);
+void* FUN_1416625b0(PCBase* p);
+void* FUN_141530290(PCBase* p);
+void FUN_1410aa380(void* p, bool b);
+class Unk_UisSlot23
+{
+public:
+    virtual void vfunc_0();  virtual void vfunc_1();  virtual void vfunc_2();  virtual void vfunc_3();
+    virtual void vfunc_4();  virtual void vfunc_5();  virtual void vfunc_6();  virtual void vfunc_7();
+    virtual void vfunc_8();  virtual void vfunc_9();  virtual void vfunc_10(); virtual void vfunc_11();
+    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
+    virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
+    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22();
+    virtual void vfunc_23(char b);                                  // MS2: slot 23 (0xb8)
+};
+
+// @0x141adbbb0
+void CUIService::FUN_141adbbb0()
+{
+    if (FUN_140b632f0() != 0)
+    {
+        FUN_1422d49f0(FUN_140b632f0());
+        if (FUN_14036e510(FUN_140166410()))
+        {
+            char bOn = FUN_1410af770(FUN_140b632f0());
+            PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pPlayer)
+            {
+                if (Unk_UisSlot23* p = static_cast<Unk_UisSlot23*>(FUN_1416625b0(pPlayer)))
+                    p->vfunc_23(bOn);
+                if (void* q = FUN_141530290(pPlayer))
+                    FUN_1410aa380(q, bOn == 0);
+            }
+        }
+    }
+}
+
+// ---- message boxes that confirm opening the market ----
+MS2Ptr<CMsgBoxData> FUN_140d73f20(CStringW strText, int nType);
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> spBox);
+CStringW FUN_14028b8e0(CStringW str);
+
+// @0x141add1f0
+void CUIService::FUN_141add1f0()
+{
+    FUN_141add210();
+}
+MS2_REPLACE_METHOD(0x141add1f0, CUIService, FUN_141add1f0, 24, 0x56AAF3CF);
+
+// @0x141add210
+// MS2-FUNCTIONAL: the box and delegate temporaries are laid out through the exe's Delegate glue
+void CUIService::FUN_141add210()
+{
+    MS2Ptr<CMsgBoxData> spBox = FUN_140d73f20(FUN_14028b8e0(CStringW(L"s_err_lack_merat_ask")), 1);
+    if (spBox.get() != 0)
+    {
+        spBox->FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)>(this, &CUIService::FUN_141add940));
+        FUN_140d73c60(spBox);
+    }
+}
+
+// @0x141add390
+// MS2-FUNCTIONAL: the box and delegate temporaries are laid out through the exe's Delegate glue
+void CUIService::FUN_141add390()
+{
+    CStringW strText = FUN_14028b8e0(CStringW(L"s_err_lack_meso_makret_token_ask"));
+    MS2Ptr<CMsgBoxData> spBox = FUN_140d73f20(strText, 1);
+    if (spBox.get() != 0)
+    {
+        spBox->FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)>(this, &CUIService::FUN_141add9b0));
+        FUN_140d73c60(spBox);
+    }
+}
+
+// @0x141add520
+void CUIService::FUN_141add520(CStringW strText, CStringW strArg)
+{
+    MS2Ptr<CMsgBoxData> spBox = FUN_140d73f20(strText, 1);
+    if (spBox.get() != 0)
+    {
+        spBox->FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)>(this, &CUIService::FUN_141add880));
+        spBox->FUN_140b76940(CStringW(strArg));
+        FUN_140d73c60(spBox);
+    }
+}
+MS2_REPLACE_METHOD(0x141add520, CUIService, FUN_141add520, 428, 0xD48D0620);
 
 // @0x141ada610
 void CUIService::FUN_141ada610(int nScene)
@@ -603,45 +1078,52 @@ unsigned CUIService::FUN_141adbd10()
 {
     return (FUN_14025e7a0()->FUN_1422aeed0(2) == 0 && m_n124 == 0) ? 0 : 1;
 }
+MS2_REPLACE_METHOD(0x141adbd10, CUIService, FUN_141adbd10, 72, 0x31DAF086);
 
 // @0x141adbd60
 void CUIService::FUN_141adbd60(int n)
 {
     m_n124 = n;
 }
+MS2_REPLACE_METHOD(0x141adbd60, CUIService, FUN_141adbd60, 25, 0x829D7DFA);
 
 // @0x141adbd80
 int CUIService::FUN_141adbd80()
 {
     return m_n124 == 0;
 }
+MS2_REPLACE_METHOD(0x141adbd80, CUIService, FUN_141adbd80, 47, 0xBD024086);
 
 // @0x141adbdc0
 void CUIService::FUN_141adbdc0(int n)
 {
     FUN_141adbd60(n == 0);
 }
+MS2_REPLACE_METHOD(0x141adbdc0, CUIService, FUN_141adbdc0, 57, 0x0DDDA7FD);
 
 // @0x141adbe00
-void CUIService::FUN_141adbe00(float fValue, int bRaw)
+int CUIService::FUN_141adbe00(float fValue, int bRaw)
 {
     float f = fValue;
     if (bRaw == 0)
         f = FUN_141276490((float)DAT_143af62d4, fValue);
-    FUN_14025e7a0()->FUN_1422aff10(f);
+    return FUN_14025e7a0()->FUN_1422aff10(f);
 }
+MS2_REPLACE_METHOD(0x141adbe00, CUIService, FUN_141adbe00, 91, 0x1AE4A279);
 
 // @0x141adbe70
 void CUIService::FUN_141adbe70()
 {
     FUN_14025e7a0()->FUN_1422afec0(2);
 }
+MS2_REPLACE_METHOD(0x141adbe70, CUIService, FUN_141adbe70, 32, 0x1FDD01DB);
 
 // @0x141adbca0
 void CUIService::FUN_141adbca0(int n)
 {
     FUN_14025e7a0()->FUN_1422ae960(n);
 }
+MS2_REPLACE_METHOD(0x141adbca0, CUIService, FUN_141adbca0, 35, 0x3F0A8ADB);
 
 // @0x141adbcd0
 void CUIService::FUN_141adbcd0(char b)
@@ -649,6 +1131,7 @@ void CUIService::FUN_141adbcd0(char b)
     if (FUN_140b632f0() != 0)
         FUN_1422d4a30(FUN_140b632f0(), b);
 }
+MS2_REPLACE_METHOD(0x141adbcd0, CUIService, FUN_141adbcd0, 46, 0x858157CF);
 
 // @0x141adbf00
 void CUIService::FUN_141adbf00()
@@ -657,6 +1140,7 @@ void CUIService::FUN_141adbf00()
         return;
     m_n12c = 1;
 }
+MS2_REPLACE_METHOD(0x141adbf00, CUIService, FUN_141adbf00, 37, 0xCC1A7CE0);
 
 // @0x141adbf30
 void CUIService::FUN_141adbf30()
@@ -665,6 +1149,7 @@ void CUIService::FUN_141adbf30()
     if (p != 0)
         FUN_14190f180(p);
 }
+MS2_REPLACE_METHOD(0x141adbf30, CUIService, FUN_141adbf30, 47, 0xAF6C57BE);
 
 // @0x141adbf70
 void CUIService::FUN_141adbf70(int n)
@@ -673,6 +1158,7 @@ void CUIService::FUN_141adbf70(int n)
     if (p != 0)
         p->FUN_14135afa0(n);
 }
+MS2_REPLACE_METHOD(0x141adbf70, CUIService, FUN_141adbf70, 55, 0xAE0BC1C7);
 
 // @0x141adcbb0
 // MS2-FUNCTIONAL: GetNext/GetValueAt order and the MS2Ptr temporaries are reconstructed from the decompile
@@ -708,6 +1194,7 @@ int CUIService::FUN_141adcb40()
 {
     return m_n128;
 }
+MS2_REPLACE_METHOD(0x141adcb40, CUIService, FUN_141adcb40, 17, 0x10229582);
 
 // @0x141adb810
 void CUIService::FUN_141adb810()
@@ -1212,6 +1699,7 @@ void CUIService::FUN_141add1b0(int nSlot, bool bOn)
 {
     FUN_14025e7a0()->FUN_1422aebe0(nSlot, bOn);
 }
+MS2_REPLACE_METHOD(0x141add1b0, CUIService, FUN_141add1b0, 46, 0x400D367F);
 
 // @0x141adb7b0
 void CUIService::FUN_141adb7b0(int bOn)
@@ -1275,18 +1763,25 @@ MS2_REPLACE_METHOD(0x141adb4c0, CUIService, FUN_141adb4c0, 740, 0x3EEFB50B);
 // ---- efd::ISystemService overrides ----
 extern "C++" {
 void FUN_1411ab770(void* pRegistrar, int n);
-void FUN_141af1860(void* pMgr, void (*pfn)());
-void FUN_141af1a90(void* pMgr, void (*pfn)());
+void FUN_141af1860(Unk_UisMovieMgr* pMgr, void (*pfn)(CString, void*, void*, void*));
+void FUN_141af1a90(Unk_UisMovieMgr* pMgr, void (*pfn)());
 void FUN_141b6fc50();
 void FUN_1422aee50(void* pMgr, TFunctor<bool, ParamList<HWND__*, EmptyParam> >& fn);
 void* FUN_1411d15b0(void* pSvcMgr);
 void* FUN_14168ab40(void* pSvcMgr);
 void* FUN_140af7da0(void* pWorld);
-void* FUN_140994450();
+NiRenderer* FUN_140994450();
 void* FUN_14098d8d0(void* pTable, void* p);
-void FUN_1411d7c70(void* p, void (*pfn)(), void* pSelf);
+void FUN_1411d7c70(void* p, bool (*pfn)(char), void* pSelf);
 void FUN_1411d7c10(void* p, bool (*pfn)(void*), void* pSelf);
-class Unk_UisLog { public: void FUN_1401ce2f0(const char* szFormat, const char* szArg); };   // debug log (printf-style)
+class Unk_UisLog
+{
+public:
+    void FUN_1401ce2f0(const char* szFormat, const char* szArg);
+    void FUN_1401ce2f0(const char* szFormat, int n);
+    void FUN_1401ce2f0(const char* szFormat, const char* szName, int a, int b, int c);
+    void FUN_1401ce2b0(const char* szText);
+};   // debug log (printf-style)
 Unk_UisLog* FUN_140a44830();
 void FUN_1401ce3d0(Unk_UisLog* p, TFunctor<void, EmptyParam>& fn);
 void* FUN_141aee920();
@@ -1294,16 +1789,12 @@ void FUN_140cf10d0(void* p);
 extern char DAT_143d6eb58;
 unsigned FUN_14086d260();
 unsigned FUN_141473230(void* p);
-char FUN_14140ea60(void* pList);
-eUIClassID FUN_141af12e0(void* pList);
 void* FUN_141aef6d0(void* pMap);
 void* FUN_1412784d0(void* pRef);
 int FUN_1419244c0(void* pDlg, int n);
 void FUN_141aef370(void* pMap, void* pPos);
-void* FUN_141aee510(void* p);
-void* FUN_141aee520(void* p);
 void FUN_141aee3b0(void* p, int n);
-void FUN_141e30f30(void* p);
+void FUN_141e30f30(NiDebugVisualizationClick* p);
 char FUN_1401d1320(void* pCache);
 void* FUN_140e45740();
 void FUN_1422e6960(void* p);
@@ -1311,7 +1802,7 @@ void FUN_1422e6d00(void* p, int n);
 void FUN_1401d1160(void* pCache, CStringA str);
 void* FUN_1416af8c0(void* p);
 void* FUN_1416af950(void* p);
-void FUN_1416af350(void* p, int n);
+void FUN_1416af350(void* p, void* pStep);
 void* FUN_1413fc250(void* p);
 void FUN_1416b2360(void* a, void* b);
 void FUN_141626ac0(void* p);
@@ -1353,17 +1844,17 @@ efd::AsyncResult CUIService::OnInit()
 efd::AsyncResult CUIService::OnTick()
 {
     unsigned uTime = FUN_141473230((void*)(size_t)FUN_14086d260());
-    if (!FUN_14140ea60(&m_listOpen))
+    if (!m_listOpen.IsEmpty())
     {
-        for (unsigned i = 0; i < 3 && !FUN_14140ea60(&m_listOpen); ++i)
-            FUN_141adc530(FUN_141af12e0(&m_listOpen));
+        for (unsigned i = 0; i < 3 && !m_listOpen.IsEmpty(); ++i)
+            FUN_141adc530(m_listOpen.RemoveHead());
     }
-    if (!FUN_14140ea60(&m_listClose))
+    if (!m_listClose.IsEmpty())
     {
-        for (unsigned i = 0; i < 3 && !FUN_14140ea60(&m_listClose); ++i)
-            FUN_141add040(FUN_141af12e0(&m_listClose));
+        for (unsigned i = 0; i < 3 && !m_listClose.IsEmpty(); ++i)
+            FUN_141add040(m_listClose.RemoveHead());
     }
-    if (DAT_143af62e0 != 0 && FUN_14140ea60(&m_listOpen) && FUN_14140ea60(&m_listClose))
+    if (DAT_143af62e0 != 0 && m_listOpen.IsEmpty() && m_listClose.IsEmpty())
     {
         FUN_141adbea0();
         DAT_143af62e0 = 0;
@@ -1377,8 +1868,8 @@ efd::AsyncResult CUIService::OnTick()
         FUN_141aef370(&m_mapDlg, &pos);
         (void)pDlg;
     }
-    if (FUN_141aee510(&m_x268) != 0)
-        FUN_141e30f30(FUN_141aee520(&m_x268));
+    if (m_spDebugClick != 0)
+        FUN_141e30f30(m_spDebugClick);
     FUN_141aec9c0();
     if (FUN_1401d1320(&m_cache))
     {
@@ -1406,8 +1897,8 @@ efd::AsyncResult CUIService::OnShutdown()
             }
         }
     }
-    if (FUN_141aee510(&m_x268) != 0)
-        FUN_141aee3b0(&m_x268, 0);
+    if (m_spDebugClick != 0)
+        m_spDebugClick = 0;
     FUN_141aece70();
     return efd::AsyncResult_Complete;
 }
@@ -1416,11 +1907,13 @@ efd::AsyncResult CUIService::OnShutdown()
 // ---- FUN_141adf580: every dialog's construction (the ctors are unrecovered-signature exe functions) ----
 void FUN_1422d4b40(void* pObj, unsigned long long (*pfn)());
 unsigned long long FUN_141adda20();
+void FUN_141aecc30();
 void FUN_141addb30(long long n);
-void FUN_141ade430(void* p, int n);
 void FUN_1422aee20(Unk_UisMovieMgr* pMgr, void (*pfn)(long long));
 void FUN_1422aeea0(Unk_UisMovieMgr* pMgr, void (*pfn)(void*, int));
+void FUN_141ade430(void* p, int nMovieId);
 UIDialog* FUN_141959330(void* pMem);   // UIGuideEvent::UIGuideEvent
+UIDialog* FUN_141031f80(void* pMem);   // UICameraDialog::UICameraDialog
 UIDialog* FUN_141931eb0(void* pMem);   // UIExpBar::UIExpBar
 UIDialog* FUN_140ba6b20(void* pMem);   // UIAdventureLevelExpBar::UIAdventureLevelExpBar
 UIDialog* FUN_141b4bd20(void* pMem);   // UIUpperHpBar::UIUpperHpBar
@@ -3964,6 +4457,255 @@ void CUIService::FUN_141ade400()
 }
 MS2_REPLACE(0x141ade400, CUIService::FUN_141ade400, 32, 0x600272B3);
 
+// ---- movie-manager callbacks ----
+class Unk_UisHousingSvc;
+Unk_UisHousingSvc* FUN_1401cd040(char* pCell);
+extern char DAT_143b059e8;
+void FUN_1410bc320(Unk_UisHousingSvc* p);
+void* FUN_140a58540();
+char FUN_140d8ac50(void* p, int n, int m);
+char FUN_140d8ad60(void* p, int n);
+void* FUN_14025e7c0();
+char FUN_14116d840(void* p);
+char FUN_1410af770(void* p);
+unsigned long long FUN_1418fcb70();
+void FUN_1422d4b70(void* p, int n);
+void FUN_1422d4d10(void* p);
+void FUN_1422d2250(void* p);
+float FUN_141276460();
+void FUN_1401ce270(Unk_UisLog* pMgr, const CString& strName, void* pArg1, void* pArg2);
+
+// @0x141adda20
+// MS2-FUNCTIONAL: the exe re-reads the scene id for the second test
+unsigned long long FUN_141adda20()
+{
+    int nScene = FUN_1422b9e00(FUN_1408e57f0());
+    if (FUN_14025e7a0()->FUN_1422af090() == 0
+        && FUN_140d8ac50(FUN_140a58540(), 0x1d, 0)
+        && FUN_140d8ac50(FUN_140a58540(), 0x38, 0)
+        && FUN_140d8ad60(FUN_140a58540(), 0x13))
+    {
+        FUN_141aecc30();
+        return 1;
+    }
+    if (FUN_14116d840(FUN_14025e7c0()) && FUN_1410af770(FUN_140b632f0()) && nScene == 0x620001d)
+    {
+        FUN_1422d4a30(FUN_140b632f0(), 0);
+        return 1;
+    }
+    if (nScene == 0x620001d && FUN_14116d840(FUN_14025e7c0()))
+        return FUN_1418fcb70();
+    return 0;
+}
+
+// @0x141aecc30
+// MS2-FUNCTIONAL: the housing service reference is held through a raw pointer
+void FUN_141aecc30()
+{
+    if (FUN_14025e7a0()->FUN_1422b27c0() != 0)
+        return;
+    FUN_14025e7a0()->FUN_1422afb00();
+    if (CUIService* pService = FUN_1403ed2b0())
+    {
+        pService->FUN_141aecd70();
+        int nScene = FUN_1422b9e00(FUN_1408e57f0());
+        pService->FUN_141adad20(nScene);
+        pService->FUN_141ada610(nScene);
+        pService->FUN_141adb2a0(nScene);
+        pService->FUN_141ad9b30();
+    }
+    if (Unk_UisHousingSvc* pHousing = FUN_1401cd040(&DAT_143b059e8))
+        FUN_1410bc320(pHousing);
+    FUN_1403ed2d0()->FUN_141bdb7a0();
+    FUN_1422d4b70(FUN_140b632f0(), 1);
+    FUN_1422d4d10(FUN_140b632f0());
+    FUN_1422d2250(FUN_140b632f0());
+    FUN_14025e7a0()->FUN_1422b24f0();
+    FUN_1403ed2b0()->FUN_141ad9c10();
+}
+
+// @0x141ade1f0
+// MS2-FUNCTIONAL: the screen size is read through the renderer's default target group
+bool CUIService::FUN_141ade1f0(char bFlag)
+{
+    if (bFlag == 0)
+    {
+        FUN_1403ed2b0()->FUN_141adcbb0(&CUIService::FUN_141aed000);
+        NiRenderTargetGroup* pGroup = FUN_140994450()->GetDefaultRenderTargetGroup();
+        DAT_143af62d4 = pGroup->GetWidth(0);
+        DAT_143af62d8 = pGroup->GetHeight(0);
+        FUN_14025e7a0()->FUN_1422b0060(FUN_141276490((float)DAT_143af62d4, FUN_141276460()));
+    }
+    return true;
+}
+
+// @0x141ade300
+void CUIService::FUN_141ade300(CString strName, void* pUnused, void* pArg1, void* pArg2)
+{
+    FUN_1401ce270(FUN_140a44830(), strName, pArg1, pArg2);
+}
+
+// ---- per-tick and mode helpers ----
+char FUN_14116d7a0(void* p, int n);
+char FUN_14116d9c0(void* p, int a, int b, int c);
+char FUN_14116d950(void* p, int a, int b, int c);
+int FUN_140869420();
+void* FUN_140aadf80();
+void FUN_141b90e30(void* p, int* pX, int* pY);
+int FUN_141277f40();
+int FUN_141277f50();
+void FUN_141e2f970(NiDebugVisualizationClick* p);
+void FUN_141e311f0(NiDebugVisualizationClick* p, char b);
+void FUN_141e310e0(NiDebugVisualizationClick* p, void* pArg);
+void* FUN_1413f9950();
+void* FUN_1422b9e80(Unk_UisSceneMgr* p);
+int FUN_1422db750(void* p);
+CString FUN_1422db790(void* p);
+void FUN_1422dbf80(void* p, const CString& str, int n, int a, int b);
+void FUN_1410bc1c0(Unk_UisHousingSvc* p);
+int FUN_14151e8c0(void* p);
+int FUN_1422dc430(UIDialog* p);
+
+// The dialog's state fields are protected; the unit reads them through these two inline accessors.
+// MS2-PIN: ?GetC0@Unk_UisDlgPeek@@QEAAHXZ 0x141aef300
+// MS2-PIN: ?Get68@Unk_UisDlgPeek@@QEAAHXZ 0x141aef330
+struct Unk_UisDlgPeek : public UIDialog
+{
+    int GetC0() { return m_c0; }
+    int Get68() { return m_68; }
+};
+
+// @0x141aec690
+void CUIService::FUN_141aec690()
+{
+    if (FUN_14116d7a0(FUN_14025e7c0(), 0xf) != 0)
+        return;
+    if (FUN_14116d9c0(FUN_14025e7c0(), 0x19, 1, 0) && FUN_14116d950(FUN_14025e7c0(), 0x1d, 1, 0))
+    {
+        FUN_141adc750((eUIClassID)0x4e7d);
+        return;
+    }
+    if (FUN_14116d9c0(FUN_14025e7c0(), 0x3b, 1, 0) && FUN_14116d950(FUN_14025e7c0(), 0x1d, 1, 0))
+        FUN_141adc750((eUIClassID)0x4ea9);
+}
+
+// @0x141aec760
+// MS2-FUNCTIONAL: the cursor position temporaries are laid out per call in the exe
+void CUIService::FUN_141aec760(unsigned uTime)
+{
+    if (Unk_UisDlg4e52* pDlg = FUN_14136f290(0x4e52))
+        pDlg->FUN_141908720(uTime);
+    int nNow = FUN_140869420();
+    if ((unsigned)(nNow - m_n130) > 0x32)
+    {
+        m_n130 = nNow;
+        int x, y;
+        FUN_141b90e30(FUN_140aadf80(), &x, &y);
+        if (Unk_UisMovie* pMovie = FUN_1422bb8b0(2))
+        {
+            char bHit = pMovie->vfunc_37(x, y, 3, 0);
+            FUN_14025e7a0()->FUN_1422aef20(2, bHit);
+            if (bHit)
+            {
+                FUN_14025e7a0()->FUN_1422aef20(FUN_141277f40(), 0);
+                FUN_14025e7a0()->FUN_1422aef20(FUN_141277f50(), 0);
+            }
+        }
+    }
+    FUN_140d86260()->vfunc_6();
+}
+
+// @0x141aec8f0
+void CUIService::FUN_141aec8f0(char bOn, NiAVObject* pRoot)
+{
+    if (m_spDebugClick == 0)
+        return;
+    FUN_141e2f970(m_spDebugClick);
+    FUN_141e311f0(m_spDebugClick, bOn);
+    if (bOn != 0)
+    {
+        m_spDebugClick->AddRoot(pRoot);
+        FUN_141e310e0(m_spDebugClick, FUN_1413f9950());
+    }
+}
+
+// @0x141aec9c0
+// MS2-FUNCTIONAL: the housing service reference is held through a raw pointer
+void CUIService::FUN_141aec9c0()
+{
+    if (FUN_14025e7a0()->FUN_1422b27c0() == 0 || FUN_14025e7a0()->FUN_1422b2760() == 0)
+        return;
+    CUIService* pService = FUN_1403ed2b0();
+    if (pService == 0)
+        return;
+    FUN_1422d4b70(FUN_140b632f0(), 0);
+    pService->FUN_141ad9b60();
+    if (pService->FUN_141adbe00(FUN_140e09150(FUN_1409a8b10())->m_fValue, 0) != 0)
+        static_cast<Unk_UisSlot6*>(FUN_140b632f0())->vfunc_6();
+    if (void* pScene = FUN_1422b9e80(FUN_1408e57f0()))
+        FUN_1422dbf80(pScene, FUN_1422db790(pScene), FUN_1422db750(pScene), 0, 0);
+    if (void* pScene = FUN_1422b9e50(FUN_1408e57f0()))
+        FUN_1422dbf80(pScene, FUN_1422db790(pScene), FUN_1422db750(pScene), 0, 0);
+    int nScene = FUN_1422b9e00(FUN_1408e57f0());
+    pService->FUN_141ada6f0(nScene);
+    pService->FUN_141ad9e50(nScene);
+    pService->FUN_141adafd0(nScene);
+    pService->FUN_141ad9650();
+    if (Unk_UisHousingSvc* pHousing = FUN_1401cd040(&DAT_143b059e8))
+        FUN_1410bc1c0(pHousing);
+    FUN_1403ed2d0()->FUN_141bdb6a0();
+    FUN_14025e7a0()->FUN_1422b27e0(0);
+}
+
+// @0x141aecd70
+void CUIService::FUN_141aecd70()
+{
+    FUN_14151f460(1);
+    for (POSITION pos = m_mapDlg.GetStartPosition(); pos != 0; m_mapDlg.GetNext(pos))
+    {
+        MS2Ptr<UIDialog> spDlg = m_mapDlg.GetValueAt(pos);
+        if (spDlg && spDlg->vfunc_55() == 0)
+            spDlg->vfunc_68();
+    }
+}
+
+// @0x141aece70
+// MS2-FUNCTIONAL: the log lines are formatted through the debug log's printf helper
+void CUIService::FUN_141aece70()
+{
+    FUN_140a44830()->FUN_1401ce2b0("\n--- CUIService Log ---");
+    if (Unk_UisMovie* pMovie = FUN_1422bb8b0(2))
+    {
+        if (pMovie->m_slot.FUN_14151e150() != 0)
+        {
+            if (Unk_UisRootsOwner* pOwner = pMovie->m_slot.FUN_14151e170()->vfunc_49())
+                FUN_140a44830()->FUN_1401ce2f0("MaxCollectionRoots: %d", FUN_14151e8c0(pOwner->m_sub.FUN_14151e180()));
+        }
+    }
+    FUN_141adcbb0(&CUIService::FUN_141aed0a0);
+}
+
+// @0x141aed0a0
+// MS2-FUNCTIONAL: the dialog reference is read through the unit's MS2Ptr accessor glue
+int CUIService::FUN_141aed0a0(MS2Ptr<UIDialog> spDlg)
+{
+    CString strName = spDlg->vfunc_1();
+    FUN_140a44830()->FUN_1401ce2f0("*Dialog [%s] closed %d AniState %d LoadComplete %d", (const char*)strName, static_cast<Unk_UisDlgPeek*>(spDlg.get())->Get68(), static_cast<Unk_UisDlgPeek*>(spDlg.get())->GetC0(), FUN_1422dc430(spDlg.get()));
+    return 0;
+}
+
+// @0x141aebed0
+// MS2-FUNCTIONAL: the camera dialog's reference is built through the unit's MS2Ptr glue
+void CUIService::FUN_141aebed0()
+{
+    FUN_1422d4b40(FUN_140b632f0(), FUN_141adda20);
+    FUN_1422aee20(FUN_14025e7a0(), FUN_141addb30);
+    FUN_1422aeea0(FUN_14025e7a0(), FUN_141ade430);
+    void* pMem = ::operator new(0x178);
+    UIDialog* pDlg = pMem != 0 ? FUN_141031f80(pMem) : 0;
+    FUN_141aec080(MS2Ptr<UIDialog>(pDlg));
+}
+
 // @0x141ade2d0
 bool CUIService::FUN_141ade2d0(void* pContext)
 {
@@ -3974,5 +4716,351 @@ MS2_REPLACE(0x141ade2d0, CUIService::FUN_141ade2d0, 36, 0xCAD73910);
 
 template class ATL::CAtlMap<eUIClassID, MS2Ptr<UIDialog> >;
 template class ATL::CAtlMap<eUIClassID, MS2Ptr<UIObject> >;
-template class ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraits<CStringA> >;
+template class ATL::CAtlMap<CStringA, MS2Ptr<UIObject>, ATL::CStringElementTraitsI<CStringA> >;
+// @0x141aee0f0
+NotifyOpenDialogByScene::NotifyOpenDialogByScene(int nScene)
+{
+    m_nScene = nScene;
+}
+
+// MS2-PIN: ??1NotifyOpenDialogByScene@@UEAA@XZ 0x141aee390
+// MS2-FUNCTIONAL: the exe body is folded with the other trivial NotifyObject dtors and does not rewrite the vptr
+NotifyOpenDialogByScene::~NotifyOpenDialogByScene()
+{
+}
+
 template UILoadingProgressLobby* Unk_UisFind<UILoadingProgressLobby>(eUIClassID);
+
+// @0x141af1ff0
+MS2_EMIT_CRT_MEMMOVE_S();
+
+// ---- movie manager callback setters ----
+struct Unk_UisMovieMgrCb
+{
+    char m_unk00[0x108];
+    void (*m_pfnFeature)(CString, void*, void*, void*);   // +0x108
+    void (*m_pfnTick)();                                   // +0x110
+};
+
+// @0x141af1860
+void FUN_141af1860(Unk_UisMovieMgr* pMgr, void (*pfn)(CString, void*, void*, void*))
+{
+    reinterpret_cast<Unk_UisMovieMgrCb*>(pMgr)->m_pfnFeature = pfn;
+}
+MS2_REPLACE(0x141af1860, FUN_141af1860, 28, 0xA73837CE);
+
+// @0x141af1a90
+void FUN_141af1a90(Unk_UisMovieMgr* pMgr, void (*pfn)())
+{
+    reinterpret_cast<Unk_UisMovieMgrCb*>(pMgr)->m_pfnTick = pfn;
+}
+MS2_REPLACE(0x141af1a90, FUN_141af1a90, 28, 0x5C733F66);
+
+// ---- lazily created singletons (game menu table, room timer manager) ----
+struct Unk_UisSingleton { virtual void* vfunc_0(int bFree); };   // MS2: slot 0 is the deleting destructor
+extern Unk_UisSingleton* DAT_143abe318;                           // game menu table instance
+void* FUN_140cf0fd0(void* pMem);                                  // game menu table ctor
+void* FUN_140c1d2f0();                                            // game menu table GetInstance
+
+// @0x141aee920
+// MS2-FUNCTIONAL: singleton glue, temporaries differ
+void* FUN_141aee920()
+{
+    if (DAT_143abe318)
+        return FUN_140c1d2f0();
+    void* pMem = operator new(0xb8);
+    return pMem ? FUN_140cf0fd0(pMem) : 0;
+}
+
+// @0x141aee9a0
+// MS2-FUNCTIONAL: singleton glue, temporaries differ
+void* FUN_141aee9a0()
+{
+    if (TSingleton<RoomTimerManager>::s_instance)
+        return FUN_140ee0d10();
+    return new RoomTimerManager;
+}
+
+// @0x141aeec30
+// MS2-FUNCTIONAL: singleton glue, temporaries differ
+void FUN_141aeec30()
+{
+    if (DAT_143abe318)
+    {
+        Unk_UisSingleton* p = static_cast<Unk_UisSingleton*>(FUN_140c1d2f0());
+        if (p)
+            p->vfunc_0(1);
+        DAT_143abe318 = 0;
+    }
+}
+
+// @0x141aeec90
+// MS2-FUNCTIONAL: singleton glue, temporaries differ
+void FUN_141aeec90()
+{
+    if (TSingleton<RoomTimerManager>::s_instance)
+    {
+        Unk_UisSingleton* p = static_cast<Unk_UisSingleton*>(FUN_140ee0d10());
+        if (p)
+            p->vfunc_0(1);
+        TSingleton<RoomTimerManager>::s_instance = 0;
+    }
+}
+
+// ---- UI render step / debug visualization click ----
+struct Unk_UisRenderer { virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual NiRenderTargetGroup* vfunc_4(); };   // MS2: slot 4
+extern char DAT_143afaa18;
+void* FUN_141ff5ca0(void* pScene);
+Unk_UisRenderer* FUN_1409a8880(void* pTable, void* pKey);
+void FUN_140c8f950(NiDefaultClickRenderStep* pStep, const NiFixedString& kName);
+NiDebugVisualizationClick* FUN_141e2ede0(void* pMem, unsigned char uiMask);
+void FUN_141476010(NiDebugVisualizationClick* pClick, int n);
+void FUN_1414756e0(NiDefaultClickRenderStep* pStep, NiRenderClick* pClick);
+
+// @0x141aee8d0
+void FUN_141aee8d0(NiRenderFrame* pFrame, NiRenderStep* pStep)
+{
+    pFrame->GetRenderSteps().AddTail(pStep);
+}
+
+// @0x141adf250
+// MS2-FUNCTIONAL: allocation temporaries and the NiPointer glue differ from the exe
+void CUIService::FUN_141adf250()
+{
+    void* pScene = FUN_140af7da0(m_pWorldSvc30);
+    NiRenderTargetGroup* pTarget = FUN_1409a8880(&DAT_143afaa18, FUN_141ff5ca0(pScene))->vfunc_4();
+    DAT_143af62d4 = pTarget->GetWidth(0);
+    DAT_143af62d8 = pTarget->GetHeight(0);
+    NiRenderFrame* pFrame = static_cast<NiRenderFrame*>(FUN_1413fc250(pScene));
+
+    int tmp;
+    void* mem = FUN_14208a860(0x70, *(int*)FUN_140876480(&tmp, 0));
+    NiDefaultClickRenderStep* pStep = mem ? new (mem) NiDefaultClickRenderStep : 0;
+    FUN_1416af350(&m_x38, pStep);
+    {
+        NiFixedString kName("UI Render Step");
+        FUN_140c8f950(static_cast<NiDefaultClickRenderStep*>(FUN_1416af950(&m_x38)), kName);
+    }
+    FUN_141aee8d0(pFrame, static_cast<NiRenderStep*>(FUN_1416af8c0(&m_x38)));
+
+    mem = FUN_14208a860(0x178, *(int*)FUN_140876480(&tmp, 0));
+    m_spDebugClick = mem ? FUN_141e2ede0(mem, 0xf) : 0;
+    {
+        NiFixedString kName("DebugGeometryClick");
+        m_spDebugClick->SetName(kName);
+    }
+    FUN_141e2f970(m_spDebugClick);
+    FUN_141e310e0(m_spDebugClick, FUN_1413f9950());
+    FUN_141476010(m_spDebugClick, 0);
+    m_spDebugClick->ProcessScene();
+    if (FUN_1416af8c0(&m_x38) != 0)
+        FUN_1414756e0(static_cast<NiDefaultClickRenderStep*>(FUN_1416af950(&m_x38)), m_spDebugClick);
+}
+
+// ---- AS callbacks registered on the movie manager's root object ----
+typedef Scaleform::GFx::FunctionHandler::Params Unk_UisAsParams;
+int FUN_1418dd0c0();
+int FUN_1418dd110();
+int FUN_1418dd0d0();
+CStringW FUN_14036da50(void* p, int n);
+CStringW FUN_14061ad70(const CStringW& str, const wchar_t* sz);
+CStringW FUN_140e70010(CStringW str);
+CStringW FUN_14083ccf0(const CStringW& str);
+Delegate<void(const Unk_UisAsParams&)>* FUN_14134a670(Delegate<void(const Unk_UisAsParams&)>* pOut, void (*pfn)(const Unk_UisAsParams&));
+int FUN_1422db730();
+
+// An AS function object calling back into C++ (ctor 0x1422c8430, dtor 0x1422c85b0).
+class ASFunction : public AScript {
+public:
+    ASFunction(const Delegate<void(const Unk_UisAsParams&)>& cb, int nUser, int nMovieId);
+    ~ASFunction();
+private:
+    void* m_40;
+};
+
+// @0x141ade740
+// MS2-FUNCTIONAL: string temporaries of the formatter calls differ from the exe
+static void FUN_141ade740(const Unk_UisAsParams& params)
+{
+    if (params.ArgCount > 0 && params.pArgs != 0)
+    {
+        ASData data;
+        if (data.FUN_1422b9620(params.pArgs, params.ArgCount) != 0)
+        {
+            Scaleform::GFx::Value val = data.FUN_1422b9260();
+            CStringW strArg(data.FUN_1422b8d30());
+            ASObj obj(val, 2);
+            obj.FUN_1407cbb20("text", CStringW(FUN_140e70010(CStringW(strArg))));
+        }
+    }
+}
+
+// @0x141ade900
+// MS2-FUNCTIONAL: string temporaries of the formatter calls differ from the exe
+static void FUN_141ade900(const Unk_UisAsParams& params)
+{
+    if (params.ArgCount > 0 && params.pArgs != 0)
+    {
+        ASData data;
+        if (data.FUN_1422b9620(params.pArgs, params.ArgCount) != 0)
+        {
+            Scaleform::GFx::Value val = data.FUN_1422b9260();
+            CStringW strArg(data.FUN_1422b8d30());
+            ASObj obj(val, 2);
+            obj.FUN_1407cbb20("text", CStringW(FUN_14083ccf0(strArg)));
+        }
+    }
+}
+
+// @0x141ade430
+// MS2-FUNCTIONAL: delegate / function object temporaries differ from the exe
+void FUN_141ade430(void* p, int nMovieId)
+{
+    ASObj* pObj = static_cast<ASObj*>(p);
+    CStringW strFeatures;
+    for (int i = 1; i < 0x118; ++i)
+    {
+        if (FUN_14036d570(FUN_140166410(), i))
+            strFeatures += FUN_14061ad70(FUN_14036da50(FUN_140166410(), i), L",");
+    }
+    pObj->FUN_1407cbb20("m_currentFeatureByString", CStringW(strFeatures));
+    pObj->FUN_1409c0d20("m_bottomMarginOfStage", FUN_1418dd0c0() + FUN_1418dd110());
+    pObj->FUN_1409c0d20("m_bottomMarginOfGamePlayScene", FUN_1418dd0d0());
+
+    Delegate<void(const Unk_UisAsParams&)> dlgMeso;
+    FUN_14134a670(&dlgMeso, FUN_141ade740);
+    ASFunction fnMeso(dlgMeso, 0, nMovieId);
+    pObj->FUN_1409adbe0("m_getMesoTextFunction", Scaleform::GFx::Value(fnMeso.FUN_1422bb870()));
+
+    Delegate<void(const Unk_UisAsParams&)> dlgNumeric;
+    FUN_14134a670(&dlgNumeric, FUN_141ade900);
+    ASFunction fnNumeric(dlgNumeric, 0, nMovieId);
+    pObj->FUN_1409adbe0("m_getNumericFunction", Scaleform::GFx::Value(fnNumeric.FUN_1422bb870()));
+
+    pObj->FUN_1409c0d20("m_tooltipLabelMaxWidth", static_cast<Client::Constants*>(FUN_1401d3200())->TooltipLabelMaxWidth);
+}
+
+// ---- fmt argument of an eUIClassID (wide formatter) ----
+// MS2-PIN: ??$format_arg@_WW4eUIClassID@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4eUIClassID@@@Z 0x141aed640
+namespace fmt {
+// @0x141aed640
+// MS2-FUNCTIONAL: the exe packs the streamed text through its own out-of-line wstring helper
+template <>
+void format_arg<wchar_t, eUIClassID>(BasicFormatter<wchar_t>& formatter, const wchar_t*& format, const eUIClassID& value)
+{
+    std::wostringstream oss;
+    oss << static_cast<int>(value);
+    std::wstring text = oss.str();
+    internal::Arg arg;
+    arg.wstring.value = text.c_str();
+    arg.wstring.size = text.size();
+    arg.type = internal::Arg::WSTRING;
+    format = formatter.format(format, arg);
+}
+}
+
+// ---- cached per-account config cleanup ----
+extern __int64 DAT_143ab2828;
+struct Unk_UisFindFiles {};
+void FUN_140399100(CString strExt, CString strDir, ATL::CAtlArray<CString>& arrOut, CString strFilter, bool bRecursive);
+Unk_UisFindFiles* FUN_140166420();
+CString FUN_140188f50(const char* szPath, int n);
+
+// @0x141aec3e0
+// MS2-FUNCTIONAL: CAtlArray / CString temporaries of the loop differ from the exe
+void CUIService::FUN_141aec3e0()
+{
+    CString strDir;
+    strDir.Format("./Config/%I64u", DAT_143ab2828);
+    ATL::CAtlArray<CString> arrFiles;
+    FUN_140166420();
+    FUN_140399100(CString(".xml"), CString(strDir), arrFiles, CString(""), false);
+    for (size_t i = 0; i < arrFiles.GetCount(); ++i)
+    {
+        char szDrive[8];
+        char szDir[272];
+        char szName[256];
+        _splitpath(arrFiles[i], szDrive, szDir, szName, 0);
+        CString strFile;
+        strFile.Format("%s.xml", szName);
+        CString strBase = FUN_1412755f0();
+        DeleteFileA(FUN_140cc2a00(FUN_140188f50(strBase, 0), strFile));
+    }
+}
+
+// ---- AS callback: localized text with fmt arguments ----
+CStringW FUN_1422b0570(Unk_UisMovieMgr* pMgr, const CString& strKey);       // $-prefixed key lookup
+int FUN_1407cccd0(const Scaleform::GFx::Value* pValue);                      // Value type
+unsigned FUN_1409c17e0(const Scaleform::GFx::Value* pValue);
+double FUN_140f17ed0(const Scaleform::GFx::Value* pValue);
+CStringW FUN_140719630(int n);
+CStringW FUN_1407196b0(unsigned n);
+CStringW FUN_1407197a0(float f);
+CStringW FUN_141277dd0(const Scaleform::GFx::Value* pValue);
+Scaleform::GFx::Value FUN_1412dd680(const wchar_t* sz);
+int FUN_1409c1750(const Scaleform::GFx::Value& v);
+void FUN_1407cd930(Scaleform::GFx::Value* pObj, const char* szName, const Scaleform::GFx::Value& v);
+
+// @0x141addb30
+// MS2-FUNCTIONAL: the fmt argument storage is a std::vector here (the exe uses an out-of-line buffer class)
+void FUN_141addb30(long long n)
+{
+    const Unk_UisAsParams* pParams = reinterpret_cast<const Unk_UisAsParams*>(n);
+    int nArgs = (int)pParams->ArgCount;
+    if (nArgs < 1)
+        return;
+    const Scaleform::GFx::Value* pArgs = pParams->pArgs;
+    if (pArgs == 0)
+        return;
+    ASData data;
+    if (data.FUN_1422b9620(pArgs, nArgs) == 0)
+        return;
+    Scaleform::GFx::Value kRet = data.FUN_1422b9260();
+    CString strKey = data.FUN_1422b8d30();
+    CStringW strKeyW(strKey);
+    if (strKey.IsEmpty())
+        return;
+    CStringW strFormat;
+    if (strKeyW.Find(L"$", 0) == 0)
+        strFormat = FUN_1422b0570(FUN_14025e7a0(), strKey);
+    else if (strKeyW.Find(L"s_", 0) == 0)
+        strFormat = FUN_14028b8e0(strKeyW);
+    else
+        strFormat = strKeyW;
+    if (strFormat.IsEmpty())
+        return;
+    CStringW strResult;
+    if (nArgs - 2 < 1)
+        strResult = strFormat;
+    else
+    {
+        ATL::CAtlArray<CStringW> arrKeep;
+        std::vector<fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> > > arrValues;
+        arrValues.reserve(nArgs);
+        fmt::ULongLong kTypes = 0;
+        for (int i = 2; i < nArgs; ++i)
+        {
+            Scaleform::GFx::Value kArg = pArgs[i];
+            CStringW strArg;
+            int nType = FUN_1407cccd0(&kArg);
+            if (nType == 3)
+                strArg = FUN_140719630(FUN_1409c1750(kArg));
+            else if (nType == 4)
+                strArg = FUN_1407196b0(FUN_1409c17e0(&kArg));
+            else if (nType == 5)
+                strArg = FUN_1407197a0((float)FUN_140f17ed0(&kArg));
+            else if (nType > 5 && nType < 8)
+                strArg = FUN_141277dd0(&kArg);
+            fmt::ULongLong kType = fmt::internal::make_type(strArg);
+            if (arrValues.empty())
+                kTypes = kType;
+            else
+                kTypes |= kType << ((arrValues.size() & 0xf) << 2);
+            arrKeep.Add(strArg);
+            arrValues.push_back(fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >());
+            arrValues.back().set_string(arrKeep[arrKeep.GetCount() - 1]);
+        }
+        strResult = StringFormat(strFormat, fmt::ArgList(kTypes, &arrValues[0]));
+    }
+    FUN_1407cd930(&kRet, "text", FUN_1412dd680(strResult));
+}
