@@ -394,7 +394,7 @@ void* FUN_140166440();
 void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
 CString FUN_14071a5b0(const CString& strDir, const CString& strFile);
 bool FUN_14028f710(Unk_140165cf0*);
-CString FUN_14015f710(Unk_140165cf0*, const char*, const CString&);   // string attribute
+CString FUN_14015f710(Unk_140165cf0*, const char*, CString strDefault);   // string attribute (default by value)
 class Unk_140166410 { public: bool FUN_14036d570(int); };
 Unk_140166410* FUN_140166410();
 void FUN_14019d470(bool);
@@ -595,24 +595,31 @@ const CAdventureLevelMission* CAdventureLevelTable::GetMission(unsigned nMission
 }
 
 // @0x140195f70
-// MS2-FUNCTIONAL: the claimed container's type is unrecovered (std::set<unsigned> assumed); iterator temporaries differ
-int CAdventureLevelTable::CountClaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed)
+// The rewards up to nLevel (type 2 excluded) that are not in setClaimed yet.
+// MS2-FUNCTIONAL: bytes identical; the exe calls set<unsigned>::const_iterator::operator!= from additionalactionadditional.cpp
+// (0x140184350), while this obj pairs its copy with the in-unit look-alike 0x14019ca30 (another tree type, see 0x1401a2680)
+int CAdventureLevelTable::CountUnclaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed)
 {
     int nCount = 0;
-    for (std::vector<unsigned>::iterator it = m_vecLevels.begin(); it != m_vecLevels.end() && *it <= nLevel; ++it) {
-        if (GetReward(*it)->m_nType != 2 && setClaimed.find(*it) != setClaimed.end())
-            ++nCount;
+    for (std::vector<unsigned>::const_iterator it = m_vecLevels.begin(); it != m_vecLevels.end(); ++it) {
+        if (*it > nLevel)
+            break;
+        const CAdventureLevelReward* pReward = GetReward(*it);
+        if (pReward->m_nType == 2)
+            continue;
+        if (setClaimed.find(*it) != setClaimed.end())
+            continue;
+        nCount++;
     }
     return nCount;
 }
-MS2_REPLACE_METHOD(0x140195F70, CAdventureLevelTable, CountClaimedRewards, 282, 0x9CFE52F9);
+MS2_REPLACE_METHOD(0x140195F70, CAdventureLevelTable, CountUnclaimedRewards, 282, 0x9CFE52F9);
 
 // @0x140196110
-// MS2-FUNCTIONAL: the output container's type is unrecovered (std::set<unsigned> assumed)
-void CAdventureLevelTable::CollectMissionIds(std::set<unsigned>& setOut)
+void CAdventureLevelTable::CollectMissionIds(std::vector<unsigned>& aOut) const
 {
-    for (std::map<unsigned, CAdventureLevelMission>::iterator it = m_mapMission.begin(); it != m_mapMission.end(); ++it)
-        setOut.insert(it->first);
+    for (std::map<unsigned, CAdventureLevelMission>::const_iterator it = m_mapMission.begin(); it != m_mapMission.end(); ++it)
+        aOut.push_back(it->first);
 }
 MS2_REPLACE_METHOD(0x140196110, CAdventureLevelTable, CollectMissionIds, 124, 0xCF2F835F);
 
@@ -639,7 +646,6 @@ static bool AbilityLess(const unsigned& a, const unsigned& b)
 }
 
 // @0x1401961c0
-// MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadReward()
 {
     CString strPath = FUN_14071a5b0("Table", "AdventureLevelReward.xml");
@@ -665,13 +671,12 @@ bool CAdventureLevelTable::LoadReward()
         m_mapReward.insert(std::make_pair(nLevel, row));
         m_vecLevels.push_back(nLevel);
     }
-    std::sort(m_vecLevels.begin(), m_vecLevels.end());
+    std::sort(m_vecLevels.begin(), m_vecLevels.end(), std::less<>());
     return true;
 }
 MS2_REPLACE_METHOD(0x1401961C0, CAdventureLevelTable, LoadReward, 901, 0xD3A2F416);
 
 // @0x140196550
-// MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadAbility()
 {
     CString strPath = FUN_14071a5b0("Table", "AdventureLevelAbility.xml");
@@ -705,7 +710,6 @@ bool CAdventureLevelTable::LoadAbility()
 MS2_REPLACE_METHOD(0x140196550, CAdventureLevelTable, LoadAbility, 848, 0x6F52A1EF);
 
 // @0x1401968b0
-// MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadMission()
 {
     CString strPath = FUN_14071a5b0("Table", "AdventureLevelMission.xml");

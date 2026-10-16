@@ -96,8 +96,8 @@ public:
     const CAdventureLevelMission* GetMission(unsigned nMissionId);  // 0x140196090
     std::vector<unsigned>& GetLevels();         // 0x140195eb0
     std::vector<unsigned>& GetAbilityIds();     // 0x140195f50
-    int CountClaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed);    // 0x140195f70
-    void CollectMissionIds(std::set<unsigned>& setOut);         // 0x140196110
+    int CountUnclaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed);    // 0x140195f70
+    void CollectMissionIds(std::vector<unsigned>& aOut) const;         // 0x140196110
 
     std::set<unsigned> m_map10;                  // +0x10 placeholder, never filled (a set: the exe uses _Tset_traits here)
     std::map<unsigned, unsigned> m_map20;       // +0x20 placeholder, never filled
