@@ -7,6 +7,8 @@
 // recovered yet (their pointee types and the COMDAT glue are still open).
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/placeholder/citem.h"
+#include "ms2/placeholder/citemdata.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
 
 // @0x14052a020
 int CItem::FUN_14052a020()
@@ -385,3 +387,107 @@ int CItem::FUN_1405291f0()
 {
     return m_19c;
 }
+
+// @0x140525640
+int CItem::FUN_140525640()
+{
+    return m_spData->FUN_14053cc40();
+}
+
+// @0x140525870
+int CItem::FUN_140525870()
+{
+    return m_spData->FUN_14053d150();
+}
+
+// @0x140525ca0
+int CItem::FUN_140525ca0()
+{
+    if (m_spData.IsNull())
+        return 0;
+    return m_spData->FUN_14053ce20();
+}
+
+// @0x140525db0
+int CItem::FUN_140525db0()
+{
+    if (m_spData.IsNull())
+        return 0;
+    return m_spData->FUN_14053d1f0();
+}
+
+// @0x140525e00
+int CItem::FUN_140525e00()
+{
+    if (m_spData.IsNull())
+        return 0;
+    return m_spData->FUN_14053d210();
+}
+
+// @0x140525e50
+int CItem::FUN_140525e50(int nGender, int nCategory)
+{
+    if (!m_spData->FUN_14053cae0(nGender, nCategory))
+        return 0;
+    return FUN_140525eb0(nGender, nCategory);
+}
+
+// @0x140525eb0
+int CItem::FUN_140525eb0(int nGender, int nB)
+{
+    if (m_spData.get() == 0)
+        return 0;
+    return m_spData->FUN_14053c9e0(nGender, nB);
+}
+
+// @0x140526010
+int CItem::FUN_140526010()
+{
+    if (m_spData.get() == 0)
+        return 0;
+    return m_spData->FUN_14053d900();
+}
+
+// @0x140526100
+int CItem::FUN_140526100()
+{
+    if (m_spData == 0)
+        return 0;
+    return m_spData->FUN_14053d8c0();
+}
+
+// @0x1405262c0
+int CItem::FUN_1405262c0()
+{
+    if (m_spData == 0)
+        return 0;
+    return m_spData->FUN_14053dad0();
+}
+
+// @0x140526320
+bool CItem::FUN_140526320()
+{
+    if (m_spData == 0)
+        return false;
+    return m_spData->FUN_14053c6f0() == 0x60;
+}
+
+// @0x140526790
+void CItem::FUN_140526790(int nJob)
+{
+    m_spData->FUN_14053c8e0(nJob);
+}
+
+// @0x1405267d0
+void CItem::FUN_1405267d0(int nGender)
+{
+    m_spData->FUN_14053c940(nGender);
+}
+
+// @0x140526810
+void CItem::FUN_140526810(unsigned short nLevel)
+{
+    m_spData->FUN_14053c9a0(nLevel);
+}
+
+// MS2-PIN: ?IsNull@?$MS2Ptr@VCItemData@@@@QEBA_NXZ 0x1402ffd90

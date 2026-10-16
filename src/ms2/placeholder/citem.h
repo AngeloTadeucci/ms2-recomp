@@ -1,6 +1,8 @@
 // CItem: external constructor 0x140523790, allocation size 0x1a0.
 #pragma once
+#include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/cptred.h"
+class CItemData;
 class Unk_UserProxyItemData;
 class COutputStream;
 class CInputStream;
@@ -73,6 +75,21 @@ public:
   void FUN_140528ab0(__int64);            // 0x140528ab0 set the creation time (saved beauty styles)
   __int64 FUN_140528ae0();                // 0x140528ae0 the creation time
   void FUN_1405255e0(CInPacket&);         // 0x1405255e0 read the item body (saved beauty styles)
+  // Delegations to the item table row (item.cpp, w74); names are by address.
+  int FUN_140525640();
+  int FUN_140525870();
+  int FUN_140525ca0();
+  int FUN_140525db0();
+  int FUN_140525e00();
+  int FUN_140525e50(int, int);
+  int FUN_140525eb0(int, int);
+  int FUN_140526010();
+  int FUN_140526100();
+  int FUN_1405262c0();
+  bool FUN_140526320();
+  void FUN_140526790(int);
+  void FUN_1405267d0(int);
+  void FUN_140526810(unsigned short);
   // Scalar accessors (item.cpp, w87): plain field getters/setters; names are by offset.
   int FUN_14052a020();
   void FUN_14052a040(int);
@@ -167,8 +184,7 @@ private:
   int m_d8;
   int m_dc;
   void *m_e0;
-  void *m_e8;
-  void *m_f0;
+  MS2Ptr<CItemData> m_spData;           // +0xe8 (the pointer is at +0xf0): the item's table row
   void *m_f8;
   void *m_100;
   void *m_108;
