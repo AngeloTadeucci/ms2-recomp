@@ -760,10 +760,10 @@ public:
     virtual void vfunc_10();
     virtual void vfunc_11();
     virtual void vfunc_12();
-    virtual void vfunc_13();
-    virtual void vfunc_14();
-    virtual void vfunc_15();
-    virtual void vfunc_16();
+    virtual void vfunc_13(CItem* pItem);                    // cube inventory item added
+    virtual void vfunc_14(CItem* pItem);                    // cube inventory item removed
+    virtual void vfunc_15(CItem* pItem);                    // cube inventory count changed
+    virtual void vfunc_16(CItem* pItem, int nValue);        // cube inventory item used
     virtual void vfunc_17();
     virtual void vfunc_18();
     virtual void vfunc_19();
@@ -2734,6 +2734,82 @@ void CSceneStateGame::FUN_1417132b0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x1417132B0, CSceneStateGame, FUN_1417132b0, 3305, 0xFCDC2CD4);
+
+// The housing cube inventory (items keyed by uid).
+class Unk_CubeFallbackInventory
+{
+public:
+    void FUN_1408fbac0();                                   // clear
+    void FUN_1408fbaf0(CItem* pItem);                       // add
+    void FUN_1408fbc00(__int64 nItemUid);                   // remove
+    MS2Ptr<CItem> FUN_1408fbf90(__int64 nItemUid);
+};
+extern Unk_CubeFallbackInventory DAT_143ab2e20;
+
+// @0x141715bd0
+// 0x23: the housing cube inventory.
+void CSceneStateGame::FUN_141715bd0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 1)
+        DAT_143ab2e20.FUN_1408fbac0();
+    else if (nMode == 2)
+    {
+        int nUnused = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    }
+    else if (nMode == 3)
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem());
+        if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+        {
+            spItem->FUN_140526b30(DAT_143ab2864);
+            spItem->FUN_140526a70(nItemUid);
+            spItem->FUN_140526b70(nAmount);
+            spItem->FUN_140524eb0(packet);
+            DAT_143ab2e20.FUN_1408fbaf0(spItem.get());
+            FUN_140a6a840()->vfunc_13(spItem.get());
+        }
+    }
+    else if (nMode == 4)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = DAT_143ab2e20.FUN_1408fbf90(nItemUid);
+        if (!spItem)
+            return;
+        DAT_143ab2e20.FUN_1408fbc00(nItemUid);
+        FUN_140a6a840()->vfunc_14(spItem.get());
+    }
+    else if (nMode == 5)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem = DAT_143ab2e20.FUN_1408fbf90(nItemUid);
+        if (spItem.get() != 0)
+        {
+            int bNotify = 1;
+            MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pPC != 0 && pPC->FUN_141527eb0() != 0)
+                bNotify = 0;
+            if (bNotify)
+                FUN_140a6a840()->vfunc_16(spItem.get(), nValue);
+        }
+    }
+    else if (nMode == 7)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem = DAT_143ab2e20.FUN_1408fbf90(nItemUid);
+        if (!spItem)
+            return;
+        spItem->FUN_140526c70(nAmount);
+        FUN_140a6a840()->vfunc_15(spItem.get());
+    }
+}
+MS2_REPLACE_METHOD(0x141715BD0, CSceneStateGame, FUN_141715bd0, 1564, 0x3F30BB71);
 
 // ---- inventory updates (0x21) --------------------------------------------------------------------------------------
 class Unk_ItemEquipData : public CItemData { };            // CItem::FUN_140527840's record (item.cpp)
