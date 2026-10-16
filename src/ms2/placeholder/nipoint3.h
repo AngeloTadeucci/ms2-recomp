@@ -26,6 +26,7 @@ struct Unk_StreamPoint
     float FUN_140a00f20(const Unk_StreamPoint& pt) const;           // efd::Point3::Dot
     Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
     Unk_StreamPoint FUN_140ae9180(float f) const;                   // efd::Point3::operator/(float)
+    Unk_StreamPoint FUN_14109adc0(const Unk_StreamPoint& pt) const; // unit cross product (getexp)
     float x, y, z;
 };
 MS2_CHECK_SIZE(Unk_StreamPoint, 12);
@@ -79,5 +80,6 @@ struct Unk_NiMatrix3 : public Unk_EfdMatrix3
         memcpy(this, &m, sizeof(Unk_EfdMatrix3));
     }
     void FUN_140a01190(unsigned int uiCol, Unk_StreamPoint& pt) const;  // GetCol (inline, 0x140a01190)
+    void FUN_14109aa30(unsigned int uiCol, const Unk_StreamPoint& pt);   // SetCol (0x14109aa30)
 };
 MS2_CHECK_SIZE(Unk_NiMatrix3, 0x24);
