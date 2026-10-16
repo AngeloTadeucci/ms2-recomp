@@ -1873,3 +1873,9 @@ D3DXFloat16To32Array	14230396f	func
 ?FUN_14097fc90@Unk_HudStreamPoint@@QEBA?AU1@M@Z	14097fc90	func
 ?FUN_140ae9180@Unk_HudStreamPoint@@QEBA?AU1@M@Z	140ae9180	func
 ?DAT_143b01a60@@3UUnk_HudStreamPoint@@A	143b01a60	data
+?DAT_143ab3330@@3PEAVUnk_Restrictions@@EA	143ab3330	data
+?DAT_143ab3328@@3PEAVUnk_SoundSink@@EA	143ab3328	data
+?DAT_143ab0260@@3PEAVUnk_QuestTable@@EA	143ab0260	data
+?DAT_143ab1fc8@@3PEAVUnk_ItemSlotTable@@EA	143ab1fc8	data
+?DAT_143ab3338@@3PEAVUnk_BonusBar@@EA	143ab3338	data
+?DAT_143ab3340@@3PEAVUnk_Hud@@EA	143ab3340	data
