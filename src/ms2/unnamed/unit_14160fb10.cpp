@@ -29,13 +29,13 @@ class Unk_ShadowModel { public:                                     // object re
     virtual void s0(); virtual void s1(); virtual void s2(); virtual void s3(); virtual void s4(); virtual void s5(); virtual void s6();
     virtual void s7(); virtual void s8(); virtual void s9(); virtual void s10(); virtual void s11(); virtual void s12(); virtual void s13();
     virtual void* vfunc_14(); };                                    // 0x70
-class Unk_ShadowIter { public:                                      // elements of the iterated container (+0x100)
+class Unk_ShadowIter { public:                                      // elements of the iterated container (slot 32 = +0x100)
     virtual void s0(); virtual void s1(); virtual void s2(); virtual void s3(); virtual void s4(); virtual void s5(); virtual void s6();
     virtual void s7(); virtual void s8(); virtual void s9(); virtual void s10(); virtual void s11(); virtual void s12(); virtual void s13();
     virtual void s14(); virtual void s15(); virtual void s16(); virtual void s17(); virtual void s18(); virtual void s19(); virtual void s20();
     virtual void s21(); virtual void s22(); virtual void s23(); virtual void s24(); virtual void s25(); virtual void s26(); virtual void s27();
-    virtual void s28(); virtual void s29(); virtual void s30(); virtual void s31(); virtual void s32();
-    virtual void vfunc_33(char flag); };                            // 0x108? (see call below)
+    virtual void s28(); virtual void s29(); virtual void s30(); virtual void s31();
+    virtual void vfunc_32(char flag); };                            // +0x100 (0x141610573 call [rax+0x100])
 
 struct Unk_NodePtr { Unk_NodePtr(void* p); ~Unk_NodePtr(); void* m_p; };   // ctor 0x1409f7170, dtor 0x1409f74b0 (smart pointer to the shadow NiNode)
 
@@ -300,7 +300,7 @@ void FUN_141610490()
     FUN_141bd2db0(FUN_1403ed2d0(), &list, 0);
     for (pos = FUN_140967000(&list); pos != 0; FUN_1409671f0(&list, &pos)) {
         Unk_ShadowIter* it = (Unk_ShadowIter*)FUN_1409658c0(FUN_140a01110(&list, pos));
-        it->vfunc_33(1);
+        it->vfunc_32(1);
     }
 }
 
