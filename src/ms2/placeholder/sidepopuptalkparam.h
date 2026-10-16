@@ -22,7 +22,10 @@ public:
     int m_pad_54;
     CStringA m_strSound;                    // +0x58
     CStringA m_strScript;                   // +0x60
-    char m_pad_68[0xd0 - 0x68];
+    CStringA m_str68;                       // +0x68 image path (scenestategame 0x11f)
+    CStringW m_str70;                       // +0x70 display name
+    CStringA m_str78;                       // +0x78
+    char m_pad_80[0xd0 - 0x80];
 };
 MS2_CHECK_SIZE(SidePopupTalkParam, 0xd0);
 MS2_CHECK_OFFSET(SidePopupTalkParam, m_strText, 0x38);

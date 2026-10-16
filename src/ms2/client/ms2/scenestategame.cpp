@@ -33,6 +33,9 @@
 // MS2-PIN: ?Id@UIExpBar@@SAHXZ 0x141748200 ; w102 manual
 // MS2-PIN: ?get@?$MS2Ptr@VCSplashDamageRecord@@@@QEBAPEAVCSplashDamageRecord@@XZ 0x1417472a0 ; w102 manual
 // MS2-PIN: ??$Log@HW4Unk_SSGSkillUseError@@@Unk_SSGCommandLog@@QEAAXHHPEB_WAEBHAEBW4Unk_SSGSkillUseError@@@Z 0x141740800 ; w102 manual
+// MS2-PIN: ??0?$MS2Ptr@VCSplashDamageRecord@@@@QEAA@PEAVCSplashDamageRecord@@@Z 0x141745850 ; w109 manual (was auto-order)
+// MS2-PIN: ??0?$MS2Ptr@VUGCMapBlueprintInfo@@@@QEAA@PEAVUGCMapBlueprintInfo@@@Z 0x141745880 ; w109 manual (was auto-order)
+// MS2-PIN: ??0?$MS2Ptr@VUGCMapDesignInfo@@@@QEAA@PEAVUGCMapDesignInfo@@@Z 0x1417458f0 ; w109 manual (was auto-order)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -69,6 +72,11 @@
 #include <NiColor.h>
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/client/ms2/stateemotionidle.h"
+#include "uigalleryeventdialog.h"
+#include "uilongtermattendgiftdialog.h"
+#include "uisnowmaneventdialog.h"
+#include "ms2/placeholder/sidepopuptalkparam.h"
+#include "ms2/ms2format.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
 #include <efd/ServiceManager.h>
@@ -752,7 +760,7 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0x2d0]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x78]; CString m_str358; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2d0 - 0xd8]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x78]; CString m_str358; };
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
 int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
 class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
@@ -3471,6 +3479,8 @@ void CSceneStateGame::FUN_14173f810(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14173f810, CSceneStateGame, FUN_14173f810, 60, 0xDC170DA8);
 void FUN_140274970(DamageCalculatorInfo* pInfo);           // show ToString() as a system message
+CStringW FUN_14061ad70(const CStringW& str, const wchar_t* pszSuffix);
+
 // @0x14173f860
 // MS2-FUNCTIONAL: stack slots differ (SYSTEMTIME/strText/hFile placement) and the exe has one extra dead jmp after the switch dispatch.
 void CSceneStateGame::FUN_14173f860(CInPacket& packet)
@@ -3490,7 +3500,7 @@ void CSceneStateGame::FUN_14173f860(CInPacket& packet)
         }
         else if (strFile.Right(4) != L".txt")
         {
-            strFile = strFile + L".txt";
+            strFile = FUN_14061ad70(strFile, L".txt");
         }
         HANDLE hFile = CreateFileW(strFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
         if (hFile == INVALID_HANDLE_VALUE)
@@ -5283,3 +5293,193 @@ static int FUN_1417403b0(const __int64& nValue, const int& nType, int& nOutType,
     }
     return 0;
 }
+
+// ---- w109: event dialog / misc handlers -------------------------------------------------------------------------
+class UIStampEventDialog : public UIDialog { public: void FUN_140ed7ea0(); };
+class UITimeRunEventDialog : public UIDialog { public: void FUN_140ee4570(int nMode); };
+UITimeRunEventDialog* FUN_140cf8380(int nId);               // GetDialog<UITimeRunEventDialog>
+UISnowmanEventDialog* FUN_140ce8450(int nId);               // GetDialog<UISnowmanEventDialog>
+class Unk_SSGGameMenuDlg { public: void FUN_141938ae0(int nId, int n); };
+
+// @0x141735dd0
+void CSceneStateGame::FUN_141735dd0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0 || nMode == 1)
+    {
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            for (int i = 0; i < nCount; i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nValue = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+                pChat->FUN_141abf6e0(nItemId, nValue);
+            }
+        }
+        UIStampEventDialog* pStamp = Unk_SSGGetDialog<UIStampEventDialog>(0x4f33);
+        if (pStamp != 0)
+            pStamp->FUN_140ed7ea0();
+        Unk_SSGGameMenuDlg* pMenu = (Unk_SSGGameMenuDlg*)FUN_140938b90(0x4e28);
+        if (pMenu != 0)
+            pMenu->FUN_141938ae0(0x4f33, 0);
+    }
+    else if (nMode == 4 || nMode == 3)
+    {
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+            pChat->FUN_141abf6e0(nItemId, nValue);
+        }
+        UITimeRunEventDialog* pDlg = FUN_140cf8380(0x4f43);
+        if (pDlg != 0)
+            pDlg->FUN_140ee4570(nMode);
+    }
+    else if (nMode > 6 && nMode < 10)
+    {
+        UIGalleryEventDialog* pDlg = Unk_SSGGetDialog<UIGalleryEventDialog>(0x4f59);
+        if (pDlg != 0)
+            pDlg->FUN_140c17200(nMode, (Unk_GalleryPacket*)&packet);
+    }
+    else if (nMode > 11 && nMode < 14)
+    {
+        UISnowmanEventDialog* pDlg = FUN_140ce8450(0x4f5d);
+        if (pDlg != 0)
+            pDlg->FUN_140e96c50(nMode, packet);
+    }
+    else if (nMode == 0x17)
+    {
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            for (int i = 0; i < nCount; i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nValue = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+                pChat->FUN_141abf6e0(nItemId, nValue);
+            }
+        }
+    }
+    else if (nMode > 0x18 && nMode < 0x1c)
+    {
+        UILongTermAttendGiftDialog* pDlg = Unk_SSGGetDialog<UILongTermAttendGiftDialog>(0x4f98);
+        if (pDlg != 0)
+            pDlg->FUN_140c6bac0(nMode, packet);
+    }
+}
+MS2_REPLACE_METHOD(0x141735dd0, CSceneStateGame, FUN_141735dd0, 1120, 0xD1CA309C);
+
+// 0x11f: field war announcement (side popup talk by Neirin).
+class Unk_SSGFieldWarInfo : public CPtred { public: char m_pad_18[0x2c - 0x18]; unsigned int m_nId; };
+MS2_CHECK_OFFSET(Unk_SSGFieldWarInfo, m_nId, 0x2c);
+class Unk_SSGFieldWarTable { public: MS2Ptr<Unk_SSGFieldWarInfo> FUN_140382be0(int nId); };
+Unk_SSGFieldWarTable* FUN_1414a5820();
+class Unk_SSGSidePopupTalk { public: void FUN_140e879a0(MS2Ptr<SidePopupTalkParam> spParam); };
+Unk_SSGSidePopupTalk* FUN_1413868b0(int nId);
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
+
+// @0x14173dfd0
+void CSceneStateGame::FUN_14173dfd0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<Unk_SSGFieldWarInfo> spInfo = FUN_1414a5820()->FUN_140382be0(nId);
+        if (spInfo == 0)
+            return;
+        MS2Ptr<SidePopupTalkParam> spParam(new SidePopupTalkParam);
+        spParam->m_nKind = 4;
+        spParam->m_strIcon = "Neirin_normal";
+        spParam->m_nNpcId = 30000;
+        spParam->m_strScript = s_systemFieldWar;
+        spParam->m_strText = FUN_1405c2690(L"s_fieldwar_sidepopup_script", FUN_1401a9d70()->FUN_141811980(3, spInfo->m_nId));
+        spParam->m_str70 = FUN_1401a9d70()->FUN_141811980(3, spInfo->m_nId);
+        spParam->m_str68 = StringFormat("{0}{1:08d}.png", FUN_1401d31f0()->m_strd0, spInfo->m_nId);
+        spParam->m_str78 = StringFormat("{0}", nUid);
+        Unk_SSGSidePopupTalk* pUi = FUN_1413868b0(0x4f57);
+        if (pUi != 0)
+            pUi->FUN_140e879a0(spParam);
+    }
+}
+MS2_REPLACE_METHOD(0x14173dfd0, CSceneStateGame, FUN_14173dfd0, 1121, 0x0D03AAC3);
+
+// 0x24: the housing cube stock (UGC map items).
+class CUGCMapItem : public CPtred
+{
+public:
+    CUGCMapItem();                                          // 0x140dfc1b0
+    void FUN_140dfc280(int n);
+    void FUN_140dfc2a0(int nItemId);
+    void FUN_140dfc2c0(__int64 nUid);
+    void FUN_140dfc2e0(__int64 nCount);
+    void FUN_140dfc300(MS2Ptr<CUgcItemLook> spLook);
+    int m_n18;                                              // +0x18 (FUN_140dfc280)
+    int m_nItemId;                                          // +0x1c
+    __int64 m_nUid;                                         // +0x20
+    __int64 m_nCount;                                       // +0x28
+    MS2Ptr<CUgcItemLook> m_spLook;                          // +0x30
+};
+MS2_CHECK_SIZE(CUGCMapItem, 0x40);
+class Unk_CubeStock
+{
+public:
+    void FUN_140dfc4f0();                                   // clear
+    void FUN_140dfc520(CUGCMapItem* pItem);                 // add
+    void FUN_140dfc6e0(__int64 nUid);                       // remove
+    MS2Ptr<CUGCMapItem> FUN_140dfc8f0(__int64 nUid);        // find
+};
+extern Unk_CubeStock DAT_143ab2e50;
+void FUN_140893250(CUgcItemLook* pLook, CInputStream* pIn);  // read a UGC look
+
+// @0x141716200
+void CSceneStateGame::FUN_141716200(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        DAT_143ab2e50.FUN_140dfc4f0();
+    }
+    else if (nMode == 1)
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nCount = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        bool bHasLook = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        MS2Ptr<CUgcItemLook> spLook(0);
+        if (bHasLook)
+        {
+            spLook.AssignRaw(new CUgcItemLook);
+            FUN_140893250(spLook.operator->(), &static_cast<CInputStream&>(packet));
+        }
+        MS2Ptr<CUGCMapItem> spItem(new CUGCMapItem);
+        spItem->FUN_140dfc2a0(nItemId);
+        spItem->FUN_140dfc2c0(nUid);
+        spItem->FUN_140dfc2e0(nCount);
+        spItem->FUN_140dfc300(spLook);
+        DAT_143ab2e50.FUN_140dfc520(spItem.get());
+    }
+    else if (nMode == 2)
+    {
+        __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CUGCMapItem> spItem = DAT_143ab2e50.FUN_140dfc8f0(nUid);
+        if (!spItem)
+            return;
+        DAT_143ab2e50.FUN_140dfc6e0(nUid);
+    }
+    else if (nMode == 3)
+    {
+        __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CUGCMapItem> spItem = DAT_143ab2e50.FUN_140dfc8f0(nUid);
+        if (!spItem)
+            return;
+        spItem->FUN_140dfc280(nValue);
+    }
+}
+MS2_REPLACE_METHOD(0x141716200, CSceneStateGame, FUN_141716200, 1144, 0x21D35F8C);
