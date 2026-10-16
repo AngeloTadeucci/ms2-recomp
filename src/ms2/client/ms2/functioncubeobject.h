@@ -7,6 +7,10 @@
 
 #include <afxtempl.h>
 #include <atlcoll.h>
+#include <map>
+#include <list>
+#include <efd/ISystemService.h>
+#include <efd/Category.h>
 
 #include "ms2/ms2layout.h"
 #include <egf/EntityID.h>
@@ -17,6 +21,10 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/client/ms2/animationcallbackmanager.h"      // CGlobalKeyTextCallback
 #include "ms2/client/ms2/cubespawnobject.h"               // Unk_EntRef
+#include "ms2/placeholder/cinpacket.h"
+
+namespace efd { class IMessage; }
+namespace egf { class EntityChangeMessage; }
 
 // The interaction box: a debug-visible box collision (class of an unrecovered unit; only the ctor and the fields touched).
 class CBoxCollision : public CBaseCollision
@@ -293,6 +301,9 @@ public:
 
     // exe members defined elsewhere
     int FUN_140966fc0();                                          // cube kind of the data row
+    int FUN_1409674f0();                                          // exe member of another unit
+    int FUN_140e5cc00();                                          // exe member of another unit
+    __int64 FUN_140e5cbf0();                                      // exe member of another unit
     int FUN_14112e110();                                          // item id
     int FUN_14122e6d0();                                          // 0x14122e6d0
     int FUN_14122e710();                                          // 0x14122e710
@@ -450,3 +461,81 @@ MS2_CHECK_SIZE(CNurturingCubeObject, 0x1f0);
 MS2_CHECK_OFFSET(CNurturingCubeObject, m_entPet, 0xd0);
 MS2_CHECK_OFFSET(CNurturingCubeObject, m_spPet, 0xd8);
 MS2_CHECK_OFFSET(CNurturingCubeObject, m_obj, 0xf8);
+
+// ---- the service ----
+// Smart-pointer targets seen through the cube service: a magic effect tag (its id at +0x2c) and a collision area.
+class Unk_FcTag : public CPtred
+{
+public:
+    char m_pad_18[0x14];
+    int m_nOwner;                                                 // +0x2c
+};
+class Unk_FcArea : public CPtred
+{
+public:
+    char m_pad_18[0x28];
+};
+
+class CFunctionCubeService;
+template <class T> class TSingleton;
+template <> class TSingleton<CFunctionCubeService>
+{
+public:
+    TSingleton();                                   // 0x141234920 (inline, in the cpp)
+    virtual ~TSingleton() { s_instance = 0; }       // 0x141234ea0
+    static CFunctionCubeService* s_instance;        // 0x143ab3918
+};
+
+// Client side of the housing function cubes (service id 0x06100019): it keeps every placed cube object by its id
+// string, forwards the cube packets to them and ticks them. Pointer-to-member names are invented from their use.
+class CFunctionCubeService : public efd::ISystemService, public TSingleton<CFunctionCubeService>
+{
+    EE_DECLARE_CLASS1(CFunctionCubeService, 0x06100019, efd::ISystemService);
+    EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
+public:
+    typedef ATL::CRBMap<CString, MS2Ptr<CFunctionCubeObject> > CubeMap;
+    typedef ATL::CRBMap<MS2Ptr<Unk_FcTag>, MS2Ptr<Unk_FcArea> > TagMap;
+
+    CFunctionCubeService();                         // 0x14122ef20
+    virtual ~CFunctionCubeService();                // 0x14122f000
+    virtual const char* GetDisplayName() const;     // 0x14122f0f0
+    virtual efd::SyncResult OnPreInit(efd::IDependencyRegistrar* pRegistrar);   // 0x141230670
+    virtual efd::AsyncResult OnInit();              // 0x1412306b0
+    virtual efd::AsyncResult OnTick();              // 0x141230950
+    virtual efd::AsyncResult OnShutdown();          // 0x1412309e0
+
+    void FUN_14122f110(const egf::EntityChangeMessage* pMsg, efd::Category cat);    // entity removed (8254)
+    void FUN_14122f240(const efd::IMessage* pMsg, efd::Category cat);
+    void FUN_14122f270(CInPacket* pPacket);         // the cube packet dispatcher
+    void FUN_141230310(CInPacket* pPacket);
+    void FUN_1412304e0(unsigned nA, unsigned nB, int nKind);
+    void FUN_141230580(CString strId, MS2Ptr<CFunctionCubeObject> spObject);
+    MS2Ptr<CFunctionCubeObject> FUN_141230c00(CString strId);
+    void FUN_141230c90(MS2Ptr<CFunctionCubeObject> spObject);
+    void FUN_141230df0(CString strId);
+    MS2Ptr<CFunctionCubeObject> FUN_141230f60(Unk_StreamPoint pt, float fRange, __int64 nOwner);
+    MS2Ptr<CFunctionCubeObject> FUN_141231200(Unk_StreamPoint pt, float fRange, __int64 nOwner, int nKind);
+    void FUN_1412314e0(Unk_StreamPoint pt, ATL::CAtlArray<MS2Ptr<CFunctionCubeObject> >& aOut);
+    void FUN_1412316a0(MS2Ptr<Unk_FcArea> spArea, MS2Ptr<Unk_FcTag> spTag);
+    void FUN_141231730();
+    void FUN_141231be0();
+    void FUN_141231ce0(int nKey, CString str, int bAppend);
+    int FUN_141231eb0(int nKey, int* pnItem);
+    void FUN_141232260();
+    void FUN_141232330(int nItem, int nState);
+    int FUN_141232430(int nItem, __int64 nOwner);
+    void FUN_141232660(ATL::CAtlArray<MS2Ptr<CHomemadeCubeObject> >& aOut, __int64 nOwner);
+    void FUN_141232810(ATL::CAtlArray<MS2Ptr<CNurturingCubeObject> >& aOut);
+
+    efd::Category m_catGlobal;                                    // +0x28 the message service's unique category
+    CubeMap m_mapCubes;                                           // +0x30 cube id -> object
+    CubeMap m_mapPending;                                         // +0x60 "<a>_<b>" -> object created from the table
+    TagMap m_mapTags;                                             // +0x90
+    std::map<int, std::list<CString> > m_mapStrings;              // +0xc0 cube item id -> object ids
+};
+MS2_CHECK_SIZE(CFunctionCubeService, 0xd0);
+MS2_CHECK_OFFSET(CFunctionCubeService, m_catGlobal, 0x28);
+MS2_CHECK_OFFSET(CFunctionCubeService, m_mapCubes, 0x30);
+MS2_CHECK_OFFSET(CFunctionCubeService, m_mapPending, 0x60);
+MS2_CHECK_OFFSET(CFunctionCubeService, m_mapTags, 0x90);
+MS2_CHECK_OFFSET(CFunctionCubeService, m_mapStrings, 0xc0);
