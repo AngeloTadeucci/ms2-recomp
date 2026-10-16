@@ -29,6 +29,8 @@
 #include "ms2/client/ms2/effectobject.h"
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/placeholder/citem.h"
+#include "ms2/commonfiles/logstring.h"
+#include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -416,10 +418,17 @@ CString FUN_140741200(const char* pszFormat, const CString& strA, const CString&
 CString FUN_140536a50(const char* pszFormat, const CString& strA);
 class Unk_NifStrings { public: CStringW FUN_141811980(int nA, int nId); };
 Unk_NifStrings* FUN_1401a9d70();
-void* FUN_140166440();                                              // logger singleton
-CString FUN_14154dd60(const char* pszFormat, const CString& strNode, const int& nId, const CStringW& strName);
-void FUN_14154da00(void* pLog, int nA, int nB, const wchar_t* pszFormat, const int* pnLevel, const CString* pstrFile,
-                   const CString* pstrWhere);
+CLogString* FUN_140166440();                                         // the game log, or 0
+
+// 3-argument fmt log helper (log, level, category, "format", a, b, c).
+// @0x14154da00
+template<class T, class U, class V> inline void Unk_NifLog3(CLogString* log, int level, int category, const wchar_t* format,
+                                                            const T& first, const U& second, const V& third) {
+    const fmt::internal::ArgArray<3>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(first),
+                                                 fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(second),
+                                                 fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(third)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second, third), args));
+}
 
 // @0x14154f4b0
 Unk_BitRef::operator bool() const
@@ -1017,8 +1026,7 @@ void CNifEffect::FUN_14154c7f0(Unk_EffectTarget* pTarget)
                 {
                     int nItemId = FUN_1411dc820(spModelEquip.get());
                     CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nItemId);
-                    CString strNode(FUN_142087e50(FUN_1409a8b90(FUN_14098d0f0(&spModel))));
-                    strWhere = FUN_14154dd60("targetNode:{0}, itemID:{1}({2})", strNode, nItemId, strName);
+                    strWhere = StringFormat("targetNode:{0}, itemID:{1}({2})", CString(FUN_142087e50(FUN_1409a8b90(FUN_14098d0f0(&spModel)))), nItemId, CString((const wchar_t*)strName));
                 }
             }
         }
@@ -1026,12 +1034,11 @@ void CNifEffect::FUN_14154c7f0(Unk_EffectTarget* pTarget)
         {
             int nItemId = FUN_1411dc820(spEquip.get());
             CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nItemId);
-            CString strNode(FUN_142087e50(FUN_1409a8b90(static_cast<NiAVObject*>(FUN_1409475f0(&kTarget)))));
-            strWhere = FUN_14154dd60("targetNode:{0}, itemID:{1}({2})", strNode, nItemId, strName);
+            strWhere = StringFormat("targetNode:{0}, itemID:{1}({2})", CString(FUN_142087e50(FUN_1409a8b90(static_cast<NiAVObject*>(FUN_1409475f0(&kTarget))))), nItemId, CString((const wchar_t*)strName));
         }
     }
     if (FUN_140166440() != 0)
-        FUN_14154da00(FUN_140166440(), 0xc, 0x133, L"LOD level [{0}] [{1}] [{2}]", &m_nLodLevel, &m_spParam->m_strFilePath, &strWhere);
+        Unk_NifLog3(FUN_140166440(), 0xc, 0x133, L"LOD level [{0}] [{1}] [{2}]", m_nLodLevel, m_spParam->m_strFilePath, strWhere);
 }
 
 // @0x14154cf20
