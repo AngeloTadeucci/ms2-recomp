@@ -20,12 +20,14 @@ public:
     void FUN_1407cb9c0(const char* szName, int n);                       // set an int member
     void FUN_1409c0d20(const char* szName, unsigned int n);              // set an unsigned member
     void FUN_1409c0dc0(const char* szName, const char* szValue);         // set a string member from a char*
+    void FUN_1409c0e60(const char* szName, const wchar_t* szValue);      // set a string member from a wchar_t*
     void FUN_1409c1180(const char* szName, __int64 n);                   // set a 64-bit member
     void FUN_1409c48f0(const char* szName, short n);                     // set a short member
     void FUN_1409adbe0(const char* szName, Scaleform::GFx::Value v);     // set a member to a value
     void FUN_1409c4a30(const char* szName, float f);                     // set a float member (UIRimLightDialog)
     void FUN_140e06d60(const char* szName, double d);                    // set a double member (UIRimLightDialog)
     void FUN_1409adc90(const char* szName, int n);                       // set an int member (item rank; UISnowmanEventDialog)
+    void FUN_140f43b40(const char* szName, int n);                       // set an int member (fishing medal; UIRewardNotify)
     void FUN_1409eb270(const char* szName, const ASObj& obj);            // set a member to another AS object
     void FUN_1409eb1d0(const char* szName, const class ASArray& arr);    // set a member to an AS array (UITalkCinematic components)
     void FUN_140e846b0(const char* szName, size_t n);                    // set a size_t member (a Set<unsigned __int64> COMDAT, in uirpseventdialog's range)

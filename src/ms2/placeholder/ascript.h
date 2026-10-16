@@ -88,9 +88,15 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, const AScript& obj);                  // 0x140ba4cc0 (passes obj's value)
     Scaleform::GFx::Value Invoke(const char* szMethod, unsigned int a1, float a2);          // 0x140ba4c00 (inline COMDAT, defined in uiadventureleveldialog.cpp)
     template <class T> MS2Ptr<T> FUN_140accef0(const CString& strName);                      // child control by name (the adventure level lists)
+    template <class T> MS2Ptr<T> FUN_140acce30(const CString& strName);                      // same, one COMDAT per wrapper class (w47: pet evolution)
+    template <class T> MS2Ptr<T> FUN_140accfb0(const CString& strName);
+    AScript(const AScript& o);                                                               // 0x1409bb7b0 (inline COMDAT)
+    Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1);                         // 0x140acd130 (inline COMDAT, tabcontentspetevolution.cpp)
+    Scaleform::GFx::Value FUN_140acd1f0(const char* szMethod, AScript a1);                   // 0x140acd1f0 (Invoke with the AS object by value: the callee destroys it)
     Scaleform::GFx::Value FUN_1422bb8f0(const char* szMethod, ASArgList& args);              // the Invoke back end
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, CStringW a2, int a3, CStringW a4);   // 0x141b4da00 (inline COMDAT, defined in uiupperhpbar.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, bool a1);                             // 0x140bfe360 (inline COMDAT, defined in uicoupledanceeventdialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, MS2Ptr<AScript> a1);                 // 0x141ac34b0 (inline COMDAT, defined in uirewardnotify.cpp; a1 by value: the callee destroys it)
 
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1); // 0x1409ba030 (couple dance HUD)
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, __int64 a2, int a3); // 0x140e98700 (UITamingBar, w4s10)
