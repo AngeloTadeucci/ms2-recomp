@@ -1962,3 +1962,7 @@ D3DXFloat16To32Array	14230396f	func
 ??C?$MS2Ptr@UUnk_GemPetRow@@@@QEBAPEAUUnk_GemPetRow@@XZ	14052ceb0	func
 ?get@?$Unk_14102fe10@VUnk_140bfc2e0@@@@QEBAPEAVUnk_140bfc2e0@@XZ	140bfc340	func
 ??0Customize@@QEAA@HPEAVIItemCustomizeEventListener@@H@Z	140cd1570	func
+??0RenderedTextureRenderClick@@QEAA@XZ	1416f8f50	func
+??0MS2AfterImageRenderListProcessor@@QEAA@XZ	1414dec90	func
+?UnitCross@Point3@efd@@QEBA?AV12@AEBV12@@Z	14109adc0	func
+??1?$MS2Ptr@VUnk_StateArg29@@@@QEAA@XZ	1401bfde0	func
