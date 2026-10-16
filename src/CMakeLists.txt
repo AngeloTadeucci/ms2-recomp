@@ -86,7 +86,7 @@ if(MS2HOOK_WITH_GAME)
     endif()
     set(MS2_SYMOBJ "${CMAKE_CURRENT_BINARY_DIR}/ms2sym.obj")
     add_custom_command(OUTPUT "${MS2_SYMOBJ}"
-        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES} --objs $<TARGET_OBJECTS:ms2game>
+        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES} --rebind --rebind-log "${CMAKE_CURRENT_BINARY_DIR}/rebound.txt" --objs $<TARGET_OBJECTS:ms2game>
         DEPENDS "${MS2_ROOT}/tools/ms2symobj.py" ${MS2_SYMBOL_TABLES} $<TARGET_OBJECTS:ms2game>
         COMMAND_EXPAND_LISTS
         COMMENT "Generating ms2sym.obj (exe symbol map)")

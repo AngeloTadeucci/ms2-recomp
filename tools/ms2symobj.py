@@ -143,6 +143,65 @@ def autobind_fun(syms, objs):
     return n
 
 
+KEEP_LOCAL_PREFIXES = ("??_", "__imp_", "_TI", "__ImageBase")
+
+
+def rebind_objects(syms, objs):
+    """Hook-DLL builds only: a data symbol that a recovered unit DEFINES (a TSingleton<T>::s_instance instantiation, an
+    s_bInit flag, ms_propertyMap, a DAT_ global ...) and that has an exe VA in the symbol tables would otherwise be a
+    DLL-local copy, never the exe's live instance (/alternatename only applies when nothing defines the name). Rewrite
+    the object files in place: such a definition becomes an undefined external, so the /alternatename of ms2sym.obj binds
+    it to the exe address. vftables / RTTI / import slots (KEEP_LOCAL_PREFIXES) stay local. A COMDAT section whose only
+    symbols were rebound loses its COMDAT flag (a leaderless COMDAT is invalid); the bytes are dead weight. Idempotent.
+    Returns the list of rebound names (with repeats across objects)."""
+    names = {n for n, (va, k) in syms.items() if k != "func" and not n.startswith(KEEP_LOCAL_PREFIXES)}
+    out = []
+    for path in objs:
+        d = bytearray(open(path, "rb").read())
+        if d[:4] == b"\0\0\xff\xff":
+            symoff, nsyms = struct.unpack_from("<II", d, 48)
+            recsz, secbase, secfmt = 20, 56, "<i"
+        else:
+            symoff, nsyms = struct.unpack_from("<II", d, 8)
+            recsz, secbase, secfmt = 18, 20, "<h"
+        stroff = symoff + nsyms * recsz
+        secsyms = {}          # section number -> [(symbol record offset, name)] of defined external symbols
+        i = 0
+        while i < nsyms:
+            o = symoff + i * recsz
+            nm = bytes(d[o:o + 8])
+            secnum = struct.unpack_from(secfmt, d, o + 12)[0]
+            sclass, naux = d[o + recsz - 2], d[o + recsz - 1]
+            if nm[:4] == b"\0\0\0\0":
+                so = stroff + struct.unpack_from("<I", nm, 4)[0]
+                nm = bytes(d[so:d.index(b"\0", so)])
+            else:
+                nm = nm.rstrip(b"\0")
+            if sclass == 2 and secnum > 0:
+                secsyms.setdefault(secnum, []).append((o, nm.decode("latin1")))
+            i += 1 + naux
+        changed = False
+        for secnum, lst in secsyms.items():
+            rebound = [(o, nm) for o, nm in lst if nm in names]
+            if not rebound:
+                continue
+            for o, nm in rebound:
+                struct.pack_into("<I", d, o + 8, 0)
+                struct.pack_into(secfmt, d, o + 12, 0)
+                out.append(nm)
+            changed = True
+            if len(rebound) == len(lst):
+                so = secbase + 40 * (secnum - 1) + 36
+                ch = struct.unpack_from("<I", d, so)[0]
+                if ch & IMAGE_SCN_LNK_COMDAT:
+                    struct.pack_into("<I", d, so, ch & ~IMAGE_SCN_LNK_COMDAT)
+        if changed:
+            tmp = path + ".rb"
+            open(tmp, "wb").write(d)
+            os.replace(tmp, path)
+    return out
+
+
 def build(syms):
     vas = {}
     for name, (va, kind) in syms.items():
@@ -255,11 +314,18 @@ def main():
     ap.add_argument("inputs", nargs="*", default=DEFAULT_INPUTS)
     ap.add_argument("-o", "--output", default=os.path.join(ROOT, "build", "ms2sym.obj"))
     ap.add_argument("--objs", nargs="+", metavar="OBJ", help="game objects: undefined FUN_<va> externals are auto-bound")
+    ap.add_argument("--rebind", action="store_true", help="with --objs: rebind unit-defined mutable data to the exe (hook DLL)")
+    ap.add_argument("--rebind-log", metavar="FILE")
     ap.add_argument("--check", metavar="DLL", help="post-link check of the DLL (base, no ADDR64 to exe globals)")
     a = ap.parse_args()
     if a.check:
         return check(a.check, a.inputs)
     syms = load(a.inputs)
+    if a.objs and a.rebind:
+        rb = rebind_objects(syms, a.objs)
+        print(f"rebound {len(rb)} data definitions ({len(set(rb))} distinct symbols) to the exe")
+        if a.rebind_log:
+            open(a.rebind_log, "w").write("\n".join(sorted(set(rb))) + "\n")
     if a.objs:
         nauto = autobind_fun(syms, a.objs)
         print(f"auto-bound {nauto} FUN_<va> externals")
