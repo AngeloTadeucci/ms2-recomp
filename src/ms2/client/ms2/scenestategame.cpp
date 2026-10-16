@@ -638,9 +638,9 @@ class Unk_SSGItemHub
 public:
     virtual void vfunc_0();
     virtual void vfunc_1(CItem* pItem);
-    virtual void vfunc_2();
-    virtual void vfunc_3();
-    virtual void vfunc_4();
+    virtual void vfunc_2(CItem* pItem, bool bRemoved);     // 0x21 modes 1/3
+    virtual void vfunc_3(CItem* pItem, int nDelta);         // count changed
+    virtual void vfunc_4(CItem* pItem, int n);              // 0x21 mode 7
     virtual void vfunc_5(CItem* pItem);
     virtual void vfunc_6(CItem* pItem);
     virtual void vfunc_7(CItem* pItem);
@@ -963,7 +963,7 @@ public:
     Unk_SSGNotifyInventory();                               // 0x141328cf0 (vftable 0x142eebd58)
 };
 MS2_CHECK_SIZE(Unk_SSGNotifyInventory, 0x18);
-class Unk_SSGDlgInv : public UIDialog { public: void FUN_141999f60(); void FUN_141999e00(); };
+class Unk_SSGDlgInv : public UIDialog { public: void FUN_141999f60(); void FUN_141999e00(); int FUN_141999de0(); void FUN_141999e50(); };
 Unk_SSGDlgInv* FUN_1405344f0(int nId);                      // Unk_BreakDialog<UIInventoryDialog>
 CStringW FUN_140d2e2b0(int nA, int nB, __int64 nC);
 CStringW FUN_140632a60(int nId, const CStringW& strArg0, const CStringW& strArg1);
@@ -1030,6 +1030,12 @@ public:
     int FUN_140a5d120(CItem* pItem);                        // add an item
     void FUN_140a66990(unsigned short nLevel);              // packet 0x2f: level changed
     void FUN_140a66c00();                                   // OnAddUser: the local player entered
+    // 0x21 (item inventory updates)
+    void FUN_140a5ca60(int nTab);                           // mode 0xb
+    void FUN_140a5cb80(int nTab, int nCount);               // mode 0xc: tab size
+    MS2Ptr<CItem> FUN_140a60280(int nTab, int nSlot);       // the item in a tab slot
+    void FUN_140a5d390(__int64 nItemUid);                   // remove an item
+    void FUN_140a66ae0(MS2Ptr<CItem> spItem);
 };
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
 
@@ -2600,6 +2606,241 @@ void CSceneStateGame::FUN_1417132b0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x1417132B0, CSceneStateGame, FUN_1417132b0, 3305, 0xFCDC2CD4);
+
+// ---- inventory updates (0x21) --------------------------------------------------------------------------------------
+class Unk_ItemEquipData : public CItemData { };            // CItem::FUN_140527840's record (item.cpp)
+void FUN_1414047c0(MS2Ptr<CItemData> spData);
+CStringW FUN_140a22c00(int nStringId, const CStringW& a, const unsigned short& b);   // FormatStringId<CStringW, unsigned short>
+extern CString DAT_143ae7978;                               // sound event of the codi slot error
+
+// @0x141713fb0
+void CSceneStateGame::FUN_141713fb0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0xb)
+    {
+        int nTab = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab2a90.FUN_140a5ca60(nTab);
+    }
+    else if (nMode == 0)
+    {
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        short nAmount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem(new CItem());
+        if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+        {
+            spItem->FUN_140526b30(DAT_143ab2864);
+            spItem->FUN_140526a70(nItemUid);
+            spItem->FUN_140526b70(nAmount);
+            spItem->FUN_140524eb0(packet);
+            DAT_143ab2a90.FUN_140a5d120(spItem.get());
+            int bNotify = 1;
+            MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pPC != 0 && pPC->FUN_141527eb0() != 0)
+                bNotify = 0;
+            if (bNotify)
+                FUN_140a6a840()->vfunc_1(spItem.get());
+        }
+    }
+    else if (nMode == 7)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nArg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (spItem.get() != 0)
+        {
+            spItem->FUN_1405268d0(1);
+            if (!strName.IsEmpty())
+                spItem->FUN_140529500(strName);
+            if (spItem->FUN_140527840()->FUN_14053e130())
+                FUN_1414047c0(spItem->FUN_140527840());
+            int bNotify = 1;
+            MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pPC != 0 && pPC->FUN_141527eb0() != 0)
+                bNotify = 0;
+            if (bNotify)
+                FUN_140a6a840()->vfunc_4(spItem.get(), nArg);
+            if (FUN_140166410()->FUN_14036d570(0xe8))
+            {
+                if (spItem->FUN_140527840()->FUN_14053cbc0())
+                    DAT_143ab2a90.FUN_140a66ae0(spItem);
+            }
+        }
+    }
+    else if (nMode == 6)
+    {
+        int nCount = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        for (int i = 0; i < nCount; i++)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            short nAmount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            int nRarity = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MS2Ptr<CItem> spItem(new CItem());
+            if (spItem->FUN_140523c40(nItemId, nRarity, 0))
+            {
+                spItem->FUN_140526b30(DAT_143ab2864);
+                spItem->FUN_140526a70(nItemUid);
+                spItem->FUN_140526b70(nAmount);
+                spItem->FUN_140524eb0(packet);
+                spItem->FUN_1405268d0(0);
+                DAT_143ab2a90.FUN_140a5d120(spItem.get());
+                FUN_140a6a840()->vfunc_1(spItem.get());
+            }
+        }
+    }
+    else if (nMode == 1)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (!spItem)
+            return;
+        if (spItem->FUN_140526b90() >= 0)
+            FUN_140a6a840()->vfunc_21(spItem.get());
+        DAT_143ab2a90.FUN_140a5d390(nItemUid);
+        FUN_140a6a840()->vfunc_2(spItem.get(), false);
+    }
+    else if (nMode == 2)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nAmount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (!spItem)
+            return;
+        int nOld = spItem->FUN_140526c50();
+        spItem->FUN_140526c70(nAmount);
+        int bNotify = 1;
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0 && pPC->FUN_141527eb0() != 0)
+            bNotify = 0;
+        if (bNotify)
+            FUN_140a6a840()->vfunc_3(spItem.get(), nAmount - nOld);
+    }
+    else if (nMode == 3)
+    {
+        MS2Ptr<CItem> aspItem[2] = { 0, 0 };
+        for (int i = 0; i < 2; i++)
+        {
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            short nSlot = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            if (nItemUid == 0)
+            {
+                Unk_SSGDlgInv* pDlg = FUN_1405344f0(0x4e2d);
+                if (pDlg != 0)
+                {
+                    int nTab = pDlg->FUN_141999de0();
+                    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a60280(nTab, nSlot);
+                    if (spItem.get() != 0)
+                        FUN_140a6a840()->vfunc_2(spItem.get(), true);
+                }
+                continue;
+            }
+            aspItem[i] = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+            if (!aspItem[i])
+                continue;
+            DAT_143ab2a90.FUN_140a5d390(nItemUid);
+            aspItem[i]->FUN_140526b70(nSlot);
+        }
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            if (aspItem[i].get() != 0)
+                DAT_143ab2a90.FUN_140a5d120(aspItem[i].get());
+        }
+        for (unsigned int i = 0; i < 2; i++)
+        {
+            if (aspItem[i].get() != 0)
+                FUN_140a6a840()->vfunc_3(aspItem[i].get(), 0);
+        }
+    }
+    else if (nMode == 8)
+    {
+        FUN_141715860(packet);
+    }
+    else if (nMode == 0xc)
+    {
+        int nTab = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab2a90.FUN_140a5cb80(nTab, nCount);
+        Unk_SSGDlgInv* pDlg = FUN_1405344f0(0x4e2d);
+        if (pDlg != 0 && pDlg->vfunc_55() == 0)
+            pDlg->FUN_141999e50();
+    }
+    else if (nMode == 0xe)
+    {
+        __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        if (nItemUid != 0)
+        {
+            MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+            if (spItem.get() != 0)
+            {
+                spItem->FUN_140524eb0(packet);
+                FUN_140a6a840()->vfunc_3(spItem.get(), 0);
+            }
+        }
+    }
+    else if (nMode == 0xd)
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCode = nError;
+        switch (nCode)
+        {
+        case 0xc:
+            FUN_140d73bc0(0xeb, 0, 0, L"");
+            break;
+        case 0xd:
+            FUN_141275260(0x43, 1, 1);
+            FUN_141276180(DAT_143ae7978, "");
+            break;
+        case 0x1f:
+            FUN_140d73bc0(0x72, 0, 0, L"");
+            break;
+        case 0x22:
+            FUN_1403ed2b0()->FUN_141add1f0();
+            break;
+        case 0x23:
+            FUN_140d73bc0(0xfd, 0, 0, L"");
+            break;
+        case 0x24:
+            FUN_140d73bc0(0xfe, 0, 0, L"");
+            break;
+        case 0x25:
+            FUN_140d73aa0(FUN_14028b8e0(L"s_item_err_Invalid_slot_codi"), 0, 0, L"");
+            break;
+        case 0x26:
+            FUN_140d73aa0(FUN_14028b8e0(L"s_item_err_not_active_tab"), 0, 0, L"");
+            break;
+        case 0x28:
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            unsigned short nCount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            FUN_140d73aa0(FUN_140a22c00(0x941, FUN_1401a9d70()->FUN_141811980(1, nItemId), nCount), 0, 0, L"");
+            break;
+        }
+        case 0x29:
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            unsigned short nCount = static_cast<CInputStream&>(packet).vfunc_o8_2();
+            Unk_SSGFormatMsg(0x942, 1, 1, FUN_1401a9d70()->FUN_141811980(1, nItemId), nCount);
+            break;
+        }
+        case 0x2a:
+            FUN_140d73bc0(0xd7, 0, 0, L"");
+            break;
+        default:
+            FUN_140d73aa0(FUN_1408116a0(0xcd, nError), 0, 0, L"");
+            break;
+        }
+    }
+    else if (nMode == 0xa)
+    {
+        FUN_140d73bc0(0x2a2, 0, 0, L"");
+    }
+    FUN_140d86260()->vfunc_56(nMode);
+}
+MS2_REPLACE_METHOD(0x141713FB0, CSceneStateGame, FUN_141713fb0, 6229, 0xDF6CC70B);
 // @0x141715860
 void CSceneStateGame::FUN_141715860(CInPacket& packet)
 {
