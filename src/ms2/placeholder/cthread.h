@@ -7,8 +7,8 @@ class CThread {
 public:
     CThread();
     virtual ~CThread();
-    virtual unsigned int vfunc_1(void*, Unk_140659080&) = 0;
-    bool FUN_1401d3510(DWORD timeout);
+    virtual unsigned int vfunc_1(void*, Unk_140659080&);    // 0x1401d4030 (base: signals ready, returns 0)
+    int FUN_1401d3510(DWORD timeout);
     // gamesocket.cpp worker management (non-virtual).
     bool FUN_141215220(void*,void*,int,int,int);
     HANDLE FUN_14126a990() const;
