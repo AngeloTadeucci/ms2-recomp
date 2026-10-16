@@ -256,6 +256,7 @@ class Unk_SSGGuildMgr
 public:
     void FUN_1413bc1f0(__int64 nGuildId, CStringW strName);
     void FUN_1413bcd10();
+    void FUN_1413bc250(CInPacket& packet);                  // 0xb6 mode 4: the guild of a guild battle
 };
 Unk_SSGGuildMgr* FUN_1403ed290();
 
@@ -448,7 +449,20 @@ extern int DAT_143ab2918;
 void FUN_1409304d0(__int64 a, __int64 b, __int64 c, __int64 d);
 void FUN_140930af0(__int64 a);
 class Unk_SSGChatTab { public: void FUN_140dbde50(int n); };
-class Unk_SSGChatHolder { public: Unk_SSGChatTab* FUN_140f97f00(); };
+// The game-mode service (FUN_140f97ef0): the chat tab, plus the individual PvP (duel) state at +0x100.
+class Unk_SSGChatHolder
+{
+public:
+    Unk_SSGChatTab* FUN_140f97f00();
+    void FUN_141280c60();                                   // 0xb6 'f'
+    int FUN_1412818a0();                                    // the duel state before the reset (1: was matched)
+    void FUN_141280cd0(int nMode, CInPacket& packet);       // the other 0xb6 modes
+    void FUN_14174a530(int nState, int nArg) { m_nPvPState = nState; m_nPvPArg = nArg; }
+private:
+    char m_pad0[0x100];
+    int m_nPvPState;                                        // +0x100
+    int m_nPvPArg;                                          // +0x104
+};
 Unk_SSGChatHolder* FUN_140f97ef0();
 class Unk_SSGProfile
 {
@@ -462,7 +476,7 @@ public:
 Unk_SSGProfile* FUN_140cc18a0();
 class Unk_SSGChannelDialog { public: void FUN_141ad2ea0(int nChannel); };
 Unk_SSGChannelDialog* FUN_14136f520(int nId);
-class Unk_SSG1c0d90 { public: void FUN_1404766e0(); bool FUN_14047f0f0(); bool FUN_14047f300(); };   // game rules (the two are pet-taming event checks)
+class Unk_SSG1c0d90 { public: void FUN_1404766e0(); bool FUN_14047f0f0(); bool FUN_14047f300(); void FUN_1404779b0(CInPacket& packet); };   // game rules (the two are pet-taming event checks)
 Unk_SSG1c0d90* FUN_1401c0d90();
 class Unk_SSG3ed2a0 { public: void FUN_1407ce240(); };
 Unk_SSG3ed2a0* FUN_1403ed2a0();
@@ -928,7 +942,7 @@ Unk_SSGConstants* FUN_1401d3200();
 class UIAutoReviveCountDownDialog : public UIDialog { public: void FUN_141284d70(int n); };
 class UIGlobalPortalDialog : public UIDialog { public: void FUN_1412c3020(CInPacket& packet); };
 class UIQuizDialog : public UIDialog { public: void FUN_14129a930(CInPacket& packet); };
-class UIIndividualPvPDialog : public UIDialog { public: void FUN_1412cacc0(); void FUN_1412cb220(); };
+class UIIndividualPvPDialog : public UIDialog { public: void FUN_1412cacc0(); void FUN_1412cb220(); void FUN_1412cb240(); };
 void FUN_141276180(const CString& strA, const CString& strB);   // play a sound event
 class Unk_SSGDungeonRecord : public CPtred { public: void FUN_140b20be0(CInPacket& packet); };
 class Unk_SSGGlobalFactor { public: void FUN_1404c18c0(CInPacket& packet); };
@@ -4588,6 +4602,103 @@ void CSceneStateGame::FUN_1417398d0()
     }
 }
 MS2_REPLACE_METHOD(0x1417398d0, CSceneStateGame, FUN_1417398d0, 57, 0x29BCBD60);
+
+// The guild battle dialogs; their getters are instantiated in mypc.cpp and guildmanager.cpp.
+class UIPvPGuildTeamDialog : public UIDialog { public: void FUN_14133a210(CInPacket* pPacket); };
+class UIPvPGuildTeamResultDialog : public UIDialog { public: void FUN_141340d70(CInPacket& packet); };
+template <class T> T* MyPCDialog(int nId);
+template <class T> T* Unk_GuildFindDialog(int nId);
+extern CString DAT_143ae7a00;                               // the duel start sound event
+extern CStringW DAT_143ae7a08;                              // the duel invite message box tag
+
+// @0x141732350
+// 0xb6: individual PvP (duel) and guild battle.
+void CSceneStateGame::FUN_141732350(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 'f')
+        FUN_140f97ef0()->FUN_141280c60();
+    else if (nMode == 'd')
+    {
+        int nObjId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nObjId);
+        if (pPC == 0)
+            return;
+        pPC->FUN_140967420()->FUN_140743a10(packet);
+    }
+    else if (nMode == 'e')
+    {
+        int bWin = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0)
+            pMyPC->vfunc_59(0x28, 0, bWin ? 0x73 : 0x74, 0);
+    }
+    else if (nMode == 'r')
+    {
+        if (FUN_1403ed2b0()->FUN_141adc940(0x4ec4))
+            FUN_1403ed2b0()->FUN_141adc530(0x4ec4);
+        UIPvPGuildTeamDialog* pDlg = MyPCDialog<UIPvPGuildTeamDialog>(0x4ec4);
+        if (pDlg != 0)
+            pDlg->FUN_14133a210(&packet);
+    }
+    else if (nMode == 'u')
+    {
+        UIPvPGuildTeamResultDialog* pDlg = Unk_GuildFindDialog<UIPvPGuildTeamResultDialog>(0x4ec7);
+        if (pDlg != 0)
+            pDlg->FUN_141340d70(packet);
+    }
+    else if (nMode == 4)
+        FUN_1403ed290()->FUN_1413bc250(packet);
+    else if (nMode == 9)
+    {
+        int nArg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_140f97ef0()->FUN_14174a530(1, nArg);
+        FUN_1417398d0();
+        FUN_1412751b0(FUN_14028de60(0x42b), 0x14);
+        FUN_141276180(DAT_143ae7a00, "");
+    }
+    else if (nMode == 10)
+    {
+        int nPrev = FUN_140f97ef0()->FUN_1412818a0();
+        FUN_140f97ef0()->FUN_14174a530(0, 0);
+        FUN_1417398d0();
+        if (nPrev == 1)
+            FUN_1412751b0(FUN_14028de60(0x42c), 0x14);
+    }
+    else if (nMode == 11)
+    {
+        int nArg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        FUN_140f97ef0()->FUN_14174a530(2, nArg);
+        FUN_1417398d0();
+        CStringW strMsg = FUN_14028de60(0x42d);
+        MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(1, strMsg, 0, DAT_143ae7a08);
+        if (spBox.get() != 0)
+        {
+            spBox->FUN_141a01ca0(0x19, 1, FUN_14028de60(0x2b8));
+            spBox->FUN_141a02460(1);
+            spBox->FUN_141a02480(1);
+            spBox->FUN_141a024a0(0);
+            FUN_140d73c60(spBox);
+        }
+    }
+    else if (nMode == 12)
+    {
+        FUN_1401c0d90()->FUN_1404779b0(packet);
+        UIIndividualPvPDialog* pDlg = Unk_SSGGetDialog<UIIndividualPvPDialog>(0x4ed1);
+        if (pDlg != 0)
+            pDlg->FUN_1412cb240();
+    }
+    else if (nMode == 0x11)
+    {
+        int nResult = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nResult == 0)
+            FUN_140d73aa0(FUN_14028b8e0(L"s_rank_duel_ui_error_in_arena_field"), 0, 0, L"");
+        return;
+    }
+    else
+        FUN_140f97ef0()->FUN_141280cd0(nMode, packet);
+}
+MS2_REPLACE_METHOD(0x141732350, CSceneStateGame, FUN_141732350, 1891, 0x04B092F0);
 
 // @0x14173b1d0
 void CSceneStateGame::FUN_14173b1d0(CInPacket& packet)
