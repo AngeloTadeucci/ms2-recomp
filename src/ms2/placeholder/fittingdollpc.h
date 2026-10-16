@@ -100,6 +100,7 @@ public:
     void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
     void FUN_141661dc0(unsigned short nA, int nB);          // scenestategame packet 0xb1
     void FUN_141658ed0(unsigned char n);                    // scenestategame packet 0xb2
+    void FUN_141662d60(__int64 nValue);                     // scenestategame packet 0xe6
     int FUN_141661aa0();                                    // scenestategame packet 0x33 (pvp flag)
     void FUN_141661a60(int n);                              // scenestategame packet 0x33
     void FUN_1416619d0(int n);                              // scenestategame packet 0x33

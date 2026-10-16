@@ -51,6 +51,7 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/effectquery.h"
 #include "uimasterydialog.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/client/ms2/stateemotionidle.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
@@ -76,6 +77,8 @@ public:
     PCBase* FUN_141bd1200(int nId);
     int FUN_141bd1a10(PCBase* pActor);
     PCBase* FUN_141bd3620();
+    void FUN_141bd92c0(float fX, float fY, float fZ, int n);
+    void FUN_141bd9380();
     class Unk_SSGNpc* FUN_141bd1320(int nId);
     class Unk_SSGCubeObj* FUN_141bd13a0(int nId);
     void FUN_141bc92e0(CString strName);
@@ -470,7 +473,7 @@ class Unk_SSGNotifyCenter { public: void FUN_140da4fe0(MS2Ptr<NotifyObject> spNo
 Unk_SSGNotifyCenter* FUN_140939a10();
 
 // 0x4d..0xf2: forwarders to the feature managers
-class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_141861f60(CInPacket& packet); };
+class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_141861f60(CInPacket& packet); void FUN_141863630(int nId, bool bHas, CString strName); };
 Unk_SSGad4b90* FUN_140ad4b90();
 class Unk_SSG9670b0 { public: void FUN_14122f270(CInPacket& packet); };
 Unk_SSG9670b0* FUN_1409670b0();
@@ -654,6 +657,21 @@ UIMasteryDialog* FUN_140faf160(int nId);                    // GetDialog<UIMaste
 class UIDarkStreamScoreDialog : public UIDialog { public: virtual void vfunc_84(int nScore); };
 UIDarkStreamScoreDialog* FUN_140f9d8a0(int nId);            // GetDialog<UIDarkStreamScoreDialog>
 class UIDarkStreamResultDialog : public UIDialog { public: void FUN_140f34cb0(int n); void FUN_140f34ab0(CInPacket& packet); };
+
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+bool FUN_1403b3c40(const CStringW& str, const wchar_t* psz);  // str == psz
+class UIItemMultiOpenBoxDialog { public: void FUN_140c3fa80(int nA, int nB); };
+UIItemMultiOpenBoxDialog* FUN_140d27580(int nId);           // GetDialog<UIItemMultiOpenBoxDialog>
+class UIVIPDialog : public UIDialog { public: void FUN_140fb87d0(CInPacket& packet, int nMode); };
+
+class StateFishingData : public CPtred
+{
+public:
+    StateFishingData(int nRod);                             // 0x140dda2c0
+    int m_nRod;
+    char m_pad[0x20 - sizeof(CPtred) - sizeof(int)];
+};
+MS2_CHECK_SIZE(StateFishingData, 0x20);
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -3224,3 +3242,90 @@ void CSceneStateGame::FUN_141734ca0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141734ca0, CSceneStateGame, FUN_141734ca0, 334, 0x7DA5CD92);
+
+// @0x141739e40
+void CSceneStateGame::FUN_141739e40(CInPacket& packet)
+{
+    int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nB = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+    MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+    if (!spData)
+        return;
+    const CStringW& strFunction = spData->function.name;
+    if (FUN_1403b3c40(strFunction, L"OpenItemBox") || FUN_1403b3c40(strFunction, L"SelectItemBox"))
+    {
+        UIItemMultiOpenBoxDialog* pDlg = FUN_140d27580(0x4f88);
+        if (pDlg != 0)
+            pDlg->FUN_140c3fa80(nA, nB);
+    }
+}
+MS2_REPLACE_METHOD(0x141739e40, CSceneStateGame, FUN_141739e40, 329, 0xADF56E72);
+
+// @0x141739f90
+void CSceneStateGame::FUN_141739f90(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        pPC->FUN_141662d60(static_cast<CInputStream&>(packet).vfunc_o8_4());
+        FUN_141a60f00(nId);
+        if (pPC->vfunc_108())
+            FUN_1419f37f0(1);
+        Unk_SSGDlgInv* pDlg = FUN_1405344f0(0x4e2d);
+        if (pDlg != 0)
+            pDlg->FUN_141999f60();
+    }
+    else
+    {
+        UIVIPDialog* pDlg = Unk_SSGGetDialog<UIVIPDialog>(0x4f1b);
+        if (pDlg != 0)
+            pDlg->FUN_140fb87d0(packet, nMode);
+    }
+}
+MS2_REPLACE_METHOD(0x141739f90, CSceneStateGame, FUN_141739f90, 311, 0x8CE619AA);
+
+// @0x14173a420
+void CSceneStateGame::FUN_14173a420(CInPacket& packet)
+{
+    CString strName;
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    bool bHas = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    if (bHas)
+        strName = FUN_14016a600(static_cast<CInputStream&>(packet).vfunc_o8_8(), 0);
+    FUN_140ad4b90()->FUN_141863630(nId, bHas, strName);
+}
+MS2_REPLACE_METHOD(0x14173a420, CSceneStateGame, FUN_14173a420, 388, 0x0C53B150);
+
+// @0x14173a5e0
+void CSceneStateGame::FUN_14173a5e0(CInPacket& packet)
+{
+    bool bShow = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    float fX = static_cast<CInputStream&>(packet).vfunc_o8_5();
+    float fY = static_cast<CInputStream&>(packet).vfunc_o8_5();
+    float fZ = static_cast<CInputStream&>(packet).vfunc_o8_5();
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (bShow)
+        FUN_1403ed2d0()->FUN_141bd92c0(fX, fY, fZ, nType);
+    else
+        FUN_1403ed2d0()->FUN_141bd9380();
+}
+MS2_REPLACE_METHOD(0x14173a5e0, CSceneStateGame, FUN_14173a5e0, 310, 0xA7D1CD36);
+
+// @0x14173b080
+void CSceneStateGame::FUN_14173b080(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    StateFishingData* pData = new StateFishingData(32000001);
+    int nState = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nArg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    pPC->vfunc_59(nState, pData, nArg, 0);
+}
+MS2_REPLACE_METHOD(0x14173b080, CSceneStateGame, FUN_14173b080, 319, 0x1E71DC7F);
