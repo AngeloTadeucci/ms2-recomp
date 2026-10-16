@@ -382,6 +382,7 @@
 #include "hook/ms2hook.h"
 
 #include "ms2/placeholder/tixmldocument.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
 #include <algorithm>
 #include <utility>
 
@@ -402,9 +403,15 @@ int FUN_1408731a0(Unk_140165cf0*, const char*, unsigned short*);
 int FUN_1408731e0(Unk_140165cf0*, const char*, int*);
 int FUN_140873220(Unk_140165cf0*, const char*, unsigned*);
 int FUN_140873360(Unk_140165cf0*, const char*, float*);
-void* FUN_140aafef0(void* pMgr, void* pHolder, unsigned nId, int n);
-void* FUN_140184880(void* pHolder);
-void FUN_1401836a0(void* pHolder);
+// An effect record (shared MS2Ptr<> glue with the other adventure-level skill records): CPtred + 0x18 bytes, kind at +0x30.
+class Unk_ALSkillAttr : public CPtred
+{
+public:
+    char m_pad_18[0x18];
+    int m_nKind;
+};
+MS2_CHECK_OFFSET(Unk_ALSkillAttr, m_nKind, 0x30);
+class Unk_ALSkillTable { public: MS2Ptr<Unk_ALSkillAttr> FUN_140aafef0(int nSkillId, unsigned short nLevel); };
 
 extern void* DAT_143aac278;   // the CAdventureLevelTable singleton
 extern void* DAT_143aac288;   // the effect manager singleton
@@ -454,9 +461,9 @@ float FUN_1401973d0(Unk_140165cf0* pElem, const char* pszName, float fDefault)
 }
 
 // @0x1401958b0
-static void* GetEffectMgr()
+static Unk_ALSkillTable* GetEffectMgr()
 {
-    return DAT_143aac288;
+    return (Unk_ALSkillTable*)DAT_143aac288;
 }
 
 // @0x1401958c0
@@ -492,20 +499,11 @@ static CAdventureLevelTable* GetTable()
 // @0x140195b20
 static int ParseRewardType(const CString& str)
 {
-    int nRet;
     if (str.CompareNoCase("statPoint") == 0)
-    {
-        nRet = 2;
-    }
-    else if (str.CompareNoCase("item") == 0)
-    {
-        nRet = 1;
-    }
-    else
-    {
-        nRet = 0;
-    }
-    return nRet;
+        return 2;
+    if (str.CompareNoCase("item") == 0)
+        return 1;
+    return 0;
 }
 
 // @0x140195470
@@ -525,12 +523,6 @@ CAdventureLevelMissionData::CAdventureLevelMissionData()
     m_nId = 0;
     m_b1c = false;
     m_p20 = 0;
-}
-
-// @0x140195700
-// MS2-FUNCTIONAL: exe calls CPtred::~CPtred directly without storing the vptr; implicit dtor stores it
-CAdventureLevelMissionData::~CAdventureLevelMissionData()
-{
 }
 
 // @0x140195b80
@@ -650,10 +642,9 @@ static bool AbilityLess(const unsigned& a, const unsigned& b)
 // MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadReward()
 {
-    CString strPath = FUN_14071a5b0(CString("Table"), CString("AdventureLevelReward.xml"));
+    CString strPath = FUN_14071a5b0("Table", "AdventureLevelReward.xml");
     TiXmlDocument doc;
-    const char* pszPath = strPath;
-    if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
         return false;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
     if (pRoot == 0)
@@ -683,10 +674,9 @@ MS2_REPLACE_METHOD(0x1401961C0, CAdventureLevelTable, LoadReward, 901, 0xD3A2F41
 // MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadAbility()
 {
-    CString strPath = FUN_14071a5b0(CString("Table"), CString("AdventureLevelAbility.xml"));
+    CString strPath = FUN_14071a5b0("Table", "AdventureLevelAbility.xml");
     TiXmlDocument doc;
-    const char* pszPath = strPath;
-    if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
         return false;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
     if (pRoot == 0)
@@ -718,10 +708,9 @@ MS2_REPLACE_METHOD(0x140196550, CAdventureLevelTable, LoadAbility, 848, 0x6F52A1
 // MS2-FUNCTIONAL: string temporaries are built in a different order from the exe; locals differ
 bool CAdventureLevelTable::LoadMission()
 {
-    CString strPath = FUN_14071a5b0(CString("Table"), CString("AdventureLevelMission.xml"));
+    CString strPath = FUN_14071a5b0("Table", "AdventureLevelMission.xml");
     TiXmlDocument doc;
-    const char* pszPath = strPath;
-    if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
         return false;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
     if (pRoot == 0)
@@ -747,27 +736,17 @@ bool CAdventureLevelTable::LoadMission()
 MS2_REPLACE_METHOD(0x1401968B0, CAdventureLevelTable, LoadMission, 689, 0xABCA5713);
 
 // @0x140195910
-// MS2-FUNCTIONAL: single result slot is a dword in the exe (ternary 1:0 stored wide); here separate slots
 unsigned short CAdventureLevelAbility::GetCount(unsigned nLevel) const
 {
-    unsigned nRet;
     if (m_nId == 0)
         return 0;
     if (m_nInterval == 0)
-    {
-        nRet = (nLevel >= m_nRequireLevel) ? 1 : 0;
-    }
-    else if (nLevel < m_nRequireLevel)
-    {
-        nRet = 0;
-    }
-    else
-    {
-        unsigned short nMax = (unsigned short)m_nMaxCount;
-        unsigned short nCalc = (unsigned short)((nLevel - m_nRequireLevel + m_nInterval) / (unsigned)m_nInterval);
-        nRet = (std::min)(nCalc, nMax);
-    }
-    return nRet;
+        return (nLevel >= m_nRequireLevel) ? 1 : 0;
+    if (nLevel < m_nRequireLevel)
+        return 0;
+    unsigned short nMax = (unsigned short)m_nMaxCount;
+    unsigned short nCalc = (unsigned short)((nLevel - m_nRequireLevel + m_nInterval) / (unsigned)m_nInterval);
+    return (std::min)(nCalc, nMax);
 }
 MS2_REPLACE_METHOD(0x140195910, CAdventureLevelAbility, GetCount, 175, 0x757B70A5);
 
@@ -788,25 +767,17 @@ float CAdventureLevelAbility::GetPercent(unsigned nLevel) const
 }
 
 // @0x1401954e0
-// MS2-FUNCTIONAL: iterator glue and the effect-holder temp are written with real std::vector / extern calls
 void CAdventureLevelTableHelper::FindCurrent()
 {
     std::vector<unsigned>& ids = GetTable()->GetAbilityIds();
-    std::vector<unsigned>::iterator it = ids.begin();
-    while (it != ids.end())
+    for (std::vector<unsigned>::iterator it = ids.begin(); it != ids.end(); ++it)
     {
-        unsigned* pId = &*it;
-        const CAdventureLevelAbility* pAbility = GetTable()->GetAbility(*pId);
-        char holder[0x18];
-        FUN_140aafef0(GetEffectMgr(), holder, pAbility->m_nEffectId, 1);
-        if (*(int*)((char*)FUN_140184880(holder) + 0x30) == 3)
-        {
-            m_pCurrent = const_cast<CAdventureLevelAbility*>(pAbility);
-            FUN_1401836a0(holder);
-            return;
-        }
-        FUN_1401836a0(holder);
-        ++it;
+        const CAdventureLevelAbility* pAbility = GetTable()->GetAbility(*it);
+        MS2Ptr<Unk_ALSkillAttr> spAttr = GetEffectMgr()->FUN_140aafef0(pAbility->m_nEffectId, 1);
+        if (spAttr->m_nKind != 3)
+            continue;
+        m_pCurrent = const_cast<CAdventureLevelAbility*>(pAbility);
+        break;
     }
 }
 

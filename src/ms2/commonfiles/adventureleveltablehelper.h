@@ -16,7 +16,7 @@ class CAdventureLevelMissionData : public CPtred
 {
 public:
     CAdventureLevelMissionData();               // 0x140195660
-    virtual ~CAdventureLevelMissionData();      // 0x140195700
+    virtual ~CAdventureLevelMissionData() = default;    // 0x140195700 (implicit: the exe stores no vptr)
 
     int m_nId;                                  // +0x18 (name invented)
     bool m_b1c;                                 // +0x1c
