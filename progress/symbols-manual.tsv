@@ -2195,4 +2195,9 @@ D3DXFloat16To32Array	14230396f	func
 ??0UnlimitedEnchantInfo@@QEAA@HH@Z	1408bb9d0	func
 ??0?$Unk_EnchantPtr@VCItemEnchantInfo@@@@QEAA@XZ	140633170	func
 ?Get@?$Value@M@Constants@Common@@QEAAAEBMAEBM@Z	140967520	func
+?DAT_143ab1a40@@3V?$vector@UUnk_SATypeInfo@@V?$allocator@UUnk_SATypeInfo@@@std@@@std@@A	143ab1a40	data
+??0Unk_CompareStat@@QEAA@XZ	1407e5db0	func
+??0Unk_RangeProperty@@QEAA@XZ	140800860	func
+??0Unk_SkillOverlapCondition@@QEAA@XZ	1407e5f80	func
+??0CXmlData@@QEAA@XZ	14092c230	func
 ?DAT_143ae9a98@@3PEAVCSkillCollisionManager@@EA	143ae9a98	data
