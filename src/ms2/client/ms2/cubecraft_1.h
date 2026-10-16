@@ -44,12 +44,18 @@ public:
     void FUN_1417b7670(Unk_GuideRecord* pRec);              // set the current record
     void FUN_1417b76b0(float fTime);                        // advance with the game time
     void FUN_1417b7b50(int nKind);                          // 0 construction, 1 fishing, 2 skill magic
+    // w77 (state.cpp)
+    void FUN_1417b7450();                                   // drop the current and queued records
+    int FUN_1417b7540();                                    // total queued time (ms)
+    void FUN_1417b7720();                                   // queue the current record
 
     void FUN_1410a6dc0();                                   // 0x1410a6dc0 member destruction body
 
     ATL::CAtlList<MS2Ptr<Unk_GuideRecord> > m_records;      // +0x08 (0x30)
     MS2Ptr<Unk_GuideRecord> m_spCurrent;                    // +0x38
-    char m_pad_48[0x10];                                    // +0x48
+    PCBase* m_pOwner;                                       // +0x48
+    int m_nKind;                                            // +0x50 (3: never sent)
+    int m_pad_54;
 };
 MS2_CHECK_SIZE(StatePcGuideObjectController, 0x58);
 MS2_CHECK_OFFSET(StatePcGuideObjectController, m_records, 0x08);

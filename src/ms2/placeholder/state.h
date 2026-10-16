@@ -13,7 +13,7 @@
 // Evidence (exe KMS2_DEV x64):
 // - Layout from the ctor 0x1417b7d30 / dtor 0x1417b7dc0: +0x08 owner (ctor arg; vcalls up to slot 108 = PCBase,
 //   e.g. 0x1417b7e80 calls owner slot 95 float, 0x1417b7fb0 slots 104/102), +0x10 int (slot 2 setter, getter
-//   0x1417b7e40), +0x14 int = 1 (slot 14 getter), +0x18 std::list<int> (ctor/dtor COMDATs 0x140a3d2e0/0x140a3d3d0
+//   0x1417b7e40), +0x14 int = 1 (slot 14 getter), +0x18 std::list<unsigned> (ctor/dtor COMDATs 0x140a3d2e0/0x140a3d3d0
 //   from chatemoticoncli; iterator deref 0x140a3d6f0 = node+0x10 -> list node; 0x1417b9310 walks it and removes each
 //   id), +0x28 int = 0, +0x30 MS2Ptr<StateData> (default ctor 0x1417ba320, AssignRaw 0x14167ec90, =0 0x14167ec60,
 //   get 0x14167f020). Size 0x40: StateNurturing/StateTreeWatering put ICastingEventListener at +0x40.
@@ -107,11 +107,17 @@ public:
     PCBase* FUN_1417b8370();                                // owner as PC (class id 0x6200003)
     void FUN_1417b92a0();                                   // FUN_1417b9310 + register the state's ids with the manager
     bool FUN_1417b9460();                                   // play the idle motion (owner slot 104/102)
+    // w77 (state.cpp)
+    int FUN_1417b8340();                                    // owner slot 108
+    PCBase* FUN_1417b83a0();                                // owner as npc (FUN_1409ffc60)
+    PCBase* FUN_1417b83d0();                                // the npc's pet / summon owner
+    PCBase* FUN_1417b8480();                                // owner's mount (FUN_14096e110)
+    int FUN_1417b8560();                                    // FUN_1417b84b0() != 0
 
     PCBase* m_pOwner;                  // +0x08
     int m_n10;                         // +0x10
     int m_n14;                         // +0x14 (ctor: 1)
-    std::list<int> m_ids;              // +0x18
+    std::list<unsigned> m_ids;         // +0x18
     int m_n28;                         // +0x28
     MS2Ptr<StateData> m_spData;        // +0x30
 };
