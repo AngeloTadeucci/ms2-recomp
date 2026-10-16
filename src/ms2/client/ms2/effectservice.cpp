@@ -1071,6 +1071,9 @@ CSoundService* FUN_140c9cb10();                                // the sound serv
 #include <NiRenderObject.h>
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/commonfiles/crashmanager.h"
+#include "ms2/placeholder/tfunctor_search.h"
+#include "ms2/client/ms2/ms2scenegraphservice.h"
+namespace FMOD { class EventGroup; }
 
 // PendingEffect::Init (0x140a8f300) with the real argument types (pendingeffect.h declares it over stand-ins of
 // CEffectData / Unk_EffectTarget).
@@ -1165,6 +1168,23 @@ public:
 };
 extern int DAT_143ae2b30;                                       // 1: the scene is split over several effect roots
 efd::MessageService* FUN_1413f9830();
+// The sound system (FUN_140d13c40): preloads an FMOD event group.
+class Unk_EsSoundSystem
+{
+public:
+    FMOD::EventGroup* FUN_14177d6e0(const char* pszGroup, int bLoad);
+};
+Unk_EsSoundSystem* FUN_140d13c40();
+// The field sound callback (strName, strArg) -> sound id.
+typedef TFunctor<unsigned int, ParamList<const CString&, ParamList<const CString&, EmptyParam> > > Unk_EsSoundFunctor;
+// The owner of the field sound callback (FUN_14025e7a0).
+class Unk_EsSoundCallbackHost
+{
+public:
+    void FUN_1422b0690(Unk_EsSoundFunctor callback);           // set the callback
+};
+Unk_EsSoundCallbackHost* FUN_14025e7a0();
+CNifLoadingService* FUN_140a0afd0();
 int FUN_140ad0d60(int n, int nMin, int nMax);                  // clamp
 struct Unk_EsOptionData
 {
@@ -1188,7 +1208,13 @@ Unk_EsOption* FUN_1409a8b10();
 struct Unk_EsConfig
 {
     char m_pad_000[0x208];
-    CString m_astrSky[7];                                       // +0x208
+    CString m_strSky208;                          // +0x208
+    CString m_strSky210;                          // +0x210
+    CString m_strSky218;                          // +0x218
+    CString m_strSky220;                          // +0x220
+    CString m_strSky228;                          // +0x228
+    CString m_strSky230;                          // +0x230
+    CString m_strSky238;                          // +0x238
     char m_pad_240[0x180];
     CString m_strArea3c0;                                       // +0x3c0
     CString m_strArea3c8;
@@ -2343,6 +2369,67 @@ efd::SyncResult CEffectService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
     return efd::SyncResult_Success;
 }
 MS2_REPLACE_METHOD(0x1411a9260, CEffectService, OnPreInit, 129, 0xC8E52EC1);
+
+// @0x1411a92f0
+// Not hooked: reads TSingleton<COSInfo>::s_instance (a DLL-local copy in the hook DLL).
+efd::AsyncResult CEffectService::OnInit()
+{
+    if (DAT_143ae2b30 != 0) {
+        MS2SceneGraphService* pSceneGraph = static_cast<MS2SceneGraphService*>(
+            m_pServiceManager->GetSystemServiceAs<ecr::SceneGraphService>());
+        m_nRoots = TSingleton<COSInfo>::GetInstance()->GetProcessorCount();
+        m_ppRoots = new NiNode*[m_nRoots];
+        for (unsigned i = 0; i < m_nRoots; i++) {
+            m_ppRoots[i] = NiNew NiNode(0x200);
+            m_ppRoots[i]->SetName("World Effect Root");
+            efd::vector<NiObjectPtr> kObjects;
+            kObjects.push_back(NiDynamicCast(NiObject, m_ppRoots[i]));
+            pSceneGraph->FUN_1414f1e30(m_ppRoots[i]);
+            pSceneGraph->AddSceneGraph(kObjects, true, true);
+        }
+    } else {
+        m_spRoot = NiNew NiNode(0x200);
+        m_spRoot->SetName("World Effect Root");
+        ecr::SceneGraphService* pSceneGraph = m_pServiceManager->GetSystemServiceAs<ecr::SceneGraphService>();
+        efd::vector<NiObjectPtr> kObjects;
+        kObjects.push_back(NiDynamicCast(NiObject, m_spRoot));
+        pSceneGraph->AddSceneGraph(kObjects, true, true);
+    }
+    FUN_1413f9830()->Subscribe(this, s_catEffectChannel, 0, false);
+    FUN_140d13c40()->FUN_14177d6e0("ms2sound/sound/attack/hit", 1);
+    FUN_14025e7a0()->FUN_1422b0690(Unk_EsSoundFunctor(this, &CEffectService::FUN_1411a5a60));
+    {
+        CNifLoadingService* pLoader = FUN_140a0afd0();
+        m_aPreloaded.Add(0);
+        NiAVObjectPtr spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky208, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky210, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky218, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky220, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky228, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky230, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+        spSky = pLoader->Load(static_cast<Unk_EsConfig*>(FUN_1401d31f0())->m_strSky238, false, 1, 0, 0);
+        if (spSky)
+            m_aPreloaded.Add(spSky);
+    }
+    m_spF8 = 0;
+    m_spRain = 0;
+    m_nAreaEffect = 0;
+    FUN_1403ed2d0()->FUN_141bbae40(this);
+    FUN_140a44830()->FUN_1401ce3d0(TFunctor<void, EmptyParam>(this, &CEffectService::FUN_1411a8610));
+    return efd::AsyncResult_Complete;
+}
 
 // @0x1411a9e90
 efd::AsyncResult CEffectService::OnTick()
