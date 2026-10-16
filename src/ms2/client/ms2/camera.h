@@ -179,6 +179,11 @@ public:
     void FUN_140aeb1a0();                                               // pick the npc under the cursor (npc control)
     Unk_GoPickListPtr FUN_140af0850(float fX, float fY, bool bFrontOnly, bool bAppCulled, bool bClosestOnly,
         NiAVObject* pRoot);                                             // pick the scene under a window point
+    void FUN_140aec8a0(bool bKeep);                                     // apply the map camera data
+    void FUN_140aecbb0(int nId, int nTargetId, bool bEnter);            // enter/leave a trigger camera setup
+    void FUN_140aece50();                                               // start the setup the target walked into
+    int FUN_140a18070();                                                // (another obj)
+    Unk_CameraTargetEntity* FUN_140a38d60();                            // the camera target (another obj)
     void FUN_140aefa70();                                               // toggle the target camera lock (game scene)
     Unk_CameraFlyBy FUN_140aeffd0(float fDuration, const Unk_CameraSetting& to);  // a fly-by from the current view
     void FUN_140af1a90();                                               // stop the camera effects
@@ -230,6 +235,12 @@ public:
     float FUN_140af7f00() { if (m_spMode.get()) return m_spMode->FUN_140af7ef0(); return 0; }
     // @0x140af7ea0
     float FUN_140af7ea0() { if (m_spMode.get()) return m_spMode->FUN_140af7e90(); return 0; }
+    // @0x140af9b40
+    void FUN_140af9b40(float f) { if (m_spMode.get()) m_spMode->vfunc_16(f); }
+    // @0x140af9870
+    void FUN_140af9870(float fDegree) { if (m_spMode.get()) m_spMode->vfunc_12(fDegree); }
+    // @0x140af98d0
+    void FUN_140af98d0(float fDegree) { if (m_spMode.get()) m_spMode->vfunc_13(fDegree); }
     // @0x140af81a0
     bool FUN_140af81a0() { if (m_spMode.get()) return m_spMode->FUN_140af8140(); return false; }
     // @0x140af8290

@@ -15,7 +15,7 @@
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ?TypeCast@Camera@@UEBA_NIPEAPEAX@Z 0x140ae7c40 ; unique
 // MS2-PIN: ?TypeCast@Camera@@UEBA_NIPEAPEBX@Z 0x140ae7c90 ; unique
-// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140af27a0 ; unique
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140af2750 ; unique
 // MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x140af2890 ; unique
 // MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140af2ab0 ; unique
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@1@AEAPEAU31@@Z 0x140af5530 ; prop
@@ -31,11 +31,11 @@
 // MS2-PIN: ??$make_pair@AEBVEntityID@egf@@AEBUUnk_CameraSetting@@@std@@YA?AU?$pair@VEntityID@egf@@UUnk_CameraSetting@@@0@AEBVEntityID@egf@@AEBUUnk_CameraSetting@@@Z 0x140af5b20 ; unique
 // MS2-PIN: ??0?$MS2Ptr@VCCameraMode@@@@QEAA@PEAVCCameraMode@@@Z 0x140af5d30 ; unique
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140af7270 ; prop
-// MS2-PIN: ??9?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCCameraEffect@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140af7330 ; unique
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140af7370 ; prop
 // MS2-PIN: ?GetPlane@NiFrustumPlanes@@QEBAAEBVNiPlane@@I@Z 0x140af81f0 ; unique
 // MS2-PIN: ?GetWorldDirection@NiCamera@@QEBA?AVNiPoint3@@XZ 0x140af8390 ; unique
 // MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@2@XZ 0x140af9fc0 ; unique
-// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@UUnk_CameraSetting@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@@5@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@UUnk_CameraSetting@@@std@@PEAX@2@XZ 0x140afa2e0 ; unique
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@UUnk_CameraSetup@@V?$allocator@UUnk_CameraSetup@@@std@@@std@@@std@@PEAX@2@XZ 0x140afa200 ; prop
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@UUnk_CameraSetup@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_CameraSetup@@@std@@@2@$00@std@@QEBAAEBV?$allocator@UUnk_CameraSetup@@@2@XZ 0x140afb6a0 ; unique
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x140afc620 ; prop
 // MS2-PINS-END tplpin
@@ -54,6 +54,7 @@
 #include "ms2/commonfiles/filesystem.h"
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/client/ms2/targetcameramode.h"
+#include "ms2/client/ms2/fielddatacli.h"
 #include <ecr/RenderService.h>
 #include <ecr/RenderSurface.h>
 #include <ecr/CameraService.h>
@@ -80,6 +81,7 @@ class Unk_GameContext
 public:
     // @0x140af8310
     efd::ServiceManager* FUN_140af8310() { return m_pServiceManager; }
+    MS2Ptr<class CFieldDataCli> FUN_141bd30a0();                        // the current field data
 
     void* m_0;
     efd::ServiceManager* m_pServiceManager;                             // +0x08
@@ -173,6 +175,12 @@ void FUN_1422ba250(Unk_UIManager* pUI);
 class Unk_140ad4b90;
 Unk_140ad4b90* FUN_140ad4b90();
 void FUN_1418631a0(Unk_140ad4b90* p);
+bool FUN_141863100(Unk_140ad4b90* p, int nMapId, const Unk_StreamPoint& ptPos);   // the point is in the map's area
+Unk_CameraTargetEntity* FUN_141bd1200(Unk_GameContext* pContext, int nId);   // an npc by object id
+Unk_CameraTargetEntity* FUN_141bd0cc0(Unk_GameContext* pContext);       // the local player
+void FUN_141bdb5a0(Unk_GameContext* pContext, int bOn);
+void FUN_141bd9e60(Unk_GameContext* pContext, float f1, float f2, float fTime, int nTargetId);
+void FUN_141bda050(Unk_GameContext* pContext, float f, int nTargetId);
 unsigned int FUN_140869420();                                           // tick count in ms
 void FUN_1409a5770(const NiFixedString& kName, const float* pf, int n); // set a global shader constant
 extern NiFixedString DAT_143ae5380;                                     // camera shader constant name
@@ -998,6 +1006,137 @@ Unk_GoPickListPtr CameraMgr::FUN_140af0850(float fX, float fY, bool bFrontOnly, 
     return Unk_GoPickListPtr(0);
 }
 MS2_REPLACE_METHOD(0x140AF0850, CameraMgr, FUN_140af0850, 569, 0xA62206A5);
+
+// @0x140aec8a0
+void CameraMgr::FUN_140aec8a0(bool bKeep)
+{
+    if (!FUN_140a18070() || m_spMapCameraData.IsNull())
+        return;
+    {
+        FUN_140aeb920();
+        FUN_140aed260();
+        FUN_140af9b40(m_spMapCameraData->m_distance);
+        FUN_140af9870(m_spMapCameraData->m_hAngle);
+        FUN_140af98d0(m_spMapCameraData->m_vAngle);
+        FUN_140af9ab0(m_spMapCameraData->m_zoomOutHeightOffset, m_spMapCameraData->m_zoomInHeightOffset);
+        if (m_spMapCameraData->m_30 && !bKeep)
+        {
+            Unk_CameraSetting setting;
+            setting.m_0 = FUN_140ad4b40();
+            setting.m_4 = FUN_140af7f00();
+            setting.m_8 = FUN_140af7ea0();
+            setting.m_18 = FUN_140af8290();
+            setting.m_c = FUN_140a17e10();
+            FUN_140aed720(setting);
+            FUN_140aed580(0, 0, 1.0f);
+            FUN_140aed750(m_spMapCameraData->m_18, 1);
+            CCameraMode* pMode = FUN_140af2520();
+            if (pMode)
+                pMode->vfunc_36(reinterpret_cast<Unk_CameraPreset*>((CMapCameraData*)m_spMapCameraData));
+        }
+        MS2Ptr<CFieldDataCli> spField = FUN_1403ed2d0()->FUN_141bd30a0();
+        if (spField->m_nUseDummyTarget)
+            FUN_140aeb730(reinterpret_cast<const efd::Point3&>(spField->m_vecDummyTargetPos));
+    }
+}
+MS2_REPLACE_METHOD(0x140AEC8A0, CameraMgr, FUN_140aec8a0, 764, 0xB83CC38A);
+
+// @0x140aecbb0
+// MS2-FUNCTIONAL: one byte differs that the instruction diff does not show (same instruction stream).
+void CameraMgr::FUN_140aecbb0(int nId, int nTargetId, bool bEnter)
+{
+    if (!nId)
+        return;
+    bool bHasTarget = nTargetId != 0;
+    {
+        for (POSITION pos = m_entitySetups.GetHeadPosition(); pos; m_entitySetups.GetNext(pos))
+        {
+            Unk_CameraSetup& setup = m_entitySetups.GetValueAt(pos);
+            if (setup.m_28 == 2 && setup.m_2c == nId)
+            {
+                CTargetCameraMode* pTarget = 0;
+                if (FUN_140af7e30() == 2)
+                    pTarget = static_cast<CTargetCameraMode*>(FUN_140af24f0());
+                if (pTarget)
+                    pTarget->FUN_14183cc80(1);
+                if (bEnter)
+                {
+                    Unk_CameraSetting* pSetting = FUN_140947880(FUN_140af2520());
+                    FUN_140aed580(0, 0, 0);
+                    FUN_140aed720(*pSetting);
+                    FUN_140aed750(0x10, 1);
+                    FUN_140aed1e0(setup);
+                    if (bHasTarget)
+                    {
+                        Unk_CameraTargetEntity* pNpc = FUN_141bd1200(FUN_1403ed2d0(), nTargetId);
+                        if (pNpc)
+                        {
+                            FUN_140aeaf40(pNpc, 1);
+                            FUN_141bdb5a0(FUN_1403ed2d0(), 1);
+                        }
+                        FUN_141bd9e60(FUN_1403ed2d0(), 1.0f, 0, setup.m_3c, nTargetId);
+                        m_27c = true;
+                    }
+                    return;
+                }
+                m_27c = false;
+                FUN_140aeb920();
+                FUN_140aed260();
+                FUN_140aeaf40(FUN_141bd0cc0(FUN_1403ed2d0()), 1);
+                FUN_141bdb5a0(FUN_1403ed2d0(), 0);
+                if (pTarget)
+                    pTarget->FUN_14183cc80(0);
+                FUN_141bda050(FUN_1403ed2d0(), 1.0f, nTargetId);
+                return;
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140AECBB0, CameraMgr, FUN_140aecbb0, 653, 0xE8ACA87A);
+
+// @0x140aece50
+void CameraMgr::FUN_140aece50()
+{
+    if (!m_24c)
+        return;
+    if (m_entitySetups.IsEmpty())
+        return;
+    if (FUN_140aed3a0())
+        return;
+    if (!FUN_140aed4b0())
+        return;
+    Unk_CameraTargetEntity* pTarget = FUN_140a38d60();
+    if (!pTarget)
+        return;
+    {
+        for (POSITION pos = m_entitySetups.GetHeadPosition(); pos; m_entitySetups.GetNext(pos))
+        {
+            Unk_CameraSetup& setup = m_entitySetups.GetValueAt(pos);
+            bool bHit = false;
+            if (setup.m_28 == 1)
+            {
+                float fDist = pTarget->vfunc_18().FUN_140965c40(setup.m_c).FUN_140967ac0();
+                if (fDist <= setup.m_30)
+                    bHit = true;
+            }
+            else if (setup.m_28 == 3)
+            {
+                if (FUN_141863100(FUN_140ad4b90(), setup.m_34, pTarget->vfunc_18()))
+                    bHit = true;
+            }
+            if (bHit)
+            {
+                Unk_CameraSetting* pSetting = FUN_140947880(FUN_140af2520());
+                FUN_140aed580(0, 0, 0);
+                FUN_140aed720(*pSetting);
+                FUN_140aed750(0x10, 1);
+                FUN_140aed1e0(setup);
+                return;
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140AECE50, CameraMgr, FUN_140aece50, 587, 0x127E1FEB);
 
 // @0x140aefa70
 void CameraMgr::FUN_140aefa70()
