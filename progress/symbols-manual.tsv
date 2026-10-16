@@ -1995,3 +1995,17 @@ D3DXFloat16To32Array	14230396f	func
 ??0Unk_MagicEffectFile@@QEAA@XZ	140a90100	func
 ??1Unk_MagicEffectFile@@QEAA@XZ	140a90120	func
 ??0NotifyRemoveNpc@@QEAA@V?$SmartPointer@VUnk_SSGNpc@@@efd@@@Z	140db4930	func
+??0CubeItemInfo@@QEAA@AEAVCInPacket@@@Z	1408b3630	func
+?s_instance@?$TSingleton@VCFunctionCubeService@@@@2PEAVCFunctionCubeService@@EA	143ab3918	data
+?DAT_143ab2d80@@3DA	143ab2d80	data
+?DAT_1439f706c@@3HA	1439f706c	data
+?DAT_143ad4348@@3VCategory@efd@@A	143ad4348	data
+?DAT_143ab3150@@3UUnk_FcCountMap@@A	143ab3150	data
+??0Unk_FcObjData@@QEAA@XZ	140708840	func
+??1Unk_FcObjData@@QEAA@XZ	140708d60	func
+??0Unk_FcOptions@@QEAA@XZ	140708280	func
+??0Unk_FcSkillText@@QEAA@XZ	140708950	func
+??0UIBootyPopup@@QEAA@XZ	141031430	func
+??0UIUGCCubeNoticePopup@@QEAA@XZ	140fb49b0	func
+??1Unk_FcItemSvcPtr@@QEAA@XZ	1401cd150	func
+??1Unk_FcUIMsg@@QEAA@XZ	140c30570	func
