@@ -414,6 +414,7 @@ template <> MS2Ptr<CSkillRecord>::MS2Ptr(const MS2Ptr& o);                      
 template <> MS2Ptr<CSkillRecord>::~MS2Ptr();                                            // 0x140975740
 template <> MS2Ptr<Unk_PCBaseComp_b18>::MS2Ptr(const MS2Ptr& o);                         // 0x141532430
 template <> MS2Ptr<Unk_PCBaseComp_b18>::~MS2Ptr();                                      // 0x140964b60
+template <> bool MS2Ptr<Unk_PCBaseComp_b18>::operator==(Unk_PCBaseComp_b18* p) const;    // 0x1417089e0 (defined in ridee.cpp; an implicit copy here is a duplicate symbol under lld-link)
 template <> MS2Ptr<Unk_StateArg29>::~MS2Ptr();                                          // 0x1401bfde0 (ICF-folded)
 
 // ---- StateLocalController / StatePcGuideObjectController / StateRideeController ----
