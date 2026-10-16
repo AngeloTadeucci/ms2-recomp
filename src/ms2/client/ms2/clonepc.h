@@ -12,11 +12,22 @@
 // 133 0x141086e80 (0), 139 0x141086c30, 143 0x141086cc0 (PC::vfunc_143), 145 0x1410872a0 (0).
 // Only the overrides a derived unit needs are declared below; vfunc_24's COMDAT (0x1409f7f40) is in avatarpc.
 #pragma once
-#include <efd/List.h>
+#include <efd/StdContainers.h>
+#include <atlcoll.h>
+#include <efd/SmartPointer.h>
 #include "ms2/placeholder/fittingdollpc.h"
 
 class UIModelView;   // NiRefObject-derived (UIRenderView); smart pointer COMDATs: ctor 0x14108aea0, dtor 0x140cb1460
 class NiAVObject;
+class NiActorManager;   // the equip model records are NiActorManagers (GetNIFRoot() = COMDAT 0x1409f7cb0)
+
+// The 8-byte poll timer of the preview refresh (FUN_140268870: true once nMs have passed since the last true).
+struct Unk_CloneTimer
+{
+    int FUN_140268870(unsigned int nMs);                    // 0x140268870
+    int m_nA;
+    int m_nB;
+};
 
 class ClonePC : public PC
 {
@@ -28,6 +39,15 @@ public:
 
     // @0x1409f7f40
     virtual void vfunc_24(int) { m_unk_40 = 0; }            // 24 (inline; COMDAT in avatarpc)
+    virtual void vfunc_12();                                // 12 0x1410875f0
+    virtual void vfunc_14();                                // 14 0x1410876b0
+    // slots AvatarPC inherits from here (declared so the vftable resolves to the exe slots)
+    virtual int vfunc_26();                                 // 26 0x141086e60
+    virtual bool vfunc_55(float a, float b);                // 55 0x141087cd0
+    virtual bool vfunc_56(float f);                         // 56 0x141087c90
+    virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d);// 68 0x141086ea0
+    virtual void vfunc_93(bool b);                          // 93 0x141087290
+    virtual void vfunc_9(void* p);                          // 9 0x141086b70
     // new virtuals
     virtual void vfunc_147(UIModelView* pView);             // 147 0x141086bc0 m_spModelView = pView
     virtual UIModelView* vfunc_148();                       // 148 0x141086c00
@@ -36,6 +56,12 @@ public:
     virtual void vfunc_151();                               // 151 0x141087d20
     // pList: CAtlList of equip smart pointers; pEquip: 0x1416561a0(m_pSourcePC)'s result. Types unproven.
     virtual void vfunc_152(void* pList, void* pEquip);      // 152 0x1410884f0
+
+    // non-virtual (out of line in the unrecovered clonepc unit; called by AvatarPC)
+    void FUN_141087390();                                   // 0x141087390 marks the model view dirty (m_b12f9 = 1)
+    void FUN_141087770();                                   // 0x141087770 pre-update hook of the view refresh
+    void FUN_141087790();                                   // 0x141087790 post-update hook of the view refresh
+    void FUN_1410879c0(ATL::CAtlArray<efd::SmartPointer<NiActorManager>>& kOut);   // 0x1410879c0 collects the equip records
 
 public:
     MS2_LAYOUT_FRIEND;
@@ -49,7 +75,7 @@ public:
     int m_unk_12fc;                                         // +0x12fc = 1
     efd::list<NiAVObject*> m_kList1300;                     // +0x1300 (ctor 0x141043710, dtor 0x141043950)
     void* m_pOwned1310;                                     // +0x1310 owned polymorphic object (dtor 0x14108b370 deletes it)
-    int m_unk_1318[2];                                      // +0x1318 8-byte timer value (ctor 0x140517b00 zeroes it)
+    Unk_CloneTimer m_unk_1318;                              // +0x1318 8-byte timer value (ctor 0x140517b00 zeroes it)
     void* m_unk_1320[3];                                    // +0x1320 std::vector<?> (ctor 0x14108b300, dtor 0x14108b4c0)
     bool m_b1338;                                           // +0x1338 = 0
 };

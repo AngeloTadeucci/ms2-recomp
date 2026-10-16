@@ -14,11 +14,51 @@ struct Unk_CharEquip;   // tcreatecharinfo.h (0xc)
 // Out-of-line in the unrecovered PC unit: symbols-manual rows. Slots 133..146 appended by sb4 (work/sb4/pc_slots_133.txt:
 // prologue homing + PC/ClonePC/MyPC/FittingDollPC/PortraitPC overrides). ClonePC (clonepc.h) adds 147..152.
 class Unk_PCArg125;   // MS2Ptr<T> by value (MyPC override destroys it with 0x1409f74e0)
+class Unk_PCActionTimer;   // CPtred-derived, defined by the user unit (avatarpc.cpp)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
 class PC : public PCBase {
     EE_DECLARE_CLASS1(PC, 0x06200003, PCBase);   // ClassInfo 0x143ae2e20 (setup COMDAT 0x1409f8020 in avatarpc; sb4)
 public:
     virtual ~PC();
+    virtual int vfunc_10();                                 // 10 0x141651370 (PCBase 0x14166b550)
+    virtual void vfunc_53(float f);                         // 53 0x141660240
+    virtual void vfunc_59(int a, void* b, int c, int d);    // 59 0x1416537d0
+    virtual int vfunc_116();                                // 116 0x14165ebe0 (PCBase's is pure)
+    // slots AvatarPC inherits from here (declared so the vftable resolves to the exe slots)
+    virtual void vfunc_107(void* p, float f);               // 107 0x14165f720
+    virtual void vfunc_113(void* p);                        // 113 0x14165fec0
+    virtual void vfunc_114(void*);                          // 114 0x14165c4e0
+    virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);// 115 0x14165e500
+    virtual int vfunc_118(void* a, float* b, CString* c);   // 118 0x141655a30
+    virtual void vfunc_120(void* p);                        // 120 0x1416561e0
+    virtual void vfunc_121(void* p);                        // 121 0x1416562d0
+    virtual int vfunc_122(void* p);                         // 122 0x14165f5d0
+    virtual void vfunc_15();                                // 15 0x141651d00
+    virtual void vfunc_16();                                // 16 0x141651d40
+    virtual void vfunc_23(int n);                           // 23 0x14165c320
+    virtual void vfunc_31(bool b);                          // 31 0x141652030
+    virtual void vfunc_33(void* a, void* b);                // 33 0x141652080
+    virtual void vfunc_34(void* p);                         // 34 0x1416529f0
+    virtual void vfunc_35(void* p);                         // 35 0x141652e20
+    virtual void vfunc_40(float x, float y, float z);       // 40 0x14165d8d0
+    virtual void vfunc_42(float f, bool b);                 // 42 0x14165dad0
+    virtual void vfunc_44(void* p);                         // 44 0x14165dd80
+    virtual void vfunc_52(double fTime);                    // 52 0x141651d80
+    virtual int vfunc_57();                                 // 57 0x141653ce0
+    virtual CString vfunc_60();                             // 60 0x141658a30
+    virtual int vfunc_61();                                 // 61 0x141658b80
+    virtual bool vfunc_62();                                // 62 0x141658c40
+    virtual void vfunc_66(int n);                           // 66 0x1416544f0
+    virtual int vfunc_69();                                 // 69 0x14165f480
+    virtual void vfunc_71(void* p);                         // 71 0x14165ff00
+    virtual void vfunc_72();                                // 72 0x14165ff80
+    virtual void vfunc_74(void* a, void* b);                // 74 0x141656af0
+    virtual CStringW vfunc_77();                            // 77 0x141656c70
+    virtual int vfunc_78();                                 // 78 0x1416578f0
+    virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141656f80
+    virtual MS2Ptr<Unk_PCBaseComp_a98> vfunc_84();          // 84 0x1416572b0
+    virtual void vfunc_90(void* p);                         // 90 0x141657910
+    virtual int vfunc_99(int n);                            // 99 0x141654850
     virtual int vfunc_124(int a, int b);                    // 124 0x141653840 (1/0; homes edx and r8d)
     virtual void vfunc_125(MS2Ptr<Unk_PCArg125> p);         // 125 0x141654900 (MyPC 0x141522d40)
     virtual void vfunc_126(MS2Ptr<Unk_PCArg126> p, int n);  // 126 0x141655230 (n == 0: p.get() + 0x430)
@@ -42,8 +82,12 @@ public:
     virtual void vfunc_144();                               // 144 0x141660f80
     virtual int vfunc_145();                                // 145 0x141661be0: return 1 (ClonePC: 0)
     virtual bool vfunc_146();                               // 146 0x141662e50
-    unsigned char unknownD40[0x5a0];
+    // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
+    unsigned char unknownD40[0x288];
+    MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
+    unsigned char unknownFD8[0x308];
 };
+MS2_CHECK_OFFSET(PC, m_spFC8, 0xfc8);
 MS2_CHECK_SIZE(PC, 0x12e0); // deleting dtor 1416678b0
 
 class FittingDollPC : public PC {
