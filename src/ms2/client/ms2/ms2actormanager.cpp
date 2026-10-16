@@ -124,7 +124,8 @@ NiActorManager* FUN_140d81450(const char* pcKFMFilename, bool bCumulativeAnimati
 }
 
 // @0x140d815d0 NiActorManager::Create(NiKFMTool*, ...) building an MS2ActorManager
-// MS2-FUNCTIONAL: byte-identical except `new NiStream` allocates 0x4c8 (engine header sizeof) where the exe allocates 0x5d0.
+// MS2-FUNCTIONAL: the exe's NiStream is 0x5d0 bytes (engine header sizeof 0x4c8): allocate the exe size and placement-new
+// it (a header-sized block was overrun by the exe ctor / Load: heap corruption on every KFM actor load)
 NiActorManager* FUN_140d815d0(NiKFMTool* pkKFMTool, const char* pcKFMFilePath, bool bCumulativeAnimations,
                               bool bLoadFilesFromDisk, NiStream* pkStream, NiPoseBinding* pkPoseBinding)
 {
@@ -140,7 +141,7 @@ NiActorManager* FUN_140d815d0(NiKFMTool* pkKFMTool, const char* pcKFMFilePath, b
         bool bDeleteStream = false;
         if (!pkStream)
         {
-            pkStream = EE_NEW NiStream;
+            pkStream = ::new (efd::MemObject::operator new(0x5d0, EE_MEMHINT_NONE)) NiStream;
             bDeleteStream = true;
         }
 
