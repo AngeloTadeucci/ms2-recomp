@@ -194,10 +194,11 @@ public:
     ATL::CAtlMap<int, int> m_dailyCounts; // +1c0
     ATL::CAtlMap<int, int> m_weeklyCounts; // +208
     std::map<int, std::set<__int64>> m_targets250;
-    // +260: a std::set of an 8-byte element (ctor 0x1416db960 / dtor 0x1416dbf60 are this object's own
-    // instantiation; set<__int64> and set<unsigned __int64> belong to other objects). Only the ctor and dtor
-    // reach it, so the element type is not recovered: an opaque pointer element stands in.
-    std::set<class Unk_QmTreeItem*> m_tree260;
+    // +260: only the ctor and dtor reach it. Its tree nodes are 0x38 bytes and the element dtor releases an
+    // Unk_PayloadPtr<CQuest> at +8 (0x1416dbfa0), so the element is pair<const int, Unk_PayloadPtr<CQuest>>; the
+    // mangled-name order of its deallocate COMDATs (0x1416e2840 before the map<int, set> one at 0x1416e2870) fixes
+    // the key as int.
+    std::map<int, Unk_PayloadPtr<CQuest>> m_quests260;
 };
 MS2_CHECK_SIZE(CQuestManager, 0x270);
 MS2_CHECK_OFFSET(CQuestManager, m_quests20, 0x20);
@@ -208,4 +209,4 @@ MS2_CHECK_OFFSET(CQuestManager, m_pinnedQuests, 0x1a0);
 MS2_CHECK_OFFSET(CQuestManager, m_dailyCounts, 0x1c0);
 MS2_CHECK_OFFSET(CQuestManager, m_weeklyCounts, 0x208);
 MS2_CHECK_OFFSET(CQuestManager, m_targets250, 0x250);
-MS2_CHECK_OFFSET(CQuestManager, m_tree260, 0x260);
+MS2_CHECK_OFFSET(CQuestManager, m_quests260, 0x260);

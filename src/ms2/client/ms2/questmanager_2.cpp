@@ -24,7 +24,6 @@
 // MS2-PIN: ??$destroy@V?$list@IV?$allocator@I@std@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@1@QEAV?$list@IV?$allocator@I@std@@@1@@Z 0x1416da140 ; unique
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daec0 ; unique
 // MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@PEAVCQuest@@@Z 0x1416db050 ; unique
-// MS2-PIN: ??1TextKeyCallbackData@NiControllerSequence@@QEAA@XZ 0x1416dbfa0 ; unique
 // MS2-PIN: ?IsEmpty@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEBA_NXZ 0x1416dc1d0 ; unique
 // MS2-PIN: ?SetStartTime@CQuest@@QEAAX_J@Z 0x1416ded20 ; unique
 // MS2-PIN: ?Set68@CQuest@@QEAAXH@Z 0x1416dedb0 ; unique
@@ -2474,8 +2473,8 @@ int CQuestManager::FUN_1416d40a0(int depth, unsigned fromQuestId, unsigned toQue
     std::list<std::list<unsigned>>& reached, std::list<std::list<unsigned>>* notReached)
 {
     auto finish = [&path, &reached, notReached](int ok) {
-        if (ok == 1) reached.push_back(path);
-        else if (notReached != 0) notReached->push_back(path);
+        if (ok == 1) reached.emplace_back(path);
+        else if (notReached != 0) notReached->emplace_back(path);
     };
     if (++depth >= 30000) {
         finish(0);
