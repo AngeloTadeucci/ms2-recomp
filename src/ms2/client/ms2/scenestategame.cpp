@@ -55,6 +55,8 @@
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIHideAndSeekResultDialog@@@@YAPEAVUIHideAndSeekResultDialog@@H@Z 0x141742b40 ; w120 manual (RTTI)
 // MS2-PIN: ??0?$Unk_BmPtr@VUserUGCMapInfo@@@@QEAA@AEBV0@@Z 0x1417459d0 ; w120 manual (call site)
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
+// MS2-PIN: ??_GNotifyChangeMyJob@@UEAAPEAXI@Z 0x141747850 ; w125 manual
+// MS2-PIN: ??1NotifyChangeMyJob@@UEAA@XZ 0x141746bc0 ; w125 manual
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -747,7 +749,8 @@ public:
 GameObject* FUN_140b10320(Unk_SSGCubeObj* pObj);           // the object the sound plays at
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
-class Unk_SSGDlg4e28 { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0(); };
+class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
+    void FUN_141937e00(int nMode); };   // UIGameMenuDialog
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
@@ -865,7 +868,7 @@ class Unk_SSGcea070 { public: void FUN_140dd86a0(int nA, int nB); };
 Unk_SSGcea070* FUN_140cea070();
 void FUN_141275260(int nStringId, int nA, int nB);
 
-class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2d0 - 0xd8]; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; };
+class Unk_SSGEffectCfg { public: char m_pad_00[0xd0]; CString m_strd0; char m_pad_d8[0x2c8 - 0xd8]; CString m_str2c8; CString m_str2d0; CString m_str2d8; char m_pad_2e0[0x328 - 0x2e0]; CString m_str328; char m_pad_330[0x358 - 0x330]; CString m_str358; };
 MS2_CHECK_OFFSET(Unk_SSGEffectCfg, m_str2d8, 0x2d8);
 int FUN_141658e60(PCBase* pPC);                             // the partner gem id of an actor
 class Unk_SSGDlg4e3c { public: void FUN_141910b10(__int64 nDelta); };
@@ -880,6 +883,8 @@ public:
     virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
     virtual void vfunc_8(); virtual void vfunc_9();
     virtual void vfunc_10(int n);
+    virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13();
+    virtual void vfunc_14(int nJob);                        // the player's job changed
 };
 Unk_SSGa94350* FUN_140a94350();
 
@@ -4942,6 +4947,168 @@ void CSceneStateGame::FUN_14171a900(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14171a900, CSceneStateGame, FUN_14171a900, 393, 0xEF236C66);
 
+// ---- 0x49: a player's job / skill book update (modes 0..11) ----
+class Unk_SSGSkillBook
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(unsigned short nLevel);
+    virtual void vfunc_5(); virtual void vfunc_6();
+    virtual void vfunc_7(CInPacket& packet);                // decode the skill book
+    void FUN_140a6e240();
+};
+Unk_SSGSkillBook* FUN_1416546d0(PC* pPC);                  // the actor's skill book
+class Unk_PCSkillTree : public CPtred { };
+template <> Unk_PCSkillTree* MS2Ptr<Unk_PCSkillTree>::get() const;   // 0x1409ee2c0 (astooltip's COMDAT)
+template <> MS2Ptr<Unk_PCSkillTree>::~MS2Ptr();                      // 0x1409ed920
+void FUN_14080bb80(Unk_PCSkillTree* pTree);                         // reset the tree (skilltieroptionmanager)
+void FUN_141654790(PC* pPC);                                        // refresh the actor's skills
+int FUN_141654700(MyPC* pPC);                                       // job
+enum Unk_SSGJobCode { };                                            // job code
+Unk_SSGJobCode FUN_141654730(MyPC* pPC);                            // job code
+class Unk_SSGJobTable { };
+Unk_SSGJobTable* FUN_140bd8b60();
+int FUN_1401d6ef0(Unk_SSGJobTable* pTable, int nJobCode);           // the job code is an awakened job
+class Unk_SSGDlg4f2d { public: void FUN_140ec8220(); };
+Unk_SSGDlg4f2d* FUN_1409eb120(int nId);                             // GetDialog<T>(0x4f2d)
+class UIChangeJobEffect : public UIDialog { };
+enum Unk_SSGJobError { };                                           // the 0x49 mode 3 error code
+class NotifyChangeMyJob : public NotifyObject
+{
+public:
+    NotifyChangeMyJob(MyPC* pMyPC) : m_pMyPC(pMyPC) {}
+    virtual ~NotifyChangeMyJob() = default;
+    virtual CStringW vfunc_1();                             // 0x140db4370
+    MyPC* m_pMyPC;                                          // +0x18
+};
+MS2_CHECK_SIZE(NotifyChangeMyJob, 0x20);
+
+// @0x14171f8a0
+// MS2-FUNCTIONAL: code identical; frame 0x60 smaller because the shared Unk_EffectQuery placeholder is 0x10 (exe object 0x70), so stack slots shift
+void CSceneStateGame::FUN_14171f8a0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        FUN_1416546d0(pPC)->vfunc_7(packet);
+        FUN_141654790(pPC);
+        MyPC* pMyPC = FUN_1409613d0(pPC);
+        if (pMyPC != 0)
+        {
+            FUN_140aa6d40()->FUN_141b0ce20(4, 0);
+            Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+            if (pDlg != 0)
+                pDlg->FUN_141ac0210(pMyPC);
+            FUN_140a94350()->vfunc_14(FUN_141654700(pMyPC));
+        }
+    }
+    else if (nMode == 1 || nMode == 2)
+    {
+        FUN_1416546d0(pPC)->vfunc_7(packet);
+        FUN_141654790(pPC);
+        if (nMode == 2)
+        {
+            Unk_EffectQuery query;
+            query.m_strName = FUN_1401d31f0()->m_str2c8;
+            query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
+            query.FUN_140a53190(pPC->FUN_14123c580());
+            FUN_1403ed280()->FUN_1411a4a00(&query);
+            FUN_14080bb80(pPC->FUN_1409eee00().get());
+            MyPC* pMyPC = FUN_1409613d0(pPC);
+            if (pMyPC != 0)
+            {
+                FUN_140aa6d40()->FUN_141b0ce20(4, 0);
+                FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyChangeMyJob(pMyPC)));
+                Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+                if (pDlg != 0)
+                    pDlg->FUN_141ac0210(pMyPC);
+                if (FUN_140166410()->FUN_14036d570(0xca) == true)
+                {
+                    if (FUN_1401d6ef0(FUN_140bd8b60(), FUN_141654730(pMyPC)) != 0)
+                    {
+                        UIChangeJobEffect* pEffect = Unk_SSGGetDialog<UIChangeJobEffect>(0x4f6c);
+                        if (pEffect != 0)
+                            pEffect->vfunc_2();
+                    }
+                }
+                FUN_140a94350()->vfunc_14(FUN_141654700(pMyPC));
+            }
+        }
+    }
+    else if (nMode == 7)
+    {
+        FUN_1416546d0(pPC)->vfunc_7(packet);
+        MyPC* pMyPC = FUN_1409613d0(pPC);
+        if (pMyPC != 0)
+        {
+            FUN_140aa6d40()->FUN_141b0ce20(4, 0);
+            Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+            if (pDlg != 0)
+                pDlg->FUN_141ac0210(pMyPC);
+        }
+    }
+    else if (nMode == 9 || nMode == 10 || nMode == 11)
+    {
+        FUN_1416546d0(pPC)->vfunc_7(packet);
+        MyPC* pMyPC = FUN_1409613d0(pPC);
+        if (pMyPC != 0)
+        {
+            Unk_SSGDlg4f2d* pTree = FUN_1409eb120(0x4f2d);
+            if (pTree != 0)
+                pTree->FUN_140ec8220();
+            if (nMode == 9 || nMode == 11)
+            {
+                Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+                if (pDlg != 0)
+                    pDlg->FUN_141ac0210(pMyPC);
+            }
+        }
+    }
+    else if (nMode == 8)
+    {
+        FUN_1416546d0(pPC)->vfunc_7(packet);
+    }
+    else if (nMode == 3)
+    {
+        Unk_SSGJobError nError = (Unk_SSGJobError)static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError != 0)
+        {
+            CStringW strMsg;
+            switch (nError)
+            {
+            case 9: strMsg = FUN_14028de60(0x76); break;
+            case 10: strMsg = FUN_14028de60(0x77); break;
+            case 2: strMsg = FUN_14028de60(0x78); break;
+            case 12: strMsg = FUN_14028de60(0x79); break;
+            case 11: strMsg = FUN_14028de60(0x7a); break;
+            case 3:
+            case 4: strMsg = FUN_14028de60(0x7b); break;
+            case 5: strMsg = FUN_14028de60(0x7c); break;
+            case 15: strMsg = FUN_14028de60(0x7d); break;
+            case 8: strMsg = FUN_14028de60(0x7e); break;
+            case 14: strMsg = FUN_14028de60(0x7f); break;
+            case 18:
+            {
+                int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                strMsg = FUN_1408116a0(0x80, nValue);
+                FUN_140d73aa0(strMsg, 0, 0, CStringW(L""));
+                break;
+            }
+            default: strMsg = FormatStringId(0x81, nError); break;
+            }
+            if (!strMsg.IsEmpty())
+                FUN_1412751f0(strMsg, 1, 1);
+        }
+    }
+    Unk_SSGDlg4e28* pMenu = FUN_140938b90(0x4e28);
+    if (pMenu != 0 && pMenu->vfunc_55() == 0)
+        pMenu->FUN_141937e00(nMode);
+}
+MS2_REPLACE_METHOD(0x14171f8a0, CSceneStateGame, FUN_14171f8a0, 2952, 0x3E6FD877);
+
 // @0x141720c60
 // MS2-FUNCTIONAL: code identical; the MS2Ptr<Unk_SSGSkillAttr> copy-ctor COMDAT pairs with the in-range copy 0x1417459d0 (called from 0x141725xxx) instead of 0x140182280
 void CSceneStateGame::FUN_141720c60(CInPacket& packet)
@@ -6305,15 +6472,6 @@ public:
     unsigned short m_nOldLevel;                             // +0x1a
 };
 MS2_CHECK_SIZE(NotifyChangeMyLevel, 0x20);
-class Unk_SSGSkillBook
-{
-public:
-    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(unsigned short nLevel);
-    virtual void vfunc_5(); virtual void vfunc_6();
-    virtual void vfunc_7(CInPacket& packet);                // decode the skill book
-    void FUN_140a6e240();
-};
-Unk_SSGSkillBook* FUN_1416546d0(PC* pPC);                  // the actor's skill book
 void FUN_141b16550(unsigned short nLevel);
 UIExpBar* FUN_14125b200(int nId);                           // GetDialog<UIExpBar> (another unit's COMDAT)
 
