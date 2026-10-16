@@ -23,6 +23,7 @@ class CMsTime;
 struct Unk_PCEquipSet { MS2Ptr<CEquipItem> FUN_1411e1780(int nSlot, int nKind); MS2Ptr<CEquipItem> FUN_1411e1580(__int64 nItemUid); void FUN_1411e4150(__int64 nItemUid, unsigned char nSlot, int nKind); void FUN_1411ea620(const CMsTime& kStart, const CMsTime& kEnd); void FUN_1411ea7c0(); unsigned char unknown0[0x1e8]; };   // FUN_1411e1780 (itemgem.cpp): the worn item of an equip slot   // the PC's equipment holder (+0xde0); methods FUN_1411e3de0/e3000/e22c0
 class Unk_PCD88;      // +0xd88 target (ClonePC::vfunc_12 releases it via FUN_140a35900)
 class Unk_PCArg126;   // MS2Ptr<T> by value (get 0x1409f7930, ICF generic dtor 0x1401bfde0)
+class Unk_HsInfo;     // MS2Ptr<T> by value (defined by uihideandseekresultdialog.cpp)
 // The player's interact mode (PC +0x1240): while active it picks the kind of object to interact with (actionkeyobject.cpp).
 // Defined here because PC::FUN_140967420 copies the MS2Ptr inline.
 class Unk_PCInteractMode : public CPtred
@@ -165,6 +166,7 @@ public:
     void FUN_141663550();
     void FUN_141662850(__int64 nValue);
     void FUN_141662890(__int64 nValue);
+    MS2Ptr<Unk_HsInfo> FUN_141664200();                     // the hide and seek record (scenestategame 0x12b)
     // 0xd40..0x12e0. The MS2Ptr at +0xfc8 (an action timer; AvatarPC::vfunc_142 pokes it) is exposed, the rest is opaque.
     // ClonePC (clonepc.cpp) uses the list at +0xd48, the MS2Ptr at +0xd88 and the equip holder at +0xde0.
     unsigned char unknownD40[8];

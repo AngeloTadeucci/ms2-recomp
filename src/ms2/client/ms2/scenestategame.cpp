@@ -51,6 +51,8 @@
 // MS2-PIN: ??1Unk_SSGUserChat@@QEAA@XZ 0x1417469a0 ; w118 manual
 // MS2-PIN: ??4?$Unk_PayloadPtr@VNoticeCubeInfo@@@@QEAAAEAV0@PEAVNoticeCubeInfo@@@Z 0x141746eb0 ; w118 manual
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIHomeResizeDialog@@@@YAPEAVUIHomeResizeDialog@@H@Z 0x141742be0 ; w120 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIWatchAGameDialog@@@@YAPEAVUIWatchAGameDialog@@H@Z 0x141743690 ; w120 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIHideAndSeekResultDialog@@@@YAPEAVUIHideAndSeekResultDialog@@H@Z 0x141742b40 ; w120 manual (RTTI)
 // MS2-PIN: ??0?$Unk_BmPtr@VUserUGCMapInfo@@@@QEAA@AEBV0@@Z 0x1417459d0 ; w120 manual (call site)
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
@@ -114,6 +116,7 @@
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/commonfiles/rideonaction.h"
 #include "ms2/placeholder/cproxygameobject.h"
+#include "ms2/client/ms2/uihideandseekresultdialog.h"
 // MS2Ptr<CProxyGameObject>::operator-> / get are the exe's out-of-range copies (0x1406c71d0 / 0x1406c71b0); left
 // undefined here so they are not paired with the unit's in-range look-alikes.
 template <> CProxyGameObject* MS2Ptr<CProxyGameObject>::operator->() const;
@@ -142,6 +145,7 @@ public:
     void FUN_141bbbcf0(int nMapId, int n);
     GameObject* FUN_141bd1180(int nId);
     PC* FUN_141bd1290(int nId);
+    void FUN_141bda290(const std::vector<unsigned>* ids);    // strip and hide the entities of the ids
     PCBase* FUN_141bd1200(int nId);
     int FUN_141bbb1e0(GameObject* pObj, int nA, int nB);    // add an object to the world
     int FUN_141bd1a10(PCBase* pActor);
@@ -946,12 +950,13 @@ public:
     void FUN_140f48dc0(int bVisible);
 };
 extern template class MS2Ptr<Unk_PCBaseComp_a78>;           // instances live outside the unit (0x1405a89b0...)
-class UIMainPlayerInfo : public UIDialog { public: void FUN_1419f1d10(unsigned int nMask, bool bShow); };
+class UIMainPlayerInfo : public UIDialog { public: void FUN_1419f1d10(unsigned int nMask, bool bShow); void FUN_1419f2720(bool bArcade); };
 UIMainPlayerInfo* FUN_140931900(int nId);                   // GetDialog<UIMainPlayerInfo>
 class UIHpBar : public UIDialog { };
 void FUN_1419929f0(int nActorId);                           // refresh the hp bar of an actor
 class UIArcadeMainDialog : public UIDialog { public: void FUN_140ef7d30(int nMode, CInPacket& packet); };
-class UIArcadeLifeBar : public UIDialog { public: void FUN_140ef51e0(int nMode, CInPacket& packet); };
+class UIArcadeLifeBar : public UIDialog { public: void FUN_140ef51e0(int nMode, CInPacket& packet); void FUN_140ef53f0(int nX, int nY);
+    void FUN_140ef5370(int nA, int nB, int nC); void FUN_140ef5320(int nA, int nB); };
 class UIMicroGameCoupleDance : public UIDialog { public: void FUN_140e647c0(int nMode, CInPacket& packet); };
 UIMicroGameCoupleDance* FUN_140b8b5c0(int nId);             // GetDialog<UIMicroGameCoupleDance>
 class UIArcadeTextEffectDialog : public UIDialog { public: void FUN_140ba7fe0(int nMode, CInPacket& packet); };
@@ -3717,6 +3722,180 @@ void CSceneStateGame::FUN_14173e4b0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14173e4b0, CSceneStateGame, FUN_14173e4b0, 87, 0xEB0B5C95);
+
+// ---- 0x12b: arcade / hide and seek events ---------------------------------------------------------------------
+// The hide and seek record of a player (PC::FUN_141664200); only the decode is called here.
+class Unk_HsInfo : public CPtred { public: void FUN_14050a320(CInPacket& packet); };
+template <> Unk_HsInfo* MS2Ptr<Unk_HsInfo>::get() const;     // ICF copy outside the unit (0x141371260)
+class UIWatchAGameDialog : public UIDialog
+{
+public:
+    void FUN_140fc0b20(int nValue);
+    void FUN_140fc0b40(int nCharId);
+    void FUN_140fc0b60(bool bFlag);
+};
+
+// @0x14173e5b0
+void CSceneStateGame::FUN_14173e5b0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nCharId);
+        if (pPC == 0)
+            break;
+        MS2Ptr<Unk_HsInfo> spInfo = pPC->FUN_141664200();
+        if (spInfo.get() != 0)
+            spInfo->FUN_14050a320(packet);
+        break;
+    }
+    case 1:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        std::vector<unsigned> vIds;
+        for (unsigned int i = 0; i < nCount; i++)
+        {
+            vIds.push_back(static_cast<CInputStream&>(packet).vfunc_o8_1());
+        }
+        FUN_1403ed2d0()->FUN_141bda290(&vIds);
+        break;
+    }
+    case 2:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nType = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        if (nType == 2)
+        {
+            UIMainPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+            if (pInfo != 0)
+                pInfo->FUN_1419f2720(true);
+            UIArcadeLifeBar* pBar = Unk_SSGGetDialog<UIArcadeLifeBar>(0x4efc);
+            if (pBar != 0)
+            {
+                pBar->FUN_140ef53f0(0x122, -50);
+                pBar->FUN_140ef5370(nA, nB, nC);
+            }
+        }
+        else
+        {
+            UIMainPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+            if (pInfo != 0)
+                pInfo->FUN_1419f1d10(2, false);
+            UIArcadeLifeBar* pBar = Unk_SSGGetDialog<UIArcadeLifeBar>(0x4efc);
+            if (pBar != 0)
+            {
+                pBar->FUN_140ef53f0(0, -50);
+                pBar->FUN_140ef5370(nA, nB, nC);
+            }
+        }
+        FUN_1403ed2b0()->FUN_141add0b0(0x4e3d);
+    }
+        break;
+    case 3:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        UIMainPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+        if (pInfo != 0)
+        {
+            pInfo->FUN_1419f2720(false);
+            pInfo->FUN_1419f1d10(2, true);
+        }
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4efc);
+    }
+        break;
+    case 4:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        UIArcadeLifeBar* pBar = Unk_SSGGetDialog<UIArcadeLifeBar>(0x4efc);
+        if (pBar != 0)
+            pBar->FUN_140ef5320(nA, nB);
+    }
+        break;
+    case 5:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        pMyPC->FUN_141523bc0()->FUN_141767f80(nSkillId);
+        pMyPC->FUN_141523bc0()->FUN_1417683d0();
+    }
+        break;
+    case 6:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        pMyPC->FUN_141523bc0()->FUN_141768100(nSkillId);
+        pMyPC->FUN_141523bc0()->FUN_1417683d0();
+    }
+        break;
+    case 7:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        bool bShow = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        UIWatchAGameDialog* pDlg = Unk_SSGGetDialog<UIWatchAGameDialog>(0x4f91);
+        if (pDlg == 0)
+            break;
+        if (bShow)
+        {
+            pDlg->FUN_140fc0b20(nValue);
+            pDlg->FUN_140fc0b40(nCharId);
+            pDlg->FUN_140fc0b60(bFlag);
+            FUN_1403ed2b0()->FUN_141adc530(0x4f91);
+        }
+        else
+        {
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4f91);
+        }
+    }
+        break;
+    case 8:
+    {
+        int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nRound = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nUnused = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MyPC* pMyPC = FUN_1409613d0(FUN_1403ed2d0()->FUN_141bd1290(nCharId));
+        if (pMyPC == 0)
+            break;
+        UIHideAndSeekResultDialog* pDlg = Unk_SSGGetDialog<UIHideAndSeekResultDialog>(0x4f92);
+        if (pDlg != 0)
+        {
+            pDlg->FUN_140c1eac0(nRound, nItemId, nUnused, nCount);
+            FUN_1403ed2b0()->FUN_141adc530(0x4f92);
+        }
+    }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x14173E5B0, CSceneStateGame, FUN_14173e5b0, 2757, 0xCF47C4D0);
 
 // @0x14173f7c0
 void CSceneStateGame::FUN_14173f7c0(CInPacket& packet)
