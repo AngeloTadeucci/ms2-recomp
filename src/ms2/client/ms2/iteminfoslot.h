@@ -110,3 +110,52 @@ public:
 };
 MS2_CHECK_SIZE(ItemEnchantSlotBag, 0xa8);
 MS2_CHECK_OFFSET(ItemEnchantSlotBag, m_uids, 0x88);
+
+// 0xa0 bytes. vftable 0x142f10eb8 (17 slots, ??_G 0x141420570 sized delete 0xa0). A bag of ItemInfoSlots whose items come
+// from a caller-owned item array through CreateParam::m_pfnGetItem. The ctor, dtor and the three overrides live in the
+// unrecovered unit around 0x14141f6e0 (listed as ?\itemservice.cpp, 0x141419df0-0x141420a70). The free function
+// FUN_14141f860(strName, nSlots, pItems, spParam) news a bag (0xa0), calls vfunc_10(nSlots) and registers it with the
+// owning ASUIComponent (FUN_1422c8f10); the dialogs use it through the CAtlArray<...>* of items they own.
+class ItemSlotBag : public DragSlotBag
+{
+public:
+    // 0x40 bytes (CPtred + creation parameters), vftable 0x142f10ea8 (deleting dtor 0x141420530, dtor 0x141420480).
+    class CreateParam : public CPtred
+    {
+    public:
+        // Reads the item at nIndex from the bag's item array (ItemSlotBag::m_pItems); returned by value (hidden slot).
+        typedef MS2Ptr<CItem> (*GetItemFn)(void* pItems, int nIndex);
+
+        CreateParam();                                  // 0x14141f6e0
+        virtual ~CreateParam();                         // 0x141420480
+
+        GetItemFn m_pfnGetItem;                         // +0x18 (0 in the ctor; FUN_141420330 for the gacha dialog)
+        int m_nIconType;                                // +0x20 -> ItemInfoSlot m_nIconType (0x415 for the gacha dialog)
+        int m_nFlags;                                   // +0x24 -> ItemInfoSlot m_nFlags (0x800)
+        ItemInfoSlotSlotFn* m_pfnSlot;                  // +0x28 owned Delegate handle (deleting dtor on destruction)
+        ItemInfoSlotTipFn* m_pfnTip;                    // +0x30 owned Delegate handle
+        bool m_bEnabled;                                // +0x38 -> MS2DragSlot::FUN_140a7bd80 (m_bEnabled)
+    };
+
+    ItemSlotBag(const CString& strName, void* pItems, MS2Ptr<CreateParam> spParam);   // 0x14141faf0 (takes the param)
+    ItemSlotBag(const CString& strName, void* pItems, CreateParam::GetItemFn pfnGetItem, int nIconType, int nFlags);   // 0x14141f9c0 (news the param)
+    virtual ~ItemSlotBag();                             // 0x14141fb80
+
+    // slots 2-4: GetClassDesc 0x1414205d0, TypeCast 0x141420640 / 0x141420690; ms_ClassInfo 0x143adbdb0,
+    // SetupClassInfo 0x1414205e0 (parent DragSlotBag, id 0x620002e).
+    EE_DECLARE_CLASS1(ItemSlotBag, 0x0620002E, DragSlotBag);
+public:
+    virtual void vfunc_13(int nIndex);                  // 13 0x14141fbc0 ItemInfoSlot at nIndex -> vfunc_11()
+    virtual void vfunc_14(int nIndex);                  // 14 0x14141fc10 ItemInfoSlot at nIndex -> vfunc_10()
+    virtual DragSlot* vfunc_16(int nIndex);             // 16 0x14141fc60 new ItemInfoSlot (0xe8) from m_spParam (item via m_pfnGetItem)
+
+public:
+    MS2_LAYOUT_FRIEND;
+    void* m_pItems;                                     // +0x88 the item array handed to the callback (a 0x20-byte CAtlArray in the gacha dialog)
+    MS2Ptr<CreateParam> m_spParam;                      // +0x90
+};
+MS2_CHECK_SIZE(ItemSlotBag, 0xa0);
+MS2_CHECK_OFFSET(ItemSlotBag, m_pItems, 0x88);
+MS2_CHECK_OFFSET(ItemSlotBag, m_spParam, 0x90);
+MS2_CHECK_SIZE(ItemSlotBag::CreateParam, 0x40);
+MS2_CHECK_OFFSET(ItemSlotBag::CreateParam, m_bEnabled, 0x38);
