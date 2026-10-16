@@ -249,7 +249,7 @@ public:
     void RegisterIds();                                         // 0x140229ad0 fills m_strings with the id names
     int LoadCommon();                                           // 0x140259340 Table/stringCommon.xml
     int FUN_140259910();                                        // 0x140259910 always 1
-    int LoadDebug();                                            // 0x140259640 ../XmlDebug/stringDebug.xml
+    bool LoadDebug();                                           // 0x140259640 ../XmlDebug/stringDebug.xml
     void Reload();                                              // 0x140259930
     void LoadStrings(Unk_140165cf0* pRoot);                     // 0x140259e60
 

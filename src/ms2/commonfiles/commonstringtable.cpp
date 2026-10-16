@@ -11,6 +11,8 @@
 #include "hook/ms2hook.h"
 
 CStringW FUN_14028de60(EBanStringId nStringId);
+bool FUN_14028f710(Unk_140165cf0* pNode);   // node is enabled for this client
+CString FUN_140cc2a00(const CString& strRoot, const CString& strFile);   // path join
 
 // Unrecovered helpers (the xml loader helpers the other table units use).
 class Unk_140165cf0 { public: Unk_140165cf0* FUN_140165cf0(const char*); Unk_140165cf0* FUN_140168650(const char*); };
@@ -1327,6 +1329,101 @@ MS2Ptr<CBanTextChecker> CommonString::GetChecker()
     else
     {
         return MS2Ptr<CBanTextChecker>(0);
+    }
+}
+
+// @0x140259340
+int CommonString::LoadCommon()
+{
+    TextMap& map = m_maps[0];
+    CString strPath = FUN_14071ae20("stringCommon.xml");
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+    {
+        return 0;
+    }
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return 0;
+    }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+    {
+        if (!FUN_14028f710(pNode))
+            continue;
+        CStringW strId = FUN_1401bf530(pNode, "id", CStringW(L""));
+        CStringW strValue = FUN_1401bf530(pNode, "value", CStringW(L""));
+        strValue.Replace(L"\\n", L"\n");
+        map.SetAt(strId, strValue);
+    }
+    FUN_1401d1160(CString(strPath));
+    return 1;
+}
+
+// @0x140259640
+bool CommonString::LoadDebug()
+{
+    TextMap& map = m_maps[0];
+    CString strPath = FUN_140cc2a00("../XmlDebug", "stringDebug.xml");
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+    {
+        return false;
+    }
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return false;
+    }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+    {
+        CStringW strId = FUN_1401bf530(pNode, "id", CStringW(L""));
+        CStringW strValue = FUN_1401bf530(pNode, "value", CStringW(L""));
+        strValue.Replace(L"\\n", L"\n");
+        map.SetAt(strId, strValue);
+    }
+    return true;
+}
+
+// @0x140259910
+int CommonString::FUN_140259910()
+{
+    return 1;
+}
+
+// @0x140259930
+void CommonString::Reload()
+{
+    TextMap* maps = m_maps;
+    for (unsigned i = 0; i < 2; ++i)
+    {
+        TextMap* pMap = maps + (int)i;
+        pMap->RemoveAll();
+    }
+    LoadCommon();
+    FUN_140259910();
+    LoadDebug();
+    m_spChecker->LoadTables();
+    SetInit(true);
+}
+
+// @0x140259e60
+void CommonString::LoadStrings(Unk_140165cf0* pRoot)
+{
+    TextMap& map = m_maps[0];
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("key"); pNode != 0; pNode = pNode->FUN_140168650("key"))
+    {
+        if (!FUN_14028f710(pNode))
+            continue;
+        CStringW strId = FUN_1401bf530(pNode, "id", CStringW(L""));
+        CStringW strValue = FUN_1401bf530(pNode, "value", CStringW(L""));
+        if (!strId.IsEmpty())
+        {
+            strValue.Replace(L"\\n", L"\n");
+            map.SetAt(strId, strValue);
+        }
     }
 }
 
