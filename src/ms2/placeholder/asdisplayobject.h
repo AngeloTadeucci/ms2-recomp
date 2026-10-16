@@ -47,6 +47,7 @@ class ASSprite : public ASDisplayObjectContainer {};
 class ASMovieClip : public ASSprite
 {
 public:
+    ASMovieClip(CString strLinkage, int nMovieId);               // 0x1422c1ef0 (creates the clip from a linkage name)
     ASMovieClip(Scaleform::GFx::Value v, int nMovieId);         // 0x1422c1e90 (the Value is destroyed by the callee)
     virtual ~ASMovieClip();                                     // 0 deleting 0x1422c2de0, dtor 0x1422c1fb0
     // 6-11 invoke the AS MovieClip method of the same name, 12-15 forward to the value's object interface
