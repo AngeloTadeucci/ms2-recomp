@@ -6,6 +6,8 @@
 // param vfunc_1/6, layer, layer manager) and ?\uichaoslightdialog.cpp (0x141041xxx: ChaosLightEffectParam ctor/dtor/
 // copy, ChaosLightEffect). Header name assumed. Member names are invented from use.
 #pragma once
+#include <vector>
+#include <atlcoll.h>
 #include <NiMesh.h>
 #include <NiColor.h>
 #include <NiMaterial.h>
@@ -69,9 +71,20 @@ public:
     virtual int vfunc_12();                                     // 12 0x141044440
     virtual void vfunc_13(TransitionData* pFrom, TransitionData* pTo, float fT);   // 13 0x141041c20
 public:
-    char m_unk_58[0x150 - sizeof(TransitionEffect)];            // +0x58 (layout owned by ?\uichaoslightdialog.cpp)
+    MS2_LAYOUT_FRIEND;
+    std::vector<NiPointer<NiAVObject> > m_vecObjects;           // +0x58 the effect's target objects (ctor 0x141043730, dtor 0x141043980; vfunc_3 fills it)
+    ATL::CAtlArray<void*> m_arrLayers;                          // +0x70 the ChaosLightEffectLayer* made per object (vfunc_7 hands them to the layer manager)
+    ChaosLightEffectParam m_param;                              // +0x90 the current (interpolated) values: vfunc_13 writes m_param.m_f* (+0x100..0x114)
+    void* m_130;                                                // +0x130 ctor 0
+    void* m_138;                                                // +0x138 ctor 0 (vfunc_3 stores to +0x130)
+    void* m_140;                                                // +0x140 ctor 0
+    bool m_b148;                                                // +0x148 ctor 0
 };
 MS2_CHECK_SIZE(ChaosLightEffect, 0x150);
+MS2_CHECK_OFFSET(ChaosLightEffect, m_vecObjects, 0x58);
+MS2_CHECK_OFFSET(ChaosLightEffect, m_arrLayers, 0x70);
+MS2_CHECK_OFFSET(ChaosLightEffect, m_param, 0x90);
+MS2_CHECK_OFFSET(ChaosLightEffect, m_b148, 0x148);
 
 // 0xd8 bytes. vftable 0x142ea33d0 (21 slots; overrides ~, 18, 19, 20). ctor 0x1410461b0, dtor 0x1410472d0, ??_G 0x141047670.
 class ChaosLightEffectLayer : public Layer
