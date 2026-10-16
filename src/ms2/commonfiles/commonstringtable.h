@@ -252,6 +252,7 @@ public:
     bool LoadDebug();                                           // 0x140259640 ../XmlDebug/stringDebug.xml
     void Reload();                                              // 0x140259930
     void LoadStrings(Unk_140165cf0* pRoot);                     // 0x140259e60
+    bool FUN_1402599e0();                                       // 0x1402599e0 self test of the ban word checker (this unused)
 
     TextMap m_maps[2];                                  // +0x38
     ATL::CAtlMap<int, CStringW, ATL::CDefaultElementTraits<int> > m_strings;              // +0x98

@@ -31,7 +31,7 @@ void* FUN_140166410();
 bool FUN_14036e560(void* pService);
 CStringW FUN_1401e8510(const wchar_t* pszFormat, const CStringW& strArg);   // formats one text argument into the message
 CStringW FUN_1401ceea0(const wchar_t* pszFormat, const int& nArg);          // formats one number argument into the message
-void FUN_14025fab0(CStringW& str);                                          // MakeLower
+bool FUN_14025fab0(CStringW& str);                                          // MakeLower
 extern int DAT_143ab2914;                                                   // client build / region level (below 50: checks active)
 extern int DAT_143ab0248;                                                   // client country (0..3)
 void FUN_140165320(Unk_BanWordList* pList, const CStringW& str);               // append a string to an array
@@ -1216,6 +1216,9 @@ CString FUN_14016a5c0(const char* psz, int n);
 CStringW FUN_14016a730(const char* psz, int n);                                 // narrow -> wide
 extern CStringW DAT_143aacc90;                                                  // the shared empty string
 class Unk_AltStringMgr { public: CStringW FUN_1422b0570(const CString& strKey); };
+extern Unk_AltStringMgr* DAT_143aaccf8;
+extern void* DAT_143aacd08;
+extern void* DAT_143aacd00;
 Unk_AltStringMgr* FUN_14025e7a0();
 void* FUN_14025e7c0();                                                          // the client's text-hook object
 CommonString* FUN_14025e7d0();                                                  // the CommonString singleton
@@ -1330,6 +1333,119 @@ MS2Ptr<CBanTextChecker> CommonString::GetChecker()
     {
         return MS2Ptr<CBanTextChecker>(0);
     }
+}
+
+// @0x14025e7a0
+Unk_AltStringMgr* FUN_14025e7a0()
+{
+    return DAT_143aaccf8;
+}
+
+// @0x14025e7b0
+Unk_BanConfig* FUN_14025e7b0()
+{
+    return static_cast<Unk_BanConfig*>(DAT_143aacd08);
+}
+
+// @0x14025e7c0
+void* FUN_14025e7c0()
+{
+    return DAT_143aacd00;
+}
+
+// @0x14025e7d0
+CommonString* FUN_14025e7d0()
+{
+    return TSingleton<CommonString>::s_instance;
+}
+
+// @0x14025fab0
+bool FUN_14025fab0(CStringW& str)
+{
+    try
+    {
+        str.MakeLower();
+    }
+    catch (ATL::CAtlException e)
+    {
+        (void)((!!(FALSE)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\stringutil.h", 0x1a3), 0));
+        return false;
+    }
+    return true;
+}
+
+// @0x1402272b0
+static void FUN_1402272b0()
+{
+}
+
+template <class T, size_t N> size_t CountOf(T (&)[N])
+{
+    return N;
+}
+
+#define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
+
+struct BanTestWord
+{
+    CStringW m_str;
+    bool m_bOk;
+};
+
+struct BanTestMask
+{
+    CStringW m_src;
+    CStringW m_masked;
+};
+
+// @0x1402599e0
+bool CommonString::FUN_1402599e0()
+{
+    CBanTextChecker* pChecker = FUN_14025e7d0()->GetChecker();
+    if (pChecker == 0)
+    {
+        MS2_ASSERT_AT(0xde, 0);
+        return false;
+    }
+    if (pChecker->HasStartWithWords(0x40) == 0)
+        return true;
+    BanTestWord words[3] = { { CStringW(L"StaffSofia"), false }, { CStringW(L"magicstaff"), true }, { CStringW(L"staff"), false } };
+    size_t nCount = CountOf(words);
+    for (size_t i = 0; i < nCount; ++i)
+    {
+        BanTestWord* pWord = words + i;
+        CStringW strMessage;
+        bool bOk = false;
+        int eResult = pChecker->FUN_140225210(pWord->m_str, strMessage, 0);
+        if (pWord->m_bOk)
+        {
+            MS2_ASSERT_MSG_AT(0xfb, L"eResult == BanCheckResult_Ok", eResult == 0);
+            bOk = eResult == 0;
+        }
+        else
+        {
+            MS2_ASSERT_MSG_AT(0x100, L"eResult != BanCheckResult_Ok", eResult != 0);
+            bOk = eResult != 0;
+        }
+        if (bOk == false)
+            return false;
+    }
+    BanTestMask masks[2] = { { CStringW(L"wow staffSofia staffStaff staffOlivia"), CStringW(L"wow *****Sofia *****Staff *****Olivia") }, { CStringW(L"staffSofia"), CStringW(L"*****Sofia") } };
+    nCount = CountOf(masks);
+    for (size_t i = 0; i < nCount; ++i)
+    {
+        BanTestMask* pMask = masks + i;
+        CStringW strUnused;
+        bool bOk = false;
+        pChecker->MaskBannedWords(pMask->m_src);
+        bOk = pMask->m_src.Compare(pMask->m_masked) == 0;
+        if (!bOk)
+        {
+            MS2_ASSERT_AT(0x122, 0);
+            return false;
+        }
+    }
+    return true;
 }
 
 // @0x140229ad0
