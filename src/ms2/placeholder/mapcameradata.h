@@ -18,6 +18,7 @@ class CMapCameraData : public CPtred
 {
 public:
     CMapCameraData();                                               // 0x140ae8ba0
+    CMapCameraData(const CMapCameraData& o);                        // 0x140ae8c50
     virtual ~CMapCameraData();                                      // 0x140ae8d10
     virtual void vfunc_1(void* pParam);                             // 0x140ae8d40
 
@@ -53,6 +54,8 @@ class CBossTargetCameraData : public CMapCameraData
 {
 public:
     CBossTargetCameraData();                                        // 0x140ae8df0
+    CBossTargetCameraData(const CMapCameraData& o);                 // 0x140ae8ec0 (the boss fields get their defaults)
+    CBossTargetCameraData(const CBossTargetCameraData& o);          // 0x140ae8f90
     // The implicit destructor (COMDAT 0x140a38aa0): the exe copy stores no vptr, it only calls ~CMapCameraData.
     virtual ~CBossTargetCameraData() = default;
     virtual void vfunc_1(void* pParam);                             // 0x140ae9070

@@ -58,6 +58,14 @@ public:
     void FUN_140d4f830();                               // abort the blend (return to the previous setup)
     void FUN_140d4fa10(float f);                        // set the wanted, previous and start fov
     bool FUN_140d4fa60(const Unk_CameraSetup& setup);   // jump to a setup unless a blend is running
+    // @0x140af8210
+    Unk_CameraSetting& FUN_140af8210() { return m_1c4; }
+    // @0x140af8230
+    int FUN_140af8230() { return m_1ec; }
+    // @0x140af8600
+    bool FUN_140af8600() { return m_178 == 0; }
+    // @0x140af7e10
+    int FUN_140af7e10() { return m_108.m_2c; }
 
     Unk_CameraSetup m_108;              // +0x108 the wanted setup
     int m_178;                          // +0x178 blending

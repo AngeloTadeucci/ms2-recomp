@@ -77,8 +77,8 @@ void CFlyByCameraMode::vfunc_8(double fTime)
     Unk_FlyByCameraData* pFly = Unk_CameraManager::FUN_1409478c0()->FUN_1412201a0();
     Unk_StreamPoint ptRot = CCameraMode::FUN_140afdec0(fRatio, pFly->m_from.m_18, pFly->m_to.m_18);
     vfunc_11(data.m_0);
-    FUN_140af99d0(this, data.m_4);
-    FUN_140af9950(this, data.m_8);
+    ::FUN_140af99d0(this, data.m_4);
+    ::FUN_140af9950(this, data.m_8);
     vfunc_4(ptRot);
     vfunc_3(data.m_c);
     vfunc_5(data.m_24);

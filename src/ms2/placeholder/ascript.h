@@ -17,11 +17,16 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/gfxvalue.h"
 
+template <class T> class MS2Ptr;
+class CCameraEffect;
+void FUN_140af7ba0(MS2Ptr<CCameraEffect>& spEffect);    // camera.cpp: Release on the camera effect list element
+
 template <class T>
 class MS2Ptr
 {
     template <class U> friend class MS2Ptr;
     friend struct Unk_TePtrAccess;      // taileffectobject.cpp: ResetNew on the tail info list element
+    friend void ::FUN_140af7ba0(MS2Ptr<CCameraEffect>& spEffect);
 
 public:
     MS2Ptr();

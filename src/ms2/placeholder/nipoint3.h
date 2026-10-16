@@ -26,6 +26,9 @@ struct Unk_StreamPoint
     float FUN_140a00f20(const Unk_StreamPoint& pt) const;           // efd::Point3::Dot
     Unk_StreamPoint FUN_1409f7960() const;                          // efd::Point3::operator- (unary)
     Unk_StreamPoint FUN_140ae9180(float f) const;                   // efd::Point3::operator/(float)
+    Unk_StreamPoint& FUN_140ae9200(const Unk_StreamPoint& pt);      // efd::Point3::operator-= (camera.cpp)
+    Unk_StreamPoint& FUN_140ae9270(float f);                        // efd::Point3::operator/=(float) (camera.cpp)
+    Unk_StreamPoint& FUN_140ad0c10(float f);                        // efd::Point3::operator*=(float)
     Unk_StreamPoint FUN_14109adc0(const Unk_StreamPoint& pt) const; // unit cross product (getexp)
     float x, y, z;
 };
@@ -42,6 +45,7 @@ struct Unk_NiPoint3
 {
     Unk_NiPoint3(const Unk_StreamPoint& pt) : x(pt.x), y(pt.y), z(pt.z) {}
     float FUN_140967ac0() const;                                    // efd::Point3::Length (inherited)
+    bool FUN_140552690(const Unk_StreamPoint& pt) const;            // efd::Point3::operator== (inherited)
     float x, y, z;
 };
 MS2_CHECK_SIZE(Unk_NiPoint3, 12);

@@ -15,6 +15,7 @@ class Unk_CameraPropertyBag
 {
 public:
     void FUN_14098c6e0(unsigned int nHash, const bool& bValue);
+    int FUN_1409457c0(unsigned int nHash, const float& fValue);     // egf::Entity::SetPropertyValue<float>
 };
 
 class Unk_CameraOwner
@@ -29,14 +30,26 @@ public:
         if (m_10)
             m_10->FUN_14098c6e0(0x2310d55e, b);
     }
+    // @0x140af9a10
+    void FUN_140af9a10(float f)
+    {
+        if (m_10)
+            m_10->FUN_1409457c0(0xd2c672d5, f);
+    }
+    // @0x140af9990
+    void FUN_140af9990(float f)
+    {
+        if (m_10)
+            m_10->FUN_1409457c0(0x4b35f1d, f);
+    }
 
     void* m_pad_00;
     void* m_pad_08;
     Unk_CameraPropertyBag* m_10;                // +0x10
 };
 
-// The camera settings block at CCameraMode+0x20 (0x28 bytes). The ctor (0x140ae7ce0) and the implicit copy
-// assignment (0x140ae7de0) belong to another obj; the ctor is defined here so the hook DLL has it.
+// The camera settings block at CCameraMode+0x20 (0x28 bytes). The ctor (0x140ae7ce0), the copy ctor (0x140ae7d90)
+// and the implicit copy assignment (0x140ae7de0) are COMDATs of the camera.cpp obj.
 extern const Unk_StreamPoint g_143b01a60;       // NiPoint3::ZERO
 struct Unk_CameraSetting
 {
@@ -55,9 +68,16 @@ struct Unk_CameraSetting
         m_24 = false;
     }
 
-    // 0x140ae7e80 (another obj): operator*(float) and 0x140ae81c0: operator+ (members blended by the interpolators)
-    Unk_CameraSetting FUN_140ae7e80(float f) const;
-    Unk_CameraSetting FUN_140ae81c0(const Unk_CameraSetting& o) const;
+    // The member-wise arithmetic (camera.cpp; the interpolators blend settings with them). The compound forms
+    // return a copy.
+    Unk_CameraSetting FUN_140ae7e80(float f) const;                     // operator*(float)
+    Unk_CameraSetting FUN_140ae7f70(float f);                           // operator*=(float)
+    Unk_CameraSetting FUN_140ae8020(float f) const;                     // operator/(float)
+    Unk_CameraSetting FUN_140ae8110(float f);                           // operator/=(float)
+    Unk_CameraSetting FUN_140ae81c0(const Unk_CameraSetting& o) const;  // operator+
+    Unk_CameraSetting FUN_140ae82c0(const Unk_CameraSetting& o);        // operator+=
+    Unk_CameraSetting FUN_140ae8380(const Unk_CameraSetting& o) const;  // operator-
+    Unk_CameraSetting FUN_140ae8480(const Unk_CameraSetting& o);        // operator-=
 
     float m_0;                                  // +0x00
     float m_4;                                  // +0x04
@@ -190,6 +210,18 @@ public:
     Unk_StreamPoint FUN_140af8260() { return m_setting.m_18; }
     // 0x140ad4b30 (inline, another obj)
     float FUN_140ad4b30() { return m_setting.m_0; }
+    // @0x140af9820
+    void FUN_140af9820(Unk_CameraOwner* pOwner) { m_pOwner = pOwner; }
+    // @0x140af99d0
+    void FUN_140af99d0(float f) { m_setting.m_4 = f; m_pOwner->FUN_140af9a10(f); }
+    // @0x140af9950
+    void FUN_140af9950(float f) { m_setting.m_8 = f; m_pOwner->FUN_140af9990(f); }
+    // @0x140af7ef0
+    float FUN_140af7ef0() { return m_setting.m_4; }
+    // @0x140af7e90
+    float FUN_140af7e90() { return m_setting.m_8; }
+    // @0x140af84b0
+    float FUN_140af84b0() { return m_70; }
 
     Unk_CameraOwner* m_pOwner;          // +0x18
     Unk_CameraSetting m_setting;        // +0x20
