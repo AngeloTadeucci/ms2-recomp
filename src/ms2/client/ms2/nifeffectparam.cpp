@@ -164,6 +164,7 @@ void FUN_14154fda0(void* pObj);
 void FUN_1411ff180(Unk_LightUpdateBits* pBits);                      // set every bit
 
 // Attach type name -> 0 none, 1 Node, 2 Mesh, 3 WeaponL, 4 WeaponR (0x14154d880).
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154d880
 static int ParseAttachType(CString& strType)
 {
@@ -178,6 +179,7 @@ static int ParseAttachType(CString& strType)
     return 0;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154e0e0
 static int FUN_14154e0e0(Unk_140165cf0* pNode, const char* pszName, int& nOut)
 {
@@ -198,6 +200,7 @@ const NiRTTI DuplicatedAlphaController::ms_RTTI("DuplicatedAlphaController", &Ni
 #endif
 #include "ms2/placeholder/header_statics_a.h"       // @0x1400fa350-0x1400fa470
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141548790
 // Copies pkSource (exact copy; the clone map maps its target to itself so the copy keeps the same target).
 DuplicatedAlphaController::DuplicatedAlphaController(NiSingleInterpController* pkSource)
@@ -315,12 +318,14 @@ void CNifEffectParam::vfunc_1(Unk_140165cf0* pNode)
         m_bitsApply[2] = false;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415491c0
 bool CNifEffectParam::vfunc_2()
 {
     return CEffectParam::vfunc_2() ? true : false;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415491f0
 bool CNifEffectParam::vfunc_3()
 {
@@ -330,6 +335,7 @@ bool CNifEffectParam::vfunc_3()
     return FUN_140a0afd0()->IsCached(FUN_140cc2ba0(strDir, m_strFilePath));
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415492a0
 void CNifEffectParam::vfunc_4()
 {
@@ -340,6 +346,7 @@ void CNifEffectParam::vfunc_4()
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141549340
 bool CNifEffectParam::vfunc_5(int n)
 {
@@ -490,6 +497,7 @@ void* FUN_141d17b40(void* pObj, const void* pKey);                  // extra dat
 const efd::FixedString* FUN_141168130(NiStringExtraData* pExtra);   // string value
 extern char DAT_143ae51b8;                                          // NiFixedString: the Eff_LOD tag key
 extern char DAT_143ae50e8;                                          // NiFixedString: the tag text
+extern NiRTTI DAT_143afb000;                                        // NiStringExtraData RTTI
 extern char DAT_143ae5198;                                          // NiFixedString: the nif path key
 
 // Players, their equipment and the equipped item's model.
@@ -534,6 +542,7 @@ Unk_BitRef::operator bool() const
     return FUN_140314790(m_pBits, m_nPos);
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415494d0
 CNifEffect::CNifEffect()
     : m_bSplit(false), m_spTarget(0), m_spModel(0), m_spSplit(0), m_spRoot(0), m_fFadeStart(FLT_MAX),
@@ -669,7 +678,7 @@ bool CNifEffect::vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget)
         if (pT->m_bTagLod)
         {
             NiAVObject* pLoaded = static_cast<NiAVObject*>(FUN_1409475f0(&kLoaded));
-            NiStringExtraData* pTag = static_cast<NiStringExtraData*>(FUN_14098d8d0(&NiStringExtraData::ms_RTTI, FUN_141d17b40(pLoaded, &DAT_143ae51b8)));
+            NiStringExtraData* pTag = static_cast<NiStringExtraData*>(FUN_14098d8d0(&DAT_143afb000, FUN_141d17b40(pLoaded, &DAT_143ae51b8)));
             if (pTag == 0)
             {
                 pTag = new (efd::MemHint(efd::MemHint::NONE)) NiStringExtraData(*(NiFixedString*)&DAT_143ae50e8);
@@ -760,6 +769,7 @@ bool CNifEffect::vfunc_9()
     return true;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154acf0
 // Hangs the root on the target (or on the split node) and runs the first update, as if it had started on time.
 void CNifEffect::vfunc_4()
@@ -783,6 +793,7 @@ void CNifEffect::vfunc_4()
     m_b2e = true;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154aef0
 void CNifEffect::vfunc_5()
 {
@@ -790,6 +801,7 @@ void CNifEffect::vfunc_5()
         CEffect::vfunc_5();
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154af40
 // Fades the model out over fFadeTime: every material alpha gets a duplicated controller (or a new fade controller).
 void CNifEffect::vfunc_6(float fFadeTime)
@@ -809,6 +821,7 @@ void CNifEffect::vfunc_6(float fFadeTime)
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154b080
 void CNifEffect::vfunc_7()
 {
@@ -829,6 +842,7 @@ int CNifEffect::vfunc_8(void* p)
     return 1;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154b1b0
 // A Node-attached effect that is still running is re-parented onto the effect scene root (keeping its world
 // transform) when the owner goes away, so it can finish playing.
@@ -891,6 +905,7 @@ bool CNifEffect::FUN_14154b4a0(NiObjectNET* pkNode)
     return bAny;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154b5e0
 bool CNifEffect::FUN_14154b5e0()
 {
@@ -1017,6 +1032,7 @@ void CNifEffect::FUN_14154bdd0(Unk_EffectTarget* pTarget)
     FUN_14154c580();
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154c260
 // Attach type 2: hang the effect on the parent of the named mesh node.
 void CNifEffect::FUN_14154c260(Unk_EffectTarget* pTarget)
@@ -1047,6 +1063,7 @@ void CNifEffect::FUN_14154c260(Unk_EffectTarget* pTarget)
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154c440
 // Attach types 3 / 4: hang the effect on the model of the weapon in equip slot nSlot.
 void CNifEffect::FUN_14154c440(Unk_EffectTarget* pTarget, int nSlot)
@@ -1139,6 +1156,7 @@ void CNifEffect::FUN_14154c7f0(Unk_EffectTarget* pTarget)
         Unk_NifLog3(FUN_140166440(), 0xc, 0x133, L"LOD level [{0}] [{1}] [{2}]", m_nLodLevel, m_spParam->m_strFilePath, strWhere);
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154cf20
 // Re-applies the "Eff_LOD=<n>" extra-data levels of the model: parts above the current quality level are culled.
 void CNifEffect::FUN_14154cf20(NiAVObject* pkRoot)
@@ -1152,7 +1170,7 @@ void CNifEffect::FUN_14154cf20(NiAVObject* pkRoot)
         {
             if (FUN_14098dad0(pObj) != true)
             {
-                NiStringExtraData* pTag = static_cast<NiStringExtraData*>(FUN_14098d8d0(&NiStringExtraData::ms_RTTI, FUN_141d17b40(pObj, &DAT_143ae51b8)));
+                NiStringExtraData* pTag = static_cast<NiStringExtraData*>(FUN_14098d8d0(&DAT_143afb000, FUN_141d17b40(pObj, &DAT_143ae51b8)));
                 if (pTag != 0)
                 {
                     int nLod = 0;
@@ -1525,6 +1543,7 @@ NiPixelData* FUN_140980440(NiSourceTexture* pTexture);              // source pi
 void FUN_141562500(NiSourceTexture* pTexture, NiPixelData* pPixels);    // set the source pixel data
 void FUN_140399100(CString strPattern, CString strDirectory, ATL::CAtlArray<CString>& aOut, CString strExclude, bool bLocalOnly);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141551810
 CNifLoadingService::CNifLoadingService() : m_mapNif(10), m_mapTex(10)
 {
@@ -1592,6 +1611,7 @@ void CNifLoadingService::ClearCaches()
     ClearTextureCache();
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141551c10
 void CNifLoadingService::PreloadEffectNifs()
 {
@@ -1604,6 +1624,7 @@ void CNifLoadingService::PreloadEffectNifs()
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141551db0
 bool CNifLoadingService::IsCached(CString strPath)
 {
@@ -1640,6 +1661,7 @@ void CNifLoadingService::SetLifetime(double dSeconds)
         m_dLifetime = dSeconds;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141554df0
 bool CNifLoadingService::OnDeviceReset(char bBefore, void* pRenderer)
 {
@@ -1723,6 +1745,7 @@ efd::AsyncResult CNifLoadingService::OnShutdown()
     return efd::AsyncResult_Complete;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141556410
 void CNifLoadingService::RefreshTextures()
 {
@@ -1757,6 +1780,7 @@ void CNifLoadingService::RefreshTextures()
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415543e0
 void CNifLoadingService::Sweep()
 {
@@ -1892,6 +1916,7 @@ void CNifLoadingService::Sweep()
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141555600
 void CNifLoadingService::DumpNifs()
 {
@@ -1974,6 +1999,7 @@ void CNifLoadingService::DumpNifs()
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141554f60
 void CNifLoadingService::DumpTextures()
 {
@@ -2089,6 +2115,7 @@ NiAVObject* FUN_14098db40(NiNode* pNode, unsigned nIndex);          // child at 
 void FUN_1415672e0(NiAVObject* pNode, bool bFlag);                  // prepare a loaded nif
 void FUN_14015eb90(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const CString& strArg);
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141556810
 static void SetWeights(NiAVObject* pObj, int nWeight)
 {
@@ -2108,6 +2135,7 @@ static void SetWeights(NiAVObject* pObj, int nWeight)
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141555f50
 void CNifLoadingService::ApplyWeights(CString strNifPath, NiAVObject* pkRoot)
 {
@@ -2154,6 +2182,7 @@ void CNifLoadingService::ApplyWeights(CString strNifPath, NiAVObject* pkRoot)
     }
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141556320
 NiAVObjectPtr CNifLoadingService::CloneCached(CString strPath, CCachedNifPtr spCached)
 {
@@ -2183,13 +2212,14 @@ CCachedNifPtr CNifLoadingService::FindCachedNif(CString strPath, int nClass, boo
         else
         {
             spFound->m_dLastUse = FUN_14086d260()->FUN_141473280();
-            if (nClass < spFound->m_nClass)
+            if (spFound->m_nClass > nClass)
                 spFound->m_nClass = nClass;
         }
     }
     return spFound;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141552920
 CCachedNifPtr CNifLoadingService::CreateCachedNif(CString strPath, int nClass, bool bFlag, bool bReloaded)
 {
@@ -2237,6 +2267,7 @@ CCachedNifPtr CNifLoadingService::CreateCachedNif(CString strPath, int nClass, b
     return spEntry;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141551ea0
 NiAVObjectPtr CNifLoadingService::Load(CString strPath, bool bFlag, int nClass, int nMyRefs, int nOtherRefs)
 {
@@ -2290,6 +2321,7 @@ NiAVObjectPtr CNifLoadingService::Load(CString strPath, bool bFlag, int nClass, 
     return 0;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415525d0
 bool CNifLoadingService::Preload(CString strPath, bool bFlag, int nClass)
 {
@@ -2305,6 +2337,7 @@ bool CNifLoadingService::Preload(CString strPath, bool bFlag, int nClass)
 
 // ---- textures --------------------------------------------------------------------------------------------------
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141552f90
 efd::SmartPointer<NiTexture> CNifLoadingService::GetTexture(CString strPath, int nClass)
 {
@@ -2343,6 +2376,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::GetTexture(CString strPath, int
     return spCached->m_spData;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141553910
 efd::SmartPointer<NiTexture> CNifLoadingService::GetTextureFrom(CString strKey, CString strFile, int nClass)
 {
@@ -2381,6 +2415,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::GetTextureFrom(CString strKey, 
     return spCached->m_spData;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415534d0
 efd::SmartPointer<NiSourceTexture> CNifLoadingService::CreateTexture(CString strPath, NiPixelDataPtr spPixels, int nClass)
 {
@@ -2407,6 +2442,7 @@ efd::SmartPointer<NiSourceTexture> CNifLoadingService::CreateTexture(CString str
     return static_cast<NiSourceTexture*>(static_cast<NiTexture*>(spCached->m_spData));
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x141553eb0
 efd::SmartPointer<NiTexture> CNifLoadingService::FindTexture(CString strPath, const NiTexture::FormatPrefs* pPrefs)
 {
@@ -2425,6 +2461,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::FindTexture(CString strPath, co
     return 0;
 }
 
+// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415540f0
 void CNifLoadingService::AddTexture(CString strPath, NiSourceTexture* pTexture)
 {
