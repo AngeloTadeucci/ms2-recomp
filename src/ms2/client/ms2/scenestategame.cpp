@@ -64,6 +64,9 @@ public:
     PCBase* FUN_141bd1200(int nId);
     PCBase* FUN_141bd3620();
     class Unk_SSGNpc* FUN_141bd1320(int nId);
+    class Unk_SSGCubeObj* FUN_141bd13a0(int nId);
+    void FUN_141bca220();
+    void FUN_141bca6d0(CInPacket& packet);
     void FUN_141bd3d70(Unk_StreamPoint pos, Unk_StreamPoint rot);
     void FUN_141bbbe40(int nMapId, int a, int nPortal);
     MyPC* FUN_141bd0cc0();                                  // the local player actor
@@ -81,6 +84,8 @@ public:
     void FUN_141ad93b0();
     MS2Ptr<UIObject> FUN_141adcea0(int nId);
     void FUN_141adc400();
+    int FUN_141adc940(int nId);
+    void FUN_141adc530(int nId);
 };
 Unk_SSGUIMgr* FUN_1403ed2b0();
 
@@ -364,11 +369,11 @@ extern int DAT_143ab2880;
 extern int DAT_143ab2890;
 class Unk_SSG967100 { public: void FUN_141b21390(); void FUN_141b1ddd0(CInPacket& packet); };
 Unk_SSG967100* FUN_140967100();
-class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); };
+class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); void FUN_14138b280(CInPacket& packet); };
 Unk_SSG9331e0* FUN_1409331e0();
 class Unk_SSGSoundCtl { public: void FUN_1422ba0d0(); void FUN_1422b9fd0(int nId); };
 Unk_SSGSoundCtl* FUN_1408e57f0();
-class Unk_SSG931510 { public: void FUN_140d9f710(CInPacket& packet); };
+class Unk_SSG931510 { public: void FUN_140d9f710(CInPacket& packet); MS2Ptr<class Unk_SSGDungeonRecord> FUN_140d9f2c0(); };
 void FUN_1412b9870(int nId, int nType);
 
 // 0x18..0x41: actor packets
@@ -389,6 +394,7 @@ public:
     void FUN_1410932c0(int n);
     void FUN_1410918e0(CByteBuffer& buf);                   // apply a sync block
     void FUN_14174a560(char c) { m_ce50 = c; }
+    void FUN_141092c50(CInPacket& packet);
 
     char m_pad_d40[0xe50 - 0xd40];
     char m_ce50;                                            // +0xe50
@@ -442,6 +448,56 @@ public:
 MS2_CHECK_SIZE(NotifyRemoveNpc, 0x20);
 class Unk_SSGNotifyCenter { public: void FUN_140da4fe0(MS2Ptr<NotifyObject> spNotify); };
 Unk_SSGNotifyCenter* FUN_140939a10();
+
+// 0x4d..0xf2: forwarders to the feature managers
+class Unk_SSGad4b90 { public: void FUN_141861840(CInPacket& packet); void FUN_141861f60(CInPacket& packet); };
+Unk_SSGad4b90* FUN_140ad4b90();
+class Unk_SSG9670b0 { public: void FUN_14122f270(CInPacket& packet); };
+Unk_SSG9670b0* FUN_1409670b0();
+class Unk_SSG97a780 { public: void FUN_140ae2e90(CInPacket& packet); };
+Unk_SSG97a780* FUN_14097a780();
+class Unk_SSGa6a830 { public: void FUN_140a2f730(CInPacket& packet); };
+Unk_SSGa6a830* FUN_140a6a830();
+class Unk_SSG9c4b20 { public: void FUN_1405322b0(CInPacket& packet); };
+Unk_SSG9c4b20* FUN_1409c4b20();
+class Unk_SSG535310 { public: void FUN_140612850(CInPacket& packet); };
+Unk_SSG535310* FUN_140535310();
+class Unk_SSG09a700 { public: void FUN_14127e250(CInPacket& packet); };
+Unk_SSG09a700* FUN_14109a700();
+class Unk_SSG9eed60 { public: void FUN_14127e550(CInPacket& packet); };
+Unk_SSG9eed60* FUN_1409eed60();
+class Unk_SSG953f20 { public: void FUN_140cd9840(CInPacket& packet); };
+Unk_SSG953f20* FUN_140953f20();
+class Unk_SSGc8dac0 { public: void FUN_140d061b0(CInPacket& packet); };
+Unk_SSGc8dac0* FUN_140c8dac0();
+class Unk_SSGDlg4e4c { public: void FUN_1419f5e90(CInPacket& packet); };
+Unk_SSGDlg4e4c* FUN_140e01890(int nId);                     // GetDialog<T>(0x4e4c)
+class Unk_SSGDlg4e52 { public: void FUN_141908290(CInPacket& packet); };
+Unk_SSGDlg4e52* FUN_14136f290(int nId);                     // GetDialog<T>(0x4e52)
+void FUN_140930fe0(CInPacket& packet);
+
+// 0x1a..0xe7: feature manager / dialog handlers
+class Unk_SSGCubeObj { public: void FUN_140b107f0(int n); void FUN_140b10a10(__int64 n); };
+extern int DAT_143ab2900;
+extern int DAT_143ab2918;
+class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
+Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
+class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet); };
+class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
+class Unk_SSGConstValue { public: int* FUN_1402056b0(); };
+class Unk_SSGConstants { public: char m_pad_00[0x3680]; Unk_SSGConstValue m_3680; };
+MS2_CHECK_OFFSET(Unk_SSGConstants, m_3680, 0x3680);
+Unk_SSGConstants* FUN_1401d3200();
+class UIAutoReviveCountDownDialog : public UIDialog { public: void FUN_141284d70(int n); };
+class UIGlobalPortalDialog : public UIDialog { public: void FUN_1412c3020(CInPacket& packet); };
+class UIQuizDialog : public UIDialog { public: void FUN_14129a930(CInPacket& packet); };
+class UIIndividualPvPDialog : public UIDialog { public: void FUN_1412cacc0(); void FUN_1412cb220(); };
+int FUN_141276180(const CString& strA, const CString& strB);
+class Unk_SSGDungeonRecord : public CPtred { public: void FUN_140b20be0(CInPacket& packet); };
+class Unk_SSGGlobalFactor { public: void FUN_1404c18c0(CInPacket& packet); };
+Unk_SSGGlobalFactor* FUN_140302b10();
+class Unk_SSGPreload { public: void FUN_14074ee30(); };
+Unk_SSGPreload* FUN_1407476c0();
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -1859,3 +1915,315 @@ void CSceneStateGame::FUN_141719a30(CInPacket& packet)
     FUN_140967100()->FUN_141b1ddd0(packet);
 }
 MS2_REPLACE_METHOD(0x141719a30, CSceneStateGame, FUN_141719a30, 37, 0xEF938A5F);
+
+// @0x141721270
+void CSceneStateGame::FUN_141721270(CInPacket& packet)
+{
+    FUN_140ad4b90()->FUN_141861840(packet);
+}
+MS2_REPLACE_METHOD(0x141721270, CSceneStateGame, FUN_141721270, 37, 0x55E34197);
+
+// @0x1417212a0
+void CSceneStateGame::FUN_1417212a0(CInPacket& packet)
+{
+    FUN_1409670b0()->FUN_14122f270(packet);
+}
+MS2_REPLACE_METHOD(0x1417212a0, CSceneStateGame, FUN_1417212a0, 37, 0xF8895DB9);
+
+// @0x141721c50
+void CSceneStateGame::FUN_141721c50(CInPacket& packet)
+{
+    if (FUN_14097a780() != 0)
+        FUN_14097a780()->FUN_140ae2e90(packet);
+}
+MS2_REPLACE_METHOD(0x141721c50, CSceneStateGame, FUN_141721c50, 47, 0xF8C8662A);
+
+// @0x141721c90
+void CSceneStateGame::FUN_141721c90(CInPacket& packet)
+{
+    if (FUN_140a6a830() != 0)
+        FUN_140a6a830()->FUN_140a2f730(packet);
+}
+MS2_REPLACE_METHOD(0x141721c90, CSceneStateGame, FUN_141721c90, 47, 0x45BF210A);
+
+// @0x141731ac0
+void CSceneStateGame::FUN_141731ac0(CInPacket& packet)
+{
+    FUN_1409c4b20()->FUN_1405322b0(packet);
+}
+MS2_REPLACE_METHOD(0x141731ac0, CSceneStateGame, FUN_141731ac0, 37, 0x0832EFFE);
+
+// @0x141731af0
+void CSceneStateGame::FUN_141731af0(CInPacket& packet)
+{
+    FUN_140535310()->FUN_140612850(packet);
+}
+MS2_REPLACE_METHOD(0x141731af0, CSceneStateGame, FUN_141731af0, 37, 0x324CBB58);
+
+// @0x141732ac0
+void CSceneStateGame::FUN_141732ac0(CInPacket& packet)
+{
+    FUN_14109a700()->FUN_14127e250(packet);
+}
+MS2_REPLACE_METHOD(0x141732ac0, CSceneStateGame, FUN_141732ac0, 37, 0x8634E0BC);
+
+// @0x141732af0
+void CSceneStateGame::FUN_141732af0(CInPacket& packet)
+{
+    FUN_1409eed60()->FUN_14127e550(packet);
+}
+MS2_REPLACE_METHOD(0x141732af0, CSceneStateGame, FUN_141732af0, 37, 0x8D93BFEE);
+
+// @0x141734c70
+void CSceneStateGame::FUN_141734c70(CInPacket& packet)
+{
+    FUN_140953f20()->FUN_140cd9840(packet);
+}
+MS2_REPLACE_METHOD(0x141734c70, CSceneStateGame, FUN_141734c70, 37, 0x3370C6DF);
+
+// @0x1417353b0
+void CSceneStateGame::FUN_1417353b0(CInPacket& packet)
+{
+    FUN_140c8dac0()->FUN_140d061b0(packet);
+}
+MS2_REPLACE_METHOD(0x1417353b0, CSceneStateGame, FUN_1417353b0, 37, 0x814EE860);
+
+// @0x141722f70
+void CSceneStateGame::FUN_141722f70(CInPacket& packet)
+{
+    Unk_SSGDlg4e4c* pDlg = FUN_140e01890(0x4e4c);
+    if (pDlg != 0)
+        pDlg->FUN_1419f5e90(packet);
+}
+MS2_REPLACE_METHOD(0x141722f70, CSceneStateGame, FUN_141722f70, 57, 0x8318DC96);
+
+// @0x141723260
+void CSceneStateGame::FUN_141723260(CInPacket& packet)
+{
+    Unk_SSGDlg4e52* pDlg = FUN_14136f290(0x4e52);
+    if (pDlg != 0)
+        pDlg->FUN_141908290(packet);
+}
+MS2_REPLACE_METHOD(0x141723260, CSceneStateGame, FUN_141723260, 57, 0x8F3BC42A);
+
+// @0x141731160
+void CSceneStateGame::FUN_141731160(CInPacket& packet)
+{
+    FUN_1409331e0()->FUN_14138b280(packet);
+}
+MS2_REPLACE_METHOD(0x141731160, CSceneStateGame, FUN_141731160, 37, 0x18BEB48B);
+
+// @0x1417343c0
+void CSceneStateGame::FUN_1417343c0(CInPacket& packet)
+{
+    FUN_1403ed2d0()->FUN_141bca220();
+}
+MS2_REPLACE_METHOD(0x1417343c0, CSceneStateGame, FUN_1417343c0, 32, 0xFBF9896B);
+
+// @0x141734930
+void CSceneStateGame::FUN_141734930(CInPacket& packet)
+{
+}
+
+// @0x1417353e0
+void CSceneStateGame::FUN_1417353e0(CInPacket& packet)
+{
+    FUN_1403ed2d0()->FUN_141bca6d0(packet);
+}
+MS2_REPLACE_METHOD(0x1417353e0, CSceneStateGame, FUN_1417353e0, 37, 0xAEE8CE21);
+
+// @0x141735410
+void CSceneStateGame::FUN_141735410(CInPacket& packet)
+{
+    FUN_140930fe0(packet);
+}
+MS2_REPLACE_METHOD(0x141735410, CSceneStateGame, FUN_141735410, 29, 0x1B221102);
+
+// @0x14173a0d0
+void CSceneStateGame::FUN_14173a0d0(CInPacket& packet)
+{
+}
+
+// @0x14173a5b0
+void CSceneStateGame::FUN_14173a5b0(CInPacket& packet)
+{
+    FUN_140ad4b90()->FUN_141861f60(packet);
+}
+MS2_REPLACE_METHOD(0x14173a5b0, CSceneStateGame, FUN_14173a5b0, 37, 0xDB58DC13);
+
+// @0x14171a5f0
+void CSceneStateGame::FUN_14171a5f0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nB = (unsigned int)static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGCubeObj* pObj = FUN_1403ed2d0()->FUN_141bd13a0(nId);
+    if (pObj == 0)
+        return;
+    pObj->FUN_140b107f0(nA);
+    pObj->FUN_140b10a10(nB);
+}
+MS2_REPLACE_METHOD(0x14171a5f0, CSceneStateGame, FUN_14171a5f0, 197, 0x64D7F3EC);
+
+// @0x14171a6c0
+void CSceneStateGame::FUN_14171a6c0(CInPacket& packet)
+{
+    DAT_143ab2900 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+    if (pDlg != 0)
+        pDlg->FUN_141939620();
+}
+MS2_REPLACE_METHOD(0x14171a6c0, CSceneStateGame, FUN_14171a6c0, 92, 0x4986CD7D);
+
+// @0x14171aa90
+void CSceneStateGame::FUN_14171aa90(CInPacket& packet)
+{
+    int n = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_14152a2f0(n);
+}
+MS2_REPLACE_METHOD(0x14171aa90, CSceneStateGame, FUN_14171aa90, 99, 0x3346EE17);
+
+// @0x14172f1c0
+void CSceneStateGame::FUN_14172f1c0(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_141523bc0()->FUN_141765de0();
+}
+MS2_REPLACE_METHOD(0x14172f1c0, CSceneStateGame, FUN_14172f1c0, 65, 0xDA4F33D3);
+
+// @0x14172f480
+void CSceneStateGame::FUN_14172f480(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_140c25130()->FUN_140ca9e90(packet);
+}
+MS2_REPLACE_METHOD(0x14172f480, CSceneStateGame, FUN_14172f480, 120, 0xAF5B8007);
+
+// @0x1417316d0
+void CSceneStateGame::FUN_1417316d0(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_141661370(1, *FUN_1401d3200()->m_3680.FUN_1402056b0(), 100000005);
+}
+MS2_REPLACE_METHOD(0x1417316d0, CSceneStateGame, FUN_1417316d0, 90, 0xE19EC5E4);
+
+// @0x1417337c0
+void CSceneStateGame::FUN_1417337c0(CInPacket& packet)
+{
+    int n = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (FUN_1403ed2b0()->FUN_141adc940(0x4ea2) != 0)
+        FUN_1403ed2b0()->FUN_141adc530(0x4ea2);
+    UIAutoReviveCountDownDialog* pDlg = Unk_SSGGetDialog<UIAutoReviveCountDownDialog>(0x4ea2);
+    if (pDlg != 0)
+        pDlg->FUN_141284d70(n);
+}
+MS2_REPLACE_METHOD(0x1417337c0, CSceneStateGame, FUN_1417337c0, 134, 0x0C0969CE);
+
+// @0x141734b20
+void CSceneStateGame::FUN_141734b20(CInPacket& packet)
+{
+    UIGlobalPortalDialog* pDlg = Unk_SSGGetDialog<UIGlobalPortalDialog>(0x4ed7);
+    if (pDlg == 0)
+        return;
+    pDlg->FUN_1412c3020(packet);
+}
+MS2_REPLACE_METHOD(0x141734b20, CSceneStateGame, FUN_141734b20, 59, 0x0FB46947);
+
+// @0x141734b70
+void CSceneStateGame::FUN_141734b70(CInPacket& packet)
+{
+    UIQuizDialog* pDlg = Unk_SSGGetDialog<UIQuizDialog>(0x4ee1);
+    if (pDlg == 0)
+        return;
+    pDlg->FUN_14129a930(packet);
+}
+MS2_REPLACE_METHOD(0x141734b70, CSceneStateGame, FUN_141734b70, 59, 0x27EDF9AF);
+
+// @0x141734bc0
+void CSceneStateGame::FUN_141734bc0(CInPacket& packet)
+{
+    CString strUrl = static_cast<CInputStream&>(packet).vfunc_o8_6();
+    if (strUrl.GetLength() < 1)
+        return;
+    FUN_141276180(strUrl, "");
+}
+MS2_REPLACE_METHOD(0x141734bc0, CSceneStateGame, FUN_141734bc0, 155, 0x8BD553A5);
+
+// @0x141737360
+void CSceneStateGame::FUN_141737360(CInPacket& packet)
+{
+    FUN_140931510()->FUN_140d9f2c0()->FUN_140b20be0(packet);
+}
+MS2_REPLACE_METHOD(0x141737360, CSceneStateGame, FUN_141737360, 95, 0x096233CB);
+
+// @0x141737d60
+void CSceneStateGame::FUN_141737d60(CInPacket& packet)
+{
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    pMyPC->FUN_141523bc0()->FUN_141767ae0(packet);
+}
+MS2_REPLACE_METHOD(0x141737d60, CSceneStateGame, FUN_141737d60, 70, 0x9CE84DE8);
+
+// @0x1417380c0
+void CSceneStateGame::FUN_1417380c0(CInPacket& packet)
+{
+    if (FUN_140302b10() == 0)
+        return;
+    if (DAT_143ab2918 != 0)
+        return;
+    FUN_140302b10()->FUN_1404c18c0(packet);
+    FUN_1407476c0()->FUN_14074ee30();
+    DAT_143ab2918 = 1;
+}
+MS2_REPLACE_METHOD(0x1417380c0, CSceneStateGame, FUN_1417380c0, 83, 0x2B6EC18E);
+
+// @0x141738240
+void CSceneStateGame::FUN_141738240(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+}
+MS2_REPLACE_METHOD(0x141738240, CSceneStateGame, FUN_141738240, 60, 0xBCDE2DFF);
+
+// @0x141738ad0
+void CSceneStateGame::FUN_141738ad0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nId);
+    if (pNpc == 0)
+        return;
+    pNpc->FUN_141092c50(packet);
+}
+MS2_REPLACE_METHOD(0x141738ad0, CSceneStateGame, FUN_141738ad0, 104, 0x158C510C);
+
+// @0x141739880
+void CSceneStateGame::FUN_141739880()
+{
+    if (m_nTaxiEffect == 0)
+        return;
+    FUN_1403ed280()->FUN_1411a6060(m_nTaxiEffect);
+    m_nTaxiEffect = 0;
+}
+MS2_REPLACE_METHOD(0x141739880, CSceneStateGame, FUN_141739880, 60, 0xCFA8D3E8);
+
+// @0x1417398d0
+void CSceneStateGame::FUN_1417398d0()
+{
+    UIIndividualPvPDialog* pDlg = Unk_SSGGetDialog<UIIndividualPvPDialog>(0x4ed1);
+    if (pDlg != 0)
+    {
+        pDlg->FUN_1412cacc0();
+        pDlg->FUN_1412cb220();
+    }
+}
+MS2_REPLACE_METHOD(0x1417398d0, CSceneStateGame, FUN_1417398d0, 57, 0x29BCBD60);

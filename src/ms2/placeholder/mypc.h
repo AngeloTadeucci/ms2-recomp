@@ -12,6 +12,10 @@ public:
     int vfunc_116() override;                               // declared only so the class is concrete
     void FUN_14152a4a0(PCBase* pTarget);                    // observe pTarget (guild battle, uipvpguildteamdialog)
     void FUN_14152a960();                                   // stop observing
+    void FUN_14152a2f0(int n);                              // scenestategame packet 0x35
+    class Unk_MyPCSkillSlots* FUN_141523bc0();              // the skill slot set (skillslot.cpp, 0x141765de0 etc.)
+    MS2Ptr<class Unk_MyPCStatPoints> FUN_140c25130();       // the stat point manager (statpointmanager.cpp)
+    void FUN_141661370(int a, int b, int c);                // PC member (scenestategame packet 0x83)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };
