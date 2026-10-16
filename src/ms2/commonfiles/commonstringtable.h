@@ -7,6 +7,8 @@
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/ccachedata.h"
+#include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/cvaliddata.h"
 #include "ms2/placeholder/tptreddummy.h"
 #include "ms2/placeholder/socketptr.h"
@@ -176,6 +178,8 @@ public:
     void FilterBanWords(CStringW& str);                     // 0x140226cd0
     void SetBanWords(unsigned nKey, Unk_BanWordList& words);   // 0x1402271a0
     void RemoveBanWords(unsigned nKey);                     // 0x140227280
+    static void CheckInit();                                // 0x14025d6f0 message box when not initialized
+    static void SetInit(bool bInit);                        // 0x140263710
     void ClearTries();                                      // 0x140227890
     void FUN_140229220();                                   // empty
     int LoadWords(CString strPath, TextFilterUnit* pTrie);  // 0x1402272c0 Table xml of <key name="word[,replacement]"/>
@@ -195,6 +199,7 @@ public:
     ATL::CRBMap<CStringW, CStringW> m_mapUrlHash;           // +0x378 url prefix -> its hash as text
     ATL::CRBMap<unsigned, Unk_BanWordPtr> m_mapBanWords;      // +0x3a8
     std::map<unsigned, int> m_mapCharClass;                 // +0x3d8
+    static bool s_bInit;                                    // DAT_143aacc48
 };
 MS2_CHECK_SIZE(CBanTextChecker::CheckerErrStringPackage, 0x60);
 MS2_CHECK_SIZE(CBanTextChecker::CheckerOption, 0x18);
@@ -206,3 +211,56 @@ MS2_CHECK_OFFSET(CBanTextChecker, m_setReserveIdAll, 0x368);
 MS2_CHECK_OFFSET(CBanTextChecker, m_mapUrlHash, 0x378);
 MS2_CHECK_OFFSET(CBanTextChecker, m_mapBanWords, 0x3a8);
 MS2_CHECK_OFFSET(CBanTextChecker, m_mapCharClass, 0x3d8);
+
+class CommonString;
+class Unk_140165cf0;
+
+// This instantiation stores the complete object pointer; DAT_143aacce8 (getter FUN_14025e7d0).
+template <> class TSingleton<CommonString>
+{
+public:
+    TSingleton();                           // 0x14025bc10
+    virtual ~TSingleton() { s_instance = 0; }   // 0x14025c730
+    static CommonString* s_instance;
+};
+
+// The localized string table (RTTI CommonString, 0xf8 bytes, one global instance): string id -> text from
+// Table/stringCommon.xml (and ../XmlDebug/stringDebug.xml), the id names compiled into the exe (FUN_140229ad0 fills
+// m_strings), and the shared text filter. CCacheData +0 (vftable 0x...), TSingleton +0x28, CValidData +0x30.
+class CommonString : public CCacheData, public TSingleton<CommonString>, public CValidData<CommonString>
+{
+public:
+    typedef ATL::CRBMap<CStringW, CStringW, ATL::CStringElementTraits<CStringW> > TextMap;
+
+    CommonString();                                     // 0x140229230
+    virtual ~CommonString();                            // 0x1402293a0
+
+    static void CheckInit();                            // 0x14025d7a0 message box when not initialized
+    static void SetInit(bool bInit);                    // 0x140263720
+    CStringW MapText(int nMap, const CStringW& strKey);         // 0x1402294e0 text of a key in map 0 (strings) or 1
+    CString GetNarrowDefault(int nId);                          // 0x1402295b0
+    CString GetNarrow(int nId);                                 // 0x140229600 narrow text of a string id
+    CString GetNarrowByKey(const CString& strKey);              // 0x140229690
+    CStringW GetWide(int nId);                                  // 0x140229760 wide text of a string id
+    CStringW GetWideByKey(const CStringW& strKey);              // 0x140229820
+    CStringW FUN_140229940(const CString& strKey);              // 0x140229940 wide text of a "$..." key
+    CStringW GetWideRaw(int nId);                               // 0x140229990 id text without key mapping
+    MS2Ptr<CBanTextChecker> GetChecker();                       // 0x140229a50
+    void RegisterIds();                                         // 0x140229ad0 fills m_strings with the id names
+    int LoadCommon();                                           // 0x140259340 Table/stringCommon.xml
+    int FUN_140259910();                                        // 0x140259910 always 1
+    int LoadDebug();                                            // 0x140259640 ../XmlDebug/stringDebug.xml
+    void Reload();                                              // 0x140259930
+    void LoadStrings(Unk_140165cf0* pRoot);                     // 0x140259e60
+
+    TextMap m_maps[2];                                  // +0x38
+    ATL::CAtlMap<int, CStringW, ATL::CDefaultElementTraits<int> > m_strings;              // +0x98
+    MS2Ptr<CBanTextChecker> m_spChecker;                // +0xe0
+    unsigned char m_bRaw;                               // +0xf0
+    static bool s_bInit;                                // DAT_143aaccf0
+};
+MS2_CHECK_SIZE(CommonString, 0xf8);
+MS2_CHECK_OFFSET(CommonString, m_maps, 0x38);
+MS2_CHECK_OFFSET(CommonString, m_strings, 0x98);
+MS2_CHECK_OFFSET(CommonString, m_spChecker, 0xe0);
+MS2_CHECK_OFFSET(CommonString, m_bRaw, 0xf0);

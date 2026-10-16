@@ -6,6 +6,7 @@
 #include "commonstringtable.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/tixmldocument.h"
+#include <typeinfo>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -24,10 +25,8 @@ unsigned FUN_14025ed00(const wchar_t* psz);                             // strin
 struct Unk_BanFlags { int FUN_1402c4c90(int nFlag); };                          // blocked-action flag set
 struct Unk_BanConfig { unsigned char m_pad_0[8]; Unk_BanFlags m_8; };
 Unk_BanConfig* FUN_14025e7b0();                                                 // global client config
-void FUN_14025d6f0();                                                   // "CBanTextChecker is not initialized" check
 void* FUN_140166410();
 bool FUN_14036e560(void* pService);
-void FUN_140263710(bool bInitialized);
 CStringW FUN_1401e8510(const wchar_t* pszFormat, const CStringW& strArg);   // formats one text argument into the message
 CStringW FUN_1401ceea0(const wchar_t* pszFormat, const int& nArg);          // formats one number argument into the message
 void FUN_14025fab0(CStringW& str);                                          // MakeLower
@@ -225,17 +224,16 @@ static ATL::CAtlMap<EBanErrKind, EBanStringId> s_mapDefaultErr;   // 0x143aacca0
 // The default error kind -> string id table, filled on first use.
 static void FUN_140224600()
 {
-    if (s_mapDefaultErr.IsEmpty())
-    {
-        s_mapDefaultErr.SetAt((EBanErrKind)1, (EBanStringId)0x8b8);
-        s_mapDefaultErr.SetAt((EBanErrKind)2, (EBanStringId)0x8b7);
-        s_mapDefaultErr.SetAt((EBanErrKind)3, (EBanStringId)0x8b9);
-        s_mapDefaultErr.SetAt((EBanErrKind)4, (EBanStringId)0x8ba);
-        s_mapDefaultErr.SetAt((EBanErrKind)5, (EBanStringId)0x8b3);
-        s_mapDefaultErr.SetAt((EBanErrKind)6, (EBanStringId)0x8b4);
-        s_mapDefaultErr.SetAt((EBanErrKind)7, (EBanStringId)0x8b5);
-        s_mapDefaultErr.SetAt((EBanErrKind)8, (EBanStringId)0x8b6);
-    }
+    if (!s_mapDefaultErr.IsEmpty())
+        return;
+    s_mapDefaultErr.SetAt((EBanErrKind)1, (EBanStringId)0x8b8);
+    s_mapDefaultErr.SetAt((EBanErrKind)2, (EBanStringId)0x8b7);
+    s_mapDefaultErr.SetAt((EBanErrKind)3, (EBanStringId)0x8b9);
+    s_mapDefaultErr.SetAt((EBanErrKind)4, (EBanStringId)0x8ba);
+    s_mapDefaultErr.SetAt((EBanErrKind)5, (EBanStringId)0x8b3);
+    s_mapDefaultErr.SetAt((EBanErrKind)6, (EBanStringId)0x8b4);
+    s_mapDefaultErr.SetAt((EBanErrKind)7, (EBanStringId)0x8b5);
+    s_mapDefaultErr.SetAt((EBanErrKind)8, (EBanStringId)0x8b6);
 }
 
 // @0x140224760
@@ -388,7 +386,7 @@ CStringW CBanTextChecker::GetOptionErrString(CheckerOption& opt, EBanErrKind nKi
 // @0x140228b40
 bool CBanTextChecker::FindReserveIdAny(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nPos = 0;
     int nLen = 0;
     CStringW s(str);
@@ -402,7 +400,7 @@ bool CBanTextChecker::FindReserveIdAny(const CStringW& str, CStringW& matched)
 // @0x140228c50
 bool CBanTextChecker::FindBanWord(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nPos = 0;
     int nLen = 0;
     CStringW s(str);
@@ -416,7 +414,7 @@ bool CBanTextChecker::FindBanWord(const CStringW& str, CStringW& matched)
 // @0x140228d60
 bool CBanTextChecker::FindUgcBanWord(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nPos = 0;
     int nLen = 0;
     CStringW s(str);
@@ -430,7 +428,7 @@ bool CBanTextChecker::FindUgcBanWord(const CStringW& str, CStringW& matched)
 // @0x140228e70
 bool CBanTextChecker::FindReserveWord(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nPos = 0;
     int nLen = 0;
     CStringW s(str);
@@ -444,7 +442,7 @@ bool CBanTextChecker::FindReserveWord(const CStringW& str, CStringW& matched)
 // @0x140228a60
 bool CBanTextChecker::FindReserveIdAll(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     CStringW s(str);
     FUN_14025fab0(s);
     std::set<CStringW>::iterator it = m_setReserveIdAll.find(s);
@@ -458,7 +456,7 @@ bool CBanTextChecker::FindReserveIdAll(const CStringW& str, CStringW& matched)
 // @0x140228f80
 bool CBanTextChecker::FindStartWithWord(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nStart = 0;
     int nPos = 0;
     int nLen = 0;
@@ -478,7 +476,7 @@ bool CBanTextChecker::FindStartWithWord(const CStringW& str, CStringW& matched)
 // @0x1402290b0
 bool CBanTextChecker::FindBanWordAll(const CStringW& str, CStringW& matched)
 {
-    FUN_14025d6f0();
+    CheckInit();
     int nTotal = str.GetLength();
     int nStart = 0;
     int nPos = 0;
@@ -1027,7 +1025,7 @@ int CBanTextChecker::LoadTables()
     LoadWords(FUN_14071ae20("startWithWord.xml"), &m_trieStartWith);
     LoadWords(FUN_14071ae20("banWordAll.xml"), &m_trieBanWordAll);
     BuildUrlHashes();
-    FUN_140263710(true);
+    SetInit(true);
     return 1;
 }
 
@@ -1124,7 +1122,7 @@ void CBanTextChecker::MaskBannedWords(CStringW& str)
 // @0x140226b10
 void CBanTextChecker::FilterReservedWords(CStringW& str)
 {
-    FUN_14025d6f0();
+    CheckInit();
     if (DAT_143ab2914 >= 0x32)
         return;
     if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x3a) == 0)
@@ -1150,7 +1148,7 @@ void CBanTextChecker::FilterReservedWords(CStringW& str)
 // @0x140226cd0
 void CBanTextChecker::FilterBanWords(CStringW& str)
 {
-    FUN_14025d6f0();
+    CheckInit();
     if (DAT_143ab2914 >= 0x32)
         return;
     unsigned nMask = 0;
@@ -1209,4 +1207,159 @@ void CBanTextChecker::FilterBanWords(CStringW& str)
             break;
         nStart = nStart + 1;
     }
+}
+
+CString FUN_14016a600(const wchar_t* pwsz, int n);                              // wide -> narrow
+CString FUN_14016a5c0(const char* psz, int n);
+CStringW FUN_14016a730(const char* psz, int n);                                 // narrow -> wide
+extern CStringW DAT_143aacc90;                                                  // the shared empty string
+class Unk_AltStringMgr { public: CStringW FUN_1422b0570(const CString& strKey); };
+Unk_AltStringMgr* FUN_14025e7a0();
+void* FUN_14025e7c0();                                                          // the client's text-hook object
+CommonString* FUN_14025e7d0();                                                  // the CommonString singleton
+unsigned char FUN_14116d950(void* pObj, int nFlag, bool a, int b);
+
+CommonString* TSingleton<CommonString>::s_instance = 0;
+bool CBanTextChecker::s_bInit = false;
+bool CommonString::s_bInit = false;
+
+inline TSingleton<CommonString>::TSingleton() { s_instance = static_cast<CommonString*>(this); }
+
+// @0x140229230
+CommonString::CommonString() : m_spChecker(new CBanTextChecker)
+{
+    RegisterIds();
+    Reload();
+    m_bRaw = 0;
+}
+
+// @0x1402293a0
+CommonString::~CommonString()
+{
+    TextMap* maps = m_maps;
+    for (unsigned i = 0; i < 2; ++i)
+    {
+        TextMap* pMap = maps + (int)i;
+        pMap->RemoveAll();
+    }
+    m_strings.RemoveAll();
+    m_spChecker = 0;
+}
+
+// @0x1402294e0
+CStringW CommonString::MapText(int nMap, const CStringW& strKey)
+{
+    CheckInit();
+    if (nMap < 0 || nMap >= 2)
+        return CStringW(L"");
+    CStringW strText;
+    m_maps[nMap].Lookup(strKey, strText);
+    return strText;
+}
+
+// @0x1402295b0
+CString CommonString::GetNarrowDefault(int nId)
+{
+    return GetNarrow(nId);
+}
+
+// @0x140229600
+CString CommonString::GetNarrow(int nId)
+{
+    return FUN_14016a600(GetWide(nId), 0);
+}
+
+// @0x140229690
+CString CommonString::GetNarrowByKey(const CString& strKey)
+{
+    return FUN_14016a600(GetWideByKey(FUN_14016a730(strKey, 0)), 0);
+}
+
+// @0x140229760
+CStringW CommonString::GetWide(int nId)
+{
+    CStringW strText;
+    if (!m_strings.Lookup(nId, strText))
+        return DAT_143aacc90;
+    return GetWideByKey(strText);
+}
+
+// @0x140229820
+CStringW CommonString::GetWideByKey(const CStringW& strKey)
+{
+    if (strKey.GetLength() == 0)
+        return DAT_143aacc90;
+    if (FUN_14025e7c0() != 0)
+    {
+        if (FUN_14116d950(FUN_14025e7c0(), 0x2a, 1, 0))
+        {
+            if (FUN_14116d950(FUN_14025e7c0(), 0x1d, 1, 0))
+                return strKey;
+        }
+    }
+    if (m_bRaw != 0)
+        return strKey;
+    return MapText(0, strKey);
+}
+
+// @0x140229940
+CStringW CommonString::FUN_140229940(const CString& strKey)
+{
+    return FUN_14025e7a0()->FUN_1422b0570(strKey);
+}
+
+// @0x140229990
+CStringW CommonString::GetWideRaw(int nId)
+{
+    CStringW strText;
+    if (!m_strings.Lookup(nId, strText))
+        return DAT_143aacc90;
+    return strText;
+}
+
+// @0x140229a50
+MS2Ptr<CBanTextChecker> CommonString::GetChecker()
+{
+    if (this != 0)
+    {
+        return m_spChecker;
+    }
+    else
+    {
+        return MS2Ptr<CBanTextChecker>(0);
+    }
+}
+
+// @0x14025d6f0
+void CBanTextChecker::CheckInit()
+{
+    if (!s_bInit)
+    {
+        CStringA msg;
+        msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(CBanTextChecker).name(), 0));
+        MessageBoxA(0, msg, "Error", 0);
+    }
+}
+
+// @0x140263710
+void CBanTextChecker::SetInit(bool bInit)
+{
+    s_bInit = bInit;
+}
+
+// @0x14025d7a0
+void CommonString::CheckInit()
+{
+    if (!s_bInit)
+    {
+        CStringA msg;
+        msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(CommonString).name(), 0));
+        MessageBoxA(0, msg, "Error", 0);
+    }
+}
+
+// @0x140263720
+void CommonString::SetInit(bool bInit)
+{
+    s_bInit = bInit;
 }
