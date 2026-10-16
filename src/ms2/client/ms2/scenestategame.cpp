@@ -206,6 +206,11 @@ public:
     void FUN_141bc5c40(MS2Ptr<CInteractObject> spObj);      // add one
     void FUN_141bc5d60(const CString& strName);              // remove one
     int FUN_141bd3060();                                    // current channel's map id
+    int FUN_141bc1720(MS2Ptr<class CPortal> spPortal);      // register a field object (portal) (0x48)
+    void FUN_141bc24e0(int nId);                            // unregister a field object
+    MS2Ptr<class CPortal> FUN_141bc2800(int nId);            // a field object by id
+    void FUN_141bc3140(int nId, int nVisible, int nEnabled, int nHidden);
+    void FUN_141bc31d0(int nId, Unk_StreamPoint kPos, Unk_StreamPoint kScale);
 };
 Unk_SSGWorld* FUN_1403ed2d0();
 
@@ -5857,6 +5862,124 @@ void CSceneStateGame::FUN_14171e860(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171e860, CSceneStateGame, FUN_14171e860, 308, 0x3B1A059E);
+
+// A field object placed by the server (portal, field-entry object); RTTI CPortal, 0x1b8 bytes. Same layout as
+// worldservice_1.cpp's Unk_WsE_FieldObject; only the fields set by packet 0x48 are named.
+class CPortal : public CPtred
+{
+public:
+    CPortal();                                              // 0x14169b350
+
+    egf::EntityID m_entityId;                               // +0x18
+    int m_nId;                                              // +0x20
+    int m_nVisible;                                         // +0x24
+    int m_nEnabled;                                         // +0x28
+    Unk_StreamPoint m_kPos;                                 // +0x2c
+    Unk_StreamPoint m_kScale;                               // +0x38
+    Unk_StreamPoint m_kRot;                                 // +0x44
+    char m_pad_50[0xf8];                                    // +0x50 placement
+    int m_nMapType;                                         // +0x148
+    int m_nTargetField;                                     // +0x14c
+    int m_nTargetPortal;                                    // +0x150
+    int m_nHidden;                                          // +0x154
+    __int64 m_nOwnerId;                                     // +0x158
+    int m_nType;                                            // +0x160
+    int m_n164;                                             // +0x164
+    char m_pad_168[8];
+    int m_n170;                                             // +0x170
+    char m_pad_174[4];
+    CStringW m_strName;                                     // +0x178
+    CString m_strModel;                                     // +0x180 scene graph urn
+    int m_n188;                                             // +0x188
+    bool m_bConfirm;                                        // +0x18c
+    CStringW m_str190;                                      // +0x190
+    CStringW m_str198;                                      // +0x198
+    char m_pad_1a0[0x18];
+};
+MS2_CHECK_OFFSET(CPortal, m_nMapType, 0x148);
+MS2_CHECK_OFFSET(CPortal, m_strName, 0x178);
+MS2_CHECK_OFFSET(CPortal, m_str198, 0x198);
+MS2_CHECK_SIZE(CPortal, 0x1b8);
+template <> MS2Ptr<CPortal>::MS2Ptr(const MS2Ptr& o);                // 0x1409640d0
+template <> MS2Ptr<CPortal>::~MS2Ptr();                              // 0x140964a70
+template <> CPortal* MS2Ptr<CPortal>::operator->() const;            // 0x140965960
+template <> CPortal* MS2Ptr<CPortal>::get() const;                   // 0x140c9b7d0
+
+// Packet 0x48: field objects (add / remove / properties / placement).
+// @0x14171ee80
+void CSceneStateGame::FUN_14171ee80(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (nMode == 0)
+    {
+        MS2Ptr<CPortal> spPortal = new CPortal;
+        spPortal->m_nId = nId;
+        int nVisible = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nEnabled = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        Unk_StreamPoint kScale = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        Unk_StreamPoint kRot = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        CString strModel = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        int nMapType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nTargetField = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nTargetPortal = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nHidden = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        __int64 nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int n164 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int n188 = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int n170 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        bool bConfirm = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW str190 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW str198 = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        spPortal->m_nVisible = nVisible;
+        spPortal->m_nEnabled = nEnabled;
+        spPortal->m_kPos = kPos;
+        spPortal->m_kScale = kScale;
+        spPortal->m_kRot = kRot;
+        spPortal->m_nTargetField = nTargetField;
+        spPortal->m_nTargetPortal = nTargetPortal;
+        spPortal->m_nHidden = nHidden;
+        spPortal->m_nOwnerId = nOwnerId;
+        spPortal->m_nType = nType;
+        spPortal->m_n164 = n164;
+        spPortal->m_n188 = n188;
+        spPortal->m_n170 = n170;
+        spPortal->m_bConfirm = bConfirm;
+        spPortal->m_strName = strName;
+        spPortal->m_str190 = str190;
+        spPortal->m_str198 = str198;
+        if (!strModel.IsEmpty())
+            spPortal->m_strModel = "urn:gamebryo-scenegraph:" + strModel;
+        if (nMapType != 0)
+            spPortal->m_nMapType = nMapType;
+        FUN_1403ed2d0()->FUN_141bc1720(spPortal);
+    }
+    else if (nMode == 1)
+    {
+        FUN_1403ed2d0()->FUN_141bc24e0(nId);
+    }
+    else if (nMode == 2)
+    {
+        int nVisible = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nEnabled = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nHidden = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int n188 = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        MS2Ptr<CPortal> spPortal = FUN_1403ed2d0()->FUN_141bc2800(nId);
+        if (spPortal.get() != 0)
+            spPortal->m_n188 = n188;
+        FUN_1403ed2d0()->FUN_141bc3140(nId, nVisible, nEnabled, nHidden);
+    }
+    else if (nMode == 3)
+    {
+        Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        Unk_StreamPoint kScale = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        FUN_1403ed2d0()->FUN_141bc31d0(nId, kPos, kScale);
+    }
+}
+MS2_REPLACE_METHOD(0x14171EE80, CSceneStateGame, FUN_14171ee80, 2574, 0x7FDDB2DD);
 
 // @0x141731350
 void CSceneStateGame::FUN_141731350(CInPacket& packet)
