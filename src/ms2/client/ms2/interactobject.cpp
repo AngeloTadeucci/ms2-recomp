@@ -423,7 +423,7 @@ CInteractObject::CInteractObject()
     m_nVisible = 0;
     m_bHighlight = 1;
     m_timer.FUN_1408687f0();
-    m_pad_a8 = 0;
+    m_bSpawned = 0;
 }
 
 // @0x1413fd380

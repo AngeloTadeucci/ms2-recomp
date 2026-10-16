@@ -334,7 +334,7 @@ void ClonePC::vfunc_149()
                     if (spCopy.get() != 0)
                     {
                         FUN_140526b30(spCopy.operator->(), FUN_14123c580());
-                        FUN_141653d10(this, MS2Ptr<CItem>(spCopy));
+                        ::FUN_141653d10(this, MS2Ptr<CItem>(spCopy));
                     }
                 }
             }

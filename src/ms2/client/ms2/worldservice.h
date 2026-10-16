@@ -408,7 +408,7 @@ public:
     CStringW FUN_141bd0d30();                           // m_2d8's name or ""
     int FUN_141bd0dd0(Unk_StreamPoint* pos, Unk_StreamPoint* dir);
     class Unk_WsC_GameObj* FUN_141bd0f50(class Unk_WsC_GameObj* p);
-    class Unk_WsC_GameObj* FUN_141bd0fa0(egf::EntityID id);   // the game object of an entity
+    class Unk_WsC_GameObj* FUN_141bd0fa0(const egf::EntityID& id);   // the game object of an entity
     class Unk_WsC_GameObj* FUN_141bd0fe0(unsigned __int64 key);
     class Unk_WsC_GameObj* FUN_141bd1050(void* mesh);
     class Unk_WsC_GameObj* FUN_141bd1180(int id);

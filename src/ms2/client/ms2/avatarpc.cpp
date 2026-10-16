@@ -807,7 +807,7 @@ void AvatarPC::vfunc_127(CItem* pItem, int n)
 {
     if (FUN_14123dbd0() == 0)
     {
-        FUN_141653d10(this, MS2Ptr<CItem>(pItem));
+        ::FUN_141653d10(this, MS2Ptr<CItem>(pItem));
     }
     else
     {

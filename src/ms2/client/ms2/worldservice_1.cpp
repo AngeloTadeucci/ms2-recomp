@@ -6166,9 +6166,9 @@ MS2_REPLACE_METHOD(0x141BD0F50, WorldService, FUN_141bd0f50, 61, 0x5B9FF654);
 
 // MS2-FUNCTIONAL: codegen differs (call/temporary ordering of out-of-line COMDATs)
 // @0x141bd0fa0
-void WorldService::FUN_141bd0fa0(const unsigned __int64& key)
+Unk_WsC_GameObj* WorldService::FUN_141bd0fa0(const egf::EntityID& key)
 {
-    FUN_141bd0fe0(key);
+    return FUN_141bd0fe0(reinterpret_cast<const unsigned __int64&>(key));
 }
 MS2_REPLACE_METHOD(0x141BD0FA0, WorldService, FUN_141bd0fa0, 49, 0x7B5F5D9E);
 

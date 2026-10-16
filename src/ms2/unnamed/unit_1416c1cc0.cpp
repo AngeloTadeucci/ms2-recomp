@@ -9,7 +9,7 @@
 #include <egf/FlatModel.h>
 
 // ---- out-of-unit types and callees (bound to the exe by their FUN_<va> names / symbols) ----
-extern void* DAT_143ab2828;                                         // the "self" object pointer
+extern __int64 DAT_143ab2828;                                       // the "self" object pointer
 extern Unk_StreamPoint DAT_143b01a60;                               // the zero point
 extern int DAT_143b059e8;
 
@@ -264,14 +264,14 @@ MS2_REPLACE_METHOD(0x1416C2270, CProxyGameObject, FUN_1416c2270, 114, 0x6DB7BE40
 // @0x1416c22f0
 void* CProxyGameObject::FUN_1416c22f0()
 {
-    return m_40;
+    return reinterpret_cast<void*>(m_40);
 }
 MS2_REPLACE_METHOD(0x1416C22F0, CProxyGameObject, FUN_1416c22f0, 15, 0x8B0075C1);
 
 // @0x1416c2310
 void* CProxyGameObject::FUN_1416c2310()
 {
-    return m_48;
+    return reinterpret_cast<void*>(m_48);
 }
 MS2_REPLACE_METHOD(0x1416C2310, CProxyGameObject, FUN_1416c2310, 15, 0x5AEB0F79);
 
@@ -346,7 +346,7 @@ CStringW CProxyGameObject::FUN_1416c2600()
         return FUN_141bd0cc0(FUN_1403ed2d0())->FUN_1415281c0();
     } else {
         {
-            Unk_Handle97a h = FUN_14097a780()->FUN_140ae4880(m_40);
+            Unk_Handle97a h = FUN_14097a780()->FUN_140ae4880(reinterpret_cast<void*>(m_40));
             if (h.FUN_14097a170() != 0) {
                 m_b4 = h.FUN_14097a1e0()->FUN_1401cc3e0();
                 m_c0 = h.FUN_14097a1e0()->FUN_1401cc350();

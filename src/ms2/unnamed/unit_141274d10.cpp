@@ -343,7 +343,8 @@ MS2_CHECK_OFFSET(Unk_ClientConsts, m_b270, 0xb270);
 MS2_CHECK_OFFSET(Unk_ClientConsts, m_b2c8, 0xb2c8);
 MS2_CHECK_OFFSET(Unk_ClientConsts, m_b320, 0xb320);
 MS2_CHECK_OFFSET(Unk_ClientConsts, m_b408, 0xb408);
-Unk_ClientConsts* FUN_1401d3200();
+// clientconstants.h declares FUN_1401d3200 as Common::Constants*; this unit uses its own view of the block
+#define UNK_CLIENT_CONSTS() reinterpret_cast<Unk_ClientConsts*>(FUN_1401d3200())
 unsigned* FUN_140a81910(Unk_McValue<unsigned>* pSlot);
 unsigned FUN_14056d500(unsigned* pValue);
 size_t FUN_14059d0e0(ATL::CAtlArray<int>* pArray);
@@ -473,10 +474,10 @@ MS2_REPLACE(0x141275a10, FUN_141275a10, 126, 0xBF3ECD51);
 // @0x141275aa0
 int FUN_141275aa0(int nCode)
 {
-    if (FUN_1401d3200()->m_colorTable.FUN_1412788b0()->IsEmpty())
+    if (UNK_CLIENT_CONSTS()->m_colorTable.FUN_1412788b0()->IsEmpty())
         return 0xffffff;
     size_t nIndex;
-    ATL::CAtlArray<int>* pColors = FUN_1401d3200()->m_colorTable.FUN_1412788b0();
+    ATL::CAtlArray<int>* pColors = UNK_CLIENT_CONSTS()->m_colorTable.FUN_1412788b0();
     nIndex = (size_t)(__int64)nCode / 100;
     if (FUN_14059d0e0(pColors) <= nIndex)
         return 0xffffff;
@@ -487,28 +488,28 @@ MS2_REPLACE(0x141275aa0, FUN_141275aa0, 139, 0x50397E44);
 // @0x141275b40
 unsigned FUN_141275b40()
 {
-    return FUN_14056d500(FUN_140a81910(&FUN_1401d3200()->m_b270));
+    return FUN_14056d500(FUN_140a81910(&UNK_CLIENT_CONSTS()->m_b270));
 }
 MS2_REPLACE(0x141275b40, FUN_141275b40, 36, 0x353EE636);
 
 // @0x141275b70
 unsigned FUN_141275b70()
 {
-    return FUN_14056d500(FUN_140a81910(&FUN_1401d3200()->m_b2c8));
+    return FUN_14056d500(FUN_140a81910(&UNK_CLIENT_CONSTS()->m_b2c8));
 }
 MS2_REPLACE(0x141275b70, FUN_141275b70, 36, 0x92818E0E);
 
 // @0x141275ba0
 unsigned FUN_141275ba0()
 {
-    return FUN_14056d500(FUN_140a81910(&FUN_1401d3200()->m_b320));
+    return FUN_14056d500(FUN_140a81910(&UNK_CLIENT_CONSTS()->m_b320));
 }
 MS2_REPLACE(0x141275ba0, FUN_141275ba0, 36, 0xB9F8727F);
 
 // @0x141275bd0
 unsigned FUN_141275bd0(void*)
 {
-    return FUN_1412780f0(&FUN_1401d3200()->m_b408);
+    return FUN_1412780f0(&UNK_CLIENT_CONSTS()->m_b408);
 }
 MS2_REPLACE(0x141275bd0, FUN_141275bd0, 33, 0x3752B9CB);
 
