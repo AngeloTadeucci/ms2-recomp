@@ -13,6 +13,9 @@
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/commonfiles/item.h"
+#include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/commonfiles/itemdata.h"
+#include "ms2/commonfiles/itemenchantinfo.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -21,7 +24,7 @@ class Unk_ItemEnchantData : public CItemStatus {};
 class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
 extern unsigned FUN_14054b400(ItemModelData*);
-extern int FUN_140632030();
+extern unsigned __int64 FUN_140632030(CItemUgc*);
 #define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
 
 // @0x14052a020
@@ -1302,12 +1305,200 @@ bool CItem::FUN_140528e20()
 }
 MS2_REPLACE_METHOD(0x140528E20, CItem, FUN_140528e20, 83, 0x1359AAF1);
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x140525f60
-bool CItem::FUN_140525f60()
+int CItem::FUN_140525f60()
 {
     if (m_spUgc == NULL)
-        return FUN_140632030() != 0;
-    return false;
+        return 0;
+    if (FUN_140632030(m_spUgc.get()) > 0)
+        return 1;
+    return 0;
 }
 MS2_REPLACE_METHOD(0x140525F60, CItem, FUN_140525f60, 87, 0x14B28FAE);
+
+// ---- w98 batch 1: table-row / UGC delegations
+extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
+extern bool FUN_14026d4d0(void*, int, __int64);
+extern __int64 FUN_1406321d0(CItemUgc*);
+extern int g_ItemFunctionFlags[4];   // 0x142d568c0
+
+// @0x140525c00
+int CItem::FUN_140525c00()
+{
+    if (m_spData.IsNull())
+        return 0;
+    return FUN_1403b3c40(m_spData->function.name, L"StoryBook");
+}
+MS2_REPLACE_METHOD(0x140525C00, CItem, FUN_140525c00, 87, 0xBF027633);
+
+// @0x140525cf0
+int CItem::FUN_140525cf0()
+{
+    if (m_spData.IsNull())
+        return 0;
+    int nCount = 4;
+    for (int i = 0; i < nCount; i++)
+    {
+        if (m_spData->FUN_14053eba0()->FUN_14054b450(g_ItemFunctionFlags[i]))
+            return 1;
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140525CF0, CItem, FUN_140525cf0, 171, 0xC6A23014);
+
+// @0x140525f10
+int CItem::FUN_140525f10()
+{
+    if (m_spData.get() != 0)
+        return m_spData->FUN_14053d6f0();
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140525F10, CItem, FUN_140525f10, 72, 0x5D744C7D);
+
+// @0x140525fc0
+__int64 CItem::FUN_140525fc0()
+{
+    if (m_spUgc == NULL)
+        return 0;
+    return FUN_1406321d0(m_spUgc.get());
+}
+MS2_REPLACE_METHOD(0x140525FC0, CItem, FUN_140525fc0, 73, 0xDD20CE3F);
+
+// @0x140526060
+int CItem::FUN_140526060(void* pArg)
+{
+    if (!FUN_140525f10() || !FUN_140525f60())
+        return 0;
+    CUgcItemLook* pItemLook = FUN_140528380();
+    MS2_ASSERT_MSG_AT(0x296, L"pItemLook != NULL", pItemLook != NULL);
+    if (FUN_14026d4d0(pArg, pItemLook->unknown34, pItemLook->unknown38))
+        return 1;
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140526060, CItem, FUN_140526060, 145, 0x57D9062C);
+
+// @0x140526850
+bool CItem::FUN_140526850()
+{
+    if (!(!FUN_140527840()->FUN_14053cbc0() && FUN_140526c50() != 1 && FUN_1405257f0() != 0 && !FUN_140528e20()))
+        return false;
+    return true;
+}
+MS2_REPLACE_METHOD(0x140526850, CItem, FUN_140526850, 91, 0xCCCB08AA);
+
+// ---- w98 batch 2: status (enchant) / transfer delegations
+class Unk_ItemPlusInfo { public: int FUN_1408bbc50(); };
+
+// @0x140526fc0
+int CItem::FUN_140526fc0()
+{
+    if (m_spStatus == NULL)
+        return 0;
+    CItemEnchantInfo* pInfo = m_spStatus->FUN_140630d60();
+    if (pInfo == 0)
+        return 0;
+    return pInfo->FUN_14058c5f0();
+}
+MS2_REPLACE_METHOD(0x140526FC0, CItem, FUN_140526fc0, 100, 0xC4F66D3A);
+
+// @0x140527030
+int CItem::FUN_140527030()
+{
+    if (m_spStatus == NULL)
+        return 0;
+    CItemEnchantInfo* pInfo = m_spStatus->FUN_140630d60();
+    if (pInfo == 0)
+        return 0;
+    return pInfo->FUN_14058c8a0();
+}
+MS2_REPLACE_METHOD(0x140527030, CItem, FUN_140527030, 100, 0xBD08A65D);
+
+// @0x1405270a0
+int CItem::FUN_1405270a0()
+{
+    if (m_spStatus == NULL)
+        return 0;
+    CItemEnchantInfo* pInfo = m_spStatus->FUN_140630d60();
+    if (pInfo == 0)
+        return 0;
+    return pInfo->FUN_14058c730();
+}
+MS2_REPLACE_METHOD(0x1405270A0, CItem, FUN_1405270a0, 100, 0xCC383426);
+
+// @0x140527110
+void CItem::FUN_140527110(int nExp)
+{
+    if (m_spStatus == NULL)
+        return;
+    CItemEnchantInfo* pInfo = m_spStatus->FUN_140630d60();
+    if (pInfo == 0)
+        return;
+    pInfo->FUN_14058c7c0(nExp);
+}
+MS2_REPLACE_METHOD(0x140527110, CItem, FUN_140527110, 104, 0x12B5FEE3);
+
+// @0x140527270
+int CItem::FUN_140527270()
+{
+    if (m_spStatus == NULL)
+        return 0;
+    Unk_ItemPlusInfo* pInfo = m_spStatus->FUN_140630d90();
+    if (pInfo == 0)
+        return 0;
+    return pInfo->FUN_1408bbc50();
+}
+MS2_REPLACE_METHOD(0x140527270, CItem, FUN_140527270, 100, 0x46C766FE);
+
+// @0x140527360
+bool CItem::FUN_140527360()
+{
+    if (m_a0 > 0)
+    {
+        m_a0 = m_a0 - 1;
+        return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x140527360, CItem, FUN_140527360, 50, 0x6B1F3D35);
+
+// @0x1405273a0
+__int64 CItem::FUN_1405273a0()
+{
+    if (m_spTransfer.get() != 0)
+        return m_spTransfer->FUN_140634fa0();
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1405273A0, CItem, FUN_1405273a0, 69, 0xCE7A4785);
+
+// @0x1405273f0
+void CItem::FUN_1405273f0(unsigned n)
+{
+    if (m_spTransfer.get() != 0)
+        m_spTransfer->FUN_140634fc0(n);
+}
+MS2_REPLACE_METHOD(0x1405273F0, CItem, FUN_1405273f0, 73, 0x5F564C20);
+
+// @0x140527440
+__int64 CItem::FUN_140527440()
+{
+    if (m_spTransfer.get() != 0)
+        return m_spTransfer->FUN_140634fe0();
+    return 0;
+}
+MS2_REPLACE_METHOD(0x140527440, CItem, FUN_140527440, 69, 0xFB6124AE);
+
+// @0x140527490
+void CItem::FUN_140527490(unsigned n)
+{
+    if (m_spTransfer.get() != 0)
+        m_spTransfer->FUN_140635000(n);
+}
+MS2_REPLACE_METHOD(0x140527490, CItem, FUN_140527490, 73, 0xB4A0DF13);
+
+// @0x1405275f0
+void CItem::FUN_1405275f0()
+{
+    if (m_spTransfer.get() != 0)
+        m_spTransfer->FUN_140635300();
+}
+MS2_REPLACE_METHOD(0x1405275F0, CItem, FUN_1405275f0, 65, 0x42D1E6C9);

@@ -163,8 +163,12 @@ public:
   void FUN_140525950();
   int FUN_1405259e0();
   int FUN_140525a30();
-  bool FUN_140525c00();
-  bool FUN_140525f60();
+  int FUN_140525c00();
+  bool FUN_140527360();                  // w98
+  __int64 FUN_1405273a0();               // w98
+  int FUN_140525cf0();                   // w98
+  int FUN_140526060(void*);              // w98
+  int FUN_140525f60();
   __int64 FUN_140525fc0();
   int FUN_140526160();
   void FUN_140526470(unsigned);

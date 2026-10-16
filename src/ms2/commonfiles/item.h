@@ -13,6 +13,8 @@ class CItemStatus : public CPtred
 {
 public:
     CItemStatus(unsigned, unsigned, unsigned);   // 0x14062fa00
+    class CItemEnchantInfo* FUN_140630d60();     // the enchant record (null when absent)
+    class Unk_ItemPlusInfo* FUN_140630d90();
     char m_pad18[0x30];
 };
 MS2_CHECK_SIZE(CItemStatus, 0x48);
