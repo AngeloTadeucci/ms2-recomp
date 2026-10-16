@@ -17,6 +17,8 @@ public:
 
     // Creates the item from (id, rarity), sets its amount and binds it under a new "{owner}_{n}" slot name.
     CString FUN_140d43310(int nItemId, int nRarity, int nAmount);
+    CString FUN_140d43510(const void* pItem);   // binds an item info under a new slot name (dungeon control center reward)
+    void FUN_140d43990();                       // unbinds all slots
 
 private:
     MS2_LAYOUT_FRIEND;

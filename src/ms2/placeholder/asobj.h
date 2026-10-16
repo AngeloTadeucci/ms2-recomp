@@ -39,6 +39,7 @@ public:
     void FUN_140e35da0(const char* szName, int n);                       // same body, a second instance (uigamerankingdialog.cpp)
     void FUN_140c1f8b0(const char* szName, int n);                       // set an int member (hide and seek result rows)
     void FUN_140bd0d90(const char* szName, int n);                       // set an int member (job code, uimainplayerinfo)
+    void FUN_140c0e050(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uidungeoncategory.cpp)
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
 
@@ -51,6 +52,8 @@ public:
     bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
     void FUN_1422bbf70(const char* sz);                                  // push a string (uimainplayerinfo empty slot names)
     void FUN_1422bbfe0(const wchar_t* sz);                               // push a wide string
+    void FUN_1422bbf00(const ASObj& obj);                                // push an AS object
+    unsigned int FUN_1422bc5d0();                                        // element count
 };
 
 // ASDataProvider: an ASArray with its own vftable (RTTI ASDataProvider : ASArray : AScript : CPtred), same 0x40 layout.
