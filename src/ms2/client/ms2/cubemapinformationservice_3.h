@@ -122,6 +122,10 @@ public:
     Cube* FUN_1410b8e60(egf::Entity* pEntity);
     Cube* FUN_1410b8f30(Unk_StreamPoint ptFrom, Unk_StreamPoint* pHit, float fRange);
     Unk_StreamPoint FUN_1410b9150(Unk_StreamPoint ptIn);
+    bool FUN_1410b9330(void* pArg, Unk_StreamPoint pt, float fStep, Unk_StreamPoint* pOutPos, Unk_StreamPoint* pOutRot, int* pnResult, void** ppHit);
+    int FUN_1410d1320(void* pArg, Unk_StreamPoint pt, float fStep, Unk_StreamPoint* pOut);
+    int FUN_1410d1820(void* pArg, int nDir, Unk_StreamPoint pt, Unk_StreamPoint ptCur, void** ppFound);
+    int FUN_1410d2130(void* pFound, int nDir, float fRadius, Unk_StreamPoint* pOutPos, Unk_StreamPoint* pOutRot);
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();

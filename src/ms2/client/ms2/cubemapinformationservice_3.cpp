@@ -145,6 +145,9 @@ int FUN_14168a310(CPhysXHelper*, Unk_CMISPt3*, Unk_StreamPoint*, Unk_CMISRayHit*
 bool FUN_14028d470(float, float);
 extern Unk_StreamPoint DAT_143a08cf8;                                       // up vector
 extern Unk_StreamPoint DAT_143b01a60;                                       // zero / fall-through direction
+struct Unk_CMISPair { int m_a, m_b; };
+extern Unk_CMISPair DAT_143b02320;                                          // initial cursor pair
+float FUN_14029d220(float f);                                               // fabsf
 Unk_Int3* FUN_14112ca20(Unk_Int3* pA, Unk_Int3* pOut, Unk_Int3* pB);   // point add
 const int* FUN_1402fbd20(const int*, const int*);               // std::min
 const int* FUN_1404eb7e0(const int*, const int*);               // std::max
@@ -487,6 +490,83 @@ Unk_StreamPoint CubeMapInformationService::FUN_1410b9150(Unk_StreamPoint ptIn)
         return ptRes;
     }
     return ptIn;
+}
+
+// @0x1410b9330
+// MS2-FUNCTIONAL: frame 0x10 larger than the exe (the operator+ temp is allocated before the by-value copies); same calls and control flow
+bool CubeMapInformationService::FUN_1410b9330(void* pArg, Unk_StreamPoint pt, float fStep, Unk_StreamPoint* pOutPos, Unk_StreamPoint* pOutRot, int* pnResult, void** ppHit)
+{
+    float fLimit = 75.0f;
+    void* pFound = 0;
+    float fRadius = fStep;
+    Unk_StreamPoint ptCur;
+    Unk_StreamPoint ptOffset = DAT_143b01a60;
+    Unk_CMISPair kCursor = DAT_143b02320;
+    *pnResult = FUN_1410d1320(pArg, pt, fStep, &ptCur);
+    if (*pnResult == 9)
+        return false;
+    float fDx = pt.x - ptCur.x;
+    float fDy = pt.y - ptCur.y;
+    *pOutRot = DAT_143b01a60;
+    if (FUN_14029d220(fDx) > fLimit - fRadius)
+        fDx = (fDx / FUN_14029d220(fDx)) * (fLimit - fRadius);
+    if (FUN_14029d220(fDy) > fLimit - fRadius)
+        fDy = (fDy / FUN_14029d220(fDy)) * (fLimit - fRadius);
+    *pnResult = FUN_1410d1820(pArg, *pnResult, pt, ptCur, &pFound);
+    if (pFound == 0 || FUN_1410d2130(pFound, *pnResult, fRadius, pOutPos, pOutRot) == 0) {
+        int nDir = *pnResult;
+        switch (nDir) {
+        case 0:
+            return false;
+        case 1:
+            pOutRot->z = 225.0f;
+            ptOffset.x = -fRadius;
+            ptOffset.y = fRadius;
+            break;
+        case 2:
+            pOutRot->z = 180.0f;
+            ptOffset.x = fDx;
+            ptOffset.y = fRadius;
+            break;
+        case 3:
+            pOutRot->z = 135.0f;
+            ptOffset.x = fRadius;
+            ptOffset.y = fRadius;
+            break;
+        case 4:
+            pOutRot->z = 90.0f;
+            ptOffset.x = fRadius;
+            ptOffset.y = fDy;
+            break;
+        case 5:
+            pOutRot->z = 45.0f;
+            ptOffset.x = fRadius;
+            ptOffset.y = -fRadius;
+            break;
+        case 6:
+            pOutRot->z = 0.0f;
+            ptOffset.x = fDx;
+            ptOffset.y = -fRadius;
+            break;
+        case 7:
+            pOutRot->z = 315.0f;
+            ptOffset.x = -fRadius;
+            ptOffset.y = -fRadius;
+            break;
+        case 8:
+            pOutRot->z = 270.0f;
+            ptOffset.x = -fRadius;
+            ptOffset.y = fDy;
+            break;
+        }
+        ptCur.z = pt.z;
+        *pOutPos = ptCur.FUN_14097fd50(ptOffset);
+        return true;
+    }
+    pOutPos->z = pt.z;
+    if (ppHit != 0)
+        *ppHit = pFound;
+    return true;
 }
 
 // @0x1410ce800
