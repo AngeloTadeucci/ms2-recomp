@@ -842,7 +842,7 @@ __imp_NxReleaseControllerManager	142ccec90	data
 ??0Unk_CtbVec3@@QEAA@XZ	140a003a0	func
 ??0Unk_CtbVec3@@QEAA@MMM@Z	140a00350	func
 ??0CAdventureLevelMissionData@@QEAA@XZ	140195660	func
-??1CAdventureLevelMissionData@@UEAA@XZ	140195820	func
+??1CAdventureLevelMissionData@@UEAA@XZ	140195700	func
 ??0StringIdInterfaceBase@@QEAA@HH@Z	14084ee90	func
 ??0StringIdInterfaceBase@@QEAA@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z	14084f0e0	func
 ??0Unk_AfterImageColor@@QEAA@MMMM@Z	14097f1d0	func
@@ -2395,3 +2395,18 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?vfunc_1@NotifyOpenDialogByScene@@UEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	140db51c0	func
 ??0Unk_QmTalkScriptPtr@@QEAA@AEBV0@@Z	140859bc0	func
 ?IsNull@Unk_QmTalkScriptPtr@@QEBA_NXZ	14085a420	func
+?DAT_143ae79f8@@3V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@A	143ae79f8	data
+?DAT_143ae7a00@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae7a00	data
+?DAT_143ae7a08@@3V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@A	143ae7a08	data
+?DAT_143ab3308@@3V?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@A	143ab3308	data
+?DAT_143ab3318@@3V?$map@IVCAdventureLevelMissionData@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIVCAdventureLevelMissionData@@@std@@@3@@std@@A	143ab3318	data
+??0CDamageRecord@@QEAA@XZ	14175a4e0	func
+??0CNpc@@QEAA@XZ	14108e420	func
+??0NotifyAddNpc@@QEAA@V?$SmartPointer@VUnk_SSGNpc@@@efd@@@Z	140db4860	func
+??0NotifyChangeBuff@@QEAA@IG@Z	140db4720	func
+??0Unk_SSGBuffOwner@@QEAA@XZ	1409755b0	func
+?Decode@Unk_SSGBuffOwner@@QEAAXAEAVCInPacket@@@Z	140175fe0	func
+??8?$MS2Ptr@VUnk_SSGNpcData@@@@QEBA_NPEAVUnk_SSGNpcData@@@Z	1406a9050	func
+??C?$MS2Ptr@VAdditionalCli@@@@QEBAPEAVAdditionalCli@@XZ	14096e8b0	func
+?get@?$MS2Ptr@VAdditionalCli@@@@QEBAPEAVAdditionalCli@@XZ	140975b90	func
+?get@?$MS2Ptr@VCube@@@@QEBAPEAVCube@@XZ	140885330	func
