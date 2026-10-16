@@ -5,7 +5,7 @@
 // MS2-RANGE: 0x1400b59f0-0x1400b5a20 .text$di
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ?Read@?$Value@M@Constants@Common@@QEAAMXZ 0x1402bac70 ; unique: single byte-identical candidate
-// MS2-PIN: ??$StringFormat@PEBD_N_NH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBH@Z 0x1402bae00 ; unique: caller ?Test@Constants@Common@@SA_NXZ
+// MS2-PIN: ??$StringFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00 ; unique: caller ?Test@Constants@Common@@SA_NXZ
 // MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0 ; prop: symbol ?StringFormat@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT...
 // MS2-PIN: ??$_Pocca@V?$allocator@I@std@@@std@@YAXAEAV?$allocator@I@0@AEBV10@U?$integral_constant@_N$0A@@0@@Z 0x1402bc150 ; unique: single byte-identical candidate
 // MS2-PIN: ??0?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@QEAA@XZ 0x1402bc4b0 ; unique: caller ?LoadFiles@Constants@Common@@QEAA_NXZ
@@ -73,6 +73,78 @@
 // MS2-PIN: ?Read@?$Value@I@Constants@Common@@QEAAIXZ 0x1402bac50 ; manual: named in the exe symbol dump
 // MS2-PIN: ?Read@?$Value@_J@Constants@Common@@QEAA_JXZ 0x1402bac90 ; manual: named in the exe symbol dump
 // MS2-PINS-END tplpin
+// hand pins (w123b): tplpin --simulate accepted
+// MS2-PIN: ??_G?$Value@G@Constants@Common@@UEAAPEAXI@Z 0x1402be610
+// MS2-PIN: ??_G?$Value@H@Constants@Common@@UEAAPEAXI@Z 0x1402be650
+// MS2-PIN: ??_G?$Value@I@Constants@Common@@UEAAPEAXI@Z 0x1402be690
+// MS2-PIN: ??_G?$Value@K@Constants@Common@@UEAAPEAXI@Z 0x1402be6d0
+// MS2-PIN: ??_G?$Value@M@Constants@Common@@UEAAPEAXI@Z 0x1402be710
+// MS2-PIN: ??_G?$Value@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@UEAAPEAXI@Z 0x1402be810
+// MS2-PIN: ??_G?$Value@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Constants@Common@@UEAAPEAXI@Z 0x1402be850
+// MS2-PIN: ??_G?$Value@V?$vector@HV?$allocator@H@std@@@std@@@Constants@Common@@UEAAPEAXI@Z 0x1402be890
+// MS2-PIN: ??_G?$Value@V?$vector@IV?$allocator@I@std@@@std@@@Constants@Common@@UEAAPEAXI@Z 0x1402be8d0
+// MS2-PIN: ??_G?$Value@_J@Constants@Common@@UEAAPEAXI@Z 0x1402be950
+// MS2-PIN: ??_G?$Value@_N@Constants@Common@@UEAAPEAXI@Z 0x1402be990
+// MS2-PIN: ??_G?$Values@H@Constants@Common@@UEAAPEAXI@Z 0x1402be9d0
+// MS2-PIN: ??_G?$Values@I@Constants@Common@@UEAAPEAXI@Z 0x1402bea10
+// MS2-PIN: ??_G?$Values@UUnk_ConstColor@@@Constants@Common@@UEAAPEAXI@Z 0x1402bea50
+// MS2-PIN: ??_G?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@UEAAPEAXI@Z 0x1402bea90
+// MS2-PIN: ??_G?$Values@_J@Constants@Common@@UEAAPEAXI@Z 0x1402bead0
+// MS2-PIN: ??_G?$TSingleton@VConstants@Client@@@@UEAAPEAXI@Z 0x1402be5d0
+// MS2-PIN: ??_G?$Value@VPoint3@efd@@@Constants@Common@@UEAAPEAXI@Z 0x1402be910
+// MS2-PIN: ?CallConstructors@?$CAtlArray@UUnk_ConstCacheRef@@V?$CElementTraits@UUnk_ConstCacheRef@@@ATL@@@ATL@@CAXPEAUUnk_ConstCacheRef@@_K@Z 0x1402bf480
+// MS2-PIN: ?Append@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_KAEBV12@@Z 0x1402bf0f0
+// MS2-PIN: ??_EConstants@Client@@WKOGI@EAAPEAXI@Z 0x1402be5c0
+// hand pins (w123): tplpin --simulate accepted
+// MS2-PIN: ??_7?$Value@UUnk_ConstColor@@@Constants@Common@@6B@ 0x142d1ec28
+// MS2-PIN: ??_7?$Values@UUnk_ConstColor@@@Constants@Common@@6B@ 0x142d1ec58
+// MS2-PIN: ??_7Constants@Client@@6B0Common@@@ 0x142d1eca0
+// MS2-PIN: ??_7Constants@Client@@6B?$TSingleton@VConstants@Client@@@@@ 0x142d1ecb8
+// MS2-PIN: ?Read@?$Value@I@Constants@Common@@QEAAIXZ 0x1402bac50
+// MS2-PIN: ?Read@?$Value@M@Constants@Common@@QEAAMXZ 0x1402bac70
+// MS2-PIN: ?Read@?$Value@_J@Constants@Common@@QEAA_JXZ 0x1402bac90
+// MS2-PIN: ??1Unk_ConstFile@@QEAA@XZ 0x1402bd610
+// MS2-PIN: ?Set@?$Value@_J@Constants@Common@@QEAAPEA_JAEB_J@Z 0x1402be440
+// MS2-PIN: ??A?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEBAAEBH_K@Z 0x1402be570
+// MS2-PIN: ?Add@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_KAEBUUnk_ConstColor@@@Z 0x1402bedb0
+// MS2-PIN: ?CallConstructors@?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@CAXPEAH_K@Z 0x1402bf230
+// MS2-PIN: ?CallDestructors@?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@CAXPEAUUnk_ConstFile@@_K@Z 0x1402bf5c0
+// MS2-PIN: ??A?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@QEAAAEAUUnk_ConstFile@@_K@Z 0x1402bfad0
+// MS2-PIN: ?Define@?$Value@G@Constants@Common@@QEAAPEAGPEBDAEBG@Z 0x1402bfb90
+// MS2-PIN: ?Define@?$Value@UMS2Colors@@@Constants@Common@@QEAAPEAUMS2Colors@@PEBDAEBU4@@Z 0x1402c0020
+// MS2-PIN: ?Define@?$Value@V?$vector@IV?$allocator@I@std@@@std@@@Constants@Common@@QEAAPEAV?$vector@IV?$allocator@I@std@@@std@@PEBDAEBV45@@Z 0x1402c0350
+// MS2-PIN: ?Define@?$Value@VPoint3@efd@@@Constants@Common@@QEAAPEAVPoint3@efd@@PEBDAEBV45@@Z 0x1402c0420
+// MS2-PIN: ?Define@?$Value@_J@Constants@Common@@QEAAPEA_JPEBDAEB_J@Z 0x1402c04f0
+// MS2-PIN: ?Define@?$Value@_N@Constants@Common@@QEAAPEA_NPEBDAEB_N@Z 0x1402c05f0
+// MS2-PIN: ?Define@?$Values@I@Constants@Common@@QEAA_NPEBD@Z 0x1402c08c0
+// MS2-PIN: ?Define@?$Values@UUnk_ConstColor@@@Constants@Common@@QEAA_NPEBDPEAV?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@@Z 0x1402c0c90
+// MS2-PIN: ?Define@?$Values@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@QEAA_NPEBDPEAV?$CAtlArray@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@@Z 0x1402c0ea0
+// MS2-PIN: ?Define@?$Values@_J@Constants@Common@@QEAA_NPEBD@Z 0x1402c10f0
+// MS2-PIN: ??0?$CAtlArray@PEAV?$Value@I@Constants@Common@@V?$CElementTraits@PEAV?$Value@I@Constants@Common@@@ATL@@@ATL@@QEAA@XZ 0x1402bc430
+// MS2-PIN: ?Set@?$Value@H@Constants@Common@@QEAAPEAHAEBH@Z 0x1402be3c0
+// MS2-PIN: ?Set@?$Value@I@Constants@Common@@QEAAPEAIAEBI@Z 0x1402be400
+// MS2-PIN: ?GetCount@?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@QEBA_KXZ 0x1402be5b0
+// MS2-PIN: ?GetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEBA_KXZ 0x1402bfb70
+// MS2-PIN: ?Define@?$Value@H@Constants@Common@@QEAAPEAHPEBDAEBH@Z 0x1402bfc50
+// MS2-PIN: ?Define@?$Value@I@Constants@Common@@QEAAPEAIPEBDAEBI@Z 0x1402bfd10
+// MS2-PIN: ?Define@?$Value@K@Constants@Common@@QEAAPEAKPEBDAEBK@Z 0x1402bfdd0
+// MS2-PIN: ?Define@?$Value@UUnk_ConstColor@@@Constants@Common@@QEAAPEAUUnk_ConstColor@@PEBDAEBU4@@Z 0x1402bff60
+// MS2-PIN: ?Define@?$Value@UMS2Tick@@@Constants@Common@@QEAAPEAUMS2Tick@@PEBDAEBU4@@Z 0x1402c00f0
+// MS2-PIN: ?Define@?$Value@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Constants@Common@@QEAAPEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBV45@@Z 0x1402c01b0
+// MS2-PIN: ?Define@?$Value@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Constants@Common@@QEAAPEAV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEBDAEBV45@@Z 0x1402c0280
+// MS2-PIN: ?Define@?$Values@H@Constants@Common@@QEAA_NPEBDPEAV?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@@Z 0x1402c06b0
+// MS2-PIN: ?Define@?$Values@I@Constants@Common@@QEAA_NPEBDPEAV?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@Z 0x1402c0a80
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@AEAA_N_K@Z 0x1402c12b0
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@UUnk_ConstColor@@@ATL@@SAXPEAUUnk_ConstColor@@0_K@Z 0x1402c26b0
+// MS2-PIN: ??$StringFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00
+// MS2-PIN: ??0?$Values@UUnk_ConstColor@@@Constants@Common@@QEAA@XZ 0x1402bcd90
+// MS2-PIN: ?Define@?$Value@M@Constants@Common@@QEAAPEAMPEBDAEBM@Z 0x1402bfe90
+// MS2-PIN: ?SetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c2d10
+// MS2-PIN: ?CopyElements@?$CElementTraitsBase@H@ATL@@SAXPEAHPEBH_K@Z 0x1402bf6c0
+// MS2-PIN: ?vfunc_1@?$Values@_J@Constants@Common@@UEAAXXZ 0x1402c3730
+// MS2-PIN: ??1?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEAA@XZ 0x1402bd150
+// MS2-PIN: ?vfunc_1@?$Values@UUnk_ConstColor@@@Constants@Common@@UEAAXXZ 0x1402c36d0
+// MS2-PIN: ??$StringFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/ms2recover.h"
@@ -160,7 +232,7 @@ bool Constants::Test()
         if (!obj->IsValid())
         {
             CString msg = StringFormat("Constants::Test() failed with key : {0}, is_set : {1}, has_key: {2}, order : {3}",
-                                       obj->GetKey(), obj->IsDefined(), obj->HasKey(), (int)(i + 1));
+                                       obj->GetKey(), obj->IsDefined(), obj->HasKey(), i + 1);
             MessageBoxA(NULL, msg, "Constants error", 0);
         }
     }
@@ -239,15 +311,6 @@ static void FormatKey(char* out, const char* fmt, ...)
     _vsnprintf(out, 0x100, fmt, args);
     va_end(args);
 }
-// @0x1402c10f0
-// @0x1402c0ea0
-// @0x1402c0c90
-// @0x1402bedb0
-// @0x1402bcd90
-// @0x1402c36d0
-// @0x1402c2b80
-// @0x1402c2d10
-// @0x1402c3030
 // MS2-FUNCTIONAL: the Values<T> collectors, Add/SetCount/ctor/vfunc_1 instantiations for colour/string/int64 elements differ from the exe in temporaries; same behaviour
 template unsigned int Constants::Value<unsigned int>::Read();
 template __int64 Constants::Value<__int64>::Read();
@@ -289,7 +352,7 @@ template<class T> bool Constants::Values<T>::Define(const char* key, ATL::CAtlAr
     if (m_loaded)
     {
         out->RemoveAll();
-        out->Copy(m_values);
+        out->Append(m_values);
         return true;
     }
     if (m_hasKey)
@@ -318,7 +381,7 @@ template<class T> bool Constants::Values<T>::Define(const char* key, ATL::CAtlAr
     if (m_values.GetCount() != 0)
     {
         out->RemoveAll();
-        out->Copy(m_values);
+        out->Append(m_values);
         MarkLoaded();
     }
     m_defined = true;
@@ -1214,7 +1277,8 @@ struct Unk_ConstFile
 {
     CString path;
     bool required;
-    Unk_ConstFile(const CString& p, const bool& r) : path(p), required(r) {}    // 0x1402bac00
+    // @0x1402bac00
+    Unk_ConstFile(CString& p, const bool& r) : path(std::forward<CString>(p)), required(std::forward<const bool&>(r)) {}
 };
 
 // @0x1402b2010
