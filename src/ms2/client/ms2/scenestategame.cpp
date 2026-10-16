@@ -8540,6 +8540,7 @@ class Unk_SSGPatchMgr
 {
 public:
     Unk_SSGTextFilter* FUN_141747b40() { return &m_kFilter; }
+    Unk_SSGTextFilter* FUN_140a87690();                     // the filter at +0x8
 private:
     char m_pad0[0xd0];
     Unk_SSGTextFilter m_kFilter;                            // +0xd0
@@ -8602,6 +8603,83 @@ void CSceneStateGame::FUN_141738430(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141738430, CSceneStateGame, FUN_141738430, 1684, 0x1D689E6E);
+
+// The system notice record (decoder 0x1407a7d20 in unit_1407a4f20.cpp); its dtor is emitted here.
+struct Unk_1407a7d20
+{
+    Unk_1407a7d20(CInPacket& in);
+    unsigned char m_nKind;                                  // +0x00 4: notice, 5: forced logout
+    unsigned m_nFlags;                                      // +0x04 where to show it
+    CStringW m_strText;                                     // +0x08
+    unsigned m_nArg;                                        // +0x10 (flag 0x10: the repeat count)
+    ATL::CAtlArray<void*> m_aExtra;                         // +0x18
+};
+CStringW FUN_14083d340(CStringW strText);                   // expand the text macros
+void FUN_1412753b0(const CStringW& strMsg, int nType, int nArg);
+void FUN_141275400(const CStringW& strMsg, int nArg);
+extern CStringW DAT_143ae79d8;                              // the maintenance exit message box tag
+
+// @0x141728c20
+// 0x71: system notices, shown in the places their flags select.
+void CSceneStateGame::FUN_141728c20(CInPacket& packet)
+{
+    Unk_1407a7d20 kNotice(packet);
+    int nKind = kNotice.m_nKind;
+    if (nKind == 4)
+    {
+        unsigned nFlags = kNotice.m_nFlags;
+        CStringW strText(kNotice.m_strText);
+        strText = FUN_140a87680()->FUN_140a87690()->FUN_14087ede0(strText);
+        int nArg = kNotice.m_nArg;
+        if (nFlags & 2)
+            return;
+        if (nFlags & 0x20)
+        {
+            FUN_141276180(FUN_14016a600(strText, 0), "");
+            return;
+        }
+        strText = FUN_14083d340(strText);
+        if (nFlags & 4)
+            FUN_1412751f0(strText, 6, 0);
+        else if (nFlags & 0x10)
+            FUN_1412753b0(strText, 9, nArg);
+        else if (nFlags & 0x200)
+        {
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            FUN_141275400(strText, nValue);
+        }
+        else if (nFlags & 0x400)
+            FUN_1412751f0(strText, 2, 1);
+        if (nFlags & 1)
+        {
+            int nType = (nFlags & 0x100) ? 0x1d : 0x14;
+            FUN_1412751b0(FUN_14028ee20(nFlags, strText), nType);
+        }
+        if (nFlags == 0)
+            FUN_1412751b0(strText, 0x14);
+        if (nFlags & 0x40)
+            FUN_140d73aa0(strText, 0, 0, L"");
+        else if (nFlags & 0x80)
+        {
+            FUN_140d73aa0(strText, 0, 0, DAT_143ae79d8);
+            FUN_140d86260()->vfunc_58(0x289, 0);
+        }
+        if ((nFlags & 0x800) && FUN_140166440())
+            FUN_140166440()->FUN_1401859c0(0xb, 0x2f, strText);
+    }
+    else if (nKind == 5)
+    {
+        unsigned nFlags = kNotice.m_nFlags;
+        CStringW strText(kNotice.m_strText);
+        if (nFlags == 0x40)
+        {
+            FUN_140714f90()->FUN_1415388a0();
+            FUN_140aa6d30()->FUN_1417e25a0(0x6200009);
+            FUN_140d73aa0(strText, 0, 0, L"");
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141728C20, CSceneStateGame, FUN_141728c20, 1567, 0x47A4AE53);
 
 // The current snowman event context (FUN_1401c0d90()->FUN_14047d050()).
 class Unk_SnowmanContext : public CPtred { public: char m_pad_18[0x40 - 0x18]; CStringW m_strName; };
