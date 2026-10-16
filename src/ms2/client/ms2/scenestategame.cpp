@@ -31,6 +31,8 @@
 // MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
 // MS2-PIN: ??1Unk_SSGCharNameResult@@QEAA@XZ 0x141746aa0 ; w97 manual
 // MS2-PIN: ?Id@UIExpBar@@SAHXZ 0x141748200 ; w102 manual
+// MS2-PIN: ?get@?$MS2Ptr@VCSplashDamageRecord@@@@QEBAPEAVCSplashDamageRecord@@XZ 0x1417472a0 ; w102 manual
+// MS2-PIN: ??$Log@HW4Unk_SSGSkillUseError@@@Unk_SSGCommandLog@@QEAAXHHPEB_WAEBHAEBW4Unk_SSGSkillUseError@@@Z 0x141740800 ; w102 manual
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -82,6 +84,9 @@ class Unk_RideeFieldObj : public CPtred { public: void FUN_140ade420(int nState,
 class Unk_SSGWorld
 {
 public:
+    bool FUN_141bc32d0(class CRegionSkillObject* pObj);   // register a region skill
+    class CRegionSkillObject* FUN_141bc3360(int nId);
+    void FUN_141bc33d0(int nId);
     MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName);
     void FUN_141bd9950(const CString& strUrl);              // open in the external browser
     void FUN_141bbae40(IWorldServiceCallback* cb);          // register a callback
@@ -462,7 +467,19 @@ private:
     char m_pad_18[0xe0 - 0x18];
 };
 MS2_CHECK_SIZE(CDotDamageRecord, 0xe0);
-class Unk_SSGMagicService { public: void FUN_14146bc20(CDotDamageRecord* pRecord); };
+// The splash damage record (?\skillrecord.cpp; new(0xd8)); only the members the splash handler uses.
+class CSplashDamageRecord : public CPtred
+{
+public:
+    CSplashDamageRecord();                                  // 0x14175b180
+    virtual ~CSplashDamageRecord();                         // 0x14175b5f0
+    int FUN_14175b1c0(int nOwnerId, int n, __int64 nSkillUid, int nSkillId, short nLevel, int a, int b, Unk_StreamPoint kDir, Unk_StreamPoint kPos);
+    void FUN_14175abc0(int nFlag, __int64 nDamage);
+private:
+    char m_pad_18[0xd8 - 0x18];
+};
+MS2_CHECK_SIZE(CSplashDamageRecord, 0xd8);
+class Unk_SSGMagicService { public: void FUN_14146bc20(CDotDamageRecord* pRecord); void FUN_14146bc80(CSplashDamageRecord* pRecord); };
 Unk_SSGMagicService* FUN_1410a7630();
 
 class Unk_SSGDropItem : public GameObject
@@ -628,7 +645,8 @@ class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
-    unsigned int FUN_141768680(class Unk_SSGSkillRow* pRow); void FUN_141765e70(int nSkillId); };
+    unsigned int FUN_141768680(class Unk_SSGSkillRow* pRow); void FUN_141765e70(int nSkillId);
+    void FUN_1417669c0(int nSlot, int nSkillId, float fCool); };
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
 class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
@@ -687,7 +705,19 @@ Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4e
 class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); void FUN_141a3a780(int nId); };
 Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e29)
 
-class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); void FUN_14015eb90(int nCat, int nLevel, const wchar_t* pszFormat, const CString& strArg); };
+class Unk_SSGCommandLog
+{
+public:
+    int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText);
+    void FUN_14015eb90(int nCat, int nLevel, const wchar_t* pszFormat, const CString& strArg);
+    void FUN_1406530d0(int nCat, int nLevel, const wchar_t* pszFormat, const fmt::ArgList& args);
+    // fmt log line with two arguments (0x141740800 = <int, Unk_SSGSkillUseError>).
+    template <class A, class B> void Log(int nCat, int nLevel, const wchar_t* pszFormat, const A& a, const B& b)
+    {
+        const fmt::internal::ArgArray<2>::Type values = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(a), fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(b)};
+        FUN_1406530d0(nCat, nLevel, pszFormat, fmt::ArgList(fmt::internal::make_type(a, b), values));
+    }
+};
 Unk_SSGCommandLog* FUN_140166440();
 class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
@@ -2455,6 +2485,58 @@ void CSceneStateGame::FUN_141718680(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141718680, CSceneStateGame, FUN_141718680, 295, 0x1170D80D);
+enum Unk_SSGSkillUseError { Unk_SSGSkillUseError_None };   // skill use fail reason (logged through the enum MakeValue)
+// @0x1417187b0
+// MS2-FUNCTIONAL: code identical; the exe gives eError a lower stack slot than nState/nSlot (0x50 vs 0x58).
+void CSceneStateGame::FUN_1417187b0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    __int64 nSkillUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGSkillUseError eError = static_cast<Unk_SSGSkillUseError>(static_cast<CInputStream&>(packet).vfunc_o8_1());
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC != 0)
+    {
+        if (nMode == 5)
+        {
+            MS2Ptr<Unk_PCBaseComp_b18> spSkill = pMyPC->vfunc_103();
+            if (spSkill.get() != 0 && pMyPC->FUN_14166c930() == 0x10 && spSkill->m_nSkillUid == nSkillUid)
+                pMyPC->FUN_14166ccb0()->vfunc_7(1);
+        }
+        else if (nMode == 6)
+        {
+            int nState = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (nState == pMyPC->FUN_14166c930())
+            {
+                State* pState = pMyPC->FUN_14166ccb0();
+                if (pState != 0)
+                    pState->vfunc_7(1);
+            }
+        }
+        int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        float fCool = static_cast<CInputStream&>(packet).vfunc_o8_15();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (fCool > 0.0f)
+        {
+            MS2Ptr<Unk_SSGSkillRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(nSkillId);
+            if (spRow.get() != 0)
+            {
+                int nBaseId = spRow->FUN_1407e9b90();
+                if (nBaseId != 0)
+                    nSkillId = nBaseId;
+            }
+            pMyPC->FUN_141523bc0()->FUN_1417669c0(nSlot, nSkillId, fCool);
+        }
+        else if (nValue == 0)
+        {
+            pMyPC->FUN_141523bc0()->FUN_141765e70(nSkillId);
+        }
+        pMyPC->FUN_141523bc0()->FUN_141768530(nSkillId, nValue);
+        if (FUN_140166440() != 0)
+            FUN_140166440()->Log(0xb, 0x134, L"OnSkillUseFailed skillID :{0}, errorType :{1}", nSkillId, eError);
+    }
+}
+MS2_REPLACE_METHOD(0x1417187b0, CSceneStateGame, FUN_1417187b0, 955, 0xBEA2CACC);
 
 // @0x141718b80
 void CSceneStateGame::FUN_141718b80(CInPacket& packet)
@@ -3546,6 +3628,34 @@ void CSceneStateGame::FUN_14171d820(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14171D820, CSceneStateGame, FUN_14171d820, 1036, 0xBA2CEA1E);
+// @0x14171e440
+void CSceneStateGame::FUN_14171e440(CInPacket& packet)
+{
+    __int64 nSkillUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nLevel = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    for (int i = 0; i < nCount; i++)
+    {
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nHits = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_11();
+        Unk_StreamPoint kPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        MS2Ptr<CSplashDamageRecord> spRecord(new CSplashDamageRecord());
+        if (!spRecord->FUN_14175b1c0(nOwnerId, 0, nSkillUid, nSkillId, nLevel, 0, 0, kDir, kPos))
+            return;
+        for (int j = 0; j < nHits; j++)
+        {
+            int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            __int64 nDamage = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spRecord->FUN_14175abc0(nFlag, nDamage);
+        }
+        GameObject* pOwner = FUN_1403ed2d0()->FUN_141bd1180(nOwnerId);
+        if (pOwner != 0)
+            FUN_1410a7630()->FUN_14146bc80(spRecord.get());
+    }
+}
+MS2_REPLACE_METHOD(0x14171e440, CSceneStateGame, FUN_14171e440, 1035, 0x6B7211C5);
 
 // @0x141721940
 void CSceneStateGame::FUN_141721940(CInPacket& packet)
@@ -4406,6 +4516,51 @@ void CSceneStateGame::FUN_141720c60(CInPacket& packet)
     FUN_141469a90()->FUN_141755cd0(pActor, spSkill, kPos, kDir);
 }
 MS2_REPLACE_METHOD(0x141720c60, CSceneStateGame, FUN_141720c60, 479, 0x10631625);
+// The region skill object (?\regionskillobject.cpp; new(0x158)); only the members the 0x4c handler uses.
+class CRegionSkillObject : public CPtred
+{
+public:
+    CRegionSkillObject();                                   // 0x1416f57c0
+    int FUN_1416f5a20(int nId, int nSkillId, const ATL::CAtlArray<Unk_StreamPoint>& kPoints, int nOwnerId, short nLevel, float fB, float fA, int nTick);
+    void FUN_1416f6e40();                                   // end the region skill
+private:
+    char m_pad_18[0x158 - 0x18];
+};
+MS2_CHECK_SIZE(CRegionSkillObject, 0x158);
+// @0x141720e50
+void CSceneStateGame::FUN_141720e50(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (nMode == 0)
+    {
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nTick = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        ATL::CAtlArray<Unk_StreamPoint> kPoints;
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        for (int i = 0; i < nCount; i++)
+            kPoints.Add(static_cast<CInputStream&>(packet).vfunc_o8_10());
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        float fA = static_cast<CInputStream&>(packet).vfunc_o8_5();
+        float fB = static_cast<CInputStream&>(packet).vfunc_o8_5();
+        MS2Ptr<CRegionSkillObject> spObj(new CRegionSkillObject());
+        if (!spObj->FUN_1416f5a20(nId, nSkillId, kPoints, nOwnerId, nLevel, fB, fA, nTick))
+            return;
+        FUN_1403ed2d0()->FUN_141bc32d0(spObj.get());
+    }
+    else if (nMode == 1)
+    {
+        FUN_1403ed2d0()->FUN_141bc33d0(nId);
+    }
+    else if (nMode == 2)
+    {
+        MS2Ptr<CRegionSkillObject> spObj(FUN_1403ed2d0()->FUN_141bc3360(nId));
+        if (spObj.get() != 0)
+            spObj->FUN_1416f6e40();
+    }
+}
+MS2_REPLACE_METHOD(0x141720E50, CSceneStateGame, FUN_141720e50, 1037, 0xEEED3063);
 
 // @0x141723410
 void CSceneStateGame::FUN_141723410(CInPacket& packet)
@@ -4620,6 +4775,63 @@ void CSceneStateGame::FUN_1417343f0(CInPacket& packet)
     FUN_1412751b0(strMsg, 0x14);
 }
 MS2_REPLACE_METHOD(0x1417343f0, CSceneStateGame, FUN_1417343f0, 309, 0x3BC0794C);
+// The recall notice (packet 0xbc mode 1): text, three ints and a uid.
+struct Unk_SSGRecallInfo
+{
+    Unk_SSGRecallInfo();                                    // 0x1408f2300
+    ~Unk_SSGRecallInfo();                                   // 0x1408f2590
+    CStringW m_strText;
+    int m_n8;
+    int m_nC;
+    int m_n10;
+    __int64 m_n18;
+};
+MS2_CHECK_SIZE(Unk_SSGRecallInfo, 0x20);
+class Unk_SSGRecallDlg : public UIDialog { public: void FUN_14129c920(int nType, __int64 nUid, const Unk_SSGRecallInfo& info, int nValue); void FUN_14129caa0(int nType); };
+Unk_SSGRecallDlg* FUN_140bc1870(int nId);                   // GetDialog<T>(0x4edd)
+extern CString DAT_143ae7558;                               // the recall notice sound event name
+// @0x141734530
+void CSceneStateGame::FUN_141734530(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode != 0)
+    {
+        Unk_SSGRecallInfo kInfo;
+        kInfo.m_strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        kInfo.m_n8 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        kInfo.m_nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        kInfo.m_n10 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        kInfo.m_n18 = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        Unk_SSGRecallDlg* pDlg = FUN_140bc1870(0x4edd);
+        if (pDlg == 0)
+            return;
+        CStringW strMsg;
+        switch (nType)
+        {
+        case 0:
+            strMsg = FUN_14028de60(0xb64);
+            break;
+        case 1:
+            strMsg = FUN_14028de60(0xb63);
+            break;
+        case 2:
+            strMsg = FUN_14028b8e0(L"s_cash_recall_wedding_notice");
+            break;
+        }
+        pDlg->FUN_14129c920(nType, kInfo.m_n18, kInfo, kInfo.m_nC);
+        FUN_1412751f0(strMsg, 3, 1);
+        FUN_141276180(DAT_143ae7558, "");
+    }
+    else
+    {
+        Unk_SSGRecallDlg* pDlg = FUN_140bc1870(0x4edd);
+        if (pDlg == 0)
+            return;
+        pDlg->FUN_14129caa0(nType);
+    }
+}
+MS2_REPLACE_METHOD(0x141734530, CSceneStateGame, FUN_141734530, 1003, 0x1620B1DD);
 
 // @0x141734950
 void CSceneStateGame::FUN_141734950(CInPacket& packet)
