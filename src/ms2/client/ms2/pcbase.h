@@ -161,6 +161,9 @@ public:
     void FUN_14166ef10(const CString& str, bool bA, int nB, int nC);   // 0x14166ef10
     int FUN_14166f6d0();                                    // 0x14166f6d0
     CString FUN_14166f740();                                // 0x14166f740 (returns a string)
+    // uipvpguildteamdialog.cpp (w71)
+    __int64 FUN_141670a00(int nStat);                       // 0x141670a00 current value of a stat (4 = hp)
+    __int64 FUN_141670a30(int nStat);                       // 0x141670a30 max value of a stat
 
 public:
     MS2_LAYOUT_FRIEND;

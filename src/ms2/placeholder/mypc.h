@@ -10,6 +10,8 @@ class MyPC : public PCBase
 public:
     MyPC();                                                 // 0x141520680
     int vfunc_116() override;                               // declared only so the class is concrete
+    void FUN_14152a4a0(PCBase* pTarget);                    // observe pTarget (guild battle, uipvpguildteamdialog)
+    void FUN_14152a960();                                   // stop observing
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };

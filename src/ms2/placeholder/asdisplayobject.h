@@ -43,6 +43,9 @@ class ASDisplayObjectContainer : public ASInteractiveObject
 public:
     Scaleform::GFx::Value FUN_1422c6900(Scaleform::GFx::Value child);   // addChild (the argument is destroyed by the callee)
     Scaleform::GFx::Value FUN_1422c6b70(Scaleform::GFx::Value child);   // removeChild
+    Scaleform::GFx::Value FUN_1422c6b00(const CString& strName);       // getChildByName (uipvpguildteamdialog)
+    int FUN_1422c6670();                                                // numChildren
+    Scaleform::GFx::Value FUN_1422c6aa0(int nIndex);                   // getChildAt
 };
 class ASSprite : public ASDisplayObjectContainer {};
 class ASMovieClip : public ASSprite
