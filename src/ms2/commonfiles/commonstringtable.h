@@ -120,23 +120,24 @@ public:
 
     static CStringW GetErrString(EBanErrKind nKind, MS2Ptr<CheckerErrStringPackage> pkg);       // 0x1402247f0
     static CStringW GetDefaultErrString(EBanErrKind nKind);                                    // 0x140224760
+    static CStringW GetLimitErrString(CheckerLimit& limit, unsigned nKind);                    // 0x140259fe0
+    static CStringW GetOptionErrString(CheckerOption& opt, EBanErrKind nKind, const CStringW& strMatched, unsigned char bFlag);   // 0x14025a290
 
     int LoadTables();                                       // 0x140224b20
-    bool HasStartWithWords(unsigned nTypes);                // 0x140224f80
-    bool IsAlnumName(const CStringW& str);                  // 0x140224fe0 (1..32 characters of [0-9A-Za-z])
+    int HasStartWithWords(unsigned nTypes);                // 0x140224f80
+    bool IsAlnumName(const CStringW& str, void*);                  // 0x140224fe0 (1..32 characters of [0-9A-Za-z])
 
-    int FUN_140225120(const CStringW& str, CStringW& message);    // character name
+    int FUN_140225120(const CStringW& str, CStringW& message);
     int FUN_140225210(const CStringW& str, CStringW& message, int bShort);
     int FUN_1402252f0(const CStringW& str, CStringW& message);
     int FUN_1402253b0(const CStringW& str, CStringW& message);
     int FUN_140225470(const CStringW& str, CStringW& message);
     int FUN_140225550(const CStringW& str, CStringW& message);
     int FUN_140225630(const CStringW& str, CStringW& message);
-    int FUN_140225720(const CStringW& str, CStringW& message);    // guild name
+    int FUN_140225720(const CStringW& str, CStringW& message);
     int FUN_140225810(const CStringW& str, CStringW& message);
     int FUN_1402258f0(const CStringW& str, CStringW& message);
     int FUN_1402259b0(const CStringW& str, CStringW& message);
-    int FUN_140225a70(const CStringW& str, CStringW& message);
     int FUN_140225c90(const CStringW& str, CStringW& message);
     int FUN_140225de0(const CStringW& str, CStringW& message);
     int FUN_140225f30(const CStringW& str, CStringW& message);
@@ -151,6 +152,23 @@ public:
     int FUN_1402262e0(const CStringW& str, CStringW& message);
     int FUN_140226320(const CStringW& str, CStringW& message);
     int FUN_140226400(const CStringW& str, CStringW& message);
+    int FUN_140226440(const CStringW& str, CStringW& message);
+    int FUN_140226590(const CStringW& str, CStringW& message);
+    int FUN_1402266e0(const CStringW& str, CStringW& message);
+    int FUN_140226830(const CStringW& str, CStringW& message);
+
+    int CheckTextWithLimit(const CStringW& str, CheckerOption& opt, CheckerLimit& limit, CStringW& message);   // 0x140227fb0
+    int CheckTextOption(const CStringW& str, CheckerOption& opt, CStringW& message);      // 0x140227930
+    int CheckTypes(const CStringW& str, unsigned nTypes, bool bFlag, CStringW& message);  // 0x140228080
+    unsigned ScanLimit(const CStringW& str, CheckerLimit& limit);                         // 0x140228110
+
+    bool FindReserveIdAll(const CStringW& str, CStringW& matched);     // 0x140228a60
+    bool FindReserveIdAny(const CStringW& str, CStringW& matched);     // 0x140228b40
+    bool FindBanWord(const CStringW& str, CStringW& matched);          // 0x140228c50
+    bool FindUgcBanWord(const CStringW& str, CStringW& matched);       // 0x140228d60
+    bool FindReserveWord(const CStringW& str, CStringW& matched);      // 0x140228e70
+    bool FindStartWithWord(const CStringW& str, CStringW& matched);    // 0x140228f80
+    bool FindBanWordAll(const CStringW& str, CStringW& matched);       // 0x1402290b0
 
     void MaskBannedWords(CStringW& str);                    // 0x140226980
     void FilterReservedWords(CStringW& str);                // 0x140226b10
@@ -158,6 +176,7 @@ public:
     void SetBanWords(unsigned nKey, Unk_BanWordList& words);   // 0x1402271a0
     void RemoveBanWords(unsigned nKey);                     // 0x140227280
     void ClearTries();                                      // 0x140227890
+    void FUN_140229220();                                   // empty
 
     TextFilterUnit m_trieBanUrl;                            // +0x020 Table/banUrl.xml
     TextFilterUnit m_trieBanWord;                           // +0x098 Table/banWord.xml

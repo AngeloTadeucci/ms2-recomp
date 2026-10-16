@@ -25,6 +25,11 @@ void FUN_14025d6f0();                                                   // "CBan
 void* FUN_140166410();
 bool FUN_14036e560(void* pService);
 void FUN_140263710(bool bInitialized);
+CStringW FUN_1401e8510(const wchar_t* pszFormat, const CStringW& strArg);   // formats one text argument into the message
+CStringW FUN_1401ceea0(const wchar_t* pszFormat, const int& nArg);          // formats one number argument into the message
+void FUN_14025fab0(CStringW& str);                                          // MakeLower
+extern int DAT_143ab2914;                                                   // client build / region level (below 50: checks active)
+extern int DAT_143ab0248;                                                   // client country (0..3)
 
 // The game constants table (FUN_1401d3200()): only the 0x58-byte slots read here.
 class Unk_ConstVal { char m_pad_00[0x58]; };
@@ -272,4 +277,544 @@ CBanTextChecker::CheckerLimit::CheckerLimit(int nMin, int nMax, bool bAllowSpace
 CBanTextChecker::CheckerLimit::~CheckerLimit()
 {
     m_errs = 0;
+}
+
+// @0x140229220
+void CBanTextChecker::FUN_140229220()
+{
+}
+
+// @0x140224890
+CBanTextChecker::CBanTextChecker() : m_mapUrlHash(10), m_mapBanWords(10)
+{
+    FUN_140229220();
+}
+
+// @0x1402249e0
+CBanTextChecker::~CBanTextChecker()
+{
+    ClearTries();
+}
+
+// @0x140227890
+void CBanTextChecker::ClearTries()
+{
+    m_trieBanUrl.Clear();
+    m_trieBanWord.Clear();
+    m_trieReserveWord.Clear();
+    m_trieReserveIdAny.Clear();
+    m_setReserveIdAll.clear();
+    m_mapUrlHash.RemoveAll();
+    m_mapBanWords.RemoveAll();
+}
+
+// @0x140224f80
+int CBanTextChecker::HasStartWithWords(unsigned nTypes)
+{
+    if (nTypes & 0x40) return (unsigned)m_trieStartWith.GetChildCount() > 0;
+    return 0;
+}
+
+// @0x140224fe0
+bool CBanTextChecker::IsAlnumName(const CStringW& str, void*)
+{
+    CStringW s(str);
+    if (s.GetLength() > 0x20) return false;
+    int nLen = s.GetLength();
+    if (nLen < 1 || 0x20 < nLen) return false;
+    for (int i = 0; i < nLen; ++i) {
+        wchar_t ch = s.GetAt(i);
+        if (ch >= L'0' && ch <= L'9') continue;
+        if ((ch >= L'a' && ch <= L'z') || (ch >= L'A' && ch <= L'Z')) continue;
+        return false;
+    }
+    return true;
+}
+
+// @0x140259fe0
+CStringW CBanTextChecker::GetLimitErrString(CheckerLimit& limit, unsigned nKind)
+{
+    EBanErrKind eKind = static_cast<EBanErrKind>(0);
+    switch (nKind) {
+    case 1: {
+        eKind = static_cast<EBanErrKind>(5);
+        CStringW format = CBanTextChecker::GetErrString(eKind, limit.m_errs);
+        int nCount = limit.m_nMin < 1 ? 1 : limit.m_nMin;
+        return FUN_1401ceea0(format, nCount);
+    }
+    case 2: {
+        eKind = static_cast<EBanErrKind>(6);
+        CStringW format = CBanTextChecker::GetErrString(eKind, limit.m_errs);
+        int nCount = limit.m_nMax > 1 ? limit.m_nMax : 1;
+        return FUN_1401ceea0(format, nCount);
+    }
+    case 3: {
+        eKind = static_cast<EBanErrKind>(limit.m_bAllowSpace ? 7 : 8);
+        CStringW format = CBanTextChecker::GetErrString(eKind, limit.m_errs);
+        return format;
+    }
+    }
+    return CStringW(L"");
+}
+
+// @0x14025a290
+CStringW CBanTextChecker::GetOptionErrString(CheckerOption& opt, EBanErrKind nKind, const CStringW& strMatched, unsigned char bFlag)
+{
+    EBanErrKind eKind = static_cast<EBanErrKind>(0);
+    switch (nKind) {
+    case 5:
+    case 9: {
+        eKind = static_cast<EBanErrKind>(bFlag ? 1 : 2);
+        CStringW format = CBanTextChecker::GetErrString(eKind, opt.m_errs);
+        return FUN_1401e8510(format, strMatched);
+    }
+    case 6:
+    case 7:
+    case 8: {
+        eKind = static_cast<EBanErrKind>(opt.m_bFlag ? 3 : 4);
+        CStringW format = CBanTextChecker::GetErrString(eKind, opt.m_errs);
+        return FUN_1401e8510(format, strMatched);
+    }
+    }
+    return CStringW(L"");
+}
+
+// @0x140228c50
+bool CBanTextChecker::FindBanWord(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nPos = 0;
+    int nLen = 0;
+    CStringW s(str);
+    if (m_trieBanWord.Find(s, 0, true, &nPos, &nLen, NULL)) {
+        matched = s.Mid(nPos, nLen);
+        return true;
+    }
+    return false;
+}
+
+// @0x140228d60
+bool CBanTextChecker::FindUgcBanWord(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nPos = 0;
+    int nLen = 0;
+    CStringW s(str);
+    if (m_trieUgcBanWord.Find(s, 0, true, &nPos, &nLen, NULL)) {
+        matched = s.Mid(nPos, nLen);
+        return true;
+    }
+    return false;
+}
+
+// @0x140228e70
+bool CBanTextChecker::FindReserveWord(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nPos = 0;
+    int nLen = 0;
+    CStringW s(str);
+    if (m_trieReserveWord.Find(s, 0, true, &nPos, &nLen, NULL)) {
+        matched = s.Mid(nPos, nLen);
+        return true;
+    }
+    return false;
+}
+
+// @0x140228a60
+bool CBanTextChecker::FindReserveIdAll(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    CStringW s(str);
+    FUN_14025fab0(s);
+    std::set<CStringW>::iterator it = m_setReserveIdAll.find(s);
+    if (it != m_setReserveIdAll.end()) {
+        matched = *it;
+        return true;
+    }
+    return false;
+}
+
+// @0x140228f80
+bool CBanTextChecker::FindStartWithWord(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nStart = 0;
+    int nPos = 0;
+    int nLen = 0;
+    while (m_trieStartWith.Find(str, nStart, true, &nPos, &nLen, NULL)) {
+        if (nPos == nStart) {
+            matched = str.Mid(nPos, nLen);
+            return true;
+        } else {
+            nStart = str.Find(L' ', nPos);
+            if (nStart < 0) break;
+            nStart = nStart + 1;
+        }
+    }
+    return false;
+}
+
+// @0x1402290b0
+bool CBanTextChecker::FindBanWordAll(const CStringW& str, CStringW& matched)
+{
+    FUN_14025d6f0();
+    int nTotal = str.GetLength();
+    int nStart = 0;
+    int nPos = 0;
+    int nLen = 0;
+    while (m_trieBanWordAll.Find(str, nStart, true, &nPos, &nLen, NULL)) {
+        int nSpace = str.Find(L' ', nPos);
+        bool bWhole = true;
+        if (nStart == nPos) {
+            if (nSpace == -1 && nPos + nLen != nTotal) bWhole = false;
+            else if (nSpace != -1 && nPos + nLen != nSpace) bWhole = false;
+        } else {
+            int nPrevSpace = str.Find(L' ', nStart);
+            if (nSpace - nPrevSpace - 1 != nLen) bWhole = false;
+        }
+        if (bWhole) return true;
+        nStart = str.Find(L' ', nPos);
+        if (nStart < 0) break;
+        nStart = nStart + 1;
+    }
+    return false;
+}
+
+// @0x140227930
+int CBanTextChecker::CheckTextOption(const CStringW& str, CheckerOption& opt, CStringW& message)
+{
+    if (DAT_143ab2914 >= 0x32) return 0;
+    {
+        unsigned nTypes = opt.m_nTypes;
+        unsigned char bFlag = nTypes & 1;
+        if ((nTypes & 2) != 0) {
+            CStringW matched;
+            if (FindReserveIdAll(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(5);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 4) != 0) {
+            CStringW matched;
+            if (FindReserveIdAny(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(6);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 8) != 0) {
+            CStringW matched;
+            if (FindReserveWord(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(7);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 0x10) != 0) {
+            CStringW matched;
+            if (FindBanWord(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(8);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 0x20) != 0) {
+            CStringW matched;
+            if (FindUgcBanWord(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(8);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 0x40) != 0) {
+            CStringW matched;
+            if (FindStartWithWord(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(8);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+        if ((nTypes & 0x80) != 0) {
+            CStringW matched;
+            if (FindBanWordAll(str, matched)) {
+                EBanErrKind eKind = static_cast<EBanErrKind>(9);
+                message = GetOptionErrString(opt, eKind, matched, bFlag);
+                return eKind;
+            }
+        }
+    }
+    return 0;
+}
+
+// @0x140228110
+unsigned CBanTextChecker::ScanLimit(const CStringW& str, CheckerLimit& limit)
+{
+    return 0;
+}
+// @0x140225120
+int CBanTextChecker::FUN_140225120(const CStringW& str, CStringW& message)
+{
+    int nMin = *FUN_1402056b0(&FUN_1401d3200()->m_nameMin);
+    int nMax = *FUN_1402056b0(&FUN_1401d3200()->m_nameMax);
+    CheckerOption opt(0x91, true);
+    CheckerLimit limit(nMin, nMax, true, false, false, true, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225210
+int CBanTextChecker::FUN_140225210(const CStringW& str, CStringW& message, int bShort)
+{
+    int nMax = bShort ? 0xc : 0x18;
+    CheckerOption opt(0xdf, true);
+    CheckerLimit limit(2, nMax, false, false, false, true, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x1402252f0
+int CBanTextChecker::FUN_1402252f0(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd9, true);
+    CheckerLimit limit(1, 0x10, true, false, false, true, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x1402253b0
+int CBanTextChecker::FUN_1402253b0(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd9, true);
+    CheckerLimit limit(0, 100, true, false, false, false, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225470
+int CBanTextChecker::FUN_140225470(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd9, true);
+    CheckerLimit limit(FUN_14025a620(&FUN_1401d3200()->m_dNameMin), FUN_14025a620(&FUN_1401d3200()->m_dNameMax), true, false, false, false, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225550
+int CBanTextChecker::FUN_140225550(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd9, true);
+    CheckerLimit limit(FUN_14025a620(&FUN_1401d3200()->m_eNameMin), FUN_14025a620(&FUN_1401d3200()->m_eNameMax), true, false, true, false, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225630
+int CBanTextChecker::FUN_140225630(const CStringW& str, CStringW& message)
+{
+    int nMin = *FUN_1402056b0(&FUN_1401d3200()->m_cNameMin);
+    int nMax = *FUN_1402056b0(&FUN_1401d3200()->m_cNameMax);
+    CheckerOption opt(0xf9, true);
+    CheckerLimit limit(nMin, nMax, true, false, false, false, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225720
+int CBanTextChecker::FUN_140225720(const CStringW& str, CStringW& message)
+{
+    int nMin = *FUN_1402056b0(&FUN_1401d3200()->m_guildNameMin);
+    int nMax = *FUN_1402056b0(&FUN_1401d3200()->m_guildNameMax);
+    CheckerOption opt(0xd9, true);
+    CheckerLimit limit(nMin, nMax, true, false, false, false, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225810
+int CBanTextChecker::FUN_140225810(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd9, true);
+    int nMax = 7;
+    if (FUN_14036e560(FUN_140166410())) nMax = 0xf;
+    CheckerLimit limit(1, nMax, true, false, false, false, true);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x1402258f0
+int CBanTextChecker::FUN_1402258f0(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd8, true);
+    CheckerLimit limit(1, 1000, false, false, false, false, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x1402259b0
+int CBanTextChecker::FUN_1402259b0(const CStringW& str, CStringW& message)
+{
+    CheckerOption opt(0xd8, true);
+    CheckerLimit limit(1, 300, false, false, false, false, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140225c90
+int CBanTextChecker::FUN_140225c90(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c1));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c2));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140225de0
+int CBanTextChecker::FUN_140225de0(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140225f70
+int CBanTextChecker::FUN_140225f70(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8bb));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8bc));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140226440
+int CBanTextChecker::FUN_140226440(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c1));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c2));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140226590
+int CBanTextChecker::FUN_140226590(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x1402266e0
+int CBanTextChecker::FUN_1402266e0(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140226830
+int CBanTextChecker::FUN_140226830(const CStringW& str, CStringW& message)
+{
+    MS2Ptr<CheckerErrStringPackage> pkg(new CheckerErrStringPackage);
+    if (pkg.get()) {
+        pkg->Add(static_cast<EBanErrKind>(3), static_cast<EBanStringId>(0x8c3));
+        pkg->Add(static_cast<EBanErrKind>(4), static_cast<EBanStringId>(0x8c4));
+    }
+    return CheckTextOption(str, CheckerOption(pkg, 0xd8, true), message);
+}
+
+// @0x140225f30
+int CBanTextChecker::FUN_140225f30(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd0, true, message);
+}
+
+// @0x1402260c0
+int CBanTextChecker::FUN_1402260c0(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd8, true, message);
+}
+
+// @0x1402261e0
+int CBanTextChecker::FUN_1402261e0(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xf8, true, message);
+}
+
+// @0x140226220
+int CBanTextChecker::FUN_140226220(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd8, true, message);
+}
+
+// @0x140226260
+int CBanTextChecker::FUN_140226260(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd8, true, message);
+}
+
+// @0x1402262a0
+int CBanTextChecker::FUN_1402262a0(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd0, true, message);
+}
+
+// @0x1402262e0
+int CBanTextChecker::FUN_1402262e0(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd8, true, message);
+}
+
+// @0x140226400
+int CBanTextChecker::FUN_140226400(const CStringW& str, CStringW& message)
+{
+    return CheckTypes(str, 0xd8, true, message);
+}
+
+// @0x140226100
+int CBanTextChecker::FUN_140226100(const CStringW& str, CStringW& message)
+{
+    int nMax = 200;
+    if (str.GetLength() > nMax) return 2;
+    return CheckTypes(str, 0xf8, true, message);
+}
+
+// @0x140226160
+int CBanTextChecker::FUN_140226160(const CStringW& str, CStringW& message)
+{
+    int nMax = *FUN_1402056b0(&FUN_1401d3200()->m_wideTextMax) * 3 + 10;
+    if (str.GetLength() > nMax) return 2;
+    return CheckTypes(str, 0xf8, true, message);
+}
+
+// @0x140226320
+int CBanTextChecker::FUN_140226320(const CStringW& str, CStringW& message)
+{
+    if (str.IsEmpty()) return 0;
+    CheckerOption opt(0xdf, true);
+    CheckerLimit limit(1, 200, true, false, false, false, false);
+    return CheckTextWithLimit(str, opt, limit, message);
+}
+
+// @0x140227fb0
+int CBanTextChecker::CheckTextWithLimit(const CStringW& str, CheckerOption& opt, CheckerLimit& limit, CStringW& message)
+{
+    unsigned nTypes = opt.m_nTypes;
+    unsigned char bCheckLimit = nTypes & 1;
+    unsigned nResult;
+    if (bCheckLimit && (nResult = ScanLimit(str, limit)) != 0) {
+        message = GetLimitErrString(limit, nResult);
+        return nResult;
+    }
+    return CheckTextOption(str, opt, message);
+}
+
+// @0x140228080
+int CBanTextChecker::CheckTypes(const CStringW& str, unsigned nTypes, bool bFlag, CStringW& message)
+{
+    return CheckTextOption(str, CheckerOption(nTypes, bFlag), message);
 }
