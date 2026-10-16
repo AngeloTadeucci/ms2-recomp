@@ -207,6 +207,9 @@ public:
     int FUN_14152c280(class RideOffAction* pAction);        // get off the ride
     void FUN_141530200();                                   // leave the cube build mode
     class Unk_PCCubeCraft* FUN_141530290();                 // the cube craft controller in the cube craft mode
+    void FUN_141529a50(int nNpcId);                         // talk to the npc
+    // @0x140967010
+    MS2Ptr<CHomePrivilege> FUN_140967010() { return m_spHomePrivilege; }   // COMDAT in actionkeyobject.cpp's range
     static void FUN_1415308d0();                            // reset the debug switches
     static void FUN_141530910(int n);
     static PCBase* FUN_141530930();                         // the local player

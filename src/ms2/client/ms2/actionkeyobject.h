@@ -22,7 +22,9 @@ class CInteractGatheringObject;
 class CHomemadeCubeObject;
 class CReactor;
 namespace egf { class Entity; }
-class Unk_AkoFieldObj;
+class Unk_AkoPortal;
+class Unk_AkoCell;
+class Unk_WsC_GameObj;
 class CMsgBoxData;
 
 // The point an action wants the camera / player to face; returned by ActionKeyObject::vfunc_12.
@@ -111,7 +113,7 @@ public:
 };
 MS2_CHECK_SIZE(FishingAction, 0x18);
 
-class PortalAction : public ActionKeyObject
+struct PortalAction : public ActionKeyObject           // a struct in the exe (RTTI .?AUPortalAction@@)
 {
 public:
     PortalAction();
@@ -123,14 +125,22 @@ public:
     int vfunc_5() override;
     CStringW vfunc_6() override;
     Unk_AkoTarget vfunc_12() override;
-    int FUN_140956110();                                // the portal is a field-move portal
-    bool FUN_140956180(int nButton, const CMsgBoxData& data);   // message box answer
+    int FUN_140956110();                                // the portal moves to another field
+    void FUN_140956160(int nTarget, int nPortalId);     // move through the portal by its type
+    void FUN_140956290(int nPortalId);                  // the dungeon room dialog (type 8)
+    void FUN_140956310();                               // request the home move (type 9)
+    void FUN_140956370(int nTarget, int nPortalId);     // move to another field (confirmation box when asked)
+    void FUN_1409569a0(int nPortalId, int nMode);       // the dungeon room dialog in a mode (types 0xc, 0xe)
+    void FUN_140956a20(int nPortalId, int nArg);        // the dungeon room dialog (type 0x11)
+    void FUN_140956aa0(Unk_AkoCell* pCell, int nTarget, int nPortalId);   // move inside a house
+    bool FUN_140956be0(int nButton, const CMsgBoxData& data);   // the move confirmation box answer
+    CStringW FUN_140956e40();                           // the portal's name
 
 private:
     MS2_LAYOUT_FRIEND;
     efd::SmartPointer<egf::Entity> m_spEntity;          // +0x18 the portal's entity
     void* m_unk_20;                                     // +0x20 unused
-    MS2Ptr<Unk_AkoFieldObj> m_spPortal;                 // +0x28 the portal's field object
+    MS2Ptr<Unk_AkoPortal> m_spPortal;                   // +0x28 the portal's field object
 };
 MS2_CHECK_SIZE(PortalAction, 0x38);
 
@@ -144,6 +154,7 @@ public:
     void vfunc_3() override;
     int vfunc_5() override;
     CStringW vfunc_6() override;
+    void FUN_1409571a0(egf::EntityID id, int bSelect);  // highlight the cube entity
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -196,6 +207,7 @@ public:
     CStringW vfunc_7() override;
     Unk_AkoTarget vfunc_12() override;
     virtual int vfunc_13(CInteractObject* pObject);     // 13: the object kind is handled by this action
+    CInteractObject* FUN_140958e70();                   // the usable interact object in front of the player
 
     CString m_strObjectId;                              // +0x18
     int m_n20;                                          // +0x20
@@ -215,10 +227,11 @@ public:
     void vfunc_9() override;
     bool vfunc_11() override;
     Unk_AkoTarget vfunc_12() override;
+    Unk_WsC_GameObj* FUN_140959330();                   // the npc to talk to in front of the player
 
 private:
     MS2_LAYOUT_FRIEND;
-    __int64 m_n18;                                      // +0x18
+    Unk_WsC_GameObj* m_pNpc;                            // +0x18
     int m_n20;                                          // +0x20
 };
 MS2_CHECK_SIZE(InteractNpcAction, 0x28);
@@ -233,7 +246,7 @@ public:
     int vfunc_5() override;
     CStringW vfunc_6() override;
 
-    void* m_unk_18;                                     // +0x18 never initialised (new is 0x20)
+    int m_nMapId;                                       // +0x18 never initialised (new is 0x20)
 };
 MS2_CHECK_SIZE(ViewCubeMapProfileAction, 0x20);
 
@@ -247,6 +260,7 @@ public:
     void vfunc_3() override;
     int vfunc_5() override;
     CStringW vfunc_6() override;
+    void FUN_140959d70(egf::Entity* pEntity, int bSelect);  // highlight the ugc entity
 
 private:
     MS2_LAYOUT_FRIEND;

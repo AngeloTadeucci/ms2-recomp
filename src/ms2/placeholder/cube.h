@@ -38,6 +38,7 @@ public:
     int fieldD4,fieldD8;
     Unk_CubeTextRecord record;
     Unk_PayloadPtr<NoticeCubeInfo> notice;
+    struct Unk_StreamPoint FUN_1408b5370();                 // the world position of the cube
 };
 MS2_CHECK_SIZE(Cube,0x110);
 MS2_CHECK_OFFSET(Cube,entity,0x20);

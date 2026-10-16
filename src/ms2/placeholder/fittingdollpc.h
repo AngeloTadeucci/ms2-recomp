@@ -105,6 +105,10 @@ public:
     class Unk_PCItemCooldowns* FUN_1416561c0();             // 0x1416561c0
     int FUN_1416595d0();                                    // the cube craft mode (scenestategame 0x1417235a0)
     class Unk_PCCubeCraft* FUN_141659700();                 // the cube craft controller
+    class Unk_MyPCEmotion* FUN_14165f100();                 // the playing emotion (actionkeyobject.cpp)
+    // @0x140967420
+    MS2Ptr<class Unk_PCInteractMode> FUN_140967420() { return m_spInteractMode; }   // COMDAT in actionkeyobject.cpp's range
+    Unk_StreamPoint FUN_1416767d0();                        // PCBase member: the position (the ride's when riding; actionkeyobject.cpp)
     void FUN_141660000(__int64 nValue);
     void FUN_141661ba0(int n);                              // scenestategame packet (state reset flag)
     void FUN_141661dc0(unsigned short nA, int nB);          // scenestategame packet 0xb1
@@ -133,12 +137,15 @@ public:
     unsigned char unknownD98[0x48];
     Unk_PCEquipSet m_kEquipDE0;                             // +0xde0 equip holder (FUN_1411e3de0)
     MS2Ptr<Unk_PCActionTimer> m_spFC8;                      // +0xfc8
-    unsigned char unknownFD8[0x308];
+    unsigned char unknownFD8[0x268];
+    MS2Ptr<class Unk_PCInteractMode> m_spInteractMode;      // +0x1240 (actionkeyobject.cpp)
+    unsigned char unknown1250[0x90];
 };
 MS2_CHECK_OFFSET(PC, m_kListD48, 0xd48);
 MS2_CHECK_OFFSET(PC, m_spD88, 0xd88);
 MS2_CHECK_OFFSET(PC, m_kEquipDE0, 0xde0);
 MS2_CHECK_OFFSET(PC, m_spFC8, 0xfc8);
+MS2_CHECK_OFFSET(PC, m_spInteractMode, 0x1240);
 MS2_CHECK_SIZE(PC, 0x12e0); // deleting dtor 1416678b0
 
 class FittingDollPC : public PC {
