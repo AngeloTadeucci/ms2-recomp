@@ -14,6 +14,9 @@
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PetRow@@@@QEAA@XZ 0x14052c420 ; prop: symbols.tsv (hand)
 // MS2-PIN: ?Release@?$MS2Ptr@VUnk_PetRow@@@@AEAAXXZ 0x14052d920 ; prop (hand)
 // MS2-PINS-END tplpin
+// hand pins (w108)
+// MS2-PIN: ??8?$MS2Ptr@VUnk_IngItem@@@@QEBA_NPEAVUnk_IngItem@@@Z 0x14052ccc0
+// MS2-PIN: ?Release@?$MS2Ptr@VUnk_IngItem@@@@AEAAXXZ 0x14052d9a0
 // MS2-PIN: ?get@?$MS2SvrPtr@VCIngredientContainer@@@@QEBAPEAVCIngredientContainer@@XZ 0x14052f0b0
 // MS2-PIN: ??B?$MS2SvrPtr@VCIngredientContainer@@@@QEBAPEAVCIngredientContainer@@XZ 0x14052f0d0
 // MS2-PIN: ??4?$MS2Ptr@VCItemData@@@@QEAAAEAV0@AEBV0@@Z 0x14052c6f0
