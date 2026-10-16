@@ -66,6 +66,8 @@ public:
     __int64 m_n18;                          // +0x18
     CStringW m_str20;                       // +0x20
     __int64 FUN_14052d1c0();                // m_n18
+    const CStringW& FUN_14052d1b0();        // m_str20
+    bool FUN_140634790(void*);              // elsewhere (itemtransfer)
 };
 MS2_CHECK_SIZE(CItemTransfer::CItemBinding, 0x28);
 

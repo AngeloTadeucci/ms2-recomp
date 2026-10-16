@@ -19,7 +19,16 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
-class Unk_ItemEquipData : public CItemData {};
+class Unk_ItemEquipData : public CItemData
+{
+public:
+    int FUN_14053c620();
+    int FUN_14053f0d0(int);
+    int FUN_14053f390(int, int);
+    int FUN_14053e9e0();
+};
+class Unk_ItemPriceSvc { public: int FUN_140678760(int, int, int); };
+extern Unk_ItemPriceSvc* FUN_1401c0db0();
 class Unk_ItemEnchantData : public CItemStatus {};
 class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
@@ -1387,7 +1396,7 @@ bool CItem::FUN_140526850()
 MS2_REPLACE_METHOD(0x140526850, CItem, FUN_140526850, 91, 0xCCCB08AA);
 
 // ---- w98 batch 2: status (enchant) / transfer delegations
-class Unk_ItemPlusInfo { public: int FUN_1408bbc50(); };
+class Unk_ItemPlusInfo { public: int FUN_1408bbc50(); void FUN_1408bbcb0(int, bool); };
 
 // @0x140526fc0
 int CItem::FUN_140526fc0()
@@ -1502,3 +1511,148 @@ void CItem::FUN_1405275f0()
         m_spTransfer->FUN_140635300();
 }
 MS2_REPLACE_METHOD(0x1405275F0, CItem, FUN_1405275f0, 65, 0x42D1E6C9);
+
+// @0x1405290b0
+void CItem::FUN_1405290b0()
+{
+    if (!FUN_140527840()->FUN_14053cbc0())
+    {
+        m_b4 = 0;
+        m_b0 = 0;
+        return;
+    }
+    int nA = FUN_140526bd0();
+    int nB = FUN_140527840()->FUN_14053c620();
+    int nLevel = FUN_140526fc0();
+    int nBase = FUN_140527840()->FUN_14053f0d0(nA);
+    m_b4 = FUN_140527840()->FUN_14053f390(nBase, nLevel);
+    int nPlus = FUN_140527270();
+    if (0 < nPlus)
+    {
+        int nExtra = FUN_140527840()->FUN_14053e9e0();
+        int nBonus = FUN_1401c0db0()->FUN_140678760(nPlus, nExtra, nB);
+        m_b4 = m_b4 + nBonus;
+    }
+    m_b0 = m_b4 + nBase;
+}
+MS2_REPLACE_METHOD(0x1405290B0, CItem, FUN_1405290b0, 314, 0x1A68A1AB);
+
+// @0x140526e60
+bool CItem::FUN_140526e60(int nLevel, bool bFlag)
+{
+    if (m_spStatus == NULL)
+    {
+        MS2_ASSERT_MSG_AT(0xca8, L"FALSE", false);
+        return false;
+    }
+    CItemEnchantInfo* pInfo = m_spStatus->FUN_140630d60();
+    if (pInfo == 0)
+    {
+        MS2_ASSERT_MSG_AT(0xcaf, L"FALSE", false);
+        return false;
+    }
+    pInfo->FUN_14058c6b0(nLevel, bFlag);
+    if (bFlag)
+    {
+        FUN_1405290b0();
+        vfunc_5(true);
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x140526E60, CItem, FUN_140526e60, 229, 0x7BD37AA2);
+
+// @0x140527180
+bool CItem::FUN_140527180(int nLevel, bool bFlag)
+{
+    if (m_spStatus == NULL)
+    {
+        MS2_ASSERT_MSG_AT(0xcf6, L"FALSE", false);
+        return false;
+    }
+    Unk_ItemPlusInfo* pInfo = m_spStatus->FUN_140630d90();
+    if (pInfo == 0)
+    {
+        MS2_ASSERT_MSG_AT(0xcfd, L"FALSE", false);
+        return false;
+    }
+    pInfo->FUN_1408bbcb0(nLevel, bFlag);
+    if (bFlag)
+    {
+        FUN_1405290b0();
+        vfunc_5(true);
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x140527180, CItem, FUN_140527180, 229, 0x6E805001);
+
+// @0x140526f50
+void CItem::FUN_140526f50(unsigned nLevel, bool bFlag)
+{
+    if (!FUN_140526e60(nLevel, bFlag))
+        return;
+    CItemEnchantInfo* pInfo = FUN_1405278a0()->FUN_140630d60();
+    if (pInfo != 0)
+        pInfo->FUN_14058c830();
+}
+MS2_REPLACE_METHOD(0x140526F50, CItem, FUN_140526f50, 93, 0x5DBC915F);
+
+// @0x14052a170
+int CItem::FUN_14052a170()
+{
+    if (m_24 != -1)
+        return m_24;
+    int nKind = 0;
+    if (FUN_140527840()->FUN_14053cf90())
+        nKind = 1;
+    else if (FUN_140527840()->FUN_14053e130())
+        nKind = 0;
+    else if (FUN_140527840()->property.flag08 != 0)
+        nKind = 3;
+    return nKind;
+}
+MS2_REPLACE_METHOD(0x14052A170, CItem, FUN_14052a170, 143, 0xF8F11542);
+
+// @0x14052a3f0
+bool FUN_14052a3f0(int nA, __int64 nB, int nC, int nD, int nE)
+{
+    bool bResult = false;
+    if (nA != 0 && nB > 0)
+        bResult = true;
+    else if (nD != 0)
+    {
+        if (nD == 3 && nC == 1)
+            bResult = true;
+        else if (nD == 4 && nC == 2)
+            bResult = true;
+    }
+    else
+    {
+        if (nE != 0 && nC != 0 && nE == nC)
+            bResult = true;
+    }
+    return bResult;
+}
+
+// @0x14052a4f0
+CStringW CItem::FUN_14052a4f0()
+{
+    MS2_ASSERT_MSG_AT(0xc2e, L"m_pMoveStoreChar != NULL", m_spBinding.get() != 0);
+    return m_spBinding->FUN_14052d1b0();
+}
+MS2_REPLACE_METHOD(0x14052A4F0, CItem, FUN_14052a4f0, 136, 0x2B76F1F7);
+
+// @0x14052a580
+int CItem::FUN_14052a580(void* pArg)
+{
+    MS2_ASSERT_MSG_AT(0xc34, L"m_pMoveStoreChar != NULL", m_spBinding.get() != 0);
+    if (m_spBinding->FUN_14052d1c0() == 0)
+        return 1;
+    return m_spBinding->FUN_140634790(pArg);
+}
+MS2_REPLACE_METHOD(0x14052A580, CItem, FUN_14052a580, 145, 0x2731BEF2);
+
+// @0x14052d1b0
+const CStringW& CItemTransfer::CItemBinding::FUN_14052d1b0()
+{
+    return m_str20;
+}

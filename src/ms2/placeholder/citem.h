@@ -166,6 +166,12 @@ public:
   int FUN_140525c00();
   bool FUN_140527360();                  // w98
   __int64 FUN_1405273a0();               // w98
+  void FUN_1405290b0();                  // w98
+  bool FUN_140526e60(int, bool);
+  bool FUN_140527180(int, bool);
+  int FUN_14052a170();                   // w98
+  CStringW FUN_14052a4f0();
+  int FUN_14052a580(void*);
   int FUN_140525cf0();                   // w98
   int FUN_140526060(void*);              // w98
   int FUN_140525f60();
@@ -176,7 +182,7 @@ public:
   bool FUN_140526850();
   unsigned FUN_140526cc0(int);
   int FUN_140526d30();
-  void FUN_140526f50(unsigned, unsigned char);
+  void FUN_140526f50(unsigned, bool);
   __int64 FUN_140527440();
   void FUN_1405273f0(unsigned);
   void FUN_140527490(unsigned);
