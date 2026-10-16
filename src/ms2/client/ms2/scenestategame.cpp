@@ -50,6 +50,7 @@
 #include "ms2/commonfiles/stream.h"
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/effectquery.h"
+#include "uimasterydialog.h"
 #include "ms2/client/ms2/stateemotionidle.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
@@ -563,7 +564,7 @@ Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e
 
 class Unk_SSGCommandLog { public: int FUN_1401859c0(int nType, int nValue, const wchar_t* pszText); };
 Unk_SSGCommandLog* FUN_140166440();
-class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); };
+class Unk_SSGChatDialog { public: void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
 class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
 Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
@@ -630,6 +631,29 @@ Unk_SSGTaxiStation* FUN_1412787a0();                        // TSingleton<CAutoF
 CStringW FUN_14028b8e0(const CStringW& strKey);              // localized text for a string key
 class Unk_SSGDlgShop { public: void FUN_141afb720(int nType); };
 Unk_SSGDlgShop* FUN_140534780(int nId);                     // Unk_BreakDialog<UIShopDialog>
+
+class Unk_SSGNotifyInventory : public NotifyObject
+{
+public:
+    Unk_SSGNotifyInventory();                               // 0x141328cf0 (vftable 0x142eebd58)
+};
+MS2_CHECK_SIZE(Unk_SSGNotifyInventory, 0x18);
+class Unk_SSGDlgInv { public: void FUN_141999f60(); };
+Unk_SSGDlgInv* FUN_1405344f0(int nId);                      // Unk_BreakDialog<UIInventoryDialog>
+CStringW FUN_140d2e2b0(int nA, int nB, __int64 nC);
+CStringW FUN_140632a60(int nId, const CStringW& strArg0, const CStringW& strArg1);
+class UIEnchantScrollDialog : public UIDialog
+{
+public:
+    void FUN_140f3b920(CInPacket& packet);
+    void FUN_140f3bd10(CInPacket& packet);
+    void FUN_140f3c6c0(CInPacket& packet);
+};
+UIEnchantScrollDialog* FUN_140cd7aa0(int nId);              // GetDialog<UIEnchantScrollDialog>
+UIMasteryDialog* FUN_140faf160(int nId);                    // GetDialog<UIMasteryDialog>
+class UIDarkStreamScoreDialog : public UIDialog { public: virtual void vfunc_84(int nScore); };
+UIDarkStreamScoreDialog* FUN_140f9d8a0(int nId);            // GetDialog<UIDarkStreamScoreDialog>
+class UIDarkStreamResultDialog : public UIDialog { public: void FUN_140f34cb0(int n); void FUN_140f34ab0(CInPacket& packet); };
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -3092,3 +3116,111 @@ void CSceneStateGame::FUN_141733660(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141733660, CSceneStateGame, FUN_141733660, 340, 0x89D2A43C);
+
+// @0x141733f50
+void CSceneStateGame::FUN_141733f50(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    pPC->FUN_141658ed0(nValue);
+    void* pHost = FUN_1409613d0(pPC);
+    if (pHost != 0)
+    {
+        PCBase* pTarget = FUN_1403ed2d0()->FUN_141bd3620();
+        if (pTarget != 0)
+            static_cast<PC*>(pTarget)->FUN_141658ed0(nValue);
+        Unk_SSGDlgInv* pDlg = FUN_1405344f0(0x4e2d);
+        if (pDlg != 0)
+            pDlg->FUN_141999f60();
+        FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new Unk_SSGNotifyInventory()));
+    }
+}
+MS2_REPLACE_METHOD(0x141733f50, CSceneStateGame, FUN_141733f50, 403, 0xB72802C3);
+
+// @0x1417343f0
+void CSceneStateGame::FUN_1417343f0(CInPacket& packet)
+{
+    CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW strItem = FUN_140d2e2b0(nA, nB, nC);
+    CStringW strMsg = FUN_140632a60(0x342, strName, strItem);
+    FUN_1412751b0(strMsg, 0x14);
+}
+MS2_REPLACE_METHOD(0x1417343f0, CSceneStateGame, FUN_1417343f0, 309, 0x3BC0794C);
+
+// @0x141734950
+void CSceneStateGame::FUN_141734950(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    UIEnchantScrollDialog* pDlg = FUN_140cd7aa0(0x4ee0);
+    if (pDlg == 0)
+        return;
+    if (nMode == 0)
+    {
+        pDlg->FUN_140f3b920(packet);
+    }
+    else if (nMode == 1)
+    {
+        pDlg->FUN_140f3bd10(packet);
+    }
+    else if (nMode == 3)
+    {
+        pDlg->FUN_140f3c6c0(packet);
+    }
+    else if (nMode == 4)
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+        {
+            for (int i = 0; i < nCount; i++)
+            {
+                int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+                int nValue = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+                pChat->FUN_141abf6e0(nItemId, nValue);
+            }
+        }
+        UIMasteryDialog* pMastery = FUN_140faf160(0x4f1e);
+        if (pMastery != 0)
+            pMastery->FUN_140eb4ba0();
+    }
+}
+MS2_REPLACE_METHOD(0x141734950, CSceneStateGame, FUN_141734950, 452, 0x69A47724);
+
+// @0x141734ca0
+void CSceneStateGame::FUN_141734ca0(CInPacket& packet)
+{
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        FUN_1403ed2b0()->FUN_141adc530(0x4ee4);
+        UIDarkStreamScoreDialog* pDlg = FUN_140f9d8a0(0x4ee4);
+        if (pDlg == 0)
+            return;
+        pDlg->vfunc_84(0);
+    }
+    else if (nMode == 1)
+    {
+        int nScore = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        UIDarkStreamScoreDialog* pDlg = FUN_140f9d8a0(0x4ee4);
+        if (pDlg == 0)
+            return;
+        pDlg->vfunc_84(nScore);
+    }
+    else if (nMode == 2)
+    {
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4ee4);
+        FUN_1403ed2b0()->FUN_141adc530(0x4ee5);
+        UIDarkStreamResultDialog* pDlg = Unk_SSGGetDialog<UIDarkStreamResultDialog>(0x4ee5);
+        if (pDlg == 0)
+            return;
+        pDlg->FUN_140f34cb0(0);
+        pDlg->FUN_140f34ab0(packet);
+    }
+}
+MS2_REPLACE_METHOD(0x141734ca0, CSceneStateGame, FUN_141734ca0, 334, 0x7DA5CD92);
