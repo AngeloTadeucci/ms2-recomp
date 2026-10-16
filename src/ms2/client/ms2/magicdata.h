@@ -170,7 +170,9 @@ public:
     int FUN_141467420();                                            // 0x141467420 the state
 
     void FUN_141462900(unsigned nNow);                              // 0x141462900
-    void FUN_141461bd0(unsigned nNow);                              // 0x141461bd0
+    void FUN_141461bd0(unsigned nNow);
+    void FUN_141464d00(unsigned nNow, const Unk_MagicSkillRow* pRow);   // 0x141464d00
+    void FUN_141465b30(unsigned nNow, const Unk_MagicSkillRow* pRow);   // 0x141465b30                              // 0x141461bd0
     void FUN_141462490(unsigned nNow);                              // 0x141462490
     int FUN_141467100(Unk_MagicEntity* pEntity, Unk_StreamPoint* pOut);   // 0x141467100 nearest hit point of the target
     void FUN_141463960();                                           // 0x141463960
@@ -224,7 +226,7 @@ public:
     int m_n534;
     int m_n538;
     int m_n53C;
-    void* m_pCollision;                                             // +0x540
+    __int64 m_nCollision;                                           // +0x540 handle of the debug collision shape
 };
 MS2_CHECK_SIZE(CMagic, 0x548);
 

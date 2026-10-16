@@ -46,6 +46,8 @@
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/coutpacket.h"
+#include "skillcollisionmanager.h"
+#include "functioncubeobject.h"
 #include <NiNode.h>
 #include <NiFixedString.h>
 #include <cfloat>
@@ -53,6 +55,8 @@
 #include <vector>
 
 extern Unk_StreamPoint DAT_143b01a60;       // the zero point
+extern char DAT_143ae95e0;                   // debug: show skill collision shapes
+extern char DAT_143ae95e1;
 extern Unk_StreamPoint DAT_143a08ce8;       // the default direction
 
 class Unk_140165cf0 {
@@ -109,7 +113,6 @@ class Unk_MagicEffectMgr { public: void FUN_1411a6060(int nHandle); int FUN_1411
 Unk_MagicEffectMgr* FUN_1403ed280();
 void* FUN_1409475d0(Unk_NodePtr*);
 void FUN_140a0b2a0(void* pNode);            // detach the node from its parent
-class CSkillCollisionManager { public: void Touch(__int64 nHandle); };    // 0x141755bd0
 CSkillCollisionManager* FUN_141469a90();
 extern float FUN_1407680d0(void* pRandom);
 extern void FUN_140965c40(Unk_StreamPoint* pRange, Unk_StreamPoint* pOut, Unk_StreamPoint* pBase, void* pCtx, float x, float z);
@@ -296,16 +299,16 @@ CMagic::CMagic()
     , m_map220(17, .75f, .25f, 2.25f, 10)
     , m_n268(0)
     , m_n538(0)
-    , m_pCollision(0)
+    , m_nCollision(0)
 {
 }
 
 // @0x14145d390
 CMagic::~CMagic()
 {
-    if (m_pCollision) {
-        FUN_141469a90()->Touch((__int64)m_pCollision);
-        m_pCollision = 0;
+    if (m_nCollision) {
+        FUN_141469a90()->Touch(m_nCollision);
+        m_nCollision = 0;
     }
     FUN_1403ed280()->FUN_1411a6060(m_nEffectId);
     m_nEffectId = 0;
@@ -343,12 +346,16 @@ struct Unk_MagicSkillRow {
     float m_f9c;                                                    // +0x9c height offset
     char m_pada0[0x10];
     float m_fb0;                                                    // +0xb0 height offset
-    char m_padb4[0x4c];
+    Unk_StreamPoint m_ptB4;                                         // +0xb4 collision offset
+    float m_fC0;                                                    // +0xc0 collision offset z
+    char m_padc4[0x3c];
     Unk_MagicRowFlag m_flag100;                                     // +0x100 (+0x104: spawn the hit effect)
     int m_n10c;                                                     // +0x10c
     char m_pad10[0x10];
     int m_n120;                                                     // +0x120
-    char m_pad124[0x24];
+    Unk_StreamPoint m_ptBox;                                        // +0x124 box collision size
+    Unk_StreamPoint m_ptBoxSize;                                    // +0x130 box collision extent (y, z)
+    char m_pad13c[0xc];
     CString m_str148;                                               // +0x148 end effect
     CString m_str150;                                               // +0x150 end effect when the flight was cut short
     CString m_str158;                                               // +0x158 spawn effect
@@ -365,6 +372,9 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n40, 0x40);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_f9c, 0x9c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_fb0, 0xb0);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_ptB4, 0xb4);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_ptBox, 0x124);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_ptBoxSize, 0x130);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n10c, 0x10c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n120, 0x120);
@@ -376,6 +386,8 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str270, 0x270);
 
 // The skill cast record behind Unk_MagicTagPtr.
 struct Unk_MagicTag;
+class Unk_SkillSrc;
+struct Unk_MagicSrcPtr { void* m_pad; Unk_SkillSrc* m_p; };     // 16 byte handle; get() is 0x1407ebbf0
 struct Unk_MagicLinkPtr { Unk_MagicTag* FUN_1410a7150() const; void* m_pad; Unk_MagicTag* m_p; };   // 16 byte handle; operator-> is 0x1410a7150
 struct Unk_MagicAimInfo { char m_pad00[0xb8]; float m_fAim; };      // +0xb8 nonzero: keep the caller's direction
 struct Unk_MagicTag : public CPtred {
@@ -390,9 +402,12 @@ struct Unk_MagicTag : public CPtred {
     int m_nTimeMode;                                                // +0x30
     char m_pad34[4];
     Unk_MagicAttackerPtr m_spAttacker;                              // +0x38
-    char m_setHit[0x14];                                            // +0x48
-    unsigned char m_b5c;                                            // +0x5c
-    char m_pad5d[3];
+    Unk_MagicSrcPtr m_spSrc;                                        // +0x48 the skill source (16 byte handle, pointer in the second word)
+    int m_nSrcLevel;                                                // +0x58
+    union {
+        int m_nSrcIndex;                                            // +0x5c
+        unsigned char m_b5c;
+    };
     Unk_StreamPoint m_ptDefaultDir;                                  // +0x60
     char m_pad6c[4];
     Unk_MagicLinkPtr m_spLinked;                                    // +0x70 the cast this one continues
@@ -400,7 +415,12 @@ struct Unk_MagicTag : public CPtred {
     int m_n84;                                                      // +0x84
     int m_nStartTick;                                               // +0x88
     int m_n8c;                                                      // +0x8c
+    char m_setHit[0x28];                                            // +0x90 the hit set (FUN_14101ac20)
 };
+MS2_CHECK_OFFSET(Unk_MagicTag, m_spSrc, 0x48);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_nSrcLevel, 0x58);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_nSrcIndex, 0x5c);
+MS2_CHECK_OFFSET(Unk_MagicTag, m_setHit, 0x90);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_nTagId, 0x18);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_spAttacker, 0x38);
 MS2_CHECK_OFFSET(Unk_MagicTag, m_ptDefaultDir, 0x60);
@@ -411,11 +431,11 @@ MS2_CHECK_OFFSET(Unk_MagicTag, m_nStartTick, 0x88);
 struct Unk_MagicEntity {
     virtual void vf0(); virtual void vf1(); virtual void vf2(); virtual void vf3(); virtual void vf4();
     virtual bool vf5_GetProperty(int nProp, unsigned long long* pOut);  // MS2: slot 5 (+0x28)
-    virtual void vf6(); virtual void vf7(); virtual void vf8(); virtual void vf9(); virtual void vf10();
+    virtual void vf6(); virtual int vf7_GetClassId(); virtual void vf8(); virtual void vf9(); virtual void vf10();
     virtual void vf11(); virtual void vf12(); virtual void vf13(); virtual void vf14(); virtual void vf15();
     virtual void vf16(); virtual void vf17();
     virtual Unk_StreamPoint vf18_GetPosition();                     // MS2: slot 18 (+0x90)
-    virtual void vf19(); virtual void vf20(); virtual void vf21(); virtual void vf22(); virtual void vf23();
+    virtual void vf19(); virtual Unk_StreamPoint vf20_GetRotation(); virtual void vf21(); virtual void vf22(); virtual void vf23();
     virtual void vf24();
     virtual int vf25_IsDead();                                      // MS2: slot 25 (+0xc8)
     virtual void vf26(); virtual void vf27_CollectPartsA(ATL::CAtlArray<void*>* pOut); virtual void vf28_CollectPartsB(ATL::CAtlArray<void*>* pOut); virtual void vf29(); virtual void vf30();
@@ -1316,6 +1336,75 @@ void CMagic::FUN_141464790(void* pHits, int nHits)
     }
 }
 MS2_REPLACE_METHOD(0x141464790, CMagic, FUN_141464790, 929, 0xE9CCCCA8);
+
+// @0x141461bd0
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared (the shape handle / pose temporaries differ)
+void CMagic::FUN_141461bd0(unsigned nNow)
+{
+    if (m_n53C != 0 || m_n538 == 2)
+        return;
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL || m_n1CC != 0)
+        return;
+    if (m_nCollision != 0) {
+        FUN_141469a90()->Remove(m_nCollision);
+        m_nCollision = 0;
+    }
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    if (pOwner != NULL) {
+        int bShow = 0;
+        if (pOwner->vf7_GetClassId() == 0x6200028 && DAT_143ae95e1 == 1) {
+            bShow = 1;
+        } else {
+            int nClass = pOwner->vf7_GetClassId();
+            if ((nClass == 0x6200003 || pOwner->vf7_GetClassId() == 0x6200004 || pOwner->vf7_GetClassId() == 0x6200045)
+                && DAT_143ae95e0 != 0)
+                bShow = 1;
+        }
+        if (bShow != 0) {
+            ATL::CAtlArray<void*> aUnused;
+            CSkillCollisionManager::CollisionPtr spShape(0);
+            if (m_spSkill->FUN_141759090() == 0) {
+                Unk_StreamPoint ptPos = pOwner->vf18_GetPosition();
+                Unk_StreamPoint ptRot = pOwner->vf20_GetRotation();
+                spShape = FUN_141469a90()->Create(m_spSkill->m_spSrc.m_p, m_spSkill->m_nSrcLevel, m_spSkill->m_nSrcIndex,
+                    pOwner, 0.0f);
+                if (spShape.get() != 0) {
+                    if (pOwner->vf108_GetLockOn()) {
+                        Unk_StreamPoint ptAdd = DAT_143b01a60;
+                        Unk_StreamPoint ptAddRot = DAT_143b01a60;
+                        ptAdd = pRow->m_ptB4;
+                        ptAddRot.z = pRow->m_fC0;
+                        Unk_StreamPoint ptFace = pOwner->FUN_14123cc20();
+                        float fYaw = FUN_14123ce70(ptFace);
+                        Unk_NiMatrix3 matRot;
+                        matRot.FUN_142084c10(fYaw + 3.1415927f);
+                        ptAdd = matRot.FUN_140a00720(ptAdd);
+                        ptPos.FUN_140a4e560(ptAdd);
+                        ptRot.FUN_140a4e560(ptAddRot);
+                    }
+                    spShape->vfunc_3(ptPos, ptRot, 1.0f);
+                }
+            } else {
+                Unk_StreamPoint ptSpan = m_ptLast.FUN_140965c40(m_ptCurrent);
+                float fLen = ptSpan.FUN_140968990();
+                CBoxCollision* pBox = new CBoxCollision();
+                spShape.AssignRaw(pBox);
+                pBox->m_ptBox = Unk_StreamPoint(pRow->m_ptBox.x, fLen + pRow->m_ptBox.y, pRow->m_ptBox.z);
+                pBox->m_ptSize = Unk_StreamPoint(0, pRow->m_ptBoxSize.y, pRow->m_ptBoxSize.z);
+                pBox->m_kColor = NiColorA(0.0f, 0.0f, 1.0f, 1.0f);
+                pBox->vfunc_4();
+                pBox->vfunc_2(m_ptLast, reinterpret_cast<const Unk_StreamPoint&>(m_matRotation), 1.0f);
+            }
+            m_nCollision = FUN_141469a90()->Add(spShape);
+        }
+    }
+    if (m_spSkill->FUN_141759090() == 0)
+        FUN_141464d00(nNow, pRow);
+    else
+        FUN_141465b30(nNow, pRow);
+}
+MS2_REPLACE_METHOD(0x141461BD0, CMagic, FUN_141461bd0, 2231, 0x88F2A592);
 
 // @0x141464b40
 void CMagic::FUN_141464b40()
