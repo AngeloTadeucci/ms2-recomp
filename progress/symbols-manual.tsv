@@ -2146,3 +2146,5 @@ D3DXFloat16To32Array	14230396f	func
 ?Add@?$CAtlArray@UUnk_StreamPoint@@V?$CElementTraits@UUnk_StreamPoint@@@ATL@@@ATL@@QEAA_KAEBUUnk_StreamPoint@@@Z	1410a7400	func
 ?s_bInit@CBanTextChecker@@2_NA	143aacc48	data
 ?s_bInit@CommonString@@2_NA	143aaccf0	data
+?Create@CSkillCollisionManager@@QEAA?AV?$MS2Ptr@VCBaseCollision@@@@PEAVUnk_SkillSrc@@HHPEAXM@Z	1417551b0	func
+?get@?$MS2Ptr@VCBaseCollision@@@@QEBAPEAVCBaseCollision@@XZ	141235250	func
