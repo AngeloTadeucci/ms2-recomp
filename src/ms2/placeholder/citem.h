@@ -43,6 +43,7 @@ public:
     int FUN_140635190();
     bool FUN_1406351b0();
     void FUN_140635320(bool);
+    void FUN_140635350(class PCBase* pPc, CStringW* pName);   // the binding owner name
     int FUN_1406354d0();
     unsigned FUN_140635520();
     int FUN_140635580();

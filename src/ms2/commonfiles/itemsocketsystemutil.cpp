@@ -2619,6 +2619,23 @@ void CItemTransfer::FUN_140635320(bool b)
 }
 MS2_REPLACE_METHOD(0x140635320, CItemTransfer, FUN_140635320, 32, 0xB7D9EF8D);
 
+// The binding owner's name: the actor's own name when the actor is the owner, else the stored name.
+// @0x140635350
+void CItemTransfer::FUN_140635350(PCBase* pPc, CStringW* pName)
+{
+    CItemBinding* pBinding = FUN_140635160();
+    if (pBinding != 0)
+    {
+        if (pPc != 0 && pPc->FUN_141656a80() == pBinding->FUN_14052d1c0())
+        {
+            *pName = pPc->vfunc_77();
+            return;
+        }
+        *pName = pBinding->FUN_14052d1b0();
+    }
+}
+MS2_REPLACE_METHOD(0x140635350, CItemTransfer, FUN_140635350, 196, 0x7287F0A9);
+
 // @0x140635470
 bool CItemTransfer::FUN_140635470(const __int64* pId)
 {
