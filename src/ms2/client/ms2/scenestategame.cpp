@@ -54,6 +54,7 @@
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIHomeResizeDialog@@@@YAPEAVUIHomeResizeDialog@@H@Z 0x141742be0 ; w120 manual (RTTI)
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIWatchAGameDialog@@@@YAPEAVUIWatchAGameDialog@@H@Z 0x141743690 ; w120 manual (RTTI)
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIHideAndSeekResultDialog@@@@YAPEAVUIHideAndSeekResultDialog@@H@Z 0x141742b40 ; w120 manual (RTTI)
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIApartmentDialog@@@@YAPEAVUIApartmentDialog@@H@Z 0x141742450 ; w131 manual (RTTI)
 // MS2-PIN: ??0?$Unk_BmPtr@VUserUGCMapInfo@@@@QEAA@AEBV0@@Z 0x1417459d0 ; w120 manual (call site)
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
 // MS2-PIN: ??_GNotifyChangeMyJob@@UEAAPEAXI@Z 0x141747850 ; w125 manual
@@ -89,6 +90,7 @@
 #include "ms2/placeholder/mstime.h"
 #include "ms2/commonfiles/commonstruct_wb.h"
 #include "ms2/client/ms2/uimessageboxdata.h"
+#include "ms2/client/ms2/uimessagebox.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/notifyobject.h"
 #include "ms2/commonfiles/stream.h"
@@ -4113,6 +4115,144 @@ void CSceneStateGame::FUN_141737360(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141737360, CSceneStateGame, FUN_141737360, 95, 0x096233CB);
 
+// Packet 0xce: UGC map (home) visit results and the password portal (mypc.cpp's lock map and key).
+class UIApartmentDialog : public UIDialog { public: bool FUN_1418b6ab0(int nMode); };   // nonzero: handled
+// A password portal lock (RTTI UGCMapEnterBlockInfo, 0x28; ctor 0x1408b3e20 in ?\ugcmapoptions.cpp).
+class Unk_MyPCPortalLock : public CPtred
+{
+public:
+    Unk_MyPCPortalLock();
+    __int64 m_nUntil;                                       // +0x18 the portal cannot be retried before this
+    int m_nTries;                                           // +0x20 wrong passwords
+};
+// The key of a password portal (world, portal coordinates and the portal object uid).
+struct Unk_MyPCPortalKey
+{
+    Unk_MyPCPortalKey(unsigned nWorld, int nA, int nB, unsigned __int64 nC);   // 0x141532850
+    bool operator==(const Unk_MyPCPortalKey& o) const;      // 0x141533020
+    bool operator<(const Unk_MyPCPortalKey& o) const;       // 0x1415332e0
+    unsigned m_nWorld;
+    int m_nA;
+    int m_nB;
+    unsigned __int64 m_nC;
+};
+extern ATL::CRBMap<Unk_MyPCPortalKey, MS2Ptr<Unk_MyPCPortalLock> > DAT_143ab3288;   // the locked password portals
+// The pending portal move (mypc.h; +0x17a0 of MyPC).
+struct Unk_SSGPortalMove
+{
+    int m_nPortalId;                                        // +0x00
+    int m_nA;                                               // +0x04
+    int m_nB;                                               // +0x08
+    __int64 m_nC;                                           // +0x10
+    int m_nD;                                               // +0x18
+    int m_bWithPwd;                                         // +0x1c
+};
+// MyPC's IMessageListener base (+0x12e0; the real MyPC is PC + IMessageListener, mypc.h of the owning unit).
+class Unk_SSGMyPCView : public PC, public IMessageListener
+{
+public:
+    char m_pad12e8[0x17a0 - 0x12e8];
+    Unk_SSGPortalMove m_kPortalMove;                        // +0x17a0
+};
+MS2_CHECK_OFFSET(Unk_SSGMyPCView, m_kPortalMove, 0x17a0);
+__int64 GetServerTime();
+MS2Ptr<CMsgBoxData> FUN_140d73e40(int nType, int nStringId, IMessageListener* pListener, CStringW strTag);
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);
+UIMessageBox* FUN_14151f890();                              // the open message box
+// @0x1417373d0
+void CSceneStateGame::FUN_1417373d0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+        FUN_140d73bc0(0x9cb, 0, 0, L"");
+        break;
+    case 2:
+        FUN_140d73bc0(0x9cd, 0, 0, L"");
+        break;
+    case 1:
+    {
+        UIApartmentDialog* pDlg = Unk_SSGGetDialog<UIApartmentDialog>(0x4e74);
+        if (pDlg != 0 && pDlg->FUN_1418b6ab0(nMode))
+            return;
+    }
+        break;
+    case 3:
+    {
+        int nPortalId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nD = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int bWithPwd = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_SSGMyPCView* pMyPC = static_cast<Unk_SSGMyPCView*>(static_cast<PCBase*>(FUN_1403ed2d0()->FUN_141bd0cc0()));
+        if (pMyPC != 0)
+        {
+            pMyPC->m_kPortalMove.m_nPortalId = nPortalId;
+            pMyPC->m_kPortalMove.m_nA = nA;
+            pMyPC->m_kPortalMove.m_nB = nB;
+            pMyPC->m_kPortalMove.m_nC = nC;
+            pMyPC->m_kPortalMove.m_nD = nD;
+            pMyPC->m_kPortalMove.m_bWithPwd = bWithPwd;
+            MS2Ptr<CMsgBoxData> spBox = FUN_140d73e40(10, 0xb07, pMyPC, L"movePortalWithPwd");
+            if (spBox.get() != 0)
+            {
+                CStringW strEmpty(L"");
+                spBox->FUN_141a01d30(5, strEmpty, 6, 0, 0);
+                FUN_140d73c60(spBox);
+            }
+        }
+    }
+        break;
+    case 4:
+    {
+        UIMessageBox* pBox = FUN_14151f890();
+        if (pBox != 0)
+            pBox->FUN_1419f82b0(FUN_14028de60(0xb0b));
+        int nPortalId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        Unk_MyPCPortalKey key(FUN_1403ed2d0()->FUN_141bd3060(), nA, nB, nC);
+        MS2Ptr<Unk_MyPCPortalLock> spLock(0);
+        if (!DAT_143ab3288.Lookup(key, spLock))
+        {
+            spLock.AssignRaw(new Unk_MyPCPortalLock);
+            DAT_143ab3288.SetAt(key, spLock);
+        }
+        if (spLock->m_nUntil > GetServerTime())
+            break;
+        spLock->m_nTries++;
+        if (spLock->m_nTries >= 5)
+            spLock->m_nUntil = GetServerTime() + 10;
+    }
+        break;
+    case 5:
+        FUN_140d73bc0(0x9ce, 0, 0, L"");
+        break;
+    case 6:
+        FUN_140d73bc0(0x87c, 0, 0, L"");
+        break;
+    case 7:
+        FUN_140d73bc0(0x87b, 0, 0, L"");
+        break;
+    case 8:
+        FUN_140d73bc0(0x87d, 0, 0, L"");
+        break;
+    case 9:
+        FUN_140d73bc0(0x87a, 0, 0, L"");
+        break;
+    case 10:
+        FUN_140d73bc0(0x87e, 0, 0, L"");
+        break;
+    case 11:
+        FUN_140d73aa0(FUN_14028b8e0(L"s_home_visit_failed_private"), 0, 0, L"");
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x1417373D0, CSceneStateGame, FUN_1417373d0, 2381, 0x68C26CA3);
+
 // @0x141737d60
 void CSceneStateGame::FUN_141737d60(CInPacket& packet)
 {
@@ -8050,8 +8190,6 @@ extern template Unk_BmPtr<UserUGCMapInfo>::Unk_BmPtr(UserUGCMapInfo* p);
 extern template Unk_BmPtr<UserUGCMapInfo>::~Unk_BmPtr();
 extern template UserUGCMapInfo* Unk_BmPtr<UserUGCMapInfo>::operator->() const;
 extern template bool Unk_BmPtr<UserUGCMapInfo>::operator==(UserUGCMapInfo* p) const;
-// MyPC's IMessageListener base (+0x12e0; the real MyPC is PC + IMessageListener, mypc.h of the owning unit).
-class Unk_SSGMyPCView : public PC, public IMessageListener {};
 MS2Ptr<CMsgBoxData> FUN_140d73e40(int nType, int nStringId, IMessageListener* pListener, CStringW strTag);
 // The UGC event dispatcher (FUN_140bc09f0; UIUGCEventListener registry): slots 5..7 notify the listeners.
 class Unk_SSGUgcEvents
