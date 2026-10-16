@@ -103,7 +103,7 @@
 // MS2-PIN: ?GetKeyAt@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEBAAEBUUnk_NifTexKey@@PEAU__POSITION@@@Z 0x14155d7d0 ; hand: identical look-alike group
 // MS2-PIN: ?GetValueAt@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAAAEAPEAVNiStream@@PEAU__POSITION@@@Z 0x14155d9e0 ; hand: identical look-alike group
 // MS2-PIN: ??_ECNiStreamLoadThread@@WBI@EAAPEAXI@Z 0x14155c59c ; hand: identical look-alike group
-// MS2-PIN: ?Clone@CAtlStringMgr@ATL@@UEAAPEAUIAtlStringMgr@2@XZ 0x1415502f0 ; hand: identical look-alike group
+// MS2-PIN: ?Clone@CAtlStringMgr@ATL@@UEAAPEAUIAtlStringMgr@2@XZ 0x14103c770 ; hand: vftable slot copy
 // MS2-PIN: ??0Point3@efd@@QEAA@XZ 0x141550310 ; hand: identical look-alike group
 // MS2-PIN: ??0?$allocator@V?$SmartPointer@VNiAVObject@@@efd@@@std@@QEAA@XZ 0x14155a440 ; hand: identical look-alike group
 // MS2-PIN: ??0Matrix3@efd@@QEAA@XZ 0x14155a420 ; hand: identical look-alike group
@@ -123,8 +123,7 @@
 // MS2-PIN: ??B?$SmartPointer@VNiObject@@@efd@@QEBAPEAVNiObject@@XZ 0x14155bfb0 ; hand: identical look-alike group
 // MS2-PIN: ??C?$MS2Ptr@VCBirdMovement@@@@QEBAPEAVCBirdMovement@@XZ 0x14154f4a0 ; hand: identical look-alike group
 // MS2-PIN: ??1?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAU__POSITION@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAU__POSITION@@@2@@ATL@@QEAA@XZ 0x14155b490 ; hand: identical look-alike group
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VNiAVObject@@@efd@@V?$allocator@V?$SmartPointer@VNiAVObject@@@efd@@@std@@@std@@@std@@QEBAAEBQEAV?$SmartPointer@VNiAVObject@@@efd@@XZ 0x14155b4b0 ; hand: identical look-alike group
-// MS2-PIN: ??1?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAA@XZ 0x14155b4d0 ; hand: identical look-alike group
+// MS2-PIN: ??1?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAA@XZ 0x14155b4b0 ; hand: identical look-alike group
 // MS2-PIN: ?_Getal@?$_String_alloc@U?$_String_base_types@DV?$allocator@D@std@@@std@@@std@@QEAAAEAV?$allocator@D@2@XZ 0x141550390 ; hand: identical look-alike group
 // MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@PEAVNiAVObject@@VNiString@@U?$less@PEAVNiAVObject@@@std@@V?$allocator@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@4@$0A@@std@@@std@@IEBAAEBQEAVNiAVObject@@AEBU?$pair@QEAVNiAVObject@@VNiString@@@2@@Z 0x1415503e0 ; hand: identical look-alike group
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@1@@Z 0x14154ee60 ; hand: identical look-alike group
@@ -138,6 +137,21 @@
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@PEAVNiAVObject@@VNiString@@U?$less@PEAVNiAVObject@@@std@@V?$allocator@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@4@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@2@XZ 0x141550790 ; hand: identical look-alike group
 // MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@2@@Z 0x141550410 ; hand: identical look-alike group
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAA@XZ 0x14155b4d0 ; hand: ground truth, CNifLoadingService dtor +0x28
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@2@$00@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@std@@@2@XZ 0x1415502f0 ; hand: const _Getal callee
+// MS2-PIN: ??0Unk_NifTexKey@@QEAA@AEBU0@@Z 0x14155b070
+// MS2-PIN: ??1?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAA@XZ 0x14155b550 ; hand: byte-identical
+// MS2-PIN: ??1?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAA@XZ 0x14155b590 ; hand: byte-identical
+// MS2-PIN: ?GetValueAt@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAAAEAV?$SmartPointer@VCCachedNif@@@efd@@PEAU__POSITION@@@Z 0x14155da40 ; hand: byte-identical
+// MS2-PIN: ?GetValueAt@?$CRBTree@UUnk_NifTexKey@@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@V?$CElementTraits@UUnk_NifTexKey@@@ATL@@V?$CElementTraits@V?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@@5@@ATL@@QEAAAEAV?$SmartPointer@V?$CCached@V?$SmartPointer@VNiTexture@@@efd@@@@@efd@@PEAU__POSITION@@@Z 0x14155daa0 ; hand: byte-identical
+// MS2-PIN: ?SetAt@?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAVNiStream@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@PEAVNiStream@@@2@@ATL@@QEAAPEAU__POSITION@@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEBQEAVNiStream@@@Z 0x141562060 ; hand: byte-identical
+// MS2-PIN: ?SetAt@?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCCachedNif@@@efd@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$SmartPointer@VCCachedNif@@@efd@@@2@@ATL@@QEAAPEAU__POSITION@@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEBV?$SmartPointer@VCCachedNif@@@efd@@@Z 0x1415620d0 ; hand: byte-identical
+// MS2-PIN: ?GetClassDesc@CNifLoadingService@@UEBAPEBVClassInfo@efd@@XZ 0x14155d5a0 ; hand: byte-identical
+// MS2-PIN: ?GetAt@?$NiTLargeArray@V?$SmartPointer@VNiObject@@@efd@@V?$NiTNewInterface@V?$SmartPointer@VNiObject@@@efd@@@@@@QEBAAEBV?$SmartPointer@VNiObject@@@efd@@I@Z 0x14155d580 ; hand: byte-identical
+// MS2-PIN: ?Get@?$TCircleList@V?$SmartPointer@VNiAVObject@@@efd@@@@QEBAHHAEAV?$SmartPointer@VNiAVObject@@@efd@@@Z 0x14155d5b0 ; hand: byte-identical
+// MS2-PIN: ?DecRefCount@CNifLoadingService@@UEBAXXZ 0x14155ce50 ; hand: byte-identical
+// MS2-PIN: ?DeleteThis@CNifLoadingService@@MEBAXXZ 0x14155ce90 ; hand: byte-identical
+// MS2-PIN: ?Clone@?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCNifLoadingService@@P82@EAAXXZ@@UEBAPEAV1@XZ 0x14155cee0 ; hand: byte-identical
 // MS2-PIN: ?GetSearchPath@NiStream@@QEBAPEAVNiSearchPath@@XZ 0x14155d9a0
 // MS2-PIN: ?GetObjectAt@NiStream@@QEBAPEAVNiObject@@I@Z 0x14155d900
 // MS2-PIN: ?GetObjectCount@NiStream@@QEBAIXZ 0x14155d950
@@ -985,6 +999,12 @@ int CNifEffect::vfunc_11()
     return 1;
 }
 MS2_REPLACE_METHOD(0x14154B1B0, CNifEffect, vfunc_11, 611, 0x5782BF21);
+
+// @0x14154f9d0
+int CNifEffect::vfunc_12()
+{
+    return 1;
+}
 
 // @0x14154b420
 void CNifEffect::vfunc_10(bool bVisible)
@@ -2656,3 +2676,60 @@ void CNifLoadingService::AddTexture(CString strPath, NiSourceTexture* pTexture)
     }
 }
 MS2_REPLACE_METHOD(0x1415540F0, CNifLoadingService, AddTexture, 741, 0x08563473);
+
+// Out-of-line NiString wrappers of the exe (the NiMain copies at 0x141d5b..).
+void FUN_141d5be30(NiString* pDst, const NiString* pSrc);
+void FUN_141d5bfe0(NiString* pStr);
+
+// MS2-FUNCTIONAL: temporaries: the exe reloads the source through a register hop
+// @0x14154ef70
+NiString* FUN_14154ef70(NiString* pDst, const NiString* pSrc)
+{
+    FUN_141d5be30(pDst, pSrc);
+    return pDst;
+}
+
+// MS2-FUNCTIONAL: temporaries: the exe reloads the source through a register hop
+// @0x14154efa0
+NiString* FUN_14154efa0(NiString* pDst, const NiString* pSrc)
+{
+    FUN_141d5be30(pDst, pSrc);
+    return pDst;
+}
+
+// MS2-FUNCTIONAL: placement-new form not found; exe is a plain 37-byte call to the NiString ctor with 0x100
+// @0x14154efd0
+NiString* FUN_14154efd0(NiString* pStr)
+{
+    return new (pStr) NiString();
+}
+
+// MS2-FUNCTIONAL: the exe reloads this through a register hop and calls the destructor directly
+// @0x14154f250
+void FUN_14154f250(NiString* pStr)
+{
+    pStr->~NiString();
+}
+
+// @0x14154fda0
+void FUN_14154fda0(void* pObj)
+{
+    FUN_140a0b330(pObj, true, 0x800);
+}
+
+// The exe's GetValueAt copies for the nif / texture caches (called by CNifLoadingService::Sweep).
+template CCachedNifPtr& ATL::CRBTree<CString, CCachedNifPtr, ATL::CElementTraits<CString>, ATL::CElementTraits<CCachedNifPtr> >::GetValueAt(POSITION);
+template CCachedTexturePtr& ATL::CRBTree<Unk_NifTexKey, CCachedTexturePtr, ATL::CElementTraits<Unk_NifTexKey>, ATL::CElementTraits<CCachedTexturePtr> >::GetValueAt(POSITION);
+
+// Raw (no reference counting) store into NiSourceTexture's protected m_spSrcPixelData.
+struct Unk_NifSrcTexAccess : NiSourceTexture
+{
+    static NiPixelDataPtr NiSourceTexture::* Member() { return &Unk_NifSrcTexAccess::m_spSrcPixelData; }
+};
+
+// MS2-FUNCTIONAL: the exe stores the raw pointer at +0x40 directly (25 bytes); the protected member needs the access helper
+// MS2-PIN: ?FUN_141562500@@YAXPEAVNiSourceTexture@@PEAVNiPixelData@@@Z 0x141562500
+void FUN_141562500(NiSourceTexture* pTexture, NiPixelData* pPixels)
+{
+    *reinterpret_cast<NiPixelData**>(&(pTexture->*Unk_NifSrcTexAccess::Member())) = pPixels;
+}

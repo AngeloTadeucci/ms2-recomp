@@ -268,19 +268,19 @@ public:
     }
     int GetCapacity() const { return m_nCapacity; }             // @0x14155d830
     int GetCount() const { return m_nCount; }                   // @0x14155d9d0
-    bool Get(int nIndex, T& rOut) const                         // 0x14155d5b0 oldest first
+    int Get(int nIndex, T& rOut) const                         // 0x14155d5b0 oldest first
     {
         int nInCapacity = nIndex < m_nCapacity;
         int nInCount = nIndex < m_nCount;
         if (nInCapacity & nInCount)
         {
-            nIndex = m_nStart + nIndex;
-            int nWrapped = (nIndex >= m_nCapacity) * (nIndex - m_nCapacity);
-            nIndex = (nWrapped == 0) * nIndex + nWrapped;
+            int nSum = m_nStart + nIndex;
+            int nWrapped = (nSum >= m_nCapacity) * (nSum - m_nCapacity);
+            nIndex = (nWrapped == 0) * nSum + nWrapped;
             rOut = m_aItems[nIndex];
-            return true;
+            return 1;
         }
-        return false;
+        return 0;
     }
     void Push(const T& rItem)                                   // 0x14155cb10 overwrites the oldest when full
     {
@@ -337,10 +337,10 @@ struct Unk_NifTexKey
     Unk_NifTexKey(CString strPath, NiTexture::FormatPrefs kPrefs)     // 0x14155b0b0
     {
         m_strPath = strPath;
-        m_kBytes.m_cLayout = (unsigned char)kPrefs.m_ePixelLayout;
-        m_kBytes.m_cAlpha = (unsigned char)kPrefs.m_eAlphaFmt;
-        m_kBytes.m_cMipMapped = (unsigned char)kPrefs.m_eMipMapped;
-        m_kBytes.m_cPad = 0;
+        *(reinterpret_cast<unsigned char*>(&m_nPrefs) + 0) = (unsigned char)kPrefs.m_ePixelLayout;
+        *(reinterpret_cast<unsigned char*>(&m_nPrefs) + 1) = (unsigned char)kPrefs.m_eAlphaFmt;
+        *(reinterpret_cast<unsigned char*>(&m_nPrefs) + 2) = (unsigned char)kPrefs.m_eMipMapped;
+        *(reinterpret_cast<unsigned char*>(&m_nPrefs) + 3) = 0;
     }
     bool operator<(const Unk_NifTexKey& r) const                // 0x14155c4d0
     {
@@ -355,18 +355,7 @@ struct Unk_NifTexKey
         return false;
     }
     CString m_strPath;
-    union
-    {
-        unsigned m_nPrefs;
-        struct
-        {
-            unsigned char m_cLayout;
-            unsigned char m_cAlpha;
-            unsigned char m_cMipMapped;
-            unsigned char m_cPad;
-        } m_kBytes;
-    };
-    int m_pad;
+    unsigned m_nPrefs;                              // bytes: layout, alpha format, mip-mapped, pad
 };
 MS2_CHECK_SIZE(Unk_NifTexKey, 0x10);
 
