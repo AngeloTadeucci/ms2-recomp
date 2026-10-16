@@ -332,11 +332,14 @@ struct Unk_MagicRowFlag { int m_nPad; int m_nValue; int m_nPad2; bool FUN_1407df
 
 // The skill row (skillrecord.cpp); only the members the projectile reads.
 struct Unk_MagicSkillRow {
+    int FUN_1407e1a10() const;                                      // the cast mode (2: the projectile follows the caster's hand)
     char m_pad00[0x30];
     unsigned m_nMagicId;                                            // +0x30 id into magicPath.xml
     int m_n34;                                                      // +0x34 target-tracking projectile
     int m_n38;                                                      // +0x38 aim type of the projectile
-    char m_pad3c[0x60];
+    char m_pad3c[4];
+    int m_n40;                                                      // +0x40 spawn a hit marker
+    char m_pad44[0x58];
     float m_f9c;                                                    // +0x9c height offset
     char m_pada0[0x10];
     float m_fb0;                                                    // +0xb0 height offset
@@ -354,9 +357,12 @@ struct Unk_MagicSkillRow {
     CString m_str188;                                               // +0x188 hit effect
     char m_pad190[0x10];
     int m_n1a0;                                                     // +0x1a0 hit effect id (0: take it from the worn weapon)
+    char m_pad1a4[0xcc];
+    CString m_str270;                                               // +0x270 beam effect
 };
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_nMagicId, 0x30);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n34, 0x34);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_n40, 0x40);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_f9c, 0x9c);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_fb0, 0xb0);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_flag100, 0x100);
@@ -366,6 +372,7 @@ MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str148, 0x148);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str158, 0x158);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str160, 0x160);
 MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str188, 0x188);
+MS2_CHECK_OFFSET(Unk_MagicSkillRow, m_str270, 0x270);
 
 // The skill cast record behind Unk_MagicTagPtr.
 struct Unk_MagicTag;
@@ -403,7 +410,7 @@ MS2_CHECK_OFFSET(Unk_MagicTag, m_nStartTick, 0x88);
 // A scene entity (GameObject). Only the vtable slots the projectile calls are named; the others keep the numbering.
 struct Unk_MagicEntity {
     virtual void vf0(); virtual void vf1(); virtual void vf2(); virtual void vf3(); virtual void vf4();
-    virtual int vf5_GetProperty(int nProp, unsigned long long* pOut);  // MS2: slot 5 (+0x28)
+    virtual bool vf5_GetProperty(int nProp, unsigned long long* pOut);  // MS2: slot 5 (+0x28)
     virtual void vf6(); virtual void vf7(); virtual void vf8(); virtual void vf9(); virtual void vf10();
     virtual void vf11(); virtual void vf12(); virtual void vf13(); virtual void vf14(); virtual void vf15();
     virtual void vf16(); virtual void vf17();
@@ -416,7 +423,7 @@ struct Unk_MagicEntity {
     virtual void vf33_Hit(Unk_MagicTag* pTag, Unk_StreamPoint ptAt);  // MS2: slot 33 (+0x108)
     virtual void vf34_Cast(Unk_MagicTag* pTag);                     // MS2: slot 34 (+0x110)
     virtual void vf35_End(Unk_MagicTag* pTag);                      // MS2: slot 35 (+0x118)
-    virtual void vf36(); 
+    virtual void vf36_GetNodePosition(CString strNode, Unk_StreamPoint* pOut);   // MS2: slot 36 (+0x120)
     virtual Unk_StreamPoint vf37_GetExtent();                       // MS2: slot 37 (+0x128)
     virtual Unk_StreamPoint vf38_Trace(Unk_StreamPoint ptFrom, Unk_StreamPoint ptTo, float fRange);   // MS2: slot 38 (+0x130)
     virtual void vf39();
@@ -438,9 +445,10 @@ public:
     Unk_MagicTagLookup FUN_141bc5bb0(unsigned long long nTag);
     Unk_MagicEntity* FUN_141bd0cc0();
     int FUN_141bd19d0(int nId);                                     // entity type by id
+    void FUN_141bc3470(Unk_MagicValPtr spVal, Unk_MagicTagPtr spTag);   // register the cast record's value (callee releases both)
 };
 Unk_MagicWorld* FUN_1403ed2d0();
-class Unk_MagicTime { public: long long FUN_1414732f0(int nMode); }; // 0x1414732f0 the clock in ms; mode from tag + 0x30
+class Unk_MagicTime { public: long long FUN_1414732f0(int nMode); int FUN_1414734a0(); }; // 0x1414732f0 the clock in ms; mode from tag + 0x30
 extern Unk_MagicTime* DAT_143ab1fa8;
 
 
@@ -453,13 +461,15 @@ struct Unk_MagicEffectReq {
     char m_pad0c[4];
     Unk_NodePtr m_pNode;                                            // +0x10
     void* m_pXform;                                                 // +0x18 the Unk_MagicXform to play at
-    char m_pad20[0x10];
+    char m_pad20[8];
+    void* m_pIds;                                                   // +0x28 where the spawned ids are collected
     int m_bFlag;                                                    // +0x30
-    char m_pad34[0x1c];
-    void* m_pIds;                                                   // +0x50
-    char m_pad58[0x18];
+    char m_pad34[0x3c];
 };
 MS2_CHECK_SIZE(Unk_MagicEffectReq, 0x70);
+MS2_CHECK_OFFSET(Unk_MagicEffectReq, m_pXform, 0x18);
+MS2_CHECK_OFFSET(Unk_MagicEffectReq, m_pIds, 0x28);
+MS2_CHECK_OFFSET(Unk_MagicEffectReq, m_bFlag, 0x30);
 
 // A 24 byte effect file handle (dtor 0x140a90120).
 struct Unk_MagicEffectFile { Unk_MagicEffectFile(); ~Unk_MagicEffectFile(); void* m_p; char m_pad[0x10]; };
@@ -709,6 +719,30 @@ Unk_MagicItemData* FUN_140527840(void* pItem);
 void FUN_1401bfde0(Unk_MagicItemHandle* pHandle);                   // release
 void FUN_1405a85f0(Unk_MagicItemHandle* pHandle);                   // release
 
+// ---- callees of the beam and cancel logic (unit-local; names invented) ----
+struct Unk_MagicRidee;
+class Unk_MagicRideeRef {
+public:
+    Unk_MagicRideeRef(Unk_MagicRidee* p);                           // 0x140963df0
+    ~Unk_MagicRideeRef();                                           // 0x1409648b0
+    bool FUN_140ba7bb0(int nNull) const;                            // != NULL
+    Unk_MagicRidee* FUN_140975bc0() const;                          // operator->
+private:
+    Unk_MagicRidee* m_p;
+};
+Unk_MagicEntity* FUN_141706540(Unk_MagicRidee* pRidee);             // the Ridee's rider
+void* FUN_14096e160(Unk_MagicEntity* pEntity);                      // as MyPC
+class Unk_MagicCubeService { public: void FUN_1412316a0(Unk_MagicValPtr spVal, Unk_MagicTagPtr spTag); };
+Unk_MagicCubeService* FUN_1409670b0();
+int FUN_14166ce30(Unk_MagicEntity* pEntity);
+Unk_StreamPoint* FUN_14144dcb0(ATL::CAtlArray<Unk_StreamPoint>* pArray, unsigned nIndex);     // element address
+long long FUN_140a0afb0(ATL::CAtlArray<Unk_StreamPoint>* pArray);  // GetCount
+void FUN_1410a76c0(void* pArray);                                   // RemoveAll
+
+// ---- callees of the projectile start (unit-local; names invented) ----
+float FUN_14123ce70(Unk_StreamPoint ptDirection);                   // direction -> yaw
+Unk_MagicEntity* FUN_14099eef0(Unk_MagicEntity* pEntity);           // entity -> player (0 if it is not one)
+
 // @0x14145e1a0
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 int FUN_14145e1a0(int nFrom, int nTo, Unk_MagicAimInfo* pInfo, const Unk_MagicSkillRow* pRow, Unk_StreamPoint* pPos, Unk_StreamPoint* pDir)
@@ -934,6 +968,69 @@ void CMagic::FUN_141460700()
 MS2_REPLACE_METHOD(0x141460700, CMagic, FUN_141460700, 208, 0x262997B3);
 
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x1414609e0
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_1414609e0()
+{
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1180(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL)
+        return;
+    int bFollowHand = 0;
+    int bBeam = 0;
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow != NULL && pRow->FUN_1407e1a10() == 2)
+        bFollowHand = 1;
+    if (pRow != NULL && m_n53C != 0 && !pRow->m_str270.IsEmpty())
+        bBeam = 1;
+    if (m_n530 == 0 || bFollowHand != 0 || bBeam != 0)
+        pOwner->vf36_GetNodePosition(CString(m_data.m_strFireNode), &m_ptStart);
+    if (m_data.m_ptFireFixed.FUN_140552700(DAT_143b01a60))
+        m_ptStart = m_data.m_ptFireFixed;
+    Unk_NiMatrix3 matRot;
+    float fYaw = FUN_14123ce70(m_spSkill->m_ptDefaultDir);
+    matRot.FUN_142084c10(fYaw);
+    FUN_141461ba0(matRot);
+    FUN_1420849a0(&matRot);
+    if (m_data.m_nRotation == 0) {
+        FUN_1420849a0(&matRot);
+        if (!FUN_14028d470(m_data.m_fDirRotZ, 0))
+            matRot.FUN_142084c10(-((m_data.m_fDirRotZ * 3.1415927f) / 180.0f));
+    } else {
+        matRot.FUN_142084c10((fYaw + 3.1415927f) - (m_data.m_fDirRotZ * 3.1415927f) / 180.0f);
+    }
+    m_ptB8 = matRot.FUN_140a00720(m_data.m_ptFireOffset);
+    m_ptStart.FUN_140a4e560(matRot.FUN_140a00720(m_data.m_ptFireOffset));
+    m_ptTarget = m_ptStart.FUN_14097fd50(matRot.FUN_140a00720(m_data.m_ptDirection).FUN_14097fc90(m_data.m_fDistance))
+        .FUN_14097fd50(m_data.m_ptControlEnd);
+    m_ptLast = m_ptStart;
+    m_ptCurrent = m_ptStart;
+    FUN_141461a80(m_ptStart);
+    FUN_141461140();
+    if (pRow != NULL && pRow->m_n120 != 0) {
+        if (m_spSkill->FUN_141759090() != 0 && m_data.m_nIgnorePhysxTestInitPosition == 0) {
+            Unk_MagicEntity* pPlayer = FUN_14099eef0(pOwner);
+            if (pPlayer != NULL && m_nState != 5) {
+                Unk_StreamPoint ptDelta = m_ptStart.FUN_140965c40(pPlayer->vf18_GetPosition());
+                if (m_n530 != 0 && bFollowHand == 0)
+                    ptDelta = m_ptStart.FUN_140965c40(m_ptAc);
+                ptDelta.z = 0;
+                float fLen = ptDelta.FUN_140968990();
+                if (0.0f < fLen) {
+                    Unk_StreamPoint ptHit;
+                    Unk_StreamPoint ptFrom = m_ptStart.FUN_14097fd50(ptDelta.FUN_1409f7960().FUN_14097fc90(fLen));
+                    if (FUN_1409f7ca0()->FUN_14168a230(ptFrom, ptHit, ptDelta, fLen, 0x201) != 0) {
+                        m_ptStart = ptHit.FUN_140965c40(ptDelta.FUN_14097fc90(5.0f));
+                        m_ptTarget = m_ptStart;
+                        FUN_141461a80(m_ptStart);
+                        m_n1C8 = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1414609E0, CMagic, FUN_1414609e0, 1870, 0xD4D59684);
+
 // @0x141461140
 void CMagic::FUN_141461140()
 {
@@ -1067,6 +1164,116 @@ void CMagic::FUN_1414607e0()
 MS2_REPLACE_METHOD(0x1414607e0, CMagic, FUN_1414607e0, 496, 0x890BF44E);
 
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+// @0x141468360
+// MS2-FUNCTIONAL: exe has a dead jmp after the return (template cast helper); no source form found
+Unk_MagicRidee* FUN_141468360(Unk_MagicEntity* pEntity)
+{
+    Unk_MagicRidee* pResult = 0;
+    if (pEntity != 0) {
+        if (pEntity->vf5_GetProperty(0x6200045, reinterpret_cast<unsigned long long*>(&pResult)))
+            return pResult;
+    }
+    return 0;
+}
+
+// @0x141462490
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_141462490(unsigned nNow)
+{
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL)
+        return;
+    if (!pRow->m_flag100.FUN_1407dfbb0() && pRow->m_n40 == 0)
+        return;
+    if (m_n1D0 != 0)
+        return;
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    Unk_MagicRideeRef kRidee(FUN_141468360(pOwner));
+    if (kRidee.FUN_140ba7bb0(0)) {
+        if (FUN_14096e160(FUN_141706540(kRidee.FUN_140975bc0())) == NULL)
+            return;
+    } else {
+        if (FUN_14096e160(pOwner) == NULL)
+            return;
+    }
+    if (m_spSkill->FUN_141759090() == 0) {
+        int nDelay = m_spSkill->FUN_141759190();
+        int nLife = nDelay + FUN_14028d260(m_data.m_fDelayTime);
+        unsigned nDue = nLife - FUN_14086d260()->FUN_1414734a0();
+        if (nDue <= nNow) {
+            m_n1D0 = 1;
+            FUN_1403ed2d0()->FUN_141bc3470(Unk_MagicValPtr(m_spVal), Unk_MagicTagPtr(m_spSkill));
+            FUN_1409670b0()->FUN_1412316a0(Unk_MagicValPtr(m_spVal), Unk_MagicTagPtr(m_spSkill));
+        }
+    } else {
+        FUN_1403ed2d0()->FUN_141bc3470(Unk_MagicValPtr(m_spVal), Unk_MagicTagPtr(m_spSkill));
+        FUN_1409670b0()->FUN_1412316a0(Unk_MagicValPtr(m_spVal), Unk_MagicTagPtr(m_spSkill));
+    }
+}
+
+MS2_REPLACE_METHOD(0x141462490, CMagic, FUN_141462490, 1128, 0x99D585A5);
+
+// @0x141463960
+// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
+void CMagic::FUN_141463960()
+{
+    if (m_n53C == 0)
+        return;
+    const Unk_MagicSkillRow* pRow = m_spSkill->FUN_141759050();
+    if (pRow == NULL)
+        return;
+    if (m_spSkill->FUN_141759090() != 0 || pRow->m_str270.IsEmpty())
+        return;
+    Unk_MagicEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_spSkill->m_nOwnerId);
+    if (pOwner == NULL || FUN_14166ce30(pOwner) != 0)
+        return;
+    FUN_1414609e0();
+    int nCaster = m_spSkill->m_nCasterId;
+    if (m_n280 == 0) {
+        m_n280 = 1;
+        ATL::CAtlArray<Unk_StreamPoint> kPoints;
+        FUN_1410a7400(&kPoints, &m_ptStart);
+        Unk_MagicEntity* pCaster = FUN_1403ed2d0()->FUN_141bd1200(nCaster);
+        if (pCaster != NULL) {
+            Unk_StreamPoint ptEnd = DAT_143b01a60;
+            if (FUN_141467100(pCaster, &ptEnd) == 0)
+                ptEnd = pCaster->vf18_GetPosition().FUN_14097fd50(pCaster->vf37_GetExtent());
+            FUN_1410a7400(&kPoints, &ptEnd);
+        }
+        if (FUN_140a0afb0(&kPoints) == 1)
+            return;
+        int nType = FUN_1403ed2d0()->FUN_141bd19d0(m_spSkill->m_nOwnerId);
+        if (FUN_14161ce60(FUN_1409f7c90(), m_spSkill->m_nOwnerId) == 0 && !FUN_141464220()) {
+            FUN_1410a7400(&m_slots[0].m_ids, FUN_14144dcb0(&kPoints, 0));
+            FUN_1410a7400(&m_slots[0].m_ids, FUN_14144dcb0(&kPoints, 1));
+            Unk_MagicEffectReq kReq;
+            kReq.m_strName = pRow->m_str270;
+            kReq.m_nObject = nType;
+            FUN_1409fabf0(&kReq.m_pNode, FUN_1409475d0(&m_spScene));
+            kReq.m_bFlag = 1;
+            kReq.m_pIds = &m_slots[0].m_ids;
+            m_slots[0].m_nEffect = FUN_1403ed280()->FUN_1411a49c0(&kReq);
+        }
+    }
+    if (m_n280 != 0) {
+        ATL::CAtlArray<Unk_StreamPoint> kPoints;
+        FUN_1410a7400(&kPoints, &m_ptStart);
+        Unk_MagicEntity* pCaster = FUN_1403ed2d0()->FUN_141bd1200(nCaster);
+        if (pCaster != NULL) {
+            Unk_StreamPoint ptEnd = DAT_143b01a60;
+            if (FUN_141467100(pCaster, &ptEnd) == 0)
+                ptEnd = pCaster->vf18_GetPosition().FUN_14097fd50(pCaster->vf37_GetExtent());
+            FUN_1410a7400(&kPoints, &ptEnd);
+        }
+        FUN_1410a76c0(&m_slots[0].m_ids);
+        if (FUN_140a0afb0(&kPoints) != 1) {
+            FUN_1410a7400(&m_slots[0].m_ids, FUN_14144dcb0(&kPoints, 0));
+            FUN_1410a7400(&m_slots[0].m_ids, FUN_14144dcb0(&kPoints, 1));
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141463960, CMagic, FUN_141463960, 1603, 0x7D7DA8EE);
+
 // @0x141464790
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_141464790(void* pHits, int nHits)
