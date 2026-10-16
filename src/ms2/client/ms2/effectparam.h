@@ -20,6 +20,8 @@
 #include "ms2/placeholder/cptred.h"
 
 class Unk_140165cf0;     // game TinyXML element
+class NiAVObject;
+class NiTransform;
 // Effect owner/target context passed to CEffectParam::vfunc_7 and CEffect::vfunc_3 (getters 0x140a53110/53010/53050/
 // 53420). Partial layout: only the fields read directly by recovered code; never allocate it from here.
 class Unk_EffectTarget
@@ -27,14 +29,29 @@ class Unk_EffectTarget
 public:
     void* m_unk_00;
     int m_nKind;                    // +0x08 (CPostEffectParam::vfunc_7: 3 passes; copied to CEffect +0x18)
-    int m_unk_0c[10];
+    int m_unk_0c;
+    NiPointer<NiAVObject> m_spObject;   // +0x10 the node the effect is attached to (effectservice: skip position)
+    NiTransform* m_pXform;          // +0x18 world transform when there is no node (caller owned)
+    void* m_unk_20[2];
+    bool m_b30;                     // +0x30 effectservice: Unk_SkipCheck::m_n14
+    bool m_b31;                     // +0x31
+    char m_unk_32[2];
     bool m_b34;                     // +0x34 copied to CEffect::m_b2f
     char m_unk_35[0x17];
     unsigned int m_nRandomIndex;    // +0x4c CRandomEffect: forced child index (mod count); 0 = weighted random
 
     class GameObject* FUN_140a533b0();  // 0x140a533b0 return the GameObject* at +0x58 (the effect's owner actor)
+    // ?\unit_140a52ef0.cpp getters (owner = the GameObject at +0x58; 2 = "any" for gender/job).
+    int FUN_140a53010();            // 0x140a53010 owner gender
+    int FUN_140a53050();            // 0x140a53050 owner job code
+    bool FUN_140a530d0();           // 0x140a530d0 the target is the local player
+    bool FUN_140a53110();           // 0x140a53110 the owner is optimized out (hidden)
+    double FUN_140a53420();         // 0x140a53420 start time (+0x68), 0 = now
+    void FUN_140a534a0();           // 0x140a534a0 resolve the owner by id and its scene node
 };
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nKind, 0x08);
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_spObject, 0x10);
+MS2_CHECK_OFFSET(Unk_EffectTarget, m_b30, 0x30);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_b34, 0x34);
 MS2_CHECK_OFFSET(Unk_EffectTarget, m_nRandomIndex, 0x4c);
 
@@ -66,6 +83,12 @@ public:
     virtual int vfunc_12() = 0;                     // 12 pure (CPostEffect 0x140dbdc80: return +0x30)
     // @0x140985010
     int GetKind() const { return m_unk_18; }
+    CString GetName() const;                        // 0x14119f330
+    float GetDuration() const;                      // 0x14119f380
+    double GetStartTime() const;                    // 0x14119f3a0
+    bool FUN_14119f3c0() const;                     // 0x14119f3c0 started (vfunc_4 ran)
+    bool IsLoop() const;                            // 0x14119f3e0
+    bool FUN_14119f400() const;                     // 0x14119f400
 
 public:
     MS2_LAYOUT_FRIEND;
