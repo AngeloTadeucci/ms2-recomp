@@ -14,7 +14,7 @@ template <class T> class MS2Ptr;
 class CItem;
 class COutputStream;
 class CInputStream;
-class CItemTransfer : public CPtred { public: class CItemBinding; CItemTransfer(); virtual void vfunc_1(COutputStream&); virtual void vfunc_2(CInputStream&); unsigned char FUN_1406352b0(); unsigned char FUN_1406351f0(void*, void*); __int64 FUN_140634fa0(); void FUN_140634fc0(unsigned); __int64 FUN_140634fe0(); void FUN_140635000(unsigned); void FUN_140635300(); MS2Ptr<CItemTransfer> FUN_140634b30(); void FUN_140634970(CItem*); char m_pad18[0x40]; };   // 0x58, ctor 0x140634820
+class CItemTransfer : public CPtred { public: class CItemBinding; CItemTransfer(); virtual void vfunc_1(COutputStream&); virtual void vfunc_2(CInputStream&); unsigned char FUN_1406352b0(); unsigned char FUN_1406351f0(void*, void*); __int64 FUN_140634fa0(); void FUN_140634fc0(unsigned); __int64 FUN_140634fe0(); void FUN_140635000(unsigned); void FUN_140635300(); MS2Ptr<CItemTransfer> FUN_140634b30(); void FUN_140634970(CItem*); void FUN_140634990(CItem*); char m_pad18[0x40]; };   // 0x58, ctor 0x140634820
 MS2_CHECK_SIZE(CItemTransfer, 0x58);
 typedef MS2SvrPtr<CPtred> Unk_ItemSlot188;   // 16-byte handle (ctor 0x14052c0d0, dtor 0x14027e150)
 class Unk_UserProxyItemData;

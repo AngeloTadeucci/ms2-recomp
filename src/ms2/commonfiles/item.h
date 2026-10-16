@@ -25,6 +25,7 @@ public:
     class Unk_ItemPlusInfo* FUN_140630d90();
     void FUN_1406306f0(int, int, int);
     void FUN_14062fda0(COutputStream&);
+    MS2Ptr<CItemStatus> FUN_14062fbc0();
     void FUN_14062fe20(CInputStream&);
     MS2Ptr<CItemOption> m_spOption;             // +0x18
     char m_pad28[0x20];
@@ -38,6 +39,7 @@ public:
     char m_pad80[0x58];
     int FUN_1406321a0();
     void FUN_140631f50(COutputStream&);
+    MS2Ptr<CItemUgc> FUN_140631e80();
     void FUN_140631fa0(CInputStream&);
     CString FUN_140632100();
 };
@@ -48,6 +50,7 @@ public:
     CItemSocket();                          // 0x140620320
     bool FUN_140620de0();
     void FUN_140620840(unsigned, unsigned);
+    MS2Ptr<CItemSocket> FUN_140620490();
     void FUN_1406205e0(COutputStream&);
     void FUN_140620700(CInputStream&);
     char m_pad18[0xd8];
@@ -58,7 +61,7 @@ class Unk_UserProxyItemData : public CPtred
 public:
     virtual void vfunc_1();
     virtual void vfunc_2();
-    virtual void vfunc_3();
+    virtual void vfunc_3(Unk_UserProxyItemData* pSrc);
     virtual void vfunc_4();
     virtual void vfunc_5(__int64);
     virtual void vfunc_6(CInputStream*);
@@ -89,6 +92,7 @@ public:
     __int64 FUN_14052d1c0();                // m_n18
     const CStringW& FUN_14052d1b0();        // m_str20
     void FUN_1406346a0(COutputStream&);
+    void FUN_1406347d0(const __int64& nId, const CStringW& strName);
     void FUN_140634700(CInputStream&);
     bool FUN_140634790(void*);              // elsewhere (itemtransfer)
 };
@@ -118,6 +122,7 @@ public:
     CItemCustomMusicScore();                // 0x14052c1a0
     bool FUN_140632780();
     void FUN_140632500(COutputStream&);
+    MS2Ptr<CItemCustomMusicScore> FUN_1406322c0();
     void FUN_140632620(CInputStream&);
     virtual ~CItemCustomMusicScore();       // (??_G 0x14052cfc0)
     void FUN_1406328c0();                   // reset the score (elsewhere)

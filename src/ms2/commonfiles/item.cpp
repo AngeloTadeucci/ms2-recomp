@@ -62,7 +62,11 @@ class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsig
 extern Unk_MusicBookTable* DAT_143aaf1a8;
 class Unk_EnchantRates { public: int FUN_140594720(int); int FUN_140594750(int); int FUN_1405947c0(int); };
 extern Unk_EnchantRates* DAT_143aaf1b0;
+class NpcShopItemLife : public CPtred { public: Unk_ItemSlot188 FUN_14026eab0(); };   // commonstruct_wa.h has the full class
+class Unk_ItemSetTable { public: int FUN_140597430(int); };   // behind DAT_143aaf1b8 (FUN_14052d1f0 returns it as void*)
 extern void* DAT_143aaf1b8;
+void* FUN_140166440();
+void FUN_140177a80(void* logger, int level, int category, const wchar_t* fmt, const int& arg);
 extern void* DAT_143aaf1c0;
 extern Unk_SingletonObj* DAT_143aaf1c8;
 extern Unk_SingletonObj* DAT_143aaf1d8;
@@ -2587,6 +2591,97 @@ void CItem::FUN_140524eb0(CInputStream& in)
     m_spBinding->FUN_140634700(in);
     FUN_1405290b0();
 }
+
+// ---- w101 batch 11: item copy
+// @0x140524250
+// MS2-FUNCTIONAL: the shop-life ref's operator-> (0x14027f340) and dtor (0x14027e150) are the exe's copies outside the unit; the bytes are identical otherwise
+MS2Ptr<CItem> CItem::FUN_140524250()
+{
+    MS2Ptr<CItem> spNew(new CItem);
+    if (!spNew->FUN_140523c40(FUN_1405276c0(), FUN_140526bd0(), 0))
+        return MS2Ptr<CItem>(0);
+    spNew->m_48 = m_48;
+    spNew->m_50 = m_50;
+    spNew->m_40 = m_40;
+    spNew->m_58 = m_58;
+    spNew->m_6c = m_6c;
+    spNew->m_5c = m_5c;
+    spNew->m_60 = m_60;
+    spNew->m_9c = m_9c;
+    spNew->m_a0 = m_a0;
+    spNew->m_a4 = m_a4;
+    spNew->m_a8 = m_a8;
+    spNew->m_d8 = m_d8;
+    spNew->m_d4 = m_d4;
+    spNew->m_dc = m_dc;
+    spNew->FUN_1405288e0(FUN_140528910());
+    spNew->FUN_140526c10(m_68);
+    if (static_cast<CItemStatus*>(m_spStatus) != 0)
+        spNew->m_spStatus = m_spStatus->FUN_14062fbc0();
+    if (m_spProxy.get() != 0)
+        spNew->m_spProxy->vfunc_3(m_spProxy.get());
+    if (static_cast<CItemUgc*>(m_spUgc) != 0)
+        spNew->m_spUgc = m_spUgc->FUN_140631e80();
+    if (static_cast<CItemGem*>(m_spGem) != 0)
+        spNew->m_spGem = m_spGem->vfunc_2();
+    if (static_cast<CItemTransfer*>(m_spTransfer) != 0)
+    {
+        spNew->m_spTransfer = m_spTransfer->FUN_140634b30();
+        spNew->m_spTransfer->FUN_140634970(spNew.get());
+    }
+    if (static_cast<CItemCustomMusicScore*>(m_spMusic) != 0)
+        spNew->m_spMusic = m_spMusic->FUN_1406322c0();
+    if (static_cast<CItemSocket*>(m_spSocket) != 0)
+        spNew->m_spSocket = m_spSocket->FUN_140620490();
+    if (static_cast<CItemTransfer::CItemBinding*>(m_spBinding) != 0)
+    {
+        spNew->m_spBinding.AssignRaw(new CItemTransfer::CItemBinding);
+        spNew->m_spBinding->FUN_1406347d0(m_spBinding->FUN_14052d1c0(), m_spBinding->FUN_14052d1b0());
+    }
+    if (static_cast<CPtred*>(m_slot188) != 0)
+        spNew->m_slot188 = static_cast<NpcShopItemLife*>(m_slot188.get())->FUN_14026eab0();
+    spNew->FUN_1405290b0();
+    return spNew;
+}
+
+// ---- w101 batch 11: item create
+// @0x140523c40
+bool CItem::FUN_140523c40(int nItemId, int nRarity, int nStatusArg)
+{
+    m_spData = FUN_14053f870(nItemId);
+    if (m_spData.IsNull())
+    {
+        FUN_140177a80(FUN_140166440(), 1, 0x13, L"Item 정보를 읽을 수 없습니다.itemID {0}", nItemId);
+        return false;
+    }
+    if (m_spData->FUN_14053c5a0() == 0)
+        FUN_140526bf0(nRarity);
+    else
+        FUN_140526bf0(m_spData->FUN_14053c5a0());
+    reinterpret_cast<Unk_PayloadPtr<CItemExtraData>&>(m_spProxy) = m_spData->FUN_14053e6c0();
+    m_spStatus.AssignRaw(new CItemStatus(nItemId, FUN_140526bd0(), nStatusArg));
+    if (FUN_140525f10() != 0 || FUN_140526010() != 0)
+        m_spUgc.AssignRaw(new CItemUgc);
+    if (FUN_140525a30() != 0)
+        m_spGem.AssignRaw(new CItemGem);
+    if (FUN_140525680())
+        m_spMusic.AssignRaw(new CItemCustomMusicScore);
+    m_spTransfer.AssignRaw(new CItemTransfer);
+    m_spTransfer->FUN_140634990(this);
+    if (m_spData->FUN_14053d510())
+        FUN_140526c10(5);
+    else
+        FUN_140526c10(FUN_140527a20());
+    vfunc_1();
+    m_spSocket.AssignRaw(new CItemSocket);
+    m_spCouple.AssignRaw(new CItemCoupleInfo);
+    FUN_1405290b0();
+    m_d8 = static_cast<Unk_ItemSetTable*>(FUN_14052d1f0())->FUN_140597430(nItemId);
+    m_spBinding.AssignRaw(new CItemTransfer::CItemBinding);
+    vfunc_2();
+    return true;
+}
+MS2_REPLACE_METHOD(0x140523C40, CItem, FUN_140523c40, 1529, 0x46F3A047);
 
 // ---- w101 batch 11: item write
 // @0x140524ad0
