@@ -49,6 +49,7 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\pcbase.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "pcbase.h"
+#include <egf/Entity.h>
 #include "ms2/client/ms2/ridee.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
@@ -280,6 +281,7 @@ class Unk_PCBaseHitReport
 {
 public:
     egf::EntityID FUN_140cfaf70();                                  // id of the entity stood on
+    void FUN_140cfb020(egf::Entity* pEntity);                       // the entity stood on
     Unk_PCBaseEntity* FUN_140cfaff0();                              // the entity stood on
 };
 
@@ -302,7 +304,7 @@ struct Unk_PCBaseRayHit
     int m_groups;                                                   // +0x1c
     void* m_20;
     void* m_28;
-    void* m_hitEntity;                                              // +0x30
+    egf::Entity* m_hitEntity;                                       // +0x30
     void* m_hitActor;
     void* m_hitShape;
     float m_hitDist;                                                // +0x48
@@ -313,7 +315,7 @@ MS2_CHECK_SIZE(Unk_PCBaseRayHit, 0x68);
 class Unk_PCBasePhysX
 {
 public:
-    int FUN_14168a310(const NiPoint3& kFrom, efd::Point3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, NiPoint3* pNormal, int nB);
+    int FUN_14168a310(const efd::Point3& kFrom, efd::Point3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, efd::Point3* pNormal, int nB);
     int FUN_14168a230(NiPoint3 kFrom, efd::Point3& kHit, NiPoint3 kDir, float fLen, int nMask);   // ray cast
     int FUN_14168a450(efd::Point3& kPos, float* pfHeight, float fRange);                                // ground probe
 };
@@ -475,6 +477,18 @@ public:
 };
 Unk_PCBaseConstants* FUN_1401d3200();
 
+// A moving field object (platform; scenestategame.cpp/state.cpp).
+class Unk_RideeFieldObj
+{
+public:
+    efd::Point3 FUN_140ae0150();                                    // ground normal
+    void FUN_140ae0190();                                           // advance to the current time
+    efd::Point3 FUN_140adf8e0();                                    // +0x148 position
+    efd::Point3 FUN_140ae0660();                                    // +0x154 offset
+};
+template <> MS2Ptr<Unk_RideeFieldObj>::~MS2Ptr();
+template <> Unk_RideeFieldObj* MS2Ptr<Unk_RideeFieldObj>::get() const;
+template <> Unk_RideeFieldObj* MS2Ptr<Unk_RideeFieldObj>::operator->() const;
 class Unk_PCBaseWorld
 {
 public:
@@ -485,6 +499,7 @@ public:
     MS2Ptr<CFieldDataCli> FUN_141bd30a0();                          // the current field data
     bool FUN_141bd7230(const NiPoint3& kPos);
     int FUN_141bdb660(int n);
+    MS2Ptr<Unk_RideeFieldObj> FUN_141bc4f10(egf::Entity* pEntity);  // the field object of an entity
 };
 Unk_PCBaseWorld* FUN_1403ed2d0();
 // The skill request a CSkillRecord is built from (same view as avatarpc.cpp / uimessagebox.cpp).
@@ -617,6 +632,7 @@ Unk_PCBaseAnimSvc* FUN_141b6f910();
 CString FUN_1409a2360(const char* psz, int n);                      // text conversion
 void FUN_140ae1240(void* pEntity, unsigned uHash, const efd::utf8string& str);   // set an entity string property
 NiAVObject* FUN_141b6efc0(void* pEntity);
+CString FUN_140188f50(const char* psz, int nCodePage);              // multibyte copy (0 = default code page)
 void FUN_141567330(NiAVObject* pNode, bool bShadow);
 const char* FUN_142087e50(const NiFixedString& kFixed);            // NiFixedString -> c string
 int FUN_1409a1a00(NiActorManager* pkManager);                       // the current sequence id
@@ -639,6 +655,31 @@ EE_IMPLEMENT_CONCRETE_CLASS_INFO(PCBase);
 static CString s_sortNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_skill("skill");
 static CString s_stun("stun");
+// The NIF resource loader (FUN_140a0afd0; cubecraft_1.cpp's Unk_CubeResourceService).
+class Unk_PCBaseResourceSvc
+{
+public:
+    efd::SmartPointer<NiAVObject> FUN_141551ea0(CString strPath, int nA, int nFlags, int nB, int nC);
+};
+Unk_PCBaseResourceSvc* FUN_140a0afd0();
+CString FUN_140cc2a00(const CString& strRoot, const CString& strFile);   // path join
+void FUN_1410b2450(NiAVObject* pObj, float fScale);                   // uniform scale
+void FUN_141b70cb0(NiRenderObject* pObj, float fWidth, const NiColor& kColor, float fAlpha);   // outline tint
+// Depth-first walker over a scene graph (0x38; util.cpp).
+class Unk_SceneWalker
+{
+public:
+    Unk_SceneWalker(NiObject* pkRoot);                              // 0x14098cb80
+    ~Unk_SceneWalker();                                             // 0x14098cf00
+    NiAVObject* Next(bool bDescend);                                // 0x14098e0d0
+private:
+    void* m_pad_00; void* m_pad_08; void* m_pad_10; void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30;
+};
+MS2_CHECK_SIZE(Unk_SceneWalker, 0x38);
+extern NiFixedString DAT_143ae5470[9][30];
+PCBase* FUN_1409ffd30(GameObject* pObj);                            // efd::DynamicCast<PCBase> (class id 0x06200013)
+bool FUN_14028d470(float fA, float fB);                             // float equality
+float FUN_140966f00(NiPoint3 kA, NiPoint3 kB);                      // distance                         // "<part>NN" dummy names (unit_1416bc380)
 static CString s_partNames[] = {"Head", "Body", "Back", "RHand", "LHand", "RFoot", "LFoot", "Tail", "Hold_Point"};
 static egf::EntityID s_kNoEntity(0ull);
 static ATL::CAtlMap<unsigned int, CString> s_conditions(17, .75f, .25f, 2.25f, 10);
@@ -2533,6 +2574,57 @@ efd::SmartPointer<NiAVObject> PCBase::FUN_141675930()
 }
 MS2_REPLACE_METHOD(0x141675930, PCBase, FUN_141675930, 67, 0x12297BF2);
 
+// @0x141675980
+void PCBase::FUN_141675980()
+{
+    m_unk_bb8.RemoveAll();
+    if (FUN_1409f7c90()->FUN_14109a9d0() != 0)
+    {
+        NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+        if (pRoot != 0)
+        {
+            for (unsigned int i = 0; i < 9; i++)
+            {
+                for (unsigned int j = 0; j < 30; j++)
+                {
+                    NiAVObject* pNode = pRoot->GetObjectByName(DAT_143ae5470[i][j]);
+                    if (pNode != 0)
+                    {
+                        efd::SmartPointer<NiAVObject> spNode(pNode);
+                        m_unk_bb8.SetAt(FUN_140188f50(pNode->GetName(), 0), spNode);
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+        if (pRoot != 0)
+        {
+            for (unsigned int i = 0; i < 9; i++)
+            {
+                for (unsigned int j = 0; j < 30; j++)
+                {
+                    CString strName;
+                    strName.Format("%s%02d", (const char*)s_partNames[i], j);
+                    NiAVObject* pNode;
+                    {
+                        NiFixedString kName(strName);
+                        pNode = pRoot->GetObjectByName(kName);
+                    }
+                    if (pNode != 0)
+                    {
+                        efd::SmartPointer<NiAVObject> spNode(pNode);
+                        m_unk_bb8.SetAt(FUN_140188f50(pNode->GetName(), 0), spNode);
+                    }
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141675980, PCBase, FUN_141675980, 831, 0x095AE68E);
+
 // @0x141675cd0
 int PCBase::FUN_141675cd0(const NiPoint3& kPos, CString strUnused, CString* pName, float* pDist)
 {
@@ -3003,6 +3095,130 @@ void PCBase::vfunc_53(float f)
 }
 MS2_REPLACE_METHOD(0x141679450, PCBase, vfunc_53, 383, 0x2D2ECE5C);
 
+// @0x141679800
+GameObject* PCBase::FUN_141679800(CAtlArray<efd::SmartPointer<GameObject> >& arrTargets, float fAngle, efd::Point3 kDir, int nMode)
+{
+    GameObject* pBest = 0;
+    float fBest = -1.0f;
+    GameObject* pBestDead = 0;
+    float fBestDead = -1.0f;
+    for (unsigned int i = 0; i < arrTargets.GetCount(); i++)
+    {
+        GameObject* pTarget = arrTargets[i];
+        efd::Point3 kTo = pTarget->vfunc_18() - vfunc_18();
+        kTo.z = 0.0f;
+        kTo.Unitize();
+        float fDot = kDir.Dot(kTo);
+        if (fDot < cos(((fAngle / 2.0f) * 3.1415927f) / 180.0f))
+            continue;
+        {
+            int nDead = 0;
+            PCBase* pPC = FUN_1409ffd30(pTarget);
+            if (pPC != 0)
+                nDead = pPC->FUN_14166ce30();
+            if (nDead != 0)
+            {
+                int bPick = 0;
+                if (nMode == 0)
+                {
+                    if (fBestDead < fDot)
+                        bPick = 1;
+                }
+                else if (nMode == 3 && (fBestDead > fDot || FUN_14028d470(fBestDead, -1.0f)))
+                    bPick = 1;
+                if (bPick)
+                {
+                    fBestDead = fDot;
+                    pBestDead = pTarget;
+                }
+            }
+            else
+            {
+                int bPick = 0;
+                if (nMode == 0)
+                {
+                    if (fBest < fDot)
+                        bPick = 1;
+                }
+                else if (nMode == 3 && (fBest > fDot || FUN_14028d470(fBest, -1.0f)))
+                    bPick = 1;
+                if (bPick)
+                {
+                    fBest = fDot;
+                    pBest = pTarget;
+                }
+            }
+        }
+    }
+    if (pBest == 0)
+        return pBestDead;
+    return pBest;
+}
+MS2_REPLACE_METHOD(0x141679800, PCBase, FUN_141679800, 707, 0xB9D64A5E);
+
+// @0x141679ad0
+GameObject* PCBase::FUN_141679ad0(CAtlArray<efd::SmartPointer<GameObject> >& arrTargets, float fAngle, efd::Point3 kDir, int nMode)
+{
+    GameObject* pBest = 0;
+    float fBest = -1.0f;
+    GameObject* pBestDead = 0;
+    float fBestDead = -1.0f;
+    for (unsigned int i = 0; i < arrTargets.GetCount(); i++)
+    {
+        GameObject* pTarget = arrTargets[i];
+        NiPoint3 kPos = pTarget->vfunc_30(this);
+        efd::Point3 kTo = kPos - vfunc_18();
+        kTo.z = 0.0f;
+        kTo.Unitize();
+        float fDot = kDir.Dot(kTo);
+        if (fDot < cos(((fAngle / 2.0f) * 3.1415927f) / 180.0f))
+            continue;
+        {
+            float fDist = FUN_140966f00(kPos, vfunc_18());
+            int nDead = 0;
+            PCBase* pPC = FUN_1409ffd30(pTarget);
+            if (pPC != 0)
+                nDead = pPC->FUN_14166ce30();
+            if (nDead != 0)
+            {
+                int bPick = 0;
+                if (nMode == 2)
+                {
+                    if (fBestDead < fDist)
+                        bPick = 1;
+                }
+                else if (nMode == 1 && (fBestDead > fDist || FUN_14028d470(fBestDead, -1.0f)))
+                    bPick = 1;
+                if (bPick)
+                {
+                    fBestDead = fDist;
+                    pBestDead = pTarget;
+                }
+            }
+            else
+            {
+                int bPick = 0;
+                if (nMode == 2)
+                {
+                    if (fBest < fDist)
+                        bPick = 1;
+                }
+                else if (nMode == 1 && (fBest > fDist || FUN_14028d470(fBest, -1.0f)))
+                    bPick = 1;
+                if (bPick)
+                {
+                    fBest = fDist;
+                    pBest = pTarget;
+                }
+            }
+        }
+    }
+    if (pBest == 0)
+        return pBestDead;
+    return pBest;
+}
+MS2_REPLACE_METHOD(0x141679ad0, PCBase, FUN_141679ad0, 807, 0x7FC7CEBC);
+
 // @0x141679fa0
 // MS2-FUNCTIONAL: pointer locals get other frame slots (the exe copies the "FA_Skin" child into a second slot); same calls and stores.
 void PCBase::FUN_141679fa0()
@@ -3197,6 +3413,40 @@ int PCBase::FUN_141677f40(PCBase* pActor)
 }
 MS2_REPLACE(0x141677f40, PCBase::FUN_141677f40, 523, 0x3E530166);
 
+// @0x141678360
+void PCBase::FUN_141678360()
+{
+    if (m_unk_c04 != 0)
+    {
+        float fRange = 50.0f;
+        Unk_PCBaseRayHit kRay;
+        efd::Point3 kFrom = vfunc_18() + efd::Point3(0.0f, 0.0f, 50.0f);
+        efd::Point3 kHit = efd::Point3::ZERO;
+        efd::Point3 kNormal = efd::Point3::ZERO;
+        int nHit = FUN_1409f7ca0()->FUN_14168a310(kFrom, &kHit, &kRay, 50.0f, &kNormal, 0);
+        if (nHit != 0 && kRay.m_hitEntity != 0)
+        {
+            if (kRay.m_hitEntity->GetEntityID() != FUN_14166d220()->FUN_141240f20()->FUN_140cfaf70())
+            {
+                MS2Ptr<Unk_RideeFieldObj> spObj = FUN_1403ed2d0()->FUN_141bc4f10(kRay.m_hitEntity);
+                if (spObj.get())
+                {
+                    efd::Point3 kNormalUp = spObj->FUN_140ae0150();
+                    if (kNormalUp.z > 0.0f && kRay.m_hitDist <= 50.0f)
+                    {
+                        spObj->FUN_140ae0190();
+                        efd::Point3 kPos = kRay.m_hitPoint;
+                        kPos.z = spObj->FUN_140adf8e0().z + spObj->FUN_140ae0660().z + 10.0f;
+                        vfunc_19(kPos);
+                        FUN_14166d220()->FUN_141240f20()->FUN_140cfb020(kRay.m_hitEntity);
+                    }
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141678360, PCBase, FUN_141678360, 786, 0x4E893F00);
+
 // @0x1416788d0
 void PCBase::FUN_1416788d0()
 {
@@ -3284,6 +3534,46 @@ void PCBase::FUN_141670fd0(efd::Point3 kSize, efd::Point3 kOffset)
     m_sp628->vfunc_4();
 }
 MS2_REPLACE_METHOD(0x141670fd0, PCBase, FUN_141670fd0, 332, 0x3365AEC9);
+
+// @0x141678ad0
+// MS2-FUNCTIONAL: the /GS frame puts the rotation matrix and cookie 8 bytes higher (0x110/0x138 vs 0x108/0x130); code otherwise identical.
+void PCBase::FUN_141678ad0(CString strName, bool bOutline, float fScale, float fAngle)
+{
+    if (m_spC40)
+        return;
+    efd::SmartPointer<NiNode> spRoot = (NiNode*)FUN_141675150("Eff_UI");
+    if (spRoot == 0)
+        return;
+    m_spC40 = FUN_140a0afd0()->FUN_141551ea0(FUN_140cc2a00("Model", strName), 0, 5, 0, 0);
+    if (m_spC40 == 0)
+        return;
+    if (fScale != 1.0f)
+        FUN_1410b2450(m_spC40.operator->(), fScale);
+    if (fAngle != 0.0f)
+    {
+        float fRad = fAngle != 0.0f ? (fAngle * 3.1415927f) / 180.0f : 0.0f;
+        NiMatrix3 kRot;
+        kRot.MakeIdentity();
+        kRot.FromEulerAnglesXYZ(0.0f, 0.0f, fRad);
+        m_spC40->SetRotate(kRot);
+    }
+    spRoot->AttachChild(m_spC40, false);
+    m_spC40->UpdateEffects();
+    m_spC40->UpdateProperties();
+    if (bOutline)
+    {
+        NiColor kColor(1.0f, 0.95f, 0.5058f);
+        Unk_SceneWalker kWalker(m_spC40);
+        NiAVObject* pObj;
+        while ((pObj = kWalker.Next(true)) != 0)
+        {
+            NiRenderObject* pRender = NiDynamicCast(NiRenderObject, pObj);
+            if (pRender != 0)
+                FUN_141b70cb0(NiDynamicCast(NiRenderObject, pObj), 3.0f, kColor, 0.0f);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141678ad0, PCBase, FUN_141678ad0, 1135, 0x6DF40066);
 
 // @0x141678f50
 // MS2-FUNCTIONAL: the exe keeps the NiNode smart pointer's ctor result in three extra slots (frame 0x78 vs 0x58); same calls and order.

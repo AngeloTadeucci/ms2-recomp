@@ -239,7 +239,10 @@ public:
     void FUN_14166ebf0(PCBase* pOther);                     // 0x14166ebf0 copy pOther's +0xae0 entity position
     int FUN_141675ed0();                                    // 0x141675ed0 standing on a kind-8 (water) entity
     void FUN_141676140();                                   // 0x141676140 send the fall damage since +0xc10
-    void FUN_141678f50();                                   // 0x141678f50 detach +0xc40 from "Eff_UI"
+    void FUN_141678ad0(CString strName, bool bOutline, float fScale, float fAngle);   // 0x141678ad0 attach a model under "Eff_UI" (+0xc40)
+    void FUN_141678f50();
+    GameObject* FUN_141679800(CAtlArray<efd::SmartPointer<GameObject> >& arrTargets, float fAngle, efd::Point3 kDir, int nMode);   // 0x141679800 best target in a cone by angle (alive first)
+    GameObject* FUN_141679ad0(CAtlArray<efd::SmartPointer<GameObject> >& arrTargets, float fAngle, efd::Point3 kDir, int nMode);   // 0x141679ad0 best target in a cone by distance (alive first)                                   // 0x141678f50 detach +0xc40 from "Eff_UI"
     // clonepc.cpp (w69)
     bool FUN_14166ed10();                                   // 0x14166ed10 the value ClonePC copies into m_b9d0
     void FUN_14166ed70(int n);                              // 0x14166ed70
