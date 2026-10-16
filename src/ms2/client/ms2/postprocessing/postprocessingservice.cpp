@@ -71,6 +71,10 @@
 // MS2-PIN: ??1OverdrawRenderStep@@UEAA@XZ 0x1416a27f0
 // MS2-PIN: ??_7PostProcessingService@@6B?$TSingleton@VPostProcessingService@@@@@ 0x142f52100
 // MS2-PIN: ??_7PostProcessingService@@6BISystemService@efd@@@ 0x142f52110
+// MS2-PIN: ??__ENiD3DXEffectShaderSDMObject@@YAXXZ 0x1400fc840 ; hand: NiD3DXEffectShaderLib.h static, between the sort names and "skill"
+// MS2-PIN: ??__Es_pointer@@YAXXZ 0x1400fc8f0 ; hand: dynamic init of s_pointer
+// MS2-PIN: ?FUN_1416b0de0@CPlaneReflectionSetting@@QEAAAEAVPoint3@efd@@XZ 0x1416b0de0 ; hand: tplpin proposal
+// MS2-PIN: ?FUN_1416b0e20@CPlaneReflectionSetting@@QEAAAEAVPoint3@efd@@XZ 0x1416b0e20 ; hand: tplpin proposal
 #ifdef __clang__
 // The exe passes the address of a temporary NiFixedString (an MSVC extension) to the SSAO step ctor.
 #pragma clang diagnostic ignored "-Waddress-of-temporary"
@@ -91,6 +95,7 @@
 #include <NiScreenFillingRenderView.h>
 #include <NiTexturingProperty.h>
 #include <NiRenderObject.h>
+#include <NiSingleShaderMaterial.h>
 #include <ecr/CoreRuntimeMessages.h>
 #include "ms2/client/ms2/mirrored3drenderview.h"
 #include "ms2/client/ms2/ms2renderlistprocessor.h"
@@ -130,6 +135,7 @@
 #include <egf/FlatModel.h>
 #include <egf/FlatModelManager.h>
 #include "ms2/placeholder/ms2renderprocessors.h"
+#include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
 extern NiFixedString DAT_143ae53e0;                         // "gakNormalSampleOffsets" (global shader constant name)
@@ -1504,12 +1510,11 @@ MS2_REPLACE_METHOD(0x1416a3cd0, PostProcessingService, FUN_1416a3cd0, 485, 0x74B
 
 // The first active step.
 // @0x1416a3ec0
-// MS2-FUNCTIONAL: the exe copies the begin()/end() temporaries into separate locals; behaviour equivalent
 PostProcessEffect* PostProcessingService::FUN_1416a3ec0()
 {
-    for (auto& kStep : m_kSteps)
+    MS2_FOR_EACH(const auto& kStep, m_kSteps)
     {
-        if (kStep.second != 0 && kStep.second->GetActive())
+        if ((bool)kStep.second && kStep.second->GetActive())
             return kStep.second;
     }
     return 0;
@@ -1802,7 +1807,7 @@ efd::AsyncResult PostProcessingService::OnShutdown()
             FUN_1401859c0(FUN_140166440(), 1, 0x13, L"ERROR: PostProcessingService::LinkEffects pFrame is Null");
             return efd::AsyncResult_Pending;
         }
-        for (auto& kStep : m_kSteps)
+        MS2_FOR_EACH(const auto& kStep, m_kSteps)
         {
             pkFrame->RemoveRenderStep(kStep.second);
             kStep.second->vfunc_16();
@@ -1828,7 +1833,7 @@ efd::AsyncResult PostProcessingService::OnShutdown()
         }
         if (pkFrame != 0)
         {
-            if (m_spMirroredStep != 0)
+            if ((NiDefaultClickRenderStep*)m_spMirroredStep != 0)
             {
                 m_spMirroredStep->RemoveAllRenderClicks();
                 m_aspClicks[7] = 0;
@@ -1837,7 +1842,7 @@ efd::AsyncResult PostProcessingService::OnShutdown()
                 m_spMirroredStep = 0;
             }
             NiDefaultClickRenderStep* pkStep = NiDynamicCast(NiDefaultClickRenderStep,
-                pkFrame->GetRenderStepByName(NiFixedString("PreprocessRenderStep")));
+                pkFrame->GetRenderStepByName("PreprocessRenderStep"));
             if (pkStep != 0)
             {
                 for (int i = 0; i < 11; i++)
@@ -2235,8 +2240,127 @@ bool PostProcessingService::FUN_1416ac2e0(NiRenderClick* pkClick, void* pvData)
     return false;
 }
 
+// @0x1416aaef0
+// PostProcessingService::LinkEffects (name from its log strings): takes the steps out of the active render frame, then
+// inserts the active ones after the main scene step (fade steps at the tail), chaining each step's output into the next
+// one; the UI steps render into the first fade step's input and the last step into the default target.
+void PostProcessingService::FUN_1416aaef0()
+{
+    ecr::RenderService* pkRenderService = m_pServiceManager->GetSystemServiceAs<ecr::RenderService>();
+    if (pkRenderService == 0)
+    {
+        FUN_1401859c0(FUN_140166440(), 1, 0x13, L"ERROR: PostProcessingService::LinkEffects pRenderService is Null");
+        return;
+    }
+    NiRenderFrame* pkFrame = pkRenderService->GetActiveRenderSurface()->GetRenderFrame();
+    if (pkFrame == 0)
+    {
+        FUN_1401859c0(FUN_140166440(), 1, 0x13, L"ERROR: PostProcessingService::LinkEffects pFrame is Null");
+        return;
+    }
+    NiRenderStep* pkMainSceneRenderStep = pkRenderService->GetActiveRenderSurface()->GetRenderStep();
+    if (pkMainSceneRenderStep == 0)
+    {
+        FUN_1401859c0(FUN_140166440(), 1, 0x13,
+            L"ERROR: PostProcessingService::LinkEffects pMainSceneRenderStep is Null");
+        return;
+    }
+
+    MS2_FOR_EACH(const auto& kStep, m_kSteps)
+        pkFrame->RemoveRenderStep(kStep.second);
+
+    efd::SmartPointer<PostProcessEffect> spPrev = 0;
+    efd::SmartPointer<PostProcessEffect> spFirst = 0;
+    efd::SmartPointer<PostProcessEffect> spFirstFade = 0;
+    NiTListIterator kPos = pkFrame->GetRenderSteps().FindPos(pkMainSceneRenderStep);
+
+    MS2_FOR_EACH(const auto& kStep, m_kSteps)
+    {
+        if (!kStep.second)
+            continue;
+        kStep.second->SetPreProcessingCallbackFunc(0, 0);
+        if (kStep.second->GetActive())
+        {
+            if (FUN_1416aa8b0(kStep.second))
+                continue;
+            if (spFirst == 0)
+                spFirst = kStep.second;
+            if (!kStep.second->FUN_1409a8f00())
+            {
+                if (!FUN_1416ac060(kStep.second))
+                    continue;
+            }
+            else
+            {
+                kStep.second->vfunc_21();
+            }
+            kPos = pkFrame->GetRenderSteps().InsertAfter(kPos, NiDynamicCast(NiRenderStep, kStep.second));
+            if (spPrev != 0)
+                spPrev->SetOutputRenderTargetGroup((NiRenderTargetGroup*)kStep.second->vfunc_18());
+            spPrev = kStep.second;
+        }
+    }
+
+    MS2_FOR_EACH(const auto& kStep, m_kSteps)
+    {
+        if (!kStep.second)
+            continue;
+        if (kStep.second->GetActive())
+        {
+            if (!FUN_1416aa8b0(kStep.second))
+                continue;
+            if (spFirst == 0)
+                spFirst = kStep.second;
+            if (spFirstFade == 0)
+                spFirstFade = kStep.second;
+            if (!kStep.second->FUN_1409a8f00())
+            {
+                if (!kStep.second->vfunc_15(m_nFormat, m_aspTextures))
+                    continue;
+            }
+            pkFrame->GetRenderSteps().AddTail(NiDynamicCast(NiRenderStep, kStep.second));
+            if (spPrev != 0)
+                spPrev->SetOutputRenderTargetGroup((NiRenderTargetGroup*)kStep.second->vfunc_18());
+            spPrev = kStep.second;
+        }
+    }
+
+    NiTListIterator kIter = 0;
+    if (kIter == 0)
+        kIter = pkFrame->GetRenderSteps().GetHeadPos();
+    while (kIter)
+    {
+        NiRenderStep* pkStep = pkFrame->GetRenderSteps().GetNext(kIter);
+        if (pkStep != 0 && (pkStep->GetName() == "UI Render Step" || pkStep->GetName() == "Screen Elements Render Step"))
+        {
+            if (spFirstFade)
+            {
+                if (spFirstFade == spFirst)
+                    pkStep->SetOutputRenderTargetGroup(m_spTarget190);
+                else
+                    pkStep->SetOutputRenderTargetGroup((NiRenderTargetGroup*)spFirstFade->vfunc_18());
+            }
+            else
+            {
+                pkStep->SetOutputRenderTargetGroup(pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup());
+            }
+        }
+    }
+
+    if (spFirst == 0)
+    {
+        FUN_1416ac3b0(pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup());
+    }
+    else if (spPrev != 0)
+    {
+        spPrev->SetOutputRenderTargetGroup(pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup());
+        FUN_1416ac3b0(m_spTarget190);
+        spFirst->SetPreProcessingCallbackFunc(FUN_1416abac0, this);
+    }
+}
+MS2_REPLACE_METHOD(0x1416aaef0, PostProcessingService, FUN_1416aaef0, 2660, 0x8ED2747E);
+
 // @0x1416ab960
-// MS2-FUNCTIONAL: the exe copies the step map's begin()/end() temporaries into separate locals; behaviour equivalent
 void PostProcessingService::FUN_1416ab960()
 {
     ecr::RenderService* pkRenderService = m_pServiceManager->GetSystemServiceAs<ecr::RenderService>();
@@ -2245,7 +2369,7 @@ void PostProcessingService::FUN_1416ab960()
         NiRenderFrame* pkFrame = pkRenderService->GetActiveRenderSurface()->GetRenderFrame();
         if (pkFrame != 0)
         {
-            for (auto& kStep : m_kSteps)
+            MS2_FOR_EACH(const auto& kStep, m_kSteps)
             {
                 if (kStep.second)
                 {
@@ -2545,7 +2669,7 @@ efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a97b0()
 }
 MS2_REPLACE_METHOD(0x1416a97b0, PostProcessingService, FUN_1416a97b0, 729, 0xCC1298A7);
 
-extern NiColorA DAT_143a09680;          // all-zero clear colour
+extern NiColorA DAT_143a09680;          // efd::ColorA::BLACK (0,0,0,1)
 
 // @0x1416a9a90
 // MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
@@ -2795,7 +2919,7 @@ bool PostProcessingService::FUN_1416abd20(bool bBeforeReset)
             {
                 if (pkStep->GetOutputRenderTargetGroup() != pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup())
                     FUN_1416ac3b0(0);
-                for (auto& kStep : m_kSteps)
+                MS2_FOR_EACH(const auto& kStep, m_kSteps)
                 {
                     if (kStep.second->GetOutputRenderTargetGroup() != pkRenderService->GetRenderer()->GetDefaultRenderTargetGroup()
                         && kStep.second)
@@ -2828,3 +2952,90 @@ bool PostProcessingService::FUN_1416abd20(bool bBeforeReset)
     return true;
 }
 MS2_REPLACE_METHOD(0x1416abd20, PostProcessingService, FUN_1416abd20, 820, 0x723AFA3D);
+
+// Builds one screen-filling post-process pass: a full-screen quad textured with
+// pkSource (plus up to three shader maps), drawn with pcMaterial into pkTarget,
+// and appends the click to pkStep. Callers reach it through FUN_1416b4990.
+// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
+// @0x1416b4990
+efd::SmartPointer<NiViewRenderClick> setupRenderClick(NiDefaultClickRenderStep* pkStep, const char* pcName,
+    NiRenderClick::Callback pfnCallback, void* pvCallbackData, NiTexture* pkSource,
+    NiTexturingProperty::FilterMode eFilter, NiTexturingProperty::ClampMode eClamp, NiRenderedTexture* pkTarget,
+    const char* pcMaterial, NiTexture* pkMap0, NiTexture* pkMap1, NiTexture* pkMap2)
+{
+    {
+        efd::SmartPointer<NiScreenFillingRenderView> spView =
+            NiDynamicCast(NiScreenFillingRenderView, NiScreenFillingRenderView::Create());
+        if (spView)
+        {
+            efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick;
+            if (spClick)
+            {
+                spClick->SetName(pcName);
+                spClick->SetBackgroundColor((const efd::ColorA&)DAT_143a09680);
+                spClick->SetClearColorBuffers(false);
+                spClick->AppendRenderView(spView);
+                spClick->SetPreProcessingCallbackFunc(pfnCallback, pvCallbackData);
+                NiRenderObject* pkQuad = &spView->GetScreenFillingQuad();
+                {
+                    efd::SmartPointer<NiTexturingProperty> spTexProp = NiNew NiTexturingProperty;
+                    if (spTexProp)
+                    {
+                        spTexProp->SetBaseTexture(pkSource);
+                        spTexProp->SetBaseFilterMode(eFilter);
+                        spTexProp->SetBaseClampMode(eClamp);
+                        pkQuad->AttachProperty(spTexProp);
+                        if (pkTarget != 0)
+                        {
+                            efd::SmartPointer<NiRenderTargetGroup> spTarget = NiRenderTargetGroup::Create(
+                                pkTarget->GetBuffer(), FUN_140994450(), true, true);
+                            if (!spTarget)
+                                return 0;
+                            spClick->SetRenderTargetGroup(spTarget);
+                        }
+                        if (pcMaterial == 0)
+                            return 0;
+                        efd::SmartPointer<NiMaterial> spMaterial = NiSingleShaderMaterial::Create(pcMaterial, true);
+                        if (!spMaterial)
+                            return 0;
+                        pkQuad->ApplyAndSetActiveMaterial(spMaterial);
+                        pkStep->AppendRenderClick(spClick);
+                        if (pkMap0 != 0)
+                        {
+                            NiTexturingProperty::ShaderMap* pkMap =
+                                NiNew NiTexturingProperty::ShaderMap(pkMap0, 0, eClamp, eFilter, 0);
+                            if (pkMap == 0)
+                                return 0;
+                            spTexProp->SetShaderMap(0, pkMap);
+                        }
+                        if (pkMap1 != 0)
+                        {
+                            NiTexturingProperty::ShaderMap* pkMap =
+                                NiNew NiTexturingProperty::ShaderMap(pkMap1, 1, eClamp, eFilter, 0);
+                            if (pkMap == 0)
+                                return 0;
+                            spTexProp->SetShaderMap(1, pkMap);
+                        }
+                        if (pkMap2 != 0)
+                        {
+                            NiTexturingProperty::ShaderMap* pkMap =
+                                NiNew NiTexturingProperty::ShaderMap(pkMap2, 2, eClamp, eFilter, 0);
+                            if (pkMap == 0)
+                                return 0;
+                            spTexProp->SetShaderMap(2, pkMap);
+                        }
+                    }
+                    else
+                        return 0;
+                }
+                pkQuad->Update(0.0f, true);
+                pkQuad->UpdateEffects();
+                pkQuad->UpdateProperties();
+                spClick->SetClearAllBuffers(true);
+                return spClick;
+            }
+        }
+    }
+    return 0;
+}
+MS2_REPLACE(0x1416b4990, setupRenderClick, 2448, 0x1AC6ABD0);
