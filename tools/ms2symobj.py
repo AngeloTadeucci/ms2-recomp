@@ -47,6 +47,7 @@ def load(paths):
     syms = {}
     src = {}
     conflicts = []
+    multicopy = []
     for p in paths:
         if not os.path.exists(p):
             continue
@@ -61,13 +62,32 @@ def load(paths):
             if name in syms and syms[name][0] != va:
                 prev = src[name]
                 if not prev[2]:
+                    if same_code(syms[name][0], va):
+                        # byte-identical exe copies under one name (per-unit COMDAT binding, NOTES "pin1"): calling
+                        # either is equivalent; the earlier table's binding stays (deterministic)
+                        multicopy.append(name)
+                        continue
                     conflicts.append(f"{name}: 0x{syms[name][0]:x} ({prev[0]}:{prev[1]}) vs 0x{va:x} ({os.path.basename(p)}:{n})")
             syms[name] = (va, kind)
             src[name] = (os.path.basename(p), n, is_engine)
+    if multicopy:
+        print(f"ms2symobj: {len(multicopy)} name(s) listed at byte-identical exe copies; first table's VA kept")
     if conflicts:
         sys.exit("ms2symobj: symbol name bound to different VAs (only symbols-engine.tsv may be overridden):\n  " +
                  "\n  ".join(conflicts))
     return syms
+
+
+_EXE = []
+
+
+def same_code(a, b):
+    """bytematch.same_code on the exe (loaded lazily: only needed when two tables disagree)."""
+    sys.path.insert(0, os.path.join(ROOT, "tools"))
+    import bytematch as bm
+    if not _EXE:
+        _EXE.append(bm.Exe(bm.EXE))
+    return bm.same_code(_EXE[0], a, b)
 
 
 FUN_RE = re.compile(r"FUN_([0-9a-f]{8,9})(?![0-9a-zA-Z])")

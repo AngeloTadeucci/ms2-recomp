@@ -563,6 +563,85 @@ NO_HARVEST_PREFIXES = ("__imp_", "??_C@", "__real@", "__xmm@", "__mask@", "__ymm
                        "_RTC_", "__std_", "_Init_thread_", "_Thrd_", "__acrt_", "__vcrt_", "__report_")
 
 
+MULTICOPY = []     # (name, table va, exe va): one name, several byte-identical exe copies (info only, not a conflict)
+STRICT_SYMBOLS = False  # tools/progress.py pairing trials: only the unit's own pairs override the table (the table's
+                        # other copy stays a hint against look-alike candidates)
+CUR_EXE = None     # the Exe of the current match_one call (note_symbol needs it for same_code)
+_SAME_MEMO = {}
+_MD2 = capstone.Cs(capstone.CS_ARCH_X86, capstone.CS_MODE_64)
+_MD2.detail = True
+
+
+def _fn_size(exe, va):
+    rva = va - exe.base
+    if rva in exe.rf:
+        return exe.rf[rva][0] - rva
+    i = bisect.bisect_left(exe.starts, va)
+    if i < len(exe.starts) and exe.starts[i] == va and i + 1 < len(exe.starts):
+        n = exe.starts[i + 1] - va          # leaf without .pdata: up to the next function, minus int3 padding
+        d = exe.read(va, n)
+        while n > 1 and d[n - 1] == 0xCC:
+            n -= 1
+        return n
+    return None
+
+
+def same_code(exe, a, b, depth=8):
+    """Per-unit COMDAT binding (NOTES "per-unit COMDAT binding (pin1)"): are the exe functions at a and b byte-identical
+    copies? Same length, same instructions; branch/call/RIP-relative operands must reach the same offset inside the
+    function, the same absolute address, or (recursively) identical functions. Conservative: anything else is False."""
+    if a == b:
+        return True
+    if exe is None or os.environ.get("MS2_NO_MULTICOPY"):     # MS2_NO_MULTICOPY=1: old one-name-one-VA behaviour
+        return False
+    key = (min(a, b), max(a, b))
+    if key in _SAME_MEMO:
+        return _SAME_MEMO[key]
+    if depth <= 0:
+        return False
+    na, nb = _fn_size(exe, a), _fn_size(exe, b)
+    if not na or na != nb or na > 0x4000:
+        _SAME_MEMO[key] = False
+        return False
+    _SAME_MEMO[key] = True          # coinductive: a cycle back to this pair counts as equal
+    ok = _same_code(exe, a, b, na, depth)
+    _SAME_MEMO[key] = ok
+    return ok
+
+
+def _same_code(exe, a, b, n, depth):
+    ia = list(_MD2.disasm(exe.read(a, n), a))
+    ib = list(_MD2.disasm(exe.read(b, n), b))
+    if len(ia) != len(ib) or sum(x.size for x in ia) != n:
+        return False
+    for x, y in zip(ia, ib):
+        if x.size != y.size or x.id != y.id:
+            return False
+        bx, by = bytearray(x.bytes), bytearray(y.bytes)
+        tx, ty = [], []
+        for ins, buf, tg, lo in ((x, bx, tx, a), (y, by, ty, b)):
+            branch = ins.group(capstone.CS_GRP_JUMP) or ins.group(capstone.CS_GRP_CALL)
+            for op in ins.operands:
+                if op.type == x86.X86_OP_IMM and branch and ins.imm_size:
+                    tg.append(op.imm)
+                    buf[ins.imm_offset:ins.imm_offset + ins.imm_size] = bytes(ins.imm_size)
+                elif op.type == x86.X86_OP_MEM and op.mem.base == x86.X86_REG_RIP and ins.disp_size:
+                    tg.append(ins.address + ins.size + op.mem.disp)
+                    buf[ins.disp_offset:ins.disp_offset + ins.disp_size] = bytes(ins.disp_size)
+        if bx != by or len(tx) != len(ty):
+            return False
+        for p, q in zip(tx, ty):
+            if p == q:
+                continue
+            if a <= p < a + n and b <= q < b + n:
+                if p - a != q - b:
+                    return False
+                continue
+            if not same_code(exe, p, q, depth - 1):
+                return False
+    return True
+
+
 def load_symbols(path=SYMBOLS_TSV):
     SYMBOLS.clear()
     if path and os.path.exists(path):
@@ -584,14 +663,22 @@ def note_symbol(name, va, rep):
     if not harvestable(name, va):
         return
     want = SYMBOLS.get(name)
-    if want is not None and want != va:
+    if want is not None and want != va and (not STRICT_SYMBOLS or LOCAL_KNOWN.get(name) == va) \
+            and same_code(CUR_EXE, want, va):
+        # one name, several byte-identical exe copies (template COMDATs per TU, or stand-in types that fold several
+        # real instantiations into one mangled name): the unit's own binding wins for its own references
+        MULTICOPY.append((name, want, va))
+    elif want is not None and want != va:
         SYMBOL_MISMATCH.append((name, want, va))
         rep.bad(f"symbol {name} is 0x{want:x} in {os.path.relpath(SYMBOLS_TSV, ROOT)}, exe uses 0x{va:x} "
                 f"(wrong callee/global?)")
         return
     prev = HARVEST.get(name)
     if prev is not None and prev != va:
-        CONFLICTS.append((name, prev, va))
+        if same_code(CUR_EXE, prev, va):
+            MULTICOPY.append((name, prev, va))      # first binding of this run stays
+        else:
+            CONFLICTS.append((name, prev, va))
         return
     HARVEST[name] = va
 
@@ -612,7 +699,10 @@ def write_harvest(path, exe, fresh=False):
     for n, va in HARVEST.items():
         if n in cur:
             if cur[n][0] != va:
-                CONFLICTS.append((n, cur[n][0], va))
+                if same_code(exe, cur[n][0], va):
+                    MULTICOPY.append((n, cur[n][0], va))     # the existing entry stays the DLL's binding
+                else:
+                    CONFLICTS.append((n, cur[n][0], va))
             continue
         cur[n] = (va, "func" if text_lo <= va < text_hi else "data")
         added += 1
@@ -626,6 +716,8 @@ def write_harvest(path, exe, fresh=False):
 
 def match_data(obj, si, va, exe, verbose, quiet=False):
     """Data symbol (vftable, constant table): unrelocated bytes equal, ADDR64 slots resolved against the exe."""
+    global CUR_EXE
+    CUR_EXE = exe
     rep = Report()
     name, value, secnum = obj.syms[si][0], obj.syms[si][1], obj.syms[si][2]
     sec = obj.sec(secnum)
@@ -666,6 +758,8 @@ def match_data(obj, si, va, exe, verbose, quiet=False):
 
 
 def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
+    global CUR_EXE
+    CUR_EXE = exe
     if isinstance(obj_or_cod, Obj):
         si = obj_or_cod.find_any(sym)
         if not obj_or_cod.is_code(si):

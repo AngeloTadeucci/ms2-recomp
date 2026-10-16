@@ -537,9 +537,13 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
 
     def trial(name, va):
         snap, nconf = dict(bm.HARVEST), len(bm.CONFLICTS)
-        buf = io.StringIO()
-        with contextlib.redirect_stdout(buf):
-            ok = bm.match_one(obj, name, va, exe, verbose=False, check_unwind=True, quiet=True)
+        bm.STRICT_SYMBOLS = True
+        try:
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                ok = bm.match_one(obj, name, va, exe, verbose=False, check_unwind=True, quiet=True)
+        finally:
+            bm.STRICT_SYMBOLS = False
         bm.HARVEST.clear()
         bm.HARVEST.update(snap)
         del bm.CONFLICTS[nconf:]
@@ -548,8 +552,12 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
     def refs(name, va):
         """{obj symbol: exe va} referenced by `name` paired with `va` (empty unless it matches)."""
         snap, nconf = dict(bm.HARVEST), len(bm.CONFLICTS)
-        with contextlib.redirect_stdout(io.StringIO()):
-            bm.match_one(obj, name, va, exe, verbose=False, check_unwind=False, quiet=True)
+        bm.STRICT_SYMBOLS = True
+        try:
+            with contextlib.redirect_stdout(io.StringIO()):
+                bm.match_one(obj, name, va, exe, verbose=False, check_unwind=False, quiet=True)
+        finally:
+            bm.STRICT_SYMBOLS = False
         out = dict(bm.LAST_TARGETS)
         bm.HARVEST.clear()
         bm.HARVEST.update(snap)
@@ -738,6 +746,7 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
     # the symbol map is harvested from FULLY matched functions only (bytes + unwind/EH): a function that differs
     # anywhere contributes no mapping
     del bm.SYMBOL_MISMATCH[:]
+    del bm.MULTICOPY[:]
     for name, va in sorted(known.items(), key=lambda kv: kv[1]):
         bm.FUNCLET_PAIRS.clear()
         snap = dict(bm.HARVEST)
@@ -785,6 +794,8 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             res["vft"][name] = {"va": va, "ok": ok, "report": "" if ok else text}
     res["harvest"] = dict(bm.HARVEST)
     res["symmismatch"] = sorted({f"{n} is 0x{w:x} in the symbol table, exe uses 0x{v:x}" for n, w, v in bm.SYMBOL_MISMATCH})
+    # byte-identical exe copies under one name (bytematch.same_code): the unit's own binding is accepted, info only
+    res["multicopy"] = sorted({(n, w, v) for n, w, v in bm.MULTICOPY})
     known.clear()
     return res
 
@@ -798,6 +809,10 @@ def main():
     ap.add_argument("--agent", default=os.environ.get("MS2_AGENT") or None,
                     help="private cache build/progress-AGENT/, report mode (default: $MS2_AGENT)")
     ap.add_argument("--report", action="store_true", help="report mode: never write progress/* (implied by --agent)")
+    ap.add_argument("--simulate-merge", action="store_true",
+                    help="report mode with the merge step's symbol semantics (table rebuilt from symbols-manual.tsv + "
+                         "the harvest of the selected units): shows the CONFLICT lines a merge would print, writes only "
+                         "build/progress-AGENT/")
     ap.add_argument("--functional", action="store_true",
                     help="with --check: the functional gate instead of the exact one (no stub functions, all vftables "
                          "paired and matching, no symbol conflict from the unit; functional functions are accepted)")
@@ -806,6 +821,8 @@ def main():
     a = ap.parse_args()
 
     global CACHE, OUT
+    if a.simulate_merge and not a.agent:
+        a.report = True
     if a.agent and not re.fullmatch(r"[A-Za-z0-9_.-]+", a.agent):
         sys.exit(f"bad agent name {a.agent!r}")
     if a.agent or a.report:
@@ -837,8 +854,8 @@ def main():
     exe = bm.Exe(bm.EXE)
     starts, finfo = load_functions()
     bases, vft = load_vftables()
-    merge_mode = not (a.agent or a.report)
-    manual_tsv = os.path.join(OUT, "symbols-manual.tsv")
+    merge_mode = not (a.agent or a.report) or a.simulate_merge
+    manual_tsv = os.path.join(ROOT, "progress", "symbols-manual.tsv")
     # merge mode: the table is rebuilt from scratch (hand-written symbols-manual.tsv + the harvest of fully matched
     # units); stale entries of the previous table never win. Report mode checks against the committed table.
     bm.load_symbols(manual_tsv if merge_mode else bm.SYMBOLS_TSV)
@@ -847,7 +864,7 @@ def main():
         if u.rel in failed or not os.path.exists(u.obj):
             cache[u.rel] = {"key": None, "failed": True, "res": None}
             continue
-        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges]
+        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy3" + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
         c = cache.get(u.rel)
         if not a.force and c and c.get("key") == json.loads(json.dumps(key)) and not a.verbose:
             continue
@@ -896,10 +913,15 @@ def main():
             us = by_va[va]
             # units that are done in the queue win over blocked/in-progress ones (their pins may be stale)
             return (sum(1 for r in us if r in done_rels), sum(1 for r in us if fully_ok(cache[r])), len(us), -va)
+        # the global binding (symbols.tsv -> hook DLL link) of a name with several VAs: deterministic rank. When the
+        # copies are byte-identical (bytematch.same_code) every unit keeps its own binding for scoring and the DLL may
+        # call any copy: info-level MULTICOPY, not a conflict.
         win = max(by_va, key=rank)
         bm.HARVEST[n] = win
         for va, us in by_va.items():
-            if va != win:
+            if va != win and bm.same_code(exe, win, va):
+                bm.MULTICOPY.append((n, win, va))
+            elif va != win:
                 bm.CONFLICTS.append((f"{n} [0x{win:x} from {', '.join(by_va[win])}; 0x{va:x} from {', '.join(us)}]",
                                      win, va))
                 for r in us:
@@ -912,7 +934,9 @@ def main():
                     continue
                 q = line.rstrip("\n").split("\t")
                 va = int(q[1], 16)
-                if bm.HARVEST.get(q[0], va) != va:
+                if bm.HARVEST.get(q[0], va) != va and bm.same_code(exe, bm.HARVEST[q[0]], va):
+                    bm.MULTICOPY.append((q[0], bm.HARVEST[q[0]], va))
+                elif bm.HARVEST.get(q[0], va) != va:
                     bm.CONFLICTS.append((f"{q[0]} [symbols-manual.tsv says 0x{va:x}, matched units 0x{bm.HARVEST[q[0]]:x}]",
                                          va, bm.HARVEST[q[0]]))
                 else:
@@ -1013,6 +1037,15 @@ def main():
                 print(f"note {rel}: {nline}")
     for n, x, y in bm.CONFLICTS:
         print(f"CONFLICT symbol {n}: 0x{x:x} vs 0x{y:x}")
+    mc = sorted(set(bm.MULTICOPY) | {tuple(t) for c in cache.values() if c.get("res")
+                                     for t in c["res"].get("multicopy", [])})
+    with open(os.path.join(OUT, "multicopy.tsv"), "w") as fo:
+        fo.write("#symbol\tbound va (symbols.tsv)\tother byte-identical copy\n")
+        for n, x, y in mc:
+            fo.write(f"{n}\t{x:x}\t{y:x}\n")
+    if mc:
+        print(f"multicopy: {len(mc)} name/VA pairs bound to byte-identical exe copies (info; "
+              f"{os.path.relpath(OUT, ROOT)}/multicopy.tsv)")
     bad = []
     ok_msg = None
     # who claims the VAs named in a "symbol conflict" line: committed status.tsv (matched/functional rows) plus this run
