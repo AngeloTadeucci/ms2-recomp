@@ -22,6 +22,16 @@
 // MS2-PIN: ?SetAt@?$CAtlMap@IV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$Unk_SocketPtr@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@@Z 0x14146a960 ; unique
 // MS2-PIN: ?AddRef@?$Unk_SocketPtr@VCMagicData@@@@AEBAXXZ 0x14146aca0 ; prop
 // MS2-PINS-END tplpin
+// hand pins (w107, tplpin proposals)
+// MS2-PIN: ??$make_pair@AEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@std@@YA?AU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@0@AEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@Z 0x141468480 ; prop: symbol ??$forward@AEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@AT...
+// MS2-PIN: ??$make_pair@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@std@@YA?AU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@0@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@Z 0x1414684e0 ; prop: symbol ??$forward@AEAH@std@@YAAEAHAEAH@Z
+// MS2-PIN: ?get@?$Unk_SocketPtr@UUnk_MagicTag@@@@QEBAPEAUUnk_MagicTag@@XZ 0x141469290 ; unique: caller ?FUN_14145f570@CMagic@@QEAAXI@Z
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@CAXPEAV?$Unk_SocketPtr@VCMagicData@@@@_K@Z 0x1414696d0 ; prop: symbols.tsv
+// MS2-PIN: ?CallDestructors@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@CAXPEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@_K@Z 0x141469730 ; prop: callee ??_G?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@...
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@SAXPEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@0_K@Z 0x14146a620 ; unique: caller ?GrowBuffer@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV...
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@SAXPEAV?$Unk_SocketPtr@VCMagicData@@@@0_K@Z 0x14146a660 ; unique: caller ?GrowBuffer@?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElemen...
+// MS2-PIN: ??0Unk_MagicValPtr@@QEAA@XZ 0x14146d4a0 ; unique: single byte-identical candidate
+// MS2-PIN: ??0CPair@?$CAtlMap@_KV?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr@VCMagicModel@@@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicModel@@@@@3@@ATL@@@@@3@@ATL@@IEAA@_K@Z 0x14146d790 ; unique: caller ??0CNode@?$CAtlMap@_KV?$Unk_SocketPtr@V?$CRBMap@_KV?$Unk_SocketPtr...
 // hand pins (w98): tplpin unique proposals
 // MS2-PIN: ?New@?$Unk_SocketRef@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@SAPEAV?$TPtredDummy@V?$CAtlArray@V?$Unk_SocketPtr@VCMagicData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VCMagicData@@@@@ATL@@@ATL@@@@PEAX@Z 0x1414683b0 ; unique
 // MS2-PIN: ??0?$Unk_SocketPtr@VCMagicData@@@@QEAA@H@Z 0x1414688e0 ; unique
@@ -2288,6 +2298,26 @@ CMagicData& CMagicData::operator=(const CMagicData& kOther)
     return *this;
 }
 
+// The UCRT's `static __inline memcpy_s` of this TU (unreferenced copy, kept alive by the pointer below).
+#pragma function(memcpy, memset)
+// @0x14146b190
+static __inline errno_t ms2_magic_memcpy_s(void* const d, size_t const dsz, void const* const s, size_t const ssz)
+{
+    if (ssz == 0) { return 0; }
+    { int e = !!(d != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+    if (s == NULL || dsz < ssz)
+    {
+        memset(d, 0, dsz);
+        { int e = !!(s != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+        { int e = !!(dsz >= ssz); if (!e) { errno = ERANGE; _invalid_parameter_noinfo(); return ERANGE; } }
+        return EINVAL;
+    }
+    memcpy(d, s, ssz);
+    return 0;
+}
+__declspec(selectany) extern errno_t(__cdecl* const ms2_pfnMagicMemcpyS)(void*, size_t, const void*, size_t) = &ms2_magic_memcpy_s;
+#pragma intrinsic(memset, memcpy)
+
 // ---- CMagicService ----
 CMagicService* TSingleton<CMagicService>::s_instance = 0;
 inline TSingleton<CMagicService>::TSingleton() { s_instance = static_cast<CMagicService*>(this); }
@@ -2340,6 +2370,40 @@ Unk_SocketPtr<CMagicModel> CMagicService::FUN_14146c5d0(unsigned long long nCast
     return spModel;
 }
 MS2_REPLACE_METHOD(0x14146C5D0, CMagicService, FUN_14146c5d0, 226, 0x6545E771);
+
+// MS2-FUNCTIONAL: typed behaviour-equivalent; frame layout/temp order and SocketPtr copy glue not byte-matched (560 vs 576 bytes)
+// @0x14146c6c0
+void CMagicService::FUN_14146c6c0(unsigned long long nCaster, int bForce, int bDestroy)
+{
+    Unk_MagicModelMapPtr spModels(0);
+    if (!m_mapModels.Lookup(nCaster, spModels))
+        return;
+    if (spModels == 0)
+        return;
+    ATL::CAtlList<Unk_SocketPtr<CMagicModel> > lstModels(10);
+    POSITION posMap = spModels->GetHeadPosition();
+    while (posMap)
+    {
+        Unk_SocketPtr<CMagicModel> spCopy(spModels->GetValueAt(posMap));
+        lstModels.AddTail(spCopy);
+        spModels->GetNext(posMap);
+    }
+    POSITION posList = lstModels.GetHeadPosition();
+    while (posList)
+    {
+        Unk_SocketPtr<CMagicModel> spModel(lstModels.GetAt(posList));
+        if (bForce != 0 || spModel->FUN_141467dd0(nCaster) != 0)
+        {
+            if (bDestroy != 0)
+                spModel->FUN_141467ed0();
+            spModels->RemoveKey(spModel->FUN_141467b60());
+        }
+        lstModels.GetNext(posList);
+    }
+    if (spModels->IsEmpty())
+        m_mapModels.RemoveKey(nCaster);
+}
+MS2_REPLACE_METHOD(0x14146C6C0, CMagicService, FUN_14146c6c0, 576, 0x05408639);
 
 // MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x14146c910

@@ -330,6 +330,7 @@ public:
     // Members below are the table accessors (names invented): casts are keyed by (caster id, cast id).
     void FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast);       // 0x14146c4b0 drop one model
     Unk_SocketPtr<CMagicModel> FUN_14146c5d0(unsigned long long nCaster, unsigned long long nCast);  // 0x14146c5d0 find one model
+    void FUN_14146c6c0(unsigned long long nCaster, int bForce, int bDestroy);        // 0x14146c6c0 cancel the casts of a caster
     Unk_MagicModelMapPtr FUN_14146c910(unsigned long long nCaster);                // 0x14146c910 all models of a caster
     int FUN_14146cbd0(Unk_SocketPtr<CMagicModel> spModel);                         // 0x14146cbd0 register a model
     void FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel);                        // 0x14146cd10 unregister a model
