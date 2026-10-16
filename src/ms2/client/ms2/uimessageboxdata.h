@@ -186,6 +186,12 @@ public:
     bool FUN_141a03070() const;
     int FUN_141a02e50(int nIndex, int nDefault) const;              // the nIndex-th argument as an int
     CStringW FUN_141a02fd0(int nIndex, CStringW strDefault) const;  // the nIndex-th argument as a string
+    CStringW FUN_141a02d50() const;                                 // the +0x218 string (the text input's text)
+    void FUN_141a01690(const CStringW& strBtn0, const CStringW& strBtn1, const CStringW& strBtn2);   // button texts
+    void FUN_141a01d30(int nMode, const CStringW& strDefault, unsigned int nMax, int a4, int a5);    // text input setup
+    void FUN_141a027c0(Delegate<bool(int, const CMsgBoxData&)> cb); // result callback
+    void FUN_140533ff0(int n);                                      // appends an int argument (COMDAT outside this class' range)
+    void FUN_140b76940(CStringW str);                               // appends a string argument (the callee destroys it)
 
     void* m_18;                                                     // +0x18 0
     int m_nType;                                                    // +0x20
