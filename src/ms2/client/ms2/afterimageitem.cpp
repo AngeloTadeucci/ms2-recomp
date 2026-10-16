@@ -12,10 +12,10 @@
 // MS2-PIN: ??0?$MS2Ptr@VAfterImageItem@@@@QEAA@PEAVAfterImageItem@@@Z 0x14097ee50 ; unique
 // MS2-PIN: ??0NiBound@@QEAA@XZ 0x14097f1b0 ; unique
 // MS2-PIN: ??1?$SmartPointer@VCEffect@@@efd@@QEAA@XZ 0x14097f3b0 ; unique
-// MS2-PIN: ??1?$SmartPointer@VNiDynamicTexture@@@efd@@QEAA@XZ 0x14097f410 ; prop
 // MS2-PIN: ??1?$SmartPointer@VNiTexture@@@efd@@QEAA@XZ 0x14097f4a0 ; prop
 // MS2-PIN: ??1?$SmartPointer@VNiZBufferProperty@@@efd@@QEAA@XZ 0x14097f4d0 ; prop
 // MS2-PIN: ??4?$SmartPointer@VNiTexture@@@efd@@QEAAAEAV01@PEAVNiTexture@@@Z 0x14097f9b0 ; prop
+// MS2-PIN: ??4NiPoint3@@QEAAAEAV0@$$QEAV0@@Z 0x14097faa0 ; unique
 // MS2-PIN: ??8?$SmartPointer@VNiDynamicTexture@@@efd@@QEBA_NPEAVNiDynamicTexture@@@Z 0x14097fb00 ; prop
 // MS2-PIN: ??B?$SmartPointer@VNiRenderTargetGroup@@@efd@@QEBAPEAVNiRenderTargetGroup@@XZ 0x14097fbe0 ; prop
 // MS2-PIN: ??B?$SmartPointer@VNiTexture@@@efd@@QEBAPEAVNiTexture@@XZ 0x14097fbf0 ; prop
@@ -55,21 +55,16 @@
 // MS2-PIN: ?Type@NiZBufferProperty@@UEBAHXZ 0x140981150 ; unique
 // MS2-PIN: ?AddRef@?$MS2Ptr@VAfterImageItem@@@@AEBAXXZ 0x140981160 ; unique
 // MS2-PIN: ?AddRefImpl@?$MS2Ptr@VAfterImageItem@@@@AEBAXPEAX@Z 0x140981200 ; unique
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAfterImageItem@@@@@std@@@2@$00@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@2@XZ 0x140981490 ; prop
-// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAfterImageItem@@@@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@2@XZ 0x1409814e0 ; unique
 // MS2-PIN: ?empty@?$vector@V?$MS2Ptr@VAfterImageItem@@@@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@QEBA_NXZ 0x140981a60 ; unique
 // MS2-PIN: ?erase@?$vector@V?$MS2Ptr@VAfterImageItem@@@@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@@2@V?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@@2@@Z 0x140981ab0 ; unique
 // MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@SA_KAEBV?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@2@@Z 0x140981b70 ; unique
 // MS2-PIN: ?push_back@?$vector@V?$MS2Ptr@VAfterImageItem@@@@V?$allocator@V?$MS2Ptr@VAfterImageItem@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VAfterImageItem@@@@@Z 0x140981bd0 ; unique
-// MS2-PIN: ??$?0V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@1@$$QEA_N@Z 0x1409827c0 ; prop
-// MS2-PIN: ??$_Buy_if_not_node@AEBV?$SmartPointer@VCEffect@@@efd@@@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@U_Not_a_node_tag@1@AEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x140982860 ; prop
-// MS2-PIN: ??$_Buynode@AEBV?$SmartPointer@VCEffect@@@efd@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@AEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x1409828c0 ; prop
-// MS2-PIN: ??$_Insert_at@AEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@1@_NPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@AEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@1@@Z 0x140982e30 ; prop
+// MS2-PIN: ??$_Buy_if_not_node@AEBV?$SmartPointer@VCEffect@@@efd@@@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@U_Not_a_node_tag@1@AEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x140982860 ; unique
+// MS2-PIN: ??$_Buynode@AEBV?$SmartPointer@VCEffect@@@efd@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@AEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x1409828c0 ; unique
+// MS2-PIN: ??$_Insert_at@AEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@1@_NPEAU?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@AEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@1@@Z 0x140982e30 ; unique
 // MS2-PIN: ??$_Insert_nohint@AEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@_N@1@_NAEBV?$SmartPointer@VCEffect@@@efd@@U_Not_a_node_tag@1@@Z 0x1409834f0 ; unique
-// MS2-PIN: ??$construct@V?$SmartPointer@VCEffect@@@efd@@AEBV12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@1@QEAV?$SmartPointer@VCEffect@@@efd@@AEBV34@@Z 0x140983e20 ; prop
+// MS2-PIN: ??$construct@V?$SmartPointer@VCEffect@@@efd@@AEBV12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@1@QEAV?$SmartPointer@VCEffect@@@efd@@AEBV34@@Z 0x140983e20 ; unique
 // MS2-PIN: ??$destroy@V?$SmartPointer@VCEffect@@@efd@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@1@QEAV?$SmartPointer@VCEffect@@@efd@@@Z 0x140983ee0 ; unique
-// MS2-PIN: ??$forward@AEBV?$SmartPointer@VCEffect@@@efd@@@std@@YAAEBV?$SmartPointer@VCEffect@@@efd@@AEBV12@@Z 0x140983fb0 ; prop
-// MS2-PIN: ??$forward@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@0@AEAV10@@Z 0x140983fd0 ; prop
 // MS2-PIN: ??0?$SmartPointer@VCEffect@@@efd@@QEAA@AEBV01@@Z 0x140984070 ; prop
 // MS2-PIN: ??4?$SmartPointer@VCEffect@@@efd@@QEAAAEAV01@AEBV01@@Z 0x1409845c0 ; unique
 // MS2-PIN: ??4?$SmartPointer@VRenderedTextureRenderClick@@@efd@@QEAAAEAV01@PEAVRenderedTextureRenderClick@@@Z 0x140984710 ; unique
@@ -78,12 +73,14 @@
 // MS2-PIN: ??9?$SmartPointer@VRenderedTextureRenderClick@@@efd@@QEBA_NPEAVRenderedTextureRenderClick@@@Z 0x1409848f0 ; unique
 // MS2-PIN: ??B?$SmartPointer@VNiAVObject@@@efd@@QEBAPEAVNiAVObject@@XZ 0x1409849b0 ; prop
 // MS2-PIN: ??B?$SmartPointer@VCEffect@@@efd@@QEBAPEAVCEffect@@XZ 0x1409849c0 ; unique
-// MS2-PIN: ??0NiPoint3@@QEAA@XZ 0x140984c30 ; unique
-// MS2-PIN: ??_G?$SmartPointer@VCEffect@@@efd@@QEAAPEAXI@Z 0x140984ed0 ; prop
-// MS2-PIN: ??_G?$SmartPointer@VNiDynamicTexture@@@efd@@QEAAPEAXI@Z 0x140984f30 ; unique
-// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@IEAAXU_Not_a_node_tag@2@@Z 0x1409854a0 ; prop
-// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tset_traits@V?$SmartPointer@VCEffect@@@efd@@U?$less@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@4@$0A@@std@@@std@@QEAAAEAU?$less@V?$SmartPointer@VCEffect@@@efd@@@2@XZ 0x140986490 ; prop
+// MS2-PIN: ??_G?$SmartPointer@VCEffect@@@efd@@QEAAPEAXI@Z 0x140984ed0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1AfterImageItem@@UEAA@XZ 0x14097f600
+// MS2-PIN: ??0?$SmartPointer@VNiTexture@@@efd@@QEAA@PEAVNiTexture@@@Z 0x14097ed60
+// MS2-PIN: ??0?$SmartPointer@VNiZBufferProperty@@@efd@@QEAA@PEAVNiZBufferProperty@@@Z 0x14097eda0
+// MS2-PIN: ??1?$SmartPointer@VRenderedTextureRenderClick@@@efd@@QEAA@XZ 0x14097f500
+// MS2-PIN: ??C?$MS2Ptr@VAfterImageItem@@@@QEBAPEAVAfterImageItem@@XZ 0x14097fc70
+// MS2-PIN: ??$forward@AEBV?$SmartPointer@VCEffect@@@efd@@@std@@YAAEBV?$SmartPointer@VCEffect@@@efd@@AEBV12@@Z 0x140983fb0
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 #include "afterimageitem.h"
@@ -231,6 +228,7 @@ void Unk_AfterImageRef::FUN_140981730(void*)
 
 // ---- AfterImageItem ----
 // @0x14097c1f0
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 AfterImageItem::AfterImageItem()
     : m_spTexture((NiDynamicTexture*)0), m_spNode((NiBillboardNode*)0), m_spMesh((NiMeshScreenElements*)0),
       m_kOffset(efd::Point3::ZERO), m_fSize(0.0f)
@@ -239,12 +237,8 @@ AfterImageItem::AfterImageItem()
     m_nLife = 0;
 }
 
-// @0x14097f600 (deleting: 0x14097fe80)
-AfterImageItem::~AfterImageItem()
-{
-}
-
 // @0x14097c2d0
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 void AfterImageItem::Init(Unk_AfterImageRef kParam, NiDynamicTexturePtr spTexture, const NiPoint3& kPos, float fSize,
                           unsigned nLife)
 {
@@ -286,19 +280,19 @@ void AfterImageItem::Release()
 // @0x14097c7a0
 void AfterImageItem::UpdateColor()
 {
-    float fAge = (float)(FUN_140869420() - m_nBirth) / (float)m_nLife;
-    float fFade;
-    if (fAge >= 0.1f)
-        fFade = (fAge - 0.1f) / 0.9f;
+    unsigned nAge = FUN_140869420() - m_nBirth;
+    float fRatio = (float)nAge / (float)m_nLife;
+    if (fRatio < 0.1f)
+        fRatio = 0.0f;
     else
-        fFade = 0.0f;
-    m_spMesh->SetColors(0, Unk_AfterImageColor(m_kColor.r, m_kColor.g, m_kColor.b, m_kColor.a * (1.0f - fFade)));
+        fRatio = (fRatio - 0.1f) / 0.9f;
+    m_spMesh->SetColors(0, Unk_AfterImageColor(m_kColor.r, m_kColor.g, m_kColor.b, m_kColor.a * (1.0f - fRatio)));
 }
 
 // @0x14097c890
 bool AfterImageItem::IsExpired() const
 {
-    return m_nBirth + m_nLife < FUN_140869420();
+    return FUN_140869420() > m_nBirth + m_nLife;
 }
 
 // @0x14097c8e0
@@ -308,6 +302,7 @@ NiDynamicTexturePtr AfterImageItem::GetTexture() const
 }
 
 // @0x14097c930
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 NiMeshScreenElementsPtr AfterImageItem::CreateQuad(NiTexturePtr spTexture, float fSize, NiTexturePtr spMask,
                                                    const NiColorA& kColor, bool bLighten)
 {
@@ -366,9 +361,8 @@ NiMeshScreenElementsPtr AfterImageItem::CreateQuad(NiTexturePtr spTexture, float
 // ---- CAfterImageEffect ----
 // @0x14097d000
 CAfterImageEffect::CAfterImageEffect(Unk_AfterImageRef kRef)
-    : m_kParam(kRef), m_nTarget(0), m_spTarget((NiAVObject*)0), m_rcScreen(0.0f, 0.0f, 0.0f, 0.0f), m_kPos(0.0f, 0.0f, 0.0f)
+    : m_kParam(kRef), m_nTarget(0), m_spTarget((NiAVObject*)0), m_nLastCapture(0), m_rcScreen(0.0f, 0.0f, 0.0f, 0.0f), m_kPos(0.0f, 0.0f, 0.0f)
 {
-    m_nLastCapture = 0;
     m_fRadius = 0.0f;
     m_bPending = false;
 }
@@ -382,12 +376,11 @@ CAfterImageEffect::~CAfterImageEffect()
 bool CAfterImageEffect::vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget)
 {
     bool bOk = CEffect::vfunc_3(pParam, pTarget);
-    if (bOk)
-    {
-        m_nTarget = FUN_140a53390(pTarget);
-        m_spTarget = reinterpret_cast<Unk_AfterImageTarget*>(pTarget)->m_spNode;
-    }
-    return bOk;
+    if (!bOk)
+        return bOk;
+    m_nTarget = FUN_140a53390(pTarget);
+    m_spTarget = reinterpret_cast<Unk_AfterImageTarget*>(pTarget)->m_spNode;
+    return true;
 }
 
 // @0x14097d4d0
@@ -415,15 +408,14 @@ bool CAfterImageEffect::IsTimeUp() const
     double dNow = FUN_14086d260()->FUN_141473280();
     if (!FUN_14119f3c0(const_cast<CAfterImageEffect*>(this)))
         return false;
-    if (dNow <= m_dStartTime + (double)m_fDuration)
-        return false;
-    return !m_b2c;
+    return dNow > m_dStartTime + (double)m_fDuration ? !m_b2c : false;
 }
 
 // @0x14097d960
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 bool CAfterImageEffect::ShouldCapture()
 {
-    if (m_kParam.m_pParam == 0)
+    if (m_kParam == 0)
         return false;
     if (IsTimeUp())
         return false;
@@ -441,6 +433,7 @@ bool CAfterImageEffect::ShouldCapture()
 }
 
 // @0x14097db30
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 void CAfterImageEffect::StartCapture()
 {
     if (FUN_1403ed2d0() == 0)
@@ -477,6 +470,7 @@ void CAfterImageEffect::StartCapture()
 }
 
 // @0x14097d4f0
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 void CAfterImageEffect::Capture(RenderedTextureClickPtr spClick)
 {
     m_bPending = false;
@@ -534,6 +528,7 @@ void CAfterImageEffect::vfunc_7()
 }
 
 // @0x14097d1e0
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 bool CAfterImageEffect::vfunc_9()
 {
     bool bRunning = CEffect::vfunc_9();
@@ -580,11 +575,13 @@ CAfterImageEffectManager* TSingleton<CAfterImageEffectManager>::GetInstance()
 }
 
 // @0x140980250
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 CAfterImageEffectManager* TSingleton<CAfterImageEffectManager>::CreateInstance()
 {
-    if (s_instance == 0)
-        return new CAfterImageEffectManager;
-    return GetInstance();
+    if (s_instance != 0)
+        return GetInstance();
+    CAfterImageEffectManager* pManager = new CAfterImageEffectManager;
+    return pManager;
 }
 
 // @0x1409802d0
@@ -608,7 +605,7 @@ CAfterImageEffectManager::~CAfterImageEffectManager()
 {
     if (m_spClick != 0)
     {
-        m_spClick->vfunc_15(1);
+        m_spClick->vfunc_11();
         m_spClick = (RenderedTextureRenderClick*)0;
     }
 }
@@ -625,12 +622,14 @@ static bool FUN_140981c40(NiRenderClick*, void*)
 // @0x140981c80
 static bool FUN_140981c80(NiRenderClick*, void*)
 {
-    if (TSingleton<CAfterImageEffectManager>::GetInstance() != 0)
-        TSingleton<CAfterImageEffectManager>::GetInstance()->RenderNext();
-    return TSingleton<CAfterImageEffectManager>::GetInstance() != 0;
+    if (TSingleton<CAfterImageEffectManager>::GetInstance() == 0)
+        return false;
+    TSingleton<CAfterImageEffectManager>::GetInstance()->RenderNext();
+    return true;
 }
 
 // @0x140981e30
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 void CAfterImageEffectManager::CreateClick()
 {
     m_spClick = new (efd::MemHint(efd::MemHint::NONE)) RenderedTextureRenderClick;
@@ -673,14 +672,14 @@ void CAfterImageEffectManager::Process(CEffectPtr spEffect)
 // @0x140982390
 void CAfterImageEffectManager::RenderNext()
 {
-    if (!(m_spCurrent == 0))
-    {
-        static_cast<CAfterImageEffect*>((CEffect*)m_spCurrent)->StartCapture();
-        m_spClick->vfunc_13((NiAVObject*)static_cast<CAfterImageEffect*>((CEffect*)m_spCurrent)->GetTarget());
-    }
+    if (m_spCurrent == 0)
+        return;
+    static_cast<CAfterImageEffect*>((CEffect*)m_spCurrent)->StartCapture();
+    m_spClick->vfunc_13((NiAVObject*)static_cast<CAfterImageEffect*>((CEffect*)m_spCurrent)->GetTarget());
 }
 
 // @0x1409821b0
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 bool CAfterImageEffectManager::SelectNext()
 {
     CEffectPtr spFound((CEffect*)0);
@@ -690,7 +689,7 @@ bool CAfterImageEffectManager::SelectNext()
         if (static_cast<CAfterImageEffect*>((CEffect*)spCandidate)->ShouldCapture())
         {
             spFound = spCandidate;
-            if (spFound->m_unk_18 == 1)
+            if (spFound->GetKind() == 1)
                 break;
         }
     }
@@ -701,6 +700,7 @@ bool CAfterImageEffectManager::SelectNext()
 }
 
 // @0x140982460
+// MS2-FUNCTIONAL: temp/frame layout and smart-pointer temp hops differ from the exe; behaviour equivalent
 NiDynamicTexturePtr CAfterImageEffectManager::GetTexture()
 {
     if (m_setTextures.empty())
@@ -714,4 +714,10 @@ NiDynamicTexturePtr CAfterImageEffectManager::GetTexture()
     NiDynamicTexturePtr spTexture = *m_setTextures.begin();
     m_setTextures.erase(m_setTextures.begin());
     return spTexture;
+}
+
+// @0x140982580
+void CAfterImageEffectManager::ReleaseTexture(NiDynamicTexturePtr spTexture)
+{
+    m_setTextures.insert(spTexture);
 }

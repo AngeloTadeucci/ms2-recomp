@@ -25,6 +25,7 @@ public:
     ~Unk_AfterImageRef();                                      // 0x14097f560
     Unk_AfterImageRef& operator=(const Unk_AfterImageRef& kOther);   // 0x14097fa60
     class CAfterImageEffectParam* operator->() const;          // 0x14097fc80
+    bool operator==(class CAfterImageEffectParam* p) const { return m_pParam == p; }   // @0x14097fb40
     void FUN_140981190();                                      // add a reference (if set)
     void FUN_140981230(void*);                                 // add a reference
     static void FUN_1409811e0(class CAfterImageEffectParam* p);   // CPtred::AddRefPtred

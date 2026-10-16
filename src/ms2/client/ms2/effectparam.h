@@ -64,6 +64,8 @@ public:
     virtual void vfunc_10(bool b);                  // 10 0x14119f2f0 {}
     virtual int vfunc_11();                         // 11 0x14119f300 return !m_b2c
     virtual int vfunc_12() = 0;                     // 12 pure (CPostEffect 0x140dbdc80: return +0x30)
+    // @0x140985010
+    int GetKind() const { return m_unk_18; }
 
 public:
     MS2_LAYOUT_FRIEND;

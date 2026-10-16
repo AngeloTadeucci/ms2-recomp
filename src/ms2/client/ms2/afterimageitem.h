@@ -38,7 +38,7 @@ class AfterImageItem : public CPtred
 {
 public:
     AfterImageItem();                                               // 0x14097c1f0
-    virtual ~AfterImageItem();                                      // 0x14097f600
+    virtual ~AfterImageItem() = default;                            // 0x14097f600 (no vptr store), ??_G 0x14097fe80
     // Take the snapshot: build the quad (a billboard facing the camera at kPos, fSize wide) textured with spTexture
     // and tinted with the param's colour; nLife is the lifetime in ms.
     void Init(Unk_AfterImageRef kParam, NiDynamicTexturePtr spTexture, const NiPoint3& kPos, float fSize,
@@ -143,6 +143,7 @@ public:
     void RenderNext();                                              // 0x140982390 begin the capture of the selected effect
     bool SelectNext();                                              // 0x1409821b0 pick the next effect due a snapshot
     NiDynamicTexturePtr GetTexture();                               // 0x140982460 a pooled or new 256x256 texture
+    void ReleaseTexture(NiDynamicTexturePtr spTexture);             // 0x140982580 (invented name) return a texture to the pool
 public:
     MS2_LAYOUT_FRIEND;
     RenderedTextureClickPtr m_spClick;                              // +0x08
