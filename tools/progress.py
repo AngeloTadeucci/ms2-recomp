@@ -904,6 +904,15 @@ def main():
     except (OSError, IndexError):
         pass
     seen = {}                       # name -> {va: [unit rel, ...]}
+    # a filtered run keeps the cached rows of the units it did not select; a unit whose source/header changed since its obj
+    # was built has a stale harvest (its old obj may bind a name that the current source no longer references), so it
+    # contributes nothing to the symbol table until it is rebuilt
+    selected = {u.rel for u in units}
+    stale_units = {u.rel for u in all_units if u.rel not in selected and needs_compile(u)}
+    if stale_units and merge_mode:
+        print(f"warning: {len(stale_units)} unit(s) not selected and out of date (source/header newer than obj); their "
+              f"cached harvest is ignored (rerun without a filter to include them): "
+              + ", ".join(sorted(stale_units)[:8]) + (" ..." if len(stale_units) > 8 else ""))
     STALE = []                      # (name, win, va, units): conflicts whose losing side is only blocked/todo/claimed units
     for rel, c in sorted(cache.items()):
         for n, x, y in (c.get("res") or {}).get("conflicts", []):
@@ -912,7 +921,7 @@ def main():
             else:
                 STALE.append((n, x, y, [rel]))
     for rel, c in sorted(cache.items()):
-        if c.get("res"):
+        if c.get("res") and not (merge_mode and rel in stale_units):
             for n, va in c["res"]["harvest"].items():
                 seen.setdefault(n, {}).setdefault(va, []).append(rel)
     bm.HARVEST.clear()
@@ -953,8 +962,11 @@ def main():
                 if bm.HARVEST.get(q[0], va) != va and bm.same_code(exe, bm.HARVEST[q[0]], va):
                     bm.MULTICOPY.append((q[0], bm.HARVEST[q[0]], va))
                 elif bm.HARVEST.get(q[0], va) != va:
-                    bm.CONFLICTS.append((f"{q[0]} [symbols-manual.tsv says 0x{va:x}, matched units 0x{bm.HARVEST[q[0]]:x}]",
-                                         va, bm.HARVEST[q[0]]))
+                    # symbols-manual.tsv is hand-verified: it wins over the harvest, the disagreement is only warned about
+                    print(f"warning: {q[0]}: symbols-manual.tsv says 0x{va:x}, harvest of "
+                          f"{', '.join(seen.get(q[0], {}).get(bm.HARVEST[q[0]], ['?']))} says 0x{bm.HARVEST[q[0]]:x}; "
+                          f"manual wins (fix the unit that references the wrong symbol)")
+                    bm.HARVEST[q[0]] = va
                 else:
                     bm.HARVEST.setdefault(q[0], va)
     elif symbols_out != bm.SYMBOLS_TSV:
