@@ -16,12 +16,12 @@ public:
     UIUGCEventListener();                           // 0x141b38b00
     virtual ~UIUGCEventListener();                  // 0x141b38b20 (scalar deleting 0x141b39290)
 
-    virtual void vfunc_1(void*, CString) {}         // 1  0x140bc0ab0
-    virtual void vfunc_2(void*, CString) {}         // 2  0x140bc0a80
-    virtual void vfunc_3(void*, void*) {}           // 3  0x1413391e0
-    virtual void vfunc_4(int) {}                    // 4  0x140bc0ae0
-    virtual void vfunc_5() {}                       // 5  0x140bc0a70
-    virtual void vfunc_6() {}                       // 6  0x140bc0af0
-    virtual void vfunc_7(int) {}                    // 7  0x140bc0b00
+    virtual void vfunc_ugc_1(void*, CString) {}         // 1  0x140bc0ab0
+    virtual void vfunc_ugc_2(void*, CString) {}         // 2  0x140bc0a80
+    virtual void vfunc_ugc_3(void*, void*) {}           // 3  0x1413391e0
+    virtual void vfunc_ugc_4(int) {}                    // 4  0x140bc0ae0
+    virtual void vfunc_ugc_5() {}                       // 5  0x140bc0a70
+    virtual void vfunc_ugc_6() {}                       // 6  0x140bc0af0
+    virtual void vfunc_ugc_7(int) {}                    // 7  0x140bc0b00
 };
 MS2_CHECK_SIZE(UIUGCEventListener, 0x8);

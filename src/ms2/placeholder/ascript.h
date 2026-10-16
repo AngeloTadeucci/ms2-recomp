@@ -121,6 +121,9 @@ public:
     MS2Ptr<ASMovieClip> FUN_1409b4560(const CString& strName); // bind a movie clip child (w4s10; units may hide it)
     MS2Ptr<ASTextField> FUN_1409b4620(const CString& strName); // bind a text field child (aseffect.cpp)
     Scaleform::GFx::Value Invoke(const char*, CString, int); // setTabCount, 0x140a46640
+    Scaleform::GFx::Value FUN_140ee5060(const char* szMethod, CString a1, bool a2);          // 0x140ee5060 (game menu red circle)
+    Scaleform::GFx::Value FUN_140c38f00(const char* szMethod, CString a1, CStringW a2);     // 0x140c38f00 (game menu event popup)
+    Scaleform::GFx::Value FUN_14184af30(const char* szMethod, bool a1, int a2);             // 0x14184af30 (game menu quest)
     Scaleform::GFx::Value Invoke(const char* szMethod, unsigned int a1);                    // 0x140ba26d0 (UIStanceBar; Value = UInt)
     Scaleform::GFx::Value Invoke(const char* szMethod, unsigned long a1);                   // 0x140ba2770
     Scaleform::GFx::Value Invoke(const char* szMethod, unsigned long a1, unsigned long a2); // 0x140ba2810
