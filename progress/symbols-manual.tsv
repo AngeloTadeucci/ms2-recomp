@@ -1398,3 +1398,9 @@ D3DXSaveSurfaceToFileA	14230399f	func
 ?DAT_1439f734c@@3MA	1439f734c	data
 ?DAT_1439f7350@@3MA	1439f7350	data
 ?DAT_1439f7354@@3MA	1439f7354	data
+??0Unk_IndexPool@@QEAA@XZ	141b90b70	func
+??1Unk_IndexPool@@QEAA@XZ	141b90ba0	func
+?AddIndex@Unk_IndexPool@@QEAAXHH@Z	141b90bd0	func
+?Shuffle@Unk_IndexPool@@QEAAXXZ	141b90c20	func
+?Pick@Unk_IndexPool@@QEAAHXZ	141b90c70	func
+??0Unk_ObjectRef@@QEAA@PEAVGameObject@@@Z	140a000f0	func
