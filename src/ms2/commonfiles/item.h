@@ -91,6 +91,18 @@ public:
     MS2Ptr<CItemSocket> FUN_140620490();
     void FUN_1406205e0(COutputStream&);
     void FUN_140620700(CInputStream&);
+    int FUN_140622720();
+    int FUN_140622750();
+    int FUN_140622780();
+    int FUN_140622790();
+    int FUN_1406227c0();
+    int FUN_1406227f0();
+    int FUN_140622820();
+    int FUN_140622850();
+    int FUN_140622880();
+    bool FUN_1406228d0();
+    bool FUN_140622a00(const __int64* pCharacterId);
+    void FUN_140622b40(__int64* pCharacterId, CStringW* pName);
     char m_pad18[0xd8];
 };
 MS2_CHECK_SIZE(CItemSocket, 0xf0);

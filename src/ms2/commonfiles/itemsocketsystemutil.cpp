@@ -59,6 +59,7 @@
 #include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/wcformat.h"
+#include "ms2/placeholder/itemutiltransfer.h"
 
 // The header statics of this unit: the sort-name tables of two headers, header_statics_a.h's four, then a second
 // copy of the four (two more headers that carry the same statics).
@@ -2043,6 +2044,297 @@ __int64 FUN_140632990(__int64 nValue, float fRate)
     return (__int64)((double)nValue * (double)fRate + 0.5);
 }
 MS2_REPLACE(0x140632990, FUN_140632990, 42, 0xC9ADCF11);
+
+// The per-action "can the item be X'd" checks: the item must exist, its transfer
+// (trade/bind) state must allow it, its gem sockets must allow it, and for some
+// actions the enchant record must allow it too. The reason variants report which
+// part refused (1 = transfer/enchant, 2 = socket).
+class Unk_ItemOwnerRef : public CItemTransfer {};
+class Unk_ItemEnchantData : public CItemStatus {};
+bool FUN_140633e40(MS2Ptr<CItem> spItem, int* pReason);
+bool FUN_140633fb0(MS2Ptr<CItem> spItem, int* pReason);
+bool FUN_140634120(MS2Ptr<CItem> spItem, int* pReason);
+bool FUN_140634290(MS2Ptr<CItem> spItem, int* pReason);
+
+// @0x140633700
+bool FUN_140633700(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635520() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622750() == 0)
+        return false;
+    CItemEnchantInfo* pEnchant = spItem->FUN_1405278a0()->FUN_140630d60();
+    if (pEnchant != 0 && pEnchant->FUN_14058c9a0() == false)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633700, FUN_140633700, 302, 0x29CDDF00);
+
+// @0x140633840
+bool FUN_140633840(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_1406354d0() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622720() == 0)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633840, FUN_140633840, 221, 0x7431F417);
+
+// @0x140633930
+bool FUN_140633930(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635580() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622780() == 0)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633930, FUN_140633930, 221, 0x7B0A99FE);
+
+// @0x140633a20
+bool FUN_140633a20(MS2Ptr<CItem> spItem)
+{
+    int nReason = 0;
+    return FUN_140633e40(spItem, &nReason);
+}
+MS2_REPLACE(0x140633A20, FUN_140633a20, 95, 0x4EE47894);
+
+// @0x140633a90
+bool FUN_140633a90(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635630() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_1406227c0() == 0)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633A90, FUN_140633a90, 221, 0x8E6352DF);
+
+// @0x140633b80
+bool FUN_140633b80(MS2Ptr<CItem> spItem)
+{
+    int nReason = 0;
+    return FUN_140633fb0(spItem, &nReason);
+}
+MS2_REPLACE(0x140633B80, FUN_140633b80, 95, 0x84758196);
+
+// @0x140633bf0
+bool FUN_140633bf0(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635770() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622820() == 0)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633BF0, FUN_140633bf0, 221, 0xC088C53D);
+
+// @0x140633ce0
+bool FUN_140633ce0(MS2Ptr<CItem> spItem)
+{
+    int nReason = 0;
+    return FUN_140634120(spItem, &nReason);
+}
+MS2_REPLACE(0x140633CE0, FUN_140633ce0, 95, 0x329E53DE);
+
+// @0x140633d50
+bool FUN_140633d50(MS2Ptr<CItem> spItem)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_1406358c0() == 0)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622880() == 0)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x140633D50, FUN_140633d50, 221, 0x00269DAF);
+
+// @0x140633e40
+bool FUN_140633e40(MS2Ptr<CItem> spItem, int* pReason)
+{
+    *pReason = 0;
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635590() == 0)
+    {
+        *pReason = 1;
+        return false;
+    }
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622790() == 0)
+    {
+        *pReason = 2;
+        return false;
+    }
+    CItemEnchantInfo* pEnchant = spItem->FUN_1405278a0()->FUN_140630d60();
+    if (pEnchant != 0 && pEnchant->FUN_14058c9a0() == false)
+    {
+        *pReason = 1;
+        return false;
+    }
+    return true;
+}
+MS2_REPLACE(0x140633E40, FUN_140633e40, 351, 0x4DA816AE);
+
+// @0x140633fb0
+bool FUN_140633fb0(MS2Ptr<CItem> spItem, int* pReason)
+{
+    *pReason = 0;
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635690() == 0)
+    {
+        *pReason = 1;
+        return false;
+    }
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_1406227f0() == 0)
+    {
+        *pReason = 2;
+        return false;
+    }
+    CItemEnchantInfo* pEnchant = spItem->FUN_1405278a0()->FUN_140630d60();
+    if (pEnchant != 0 && pEnchant->FUN_14058c9a0() == false)
+    {
+        *pReason = 1;
+        return false;
+    }
+    return true;
+}
+MS2_REPLACE(0x140633FB0, FUN_140633fb0, 351, 0xF045CBEF);
+
+// @0x140634120
+bool FUN_140634120(MS2Ptr<CItem> spItem, int* pReason)
+{
+    *pReason = 0;
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635870() == 0)
+    {
+        *pReason = 1;
+        return false;
+    }
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622850() == 0)
+    {
+        *pReason = 2;
+        return false;
+    }
+    return true;
+}
+MS2_REPLACE(0x140634120, FUN_140634120, 259, 0xC62C7B4D);
+
+// @0x140634230
+bool FUN_140634230(MS2Ptr<CItem> spItem)
+{
+    int nReason;
+    return FUN_140634290(spItem, &nReason);
+}
+MS2_REPLACE(0x140634230, FUN_140634230, 87, 0x70A27980);
+
+// The item is bound (by transfer state or socketed gems); pReason says which.
+// @0x140634290
+bool FUN_140634290(MS2Ptr<CItem> spItem, int* pReason)
+{
+    *pReason = 0;
+    if (spItem == (CItem*)0)
+    {
+        *pReason = 1;
+        return false;
+    }
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635940() == true)
+    {
+        *pReason = 1;
+        return true;
+    }
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_1406228d0() == true)
+    {
+        *pReason = 2;
+        return true;
+    }
+    return false;
+}
+MS2_REPLACE(0x140634290, FUN_140634290, 278, 0xA3E57979);
+
+// @0x1406343b0
+bool FUN_1406343b0(MS2Ptr<CItem> spItem, const __int64* pCharacterId)
+{
+    if (spItem == (CItem*)0)
+        return false;
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    if (pTransfer != 0 && pTransfer->FUN_140635980(pCharacterId) == false)
+        return false;
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622a00(pCharacterId) == false)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x1406343B0, FUN_1406343b0, 242, 0x380B7BEC);
+
+// Whether the character may take the item; on refusal fills the binding owner.
+// @0x1406344b0
+bool FUN_1406344b0(MS2Ptr<CItem> spItem, const __int64* pCharacterId, ItemUtilTransfer::TOutBindingParam* pOut)
+{
+    pOut->kind = 0;
+    if (spItem == (CItem*)0)
+    {
+        pOut->kind = 1;
+        return false;
+    }
+    Unk_ItemOwnerRef* pTransfer = spItem->FUN_140527930();
+    bool bBound = false;
+    if (pTransfer != 0 && pTransfer->FUN_140635940())
+    {
+        if ((unsigned __int64)spItem->FUN_140527930()->FUN_140635160()->FUN_14052d1c0() > 0)
+            bBound = true;
+    }
+    if (spItem->FUN_140527840()->FUN_14053d7c0())
+        bBound = true;
+    if (bBound && pTransfer != 0 && pTransfer->FUN_140635980(pCharacterId) == false)
+    {
+        pOut->kind = 1;
+        pTransfer->FUN_1406359c0(&pOut->characterId, &pOut->name);
+        return false;
+    }
+    CItemSocket* pSocket = spItem->FUN_1405279c0();
+    if (pSocket != 0 && pSocket->FUN_140622a00(pCharacterId) == false)
+    {
+        pOut->kind = 2;
+        pSocket->FUN_140622b40(&pOut->characterId, &pOut->name);
+        return false;
+    }
+    return true;
+}
+MS2_REPLACE(0x1406344B0, FUN_1406344b0, 487, 0xAC86C104);
 
 // @0x1406346a0
 void CItemTransfer::CItemBinding::FUN_1406346a0(COutputStream& out)
