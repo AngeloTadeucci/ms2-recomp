@@ -17,6 +17,7 @@
 // MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@2@XZ 0x14174b0e0 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ?SetupClassInfo@CSceneStateGame@@SAXPEAVClassInfo@efd@@_K@Z 0x14174a6c0
+// MS2-PIN: ?FUN_14174a560@Unk_SSGNpc@@QEAAXD@Z 0x14174a560
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -37,6 +38,8 @@
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/notifyobject.h"
+#include "ms2/commonfiles/stream.h"
 #include <efd/Helpers.h>
 #include <efd/ISystemService.h>
 #include <efd/ServiceManager.h>
@@ -60,6 +63,7 @@ public:
     PC* FUN_141bd1290(int nId);
     PCBase* FUN_141bd1200(int nId);
     PCBase* FUN_141bd3620();
+    class Unk_SSGNpc* FUN_141bd1320(int nId);
     void FUN_141bd3d70(Unk_StreamPoint pos, Unk_StreamPoint rot);
     void FUN_141bbbe40(int nMapId, int a, int nPortal);
     MyPC* FUN_141bd0cc0();                                  // the local player actor
@@ -358,7 +362,7 @@ extern int DAT_143ab2878;
 extern int DAT_143ab287c;
 extern int DAT_143ab2880;
 extern int DAT_143ab2890;
-class Unk_SSG967100 { public: void FUN_141b21390(); };
+class Unk_SSG967100 { public: void FUN_141b21390(); void FUN_141b1ddd0(CInPacket& packet); };
 Unk_SSG967100* FUN_140967100();
 class Unk_SSG9331e0 { public: void FUN_14138d7e0(int a, int nMapId); };
 Unk_SSG9331e0* FUN_1409331e0();
@@ -372,12 +376,24 @@ class Unk_SSG9f7c90 { public: int FUN_1409f7ea0(); };
 Unk_SSG9f7c90* FUN_1409f7c90();
 void FUN_141663500(MyPC* pPC, int nMapId);                 // PC member (0x141663500), called on the local MyPC
 // The npc / monster class (class id 0x06200011).
+class Unk_SSGNpcData : public CPtred { public: char m_pad[0x60 - sizeof(CPtred)]; int m_n60; };   // the npc table row
+MS2_CHECK_OFFSET(Unk_SSGNpcData, m_n60, 0x60);
 class Unk_SSGNpc : public PCBase
 {
 public:
     static const efd::ClassID CLASS_ID = 0x06200011;
+    virtual void vfunc_124();
+    virtual void vfunc_125(int n);                          // 125 (called with 1 on packet 0x57)
     int FUN_1411900d0();
+    MS2Ptr<Unk_SSGNpcData> FUN_141093270();                 // the npc table row
+    void FUN_1410932c0(int n);
+    void FUN_1410918e0(CByteBuffer& buf);                   // apply a sync block
+    void FUN_14174a560(char c) { m_ce50 = c; }
+
+    char m_pad_d40[0xe50 - 0xd40];
+    char m_ce50;                                            // +0xe50
 };
+MS2_CHECK_OFFSET(Unk_SSGNpc, m_ce50, 0xe50);
 class Unk_PCItemCooldowns { public: void FUN_140c86510(__int64 nItemUid); };
 // The item event hub (FUN_140a6a840); slots 5/21/23 are item notifications.
 class Unk_SSGItemHub
@@ -413,6 +429,19 @@ void* FUN_1409613d0(PCBase* pPC);
 int FUN_1422b9e00(Unk_SSGSoundCtl* p);
 
 MyPC* FUN_14096e160(PCBase* pActor);                        // efd::DynamicCast<MyPC> (class id 0x06200004)
+
+// 0x3f..0x5a: npc / actor state packets
+class Unk_PCBaseComp_b18 : public CPtred { public: char m_pad[0x28 - sizeof(CPtred)]; __int64 m_nSkillUid; };   // the casting skill
+MS2_CHECK_OFFSET(Unk_PCBaseComp_b18, m_nSkillUid, 0x28);
+class NotifyRemoveNpc : public NotifyObject
+{
+public:
+    NotifyRemoveNpc(efd::SmartPointer<Unk_SSGNpc> spNpc);   // 0x140db4930
+    efd::SmartPointer<Unk_SSGNpc> m_spNpc;                  // +0x18
+};
+MS2_CHECK_SIZE(NotifyRemoveNpc, 0x20);
+class Unk_SSGNotifyCenter { public: void FUN_140da4fe0(MS2Ptr<NotifyObject> spNotify); };
+Unk_SSGNotifyCenter* FUN_140939a10();
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -1725,3 +1754,108 @@ void CSceneStateGame::FUN_141717580(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141717580, CSceneStateGame, FUN_141717580, 297, 0xF8FFE207);
+
+// @0x141718680
+void CSceneStateGame::FUN_141718680(CInPacket& packet)
+{
+    __int64 nSkillUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+    if (pActor != 0)
+    {
+        MS2Ptr<Unk_PCBaseComp_b18> spSkill = pActor->vfunc_103();
+        if ((spSkill.get() ? true : false) && spSkill->m_nSkillUid == nSkillUid && pActor->FUN_14166c930() == 0x10)
+            pActor->FUN_14166ccb0()->vfunc_7(1);
+    }
+}
+MS2_REPLACE_METHOD(0x141718680, CSceneStateGame, FUN_141718680, 295, 0x1170D80D);
+
+// @0x141718b80
+void CSceneStateGame::FUN_141718b80(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nType)
+    {
+    case 6:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nSkillUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nLevel = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            break;
+        State* pState = pPC->FUN_14166ccb0();
+        if (pState == 0)
+            break;
+        pState->vfunc_33(true);
+    }
+    }
+}
+MS2_REPLACE_METHOD(0x141718b80, CSceneStateGame, FUN_141718b80, 347, 0x325308DD);
+
+// @0x1417195f0
+void CSceneStateGame::FUN_1417195f0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGWorld* pWorld = FUN_1403ed2d0();
+    Unk_SSGNpc* pNpc = pWorld->FUN_141bd1320(nId);
+    if (pNpc == 0)
+        return;
+    int n = pNpc->FUN_141093270()->m_n60;
+    if (n != 0)
+        pNpc->vfunc_40(1.0f, 0.0f, 0.0f, 0.5f);
+    pNpc->FUN_1410932c0(0);
+    pWorld->FUN_141bbbcf0(nId, 1);
+    FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyRemoveNpc(efd::SmartPointer<Unk_SSGNpc>(pNpc))));
+}
+MS2_REPLACE_METHOD(0x1417195f0, CSceneStateGame, FUN_1417195f0, 455, 0xC7E9BA24);
+
+// @0x1417197c0
+void CSceneStateGame::FUN_1417197c0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nId);
+    if (pNpc == 0)
+        return;
+    pNpc->vfunc_125(1);
+}
+MS2_REPLACE_METHOD(0x1417197c0, CSceneStateGame, FUN_1417197c0, 113, 0xF86CD5AB);
+
+// @0x141719840
+void CSceneStateGame::FUN_141719840(CInPacket& packet)
+{
+    int nCount = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+    CByteBuffer buf;
+    for (int i = 0; i < nCount; i++)
+    {
+        int nSize = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+        buf.FUN_140518490();
+        buf.FUN_140715230(nSize);
+        static_cast<CInputStream&>(packet).vfunc_o8_9(buf.FUN_140204eb0(), nSize);
+        int nId = buf.CByteBuffer::vfunc_o8_3();
+        Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nId);
+        if (pNpc != 0)
+            pNpc->FUN_1410918e0(buf);
+    }
+}
+MS2_REPLACE_METHOD(0x141719840, CSceneStateGame, FUN_141719840, 329, 0xF8C75F47);
+
+// @0x141719990
+void CSceneStateGame::FUN_141719990(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    Unk_SSGNpc* pNpc = FUN_1403ed2d0()->FUN_141bd1320(nId);
+    if (pNpc == 0)
+        return;
+    char cFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    pNpc->FUN_14174a560(cFlag);
+}
+MS2_REPLACE_METHOD(0x141719990, CSceneStateGame, FUN_141719990, 142, 0xE0A802D1);
+
+// @0x141719a30
+void CSceneStateGame::FUN_141719a30(CInPacket& packet)
+{
+    FUN_140967100()->FUN_141b1ddd0(packet);
+}
+MS2_REPLACE_METHOD(0x141719a30, CSceneStateGame, FUN_141719a30, 37, 0xEF938A5F);
