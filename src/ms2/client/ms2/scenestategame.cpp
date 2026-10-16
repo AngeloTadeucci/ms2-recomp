@@ -673,6 +673,9 @@ public:
 };
 MS2_CHECK_SIZE(StateFishingData, 0x20);
 
+class Unk_SSGInventory { public: MS2Ptr<CItem> FUN_140a5d680(__int64 nItemUid); };
+extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
+
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
 
@@ -3329,3 +3332,41 @@ void CSceneStateGame::FUN_14173b080(CInPacket& packet)
     pPC->vfunc_59(nState, pData, nArg, 0);
 }
 MS2_REPLACE_METHOD(0x14173b080, CSceneStateGame, FUN_14173b080, 319, 0x1E71DC7F);
+
+// @0x14173b220
+void CSceneStateGame::FUN_14173b220(CInPacket& packet)
+{
+    __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    const CStringW& strTitle = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+    if (spItem == 0)
+        return;
+    CUgcItemLook* pLook = ((CItem*)spItem)->FUN_140528380();
+    if (pLook != 0)
+    {
+        pLook->unknown60 = nValue;
+        pLook->title = strTitle;
+    }
+}
+MS2_REPLACE_METHOD(0x14173b220, CSceneStateGame, FUN_14173b220, 334, 0xD2E16AC7);
+
+// @0x14173b420
+void CSceneStateGame::FUN_14173b420(CInPacket& packet)
+{
+    __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+    if (spItem == 0)
+    {
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC == 0)
+            return;
+        MS2Ptr<CEquipItem> spEquip = pMyPC->FUN_141655c30(nItemUid);
+        if (spEquip.get())
+            spItem = spEquip->FUN_1411dc7a0();
+        if (spItem == 0)
+            return;
+    }
+    ((CItem*)spItem)->FUN_140524eb0(packet);
+}
+MS2_REPLACE_METHOD(0x14173b420, CSceneStateGame, FUN_14173b420, 372, 0x5E75A989);

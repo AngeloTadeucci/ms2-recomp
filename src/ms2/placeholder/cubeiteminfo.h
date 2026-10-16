@@ -18,7 +18,8 @@ public:
     CStringW description;
     __int64 unknown50;
     CString resourcePath;
-    __int64 unknown60;
+    int unknown60;                          // +0x60 (scenestategame 0x14173b220 sets it from the packet)
+    int unknown64;
 };
 MS2_CHECK_SIZE(CUgcItemLook, 0x68);
 MS2_CHECK_OFFSET(CUgcItemLook, resourcePath, 0x58);

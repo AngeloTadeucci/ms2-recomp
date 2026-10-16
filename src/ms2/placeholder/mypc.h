@@ -6,6 +6,7 @@
 #include "ms2/client/ms2/pcbase.h"
 
 class CInPacket;
+class CEquipItem;
 
 class MyPC : public PCBase
 {
@@ -21,6 +22,7 @@ public:
     void FUN_141528c30(CInPacket& packet);                  // scenestategame packet 0x135
     void FUN_141662850(__int64 nValue);                     // PC member (scenestategame packet 0xe0)
     void FUN_141662890(__int64 nValue);                     // PC member
+    MS2Ptr<CEquipItem> FUN_141655c30(__int64 nItemUid);     // PC member: a worn item by uid (scenestategame 0x14173b420)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };
