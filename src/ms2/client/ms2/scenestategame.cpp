@@ -620,10 +620,13 @@ public:
     virtual ~CSplashDamageRecord();                         // 0x14175b5f0
     int FUN_14175b1c0(int nOwnerId, int n, __int64 nSkillUid, int nSkillId, short nLevel, int a, int b, Unk_StreamPoint kDir, Unk_StreamPoint kPos);
     void FUN_14175abc0(int nFlag, __int64 nDamage);
-private:
-    char m_pad_18[0xd8 - 0x18];
+    char m_pad_18[0x78 - 0x18];
+    Unk_StreamPoint m_kPos;                                 // +0x78 the hit position
+    char m_pad_84[0xd8 - 0x84];
 };
+MS2_CHECK_OFFSET(CSplashDamageRecord, m_kPos, 0x78);
 MS2_CHECK_SIZE(CSplashDamageRecord, 0xd8);
+template <> MS2Ptr<CSplashDamageRecord>::MS2Ptr(CSplashDamageRecord* p);   // out-of-unit COMDAT (0x141099d10)
 // The skill level row of a damage record (FUN_140803f60); only the fields the hit handler reads.
 class Unk_PCBaseSkillLevel
 {
@@ -6765,17 +6768,24 @@ void CSceneStateGame::FUN_141720c60(CInPacket& packet)
     FUN_141469a90()->FUN_141755cd0(pActor, spSkill, kPos, kDir);
 }
 MS2_REPLACE_METHOD(0x141720c60, CSceneStateGame, FUN_141720c60, 479, 0x10631625);
+// The skill of a region skill object (id 0x140803dc0, level 0x140803df0).
+class Unk_InventorySkillLevel : public CPtred { public: unsigned FUN_140803dc0(); unsigned short FUN_140803df0(); };
 // The region skill object (?\regionskillobject.cpp; new(0x158)); only the members the 0x4c handler uses.
 class CRegionSkillObject : public CPtred
 {
 public:
     CRegionSkillObject();                                   // 0x1416f57c0
+    virtual ~CRegionSkillObject();
     int FUN_1416f5a20(int nId, int nSkillId, const ATL::CAtlArray<Unk_StreamPoint>& kPoints, int nOwnerId, short nLevel, float fB, float fA, int nTick);
     void FUN_1416f6e40();                                   // end the region skill
-private:
-    char m_pad_18[0x158 - 0x18];
+    void FUN_1416f6900();                                   // a tick hit
+    char m_pad_18[0x28 - 0x18];
+    MS2Ptr<Unk_InventorySkillLevel> m_spSkill;                      // +0x28 the skill (id, level)
+    char m_pad_38[0x158 - 0x38];
 };
+MS2_CHECK_OFFSET(CRegionSkillObject, m_spSkill, 0x28);
 MS2_CHECK_SIZE(CRegionSkillObject, 0x158);
+template <> Unk_InventorySkillLevel* MS2Ptr<Unk_InventorySkillLevel>::operator->() const;   // out-of-unit COMDAT (0x1407ebbf0)
 // @0x141720e50
 void CSceneStateGame::FUN_141720e50(CInPacket& packet)
 {
@@ -6810,6 +6820,88 @@ void CSceneStateGame::FUN_141720e50(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141720E50, CSceneStateGame, FUN_141720e50, 1037, 0xEEED3063);
+
+// Part anchors of an actor (gameobject.cpp's 16-byte handle; GameObject::vfunc_27 collects them).
+struct Unk_UtilFloat3 { float x, y, z; };
+Unk_StreamPoint FUN_141b6e150(const Unk_UtilFloat3* p);
+class Unk_GoAnchor
+{
+public:
+    char m_pad[0xb4];
+    Unk_UtilFloat3 m_kPos;                                  // +0xb4
+};
+class Unk_GoAnchorPtr
+{
+public:
+    Unk_GoAnchorPtr(const Unk_GoAnchorPtr& o);              // 0x140a00180
+    ~Unk_GoAnchorPtr();                                     // 0x140a00490
+    bool FUN_140a00660(int n) const;                        // == NULL
+    Unk_GoAnchor* FUN_140ae1940() const;
+    void* m_pad[2];
+};
+
+// 0x3d mode 5: region skill hits. The region skill (cast uid, owner, region id, attack), then per target its id,
+// (flag, damage) hits, origin and direction; npcs with flag 0x1d are hit at their nearest part anchor.
+// @0x14171dc40
+void CSceneStateGame::FUN_14171dc40(CInPacket& packet)
+{
+    __int64 nSkillUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nRegionId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nAttack = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nCount = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    MS2Ptr<CRegionSkillObject> spRegion(FUN_1403ed2d0()->FUN_141bc3360(nRegionId));
+    if (!spRegion)
+        return;
+    spRegion->FUN_1416f6900();
+    for (int i = 0; i < nCount; i++)
+    {
+        int nTargetId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nHits = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        Unk_StreamPoint kOrigin = static_cast<CInputStream&>(packet).vfunc_o8_11();
+        Unk_StreamPoint kDir = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        MS2Ptr<CSplashDamageRecord> spRecord(new CSplashDamageRecord());
+        if (!spRecord->FUN_14175b1c0(nTargetId, nOwnerId, nSkillUid, spRegion->m_spSkill->FUN_140803dc0(),
+                                     spRegion->m_spSkill->FUN_140803df0(), 0, nAttack, kOrigin, kDir))
+            return;
+        for (int j = 0; j < nHits; j++)
+        {
+            int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            __int64 nDamage = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spRecord->FUN_14175abc0(nFlag, nDamage);
+        }
+        GameObject* pTarget = FUN_1403ed2d0()->FUN_141bd1180(nTargetId);
+        if (pTarget != 0)
+        {
+            CNpc* pNpc = dynamic_cast<CNpc*>(pTarget);
+            if (pNpc != 0 && pNpc->FUN_141093270()->FUN_1406cd200(0x1d))
+            {
+                Unk_StreamPoint kBest = kOrigin;
+                ATL::CAtlArray<Unk_GoAnchorPtr> kAnchors;
+                pNpc->vfunc_27(kAnchors);
+                if (kAnchors.IsEmpty() == true)
+                    return;
+                float fMin = FLT_MAX;
+                for (size_t k = 0; k < kAnchors.GetCount(); k++)
+                {
+                    Unk_GoAnchorPtr spAnchor(kAnchors[k]);
+                    if (spAnchor.FUN_140a00660(0))
+                        continue;
+                    Unk_StreamPoint kPt = FUN_141b6e150(&spAnchor.FUN_140ae1940()->m_kPos);
+                    float fDist = kOrigin.FUN_140965c40(kPt).FUN_140967ac0();
+                    if (fDist < fMin)
+                    {
+                        fMin = fDist;
+                        kBest = kPt;
+                    }
+                }
+                spRecord->m_kPos = kBest;
+            }
+            FUN_1410a7630()->FUN_14146bc80(spRecord.get());
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14171DC40, CSceneStateGame, FUN_14171dc40, 2035, 0x57F2ECD1);
 
 // @0x141723410
 void CSceneStateGame::FUN_141723410(CInPacket& packet)
