@@ -68,6 +68,11 @@
 // MS2-PIN: ?get@?$MS2Ptr@VCInteractObjectData@@@@QEBAPEAVCInteractObjectData@@XZ 0x1411926f0 ; w125 manual (call site 0x14172d0f0; look-alike 0x141747280 is called by stub 0x141732b20)
 // MS2-PIN: ??0?$MS2Ptr@VNotifyChangeBuff@@@@QEAA@PEAVNotifyChangeBuff@@@Z 0x141745880 ; w131 manual (call sites 0x141720480; the look-alike 0x141745850 is called by 0x141746eb0)
 // MS2-PIN: ?get@?$MS2Ptr@VUnk_SnowmanContext@@@@QEBAPEAVUnk_SnowmanContext@@XZ 0x1417472c0 ; w131 manual (only caller 0x141736240; the look-alike 0x141747350 is called by stub 0x141732b20)
+// MS2-PIN: ??1NotifyLearnEmotion@@UEAA@XZ 0x141746c60 ; w131 manual (called by its ??_G 0x141747950)
+// MS2-PIN: ??1NotifyKillPlayer@@UEAA@XZ 0x141746c20 ; w131 manual (called by its ??_G 0x141747910)
+// MS2-PIN: ??1NotifyChangedTokenMoney@@UEAA@XZ 0x141746c00 ; w131 manual (called by its ??_G 0x1417478d0)
+// MS2-PIN: ??_GNotifyChangedTokenMoney@@UEAAPEAXI@Z 0x1417478d0 ; w131 manual (vftable slot 0)
+// MS2-PIN: ??1NotifyActiveMyCodiTab@@UEAA@XZ 0x141746ba0 ; w131 manual (called by its ??_G 0x141747810)
 #define NOMINMAX                        // NxPhysics (interactobject.h)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -856,7 +861,7 @@ class NotifyKillPlayer : public NotifyObject
 {
 public:
     NotifyKillPlayer(const CStringW& strKiller, const CStringW& strVictim) : m_strKiller(strKiller), m_strVictim(strVictim) {}
-    virtual ~NotifyKillPlayer() {}
+    virtual ~NotifyKillPlayer() = default;
     virtual CStringW vfunc_1();                             // 0x140db5220
     CStringW m_strKiller;                                   // +0x18
     CStringW m_strVictim;                                   // +0x20
@@ -869,7 +874,7 @@ class NotifyChangedTokenMoney : public NotifyObject
 {
 public:
     NotifyChangedTokenMoney(int nType, __int64 nValue, __int64 nDelta) : m_nType(nType), m_nValue(nValue), m_nDelta(nDelta) {}
-    virtual ~NotifyChangedTokenMoney() {}
+    virtual ~NotifyChangedTokenMoney() = default;
     virtual CStringW vfunc_1();                             // 0x140db4610
     int m_nType;                                            // +0x18
     __int64 m_nValue;                                       // +0x20
@@ -943,7 +948,8 @@ extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 : public UIDialog { public: void FUN_141938ae0(int nId, int n); void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0();
     void FUN_141937e00(int nMode); void FUN_141937e40(int nMode); };   // UIGameMenuDialog
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
-class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
+class Unk_MyPCSkillSlots { public: void FUN_141769250(); void FUN_141768e70(int nId, unsigned short nLevel, __int64 nStart, __int64 nEnd, bool bA, bool bB, int bNew);
+    void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
     unsigned int FUN_141768680(class Unk_SSGSkillRow* pRow); void FUN_141765e70(int nSkillId);
     void FUN_1417669c0(int nSlot, int nSkillId, float fCool); };
@@ -2611,6 +2617,58 @@ void CSceneStateGame::FUN_1417127b0(CInPacket& packet, PCBase* pActor)
     }
 }
 MS2_REPLACE_METHOD(0x1417127b0, CSceneStateGame, FUN_1417127b0, 718, 0x3B245B75);
+
+// 0x141746370: the learned emotion notification (ctor/dtor are emitted in this unit; vfunc_1 lives in the notify unit).
+class NotifyLearnEmotion : public NotifyObject
+{
+public:
+    NotifyLearnEmotion(int nId) : m_nId(nId) {}
+    virtual ~NotifyLearnEmotion() = default;
+    virtual CStringW vfunc_1();                             // 0x140db4190
+    int m_nId;                                              // +0x18
+};
+MS2_CHECK_SIZE(NotifyLearnEmotion, 0x20);
+// @0x141712a90
+void CSceneStateGame::FUN_141712a90(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    if (nMode == 0)
+    {
+        pMyPC->FUN_141523bc0()->FUN_141769250();
+        size_t nCount = (unsigned int)static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (size_t i = 0; i < nCount; i++)
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            unsigned short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            bool bA = static_cast<CInputStream&>(packet).vfunc_o8_0();
+            __int64 nStart = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nEnd = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            bool bB = static_cast<CInputStream&>(packet).vfunc_o8_0();
+            pMyPC->FUN_141523bc0()->FUN_141768e70(nId, nLevel, nStart, nEnd, bA, bB, 0);
+        }
+    }
+    else if (nMode == 1)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        unsigned short nLevel = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nStart = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nEnd = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        pMyPC->FUN_141523bc0()->FUN_141768e70(nId, nLevel, nStart, nEnd, false, false, 1);
+        FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyLearnEmotion(nId)));
+    }
+    else if (nMode == 3)
+    {
+        int nResult = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nResult == 1)
+            FUN_140d73bc0(0x858, 0, 0, L"");
+        else if (nResult == 0)
+            FUN_140d73bc0(0x857, 0, 0, L"");
+    }
+}
+MS2_REPLACE_METHOD(0x141712a90, CSceneStateGame, FUN_141712a90, 1298, 0xE15A5F74);
 
 // @0x141712fb0
 // MS2-FUNCTIONAL: exe frame 0x20 larger (the uid reads go through extra expression temps); same calls and args
@@ -8476,7 +8534,7 @@ class NotifyActiveMyCodiTab : public NotifyObject
 {
 public:
     NotifyActiveMyCodiTab(const __int64& nStart, const __int64& nEnd) : m_nStart(nStart), m_nEnd(nEnd) {}
-    virtual ~NotifyActiveMyCodiTab() {}
+    virtual ~NotifyActiveMyCodiTab() = default;
     virtual CStringW vfunc_1();                             // 0x140db4cd0
     __int64 m_nStart;                                       // +0x18
     __int64 m_nEnd;                                         // +0x20
