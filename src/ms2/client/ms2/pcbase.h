@@ -48,6 +48,8 @@ class Ridee;                // ridee.h (the mount; +0xb10)
 class PCBase;
 class Unk_PCBaseEntity;      // an egf entity seen through its property getters, pcbase.cpp
 class Unk_PCBaseFxSet;       // vfunc_71/73 argument (MS2Ptr by value; effect names at +0x40), pcbase.cpp
+class CBoxCollision;         // functioncubeobject.h
+class Unk_PCBaseFxLib;       // vfunc_70 result: the effect-source library (FUN_1411bde10 by id), pcbase.cpp
 class Unk_PCBaseFxSource;    // +0xd10, hands out Unk_PCBaseFxSet by key (slot 2), pcbase.cpp
 class Unk_PCBaseEmoPlayer;   // +0x638 (FUN_141848650 stop, FUN_141848740 busy at a time), pcbase.cpp
 class Unk_PCBaseBody;       // +0x150 physics/controller body (0xf8; ctor 0x14123f2d0, dtor 0x14123f460), pcbase.cpp
@@ -158,7 +160,7 @@ public:
     virtual void vfunc_67(void* a, void* b);                // 67  0x14166cf40
     virtual bool vfunc_68(void* a, double t, int b, unsigned c, int d);  // 68 0x14166e100
     virtual int vfunc_69();                                 // 69  0x14166f9f0
-    virtual void vfunc_70();                                // 70  0x14166fa00
+    virtual Unk_PCBaseFxLib* vfunc_70();                    // 70  0x14166fa00
     virtual void vfunc_71(MS2Ptr<Unk_PCBaseFxSet> spSet);   // 71  0x14166fa30
     virtual void vfunc_72();                                // 72  0x14166fa60
     virtual void vfunc_73(MS2Ptr<Unk_PCBaseFxSet> spSet, int bFx); // 73  0x14166fa70
@@ -240,6 +242,7 @@ public:
     bool FUN_14166f790(void* pKey, CString& strOut, int n);   // 0x14166f790 effect name of a key
     void FUN_14166f940();                                   // 0x14166f940 emotion timer expired: back to default                                    // 0x14166f6d0
     CString FUN_14166f740();                                // 0x14166f740 (returns a string)
+    void FUN_14166f380();                                   // 0x14166f380 reload the effect source (vfunc_70 library, vfunc_69 id)
     // uipvpguildteamdialog.cpp (w71)
     __int64 FUN_141670a00(int nStat);                       // 0x141670a00 current value of a stat (4 = hp)
     __int64 FUN_141670a30(int nStat);                       // 0x141670a30 max value of a stat
@@ -398,6 +401,7 @@ public:
     void FUN_141679760();                                    // 0x141679760 reload +0xd00 for vfunc_57()
     void FUN_141679e00();                                    // 0x141679e00 stop the +0xa30 effects
     void FUN_141679f30();                                    // 0x141679f30
+    void FUN_141679fa0();                                    // 0x141679fa0
     // mypc.cpp (w99)
     unsigned short FUN_141661e00();                         // 0x141661e00 the channel the actor is on
     int FUN_141661e20();                                    // 0x141661e20
@@ -435,7 +439,7 @@ public:
     __int64 m_unk_1c0[3][0x23];         // +0x1c0 stat values (kind 0..2, stat 0..0x22; FUN_141670990)
     __int64 m_unk_508[0x23];            // +0x508 zero-filled record
     efd::Point2 m_unk_620;              // +0x620 (init 0x140a0a600(p, 25.0, 105.0)) model size
-    void* m_unk_628[2];                 // +0x628 (init 0x140ae13b0)
+    MS2Ptr<CBoxCollision> m_sp628;      // +0x628 collision box (FUN_141670fd0)
     MS2Ptr<Unk_PCBaseEmoPlayer> m_sp638; // +0x638 (init 0x14167e030)
     Unk_PCBaseColorBoostMgr m_colorBoost;   // +0x648 CColorBoostManager (0x48)
     void* m_pushControl[9];             // +0x690 CPushControl (0x48)
@@ -466,7 +470,7 @@ public:
     CString m_str9d8;                   // +0x9d8 = "default"
     CString m_str9e0;                   // +0x9e0
     Timer m_timer9e8;                   // +0x9e8
-    void* m_unk_a20[2];                 // +0xa20 (not initialised by the ctor)
+    float m_afA20[4];                   // +0xa20 "FA_Skin" floats extra data (FUN_141679fa0; not initialised by the ctor)
     CAtlArray<unsigned int> m_arrA30;   // +0xa30 effect handles (vfunc_73)
     int m_unk_a50;                      // +0xa50 = 1
     MS2Ptr<Unk_PCBaseComp_a58> m_spA58; // +0xa58

@@ -241,7 +241,7 @@ Unk_CsoGameCtx* FUN_1403ed280();
 class Unk_CsoSpawnMgr
 {
 public:
-    void FUN_1411bf1e0();
+    Unk_PCBaseFxLib* FUN_1411bf1e0();
 };
 extern Unk_CsoSpawnMgr* DAT_143ab6dc8;
 // @0x140a50010
@@ -341,9 +341,9 @@ int CubeSpawnObject::vfunc_69()
 MS2_REPLACE_METHOD(0x140a4eff0, CubeSpawnObject, vfunc_69, 128, 0xCE493C67);
 
 // @0x140a4f080
-void CubeSpawnObject::vfunc_70()
+Unk_PCBaseFxLib* CubeSpawnObject::vfunc_70()
 {
-    FUN_140a50010()->FUN_1411bf1e0();
+    return FUN_140a50010()->FUN_1411bf1e0();
 }
 MS2_REPLACE_METHOD(0x140a4f080, CubeSpawnObject, vfunc_70, 27, 0xC7E44435);
 

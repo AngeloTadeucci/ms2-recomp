@@ -42,7 +42,7 @@ public:
     virtual void vfunc_12();                                // 12  0x140a4f9f0
     virtual void vfunc_53(float f);                         // 53  0x140a4faf0
     virtual int vfunc_69();                                 // 69  0x140a4eff0 (npc id)
-    virtual void vfunc_70();                                // 70  0x140a4f080
+    virtual Unk_PCBaseFxLib* vfunc_70();                    // 70  0x140a4f080
     virtual MS2Ptr<Unk_PCBaseComp_aa8> vfunc_85();          // 85  0x140a4f0b0 (lazy chat balloon)
     virtual int vfunc_116();                                // 116 0x140a4efd0 (return 1)
     // new slot 124: binds the npc row and the cube entity (ent is by value: the callee destroys it).

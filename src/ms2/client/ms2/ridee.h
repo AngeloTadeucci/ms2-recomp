@@ -143,7 +143,7 @@ public:
     virtual int vfunc_58();                                 // 58  0x141705220
     virtual void vfunc_67(void* a, void* b);                // 67  0x141706180
     virtual int vfunc_69();                                 // 69  0x141707070
-    virtual void vfunc_70();                                // 70  0x141705880
+    virtual Unk_PCBaseFxLib* vfunc_70();                    // 70  0x141705880
     virtual MS2Ptr<Unk_PCBaseComp_a58> vfunc_80();          // 80  0x1417077a0
     virtual float vfunc_89();                               // 89  0x1417078d0
     virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);     // 102 0x141706260

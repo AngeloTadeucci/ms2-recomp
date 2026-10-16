@@ -56,6 +56,9 @@
 #include "ms2/client/ms2/statemanager.h"
 #include "ms2/client/ms2/animationmanager.h"
 #include "ms2/placeholder/state.h"
+#include "ms2/client/ms2/stateemotionidle.h"
+#include "ms2/client/ms2/functioncubeobject.h"        // CBoxCollision
+#include "ms2/client/ms2/afterimageeffectparam.h"    // Unk_AfterImageColor
 #include "ms2/commonfiles/rideonaction.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
@@ -64,6 +67,8 @@
 #include <algorithm>
 #include <NiMatrix3.h>
 #include <NiFixedString.h>
+#include <NiFloatsExtraData.h>
+#include <NiActorManager.h>
 
 // ---- unit-local placeholders ----
 
@@ -151,6 +156,34 @@ int FUN_1417e9330(State* pState);                                 // the skill s
 
 extern const NiRTTI DAT_143ad1588;                                  // EffectNode::ms_RTTI
 
+// The emotion table (?\\stateemotionidle.cpp has the same row type).
+class Unk_EmoRow : public CPtred
+{
+public:
+    int FUN_1407e9a60();                                 // row kind (0xe = emotion)
+    CString FUN_1407e9cb0();                             // animation name
+    char m_pad_18[0x18];
+    int m_n30;                                           // +0x30 animation speed
+};
+class Unk_PCBaseEmoTable
+{
+public:
+    MS2Ptr<Unk_EmoRow> FUN_1407ee1d0(int nEmotion);
+};
+Unk_PCBaseEmoTable* FUN_1401958b0();
+template <> MS2Ptr<Unk_EmoRow>::~MS2Ptr();                                              // 0x14063e5c0
+template <> bool MS2Ptr<Unk_EmoRow>::operator==(Unk_EmoRow* p) const;                   // 0x14063eab0
+template <> Unk_EmoRow* MS2Ptr<Unk_EmoRow>::operator->() const;                         // 0x14063ed50
+
+// The graphics option singleton (FUN_141679fa0).
+class Unk_PCBaseGfxOption
+{
+public:
+    int FUN_14109a9d0();                                            // skin colour on the "FA_Skin" child
+};
+Unk_PCBaseGfxOption* FUN_1409f7c90();
+extern NiFixedString DAT_143ae50f8;                                 // the skin colour extra data key
+
 // TSingleton<CBattleRecordManager> (vfunc_113).
 class Unk_PCBaseBattleRecord
 {
@@ -165,30 +198,41 @@ template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();                                   
 template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;                   // 0x1407895d0
 
 // The argument of vfunc_71/73 (passed as MS2Ptr by value; the callee releases it).
+class Unk_PCBaseEmoAnim : public CPtred {};                          // the effect set's +0x30 animation record
+template <> Unk_PCBaseEmoAnim* MS2Ptr<Unk_PCBaseEmoAnim>::get() const;                 // 0x1411c0200
 class Unk_PCBaseFxSet : public CPtred
 {
 public:
     CString FUN_1411bd0c0(int n);
-    char m_pad[0x28];
+    void* m_pad_18[3];
+    MS2Ptr<Unk_PCBaseEmoAnim> m_sp30;                               // +0x30
     CAtlArray<CString> m_arrEffects;                                // +0x40 effect names
 };
 MS2_CHECK_OFFSET(Unk_PCBaseFxSet, m_arrEffects, 0x40);
 class Unk_PCBaseFxSource : public CPtred
 {
 public:
-    virtual void vfunc_1();
+    virtual CString vfunc_1();                                      // the source's name
     virtual MS2Ptr<Unk_PCBaseFxSet> vfunc_2(void* pKey);
 };
-class Unk_PCBaseEmoPlayer : public CPtred
+class Unk_PCBaseEmoPlayer : public CPtred                           // 0x88
 {
 public:
+    Unk_PCBaseEmoPlayer(PCBase* pOwner);                            // 0x1418482f0
+    void FUN_1418484a0(MS2Ptr<Unk_PCBaseEmoAnim> spAnim, const CString& strName);
     void FUN_141848650();
     bool FUN_141848740(int nTime);
+    void* m_pad_18[14];
 };
-class Unk_PCBaseState0b : public State
+MS2_CHECK_SIZE(Unk_PCBaseEmoPlayer, 0x88);
+class Unk_PCBaseState0b : public State                              // StateEmotion (stateemotionidle.h)
 {
 public:
     int FUN_1417c4320();
+    // @0x14167f950
+    CString FUN_14167f950() { return m_strAnim; }
+    void* m_pad_40[2];
+    CString m_strAnim;                                              // +0x50
 };
 class Unk_PCBaseState0d : public State                              // ?\statehit.cpp
 {
@@ -203,7 +247,12 @@ public:
 class Unk_PCBaseSpawnMgr
 {
 public:
-    void FUN_1411bf1b0();
+    Unk_PCBaseFxLib* FUN_1411bf1b0();
+};
+class Unk_PCBaseFxLib
+{
+public:
+    MS2Ptr<Unk_PCBaseFxSource> FUN_1411bde10(int nId);
 };
 Unk_PCBaseSpawnMgr* FUN_140a50010();
 
@@ -457,6 +506,7 @@ class Unk_PCBaseAnimSvc
 public:
     efd::utf8string FUN_140b7cc50(const egf::EntityID& kId);         // current animation name
     unsigned int FUN_140999490(const egf::EntityID& kId, const efd::utf8string& strName);   // GetAnimationIdFromName
+    NiActorManager* FUN_140999440(const egf::EntityID& kId);        // GetActorManager
 };
 Unk_PCBaseAnimSvc* FUN_141b6f910();
 
@@ -615,7 +665,7 @@ Unk_GoAttachment* PCBase::vfunc_26()
 {
     if (FUN_1416764d0())
         return FUN_1416764a0()->vfunc_26();
-    return FUN_140a006f0(&m_unk_628);
+    return FUN_140a006f0(&m_sp628);
 }
 MS2_REPLACE_METHOD(0x14166bd70, PCBase, vfunc_26, 83, 0x28C24E0F);
 
@@ -1200,9 +1250,9 @@ int PCBase::vfunc_69()
 MS2_REPLACE_METHOD(0x14166f9f0, PCBase, vfunc_69, 8, 0x7F371472);
 
 // @0x14166fa00
-void PCBase::vfunc_70()
+Unk_PCBaseFxLib* PCBase::vfunc_70()
 {
-    FUN_140a50010()->FUN_1411bf1b0();
+    return FUN_140a50010()->FUN_1411bf1b0();
 }
 MS2_REPLACE_METHOD(0x14166fa00, PCBase, vfunc_70, 27, 0x7E5CDCB1);
 
@@ -2776,6 +2826,144 @@ void PCBase::FUN_14166ebf0(PCBase* pOther)
     }
 }
 MS2_REPLACE_METHOD(0x14166ebf0, PCBase, FUN_14166ebf0, 268, 0x8CB8826E);
+
+// @0x14166ed70
+void PCBase::FUN_14166ed70(int nEmotion)
+{
+    MS2Ptr<Unk_EmoRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(nEmotion);
+    if (spRow == 0)
+        return;
+    if (FUN_14166c930() == 0xb) {
+        Unk_PCBaseState0b* pState = static_cast<Unk_PCBaseState0b*>(FUN_14166ccb0());
+        if (pState->FUN_14167f950() == spRow->FUN_1407e9cb0())
+            return;
+    }
+    vfunc_59(0xb, new StateEmotionData(nEmotion), 0, 1);
+}
+MS2_REPLACE_METHOD(0x14166ED70, PCBase, FUN_14166ed70, 396, 0x285198E6);
+
+// @0x14166ef10
+void PCBase::FUN_14166ef10(const CString& str, int nA, int nB, bool bC)
+{
+    if (!m_b9d0)
+        return;
+    if (m_spD10 == 0)
+        return;
+    {
+        MS2Ptr<Unk_PCBaseFxSet> spSet = m_spD10->vfunc_2((void*)&str);
+        if (spSet == 0)
+            return;
+        if (nB == 0 && m_str9e0 == str)
+            return;
+        FUN_141679fa0();
+        FUN_141679f30();
+        vfunc_72();
+        m_str9e0 = str;
+        m_timer9e8.FUN_1408687c0();
+        vfunc_71(spSet);
+        if (spSet->m_sp30.get() != 0) {
+            if (m_sp638 == 0)
+                m_sp638.AssignRaw(new Unk_PCBaseEmoPlayer(this));
+            m_sp638->FUN_1418484a0(spSet->m_sp30, m_spD10->vfunc_1());
+        }
+        if (m_unk_a50 != 0 && nA != 0) {
+            for (unsigned int i = 0; i < spSet->m_arrEffects.GetCount(); i++) {
+                Unk_PCBaseFxQuery kQuery;
+                kQuery.m_strName = spSet->m_arrEffects[i];
+                kQuery.m_nPlayer = FUN_1403ed2d0()->FUN_141bd1a10(this);
+                kQuery.FUN_140a53190(FUN_14123c580());
+                kQuery.m_bEmotion = bC;
+                unsigned int nHandle = FUN_1403ed280()->FUN_1411a49c0(&kQuery);
+                m_arrA30.Add(nHandle);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14166EF10, PCBase, FUN_14166ef10, 1117, 0x56C2592F);
+
+// @0x141679fa0
+// MS2-FUNCTIONAL: pointer locals get other frame slots (the exe copies the "FA_Skin" child into a second slot); same calls and stores.
+void PCBase::FUN_141679fa0()
+{
+    if (FUN_1409f7c90()->FUN_14109a9d0() != 0) {
+        if (!m_spC38) {
+            NiActorManager* pActor = FUN_141b6f910()->FUN_140999440(FUN_14123c460());
+            NiAVObject* pRoot;
+            if (pActor != 0 && (pRoot = pActor->GetNIFRoot()) != 0)
+                m_spC38 = pRoot->GetObjectByName("FA_Skin");
+        }
+        if (m_spC38) {
+            NiFloatsExtraData* pData = NiDynamicCast(NiFloatsExtraData, m_spC38->GetExtraData(DAT_143ae50f8));
+            if (pData == 0) {
+                m_afA20[0] = 0.0f;
+                m_afA20[1] = 0.0f;
+                m_afA20[2] = 0.0f;
+                m_afA20[3] = 0.0f;
+                pData = NiNew NiFloatsExtraData(4, m_afA20);
+                m_spC38->AddExtraData(DAT_143ae50f8, pData);
+            } else {
+                m_afA20[0] = pData->GetValue(0);
+                m_afA20[1] = pData->GetValue(1);
+                m_afA20[2] = pData->GetValue(2);
+                m_afA20[3] = pData->GetValue(3);
+            }
+        }
+    } else {
+        NiActorManager* pActor = FUN_141b6f910()->FUN_140999440(FUN_14123c460());
+        NiAVObject* pRoot;
+        if (pActor != 0 && (pRoot = pActor->GetNIFRoot()) != 0) {
+            NiAVObject* pSkin = pRoot->GetObjectByName("FA_Skin");
+            if (pSkin != 0) {
+                NiFloatsExtraData* pData = NiDynamicCast(NiFloatsExtraData, pSkin->GetExtraData(DAT_143ae50f8));
+                if (pData == 0) {
+                    m_afA20[0] = 0.0f;
+                    m_afA20[1] = 0.0f;
+                    m_afA20[2] = 0.0f;
+                    m_afA20[3] = 0.0f;
+                    NiExtraData* pNew = NiNew NiFloatsExtraData(4, m_afA20);
+                    pSkin->AddExtraData(DAT_143ae50f8, pNew);
+                } else {
+                    m_afA20[0] = pData->GetValue(0);
+                    m_afA20[1] = pData->GetValue(1);
+                    m_afA20[2] = pData->GetValue(2);
+                    m_afA20[3] = pData->GetValue(3);
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141679FA0, PCBase, FUN_141679fa0, 1479, 0xF07072FF);
+
+// @0x14166f380
+void PCBase::FUN_14166f380()
+{
+    FUN_141679fa0();
+    if (m_sp638.get() != 0)
+        m_sp638->FUN_141848650();
+    m_timer9e8.FUN_1408687f0();
+    m_timer9e8.FUN_1408687c0();
+    m_spD10 = vfunc_70()->FUN_1411bde10(vfunc_69());
+    if (m_spD10.get() != 0) {
+        MS2Ptr<Unk_PCBaseFxSet> spSet = m_spD10->vfunc_2((void*)&m_str9e0);
+        if ((spSet.get() ? true : false) && (spSet->m_sp30.get() ? true : false)) {
+            if (m_sp638 == 0)
+                m_sp638.AssignRaw(new Unk_PCBaseEmoPlayer(this));
+            m_sp638->FUN_1418484a0(spSet->m_sp30, m_spD10->vfunc_1());
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14166f380, PCBase, FUN_14166f380, 831, 0xC410A395);
+
+// @0x141670fd0
+void PCBase::FUN_141670fd0(efd::Point3 kSize, efd::Point3 kOffset)
+{
+    m_sp628.AssignRaw(new CBoxCollision);
+    m_sp628->m_ptBox = reinterpret_cast<const Unk_StreamPoint&>(kSize);
+    m_sp628->m_ptSize = reinterpret_cast<const Unk_StreamPoint&>(kOffset);
+    m_sp628->m_kColor = Unk_AfterImageColor(0, 0, 1.0f, 1.0f);
+    m_sp628->vfunc_4();
+}
+MS2_REPLACE_METHOD(0x141670fd0, PCBase, FUN_141670fd0, 332, 0x3365AEC9);
 
 // @0x141678f50
 // MS2-FUNCTIONAL: the exe keeps the NiNode smart pointer's ctor result in three extra slots (frame 0x78 vs 0x58); same calls and order.

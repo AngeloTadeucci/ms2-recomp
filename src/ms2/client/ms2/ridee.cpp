@@ -261,7 +261,7 @@ Unk_RideeOptions* FUN_1409a8b10();
 class Unk_RideeSpawnMgr
 {
 public:
-    void FUN_1411bf1e0();
+    Unk_PCBaseFxLib* FUN_1411bf1e0();
 };
 Unk_RideeSpawnMgr* FUN_140a50010();
 
@@ -700,9 +700,9 @@ void Ridee::vfunc_119()
 }
 
 // @0x141705880
-void Ridee::vfunc_70()
+Unk_PCBaseFxLib* Ridee::vfunc_70()
 {
-    FUN_140a50010()->FUN_1411bf1e0();
+    return FUN_140a50010()->FUN_1411bf1e0();
 }
 MS2_REPLACE_METHOD(0x141705880, Ridee, vfunc_70, 27, 0x48167045);
 
