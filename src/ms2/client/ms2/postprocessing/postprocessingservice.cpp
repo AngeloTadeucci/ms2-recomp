@@ -83,6 +83,9 @@
 #pragma clang diagnostic ignored "-Waddress-of-temporary"
 #endif
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\postprocessing\\postprocessingservice.cpp"
+#ifndef NOMINMAX
+#define NOMINMAX                                                            // PhysX (via entityworldmanager.h)
+#endif
 #include "ms2/placeholder/ms2stdafx.h"
 #include "postprocessingservice.h"
 #include <NiClickRenderStep.h>
@@ -108,6 +111,7 @@
 #include "ms2/client/ms2/planereflectionsetting.h"
 #include "ms2/client/ms2/ms2texturedensityprocessor.h"
 #include "ms2/client/ms2/depthoffieldmanager.h"
+#include "ms2/client/ms2/entityworldmanager.h"
 #include <NiTextureEffect.h>
 #include <NiRenderListProcessor.h>
 #include <NiDefaultClickRenderStep.h>
@@ -1287,7 +1291,7 @@ extern NiFixedString DAT_143ae52d0;
 extern NiFixedString DAT_143ae52d8;
 extern NiFixedString DAT_143ae5268;
 extern const efd::Category DAT_143ae4c20;                                   // the entity channel (defined below)
-egf::EntityManager* FUN_1409670f0();                                        // the entity manager
+EntityWorldManager* FUN_1409670f0();                                        // the entity world manager (iterates the current map's entities)
 
 // CEffectService (0x0610000c) has no recovered header; this carries its class id for AddDependency<>.
 struct Unk_PPEffectServiceDep
@@ -2161,9 +2165,9 @@ void PostProcessingService::FUN_1416aa450(int nClick, bool bActive)
         else
         {
             m_spTextureEffect->DetachAllAffectedNodes();
-            egf::EntityManager::EntityMap::const_iterator kPos = FUN_1409670f0()->GetFirstEntityPos();
+            Unk_WorldEntityMap::iterator kPos = FUN_1409670f0()->FUN_1411ce4c0();
             egf::Entity* pkEntity = 0;
-            while (FUN_1409670f0()->GetNextEntity(kPos, pkEntity))
+            while (FUN_1409670f0()->FUN_1411ce510(kPos, pkEntity))
             {
                 NiNode* pkNode = NiDynamicCast(NiNode, FUN_141b6efc0(pkEntity));
                 if (pkNode == 0)
@@ -2907,9 +2911,9 @@ void PostProcessingService::FUN_1416aa950()
             NiAVObject* pkScene = kScenes.GetNext(kPos);
             pkView->AppendScene(pkScene);
         }
-        egf::EntityManager::EntityMap::const_iterator kIter = FUN_1409670f0()->GetFirstEntityPos();
+        Unk_WorldEntityMap::iterator kIter = FUN_1409670f0()->FUN_1411ce4c0();
         egf::Entity* pEntity = 0;
-        while (FUN_1409670f0()->GetNextEntity(kIter, pEntity))
+        while (FUN_1409670f0()->FUN_1411ce510(kIter, pEntity))
         {
             NiNode* pkRoot = NiDynamicCast(NiNode, FUN_141b6efc0(pEntity));
             if (!pkRoot)
