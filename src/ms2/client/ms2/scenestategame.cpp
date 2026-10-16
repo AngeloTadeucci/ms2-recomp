@@ -131,6 +131,7 @@
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
 #include "interactobject.h"                // CInteractObject (0x63)
 #include "entityworldmanager.h"
+#include "statedata.h"                   // StateSummonData, StateHoldData (0x79)
 // usermail.h declares FUN_1403ed2d0 over its own Unk_MailSession stand-in; this unit's world type is Unk_SSGWorld,
 // so the header's declaration is renamed out of the way.
 #define FUN_1403ed2d0 FUN_1403ed2d0_UserMail
@@ -184,6 +185,10 @@ public:
     void FUN_141bd3d70(Unk_StreamPoint pos, Unk_StreamPoint rot);
     void FUN_141bbbe40(int nMapId, int a, int nPortal);
     MyPC* FUN_141bd0cc0();                                  // the local player actor
+    MS2Ptr<class Unk_SSGNamedObj> FUN_141bc5a20(CString strName);   // a named field object (0x73)
+    void FUN_141bc5420(CInPacket& packet);                  // 0x73 mode 3
+    void FUN_141bc5830(CString strName);                    // remove a named field object
+    struct Unk_SSGEntListPtr FUN_141bd0420(unsigned int nModelHash);   // the entities of a model
     void FUN_141bc9aa0(MS2Ptr<CProxyGameObject> spProxy);   // add a field object proxy
     void FUN_141bc9b30(int nId);                            // remove one
     MS2Ptr<CProxyGameObject> FUN_141bc9be0(int nId);        // find one
@@ -273,7 +278,7 @@ Unk_SSGKeyState* FUN_14025e7a0();
 class Unk_SSGKeyboard { public: bool FUN_14116d950(int nKey, bool bA, int b); bool FUN_14116d9c0(int nKey, bool bA, int b); };
 Unk_SSGKeyboard* FUN_14025e7c0();
 
-class Unk_SSGQuery { public: int FUN_140a18070(); void FUN_140aeb1a0(); void FUN_140aecbb0(int a, int b, bool c); };
+class Unk_SSGQuery { public: int FUN_140a18070(); void FUN_140aeb1a0(); void FUN_140aecbb0(int a, int b, bool c); void FUN_140aeaf40(MyPC* pTarget, int n); };
 Unk_SSGQuery* FUN_1409478c0();
 
 // OnEnter/OnLeave service calls
@@ -9503,6 +9508,252 @@ CSkillMagicControlGuide* FUN_141662610(PCBase* pOwner);   // the owner's skill-m
 extern int DAT_143af25f8;                                    // set after a fitting doll's equipment changed
 FittingDollPC* FUN_140884db0(PCBase* pObj);                 // the object as a fitting doll (class 0x6200046) or 0
 void FUN_14121b840(int nId);                                // FittingDollPC: packet 0x7b mode 0xb
+
+// A named field object of packet 0x73 (methods in an unrecovered unit near 0x141447800).
+class Unk_SSGNamedObj : public CPtred
+{
+public:
+    void FUN_1414477f0(CString strA, CString strB);
+    void FUN_141447850(CString strA, CString strB);
+    void FUN_141447a60(int n);
+    void FUN_1414478b0(bool b);
+    void FUN_141447aa0(bool b);
+    void FUN_141447b00(int n);
+};
+typedef ATL::CAtlList<efd::SmartPointer<egf::Entity> > Unk_SSGEntList;
+// 16-byte smart pointer to a boxed entity list (TPtredDummy<T>; the same COMDATs as autofindtaxistation's Unk_TaxiPtr).
+struct Unk_SSGEntListPtr
+{
+    Unk_SSGEntList* get() const { return m_p; }
+    Unk_SSGEntList* operator->() const { return m_p; }
+    ~Unk_SSGEntListPtr() { Release(); }
+    void Release()
+    {
+        if (m_p)
+        {
+            ReleaseImpl(0);
+            m_p = 0;
+        }
+    }
+    void ReleaseImpl(void*)
+    {
+        CPtred* owner = Owner(m_p);
+        if (CPtred::ReleasePtred(owner) == 0)
+        {
+            Ref(owner);
+            CPtred::DeletePtred(owner);
+        }
+    }
+    static void Ref(CPtred* p) { CPtred::AddRefPtred(p); }
+    static TPtredDummy<Unk_SSGEntList>* Owner(Unk_SSGEntList* p)
+    {
+        return p == NULL ? NULL : reinterpret_cast<TPtredDummy<Unk_SSGEntList>*>(reinterpret_cast<char*>(p) - offsetof(TPtredDummy<Unk_SSGEntList>, value));
+    }
+    void* m_00;
+    Unk_SSGEntList* m_p;
+};
+efd::ID128* FUN_140ae1be0(egf::Entity* pEntity);            // the entity's data file id
+void FUN_140ae1f60(efd::ID128* pId, efd::utf8string& strOut);   // the id as text
+void FUN_1401d3700(CString& str);                           // normalise a name
+Unk_Int3 FUN_1408a1430(efd::Point3 kPos);                   // the cube cell of a world position
+
+// Packet 0x73: named field objects (state sync, remove).
+// MS2-FUNCTIONAL: code bytes match; set<CString> ctor/insert/dtor are bound in symbols.tsv to uihideandseekresultdialog's
+// (different-bodied) copies, the exe uses this unit's in-range instances 0x141745b10/0x1417451e0/0x1417468f0
+// @0x141729250
+void CSceneStateGame::FUN_141729250(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (nMode)
+    {
+    case 0:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        std::set<CString> names;
+        for (int i = 0; i < nCount; i++)
+        {
+            CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+            bool bEnable = static_cast<CInputStream&>(packet).vfunc_o8_1() == 0 ? false : true;
+            int nState = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            CString strA = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            CString strB = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            CString strC = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            CString strD = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_0();
+            names.insert(strName);
+            MS2Ptr<Unk_SSGNamedObj> spObj = FUN_1403ed2d0()->FUN_141bc5a20(strName);
+            if (spObj.get() != 0)
+            {
+                spObj->FUN_1414477f0(strA, strB);
+                spObj->FUN_141447850(strC, strD);
+                spObj->FUN_141447a60(nState);
+                spObj->FUN_1414478b0(bEnable);
+                spObj->FUN_141447aa0(bFlag);
+                spObj->FUN_141447b00(nKind);
+            }
+        }
+        Unk_SSGEntListPtr list = FUN_1403ed2d0()->FUN_141bd0420(0x32767dd);
+        if (list.get() != 0)
+        {
+            for (POSITION pos = list->GetHeadPosition(); pos != 0; list->GetNext(pos))
+            {
+                egf::Entity* pEntity = list->GetAt(pos);
+                efd::utf8string strId;
+                FUN_140ae1f60(FUN_140ae1be0(pEntity), strId);
+                CString strName(strId.c_str());
+                FUN_1401d3700(strName);
+                if (names.find(strName) == names.end())
+                {
+                    efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+                    efd::Point3 kPos = efd::Point3::ZERO;
+                    pEntity->GetPropertyValue(0xfd95ca52, kPos);
+                    Unk_Int3 kCell = FUN_1408a1430(kPos);
+                    spService->FUN_1410c4b50(kCell, 0);
+                    FUN_1403ed2d0()->FUN_141bc5830(strName);
+                }
+            }
+        }
+    }
+        break;
+    case 2:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        bool bEnable = static_cast<CInputStream&>(packet).vfunc_o8_1() == 0 ? false : true;
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        MS2Ptr<Unk_SSGNamedObj> spObj = FUN_1403ed2d0()->FUN_141bc5a20(strName);
+        if (spObj.get() != 0)
+        {
+            spObj->FUN_141447a60(nState);
+            spObj->FUN_1414478b0(bEnable);
+            spObj->FUN_141447b00(nKind);
+        }
+    }
+        break;
+    case 3:
+        FUN_1403ed2d0()->FUN_141bc5420(packet);
+        break;
+    case 4:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        FUN_1403ed2d0()->FUN_141bc5830(strName);
+    }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x141729250, CSceneStateGame, FUN_141729250, 2696, 0x7EC41E6F);
+
+template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();                                           // 0x140788ed0
+template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;                   // 0x1407895d0
+template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::get() const;                          // 0x1409f78a0
+template <> MS2Ptr<Unk_RideeModel>::~MS2Ptr();                                          // 0x140788ea0
+template <> Unk_RideeModel* MS2Ptr<Unk_RideeModel>::operator->() const;                 // 0x1407895c0
+template <> Unk_RideeModel* MS2Ptr<Unk_RideeModel>::get() const;                        // 0x140789570
+MS2Ptr<Unk_RideeData> FUN_1407844b0(int nRideeId);             // the ridee table row of an id
+
+// Packet 0x79: riding (ride on / ride off / mount summon / passenger seats / ride flag).
+// @0x14172a8f0
+void CSceneStateGame::FUN_14172a8f0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 0)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        MS2Ptr<RideOnAction> spAction = FUN_14077deb0(&static_cast<CInputStream&>(packet));
+        PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+        if (pActor == 0)
+            return;
+        pActor->vfunc_120(spAction);
+    }
+    else if (nMode == 1)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+        if (pActor == 0)
+            return;
+        MS2Ptr<RideOffAction> spAction = FUN_14077e5b0(&static_cast<CInputStream&>(packet));
+        pActor->vfunc_121(spAction);
+    }
+    else if (nMode == 2)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PCBase* pActor = FUN_1403ed2d0()->FUN_141bd1200(nId);
+        if (pActor == 0)
+            return;
+        pActor->vfunc_121(MS2Ptr<RideOffAction>(0));
+        if (pActor->GetClassID() == 0x6200004)
+        {
+            int nRideeId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            MS2Ptr<Unk_RideeData> spData = FUN_1407844b0(nRideeId);
+            if (spData.get() != 0)
+                pActor->vfunc_59(0x26, new StateSummonData(reinterpret_cast<void*>(nItemUid), 0), 0, 0);
+        }
+    }
+    else if (nMode == 3)
+    {
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nRiderId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nSeat = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        CString strNode("");
+        PC* pOwner = FUN_1403ed2d0()->FUN_141bd1290(nOwnerId);
+        if (pOwner == 0)
+            return;
+        pOwner->FUN_141676670(nRiderId, nSeat);
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0 && pMyPC->FUN_14123c580() == nRiderId)
+        {
+            efd::SmartPointer<Ridee> spRidee = pOwner->FUN_1416764a0();
+            if (spRidee)
+            {
+                MS2Ptr<Unk_RideeModel> spModel = spRidee->FUN_141707750()->FUN_1407849c0(nSeat);
+                if (spModel.get() != 0)
+                    strNode = spModel->m_strNode;
+            }
+            MS2Ptr<StateHoldData> spHold = new StateHoldData;
+            spHold->m_nTargetId = nOwnerId;
+            spHold->m_strTargetName = strNode;
+            pMyPC->vfunc_59(0x20, spHold, 0, 0);
+        }
+    }
+    else if (nMode == 4)
+    {
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nRiderId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pOwner = FUN_1403ed2d0()->FUN_141bd1290(nOwnerId);
+        if (pOwner == 0)
+            return;
+        pOwner->FUN_141676730(nRiderId);
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0 && pMyPC->FUN_14152e060() == nOwnerId)
+            FUN_1409478c0()->FUN_140aeaf40(pMyPC, 1);
+    }
+    else if (nMode == 5)
+    {
+        int nOwnerId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pOwner = FUN_1403ed2d0()->FUN_141bd1290(nOwnerId);
+        if (pOwner == 0)
+            return;
+        pOwner->FUN_141676700();
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0 && pMyPC->FUN_14152e060() == nOwnerId)
+            FUN_1409478c0()->FUN_140aeaf40(pMyPC, 1);
+    }
+    else if (nMode == 6)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        pPC->FUN_1416642c0(bFlag);
+        RideOnAction* pAction = pPC->FUN_141676370().get();
+        if (pAction != 0)
+            pPC->FUN_141676370()->m_b28 = bFlag;
+    }
+}
+MS2_REPLACE_METHOD(0x14172A8F0, CSceneStateGame, FUN_14172a8f0, 2640, 0x4B945ADF);
 
 // Packet 0x7b: fitting dolls (housing mannequins).
 // @0x14172b350

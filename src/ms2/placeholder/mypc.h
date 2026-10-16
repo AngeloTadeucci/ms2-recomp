@@ -48,6 +48,7 @@ public:
     void FUN_14152ed60(class Unk_UserProxy* pProxy);        // scenestategame OnAddUser
     void FUN_1416634a0(__int64 nCharId);                    // PC member (scenestategame OnAddUser)
     int FUN_141527eb0();                                    // (scenestategame storage update)
+    int FUN_14152e060();                                    // 0x14152e060 the id of the actor held (state 0x20), else 0 (scenestategame 0x79)
 private:
     char m_pad[0x1808 - 0xd40];                             // unrecovered members
 };
