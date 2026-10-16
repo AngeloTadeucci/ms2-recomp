@@ -138,6 +138,11 @@
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@PEAVNiAVObject@@VNiString@@U?$less@PEAVNiAVObject@@@std@@V?$allocator@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@4@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@@2@XZ 0x141550790 ; hand: identical look-alike group
 // MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@VNiString@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@VNiString@@@std@@PEAX@2@@Z 0x141550410 ; hand: identical look-alike group
 // MS2-PINS-END tplpin
+// MS2-PIN: ?GetSearchPath@NiStream@@QEBAPEAVNiSearchPath@@XZ 0x14155d9a0
+// MS2-PIN: ?GetObjectAt@NiStream@@QEBAPEAVNiObject@@I@Z 0x14155d900
+// MS2-PIN: ?GetObjectCount@NiStream@@QEBAIXZ 0x14155d950
+// MS2-PIN: ??$AddDependency@UUnk_NifDepSix@@@IDependencyRegistrar@efd@@QEAA_NI@Z 0x141556d30
+// MS2-PIN: ??4?$SmartPointer@VCEffectObject@@@efd@@QEAAAEAV01@PEAVCEffectObject@@@Z 0x14154f270
 // MS2-PIN: ??_7CNiStreamLoadThread@@6B?$TSingleton@VCNiStreamLoadThread@@@@@ 0x142f2e158
 // MS2-PIN: ??_7CNifLoadingService@@6BISystemService@efd@@@ 0x142f2e1a8
 // MS2-PIN: ??_7CNifLoadingService@@6B?$TSingleton@VCNifLoadingService@@@@@ 0x142f2e230
@@ -185,6 +190,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "nifeffectparam.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include <efd/AssetFactoryManager.h>
 #include <algorithm>
 #include <new>
 #include <efd/MemoryDefines.h>
@@ -647,7 +653,7 @@ Unk_BitRef::operator bool() const
 // @0x1415494d0
 CNifEffect::CNifEffect()
     : m_bSplit(false), m_spTarget(0), m_spModel(0), m_spSplit(0), m_spRoot(0), m_fFadeStart(FLT_MAX),
-      m_fFadeTime(1.0f), m_nLodLevel(0), m_fStartTime(0.0f), m_spEffectObject(0), m_spParam(0)
+      m_fFadeTime(1.0f), m_nLodLevel(0), m_fStartTime(0.0f), m_spEffectObject(0), m_spParam()
 {
     m_kXform.MakeIdentity();
 }
@@ -668,7 +674,7 @@ bool CNifEffect::vfunc_3(const CEffectParam* pParam, Unk_EffectTarget* pTarget)
     if (!CEffect::vfunc_3(pParam, pTarget))
         return false;
     m_spParam.AssignRaw(static_cast<CNifEffectParam*>(const_cast<CEffectParam*>(pParam)));
-    if (m_spParam.IsNull())
+    if (m_spParam == 0)
         return false;
     if (m_unk_18 == 1 && m_spParam->m_nMyReferCount == -1)
         return false;
@@ -1020,7 +1026,7 @@ bool CNifEffect::FUN_14154b4a0(NiObjectNET* pkNode)
 // @0x14154b5e0
 bool CNifEffect::FUN_14154b5e0()
 {
-    if (m_spParam.IsNull())
+    if (m_spParam == 0)
         return false;
     return m_spParam->m_bNotForceStop;
 }
@@ -1646,9 +1652,8 @@ void FUN_1414fe240(void* pObj, bool (*pfn)(void*));
 void FUN_1411ab770(efd::IDependencyRegistrar* pRegistrar, int nRequired);
 void FUN_1411ab7a0(efd::IDependencyRegistrar* pRegistrar, int nRequired);
 void FUN_1411ab740(efd::IDependencyRegistrar* pRegistrar, int nRequired);
-void FUN_141556d30(efd::IDependencyRegistrar* pRegistrar, int nRequired);
+struct Unk_NifDepSix : efd::ISystemService { static const efd::ClassID CLASS_ID = 0x06100006; };
 void FUN_1410db4c0(efd::IDependencyRegistrar* pRegistrar, int nRequired);
-void FUN_141556d00(efd::IDependencyRegistrar* pRegistrar, int nRequired);
 void* FUN_1409f7c90();
 __int64 FUN_14161bdc0(void* pObj);                                  // pagefile use, MB
 void* FUN_1414a56c0();
@@ -1831,9 +1836,9 @@ efd::SyncResult CNifLoadingService::OnPreInit(efd::IDependencyRegistrar* pRegist
     FUN_1411ab770(pRegistrar, 1);
     FUN_1411ab7a0(pRegistrar, 1);
     FUN_1411ab740(pRegistrar, 1);
-    FUN_141556d30(pRegistrar, 1);
+    pRegistrar->AddDependency<Unk_NifDepSix>(1);
     FUN_1410db4c0(pRegistrar, 1);
-    FUN_141556d00(pRegistrar, 1);
+    pRegistrar->AddDependency<efd::AssetFactoryManager>(1);
     return efd::SyncResult_Success;
 }
 MS2_REPLACE_METHOD(0x141555CE0, CNifLoadingService, OnPreInit, 114, 0xA912D745);
@@ -2240,6 +2245,13 @@ MS2_REPLACE_METHOD(0x141556610, CNifLoadingService, LogCounts, 500, 0xD41A024D);
 
 extern NiTexture::FormatPrefs DAT_1439fc800;                        // NiSourceTexture's default format preferences
 
+// A copy of the default format preferences.
+// @0x14155d6d0
+static NiTexture::FormatPrefs FUN_14155d6d0()
+{
+    return DAT_1439fc800;
+}
+
 // ---- weights, cloning, creation --------------------------------------------------------------------------------
 extern char DAT_143afa4d8;                                          // NiRTTI table entry: NiNode
 extern char DAT_143afa458;                                          // NiRTTI table entry: NiAVObject
@@ -2498,7 +2510,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::GetTexture(CString strPath, int
     int nNewClass = nClass;
     NiTexturePtr spTexture = 0;
     CCachedTexturePtr spCached = 0;
-    Unk_NifTexKey kKey(CString(strPath), DAT_1439fc800);
+    Unk_NifTexKey kKey(CString(strPath), FUN_14155d6d0());
     if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
     {
         if (!FUN_1401d1320(&spCached->m_kFile))
@@ -2538,7 +2550,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::GetTextureFrom(CString strKey, 
     int nNewClass = nClass;
     NiTexturePtr spTexture = 0;
     CCachedTexturePtr spCached = 0;
-    Unk_NifTexKey kKey(CString(strKey), DAT_1439fc800);
+    Unk_NifTexKey kKey(CString(strKey), FUN_14155d6d0());
     if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
     {
         if (!FUN_1401d1320(&spCached->m_kFile))
@@ -2576,7 +2588,7 @@ efd::SmartPointer<NiSourceTexture> CNifLoadingService::CreateTexture(CString str
     if (Unk_LockGuard kGuard = DAT_143ae1f58)
         return 0;
     CCachedTexturePtr spCached = 0;
-    Unk_NifTexKey kKey(CString(strPath), DAT_1439fc800);
+    Unk_NifTexKey kKey(CString(strPath), FUN_14155d6d0());
     if (DAT_1439ed00c != 0 && m_mapTex.Lookup(kKey, spCached))
     {
         spCached->m_dLastUse = FUN_14086d260()->FUN_141473280();
@@ -2604,7 +2616,7 @@ efd::SmartPointer<NiTexture> CNifLoadingService::FindTexture(CString strPath, co
     if (Unk_LockGuard kGuard = DAT_143ae1f58)
         return 0;
     CCachedTexturePtr spCached = 0;
-    NiTexture::FormatPrefs kPrefs = DAT_1439fc800;
+    NiTexture::FormatPrefs kPrefs = FUN_14155d6d0();
     if (pPrefs != 0)
         kPrefs = *pPrefs;
     Unk_NifTexKey kKey(CString(strPath), kPrefs);
