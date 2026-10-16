@@ -215,7 +215,9 @@ Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
-    egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip); };
+    egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
+    void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
+    class Unk_MyPCDropItem* FUN_141bd1d10(int a, int b); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
@@ -264,7 +266,18 @@ struct Unk_MyPCOptionData
 };
 // The house settings (the flags shown on the house info).
 class Unk_MyPCHouseCfg { public: void FUN_141261e40(int bSet, int nFlag); void FUN_141261dd0(int nFlag); };
-class Unk_MyPCAdvCfg { public: unsigned char* FUN_140af7de0(); Unk_MyPCOptionData* FUN_140b123b0(); Unk_MyPCHouseCfg* FUN_140a46860(); };
+// The auto loot options (+0x14c of the account settings).
+class Unk_MyPCAutoLoot { public: bool FUN_141261340(void* pItem, bool bMeso); bool FUN_141261510(); };
+class Unk_MyPCAdvCfg
+{
+public:
+    unsigned char* FUN_140af7de0(); Unk_MyPCOptionData* FUN_140b123b0(); Unk_MyPCHouseCfg* FUN_140a46860();
+    // @0x141533e20
+    Unk_MyPCAutoLoot* FUN_141533e20() { return &m_kAutoLoot; }
+
+    unsigned char m_pad_000[0x14c];
+    Unk_MyPCAutoLoot m_kAutoLoot;                           // +0x14c
+};
 Unk_MyPCAdvCfg* FUN_1409a8b10();
 class Unk_MyPCUpdateList { public: void FUN_140a0d0c0(int n); };
 Unk_MyPCUpdateList* FUN_14123ee80();
@@ -2961,6 +2974,169 @@ void MyPC::FUN_141530d70(double dTime)
     FUN_141530db0();
 }
 MS2_REPLACE_METHOD(0x141530D70, MyPC, FUN_141530d70, 46, 0x86EA458A);
+
+// A drop item on the field (client\ms2\dropitem.cpp, CLASS_ID 0x06200011); only what the pickup needs.
+class Unk_MyPCDropItem
+{
+public:
+    int FUN_1411900d0();                    // non-zero while the item may not be picked up
+    int FUN_141191030();
+    int FUN_14123c580();                    // GameObject: the object id
+    int FUN_1411910a0();                    // the owner object id
+    int FUN_1411910c0();                    // the item kind (0x3ed: meso)
+    void* FUN_140b12380();                  // the item data
+    void FUN_141192840(int n);              // +0x294 = n
+    void FUN_141190900(int n);
+    int FUN_141190640(bool b);
+    void FUN_1411911a0();
+    // @0x141533e40
+    int FUN_141533e40() { return m_n294; }
+
+    unsigned char m_pad_000[0x294];
+    int m_n294;                             // +0x294 1 while being picked up
+};
+// The ridee row handle (16 bytes; same view as unit_140ba6b20's Unk_AdvMountPtr).
+struct Unk_MyPCRideeRow { unsigned char m_pad_00[0xb0]; int m_nB0; };
+class Unk_MyPCRideePtr
+{
+public:
+    ~Unk_MyPCRideePtr();                    // 0x140788ed0
+    void* FUN_1409f78a0() const;            // get
+    Unk_MyPCRideeRow* FUN_1407895d0() const;   // operator->
+    void* m_pad_00;
+    Unk_MyPCRideeRow* m_p;
+};
+Unk_MyPCRideePtr FUN_1407844b0(unsigned nRideeId);
+class Unk_MyPCBuffMgr { public: bool FUN_141682fe0(int nBuffId); bool FUN_141683100(int nBuffId); };
+
+// @0x141530db0
+// Auto loot: flag the drop items the auto loot options take, pick up the mesos, and the pet pickup buff.
+void MyPC::FUN_141530db0()
+{
+    if (FUN_14166ce30() == 0)
+    {
+        if (FUN_141676410() != 0)
+        {
+            Unk_MyPCRideePtr spRidee = FUN_1407844b0(FUN_141676410());
+            if ((bool)spRidee.FUN_1409f78a0() && spRidee.FUN_1407895d0()->m_nB0 != 0)
+                return;
+        }
+        std::list<Unk_MyPCDropItem*> lstItems;
+        std::list<Unk_MyPCDropItem*> lstMesos;
+        FUN_1403ed2d0()->FUN_141bd1ed0(&lstItems, &lstMesos, 0, 1, 0);
+        for (std::list<Unk_MyPCDropItem*>::iterator it = lstItems.begin(); it != lstItems.end(); ++it)
+        {
+            Unk_MyPCDropItem* pDrop = *it;
+            if (pDrop->FUN_141533e40() == 1)
+                continue;
+            if (pDrop->FUN_1411910a0() == FUN_14123c580())
+                continue;
+            if (FUN_1409a8b10()->FUN_141533e20()->FUN_141261340(pDrop->FUN_140b12380(), pDrop->FUN_1411910c0() == 0x3ed))
+            {
+                pDrop->FUN_141192840(1);
+                pDrop->FUN_141190900(0);
+            }
+        }
+        if (FUN_1409a8b10()->FUN_141533e20()->FUN_141261510())
+            FUN_1415310e0(lstMesos);
+        if (((Unk_MyPCBuffMgr*)FUN_14166d240())->FUN_141682fe0(0x493e3))
+        {
+            FUN_1415310e0(lstMesos);
+            Unk_MyPCDropItem* pNear = FUN_1403ed2d0()->FUN_141bd1d10(1, 0);
+            if (pNear != 0)
+            {
+                if (pNear->FUN_141190640(((Unk_MyPCBuffMgr*)FUN_14166d240())->FUN_141683100(0x493e3)) != 0)
+                    pNear->FUN_141190900(0);
+            }
+            else
+            {
+                Unk_MyPCDropItem* pFar = FUN_1403ed2d0()->FUN_141bd1d10(1, 1);
+                if (pFar != 0)
+                {
+                    FUN_141275260(0x45, 1, 1);
+                    pFar->FUN_1411911a0();
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141530db0, MyPC, FUN_141530db0, 802, 0x270D1A85);
+
+// The block-manager record handle (16 bytes, same view as unit_141274d10's Unk_PenaltyPtr).
+class Unk_MyPCBlockPtr
+{
+public:
+    ~Unk_MyPCBlockPtr();                    // 0x1401cb250
+    void* FUN_1401cb3d0() const;            // the record, or null
+    void* m_00; void* m_08;
+};
+class Unk_MyPCBlockMgr { public: Unk_MyPCBlockPtr FUN_140a2f620(int nAction); };
+Unk_MyPCBlockMgr* FUN_140a6a830();
+CStringW FUN_1401ca400(const Unk_MyPCBlockPtr& spBlock, int nAction);
+// 8-byte millisecond poll timer (ctor 0x140517b00, "interval elapsed" test 0x140268870 re-arms).
+struct Unk_MyPCPollTimer
+{
+    Unk_MyPCPollTimer();                    // 0x140517b00
+    int FUN_140268870(int nInterval);
+    unsigned m_nInterval;
+    unsigned m_nLastTick;
+};
+int FUN_14020abc0(const unsigned char& n);
+int FUN_14020ac40(unsigned char n, unsigned char* pDst);
+void FUN_1412751b0(const CStringW& strMsg, int nType);  // chat notice
+
+// @0x141533880 (COutPacket::EncodeAt<unsigned char>, commonfiles/packet.h): overwrite a byte already written.
+void FUN_141533880(COutPacket& packet, unsigned char n, unsigned uOffset)
+{
+    (void)((packet.m_aBuffer.GetCount() >= uOffset + FUN_14020abc0(n))
+        || (_wassert(L"m_aSendBuff.GetCount() >= uOffset + _BM::EncSize1(n)",
+                     L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\packet.h", 0x4df), 0));
+    FUN_14020ac40(n, (unsigned char*)&packet.m_aBuffer[0] + uOffset);
+}
+
+// @0x1415310e0
+// Pick up the drop items of the list (packet 0x1d, at most 0x80), unless the account is blocked from it.
+void MyPC::FUN_1415310e0(std::list<Unk_MyPCDropItem*>& lstDrops)
+{
+    if (lstDrops.size() < 1)
+        return;
+    {
+        Unk_MyPCBlockPtr spBlock = FUN_140a6a830()->FUN_140a2f620(0x1e);
+        if (spBlock.FUN_1401cb3d0() != 0)
+        {
+            static Unk_MyPCPollTimer s_kNoticeTimer;
+            if (s_kNoticeTimer.FUN_140268870(5000) == 1)
+            {
+                CStringW strMsg = FUN_1401ca400(spBlock, 0x20);
+                FUN_1412751b0(strMsg, 0x14);
+            }
+            return;
+        }
+    }
+    COutPacket packet(0x1d, 0);
+    unsigned char nCountPos = packet.FUN_14020b9f0();
+    packet.COutPacket::vfunc_o10_1(0);
+    int nCount = 0;
+    for (std::list<Unk_MyPCDropItem*>::iterator it = lstDrops.begin(); it != lstDrops.end(); ++it)
+    {
+        Unk_MyPCDropItem* pDrop = *it;
+        if (pDrop->FUN_1411900d0() == 0)
+        {
+            pDrop->FUN_141191030();
+            int nObjectId = pDrop->FUN_14123c580();
+            packet.COutPacket::vfunc_o10_3(nObjectId);
+            nCount++;
+            if (nCount >= 0x80)
+                break;
+        }
+    }
+    if (nCount > 0)
+    {
+        FUN_141533880(packet, (unsigned char)nCount, nCountPos);
+        FUN_140710590(packet);
+    }
+}
+MS2_REPLACE_METHOD(0x1415310e0, MyPC, FUN_1415310e0, 551, 0xA11E8E80);
 
 // @0x1415313f0
 void MyPC::vfunc_144()

@@ -7,6 +7,7 @@
 // Members: proven types where known, otherwise unit-local views named after their ctor VA. Heap-only.
 #pragma once
 #include <set>
+#include <list>
 #include <atlcoll.h>
 #include "ms2/placeholder/fittingdollpc.h"
 #include "ms2/placeholder/imessagelistener.h"
@@ -255,6 +256,7 @@ public:
     static PCBase* FUN_141530930();                         // the local player
     void FUN_141530d70(double dTime);
     void FUN_141530db0();
+    void FUN_1415310e0(std::list<class Unk_MyPCDropItem*>& lstDrops);   // pick up the drop items (packet 0x1d)
     int FUN_14152ecc0(__int64 n);
     int FUN_14152ed10(__int64 n);
     void FUN_141528c30(CInPacket& packet);
