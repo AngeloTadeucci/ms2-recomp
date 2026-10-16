@@ -131,6 +131,7 @@
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
 #include "interactobject.h"                // CInteractObject (0x63)
 #include "entityworldmanager.h"
+#include "ms2/commonfiles/famegradedata.h"   // Unk_FameAlliance (0xa8)
 #include "statedata.h"                   // StateSummonData, StateHoldData (0x79)
 // usermail.h declares FUN_1403ed2d0 over its own Unk_MailSession stand-in; this unit's world type is Unk_SSGWorld,
 // so the header's declaration is renamed out of the way.
@@ -909,7 +910,7 @@ public:
     }
 };
 Unk_SSGCommandLog* FUN_140166440();
-class Unk_SSGChatDialog { public: void FUN_141ac0210(MyPC* pPlayer); void FUN_141ac14b0(); void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
+class Unk_SSGChatDialog { public: void FUN_141ac0ac0(int nId); void FUN_141ac0210(MyPC* pPlayer); void FUN_141ac14b0(); void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
 class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
 Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
@@ -3808,6 +3809,137 @@ void CSceneStateGame::FUN_141734bc0(CInPacket& packet)
     FUN_141276180(strUrl, "");
 }
 MS2_REPLACE_METHOD(0x141734bc0, CSceneStateGame, FUN_141734bc0, 155, 0x8BD553A5);
+
+// Packet 0xa8: fame / achievement / collection counters held in globals.
+class UIAchieveDialog { public: void FUN_1418a8f80(); };   // refresh when not hidden
+UIAchieveDialog* FUN_1412bcec0(int nId);                    // GetDialog<UIAchieveDialog>
+extern ATL::CAtlArray<unsigned int> DAT_143ab3268;          // completed achievement ids
+extern ATL::CAtlMap<unsigned int, unsigned int> DAT_143ab30e0;  // achievement id -> grade
+extern ATL::CAtlArray<int> DAT_143ab3128;                    // templates whose first use was announced
+extern ATL::CAtlMap<int, int> DAT_143ab3150;                // item id -> count
+extern ATL::CAtlMap<unsigned int, int> DAT_143ab31a0;       // mastery id -> value
+extern ATL::CAtlMap<Unk_FameAlliance, int> DAT_143ab3220;   // alliance -> fame points
+extern ATL::CRBMap<__int64, int> DAT_143ab31e8;             // character id -> fame points
+// RemoveAll of DAT_143ab31e8's tree is unit_14092f420's COMDAT (0x1409333a0); the in-range RemoveAll is another tree's.
+template <> void ATL::CRBTree<__int64, int, ATL::CElementTraits<__int64>, ATL::CElementTraits<int> >::RemoveAll() throw();
+// @0x141736940
+void CSceneStateGame::FUN_141736940(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (nMode == 1)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        pPC->FUN_141661c70(nValue);
+    }
+    else if (nMode == 0)
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab3268.Add(nId);
+        Unk_SSGChatDialog* pChat = FUN_140938cd0(0x4e5d);
+        if (pChat != 0)
+            pChat->FUN_141ac0ac0(nId);
+        MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pMyPC != 0)
+            FUN_141a60f00(pMyPC->FUN_14123c580());
+    }
+    else if (nMode == 2)
+    {
+        DAT_143ab3268.RemoveAll();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; i++)
+        {
+            unsigned int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            DAT_143ab3268.Add(nId);
+        }
+    }
+    else if (nMode == 3)
+    {
+        DAT_143ab30e0.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            unsigned int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            unsigned int nGrade = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            DAT_143ab30e0.SetAt(nId, nGrade);
+        }
+        UIAchieveDialog* pDlg = FUN_1412bcec0(0x4e73);
+        if (pDlg != 0)
+            pDlg->FUN_1418a8f80();
+    }
+    else if (nMode == 4)
+    {
+        DAT_143ab3128.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            int nTemplate = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            DAT_143ab3128.Add(nTemplate);
+        }
+    }
+    else if (nMode == 8)
+    {
+        DAT_143ab3150.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            DAT_143ab3150.SetAt(nId, nValue);
+        }
+    }
+    else if (nMode == 9)
+    {
+        DAT_143ab31a0.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            unsigned int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            DAT_143ab31a0.SetAt(nId, nValue);
+        }
+    }
+    else if (nMode == 0xa)
+    {
+        DAT_143ab3220.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            Unk_FameAlliance eAlliance = static_cast<Unk_FameAlliance>(static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2()));
+            int nFame = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            DAT_143ab3220.SetAt(eAlliance, nFame);
+        }
+    }
+    else if (nMode == 0xb)
+    {
+        Unk_FameAlliance eAlliance = static_cast<Unk_FameAlliance>(static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2()));
+        int nFame = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab3220.SetAt(eAlliance, nFame);
+    }
+    else if (nMode == 0xc)
+    {
+        DAT_143ab31e8.RemoveAll();
+        size_t nCount = static_cast<unsigned int>(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        for (size_t i = 0; i < nCount; i++)
+        {
+            int nFame = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            DAT_143ab31e8.SetAt(nCharId, nFame);
+        }
+    }
+    else if (nMode == 0xd)
+    {
+        int nFame = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        DAT_143ab31e8.SetAt(nCharId, nFame);
+        CStringW strKey(L"s_fame_point_update");
+        FUN_1412751b0(FUN_14028b8e0(strKey), 0x14);
+    }
+}
+MS2_REPLACE_METHOD(0x141736940, CSceneStateGame, FUN_141736940, 2576, 0xC99A41D7);
 
 // @0x141737360
 void CSceneStateGame::FUN_141737360(CInPacket& packet)
