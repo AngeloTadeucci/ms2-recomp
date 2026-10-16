@@ -7,6 +7,8 @@ class CItemData;
 template <class T> class MS2Ptr;
 class CItemExtraData:public CPtred {
 public:
+    CItemExtraData();                                            // 0x140598e60: inits +0x18..+0x28 and the containers from +0x30
+                                                                 // (an implicit ctor left them garbage in DLL-allocated objects)
     bool FUN_140599480(const ItemColorEx&, MS2Ptr<CItemData>);   // 0x140599480 (itemugcmesh.cpp: bound into a Delegate)
     virtual ~CItemExtraData();
     virtual int vfunc_1(const CItemExtraData*);
