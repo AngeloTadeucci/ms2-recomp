@@ -88,7 +88,7 @@ void MS2CameraService::OnPropertyUpdate(const efd::ClassID&, egf::Entity* pEntit
             m_dirty.SetAt(pEntity->GetEntityID(), 0);
     }
 }
-MS2_REPLACE_METHOD(0x1414af5e0, MS2CameraService, OnPropertyUpdate, 231, 0x9072AF41);
+MS2_REPLACE_METHOD_VIA(0x1414af5e0, MS2CameraService, egf::IPropertyCallback, OnPropertyUpdate, 231, 0x9072AF41);
 
 // @0x1414b1110 (the UCRT header-inline memmove_s from corecrt_memcpy_s.h, emitted here as an ordinary function)
 #define MS2_VALIDATE_RETURN_ERRCODE(expr, errorcode)                                                           \
