@@ -219,6 +219,7 @@ public:
     int FUN_141a02ca0() const;                                      // the box id
     IMessageListener* FUN_141a02cc0() const;                        // the listener
     const CStringW& FUN_141a02ce0() const;                          // the tag
+    CStringW FUN_141a02b90() const;                                 // copy of the tag (messageboxqueue.cpp)
     const Delegate<bool(int, const CMsgBoxData&)>& FUN_141a02da0() const;  // the result callback
     CString FUN_141a02dc0() const;                                  // the hyper link url
     unsigned int FUN_141a02e90(int nIndex, unsigned int nDefault) const;    // the nIndex-th argument as an unsigned
