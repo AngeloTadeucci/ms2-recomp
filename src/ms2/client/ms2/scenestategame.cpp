@@ -67,6 +67,7 @@
 // MS2-PIN: ?IsNull@?$MS2Ptr@VCInteractObject@@@@QEBA_NXZ 0x140a7b5e0 ; w125 manual (call site 0x14172d0f0; the in-range look-alike 0x141747040 is called only by stubs 0x14171dc40/0x141732b20)
 // MS2-PIN: ?get@?$MS2Ptr@VCInteractObjectData@@@@QEBAPEAVCInteractObjectData@@XZ 0x1411926f0 ; w125 manual (call site 0x14172d0f0; look-alike 0x141747280 is called by stub 0x141732b20)
 // MS2-PIN: ??0?$MS2Ptr@VNotifyChangeBuff@@@@QEAA@PEAVNotifyChangeBuff@@@Z 0x141745880 ; w131 manual (call sites 0x141720480; the look-alike 0x141745850 is called by 0x141746eb0)
+// MS2-PIN: ?get@?$MS2Ptr@VUnk_SnowmanContext@@@@QEBAPEAVUnk_SnowmanContext@@XZ 0x1417472c0 ; w131 manual (only caller 0x141736240; the look-alike 0x141747350 is called by stub 0x141732b20)
 #define NOMINMAX                        // NxPhysics (interactobject.h)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -476,7 +477,7 @@ public:
 Unk_SSGProfile* FUN_140cc18a0();
 class Unk_SSGChannelDialog { public: void FUN_141ad2ea0(int nChannel); };
 Unk_SSGChannelDialog* FUN_14136f520(int nId);
-class Unk_SSG1c0d90 { public: void FUN_1404766e0(); bool FUN_14047f0f0(); bool FUN_14047f300(); void FUN_1404779b0(CInPacket& packet); };   // game rules (the two are pet-taming event checks)
+class Unk_SSG1c0d90 { public: void FUN_1404766e0(); bool FUN_14047f0f0(); bool FUN_14047f300(); void FUN_1404779b0(CInPacket& packet); MS2Ptr<class Unk_SnowmanContext> FUN_14047d050(); };   // game rules (the two are pet-taming event checks)
 Unk_SSG1c0d90* FUN_1401c0d90();
 class Unk_SSG3ed2a0 { public: void FUN_1407ce240(); };
 Unk_SSG3ed2a0* FUN_1403ed2a0();
@@ -842,7 +843,7 @@ public:
 MS2_CHECK_SIZE(NotifyChangedTokenMoney, 0x30);
 void FUN_141361460(int nType, __int64 nDelta, int nX);
 int FUN_1403bb010(int nType, int nColor);
-class Unk_SSGStrTable { public: CStringW FUN_141811980(int nTable, int nIndex); };
+class Unk_SSGStrTable { public: CStringW FUN_141811980(int nTable, int nIndex); CStringW FUN_141812290(int nId, unsigned short nRank, CString strField); };
 Unk_SSGStrTable* FUN_1401a9d70();
 void FUN_141275460(int nStringId, int nA, int nB, const fmt::ArgList& args);
 // 0x141740df0: fmt message with two arguments (a template over the argument types in the original).
@@ -1001,7 +1002,7 @@ public:
     }
 };
 Unk_SSGCommandLog* FUN_140166440();
-class Unk_SSGChatDialog { public: void FUN_141ac0ac0(int nId); void FUN_141ac0210(MyPC* pPlayer); void FUN_141ac14b0(); void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
+class Unk_SSGChatDialog { public: void FUN_141ac0ac0(int nId); void FUN_141ac0210(MyPC* pPlayer); void FUN_141ac14b0(); void FUN_141ac1d10(int n); void FUN_141abf6e0(int nId, int nValue); void FUN_141ac1580(const CStringW& strImage, const CStringW& strText, int n); void FUN_141ac0990(__int64 nAmount); void FUN_141ac0860(__int64 nAmount); };
 Unk_SSGChatDialog* FUN_140938cd0(int nId);                  // GetDialog<UIChatDialog>
 class Unk_SSGMessengerBrowser { public: void FUN_141a265d0(); void FUN_141a26560(unsigned int nId); void FUN_141a26600(); };
 Unk_SSGMessengerBrowser* FUN_140a3ab70(int nId);            // GetDialog<UIMessengerBrowser>
@@ -8601,6 +8602,79 @@ void CSceneStateGame::FUN_141738430(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141738430, CSceneStateGame, FUN_141738430, 1684, 0x1D689E6E);
+
+// The current snowman event context (FUN_1401c0d90()->FUN_14047d050()).
+class Unk_SnowmanContext : public CPtred { public: char m_pad_18[0x40 - 0x18]; CStringW m_strName; };
+MS2_CHECK_OFFSET(Unk_SnowmanContext, m_strName, 0x40);
+CStringW FUN_140298ea0(CStringW strKey);                    // localized text for a string key
+
+// @0x141736240
+// 0xf9: promotion event rewards (Goldus, Pesca, Stefan, the snowman), listed in the reward notifier.
+void CSceneStateGame::FUN_141736240(CInPacket& packet)
+{
+    int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned short nRank = static_cast<CInputStream&>(packet).vfunc_o8_2();
+    unsigned int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int bNotice = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    CStringW strImage;
+    CStringW strKey;
+    switch (nType)
+    {
+    case 1:
+        strImage = L"./Data/Resource/Image/Portrait/Npc/11000252_Goldus_P.png";
+        strKey = L"s_goldus_promotion_reward";
+        break;
+    case 3:
+        strImage = L"./Data/Resource/Image/Portrait/Npc/11000765_Musician4_P.png";
+        strKey = L"s_stefan_promotion_reward";
+        break;
+    case 2:
+        strImage = L"./Data/Resource/Image/Portrait/Npc/11000781_ToolMan1_P.png";
+        strKey = L"s_pesca_promotion_reward";
+        break;
+    case 4:
+    {
+        MS2Ptr<Unk_SnowmanContext> spSnowman = FUN_1401c0d90()->FUN_14047d050();
+        if (spSnowman.get() != 0)
+        {
+            strImage = StringFormat(L"./Data/Resource/Image/ETC/snow_{0}.png", spSnowman->m_strName);
+            strKey = StringFormat(L"s_snowman_{0}_promotion_reward", spSnowman->m_strName);
+            break;
+        }
+    }
+    }
+
+    Unk_SSGChatDialog* pDlg = FUN_140938cd0(0x4e5d);
+    if (pDlg != 0)
+    {
+        for (size_t i = 0; i < nCount; i++)
+        {
+            int nItemId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nAmount = (unsigned short)static_cast<CInputStream&>(packet).vfunc_o8_2();
+            if (nType != 0)
+            {
+                CStringW strText = FUN_1405c2690(strKey, FUN_1401a9d70()->FUN_141811980(1, nItemId));
+                pDlg->FUN_141ac1580(strImage, strText, 1);
+            }
+            else
+                pDlg->FUN_141abf6e0(nItemId, nAmount);
+        }
+        if (nType != 0 && nId != 0)
+        {
+            // Original bug: the inner strKey shadows the outer one and is copied before it is constructed.
+            CStringW strKey = FUN_1405c2690(strKey, FUN_1401a9d70()->FUN_141812290(nId, nRank, "name"));
+            pDlg->FUN_141ac1580(strImage, strKey, 1);
+        }
+        if (bNotice == 1)
+        {
+            CStringW strText = FUN_140298ea0(strKey);
+            pDlg->FUN_141ac1580(strImage, strText, 1);
+            FUN_1412751f0(strText, 0, 1);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141736240, CSceneStateGame, FUN_141736240, 1588, 0x6A7CAA6F);
 
 // 0x24: the housing cube stock (UGC map items).
 class CUGCMapItem : public CPtred
