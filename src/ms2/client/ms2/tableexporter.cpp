@@ -33,6 +33,7 @@
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_PortalInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_PortalInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x1418367f0 ; order
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@@std@@PEAX@2@_K@Z 0x141836820 ; order
 // MS2-PINS-END tplpin
+// MS2-PIN: ??0Unk_NpcInfo@?A0x82dadc2e@@QEAA@XZ 0x14182f220
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\tableexporter.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>
