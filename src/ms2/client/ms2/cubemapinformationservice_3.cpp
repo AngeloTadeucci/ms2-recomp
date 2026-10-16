@@ -145,6 +145,14 @@ int FUN_14168a310(CPhysXHelper*, Unk_CMISPt3*, Unk_StreamPoint*, Unk_CMISRayHit*
 bool FUN_14028d470(float, float);
 extern Unk_StreamPoint DAT_143a08cf8;                                       // up vector
 extern Unk_StreamPoint DAT_143b01a60;                                       // zero / fall-through direction
+struct Unk_CMISCubeByKey { int first; MS2Ptr<Cube> second; };                // the node value of the cubes by key
+void FUN_14114dd70(Unk_CMISTree<260>*, Unk_CMISIter<260>*);                 // begin
+bool FUN_1411274c0(Unk_CMISIter<260>*, Unk_CMISIter<260>*);                 // operator!=
+Unk_CMISCubeByKey* FUN_1411285e0(Unk_CMISIter<260>*);                       // operator*
+void FUN_141129b50(Unk_CMISIter<260>*);                                     // operator++
+int FUN_1408b4f20(Cube*);                                                   // the item id of a cube
+__int64 FUN_1408b4f50(Cube*);
+int FUN_14053fc10(int);                                                     // the item category
 struct Unk_CMISPair { int m_a, m_b; };
 extern Unk_CMISPair DAT_143b02320;                                          // initial cursor pair
 float FUN_14029d220(float f);                                               // fabsf
@@ -567,6 +575,81 @@ bool CubeMapInformationService::FUN_1410b9330(void* pArg, Unk_StreamPoint pt, fl
     if (ppHit != 0)
         *ppHit = pFound;
     return true;
+}
+
+// @0x1410b9850
+Cube* CubeMapInformationService::FUN_1410b9850(int nItemId)
+{
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        {
+            if (FUN_1408b4f20(spCube.operator->()) == nItemId)
+                return spCube.get();
+        }
+    }
+    return 0;
+}
+// @0x1410b9950
+int CubeMapInformationService::FUN_1410b9950(int nCategory)
+{
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        if (FUN_14053fc10(FUN_1408b4f20(spCube.operator->())) == nCategory)
+            return 1;
+    }
+    return 0;
+}
+// @0x1410b9a50
+int CubeMapInformationService::FUN_1410b9a50()
+{
+    int nCount = 0;
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        nCount++;
+    }
+    return nCount;
+}
+// @0x1410b9b20
+int CubeMapInformationService::FUN_1410b9b20(int nItemId)
+{
+    int nCount = 0;
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        if (FUN_1408b4f20(spCube.operator->()) != nItemId)
+            continue;
+        nCount++;
+    }
+    return nCount;
+}
+// @0x1410b9d80
+int CubeMapInformationService::FUN_1410b9d80(__int64 nId)
+{
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 == 0)
+            continue;
+        if (FUN_1408b4f50(spCube.operator->()) == nId)
+            return 1;
+    }
+    return 0;
+}
+// @0x1410b9e70
+Unk_CMISTree<277>* CubeMapInformationService::FUN_1410b9e70()
+{
+    return &f2a8;
 }
 
 // @0x1410ce800

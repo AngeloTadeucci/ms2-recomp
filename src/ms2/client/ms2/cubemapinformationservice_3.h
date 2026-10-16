@@ -126,6 +126,12 @@ public:
     int FUN_1410d1320(void* pArg, Unk_StreamPoint pt, float fStep, Unk_StreamPoint* pOut);
     int FUN_1410d1820(void* pArg, int nDir, Unk_StreamPoint pt, Unk_StreamPoint ptCur, void** ppFound);
     int FUN_1410d2130(void* pFound, int nDir, float fRadius, Unk_StreamPoint* pOutPos, Unk_StreamPoint* pOutRot);
+    Cube* FUN_1410b9850(int nItemId);
+    int FUN_1410b9950(int nCategory);
+    int FUN_1410b9a50();
+    int FUN_1410b9b20(int nItemId);
+    int FUN_1410b9d80(__int64 nId);
+    Unk_CMISTree<277>* FUN_1410b9e70();
     Cube* FUN_1410b9080(Cube* pBase, int nOffset);
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();
