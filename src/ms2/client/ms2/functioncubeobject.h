@@ -107,6 +107,34 @@ MS2_CHECK_SIZE(FunctionCubeData, 0x138);
 
 // ---- unit-local views of exe classes this unit calls into ----
 
+// The nurturing pet data of a cube row (class of objectdata.cpp, unrecovered): owner name, then three hash maps.
+struct Unk_FcMapU64
+{
+    unsigned __int64 FUN_14122e460() const;                       // 0x14122e460 count
+    void* FUN_140709db0();                                        // first position (0 when empty)
+    unsigned __int64* FUN_14122e4c0(void* pos);                   // 0x14122e4c0 value at a position
+    void* FUN_14122e470(void** ppos);                             // 0x14122e470 step to the next position
+    bool FUN_14122e740(unsigned short nKey, unsigned __int64* pnValue);   // 0x14122e740 lookup
+    char m_pad[0x48];
+};
+struct Unk_FcMapInt
+{
+    unsigned char FUN_1405b9580(unsigned short nKey, int* pnValue);       // lookup
+    char m_pad[0x48];
+};
+struct Unk_FcObjData
+{
+    Unk_FcObjData();                                              // 0x140708840
+    ~Unk_FcObjData();                                             // 0x140708d60
+    void FUN_140704bd0(const Unk_FcObjData* pSrc);                // copy
+    CStringW m_strOwner;                                          // +0x00
+    char m_pad_08[0x18];
+    Unk_FcMapU64 m_map;                                           // +0x20 level -> experience
+    Unk_FcMapInt m_mapNpc;                                        // +0x68 level -> npc id
+    char m_pad_b0[0x48];
+};
+MS2_CHECK_SIZE(Unk_FcObjData, 0xf8);
+
 // The cube table row an object is built from (only the columns the objects copy).
 struct Unk_FcRow
 {
@@ -145,7 +173,8 @@ struct Unk_FcRow
     int m_n170;                                                   // +0x170
     char m_pad_174[4];
     CString m_str178;                                             // +0x178
-    char m_pad_180[0x280 - 0x180];
+    Unk_FcObjData m_objData;                                      // +0x180
+    char m_pad_278[8];
     Unk_FcSkillText m_skill;                                      // +0x280
     CStringW m_strNotice;                                         // +0x298
 };
@@ -178,8 +207,9 @@ class Unk_FcStateSrc
 public:
     virtual void vfunc_0();
     virtual void vfunc_1();
-    virtual void vfunc_2();
+    virtual unsigned short vfunc_2();
     virtual int vfunc_3();                                        // current state
+    virtual __int64 vfunc_4();
 };
 struct Unk_FcMsg
 {
@@ -365,3 +395,58 @@ public:
     virtual int vfunc_17();                                       // 17 0x14122b060
 };
 MS2_CHECK_SIZE(CFarmingCubeObject, 0xc8);
+
+// Nurturing: vftable 0x142ec5090 (derives the base directly), listener vftable 0x142ec5118.
+class CNurturingCubeObject : public CFunctionCubeObject
+{
+public:
+    CNurturingCubeObject();                                       // 0x14122b0d0
+    virtual ~CNurturingCubeObject();                              // 0x14122b1f0
+    virtual void vfunc_1(Unk_FcMsg* pMsg);                        // 1  0x14122b2e0
+    virtual int vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+        CubeItemInfo* pItem);                                     // 2  0x14122b6e0
+    virtual void vfunc_3();                                       // 3  0x14122b870
+    virtual void vfunc_5(float fZ);                               // 5  0x14122b9f0
+    virtual CStringW vfunc_6();                                   // 6  0x14122bab0
+    virtual CStringW vfunc_7();                                   // 7  0x14122bbe0
+    virtual void vfunc_8(CString str);                            // 8  0x14122bc30
+    virtual void vfunc_14(MS2Ptr<Unk_FcStateMsg> sp);       // 14 0x14122b530
+
+    int FUN_14122bda0();                                          // 0x14122bda0 may the player use it
+    unsigned char FUN_14122c340();                                // 0x14122c340 is it the player's own
+    int FUN_14122c410();                                          // 0x14122c410 npc id of the level
+    void FUN_14122c460(int nMode);                                // 0x14122c460 success notice
+    void FUN_14122c7b0(int nError);                               // 0x14122c7b0 error notice
+    efd::SmartPointer<CubeSpawnObject> GetValue();                           // 0x14122cab0 (copy of the pet pointer)
+    __int64 FUN_14122cb00();                                      // 0x14122cb00
+    unsigned short FUN_14122cb20();                               // 0x14122cb20
+    unsigned short FUN_14122cb40();                               // 0x14122cb40
+    unsigned FUN_14122cb60();                                     // 0x14122cb60
+    __int64 FUN_14122cb80();                                      // 0x14122cb80
+    __int64 FUN_14122cba0();                                      // 0x14122cba0
+    void FUN_14122cbc0(unsigned short nLevel, Unk_EntRef ent);    // 0x14122cbc0 spawn the pet
+    void FUN_14122ce80(unsigned short nLevel);                    // 0x14122ce80 respawn on a level change
+    int FUN_14122d190();                                          // 0x14122d190 is the timer over
+    int FUN_14122d200();                                          // 0x14122d200 action id
+    void FUN_14122d2a0(const CStringW& str);                      // 0x14122d2a0 notice once
+
+public:
+    MS2_LAYOUT_FRIEND;
+    int m_bNear;                                                  // +0xb0
+    int m_bNotice;                                                // +0xb4 a notice may be shown
+    __int64 m_nTime;                                              // +0xb8 timestamp of the last feeding
+    __int64 m_nC0;                                                // +0xc0
+    char m_pad_c8[8];
+    Unk_EntRef m_entPet;                                          // +0xd0
+    efd::SmartPointer<CubeSpawnObject> m_spPet;                   // +0xd8
+    __int64 m_nE0;                                                // +0xe0
+    __int64 m_nE8;                                                // +0xe8
+    unsigned short m_nLevel;                                      // +0xf0
+    unsigned short m_nMaxLevel;                                   // +0xf2
+    unsigned m_nF4;                                               // +0xf4
+    Unk_FcObjData m_obj;                                          // +0xf8
+};
+MS2_CHECK_SIZE(CNurturingCubeObject, 0x1f0);
+MS2_CHECK_OFFSET(CNurturingCubeObject, m_entPet, 0xd0);
+MS2_CHECK_OFFSET(CNurturingCubeObject, m_spPet, 0xd8);
+MS2_CHECK_OFFSET(CNurturingCubeObject, m_obj, 0xf8);

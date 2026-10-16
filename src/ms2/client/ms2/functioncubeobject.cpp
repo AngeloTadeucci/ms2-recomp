@@ -40,6 +40,7 @@ class Unk_FcItemRow : public CPtred
 {
 public:
     int FUN_1408b4f20();                                            // item id
+    int FUN_1408b4f50();                                            // category
     char m_pad_18[0xe8];
     MS2Ptr<Unk_FcItemText> m_spText;                                // +0x100
 };
@@ -149,14 +150,25 @@ void FUN_140ac3050(Unk_FcUseInfo* p);                               // destroy
 void FUN_1401fc610(Unk_FcUseInfo* pInfo, COutPacket* pPacket);      // serialize
 void FUN_140710590(COutPacket& packet);                             // send
 
+struct Unk_FcCellInt { char m_pad[0x58]; };
+struct Unk_FcCellStr { char m_pad[0x58]; };
+struct Unk_FcCellFloat { char m_pad[0x58]; };
 // The game constants table (the camera-fx / sound range constant is a float slot).
 struct Unk_FcConstF { char m_pad[8]; float FUN_1402bac70() const; };
 struct Unk_FcConstTable
 {
     char m_pad_00[0x13f8];
     Unk_FcConstF m_range;                                           // +0x13f8
+    char m_pad_1400[0x93f8 - 0x1400];
+    Unk_FcCellInt m_eat;                                            // +0x93f8 feedings per day
+    Unk_FcCellInt m_play;                                           // +0x9450 plays per day
+    Unk_FcCellStr m_owner;                                          // +0x94a8
+    char m_pad_9500[0xdfe0 - 0x9500];
+    Unk_FcCellFloat m_near;                                         // +0xdfe0 distance of the pet notice
 };
 MS2_CHECK_OFFSET(Unk_FcConstTable, m_range, 0x13f8);
+MS2_CHECK_OFFSET(Unk_FcConstTable, m_eat, 0x93f8);
+MS2_CHECK_OFFSET(Unk_FcConstTable, m_near, 0xdfe0);
 Unk_FcConstTable* FUN_1401d3200();
 
 // UI windows this unit opens (classes of other units; only what is called).
@@ -915,7 +927,7 @@ void CFunctionCubeObject::FUN_141228340()
 // ---- Homemade / Breeding / Farming ----
 
 // Local player actor and the world / housing singletons (classes of other units; opaque here).
-class Unk_FcActor;
+class Unk_FcActor : public PCBase { };
 void* FUN_1403ed2d0();                                              // the world manager
 Unk_FcActor* FUN_141bd0cc0(void* pWorld);                           // the local player actor
 int FUN_1416764d0(Unk_FcActor* p);                                  // is riding
@@ -1568,4 +1580,533 @@ int CFarmingCubeObject::vfunc_17()
     if (nLevel < (unsigned)pData->m_n104)
         return 0;
     return 1;
+}
+
+// ---- Nurturing ----
+
+// Actor helpers and constants of other units.
+void FUN_141bbb7f0(void* pWorld, CubeSpawnObject* pObj, int nFlag);   // remove an object from the world
+void FUN_141bbb1e0(void* pWorld, CubeSpawnObject* pObj, int nA, int nB);   // add an object to the world
+extern int DAT_1439f706c;                                           // object id counter
+int FUN_14086ace0(__int64 nTime);
+int FUN_14152ebd0(Unk_FcActor* p);
+void FUN_14152eb80(Unk_FcActor* p);
+unsigned FUN_14152eb20(Unk_FcActor* p);                             // times fed today
+unsigned FUN_14152eb50(Unk_FcActor* p);                             // times played today
+int FUN_14152ed10(Unk_FcActor* p, int nCategory);
+int FUN_140a5f780(void* pCell, int nId, int nArg);
+CStringW FUN_1401aa6a0(int nId);                                    // item / pet name
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
+CStringW FUN_140e9fe10(CStringW strKey, const CStringW& strArg, const int* pnA, const int* pnB);
+extern char DAT_143ab2a90;
+void* FUN_1401c0d90();
+unsigned char FUN_1404793a0(void* pMgr, const CStringW& str);
+unsigned char FUN_140164830(const CStringW& a, const CStringW& b);
+unsigned* FUN_1401d7c10(Unk_FcCellInt* p);
+const CStringW& FUN_140a50020(Unk_FcCellStr* p);
+float* FUN_140298f40(Unk_FcCellFloat* p);
+
+// @0x14122b0d0
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+CNurturingCubeObject::CNurturingCubeObject()
+    : m_entPet(0)
+{
+    m_bNear = 0;
+    m_bNotice = 0;
+    m_nTime = 0;
+    m_nC0 = 0;
+    m_spPet = 0;
+    m_nE0 = 0;
+    m_nE8 = 0;
+    m_nLevel = 1;
+    m_nMaxLevel = 1;
+    m_nF4 = 0;
+}
+
+// @0x14122b1f0
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+CNurturingCubeObject::~CNurturingCubeObject()
+{
+    if (((CubeSpawnObject*)m_spPet) != 0)
+    {
+        CubeSpawnObject* pPet = ((CubeSpawnObject*)m_spPet);
+        void* pWorld = FUN_1403ed2d0();
+        FUN_141bbb7f0(pWorld, pPet, 0);
+        m_spPet = 0;
+    }
+}
+
+// @0x14122b2e0
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+void CNurturingCubeObject::vfunc_1(Unk_FcMsg* pMsg)
+{
+    CFunctionCubeObject::vfunc_1(pMsg);
+    __int64 nTime = pMsg->m_src.vfunc_4();
+    __int64 nE0 = pMsg->m_src.vfunc_4();
+    unsigned short nLevel = pMsg->m_src.vfunc_2();
+    unsigned short nMaxLevel = pMsg->m_src.vfunc_2();
+    unsigned short nF4 = pMsg->m_src.vfunc_2();
+    __int64 nC0 = pMsg->m_src.vfunc_4();
+    FUN_14122ce80(nLevel);
+    m_nE0 = nE0;
+    m_nTime = nTime;
+    m_nMaxLevel = nMaxLevel;
+    m_nF4 = nF4;
+    m_nLevel = nLevel;
+    m_nC0 = nC0;
+    if (((CubeSpawnObject*)m_spPet) != 0)
+    {
+        m_spPet->FUN_140a4f200((void*)m_nC0);
+        m_spPet->FUN_140a4f230((int)m_nE0, (int)m_nE8);
+    }
+}
+
+// @0x14122b530
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+void CNurturingCubeObject::vfunc_14(MS2Ptr<Unk_FcStateMsg> sp)
+{
+    CFunctionCubeObject::vfunc_14(sp);
+    CNurturingCubeObject* pSrc = dynamic_cast<CNurturingCubeObject*>((CFunctionCubeObject*)sp.get());
+    if (pSrc != 0)
+    {
+        FUN_14122ce80(pSrc->FUN_14122cb20());
+        m_nE0 = pSrc->FUN_14122cb00();
+        m_nTime = pSrc->FUN_14122cba0();
+        m_nMaxLevel = pSrc->FUN_14122cb40();
+        m_nF4 = pSrc->FUN_14122cb60();
+        m_nLevel = pSrc->FUN_14122cb20();
+        m_nC0 = pSrc->FUN_14122cb80();
+        if (((CubeSpawnObject*)m_spPet) != 0)
+        {
+            m_spPet->FUN_140a4f200((void*)m_nC0);
+            m_spPet->FUN_140a4f230((int)m_nE0, (int)m_nE8);
+        }
+    }
+}
+
+// @0x14122b6e0
+// MS2-FUNCTIONAL: map walk through unit-local stand-ins; frame layout differs
+int CNurturingCubeObject::vfunc_2(Unk_Entity* pEntity, const Unk_FcRow* pRow, int nCubeId, __int64 nArg,
+    CubeItemInfo* pItem)
+{
+    if (CFunctionCubeObject::vfunc_2(pEntity, pRow, nCubeId, nArg, pItem) == 0)
+        return 0;
+    if (pRow->m_nSub == 1)
+        m_spData->m_bBuff = 1;
+    m_obj.FUN_140704bd0(&pRow->m_objData);
+    void* pos = m_obj.m_map.FUN_140709db0();
+    while (pos != 0)
+    {
+        __int64 nValue = *m_obj.m_map.FUN_14122e4c0(pos);
+        __int64 nMax = nValue;
+        if (nValue <= m_nE8)
+            nMax = m_nE8;
+        m_nE8 = nMax;
+        m_obj.m_map.FUN_14122e470(&pos);
+    }
+    FUN_14122cbc0(m_nLevel, Unk_EntRef(pEntity));
+    return 1;
+}
+
+// @0x14122b870
+// MS2-FUNCTIONAL: distance test through efd::Point3 operators; frame layout differs
+void CNurturingCubeObject::vfunc_3()
+{
+    CFunctionCubeObject::vfunc_3();
+    if (FUN_14122d190() != 0)
+    {
+        m_nF4 = 0;
+        m_nTime = FUN_140869440();
+    }
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor != 0)
+    {
+        if (FUN_14152ebd0(pActor) != 0)
+            FUN_14152eb80(pActor);
+        NiPoint3 kActor = pActor->vfunc_18();
+        float fDist = reinterpret_cast<Unk_StreamPoint&>(kActor).FUN_140965c40(FUN_141226d00()).FUN_140967ac0();
+        unsigned nNear = fDist < *FUN_140298f40(&FUN_1401d3200()->m_near);
+        if ((unsigned)m_bNear != nNear)
+        {
+            m_bNear = nNear;
+            if (m_bNear == 0)
+                m_bNotice = 0;
+            else
+                m_bNotice = 1;
+        }
+    }
+}
+
+// @0x14122b9f0
+// MS2-FUNCTIONAL: efd::Point3 copy instead of the exe's byte loop
+void CNurturingCubeObject::vfunc_5(float fZ)
+{
+    if (((CubeSpawnObject*)m_spPet) != 0)
+    {
+        NiPoint3 kDir = m_spPet->vfunc_20();
+        kDir.z = fZ;
+        m_spPet->vfunc_21(kDir);
+    }
+}
+
+// @0x14122bab0
+// MS2-FUNCTIONAL: string pieces glued with FUN_ operators; frame layout differs
+CStringW CNurturingCubeObject::vfunc_6()
+{
+    Unk_FcItemSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+    if (!spSvc.FUN_140ef4cb0(0))
+    {
+        Unk_FcItemRow* pRow = spSvc.FUN_1401cd1a0()->FUN_1410b8b00(FUN_14112e110());
+        if (pRow == 0)
+            return CStringW(L"");
+        int nItemId = pRow->FUN_1408b4f20();
+        return FUN_1401a9d70()->FUN_141811980(1, nItemId);
+    }
+    return CStringW(L"");
+}
+
+// @0x14122bbe0
+CStringW CNurturingCubeObject::vfunc_7()
+{
+    return CStringW(L"key");
+}
+
+// @0x14122bc30
+// MS2-FUNCTIONAL: ride-off action through MS2Ptr; frame layout differs
+void CNurturingCubeObject::vfunc_8(CString str)
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return;
+    if (FUN_14122bda0() != 0)
+    {
+        if (FUN_1416764d0(pActor) == 0)
+        {
+            if (FUN_14166c930(pActor) != 0x40)
+            {
+                int nAction = FUN_14122d200();
+                Unk_FcActorSetState(pActor, 0x40, 0, nAction);
+            }
+        }
+        else
+        {
+            MS2Ptr<RideOffActionNurturing> spAct(new RideOffActionNurturing(0));
+            spAct->m_s28 = str;
+            FUN_14152c280(pActor, spAct.get());
+        }
+    }
+}
+
+// @0x14122bda0
+// MS2-FUNCTIONAL: nested early-outs restructured; frame layout differs
+int CNurturingCubeObject::FUN_14122bda0()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    Unk_FcItemSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+    if (spSvc.FUN_140ef4cb0(0))
+        return 0;
+    Unk_FcItemRow* pRow = spSvc.FUN_1401cd1a0()->FUN_1410b8b00(FUN_14112e110());
+    if (pRow == 0)
+        return 0;
+    if (FUN_140164830(m_obj.m_strOwner, FUN_140a50020(&FUN_1401d3200()->m_owner)))
+        return 0;
+    if (FUN_1404793a0(FUN_1401c0d90(), FUN_140a50020(&FUN_1401d3200()->m_owner)) == 0)
+        return 0;
+    if (FUN_14122c340() != 0)
+    {
+        m_bNotice = 0;
+        return 1;
+    }
+    if (FUN_1410c3180(FUN_1409670e0()) == FUN_141656ad0(pActor))
+    {
+        if (m_nE8 <= m_nE0 && m_nLevel < m_nMaxLevel)
+        {
+            FUN_14122d2a0(FUN_1405c2690(CStringW(L"s_error_nurturing_invalid_eat"), FUN_1401aa6a0(FUN_14122c410())));
+            return 0;
+        }
+        if (FUN_140a5f780(&DAT_143ab2a90, 0x79, 0) == 0)
+        {
+            FUN_14122c7b0(1);
+            return 0;
+        }
+        unsigned nEat = *FUN_1401d7c10(&FUN_1401d3200()->m_eat);
+        if (nEat == 0)
+        {
+            m_bNotice = 0;
+            return 1;
+        }
+        unsigned nDone = FUN_14152eb20(pActor);
+        if (nDone < *FUN_1401d7c10(&FUN_1401d3200()->m_eat))
+        {
+            m_bNotice = 0;
+            return 1;
+        }
+        FUN_14122d2a0(FUN_1405c2690(CStringW(L"s_error_nurturing_invalid_eat"), FUN_1401aa6a0(FUN_14122c410())));
+    }
+    else
+    {
+        if (FUN_14152ed10(pActor, pRow->FUN_1408b4f50()) != 0)
+        {
+            FUN_14122c7b0(4);
+            return 0;
+        }
+        unsigned nPlay = FUN_14152eb50(pActor);
+        if (nPlay < *FUN_1401d7c10(&FUN_1401d3200()->m_play))
+        {
+            m_bNotice = 0;
+            return 1;
+        }
+        FUN_14122c7b0(3);
+    }
+    return 0;
+}
+
+// @0x14122c340
+// MS2-FUNCTIONAL: branch layout differs from the exe (equivalent behaviour)
+unsigned char CNurturingCubeObject::FUN_14122c340()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    __int64 nOwner = FUN_1410c3180(FUN_1409670e0());
+    if (nOwner != FUN_141656ad0(pActor))
+        return 0;
+    if (m_nMaxLevel < m_nLevel)
+        return 1;
+    if (m_nE0 < m_nE8 || m_nLevel != m_nMaxLevel)
+        return 0;
+    return 1;
+}
+
+// @0x14122c410
+int CNurturingCubeObject::FUN_14122c410()
+{
+    int nNpc = 0;
+    m_obj.m_mapNpc.FUN_1405b9580(m_nLevel, &nNpc);
+    return nNpc;
+}
+
+// @0x14122c460
+// MS2-FUNCTIONAL: notice strings built through FUN_ helpers; frame layout differs
+void CNurturingCubeObject::FUN_14122c460(int nMode)
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor != 0 && ((CubeSpawnObject*)m_spPet) != 0)
+    {
+        m_spPet->FUN_140a4f230((int)m_nE0, (int)m_nE8);
+        if (nMode == 0)
+        {
+            if (FUN_1410c3180(FUN_1409670e0()) == FUN_141656ad0(pActor))
+            {
+                int nEat = *FUN_1401d7c10(&FUN_1401d3200()->m_eat);
+                if (nEat == 0)
+                {
+                    CStringW str = FUN_1405c2690(CStringW(L"s_msg_nurturing_eat_success_nocount"), FUN_1401aa6a0(FUN_14122c410()));
+                    FUN_1412751f0(str, 1, 1);
+                }
+                else
+                {
+                    int nDone = FUN_14152eb20(pActor);
+                    CStringW str = FUN_140e9fe10(CStringW(L"s_msg_nurturing_eat_success"), FUN_1401aa6a0(FUN_14122c410()), &nDone, &nEat);
+                    FUN_1412751f0(str, 1, 1);
+                }
+            }
+            else
+            {
+                int nDone = FUN_14152eb50(pActor);
+                CStringW str = FUN_140e9fe10(CStringW(L"s_msg_nurturing_play_success"), FUN_1401aa6a0(FUN_14122c410()), &nDone,
+                    (const int*)FUN_1401d7c10(&FUN_1401d3200()->m_play));
+                FUN_1412751f0(str, 1, 1);
+            }
+        }
+    }
+}
+
+// @0x14122c7b0
+// MS2-FUNCTIONAL: notice strings built through FUN_ helpers; frame layout differs
+void CNurturingCubeObject::FUN_14122c7b0(int nError)
+{
+    if (nError == 1)
+        FUN_14122d2a0(FUN_14028b8e0(CStringW(L"s_error_nurturing_invalid_item")));
+    else if (nError == 2)
+        FUN_14122d2a0(FUN_1405c2690(CStringW(L"s_error_nurturing_eat_maxcount"), FUN_1401aa6a0(FUN_14122c410())));
+    else if (nError == 3)
+        FUN_14122d2a0(FUN_1405c2690(CStringW(L"s_error_nurturing_play_maxcount"), FUN_1401aa6a0(FUN_14122c410())));
+    else if (nError == 4)
+        FUN_14122d2a0(FUN_1405c2690(CStringW(L"s_error_nurturing_invalid_play"), FUN_1401aa6a0(FUN_14122c410())));
+}
+
+// @0x14122cab0
+efd::SmartPointer<CubeSpawnObject> CNurturingCubeObject::GetValue()
+{
+    return m_spPet;
+}
+
+// @0x14122cb00
+__int64 CNurturingCubeObject::FUN_14122cb00()
+{
+    return m_nE0;
+}
+
+// @0x14122cb20
+unsigned short CNurturingCubeObject::FUN_14122cb20()
+{
+    return m_nLevel;
+}
+
+// @0x14122cb40
+unsigned short CNurturingCubeObject::FUN_14122cb40()
+{
+    return m_nMaxLevel;
+}
+
+// @0x14122cb60
+unsigned CNurturingCubeObject::FUN_14122cb60()
+{
+    return m_nF4;
+}
+
+// @0x14122cb80
+__int64 CNurturingCubeObject::FUN_14122cb80()
+{
+    return m_nC0;
+}
+
+// @0x14122cba0
+__int64 CNurturingCubeObject::FUN_14122cba0()
+{
+    return m_nTime;
+}
+
+// @0x14122cbc0
+// MS2-FUNCTIONAL: pet spawn through new / world calls; frame layout differs
+void CNurturingCubeObject::FUN_14122cbc0(unsigned short nLevel, Unk_EntRef ent)
+{
+    if (!ent.FUN_1408b70b0(0))
+    {
+        m_entPet = ent;
+        if (m_obj.m_map.FUN_14122e460() >= 3)
+        {
+            unsigned __int64 nGaugeA = 300;
+            unsigned __int64 nGaugeB = 500;
+            m_obj.m_map.FUN_14122e740(1, &nGaugeA);
+            m_obj.m_map.FUN_14122e740(2, &nGaugeB);
+            int nNpc = 0;
+            if (m_obj.m_mapNpc.FUN_1405b9580(nLevel, &nNpc))
+            {
+                m_spPet = new (efd::MemHint(efd::MemHint::NONE)) CubeSpawnObject;
+                int nId = DAT_1439f706c;
+                DAT_1439f706c = DAT_1439f706c + 1;
+                m_spPet->FUN_14123c5a0(nId);
+                if (m_spPet->vfunc_124(nNpc, ent, (int)nGaugeA, (int)nGaugeB, m_obj.m_strOwner) != 0)
+                    FUN_141bbb1e0(FUN_1403ed2d0(), ((CubeSpawnObject*)m_spPet), 0, 1);
+            }
+        }
+    }
+}
+
+// @0x14122ce80
+// MS2-FUNCTIONAL: pet respawn through new / world calls; frame layout differs
+void CNurturingCubeObject::FUN_14122ce80(unsigned short nLevel)
+{
+    if (((CubeSpawnObject*)m_spPet) != 0 && m_nLevel != nLevel && m_obj.m_map.FUN_14122e460() > 2)
+    {
+        unsigned __int64 nGaugeA = 300;
+        unsigned __int64 nGaugeB = 500;
+        m_obj.m_map.FUN_14122e740(1, &nGaugeA);
+        m_obj.m_map.FUN_14122e740(2, &nGaugeB);
+        int nNpc = 0;
+        if (m_obj.m_mapNpc.FUN_1405b9580(nLevel, &nNpc))
+        {
+            if (((CubeSpawnObject*)m_spPet) != 0)
+            {
+                CubeSpawnObject* pOld = ((CubeSpawnObject*)m_spPet);
+                void* pWorld = FUN_1403ed2d0();
+                FUN_141bbb7f0(pWorld, pOld, 0);
+                m_spPet = 0;
+            }
+            m_spPet = new (efd::MemHint(efd::MemHint::NONE)) CubeSpawnObject;
+            int nId = DAT_1439f706c;
+            DAT_1439f706c = DAT_1439f706c + 1;
+            m_spPet->FUN_14123c5a0(nId);
+            if (m_spPet->vfunc_124(nNpc, m_entPet, (int)nGaugeA, (int)nGaugeB, m_obj.m_strOwner) != 0)
+                FUN_141bbb1e0(FUN_1403ed2d0(), ((CubeSpawnObject*)m_spPet), 0, 1);
+        }
+    }
+}
+
+// @0x14122d190
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+int CNurturingCubeObject::FUN_14122d190()
+{
+    if (m_nTime == 0)
+        return 1;
+    if (FUN_140869440() < m_nTime)
+        return 1;
+    if (FUN_14086ace0(m_nTime) == 0)
+        return 0;
+    return 1;
+}
+
+// @0x14122d200
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+int CNurturingCubeObject::FUN_14122d200()
+{
+    Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pActor == 0)
+        return 0;
+    if (((CubeSpawnObject*)m_spPet) == 0)
+        return 0;
+    if (FUN_1410c3180(FUN_1409670e0()) == FUN_141656ad0(pActor))
+    {
+        if (FUN_14122c340() == 0)
+            return 0xa5;
+        return 0xa7;
+    }
+    return 0xa6;
+}
+
+// @0x14122d2a0
+void CNurturingCubeObject::FUN_14122d2a0(const CStringW& str)
+{
+    if (m_bNotice != 0)
+    {
+        m_bNotice = 0;
+        FUN_1412751f0(str, 1, 1);
+    }
+}
+
+// ---- the data row ----
+
+// @0x14122d840
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+FunctionCubeData::FunctionCubeData()
+    : m_nCubeId(0), m_bBuff(0), m_bLike(0), m_nKind(0), m_nSubKind(0),
+      m_nE8(0), m_nEC(0), m_nF0(0), m_nF4(0), m_nF8(0), m_nFC(0), m_n100(0), m_n104(0),
+      m_str108(""), m_n110(0)
+{
+}
+
+// @0x14122dbb0
+// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
+FunctionCubeData::~FunctionCubeData()
+{
+}
+
+// @0x141225470
+// MS2-FUNCTIONAL: allocation through plain operator new; frame layout differs
+CFunctionCubeObject* FUN_141225470(int nKind)
+{
+    CFunctionCubeObject* pObj;
+    if (nKind == 7)
+        pObj = new CBreedingCubeObject;
+    else if (nKind == 8)
+        pObj = new CFarmingCubeObject;
+    else if (nKind == 0xd)
+        pObj = new CNurturingCubeObject;
+    else
+        pObj = new CFunctionCubeObject;
+    return pObj;
 }
