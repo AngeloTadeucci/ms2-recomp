@@ -1885,6 +1885,7 @@ MS2_REPLACE_METHOD(0x14152b800, MyPC, FUN_14152b800, 192, 0x59BEFECE);
 
 // MS2Ptr<Unk_RideeData> (Unk_RideeData is not CPtred-derived here): dtor 0x140788ed0, operator-> 0x1407895d0.
 template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();
+template <> bool MS2Ptr<Unk_RideeData>::operator==(Unk_RideeData* p) const;
 template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;
 
 // Mounted: learn the ridee's skill and close the windows a multi-seat ridee hides.
@@ -1914,6 +1915,32 @@ void MyPC::vfunc_120(MS2Ptr<RideOnAction> spAction)
     FUN_140aa6d40()->FUN_141b0ce20(0xc, 1);
 }
 MS2_REPLACE_METHOD(0x14152C460, MyPC, vfunc_120, 510, 0x966C40D5);
+
+// Request to get off the ride (pAction 0: a plain ride off).
+// @0x14152c280
+int MyPC::FUN_14152c280(RideOffAction* pAction)
+{
+    if (FUN_1416764d0() == 0)
+        return 1;
+    MS2Ptr<Unk_RideeData> spData = m_spB10->FUN_141707750();
+    if (spData == 0)
+        return 1;
+    if (pAction == 0)
+        pAction = new RideOffAction(0);
+    if ((spData->m_nType == 1 || spData->m_nType == 2) && pAction->m_n20 == 0)
+    {
+        FUN_141275260(0x655, 1, 0);
+        return 0;
+    }
+    if (pAction->m_nType == 0xf && spData->m_n64 == 0)
+        return 0;
+    COutPacket packet(0x40, 0);
+    packet.Encode1(1);
+    pAction->vfunc_1(&packet);
+    FUN_140710590(packet);
+    return 1;
+}
+MS2_REPLACE_METHOD(0x14152C280, MyPC, FUN_14152c280, 474, 0x03A6A593);
 
 // @0x14152e060
 int MyPC::FUN_14152e060()
