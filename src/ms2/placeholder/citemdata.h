@@ -44,6 +44,9 @@ MS2_CHECK_OFFSET(ItemInstallData, useInstancing, 0x5c);
 class CItemData : public CPtred, public CValidData<CItemData>, public CObjectCount<CItemData> {
 public:
     virtual ~CItemData();
+    int FUN_14053c560();     // 0x14053c560 (uiitemenchantdialog.cpp)
+    bool FUN_14053d510();    // 0x14053d510
+    int FUN_14053c6f0();     // 0x14053c6f0
     int FUN_14053c510();     // 0x14053c510 return the item id (+0x20; sb4, clonecube)
     unsigned char unknown20[0x68];
     unsigned stackLimit;

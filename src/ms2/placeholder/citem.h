@@ -6,6 +6,9 @@ class COutputStream;
 class CInputStream;
 class Unk_ItemUgcInfo;
 class Unk_ItemEquipData;
+class Unk_ItemEnchantData;
+class Unk_ItemOwnerRef;
+template <class T> class MS2Ptr;
 class CItem : public CPtred {
 public:
   CItem();
@@ -42,6 +45,22 @@ public:
   unsigned __int64 FUN_1405283d0();       // 0x1405283d0 UGC uid of that info (0 when null; avatarcube.cpp)
   bool FUN_140528cc0();                   // 0x140528cc0 can be item-locked (unit_1406125d0)
   bool FUN_140528da0();                   // 0x140528da0 can be item-unlocked (unit_1406125d0)
+  // uiitemenchantdialog.cpp: enchant-related accessors.
+  int FUN_140526fc0();                    // 0x140526fc0 enchant level
+  int FUN_1405270a0();                    // 0x1405270a0 enchant exp
+  void FUN_140527110(int);                // 0x140527110 set enchant exp
+  int FUN_140527270();
+  int FUN_140527030();
+  Unk_ItemEnchantData* FUN_1405278a0();   // 0x1405278a0 the enchant data object (null when absent)
+  Unk_ItemOwnerRef* FUN_140527930();      // 0x140527930 binding owner holder
+  unsigned FUN_140527710();               // 0x140527710 item level
+  int FUN_14052b2e0(int, int, int, int);  // set up from id, rank, 0, count
+  MS2Ptr<CItem> FUN_140524250();          // 0x140524250 copy
+  bool FUN_1405277e0(int);
+  bool FUN_140528e20();
+  int FUN_140528f90(int);
+  CStringW FUN_140528160();               // 0x140528160 item name
+  int FUN_140526c50();                    // 0x140526c50 count
 private:
   void *m_18;
   void *m_20;

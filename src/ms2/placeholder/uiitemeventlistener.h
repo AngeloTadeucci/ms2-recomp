@@ -12,7 +12,7 @@ public:
     UIItemEventListener();                          // 0x1419cad20
     virtual ~UIItemEventListener();                 // 0x1419cad40 (scalar deleting 0x1419cc570)
 
-    virtual int vfunc_1();                          // 1  0x1419cad60 return 1
+    virtual int vfunc_il1();                         // 1  0x1419cad60 return 1
     virtual void vfunc_2(void*) {}                  // 2  0x140be5490
     virtual void vfunc_3(void*, bool) {}            // 3  0x140c255d0
     virtual void vfunc_4(void*, int) {}             // 4  0x140be54a0
@@ -24,7 +24,7 @@ public:
     virtual void vfunc_10(void*) {}                 // 10 0x140be5520
     virtual void vfunc_11(void*) {}                 // 11 0x140be5510
     virtual void vfunc_12() {}                      // 12 0x140be5530
-    virtual void vfunc_13() {}                      // 13 0x140be5500
+    virtual void vfunc_il13() {}                     // 13 0x140be5500
     virtual void vfunc_14(void*) {}                 // 14 0x140be5570
     virtual void vfunc_15(void*) {}                 // 15 0x140be55a0
     virtual void vfunc_16(void*) {}                 // 16 0x140be5580
