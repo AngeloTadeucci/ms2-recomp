@@ -144,6 +144,7 @@ public:
     int FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all);
     void FUN_1416d16c0(int group, ATL::CAtlList<unsigned>& out);
     void FUN_1416d1800(int group, Unk_QmNpcQuestState* best);
+    void FUN_1416d1a30(int questId);
     int FUN_1416d00c0();
     int FUN_1416d0100();
     int FUN_1416d0150();

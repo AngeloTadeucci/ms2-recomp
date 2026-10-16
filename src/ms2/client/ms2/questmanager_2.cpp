@@ -209,6 +209,12 @@ class Unk_QmOptions { public: Unk_QmQuestFilter* FUN_140c9b8b0(); };
 Unk_QmOptions* FUN_1409a8b10();
 CStringW FUN_140763550(unsigned questId, int state);     // one tooltip line of a quest
 CStringW FUN_14052bd00(int stringId, const CStringW& arg);
+PCBase* FUN_140aac420(Unk_WsV118* user);              // the user's object (CComPtrBase::operator T*)
+// CRBTree<unsigned, Unk_WsV118> members belong to other objects (0x140c20a10, 0x14112e170, 0x14112e2b0).
+template<> POSITION ATL::CRBTree<unsigned, Unk_WsV118, ATL::CElementTraits<unsigned>, ATL::CElementTraits<Unk_WsV118>>::GetHeadPosition() const throw();
+template<> ATL::CRBTree<unsigned, Unk_WsV118, ATL::CElementTraits<unsigned>, ATL::CElementTraits<Unk_WsV118>>::CPair*
+    ATL::CRBTree<unsigned, Unk_WsV118, ATL::CElementTraits<unsigned>, ATL::CElementTraits<Unk_WsV118>>::GetNext(POSITION&) throw();
+template<> Unk_WsV118& ATL::CRBTree<unsigned, Unk_WsV118, ATL::CElementTraits<unsigned>, ATL::CElementTraits<Unk_WsV118>>::GetValueAt(POSITION) throw();
 int FUN_14074b210(CQuestData* data);
 int FUN_1407474d0(const ATL::CAtlArray<int>* values, const int* value);   // index of value, or -1
 void FUN_140d73bc0(int id, int a, void* b, CStringW text);
@@ -1683,6 +1689,31 @@ void CQuestManager::FUN_1416d1800(int group, Unk_QmNpcQuestState* best)
     }
 }
 MS2_REPLACE_METHOD(0x1416d1800, CQuestManager, FUN_1416d1800, 553, 0x44156FC6);
+
+// @0x1416d1a30
+void CQuestManager::FUN_1416d1a30(int questId)
+{
+    WorldService* world = FUN_1403ed2d0();
+    if (world == 0) return;
+    Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
+    if (quest.IsNull()) {
+        MS2_ASSERT_AT(0x963, 0);
+        return;
+    }
+    if (quest->IsActive() == 0) return;
+    if (quest->IsComplete() == 1) return;
+    if (m_targets250.end() == m_targets250.find(questId))
+        m_targets250[questId] = std::set<__int64>();
+    ATL::CRBMap<unsigned, Unk_WsV118>* users = world->FUN_141bd36b0();
+    for (POSITION pos = users->GetHeadPosition(); pos != 0; users->GetNext(pos)) {
+        PCBase* pc = FUN_140aac420(&users->GetValueAt(pos));
+        if (pc == 0) continue;
+        if (world->FUN_141bd0cc0() == pc) continue;
+        if (quest->CheckUserFind(pc) == 0) continue;
+        m_targets250[questId].insert(pc->FUN_141656a80());
+    }
+}
+MS2_REPLACE_METHOD(0x1416d1a30, CQuestManager, FUN_1416d1a30, 699, 0x9270EB9B);
 
 // @0x1416d1d00
 void CQuestManager::FUN_1416d1d00(PCBase* pc)
