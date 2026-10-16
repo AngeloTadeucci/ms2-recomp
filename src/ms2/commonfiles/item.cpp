@@ -14,6 +14,10 @@
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PetRow@@@@QEAA@XZ 0x14052c420 ; prop: symbols.tsv (hand)
 // MS2-PIN: ?Release@?$MS2Ptr@VUnk_PetRow@@@@AEAAXXZ 0x14052d920 ; prop (hand)
 // MS2-PINS-END tplpin
+// MS2-PIN: ?get@?$MS2SvrPtr@VCIngredientContainer@@@@QEBAPEAVCIngredientContainer@@XZ 0x14052f0b0
+// MS2-PIN: ??B?$MS2SvrPtr@VCIngredientContainer@@@@QEBAPEAVCIngredientContainer@@XZ 0x14052f0d0
+// MS2-PIN: ??4?$MS2Ptr@VCItemData@@@@QEAAAEAV0@AEBV0@@Z 0x14052c6f0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCItemData@@@@AEAAXPEAX@Z 0x14052dd90
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\item.cpp"
 // item.cpp - CItem (commonfiles\item.cpp; the wassert path is e:\build\kr\22_04\ms2code\commonfiles\item.cpp).
 // Partial: the plain scalar field accessors. The constructor, serializer and smart-pointer slot helpers are not
@@ -3049,7 +3053,8 @@ CItemBreakIngredientTable::IngredientPtr CItemBreakIngredientTable::GetIngredien
         MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
         if (spItem.get() != 0)
         {
-            if (spItem->limit.enableBreak == 0 || spItem->limit.enableBreak == 2)
+            int nEnableBreak = spItem->limit.enableBreak;
+            if (nEnableBreak == 0 || nEnableBreak == 2)
                 return spResult;
             if (spItem->FUN_14053cf90())
             {
@@ -3076,3 +3081,18 @@ template class MS2Ptr<Unk_IngItem>;
 template class MS2Ptr<Unk_MusicBookInfo>;
 template class MS2Ptr<CItemOption>;
 template class MS2Ptr<CItem>;
+template class MS2Ptr<CItemData>;
+
+// UCRT memmove_s (static inline copy pulled in by the container glue above)
+// @0x140530520
+static __inline errno_t ms2_item_memmove_s(void* const d, size_t const dsz, void const* const s, size_t const ssz)
+{
+    if (ssz == 0)
+        return 0;
+    { int e = !!(d != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+    { int e = !!(s != NULL); if (!e) { errno = EINVAL; _invalid_parameter_noinfo(); return EINVAL; } }
+    { int e = !!(dsz >= ssz); if (!e) { errno = ERANGE; _invalid_parameter_noinfo(); return ERANGE; } }
+    memmove(d, s, ssz);
+    return 0;
+}
+__declspec(selectany) extern errno_t(__cdecl* const ms2_pfnItemMemmoveS)(void*, size_t, const void*, size_t) = &ms2_item_memmove_s;
