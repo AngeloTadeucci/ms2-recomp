@@ -42,7 +42,9 @@
 // MS2-PIN: ??1?$CSimpleArray@GV?$CSimpleArrayEqualHelper@G@ATL@@@ATL@@QEAA@XZ 0x14035e5b0 ; unique
 // MS2-PIN: ??1?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA@XZ 0x14035e630 ; prop
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA@XZ 0x14035e660 ; unique: single byte-identical candidate
-// MS2-PIN: ??1?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@QEAA@XZ 0x14035e6e0 ; unique
+// MS2-PIN: ??1?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@QEAA@XZ 0x14035e6c0 ; hand: caller CFameTable dtor destroys m_setOfficerNpc (+0x338) with FUN_14035e6c0
+// MS2-PIN: ??1?$set@W4Unk_FameAlliance@@U?$less@W4Unk_FameAlliance@@@std@@V?$allocator@W4Unk_FameAlliance@@@3@@std@@QEAA@XZ 0x14035e6e0 ; hand: sibling of set<int> dtor
+// MS2-PIN: ??7?$MS2Ptr@VCFameSeasonDef@@@@QEBA_NXZ 0x14035e980 ; hand: GetSeasonRequireQuest (14035b510) calls it on its MS2Ptr<CFameSeasonDef>
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14035e9e0 ; unique: single byte-identical candidate
 // MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14035ea60 ; unique: single byte-identical candidate
 // MS2-PIN: ??A?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAAAEAH_K@Z 0x14035eae0 ; unique
@@ -886,9 +888,9 @@ Unk_FameAlliance CFameTable::GetAllianceByNpc(int nNpcId)
 int CFameTable::GetSeasonRequireQuest(Unk_FameAlliance nAlliance)
 {
     SeasonPtr spSeason = GetSeason(nAlliance);
-    if (spSeason.get() != 0)
-        return spSeason->m_nRequireQuest;
-    return 0;
+    if (!spSeason)
+        return 0;
+    return spSeason->m_nRequireQuest;
 }
 
 // @0x14035b590
