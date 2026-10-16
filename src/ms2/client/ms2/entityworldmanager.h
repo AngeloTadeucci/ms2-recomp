@@ -101,13 +101,13 @@ public:
     void FUN_1411cfce0();
     void FUN_1411cfd40(const egf::EntityChangeMessage*, efd::Category);
     void FUN_1411cffa0(const egf::EntityChangeMessage*, efd::Category);
-    void FUN_1411d0a60(int, int);
+    void FUN_1411d0a60(unsigned, int);
     size_t FUN_1411d0ab0();
     size_t FUN_1411d0af0();
     efd::UInt32 FUN_1411d0b30();
 public:
-    int currentMap;
-    std::map<int, Unk_EntityWorldRecord> worlds;
+    unsigned currentMap;
+    std::map<unsigned, Unk_EntityWorldRecord> worlds;
     egf::BlockIdentification currentBlock;
     unsigned unknown78;
     bool loaded;
@@ -117,7 +117,7 @@ public:
     efd::SmartPointer<MS2EntityLoaderService> loader;
     efd::SmartPointer<ecr::SceneGraphService> sceneGraphs;
     efd::SmartPointer<egf::FlatModelManager> models;
-    std::map<int, std::set<int>> mapGroups;
+    std::map<unsigned, std::set<int>> mapGroups;
     unsigned __int64 unknownC0;
     std::list<efd::AssetID> unusedAssets;
     efd::SmartPointer<Unk_PhysXSceneView> scenes;
