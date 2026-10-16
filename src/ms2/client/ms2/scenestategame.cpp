@@ -776,7 +776,7 @@ public:
     virtual void vfunc_17();
     virtual void vfunc_18();
     virtual void vfunc_19();
-    virtual void vfunc_20();
+    virtual void vfunc_20(CItem* pItem);                    // an item was equipped
     virtual void vfunc_21(CItem* pItem);
     virtual void vfunc_22(CItem* pItem);
     virtual void vfunc_23(CItem* pItem);
@@ -1208,6 +1208,10 @@ public:
     MS2Ptr<CItem> FUN_140a60280(int nTab, int nSlot);       // the item in a tab slot
     void FUN_140a5d390(__int64 nItemUid);                   // remove an item
     void FUN_140a66ae0(MS2Ptr<CItem> spItem);
+    // 0x25 (equip): the item the auto-install prompt was raised for
+    int FUN_140a67000();
+    __int64 FUN_140a66f20();
+    void FUN_140a66f40(__int64 nItemUid);
 };
 extern Unk_SSGInventory DAT_143ab2a90;                      // the local player's inventory
 
@@ -3178,6 +3182,81 @@ void CSceneStateGame::FUN_141715860(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141715860, CSceneStateGame, FUN_141715860, 869, 0x0FAB05F1);
 
+// The equip packet header (?\unit_1407a4f20.cpp decodes it): owner, item id, uid, slot, rarity, item type.
+struct Unk_1407a8050
+{
+    Unk_1407a8050() : m_00(0), m_04(0), m_08(0), m_14(0), m_18(0) {}   // 0x141745ff0
+    int m_00, m_04; __int64 m_08; int m_10; int m_14; int m_18;
+};
+void FUN_1407a8100(Unk_1407a8050& v, CInputStream& in);
+extern CStringW DAT_143ae7980;                              // L"useBindEquipItem" (the bind confirm box tag)
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);   // fmt one-argument format
+UIMessageBox* FUN_14151f890();                              // the open message box
+
+// @0x141716680
+void CSceneStateGame::FUN_141716680(CInPacket& packet)
+{
+    Unk_1407a8050 kInfo;
+    FUN_1407a8100(kInfo, packet);
+    int nId = kInfo.m_00;
+    int nItemId = kInfo.m_04;
+    __int64 nItemUid = kInfo.m_08;
+    int nSlot = kInfo.m_10;
+    int nRarity = kInfo.m_14;
+    int nType = kInfo.m_18;
+    int nKind = FUN_140222f60(nType);
+    if (nKind == 6)
+        return;
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    MS2Ptr<CItem> spItem(new CItem());
+    if (!spItem->FUN_140523c40(nItemId, nRarity, 0))
+        return;
+    spItem->FUN_140526b30(nId);
+    spItem->FUN_140526a70(nItemUid);
+    spItem->FUN_140526c10(nSlot);
+    if (nKind == 2)
+        spItem->FUN_14052a130(nKind);
+    spItem->FUN_140524eb0(packet);
+    if (FUN_1422b9e00(FUN_1408e57f0()) == 0x620001f)
+        pPC->vfunc_127(spItem.get(), 1);
+    else
+        pPC->vfunc_127(spItem.get(), 0);
+    MyPC* pMyPC = FUN_1409613d0(pPC);
+    if (pMyPC != 0)
+    {
+        if (FUN_1422b9e00(FUN_1408e57f0()) == 0x620001f)
+        {
+            if (nSlot == 1 || nSlot == 3 || nSlot == 2)
+            {
+                Unk_SSGItemHub* pHub = FUN_140a6a840();
+                pHub->vfunc_20(spItem.get());
+            }
+        }
+        else
+        {
+            Unk_SSGItemHub* pHub = FUN_140a6a840();
+            pHub->vfunc_20(spItem.get());
+        }
+        if (FUN_140166410()->FUN_14036d570(0xe8) && DAT_143ab2a90.FUN_140a67000() != 0 &&
+            DAT_143ab2a90.FUN_140a66f20() == nItemUid)
+        {
+            DAT_143ab2a90.FUN_140a66f40(0);
+            FUN_1412751f0(FUN_1405c2690(CStringW(L"s_msg_item_auto_install_equipment"),
+                FUN_1401a9d70()->FUN_141811980(1, nItemId)), 1, 1);
+            UIMessageBox* pBox = FUN_14151f890();
+            if (pBox != 0)
+            {
+                MS2Ptr<CMsgBoxData> spBox = pBox->FUN_1419f8470();
+                if (spBox.get() != 0 && spBox->FUN_141a02ce0() == DAT_143ae7980)
+                    pBox->FUN_1419f8120();
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141716680, CSceneStateGame, FUN_141716680, 1230, 0xCBFF9958);
+
 // @0x141716b60
 void CSceneStateGame::FUN_141716b60(CInPacket& packet)
 {
@@ -3954,7 +4033,6 @@ public:
     int FUN_14066b4e0(unsigned int nRecipe);                // recipe % 1000
 };
 Unk_SSGMastery* FUN_1409670c0();
-CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);   // fmt one-argument format
 // Packet 0xcd: life-skill mastery (exp and grade changes, rewards, recipe unlocks).
 class Unk_SSGFishData { public: CStringW FUN_1403b2240(int nGrade); };     // the fishing grade name
 Unk_SSGFishData* FUN_1403b4740();
@@ -4619,7 +4697,6 @@ MS2_CHECK_OFFSET(Unk_SSGMyPCView, m_kPortalMove, 0x17a0);
 __int64 GetServerTime();
 MS2Ptr<CMsgBoxData> FUN_140d73e40(int nType, int nStringId, IMessageListener* pListener, CStringW strTag);
 void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);
-UIMessageBox* FUN_14151f890();                              // the open message box
 // @0x1417373d0
 void CSceneStateGame::FUN_1417373d0(CInPacket& packet)
 {
