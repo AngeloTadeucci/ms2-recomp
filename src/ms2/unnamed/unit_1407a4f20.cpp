@@ -59,6 +59,7 @@
 #include "ms2/ms2layout.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
+#include "ms2/placeholder/mstime.h"
 #include "ms2/commonfiles/stream.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/coutpacket.h"
@@ -83,7 +84,7 @@ CStringW FUN_14016a730(const char*, int);                           // FormatStr
 
 // ---- time / category text ---------------------------------------------------------------------------------------
 // @0x1407a4f20
-CString FUN_1407a4f20(CTime& time)
+CString FUN_1407a4f20(CMsTime& time)
 {
     int year = time.GetYear();
     int month = time.GetMonth();

@@ -944,7 +944,7 @@ int FUN_14028e280(CMsTime& kOut, const CString& strFormat, const CString& strTex
 }
 
 // @0x14028e440
-CString FUN_14028e440(const ATL::CTime& kTime, const CString& strFormat)
+CString FUN_14028e440(const CMsTime& kTime, const CString& strFormat)
 {
     CString strResult;
     strResult.Format(strFormat, kTime.GetYear(), kTime.GetMonth(), kTime.GetDay(), kTime.GetHour(), kTime.GetMinute(),

@@ -12,6 +12,7 @@
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/client/ms2/fielddatacli.h"
 #include "ms2/ms2recover.h"
+#include "ms2/placeholder/mstime.h"
 #include "ms2/ms2layout.h"
 #include "hook/ms2hook.h"
 #include <cmath>
@@ -1091,7 +1092,7 @@ CStringW FUN_140f15bd0(const wchar_t* pszFormat, const int& nYear, const int& nM
                        const int& nMinute, const int& nSecond);
 
 // @0x141b70f90
-void FUN_141b70f90(const CTime& kTime, const CStringW& kFormat, CStringW& kOut)
+void FUN_141b70f90(const CMsTime& kTime, const CStringW& kFormat, CStringW& kOut)
 {
     int nSecond = kTime.GetSecond();
     int nMinute = kTime.GetMinute();
