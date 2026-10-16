@@ -2,7 +2,7 @@
 // MS2-UNIT: commonfiles\commonstringtable.cpp
 // MS2-RANGE: 0x140223c60-0x140266860 .text$mn
 // MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x14025d8e0
-// MS2-PIN: ?_Allocate@_Default_allocate_traits@std@@SAPEAX_K@Z 0x14025c810
+// MS2-PIN: ??1?$map@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@@std@@QEAA@XZ 0x14025c810
 // MS2-PIN: ?__empty_global_delete@@YAXPEAX@Z 0x1402272b0
 // MS2-PIN: ?__empty_global_delete@@YAXPEAX_K@Z 0x140266770
 // MS2-PIN: ?_Adopt@_Iterator_base0@std@@QEAAXPEBX@Z 0x140266670

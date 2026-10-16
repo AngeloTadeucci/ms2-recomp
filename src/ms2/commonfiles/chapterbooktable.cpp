@@ -24,7 +24,6 @@
 // MS2-PIN: ??0ItemAble@@QEAA@AEBU0@@Z 0x1401dbe40 ; unique
 // MS2-PIN: ??0ItemEntity@@QEAA@AEBU0@@Z 0x1401dbe60 ; unique
 // MS2-PIN: ??1?$CSimpleArray@GV?$CSimpleArrayEqualHelper@G@ATL@@@ATL@@QEAA@XZ 0x1401dbf40 ; unique
-// MS2-PIN: ?_Allocate@_Default_allocate_traits@std@@SAPEAX_K@Z 0x1401dc170 ; unique
 // MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHU?$pair@HH@std@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1401dc480 ; prop
 // MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@HU?$pair@HH@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHU?$pair@HH@std@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x1401de120 ; unique
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHU?$pair@HH@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHU?$pair@HH@std@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@H@2@XZ 0x1401de8f0 ; order
@@ -32,6 +31,7 @@
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HU?$pair@HH@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHU?$pair@HH@std@@@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x1401de9d0 ; order
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HU?$pair@HH@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHU?$pair@HH@std@@@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x1401de9f0 ; order
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1ItemEntity@@UEAA@XZ 0x1401dc170
 // MS2-PIN: ??$StringFormat@_K@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_K@Z 0x1401d9af0 ; hand
 // MS2-PIN: ??$?0AEAHAEAH$0A@@?$pair@HH@std@@QEAA@AEAH0@Z 0x1401d9970 ; hand
 // MS2-PIN: ??$forward@AEAH@std@@YAAEAHAEAH@Z 0x1401db5b0 ; hand

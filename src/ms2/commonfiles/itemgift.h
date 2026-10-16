@@ -19,7 +19,7 @@ struct ItemEntity : CPtred, ItemAble {
     ItemEntity& operator=(const ItemEntity&) = default;
     ItemEntity(unsigned id,int rank,unsigned count,bool b28,bool b2a,bool b29,bool b2b);   // 0x14026abf0 (rx2a)
     ItemEntity(ItemAble& source);                                                             // 0x14026acb0 (rx2a)
-    virtual ~ItemEntity();
+    virtual ~ItemEntity() = default;   // 0x1401dc170 (exe body: only call CPtred::~CPtred)
     virtual void vfunc_1(CStringW);
     virtual void vfunc_2(void*);
     virtual unsigned int vfunc_o18_0();
