@@ -74,6 +74,10 @@
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IV?$Unk_PayloadPtr@VCGuildNpcShop@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@@3@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x1405020c0 ; prop
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@U?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@U?$pair@HH@std@@@2@XZ 0x1405020e0 ; prop
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@U?$pair@IH@std@@UItemEntity@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@U?$pair@IH@std@@@2@XZ 0x140502120 ; prop
+// MS2-PIN: ?_Calculate_growth@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@AEBA_K_K@Z 0x1404fbf00 ; unique: single byte-identical candidate
+// MS2-PIN: ?_Change_array@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@AEAAXQEAU?$pair@HH@2@_K1@Z 0x1404fc0b0 ; unique: single byte-identical candidate
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@std@@@2@XZ 0x140501140 ; prop: symbol ?_Get_second@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair...
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x140502080 ; prop: caller ?_Compare@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@UGuildRaid@CG...
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\guilddef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -170,6 +174,8 @@ void Unk_GuildDriveArray7(GradeArray& a,HistArray& b,MemberArray& c){
 }
 void Unk_GuildDriveVectors7(std::vector<int>& a,SkillVec& b,ProductVec& c,MapProperty& d){
     (void)a[0]; (void)b[0]; (void)c[0];
+    b.push_back(b[0]); c.push_back(c[0]); b.reserve(4); c.reserve(4); b.resize(2); c.resize(2);
+    b.shrink_to_fit(); c.shrink_to_fit(); b.clear(); c.clear();
     MapProperty::reverse_iterator r=d.rbegin(); (void)r->first; r++;
 }
 template<class M,class K,class V> void Unk_DriveRBMap7(M& m,const K& key,const V& value){
@@ -191,3 +197,8 @@ void Unk_GuildDriveRB7(MemberRBMap& m,AtlLocalMap& l){
 }
 
 
+// vector<pair<int,int>> (8 byte elements; guilddef's emplace_reallocate calls this unit's _Change_array/_Calculate_growth).
+void Unk_GuildDrivePairVec7(std::vector<std::pair<int,int>>& a){
+    a.push_back(a[0]); a.reserve(4); a.resize(2); a.shrink_to_fit(); a.clear();
+    std::vector<std::pair<int,int>> b(a); b = a; b.swap(a); b.assign(a.begin(), a.end());
+}
