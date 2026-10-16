@@ -1509,6 +1509,119 @@ CItemStatus::CItemStatus(CItemOption* pOption, CItemEnchantInfo* pEnchant, Unlim
 {
 }
 
+// @0x140632240
+CItemCustomMusicScore::~CItemCustomMusicScore()
+{
+}
+
+// @0x1406322c0
+MS2Ptr<CItemCustomMusicScore> CItemCustomMusicScore::FUN_1406322c0()
+{
+    MS2Ptr<CItemCustomMusicScore> spNew(new CItemCustomMusicScore());
+    spNew->m_n18 = m_n18;
+    spNew->m_n1c = m_n1c;
+    spNew->m_str28 = m_str28;
+    spNew->m_str20 = m_str20;
+    spNew->m_str30 = m_str30;
+    spNew->m_n38 = m_n38;
+    spNew->m_n40 = m_n40;
+    spNew->m_n48 = m_n48;
+    spNew->m_note.m_n00 = m_note.m_n00;
+    spNew->m_note.m_n08 = m_note.m_n08;
+    spNew->m_note.m_n10 = m_note.m_n10;
+    spNew->m_note.m_str18 = m_note.m_str18;
+    return spNew;
+}
+MS2_REPLACE_METHOD(0x1406322C0, CItemCustomMusicScore, FUN_1406322c0, 556, 0x32D48641);
+
+// @0x140632500
+void CItemCustomMusicScore::FUN_140632500(COutputStream& out)
+{
+    out.vfunc_o10_3(m_n18);
+    out.vfunc_o10_3(m_n1c);
+    out.vfunc_o10_8(m_str28);
+    out.vfunc_o10_8(m_str20);
+    out.vfunc_o10_3(m_note.m_n00);
+    out.vfunc_o10_4(m_note.m_n08);
+    out.vfunc_o10_1(m_n38);
+    out.vfunc_o10_4(m_n40);
+    out.vfunc_o10_4(m_n48);
+}
+MS2_REPLACE_METHOD(0x140632500, CItemCustomMusicScore, FUN_140632500, 267, 0x7A2583B5);
+
+// @0x140632620
+void CItemCustomMusicScore::FUN_140632620(CInputStream& in)
+{
+    m_n18 = in.vfunc_o8_3();
+    m_n1c = in.vfunc_o8_3();
+    m_str28 = in.vfunc_o8_8();
+    m_str20 = in.vfunc_o8_8();
+    m_note.m_n00 = in.vfunc_o8_3();
+    m_note.m_n08 = in.vfunc_o8_4();
+    m_n38 = in.vfunc_o8_1();
+    m_n40 = in.vfunc_o8_4();
+    m_n48 = in.vfunc_o8_4();
+}
+MS2_REPLACE_METHOD(0x140632620, CItemCustomMusicScore, FUN_140632620, 344, 0x07AB5DCE);
+
+// @0x140632780
+bool CItemCustomMusicScore::FUN_140632780()
+{
+    if (m_str20.IsEmpty())
+        return true;
+    return false;
+}
+MS2_REPLACE_METHOD(0x140632780, CItemCustomMusicScore, FUN_140632780, 45, 0x11A618AD);
+
+// A market listing's music score (uimeratmarketcommon.cpp passes the record at +0x3a0 of its listing).
+struct Unk_MusicScoreInfo
+{
+    char m_pad00[0x20];
+    int m_n20;                                                      // +0x20
+    int m_n24;
+    CStringW m_str28;                                               // +0x28
+    CStringW m_str30;                                               // +0x30
+    CString m_str38;                                                // +0x38
+    Unk_MusicNoteBlock m_note;                                      // +0x40
+};
+MS2_CHECK_OFFSET(Unk_MusicScoreInfo, m_note, 0x40);
+
+// @0x1406327c0
+void CItemCustomMusicScore::FUN_1406327c0(const Unk_MusicScoreInfo& info)
+{
+    FUN_1406328c0();
+    m_n18 = info.m_n20;
+    m_n1c = info.m_n24;
+    m_str28 = info.m_str30;
+    m_str20 = info.m_str28;
+    m_str30 = info.m_str38;
+    const Unk_MusicNoteBlock& kNote = info.m_note;
+    m_note.m_n00 = kNote.m_n00;
+    m_note.m_n08 = kNote.m_n08;
+    m_note.m_n10 = kNote.m_n10;
+    m_note.m_str18 = kNote.m_str18;
+    m_n38 = 1;
+}
+MS2_REPLACE_METHOD(0x1406327C0, CItemCustomMusicScore, FUN_1406327c0, 246, 0x61EED0DA);
+
+// @0x1406328c0
+void CItemCustomMusicScore::FUN_1406328c0()
+{
+    m_n18 = 0;
+    m_n1c = 0;
+    m_b70 = 0;
+    m_b70b = 0;
+    m_n70c = 0;
+    m_str20.Empty();
+    m_str28.Empty();
+    m_str30.Empty();
+    m_n38 = 0;
+    m_n48 = 0;
+    m_n40 = 0;
+    m_note.FUN_14052d040();
+}
+MS2_REPLACE_METHOD(0x1406328C0, CItemCustomMusicScore, FUN_1406328c0, 204, 0x4570B3DE);
+
 // @0x140633280
 // MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
 CItemStatus::~CItemStatus()

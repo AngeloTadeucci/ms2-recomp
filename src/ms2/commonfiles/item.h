@@ -171,12 +171,19 @@ public:
     CStringW m_str20;                       // +0x20
     CStringW m_str28;                       // +0x28
     CString m_str30;                        // +0x30
-    int m_n38;                              // +0x38
-    char m_pad3c[0x14];
+    int m_n38;                              // +0x38 (streamed as a byte)
+    int m_pad3c;
+    __int64 m_n40;                          // +0x40
+    __int64 m_n48;                          // +0x48
     Unk_MusicNoteBlock m_note;              // +0x50
-    char m_pad70[8];
+    unsigned m_b70 : 1;                     // +0x70 (cleared by FUN_1406328c0)
+    unsigned m_b70b : 1;
+    unsigned m_n70c : 30;
+    int m_pad74;
+    void FUN_1406327c0(const struct Unk_MusicScoreInfo& info);   // copy from a market listing's score (itemsocketsystemutil.cpp)
 };
 MS2_CHECK_SIZE(CItemCustomMusicScore, 0x78);
+MS2_CHECK_OFFSET(CItemCustomMusicScore, m_n48, 0x48);
 
 // CItemBreakIngredientTable (RTTI name), 0xd8 bytes: what breaking an item (itemBreakIngredient.xml) or a gacha box
 // yields. Member and method names are invented. TSingleton at +0 (DAT_143aaf1e0); vftable holds the deleting
