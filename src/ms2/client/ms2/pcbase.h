@@ -22,6 +22,7 @@
 #include "ms2/client/ms2/gameobject.h"
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/timer.h"     // Timer (0x38)
+#include "ms2/placeholder/pushcontrol.h"   // CPushControl (0x48)
 #include <efd/utf8string.h>
 #include <efd/Point2.h>
 
@@ -39,7 +40,7 @@ class Unk_PCBaseComp_ab8;   // slot 86, +0xab8 [0x14108af80]
 class Unk_PCBaseComp_ac8;   // slot 87, +0xac8 [0x140ba97e0]
 class Unk_PCBaseComp_b18;   // slots 103/104, +0xb18 [0x141532140 / member init 0x141532470]
 class CStateManager;        // +0x140 actor state machine (0x98 bytes, ctor(actor) 0x1417da7a0, AddState 0x1417daeb0)
-class Unk_PCBaseEquipPart;  // element of the npc row's part list (+0x588), applied by FUN_141674ef0
+class CEffectDummy;         // effectdummy.h: element of the npc row's part list (+0x588), applied by FUN_141674ef0
 class Unk_PCBaseBuffs;      // FUN_1416749a0 (ridee.cpp)
 class State;                // state.h
 class StateData;            // state.h (the request record handed to CStateManager::FUN_1417dafa0)
@@ -49,6 +50,9 @@ class PCBase;
 class Unk_PCBaseEntity;      // an egf entity seen through its property getters, pcbase.cpp
 class Unk_PCBaseFxSet;       // vfunc_71/73 argument (MS2Ptr by value; effect names at +0x40), pcbase.cpp
 class CBoxCollision;         // functioncubeobject.h
+class CDotDamageRecord;      // ?\skillrecord.cpp (view in pcbase.cpp)
+class CDamageRecord;         // ?\skillrecord.cpp (view in pcbase.cpp)
+class CSplashDamageRecord;   // ?\skillrecord.cpp (view in pcbase.cpp)
 class Unk_PCBaseFxLib;       // vfunc_70 result: the effect-source library (FUN_1411bde10 by id), pcbase.cpp
 class Unk_PCBaseFxSource;    // +0xd10, hands out Unk_PCBaseFxSet by key (slot 2), pcbase.cpp
 class Unk_PCBaseEmoPlayer;   // +0x638 (FUN_141848650 stop, FUN_141848740 busy at a time), pcbase.cpp
@@ -62,6 +66,7 @@ class Unk_PCBaseColorBoostMgr
 {
 public:
     void FUN_14109be00(const CColorBoostData& kData);
+    void FUN_14109be30(const egf::EntityID& kId);          // per-frame update
 private:
     void* m_unk[9];
 };
@@ -74,6 +79,7 @@ public:
     Unk_PCBaseBuffList(PCBase* pOwner);                     // 0x14096ef20
     ~Unk_PCBaseBuffList();
     void FUN_140970490();                                   // clear
+    void FUN_140970420(double dTime);                       // per-frame update
     float FUN_1409705d0();                                  // scale
     int FUN_1409701d0(int nKind);
     int FUN_140970eb0(float& fOut);                         // a buff fixes the height
@@ -224,7 +230,7 @@ public:
     // non-virtual helpers called by derived units
     bool FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
     void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
-    void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
+    bool FUN_141674ef0(const CEffectDummy& kDummy);         // 0x141674ef0 attach an effect node per the dummy
     MS2Ptr<CStateManager> FUN_141678750();                  // 0x141678750 copy of m_spStateMgr (w17)
     void FUN_141676310(int n);                              // 0x141676310 empty
     bool FUN_141679220(const char* szName);                 // 0x141679220 FUN_141679270 found a sequence
@@ -242,6 +248,12 @@ public:
     bool FUN_14166f790(void* pKey, CString& strOut, int n);   // 0x14166f790 effect name of a key
     void FUN_14166f940();                                   // 0x14166f940 emotion timer expired: back to default                                    // 0x14166f6d0
     CString FUN_14166f740();                                // 0x14166f740 (returns a string)
+    void FUN_141671c20(MS2Ptr<CDamageRecord> spRecord);     // 0x141671c20 show a hit (damage numbers or the miss effect)
+    void FUN_141672020(MS2Ptr<CDotDamageRecord> spRecord);
+    void FUN_1416721d0(MS2Ptr<CSplashDamageRecord> spRecord);   // 0x1416721d0 show a splash hit   // 0x141672020 show a DoT tick
+    int FUN_1416725c0(NiPoint3& kDir, float fDist, float fHeight, float fUp);   // 0x1416725c0 can step fDist along kDir (motioncontroller)
+    static int FUN_141677f40(PCBase* pActor);                // 0x141677f40 local rider: request getting off (states)
+    void FUN_1416788d0();                                   // 0x1416788d0 cast skill 20000011 (or the "not now" notice)
     void FUN_14166f380();                                   // 0x14166f380 reload the effect source (vfunc_70 library, vfunc_69 id)
     // uipvpguildteamdialog.cpp (w71)
     __int64 FUN_141670a00(int nStat);                       // 0x141670a00 current value of a stat (4 = hp)
@@ -442,7 +454,7 @@ public:
     MS2Ptr<CBoxCollision> m_sp628;      // +0x628 collision box (FUN_141670fd0)
     MS2Ptr<Unk_PCBaseEmoPlayer> m_sp638; // +0x638 (init 0x14167e030)
     Unk_PCBaseColorBoostMgr m_colorBoost;   // +0x648 CColorBoostManager (0x48)
-    void* m_pushControl[9];             // +0x690 CPushControl (0x48)
+    CPushControl m_pushControl;         // +0x690 (0x48)
     void* m_unk_6d8[14];                // +0x6d8 (init 0x141682e90)
     Unk_PCBaseBuffList m_unk_748;       // +0x748 buffs
     CAtlList<MS2Ptr<Unk_PCBaseComp_b18> > m_unk_8e8;   // +0x8e8 (init 0x14167de50(p,10)); head probed by vfunc_103

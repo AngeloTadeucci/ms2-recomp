@@ -889,7 +889,7 @@ int CConstructionGuideObject::vfunc_11()
     kDummy.SetName(CString("Lift Node"));
     kDummy.SetParentNode(CString("Scene Root"));
     kDummy.SetTranslate(Unk_DummyVec3(0.0f, 0.0f, -100.0f));
-    FUN_141674ef0(reinterpret_cast<const Unk_PCBaseEquipPart&>(kDummy));
+    FUN_141674ef0(kDummy);
     NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
     if (pRoot != 0)
     {

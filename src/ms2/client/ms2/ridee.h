@@ -44,7 +44,7 @@ class Unk_RideePartList
 {
 public:
     size_t FUN_14078cd60();                                 // count
-    const Unk_PCBaseEquipPart& FUN_140789540(size_t i);     // GetAt
+    const CEffectDummy& FUN_140789540(size_t i);            // GetAt
     char m_pad[0x18];
 };
 
@@ -68,7 +68,8 @@ public:
     float m_f7c;                                            // +0x7c run speed
     float m_f80;                                            // +0x80 walk speed
     float m_f84;                                            // +0x84
-    char m_pad_88[8];
+    int m_n88;                                              // +0x88 nonzero: the rider cannot get off by input
+    char m_pad_8c[4];
     CString m_str90;                                        // +0x90 (vfunc_123 0x1e)
     CString m_str98;                                        // +0x98 (vfunc_123 0x1f)
     __int64 m_nA0;                                          // +0xa0 stamina needed to run (0: none)

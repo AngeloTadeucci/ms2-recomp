@@ -60,6 +60,9 @@
 #include "ms2/client/ms2/functioncubeobject.h"        // CBoxCollision
 #include "ms2/client/ms2/afterimageeffectparam.h"    // Unk_AfterImageColor
 #include "ms2/commonfiles/rideonaction.h"
+#include "ms2/client/ms2/mypc.h"
+#include "ms2/client/ms2/effectdummy.h"
+#include "ms2/client/ms2/effectservice.h"           // EffectNode
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -311,6 +314,8 @@ class Unk_PCBasePhysX
 {
 public:
     int FUN_14168a310(const NiPoint3& kFrom, efd::Point3* pHit, Unk_PCBaseRayHit* pInfo, float fMaxDist, NiPoint3* pNormal, int nB);
+    int FUN_14168a230(NiPoint3 kFrom, efd::Point3& kHit, NiPoint3 kDir, float fLen, int nMask);   // ray cast
+    int FUN_14168a450(efd::Point3& kPos, float* pfHeight, float fRange);                                // ground probe
 };
 Unk_PCBasePhysX* FUN_1409f7ca0();
 float FUN_14028d380(float fValue);                                  // percent (x100)
@@ -420,6 +425,56 @@ public:
 };
 Unk_PCBaseFxMgr* FUN_1403ed280();
 
+// The hit record (?\skillrecord.cpp, ctor 0x14175a4e0); only the members used here.
+class Unk_PCBaseSkillFlag { public: int FUN_1407e0f40(); };
+class Unk_PCBaseSkillLevel                                          // skill level row (FUN_140803f60)
+{
+public:
+    char m_pad_00[0x168];
+    Unk_PCBaseSkillFlag m_168;                                      // +0x168 nonzero: shows damage numbers
+};
+class Unk_PCBaseSkillData { public: int FUN_1407e9a60(); };         // the skill's kind (0x12: shows the miss effect)
+class CDamageRecord : public CPtred
+{
+public:
+    Unk_PCBaseSkillData* FUN_14175a820();
+    Unk_PCBaseSkillLevel* FUN_14175a8b0();
+    char m_pad_18[0x2c - 0x18];
+    int m_n2c;                                                      // +0x2c the attacker's object id
+    char m_pad_30[0x78 - 0x30];
+    efd::Point3 m_kPos;                                             // +0x78
+    char m_pad_84[0x90 - 0x84];
+    CAtlArray<int> m_arrTypes;                                      // +0x90 per hit: damage kind (2 = miss)
+    CAtlArray<__int64> m_arrDamage;                                 // +0xb0 per hit: amount
+};
+MS2_CHECK_OFFSET(CDamageRecord, m_arrDamage, 0xb0);
+MS2_CHECK_SIZE(CDamageRecord, 0xd0);
+// The DoT / splash damage records (scenestategame.cpp holds other views of them); only the members used here.
+class CDotDamageRecord : public CDamageRecord
+{
+public:
+    virtual ~CDotDamageRecord();                                    // 0x14175b590
+    void* FUN_14175ac30();                                          // the tick's damage
+    int FUN_14175b130();                                            // the tick's damage kind
+    char m_pad_d0[0xe0 - 0xd0];
+};
+MS2_CHECK_SIZE(CDotDamageRecord, 0xe0);
+class CSplashDamageRecord : public CDamageRecord
+{
+public:
+    virtual ~CSplashDamageRecord();                                 // 0x14175b5f0
+    char m_pad_d0[0xd8 - 0xd0];
+};
+MS2_CHECK_SIZE(CSplashDamageRecord, 0xd8);
+class Unk_PCBaseConstStr { public: CString& FUN_140298f80(); };
+class Unk_PCBaseConstants
+{
+public:
+    char m_pad_00[0x8350];
+    Unk_PCBaseConstStr m_8350;                                      // +0x8350 the miss effect name
+};
+Unk_PCBaseConstants* FUN_1401d3200();
+
 class Unk_PCBaseWorld
 {
 public:
@@ -428,8 +483,56 @@ public:
     PCBase* FUN_141bd0cc0();                                        // the local player
     class Unk_PCBaseWorldObj* FUN_141bd1200(int nId);
     MS2Ptr<CFieldDataCli> FUN_141bd30a0();                          // the current field data
+    bool FUN_141bd7230(const NiPoint3& kPos);
+    int FUN_141bdb660(int n);
 };
 Unk_PCBaseWorld* FUN_1403ed2d0();
+// The skill request a CSkillRecord is built from (same view as avatarpc.cpp / uimessagebox.cpp).
+struct Unk_InventorySkillRequest
+{
+    Unk_InventorySkillRequest(int, unsigned short);                 // 0x141763fa0
+    int skill;
+    unsigned short level;
+    unsigned __int64 tick;
+    unsigned serial, unknown14;
+    efd::Point3 origin;                                             // +0x18
+    efd::Point3 direction;                                          // +0x24
+    float fValue;                                                   // +0x30 (the pc's speed scale)
+    unsigned unknown34;
+    bool remap, suppressDispatch, itemUse;
+    __int64 item;
+};
+MS2_CHECK_SIZE(Unk_InventorySkillRequest, 0x48);
+class CSkillRecord : public CPtred                                  // RTTI, 0x1c0 (?\skillrecord.cpp)
+{
+public:
+    CSkillRecord();                                                 // 0x141759260
+    bool FUN_1417595d0(Unk_InventorySkillRequest& kReq);
+    char m_pad_18[0x1c0 - 0x18];
+};
+MS2_CHECK_SIZE(CSkillRecord, 0x1c0);
+CStringW FUN_1409eec40(int nId);                                    // system string by id
+void FUN_1412751f0(const CStringW& strMsg, int a, int b);           // notice
+void FUN_141276180(const CString& strSound, const CString& strArg); // play a ui sound
+extern CString DAT_143ae32c8;                                       // the "denied" ui sound name
+
+class Unk_PCBaseLog
+{
+public:
+    void FUN_14054c030(int nLevel, int nLine, const wchar_t* szFormat, const CString& str0, const CString& str1);
+};
+Unk_PCBaseLog* FUN_140166440();
+class Unk_PCBaseClock;
+Unk_PCBaseClock* FUN_14086d260();                                   // the game clock
+double FUN_141473280(Unk_PCBaseClock* pClock);                      // seconds
+
+// The house privileges of the local player (MyPC +0x1628; commonfiles\homeprivilege.cpp); completes mypc.h's MS2Ptr.
+class CHomePrivilege : public CPtred
+{
+public:
+    MyPC* m_pOwner;                                                 // +0x18
+};
+Ridee* FUN_141468360(PCBase* pEntity);                              // the mount an actor rides (entity property 0x6200045)
 
 // The action container at +0xd00 (?\actioncontainer.cpp).
 class Unk_PCBaseActions : public CPtred
@@ -2881,6 +2984,25 @@ void PCBase::FUN_14166ef10(const CString& str, int nA, int nB, bool bC)
 }
 MS2_REPLACE_METHOD(0x14166EF10, PCBase, FUN_14166ef10, 1117, 0x56C2592F);
 
+// @0x141679450
+void PCBase::vfunc_53(float f)
+{
+    GameObject::vfunc_53(f);
+    FUN_14166f940();
+    m_spStateMgr->FUN_1417daaa0(f);
+    m_colorBoost.FUN_14109be30(FUN_14123c460());
+    bool bMoved = false;
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRidee)
+        bMoved = m_pushControl.vfunc_1(spRidee, f);
+    else
+        bMoved = m_pushControl.vfunc_1(this, f);
+    if (bMoved)
+        vfunc_110();
+    m_unk_748.FUN_140970420(f);
+}
+MS2_REPLACE_METHOD(0x141679450, PCBase, vfunc_53, 383, 0x2D2ECE5C);
+
 // @0x141679fa0
 // MS2-FUNCTIONAL: pointer locals get other frame slots (the exe copies the "FA_Skin" child into a second slot); same calls and stores.
 void PCBase::FUN_141679fa0()
@@ -2933,6 +3055,204 @@ void PCBase::FUN_141679fa0()
     }
 }
 MS2_REPLACE_METHOD(0x141679FA0, PCBase, FUN_141679fa0, 1479, 0xF07072FF);
+
+// @0x141671c20
+void PCBase::FUN_141671c20(MS2Ptr<CDamageRecord> spRecord)
+{
+    if (spRecord == 0)
+        return;
+    Unk_PCBaseSkillLevel* pLevel = spRecord->FUN_14175a8b0();
+    if (pLevel == 0)
+        return;
+    if (pLevel->m_168.FUN_1407e0f40() != 0) {
+        if (FUN_1403ed2d0()->FUN_141bd7230(vfunc_18()))
+            return;
+        unsigned int nCount = spRecord->m_arrDamage.GetCount();
+        if (nCount > 0) {
+            __int64 nTotal = 0;
+            for (unsigned int i = 0; i < nCount; i++) {
+                nTotal += spRecord->m_arrDamage[i];
+                efd::Point3 kPos = spRecord->m_kPos;
+                vfunc_111(reinterpret_cast<void*>(spRecord->m_arrDamage[i]), spRecord->m_arrTypes[i], spRecord->m_n2c, &kPos);
+            }
+            vfunc_112(reinterpret_cast<void*>(nTotal), spRecord->m_n2c);
+        }
+    }
+    else if (spRecord->FUN_14175a820()->FUN_1407e9a60() == 0x12) {
+        for (unsigned int i = 0; i < spRecord->m_arrDamage.GetCount(); i++) {
+            int nType = spRecord->m_arrTypes[i];
+            if (nType == 2) {
+                Unk_PCBaseFxQuery kQuery;
+                kQuery.m_strName = FUN_1401d3200()->m_8350.FUN_140298f80();
+                kQuery.m_nPlayer = 0;
+                kQuery.FUN_140a53190(FUN_14123c580());
+                FUN_1403ed280()->FUN_1411a4a00(&kQuery);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x141671c20, PCBase, FUN_141671c20, 1004, 0x393C4E4D);
+
+// @0x141672020
+void PCBase::FUN_141672020(MS2Ptr<CDotDamageRecord> spRecord)
+{
+    if (spRecord == 0)
+        return;
+    if (FUN_1403ed2d0()->FUN_141bd7230(vfunc_18()))
+        return;
+    efd::Point3 kZero = efd::Point3::ZERO;
+    vfunc_111(spRecord->FUN_14175ac30(), spRecord->FUN_14175b130(), spRecord->m_n2c, &kZero);
+    vfunc_112(spRecord->FUN_14175ac30(), spRecord->m_n2c);
+}
+MS2_REPLACE_METHOD(0x141672020, PCBase, FUN_141672020, 412, 0xA04BB489);
+
+// @0x1416721d0
+void PCBase::FUN_1416721d0(MS2Ptr<CSplashDamageRecord> spRecord)
+{
+    if (spRecord == 0)
+        return;
+    Unk_PCBaseSkillLevel* pLevel = spRecord->FUN_14175a8b0();
+    if (pLevel == 0)
+        return;
+    if (pLevel->m_168.FUN_1407e0f40() != 0) {
+        if (FUN_1403ed2d0()->FUN_141bd7230(vfunc_18()))
+            return;
+        __int64 nTotal = 0;
+        unsigned int nCount = spRecord->m_arrDamage.GetCount();
+        if (nCount > 0) {
+            for (unsigned int i = 0; i < nCount; i++) {
+                nTotal += spRecord->m_arrDamage[i];
+                efd::Point3 kZero = efd::Point3::ZERO;
+                vfunc_111(reinterpret_cast<void*>(spRecord->m_arrDamage[i]), spRecord->m_arrTypes[i], spRecord->m_n2c, &kZero);
+            }
+            vfunc_112(reinterpret_cast<void*>(nTotal), spRecord->m_n2c);
+        }
+    }
+    else if (spRecord->FUN_14175a820()->FUN_1407e9a60() == 0x12) {
+        for (unsigned int i = 0; i < spRecord->m_arrDamage.GetCount(); i++) {
+            int nType = spRecord->m_arrTypes[i];
+            if (nType == 2) {
+                Unk_PCBaseFxQuery kQuery;
+                kQuery.m_strName = FUN_1401d3200()->m_8350.FUN_140298f80();
+                kQuery.m_nPlayer = 0;
+                kQuery.FUN_140a53190(FUN_14123c580());
+                FUN_1403ed280()->FUN_1411a4a00(&kQuery);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1416721d0, PCBase, FUN_1416721d0, 997, 0x69395726);
+
+// @0x1416725c0
+int PCBase::FUN_1416725c0(NiPoint3& kDir, float fDist, float fHeight, float fUp)
+{
+    kDir.Unitize();
+    if (kDir == efd::Point3::ZERO)
+        return 0;
+    NiPoint3 kPos = vfunc_18();
+    kPos.z += fUp;
+    efd::Point3 kHit = efd::Point3::ZERO;
+    if (fDist < 0.0f) {
+        static_cast<efd::Point3&>(kDir) = kDir * -1.0f;
+        fDist = fDist * -1.0f;
+    }
+    NiPoint3 kFlat = kDir;
+    kFlat.z = 0.0f;
+    if (FUN_1409f7ca0()->FUN_14168a230(kPos, kHit, kDir, fDist, 0))
+        return 0;
+    if (FUN_1409f7ca0()->FUN_14168a230(kPos, kHit, kFlat, fDist, 0))
+        return 0;
+    static_cast<efd::Point3&>(kPos) = kPos + kDir * fDist + efd::Point3(0.0f, 0.0f, 10.0f);
+    float fGround = 0.0f;
+    if (FUN_1409f7ca0()->FUN_14168a450(kPos, &fGround, 10.0f + fHeight + 1.0f))
+        return 0;
+    kPos.x += 0.1f;
+    kPos.y += 0.05f;
+    if (FUN_1409f7ca0()->FUN_14168a450(kPos, &fGround, 10.0f + fHeight + 1.0f))
+        return 0;
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1416725c0, PCBase, FUN_1416725c0, 841, 0xACCFEB93);
+
+// @0x141677f40
+int PCBase::FUN_141677f40(PCBase* pActor)
+{
+    efd::SmartPointer<Ridee> spRidee = FUN_141468360(pActor);
+    if (spRidee) {
+        PCBase* pRider = spRidee->FUN_141706540();
+        PCBase* pLocal = FUN_1403ed2d0()->FUN_141bd0cc0();
+        MS2Ptr<Unk_RideeData> spData = spRidee->FUN_141707750();
+        if ((spData.get() ? true : false) && pLocal != 0 && pRider != 0) {
+            if (pLocal->FUN_14123c580() == pRider->FUN_14123c580() && spData->m_n88 == 0) {
+                if (spRidee->FUN_1417075e0() == 0) {
+                    MS2Ptr<RideOffAction> spAction(new RideOffAction(1));
+                    if (static_cast<MyPC*>(pLocal)->FUN_14152c280(spAction.get()) == 0)
+                        return 0;
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
+}
+MS2_REPLACE(0x141677f40, PCBase::FUN_141677f40, 523, 0x3E530166);
+
+// @0x1416788d0
+void PCBase::FUN_1416788d0()
+{
+    if (FUN_1403ed2d0()->FUN_141bdb660(1) != 0) {
+        if (m_timerC70.FUN_140868c00()) {
+            FUN_1412751f0(FUN_1409eec40(0x5f), 1, 1);
+            {
+                CString strArg("");
+                FUN_141276180(DAT_143ae32c8, strArg);
+            }
+            m_timerC70.FUN_140868750(1000);
+        }
+    }
+    else {
+        Unk_InventorySkillRequest kReq(0x1312d0b, 1);
+        kReq.origin = vfunc_18();
+        kReq.fValue = FUN_14166da40();
+        MS2Ptr<CSkillRecord> spSkill(new CSkillRecord);
+        if (spSkill->FUN_1417595d0(kReq))
+            vfunc_102(spSkill);
+    }
+}
+MS2_REPLACE_METHOD(0x1416788d0, PCBase, FUN_1416788d0, 504, 0xE79706B1);
+
+// @0x141674ef0
+bool PCBase::FUN_141674ef0(const CEffectDummy& kDummy)
+{
+    NiNode* pRoot = NiDynamicCast(NiNode, FUN_141b6efc0(FUN_14123c410()));
+    if (pRoot == 0)
+        return false;
+    NiNode* pParent;
+    {
+        NiFixedString kParentName((const char*)kDummy.GetParentNode());
+        pParent = NiDynamicCast(NiNode, pRoot->GetObjectByName(kParentName));
+    }
+    if (pParent == 0) {
+        FUN_140166440()->FUN_14054c030(1, 0x13, L"EffectDummy의 부모를 찾을 수 없습니다.effectDummy[{0}] - [{1}]",
+                                       kDummy.GetName(), kDummy.GetParentNode());
+        return false;
+    }
+    EffectNode* pNode;
+    {
+        NiFixedString kName((const char*)kDummy.GetName());
+        pNode = static_cast<EffectNode*>(NiObject::DynamicCast(&DAT_143ad1588, pParent->GetObjectByName(kName)));
+    }
+    if (pNode == 0) {
+        pNode = NiNew EffectNode(kDummy);
+        pParent->AttachChild(pNode, true);
+    }
+    else
+        pNode->FUN_1411a3cb0(kDummy);
+    pNode->FUN_1411a3fd0(pRoot);
+    pNode->Update((float)FUN_141473280(FUN_14086d260()), true);
+    return true;
+}
+MS2_REPLACE_METHOD(0x141674ef0, PCBase, FUN_141674ef0, 597, 0x968AEBEC);
 
 // @0x14166f380
 void PCBase::FUN_14166f380()

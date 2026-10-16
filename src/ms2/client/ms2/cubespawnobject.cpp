@@ -31,7 +31,7 @@ class Unk_NpcPartList
 {
 public:
     size_t FUN_14078cd60();                                         // count
-    const Unk_PCBaseEquipPart& FUN_140789540(size_t i);             // GetAt
+    const CEffectDummy& FUN_140789540(size_t i);                    // GetAt
 };
 
 // Npc table row (NpcData xml). Only the members this unit reads.
