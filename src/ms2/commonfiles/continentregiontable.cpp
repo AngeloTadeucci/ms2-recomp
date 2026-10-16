@@ -21,7 +21,9 @@ CString FUN_14016a5c0(const char* psz, int n);
 void* FUN_140166440();
 void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CContinentRegionTable::s_bInit;
+#endif
 
 // @0x1402c5180
 CContinentRegionTable::CContinentRegionTable() : m_map(17, 0.75f, 0.25f, 2.25f, 10)

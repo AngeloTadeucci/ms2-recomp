@@ -6121,7 +6121,10 @@ void WorldService::FUN_141bd0cf0(void* pPlayer)
 {
     m_2d8 = static_cast<efd::ISystemService*>(pPlayer);
 }
+// Not hooked: m_2d8 is an efd::SmartPointer<ISystemService> stand-in; the exe assigns through its own pointer type (0x141bf6b40), so the compiled release of the old value AVed (null+8) at field entry.
+#if 0
 MS2_REPLACE_METHOD(0x141BD0CF0, WorldService, FUN_141bd0cf0, 43, 0x21E9EE06);
+#endif
 
 // @0x141bd0d30
 CStringW WorldService::FUN_141bd0d30()

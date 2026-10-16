@@ -24,7 +24,9 @@ class Unk_140166420 { public: int FUN_1403974b0(TiXmlDocument* doc, const char* 
 Unk_140166420* FUN_140166420();
 CString FUN_14016a5c0(const char* psz, int n);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CServerListTable::s_bInit;
+#endif
 
 // @0x1417516d0
 CServerListTable::CServerListTable() : m_map(17, 0.75f, 0.25f, 2.25f, 10)

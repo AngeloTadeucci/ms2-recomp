@@ -72,7 +72,9 @@ private:
 };
 MS2_CHECK_SIZE(Unk_1401b4ec0, 8);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CBankTable::s_bInit;
+#endif
 
 // Sort names of the bank list (header static of this unit).
 #ifndef MS2_HOOK_DLL

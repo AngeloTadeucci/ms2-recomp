@@ -18,7 +18,9 @@ CString FUN_14016a5c0(const char* psz, int n);
 void* FUN_140166440();
 void FUN_1403a1280(void*, int, int, const char*, const char**);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CommonEffectDummy::s_bInit;
+#endif
 
 // @0x140a40060
 CommonEffectDummy::CommonEffectDummy()

@@ -640,7 +640,9 @@ inline bool Unk_ArrayEqual(const ATL::CAtlArray<CStringW>& a, const ATL::CAtlArr
 // ---------------------------------------------------------------------------------------------------------------
 // The table statics (init order = definition order).
 // ---------------------------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CAchieveData::s_bInit;                                             // 0x143aab3a0
+#endif
 static ATL::CAtlMap<unsigned, MS2Ptr<CAchieveData> > s_mapData;         // 0x143aab3e0 (achievement id -> data)
 static ATL::CAtlList<MS2Ptr<CAchieveData> > s_listData;                 // 0x143aab428 (load order)
 static CLockCriticalSection s_lock;                                     // 0x143aab478

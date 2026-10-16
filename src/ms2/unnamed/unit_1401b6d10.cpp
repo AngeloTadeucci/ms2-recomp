@@ -79,7 +79,9 @@ typedef ATL::CRBMap<int, Unk_BannerPtr> Unk_BannerMap;
 typedef Unk_SocketPtr<Unk_BannerList> Unk_BannerListPtr;
 typedef ATL::CRBMap<int, Unk_BannerListPtr> Unk_FieldMap;
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CFieldBannerData::s_bInit;
+#endif
 static Unk_BannerMap s_banners(10);
 static Unk_FieldMap s_fields(10);
 static CLockCriticalSection s_lock;

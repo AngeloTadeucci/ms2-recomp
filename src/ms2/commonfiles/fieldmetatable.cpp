@@ -97,8 +97,12 @@ Unk_140166410* FUN_140166410();
 // field id -> <feature> name of every <fieldData> (filled once by BuildNameTable).
 static ATL::CAtlMap<int, CStringW> s_names;
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CFieldFeatureChecker::s_bInit;
+#endif
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CFieldMetaTable::s_bInit;
+#endif
 
 // @0x1406f96f0
 CFieldFeatureChecker::CFieldFeatureChecker()

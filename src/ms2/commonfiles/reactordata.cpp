@@ -68,7 +68,9 @@ void FUN_14034f0c0(ATL::CAtlArray<ItemEntity>&, const ItemEntity&);      // CAtl
 size_t FUN_1401662c0(ATL::CAtlArray<CStringA>&);                         // GetCount
 CStringA& FUN_140164930(ATL::CAtlArray<CStringA>&, size_t nIndex);       // operator[]
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool CReactorDataTable::s_bInit;
+#endif
 
 // @0x14076a1e0
 ReactorStateData::ConditionPtr FUN_14076a1e0(Unk_140165cf0* pNode)

@@ -100,7 +100,9 @@ void* FUN_1409a8b10();
 int* FUN_1409a8ac0(void*);
 unsigned char FUN_1401d1320(CCacheData*);
 
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 bool EffectSkipMgr::s_bInit;
+#endif
 
 // @0x1411b8510
 Unk_SkipRow::Unk_SkipRow()

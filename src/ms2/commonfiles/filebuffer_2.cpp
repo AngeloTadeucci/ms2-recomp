@@ -34,7 +34,9 @@ std::map<int, MS2Ptr<CTextLogFile> > CFileLogger::ms_files;
 std::set<CStringW> CFileLogger::ms_paths;
 CRITICAL_SECTION CFileLogger::ms_cs;
 int CFileLogger::ms_nLastId;
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv); a local copy stays false -> "is not initialized" box
 int CFileLogger::ms_bInit;
+#endif
 
 static CString s_sortNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 
