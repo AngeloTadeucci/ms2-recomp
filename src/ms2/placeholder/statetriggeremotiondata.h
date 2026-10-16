@@ -6,9 +6,9 @@
 
 #include <atlstr.h>
 #include <atlcoll.h>
-#include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/state.h"
 
-class StateTriggerEmotionData : public CPtred
+class StateTriggerEmotionData : public StateData
 {
 public:
     StateTriggerEmotionData();              // 0x1417c4370
@@ -18,7 +18,8 @@ public:
     int m_nMode;                            // +0x38 0 = from a list, 1 = single
     int m_nFlag;                            // +0x3c
     int m_nValue;                           // +0x40
-    int m_pad_44;
+    bool m_bLoop;                           // +0x44 play the first animation looped
+    char m_pad_45[3];
 };
 MS2_CHECK_SIZE(StateTriggerEmotionData, 0x48);
 MS2_CHECK_OFFSET(StateTriggerEmotionData, m_aEmotions, 0x18);

@@ -27,6 +27,7 @@
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 
 class PCBase;
+class MyPC;
 class NiActorManager;
 class NiFixedString;
 class NiTextKeyMatch;
@@ -40,6 +41,7 @@ class Unk_StateArg29;     // MS2Ptr<T> by value in slots 29/30 (dtor 0x1401bfde0
 class StateData : public CPtred
 {
 public:
+    StateData();                                 // 0x1417c0ac0 (w38)
     virtual ~StateData();                        // 0x1417c0b00
     virtual void vfunc_1(Unk_StateDataArg* p);   // 1 0x1417c0b30 (called from State slot 26)
     virtual void vfunc_2(Unk_StateDataArg* p);   // 2 0x1417c0b50
@@ -100,6 +102,11 @@ public:
 
     int FUN_1417b7e40();                                    // return m_n10
     void FUN_1417b9310();                                   // remove every id in m_ids, then clear it (dtor, slots 4/5)
+    // w38 (stateemotionidle): non-virtual helpers, bodies unrecovered
+    MyPC* FUN_1417b84b0();                                  // owner as MyPC (a Ridee's rider), via the class-id casts
+    PCBase* FUN_1417b8370();                                // owner as PC (class id 0x6200003)
+    void FUN_1417b92a0();                                   // FUN_1417b9310 + register the state's ids with the manager
+    bool FUN_1417b9460();                                   // play the idle motion (owner slot 104/102)
 
     PCBase* m_pOwner;                  // +0x08
     int m_n10;                         // +0x10
