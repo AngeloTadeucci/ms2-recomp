@@ -159,7 +159,7 @@ void MeshInstancing::FUN_14147caa0() {
         egf::Entity* entity = it->second.entity;
         if (entity != NULL) {
             FUN_14098c6e0(entity, 0xa0b6b179, false);
-            if (!FUN_141bc7b20(FUN_1403ed2d0(), it->first)) renderer->AddRenderedEntity(entity, it->second.original);
+            if (!FUN_141bc7b20(FUN_1403ed2d0(), it->first)) renderer->RemoveRenderedEntity(entity, it->second.original);
         }
     }
 }
