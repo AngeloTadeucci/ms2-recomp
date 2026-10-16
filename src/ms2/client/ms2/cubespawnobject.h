@@ -20,6 +20,8 @@ struct Unk_EntRef
     Unk_EntRef& FUN_1408b6ec0(Unk_Entity* p);       // assign a raw entity pointer (same body as operator=(int))
     bool FUN_1408b70b0(Unk_Entity* p) const;        // operator==
     Unk_Entity* FUN_1408a9280() const;              // operator->
+    Unk_EntRef(Unk_Entity* p);                      // 0x1408b6680 (same body as the null ctor; ridee.cpp)
+    bool operator!=(Unk_Entity* p) const;           // 0x140965490 (ridee.cpp)
     void* m_p;
 };
 MS2_CHECK_SIZE(Unk_EntRef, 8);

@@ -22,6 +22,7 @@
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
 #include "ms2/placeholder/timer.h"     // Timer (0x38)
 #include <efd/utf8string.h>
+#include <efd/Point2.h>
 
 // Component types behind the MS2Ptr members/getters (names unknown; MS2Ptr null-ctor VA in brackets).
 class CSkillRecord;        // slots 100-102 (RTTI CSkillRecord, 0x1c0; ?\skillrecord.cpp)
@@ -36,6 +37,8 @@ class Unk_PCBaseComp_ac8;   // slot 87, +0xac8 [0x140ba97e0]
 class Unk_PCBaseComp_b18;   // slots 103/104, +0xb18 [0x141532140 / member init 0x141532470]
 class CStateManager;        // +0x140 actor state machine (0x98 bytes, ctor(actor) 0x1417da7a0, AddState 0x1417daeb0)
 class Unk_PCBaseEquipPart;  // element of the npc row's part list (+0x588), applied by FUN_141674ef0
+class Unk_PCBaseBuffs;      // FUN_1416749a0 (ridee.cpp)
+class State;                // state.h
 
 // 0xd40 bytes. vftable 0x142f4c6f0 (124 slots); CallbackObject vftable @+8 0x142f4cad8 (dtor thunk 0x14167f518,
 // overrides AnimActivated 0x14166bec0, TextKeyEvent 0x14166bf40, EndOfSequence 0x14166c550).
@@ -126,8 +129,8 @@ public:
     virtual void vfunc_101(MS2Ptr<CSkillRecord> skill, int n, void* q);  // 101 0x141672de0
     virtual bool vfunc_102(MS2Ptr<CSkillRecord> skill);                  // 102 0x141673890 (base: return true)
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_103();         // 103 0x1416738c0 (checks +0x8e8 list)
-    virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b);  // 104 0x1416739c0 (base: null)
-    virtual void vfunc_105(void* a, void* b, void* c, int d);      // 105 0x141673a10
+    virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b, bool c);  // 104 0x1416739c0 (base: null; 3 bools per Ridee)
+    virtual void vfunc_105(efd::Point3 kPos, void* b, void* c, int d);   // 105 0x141673a10 (kPos by value per Ridee)
     virtual void vfunc_106(void* p, double t, int n);       // 106 0x141674750
     virtual void vfunc_107(void* p, float f);               // 107 0x141674020
     virtual int vfunc_108();                                // 108 0x141674bf0
@@ -148,7 +151,7 @@ public:
     virtual void vfunc_120(void* p);                        // 120 0x141676b90
     virtual void vfunc_121(void* p);                        // 121 0x1416773f0
     virtual int vfunc_122(void* p);                         // 122 0x1416781c0
-    virtual void* vfunc_123(int n);                         // 123 0x1416790b0 (looks up in +0xd00)
+    virtual const char* vfunc_123(int n);                   // 123 0x1416790b0 (looks up in +0xd00; a string per Ridee)
 
     // non-virtual helpers called by derived units
     void FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
@@ -164,6 +167,26 @@ public:
     // uipvpguildteamdialog.cpp (w71)
     __int64 FUN_141670a00(int nStat);                       // 0x141670a00 current value of a stat (4 = hp)
     __int64 FUN_141670a30(int nStat);                       // 0x141670a30 max value of a stat
+    // ridee.cpp (w67)
+    ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> >& FUN_141708b10() { return m_unk_b88; }   // COMDAT 0x141708b10
+    int FUN_14166c930();                                    // 0x14166c930 current state id (0: none)
+    int FUN_14166cc80();                                    // 0x14166cc80 current sub state
+    State* FUN_14166ccb0();                                 // 0x14166ccb0 current state
+    float FUN_14166da40();                                  // 0x14166da40
+    void FUN_14166d820();                                   // 0x14166d820
+    void FUN_14166e0a0();                                   // 0x14166e0a0
+    void FUN_141670d50(efd::Point2 kSize);                  // 0x141670d50 (25, 105 for a Ridee)
+    void FUN_141670fd0(efd::Point3 kSize, efd::Point3 kOffset);   // 0x141670fd0 collision box
+    void FUN_141671960(float fSpeed);                       // 0x141671960
+    Unk_PCBaseBuffs* FUN_1416749a0();                       // 0x1416749a0
+    bool FUN_1416749c0();                                   // 0x1416749c0
+    int FUN_141676410();                                    // 0x141676410 riding id
+    MS2Ptr<Unk_PCBaseComp_b18> FUN_141676930();             // 0x141676930 ugc ridee item
+    void FUN_141676b50(int bRun);                           // 0x141676b50
+    int FUN_141676b70();                                    // 0x141676b70
+    void FUN_141678240(const egf::EntityID& kId, const NiPoint3& kPos);   // 0x141678240
+    void FUN_141678290(egf::EntityID kId, NiPoint3 kPos);   // 0x141678290
+    void FUN_141678360();                                   // 0x141678360
 
 public:
     MS2_LAYOUT_FRIEND;
@@ -229,7 +252,7 @@ public:
     MS2Ptr<Unk_PCBaseComp_ab8> m_spAB8; // +0xab8
     MS2Ptr<Unk_PCBaseComp_ac8> m_spAC8; // +0xac8 (init 0x14167e090)
     void* m_unk_ad8;                    // +0xad8 = 0
-    void* m_unk_ae0;                    // +0xae0 (init 0x1408995b0, then 0x140899bd0(p, 0x143ae3278))
+    egf::EntityID m_unk_ae0;            // +0xae0 (init 0x1408995b0, then 0x140899bd0(p, 0x143ae3278)); EntityID per Ridee
     NiPoint3 m_posAE8;                  // +0xae8 (= ZERO)
     int m_unk_af4;                      // +0xaf4 = 0x7fffffff
     int m_unk_af8;                      // +0xaf8
@@ -240,7 +263,7 @@ public:
     int m_unk_b70;                      // +0xb70
     void* m_unk_b78;                    // +0xb78
     int m_unk_b80;                      // +0xb80
-    void* m_unk_b88[6];                 // +0xb88 CAtlList-like (init 0x14167deb0(p,10))
+    ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> > m_unk_b88;   // +0xb88 (init 0x14167deb0(p,10)); node map per Ridee
     void* m_unk_bb8[6];                 // +0xbb8 CAtlList-like (init 0x14167deb0(p,10))
     void* m_unk_be8;                    // +0xbe8 (init 0x14097eba0(p,0))
     int m_unk_bf0;                      // +0xbf0
@@ -273,6 +296,8 @@ MS2_CHECK_OFFSET(PCBase, m_f164, 0x164);
 MS2_CHECK_OFFSET(PCBase, m_f178, 0x178);
 MS2_CHECK_OFFSET(PCBase, m_unk_1c0, 0x1c0);
 MS2_CHECK_OFFSET(PCBase, m_unk_620, 0x620);
+MS2_CHECK_OFFSET(PCBase, m_unk_ae0, 0xae0);
+MS2_CHECK_OFFSET(PCBase, m_unk_b88, 0xb88);
 MS2_CHECK_OFFSET(PCBase, m_colorBoost, 0x648);
 MS2_CHECK_OFFSET(PCBase, m_pushControl, 0x690);
 MS2_CHECK_OFFSET(PCBase, m_unk_748, 0x748);

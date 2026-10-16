@@ -47,7 +47,7 @@ public:
     int m_nA0;                          // +0xa0 (0x7fffffff = unset)
     float m_fA4;                        // +0xa4
     int m_nA8;                          // +0xa8 already-fired flag
-    char m_pad_ac[4];
+    int m_nAC;                          // +0xac server tick (Ridee::FUN_141706650)
 };
 MS2_CHECK_OFFSET(Unk_StateArg22, m_nState, 0x18);
 MS2_CHECK_OFFSET(Unk_StateArg22, m_pos20, 0x20);
