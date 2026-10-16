@@ -50,6 +50,9 @@
 // MS2-PIN: ??$Unk_SSGGetDialog@VUIUGCPVPControlDialog@@@@YAPEAVUIUGCPVPControlDialog@@H@Z 0x141743370 ; w118 manual (RTTI)
 // MS2-PIN: ??1Unk_SSGUserChat@@QEAA@XZ 0x1417469a0 ; w118 manual
 // MS2-PIN: ??4?$Unk_PayloadPtr@VNoticeCubeInfo@@@@QEAAAEAV0@PEAVNoticeCubeInfo@@@Z 0x141746eb0 ; w118 manual
+// MS2-PIN: ??$Unk_SSGGetDialog@VUIHomeResizeDialog@@@@YAPEAVUIHomeResizeDialog@@H@Z 0x141742be0 ; w120 manual (RTTI)
+// MS2-PIN: ??0?$Unk_BmPtr@VUserUGCMapInfo@@@@QEAA@AEBV0@@Z 0x1417459d0 ; w120 manual (call site)
+// MS2-PIN: ?get@?$Unk_PayloadPtr@VObjectWeaponInfo@@@@QEBAPEAVObjectWeaponInfo@@XZ 0x1417472b0 ; w120 manual (call site)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -101,6 +104,10 @@
 #include <efd/ServiceManager.h>
 #include <atlcoll.h>
 #include <map>
+#include <set>
+#include "ms2/commonfiles/ugcmappackageinfo.h"   // Unk_Int3
+#include "ms2/unnamed/unit_140fa9eb0.h"
+#include "uiugccubepalettedialog.h"
 
 // ---- singletons and callees (names inferred; unit-local stand-ins) -----------------------------------------------
 CNetworkService* FUN_140714f90();
@@ -239,9 +246,8 @@ void* FUN_14015a050();
 void FUN_140ceac00(void*);
 void* FUN_1409eed70();
 void FUN_140ad68a0(void*);
-void* FUN_14052d220();
-void FUN_1418894d0(void*);
-void FUN_141889150(void*);
+class Unk_SSGUgcMgr { public: void FUN_1418894d0(); void FUN_141889150(); void FUN_14188ff10(CInPacket& packet); };   // UGC manager
+Unk_SSGUgcMgr* FUN_14052d220();
 void* FUN_1409670d0();
 void FUN_14162b790(void*);
 void* FUN_1409a8b00();
@@ -425,9 +431,34 @@ public:
     unsigned char m_a, m_b, m_c;
 };
 MS2_CHECK_SIZE(Unk_SSGHouseRule, 3);
+class NoticeCubeInfo;
 class Unk_Service6100017 : public efd::ISystemService
 {
 public:
+    // 0x69 (UGC housing) results
+    void FUN_1410c4240(int nA, int nB, const CStringW& strName, __int64 nC, __int64 nCharId);
+    void FUN_1410d6590(int nError);                         // report a housing error code
+    void FUN_1410c44b0(int nA, int nB, int bFlag);
+    void FUN_1410c4850(__int64 nItemUid, Unk_Int3 kPos, const CubeItemInfo& info, float fRot, int nA, int nB, bool bFlag,
+        int nC, int nD, Unk_PayloadPtr<NoticeCubeInfo> spNotice);   // a cube placed
+    void FUN_1410c4b50(Unk_Int3 kPos, bool bFlag);          // a cube removed
+    void FUN_1410c4d80(Unk_Int3 kPos, float fRot);          // a cube rotated
+    void FUN_1410c4e20(__int64 nItemUid, Unk_Int3 kPos, const CubeItemInfo& info, float fRot, bool bFlag, int nA, int nB);
+    void FUN_1410caf20(Cube* pCube, int nValue);
+    __int64 FUN_1410c3180();                                // the house owner
+    void FUN_1410c51d0(int nA, int nB, CStringW strName);
+    void FUN_1410c7a50(int nA, int nB, int nC, __int64 nD);
+    unsigned int FUN_1410c3470();
+    unsigned int FUN_1410c34b0();
+    void FUN_1410d4450(__int64 nCharId, int nSlot, CString strName, __int64 nTime);
+    void FUN_1410d4710(__int64 nCharId, int nSlot, CString strName, __int64 nTime);
+    void FUN_1410d54f0(int n);
+    void FUN_1410d5700(__int64 n);
+    void FUN_1410d5750(__int64 n);
+    void FUN_1410d57a0(__int64 n);
+    void FUN_1410d5830(__int64 n);
+    void FUN_1410d5ae0(int n);
+    int FUN_1410d5b00();
     Cube* FUN_1410b8b00(int nCubeId);                      // the placed cube with this id
     static const efd::ClassID CLASS_ID = 0x06100017;
     void FUN_1410c3020(int n);
@@ -688,7 +719,7 @@ public:
 GameObject* FUN_140b10320(Unk_SSGCubeObj* pObj);           // the object the sound plays at
 extern int DAT_143ab2900;
 extern int DAT_143ab2918;
-class Unk_SSGDlg4e28 { public: void FUN_141939620(); void FUN_140ea5f80(); };
+class Unk_SSGDlg4e28 { public: void FUN_141939620(); void FUN_140ea5f80(); void FUN_141938190(); void FUN_1419391c0(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141767f80(int nSkillId); void FUN_141768100(int nSkillId); void FUN_1417683d0(); void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
     void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
@@ -702,7 +733,9 @@ class Unk_SSGConstants
 public:
     char m_pad_00[0x2970];
     Unk_SSGConstValue m_2970;                               // +0x2970
-    char m_pad_2971[0x3680 - 0x2971];
+    char m_pad_2971[0x3578 - 0x2971];
+    Unk_SSGConstValue m_3578;                               // +0x3578
+    char m_pad_3579[0x3680 - 0x3579];
     Unk_SSGConstValue m_3680;                               // +0x3680
     char m_pad_3681[0x66d0 - 0x3681];
     Unk_SSGConstValue2 m_66d0;                              // +0x66d0
@@ -740,7 +773,7 @@ Unk_SSGHomeBlocks* FUN_1414a5830();
 class Unk_SSGStatusListener { public: void FUN_141b0ce20(int a, int b); void FUN_141b0e050(); };
 Unk_SSGStatusListener* FUN_140aa6d40();
 void FUN_140930150(int n);
-class Unk_PCCubeCraft { public: void FUN_1410aa5c0(CubeItemInfo* pInfo); };
+class Unk_PCCubeCraft { public: void FUN_1410aa5c0(CubeItemInfo* pInfo); void FUN_1410aa550(int n); void FUN_1410aa380(bool b); void FUN_1410aa590(); };
 
 void FUN_1403d7440(CInputStream& stream, CAtlArray<unsigned int>& arr);   // read a u32 array
 class Unk_SSGMsgBoxFlags { public: void FUN_1417e25a0(int nClassId); };
@@ -750,7 +783,8 @@ extern CStringW DAT_143ae79f0;
 bool FUN_14028d780(unsigned char n);
 class Unk_SSGDlg4e47 { public: void FUN_141b10ba0(int n); };
 Unk_SSGDlg4e47* FUN_140de48d0(int nId);                     // GetDialog<T>(0x4e47)
-class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); void FUN_1412c54e0(int n); };
+class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); void FUN_1412c54e0(int n); void FUN_1412c5f00(); void FUN_1412c6070();
+    void FUN_1412c5c30(); void FUN_1412c6220(); void FUN_1412c66c0(); void FUN_1412c6b50(); };
 Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4ed8)
 
 class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); void FUN_141a3a780(int nId); };
@@ -1125,7 +1159,7 @@ void CSceneStateGame::OnLeave(int nNextState)
     FUN_140d9f0c0(FUN_140931510());
     FUN_140ceac00(FUN_14015a050());
     FUN_140ad68a0(FUN_1409eed70());
-    FUN_1418894d0(FUN_14052d220());
+    FUN_14052d220()->FUN_1418894d0();
     FUN_1403ed2d0()->FUN_141bbae80(this);
     FUN_1403ed2b0()->FUN_141adc050();
     FUN_1403ed2d0()->FUN_141bbc580(0, 0);
@@ -1808,7 +1842,7 @@ void CSceneStateGame::vfunc_1(int nParam)
         out.COutPacket::vfunc_o10_3(FUN_1403ed2d0()->FUN_141bd98d0());
         FUN_140710590(out);
     }
-    FUN_141889150(FUN_14052d220());
+    FUN_14052d220()->FUN_141889150();
     {
         COutPacket out(0x38, 0);
         out.COutPacket::vfunc_o10_1(0x12);
@@ -3997,7 +4031,7 @@ MS2_REPLACE_METHOD(0x14173a990, CSceneStateGame, FUN_14173a990, 116, 0x91EABDAC)
 
 // Guild/party invite request (mode 2): ask the player unless invites are blocked in the options (then answer 5).
 class Unk_SSGGameOpt { public: bool m_b0, m_b1, m_b2, m_b3, m_b4, m_b5, m_b6, m_b7, m_b8; bool m_bBlockInvite; };   // +9
-class Unk_SSGCfg { public: Unk_SSGGameOpt* FUN_140ae6540(); class Unk_SSGAdvCfg* FUN_140b123b0(); };
+class Unk_SSGCfg { public: Unk_SSGGameOpt* FUN_140ae6540(); class Unk_SSGAdvCfg* FUN_140b123b0(); class Unk_SSGHouseCfg* FUN_140a46860(); };
 Unk_SSGCfg* FUN_1409a8b10();
 
 // @0x14173aa10
@@ -5019,7 +5053,8 @@ extern template Unk_PayloadPtr<NoticeCubeInfo>::Unk_PayloadPtr(NoticeCubeInfo* v
 extern template Unk_PayloadPtr<NoticeCubeInfo>::~Unk_PayloadPtr();
 extern template bool Unk_PayloadPtr<NoticeCubeInfo>::operator==(NoticeCubeInfo* value) const;
 extern template NoticeCubeInfo* Unk_PayloadPtr<NoticeCubeInfo>::operator->() const;
-class Unk_SSG9670e0 { public: void FUN_1410c92e0(int nCubeId); };
+class Unk_SSG9670e0 { public: void FUN_1410c92e0(int nCubeId); void FUN_1410c3560(unsigned char n); void FUN_1410c3580(unsigned char n);
+    void FUN_1410c35a0(unsigned char n); void FUN_1410d5b20(__int64 n); };
 Unk_SSG9670e0* FUN_1409670e0();
 
 UIDialog* FUN_141386950(const CString& strName);           // a dialog by its name
@@ -6140,3 +6175,1074 @@ void CSceneStateGame::FUN_141733b30(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x141733b30, CSceneStateGame, FUN_141733b30, 768, 0x4F3DB91A);
+
+// ---- 0x69: UGC housing (cube placement, house settings, save slots) ---------------------------------------------
+// The house info (RTTI UserUGCMapInfo, CPtred, 0x48 bytes; ctor 0x1408b3f10, dtor 0x1408b3fe0).
+class UserUGCMapInfo : public CPtred
+{
+public:
+    UserUGCMapInfo();
+    ~UserUGCMapInfo();
+    void FUN_1408b4220(CInPacket& packet, int* pResult);    // decode
+    void FUN_1408b40d0(Unk_BmPtr<UserUGCMapInfo> spOther);  // copy from another info
+    int m_n18;                                              // +0x18 the owner's character id
+    int m_n1c;
+    int m_n20;
+    int m_n24;
+    CStringW m_str28;                                       // +0x28
+    __int64 m_n30;                                          // +0x30 compared to detect a changed house
+    __int64 m_n38;
+    unsigned char m_n40;
+};
+MS2_CHECK_SIZE(UserUGCMapInfo, 0x48);
+// The weapon data of a cube object (RTTI ObjectWeaponInfo, 0x58 bytes; ctor 0x1408b45b0).
+class ObjectWeaponInfo
+{
+public:
+    void* m_unk_00[3];
+    int m_n18;
+    int m_n1c;                                              // +0x1c the holder's value written by 0x69 mode 0x11
+    void* m_unk_20[7];
+};
+MS2_CHECK_SIZE(ObjectWeaponInfo, 0x58);
+extern template Unk_PayloadPtr<NoticeCubeInfo>::Unk_PayloadPtr(int);
+extern template Unk_PayloadPtr<NoticeCubeInfo>::Unk_PayloadPtr(const Unk_PayloadPtr<NoticeCubeInfo>& value);
+extern template ObjectWeaponInfo* Unk_PayloadPtr<ObjectWeaponInfo>::operator->() const;
+// Unk_BmPtr<UserUGCMapInfo>: the raw-pointer ctor, dtor, operator-> and operator== are ICF copies outside the unit.
+extern template Unk_BmPtr<UserUGCMapInfo>::Unk_BmPtr(UserUGCMapInfo* p);
+extern template Unk_BmPtr<UserUGCMapInfo>::~Unk_BmPtr();
+extern template UserUGCMapInfo* Unk_BmPtr<UserUGCMapInfo>::operator->() const;
+extern template bool Unk_BmPtr<UserUGCMapInfo>::operator==(UserUGCMapInfo* p) const;
+// MyPC's IMessageListener base (+0x12e0; the real MyPC is PC + IMessageListener, mypc.h of the owning unit).
+class Unk_SSGMyPCView : public PC, public IMessageListener {};
+MS2Ptr<CMsgBoxData> FUN_140d73e40(int nType, int nStringId, IMessageListener* pListener, CStringW strTag);
+// The UGC event dispatcher (FUN_140bc09f0; UIUGCEventListener registry): slots 5..7 notify the listeners.
+class Unk_SSGUgcEvents
+{
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();
+    virtual void vfunc_4();
+    virtual void vfunc_5();                                 // build mode started
+    virtual void vfunc_6();                                 // build mode ended
+    virtual void vfunc_7(int bChanged);                     // the house info was refreshed
+};
+Unk_SSGUgcEvents* FUN_140bc09f0();
+class Unk_SSGTaxiTable { public: bool FUN_14085f730(int nMapId); };
+Unk_SSGTaxiTable* FUN_1409f24a0();
+class Unk_SSGHouseCfg { public: void FUN_141262180(); void FUN_141262650(); };
+int FUN_14151f6e0();                                        // messageboxqueue.cpp
+void FUN_140ee8190(CInPacket& packet);
+void FUN_140ee83f0(CInPacket& packet);
+class Unk_SSGHomeMenu { public: void FUN_140b682c0(unsigned char n); void FUN_140b682f0(unsigned char n); void FUN_140b683f0(unsigned char n); };
+Unk_SSGHomeMenu* FUN_140b6a040();
+class UIHomeResizeDialog : public UIDialog { public: void FUN_140c2bf40(); void FUN_140c2bf70(); };
+class UIUGCHousingPointDialog : public UIHomeResizeDialog { public: void FUN_140fae0d0(); };
+UIUGCHousingPointDialog* FUN_140ef4af0(int nId);            // GetDialog<UIUGCHousingPointDialog>
+UIUGCCubePaletteDialog* FUN_140ef4a50(int nId);
+UIHomeSaveSlotDialog* FUN_140c2b5c0(int nId);
+Unk_Int3 FUN_1408a0400(int nPacked);                        // unpack a cube coordinate
+extern CString DAT_143ae79a0;                               // housing sound event names
+extern CString DAT_143ae79a8;
+extern CString DAT_143ae79b0;
+extern CString DAT_143ae79b8;
+extern CString DAT_143ae79c0;
+extern CString DAT_143ae79c8;
+extern CString DAT_143ae79d0;
+extern bool DAT_143ab2857;
+extern unsigned short DAT_143ab291c;
+extern bool DAT_143ab291e;
+extern __int64 DAT_143ab2928;
+extern __int64 DAT_143ab2930;
+extern __int64 DAT_143ab2938;
+extern unsigned short DAT_143ab2940;
+extern __int64 DAT_143ab2948;
+extern ATL::CAtlArray<unsigned int> DAT_143ab32b8;
+// A (cube id, value) pair of the house set 0x143ab32d8 (ctor 0x1409ed810).
+struct Unk_SSGHouseKey
+{
+    Unk_SSGHouseKey();   // 0x1409ed810, out of range
+    unsigned int m_nA;
+    unsigned int m_nB;
+};
+inline bool operator<(const Unk_SSGHouseKey& a, const Unk_SSGHouseKey& b)
+{
+    if (a.m_nA != b.m_nA)
+        return a.m_nA < b.m_nA;
+    return a.m_nB < b.m_nB;
+}
+// The set's members live in another unit (clear 0x140581e40, end 0x140582470, find 0x140583270, insert 0x140569330).
+// Declared as explicit specializations so this TU calls them instead of emitting look-alikes of the unit's other set.
+typedef std::_Tree<std::_Tset_traits<Unk_SSGHouseKey, std::less<Unk_SSGHouseKey>, std::allocator<Unk_SSGHouseKey>, false> > Unk_SSGHouseTree;
+template <> Unk_SSGHouseTree::iterator Unk_SSGHouseTree::find(const Unk_SSGHouseKey& kKey);
+template <> Unk_SSGHouseTree::iterator Unk_SSGHouseTree::end() noexcept;
+template <> void Unk_SSGHouseTree::clear() noexcept;
+template <> template <> Unk_SSGHouseTree::_Pairib Unk_SSGHouseTree::insert<false, 0>(const Unk_SSGHouseKey& kKey);
+extern std::set<Unk_SSGHouseKey> DAT_143ab32d8;
+
+// @0x141723670
+// MS2-FUNCTIONAL: identical instructions; the exe swaps two dword stack slots (mode 2 nError at +0x90, the mode 5 `nFlag == 0` temp at +0x128) and shifts the four loop counters by 4
+void CSceneStateGame::FUN_141723670(CInPacket& packet)
+{
+    efd::SmartPointer<Unk_Service6100017> spService(FUN_1401cd040(&DAT_143b059e8));
+    unsigned char nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    switch (nMode)
+    {
+    case 0:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        if (pPC->FUN_1416595d0() != 0)
+        {
+            Unk_PCCubeCraft* pCraft = pPC->FUN_141659700();
+            if (pCraft != 0)
+                pCraft->FUN_1410aa550(nValue);
+        }
+    }
+        break;
+    case 1:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CubeItemInfo info(packet);
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        if (pPC->FUN_1416595d0() != 0)
+        {
+            Unk_PCCubeCraft* pCraft = pPC->FUN_141659700();
+            if (pCraft != 0)
+                pCraft->FUN_1410aa5c0(&info);
+        }
+    }
+        break;
+    case 2:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410c4240(nA, nB, strName, nC, nCharId);
+            if (nCharId == DAT_143ab2820)
+            {
+                COutPacket out(0x37, 0);
+                out.COutPacket::vfunc_o10_1(0x15);
+                out.COutPacket::vfunc_o10_8(strName);
+                FUN_140710590(out);
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 4:
+        if (pMyPC != 0)
+        {
+            FUN_140bc09f0()->vfunc_5();
+            FUN_141276180(DAT_143ae79a0, "");
+            FUN_141276180(DAT_143ae79a8, "");
+            FUN_141275260(0x6f1, 3, 1);
+        }
+        break;
+    case 5:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            spService->FUN_1410c44b0(nA, nB, nFlag == 0);
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 7:
+    {
+        int nReason = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nReason == 0x75)
+            FUN_141275260(0x6c1, 3, 1);
+        else
+            FUN_141275260(0x6f2, 3, 1);
+        if (pMyPC != 0)
+        {
+            FUN_140bc09f0()->vfunc_6();
+            FUN_141276180(DAT_143ae79b0, "");
+            int nValue = 0;
+            if (bFlag != 0)
+                nValue = *FUN_1401d3200()->m_3578.FUN_1402056b0();
+        }
+    }
+        break;
+    case 0xa:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (nCharId != 0 && pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                Unk_PCCubeCraft* pCraft = pMyPC->FUN_141530290();
+                if (pCraft != 0)
+                    pCraft->FUN_1410aa380(false);
+                FUN_141276180(DAT_143ae79b8, "");
+            }
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nPacked = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            Unk_Int3 kPos = FUN_1408a0400(nPacked);
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            CubeItemInfo info(packet);
+            bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1() == 0 ? false : true;
+            float fRot = static_cast<CInputStream&>(packet).vfunc_o8_5();
+            int nD = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            Unk_PayloadPtr<NoticeCubeInfo> spNotice(0);
+            int nHasNotice = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (nHasNotice == 1)
+            {
+                CStringW strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+                int nType = static_cast<CInputStream&>(packet).vfunc_o8_1();
+                spNotice = new NoticeCubeInfo;
+                spNotice->FUN_1408b4970(strText, nType);
+            }
+            spService->FUN_1410c4850(nItemUid, kPos, info, fRot, nA, nB, bFlag, nC, nD, spNotice);
+        }
+        else
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                Unk_PCCubeCraft* pCraft = pMyPC->FUN_141530290();
+                if (pCraft != 0)
+                    pCraft->FUN_1410aa590();
+                MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+                if (pPC != 0)
+                {
+                    if (pPC->FUN_141659690() != 0)
+                    {
+                        FUN_141275260(0x6c9, 1, 1);
+                        FUN_141276180(DAT_143ae79c0, "");
+                    }
+                    else
+                        spService->FUN_1410d6590(nError);
+                }
+            }
+        }
+    }
+        break;
+    case 0xc:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nPacked = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1() == 1;
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                Unk_PCCubeCraft* pCraft = pMyPC->FUN_141530290();
+                if (pCraft != 0)
+                    pCraft->FUN_1410aa380(true);
+                FUN_141276180(DAT_143ae79c8, "");
+            }
+            Unk_Int3 kPos = FUN_1408a0400(nPacked);
+            spService->FUN_1410c4b50(kPos, bFlag);
+        }
+        else
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                if (pMyPC->FUN_141659690() != 0)
+                {
+                    FUN_141275260(0x6c9, 1, 1);
+                    FUN_141276180(DAT_143ae79c0, "");
+                }
+                else
+                    spService->FUN_1410d6590(nError);
+            }
+        }
+    }
+        break;
+    case 0xe:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+                FUN_141276180(DAT_143ae79d0, "");
+            int nPacked = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            Unk_Int3 kPos = FUN_1408a0400(nPacked);
+            float fRot = static_cast<CInputStream&>(packet).vfunc_o8_5();
+            spService->FUN_1410c4d80(kPos, fRot);
+        }
+        else
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                if (pMyPC->FUN_141659690() != 0)
+                {
+                    FUN_141275260(0x6c9, 1, 1);
+                    FUN_141276180(DAT_143ae79c0, "");
+                }
+                else
+                    spService->FUN_1410d6590(nError);
+            }
+        }
+    }
+        break;
+    case 0xf:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                Unk_PCCubeCraft* pCraft = pMyPC->FUN_141530290();
+                if (pCraft != 0)
+                    pCraft->FUN_1410aa380(false);
+                FUN_141276180(DAT_143ae79b8, "");
+            }
+            int nPacked = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            Unk_Int3 kPos = FUN_1408a0400(nPacked);
+            __int64 nItemUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            CubeItemInfo info(packet);
+            bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_1() == 0 ? false : true;
+            float fRot = static_cast<CInputStream&>(packet).vfunc_o8_5();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            spService->FUN_1410c4e20(nItemUid, kPos, info, fRot, bFlag, nA, nB);
+        }
+        else
+        {
+            int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+            {
+                if (pMyPC->FUN_141659690() != 0)
+                {
+                    FUN_141275260(0x6c9, 1, 1);
+                    FUN_141276180(DAT_143ae79c0, "");
+                }
+                else
+                    spService->FUN_1410d6590(nError);
+            }
+        }
+    }
+        break;
+    case 0x11:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nCubeId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MS2Ptr<Cube> spCube(spService->FUN_1410b8b00(nCubeId));
+            if (spCube.get() != 0 ? true : false)
+            {
+                if (spCube->weapon.get() != 0)
+                {
+                    spCube->weapon->m_n1c = nValue;
+                    spService->FUN_1410caf20(spCube.get(), nValue);
+                    PC* pPC = FUN_140974230(FUN_1403ed2d0()->FUN_141bd1200(nId));
+                    if (pPC == 0)
+                        return;
+                    pPC->FUN_14165f1f0(nA, 1);
+                }
+            }
+        }
+        else
+        {
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+                spService->FUN_1410d6590(nError);
+        }
+    }
+        break;
+    case 0x12:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            PC* pPC = FUN_140974230(FUN_1403ed2d0()->FUN_141bd1200(nId));
+            if (pPC == 0)
+                return;
+            pPC->FUN_14165f1f0(0, 0);
+        }
+        else
+        {
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+                spService->FUN_1410d6590(nError);
+        }
+    }
+        break;
+    case 0x1b:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (unsigned int i = 0; i < nCount; i++)
+        {
+            int nCubeId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            MS2Ptr<Cube> spCube(spService->FUN_1410b8b00(nCubeId));
+            if (spCube.get() != 0)
+                spService->FUN_1410caf20(spCube.get(), nValue);
+        }
+    }
+        break;
+    case 0x14:
+    {
+        int nResult = 0;
+        Unk_BmPtr<UserUGCMapInfo> spInfo(Unk_BmNewTag(0));
+        spInfo->FUN_1408b4220(packet, &nResult);
+        if (pMyPC != 0)
+        {
+            if (pMyPC->FUN_14123c580() == spInfo->m_n18)
+            {
+                int bChanged = 0;
+                Unk_BmPtr<UserUGCMapInfo> spCur(pMyPC->FUN_141523c50());
+                if (spCur == 0)
+                {
+                    spCur.AssignRaw(new UserUGCMapInfo);
+                    pMyPC->FUN_141524880(spCur);
+                }
+                else if (pMyPC->FUN_141527e00() == 0)
+                {
+                    if (spCur->m_n30 != spInfo->m_n30)
+                        bChanged = 1;
+                }
+                spService->FUN_1410d5ae0(1);
+                spCur->FUN_1408b40d0(spInfo);
+                FUN_140bc09f0()->vfunc_7(bChanged);
+                if (pMyPC->FUN_141527e00() == 0)
+                {
+                    if (FUN_14151f6e0() != 0)
+                        FUN_1409a8b10()->FUN_140a46860()->FUN_141262180();
+                    FUN_1409a8b10()->FUN_140a46860()->FUN_141262650();
+                }
+                if (pMyPC->FUN_141527e00() != 0 && pMyPC->FUN_1416595d0() != 0)
+                    pMyPC->FUN_141530200();
+                if (FUN_1409f24a0()->FUN_14085f730(DAT_143ab2870))
+                    FUN_141739450(nResult != 0 ? false : true);
+            }
+        }
+    }
+        break;
+    case 0x15:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nOwner = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CStringW strName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            if (spService->FUN_1410c3180() == nOwner)
+            {
+                spService->FUN_1410c3220(strName);
+                Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+                if (pDlg != 0)
+                    pDlg->FUN_1412c5f00();
+                spService->FUN_1410c51d0(nA, nB, strName);
+            }
+        }
+        else
+        {
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+                spService->FUN_1410d6590(nError);
+        }
+    }
+        break;
+    case 0x1d:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            CStringW strDesc = static_cast<CInputStream&>(packet).vfunc_o8_8();
+            spService->FUN_1410c32b0(strDesc);
+            Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+            if (pDlg != 0)
+                pDlg->FUN_1412c5c30();
+        }
+        else
+        {
+            int nCharId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (pMyPC != 0 && pMyPC->FUN_14123c580() == nCharId)
+                spService->FUN_1410d6590(nError);
+        }
+    }
+        break;
+    case 0x18:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+            break;
+        spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x16:
+    {
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nC = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        __int64 nD = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        spService->FUN_1410c7a50(nA, nB, nC, nD);
+    }
+        break;
+    case 9:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+            break;
+        spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x19:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            if (DAT_143ab2820 == nCharId)
+                DAT_143ab2920 = nValue;
+            Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+            if (pDlg != 0)
+                pDlg->FUN_1412c6070();
+            FUN_141275260(0xb13, 1, 1);
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x1a:
+    {
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0)
+        {
+            MS2Ptr<CMsgBoxData> spBox = FUN_140d73e40(0, 0xb10,
+                static_cast<Unk_SSGMyPCView*>(static_cast<PCBase*>(pPC)), L"userOutNotice");
+            if (spBox.get() != 0)
+            {
+                spBox->FUN_141a01700(0xb12, 0, 0);
+                spBox->FUN_141a02460(1);
+                spBox->FUN_141a02480(1);
+                spBox->FUN_141a024a0(0);
+                FUN_140d73c60(spBox);
+            }
+        }
+    }
+        break;
+    case 0x1c:
+    {
+        int nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        spService->FUN_1410c3410(nA);
+        spService->FUN_1410c3450(nB);
+        Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+        if (pDlg != 0)
+            pDlg->FUN_1412c6070();
+    }
+        break;
+    case 0x47:
+    {
+        int nType = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        if (nType == 1 || nType == 2)
+            FUN_1412751f0(FUN_14028de60(0xb89), 1, 1);
+        else if (nType == 3)
+            FUN_1412751f0(FUN_14028de60(0xb8a), 1, 1);
+        else if (nType == 4)
+            FUN_1412751f0(FUN_14028de60(0xb8b), 1, 1);
+    }
+        break;
+    case 0x20:
+    {
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0)
+        {
+            FUN_1403ed2b0()->FUN_141adc5d0(0x4e2d);
+            pPC->FUN_141530700(1);
+        }
+    }
+        break;
+    case 0x21:
+    {
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0)
+            pPC->FUN_141530700(0);
+    }
+        break;
+    case 0x22:
+    {
+        MyPC* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pPC != 0)
+        {
+            int nValue = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            pPC->FUN_14152a2d0(nValue);
+        }
+    }
+        break;
+    case 0x24:
+        FUN_140ee8190(packet);
+        break;
+    case 0x43:
+        FUN_140ee83f0(packet);
+        break;
+    case 0x25:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (spService != 0)
+            {
+                if (nValue != spService->FUN_1410c3470())
+                {
+                    spService->FUN_1410c3490(nValue);
+                    spService->FUN_1410c3670();
+                    FUN_141275260(0x6e6, 3, 1);
+                }
+                UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+                if (pPoint != 0)
+                    pPoint->FUN_140c2bf40();
+                UIHomeResizeDialog* pResize = Unk_SSGGetDialog<UIHomeResizeDialog>(0x4f7e);
+                if (pResize != 0)
+                    pResize->FUN_140c2bf40();
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x26:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (spService != 0)
+            {
+                if (nValue != spService->FUN_1410c3470())
+                {
+                    spService->FUN_1410c3490(nValue);
+                    spService->FUN_1410c3670();
+                    FUN_141275260(0x6e8, 3, 1);
+                }
+                UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+                if (pPoint != 0)
+                    pPoint->FUN_140c2bf40();
+                UIHomeResizeDialog* pResize = Unk_SSGGetDialog<UIHomeResizeDialog>(0x4f7e);
+                if (pResize != 0)
+                    pResize->FUN_140c2bf40();
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x2c:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (spService != 0)
+            {
+                if (nValue != spService->FUN_1410c34b0())
+                {
+                    spService->FUN_1410c34d0(nValue);
+                    spService->FUN_1410c3670();
+                    FUN_141275260(0x6e7, 3, 1);
+                    UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+                    if (pPoint != 0)
+                        pPoint->FUN_140c2bf70();
+                    UIHomeResizeDialog* pResize = Unk_SSGGetDialog<UIHomeResizeDialog>(0x4f7e);
+                    if (pResize != 0)
+                        pResize->FUN_140c2bf70();
+                }
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x2d:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (spService != 0)
+            {
+                if (nValue != spService->FUN_1410c34b0())
+                {
+                    spService->FUN_1410c34d0(nValue);
+                    spService->FUN_1410c3670();
+                    FUN_141275260(0x6e9, 3, 1);
+                    UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+                    if (pPoint != 0)
+                        pPoint->FUN_140c2bf70();
+                    UIHomeResizeDialog* pResize = Unk_SSGGetDialog<UIHomeResizeDialog>(0x4f7e);
+                    if (pResize != 0)
+                        pResize->FUN_140c2bf70();
+                }
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x3e:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nA = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            unsigned char nB = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            bool bChanged = false;
+            if (spService != 0)
+            {
+                if (nA != spService->FUN_1410c3470())
+                {
+                    spService->FUN_1410c3490(nA);
+                    bChanged = true;
+                }
+                if (nB != spService->FUN_1410c34b0())
+                {
+                    spService->FUN_1410c34d0(nB);
+                    bChanged = true;
+                }
+                if (bChanged)
+                {
+                    spService->FUN_1410c3670();
+                    UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+                    if (pPoint != 0)
+                    {
+                        pPoint->FUN_140c2bf40();
+                        pPoint->FUN_140c2bf70();
+                    }
+                    UIHomeResizeDialog* pResize = Unk_SSGGetDialog<UIHomeResizeDialog>(0x4f7e);
+                    if (pResize != 0)
+                    {
+                        pResize->FUN_140c2bf40();
+                        pResize->FUN_140c2bf70();
+                    }
+                    Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+                    if (pDlg != 0)
+                        pDlg->FUN_1412c6b50();
+                }
+            }
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x27:
+    {
+        __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        if (DAT_143ab2820 != nCharId)
+            return;
+        __int64 nA = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        unsigned short nB = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_4());
+        __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab2928 = nA;
+        DAT_143ab291c = nB;
+        DAT_143ab2930 = nC;
+        DAT_143ab32b8.RemoveAll();
+        for (int i = 0; i < nCount; i++)
+            DAT_143ab32b8.Add(static_cast<CInputStream&>(packet).vfunc_o8_3());
+        UIMasteryDialog* pMastery = FUN_140faf160(0x4f1e);
+        if (pMastery != 0)
+        {
+            pMastery->FUN_140eb2460();
+            pMastery->FUN_140eb4be0();
+        }
+        Unk_SSGDlg4e28* pDlg = FUN_140938b90(0x4e28);
+        if (pDlg != 0)
+        {
+            pDlg->FUN_141938190();
+            pDlg->FUN_1419391c0();
+        }
+        UIUGCHousingPointDialog* pPoint = FUN_140ef4af0(0x4f28);
+        if (pPoint != 0)
+            pPoint->FUN_140fae0d0();
+    }
+        break;
+    case 0x35:
+    {
+        __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nA = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nB = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nC = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        if (DAT_143ab2820 != nCharId)
+            return;
+        DAT_143ab2857 = true;
+        DAT_143ab2938 = nA;
+        spService->FUN_1410d5700(nB);
+        spService->FUN_1410d5750(nC);
+        Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+        if (pDlg != 0)
+            pDlg->FUN_1412c6220();
+    }
+        break;
+    case 0x3c:
+    {
+        __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        if (DAT_143ab2820 != nCharId)
+            return;
+        DAT_143ab291e = true;
+        DAT_143ab2948 = nValue;
+    }
+        break;
+    case 0x2a:
+    {
+        int nKey = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        bool bValue = static_cast<CInputStream&>(packet).vfunc_o8_1() == 1 ? true : false;
+        if (spService != 0)
+            spService->FUN_1410c3e40(nKey, bValue);
+    }
+        break;
+    case 0x2b:
+    {
+        int nKey = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (spService != 0)
+            spService->FUN_1410c3f10(nKey, nValue);
+    }
+        break;
+    case 0x28:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+            break;
+        spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x29:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+            break;
+        spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x2e:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CString strName = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            __int64 nTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            if (nCharId == DAT_143ab2820 && spService != 0)
+            {
+                spService->FUN_1410d4450(nCharId, nSlot, strName, nTime);
+                spService->FUN_1410d54f0(0);
+            }
+            UIHomeSaveSlotDialog* pSlots = FUN_140c2b5c0(0x4f27);
+            if (pSlots != 0)
+                pSlots->FUN_140faa2d0();
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x40:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nCharId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            int nSlot = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            CString strName = static_cast<CInputStream&>(packet).vfunc_o8_6();
+            __int64 nTime = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            if (nCharId == DAT_143ab2820 && spService != 0)
+            {
+                spService->FUN_1410d4710(nCharId, nSlot, strName, nTime);
+                spService->FUN_1410d54f0(0);
+            }
+            UIHomeSaveSlotDialog* pSlots = FUN_140c2b5c0(0x4f27);
+            if (pSlots != 0)
+                pSlots->FUN_140faa2d0();
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x32:
+    {
+        unsigned __int64 nUid = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        UIUGCCubePaletteDialog* pPalette = FUN_140ef4a50(0x4f16);
+        if (pPalette != 0)
+            pPalette->FUN_140eec0b0(nUid);
+    }
+        break;
+    case 0x33:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            FUN_1409670e0()->FUN_1410c3560(nValue);
+            FUN_140b6a040()->FUN_140b682c0(nValue);
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x34:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            FUN_1409670e0()->FUN_1410c3580(nValue);
+            FUN_140b6a040()->FUN_140b682f0(nValue);
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x36:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            unsigned char nValue = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            FUN_1409670e0()->FUN_1410c35a0(nValue);
+            FUN_140b6a040()->FUN_140b683f0(nValue);
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x37:
+    {
+        DAT_143ab2940 = static_cast<CInputStream&>(packet).vfunc_o8_2();
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        DAT_143ab32d8.clear();
+        for (unsigned int i = 0; i < nCount; i++)
+        {
+            Unk_SSGHouseKey kKey;
+            kKey.m_nA = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            kKey.m_nB = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            if (DAT_143ab32d8.find(kKey) == DAT_143ab32d8.end())
+                DAT_143ab32d8.insert(kKey);
+        }
+    }
+        break;
+    case 0x39:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410d57a0(nValue);
+            Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+            if (pDlg != 0)
+                pDlg->FUN_1412c66c0();
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x3a:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410d5830(nValue);
+            Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+            if (pDlg != 0)
+                pDlg->FUN_1412c66c0();
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x38:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 0)
+        {
+            __int64 nA = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            __int64 nB = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410d5700(nA);
+            spService->FUN_1410d5750(nB);
+            Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+            if (pDlg != 0)
+                pDlg->FUN_1412c6220();
+        }
+        else
+            spService->FUN_1410d6590(nError);
+    }
+        break;
+    case 0x3b:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (unsigned int i = 0; i < nCount; i++)
+        {
+            __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+            spService->FUN_1410d57a0(nValue);
+        }
+        Unk_SSGDlg4ed8* pDlg = FUN_140bbea00(0x4ed8);
+        if (pDlg != 0)
+            pDlg->FUN_1412c66c0();
+    }
+        break;
+    case 0x3d:
+    {
+        int nError = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nError == 100)
+        {
+            int nSub = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (nSub != 0 || spService->FUN_1410d5b00() != 0)
+            {
+                spService->FUN_1410d6590(100);
+                spService->FUN_1410d5ae0(0);
+            }
+        }
+    }
+        break;
+    case 0x3f:
+        FUN_14052d220()->FUN_14188ff10(packet);
+        break;
+    case 0x45:
+    {
+        __int64 nValue = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        FUN_1409670e0()->FUN_1410d5b20(nValue);
+    }
+        break;
+    }
+}
+MS2_REPLACE_METHOD(0x141723670, CSceneStateGame, FUN_141723670, 18808, 0xE92E47F8);

@@ -42,6 +42,9 @@ public:
     ~Unk_BmPtr();
     Unk_BmPtr& operator=(const Unk_BmPtr& o);
     Unk_BmPtr& operator=(const Unk_BmNewTag&);
+    // `Unk_BmPtr tmp(p); swap` - assignment from a raw pointer (0x141746fd0 for T = UserUGCMapInfo, scenestategame).
+    // A named member, not operator=(T*), so that existing `p = q` / `p = 0` call sites keep their overloads.
+    Unk_BmPtr& AssignRaw(T* p);
     T* get() const;
     T* operator->() const;
     T& operator*() const;
@@ -75,6 +78,14 @@ template <class T> Unk_BmPtr<T>& Unk_BmPtr<T>::operator=(const Unk_BmPtr& o)
     return *this;
 }
 template <class T> Unk_BmPtr<T>& Unk_BmPtr<T>::operator=(const Unk_BmNewTag&) { Make(); return *this; }
+template <class T> Unk_BmPtr<T>& Unk_BmPtr<T>::AssignRaw(T* p)
+{
+    Unk_BmPtr tmp(p);
+    T* pOld = m_p;
+    m_p = tmp.m_p;
+    tmp.m_p = pOld;
+    return *this;
+}
 template <class T> T* Unk_BmPtr<T>::get() const { return m_p; }
 template <class T> T* Unk_BmPtr<T>::operator->() const { return m_p; }
 template <class T> T& Unk_BmPtr<T>::operator*() const { return *m_p; }
