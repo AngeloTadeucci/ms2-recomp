@@ -2047,3 +2047,8 @@ D3DXFloat16To32Array	14230396f	func
 ?DAT_142ceae98@@3UCAdventureLevelReward@@A	142ceae98	data
 ?DAT_142ceaea8@@3UCAdventureLevelAbility@@A	142ceaea8	data
 ?DAT_142ceaec8@@3UCAdventureLevelMission@@A	142ceaec8	data
+??0CItemStatus@@QEAA@III@Z	14062fa00	func
+??0CItemUgc@@QEAA@XZ	140631d70	func
+??0CItemTransfer@@QEAA@XZ	140634820	func
+??0CItemSocket@@QEAA@XZ	140620320	func
+??1Unk_ItemSlot188@@QEAA@XZ	14027e150	func
