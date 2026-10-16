@@ -19,6 +19,7 @@ struct Unk_CmMaterialList : std::vector<TransparencyStandardMaterial*, efd::Cust
 class Unk_CmScale
 {
 public:
+    Unk_CmScale() {}                                                // 0x1410af660 (inline, the timer ctor), dtor 0x1410af6b0
     Unk_CmScale(float fFrom, float fTo, unsigned nMs);              // 0x14115e3e0
     float m_fFrom;                  // +0x00
     float m_fTo;                    // +0x04
@@ -30,6 +31,7 @@ MS2_CHECK_SIZE(Unk_CmScale, 0x40);
 class Unk_CmRotate
 {
 public:
+    Unk_CmRotate() {}                                               // 0x1410af630 (inline, the timer ctor), dtor 0x1410af690
     Unk_CmRotate(float fFrom, float fTo, unsigned nMs);             // 0x14115e2c0
     float m_fFrom;                  // +0x00
     float m_fTo;                    // +0x04
@@ -76,8 +78,8 @@ public:
     void AddBounce(const egf::EntityID& id, float fFrom, float fTo, unsigned nUnused, unsigned nMs);  // 0x14115b2e0
     void AddFade(const egf::EntityID& id, float fFrom, float fTo, unsigned nMs, bool bHide);          // 0x14115b370
     void RemoveFade(const egf::EntityID& id);                       // 0x14115b430
-    void FUN_14115b4c0(const egf::EntityID& id, Unk_CmScale& out);  // 0x14115b4c0
-    void FUN_14115b500(const egf::EntityID& id, Unk_CmRotate& out); // 0x14115b500
+    bool FUN_14115b4c0(const egf::EntityID& id, Unk_CmScale& out);  // 0x14115b4c0 (the entity has a scale motion)
+    bool FUN_14115b500(const egf::EntityID& id, Unk_CmRotate& out); // 0x14115b500 (the entity has a rotate motion)
     void Update();                                                  // 0x14115b540
 
     ATL::CRBMap<egf::EntityID, Unk_CmScale> m_scale;                // +0x08

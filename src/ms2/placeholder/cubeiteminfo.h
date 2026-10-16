@@ -28,6 +28,7 @@ class CInPacket;
 class CubeItemInfo : public CPtred {
 public:
     CubeItemInfo();
+    CubeItemInfo(const CubeItemInfo& src);                                              // 0x1408b34b0
     CubeItemInfo(int itemId, __int64 instanceId, __int64 count, CUgcItemLook* pLook);   // 0x1408b3520
     CubeItemInfo(CInPacket& packet);                                                     // 0x1408b3630 (reads the item)
     virtual ~CubeItemInfo();
