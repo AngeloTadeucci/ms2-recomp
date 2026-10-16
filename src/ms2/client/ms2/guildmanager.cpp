@@ -70,11 +70,13 @@ struct Unk_GuildConstTable {
     Unk_GuildConstInt m_guildCreateMinLevel;                  // +0x4998
     char m_pad_49f0[0x4aa0 - 0x49f0];
     Unk_GuildConstInt m_guildDonationMeso;                    // +0x4aa0
-    char m_pad_4af8[0x9d60 - 0x4af8];
+    Unk_GuildConstInt m_guildStorageGiftNeedPeriod;           // +0x4af8
+    char m_pad_4b50[0x9d60 - 0x4b50];
     Unk_GuildConstInt m_guildNameMinLength;                   // +0x9d60
 };
 MS2_CHECK_OFFSET(Unk_GuildConstTable, m_guildCreateMinLevel, 0x4998);
 MS2_CHECK_OFFSET(Unk_GuildConstTable, m_guildDonationMeso, 0x4aa0);
+MS2_CHECK_OFFSET(Unk_GuildConstTable, m_guildStorageGiftNeedPeriod, 0x4af8);
 MS2_CHECK_OFFSET(Unk_GuildConstTable, m_guildNameMinLength, 0x9d60);
 Unk_GuildConstTable* FUN_1401d3200();
 int* FUN_1402056b0(Unk_GuildConstInt* slot);
@@ -83,7 +85,7 @@ class Unk_GuildEventMgr { public: bool FUN_14047e880(); bool FUN_14047eca0(); };
 Unk_GuildEventMgr* FUN_1401c0d90();
 class Unk_GuildDialog4e28 { public: void FUN_1419381c0(); };
 Unk_GuildDialog4e28* FUN_140938b90(int id);
-class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); void FUN_14196b620(); void FUN_14196e590(); void FUN_14196e2c0(); void FUN_14196c1d0(); void FUN_141970900(); void FUN_141971490(); void FUN_141971ac0(); void FUN_141972520(); void FUN_141972fc0(); void FUN_141973220(); void FUN_14196e0a0(); void FUN_141974930(); void FUN_141973fd0(int gradeIndex); void FUN_141974120(const CString& code); void FUN_141974190(const CStringW& guildName); };
+class Unk_GuildDialog4e4f { public: void FUN_141973a70(); void FUN_141974240(); void FUN_141974640(); void FUN_1419729d0(); void FUN_14196cf80(); void FUN_14196f830(); void FUN_14196e230(bool show); void FUN_141973df0(const CStringW& oldName); void FUN_141973b20(const CStringW& newName); void FUN_14196da70(); void FUN_14196b620(); void FUN_14196e590(); void FUN_14196e2c0(); void FUN_14196c1d0(); void FUN_141970900(); void FUN_141971490(); void FUN_141971ac0(); void FUN_141972520(); void FUN_141972fc0(); void FUN_141973220(); void FUN_14196e0a0(); void FUN_141974930(); void FUN_141973fd0(int gradeIndex); void FUN_141974120(const CString& code); void FUN_141974190(const CStringW& guildName); void FUN_14196d0c0(int search); void FUN_14196d660(); };
 Unk_GuildDialog4e4f* FUN_14136f480(int id);
 class Unk_GuildNotifyCenter {
 public:
@@ -177,6 +179,8 @@ template <class T> T* Unk_GuildFindDialog(int id)
 class UIGuildHouseUpgradeDialog : public UIDialog { public: void FUN_140e39da0(); };
 class UIPvPGuildTeamResultDialog : public UIDialog { public: void FUN_141341220(CInPacket& packet); };
 CStringW FUN_14052bd00(int id, const CStringW& arg);
+bool FUN_1403b3c40(const CStringW& text, const wchar_t* other);
+CStringW FUN_140a2fcd0(__int64 begin, __int64 end);
 CStringW FUN_140632a60(int id, const CStringW& arg0, const CStringW& arg1);
 bool FUN_141b70f50(const CStringW& left, const CStringW& right);   // the names are equal
 bool FUN_14025cd60(const CStringW& left, const CStringW& right);
@@ -2845,6 +2849,339 @@ void CGuildManager::FUN_1413c4b60(CInPacket& packet)
         dialog->FUN_14196e2c0();
 }
 MS2_REPLACE_METHOD(0x1413C4B60, CGuildManager, FUN_1413c4b60, 97, 0x89C61D47);
+
+// @0x1413c4bd0
+void CGuildManager::FUN_1413c4bd0(CInPacket& packet)
+{
+    f164 = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196e2c0();
+}
+MS2_REPLACE_METHOD(0x1413C4BD0, CGuildManager, FUN_1413c4bd0, 97, 0x0C093F26);
+
+// Members removed while offline: an "expeled" entry shows a notice with the member's name.
+// @0x1413c4c40
+void CGuildManager::FUN_1413c4c40(CInPacket& packet)
+{
+    unsigned count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (unsigned i = 0; i < count; i++) {
+        CStringW unused;
+        CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW reason = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        __int64 time = static_cast<CInputStream&>(packet).vfunc_o8_4();
+        if (FUN_1403b3c40(reason, L"expeled"))
+            FUN_1412751b0(FUN_14052bd00(0x3ab, name), 0xd);
+    }
+}
+MS2_REPLACE_METHOD(0x1413C4C40, CGuildManager, FUN_1413c4c40, 391, 0x8FF3CB79);
+
+// @0x1413c4dd0
+void CGuildManager::FUN_1413c4dd0(CInPacket& packet)
+{
+    FUN_140d73bc0(0x228, 0, 0, L"");
+}
+MS2_REPLACE_METHOD(0x1413C4DD0, CGuildManager, FUN_1413c4dd0, 72, 0x3D79C845);
+
+// @0x1413c4e20
+void CGuildManager::FUN_1413c4e20(CInPacket& packet)
+{
+    int kind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int code = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int arg = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    FUN_1413c66f0(kind, code, arg);
+}
+MS2_REPLACE_METHOD(0x1413C4E20, CGuildManager, FUN_1413c4e20, 163, 0x616EE1A4);
+
+// A guild penalty: notice with the remaining time.
+// @0x1413c4ed0
+void CGuildManager::FUN_1413c4ed0(CInPacket& packet)
+{
+    int kind = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    __int64 begin = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    __int64 end = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW remain = FUN_140a2fcd0(begin, end);
+    FUN_141275260(0x421, 1, 1);
+    FUN_1412751b0(remain, 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C4ED0, CGuildManager, FUN_1413c4ed0, 289, 0x0A1CBAAD);
+
+// Guild pvp history entries (keeps the newest 10).
+// @0x1413c5000
+void CGuildManager::FUN_1413c5000(CInPacket& packet)
+{
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        int has = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (has == 1) {
+            MS2Ptr<CGuildPVPHistoryData> history(new CGuildPVPHistoryData());
+            history->FUN_1404c6a30(&packet);
+            m_pvpHistory.push_back(history);
+            if (m_pvpHistory.size() > 10)
+                m_pvpHistory.pop_front();
+            m_lastPvpHistoryId = history->fb8;
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_141974240();
+}
+MS2_REPLACE_METHOD(0x1413C5000, CGuildManager, FUN_1413c5000, 428, 0x307F6644);
+
+// Guild pvp season history entries.
+// @0x1413c51c0
+void CGuildManager::FUN_1413c51c0(CInPacket& packet)
+{
+    if (!m_pvpSeasonHistory.empty())
+        m_pvpSeasonHistory.clear();
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        int has = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (has == 1) {
+            MS2Ptr<CGuildPVPSeasonHistoryData> history(new CGuildPVPSeasonHistoryData());
+            history->FUN_1404d4490(&packet);
+            m_pvpSeasonHistory.push_back(history);
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_141974640();
+}
+MS2_REPLACE_METHOD(0x1413C51C0, CGuildManager, FUN_1413c51c0, 398, 0xC969639A);
+
+// @0x1413c5360
+void CGuildManager::FUN_1413c5360(CInPacket& packet)
+{
+    if (FUN_1413b6160() != 0)
+        return;
+    unsigned __int64 guildId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (guildId > 0) {
+        FUN_1412751b0(FUN_14052bd00(0x3ce, guildName), 0xd);
+        FUN_1413bc6a0();
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5360, CGuildManager, FUN_1413c5360, 218, 0xD82E497B);
+
+// @0x1413c5440
+void CGuildManager::FUN_1413c5440(CInPacket& packet)
+{
+    if (FUN_1413b6160() != 0)
+        return;
+    unsigned __int64 guildId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    if (guildId > 0) {
+        FUN_1412751b0(FUN_14052bd00(0x3cf, guildName), 0xd);
+        FUN_1413bc6a0();
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5440, CGuildManager, FUN_1413c5440, 218, 0xC3304083);
+
+// The answer to a join request this guild's master sent.
+// @0x1413c5520
+void CGuildManager::FUN_1413c5520(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    unsigned __int64 characterId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int accepted = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (characterId > 0) {
+        if (accepted == 1)
+            FUN_1412751b0(FUN_14052bd00(0x3d0, name), 0xd);
+        else
+            FUN_1412751b0(FUN_14052bd00(0x3d1, name), 0xd);
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5520, CGuildManager, FUN_1413c5520, 354, 0x86489381);
+
+// The join requests sent to this guild.
+// @0x1413c5690
+void CGuildManager::FUN_1413c5690(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    m_joinRequestsForGuild.RemoveAll();
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        int has = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (has != 0) {
+            MS2Ptr<CGuildJoinRequestForGuild> request(new CGuildJoinRequestForGuild());
+            request->FUN_1404c7940(&packet);
+            m_joinRequestsForGuild.Add(request);
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196da70();
+    if (Unk_GuildDialog4e28* dialog = FUN_140938b90(0x4e28))
+        dialog->FUN_1419381c0();
+}
+MS2_REPLACE_METHOD(0x1413C5690, CGuildManager, FUN_1413c5690, 424, 0x2F130CD7);
+
+// The join requests this character sent.
+// @0x1413c5840
+void CGuildManager::FUN_1413c5840(CInPacket& packet)
+{
+    if (FUN_1413b6160() != 0)
+        return;
+    m_joinRequestsForChar.RemoveAll();
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        int has = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (has != 0) {
+            MS2Ptr<CGuildJoinRequestForChar> request(new CGuildJoinRequestForChar());
+            request->FUN_1404c7f90(&packet);
+            m_joinRequestsForChar.Add(request);
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f)) {
+        dialog->FUN_14196d0c0(0);
+        dialog->FUN_14196d660();
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5840, CGuildManager, FUN_1413c5840, 403, 0xDBB149BD);
+
+// Guild search results.
+// @0x1413c59e0
+void CGuildManager::FUN_1413c59e0(CInPacket& packet)
+{
+    if (FUN_1413b6160() != 0)
+        return;
+    m_searchResults.RemoveAll();
+    int count = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    if (count == 0) {
+        FUN_140d73aa0(FUN_14028de60(0x3ca), 0, 0, L"");
+    } else {
+        for (int i = 0; i < count; i++) {
+            int has = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            if (has != 0) {
+                MS2Ptr<CSearchGuildJoin> result(new CSearchGuildJoin());
+                result->FUN_1404c8a50(&packet);
+                m_searchResults.Add(result);
+            }
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196d0c0(1);
+}
+MS2_REPLACE_METHOD(0x1413C59E0, CGuildManager, FUN_1413c59e0, 528, 0x4A55976C);
+
+// A guild storage gift result.
+// @0x1413c5c00
+void CGuildManager::FUN_1413c5c00(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    int result = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    if (result == 0) {
+        CStringW receiver = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        FUN_1412751b0(FUN_1405c2690(CStringW(L"s_guild_storage_gift"), receiver), 0xd);
+    } else if (result == 0x36) {
+        int period = *FUN_1402056b0(&FUN_1401d3200()->m_guildStorageGiftNeedPeriod);
+        FUN_1412751f0(FUN_14062b4f0(L"s_guild_storage_not_enough_gift_need_period", &period), 1, 1);
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5C00, CGuildManager, FUN_1413c5c00, 430, 0xA019B758);
+
+// A join request this character sent was cancelled or answered.
+// @0x1413c5f90
+void CGuildManager::FUN_1413c5f90(CInPacket& packet)
+{
+    if (FUN_1413b6160() != 0)
+        return;
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    __int64 requestId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    int joined = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    for (size_t i = 0; i < m_joinRequestsForChar.GetCount(); i++) {
+        MS2Ptr<CGuildJoinRequestForChar> request = m_joinRequestsForChar[i];
+        if (request == 0)
+            continue;
+        if (request->f18 == requestId) {
+            m_joinRequestsForChar.RemoveAt(i, 1);
+            break;
+        }
+    }
+    if (joined) {
+        FUN_1403ed2b0()->FUN_141adc5d0(0x4e4f);
+    } else {
+        if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f)) {
+            dialog->FUN_14196d0c0(0);
+            dialog->FUN_14196d660();
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1413C5F90, CGuildManager, FUN_1413c5f90, 489, 0x158A8056);
+
+// A join request to this guild was cancelled or answered.
+// @0x1413c6180
+void CGuildManager::FUN_1413c6180(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    CStringW guildName = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    CStringW name = static_cast<CInputStream&>(packet).vfunc_o8_8();
+    int accepted = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    __int64 requestId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    for (size_t i = 0; i < m_joinRequestsForGuild.GetCount(); i++) {
+        MS2Ptr<CGuildJoinRequestForGuild> request = m_joinRequestsForGuild[i];
+        if (request == 0)
+            continue;
+        if (request->f18 == requestId) {
+            m_joinRequestsForGuild.RemoveAt(i, 1);
+            break;
+        }
+    }
+    Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f);
+    if (dialog)
+        dialog->FUN_14196da70();
+    Unk_GuildDialog4e28* listDialog = FUN_140938b90(0x4e28);
+    if (listDialog)
+        listDialog->FUN_1419381c0();
+    if (accepted)
+        FUN_1412751b0(FUN_140632a60(0x3bd, guildName, name), 0xd);
+    else
+        FUN_1412751b0(FUN_140632a60(0x3be, guildName, name), 0xd);
+}
+MS2_REPLACE_METHOD(0x1413C6180, CGuildManager, FUN_1413c6180, 729, 0x82F01EB1);
+
+// A new join request to this guild.
+// @0x1413c6460
+void CGuildManager::FUN_1413c6460(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    MS2Ptr<CGuildJoinRequestForGuild> request(new CGuildJoinRequestForGuild());
+    request->FUN_1404c7940(&packet);
+    if (FUN_1413b6160() == 0)
+        return;
+    m_joinRequestsForGuild.Add(request);
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196da70();
+    if (Unk_GuildDialog4e28* dialog = FUN_140938b90(0x4e28))
+        dialog->FUN_1419381c0();
+}
+MS2_REPLACE_METHOD(0x1413C6460, CGuildManager, FUN_1413c6460, 272, 0x8310269E);
+
+// A join request to this guild was withdrawn.
+// @0x1413c6580
+void CGuildManager::FUN_1413c6580(CInPacket& packet)
+{
+    if (FUN_1413b6160() == 0)
+        return;
+    __int64 requestId = static_cast<CInputStream&>(packet).vfunc_o8_4();
+    for (size_t i = 0; i < m_joinRequestsForGuild.GetCount(); i++) {
+        MS2Ptr<CGuildJoinRequestForGuild> request = m_joinRequestsForGuild[i];
+        if (request == 0)
+            continue;
+        if (request->f18 == requestId) {
+            m_joinRequestsForGuild.RemoveAt(i, 1);
+            break;
+        }
+    }
+    if (Unk_GuildDialog4e4f* dialog = FUN_14136f480(0x4e4f))
+        dialog->FUN_14196da70();
+    if (Unk_GuildDialog4e28* dialog = FUN_140938b90(0x4e28))
+        dialog->FUN_1419381c0();
+}
+MS2_REPLACE_METHOD(0x1413C6580, CGuildManager, FUN_1413c6580, 354, 0xB05B82C0);
 
 // The vs-game entry prompt's result: enter on the first button.
 // @0x1413c7cb0
