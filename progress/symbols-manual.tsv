@@ -2148,3 +2148,7 @@ D3DXFloat16To32Array	14230396f	func
 ?s_bInit@CommonString@@2_NA	143aaccf0	data
 ?Create@CSkillCollisionManager@@QEAA?AV?$MS2Ptr@VCBaseCollision@@@@PEAVUnk_SkillSrc@@HHPEAXM@Z	1417551b0	func
 ?get@?$MS2Ptr@VCBaseCollision@@@@QEBAPEAVCBaseCollision@@XZ	141235250	func
+?ms_pkD3D9@NiDX9Renderer@@1PEAUIDirect3D9@@EA	143d6ea00	data
+?DetermineD3DFormat@NiDX9PixelFormat@@SA?AW4_D3DFORMAT@@AEBVNiPixelFormat@@@Z	1427e8210	func
+??0OutlineRenderStep@@QEAA@_KI@Z	1416263e0	func
+??0CUGCMapItem@@QEAA@XZ	140dfc1b0	func
