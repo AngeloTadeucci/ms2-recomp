@@ -63,6 +63,7 @@
 #include "ms2/commonfiles/rideonaction.h"
 #include <algorithm>
 #include "ms2/ms2format.h"
+#include "statedata.h"                       // StateSummonData
 #include "hook/ms2hook.h"
 
 
@@ -163,7 +164,9 @@ Unk_MyPCFeatures* FUN_140166410();
 // The field data of a map id (MS2Ptr view; dtor 0x1408850f0, IsNull 0x1408851f0).
 struct Unk_MyPCFieldData
 {
-    char m_pad_000[0x120];
+    char m_pad_000[0xa8];
+    int m_nA8;                                              // +0xa8 summoning is allowed in the field
+    char m_pad_0ac[0x120 - 0xac];
     int m_n120;                                             // +0x120 the field allows it outright
     int m_n124;                                             // +0x124
     int FUN_140375570();
@@ -1882,6 +1885,30 @@ void MyPC::FUN_14152b800(__int64 nItemUid)
     FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x14152b800, MyPC, FUN_14152b800, 192, 0x59BEFECE);
+
+int FUN_14072f970(int nState);                              // a summon may start from the state
+
+// Summon with an inventory item (state 0x26), if the state and the field allow it.
+// @0x14152b8d0
+void MyPC::FUN_14152b8d0(__int64 nItemUid)
+{
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+    if (spItem == 0)
+        return;
+    if (FUN_14072f970(FUN_14166c930()) == 0)
+    {
+        FUN_141275260(0x654, 1, 0);
+        return;
+    }
+    if (FUN_1403ed2d0()->FUN_141bd30a0().FUN_140885340()->m_nA8 == 0)
+    {
+        FUN_141275260(0x654, 1, 0);
+        return;
+    }
+    // the summon is carried as the item's id value
+    vfunc_59(0x26, new StateSummonData(reinterpret_cast<void*>(spItem->FUN_140526a50()), 1), 0, 0);
+}
+MS2_REPLACE_METHOD(0x14152b8d0, MyPC, FUN_14152b8d0, 424, 0xB2896AD2);
 
 // MS2Ptr<Unk_RideeData> (Unk_RideeData is not CPtred-derived here): dtor 0x140788ed0, operator-> 0x1407895d0.
 template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();
