@@ -40,6 +40,9 @@ public:
     void FUN_140c1f8b0(const char* szName, int n);                       // set an int member (hide and seek result rows)
     void FUN_140bd0d90(const char* szName, int n);                       // set an int member (job code, uimainplayerinfo)
     void FUN_140c0e050(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uidungeoncategory.cpp)
+    void FUN_140c43830(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uiitemgachaboxdialog.cpp)
+    void FUN_141aafcd0(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uiquesteventlistener.cpp)
+    void FUN_1409c4990(const char* szName, unsigned long n);             // set a colour member (uiavatarbase.cpp)
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
 
