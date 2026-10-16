@@ -21,7 +21,6 @@
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@1@XZ 0x1404f0dc0 ; prop
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@1@XZ 0x1404f0de0 ; prop
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@1@XZ 0x1404f0e00 ; prop
-// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@1@XZ 0x1404f0e20 ; prop
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@1@XZ 0x1404f0e40 ; prop
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@1@XZ 0x1404f0e60 ; prop
 // MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@1@XZ 0x1404f0e80 ; prop
@@ -90,14 +89,11 @@
 // MS2-PIN: ??R?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@std@@QEBA_NAEBU?$pair@W4Unk_GuildNpcKind@@H@1@0@Z 0x1404f2490 ; prop
 // MS2-PIN: ??R?$less@H@std@@QEBA_NAEBH0@Z 0x1404f24c0 ; unique
 // MS2-PIN: ??_G?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@QEAAPEAXI@Z 0x1404f2750 ; unique
-// MS2-PIN: ??_G?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@QEAAPEAXI@Z 0x1404f27d0 ; prop
 // MS2-PIN: ??_G?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@QEAAPEAXI@Z 0x1404f2850 ; unique
 // MS2-PIN: ??_G?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@QEAAPEAXI@Z 0x1404f2890 ; prop
 // MS2-PIN: ?GetNext@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1404f45c0 ; prop
 // MS2-PIN: ?GetNext@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildSkill@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildSkill@@@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1404f4660 ; prop
 // MS2-PIN: ?GetNext@?$CAtlMap@W4Unk_GuildNpcKind@@V?$Unk_PayloadPtr@VCGuildNpc@@@@V?$CElementTraits@W4Unk_GuildNpcKind@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildNpc@@@@@4@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1404f46b0 ; prop
-// MS2-PIN: ?GetStartPosition@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4c60 ; order
-// MS2-PIN: ?GetStartPosition@?$CAtlMap@W4Unk_GuildNpcKind@@V?$Unk_PayloadPtr@VCGuildNpc@@@@V?$CElementTraits@W4Unk_GuildNpcKind@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildNpc@@@@@4@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4cd0 ; order
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@_J_JV?$CElementTraits@_J@ATL@@V12@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4d40 ; order
 // MS2-PIN: ?IsEmpty@?$CRBTree@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$Unk_PayloadPtr@VCGuildMember@@@@V?$CStringElementTraitsI@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CDefaultCharTraits@_W@2@@2@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildMember@@@@@2@@ATL@@QEBA_NXZ 0x1404f5c10 ; order
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$Unk_PayloadPtr@VCGuildGrade@@@@@ATL@@SAXPEAV?$Unk_PayloadPtr@VCGuildGrade@@@@0_K@Z 0x1404f8620 ; unique
@@ -106,6 +102,26 @@
 // MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildSkill@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildSkill@@@@@3@@ATL@@AEAAXXZ 0x1404fa410 ; unique
 // MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@W4Unk_GuildNpcKind@@V?$Unk_PayloadPtr@VCGuildNpc@@@@V?$CElementTraits@W4Unk_GuildNpcKind@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildNpc@@@@@4@@ATL@@AEAAXXZ 0x1404fa4f0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??R?$less@U?$pair@HH@std@@@std@@QEBA_NAEBU?$pair@HH@1@0@Z 0x1404f2460 ; w80 caller evidence
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4bf0 ; w80 caller evidence
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildCustomEvent@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildCustomEvent@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4c60 ; w80 caller evidence
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildSkill@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildSkill@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4cd0 ; w80 caller evidence
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@W4Unk_GuildNpcKind@@V?$Unk_PayloadPtr@VCGuildNpc@@@@V?$CElementTraits@W4Unk_GuildNpcKind@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildNpc@@@@@4@@ATL@@QEBAPEAU__POSITION@@XZ 0x1404f4d40 ; w80 caller evidence
+// MS2-PIN: ?GetKeyAt@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x1404f4550 ; w80 caller evidence
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEAAAEAUUnk_GuildStrEntry@@PEAU__POSITION@@@Z 0x1404f4db0 ; w80 caller evidence
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildCustomEvent@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildCustomEvent@@@@@3@@ATL@@QEAAAEAV?$Unk_PayloadPtr@VCGuildCustomEvent@@@@PEAU__POSITION@@@Z 0x1404f4e20 ; w80 caller evidence
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildSkill@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildSkill@@@@@3@@ATL@@QEAAAEAV?$Unk_PayloadPtr@VCGuildSkill@@@@PEAU__POSITION@@@Z 0x1404f4e90 ; w80 caller evidence
+// MS2-PIN: ?GetValueAt@?$CAtlMap@W4Unk_GuildNpcKind@@V?$Unk_PayloadPtr@VCGuildNpc@@@@V?$CElementTraits@W4Unk_GuildNpcKind@@@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildNpc@@@@@4@@ATL@@QEAAAEAV?$Unk_PayloadPtr@VCGuildNpc@@@@PEAU__POSITION@@@Z 0x1404f4f00 ; w80 caller evidence
+// MS2-PIN: ?IsEmpty@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildCustomEvent@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildCustomEvent@@@@@3@@ATL@@QEBA_NXZ 0x1404f5bb0 ; w80 caller evidence
+// MS2-PIN: ?IsEmpty@?$CAtlMap@HV?$Unk_PayloadPtr@VCGuildSkill@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildSkill@@@@@3@@ATL@@QEBA_NXZ 0x1404f5be0 ; w80 caller evidence
+// MS2-PIN: ?IsEmpty@?$CAtlMap@HUUnk_GuildStrEntry@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_GuildStrEntry@@@3@@ATL@@QEBA_NXZ 0x1404f5b80 ; w80 caller evidence
+// MS2-PIN: ?RemoveAll@?$CAtlArray@V?$Unk_PayloadPtr@VCGuildGrade@@@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildGrade@@@@@ATL@@@ATL@@QEAAXXZ 0x1404f86e0 ; w80 caller evidence
+// MS2-PIN: ?SetAt@?$CAtlArray@V?$Unk_PayloadPtr@VCGuildGrade@@@@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildGrade@@@@@ATL@@@ATL@@QEAAX_KAEBV?$Unk_PayloadPtr@VCGuildGrade@@@@@Z 0x1404f9730 ; w80 caller evidence
+// MS2-PIN: ?GetNext@?$CRBTree@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$Unk_PayloadPtr@VCGuildMember@@@@V?$CStringElementTraitsI@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CDefaultCharTraits@_W@2@@2@V?$CElementTraits@V?$Unk_PayloadPtr@VCGuildMember@@@@@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1404f4700 ; w80 caller evidence
+// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@1@XZ 0x1404f0da0 ; w80 caller evidence
+// MS2-PIN: ??_G?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@QEAAPEAXI@Z 0x1404f2790 ; w80 caller evidence
+// MS2-PIN: ??_G?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@QEAAPEAXI@Z 0x1404f27d0 ; w80 caller evidence
+// MS2-PIN: ??_G?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@QEAAPEAXI@Z 0x1404f2810 ; w80 caller evidence
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\guilddef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/commonfiles/guilddef_4.h"
@@ -113,11 +129,14 @@
 #include <atlcoll.h>
 #include <algorithm>
 #include <new>
+#include <typeinfo>
+CString FUN_14016a5c0(const char* psz, int n);
 
 // This range holds no original (non-COMDAT) function: it is the sorted tail of the standard-library and ATL
 // instantiations of guilddef.cpp (tree and CAtlMap operations). The instances come from the code of the other
 // guilddef.cpp parts, which are separate sources here, so the container operations are driven from the functions below.
 using namespace guilddef4;
+typedef ATL::CAtlArray<TP<CGuildMember>> MemberArray;   // CGuildInfo member list (Add/GrowBuffer only)
 
 template<class M,class K> void Unk_DriveMap5(M& m,const K& key){
     typename M::iterator it=m.find(key);
@@ -176,6 +195,7 @@ template<class M,class K,class V> void Unk_DriveAtlMap5(M& m,const K& key,const 
     pos=m.GetStartPosition(); (void)m.GetNextKey(pos);
     pos=m.GetStartPosition(); (void)m.GetValueAt(pos); (void)m.GetKeyAt(pos); m.SetValueAt(pos,value); m.RemoveAtPos(pos);
     (void)m.GetCount(); (void)m.IsEmpty();
+    m.SetOptimalLoad(0.0f,0.0f,0.0f,false);
     m.RemoveAll();
 }
 void Unk_GuildDriveAtl5(AtlStrMap& a,AtlEventMap& b,AtlSkillMap& c,AtlNpcMap& d){
@@ -190,9 +210,14 @@ template<class A,class T> void Unk_DriveAtlArray5(A& a,const T& x){
     (void)a[0]; (void)a.GetData(); a.InsertAt(0,x); a.InsertAt(0,x,2); a.RemoveAt(0); a.RemoveAt(0,2); a.SetAtGrow(1,x);
     a.Append(a); a.Copy(a); a.RemoveAll(); a.FreeExtra();
 }
-void Unk_GuildDriveArray5(GradeArray& a,HistArray& b){
+void Unk_GuildDriveArray5(GradeArray& a,HistArray& b,MemberArray& c){
     Unk_DriveAtlArray5(a,TP<CGuildGrade>());
     Unk_DriveAtlArray5(b,TP<Hist>());
+    c.Add(TP<CGuildMember>());
+}
+void Unk_GuildDriveVectors5(std::vector<int>& a,SkillVec& b,ProductVec& c,MapProperty& d){
+    (void)a[0]; (void)b[0]; (void)c[0];
+    MapProperty::reverse_iterator r=d.rbegin(); (void)r->first; r++;
 }
 template<class M,class K,class V> void Unk_DriveRBMap5(M& m,const K& key,const V& value){
     V out; K k=key; V v=value;
@@ -378,7 +403,26 @@ unsigned __int64 Unk_GetCount_0bf0(const Unk_CountedContainer* container) { retu
 class Unk_SingletonObj;
 extern Unk_SingletonObj* DAT_143aaef68;
 Unk_SingletonObj* Unk_GetSingleton_4540() { return DAT_143aaef68; }
+MS2_REPLACE(0x1404F4540, Unk_GetSingleton_4540, 8, 0x384AE20B);
 // @0x1404fa010
 // MS2-FUNCTIONAL: setter of the flag byte at 0x143aaef5f next to the CGuildXmlData singleton pointer
 extern bool DAT_143aaef5f;
 void Unk_SetGuildFlag_a010(bool value) { DAT_143aaef5f = value; }
+MS2_REPLACE(0x1404FA010, Unk_SetGuildFlag_a010, 16, 0x6EF0073A);
+
+// @0x1404f24fc
+// MS2-FUNCTIONAL: adjustor thunk of the CValidData<CGuildXmlData> scalar deleting destructor (this -= 8, then jmp); written as a call
+void* Unk_Thunk_24fc(CValidData<CGuildXmlData>* self, unsigned int flags) { return Unk_Sdd_2d50(static_cast<CGuildXmlData*>(self), flags); }
+
+extern bool DAT_143aaef60;
+// @0x1404f3460
+void Unk_GuildXmlDataCheckInit_3460()
+{
+    if (!DAT_143aaef60)
+    {
+        CString msg;
+        msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(CGuildXmlData).name(), 0));
+        MessageBoxA(0, msg, "Error", 0);
+    }
+}
+MS2_REPLACE(0x1404F3460, Unk_GuildXmlDataCheckInit_3460, 176, 0x2FE7F9E2);
