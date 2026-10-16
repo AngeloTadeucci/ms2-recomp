@@ -76,6 +76,74 @@
 // MS2-PIN: ?reserve@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAX_K@Z 0x14096b0b0 ; unique
 // MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b180 ; prop
 // MS2-PINS-END tplpin
+// tplpin --simulate accepted pins (hand-pasted)
+// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x140953ce0
+// MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@H@ATL@@SAHAEBH0@Z 0x140953d30
+// MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@IEBAPEAVCNode@12@AEBH@Z 0x140953d70
+// MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@AEAAPEAVCNode@12@AEBHAEBV?$MS2Ptr@VActionKeyObject@@@@@Z 0x140954040
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_StreamPoint@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140960d10
+// MS2-PIN: ??$?0UPortalAction@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAUPortalAction@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140960e50
+// MS2-PIN: ??$_Destroy_range@V?$allocator@UUnk_StreamPoint@@@std@@@std@@YAXPEAUUnk_StreamPoint@@0AEAV?$allocator@UUnk_StreamPoint@@@0@@Z 0x140961b80
+// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXAEBUUnk_StreamPoint@@@Z 0x140961c20
+// MS2-PIN: ??$_Emplace_reallocate@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAPEAUUnk_StreamPoint@@QEAU2@AEBU2@@Z 0x140961ce0
+// MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730
+// MS2-PIN: ??$emplace_back@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAXAEBUUnk_StreamPoint@@@Z 0x140963790
+// MS2-PIN: ??0?$MS2Ptr@VCHomemadeCubeObject@@@@QEAA@AEBV0@@Z 0x140963ec0
+// MS2-PIN: ??0?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAA@XZ 0x1409643e0
+// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x1409644c0
+// MS2-PIN: ??0?$allocator@UUnk_StreamPoint@@@std@@QEAA@XZ 0x140964540
+// MS2-PIN: ??0?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@QEAA@XZ 0x140964550
+// MS2-PIN: ??0?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x140964560
+// MS2-PIN: ??0?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA@XZ 0x140964590
+// MS2-PIN: ??1?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@XZ 0x1409648f0
+// MS2-PIN: ??1?$Unk_PayloadPtr@VCubeOwner@@@@QEAA@XZ 0x140964aa0
+// MS2-PIN: ??1?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@XZ 0x140964b60
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCube@@@@QEAAAEAV1@PEAVCube@@@Z 0x140965090
+// MS2-PIN: ??8?$MS2Ptr@VCFieldDataCli@@@@QEBA_NPEAVCFieldDataCli@@@Z 0x140965240
+// MS2-PIN: ??B?$SmartPointer@VRidee@@@efd@@QEBAPEAVRidee@@XZ 0x140965790
+// MS2-PIN: ?get@?$MS2Ptr@VCFieldDataCli@@@@QEBAPEAVCFieldDataCli@@XZ 0x1409657a0
+// MS2-PIN: ??B?$MS2Ptr@VCNurturingCubeObject@@@@QEBAPEAVCNurturingCubeObject@@XZ 0x140965800
+// MS2-PIN: ??B?$MS2Ptr@VUnk_PCInteractMode@@@@QEBAPEAVUnk_PCInteractMode@@XZ 0x140965810
+// MS2-PIN: ??B?$Unk_PayloadPtr@VCubeOwner@@@@QEBAPEAVCubeOwner@@XZ 0x140965820
+// MS2-PIN: ?get@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEBAPEAVUnk_PCBaseComp_b18@@XZ 0x140965850
+// MS2-PIN: ??C?$MS2Ptr@VCNurturingCubeObject@@@@QEBAPEAVCNurturingCubeObject@@XZ 0x140965950
+// MS2-PIN: ??D?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140965a50
+// MS2-PIN: ??_G?$MS2Ptr@VUnk_WsB_Lift@@@@QEAAPEAXI@Z 0x140965e00
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCHomemadeCubeObject@@@@@Z 0x140966580
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@VCNurturingCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@@ATL@@QEBA_KXZ 0x140966d90
+// MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HV?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@2@V?$CElementTraits@H@2@@ATL@@AEBAPEAVCNode@12@PEB_WAEAI1AEAPEAV312@@Z 0x1409672c0
+// MS2-PIN: ?get@?$MS2Ptr@VCInteractObject@@@@QEBAPEAVCInteractObject@@XZ 0x140967470
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1409675f0
+// MS2-PIN: ?SetCount@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1409685a0
+// MS2-PIN: ?AddRef@?$MS2Ptr@VUnk_WsB_Lift@@@@AEBAXXZ 0x140968bd0
+// MS2-PIN: ?AddRef@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXXZ 0x140968c30
+// MS2-PIN: ?Reference@?$MS2Ptr@VCNurturingCubeObject@@@@CAXPEAVCNurturingCubeObject@@@Z 0x140968ef0
+// MS2-PIN: ?Reference@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@CAXPEAVUnk_PCBaseComp_b18@@@Z 0x140968fb0
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VUnk_WsB_Lift@@@@AEBAXPEAX@Z 0x140969100
+// MS2-PIN: ?AddRefImpl@?$Unk_PayloadPtr@VCubeOwner@@@@AEBAXPEAX@Z 0x140969130
+// MS2-PIN: ?_Destroy@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXPEAUUnk_StreamPoint@@0@Z 0x140969470
+// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@2@@Z 0x140969540
+// MS2-PIN: ?_Get_data@?$_String_alloc@U?$_String_base_types@DV?$CustomAllocator@D@efd@@@std@@@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969610
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@D@efd@@V?$_String_val@U?$_Simple_types@D@std@@@std@@$00@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969710
+// MS2-PIN: ?_Has_unused_capacity@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEBA_NXZ 0x140969810
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a00
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969a20
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAAAEAPEAUUnk_StreamPoint@@XZ 0x140969a40
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969aa0
+// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969b20
+// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969b60
+// MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAXXZ 0x140969b80
+// MS2-PIN: ?_Reallocate_exactly@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAX_K@Z 0x140969bc0
+// MS2-PIN: ?Release@?$MS2Ptr@VCFieldDataCli@@@@AEAAXXZ 0x140969de0
+// MS2-PIN: ?Release@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEAAXXZ 0x140969fa0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEAAXPEAX@Z 0x14096a350
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_PCInteractMode@@@@AEAAXPEAX@Z 0x14096a3f0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEAAXPEAX@Z 0x14096a530
+// MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096aab0
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x14096af00
+// MS2-PIN: ??$Call@UPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@CA_NAEAU?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@HAEBVCMsgBoxData@@@Z 0x14096af40
+// MS2-PIN: ?reserve@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAX_K@Z 0x14096b0b0
+// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b180
 //
 // The unit has no __FILE__ string; its name comes from the classes and its directory is assumed. Names are Ghidra's
 // (vfunc_<slot> / FUN_<va>) unless the exe has one (RTTI). The COMDAT tail: the action maps (CRBMap<int,
