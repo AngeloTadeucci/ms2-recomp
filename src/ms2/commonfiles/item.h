@@ -8,6 +8,7 @@
 #include "ms2/placeholder/citem.h"
 #include "ms2/commonfiles/itemgem.h"
 #include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/placeholder/blueprintitemdata.h"
 #include "ms2/commonfiles/itemenchantinfo.h"
 #include "ms2/placeholder/unlimitedenchantinfo.h"
 #include <atlcoll.h>
@@ -73,13 +74,24 @@ class CItemUgc : public CPtred
 {
 public:
     CItemUgc();                             // 0x140631d70
-    CUgcItemLook m_look;                    // +0x18
-    char m_pad80[0x58];
+    virtual ~CItemUgc();                    // 0x140631de0 (??_G 0x140633490)
+    void FUN_140631e50();                   // resets the look
     int FUN_1406321a0();
+    int FUN_1406321d0();
     void FUN_140631f50(COutputStream&);
     MS2Ptr<CItemUgc> FUN_140631e80();
     void FUN_140631fa0(CInputStream&);
+    void FUN_140631ff0(CUgcItemLook* pLook);
+    unsigned __int64 FUN_140632030();                // the ugc id of the look
+    int FUN_140632050();
+    void FUN_140632070(CBlueprintItemData* pBlueprint);
+    __int64 FUN_1406320c0();
+    int FUN_1406320e0();
     CString FUN_140632100();
+    CStringW FUN_140632150();
+    void FUN_140632200(CItemUgc* pSource);
+    CUgcItemLook m_look;                    // +0x18
+    CBlueprintItemData m_blueprint;         // +0x80
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
 class CItemSocket : public CPtred

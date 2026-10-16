@@ -62,7 +62,6 @@ class Unk_ItemEnchantData : public CItemStatus { public: int FUN_14062ffb0(unsig
 class Unk_ItemOwnerRef : public CItemTransfer {};
 extern __int64 FUN_140869440();
 extern unsigned FUN_14054b400(ItemModelData*);
-extern unsigned __int64 FUN_140632030(CItemUgc*);
 
 // w101 additions: unit-local record types for the table lookups CItem makes (names are descriptive, not original).
 class Unk_IngItem : public CPtred { public: bool FUN_14054aca0(); int FUN_14054ace0(); CStringW FUN_14054ad20(); int FUN_14054ad00(); };
@@ -1380,7 +1379,7 @@ int CItem::FUN_140525f60()
 {
     if (m_spUgc == NULL)
         return 0;
-    if (FUN_140632030(m_spUgc.get()) > 0)
+    if (m_spUgc.get()->FUN_140632030() > 0)
         return 1;
     return 0;
 }
@@ -1389,7 +1388,6 @@ MS2_REPLACE_METHOD(0x140525F60, CItem, FUN_140525f60, 87, 0x14B28FAE);
 // ---- w98 batch 1: table-row / UGC delegations
 extern bool FUN_1403b3c40(const CStringW&, const wchar_t*);
 extern bool FUN_14026d4d0(void*, int, __int64);
-extern __int64 FUN_1406321d0(CItemUgc*);
 extern int g_ItemFunctionFlags[4];   // 0x142d568c0
 
 // @0x140525c00
@@ -1426,11 +1424,11 @@ int CItem::FUN_140525f10()
 MS2_REPLACE_METHOD(0x140525F10, CItem, FUN_140525f10, 72, 0x5D744C7D);
 
 // @0x140525fc0
-__int64 CItem::FUN_140525fc0()
+int CItem::FUN_140525fc0()
 {
     if (m_spUgc == NULL)
         return 0;
-    return FUN_1406321d0(m_spUgc.get());
+    return m_spUgc.get()->FUN_1406321d0();
 }
 MS2_REPLACE_METHOD(0x140525FC0, CItem, FUN_140525fc0, 73, 0xDD20CE3F);
 
@@ -1995,10 +1993,6 @@ ItemGachaBoxTable* FUN_14052d230()
 }
 
 // ---- w101 batch 3: UGC look accessors, name/category helpers
-extern void FUN_140631ff0(CItemUgc*, CUgcItemLook*);
-extern __int64 FUN_140632050(CItemUgc*);
-extern void FUN_140632070(CItemUgc*, CUgcItemLook*);
-extern __int64 FUN_1406320c0(CItemUgc*);
 
 // @0x140525c60
 int CItem::FUN_140525c60()
@@ -2033,7 +2027,7 @@ void CItem::FUN_140528300(CUgcItemLook* pLook)
     if (FUN_140525f10() == 0 && FUN_140526010() == 0)
         return;
     if (static_cast<CItemUgc*>(m_spUgc) != 0)
-        FUN_140631ff0(m_spUgc.get(), pLook);
+        m_spUgc.get()->FUN_140631ff0(pLook);
 }
 MS2_REPLACE_METHOD(0x140528300, CItem, FUN_140528300, 115, 0x85D67BAB);
 
@@ -2051,21 +2045,21 @@ unsigned __int64 CItem::FUN_1405283d0()
 {
     if (m_spUgc == NULL)
         return 0;
-    return FUN_140632030(m_spUgc.get());
+    return m_spUgc.get()->FUN_140632030();
 }
 MS2_REPLACE_METHOD(0x1405283D0, CItem, FUN_1405283d0, 73, 0x2AB13BCA);
 
 // @0x140528420
-__int64 CItem::FUN_140528420()
+int CItem::FUN_140528420()
 {
     if (m_spUgc == NULL)
         return 0;
-    return FUN_140632050(m_spUgc.get());
+    return m_spUgc.get()->FUN_140632050();
 }
 MS2_REPLACE_METHOD(0x140528420, CItem, FUN_140528420, 73, 0x96D2DFC9);
 
 // @0x140528470
-void CItem::FUN_140528470(CUgcItemLook* pLook)
+void CItem::FUN_140528470(CBlueprintItemData* pLook)
 {
     if (pLook == 0)
         return;
@@ -2074,16 +2068,16 @@ void CItem::FUN_140528470(CUgcItemLook* pLook)
     if (FUN_1405276c0() != 35200000)
         return;
     if (static_cast<CItemUgc*>(m_spUgc) != 0)
-        FUN_140632070(m_spUgc.get(), pLook);
+        m_spUgc.get()->FUN_140632070(pLook);
 }
 MS2_REPLACE_METHOD(0x140528470, CItem, FUN_140528470, 120, 0xEA20A929);
 
 // @0x1405284f0
-CUgcItemLook* CItem::FUN_1405284f0()
+CBlueprintItemData* CItem::FUN_1405284f0()
 {
     if (m_spUgc == NULL)
         return 0;
-    return reinterpret_cast<CUgcItemLook*>(m_spUgc->m_pad80);
+    return &m_spUgc->m_blueprint;
 }
 MS2_REPLACE_METHOD(0x1405284F0, CItem, FUN_1405284f0, 71, 0x33B685AE);
 
@@ -2092,7 +2086,7 @@ __int64 CItem::FUN_140528540()
 {
     if (m_spUgc == NULL)
         return 0;
-    return FUN_1406320c0(m_spUgc.get());
+    return m_spUgc.get()->FUN_1406320c0();
 }
 MS2_REPLACE_METHOD(0x140528540, CItem, FUN_140528540, 73, 0x78F83810);
 
@@ -2103,7 +2097,6 @@ extern Unk_OptionMgr* FUN_140166430();
 extern bool FUN_14036d570(void*, int);
 extern int FUN_14088de00(MS2Ptr<CItemData>);
 extern int FUN_14062d6f0(void*, int, int, MS2Ptr<CItemData>);
-extern int FUN_1406320e0(CItemUgc*);
 extern unsigned FUN_14062d4b0(void*, int, int, MS2Ptr<CItemData>);
 
 // @0x140528840
@@ -2111,7 +2104,7 @@ int CItem::FUN_140528840()
 {
     if (static_cast<CItemUgc*>(m_spUgc) != 0 ? true : false)
     {
-        if (FUN_1406320e0(m_spUgc.get()) != 0)
+        if (m_spUgc.get()->FUN_1406320e0() != 0)
             return FUN_14088de00(m_spData);
     }
     return 0;
@@ -2368,7 +2361,7 @@ CString CItem::FUN_140528590()
 {
     if (m_strName.GetLength() > 0)
         return m_strName;
-    if ((static_cast<CItemUgc*>(m_spUgc) != 0 ? true : false) && FUN_1406320e0(m_spUgc.get()) != 0)
+    if ((static_cast<CItemUgc*>(m_spUgc) != 0 ? true : false) && m_spUgc.get()->FUN_1406320e0() != 0)
     {
         if (m_spUgc->FUN_1406321a0() == 1)
             return m_spData->FUN_14053fdd0();

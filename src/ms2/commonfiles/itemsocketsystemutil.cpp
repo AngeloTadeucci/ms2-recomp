@@ -20,6 +20,7 @@
 // MS2-PIN: ??D?$MS2Ptr@VCItemBinding@CItemTransfer@@@@QEBAAEAVCItemBinding@CItemTransfer@@XZ 0x140635e60 ; unique
 // MS2-PIN: ??D?$MS2Ptr@VCItemTransfer@@@@QEBAAEAVCItemTransfer@@XZ 0x140635e70 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??_GCItemUgc@@UEAAPEAXI@Z 0x140633490
 // MS2-PIN: ??_7CItemSocketTable@@6B?$TSingleton@VCItemSocketTable@@@@@ 0x142d6bd60
 // MS2-PIN: ?at@?$vector@_JV?$allocator@_J@std@@@std@@QEAAAEA_J_K@Z 0x14062c480
 // MS2-PIN: ??$_Assign_range@PEB_J@?$vector@_JV?$allocator@_J@std@@@std@@AEAAXPEB_J0Uforward_iterator_tag@1@@Z 0x14062b9b0
@@ -1494,6 +1495,12 @@ CStringW FUN_140631830(int nStat, int nValue, CItemData* pData);
 CStringW FUN_140630ea0(int nSaType, unsigned short nValue, CItemData* pData);
 __int64 FUN_140632990(__int64 nValue, float fRate);
 void FUN_1406334d0(CStringW& str);
+void FUN_140892c70(CUgcItemLook* pLook);
+void FUN_140892da0(CUgcItemLook* pDest, const CUgcItemLook* pSource);
+void FUN_140893070(CUgcItemLook* pLook, COutputStream* pStream);
+void FUN_140893250(CUgcItemLook* pLook, CInputStream* pStream);
+int FUN_1408934f0(CUgcItemLook* pLook);
+int FUN_140893520(CUgcItemLook* pLook);
 
 // @0x14062fa00
 // MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
@@ -1509,6 +1516,131 @@ CItemStatus::CItemStatus(CItemOption* pOption, CItemEnchantInfo* pEnchant, Unlim
     : m_spOption(pOption), m_spEnchant(pEnchant), m_spUnlimited(pUnlimited)
 {
 }
+
+// @0x140631d70
+CItemUgc::CItemUgc()
+{
+    FUN_140631e50();
+}
+
+// @0x140631de0
+CItemUgc::~CItemUgc()
+{
+    FUN_140631e50();
+}
+
+// @0x140631e50
+void CItemUgc::FUN_140631e50()
+{
+    FUN_140892c70(&m_look);
+}
+MS2_REPLACE_METHOD(0x140631E50, CItemUgc, FUN_140631e50, 31, 0xB73A08F6);
+
+// @0x140631e80
+MS2Ptr<CItemUgc> CItemUgc::FUN_140631e80()
+{
+    MS2Ptr<CItemUgc> spNew(new CItemUgc());
+    FUN_140892da0(&spNew->m_look, &m_look);
+    return spNew;
+}
+MS2_REPLACE_METHOD(0x140631E80, CItemUgc, FUN_140631e80, 196, 0x5C94FB68);
+
+// @0x140631f50
+void CItemUgc::FUN_140631f50(COutputStream& out)
+{
+    FUN_140893070(&m_look, &out);
+    m_blueprint.FUN_1408925d0(&out);
+}
+MS2_REPLACE_METHOD(0x140631F50, CItemUgc, FUN_140631f50, 65, 0xD959A128);
+
+// @0x140631fa0
+void CItemUgc::FUN_140631fa0(CInputStream& in)
+{
+    FUN_140893250(&m_look, &in);
+    m_blueprint.FUN_1408926e0(&in);
+}
+MS2_REPLACE_METHOD(0x140631FA0, CItemUgc, FUN_140631fa0, 65, 0xBF3AE4BB);
+
+// @0x140631ff0
+void CItemUgc::FUN_140631ff0(CUgcItemLook* pLook)
+{
+    FUN_140631e50();
+    FUN_140892da0(&m_look, pLook);
+}
+MS2_REPLACE_METHOD(0x140631FF0, CItemUgc, FUN_140631ff0, 51, 0x47EF6E9A);
+
+// @0x140632030
+unsigned __int64 CItemUgc::FUN_140632030()
+{
+    return m_look.ugcId;
+}
+MS2_REPLACE_METHOD(0x140632030, CItemUgc, FUN_140632030, 15, 0xAC153A31);
+
+// @0x140632050
+int CItemUgc::FUN_140632050()
+{
+    return m_look.unknown60;
+}
+MS2_REPLACE_METHOD(0x140632050, CItemUgc, FUN_140632050, 14, 0xB1F80757);
+
+// @0x140632070
+void CItemUgc::FUN_140632070(CBlueprintItemData* pBlueprint)
+{
+    m_blueprint.FUN_140892470();
+    m_blueprint.FUN_140892510(pBlueprint);
+}
+MS2_REPLACE_METHOD(0x140632070, CItemUgc, FUN_140632070, 62, 0xBB4AA826);
+
+// @0x1406320c0
+__int64 CItemUgc::FUN_1406320c0()
+{
+    return m_blueprint.m_n18;
+}
+MS2_REPLACE_METHOD(0x1406320C0, CItemUgc, FUN_1406320c0, 18, 0xB95413A9);
+
+// @0x1406320e0
+int CItemUgc::FUN_1406320e0()
+{
+    return m_look.unknown30;
+}
+MS2_REPLACE_METHOD(0x1406320E0, CItemUgc, FUN_1406320e0, 14, 0x921EE467);
+
+// @0x140632100
+CString CItemUgc::FUN_140632100()
+{
+    return m_look.FUN_140892ec0();
+}
+MS2_REPLACE_METHOD(0x140632100, CItemUgc, FUN_140632100, 65, 0x2B0AA445);
+
+// @0x140632150
+CStringW CItemUgc::FUN_140632150()
+{
+    return m_look.title;
+}
+MS2_REPLACE_METHOD(0x140632150, CItemUgc, FUN_140632150, 66, 0x1C4EBE1A);
+
+// @0x1406321a0
+int CItemUgc::FUN_1406321a0()
+{
+    return FUN_1408934f0(&m_look);
+}
+MS2_REPLACE_METHOD(0x1406321A0, CItemUgc, FUN_1406321a0, 31, 0xA34D9BC7);
+
+// @0x1406321d0
+int CItemUgc::FUN_1406321d0()
+{
+    return FUN_140893520(&m_look);
+}
+MS2_REPLACE_METHOD(0x1406321D0, CItemUgc, FUN_1406321d0, 31, 0xA34D9BC7);
+
+// @0x140632200
+void CItemUgc::FUN_140632200(CItemUgc* pSource)
+{
+    if (pSource == 0)
+        return;
+    FUN_140892da0(&m_look, &pSource->m_look);
+}
+MS2_REPLACE_METHOD(0x140632200, CItemUgc, FUN_140632200, 55, 0x51B741FA);
 
 // @0x140632240
 CItemCustomMusicScore::~CItemCustomMusicScore()

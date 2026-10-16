@@ -278,7 +278,7 @@ public:
   int FUN_140525cf0();                   // w98
   int FUN_140526060(void*);              // w98
   int FUN_140525f60();
-  __int64 FUN_140525fc0();
+  int FUN_140525fc0();
   int FUN_140526160();
   void FUN_140526470(unsigned);
   void FUN_140526640(unsigned);
@@ -298,9 +298,9 @@ public:
   unsigned FUN_140527a20();
   unsigned FUN_1405281e0();
   unsigned short FUN_1405282d0();
-  __int64 FUN_140528420();
-  void FUN_140528470(class CUgcItemLook*);
-  class CUgcItemLook* FUN_1405284f0();
+  int FUN_140528420();
+  void FUN_140528470(class CBlueprintItemData*);
+  class CBlueprintItemData* FUN_1405284f0();
   __int64 FUN_140528540();
   bool FUN_140528930();
   void FUN_140528b00(const CStringW&);
