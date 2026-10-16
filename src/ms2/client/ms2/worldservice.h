@@ -136,7 +136,7 @@ struct Unk_WsPod32 { unsigned char raw[32]; };
 struct Unk_WsV058 { void* p; };
 struct Unk_WsV0b8 { void* p; };
 struct Unk_WsV0e8 { void* p; };
-struct Unk_WsV118 { void* p; };
+struct Unk_WsV118 { GameObject* p; };                     // an 8-byte intrusive pointer to the world object (player/npc/monster/pet; slot 2 = Release)
 struct Unk_WsV148 { void* p; };
 struct Unk_WsV1a8 { void* m_obj; unsigned __int64 m_id; };      // proven by OnTick (G): {GameObject*, entity id}
 struct Unk_WsV1d8                                      // proven by FUN_141bbfe30 (helper A): a tracked scene-graph entity
@@ -273,7 +273,7 @@ public:
     void FUN_141bca170(int interval);                   // m_a70 = interval
     void FUN_141bca1e0();                               // m_2b8 = 1 ...
     void FUN_141bca240();
-    void* FUN_141bd0cc0();                              // (unrecovered, #1)
+    void* FUN_141bd0cc0();                              // the local player: m_2d8's pointee, a MyPC (cast with static_cast<PC*>; fittingdollpc.h has PC with slots to 146)
     void FUN_141bcf9f0();                               // (unrecovered, #1)
     void FUN_141bcfad0();                               // (unrecovered, #1)
     void FUN_141bca390(unsigned key);                   // m_1a8.RemoveKey
