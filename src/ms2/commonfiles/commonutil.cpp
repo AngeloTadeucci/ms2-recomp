@@ -1105,3 +1105,145 @@ void FUN_14028f580(CStringW& strText)
     strText.Replace(L"<", L"&lt;");
     strText.Replace(L">", L"&gt;");
 }
+
+#include <string>
+#include "ms2/placeholder/clockcriticalsection.h"
+
+// Item tab name table: per inventory tab the names it is known by (English keys, then localized names).
+class CItemTabNameTable
+{
+public:
+    CItemTabNameTable();                                        // 0x140290460
+    void Init();                                                // 0x1402906b0
+    int FindIndex(std::string strName);                         // 0x1402904d0
+    const std::string& GetTabName(int nTab);                    // 0x1402905e0
+
+    std::vector<std::string> m_arrNames[15];                    // +0x00
+    CLockCriticalSection m_lock;                                // +0x168
+};
+MS2_CHECK_SIZE(CItemTabNameTable, 0x198);
+
+extern CItemTabNameTable g_ItemTabNames;                        // 0x143aacde0
+
+// @0x140290460
+CItemTabNameTable::CItemTabNameTable()
+{
+    Init();
+}
+
+// Fills the table. The localized names are CP949 text.
+// MS2-FUNCTIONAL: not yet byte-matched (string temp slots)
+// @0x1402906b0
+void CItemTabNameTable::Init()
+{
+    Unk_LockGuard guard(m_lock);
+    m_arrNames[0].push_back(std::string("game"));
+    m_arrNames[1].push_back(std::string("skin"));
+    m_arrNames[2].push_back(std::string("summon"));
+    m_arrNames[3].push_back(std::string("material"));
+    m_arrNames[4].push_back(std::string("life"));
+    m_arrNames[5].push_back(std::string("quest"));
+    m_arrNames[6].push_back(std::string("gem"));
+    m_arrNames[7].push_back(std::string("misc"));
+    m_arrNames[8].push_back(std::string("mastery"));
+    m_arrNames[9].push_back(std::string("pet"));
+    m_arrNames[13].push_back(std::string("lapenshard"));
+    m_arrNames[10].push_back(std::string("activeskill"));
+    m_arrNames[11].push_back(std::string("coin"));
+    m_arrNames[12].push_back(std::string("badge"));
+    m_arrNames[14].push_back(std::string("piece"));
+    for (unsigned int nTab = 0; nTab < 15; ++nTab)
+    {
+        for (unsigned int nSub = 0; nSub < m_arrNames[nTab].size(); ++nSub)
+        {
+            if (m_arrNames[nTab][nSub].size() == 0)
+                _wassert(L"vTabNames[tabIndex][subIndex].size()", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp", 0x811);
+        }
+    }
+    m_arrNames[0].push_back(std::string("equip"));
+    m_arrNames[0].push_back(std::string("\xc0\xe5\xba\xf1"));
+    m_arrNames[1].push_back(std::string("\xbd\xba\xc5\xb2"));
+    m_arrNames[2].push_back(std::string("\xbc\xd2\xc8\xaf"));
+    m_arrNames[3].push_back(std::string("\xc0\xe7\xb7\xe1"));
+    m_arrNames[4].push_back(std::string("\xbb\xfd\xc8\xb0"));
+    m_arrNames[5].push_back(std::string("\xc4\xf9\xbd\xba\xc6\xae"));
+    m_arrNames[6].push_back(std::string("gemstone"));
+    m_arrNames[6].push_back(std::string("\xc1\xaa\xbd\xba\xc5\xe6"));
+    m_arrNames[7].push_back(std::string("etc"));
+    m_arrNames[7].push_back(std::string("\xb1\xe2\xc5\xb8"));
+    m_arrNames[8].push_back(std::string("\xbb\xfd\xc8\xb0\xb1\xe2\xbc\xfa"));
+    m_arrNames[9].push_back(std::string("\xc6\xea"));
+    m_arrNames[13].push_back(std::string("\xb6\xf3\xc6\xe6\xbb\xfe\xb5\xe5"));
+    m_arrNames[10].push_back(std::string("\xbc\xd2\xba\xf1"));
+    m_arrNames[11].push_back(std::string("\xc8\xad\xc6\xf3"));
+    m_arrNames[12].push_back(std::string("\xb9\xe8\xc1\xf6"));
+    m_arrNames[14].push_back(std::string("\xc1\xb6\xb0\xa2"));
+}
+
+// Tab index that knows the name, or -1.
+// MS2-FUNCTIONAL: not yet byte-matched
+// @0x1402904d0
+int CItemTabNameTable::FindIndex(std::string strName)
+{
+    for (unsigned int nTab = 0; nTab < 15; ++nTab)
+    {
+        for (unsigned int nSub = 0; nSub < m_arrNames[nTab].size(); ++nSub)
+        {
+            if (strName.compare(m_arrNames[nTab][nSub]) == 0)
+                return nTab;
+        }
+    }
+    _wassert(L"0", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp", 0x841);
+    return -1;
+}
+
+// @0x140291150
+char FUN_140291150(int nTab)
+{
+    int bValid;
+    if (nTab > -1 && nTab < 15)
+        bValid = 1;
+    else
+        bValid = 0;
+    return bValid;
+}
+
+// First name of the tab.
+// MS2-FUNCTIONAL: not yet byte-matched
+// @0x1402905e0
+const std::string& CItemTabNameTable::GetTabName(int nTab)
+{
+    static std::string s_strEmpty;
+    if (!FUN_140291150(nTab))
+    {
+        _wassert(L"0", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonutil.cpp", 0x82f);
+        return s_strEmpty;
+    }
+    return m_arrNames[nTab][0];
+}
+
+// @0x140291190
+int FUN_140291190(std::string strName)
+{
+    return g_ItemTabNames.FindIndex(strName);
+}
+
+// @0x140291200
+int FUN_140291200(CString strName)
+{
+    std::string strText((const char*)strName);
+    return g_ItemTabNames.FindIndex(strText);
+}
+
+// @0x1402912d0
+int FUN_1402912d0(CStringW strName)
+{
+    return FUN_140291200(CString((const wchar_t*)strName));
+}
+
+// @0x140291340
+bool FUN_140291340(int nTab, std::string& strOut)
+{
+    strOut = g_ItemTabNames.GetTabName(nTab);
+    return strOut.size() != 0;
+}
