@@ -251,7 +251,7 @@ void* FUN_1401cd190(void*);
 void* FUN_1410a6920(void*);
 float FUN_140966f00(efd::Point3, efd::Point3);
 efd::Point3 FUN_1410a7590(PCBase*);
-int FUN_1410a7600(PCBase*);
+float FUN_1410a7600(PCBase*);
 void FUN_1410a77e0(CGuideObject*, float);
 
 class CStateManager : public CPtred
@@ -264,7 +264,7 @@ private:
     char m_pad_18[0x98 - 0x18];
 };
 
-// The placement/aim record a controller sends (a CPtred, created by 0x140835450).
+// The placement/aim record a controller sends (a CPtred, created by 0x140835450; layout = statemanager.h Unk_StateArg22).
 class Unk_GuideRecord : public CPtred
 {
 public:
@@ -273,12 +273,13 @@ public:
     int m_nObjId;                                               // +0x1c
     efd::Point3 m_pos20;
     efd::Point3 m_pos2c;
+    char m_pad_38[4];
     efd::Point3 m_pos3c;
     efd::Point3 m_pos48;
     int m_n54;
-    int m_n58;
+    float m_f58;                                                // +0x58
     char m_pad_5c[0xa4 - 0x5c];
-    int m_na4;
+    float m_fa4;                                                // +0xa4
     int m_na8;
     int m_nac;
 };
@@ -379,7 +380,7 @@ Unk_CubeSelection* FUN_141659700(PCBase*);
 int FUN_14166c930(PCBase*);
 void* FUN_14166ccb0(PCBase*);
 int FUN_14166cc80(PCBase*);
-int FUN_14166da40(PCBase*);
+float FUN_14166da40(PCBase*);
 void FUN_14166d820(PCBase*);
 void FUN_141678160(PCBase*, efd::Point3);
 void* FUN_141670990(PCBase*, int, int);
@@ -501,10 +502,10 @@ void CGuideObject::vfunc_126()
     spNew->m_pos3c = m_pos98;
     spNew->m_pos20 = vfunc_18();
     spNew->m_pos2c = vfunc_20();
-    spNew->m_n58 = ::FUN_14166da40(this);
+    spNew->m_f58 = ::FUN_14166da40(this);
     spNew->m_pos48 = NiPoint3::ZERO;
     spNew->m_n54 = FUN_1409478c0()->FUN_140af7e30();
-    spNew->m_na4 = FUN_1410a7600(this);
+    spNew->m_fa4 = FUN_1410a7600(this);
     spNew->m_nac = FUN_14086d260()->FUN_141473390();
     if (m_bBusy)
         spNew->m_pos3c = NiPoint3::ZERO;
@@ -1582,15 +1583,15 @@ efd::Point3 FUN_1410a7590(PCBase* pActor)
 }
 
 // @0x1410a7600
-int FUN_1410a7600(PCBase* pActor)
+float FUN_1410a7600(PCBase* pActor)
 {
-    return pActor->m_unk_bf0;
+    return pActor->m_fBF0;
 }
 
 // @0x1410a77e0
 void FUN_1410a77e0(CGuideObject* pActor, float f)
 {
-    pActor->m_unk_bf0 = *(int*)&f;
+    pActor->m_fBF0 = f;
 }
 
 // @0x1410a7800

@@ -519,7 +519,7 @@ public:
     ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> > m_unk_b88;   // +0xb88 (init 0x14167deb0(p,10)); node map per Ridee
     ATL::CRBMap<CString, efd::SmartPointer<NiAVObject> > m_unk_bb8;   // +0xbb8 (init 0x14167deb0(p,10)); second node map
     efd::SmartPointer<NiAVObject> m_spBE8;   // +0xbe8 (init 0x14097eba0(p,0))
-    int m_unk_bf0;                      // +0xbf0
+    float m_fBF0;                       // +0xbf0 (FUN_1410a7600 / FUN_1410a77e0)
     NiPoint3 m_posBF4;                  // +0xbf4 = ZERO
     int m_unk_c00;                      // +0xc00
     int m_unk_c04;                      // +0xc04 = 1
