@@ -45,6 +45,7 @@
 #include "cubecraft_1.h"
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/ascript.h"
+#include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/notifyobject.h"
 #include "ms2/commonfiles/stream.h"
@@ -506,7 +507,8 @@ extern int DAT_143ab2918;
 class Unk_SSGDlg4e28 { public: void FUN_141939620(); };
 Unk_SSGDlg4e28* FUN_140938b90(int nId);                     // GetDialog<T>(0x4e28)
 class Unk_MyPCSkillSlots { public: void FUN_141765de0(); void FUN_141767ae0(CInPacket& packet);
-    void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue); };
+    void FUN_141765f60(__int64 nUid); void FUN_141766900(__int64 nUid, int nSlot); void FUN_141768530(int nSkillId, int nValue);
+    unsigned int FUN_141768680(class Unk_SSGSkillRow* pRow); void FUN_141765e70(int nSkillId); };
 class Unk_MyPCStatPoints : public CPtred { public: void FUN_140ca9e90(CInPacket& packet); };
 class Unk_SSGConstValue { public: int* FUN_1402056b0(); int FUN_140ad5c50(); };
 class Unk_SSGConstValue2 { public: int* FUN_1401d7c10(); };
@@ -609,7 +611,9 @@ public:
 Unk_SSGa94350* FUN_140a94350();
 
 class Unk_SSGSkillAttr : public CPtred { };
-class Unk_SSGSkillTable { public: MS2Ptr<Unk_SSGSkillAttr> FUN_140aafef0(int nSkillId, unsigned short nLevel); };
+class Unk_SSGSkillRow : public CPtred { public: int FUN_1407e9b90(); };   // SkillDataTableCli row (base skill id or 0)
+class Unk_SSGSkillTable { public: MS2Ptr<Unk_SSGSkillAttr> FUN_140aafef0(int nSkillId, unsigned short nLevel);
+    MS2Ptr<Unk_SSGSkillRow> FUN_1407ee1d0(int nSkillId); };
 Unk_SSGSkillTable* FUN_1401958b0();                         // SkillDataTableCli
 class Unk_SSGSkillCollision
 {
@@ -726,6 +730,8 @@ public:
     int m_nA;
 };
 MS2_CHECK_SIZE(Unk_SSG5b5e70, 4);
+
+bool FUN_1418fd6c0(__int64 nUid);
 
 // ---- statics (exe .di order) -----------------------------------------------------------------------------------
 class Unk_Handle1401cd100 { public: Unk_Handle1401cd100(int nNull); void* m_p; };     // ctor 0x1401cd100
@@ -3533,3 +3539,49 @@ void CSceneStateGame::FUN_14173d2e0(CInPacket& packet)
     }
 }
 MS2_REPLACE_METHOD(0x14173d2e0, CSceneStateGame, FUN_14173d2e0, 483, 0x21A44490);
+
+// @0x14173fc40
+void CSceneStateGame::FUN_14173fc40(CInPacket& packet)
+{
+    int nSkillId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned int nMin = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    unsigned int nUsed = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    MyPC* pMyPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pMyPC == 0)
+        return;
+    MS2Ptr<Unk_SSGSkillRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(nSkillId);
+    if (spRow == 0)
+        return;
+    int nBaseId = spRow->FUN_1407e9b90();
+    if (nBaseId != 0)
+        nSkillId = nBaseId;
+    unsigned int nPoint = pMyPC->FUN_141523bc0()->FUN_141768680(spRow.get());
+    nPoint -= (std::min)(nPoint, nUsed);
+    unsigned int nValue = nPoint;
+    if (nPoint < nMin)
+        nValue = nMin;
+    if (nValue == 0)
+        pMyPC->FUN_141523bc0()->FUN_141765e70(nSkillId);
+    pMyPC->FUN_141523bc0()->FUN_141768530(nSkillId, nValue);
+}
+MS2_REPLACE_METHOD(0x14173fc40, CSceneStateGame, FUN_14173fc40, 459, 0x11D57B92);
+
+// @0x141740280
+bool CSceneStateGame::FUN_141740280(int nButton, const CMsgBoxData& data)
+{
+    __int64 nUid = data.FUN_141a02ed0(0, 0);
+    const CStringW& strName = data.FUN_141a02fd0(1, CStringW());
+    if (nButton == 0)
+    {
+        FUN_1418fd6c0(nUid);
+        FUN_141740200(strName, 1);
+    }
+    else if (data.FUN_141a04a80().m_nButton != 0)
+        FUN_141740200(strName, 6);
+    else if (data.FUN_141a049d0())
+        FUN_141740200(strName, 6);
+    else
+        FUN_141740200(strName, 2);
+    return true;
+}
+MS2_REPLACE_METHOD(0x141740280, CSceneStateGame, FUN_141740280, 285, 0x7362E0DC);

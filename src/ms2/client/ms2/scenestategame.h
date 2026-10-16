@@ -244,6 +244,7 @@ public:
     int FUN_14173fe20();                                    // Ctrl+Alt+... debug key combination
     void FUN_14173feb0();                                   // the debug key action
     void FUN_141740200(const CStringW& strName, int nType); // send packet 0x51 (mode 0, name, type)
+    bool FUN_141740280(int nButton, const CMsgBoxData& data); // message box callback: answers packet 0x51
 
 public:   // members (names inferred)
     bool m_b18;                                             // +0x18 (true)
