@@ -28,10 +28,16 @@ public:
     CInteractObjectData();              // 0x14051caa0
     virtual ~CInteractObjectData();     // 0x14051cd40
 
+    // Inline members of the original header (their COMDATs are in scenestategame.cpp's range).
+    // @0x1417486f0
+    int FUN_1417486f0() { return m_nKind == 1; }    // a mesh object
+    // @0x1417486c0
+    int FUN_1417486c0() { return m_nKind == 8; }    // a bill board
+
     int m_nBanMapType;                  // +0x30 map type in which the object may not be used
-    int m_pad_34;
+    int m_nKind;                        // +0x34 object kind (1 mesh, 8 bill board; scenestategame 0x63 mode 9)
     QuestMask m_maskUse;                // +0x38 quest condition to use the object at all
-    int m_pad_78;
+    int m_nFirstUseNotice;              // +0x78 announce the first use (scenestategame 0x63 mode 13)
     int m_pad_7c;
     int m_nShowCollisionA;              // +0x80 mesh collision switch handed to the box controller
     int m_nShowCollisionB;              // +0x84

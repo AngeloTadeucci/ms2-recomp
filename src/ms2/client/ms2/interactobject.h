@@ -75,6 +75,10 @@ public:
     Unk_StreamPoint FUN_1409673c0();                            // 0x1409673c0 position copy
     // @0x140967150
     int FUN_140967150() { return m_nVisible; }
+    // @0x14174a4a0
+    void FUN_14174a4a0(const CString& strName) { m_strName = strName; }
+    // @0x14174a4d0
+    void FUN_14174a4d0() { m_bSpawned = 1; }
 
     Unk_EntRef FUN_1413fd890();                                 // copy of the entity handle
     egf::EntityID FUN_1413fd8e0();                              // id of the entity (0 when unbound)
@@ -106,7 +110,8 @@ public:
     int m_nVisible;                                             // +0x64
     unsigned char m_bHighlight;                                 // +0x68 registered with the highlight manager
     Timer m_timer;                                              // +0x70
-    __int64 m_pad_a8;
+    unsigned char m_bSpawned;                                   // +0xa8 created by the field (scenestategame 0x63)
+    char m_pad_a9[7];
 };
 MS2_CHECK_SIZE(CInteractObject, 0xb0);
 MS2_CHECK_OFFSET(CInteractObject, m_ent, 0x18);

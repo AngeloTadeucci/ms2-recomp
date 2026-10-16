@@ -60,6 +60,9 @@
 // MS2-PIN: ??1Unk_MagicTag@@UEAA@XZ 0x141746cb0 ; w125 manual (RTTI SkillTargetRecord)
 // MS2-PIN: ??_7Unk_MagicTag@@6B@ 0x142f5faf8 ; w125 manual (RTTI SkillTargetRecord)
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@AEBV0@@Z 0x141746e70 ; w125 manual (this obj's copy; mypc has 0x141532e00)
+// MS2-PIN: ?IsNull@?$MS2Ptr@VCInteractObject@@@@QEBA_NXZ 0x140a7b5e0 ; w125 manual (call site 0x14172d0f0; the in-range look-alike 0x141747040 is called only by stubs 0x14171dc40/0x141732b20)
+// MS2-PIN: ?get@?$MS2Ptr@VCInteractObjectData@@@@QEBAPEAVCInteractObjectData@@XZ 0x1411926f0 ; w125 manual (call site 0x14172d0f0; look-alike 0x141747280 is called by stub 0x141732b20)
+#define NOMINMAX                        // NxPhysics (interactobject.h)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "scenestategame.h"
@@ -124,6 +127,9 @@
 #include "magicdata.h"                    // CMagicModel, Unk_MagicTagPtr (0x3d mode 0)
 #include "ms2/commonfiles/timeutil.h"     // Unk_ServerClock
 #include "ms2/client/ms2/uihideandseekresultdialog.h"
+#include "interactobject.h"                // CInteractObject (0x63)
+#include "entityworldmanager.h"
+#include <egf/EntityIDFactory.h>
 // MS2Ptr<CProxyGameObject>::operator-> / get are the exe's out-of-range copies (0x1406c71d0 / 0x1406c71b0); left
 // undefined here so they are not paired with the unit's in-range look-alikes.
 template <> CProxyGameObject* MS2Ptr<CProxyGameObject>::operator->() const;
@@ -175,6 +181,15 @@ public:
     void FUN_141bd9c20(CInPacket& packet);
     void FUN_141bdb6a0();                                   // hide the world tooltips
     void FUN_141bdb7a0();                                   // show them
+    // interact objects (0x63)
+    void FUN_141bc6860(const CString& strName, int nA, int nB);
+    MS2Ptr<CInteractObject> FUN_141bc66b0(const CString& strName);  // find one by name
+    void FUN_141bc6930(int nKind, int n);
+    void FUN_141bc6a20(int n);
+    void FUN_141bc6760(const CString& strName, int nA, int nB, int nC);
+    void FUN_141bc5c40(MS2Ptr<CInteractObject> spObj);      // add one
+    void FUN_141bc5d60(const CString& strName);              // remove one
+    int FUN_141bd3060();                                    // current channel's map id
 };
 Unk_SSGWorld* FUN_1403ed2d0();
 
@@ -221,6 +236,7 @@ public:
     void FUN_1411a6060(int nHandle);                        // remove an effect
     void FUN_1411a4f40(CString strName, const NiPoint3& kPos);
     void FUN_1411a4a00(Unk_EffectQuery* pQuery);                    // play once
+    int FUN_1411a4a00(struct Unk_SSGEffectReq& req);                // the same, with the full 0x70 request
     void FUN_1411a5110(CString strPath, CString strName, CString strBone, int a, struct Unk_SSGXform* pXform, float fScale, int b);   // play a sound
 };
 Unk_SSGEffectMgr* FUN_1403ed280();
@@ -834,7 +850,15 @@ class Unk_SSGDlg4ed8 { public: void FUN_1412c5330(int n); void FUN_1412c54e0(int
     void FUN_1412c5c30(); void FUN_1412c6220(); void FUN_1412c66c0(); void FUN_1412c6b50(); };
 Unk_SSGDlg4ed8* FUN_140bbea00(int nId);                     // GetDialog<T>(0x4ed8)
 
-class Unk_SSGDlg4e29 { public: void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos); void FUN_141a3a780(int nId); };
+class Unk_SSGDlg4e29
+{
+public:
+    void FUN_141a3b130(__int64 nUid, int nType, const Unk_NiPoint3& kPos);
+    void FUN_141a3a780(int nId);
+    void FUN_141a39770(MS2Ptr<CInteractObject> spObj);     // an interact object was added
+    void FUN_141a39bf0(MS2Ptr<CInteractObject> spObj);     // one was removed
+    void FUN_141a3a890();                                   // first use of a gathering object
+};
 Unk_SSGDlg4e29* FUN_140c9b540(int nId);                     // GetDialog<T>(0x4e29)
 
 class Unk_SSGCommandLog
@@ -4485,6 +4509,367 @@ void CSceneStateGame::FUN_14172a850(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14172a850, CSceneStateGame, FUN_14172a850, 140, 0xE3DF6E2B);
 
+// NiTransform (rotation, translation, scale) for the sound call (same free-function placeholders as uimessagebox.cpp).
+struct Unk_SSGPt3 { float x, y, z; };
+struct Unk_SSGNiPt3
+{
+    Unk_SSGNiPt3(const NiPoint3& src);                      // 0x14027dcf0 NiPoint3 from efd::Point3
+    Unk_SSGNiPt3(const Unk_StreamPoint& src);               // 0x14027dcf0 (the same ctor)
+    float x, y, z;
+};
+struct Unk_SSGRot { float m[3][3]; };
+struct Unk_SSGXform
+{
+    Unk_SSGRot m_rotate;                                    // +0x00
+    Unk_SSGPt3 m_translate;                                 // +0x24
+    float m_fScale;                                         // +0x30
+    void FUN_141d2fab0();                                   // NiTransform::MakeIdentity
+};
+MS2_CHECK_SIZE(Unk_SSGXform, 0x34);
+void FUN_140a332d0(Unk_SSGXform* p);                        // NiTransform default ctor
+void FUN_14097faa0(Unk_SSGPt3* pDst, const Unk_SSGNiPt3& src);   // NiPoint3::operator=
+void FUN_140a33240(Unk_SSGRot* pDst, const Unk_EfdMatrix3* pSrc);   // NiMatrix3 from efd::Matrix3
+extern Unk_EfdMatrix3 DAT_143a09600;                        // identity rotation
+// ---- 0x63: interact objects of the field (create / update / remove, use results) --------------------------------
+MS2Ptr<CInteractObjectData> FUN_14051f670(int nId);          // the interact table row
+EntityWorldManager* FUN_1409670f0();
+CString FUN_1409a2360(const char* psz, int nFlag);           // a copy of the string
+void FUN_140de0cb0(efd::AssetID* pAsset, const efd::utf8string& strUrn);   // set an asset id from its urn
+#ifdef __clang__
+CString FUN_140298360(const char* pszLeft, const CString& strRight);   // ATL::operator+(const char*, const CString&)
+#endif
+extern ATL::CAtlArray<int> DAT_143ab3128;                    // templates whose first use was announced
+int FUN_1402bacf0(ATL::CAtlArray<int>& arr, const int& n);  // index of n (-1 if absent)
+extern CString DAT_143ae79e0;                                // the first use sound event
+class Unk_SSGMastery
+{
+public:
+    CStringW FUN_14066bdd0(int nType);                      // the mastery name
+    CStringW FUN_14066c690(int nType, int nGrade);          // the mastery grade name
+};
+Unk_SSGMastery* FUN_1409670c0();
+void FUN_141275460(int nStringId, int nA, int nB, const fmt::ArgList& args);
+// fmt center notices with one / two arguments (the same template as actionkeyobject.cpp's).
+template <class A> void Unk_AkoMessage(int nStringId, int nA, int nB, const A& x)
+{
+    const fmt::internal::ArgArray<1>::Type values = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(x)};
+    FUN_141275460(nStringId, nA, nB, fmt::ArgList(fmt::internal::make_type(x), values));
+}
+template <class A, class B> void Unk_AkoMessage(int nStringId, int nA, int nB, const A& x, const B& y)
+{
+    const fmt::internal::ArgArray<2>::Type values = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(x),
+        fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(y)};
+    FUN_141275460(nStringId, nA, nB, fmt::ArgList(fmt::internal::make_type(x, y), values));
+}
+// The effect play request (0x70 bytes; effectquery.h declares only its first 0x10).
+struct Unk_SSGEffectReq
+{
+    Unk_SSGEffectReq();                                     // 0x140a52ef0
+    ~Unk_SSGEffectReq();                                    // 0x1405a89e0
+    CString m_strName;                                      // +0x00
+    int m_nType;                                            // +0x08
+    int m_pad_0c;
+    void* m_pad_10;
+    Unk_SSGXform* m_pXform;                                 // +0x18
+    void* m_pad_20[10];
+};
+MS2_CHECK_SIZE(Unk_SSGEffectReq, 0x70);
+MS2_CHECK_OFFSET(Unk_SSGEffectReq, m_pXform, 0x18);
+
+// The use result of an interact object (0x63 mode 13; 0 ok, 1.. the failure notices; formatted into notice 0x895).
+enum Unk_SSGInteractResult { SSG_INTERACT_OK };
+
+enum Unk_SSGInteractMode
+{
+    SSG_INTERACT_STATE = 4, SSG_INTERACT_MSG, SSG_INTERACT_KIND_STATE, SSG_INTERACT_ALL_STATE, SSG_INTERACT_STATES,
+    SSG_INTERACT_ADD, SSG_INTERACT_REMOVE, SSG_INTERACT_11, SSG_INTERACT_12, SSG_INTERACT_RESULT, SSG_INTERACT_NOTICE,
+    SSG_INTERACT_WEAPON
+};
+
+// @0x14172d0f0
+void CSceneStateGame::FUN_14172d0f0(CInPacket& packet)
+{
+    int nMode = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    switch (static_cast<Unk_SSGInteractMode>(nMode))
+    {
+    case SSG_INTERACT_MSG:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        unsigned char nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        MS2Ptr<CInteractObject> spObj = FUN_1403ed2d0()->FUN_141bc66b0(strName);
+        if (spObj.IsNull())
+            break;
+        if (spObj->vfunc_5() != nKind)
+            break;
+        // the stream of the packet is the message's (Unk_InteractMsg keeps it at +8 as CInPacket does)
+        spObj->vfunc_2(reinterpret_cast<Unk_InteractMsg*>(&packet));
+    }
+    break;
+    case SSG_INTERACT_RESULT:
+    {
+        Unk_SSGInteractResult nResult = static_cast<Unk_SSGInteractResult>(static_cast<CInputStream&>(packet).vfunc_o8_1());
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        unsigned char nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        if (nResult == 0)
+        {
+            MS2Ptr<CInteractObject> spObj = FUN_1403ed2d0()->FUN_141bc66b0(strName);
+            if (spObj.IsNull())
+                return;
+            if (spObj->vfunc_5() != nKind)
+                return;
+            spObj->vfunc_12();
+            int nNotice = spObj->FUN_140966e00()->m_nFirstUseNotice;
+            if (nNotice != 0)
+            {
+                int nTemplate = spObj->FUN_140967110();
+                if (FUN_1402bacf0(DAT_143ab3128, nTemplate) == -1)
+                {
+                    DAT_143ab3128.Add(spObj->FUN_140967110());
+                    if (spObj->vfunc_5() == 2)
+                    {
+                        if (Unk_SSGDlg4e29* pDlg = FUN_140c9b540(0x4e29))
+                            pDlg->FUN_141a3a890();
+                        FUN_141275260(0x897, 3, 1);
+                        FUN_141276180(DAT_143ae79e0, "");
+                    }
+                }
+            }
+        }
+        else if (nResult == 1)
+        {
+            Unk_AkoMessage(0x895, 1, 1, nResult);
+        }
+        else if (nResult == 12)
+        {
+        }
+        else if (nResult == 4)
+        {
+            MS2Ptr<CInteractObject> spObj = FUN_1403ed2d0()->FUN_141bc66b0(strName);
+            if (spObj.IsNull())
+                return;
+            if (spObj->FUN_140966e00().IsNull())
+                return;
+            Unk_AkoMessage(0x7c9, 1, 1, FUN_1401a9d70()->FUN_141811980(1, spObj->FUN_140966e00()->m_nCostItemId));
+        }
+        else if (nResult == 13)
+        {
+            MS2Ptr<CInteractObject> spObj = FUN_1403ed2d0()->FUN_141bc66b0(strName);
+            if (spObj.IsNull())
+                return;
+            MS2Ptr<CInteractObjectData> spData = spObj->FUN_140966e00();
+            if (spData.IsNull())
+                return;
+            CStringW strMastery = FUN_1409670c0()->FUN_14066bdd0(spData->m_nGatherNeedA);
+            CStringW strGrade = FUN_1409670c0()->FUN_14066c690(spData->m_nGatherNeedA, spData->m_nGatherNeedB);
+            Unk_AkoMessage(0x896, 1, 1, strMastery, strGrade);
+        }
+        else
+        {
+            int nStringId = 0;
+            switch (nResult)
+            {
+            case 7: nStringId = 0x891; break;
+            case 2: nStringId = 0x892; break;
+            case 3: nStringId = 0x893; break;
+            case 5: nStringId = 0x894; break;
+            case 6: return;
+            default: return;
+            }
+            FUN_141275260(nStringId, 1, 1);
+        }
+    }
+    break;
+    case SSG_INTERACT_ADD:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        unsigned char nKind = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nRowId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        Unk_StreamPoint ptPos = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        Unk_StreamPoint ptRot = static_cast<CInputStream&>(packet).vfunc_o8_10();
+        CString strModel = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        CString strAnim = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        CString strAssetA = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        CString strAssetB = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        float fScale = static_cast<CInputStream&>(packet).vfunc_o8_5();
+        bool bFlag = static_cast<CInputStream&>(packet).vfunc_o8_0();
+        efd::utf8string strUrnA(FUN_1409a2360(strAssetA, 0));
+        efd::utf8string strUrnB(FUN_1409a2360(strAssetB, 0));
+        MS2Ptr<CInteractObjectData> spData = FUN_14051f670(nRowId);
+        if (spData.get() != 0)
+        {
+            MS2Ptr<CInteractObject> spObj(0);
+            if (spData->FUN_1417486f0() || spData->FUN_1417486c0())
+            {
+                efd::SmartPointer<egf::Entity> spEntity(0);
+                if (strModel == "MS2InteractMesh")
+                {
+                    egf::EntityID id = egf::EntityIDFactory::GetNextID();
+                    spEntity = FUN_1409670f0()->FUN_1411cec80("MS2InteractMesh", id, true);
+                    if (spEntity != 0)
+                    {
+                        efd::AssetID assetA;
+                        efd::AssetID assetB;
+                        if (strUrnA.length() != 0 && strUrnB.length() != 0)
+                        {
+                            strUrnA = static_cast<const char*>(FUN_1409a2360("urn:gamebryo-scenegraph:", 0)) + strUrnA;
+                            strUrnB = static_cast<const char*>(FUN_1409a2360("urn:gamebryo-scenegraph:", 0)) + strUrnB;
+                            FUN_140de0cb0(&assetA, strUrnA);
+                            FUN_140de0cb0(&assetB, strUrnB);
+                            spEntity->SetPropertyValue(0x770e5fc6, assetA);
+                            spEntity->SetPropertyValue(0xae1cf70e, assetB);
+                        }
+                    }
+                }
+                else if (strModel == "MS2InteractActor")
+                {
+                    egf::EntityID id = egf::EntityIDFactory::GetNextID();
+                    spEntity = FUN_1409670f0()->FUN_1411cec80("MS2InteractActor", id, true);
+                    if (spEntity)
+                    {
+                        efd::AssetID asset;
+                        if (!strAnim.IsEmpty())
+                        {
+#ifdef __clang__
+                            // clang otherwise emits an unavailable CopyChars DLL import; bind the exe's operator+.
+                            strAnim = FUN_140298360("urn:gamebryo-animation:", strAnim);
+#else
+                            strAnim = "urn:gamebryo-animation:" + strAnim;
+#endif
+                            FUN_140de0cb0(&asset, efd::utf8string(FUN_1409a2360(strAnim, 0)));
+                            spEntity->SetPropertyValue(0x12383cea, asset);
+                            spEntity->SetPropertyValue(0x3ff293c8, strUrnA);
+                            spEntity->SetPropertyValue(0x63c7b14a, strUrnB);
+                        }
+                    }
+                }
+                if (spEntity)
+                {
+                    spEntity->SetPropertyValue(0xfd95ca52, reinterpret_cast<const efd::Point3&>(ptPos));
+                    spEntity->SetPropertyValue(0x68c7c29d, reinterpret_cast<const efd::Point3&>(ptRot));
+                    spEntity->SetPropertyValue(0xd460e9bc, nRowId);
+                    spEntity->SetPropertyValue(0x2d7cad2d, fScale);
+                    bool bFalse = false;
+                    spEntity->SetPropertyValue(0x9004569a, bFalse);
+                    if (bFlag)
+                        spEntity->SetPropertyValue(0x2e0ec6f3, bFlag);
+                    if (nKind == 1)
+                    {
+                        spObj.AssignRaw(new CInteractMeshObject());
+                    }
+                    else if (nKind == 8)
+                    {
+                        CInteractBillBoardObject* pBoard = new CInteractBillBoardObject();
+                        pBoard->m_nBoard = static_cast<CInputStream&>(packet).vfunc_o8_4();
+                        pBoard->m_strText = static_cast<CInputStream&>(packet).vfunc_o8_8();
+                        spObj.AssignRaw(pBoard);
+                    }
+                    if (static_cast<bool>(spObj))
+                    {
+                        // Unk_Entity is the interact objects' opaque name of the egf entity
+                        if (spObj->vfunc_1(reinterpret_cast<Unk_Entity*>(static_cast<egf::Entity*>(spEntity)), nState) != 0)
+                        {
+                            spObj->FUN_14174a4a0(strName);
+                            spObj->FUN_14174a4d0();
+                            FUN_1403ed2d0()->FUN_141bc5c40(spObj);
+                        }
+                    }
+                    FUN_1409670f0()->FUN_1411cf2d0(spEntity, 0);
+                }
+                if (Unk_SSGDlg4e29* pDlg = FUN_140c9b540(0x4e29))
+                    pDlg->FUN_141a39770(spObj);
+            }
+        }
+    }
+    break;
+    case SSG_INTERACT_REMOVE:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        CString strEffect = static_cast<CInputStream&>(packet).vfunc_o8_6();
+        MS2Ptr<CInteractObject> spObj = FUN_1403ed2d0()->FUN_141bc66b0(strName);
+        if (spObj.IsNull())
+            return;
+        if (strEffect.GetLength() != 0)
+        {
+            Unk_SSGXform xf;
+            FUN_140a332d0(&xf);
+            xf.FUN_141d2fab0();
+            Unk_SSGNiPt3 pos(spObj->FUN_1409673c0());
+            FUN_14097faa0(&xf.m_translate, pos);
+            Unk_SSGEffectReq req;
+            req.m_strName = strEffect;
+            req.m_nType = 0;
+            req.m_pXform = &xf;
+            FUN_1403ed280()->FUN_1411a4a00(req);
+        }
+        FUN_1403ed2d0()->FUN_141bc5d60(strName);
+        if (Unk_SSGDlg4e29* pDlg = FUN_140c9b540(0x4e29))
+            pDlg->FUN_141a39bf0(spObj);
+    }
+    break;
+    case SSG_INTERACT_STATE:
+    {
+        CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        int nB = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        FUN_1403ed2d0()->FUN_141bc6860(strName, nState, nB);
+    }
+    break;
+    case SSG_INTERACT_STATES:
+    {
+        int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        for (int i = 0; i < nCount; i++)
+        {
+            CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
+            int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            int nB = static_cast<CInputStream&>(packet).vfunc_o8_1();
+            int nC = 0;
+            if (nB == 6)
+                nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+            FUN_1403ed2d0()->FUN_141bc6760(strName, nState, nB, nC);
+        }
+    }
+    break;
+    case SSG_INTERACT_KIND_STATE:
+    {
+        int nKind = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        FUN_1403ed2d0()->FUN_141bc6930(nKind, nState);
+    }
+    break;
+    case SSG_INTERACT_ALL_STATE:
+    {
+        int nState = static_cast<CInputStream&>(packet).vfunc_o8_1();
+        FUN_1403ed2d0()->FUN_141bc6a20(nState);
+    }
+    break;
+    case SSG_INTERACT_NOTICE:
+    {
+        int nChannel = static_cast<unsigned short>(static_cast<CInputStream&>(packet).vfunc_o8_2());
+        int nMapId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int nNameId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        CStringW strArg = static_cast<CInputStream&>(packet).vfunc_o8_8();
+        CStringW strMsg = StringFormat(FUN_1401a9d70()->FUN_141811980(0x2b, nNameId), strArg);
+        if (DAT_1439f4a7c == nChannel && nMapId == FUN_1403ed2d0()->FUN_141bd3060())
+            FUN_1412751f0(strMsg, 10, 1);
+        else
+            FUN_1412751b0(strMsg, 0x14);
+    }
+    break;
+    case SSG_INTERACT_WEAPON:
+    {
+        int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        int n = static_cast<CInputStream&>(packet).vfunc_o8_3();
+        PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+        if (pPC == 0)
+            return;
+        pPC->FUN_14165f1f0(n, 1);
+    }
+    break;
+    }
+}
+MS2_REPLACE_METHOD(0x14172d0f0, CSceneStateGame, FUN_14172d0f0, 7933, 0xF4607904);
+
 // @0x141731610
 void CSceneStateGame::FUN_141731610(CInPacket& packet)
 {
@@ -6804,21 +7189,6 @@ void CSceneStateGame::FUN_141711e70(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141711e70, CSceneStateGame, FUN_141711e70, 1221, 0x738FBD8D);
 
-// NiTransform (rotation, translation, scale) for the sound call (same free-function placeholders as uimessagebox.cpp).
-struct Unk_SSGPt3 { float x, y, z; };
-struct Unk_SSGNiPt3 { Unk_SSGNiPt3(const NiPoint3& src); /* 0x14027dcf0 NiPoint3 from efd::Point3 */ float x, y, z; };
-struct Unk_SSGRot { float m[3][3]; };
-struct Unk_SSGXform
-{
-    Unk_SSGRot m_rotate;                                    // +0x00
-    Unk_SSGPt3 m_translate;                                 // +0x24
-    float m_fScale;                                         // +0x30
-};
-MS2_CHECK_SIZE(Unk_SSGXform, 0x34);
-void FUN_140a332d0(Unk_SSGXform* p);                        // NiTransform default ctor
-void FUN_14097faa0(Unk_SSGPt3* pDst, const Unk_SSGNiPt3& src);   // NiPoint3::operator=
-void FUN_140a33240(Unk_SSGRot* pDst, const Unk_EfdMatrix3* pSrc);   // NiMatrix3 from efd::Matrix3
-extern Unk_EfdMatrix3 DAT_143a09600;                        // identity rotation
 extern CString DAT_143ae7990;                               // the cube removal sound name
 
 // @0x14171a2e0
