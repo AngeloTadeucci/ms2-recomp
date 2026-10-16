@@ -39,6 +39,55 @@ class CStateManager;        // +0x140 actor state machine (0x98 bytes, ctor(acto
 class Unk_PCBaseEquipPart;  // element of the npc row's part list (+0x588), applied by FUN_141674ef0
 class Unk_PCBaseBuffs;      // FUN_1416749a0 (ridee.cpp)
 class State;                // state.h
+class StateData;            // state.h (the request record handed to CStateManager::FUN_1417dafa0)
+class RideOffAction;        // commonfiles/rideonaction.h
+class Ridee;                // ridee.h (the mount; +0xb10)
+class PCBase;
+class Unk_PCBaseBody;       // +0x150 physics/controller body (0xf8; ctor 0x14123f2d0, dtor 0x14123f460), pcbase.cpp
+
+// +0xc08: an 11-bit set (commonfiles\bitset.inl instance, the same as unit_140d73aa0's Unk_BitSet11): the reasons the
+// actor is hidden (FUN_14166ca20 / FUN_14166ca80 / FUN_14166cb30).
+// +0x748: the actor's buffs (0x1a0; ctor 0x14096ef20(p, owner); unit 0x14096ef20..). FUN_1416749a0 returns it as the
+// Unk_PCBaseBuffs view that ridee.cpp / pcbase.cpp declare.
+class Unk_PCBaseBuffList
+{
+public:
+    Unk_PCBaseBuffList(PCBase* pOwner);                     // 0x14096ef20
+    ~Unk_PCBaseBuffList();
+    void FUN_140970490();                                   // clear
+    float FUN_1409705d0();                                  // scale
+    int FUN_1409701d0(int nKind);
+    int FUN_140970eb0(float& fOut);                         // a buff fixes the height
+private:
+    char m_pad[0x1a0];
+};
+
+class Unk_PCBaseFlags
+{
+public:
+    Unk_PCBaseFlags();                                      // 0x140d75040
+    Unk_PCBaseFlags& FUN_140d75120(unsigned nPos, bool bValue);   // set / clear one bit
+    bool FUN_140d75240(unsigned nPos) const;                // test one bit
+    void Reset(unsigned nPos) { FUN_140d75120(nPos, false); }     // COMDAT 0x141682e20
+    bool Any() const                                        // COMDAT 0x141682520
+    {
+        for (int i = 1; i >= 0; i--) {
+            if (m_bits[i] != 0)
+                return true;
+        }
+        return false;
+    }
+    int Count() const                                       // COMDAT 0x141682780
+    {
+        int n = 0;
+        for (int i = 1; i >= 0; i--) {
+            for (unsigned char b = m_bits[i]; b != 0; b >>= 4)
+                n += "\0\1\1\2\1\2\2\3\1\2\2\3\2\3\3\4"[b & 0xf];
+        }
+        return n;
+    }
+    unsigned char m_bits[2];
+};
 
 // 0xd40 bytes. vftable 0x142f4c6f0 (124 slots); CallbackObject vftable @+8 0x142f4cad8 (dtor thunk 0x14167f518,
 // overrides AnimActivated 0x14166bec0, TextKeyEvent 0x14166bf40, EndOfSequence 0x14166c550).
@@ -81,7 +130,7 @@ public:
     // new virtuals, slots 57..123
     virtual int vfunc_57();                                 // 57  0x14166c7d0
     virtual int vfunc_58();                                 // 58  0x14166c7e0
-    virtual void vfunc_59(int a, void* b, int c, int d);    // 59  0x14166c800
+    virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59  0x14166c800
     virtual CString vfunc_60();                             // 60  0x14166c9b0 (returns a literal; PC overrides)
     virtual int vfunc_61();                                 // 61  0x14166ca00
     virtual bool vfunc_62();                                // 62  0x14166ca10
@@ -149,12 +198,12 @@ public:
     virtual int vfunc_118(void* a, float* b, CString* c);   // 118 0x1416752f0
     virtual void vfunc_119();                               // 119 0x141675450
     virtual void vfunc_120(void* p);                        // 120 0x141676b90
-    virtual void vfunc_121(void* p);                        // 121 0x1416773f0
+    virtual void vfunc_121(MS2Ptr<RideOffAction> spAction);   // 121 0x1416773f0 (by value)
     virtual int vfunc_122(void* p);                         // 122 0x1416781c0
     virtual const char* vfunc_123(int n);                   // 123 0x1416790b0 (looks up in +0xd00; a string per Ridee)
 
     // non-virtual helpers called by derived units
-    void FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
+    bool FUN_14166dd20(const efd::utf8string& strAnim, float fSpeed, bool bA, bool bB);   // 0x14166dd20 play animation
     void FUN_14166fff0(CStringW str);                       // 0x14166fff0 chat balloon text (by value)
     void FUN_141674ef0(const Unk_PCBaseEquipPart& part);    // 0x141674ef0 attach a model part
     MS2Ptr<CStateManager> FUN_141678750();                  // 0x141678750 copy of m_spStateMgr (w17)
@@ -194,6 +243,39 @@ public:
     class Ridee* FUN_1416764a0();                           // 0x1416764a0 the ridee this actor rides (scenestategame, w86)
     void FUN_14166ce70(int nEmotion);                       // 0x14166ce70 (scenestategame packet 0x3f, w86)
     __int64 FUN_141670990(int nKind, int nStat);            // 0x141670990 stat value (kind 0..2, stat 0..0x22; scenestategame w109)
+    // pcbase.cpp (w112)
+    int FUN_14166c960();                                    // 0x14166c960 queued state (m_unk_c48)
+    int FUN_14166c980();                                    // 0x14166c980 previous state id
+    void FUN_14166ca20(unsigned int nReason);               // 0x14166ca20 hide for a reason
+    void FUN_14166ca80(unsigned int nReason);               // 0x14166ca80 clear a hide reason
+    bool FUN_14166cad0();                                   // 0x14166cad0 hidden for any reason
+    bool FUN_14166cb00(unsigned int nReason);               // 0x14166cb00
+    void FUN_14166cb30();                                   // 0x14166cb30 apply the hide reasons
+    void FUN_14166cc40(int nValue);                         // 0x14166cc40
+    void FUN_14166cce0(unsigned int nFlags);                // 0x14166cce0 m_unk_158 |= (rider and mount)
+    void FUN_14166cd70(unsigned int nFlags);                // 0x14166cd70 m_unk_158 &= ~
+    Unk_PCBaseBody* FUN_14166d220();                        // 0x14166d220 the physics body
+    void* FUN_14166d240();                                  // 0x14166d240 &m_unk_6d8
+    void FUN_14166d260();                                   // 0x14166d260 move the body to the actor
+    void FUN_14166d2d0(const efd::Point3& kTarget, int bTurn);   // 0x14166d2d0 face a point
+    void FUN_14166d430(efd::Point3 kDir, int bTurn, int bResetTilt);   // 0x14166d430 face a direction
+    void FUN_14166d630(float fTime);                        // 0x14166d630 turn toward m_f934
+    void FUN_14166d8b0(float fAngle);                       // 0x14166d8b0 target yaw
+    void FUN_14166d8e0(efd::Point3 kTilt);                  // 0x14166d8e0
+    void FUN_14166d970(efd::Point3 kRot);                   // 0x14166d970
+    void FUN_14166d9d0(const NiPoint3& kPos);               // 0x14166d9d0
+    void FUN_14166da10(float fSpeed);                       // 0x14166da10 turn speed
+    float FUN_14166da60();                                  // 0x14166da60
+    float FUN_14166dab0();                                  // 0x14166dab0 turn speed
+    float FUN_14166dad0(const efd::Point3& kLook, const efd::Point3& kDir);   // 0x14166dad0 yaw (degrees)
+    NiPoint3 FUN_14166dbb0();                               // 0x14166dbb0
+    CString FUN_14166dc50();                                // 0x14166dc50 model name
+    bool FUN_14166dda0(int nId);                            // 0x14166dda0 play the animation of slot 123
+    void FUN_14166de50(float fOffset);                      // 0x14166de50 offset of the current sequence
+    CString FUN_14166dbf0(const efd::utf8string& kName);    // 0x14166dbf0 model-specific animation name
+    float FUN_1416713c0();                                  // 0x1416713c0 animation speed
+    void FUN_141675980();                                   // 0x141675980
+    void FUN_141679e90();                                   // 0x141679e90 stop the sequence effects
     // mypc.cpp (w99)
     unsigned short FUN_141661e00();                         // 0x141661e00 the channel the actor is on
     int FUN_141661e20();                                    // 0x141661e20
@@ -202,7 +284,7 @@ public:
 public:
     MS2_LAYOUT_FRIEND;
     MS2Ptr<CStateManager> m_spStateMgr; // +0x140 (init 0x14167dfe0; CubeSpawnObject assigns via AssignRaw)
-    void* m_unk_150;                    // +0x150 = 0
+    Unk_PCBaseBody* m_unk_150;          // +0x150 = 0; created by vfunc_10
     int m_unk_158;                      // +0x158
     int m_unk_15c;                      // +0x15c
     int m_unk_160;                      // +0x160
@@ -214,18 +296,26 @@ public:
     float m_f178;                       // +0x178
     int m_unk_17c;                      // +0x17c
     float m_unk_180[4];                 // +0x180 (init 0x140266620; [0] = 1800.0)
-    float m_unk_190[4];                 // +0x190 (init 0x140266620; [0] = 1800.0)
+    union {
+        float m_unk_190[4];             // +0x190 (init 0x140266620; [0] = 1800.0)
+        struct {
+            float m_fTurnSpeed;         // +0x190 degrees per second (FUN_14166da10 / FUN_14166dab0)
+            float m_f194;
+            float m_f198;
+            float m_f19c;
+        };
+    };
     float m_unk_1a0[7];                 // +0x1a0 (init 0x1402666f0; [0] = 50.0)
     int m_unk_1bc;                      // +0x1bc
-    char m_unk_1c0[3][0x118];           // +0x1c0 zero-filled records
-    char m_unk_508[0x118];              // +0x508 zero-filled record
+    __int64 m_unk_1c0[3][0x23];         // +0x1c0 stat values (kind 0..2, stat 0..0x22; FUN_141670990)
+    __int64 m_unk_508[0x23];            // +0x508 zero-filled record
     float m_unk_620[2];                 // +0x620 (init 0x140a0a600(p, 25.0, 105.0))
     void* m_unk_628[2];                 // +0x628 (init 0x140ae13b0)
     void* m_unk_638[2];                 // +0x638 (init 0x14167e030)
     void* m_colorBoost[9];              // +0x648 CColorBoostManager (0x48)
     void* m_pushControl[9];             // +0x690 CPushControl (0x48)
     void* m_unk_6d8[14];                // +0x6d8 (init 0x141682e90)
-    void* m_unk_748[52];                // +0x748 (init 0x14096ef20(p, this))
+    Unk_PCBaseBuffList m_unk_748;       // +0x748 buffs
     void* m_unk_8e8[6];                 // +0x8e8 CAtlList-like (init 0x14167de50(p,10)); probed by vfunc_103
     CStringW m_strW918;                 // +0x918
     NiPoint3 m_pos920;                  // +0x920 = ZERO
@@ -244,7 +334,7 @@ public:
     NiPoint3 m_pos9ac;                  // +0x9ac = ZERO
     NiPoint3 m_pos9b8;                  // +0x9b8 (init 0x1402bd040)
     short m_unk_9c4;                    // +0x9c4
-    int m_unk_9c8;                      // +0x9c8
+    float m_f9c8;                       // +0x9c8 (FLT_MAX / 0; shadow argument)
     int m_unk_9cc;                      // +0x9cc
     bool m_b9d0;                        // +0x9d0 = 1
     bool m_b9d1;                        // +0x9d1 = 1
@@ -268,7 +358,7 @@ public:
     int m_unk_af4;                      // +0xaf4 = 0x7fffffff
     int m_unk_af8;                      // +0xaf8
     void* m_unk_b00[2];                 // +0xb00 (init 0x1407810b0(p,0))
-    CComPtr<IUnknown> m_spB10;          // +0xb10 (CComPtrBase(0); interface type unproven)
+    efd::SmartPointer<Ridee> m_spB10;   // +0xb10 the mount (ctor 0x140963df0(p,0), dtor 0x1409648b0)
     MS2Ptr<Unk_PCBaseComp_b18> m_spB18; // +0xb18
     void* m_mapB28[9];                  // +0xb28 CAtlMap (17 bins, .75/.25/2.25, block 10; init 0x140163400)
     int m_unk_b70;                      // +0xb70
@@ -281,7 +371,7 @@ public:
     NiPoint3 m_posBF4;                  // +0xbf4 = ZERO
     int m_unk_c00;                      // +0xc00
     int m_unk_c04;                      // +0xc04 = 1
-    int m_unk_c08;                      // +0xc08 (init 0x140d75040)
+    Unk_PCBaseFlags m_unk_c08;          // +0xc08 hide reasons
     int m_unk_c0c;                      // +0xc0c
     NiPoint3 m_posC10;                  // +0xc10 = ZERO
     NiPoint3 m_posC1C;                  // +0xc1c
@@ -289,7 +379,7 @@ public:
     void* m_unk_c38;                    // +0xc38 (init 0x14097eba0(p,0))
     void* m_unk_c40;                    // +0xc40 (init 0x14097eba0(p,0))
     int m_unk_c48;                      // +0xc48 = 5
-    void* m_unk_c50[2];                 // +0xc50 (init 0x14167e100(p,0))
+    MS2Ptr<StateData> m_unk_c50;        // +0xc50 state request queued before the model loads (init 0x14167e100(p,0))
     int m_unk_c60;                      // +0xc60
     int m_unk_c64;                      // +0xc64
     int m_unk_c68;                      // +0xc68
@@ -308,6 +398,11 @@ MS2_CHECK_OFFSET(PCBase, m_f178, 0x178);
 MS2_CHECK_OFFSET(PCBase, m_unk_1c0, 0x1c0);
 MS2_CHECK_OFFSET(PCBase, m_unk_620, 0x620);
 MS2_CHECK_OFFSET(PCBase, m_unk_ae0, 0xae0);
+MS2_CHECK_OFFSET(PCBase, m_unk_508, 0x508);
+MS2_CHECK_OFFSET(PCBase, m_spB10, 0xb10);
+MS2_CHECK_OFFSET(PCBase, m_unk_c08, 0xc08);
+MS2_CHECK_OFFSET(PCBase, m_unk_c0c, 0xc0c);
+MS2_CHECK_OFFSET(PCBase, m_unk_c50, 0xc50);
 MS2_CHECK_OFFSET(PCBase, m_unk_b88, 0xb88);
 MS2_CHECK_OFFSET(PCBase, m_colorBoost, 0x648);
 MS2_CHECK_OFFSET(PCBase, m_pushControl, 0x690);
