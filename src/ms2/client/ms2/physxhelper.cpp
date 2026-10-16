@@ -609,11 +609,13 @@ bool ClosestHitReport::onHit(const NxRaycastHit& kHit)
 MS2_REPLACE_METHOD(0x1416892A0, CPhysXHelper, FUN_1416892a0, 61, 0x19AF2D89);
 MS2_REPLACE_METHOD(0x14168A1C0, CPhysXHelper, FUN_14168a1c0, 63, 0x5C1A7CCA);
 MS2_REPLACE_METHOD(0x14168A210, CPhysXHelper, FUN_14168a210, 14, 0xE4E8D95F);
-// Not hooked: the DLL copy of the ray-cast wrappers (Unk_RayCastInfo + compiled CastRay) raised a C++ exception after login and caused the blank error box at Character Select (merge5 bisect).
+
+// Not hooked: still the blank error box after login with the exe-bound statics (sb5 bisect); DLL Unk_RayCastInfo/CastRay copy.
 #if 0
 MS2_REPLACE_METHOD(0x14168A310, CPhysXHelper, FUN_14168a310, 302, 0x52623978);
 #endif
-// Not hooked: the DLL copy of the ray-cast wrappers (Unk_RayCastInfo + compiled CastRay) raised a C++ exception after login and caused the blank error box at Character Select (merge5 bisect).
+
+// Not hooked: still the blank error box after login with the exe-bound statics (sb5 bisect); DLL Unk_RayCastInfo/CastRay copy.
 #if 0
 MS2_REPLACE_METHOD(0x14168A450, CPhysXHelper, FUN_14168a450, 232, 0x8C3C8D12);
 #endif

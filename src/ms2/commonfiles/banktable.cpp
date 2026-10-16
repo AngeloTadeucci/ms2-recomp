@@ -258,10 +258,8 @@ int CBankTable::LoadItemDefine()
         }
     }
 }
-// Not hooked: CBankData::CBankData reads TSingleton<CBankTable>::s_instance, a DLL-local copy (null) in the hook DLL; the hooked loader AVed at DLL startup (blank error box before the title).
-#if 0
+
 MS2_REPLACE_METHOD(0x1401B4460, CBankTable, LoadItemDefine, 820, 0xC3037A24);
-#endif
 
 // @0x1401b47a0
 // MS2-FUNCTIONAL: exe builds the two literal CString temps and the path before the TiXmlDocument with a different EH state layout (precedent continentregiontable); not reproduced
@@ -300,10 +298,8 @@ int CBankTable::LoadBankType()
         }
     }
 }
-// Not hooked: CBankData::CBankData reads TSingleton<CBankTable>::s_instance, a DLL-local copy (null) in the hook DLL; the hooked loader AVed at DLL startup (blank error box before the title).
-#if 0
+
 MS2_REPLACE_METHOD(0x1401B47A0, CBankTable, LoadBankType, 996, 0x0C2D6239);
-#endif
 
 // @0x1401b4b90
 #undef MS2_THIS_FILE
