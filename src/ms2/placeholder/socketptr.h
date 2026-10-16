@@ -37,6 +37,7 @@ public:
     Unk_SocketPtr& operator=(std::nullptr_t) { Release(); return *this; }
     Unk_SocketPtr& operator=(int) { Release(); return *this; }
     Unk_SocketPtr& operator=(const Unk_SocketNew&) { ResetNew(); return *this; }
+    operator T*() const { return p; }   // w117: the exe's pair== calls it (0x140789570 for Rider)
     T* get() const { return p; } T* operator->() const { return p; } T& operator*() const { return *p; }
     bool operator==(T* v) const { return p==v; }
 private:

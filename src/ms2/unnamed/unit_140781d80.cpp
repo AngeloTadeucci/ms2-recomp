@@ -27,6 +27,8 @@
 // MS2-PIN: ?SetAt@?$CAtlMap@HV?$MS2SvrPtr@VCRideeData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCRideeData@@@@@3@@ATL@@QEAAPEAU__POSITION@@HAEBV?$MS2SvrPtr@VCRideeData@@@@@Z 0x14078a700 ; unique
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_SocketPtr@URider@RideeData@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_SocketPtr@URider@RideeData@@@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@H@2@XZ 0x14078b860 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??8?$MS2SvrPtr@VCRideeData@@@@QEBA_NPEAVCRideeData@@@Z 0x1407893c0
+// MS2-PIN: ??0?$Unk_SocketPtr@URider@RideeData@@@@QEAA@H@Z 0x1407888e0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\unknown_140781d80.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>
@@ -43,6 +45,7 @@
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/client/ms2/effectdummy.h"
+#include "ms2/client/ms2/commoneffectdummy.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -122,8 +125,6 @@ template<> struct Unk_SocketRef<RideeData::Rider> {
     static RideeData::Rider* Create(void*) { return Value(FUN_1401ba820(New(NULL))); }
 };
 typedef Unk_SocketPtr<RideeData::Rider> Unk_RiderPtr;
-// MS2-FUNCTIONAL: the exe compares through the pointer conversion (0x140789570) and operator==(T*) (0x140789380).
-inline bool operator==(const Unk_RiderPtr& a, const Unk_RiderPtr& b) { return a.get() == b.get(); }
 
 namespace RideeData
 {
@@ -178,6 +179,7 @@ namespace RideeData
     class Collision : public IDataCheck
     {
     public:
+        int FUN_1407836c0(Unk_140165cf0*);                                       // always 1 (name invented)
         Collision();                                        // 0x1407836e0
         virtual int vfunc_0();                             // 0x1407837e0
         bool FUN_140783760(const Collision& o);             // differs
@@ -194,6 +196,7 @@ namespace RideeData
     class Shadow : public IDataCheck
     {
     public:
+        int FUN_1407838c0(Unk_140165cf0*);                                       // always 1 (name invented)
         Shadow();                                           // 0x1407838e0
         virtual int vfunc_0();                             // 0x140783960
         bool FUN_140783930(const Shadow& o);                // differs
@@ -207,6 +210,7 @@ namespace RideeData
     class FaceCamera : public IDataCheck
     {
     public:
+        int FUN_1407839e0(Unk_140165cf0*);                                       // always 1 (name invented)
         FaceCamera();                                       // 0x140783a00
         virtual int vfunc_0();                             // 0x140783ae0
         bool FUN_140783a70(const FaceCamera& o);            // differs
@@ -221,6 +225,7 @@ namespace RideeData
     class Stat : public IDataCheck
     {
     public:
+        int FUN_140783d70(Unk_140165cf0*);                                       // always 1 (name invented)
         Stat();                                             // 0x140783d90
         virtual int vfunc_0();                             // 0x140783e40
         bool FUN_140783de0(const Stat& o);                  // differs
@@ -234,11 +239,13 @@ namespace RideeData
     class Passengers : public IDataCheck
     {
     public:
+        int FUN_140783f30(Unk_140165cf0*);                                       // always 1 (name invented)
         Passengers();                                       // 0x140783f50
         virtual int vfunc_0();                             // 0x140783ff0
         bool FUN_140783fb0(const Passengers& o);            // differs
         int FUN_140784010(Unk_140165cf0* pRoot);            // load <passengers>
-        bool FUN_140784140();                               // there are seats
+        int FUN_140784120(Unk_140165cf0*);                         // always 1 (name invented)
+        int FUN_140784140();                               // there are seats
         size_t FUN_140784180();                             // seat count
         Unk_RiderPtr FUN_1407841b0(int nIndex);             // seat nIndex (null when out of range)
 
@@ -284,7 +291,6 @@ public:
     int FUN_140a40200();                                    // row count
     bool FUN_140a40230(int nIndex, CEffectDummy* pOut);     // read row nIndex
 };
-Unk_EffectDummyTable* FUN_140789c40();
 Unk_140165cf0* FUN_1403f0510(Unk_140165cf0*);               // next <dummy>
 
 void FUN_140784de0(CRideeDataPtr spData);                   // fill the effect dummy list (default table, then the row's file)
@@ -355,6 +361,7 @@ bool RideeData::Rider::FUN_140781ef0(const Rider& o)
         return 1;
     return 0;
 }
+MS2_REPLACE_METHOD(0x140781ef0, RideeData::Rider, FUN_140781ef0, 535, 0x2085FA47);
 
 // @0x140782110
 void RideeData::Rider::FUN_140782110(Unk_140165cf0* pNode)
@@ -397,8 +404,10 @@ void RideeData::Rider::FUN_140782110(Unk_140165cf0* pNode)
     if (m_strAniPCSPJump.IsEmpty())
         m_strAniPCSPJump = m_strAniPC;
 }
+MS2_REPLACE_METHOD(0x140782110, RideeData::Rider, FUN_140782110, 1860, 0x7CF12148);
 
 // @0x140785190
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 static int FUN_140785190(CString strType)
 {
@@ -428,6 +437,7 @@ static int FUN_140785590(Unk_140165cf0* pNode, const char* pszName, int* pOut)
     *pOut = value;
     return result;
 }
+MS2_REPLACE(0x140785590, FUN_140785590, 131, 0xC1297A01);
 #undef MS2_THIS_FILE
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\unknown_140781d80.cpp"
 
@@ -445,6 +455,7 @@ RideeData::Basic::Basic()
 }
 
 // @0x140782b10
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 bool RideeData::Basic::FUN_140782b10(const Basic& o)
 {
@@ -517,12 +528,14 @@ bool RideeData::Basic::FUN_140782b10(const Basic& o)
     else
         return 0;
 }
+MS2_REPLACE_METHOD(0x140782b10, RideeData::Basic, FUN_140782b10, 1142, 0xBC49FD66);
 
 // @0x140782f90
 int RideeData::Basic::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x140782f90, RideeData::Basic, vfunc_0, 11, 0x30025ED0);
 
 // @0x140782fb0
 int RideeData::Basic::FUN_140782fb0(Unk_140165cf0* pRoot)
@@ -571,6 +584,14 @@ int RideeData::Basic::FUN_140782fb0(Unk_140165cf0* pRoot)
     m_spRider->FUN_140782110(pBasic);
     return 1;
 }
+MS2_REPLACE_METHOD(0x140782fb0, RideeData::Basic, FUN_140782fb0, 1792, 0x70B88C0C);
+
+// @0x1407836c0
+int RideeData::Collision::FUN_1407836c0(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1407836c0, RideeData::Collision, FUN_1407836c0, 16, 0x32804D89);
 
 // @0x1407836e0
 RideeData::Collision::Collision() : m_fWidth(100.0f), m_fHeight(100.0f), m_fDepth(100.0f), m_bPhysic(0)
@@ -590,14 +611,17 @@ bool RideeData::Collision::FUN_140783760(const Collision& o)
         return 1;
     return 0;
 }
+MS2_REPLACE_METHOD(0x140783760, RideeData::Collision, FUN_140783760, 114, 0x760A6FA0);
 
 // @0x1407837e0
 int RideeData::Collision::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x1407837e0, RideeData::Collision, vfunc_0, 11, 0x30025ED0);
 
 // @0x140783800
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 int RideeData::Collision::FUN_140783800(Unk_140165cf0* pRoot)
 {
@@ -611,6 +635,14 @@ int RideeData::Collision::FUN_140783800(Unk_140165cf0* pRoot)
     }
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783800, RideeData::Collision, FUN_140783800, 177, 0xEB27F6C1);
+
+// @0x1407838c0
+int RideeData::Shadow::FUN_1407838c0(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1407838c0, RideeData::Shadow, FUN_1407838c0, 16, 0x32804D89);
 
 // @0x1407838e0
 RideeData::Shadow::Shadow() : m_fScale(150.0f)
@@ -619,6 +651,7 @@ RideeData::Shadow::Shadow() : m_fScale(150.0f)
 
 // @0x140783930
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 bool RideeData::Shadow::FUN_140783930(const Shadow& o)
 {
     if (m_fScale != o.m_fScale)
@@ -626,14 +659,17 @@ bool RideeData::Shadow::FUN_140783930(const Shadow& o)
     else
         return 0;
 }
+MS2_REPLACE_METHOD(0x140783930, RideeData::Shadow, FUN_140783930, 38, 0x42D57E72);
 
 // @0x140783960
 int RideeData::Shadow::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783960, RideeData::Shadow, vfunc_0, 11, 0x30025ED0);
 
 // @0x140783980
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 int RideeData::Shadow::FUN_140783980(Unk_140165cf0* pRoot)
 {
@@ -642,6 +678,14 @@ int RideeData::Shadow::FUN_140783980(Unk_140165cf0* pRoot)
         FUN_140873360(pNode, "scale", m_fScale);
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783980, RideeData::Shadow, FUN_140783980, 90, 0x7F1DFB79);
+
+// @0x1407839e0
+int RideeData::FaceCamera::FUN_1407839e0(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1407839e0, RideeData::FaceCamera, FUN_1407839e0, 16, 0x32804D89);
 
 // @0x140783a00
 RideeData::FaceCamera::FaceCamera() : m_vLookAtPosition(0, 0, 0), m_vCameraPosition(0, 0, 0)
@@ -657,14 +701,17 @@ bool RideeData::FaceCamera::FUN_140783a70(const FaceCamera& o)
         return 1;
     return 0;
 }
+MS2_REPLACE_METHOD(0x140783a70, RideeData::FaceCamera, FUN_140783a70, 95, 0x489DD55C);
 
 // @0x140783ae0
 int RideeData::FaceCamera::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783ae0, RideeData::FaceCamera, vfunc_0, 11, 0x30025ED0);
 
 // @0x140783b00
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 int RideeData::FaceCamera::FUN_140783b00(Unk_140165cf0* pRoot)
 {
@@ -685,6 +732,14 @@ int RideeData::FaceCamera::FUN_140783b00(Unk_140165cf0* pRoot)
     m_vCameraPosition = efd::Point3(camera[0], camera[1], camera[2]);
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783b00, RideeData::FaceCamera, FUN_140783b00, 613, 0x86249F24);
+
+// @0x140783d70
+int RideeData::Stat::FUN_140783d70(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x140783d70, RideeData::Stat, FUN_140783d70, 16, 0x32804D89);
 
 // @0x140783d90
 RideeData::Stat::Stat() : m_values()
@@ -701,14 +756,17 @@ bool RideeData::Stat::FUN_140783de0(const Stat& o)
     }
     return 0;
 }
+MS2_REPLACE_METHOD(0x140783de0, RideeData::Stat, FUN_140783de0, 85, 0xFFB8E0AC);
 
 // @0x140783e40
 int RideeData::Stat::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783e40, RideeData::Stat, vfunc_0, 11, 0x30025ED0);
 
 // @0x140783e60
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 int RideeData::Stat::FUN_140783e60(Unk_140165cf0* pRoot)
 {
@@ -723,8 +781,17 @@ int RideeData::Stat::FUN_140783e60(Unk_140165cf0* pRoot)
     }
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783e60, RideeData::Stat, FUN_140783e60, 187, 0x818A00C0);
+
+// @0x140783f30
+int RideeData::Passengers::FUN_140783f30(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x140783f30, RideeData::Passengers, FUN_140783f30, 16, 0x32804D89);
 
 // @0x140783f50
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 RideeData::Passengers::Passengers()
 {
@@ -732,18 +799,22 @@ RideeData::Passengers::Passengers()
 
 // @0x140783fb0
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 bool RideeData::Passengers::FUN_140783fb0(const Passengers& o)
 {
     return !(m_seats == o.m_seats);
 }
+MS2_REPLACE_METHOD(0x140783fb0, RideeData::Passengers, FUN_140783fb0, 58, 0xFB3C5E5E);
 
 // @0x140783ff0
 int RideeData::Passengers::vfunc_0()
 {
     return 1;
 }
+MS2_REPLACE_METHOD(0x140783ff0, RideeData::Passengers, vfunc_0, 11, 0x30025ED0);
 
 // @0x140784010
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 int RideeData::Passengers::FUN_140784010(Unk_140165cf0* pRoot)
 {
@@ -762,29 +833,41 @@ int RideeData::Passengers::FUN_140784010(Unk_140165cf0* pRoot)
     }
     return 1;
 }
+MS2_REPLACE_METHOD(0x140784010, RideeData::Passengers, FUN_140784010, 251, 0xC0ED650A);
+
+// @0x140784120
+int RideeData::Passengers::FUN_140784120(Unk_140165cf0*)
+{
+    return 1;
+}
+MS2_REPLACE_METHOD(0x140784120, RideeData::Passengers, FUN_140784120, 16, 0x32804D89);
 
 // @0x140784140
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
-bool RideeData::Passengers::FUN_140784140()
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+int RideeData::Passengers::FUN_140784140()
 {
-    return m_seats.size() != 0;
+    return m_seats.size() > 0;
 }
+MS2_REPLACE_METHOD(0x140784140, RideeData::Passengers, FUN_140784140, 58, 0x9D8F4B97);
 
 // @0x140784180
 size_t RideeData::Passengers::FUN_140784180()
 {
     return m_seats.size();
 }
+MS2_REPLACE_METHOD(0x140784180, RideeData::Passengers, FUN_140784180, 31, 0x452D3D45);
 
 // @0x1407841b0
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 Unk_RiderPtr RideeData::Passengers::FUN_1407841b0(int nIndex)
 {
-    if ((size_t)nIndex < m_seats.size())
-        return m_seats[nIndex];
-    else
+    if (m_seats.size() <= (size_t)nIndex)
         return Unk_RiderPtr(0);
+    return m_seats[nIndex];
 }
+MS2_REPLACE_METHOD(0x1407841b0, RideeData::Passengers, FUN_1407841b0, 140, 0x278F09D7);
 
 // @0x140784250
 CRideeData::CRideeData()
@@ -797,6 +880,7 @@ CRideeData::~CRideeData()
 }
 
 // @0x140784390
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 bool CRideeData::FUN_140784390(const CRideeData& o)
 {
@@ -815,6 +899,7 @@ bool CRideeData::FUN_140784390(const CRideeData& o)
     else
         return 0;
 }
+MS2_REPLACE_METHOD(0x140784390, CRideeData, FUN_140784390, 277, 0x98E2C4B7);
 
 // @0x140784880
 CString CRideeData::FUN_140784880(int nLevel)
@@ -823,25 +908,30 @@ CString CRideeData::FUN_140784880(int nLevel)
         return m_basic.m_strKfm2;
     return m_basic.m_strKfm;
 }
+MS2_REPLACE_METHOD(0x140784880, CRideeData, FUN_140784880, 144, 0xD6E811E9);
 
 // @0x140784920
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 CString CRideeData::FUN_140784920()
 {
     return m_basic.m_strNif;
 }
+MS2_REPLACE_METHOD(0x140784920, CRideeData, FUN_140784920, 71, 0xF65BB79D);
 
 // @0x140784970
 Unk_RiderPtr CRideeData::FUN_140784970()
 {
     return m_basic.m_spRider;
 }
+MS2_REPLACE_METHOD(0x140784970, CRideeData, FUN_140784970, 67, 0x571C2301);
 
 // @0x1407849c0
 Unk_RiderPtr CRideeData::FUN_1407849c0(int nIndex)
 {
     return m_passengers.FUN_1407841b0(nIndex);
 }
+MS2_REPLACE_METHOD(0x1407849c0, CRideeData, FUN_1407849c0, 77, 0x44B7A6B5);
 
 // @0x1407844b0
 CRideeDataPtr FUN_1407844b0(unsigned nId)
@@ -856,6 +946,7 @@ CRideeDataPtr FUN_1407844b0(unsigned nId)
 }
 
 // @0x1407845b0
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 bool FUN_1407845b0(CString strPath, std::vector<CRideeDataPtr>& rOut)
 {
@@ -884,6 +975,7 @@ bool FUN_1407845b0(CString strPath, std::vector<CRideeDataPtr>& rOut)
 
 // @0x140784a20
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 CRideeDataPtr FUN_140784a20(unsigned nId)
 {
     CString strPath;
@@ -899,7 +991,7 @@ CRideeDataPtr FUN_140784a20(unsigned nId)
     {
         if (!FUN_14028f710(pNode))
             continue;
-        spResult = CRideeDataPtr(new CRideeData);
+        spResult = new CRideeData;
         spResult->FUN_1401d1160(strPath);
         spResult->m_basic.FUN_140782fb0(pNode);
         spResult->m_collision.FUN_140783800(pNode);
@@ -916,11 +1008,12 @@ CRideeDataPtr FUN_140784a20(unsigned nId)
 
 // @0x140784de0
 // MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
+// MS2-FUNCTIONAL: behaviour-equivalent; compiler codegen differs from the exe (branch/frame-slot shape or glue-call pairing)
 void FUN_140784de0(CRideeDataPtr spData)
 {
-    if (spData.get() == 0)
+    if (spData == 0)
         return;
-    Unk_EffectDummyTable* pTable = FUN_140789c40();
+    Unk_EffectDummyTable* pTable = reinterpret_cast<Unk_EffectDummyTable*>(CommonEffectDummy::GetInstance());   // 0x140789c40
     unsigned __int64 nCount = pTable->FUN_140a40200();
     spData->m_effectDummies.reserve(nCount);
     for (unsigned __int64 i = 0; i < nCount; i++)
@@ -963,3 +1056,6 @@ void FUN_140784de0(CRideeDataPtr spData)
         }
     }
 }
+
+// @0x14078cdb0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
