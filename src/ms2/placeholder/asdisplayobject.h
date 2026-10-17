@@ -3,7 +3,8 @@
 //   ASDisplayObject : ASEventDispatcher          vftable 0x14310ad10 (6 slots)
 //   ASInteractiveObject : ASDisplayObject, ASDisplayObjectContainer : ASInteractiveObject, ASSprite : ...Container
 //   ASMovieClip : ASSprite                       vftable 0x14310b160 (16 slots)
-// Only what recovered code calls is declared. Sizes are not pinned (never constructed by recovered code yet).
+// Only what recovered code calls is declared. ASEventDispatcher (and so ASDisplayObject) is 0x80 bytes: its ctor 0x1422c3090
+// constructs two 0x20 members at +0x40/+0x60, and `new ASDisplayObject(v, n)` (0x140eec891) / `new ASMovieClip` allocate 0x80.
 #pragma once
 
 #include <afx.h>
@@ -15,7 +16,13 @@ class ASEventDispatcher : public AScript
 {
 public:
     virtual ~ASEventDispatcher();
+private:
+    // +0x40 / +0x60: two 0x20 members built by 0x1422c4100 (the +0x60 one is the callback list, see FUN_1422c3180).
+    // Pointers, not a char array: an array member makes every local AS object a /GS buffer (the exe frames have none).
+    void* m_unrecovered_40; void* m_unrecovered_48; void* m_unrecovered_50; void* m_unrecovered_58;
+    void* m_unrecovered_60; void* m_unrecovered_68; void* m_unrecovered_70; void* m_unrecovered_78;
 };
+MS2_CHECK_SIZE(ASEventDispatcher, 0x80);
 
 class ASDisplayObject : public ASEventDispatcher
 {
@@ -66,9 +73,8 @@ public:
     virtual void vfunc_14(int nFrame);                          // 14 0x1422c22d0
     virtual void vfunc_15(const CString& strLabel);             // 15 0x1422c2290
     int FUN_1422c2300();                                        // the "currentFrame" member
-private:
-    unsigned char m_unrecovered_40[0x40];                       // exe allocates 0x80 bytes (asequipicon 0x1409b93ed)
 };
+MS2_CHECK_SIZE(ASMovieClip, 0x80);                              // exe allocates 0x80 bytes (asequipicon 0x1409b93ed)
 
 // new ASDisplayObject(v, n) wrapped in an MS2Ptr (free function or static; 0x140d01be0).
 MS2Ptr<ASDisplayObject> FUN_140d01be0(int n, const Scaleform::GFx::Value& v);

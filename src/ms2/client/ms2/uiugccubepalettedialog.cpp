@@ -417,8 +417,7 @@ public:
 class Unk_CubeRenderer : public ASDisplayObject
 {
 public:
-    Unk_CubeRenderer(const Scaleform::GFx::Value& v, int n);   // 0x1422bf7c0
-    char m_pad[0x38];
+    Unk_CubeRenderer(const Scaleform::GFx::Value& v, int n);   // 0x1422bf7c0 (the exe allocates 0x80 = sizeof(ASDisplayObject))
 };
 
 class Unk_CubePlayer

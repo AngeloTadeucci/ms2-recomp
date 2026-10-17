@@ -50,8 +50,7 @@ public:
     void FUN_14015b020(); int FUN_140159bc0(); void FUN_140159ba0();
 private:
     MS2_LAYOUT_FRIEND;
-    void* m_pad_40; void* m_pad_48; void* m_pad_50; void* m_pad_58; void* m_pad_60;
-    void* m_pad_68; void* m_pad_70; void* m_pad_78; void* m_pad_80;
+    void* m_pad_80;
 };
 MS2_CHECK_SIZE(Unk_DropSlot, 0x88);
 class Unk_DropValue { public: bool FUN_1409b4d40() const; };

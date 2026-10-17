@@ -22,7 +22,6 @@ public:
     Scaleform::GFx::Value FUN_140ba9570(const char* szMethod, Scaleform::GFx::Value clip, bool b);     // "updateEntity"
 
 private:
-    void* m_pad_40; void* m_pad_48; void* m_pad_50; void* m_pad_58; void* m_pad_60; void* m_pad_68;
-    void* m_pad_70; void* m_pad_78; void* m_pad_80;
+    void* m_pad_80;
 };
 MS2_CHECK_SIZE(ASGameEntity, 0x88);
