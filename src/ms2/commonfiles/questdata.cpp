@@ -2719,7 +2719,6 @@ MS2_REPLACE_METHOD(0x140750D90, QuestDataTable, FUN_140750d90, 252, 0x26A038B0);
 
 int __cdecl FUN_140751770(const void* pA, const void* pB);
 
-// MS2-FUNCTIONAL: sorts m_1d8 by quest level
 // @0x140750ea0
 void QuestDataTable::FUN_140750ea0()
 {
@@ -2806,24 +2805,20 @@ int FUN_1407513c0(const CString& str)
     return 0;
 }
 
-// MS2-FUNCTIONAL: early-return/else-chain frame of the exe not reproduced (CompareNoCase chain).
 // @0x140751440
 int FUN_140751440(const CString& str)
 {
-    if (str.GetLength() == 0)
+    if (!(str.GetLength() != 0))
     {
         return 0;
     }
-    else
-    {
-        if (str.CompareNoCase("global") == 0)
-            return 0;
-        else if (str.CompareNoCase("character") == 0)
-            return 1;
-        else if (str.CompareNoCase("account") == 0)
-            return 2;
+    if (str.CompareNoCase("global") == 0)
         return 0;
-    }
+    else if (str.CompareNoCase("character") == 0)
+        return 1;
+    else if (str.CompareNoCase("account") == 0)
+        return 2;
+    return 0;
 }
 MS2_REPLACE(0x140751440, FUN_140751440, 119, 0xE563F2B7);
 
