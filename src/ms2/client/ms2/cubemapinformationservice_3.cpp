@@ -23,6 +23,9 @@
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/hardwareinstancingservice.h"
+#include "ms2/placeholder/notifyobject.h"
+#include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/client/ms2/uihomeinfodialog.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #if defined(__clang__)
@@ -2426,4 +2429,31 @@ void CubeMapInformationService::FUN_1410cef70(const egf::EntityChangeMessage* pM
     if (pCube != 0)
         FUN_1408b4fd0(pCube, pEntity);
     FUN_1410c5280(nKey);
+}
+class UIMainPlayerInfo;
+__int64 FUN_140931900(int nUiId);
+UIHomeInfoDialog* FUN_140bbea00(int nId);
+class Unk_CMISNotifyMgr { public: void FUN_140da4fe0(MS2Ptr<NotifyObject> spNotify); };
+Unk_CMISNotifyMgr* FUN_140939a10();
+class Unk_CMISNotifyBuilding : public NotifyObject                                          // NotifyChangeUIBuildingCount (0x20 bytes, ctor 0x141123250)
+{
+public:
+    Unk_CMISNotifyBuilding(const int* pCount);
+    int m_nCount;
+};
+// @0x1410ce1e0
+void CubeMapInformationService::FUN_1410ce1e0(int nNotify, const int* pCount)
+{
+    __int64 nInfo = FUN_140931900(0x4e5f);
+    if (nInfo == 0)
+        return;
+    if (nNotify != 0) {
+        Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pRoster == 0)
+            return;
+        UIHomeInfoDialog* pDlg = FUN_140bbea00(0x4ed8);
+        if (pDlg != 0 && pDlg->vfunc_9() != 0)
+            pDlg->FUN_1412c5690();
+        FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new Unk_CMISNotifyBuilding(pCount)));
+    }
 }
