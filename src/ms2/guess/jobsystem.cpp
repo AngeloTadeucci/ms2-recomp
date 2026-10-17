@@ -1,6 +1,9 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). JobSkill / JobSystem: a character's job skill tree state
 // (learned skills and levels, skill points by rank). The TU right before commonfiles\jobtable.cpp, ending with its
 // own memmove_s copy at 0x140643530; it has no __FILE__ string, so the name is a guess from the classes.
+// WIP (w177, 2026-10-17): 125 stubs. The exe emplace under the byte-identical map<unsigned, JobSkillPtr>::insert
+// (0x14063db70 -> 0x14063d860) is not the 14.16 xtree emplace (_Buynode + _Insert_nohint): it calls 0x14063d950(this+8,
+// val), 0x140642050, 0x140643000(this+8) and then 0x14063b4f0 (754 B); most stubs hang off that chain (tools: work/w177/stubgraph.py).
 // MS2-UNIT: ?\jobsystem.cpp
 // MS2-RANGE: 0x140637b00-0x140643650 .text$mn
 // MS2-GUESS-LOOKALIKES
