@@ -88,7 +88,6 @@ void CFrustumCollision::vfunc_3(Unk_StreamPoint ptPos, Unk_StreamPoint ptDir, fl
 }
 
 // @0x141223bc0
-// MS2-FUNCTIONAL: derives the cone angles from the stored extents
 void CFrustumCollision::vfunc_4()
 {
     m_fDepth = m_fDepth + m_ptSize.y;
@@ -221,7 +220,6 @@ float CFrustumCollision::GetMinZ() const
 }
 
 // @0x141224920
-// MS2-FUNCTIONAL: the exe fills the 16 outline points with one assignment each
 void CFrustumCollision::vfunc_5()
 {
     m_bBuilt = 1;
@@ -265,7 +263,6 @@ void CFrustumCollision::vfunc_5()
 }
 
 // @0x141224f30
-// MS2-FUNCTIONAL: the exe calls atan2f through an import thunk
 float FUN_141224f30(float fY, float fX)
 {
     return atan2f(fY, fX);
