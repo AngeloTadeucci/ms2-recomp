@@ -212,6 +212,7 @@ public:
     int FUN_1410ce310();
     int FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut);
     CStringW FUN_1410c7f60(int nA, int nB);
+    void FUN_1410d5b20(__int64 nId);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();

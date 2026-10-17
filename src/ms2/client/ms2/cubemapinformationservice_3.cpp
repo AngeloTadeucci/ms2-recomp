@@ -20,6 +20,7 @@
 #include <efd/MessageService.h>
 #include <efd/ISystemService.h>
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/coutpacket.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #if defined(__clang__)
@@ -262,6 +263,7 @@ Unk_CMISIter<274>* FUN_1411573c0(Unk_CMISTree<274>*, Unk_CMISIter<274>*, const i
 Unk_CMISHousePtr* FUN_141127c50(Unk_CMISTree<274>*, const int*);             // operator[]
 char* FUN_141128470(Unk_CMISHousePtr*);                                      // the house info bytes
 int FUN_1408b5620(int);
+bool FUN_141151760(Unk_CMISTree<259>*);
 bool FUN_141126b10(Unk_CMISHousePtr*, int);                                 // operator==(0)
 Unk_CMISHouseInfo* FUN_141128800(Unk_CMISHousePtr*);                        // operator*
 class Unk_CMISPolyObj { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); };
@@ -1378,6 +1380,19 @@ CStringW CubeMapInformationService::FUN_1410c7f60(int nA, int nB)
     if (spOwner == 0)
         return CStringW(L"");
     return CStringW(spOwner->ownerName);
+}
+// @0x1410d5b20
+void CubeMapInformationService::FUN_1410d5b20(__int64 nId)
+{
+    if (FUN_141151760(&f78)) {
+        COutPacket packet(0x37, 0);
+        packet.vfunc_o10_1(0x44);
+        packet.vfunc_o10_4(nId);
+        FUN_140710590(packet);
+        f478 = 0;
+    } else {
+        f478 = nId;
+    }
 }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
