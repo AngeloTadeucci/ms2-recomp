@@ -45,6 +45,7 @@ struct Unk_MeshInstancingConfig {
     Unk_MeshInstancingConfig& operator=(const Unk_MeshInstancingConfig& other);   // 0x1413d3290
     bool operator==(const Unk_MeshInstancingConfig& other) const;               // 0x1413d3370
     bool FUN_1413d33c0(const Unk_MeshInstancingConfig& other) const;            // the fields after the asset
+    void FUN_1413eb720();                                       // ++activeCount
     efd::AssetID asset;
     bool flags30, flags31, flags32;
     unsigned unknown34;

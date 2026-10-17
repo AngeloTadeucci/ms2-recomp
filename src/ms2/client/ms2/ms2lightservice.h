@@ -28,6 +28,7 @@ public:
     TSingleton();                                       // 0x1414c6fb0 (inline, ms2lightservice.cpp)
     virtual ~TSingleton() { s_instance = 0; }           // 0x1414c7af0
     static MS2LightService* s_instance;                 // 0x143ad95f0
+    static MS2LightService* GetInstance() { return s_instance; }   // 0x1413ebb60 (hardwareinstancingservice.cpp)
 };
 
 class MS2LightService : public ecr::LightService, public egf::IPropertyCallback, public IWorldServiceCallback,

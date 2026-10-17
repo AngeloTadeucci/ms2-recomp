@@ -73,8 +73,6 @@
 // MS2-PIN: ??1?$map@IIU?$less@I@std@@@efd@@QEAA@XZ 0x1413e9200 ; hand: tplpin prop
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1413e96d0 ; hand: tplpin unique
 // MS2-PIN: ??C?$_List_iterator@V?$_List_val@U?$_List_simple_types@UUnk_HwiCreated@@@std@@@std@@@std@@QEBAPEAUUnk_HwiCreated@@XZ 0x1413e9be0 ; hand: tplpin unique
-// MS2-PIN: ?GetHandle@SceneGraphMessage@ecr@@UEBAIXZ 0x1413ebb90 ; hand: tplpin unique
-// MS2-PIN: ?GetMultiplicity@AssetID@efd@@UEBAEXZ 0x1413ec890 ; hand: tplpin unique
 // MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@$0A@@std@@@std@@IEBA_NAEBVEntityID@egf@@0@Z 0x1413eea90 ; hand: tplpin prop
 // MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@VEntityID@egf@@PEAVMeshInstancing@@U?$less@VEntityID@egf@@@std@@V?$allocator@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@5@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@PEAVMeshInstancing@@@std@@@std@@@2@XZ 0x1413f2390 ; hand: tplpin prop
 // MS2-PIN: ??_7HardwareInstancingService@@6BISystemService@efd@@@ 0x142f0c198 ; w102 manual
@@ -295,6 +293,7 @@
 #include <egf/EntityChangeMessage.h>
 #include <egf/FlatModel.h>
 #include <egf/FlatModelManager.h>
+#include <egf/PlaceableModel.h>
 #include <ecr/CoreRuntimeMessages.h>
 #include <ecr/RenderService.h>
 #include <ecr/ShaderService.h>
@@ -303,6 +302,7 @@
 #include "entityinstancing.h"
 #include "dynamicinstancing.h"
 #include "entityworldmanager.h"
+#include "ms2lightservice.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -342,6 +342,67 @@ egf::PropertyResult Unk_HwiCachedEntity::SetPropertyValue(egf::PropertyID propID
     return SetPropertyValueUnsafe(propID, key, &data, efd::GetClassIDFromType<T>());
 }
 
+// ---- MeshInstancing accessors (emitted in this unit) ----
+// @0x1413eb720
+void Unk_MeshInstancingConfig::FUN_1413eb720()
+{
+    ++activeCount;
+}
+
+// @0x1413eb740
+void MeshInstancing::FUN_1413eb740()
+{
+    config.FUN_1413eb720();
+}
+
+// @0x1413ebb00
+egf::EntityID MeshInstancing::FUN_1413ebb00() const
+{
+    return id18;
+}
+
+// @0x1413ebb30
+unsigned MeshInstancing::FUN_1413ebb30() const
+{
+    return config.activeCount;
+}
+
+// @0x1413ebb70
+NiNode* MeshInstancing::FUN_1413ebb70() const
+{
+    return root;
+}
+
+// @0x1413ebb90
+unsigned MeshInstancing::FUN_1413ebb90() const
+{
+    return capacity;
+}
+
+// @0x1413ec820
+bool MeshInstancing::FUN_1413ec820() const
+{
+    return !config.ids.m_list.empty();
+}
+
+// @0x1413ec890
+bool MeshInstancing::FUN_1413ec890() const
+{
+    return flag28;
+}
+
+// @0x1413ed2f0
+void MeshInstancing::FUN_1413ed2f0()
+{
+    dirty = true;
+}
+
+// @0x1413ed300
+void MeshInstancing::FUN_1413ed300(int nCount)
+{
+    config.activeCount = nCount;
+}
+
 // ---- services reached through globals ----
 extern char DAT_143b059e8;                                          // the application framework
 HardwareInstancingService* FUN_14098c5b0(char* pFramework);
@@ -352,8 +413,6 @@ void FUN_141bbae40(WorldService* pWorld, IWorldServiceCallback* pCallback);
 bool FUN_141bc7b20(void* pWorld, const egf::EntityID& id);         // is the entity drawn by the world itself
 efd::MessageService* FUN_1413f9830();
 ecr::RenderService* FUN_1413f9890();
-void* FUN_1413ebb60();                                              // the outline manager
-void FUN_1414c0bb0(void* pManager, egf::Entity* pEntity, NiAVObject* pObject);
 class Unk_Clock { public: double FUN_141473260(); };
 Unk_Clock* FUN_14086d260();
 double FUN_141473280(Unk_Clock* pClock);
@@ -362,11 +421,9 @@ class COptimizer;
 COptimizer* FUN_1409f7c90();
 int FUN_14112f0b0(COptimizer* pOptimizer);
 void FUN_1410db460(efd::IDependencyRegistrar* pRegistrar, unsigned n);   // <MS2 service 0x0610001a>
-void FUN_1413eb6d0(egf::IPropertyCallback* pCallback);             // register on the placeable model
 
 // ---- entities ----
 egf::FlatModel* FUN_1408a9bd0(egf::Entity* pEntity);
-bool FUN_1413ec7a0(egf::Entity* pEntity, unsigned uPropId);           // the entity has the property
 void FUN_1408a20a0(egf::Entity* pEntity, unsigned uPropId, bool* pOut);
 void FUN_14098c6e0(egf::Entity* pEntity, unsigned uPropId, const bool& rValue);
 int FUN_1409618c0(egf::Entity* pEntity, unsigned uPropId, efd::Point3* pOut);
@@ -607,7 +664,7 @@ efd::SyncResult HardwareInstancingService::OnPreInit(efd::IDependencyRegistrar* 
     pRegistrar->AddDependency<efd::MessageService>(1);
     pRegistrar->AddDependency<ecr::ShaderService>(1);
     FUN_1410db460(pRegistrar, 1);
-    FUN_1413eb6d0(this);
+    egf::PlaceableModel::AddCallback(this);
     return efd::SyncResult_Success;
 }
 MS2_REPLACE_METHOD(0x1413D4490, HardwareInstancingService, OnPreInit, 127, 0x5C215D93);
@@ -759,7 +816,7 @@ MeshInstancing* HardwareInstancingService::FUN_1413d4b40(egf::Entity* pEntity, i
     {
         NiAVObject* pObject = FUN_141b6efc0(pEntity);
         pRender->RemoveRenderedEntity(pEntity, pObject);
-        FUN_1414c0bb0(FUN_1413ebb60(), pEntity, pObject);
+        MS2LightService::GetInstance()->RemoveRenderedEntity(pEntity, pObject);
     }
     return pInstancing;
 }
@@ -796,7 +853,7 @@ int HardwareInstancingService::FUN_1413d4fe0(EntityInstancing* pInstancing, egf:
         {
             NiAVObject* pObject = FUN_141b6efc0(pEntity);
             pRender->RemoveRenderedEntity(pEntity, pObject);
-            FUN_1414c0bb0(FUN_1413ebb60(), pEntity, pObject);
+            MS2LightService::GetInstance()->RemoveRenderedEntity(pEntity, pObject);
         }
         m_maps[m_nMap].m_mapByValue.insert(std::make_pair(pEntity->GetEntityIDValue(), pInstancing));
     }
@@ -1330,7 +1387,7 @@ void HardwareInstancingService::FUN_1413d7800(const egf::EntityChangeMessage* pM
         egf::Entity* pEntity = pMsg->GetEntity();
         if (pEntity != NULL)
         {
-            if (FUN_1413ec7a0(pEntity, 0x23f9860e))
+            if (pEntity->IsDirty(0x23f9860e))
             {
                 bool bInstanced = false;
                 FUN_1408a20a0(pEntity, 0x23f9860e, &bInstanced);
