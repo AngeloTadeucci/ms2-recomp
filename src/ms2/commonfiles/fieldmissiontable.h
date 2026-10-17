@@ -13,6 +13,11 @@
 
 class Unk_140165cf0;    // xml element (declared where the loader is)
 
+// Skill point kind of a reward ("subJobLevel": 1 / 2). Name and type invented: the map GetSkillPoints fills has its own
+// copy of the std::map glue (try_emplace 0x14037e600, gameevent's map<int,int> is 0x1403e13d0) and of less<K>::operator()
+// (0x14037ee20, a signed jge; less<int> is 0x1401f1b70), so K is a distinct signed 32-bit type, not int.
+enum Unk_SubJobLevel { Unk_SubJobLevel_1 = 1, Unk_SubJobLevel_2 = 2 };
+
 // One reward (0x58 bytes, CPtred base, deleting dtor only). m_nType: 1 item, 2 stat point, 3 skill point.
 class CFieldMissionReward : public CPtred
 {
@@ -23,7 +28,7 @@ public:
     int m_nType;                        // +0x18 "type"
     int m_nValue;                       // +0x1c "value" (types 2, 3)
     ItemEntity m_item;                  // +0x20 the item (type 1)
-    int m_nSubJob;                      // +0x50 skill point kind (1 / 2) from "subJobLevel"
+    Unk_SubJobLevel m_nSubJob;          // +0x50 skill point kind (1 / 2) from "subJobLevel"
 };
 MS2_CHECK_SIZE(CFieldMissionReward, 0x58);
 MS2_CHECK_OFFSET(CFieldMissionReward, m_item, 0x20);
@@ -44,7 +49,7 @@ public:
     int GetPrevRound(int nRound);                               // 0x14037c450 the round before nRound (0 if none)
     int GetNextRound(int nRound);                               // 0x14037c510 the round after nRound (0 if none)
     int GetMaxRound();                                          // 0x14037c610
-    void GetSkillPoints(int nRound, std::map<int, int>& rOut);  // 0x14037c6a0 skill points of the rounds <= nRound per kind
+    void GetSkillPoints(int nRound, std::map<Unk_SubJobLevel, int>& rOut);  // 0x14037c6a0 skill points of the rounds <= nRound per kind
     int GetStatPoints(int nRound);                              // 0x14037c7c0 stat points of the rounds <= nRound
 
 private:
