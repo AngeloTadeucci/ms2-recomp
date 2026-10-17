@@ -2979,7 +2979,7 @@ Unk_CMISEffSvc* FUN_141b6f910();
 void FUN_1409a1fc0(Unk_CMISEffSvc*, const Unk_CMISEntityRef*, const efd::utf8string*, float fScale, int nFlag);
 struct Unk_CMISLimits { char pad[8]; };
 struct Unk_CMISLimitF { float m_f; };
-struct Unk_CMISRules { char pad[0xf80]; Unk_CMISLimitF m_fAtF80; char padF84[0xfd8 - 0xf84]; Unk_CMISLimitF m_fNear; char pad2[0x1348 - 0xfdc]; Unk_CMISLimits m_limits1348; char pad3[0x5078 - 0x1348 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits5078; char pad4[0xa288 - 0x5078 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits; };   // game-wide rules (limit tables at 0x1348/0x5078/0xa288)
+struct Unk_CMISRules { char pad[0xf80]; Unk_CMISLimitF m_fAtF80; char padF84[0xfd8 - 0xf84]; Unk_CMISLimitF m_fNear; char pad2[0x1138 - 0xfdc]; Unk_CMISLimits m_limits1138; char pad2b[0x1190 - 0x1138 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits1190; char pad2c[0x1348 - 0x1190 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits1348; char pad3[0x5078 - 0x1348 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits5078; char pad4[0xa288 - 0x5078 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits; };   // game-wide rules (limit tables at 0x1348/0x5078/0xa288)
 Unk_CMISRules* FUN_1401d3200();
 int* FUN_1402056b0(Unk_CMISLimits* pTable);
 Unk_CMISIter<279>* FUN_141151a90(Unk_CMISTree<279>*, Unk_CMISIter<279>*);
@@ -5289,4 +5289,109 @@ void CubeMapInformationService::FUN_1410c9710()
         }
     }
     f1e0 = nFloor;
+}
+
+// ---- w142 batch 8 ----
+struct Unk_CMISNearMap { void* m_head; size_t m_nCount; };
+struct Unk_CMISDemolishUI;                                                                  // UIHouseDemolishDialog
+struct Unk_CMISMarkEntry { int m_key; int m_pad; Unk_CMISMarkRec m_rec; };                  // node value of f288
+Unk_CMISNearMap* FUN_141122140(Unk_CMISNearMap*);                                           // ctor
+void FUN_1411252d0(Unk_CMISNearMap*);                                                       // dtor
+Unk_CMISNearIter* FUN_14114dad0(Unk_CMISNearMap*, Unk_CMISNearIter*);                       // begin
+int* FUN_141128520(Unk_CMISNearIter*);                                                      // operator* (the key)
+void FUN_141129a40(Unk_CMISNearIter*);                                                      // operator++
+void FUN_1411531f0(Unk_CMISNearMap*, const int*);                                           // erase
+int FUN_141659610(Unk_CMISPawn*);                                                           // the pawn is a ghost (state 1)
+void FUN_14152a2b0(Unk_CMISPawn*, int);                                                     // set the pawn's mark flag
+Unk_CMISDemolishUI* FUN_1410dbf80(unsigned nId);                                            // find the demolish dialog
+void FUN_1413503b0(Unk_CMISDemolishUI*);                                                    // show
+void FUN_141350440(Unk_CMISDemolishUI*);                                                    // hide
+Unk_CMISIter<275>* FUN_14114da60(Unk_CMISTree<275>*, Unk_CMISIter<275>*);                   // begin
+bool FUN_141127300(Unk_CMISIter<275>*, Unk_CMISIter<275>*);                                 // operator!=
+Unk_CMISMarkEntry* FUN_141128500(Unk_CMISIter<275>*);                                       // operator*
+void FUN_141129a20(Unk_CMISIter<275>*);                                                     // operator++
+// @0x1410ca170
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410ca170()
+{
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    Unk_CMISPawn* pPawn = reinterpret_cast<Unk_CMISPawn*>(pRoster);
+    if (pRoster == 0 || FUN_141659610(pPawn) != 0)
+        return;
+    FUN_14152a2b0(pPawn, 0);
+    Unk_CMISNearMap mapOuter;
+    FUN_141122140(&mapOuter);
+    int nOuter = *FUN_1402056b0(&FUN_1401d3200()->m_limits1190);
+    FUN_1410bb170(pPawn, nOuter, nOuter, 2, &mapOuter);
+    Unk_CMISNearMap mapInner;
+    FUN_141122140(&mapInner);
+    int nInner = *FUN_1402056b0(&FUN_1401d3200()->m_limits1138);
+    FUN_1410bb170(pPawn, nInner, nInner, 2, &mapInner);
+    bool bAny = false;
+    Unk_CMISNearIter it, itEnd, itFind;
+    for (FUN_14114dad0(&mapInner, &it); FUN_141127340(&it, FUN_1411518b0(&mapInner, &itEnd)); FUN_141129a40(&it)) {
+        int nGroup = *FUN_141128520(&it);
+        if (FUN_141127340(FUN_141156f60(&mapOuter, &itFind, &nGroup), FUN_1411518b0(&mapOuter, &itEnd)))
+            FUN_1411531f0(&mapOuter, &nGroup);
+        if (FUN_1410ca900(nGroup) != 0) {
+            bAny = true;
+            FUN_14152a2b0(pPawn, 1);
+        }
+    }
+    if (Unk_CMISDemolishUI* pUI = FUN_1410dbf80(0x4ea1)) {
+        if (FUN_1410c3180() == 0 && bAny)
+            FUN_1413503b0(pUI);
+        else
+            FUN_141350440(pUI);
+    }
+    for (FUN_14114dad0(&mapOuter, &it); FUN_141127340(&it, FUN_1411518b0(&mapOuter, &itEnd)); FUN_141129a40(&it)) {
+        int nGroup = *FUN_141128520(&it);
+        Unk_CMISIter<275> itMark, itMarkEnd;
+        if (FUN_141127300(FUN_141156e80(&f288, &itMark, &nGroup), FUN_141151850(&f288, &itMarkEnd)) == 0) {
+            Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+            if (!FUN_1408a8dd0(&spOwner, 0)) {
+                if (spOwner->ownerID == FUN_141656ad0(pRoster))
+                    FUN_1410ccc00(nGroup, 1, 0);
+            }
+            FUN_1408a8790(&spOwner);
+        }
+    }
+    Unk_CMISIter<275> itMark, itMarkEnd;
+    for (FUN_14114da60(&f288, &itMark); FUN_141127300(&itMark, FUN_141151850(&f288, &itMarkEnd)); FUN_141129a20(&itMark)) {
+        int nGroup = FUN_141128500(&itMark)->m_key;
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+        if (FUN_1408a8dd0(&spOwner, 0)) {
+            FUN_1408a8790(&spOwner);
+            continue;
+        }
+        if (spOwner->ownerID == FUN_141656ad0(pRoster)) {
+            if (FUN_141127340(FUN_141156f60(&mapInner, &itFind, &nGroup), FUN_1411518b0(&mapInner, &itEnd))) {
+                FUN_1410ccc00(nGroup, 0, 0);
+            } else {
+                Cube* pNear = FUN_1410badf0(nGroup, pPawn);
+                if (pNear != 0) {
+                    Unk_StreamPoint ptA;
+                    FUN_1402bd040(&ptA);
+                    FUN_1410b7ad0(reinterpret_cast<PCBase*>(pPawn), -150.0f, &ptA, 0);
+                    Unk_StreamPoint ptB;
+                    FUN_1402bd040(&ptB);
+                    FUN_1410b7a20(ptA, &ptB);
+                    Unk_Int3 cell = FUN_1408a1430(ptB);
+                    float fDx = fabsf((float)(pNear->position.x - cell.x));
+                    float fDy = fabsf((float)(pNear->position.y - cell.y));
+                    int nLimit = *FUN_1402056b0(&FUN_1401d3200()->m_limits1190);
+                    if (!(fDx <= (float)nLimit && fDy <= (float)nLimit)) {
+                        FUN_1410ccc00(nGroup, 0, 0);
+                        FUN_1408a8790(&spOwner);
+                        break;
+                    }
+                }
+            }
+        } else if (reinterpret_cast<Timer*>(&FUN_141128500(&itMark)->m_rec)->FUN_140868c00() != 0) {
+            FUN_1410ccc00(nGroup, 0, 0);
+        }
+        FUN_1408a8790(&spOwner);
+    }
+    FUN_1411252d0(&mapInner);
+    FUN_1411252d0(&mapOuter);
 }
