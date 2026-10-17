@@ -310,14 +310,14 @@ public:
     void FUN_1410ce600(int nItemId, Unk_Int3 pt, int nZ);
     Unk_CMISEntityRef FUN_1410cb1b0();
     void FUN_1410bf610(struct Unk_CMISCubeList* pPlaced, struct Unk_CMISSetRef rSet, struct Unk_CMISCubeList* pOthers);
-    void FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
+    void FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, float fRot, int nField50, int nField54,
         unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
     void FUN_1410c4b50(Unk_Int3 pt, bool bKeep);
-    void FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, unsigned char bField4c, int nUnused, int nFieldD8);
-    bool FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nField50, int nField54, __int64 nUnused, int nFieldD8);
+    void FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, float fRot, unsigned char bField4c, int nUnused, int nFieldD8);
+    bool FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, float fRot, int nField50, int nField54, __int64 nUnused, int nFieldD8);
     void FUN_1410bec60(MS2Ptr<Cube> spCube);
     void FUN_1410d4cb0(int nItemId, bool bFlag);
-    bool FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, class CubeItemInfo* pInfo, const efd::utf8string& strName,
+    bool FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, float fRot, class CubeItemInfo* pInfo, const efd::utf8string& strName,
         int nField50, int nField54, unsigned char bField4c, __int64 nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
     egf::EntityPtr FUN_1410bc3d0(struct Unk_CMISBlock rec);
     egf::EntityPtr FUN_1410bc7f0(Unk_StreamPoint ptPos, Unk_StreamPoint ptRot, unsigned nIdx, int nItemId);
@@ -329,7 +329,7 @@ public:
     int FUN_1410ba5f0(Unk_Int3 pt, Unk_StreamPoint ptRef);
     void FUN_1410be6e0(MS2Ptr<Cube> spCube);
     int FUN_1410b9e90(__int64 nOwnerId, struct Unk_CMISCubePtrSet* pOut);
-    MS2Ptr<Cube> FUN_1410c1330(Unk_StreamPoint ptWorld, __int64 nUnused, class CubeItemInfo* pInfo, int nKind, egf::EntityPtr spEnt, bool bUnused, int nField50);
+    MS2Ptr<Cube> FUN_1410c1330(Unk_StreamPoint ptWorld, float fUnused, class CubeItemInfo* pInfo, int nKind, egf::EntityPtr spEnt, bool bUnused, int nField50);
 
     // w138
     int FUN_1410b77e0(int nItemId, struct Unk_CMISStr* pOut);

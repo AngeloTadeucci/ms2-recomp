@@ -2688,7 +2688,7 @@ int FUN_1408a0190(int);
 void FUN_1408a0480(Cube*);
 // @0x1410bd080
 // MS2-FUNCTIONAL: transliteration with typed temporaries; the exe copies the cell points through stack blocks
-bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, CubeItemInfo* pInfo, const efd::utf8string& strName,
+bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, float fRot, CubeItemInfo* pInfo, const efd::utf8string& strName,
     int nField50, int nField54, unsigned char bField4c, __int64 nUnused, int nFieldD8, Unk_PayloadPtr<NoticeCubeInfo> spNotice)
 {
     if (pInfo == 0)
@@ -2790,7 +2790,7 @@ bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int n
     spCube->field4c = bField4c;
     spCube->field70 = pItem->install.cubeProp;
     spCube->fieldD8 = nFieldD8;
-    spCube->fieldD4 = nZ;
+    memcpy(&spCube->fieldD4, &fRot, sizeof(float));
     spCube->notice = spNotice;
     FUN_1408a0480(spCube.get());
     *FUN_141128190(&f78, FUN_1408b76f0(spCube->entity.data())) = spCube;
@@ -2801,7 +2801,7 @@ bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int n
 // ---- w138 batch 6 ----
 // @0x1410c4850
 // MS2-FUNCTIONAL: Unk_Int3 temporaries and by-value notice copies differ from the exe
-void CubeMapInformationService::FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
+void CubeMapInformationService::FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, float fRot, int nField50, int nField54,
     unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<NoticeCubeInfo> spNotice)
 {
     if (pInfo == 0)
@@ -2811,7 +2811,7 @@ void CubeMapInformationService::FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, CubeI
     Unk_CMISIter<265> itEnd, itFind;
     if (FUN_141127640(FUN_141157ac0(&f2e0, &itFind, &nCell), FUN_141151d30(&f2e0, &itEnd)) == 0) {
         if (FUN_1410b77e0(pInfo->itemId, reinterpret_cast<Unk_CMISStr*>(&strName)) != 0) {
-            FUN_1410bd080(nOwner, pt, nZ, pInfo, strName, nField50, nField54, bField4c, nUnused,
+            FUN_1410bd080(nOwner, pt, fRot, pInfo, strName, nField50, nField54, bField4c, nUnused,
                 nFieldD8, Unk_PayloadPtr<NoticeCubeInfo>(spNotice));
             FUN_1410d4cb0(pInfo->itemId, true);
             if (FUN_1410cb900()) {
@@ -2820,7 +2820,7 @@ void CubeMapInformationService::FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, CubeI
             }
         }
     } else {
-        FUN_1410bca70(nOwner, pt, nZ, nField50, nField54, nUnused, nFieldD8);
+        FUN_1410bca70(nOwner, pt, fRot, nField50, nField54, nUnused, nFieldD8);
     }
 }
 // @0x1410c4b50
@@ -2849,7 +2849,7 @@ void CubeMapInformationService::FUN_1410c4b50(Unk_Int3 pt, bool bKeep)
 }
 // @0x1410c4e20
 // MS2-FUNCTIONAL: MS2Ptr<Cube> temporaries and Unk_Int3 copies differ from the exe
-void CubeMapInformationService::FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, int nZ, unsigned char bField4c, int nUnused, int nFieldD8)
+void CubeMapInformationService::FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, float fRot, unsigned char bField4c, int nUnused, int nFieldD8)
 {
     if (pInfo == 0)
         return;
@@ -2870,7 +2870,7 @@ void CubeMapInformationService::FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, CubeI
     efd::utf8string strName;
     if (FUN_1410b77e0(pInfo->itemId, reinterpret_cast<Unk_CMISStr*>(&strName)) != 0) {
         Unk_PayloadPtr<NoticeCubeInfo> spNone(0);
-        FUN_1410bd080(nOwner, pt, nZ, pInfo, strName, spCube->field50, spCube->field54, bField4c, nUnused, nFieldD8, spNone);
+        FUN_1410bd080(nOwner, pt, fRot, pInfo, strName, spCube->field50, spCube->field54, bField4c, nUnused, nFieldD8, spNone);
         FUN_1410d4cb0(pInfo->itemId, true);
         if (FUN_1410c35c0() != 0 && FUN_1410cb900())
             FUN_1410d54f0(true);
@@ -4193,7 +4193,7 @@ int FUN_1408a01e0(CString strType);                                             
 
 // @0x1410bca70
 // MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
-bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nField50, int nField54, __int64 nUnused, int nFieldD8)
+bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, float fRot, int nField50, int nField54, __int64 nUnused, int nFieldD8)
 {
     int nCell = FUN_1408a03c0(pt);
     Unk_CMISIter<265> itEnd, itFind;
@@ -4206,7 +4206,7 @@ bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int n
     Unk_StreamPoint ptCell = DAT_143b01a60;
     FUN_1408a15b0(*(Unk_StreamPoint*)&pt, ptCell);
     Unk_StreamPoint ptRot = DAT_143b01a60;
-    *(int*)&ptRot.z = nZ;
+    ptRot.z = fRot;
     Unk_CMISStr strKind;
     FUN_1409989e0(&strKind, "None");
     FUN_1408a2060(FUN_1408a9280(&spOld), 0x15014205, &strKind);
@@ -4231,7 +4231,7 @@ bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int n
         spCube->field4c = 0;
         spCube->field70 = nFlag;
         spCube->fieldD8 = nFieldD8;
-        spCube->fieldD4 = nZ;
+        memcpy(&spCube->fieldD4, &fRot, sizeof(float));
         FUN_140965020(FUN_141128190(&f78, FUN_1408b76f0(FUN_1408a9280(&spNew))), &spCube);
         bResult = true;
     }
@@ -4334,7 +4334,7 @@ int FUN_140ae11a0(egf::Entity*, unsigned, int*);                                
 
 // @0x1410c1330
 // MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
-MS2Ptr<Cube> CubeMapInformationService::FUN_1410c1330(Unk_StreamPoint ptWorld, __int64 nUnused, CubeItemInfo* pInfo, int nKind,
+MS2Ptr<Cube> CubeMapInformationService::FUN_1410c1330(Unk_StreamPoint ptWorld, float fUnused, CubeItemInfo* pInfo, int nKind,
     egf::EntityPtr spEnt, bool bUnused, int nField50)
 {
     Unk_Int3 cell = FUN_1408a1430(ptWorld);
@@ -4402,7 +4402,7 @@ void CubeMapInformationService::FUN_1410cf160(egf::Entity* pEntity)
         FUN_1408a20a0(pEntity, 0x38141815, &bAnimatable);
         if (bAnimatable)
             FUN_1410c5570(Unk_EntRef((Unk_Entity*)pEntity));
-        MS2Ptr<Cube> spCube = FUN_1410c1330(pt, 0, 0, nKind, egf::EntityPtr(pEntity), false, nField50);
+        MS2Ptr<Cube> spCube = FUN_1410c1330(pt, 0.0f, 0, nKind, egf::EntityPtr(pEntity), false, nField50);
         if (spCube.get() != 0)
             spCube->field70 = 1;
         FUN_1408a8900(&strKind);
