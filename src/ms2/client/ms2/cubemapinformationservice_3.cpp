@@ -40,6 +40,8 @@ void FUN_1410db4c0(efd::IDependencyRegistrar*, unsigned);
 void FUN_1410db460(efd::IDependencyRegistrar*, unsigned);
 unsigned char* FUN_1411282d0(Unk_CMISTree<280>*, const int*);
 int* FUN_141128250(Unk_CMISTree<281>*, const int*);
+void FUN_14115ab30(Unk_CMISTree<260>*);
+void FUN_1409fabe0(void*);
 unsigned char* FUN_141128310(Unk_CMISTree<280>*, const int*);
 int* FUN_141128290(Unk_CMISTree<281>*, const int*);
 int* FUN_1411280d0(Unk_CMISTree<270>*, const int*);
@@ -936,6 +938,44 @@ void CubeMapInformationService::FUN_1410c3f50(int n)
 }
 // @0x1410c3fa0
 int CubeMapInformationService::FUN_1410c3fa0() { return f1dc; }
+// @0x1410c2fe0
+void CubeMapInformationService::FUN_1410c2fe0(void*) {}
+// @0x1410cb900
+bool CubeMapInformationService::FUN_1410cb900() { return f248; }
+// @0x1410ce7e0
+Unk_CMISTree<260>* CubeMapInformationService::FUN_1410ce7e0() { return &f98; }
+// @0x1410cef40
+efd::AsyncResult CubeMapInformationService::OnShutdown()
+{
+    FUN_1410d0310();
+    return efd::AsyncResult_Complete;
+}
+// @0x1410cf130
+void CubeMapInformationService::FUN_1410cf130(void*, void* p) { FUN_1409fabe0(p); }
+// @0x1410d3360
+Unk_CMISTree<268>* CubeMapInformationService::FUN_1410d3360() { return &f138; }
+// @0x1410d3380
+Unk_CMISTree<269>* CubeMapInformationService::FUN_1410d3380() { return &f148; }
+// @0x1410d4660
+ATL::CAtlArray<Unk_CMISElem388*>* CubeMapInformationService::FUN_1410d4660() { return &a388; }
+// @0x1410d4920
+ATL::CAtlArray<Unk_CMISElem3a8*>* CubeMapInformationService::FUN_1410d4920() { return &a3a8; }
+// @0x1410d5530
+bool CubeMapInformationService::FUN_1410d5530() { return f3dc; }
+// @0x1410d5700
+void CubeMapInformationService::FUN_1410d5700(unsigned __int64 v) { f420 = v; }
+// @0x1410d5730
+unsigned __int64 CubeMapInformationService::FUN_1410d5730() { return f420; }
+// @0x1410d5750
+void CubeMapInformationService::FUN_1410d5750(unsigned __int64 v) { f428 = v; }
+// @0x1410d5780
+unsigned __int64 CubeMapInformationService::FUN_1410d5780() { return f428; }
+// @0x1410d5ab0
+void CubeMapInformationService::FUN_1410d5ab0() { FUN_14115ab30(&f98); }
+// @0x1410d5ae0
+void CubeMapInformationService::FUN_1410d5ae0(int v) { f450 = v; }
+// @0x1410d5b00
+int CubeMapInformationService::FUN_1410d5b00() { return f450; }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
 {
