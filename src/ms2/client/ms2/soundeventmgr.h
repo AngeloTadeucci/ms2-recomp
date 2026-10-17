@@ -60,6 +60,16 @@ MS2_CHECK_OFFSET(CSoundEvent, m_strName, 0x30);
 typedef MS2Ptr<CSoundEvent> CSoundEventPtr;
 
 // Effect XML type 2 <SoundEvent event= group= byJob= .../> (0x110 bytes). vftable 0x142f64130.
+// The effect class of the music cue effect type; its other members live in another unit (only the RTTI static is here).
+class CSoundMusicEffect : public CEffect
+{
+public:
+    static const NiRTTI ms_RTTI;
+};
+
+// The job code of the per-job event / delay tables (an enum, so the ATL map keys are passed by reference).
+enum Unk_SoundJobCode { Unk_SoundJobCode_None };
+
 class CSoundEventEffectParam : public CEffectParam
 {
 public:
@@ -92,8 +102,8 @@ public:
     bool m_bByJob;                  // +0x78 "byJob"
     bool m_bSkipMusicConcert;       // +0x79 "isSkipMusicConcert"
     unsigned m_nCooltimeId;         // +0x7c "cooltimeID"
-    ATL::CAtlMap<int, CString> m_mapJobEvent;   // +0x80 job -> event
-    ATL::CAtlMap<int, float> m_mapJobDelay;     // +0xc8 job -> start delay
+    ATL::CAtlMap<Unk_SoundJobCode, CString> m_mapJobEvent;   // +0x80 job -> event
+    ATL::CAtlMap<Unk_SoundJobCode, float> m_mapJobDelay;     // +0xc8 job -> start delay
 };
 MS2_CHECK_SIZE(CSoundEventEffectParam, 0x110);
 MS2_CHECK_OFFSET(CSoundEventEffectParam, m_fViewDistance, 0x50);
@@ -241,7 +251,7 @@ public:
     void FUN_14177dbe0(int nCategory, unsigned bMute);          // mute a category
     void FUN_14177dc80(unsigned bMute);                         // mute everything
     bool FUN_14177dd50(int nCategory);
-    int FUN_14177ddd0();                                        // 1
+    int FUN_14177ddd0(void* pUnused, int nUnused1, int nUnused2);   // 1
     void FUN_14177ddf0(int nCategory, int nMs);                 // start a fade in
     void FUN_14177dea0(int nCategory, int nMs);                 // start a fade out
     void FUN_14177df50(int nCategory, float fVolume);           // finish a fade

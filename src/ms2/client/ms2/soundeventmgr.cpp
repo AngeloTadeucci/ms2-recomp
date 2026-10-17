@@ -3,6 +3,138 @@
 // MS2-UNIT: client\ms2\soundeventmgr.cpp
 // MS2-RANGE: 0x140101560-0x140101680 .text$di
 // MS2-RANGE: 0x141775810-0x14178fd20 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ?FUN_141776260@CSoundEventEffectParam@@QEBAAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ 0x141776260 ; unique
+// MS2-PIN: ?FUN_141776280@CSoundEventEffectParam@@QEBAAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ 0x141776280 ; unique
+// MS2-PIN: ?FUN_141777700@CSoundEventEffect@@QEAAAEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ 0x141777700 ; unique
+// MS2-PIN: ?FUN_141777770@CSoundEventEffect@@QEAAXXZ 0x141777770 ; unique
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14177e940 ; prop
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14177e970 ; unique
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14177e9a0 ; unique
+// MS2-PIN: ??$?0AEAV?$SmartPointer@VEntity@egf@@@efd@@AEAV?$MS2Ptr@VCSoundEvent@@@@$0A@@?$pair@V?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@QEAA@AEAV?$SmartPointer@VEntity@egf@@@efd@@AEAV?$MS2Ptr@VCSoundEvent@@@@@Z 0x14177ea50 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177eab0 ; prop
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177eb00 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177eb50 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177eba0 ; prop
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14177ec40 ; unique
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14177ed30 ; unique
+// MS2-PIN: ??$?0AEBH$$Z$$V@?$pair@$$CBHUUnk_SoundFade@@@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@AEBH@1@V?$tuple@$$V@1@@Z 0x14177ed80 ; prop
+// MS2-PIN: ??$?0AEBH$0A@@?$tuple@AEBH@std@@QEAA@AEBH@Z 0x14177edd0 ; unique
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177ef60 ; prop
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14177f050 ; prop
+// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHUUnk_SoundFade@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x14177f140 ; unique
+// MS2-PIN: ??$?0W4FMOD_EVENT_PITCHUNITS@@$0A@@?$MakeValue@V?$BasicFormatter@_W@fmt@@@internal@fmt@@QEAA@AEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x14177f1b0 ; prop
+// MS2-PIN: ??$?0W4FMOD_EVENT_PITCHUNITS@@@ArgType@internal@fmt@@QEAA@AEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x14177f1e0 ; prop
+// MS2-PIN: ??$Unk_SoundLog@PEBDMW4FMOD_EVENT_PITCHUNITS@@@@YAXPEAVCLogString@@HHPEB_WAEBQEBDAEBMAEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x14177f5d0 ; unique
+// MS2-PIN: ??$_Advance1@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@0@HUbidirectional_iterator_tag@0@@Z 0x141780450 ; prop
+// MS2-PIN: ??$_Advance1@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@0@HUbidirectional_iterator_tag@0@@Z 0x141780510 ; prop
+// MS2-PIN: ??$_Advance1@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@0@HUbidirectional_iterator_tag@0@@Z 0x1417805d0 ; prop
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAH@1@$$QEAV?$tuple@$$V@1@@Z 0x141780710 ; prop
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1417807e0 ; prop
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1417808b0 ; prop
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@1@@Z 0x141781ee0 ; prop
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHUUnk_SoundFade@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHUUnk_SoundFade@@@1@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@1@@Z 0x141782b20 ; prop
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@1@@Z 0x141783760 ; prop
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBHUUnk_SoundFade@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBHUUnk_SoundFade@@@1@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@1@@Z 0x141784390 ; prop
+// MS2-PIN: ??$_Kfn@$$CBHV?$TToolHistory@UParamVaule@@@@@?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@SAAEBHAEBU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@1@@Z 0x1417847a0 ; prop
+// MS2-PIN: ??$_Kfn@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@?$_Tmap_traits@V?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@U?$less@V?$SmartPointer@VEntity@egf@@@efd@@@std@@V?$allocator@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@5@$0A@@std@@SAAEBV?$SmartPointer@VEntity@egf@@@efd@@AEBU?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@1@@Z 0x1417847b0 ; prop
+// MS2-PIN: ??$_Kfn@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@?$_Tmap_traits@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@2@$0A@@std@@SAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@1@AEBU?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@1@@Z 0x1417847c0 ; prop
+// MS2-PIN: ??$_Kfn@$$CBHUUnk_SoundFade@@@?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@SAAEBHAEBU?$pair@$$CBHUUnk_SoundFade@@@1@@Z 0x1417847d0 ; prop
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x141784a60 ; prop
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x141784bb0 ; unique
+// MS2-PIN: ??$_Try_emplace@H$$V@?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@1@$$QEAH@Z 0x141784d00 ; prop
+// MS2-PIN: ??$addressof@$$CBV?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@YAPEBV?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@0@AEBV10@@Z 0x141784e50 ; unique
+// MS2-PIN: ??$addressof@$$CBV?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@std@@YAPEBV?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@0@AEBV10@@Z 0x141784e60 ; unique
+// MS2-PIN: ??$addressof@$$CBV?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@YAPEBV?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@0@AEBV10@@Z 0x141784e70 ; unique
+// MS2-PIN: ??$advance@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@0@H@Z 0x141784fd0 ; prop
+// MS2-PIN: ??$advance@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@0@H@Z 0x141785030 ; prop
+// MS2-PIN: ??$advance@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@H@std@@YAXAEAV?$_List_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@0@H@Z 0x141785090 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@1@AEAPEAU31@@Z 0x1417851e0 ; unique
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@1@AEAPEAU31@@Z 0x141785280 ; unique
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@1@AEAPEAU31@@Z 0x1417852d0 ; unique
+// MS2-PIN: ??$construct@U?$pair@$$CBHUUnk_SoundFade@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHUUnk_SoundFade@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x141785520 ; unique
+// MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAH@1@$$QEAV?$tuple@$$V@1@@Z 0x1417858c0 ; prop
+// MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x141785960 ; prop
+// MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x141785a00 ; prop
+// MS2-PIN: ??$FormatCustomArg@W4FMOD_EVENT_PITCHUNITS@@@?$MakeValue@V?$BasicFormatter@_W@fmt@@@internal@fmt@@SAXPEAXPEBX0@Z 0x141785da0 ; prop
+// MS2-PIN: ??$forward@AEAPEAU?$_List_node@UMusicData@@PEAX@std@@@std@@YAAEAPEAU?$_List_node@UMusicData@@PEAX@0@AEAPEAU10@@Z 0x141785e00 ; unique
+// MS2-PIN: ??$forward@AEAPEAU?$_List_node@UParamVaule@@PEAX@std@@@std@@YAAEAPEAU?$_List_node@UParamVaule@@PEAX@0@AEAPEAU10@@Z 0x141785e10 ; unique
+// MS2-PIN: ??$forward@AEAPEAU?$_List_node@UReverbData@@PEAX@std@@@std@@YAAEAPEAU?$_List_node@UReverbData@@PEAX@0@AEAPEAU10@@Z 0x141785e20 ; unique
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x141785e30 ; prop
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@PEAX@0@AEAPEAU10@@Z 0x141785e40 ; prop
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@0@AEAPEAU10@@Z 0x141785e50 ; prop
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@0@AEAPEAU10@@Z 0x141785e60 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785ed0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785ee0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785ef0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785f00 ; prop
+// MS2-PIN: ??$forward@AEBU?$less@H@std@@@std@@YAAEBU?$less@H@0@AEBU10@@Z 0x141785f10 ; prop
+// MS2-PIN: ??$forward@$$QEAH@std@@YA$$QEAHAEAH@Z 0x141785f50 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785fa0 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141785fd0 ; prop
+// MS2-PIN: ??$forward@V?$tuple@AEBH@std@@@std@@YA$$QEAV?$tuple@AEBH@0@AEAV10@@Z 0x141785fe0 ; prop
+// MS2-PIN: ??$make_pair@AEAV?$SmartPointer@VEntity@egf@@@efd@@AEAV?$MS2Ptr@VCSoundEvent@@@@@std@@YA?AU?$pair@V?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@0@AEAV?$SmartPointer@VEntity@egf@@@efd@@AEAV?$MS2Ptr@VCSoundEvent@@@@@Z 0x141786110 ; unique
+// MS2-PIN: ??$make_type@W4FMOD_EVENT_PITCHUNITS@@@internal@fmt@@YA_KAEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x141786170 ; prop
+// MS2-PIN: ??$move@AEAV?$tuple@AEBH@std@@@std@@YA$$QEAV?$tuple@AEBH@0@AEAV10@@Z 0x1417861b0 ; prop
+// MS2-PIN: ??$try_emplace@$$V@?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@1@$$QEAH@Z 0x1417861c0 ; unique
+// MS2-PIN: ??$try_emplace@$$V@?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x141786200 ; unique
+// MS2-PIN: ??$type@W4FMOD_EVENT_PITCHUNITS@@$0A@@?$MakeValue@V?$BasicFormatter@D@fmt@@@internal@fmt@@SA_KAEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x141786280 ; prop
+// MS2-PIN: ??0?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@QEAA@PEAU?$_List_node@UMusicData@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@1@@Z 0x141786540 ; unique
+// MS2-PIN: ??0?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@std@@QEAA@PEAU?$_List_node@UParamVaule@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@1@@Z 0x141786580 ; unique
+// MS2-PIN: ??0?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@QEAA@PEAU?$_List_node@UReverbData@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@1@@Z 0x1417865c0 ; unique
+// MS2-PIN: ??0?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_List_node@UMusicData@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@1@@Z 0x1417866c0 ; unique
+// MS2-PIN: ??0?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_List_node@UParamVaule@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@1@@Z 0x141786700 ; unique
+// MS2-PIN: ??0?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_List_node@UReverbData@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@1@@Z 0x141786740 ; unique
+// MS2-PIN: ??0?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@QEAA@XZ 0x141786840 ; unique
+// MS2-PIN: ??0?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@QEAA@XZ 0x141786870 ; unique
+// MS2-PIN: ??0?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@QEAA@XZ 0x1417868a0 ; unique
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@QEAA@XZ 0x141786ad0 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@QEAA@XZ 0x141786bb0 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x141786df0 ; prop
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@QEAA@XZ 0x141786e10 ; prop
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@QEAA@XZ 0x141786e40 ; prop
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@QEAA@XZ 0x141786e70 ; prop
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@QEAA@XZ 0x141786ea0 ; prop
+// MS2-PIN: ??0?$allocator@U?$_List_node@UMusicData@@PEAX@std@@@std@@QEAA@XZ 0x141786ed0 ; unique
+// MS2-PIN: ??0?$allocator@U?$_List_node@UParamVaule@@PEAX@std@@@std@@QEAA@XZ 0x141786ee0 ; unique
+// MS2-PIN: ??0?$allocator@U?$_List_node@UReverbData@@PEAX@std@@@std@@QEAA@XZ 0x141786ef0 ; unique
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@QEAA@XZ 0x141786f00 ; prop
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@PEAX@std@@@std@@QEAA@XZ 0x141786f10 ; prop
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@std@@QEAA@XZ 0x141786f20 ; prop
+// MS2-PIN: ??0MusicData@@QEAA@XZ 0x141787180 ; unique
+// MS2-PIN: ??0ParamVaule@@QEAA@XZ 0x1417871b0 ; unique
+// MS2-PIN: ??A?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAAAEAV?$TToolHistory@UParamVaule@@@@$$QEAH@Z 0x141787b40 ; unique
+// MS2-PIN: ??A?$map@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@@std@@QEAAAEAV?$TToolHistory@UParamVaule@@@@AEBH@Z 0x141787b80 ; unique
+// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417881f0 ; prop
+// MS2-PIN: ??F?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788450 ; prop
+// MS2-PIN: ??F?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UParamVaule@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788480 ; prop
+// MS2-PIN: ??F?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417884b0 ; prop
+// MS2-PIN: ??F?$_List_iterator@V?$_List_val@U?$_List_simple_types@UMusicData@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417884e0 ; prop
+// MS2-PIN: ??F?$_List_iterator@V?$_List_val@U?$_List_simple_types@UReverbData@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788520 ; prop
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788540 ; prop
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788560 ; unique
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788580 ; unique
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417885a0 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1417885c0 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141788620 ; prop
+// MS2-PIN: ??R?$less@H@std@@QEBA_NAEBH0@Z 0x141788980 ; unique
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x14178a1d0 ; unique
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBH0@Z 0x14178a290 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_SoundFade@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@H@2@XZ 0x14178c3b0 ; prop
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x14178c850 ; prop
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x14178c910 ; prop
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEBAAEBU?$less@H@2@XZ 0x14178c930 ; prop
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@IEBAAEBHAEBU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@2@@Z 0x14178cb90 ; unique
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@V?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@U?$less@V?$SmartPointer@VEntity@egf@@@efd@@@std@@V?$allocator@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@std@@@5@$0A@@std@@@std@@IEBAAEBV?$SmartPointer@VEntity@egf@@@efd@@AEBU?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@V?$MS2Ptr@VCSoundEvent@@@@@2@@Z 0x14178cbb0 ; unique
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@U?$less@V?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@@2@$0A@@std@@@std@@IEBAAEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@AEBU?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@2@@Z 0x14178cbd0 ; unique
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@IEBAAEBHAEBU?$pair@$$CBHUUnk_SoundFade@@@2@@Z 0x14178cbf0 ; unique
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@PEAVEventGroup@FMOD@@@std@@PEAX@2@_K@Z 0x14178e760 ; unique
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_SoundFade@@@std@@@std@@@std@@@2@AEBH@Z 0x14178f790 ; unique
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_List_node@UMusicData@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_List_node@UMusicData@@PEAX@std@@@2@@Z 0x14178f9f0 ; unique
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_List_node@UParamVaule@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_List_node@UParamVaule@@PEAX@std@@@2@@Z 0x14178fa00 ; unique
+// MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fc80 ; prop
+// MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fca0 ; prop
+// MS2-PINS-END tplpin
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
@@ -127,12 +259,18 @@ static CString s_str143aea258("skill");                                         
 static CString s_str143aea250("stun");                                               // @0x140101620
 #else
 const NiRTTI CSoundEventEffect::ms_RTTI("CSoundEventEffect", &CEffect::ms_RTTI);
+const NiRTTI CSoundMusicEffect::ms_RTTI("CSoundMusicEffect", &CEffect::ms_RTTI);
 #endif
 
 // @0x141775810
 CSoundEventEffectParam::CSoundEventEffectParam()
     : CEffectParam(2), m_bAttachToNode(false), m_bApplyNodeTransform(false), m_bDoNotStop(false), m_fVolume(1.0f),
       m_fViewDistance(0.0f), m_strExtra(""), m_bByJob(false), m_bSkipMusicConcert(false), m_nCooltimeId(0)
+{
+}
+
+// @0x1417782b0
+CSoundEventEffectParam::~CSoundEventEffectParam()
 {
 }
 
@@ -253,7 +391,7 @@ CString CSoundEventEffectParam::FUN_141776120(int nJob) const
     if (nJob == 0)
         return m_strEvent;
     CString strEvent;
-    int nKey = nJob;
+    Unk_SoundJobCode nKey = (Unk_SoundJobCode)nJob;
     m_mapJobEvent.Lookup(nKey, strEvent);
     return strEvent;
 }
@@ -273,7 +411,7 @@ float CSoundEventEffectParam::FUN_1417762a0(int nJob) const
     else
     {
         fDelay = 0;
-        int nKey = nJob;
+        Unk_SoundJobCode nKey = (Unk_SoundJobCode)nJob;
         if (!m_mapJobDelay.Lookup(nKey, fDelay))
             fDelay = m_fStartDelay;
     }
@@ -296,7 +434,7 @@ void CSoundEventEffectParam::FUN_141776330(Unk_140165cf0* pNode)
         if (arrPair.GetCount() == 2)
         {
             int nJob = atoi(arrPair[0]);
-            m_mapJobEvent.SetAt(nJob, arrPair[1]);
+            m_mapJobEvent.SetAt((Unk_SoundJobCode)nJob, arrPair[1]);
         }
     }
 }
@@ -317,7 +455,7 @@ void CSoundEventEffectParam::FUN_1417764c0(Unk_140165cf0* pNode)
         {
             int nJob = FUN_140718170(arrPair[0]);
             float fDelay = FUN_140718450(arrPair[1]);
-            m_mapJobDelay.SetAt(nJob, fDelay);
+            m_mapJobDelay.SetAt((Unk_SoundJobCode)nJob, fDelay);
         }
     }
 }
@@ -743,6 +881,12 @@ ReverbData::ReverbData() : m_nPriority(0x100)
 }
 
 // ---- CSoundEventMgr ----
+// @0x141786300
+TSingleton<CSoundEventMgr>::TSingleton()
+{
+    s_instance = static_cast<CSoundEventMgr*>(this);
+}
+
 // FMOD_RESULT to text: the second copy of the SDK's FMOD_ErrorString in this unit.
 // @0x141788f10
 const char* FUN_141788f10(FMOD_RESULT nResult)
@@ -822,7 +966,7 @@ MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177b3d0(FMOD::EventGroup* pGroup, cons
         return FUN_14177b6a0(pszName);
 
     FMOD::Event* pEvent = 0;
-    int nResult = pGroup->getEvent(pszName, FMOD_EVENT_DEFAULT, &pEvent);
+    FMOD_RESULT nResult = pGroup->getEvent(pszName, FMOD_EVENT_DEFAULT, &pEvent);
     if (nResult == FMOD_OK)
     {
         if (eUnits != 0)
@@ -830,14 +974,14 @@ MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177b3d0(FMOD::EventGroup* pGroup, cons
         Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID {0} pitch {1} pitchUnit {2}", pszName, fPitch, eUnits);
         return MS2Ptr<CSoundEvent>(new CSoundEvent(pEvent, CString(pszName)));
     }
-    if (nResult == 0x53)
+    if (nResult == FMOD_ERR_EVENT_FAILED)
     {
-        const char* pszError = FUN_141788f10((FMOD_RESULT)0x53);
+        const char* pszError = FUN_141788f10(nResult);
         Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
     }
     else
     {
-        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        const char* pszError = FUN_141788f10(nResult);
         Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
     }
     return MS2Ptr<CSoundEvent>(0);
@@ -857,18 +1001,18 @@ MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177b6a0(const char* pszName)
             Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID {0}", pszName);
         return MS2Ptr<CSoundEvent>(new CSoundEvent(pEvent, CString(pszName)));
     }
-    if (nResult == 0x53)
+    if (nResult == FMOD_ERR_EVENT_FAILED)
     {
         if (FUN_140166440() != 0)
         {
             const char* pszError = FUN_141788f10(nResult);
-            Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, (int)nResult, pszError);
+            Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
         }
     }
     else
     {
         const char* pszError = FUN_141788f10(nResult);
-        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, (int)nResult, pszError);
+        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
     }
     return MS2Ptr<CSoundEvent>(0);
 }
@@ -1028,7 +1172,7 @@ int CSoundEventMgr::FUN_14177c100(int nMusicId, float fParam, unsigned nPriority
         if (m_histMusic.Get(-1, &kPrevious) != 0)
         {
             m_histMusic.Add(kPrevious);
-            int nResult = m_pMusicSystem->promptCue(kPrevious.m_nId);
+            FMOD_RESULT nResult = m_pMusicSystem->promptCue(kPrevious.m_nId);
             if (nResult == FMOD_OK)
             {
                 FUN_14177c420(5, fParam, nPriority, 0);
@@ -1036,7 +1180,7 @@ int CSoundEventMgr::FUN_14177c100(int nMusicId, float fParam, unsigned nPriority
                 m_bMusicPlaying = 1;
                 return 1;
             }
-            const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+            const char* pszError = FUN_141788f10(nResult);
             Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"PlayMusic SoundID:{0} Code:{1}({2})", kPrevious.m_nId, nResult,
                          pszError);
         }
@@ -1046,7 +1190,7 @@ int CSoundEventMgr::FUN_14177c100(int nMusicId, float fParam, unsigned nPriority
         kCurrent.m_nId = nMusicId;
         kCurrent.m_nPriority = nPriority;
         m_histMusic.Add(kCurrent);
-        int nResult = m_pMusicSystem->promptCue(nMusicId);
+        FMOD_RESULT nResult = m_pMusicSystem->promptCue(nMusicId);
         if (nResult == FMOD_OK)
         {
             FUN_14177c420(5, fParam, nPriority, 0);
@@ -1054,7 +1198,7 @@ int CSoundEventMgr::FUN_14177c100(int nMusicId, float fParam, unsigned nPriority
             FUN_140177a80(FUN_140166440(), 0xc, 0x12f, L"PlayMusic {0}", nMusicId);
             return 1;
         }
-        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        const char* pszError = FUN_141788f10(nResult);
         Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"PlayMusic SoundID:{0} Code:{1}({2})", nMusicId, nResult, pszError);
     }
     return 0;
@@ -1080,13 +1224,13 @@ int CSoundEventMgr::FUN_14177c420(int nParamId, float fValue, unsigned nPriority
         ParamVaule kPrevious;
         if (m_mapParams[nParamId].Get(s_nParamHistoryOffset, &kPrevious) != 0)
         {
-            int nResult = m_pMusicSystem->setParameterValue(nParamId, kPrevious.m_fValue);
+            FMOD_RESULT nResult = m_pMusicSystem->setParameterValue(nParamId, kPrevious.m_fValue);
             if (nResult == FMOD_OK)
             {
                 s_nParamHistoryOffset = -1;
                 return 1;
             }
-            const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+            const char* pszError = FUN_141788f10(nResult);
             int nCue = FUN_14177caa0();
             Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error {0}: [MusicID:{1}] SetMusicParameter {2} {3} {4}", nResult,
                          nCue, nParamId, kPrevious.m_fValue, pszError);
@@ -1098,10 +1242,10 @@ int CSoundEventMgr::FUN_14177c420(int nParamId, float fValue, unsigned nPriority
         kCurrent.m_fValue = fValue;
         kCurrent.m_nPriority = nPriority;
         m_mapParams[nParamId].Add(kCurrent);
-        int nResult = m_pMusicSystem->setParameterValue(nParamId, fValue);
+        FMOD_RESULT nResult = m_pMusicSystem->setParameterValue(nParamId, fValue);
         if (nResult == FMOD_OK)
             return 1;
-        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        const char* pszError = FUN_141788f10(nResult);
         int nCue = FUN_14177caa0();
         Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error {0}: [MusicID:{1}] SetMusicParameter {2} {3} {4}", nResult,
                      nCue, nParamId, fValue, pszError);
@@ -1114,10 +1258,10 @@ int CSoundEventMgr::FUN_14177c710(int nParamId, float* pfValue)
 {
     if (m_bReady == 0)
         return 0;
-    int nResult = m_pMusicSystem->getParameterValue(nParamId, pfValue);
+    FMOD_RESULT nResult = m_pMusicSystem->getParameterValue(nParamId, pfValue);
     if (nResult == FMOD_OK)
         return 1;
-    const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+    const char* pszError = FUN_141788f10(nResult);
     int nCue = FUN_14177caa0();
     Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error{0} : [cue {1}] getParameterValue:{2} {3}", nResult, nCue, nParamId,
                  pszError);
@@ -1548,7 +1692,7 @@ bool CSoundEventMgr::FUN_14177dd50(int nCategory)
 }
 
 // @0x14177ddd0
-int CSoundEventMgr::FUN_14177ddd0()
+int CSoundEventMgr::FUN_14177ddd0(void*, int, int)
 {
     return 1;
 }
