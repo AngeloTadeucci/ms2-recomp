@@ -5637,3 +5637,184 @@ bool CubeMapInformationService::FUN_1410c1910(const Unk_Int3& pt, int bDefer)
     FUN_1405a89e0(&request);
     return true;
 }
+
+// ---- w142 batch 11 ----
+#include "ms2/placeholder/tixmldocument.h"
+struct Unk_CMISXmlNode { char m_raw[0x90]; };                                               // TiXmlElement / TiXmlComment / TiXmlDeclaration storage
+void FUN_14086f2f0(Unk_CMISXmlNode* pElem, const char* pszName);                            // TiXmlElement ctor
+void FUN_14086f450(Unk_CMISXmlNode* pElem);                                                 // TiXmlElement dtor
+void FUN_1408704d0(Unk_CMISXmlNode* pDecl, const char* pszVersion, const char* pszEncoding, const char* pszStandalone);   // TiXmlDeclaration ctor
+void FUN_1408700b0(Unk_CMISXmlNode* pComment, const char* pszText);                         // TiXmlComment ctor
+void FUN_1408724d0(Unk_CMISXmlNode* pComment);                                              // TiXmlComment dtor
+void FUN_14086e000(void* pParent, const void* pChild);                                      // InsertEndChild
+void FUN_14086f8d0(void* pElem, const char* pszName, const char* pszValue);                 // SetAttribute(string)
+void FUN_140873ce0(void* pElem, const char* pszName, unsigned int nValue);
+void FUN_140873ca0(void* pElem, const char* pszName, int nValue);
+void FUN_140873e30(void* pElem, const char* pszName, float fValue);
+void FUN_140874050(void* pElem, const char* pszName, const CString& strValue);
+bool FUN_1408710c0(TiXmlDocument* pDoc, const char* pszPath);                               // SaveFile
+CString FUN_1409a2360(const char* psz, int n);                                              // text conversion
+CString FUN_14016a5c0(const char* psz, int n);                                              // text conversion
+struct Unk_CMISAutoCube                                                                     // AutomaticCreateCubeInfo (0x50, ctor 0x141122e70): a cube that is created by the game, not stored in the map
+{
+    char m_hdr[0x18];                                                                       // CPtred header
+    int m_nItemId;                                                                          // +0x18
+    Unk_Int3 m_offset;                                                                      // +0x1c
+    float m_fRotation;                                                                      // +0x28
+    int m_nWallDir;                                                                         // +0x2c
+    char m_pad30[0x20];
+};
+MS2_CHECK_SIZE(Unk_CMISAutoCube, 0x50);
+void FUN_141122e70(void* pMem);                                                             // AutomaticCreateCubeInfo::AutomaticCreateCubeInfo
+typedef MS2Ptr<CPtred> Unk_CMISAutoPtr;                                                     // MS2Ptr<AutomaticCreateCubeInfo>
+static Unk_CMISAutoCube* Unk_CMISAuto(const Unk_CMISAutoPtr& sp) { return reinterpret_cast<Unk_CMISAutoCube*>(sp.get()); }
+typedef Unk_CMISTree<294> Unk_CMISColumnSet;                                                // set of the (x, y) columns already exported
+typedef Unk_CMISTree<295> Unk_CMISAutoList;                                                 // the automatic cubes in the order of discovery
+Unk_CMISColumnSet* FUN_141122a70(Unk_CMISColumnSet*);                                       // ctor
+void FUN_141125bb0(Unk_CMISColumnSet*);                                                     // dtor
+Unk_CMISIter<294>* FUN_141152330(Unk_CMISColumnSet*, Unk_CMISIter<294>*);                   // end
+Unk_CMISIter<294>* FUN_141158700(Unk_CMISColumnSet*, Unk_CMISIter<294>*, const Unk_CMISPairRes&);   // find
+bool FUN_141127880(Unk_CMISIter<294>*, Unk_CMISIter<294>*);                                 // operator!=
+Unk_CMISIter<294>* FUN_14111d2d0(Unk_CMISColumnSet*, Unk_CMISIter<294>*, const Unk_CMISPairRes&);   // insert
+Unk_CMISAutoList* FUN_141122af0(Unk_CMISAutoList*);                                         // ctor
+void FUN_141125c10(Unk_CMISAutoList*);                                                      // dtor
+Unk_CMISIter<295>* FUN_14111d370(Unk_CMISAutoList*, Unk_CMISIter<295>*, const Unk_CMISAutoPtr*);   // insert
+Unk_CMISIter<295>* FUN_14114e780(Unk_CMISAutoList*, Unk_CMISIter<295>*);                    // begin
+Unk_CMISIter<295>* FUN_1411523f0(Unk_CMISAutoList*, Unk_CMISIter<295>*);                    // end
+bool FUN_1411278c0(Unk_CMISIter<295>*, Unk_CMISIter<295>*);                                 // operator!=
+Unk_CMISAutoPtr* FUN_141128b10(Unk_CMISIter<295>*);                                // operator*
+void FUN_141129970(Unk_CMISIter<295>*);                                                     // operator++
+int* FUN_141128660(Unk_CMISIter<262>*);                                                     // operator* (the group)
+void FUN_141129bb0(Unk_CMISIter<262>*);                                                     // operator++
+static CString Unk_CMISFormatPoint(const Unk_Int3& pt)                                      // "x,y,z" (0x141b6eee0)
+{
+    CString str;
+    str.Format("%d,%d,%d", (unsigned)pt.x, (unsigned)pt.y, (unsigned)pt.z);
+    return str;
+}
+// @0x1410d3450
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently; the document is a stack object and the declaration node is not destroyed
+int CubeMapInformationService::FUN_1410d3450(CString strName)
+{
+    if (!FUN_140374410(FUN_1403ed2d0()->FUN_141bd3060()))
+        return 0;
+    Unk_CubePoint base;
+    if (FUN_1410d4340(&base) == 0)
+        return 0;
+    if (f218 == 0)
+        return 0;
+    if (f218->groups.find(1) == f218->groups.end())
+        return 0;
+    TiXmlDocument doc;
+    Unk_CMISXmlNode decl;
+    FUN_1408704d0(&decl, "1.0", "utf-8", "");
+    FUN_14086e000(&doc, &decl);
+    {
+        Unk_CMISXmlNode comment;
+        CString strComment = FUN_1409a2360(" \xc6\xc4\xbd\xcc\xc7\xd8\xbc\xad \xbb\xe7\xbf\xeb\xc7\xcf\xb4\xc2 \xb5\xa5\xc0\xcc\xc5\xcd\xc0\xcc\xb4\xcf \xc1\xf7\xc1\xa2 \xbc\xf6\xc1\xa4\xc7\xcf\xc1\xf6 \xb8\xb6\xbc\xbc\xbf\xe4 ", 0);
+        FUN_1408700b0(&comment, strComment);
+        FUN_14086e000(&doc, &comment);
+        FUN_1408724d0(&comment);
+    }
+    Unk_CMISXmlNode elemMap;
+    FUN_14086f2f0(&elemMap, "ugcmap");
+    FUN_14086f8d0(&elemMap, "baseCubePoint3", Unk_CMISFormatPoint(base));
+    CString strSize;
+    strSize.Format("%dx%dx%d", FUN_1410c3470(), FUN_1410c3470(), FUN_1410c34b0());
+    FUN_14086f8d0(&elemMap, "indoorSizeType", strSize);
+    Unk_CMISAutoList listAuto;
+    FUN_141122af0(&listAuto);
+    Unk_CMISColumnSet setDone;
+    FUN_141122a70(&setDone);
+    Unk_CMISIter<262> itGroup, itGroupEnd;
+    for (FUN_14114df30(&fd8, &itGroup); FUN_1411275c0(&itGroup, FUN_141151c70(&fd8, &itGroupEnd)); FUN_141129bb0(&itGroup)) {
+        int nGroup = *FUN_141128660(&itGroup);
+        if (nGroup == 0)
+            continue;
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+        Unk_CMISListIter it;
+        Unk_CMISListEnd itListEnd;
+        for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+            Unk_Int3 cell = FUN_1408a0400(*FUN_1403e8d70(&it));
+            Unk_CMISIter<294> itDone, itDoneEnd;
+            if (FUN_141127880(FUN_141158700(&setDone, &itDone, FUN_14111d460(cell.x, cell.y)), FUN_141152330(&setDone, &itDoneEnd)))
+                continue;
+            FUN_14111d2d0(&setDone, &itDone, FUN_14111d460(cell.x, cell.y));
+            if (FUN_1410b8980(cell) == 0)
+                continue;
+            int nHeight = 0;
+            if (FUN_140885340(&f208)->FUN_140375130() == 0) {
+                if (f218 != 0) {
+                    std::map<int, Unk_UGCGroup>::iterator itFound = f218->groups.find(nGroup);
+                    if (itFound != f218->groups.end())
+                        nHeight = f218->groups[nGroup].heightLimit;
+                }
+            } else {
+                nHeight = f2fc;
+            }
+            for (int k = 0; k <= nHeight; k++) {
+                Unk_Int3 col(cell.x, cell.y, cell.z + k);
+                int nColKey = FUN_1408a03c0(col);
+                Unk_CMISIter<260> itCubeEnd, itCube;
+                if (FUN_141126d90(FUN_141157580(&fb8, &itCube, &nColKey), FUN_141151af0(&fb8, &itCubeEnd)))
+                    continue;
+                MS2Ptr<Cube> spCube(*FUN_141127cd0(&fb8, &nColKey));
+                if (spCube.get() == 0)
+                    continue;
+                MS2Ptr<CItemData> spItem = FUN_14053f870(FUN_1408b4f20(spCube.get()));
+                if (spItem == 0)
+                    continue;
+                Unk_Int3 rel(col.x - base.x, col.y - base.y, col.z - base.z);
+                float fRot;
+                memcpy(&fRot, &spCube->fieldD4, sizeof(fRot));
+                if (spItem->install.attachable == 0) {
+                    Unk_CMISXmlNode elemCube;
+                    FUN_14086f2f0(&elemCube, "cube");
+                    FUN_140873ce0(&elemCube, "itemID", FUN_1408b4f20(spCube.get()));
+                    FUN_140874050(&elemCube, "offsetCubePoint3", Unk_CMISFormatPoint(rel));
+                    FUN_140873e30(&elemCube, "rotation", fRot);
+                    FUN_140873ca0(&elemCube, "wallDir", 0);
+                    FUN_14086e000(&elemMap, &elemCube);
+                    FUN_14086f450(&elemCube);
+                } else {
+                    Unk_StreamPoint ptRef;
+                    FUN_1402bd040(&ptRef);
+                    memcpy(&ptRef.z, &spCube->fieldD4, sizeof(float));
+                    int nWallDir = FUN_1410ba5f0(cell, ptRef);
+                    void* pMem = ::operator new(sizeof(Unk_CMISAutoCube));
+                    FUN_141122e70(pMem);
+                    Unk_CMISAutoPtr spInfo(static_cast<CPtred*>(pMem));
+                    Unk_CMISAutoCube* pInfo = Unk_CMISAuto(spInfo);
+                    pInfo->m_nItemId = FUN_1408b4f20(spCube.get());
+                    pInfo->m_offset = rel;
+                    pInfo->m_fRotation = fRot;
+                    pInfo->m_nWallDir = nWallDir;
+                    Unk_CMISIter<295> itIns;
+                    FUN_14111d370(&listAuto, &itIns, &spInfo);
+                }
+            }
+        }
+    }
+    Unk_CMISIter<295> itAuto, itAutoEnd;
+    for (FUN_14114e780(&listAuto, &itAuto); FUN_1411278c0(&itAuto, FUN_1411523f0(&listAuto, &itAutoEnd)); FUN_141129970(&itAuto)) {
+        Unk_CMISAutoPtr spInfo(*FUN_141128b10(&itAuto));
+        if (spInfo.get() == 0)
+            continue;
+        Unk_CMISXmlNode elemCube;
+        FUN_14086f2f0(&elemCube, "cube");
+        FUN_140873ce0(&elemCube, "itemID", Unk_CMISAuto(spInfo)->m_nItemId);
+        FUN_140874050(&elemCube, "offsetCubePoint3", Unk_CMISFormatPoint(Unk_CMISAuto(spInfo)->m_offset));
+        FUN_140873e30(&elemCube, "rotation", Unk_CMISAuto(spInfo)->m_fRotation);
+        FUN_140873ca0(&elemCube, "wallDir", (int)(unsigned char)Unk_CMISAuto(spInfo)->m_nWallDir);
+        FUN_14086e000(&elemMap, &elemCube);
+        FUN_14086f450(&elemCube);
+    }
+    FUN_14086e000(&doc, &elemMap);
+    CString strPath;
+    strPath.Format("./Data/Xml/ExportedUGCMap/%s.xml", (const char*)strName);
+    FUN_1408710c0(&doc, FUN_14016a5c0(strPath, 0));
+    FUN_141125bb0(&setDone);
+    FUN_141125c10(&listAuto);
+    FUN_14086f450(&elemMap);
+    return 1;
+}
