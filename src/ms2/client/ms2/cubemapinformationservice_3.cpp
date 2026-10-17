@@ -2504,3 +2504,134 @@ CStringW CubeMapInformationService::FUN_1410c7ce0(int nA, int nB)
         strText = FUN_14028de60(0x7e9);
     return strText;
 }
+class Unk_CMISOwnerSvc { public: int FUN_140ae52d0(int nMapId, int nGroup); };
+Unk_CMISOwnerSvc* FUN_14097a780();
+// @0x1410c8670
+// MS2-FUNCTIONAL: exe's unwind-state / temporaries layout differs (frame 0x10 larger)
+int CubeMapInformationService::FUN_1410c8670(int nGroup, int* pnFlag)
+{
+    int nResult = 0;
+    Unk_CMISRoster* pPC = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPC == 0) {
+        nResult = 0;
+    } else {
+        int nMapId = FUN_1403ed2d0()->FUN_141bd3060();
+        *pnFlag = 0;
+        FUN_1408a0890(nMapId, nGroup, pnFlag);
+        int nFlag = *pnFlag;
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nFlag == 1);
+        if (spOwner.get() == 0) {
+            if (pPC->FUN_141527e00() == 0) {
+                Unk_CMISPartyRef spParty(pPC->FUN_141523c50());
+                if (spParty.FUN_14050dee0()->m_key == nGroup) {
+                    if (spParty.FUN_14050dee0()->m_map == FUN_1403ed2d0()->FUN_141bd3060())
+                        nResult = 2;
+                }
+            }
+            int nState = 2;
+            Unk_CMISHouseRef spHouse(FUN_1410c7c20(nGroup, nFlag == 1));
+            if (spHouse.FUN_141128410() != 0)
+                nState = spHouse.FUN_1411284b0()->m_state;
+            if (nState == 4)
+                nResult = 1;
+        } else {
+            if (spOwner->ownerID == FUN_141656ad0(pPC)) {
+                nResult = 2;
+            } else {
+                if (FUN_14097a780()->FUN_140ae52d0(nMapId, nGroup) == 0)
+                    nResult = 3;
+                else
+                    nResult = 3;
+            }
+        }
+    }
+    return nResult;
+}
+// ---- sale-post effect request (shared by c4240 / c44b0) ----
+void FUN_1408a10e0(Unk_CubeOwners& owners, int nGroup, int nBlock, const CStringW& strName, __int64 nOwnerId);
+void FUN_1408a0eb0(Unk_CubeOwners& owners, int nGroup, int nBlock);
+struct Unk_CMISEffReq                                                                       // an effect play request (0x78 bytes; ctor 0x140a52ef0, dtor 0x1405a89e0)
+{
+    CString m_strName;                                                                      // +0
+    int m_nOwnerId;                                                                         // +8
+    int m_pad_0c;
+    void* m_pSlot10;                                                                        // +0x10 (the attach node)
+    char m_pad_18[0x60];
+};
+MS2_CHECK_SIZE(Unk_CMISEffReq, 0x78);
+void FUN_140a52ef0(Unk_CMISEffReq* p);
+void FUN_1405a89e0(Unk_CMISEffReq* p);
+struct Unk_CMISConsts { char m_pad_00[0x300]; CString m_strSaleEffect; };                   // game-wide constants (the sale-post effect name at +0x300)
+Unk_CMISConsts* FUN_1401d31f0();
+class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); };
+Unk_CMISEffMgr* FUN_1403ed280();
+bool FUN_1411273c0(Unk_CMISIter<264>*, Unk_CMISIter<264>*);                                 // operator!=
+Unk_CMISEntityRef* FUN_141127b90(Unk_CMISTree<264>*, const int*);                           // operator[]
+egf::Entity* FUN_1408a9090(Unk_CMISEntityRef*);                                             // the entity of a ref
+NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);                                            // the scene root of an entity
+NiObject* FUN_14098d8d0(const NiRTTI* pRTTI, NiObject* pObject);                            // NiNode-checked dynamic cast
+extern NiRTTI DAT_143afa4d8;
+void FUN_1409fabf0(void** pSlot, NiObject* pNode);                                          // assign the attach node
+// @0x1410c4240
+// MS2-FUNCTIONAL: owner-ptr / iterator temporaries and the effect-request unwind states are laid out differently from the exe
+void CubeMapInformationService::FUN_1410c4240(int nGroup, int nBlock, const CStringW& strName, __int64 nUnused, __int64 nOwnerId)
+{
+    bool bHasOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock).get() != 0;
+    if (!bHasOwner) {
+        FUN_1408a10e0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock, strName, nOwnerId);
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock);
+        if (spOwner.get() != 0)
+            FUN_1410ce3f0(spOwner);
+        Unk_CMISIter<264> itEnd, itFind;
+        if (FUN_1411273c0(FUN_141157200(&ff8, &itFind, &nGroup), FUN_141151970(&ff8, &itEnd))) {
+            Unk_CMISEffReq request;
+            FUN_140a52ef0(&request);
+            request.m_strName = FUN_1401d31f0()->m_strSaleEffect;
+            request.m_nOwnerId = 7;
+            FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(FUN_141127b90(&ff8, &nGroup)))));
+            FUN_1403ed280()->FUN_1411a4a00(&request);
+            FUN_1405a89e0(&request);
+        }
+    }
+}
+// @0x1410c44b0
+// MS2-FUNCTIONAL: owner-ptr / iterator temporaries and the effect-request unwind states are laid out differently from the exe
+void CubeMapInformationService::FUN_1410c44b0(int nGroup, int nBlock, int bFlag)
+{
+    Unk_CMISIter<262> itEnd262, itFind262;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind262, &nGroup), FUN_141151c70(&fd8, &itEnd262)) == 0) {
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock);
+        if (spOwner == 0) {
+            FUN_140166440()->FUN_1401859c0(1, 0x13, L"[ERROR] Can't find salable group to sell");
+        } else {
+            Unk_CMISIter<264> itEnd, itFind;
+            if (FUN_141126c90(FUN_141157200(&ff8, &itFind, &nGroup), FUN_141151970(&ff8, &itEnd)) == 0) {
+                if (bFlag != 0)
+                    FUN_1410c2a90(nGroup);
+                Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+                if (pRoster != 0) {
+                    __int64 nMe = FUN_141656ad0(pRoster);
+                    if (nMe == spOwner->ownerID)
+                        FUN_1410ccc00(nGroup, 0, 0);
+                }
+                FUN_1408a0eb0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock);
+                FUN_1410ce4b0(spOwner);
+                FUN_1410cd440();
+                Unk_CMISIter<264> itEnd2, itFind2;
+                if (FUN_1411273c0(FUN_141157200(&ff8, &itFind2, &nGroup), FUN_141151970(&ff8, &itEnd2))) {
+                    Unk_CMISEffReq request;
+                    FUN_140a52ef0(&request);
+                    request.m_strName = FUN_1401d31f0()->m_strSaleEffect;
+                    request.m_nOwnerId = 7;
+                    FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(FUN_141127b90(&ff8, &nGroup)))));
+                    FUN_1403ed280()->FUN_1411a4a00(&request);
+                    FUN_1405a89e0(&request);
+                }
+            } else {
+                FUN_140166440()->FUN_1401859c0(1, 0x13, L"[ERROR] Can't find salable group to sell");
+            }
+        }
+    } else {
+        FUN_140166440()->FUN_1401859c0(1, 0x13, L"[ERROR] Cant' find salable group to sell");
+    }
+}

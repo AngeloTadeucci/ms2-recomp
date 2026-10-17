@@ -201,6 +201,11 @@ public:
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
+    void FUN_1410c4240(int nGroup, int nBlock, const CStringW& strName, __int64 nUnused, __int64 nOwnerId);
+    void FUN_1410c44b0(int nGroup, int nBlock, int bFlag);
+    void FUN_1410ccc00(int nGroup, int nA, int nB);
+    void FUN_1410cd440();
+    int FUN_1410c8670(int nGroup, int* pnFlag);
     CStringW FUN_1410c7ce0(int nA, int nB);
     void FUN_1410ce020(MS2Ptr<Cube> spCube);
     void FUN_1410ce1e0(int nNotify, const int* pCount);
