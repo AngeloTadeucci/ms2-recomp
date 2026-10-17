@@ -212,6 +212,10 @@ public:
     void FUN_1410c1910(const Unk_Int3& pt, int n);
     bool FUN_1410c2610(Unk_Int3 pt);
     void FUN_1410c2a90(int nGroup);
+    unsigned __int64 FUN_1410d4fa0();
+    unsigned __int64 FUN_1410d50c0();
+    void FUN_1410d5190(unsigned __int64* pCubes, unsigned __int64* pOthers);
+    void FUN_1410d5350();
     bool FUN_1410c8470(int nA, int nB, int* pState, __int64* pValue);
     bool FUN_1410c80d0(int nGroup);
     int FUN_1410c8580(int nGroup);

@@ -1931,3 +1931,101 @@ int CubeMapInformationService::FUN_1410cb980(int nItemId)
         return 1;
     return 0;
 }
+// ---- w138 batch 4 ----
+struct Unk_CMISInvEntry { __int64 m_q0, m_q1, m_q2; unsigned m_count; unsigned m_need; };    // inventory slot (count at 0x18, need at 0x1c)
+struct Unk_CMISInvKey { int m_item; unsigned m_need; };
+struct Unk_CMISInvPtr                                                                       // MS2Ptr<inventory slot>
+{
+    Unk_CMISInvPtr(int);                                                                    // 0x1408882c0
+    Unk_CMISInvPtr(void* pNode);                                                            // 0x140eba830
+    ~Unk_CMISInvPtr();                                                                      // 0x140888a90
+    void* m_a; Unk_CMISInvEntry* m_p;
+    bool FUN_141126ad0(int);                                                                // operator==
+    Unk_CMISInvEntry* FUN_140889010();                                                      // operator->
+};
+class Unk_CMISInv
+{
+public:
+    __int64 FUN_140ebb080();                                                                // first position
+    void* FUN_140ebb100(__int64 pos);                                                       // the node at a position
+    void FUN_140ebb030(__int64* pPos);                                                      // next position
+    bool FUN_14088acd0(Unk_CMISInvKey* pKey, Unk_CMISInvPtr* pOut);                         // find by item and need
+};
+class Unk_CMISInvMgr;
+Unk_CMISInvMgr* FUN_1409eed80();
+Unk_CMISInv* FUN_140886640(Unk_CMISInvMgr*);
+Unk_CMISIter<282>* FUN_14114e470(Unk_CMISTree<282>*, Unk_CMISIter<282>*);                   // begin
+Unk_CMISIntPair* FUN_1411287a0(Unk_CMISIter<282>*);                                         // operator*
+void FUN_141129cd0(Unk_CMISIter<282>*);                                                     // operator++
+// @0x1410d50c0
+unsigned __int64 CubeMapInformationService::FUN_1410d50c0()
+{
+    unsigned __int64 nTotal = 0;
+    Unk_CMISInv* pInv = FUN_140886640(FUN_1409eed80());
+    for (__int64 pos = pInv->FUN_140ebb080(); pos != 0; pInv->FUN_140ebb030(&pos)) {
+        Unk_CMISInvPtr spSlot(pInv->FUN_140ebb100(pos));
+        if (spSlot.FUN_141126ad0(0) != 0)
+            continue;
+        nTotal += spSlot.FUN_140889010()->m_count;
+    }
+    return nTotal;
+}
+// @0x1410d4fa0
+// MS2-FUNCTIONAL: iterator/key stack slots swapped vs the exe (same calls and order)
+unsigned __int64 CubeMapInformationService::FUN_1410d4fa0()
+{
+    unsigned __int64 nTotal = 0;
+    Unk_CMISInv* pInv = FUN_140886640(FUN_1409eed80());
+    Unk_CMISIter<282> it, itEnd;
+    Unk_CMISInvKey key;
+    for (FUN_14114e470(&f3c8, &it); FUN_141127110(&it, FUN_141152150(&f3c8, &itEnd)); FUN_141129cd0(&it)) {
+        key.m_item = FUN_1411287a0(&it)->m_key;
+        key.m_need = FUN_1411287a0(&it)->m_val;
+        Unk_CMISInvPtr spSlot(0);
+        if (pInv->FUN_14088acd0(&key, &spSlot) != 0) {
+            if (key.m_need >= spSlot.FUN_140889010()->m_need)
+                nTotal += spSlot.FUN_140889010()->m_count;
+        }
+    }
+    return nTotal;
+}
+// @0x1410d5190
+// MS2-FUNCTIONAL: iterator/key stack slots swapped vs the exe (same calls and order)
+void CubeMapInformationService::FUN_1410d5190(unsigned __int64* pCubes, unsigned __int64* pOthers)
+{
+    Unk_CMISInv* pInv = FUN_140886640(FUN_1409eed80());
+    Unk_CMISIter<282> it, itEnd;
+    Unk_CMISInvKey key;
+    for (FUN_14114e470(&f3c8, &it); FUN_141127110(&it, FUN_141152150(&f3c8, &itEnd)); FUN_141129cd0(&it)) {
+        key.m_item = FUN_1411287a0(&it)->m_key;
+        key.m_need = FUN_1411287a0(&it)->m_val;
+        Unk_CMISInvPtr spSlot(0);
+        if (pInv->FUN_14088acd0(&key, &spSlot) != 0) {
+            if (key.m_need >= spSlot.FUN_140889010()->m_need)
+                *pCubes += spSlot.FUN_140889010()->m_count;
+        }
+    }
+    for (__int64 pos = pInv->FUN_140ebb080(); pos != 0; pInv->FUN_140ebb030(&pos)) {
+        Unk_CMISInvPtr spSlot(pInv->FUN_140ebb100(pos));
+        if (spSlot.FUN_141126ad0(0) != 0)
+            continue;
+        *pOthers += spSlot.FUN_140889010()->m_count;
+    }
+}
+// @0x1410d5350
+void CubeMapInformationService::FUN_1410d5350()
+{
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube.get() != 0) {
+            Unk_Int3 pos = spCube->position;
+            if (pos.x < p300.x || pos.x > p30c.x || pos.y < p300.y || pos.y > p30c.y || pos.z < p300.z || pos.z > f2fc) {
+                COutPacket packet(0x37, 0);
+                packet.vfunc_o10_1(0x1f);
+                FUN_140710590(packet);
+                return;
+            }
+        }
+    }
+}
