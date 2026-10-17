@@ -3567,7 +3567,7 @@ void CubeMapInformationService::FUN_1410bb610(unsigned nMask, Unk_CMISPawn* pPaw
 struct Unk_CMISSlot { Unk_CMISSlot(void* pId); Unk_CMISSlot(const Unk_CMISSlot&); ~Unk_CMISSlot(); void* m_p; };   // ctor 14111e890, copy 14111e850, dtor 1409648f0
 struct Unk_CMISObjRec30 { char m_pad[0x30]; int m_n30; char m_pad34[0xc]; void* m_pKind; };
 struct Unk_CMISInfoRef { ~Unk_CMISInfoRef(); void* m_p; };                                   // dtor 140ca62a0
-class Unk_CMISObj498 { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual int vfunc_2(void* pCtx, void* pRec, int nCell, __int64 nOwner, void* pItem); Unk_CMISInfoRef FUN_140ca6580(); void FUN_141227310(); void FUN_141227360(); };
+class Unk_CMISObj498 { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual int vfunc_2(void* pCtx, void* pRec, int nCell, __int64 nOwner, void* pItem); Unk_CMISInfoRef FUN_140ca6580(); void FUN_141227310(); void FUN_141227360(); Unk_CMISEntityRef FUN_141226eb0(); };
 int FUN_141126a70(Unk_CMISObjHandle*);                                                                // IsNull
 void* FUN_141225470(int nKind);
 void* FUN_1408b7270(Unk_PayloadPtr<CubeItemInfo>*);
@@ -3744,7 +3744,6 @@ void* FUN_1409657b0(void* pSlot);                                               
 float FUN_1402bac70(Unk_CMISLimitF*);                                                       // the value
 Unk_CMISObjInfo* FUN_1409658d0(Unk_CMISInfoRef*);
 void FUN_140dd7170(void* pDst, Unk_CMISSlot* pSrc);                                         // assign
-Unk_CMISEntityRef FUN_141226eb0(Unk_CMISObj498*);                                           // the id of an object
 int FUN_140dfc370(Unk_CMISStockItem*);                                                      // the item id
 Unk_CMISIter<282>* FUN_14114e4e0(Unk_CMISTree<282>*, Unk_CMISIter<282>*);                   // begin
 Unk_CMISIter<282>* FUN_1411521b0(Unk_CMISTree<282>*, Unk_CMISIter<282>*);                   // end
@@ -3772,8 +3771,8 @@ void CubeMapInformationService::FUN_1410c8a90()
     }
     if (bShown) {
         if (FUN_1409657b0(&f480) != 0) {
-            Unk_CMISEntityRef idOld = FUN_141226eb0(FUN_1409658e0(&f480));
-            Unk_CMISEntityRef idNew = FUN_141226eb0(FUN_1409658e0(&slot));
+            Unk_CMISEntityRef idOld = FUN_1409658e0(&f480)->FUN_141226eb0();
+            Unk_CMISEntityRef idNew = FUN_1409658e0(&slot)->FUN_141226eb0();
             if (idNew.FUN_140965410(reinterpret_cast<const Unk_1401cd100&>(idOld))) {
                 if (f490 == 0) {
                     FUN_1409658e0(&f480)->FUN_141227310();
