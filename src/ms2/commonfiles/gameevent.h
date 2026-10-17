@@ -10,14 +10,14 @@
 class Unk_GEOut {
 public:
     virtual void vfunc_0();
-    virtual void vfunc_1();
+    virtual void WriteByte(unsigned char value);   // slot 1
     virtual void vfunc_2();
     virtual void WriteInt(int value);   // slot 3
 };
 class Unk_GEReader {
 public:
     virtual void vfunc_0();
-    virtual void vfunc_1();
+    virtual unsigned char ReadByte();   // slot 1
     virtual void vfunc_2();
     virtual int ReadInt();              // slot 3
 };
@@ -54,16 +54,21 @@ protected:
     MS2_LAYOUT_FRIEND;
     int m_id;               // +0x18
     char m_pad_1c[4];
-    char m_pad_20[0x18];
+    char m_pad_20[8];
+    Unk_GE16 m_28;          // +0x28 (written/read as a date by the subclasses)
     Unk_GE16 m_38;          // +0x38
     char m_pad_48[0x20];
     CStringW m_68;          // +0x68
-    char m_pad_70[0x60];
+    CStringW m_70;          // +0x70
+    CStringW m_78;          // +0x78
+    char m_pad_80[0x50];
 };
 MS2_CHECK_SIZE(GameEvent, 0xd0);
 MS2_CHECK_OFFSET(GameEvent, m_id, 0x18);
 MS2_CHECK_OFFSET(GameEvent, m_38, 0x38);
 MS2_CHECK_OFFSET(GameEvent, m_68, 0x68);
+MS2_CHECK_OFFSET(GameEvent, m_28, 0x28);
+MS2_CHECK_OFFSET(GameEvent, m_78, 0x78);
 
 // ---- GameEvent subclasses and the CPtred-derived *Context element types of commonfiles/gameevent.cpp (w116) ----------
 // Generated from the exe RTTI: vftable slot lists (overridden slots declared, VAs in the comments) and the sizes of the
