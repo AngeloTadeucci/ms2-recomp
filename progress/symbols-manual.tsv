@@ -2645,3 +2645,14 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??1CChatEmoticonCli@@UEAA@XZ	140da2120	func
 ??0Unk_NpcPoint3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
 ??1Unk_BossNotifyHandle@@QEAA@XZ	1403b87a0	func
+??1?$MS2Ptr@VUnk_CadDay@@@@QEAA@XZ	1401b0f30	func
+??C?$MS2Ptr@VUnk_CadDay@@@@QEBAPEAVUnk_CadDay@@XZ	1401b1280	func
+?size@?$vector@V?$MS2Ptr@UItemEntity@@@@V?$allocator@V?$MS2Ptr@UItemEntity@@@@@std@@@std@@QEBA_KXZ	1401b3ad0	func
+??0Unk_CadNode@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422c6570	func
+??1Unk_CadNode@@UEAA@XZ	1422c65c0	func
+??$Unk_ASCreate@VUnk_CadCheck@@@@YA?AV?$MS2Ptr@VUnk_CadCheck@@@@HAEBVValue@GFx@Scaleform@@@Z	1409b40c0	func
+??0?$MS2Ptr@VUnk_CadCheck@@@@QEAA@$$QEAV0@@Z	1409b48b0	func
+??0?$MS2Ptr@VUnk_CadCheck@@@@QEAA@AEBV0@@Z	140bb56d0	func
+??0?$MS2Ptr@VUnk_CadCheck@@@@QEAA@H@Z	1409b48e0	func
+??1?$MS2Ptr@VUnk_CadCheck@@@@QEAA@XZ	1409b4a90	func
+??C?$MS2Ptr@VUnk_CadCheck@@@@QEBAPEAVUnk_CadCheck@@XZ	1409b4c60	func
