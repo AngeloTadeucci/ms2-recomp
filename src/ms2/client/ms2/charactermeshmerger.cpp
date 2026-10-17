@@ -1605,3 +1605,112 @@ bool FUN_141052ff0(NiAVObject* pA, NiAVObject* pB)
         return true;
     return false;
 }
+
+// Lexicographic order over rotation, translation and scale (the exe inlines this into the map's node insertion).
+bool Unk_TransformLess::operator()(const NiTransform& kA, const NiTransform& kB) const
+{
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        for (unsigned int j = 0; j < 3; j++)
+        {
+            if (kA.m_Rotate.GetEntry(i, j) != kB.m_Rotate.GetEntry(i, j))
+                return kA.m_Rotate.GetEntry(i, j) < kB.m_Rotate.GetEntry(i, j);
+        }
+    }
+    if (kA.m_Translate.x != kB.m_Translate.x)
+        return kA.m_Translate.x < kB.m_Translate.x;
+    if (kA.m_Translate.y != kB.m_Translate.y)
+        return kA.m_Translate.y < kB.m_Translate.y;
+    if (kA.m_Translate.z != kB.m_Translate.z)
+        return kA.m_Translate.z < kB.m_Translate.z;
+    return kA.m_fScale < kB.m_fScale;
+}
+
+// Builds the merged mesh of one group: concatenated indices and vertices, one submesh per bone bucket (0x14104f460, the twin of 0x14104ae20 with the index and vertex merge expanded in place).
+// @0x14104f460
+// MS2-FUNCTIONAL: the exe expands the index/vertex merge helpers in place; this twin calls them
+NiMesh* FUN_14104f460(const MeshGroups& kBuckets, MergeInfo& kInfo, NiAVObject* pRoot)
+{
+    unsigned int uiBucketCount = (unsigned int)kBuckets.size();
+    int iVertices = 0;
+    int iIndices = 0;
+    FUN_14104a080(kBuckets, &iVertices, &iIndices);
+    if (iVertices == 0)
+        return 0;
+
+    NiMesh* pMerged = NiNew NiMesh;
+    NiMesh* pFirst = kBuckets[0][0];
+    NiTransform kRootTransform = pRoot->GetWorldTransform();
+    pMerged->SetPrimitiveType(pFirst->GetPrimitiveType());
+    pMerged->SetSubmeshCount((unsigned int)kBuckets.size());
+    FUN_14104b530(pMerged, kBuckets);
+    FUN_14104bbb0(pMerged, kInfo, kBuckets, kRootTransform);
+
+    if (kInfo.m_spSkin != 0)
+    {
+        unsigned int uiMaxBones = 0;
+        unsigned int uiTotalBones = 0;
+        for (unsigned int i = 0; i < uiBucketCount; i++)
+        {
+            unsigned int uiBones = (unsigned int)kInfo.m_kBoneLists[i].size();
+            if (uiMaxBones < uiBones)
+                uiMaxBones = uiBones;
+            uiTotalBones += uiBones;
+        }
+        unsigned short* pPalette = (unsigned short*)_malloca(uiMaxBones * uiBucketCount * sizeof(unsigned short));
+        unsigned short* pOut = pPalette;
+        for (unsigned int i = 0; i < uiBucketCount; i++)
+        {
+            const std::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
+            for (unsigned int j = 0; j < kList.size(); j++)
+                *pOut++ = kList[j];
+            for (unsigned int j = (unsigned int)kList.size(); j < uiMaxBones; j++)
+                *pOut++ = 0;
+        }
+        int iPaletteCount = uiMaxBones * uiBucketCount;
+        NiDataStreamRef* pRef = pMerged->AddStream(NiCommonSemantics::BONE_PALETTE(), 0, NiDataStreamElement::F_UINT16_1, iPaletteCount,
+                                                   3, NiDataStream::USAGE_USER, pPalette, false, true);
+        _freea(pPalette);
+        pRef->SetSubmeshCount(uiBucketCount, 0);
+        for (unsigned int i = 0; i < uiBucketCount; i++)
+        {
+            NiDataStream::Region kRegion(i * uiMaxBones, uiMaxBones);
+            if (i == 0)
+                pRef->GetDataStream()->SetRegion(kRegion, 0);
+            else
+                pRef->GetDataStream()->AddRegion(kRegion);
+            pRef->BindRegionToSubmesh(i, i);
+        }
+    }
+
+    NiBound kBound = pFirst->GetModelBound();
+    for (unsigned int i = 0; i < kBuckets.size(); i++)
+    {
+        const MeshList& kList = kBuckets[i];
+        for (unsigned int j = 0; j < kList.size(); j++)
+            kBound.Merge(&kList[j]->GetModelBound());
+    }
+    pMerged->SetModelBound(kBound);
+    pMerged->AddModifier(kInfo.m_spSkin, true);
+    pMerged->AttachProperty(pFirst->GetProperty(8));
+    pMerged->SetName(NiFixedString("MergedMesh"));
+    for (unsigned int i = 0; i < 12; i++)
+    {
+        if (i != 8)
+        {
+            NiProperty* pProperty = pFirst->GetProperty(i);
+            if (pProperty != 0)
+                pMerged->AttachProperty(pProperty);
+        }
+    }
+    pMerged->ApplyAndSetActiveMaterial(FUN_140a17cd0(pFirst), 0xffffffff);
+    unsigned short usExtra = pFirst->GetExtraDataSize();
+    for (unsigned short us = 0; us < usExtra; us++)
+        pMerged->AddExtraData(pFirst->GetExtraDataAt(us));
+    pMerged->SetEffectState(pFirst->GetEffectState());
+    pMerged->UpdateProperties();
+    pMerged->CompleteUpdateModifiers();
+    pMerged->UpdateEffects();
+    pMerged->Update(0.0, true);
+    return pMerged;
+}
