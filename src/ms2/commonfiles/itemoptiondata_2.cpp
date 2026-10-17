@@ -1516,6 +1516,24 @@ bool ItemOptionRandom::FUN_1405d3d00(Unk_140165cf0* pElem)
     return true;
 }
 
+// @0x1405d9e00
+ItemOptionStatGroup ItemOptionRandomContext::FUN_1405d9e00()
+{
+    return m_spRandom->FUN_1405d3ca0();
+}
+
+// @0x1405d9e30
+int ItemOptionRandomContext::FUN_1405d9e30()
+{
+    return m_n50;
+}
+
+// @0x1405d9e50
+MS2Ptr<CItemOption> ItemOptionRandomContext::FUN_1405d9e50()
+{
+    return m_spOption;
+}
+
 // @0x1405eb520
 inline bool Unk_ItemOptionStatPicker::Pick(Unk_Random* pRandom, int& out) const
 {

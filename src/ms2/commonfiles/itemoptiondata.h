@@ -92,6 +92,8 @@ private:
 };
 MS2_CHECK_SIZE(ItemOptionValueRef, 0x30);
 
+enum ItemOptionStatGroup { };                   // "statGroup" (stored as a number; values not recovered)
+
 // The state of one random option roll (itemoptionrandom.xml applied to an item option).
 class ItemOptionRandomContext : public CPtred
 {
@@ -101,6 +103,9 @@ public:
     int FUN_1405d9b40(int nStatId, Unk_Random* pRandom);
     int FUN_1405d9b80(int nStatId);
     int FUN_1405d9bb0(int nStatId);
+    ItemOptionStatGroup FUN_1405d9e00();        // the random row's statGroup
+    int FUN_1405d9e30();                        // m_n50
+    MS2Ptr<CItemOption> FUN_1405d9e50();        // the option
     int m_nType;                                // +0x18 which table value FUN_1405d2800 reads (1, 2 or other)
     MS2Ptr<CItemOption> m_spOption;             // +0x20
     MS2Ptr<Unk_1405e74c0> m_spTarget;           // +0x30
@@ -231,8 +236,6 @@ private:
     Unk_ItemOptionStatPicker m_picker;          // +0x40
 };
 MS2_CHECK_SIZE(ItemOptionVariationData, 0x58);
-
-enum ItemOptionStatGroup { };                   // "statGroup" (stored as a number; values not recovered)
 
 // A random option row (itemoptionrandom.xml).
 class ItemOptionRandom : public CPtred
