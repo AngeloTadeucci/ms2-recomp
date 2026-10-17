@@ -1725,17 +1725,17 @@ void CBreedingCubeObject::vfunc_10(int nState, bool bFlag)
 }
 
 // @0x14122a670
-// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
 int CBreedingCubeObject::vfunc_17()
 {
     Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
     if (pActor == 0)
         return 0;
     FunctionCubeData* pData = m_spData.operator->();
-    unsigned nLevel = FUN_141662750(pActor, 5);
-    if (nLevel < (unsigned)pData->m_n104)
-        return 0;
-    return 1;
+    if ((unsigned)pData->m_n104 <= FUN_141662750(pActor, 5))
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // ---- Farming ----
@@ -1784,17 +1784,17 @@ int CFarmingCubeObject::vfunc_16()
 }
 
 // @0x14122b060
-// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
 int CFarmingCubeObject::vfunc_17()
 {
     Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
     if (pActor == 0)
         return 0;
     FunctionCubeData* pData = m_spData.operator->();
-    unsigned nLevel = FUN_141662750(pActor, 6);
-    if (nLevel < (unsigned)pData->m_n104)
-        return 0;
-    return 1;
+    if ((unsigned)pData->m_n104 <= FUN_141662750(pActor, 6))
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // ---- Nurturing ----
@@ -2258,16 +2258,17 @@ void CNurturingCubeObject::FUN_14122ce80(unsigned short nLevel)
 }
 
 // @0x14122d190
-// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
 int CNurturingCubeObject::FUN_14122d190()
 {
-    if (m_nTime == 0)
+    if (!(0 != m_nTime))
         return 1;
-    if (FUN_140869440() < m_nTime)
+    if (m_nTime > FUN_140869440())
         return 1;
-    if (FUN_14086ace0(m_nTime) == 0)
-        return 0;
-    return 1;
+    if (FUN_14086ace0(m_nTime) != 0)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // @0x14122d200
@@ -2782,7 +2783,6 @@ void CFunctionCubeService::FUN_141230580(CString strId, MS2Ptr<CFunctionCubeObje
     }
 }
 
-// MS2-FUNCTIONAL: the lookup temporaries differ from the exe
 // @0x141230c00
 MS2Ptr<CFunctionCubeObject> CFunctionCubeService::FUN_141230c00(CString strId)
 {
