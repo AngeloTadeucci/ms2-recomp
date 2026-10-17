@@ -2406,9 +2406,15 @@ MS2Ptr<ItemOptionValueRandom> ItemOptionRandom::FUN_1405d8f30(MS2Ptr<ItemOptionR
         {
             CString strName = pValue->FUN_1405d26c0();
             if (spContext->FUN_1405d9e00() == 2 && FUN_140166430()->FUN_1405f6e40(strName).get() != 0)
+            {
                 spHeldArmor.AssignRaw(pValue);
-            else if (pValue->FUN_1405d29b0())
+                continue;
+            }
+            if (pValue->FUN_1405d29b0())
+            {
                 spHeldSpecial.AssignRaw(pValue);
+                continue;
+            }
         }
     }
     for (auto& spValue : m_vValues)
@@ -2418,11 +2424,16 @@ MS2Ptr<ItemOptionValueRandom> ItemOptionRandom::FUN_1405d8f30(MS2Ptr<ItemOptionR
         if (!vHeld.empty() && std::find(vHeld.begin(), vHeld.end(), spValue) != vHeld.end())
             continue;
         if (spContext->FUN_1405d9e00() == 2 && FUN_140166430()->FUN_1405f6e40(strName).get() != 0)
+        {
             pickerArmor.Register(nWeight, spValue.get());
-        else if (spValue->FUN_1405d29b0())
+            continue;
+        }
+        if (spValue->FUN_1405d29b0())
+        {
             pickerSpecial.Register(nWeight, spValue.get());
-        else
-            picker.Register(nWeight, spValue.get());
+            continue;
+        }
+        picker.Register(nWeight, spValue.get());
     }
     if (pickerArmor.IsValid() == true)
     {
