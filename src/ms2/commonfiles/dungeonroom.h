@@ -7,6 +7,7 @@
 #include <map>
 #include <set>
 #include <vector>
+#include <typeinfo>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
@@ -287,12 +288,33 @@ MS2_CHECK_SIZE(DungeonRoundGroup, 0x38);
 class DungeonRoomTable;
 
 // Orders the room sets by gear score, level, sort order, then id; also compares a room with a (gear score, level) key.
+// Orders by gear score, player level limit, sort order, room id.
 struct DungeonRoomLess
 {
-    bool operator()(const DungeonRoomPtr& a, const DungeonRoomPtr& b) const;                       // 0x140335d90
-    bool operator()(const DungeonRoomPtr& a, const std::pair<unsigned, unsigned short>& key) const; // 0x140335cd0
+    // @0x140335d90
+    bool operator()(const DungeonRoomPtr& a, const DungeonRoomPtr& b) const
+    {
+        if (a->m_gearScore != b->m_gearScore)
+            return a->m_gearScore < b->m_gearScore;
+        if (a->m_limitPlayerLevel != b->m_limitPlayerLevel)
+            return a->m_limitPlayerLevel < b->m_limitPlayerLevel;
+        if (a->m_sortOrder != b->m_sortOrder)
+            return a->m_sortOrder < b->m_sortOrder;
+        return a->m_dungeonRoomID < b->m_dungeonRoomID;
+    }
+    // @0x140335cd0 (room against a (gear score, level) key; note the reversed direction)
+    bool operator()(const DungeonRoomPtr& a, const std::pair<unsigned, unsigned short>& key) const
+    {
+        if (a->m_gearScore != key.first)
+            return a->m_gearScore > key.first;
+        if (a->m_limitPlayerLevel != key.second)
+            return a->m_limitPlayerLevel > key.second;
+        return false;
+    }
 };
 typedef std::set<DungeonRoomPtr, DungeonRoomLess> DungeonRoomSet;
+
+CString FUN_14016a5c0(const char* psz, int nCodePage);         // narrows a string (the RTTI name in CheckInit)
 
 // RTTI DungeonRoomTable, 0x108 bytes: TSingleton at +0 (vftable 0x142d28ab0), CValidData at +8 (0x142d28ac0).
 class DungeonRoomTable : public TSingleton<DungeonRoomTable>, public CValidData<DungeonRoomTable>
@@ -301,22 +323,72 @@ public:
     DungeonRoomTable();                     // 0x14031f5d0
     virtual ~DungeonRoomTable();            // 0x14031f770
 
+    void LoadRooms();                       // 0x14031f8a0 DungeonRoom.xml
+    void LoadSeasons();                     // 0x14031fbf0 DungeonSeason.xml
+    void LoadConfig();                      // 0x14031fe80 DungeonConfig.xml
+    void LoadRankRewards();                 // 0x140320050 DungeonRankReward.xml
+    void LoadRoundGroups();                 // 0x140320340 DungeonRoundData.xml
+    void Clear();                           // 0x140320620
     DungeonRoomPtr GetRoom(int nDungeonId, int nIndex);         // 0x140320650
-    DungeonRoomPtr GetRoom(int nRoomId);                        // 0x1403206b0
+    DungeonRoomPtr GetRoom(unsigned nRoomId);                   // 0x1403206b0
+    DungeonRoomPtr GetRewardRoom(unsigned nRoomId);             // 0x140320770 follows unionRewardID
+    DungeonRoomPtr GetFirstRoom(unsigned nDungeonId);           // 0x140320870
+    DungeonRoomPtr GetLastRoom(unsigned nDungeonId);            // 0x140320950
+    void GetRoomIndices(unsigned nDungeonId, ATL::CAtlArray<unsigned>& out);   // 0x140320a40
+    void GetRooms(unsigned nDungeonId, ATL::CAtlArray<DungeonRoomPtr>& out);   // 0x140320b40
+    void GetRoomsForLevel(unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out);   // 0x140320c30
+    void GetMatchRooms(unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out);      // 0x140320da0
+    void GetGroupMatchRooms(DungeonGroupType nGroup, unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out);   // 0x140320f80
+    void GetGroupRooms(DungeonGroupType nGroup, std::vector<DungeonRoomPtr>& out);          // 0x140321160
+    void GetBossRankingRooms(ATL::CAtlList<DungeonRoomPtr>& out, DungeonGroupType nGroup);  // 0x140321210 by gear score, then id
+    short GetSeasonId(const CMsTime& t);                        // 0x1403214a0
+    MS2Ptr<DungeonSeason> GetCurrentSeason(const CMsTime& t);   // 0x140321550
+    MS2Ptr<DungeonSeason> GetSeason(short nSeasonId);           // 0x140321630
+    std::vector<DungeonRoomPtr>* GetRoomList();                 // 0x140321710
     int GetRank(DungeonRoom* pRoom, short nScore);              // 0x140321730
+    short GetMaxScore(DungeonRoom* pRoom);                      // 0x1403217e0
+    DungeonRankRequire* GetRankRequire(DungeonRoom* pRoom);     // 0x140321880
+    unsigned GetReverseRaidRoomID(const CMsTime& t);            // 0x140321910
+    DungeonRoomPtr GetRoom1003();                               // 0x140321a10
+    DungeonRoomPtr GetRoom1004();                               // 0x140321a60
+    DungeonRoomPtr GetRoom1007();                               // 0x140321ab0
+    MS2Ptr<DungeonRankRewardBase> GetRankReward(int nRewardId); // 0x140321b00
+    size_t GetUnitedWeeklyRewardCount();                        // 0x140321bc0
+    MS2Ptr<DungeonUnitedWeeklyReward> GetUnitedWeeklyReward(size_t nIndex);         // 0x140321bf0
+    MS2Ptr<DungeonUnitedWeeklyReward> FindUnitedWeeklyReward(unsigned nRewardCount); // 0x140321c90
+    void LinkRoom(DungeonRoomPtr pRoom);                        // 0x140321dc0
+    void AddToSets(DungeonRoomPtr pRoom);                       // 0x140321eb0
+    DungeonRoomSet& GetGroupSet(DungeonGroupType nGroup);                    // 0x140321fd0
+    void LoadCoupons();                                         // 0x140322000 DungeonRewardCoupon.xml
+    DungeonRewardCoupon* GetCoupon(int nCouponId);              // 0x140322260
+    DungeonRoundGroup* GetRoundGroup(int nGroupId);             // 0x1403222f0
+    bool LoadDungeonConfig(Unk_140165cf0* pElem);               // 0x140322370 MissionRank groups
+    bool LoadReverseRaidConfig(Unk_140165cf0* pElem);           // 0x140322440
+    bool LoadUnitedWeeklyRewards(Unk_140165cf0* pElem);         // 0x140322530
 
-    static void CheckInit();                // 0x140336680
-    static void SetInit(bool b);            // 0x140336e80
-    static bool s_bInit;                    // 0x143aad200
+    // @0x140336680
+    static void CheckInit()
+    {
+        if (!s_bInit)
+        {
+            CStringA msg;
+            msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(DungeonRoomTable).name(), 0));
+            MessageBoxA(0, msg, "Error", 0);
+        }
+    }
+    // @0x140336e80
+    static void SetInit(bool bInit) { s_bInit = bInit; }
+
+    static bool s_bInit;                    // DAT_143aad200
 
     std::map<unsigned, DungeonRoomPtr> m_rooms;                         // +0x10 by room id
     std::vector<DungeonRoomPtr> m_roomList;                             // +0x20 load order
-    std::map<int, DungeonRoomSet> m_roomsByGroup;                       // +0x38 by group type
+    std::map<DungeonGroupType, DungeonRoomSet> m_roomsByGroup;          // +0x38 by group type
     std::map<int, MS2Ptr<DungeonRewardCoupon> > m_coupons;              // +0x48
     std::map<int, MS2Ptr<DungeonRankRewardBase> > m_rankRewards;        // +0x58
     std::map<int, MS2Ptr<DungeonRoundGroup> > m_roundGroups;            // +0x68
     std::vector<MS2Ptr<DungeonSeason> > m_seasons;                      // +0x78
-    std::map<int, DungeonRankRequire> m_rankRequires;                   // +0x90
+    std::map<unsigned, DungeonRankRequire> m_rankRequires;              // +0x90 by rank table id
     std::vector<MS2Ptr<DungeonUnitedWeeklyReward> > m_unitedWeeklyRewards;  // +0xa0
     DungeonRoomSet m_matchRooms;                                        // +0xb8 group types 1 and 2
     DungeonRoomSet m_allRooms;                                          // +0xc8
