@@ -54,6 +54,8 @@ public:
     bool FUN_14074e560(unsigned nFirst, unsigned nLast);        // a quest with an id in the range and m_30 == 0
     void FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& visited);
     void FUN_14074ebc0(int nChain, IdsPtr spIds, MS2Ptr<CQuestData> spData, int nDepth);   // collects the chain of following quests
+    void FUN_14074d480();                                   // sorts m_378 by level
+    void FUN_14074f160();                                   // builds every index from m_quests
     void FUN_14074ee30();                                   // scales every reward by the level rate   // the quest and every quest that requires it
 
     CLockCriticalSection m_lock;                                            // +0x10

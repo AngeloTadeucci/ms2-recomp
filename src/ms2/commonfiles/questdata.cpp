@@ -5,6 +5,7 @@
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questdata.cpp"
+#include <algorithm>
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/client/ms2/questmanager_1.h"
 #include "ms2/placeholder/cquestmanagercommon.h"
@@ -1815,6 +1816,130 @@ void QuestDataTable::FUN_14074d410(ATL::CAtlArray<unsigned>& out)
     out.Copy(m_1d8);
 }
 
+// The predicates of the quest order sort (find_if over the pointer vectors).
+typedef std::vector<MS2Ptr<CQuestData> > QuestVec;
+struct Unk_QuestIdIs
+{
+    explicit Unk_QuestIdIs(const int& nKey) : m_pKey(&nKey) {}
+    bool operator()(MS2Ptr<CQuestData> spData) const { return FUN_14074b030(spData.operator->()) == *m_pKey; }
+    const int* m_pKey;
+};
+struct Unk_QuestPrevIs
+{
+    explicit Unk_QuestPrevIs(const int& nKey) : m_pKey(&nKey) {}
+    bool operator()(MS2Ptr<CQuestData> spData) const
+    {
+        int nPrev = spData->m_require.m_quest.GetCount() == 0 ? 0 : spData->m_require.m_quest[0];
+        return nPrev == *m_pKey;
+    }
+    const int* m_pKey;
+};
+struct Unk_QuestLevelFree
+{
+    explicit Unk_QuestLevelFree(const int& nLevel) : m_pLevel(&nLevel) {}
+    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel <= spData->m_require.m_level && spData->m_require.m_job.GetCount() == 0; }
+    const int* m_pLevel;
+};
+struct Unk_QuestLevelAbove
+{
+    explicit Unk_QuestLevelAbove(const int& nLevel) : m_pLevel(&nLevel) {}
+    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel < spData->m_require.m_level; }
+    const int* m_pLevel;
+};
+
+// MS2-FUNCTIONAL: orders m_378 so a quest follows its prerequisite chain and chains are merged by required level
+// @0x14074d480
+void QuestDataTable::FUN_14074d480()
+{
+    QuestVec sorted;
+    for (;;)
+    {
+        if (m_378.size() == 0)
+        {
+            sorted.swap(m_378);
+            return;
+        }
+        size_t nBefore = m_378.size();
+        QuestVec chain;
+        MS2Ptr<CQuestData> spCur = m_378[0];
+        m_378.erase(m_378.begin());
+        chain.push_back(spCur);
+        int nKey = spCur->m_require.m_quest.GetCount() == 0 ? 0 : spCur->m_require.m_quest[0];
+        while (nKey != 0)
+        {
+            QuestVec::iterator it = std::find_if(m_378.begin(), m_378.end(), Unk_QuestIdIs(nKey));
+            nKey = 0;
+            if (it != m_378.end())
+            {
+                nKey = (*it)->m_require.m_quest.GetCount() == 0 ? 0 : (*it)->m_require.m_quest[0];
+                chain.insert(chain.begin(), *it);
+                m_378.erase(it);
+            }
+        }
+        spCur = chain[chain.size() - 1];
+        nKey = FUN_14074b030(spCur.operator->());
+        while (nKey != 0)
+        {
+            QuestVec::iterator it = std::find_if(m_378.begin(), m_378.end(), Unk_QuestPrevIs(nKey));
+            nKey = 0;
+            if (it != m_378.end())
+            {
+                nKey = FUN_14074b030(it->operator->());
+                chain.push_back(*it);
+                m_378.erase(it);
+            }
+        }
+        if (sorted.size() == 0)
+        {
+            sorted.insert(sorted.begin(), chain.begin(), chain.end());
+        }
+        else
+        {
+            MS2Ptr<CQuestData> spFirst = chain[0];
+            MS2Ptr<CQuestData> spLast = chain[chain.size() - 1];
+            int nLevel = spFirst->m_require.m_level;
+            bool bDiff;
+            if (spFirst->m_require.m_level == spLast->m_require.m_level)
+                bDiff = spFirst->m_28 != spLast->m_28;
+            else
+                bDiff = true;
+            if (!bDiff)
+            {
+                QuestVec::iterator it = std::find_if(sorted.begin(), sorted.end(), Unk_QuestLevelFree(nLevel));
+                sorted.insert(it, chain.begin(), chain.end());
+            }
+            else
+            {
+                QuestVec::iterator it = std::find_if(sorted.begin(), sorted.end(), Unk_QuestLevelAbove(nLevel));
+                if (spFirst->m_require.m_level != spLast->m_require.m_level && !(it != sorted.end()))
+                {
+                    QuestVec::iterator pos = chain.begin();
+                    QuestVec::iterator cur = chain.begin();
+                    for (; cur != chain.end(); ++cur)
+                    {
+                        int nCurLevel = (*cur)->m_require.m_level;
+                        if (nLevel < nCurLevel)
+                        {
+                            sorted.insert(it, pos, cur);
+                            pos = cur;
+                            nLevel = nCurLevel;
+                            it = std::find_if(sorted.begin(), sorted.end(), Unk_QuestLevelAbove(nLevel));
+                        }
+                    }
+                    sorted.insert(it, pos, chain.end());
+                }
+                else
+                {
+                    sorted.insert(it, chain.begin(), chain.end());
+                }
+            }
+        }
+        if (m_378.size() == nBefore)
+            _wassert(L"0", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questdata.cpp", 0x6e3);
+    }
+}
+MS2_REPLACE_METHOD(0x14074D480, QuestDataTable, FUN_14074d480, 2780, 0x697FD88B);
+
 // @0x14074df70
 QuestDataTable::IdsPtr QuestDataTable::FUN_14074df70(unsigned nKey, int nIndex)
 {
@@ -2068,6 +2193,123 @@ void QuestDataTable::FUN_14074ee30()
     }
 }
 MS2_REPLACE_METHOD(0x14074EE30, QuestDataTable, FUN_14074ee30, 806, 0x83205888);
+
+void* FUN_140166440();
+void FUN_1406e7140(void* pLog, int a, int b, int nFlags, const wchar_t* pszFormat, const int& arg0, const int& arg1);
+void FUN_140177a80(void* pLog, int a, int nFlags, const wchar_t* pszFormat, const int& arg0);
+void FUN_140177e10(const CStringA& str, ATL::CAtlArray<unsigned>& rOut, const char* pszSep);
+void* FUN_1406aeee0();
+bool FUN_1406af060(void* p);
+
+// Looks up (or creates) the quest id list under the key and appends the quest id to it.
+template <class TMap, class TKey>
+static void AddToIds(TMap& map, const TKey& key, unsigned nQuestId)
+{
+    QuestDataTable::IdsPtr spIds(0);
+    if (!map.Lookup(key, spIds))
+    {
+        spIds = Unk_BmNewTag(0);
+        map.SetAt(key, spIds);
+    }
+    spIds->Add(nQuestId);
+}
+
+// MS2-FUNCTIONAL: builds every quest index from m_quests; MSVC folds the repeated lookup-or-create blocks differently
+// @0x14074f160
+void QuestDataTable::FUN_14074f160()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    for (; it != quests.end(); ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        unsigned nId = FUN_14074b030(spData.operator->());
+        if (spData->m_33)
+            m_360.push_back(nId);
+        AddToIds(m_chapter, spData->m_28, nId);
+        if (FUN_14074b050(spData.operator->()) != 4 && spData->m_2d && !spData->m_30)
+            m_128.Add(nId);
+        if (FUN_14074b050(spData.operator->()) == 9)
+            AddToIds(m_318, spData->m_4c, nId);
+        if (spData->m_require.m_groupId != 0)
+            AddToIds(m_390, spData->m_require.m_groupId, nId);
+
+        size_t nConditions = spData->m_conditions.GetCount();
+        for (size_t i = 0; i < nConditions; i++)
+        {
+            MS2Ptr<CConditionCommonData> spCond = spData->m_conditions[i];
+            if (spCond->m_nType == 0x9c)
+            {
+                int nKey = (int)spCond->m_target.GetFirstValue();
+                if (m_420.find(nKey) == m_420.end())
+                    m_420.insert(std::make_pair(nKey, nId));
+            }
+            else if (spCond->m_nType == 3 || spCond->m_nType == 0xad)
+            {
+                int nIdx = spCond->m_nType != 3;
+                ATL::CAtlArray<unsigned> ids;
+                FUN_140177e10(*spCond->m_code.GetText(), ids, ",");
+                for (size_t j = 0; j < ids.GetCount(); j++)
+                    AddToIds(m_148[nIdx], ids[j], nId);
+            }
+        }
+
+        int nKeyA = spData->m_2e8;
+        int nKeyB = spData->m_2ec;
+        m_430[nKeyA].insert(nId);
+        if (nKeyA != nKeyB)
+            m_430[nKeyB].insert(nId);
+
+        if (FUN_14074b050(spData.operator->()) == 4)
+        {
+            if (spData->m_fields.GetCount() != 0)
+                AddToIds(m_1f8, spData->m_fields[0], nId);
+        }
+        else if (FUN_14074b050(spData.operator->()) == 8)
+        {
+            if (spData->m_fields.GetCount() != 0)
+                AddToIds(m_240, spData->m_fields[0], nId);
+        }
+
+        if (spData->m_320.m_0 == 1)
+            m_1d8.Add(FUN_14074b030(spData.operator->()));
+
+        if (nId == 0x56c8ccb || (FUN_14074b050(spData.operator->()) == 0 && !spData->GetKind() && spData->m_30 == 0))
+            m_378.push_back(spData);
+
+        FUN_1407484a0(&spData->m_complete, FUN_14074b030(spData.operator->()));
+
+        if (spData->m_2e == 0 && !FUN_1406af060(FUN_1406aeee0()))
+        {
+            size_t nRewards = spData->m_rewards.size();
+            for (size_t i = 0; i < nRewards; i++)
+            {
+                CQuestData::QuestRewardItem& reward = spData->m_rewards[i];
+                MS2Ptr<CItemData> spItem = FUN_14053f870(reward.m_itemId);
+                if (!spItem)
+                {
+                    int nQuest = FUN_14074b030(spData.operator->());
+                    FUN_1406e7140(FUN_140166440(), 0, 0, 0x30, L"invalid quest item [qid:{0}, itemid:{1}]", nQuest, reward.m_itemId);
+                }
+                if (spItem->limit.shopSell != 0)
+                {
+                    int nQuest = FUN_14074b030(spData.operator->());
+                    FUN_1406e7140(FUN_140166440(), 0, 0, 0x30, L"abusing item [qid:{0}, itemid:{1}]", nQuest, reward.m_itemId);
+                }
+            }
+        }
+
+        if (FUN_14074b050(spData.operator->()) == 3 && spData->m_resetType == 0)
+        {
+            int nQuest = FUN_14074b030(spData.operator->());
+            FUN_140177a80(FUN_140166440(), 1, 0x30, L"주간 퀘스트인데 초기화 날짜가 없습니다. usePeriod에 초기화 요일을 적어주세요 [quest={0}]", nQuest);
+        }
+    }
+    FUN_14074d480();
+}
+MS2_REPLACE_METHOD(0x14074F160, QuestDataTable, FUN_14074f160, 3448, 0xCBA25530);
 
 // @0x14075a3f0
 CString FUN_14016a5c0(const char* psz, int n);
