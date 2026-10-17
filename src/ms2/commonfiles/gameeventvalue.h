@@ -515,12 +515,12 @@ class CGameEventValueCollectItemGroup {
 public:
     CGameEventValueCollectItemGroup();              // 0x140429500
     ~CGameEventValueCollectItemGroup();             // 0x140429550
-    MS2Ptr<CollectItemGroupContext> Get(int eventId);              // 0x140429590
+    MS2Ptr<CollectItemGroupContext> Get(unsigned eventId);            // 0x140429590
     void GetAll(std::vector<MS2Ptr<CollectItemGroupContext> >& contexts);     // 0x140429690
     void Add(MS2Ptr<CollectItemGroupContext> spContext);           // 0x140429770
     void Remove(MS2Ptr<CollectItemGroupContext> spContext);        // 0x140429830
     CLockCriticalSection m_lock;
-    std::map<int, MS2Ptr<CollectItemGroupContext> > m_contexts;               // +0x30
+    std::map<unsigned, MS2Ptr<CollectItemGroupContext> > m_contexts;               // +0x30
 };
 MS2_CHECK_SIZE(CGameEventValueCollectItemGroup, 0x40);
 
@@ -555,12 +555,12 @@ class CGameEventValueLimitedQuantity {
 public:
     CGameEventValueLimitedQuantity();               // 0x140429e20
     ~CGameEventValueLimitedQuantity();              // 0x140429e80
-    MS2Ptr<LimitedQuantityContext> Get(int eventId);               // 0x140429ed0
+    MS2Ptr<LimitedQuantityContext> Get(unsigned eventId);          // 0x140429ed0
     MS2Ptr<LimitedQuantityContext> GetByKey(unsigned long key);    // 0x140429fd0
     void Add(MS2Ptr<LimitedQuantityContext> spContext);            // 0x14042a0e0
     void Remove(MS2Ptr<LimitedQuantityContext> spContext);         // 0x14042a260
     CLockCriticalSection m_lock;
-    std::map<int, MS2Ptr<LimitedQuantityContext> > m_contexts;            // +0x30
+    std::map<unsigned, MS2Ptr<LimitedQuantityContext> > m_contexts;            // +0x30
     std::map<unsigned long, unsigned long> m_keys;                        // +0x40 key -> event id
 };
 MS2_CHECK_SIZE(CGameEventValueLimitedQuantity, 0x50);
@@ -574,7 +574,7 @@ public:
     void Remove(int id);                            // 0x14042a5b0
     MS2Ptr<EventShopNpcContext> Find(unsigned long group, int npcId);  // 0x14042a7d0
     CLockCriticalSection m_lock;
-    std::map<int, MS2Ptr<EventShopNpcContext> > m_contexts;            // +0x30 Get18 ->
+    std::map<unsigned long, MS2Ptr<EventShopNpcContext> > m_contexts;            // +0x30 Get18 ->
     std::map<unsigned long, Contexts> m_groups;                         // +0x40 Get20 ->
 };
 MS2_CHECK_SIZE(CGameEventValueEventShopNpc, 0x50);

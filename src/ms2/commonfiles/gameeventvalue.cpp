@@ -3,37 +3,34 @@
 //
 // MS2-UNIT: commonfiles\gameeventvalue.cpp
 // MS2-RANGE: 0x140422c10-0x140446320 .text$mn
+// MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$?0IAEAV?$MS2Ptr@VCollectItemGroupContext@@@@$0A@@?$pair@IV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@QEAA@$$QEAIAEAV?$MS2Ptr@VCollectItemGroupContext@@@@@Z 0x14042ad40 ; prop
 // MS2-PIN: ??$?0AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@1@0@Z 0x14042ae80 ; prop
-// MS2-PIN: ??$?0AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@1@0@Z 0x14042af70 ; prop
+// MS2-PIN: ??$?0AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@1@0@Z 0x14042aed0 ; prop
 // MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@1@0@Z 0x14042b240 ; prop
-// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@1@0@Z 0x14042b470 ; prop
-// MS2-PIN: ??$?0AEBH$$Z$$V@?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@AEBH@1@V?$tuple@$$V@1@@Z 0x14042b880 ; unique
-// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x14042c810 ; unique
-// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$MS2Ptr@VLimitedQuantityContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x14042d100 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@1@@Z 0x14042cd80 ; prop
 // MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VBurningLevelupContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042ede0 ; prop
 // MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VBurningLevelupContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@3@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042ee70 ; prop
-// MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VItemBoxEventContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042f650 ; prop
-// MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VItemBoxEventContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@3@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042f6e0 ; prop
-// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VLimitedQuantityContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAX@1@@Z 0x140435590 ; unique
-// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VCollectItemGroupContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@PEAX@1@@Z 0x14043b780 ; unique
-// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$MS2Ptr@VLimitedQuantityContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x14043f020 ; unique
+// MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VCollectItemGroupContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042f0b0 ; prop
+// MS2-PIN: ??$_Eqrange@I@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VCollectItemGroupContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@3@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBI@Z 0x14042f140 ; prop
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@1@1@Z 0x140431b50 ; prop
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@@Z 0x140434950 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@1@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@@Z 0x14043bb90 ; prop
 // MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@0@AEBV10@@Z 0x14043fdf0 ; prop
-// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@0@AEBV10@@Z 0x14043fe20 ; prop
-// MS2-PIN: ??$addressof@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@YAPEAU?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@0@AEAU10@@Z 0x14043ffa0 ; prop
-// MS2-PIN: ??$addressof@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@YAPEAU?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@0@AEAU10@@Z 0x14043ffb0 ; unique
-// MS2-PIN: ??$construct@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140440820 ; unique
-// MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VLimitedQuantityContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140441800 ; unique
+// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@0@AEBV10@@Z 0x14043fe00 ; prop
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@0@AEAV10@@Z 0x140440090 ; prop
+// MS2-PIN: ??$forward@AEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@YAAEAU?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@0@AEAU10@@Z 0x140441dd0 ; prop
 // MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140441eb0 ; prop
-// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140441ee0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140441ec0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140441f70 ; unique
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x140442140 ; unique
 // MS2-PIN: ??$make_pair@AEAHAEAV?$MS2Ptr@VArcadeOpenContext@@@@@std@@YA?AU?$pair@HV?$MS2Ptr@VArcadeOpenContext@@@@@0@AEAHAEAV?$MS2Ptr@VArcadeOpenContext@@@@@Z 0x140442500 ; unique
 // MS2-PIN: ??$make_pair@AEAIAEAV?$MS2Ptr@VBurningLevelupContext@@@@@std@@YA?AU?$pair@IV?$MS2Ptr@VBurningLevelupContext@@@@@0@AEAIAEAV?$MS2Ptr@VBurningLevelupContext@@@@@Z 0x140442560 ; unique
-// MS2-PIN: ??$make_pair@IAEAV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@YA?AU?$pair@IV?$MS2Ptr@VCollectItemGroupContext@@@@@0@$$QEAIAEAV?$MS2Ptr@VCollectItemGroupContext@@@@@Z 0x1404425c0 ; prop
-// MS2-PIN: ??$try_emplace@$$V@?$map@IV?$MS2Ptr@VItemBoxEventContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemBoxEventContext@@@@@std@@@std@@@std@@@std@@_N@1@AEBI@Z 0x1404427f0 ; prop
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@QEAA@XZ 0x1404447b0 ; unique
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x140444f50 ; prop
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x140444fb0 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@1@@Z 0x140444770 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@QEAA@XZ 0x1404447b0 ; prop
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@1@@Z 0x140444bb0 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@1@@Z 0x140444f10 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x140444f50 ; prop
 // MS2-PINS-END tplpin
 // MS2-PIN: ??$try_emplace@$$V@?$map@HV?$MS2Ptr@VLimitedQuantityContext@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@3@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VLimitedQuantityContext@@@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1404427b0
 // tplpin --simulate accepted pins (w213)
@@ -1670,10 +1667,10 @@ CGameEventValueCollectItemGroup::CGameEventValueCollectItemGroup() {}
 // @0x140429550
 CGameEventValueCollectItemGroup::~CGameEventValueCollectItemGroup() {}
 // @0x140429590
-MS2Ptr<CollectItemGroupContext> CGameEventValueCollectItemGroup::Get(int eventId)
+MS2Ptr<CollectItemGroupContext> CGameEventValueCollectItemGroup::Get(unsigned eventId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    std::map<int, MS2Ptr<CollectItemGroupContext> >::const_iterator it = m_contexts.find(eventId);
+    std::map<unsigned, MS2Ptr<CollectItemGroupContext> >::const_iterator it = m_contexts.find(eventId);
     if (it == m_contexts.end())
         return MS2Ptr<CollectItemGroupContext>(0);
     return it->second;
@@ -1685,7 +1682,7 @@ void CGameEventValueCollectItemGroup::GetAll(std::vector<MS2Ptr<CollectItemGroup
     Unk_CriticalSectionLock lock(m_lock, 1);
     if (m_contexts.empty())
         return;
-    for (std::map<int, MS2Ptr<CollectItemGroupContext> >::const_iterator it = m_contexts.begin();
+    for (std::map<unsigned, MS2Ptr<CollectItemGroupContext> >::const_iterator it = m_contexts.begin();
          it != m_contexts.end(); ++it)
         contexts.push_back(it->second);
 }
@@ -1694,8 +1691,7 @@ MS2_REPLACE_METHOD(0x140429690, CGameEventValueCollectItemGroup, GetAll, 212, 0x
 void CGameEventValueCollectItemGroup::Add(MS2Ptr<CollectItemGroupContext> spContext)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    // the exe's make_pair key is unsigned (forward<unsigned> in the pair ctor)
-    m_contexts.insert(std::make_pair(static_cast<unsigned>(spContext->m_eventId), spContext));
+    m_contexts.insert(std::make_pair(spContext->m_eventId, spContext));
 }
 MS2_REPLACE_METHOD(0x140429770, CGameEventValueCollectItemGroup, Add, 175, 0xB05B38C0);
 // @0x140429830
@@ -1772,7 +1768,7 @@ CGameEventValueLimitedQuantity::CGameEventValueLimitedQuantity() {}
 // @0x140429e80
 CGameEventValueLimitedQuantity::~CGameEventValueLimitedQuantity() {}
 // @0x140429ed0
-MS2Ptr<LimitedQuantityContext> CGameEventValueLimitedQuantity::Get(int eventId)
+MS2Ptr<LimitedQuantityContext> CGameEventValueLimitedQuantity::Get(unsigned eventId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
     if (m_contexts.find(eventId) == m_contexts.end())
@@ -1841,7 +1837,7 @@ void CGameEventValueEventShopNpc::Remove(int id)
 {
     // MS2-FUNCTIONAL: the exe frame has two more EH states and a different temp layout in the list walk
     Unk_CriticalSectionLock lock(m_lock, 1);
-    std::map<int, MS2Ptr<EventShopNpcContext> >::iterator it = m_contexts.find(id);
+    std::map<unsigned long, MS2Ptr<EventShopNpcContext> >::iterator it = m_contexts.find(id);
     if (it == m_contexts.end())
         return;
     unsigned long group = it->second->Get20();

@@ -294,7 +294,7 @@ public:
     void Write(COutputStream& out);                 // 0x1404057d0
     void Read(CInPacket& packet);                   // 0x1404058e0
     void AddCondition(ItemEntity& item);            // 0x140405ae0
-    int m_eventId;                                  // +0x18
+    unsigned m_eventId;                             // +0x18 (unsigned: CGameEventValueCollectItemGroup::Add's make_pair forwards an unsigned&)
     int m_pad_1c;
     __int64 m_beginTime;                            // +0x20
     __int64 m_endTime;                              // +0x28
@@ -416,7 +416,7 @@ public:
     void Read(CInPacket& packet);                   // 0x140406d70
     bool ParseRange(CStringW str);                  // 0x140406ea0
     bool LoadItems(CStringW strPath);               // 0x140406f70
-    int m_eventId;                                  // +0x18
+    unsigned m_eventId;                             // +0x18 (unsigned: CGameEventValueLimitedQuantity::Add indexes its map<unsigned> with it)
     unsigned long m_1c;                             // key of CGameEventValueLimitedQuantity::m_keys
     int m_20;
     int m_pad_24;
