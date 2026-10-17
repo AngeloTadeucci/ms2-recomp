@@ -15,6 +15,8 @@ public:
     explicit Exception(CString message):m_code(0),m_message(message){}
     // @0x140203af0
     ~Exception(){}
+    // 0x140b700e0 (first instantiated by client\ms2\ugcmanager.cpp#1)
+    int GetCode() const { return m_code; }
 private:
     MS2_LAYOUT_FRIEND;
     int m_code;

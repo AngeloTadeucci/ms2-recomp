@@ -4,6 +4,8 @@
 // recovered.
 #pragma once
 
+#include <afx.h>
+
 #include "ms2/ms2layout.h"
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/cthread.h"
@@ -13,6 +15,7 @@ class CUgcDownloadDown : public CThread, public TSingleton<CUgcDownloadDown>
 public:
     CUgcDownloadDown();                                     // 0x141874a40
     virtual ~CUgcDownloadDown();
+    void FUN_1418760a0(CString strName, int nFlags);        // CUgcDownloadLoad reports a loaded (0) / failed (0x20) file
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_20[0xf8 - 0x20];
