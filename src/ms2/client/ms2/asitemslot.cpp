@@ -1461,7 +1461,6 @@ int ASSlot::FUN_1409c4360(Unk_SlotSkillInfo* pSkill, unsigned nFlags)
 }
 
 // @0x1409c4510
-// MS2-FUNCTIONAL: frame layout of the temporaries differs
 int ASSlot::FUN_1409c4510(int nItemId, int nRarity, int nCount)
 {
     MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
@@ -1469,10 +1468,13 @@ int ASSlot::FUN_1409c4510(int nItemId, int nRarity, int nCount)
         return 0;
     FUN_1409c23a0(nItemId);
     FUN_1409c23e0(nRarity);
-    if (!FUN_140166410()->FUN_14036d570(0x8c))
+    if (!(!FUN_140166410()->FUN_14036d570(0x8c)))
+    {
+        if (spData->FUN_14053cc40())
+            FUN_1409c2420(nRarity);
+    }
+    else
         FUN_1409c1ce0(spData->FUN_14053cc40());
-    else if (spData->FUN_14053cc40())
-        FUN_1409c2420(nRarity);
     FUN_1409c1d20(spData->FUN_14053e130());
     FUN_1409c1d60(spData->FUN_14053cf90());
     FUN_1409c1da0(spData->FUN_14053ce20());
