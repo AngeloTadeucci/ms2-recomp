@@ -56,12 +56,12 @@ public:
 
     JobSystem();                                        // 0x1406380e0
     virtual ~JobSystem();                               // 0x140638180
-    void SetJob(Unk_JobGroupID nJobGroup, int nJobCode);    // 0x140638200
-    bool ChangeJob(Unk_JobGroupID nJobGroup, int nRank, unsigned short nLevel);   // 0x1406382e0 keeps learnt levels
+    void SetJob(int nJobGroup, int nJobCode, unsigned short nLevel);   // 0x140638200
+    bool ChangeJob(int nJobGroup, int nRank, unsigned short nLevel);   // 0x1406382e0 keeps learnt levels
     virtual MS2Ptr<SkillLevelData> vfunc_1(unsigned nSkillId);    // 0x140638690 the current level data (+ bonus)
     virtual bool vfunc_2(unsigned nSkillId);            // 0x140638980 learnt
     virtual void vfunc_3(int nJobGroup, unsigned nSkillId, unsigned short nLevel);    // 0x140638a30 grant a skill
-    virtual void vfunc_4();                             // 0x140638c70
+    virtual void vfunc_4(unsigned short nLevel);        // 0x140638c70
     virtual unsigned short vfunc_5(unsigned nSkillId);  // 0x140638c90 bonus levels
     virtual void vfunc_6(COutputStream& os);            // 0x140638cb0 write
     virtual void vfunc_7(CByteBuffer& buf);             // 0x140638f10 read
@@ -79,7 +79,7 @@ public:
     int GetTotalPoint();                                // 0x140639b20
     int GetUsedPoint(int nJobLevel);                    // 0x140639b40
     JobDataPtr GetJobData();                            // 0x140639bb0
-    void InitSkills(Unk_JobGroupID nJobGroup, int nRank);   // 0x140639c00
+    void InitSkills(int nJobGroup, int nRank);   // 0x140639c00
     void UpdateLearnable(unsigned short nLevel);        // 0x140639d90
     void AddSkill(JobSkillDataPtr spData);              // 0x140639f70 the skill and its sub skills
     void SyncSubSkills(JobSkillPtr spSkill);            // 0x14063a330

@@ -119,17 +119,17 @@ typedef MS2Ptr<JobData> JobDataPtr;
 class JobTable : public TSingleton<JobTable>, public CValidData<JobTable>
 {
 public:
-    typedef std::unordered_map<Unk_JobGroupID, JobDataPtr> JobMap;
+    typedef std::unordered_map<int, JobDataPtr> JobMap;
 
     JobTable();                                         // 0x140644470
     virtual ~JobTable();                                // 0x1406444e0
     int Load();                                         // 0x140644540 Table/job.xml
-    JobDataPtr GetJobData(Unk_JobGroupID nJobGroup);    // 0x140644880
-    unsigned GetStartField(Unk_JobGroupID nJobGroup);   // 0x140644940
+    JobDataPtr GetJobData(int nJobGroup);               // 0x140644880
+    unsigned GetStartField(int nJobGroup);              // 0x140644940
     Unk_JobGroupID GetJobGroupBySkill(unsigned nSkillId);   // 0x1406449c0
     Unk_JobGroupID GetJobGroupBySubJob(Unk_JobCode nJobCode);   // 0x140644a80
     int GetJobRank(int nJobCode);                       // 0x140644b80 (job code % 10) + 1
-    Unk_JobCode GetSubJob1(Unk_JobGroupID nJobGroup);   // 0x140644bb0
+    Unk_JobCode GetSubJob1(int nJobGroup);              // 0x140644bb0
 
     // @0x140648bf0
     static void CheckInit()

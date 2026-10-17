@@ -55,7 +55,9 @@ bool JobSkill::Init(JobData* pJob)
     if (!m_bExtra && m_spData == 0)
         return false;
     m_spSkill = JobSystem::GetSkillData(GetID());
-    return !(m_spSkill == 0);
+    if (m_spSkill == 0)
+        return false;
+    return true;
 }
 
 // @0x140637cc0
@@ -73,10 +75,15 @@ int JobSkill::GetUsedPoint()
     if (IsSubSkill())
         return 0;
     if (IsLearn() || m_bExtra)
+    {
         return m_nLevel - 1;
-    if (m_bLearned)
+    }
+    else
+    {
+        if (!m_bLearned)
+            return 0;
         return m_nLevel;
-    return 0;
+    }
 }
 
 // @0x140637e00
@@ -147,7 +154,7 @@ JobSystem::~JobSystem()
 }
 
 // @0x140638200
-void JobSystem::SetJob(Unk_JobGroupID nJobGroup, int nJobCode)
+void JobSystem::SetJob(int nJobGroup, int nJobCode, unsigned short nLevel)
 {
     if (!FUN_1401d7a50()->GetJobData(nJobGroup))
         return;
@@ -158,7 +165,8 @@ void JobSystem::SetJob(Unk_JobGroupID nJobGroup, int nJobCode)
 }
 
 // @0x1406382e0
-bool JobSystem::ChangeJob(Unk_JobGroupID nJobGroup, int nRank, unsigned short nLevel)
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (the lock at rsp+0x70 instead of 0x60; temporaries ordered differently)
+bool JobSystem::ChangeJob(int nJobGroup, int nRank, unsigned short nLevel)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
     if (!FUN_1401d7a50()->GetJobData(nJobGroup))
@@ -193,24 +201,25 @@ bool JobSystem::ChangeJob(Unk_JobGroupID nJobGroup, int nRank, unsigned short nL
 }
 
 // @0x140638690
+// MS2-FUNCTIONAL: the exe frame has one more 4-byte slot below the locals (every local 4 bytes higher)
 MS2Ptr<SkillLevelData> JobSystem::vfunc_1(unsigned nSkillId)
 {
     unsigned short nBonus = vfunc_5(nSkillId);
     Unk_CriticalSectionLock lock(m_lock, 1);
     JobSkillPtr spSkill = FindSkill(nSkillId);
-    if (spSkill.get() == 0)
+    if (spSkill.get() != 0)
     {
-        MS2Ptr<SkillData> spData = GetSkillData(nSkillId);
-        if (spData.get() != 0 && !spData->FUN_1407e9f30())
-            return spData->FUN_1407e90a0(1);
-        return 0;
+        MS2Ptr<SkillData> spData = GetSkillData(spSkill->GetID());
+        if (spData == 0)
+            return 0;
+        unsigned short nLevel = spSkill->m_bLearned ? spSkill->m_nLevel : 0;
+        unsigned short nCur = spData->FUN_1407e9b10() < nLevel + nBonus ? spData->FUN_1407e9b10() : nLevel + nBonus;
+        return spData->FUN_1407e90a0(nCur);
     }
-    MS2Ptr<SkillData> spData = GetSkillData(spSkill->GetID());
-    if (spData == 0)
-        return 0;
-    int nLevel = spSkill->m_bLearned ? spSkill->m_nLevel : 0;
-    unsigned short nCur = spData->FUN_1407e9b10() < nLevel + nBonus ? spData->FUN_1407e9b10() : nLevel + nBonus;
-    return spData->FUN_1407e90a0(nCur);
+    MS2Ptr<SkillData> spData = GetSkillData(nSkillId);
+    if (spData.get() != 0 && !spData->FUN_1407e9f30())
+        return spData->FUN_1407e90a0(1);
+    return 0;
 }
 
 // @0x140638980
@@ -218,9 +227,9 @@ bool JobSystem::vfunc_2(unsigned nSkillId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
     JobSkillPtr spSkill = FindSkill(nSkillId);
-    if (spSkill.get() == 0)
-        return false;
-    return spSkill->m_bLearned;
+    if (spSkill.get() != 0)
+        return spSkill->m_bLearned;
+    return false;
 }
 
 // @0x140638a30
@@ -244,7 +253,7 @@ void JobSystem::vfunc_3(int nJobGroup, unsigned nSkillId, unsigned short nLevel)
 }
 
 // @0x140638c70
-void JobSystem::vfunc_4()
+void JobSystem::vfunc_4(unsigned short nLevel)
 {
 }
 
@@ -278,16 +287,18 @@ void JobSystem::vfunc_7(CByteBuffer& buf)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
     m_nRank = buf.vfunc_o8_3();
-    m_spJob = FUN_1401d7a50()->GetJobData((Unk_JobGroupID)buf.vfunc_o8_3());
+    int nJobGroup = buf.vfunc_o8_3();
+    m_spJob = FUN_1401d7a50()->GetJobData(nJobGroup);
     m_skills.clear();
-    unsigned char nCount = buf.vfunc_o8_1();
+    int nCount = buf.vfunc_o8_1();
     for (int i = 0; i < nCount; i++)
     {
         unsigned nSkillId = buf.vfunc_o8_3();
         JobSkillPtr spSkill(new JobSkill(nSkillId));
         spSkill->Read(buf);
-        if (spSkill->Init(m_spJob.get()))
-            m_skills.insert(std::make_pair(spSkill->GetID(), spSkill));
+        if (!spSkill->Init(m_spJob.get()))
+            continue;
+        m_skills.insert(std::make_pair(spSkill->GetID(), spSkill));
     }
     RecalcPoints();
 }
@@ -304,8 +315,10 @@ int JobSystem::GetLevelSkillPoint(unsigned short nLevel, int nType)
     if (nLevel < 10)
         return 0;
     if (nType == 1)
+    {
         return (nLevel < FUN_1401d3200()->SkillPointLimitLevel1 ? nLevel : FUN_1401d3200()->SkillPointLimitLevel1) - 9;
-    if (nType == 2)
+    }
+    else if (nType == 2)
     {
         if (nLevel < 60)
             return 0;
@@ -436,7 +449,7 @@ JobDataPtr JobSystem::GetJobData()
 }
 
 // @0x140639c00
-void JobSystem::InitSkills(Unk_JobGroupID nJobGroup, int nRank)
+void JobSystem::InitSkills(int nJobGroup, int nRank)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
     m_spJob = FUN_1401d7a50()->GetJobData(nJobGroup);
@@ -458,7 +471,7 @@ void JobSystem::UpdateLearnable(unsigned short nLevel)
         if (!spSkill->IsLearn())
             continue;
         bool bWasLearned = spSkill->m_bLearned;
-        spSkill->m_bLearned = spSkill->GetJobLevel() <= m_nRank;
+        spSkill->m_bLearned = m_nRank >= spSkill->GetJobLevel();
         spSkill->m_bChanged = !bWasLearned && spSkill->m_bLearned;
         SyncSubSkills(spSkill);
     }
@@ -474,7 +487,7 @@ void JobSystem::AddSkill(JobSkillDataPtr spData)
     if (!spSkill->Init(m_spJob.get()))
         return;
     if (spSkill->IsLearn())
-        spSkill->m_bLearned = spSkill->GetJobLevel() <= m_nRank;
+        spSkill->m_bLearned = m_nRank >= spSkill->GetJobLevel();
     m_skills.insert(std::make_pair(spSkill->GetID(), spSkill));
     for (auto& nSubId : spData->m_subSkillIDs)
     {
@@ -552,7 +565,7 @@ bool JobSkillData::HasRequirement()
 unsigned short JobSkillData::GetRequireLevel(unsigned short skillLevel)
 {
     MS2_ASSERT_AT(55, skillLevel > 0);
-    if (m_requireLevel.empty() || skillLevel == 0)
+    if (m_requireLevel.empty() || skillLevel <= 0)
         return 0;
     if (m_requireLevel.size() < skillLevel)
         return *m_requireLevel.rbegin();
@@ -577,8 +590,8 @@ void JobData::Load(Unk_140165cf0* pElem)
     XmlValue(pElem, "subJob1", m_subJob1);
     XmlValue(pElem, "subJob2", m_subJob2);
     Unk_140165cf0* pSkills = pElem->FUN_140165cf0("skills");
-    if (pSkills == 0)
-        return;
+    if (pSkills != 0)
+    {
     for (Unk_140165cf0* pSkill : pSkills->FUN_140165cf0("v"))
     {
         JobSkillDataPtr spSkill(new JobSkillData);
@@ -592,6 +605,7 @@ void JobData::Load(Unk_140165cf0* pElem)
         FUN_1408731a0(pSkill, "maxLevel", nMaxLevel);
         s_skillMaxLevel.SetAt(spSkill->m_skillID, nMaxLevel);
     }
+    }
 }
 
 // @0x140643e40
@@ -603,12 +617,16 @@ Unk_JobGroupID JobData::GetJobGroupID()
 // @0x140643e60
 Unk_JobCode JobData::GetSubJob(int nIndex)
 {
-    if (nIndex == 1)
+    switch (nIndex)
+    {
+    case 1:
         return m_subJob1;
-    if (nIndex == 2)
+    case 2:
         return m_subJob2;
-    MS2_ASSERT_AT(131, 0);
-    return Unk_JobCode_None;
+    default:
+        MS2_ASSERT_AT(131, 0);
+        return Unk_JobCode_None;
+    }
 }
 
 // @0x140643ed0
@@ -632,9 +650,9 @@ unsigned JobData::GetCharacterBGM()
 // @0x140643f30
 CStringW JobData::GetName()
 {
-    if (FUN_1401a9d70() == 0)
-        return L"";
-    return FUN_1401a9d70()->FUN_141811980(6, m_jobGroupID);
+    if (FUN_1401a9d70() != 0)
+        return FUN_1401a9d70()->FUN_141811980(6, m_jobGroupID);
+    return L"";
 }
 
 // @0x140643fb0
@@ -686,9 +704,9 @@ JobSkillDataPtr JobData::FindSubSkill(unsigned nSkillId)
 JobSkillDataPtr JobData::GetSkillData(unsigned nSkillId)
 {
     JobSkillDataPtr spSkill = FindSkill(nSkillId);
-    if (spSkill.get() == 0)
-        return FindSubSkill(nSkillId);
-    return spSkill;
+    if (spSkill.get() != 0)
+        return spSkill;
+    return FindSubSkill(nSkillId);
 }
 
 // @0x140644380
@@ -739,7 +757,7 @@ int JobTable::Load()
             continue;
         JobDataPtr spJob(new JobData);
         spJob->Load(pNode);
-        Unk_JobGroupID nJobGroup = spJob->GetJobGroupID();
+        int nJobGroup = spJob->GetJobGroupID();
         m_jobs.insert(std::make_pair(nJobGroup, spJob));
     }
     SetInit(true);
@@ -747,7 +765,7 @@ int JobTable::Load()
 }
 
 // @0x140644880
-JobDataPtr JobTable::GetJobData(Unk_JobGroupID nJobGroup)
+JobDataPtr JobTable::GetJobData(int nJobGroup)
 {
     CheckInit();
     JobMap::iterator it = m_jobs.find(nJobGroup);
@@ -757,12 +775,11 @@ JobDataPtr JobTable::GetJobData(Unk_JobGroupID nJobGroup)
 }
 
 // @0x140644940
-unsigned JobTable::GetStartField(Unk_JobGroupID nJobGroup)
+unsigned JobTable::GetStartField(int nJobGroup)
 {
-    JobDataPtr spJob = GetJobData(nJobGroup);
-    if (spJob.get() == 0)
-        return 0x400001;
-    return spJob->GetStartField();
+    if (JobDataPtr spJob = GetJobData(nJobGroup))
+        return spJob->GetStartField();
+    return 0x400001;
 }
 
 // @0x1406449c0
@@ -793,11 +810,12 @@ Unk_JobGroupID JobTable::GetJobGroupBySubJob(Unk_JobCode nJobCode)
 // @0x140644b80
 int JobTable::GetJobRank(int nJobCode)
 {
-    return nJobCode % 10 + 1;
+    int nRank = nJobCode % 10;
+    return nRank + 1;
 }
 
 // @0x140644bb0
-Unk_JobCode JobTable::GetSubJob1(Unk_JobGroupID nJobGroup)
+Unk_JobCode JobTable::GetSubJob1(int nJobGroup)
 {
     JobDataPtr spJob = GetJobData(nJobGroup);
     if (spJob == 0)
