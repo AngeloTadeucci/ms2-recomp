@@ -433,7 +433,6 @@ CFunctionCubeObject::CFunctionCubeObject()
 }
 
 // @0x141225270
-// MS2-FUNCTIONAL: branch/temporary layout differs from the exe (equivalent behaviour)
 CFunctionCubeObject::~CFunctionCubeObject()
 {
     if (m_nSoundHandle != 0)
@@ -1173,7 +1172,6 @@ void FUN_14066d5b0(Unk_FcSp16* p);
 Unk_FcSp24* FUN_140ca6580(CHomemadeCubeObject* pThis, Unk_FcSp24* pOut);
 
 // @0x141235220
-// MS2-FUNCTIONAL: the exe reads the pointer through a smart pointer conversion that it keeps out of line
 Unk_FcHmInfo* FUN_141235220(Unk_FcSp24* p)
 {
     return p->m_pInfo;
@@ -1273,16 +1271,17 @@ CStringW CHomemadeCubeObject::vfunc_6()
 }
 
 // @0x141228720
-// MS2-FUNCTIONAL: string pieces built per branch; frame layout differs
 CStringW CHomemadeCubeObject::vfunc_7()
 {
     if (m_nState == 1)
         return CStringW(L"watch");
     if (vfunc_17() == 0)
         return CStringW(L"lock");
-    if (FUN_1410c35c0(FUN_1409670e0()) == 0)
-        return CFunctionCubeObject::vfunc_7();
-    return CStringW(L"lock");
+    if (FUN_1410c35c0(FUN_1409670e0()) != 0)
+    {
+        return CStringW(L"lock");
+    }
+    return CFunctionCubeObject::vfunc_7();
 }
 
 // @0x141228810
@@ -1407,7 +1406,6 @@ int CHomemadeCubeObject::FUN_141229000(char bWatch)
 }
 
 // @0x141229080
-// MS2-FUNCTIONAL: nested conditions folded
 int CHomemadeCubeObject::FUN_141229080()
 {
     Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
@@ -1426,24 +1424,22 @@ int CHomemadeCubeObject::FUN_141229080()
 }
 
 // @0x141229120
-// MS2-FUNCTIONAL: nested conditions folded
 int CHomemadeCubeObject::FUN_141229120()
 {
     Unk_FcActor* pActor = FUN_141bd0cc0(FUN_1403ed2d0());
     if (pActor == 0)
         return 0;
-    if (vfunc_15() == 0)
+    if (0 == vfunc_15())
         return 0;
     if (m_nState == 1)
         return 0;
-    if (FUN_140e5cc00() == 1)
+    if (FUN_140e5cc00() == 1 && FUN_140e5cbf0() != FUN_141656ad0(pActor))
+        return 0;
+    if (FUN_1410c35c0(FUN_1409670e0()) != 0)
     {
-        if (FUN_140e5cbf0() != FUN_141656ad0(pActor))
-            return 0;
+        return 0;
     }
-    if (FUN_1410c35c0(FUN_1409670e0()) == 0)
-        return vfunc_17();
-    return 0;
+    return vfunc_17();
 }
 
 // @0x1412291e0
@@ -1595,7 +1591,6 @@ void CBreedingCubeObject::vfunc_3()
 }
 
 // @0x141229b70
-// MS2-FUNCTIONAL: rotation property read-modify-write; frame layout differs
 void CBreedingCubeObject::vfunc_5(float fArg)
 {
     if (m_entPet.FUN_1408a9090() != 0)
