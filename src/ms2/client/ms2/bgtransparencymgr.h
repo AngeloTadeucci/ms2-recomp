@@ -35,7 +35,7 @@ class TransparencyElement : public NiRefObject
 {
 public:
     TransparencyElement();                                          // 0x140a15fe0
-    virtual ~TransparencyElement();                                 // 0x140a166f0 (deleting 0x140a17880)
+    // implicit virtual dtor 0x140a166f0 (stores no vptr; deleting 0x140a17880)
 
     std::list<TransparencyStandardMaterial*> m_materials;   // 0x10
     Timer m_timer;                                                  // 0x20
