@@ -18,6 +18,7 @@ CString StringFormat(const char* format, const fmt::ArgList& args);
 CStringW StringFormat(const wchar_t* format, const fmt::ArgList& args);
 FMT_VARIADIC(CString, StringFormat, const char*)
 FMT_VARIADIC_W(CStringW, StringFormat, const wchar_t*)
+CStringW StringFormat(const wchar_t* format);    // 0x1402a61e0: no arguments (out of line)
 
 // The exe has a second, name-wise unknown formatter with the same signature (0x1402bf9a0: forwards to StringFormat, as the
 // socket code uses it). Some units' FMT_VARIADIC instances call it instead of 0x1401dca30; the name is invented.
