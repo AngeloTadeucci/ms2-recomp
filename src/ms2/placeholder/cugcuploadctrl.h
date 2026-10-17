@@ -219,6 +219,7 @@ public:
     virtual void vfunc_5();
     virtual void vfunc_6(COutPacket& packet);
     virtual int vfunc_9();
+    virtual __int64 vfunc_10();
     virtual CString vfunc_11();
     virtual int vfunc_13(MS2Ptr<IUgcProxy> spProxy);
     void FUN_1418a0f90(int nBannerId);                      // the banner to preview

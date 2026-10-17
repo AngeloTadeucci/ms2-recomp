@@ -37,13 +37,13 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/client/ms2/interactobject.h"
+#include "ms2/client/ms2/uiitemblueprintcreatedialog.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
 // ---- out-of-unit types and callees (bound to the exe by their FUN_<va> names) ----
 
-class UIItemBlueprintCreateDialog;
 class Unk_VwWearer;
 
 // The world service: the player and the object / entity lookups.
@@ -106,6 +106,93 @@ int FUN_14186ced0(NiTexture* pTexture, int nItemId, int nKind, CStringW& strOut)
 int FUN_14186d050(NiTexture* pTexture, int nBannerId, CStringW& strOut);
 CString FUN_1411c0aa0(const char* szText);                  // a text without arguments
 void FUN_14186bd30(Unk_PPSmartC* pOut, const CStringW& strPath, int nSize, int nFlag);   // the texture of an image file (null on error)
+
+// A dialog of the UI service by id; slot 55 is its "is hidden" state.
+class Unk_VwDialogUi
+{
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();
+    virtual void vfunc_4();
+    virtual void vfunc_5();
+    virtual void vfunc_6();
+    virtual void vfunc_7();
+    virtual void vfunc_8();
+    virtual void vfunc_9();
+    virtual void vfunc_10();
+    virtual void vfunc_11();
+    virtual void vfunc_12();
+    virtual void vfunc_13();
+    virtual void vfunc_14();
+    virtual void vfunc_15();
+    virtual void vfunc_16();
+    virtual void vfunc_17();
+    virtual void vfunc_18();
+    virtual void vfunc_19();
+    virtual void vfunc_20();
+    virtual void vfunc_21();
+    virtual void vfunc_22();
+    virtual void vfunc_23();
+    virtual void vfunc_24();
+    virtual void vfunc_25();
+    virtual void vfunc_26();
+    virtual void vfunc_27();
+    virtual void vfunc_28();
+    virtual void vfunc_29();
+    virtual void vfunc_30();
+    virtual void vfunc_31();
+    virtual void vfunc_32();
+    virtual void vfunc_33();
+    virtual void vfunc_34();
+    virtual void vfunc_35();
+    virtual void vfunc_36();
+    virtual void vfunc_37();
+    virtual void vfunc_38();
+    virtual void vfunc_39();
+    virtual void vfunc_40();
+    virtual void vfunc_41();
+    virtual void vfunc_42();
+    virtual void vfunc_43();
+    virtual void vfunc_44();
+    virtual void vfunc_45();
+    virtual void vfunc_46();
+    virtual void vfunc_47();
+    virtual void vfunc_48();
+    virtual void vfunc_49();
+    virtual void vfunc_50();
+    virtual void vfunc_51();
+    virtual void vfunc_52();
+    virtual void vfunc_53();
+    virtual void vfunc_54();
+    virtual int vfunc_55();
+};
+Unk_VwDialogUi* FUN_140c300a0(int nId);
+// The upload event hub (slot 4 shows the finished upload of a dialog).
+class Unk_VwEvents
+{
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1();
+    virtual void vfunc_2();
+    virtual void vfunc_3();
+    virtual void vfunc_4(int nDialog);
+};
+Unk_VwEvents* FUN_140bc09f0();
+class Unk_CommandUIRef {
+public:
+    ~Unk_CommandUIRef();
+    UIObject* FUN_1403e8a70() const;
+private: void* unknown; UIObject* object;
+};
+MS2_CHECK_SIZE(Unk_CommandUIRef,0x10);
+Unk_CommandUIRef FUN_141adcea0(void*, int);
+UIObject* FUN_1403ed9e0(Unk_CommandUIRef&);
+bool FUN_140534e80(Unk_CommandUIRef&);
+void FUN_140c381b0(UIItemBlueprintCreateDialog* pDialog, MS2Ptr<CUploadFile> spFile);   // show the uploaded image
+void FUN_140c38240(UIItemBlueprintCreateDialog* pDialog);
+extern unsigned DAT_143ab2830;                              // my character's type
 
 // ---- CUgcViewerEquip ----------------------------------------------------------------------------------------------
 
@@ -919,4 +1006,361 @@ int CUgcViewerGuildPoster::vfunc_13(MS2Ptr<IUgcProxy> spProxy)
 int CUgcViewerGuildPoster::vfunc_9()
 {
     return 0x6b;
+}
+
+// ---- CUgcViewerRidee ----------------------------------------------------------------------------------------------
+
+// @0x1418a27d0
+CUgcViewerRidee::CUgcViewerRidee()
+{
+}
+
+// @0x1418a2830
+CUgcViewerRidee::~CUgcViewerRidee()
+{
+}
+
+// @0x1418a2880
+int CUgcViewerRidee::vfunc_2()
+{
+    efd::SmartPointer<AvatarRidee> spRidee = efd::DynamicCast<AvatarRidee>(FUN_1403ed2d0()->FUN_141bd0fa0(FUN_1418a2fc0()));
+    if (spRidee == 0)
+        return 0;
+    MS2Ptr<CItemUgcMeshContainer> spMeshes = spRidee->FUN_141085830();
+    if (spMeshes == 0)
+        return 0;
+    NiTexturePtr spTexture = spMeshes->FUN_141426e30();
+    if (spTexture == 0)
+        return 0;
+    CStringW strError;
+    return FUN_14186ced0(spTexture, m_item.m_nItemId, 7, strError) == 0;
+}
+
+// @0x1418a2a80
+int CUgcViewerRidee::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    Unk_PPSmartC spTexture;
+    FUN_14186bd30(&spTexture, spFile->GetPath(), vfunc_9(), 1);
+    if (spTexture.Get() == 0)
+        return 0;
+    if (FUN_14052d220()->FUN_141887160(&m_item, (NiTexture*)spTexture.Get()) == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    return 1;
+}
+
+// @0x1418a2ca0
+void CUgcViewerRidee::vfunc_4()
+{
+    efd::SmartPointer<AvatarRidee> spRidee = efd::DynamicCast<AvatarRidee>(FUN_1403ed2d0()->FUN_141bd0fa0(FUN_1418a2fc0()));
+    if (spRidee == 0)
+        return;
+    spRidee->FUN_141085250();
+}
+
+// @0x1418a2d50
+void CUgcViewerRidee::vfunc_5()
+{
+}
+
+// @0x1418a2d60
+CString CUgcViewerRidee::vfunc_11()
+{
+    CString str;
+    str = Unk_SocketFormat("[viewer={0}] [itemSN={1}]", "UgcViewerRidee", m_item.m_itemUid);
+    return str;
+}
+
+// @0x1418a2e10
+void CUgcViewerRidee::vfunc_6(COutPacket& packet)
+{
+    m_item.Write(packet);
+}
+
+// @0x1418a2e50
+int CUgcViewerRidee::vfunc_8(MS2Ptr<IUgcProxy> spProxy, int nKind)
+{
+    if (spProxy == 0)
+        return 0;
+    if (nKind == 7)
+    {
+        IUgcProxy* pProxy = spProxy.get();
+        if (pProxy == 0)
+            return 0;
+        pProxy->CopyFrom(&m_item);
+    }
+    else if (nKind == 0xc9)
+    {
+        CUgcItemIconPC* pProxy = static_cast<CUgcItemIconPC*>(spProxy.get());
+        if (pProxy == 0)
+            return 0;
+        pProxy->CopyFrom(&m_icon);
+        pProxy->m_nKind = 2;
+    }
+    return 1;
+}
+
+// @0x1418a2f90
+void CUgcViewerRidee::vfunc_12(__int64 itemUid)
+{
+    m_item.m_itemUid = itemUid;
+    m_icon.m_itemUid = itemUid;
+}
+
+// @0x1418a2fc0
+egf::EntityID CUgcViewerRidee::FUN_1418a2fc0()
+{
+    return m_item.m_entityId;
+}
+
+// @0x1418a3000
+void CUgcViewerRidee::FUN_1418a3000(const egf::EntityID& id)
+{
+    m_item.m_entityId = id;
+}
+
+// ---- CUgcViewerBlueprintImage (the image proxy at +0x18, the icon proxy at +0x50, the refreshed flag at +0xe8) ----
+
+static CUgcBlueprintImageProxy& Unk_VwBpProxy(CUgcViewerBlueprintImage* pViewer)
+{
+    return *reinterpret_cast<CUgcBlueprintImageProxy*>(reinterpret_cast<char*>(pViewer) + 0x18);
+}
+static CUgcItemIconPC& Unk_VwBpIcon(CUgcViewerBlueprintImage* pViewer)
+{
+    return *reinterpret_cast<CUgcItemIconPC*>(reinterpret_cast<char*>(pViewer) + 0x50);
+}
+static int& Unk_VwBpRefreshed(CUgcViewerBlueprintImage* pViewer)
+{
+    return *reinterpret_cast<int*>(reinterpret_cast<char*>(pViewer) + 0xe8);
+}
+
+// The create dialog of a blueprint item (0x4f7b), if it is open.
+UIItemBlueprintCreateDialog* FUN_1418a6920();
+int FUN_1418a7190();
+
+// @0x1418a3030
+CUgcViewerBlueprintImage::CUgcViewerBlueprintImage()
+{
+    new (&Unk_VwBpProxy(this)) CUgcBlueprintImageProxy();
+    new (&Unk_VwBpIcon(this)) CUgcItemIconPC();
+    Unk_VwBpRefreshed(this) = 0;
+    Unk_VwBpProxy(this).Clear();
+    Unk_VwBpIcon(this).Clear();
+}
+
+// @0x1418a30f0
+CUgcViewerBlueprintImage::~CUgcViewerBlueprintImage()
+{
+    Unk_VwBpIcon(this).~CUgcItemIconPC();
+    Unk_VwBpProxy(this).~CUgcBlueprintImageProxy();
+}
+
+// @0x1418a3140
+int CUgcViewerBlueprintImage::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    CStringW strPath = spFile->GetPath();
+    if (_waccess(strPath, 0) != 0)
+        return 0;
+    CStringW strThumb = spFile->GetThumbnailPath();
+    if (strThumb.GetLength() == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    UIItemBlueprintCreateDialog* pDialog = FUN_1418a6920();
+    if (pDialog == 0)
+        return 0;
+    FUN_140c381b0(pDialog, spFile);
+    return 1;
+}
+
+// @0x1418a33a0
+void CUgcViewerBlueprintImage::vfunc_4()
+{
+    UIItemBlueprintCreateDialog* pDialog = FUN_1418a6920();
+    if (pDialog != 0)
+        FUN_140c38240(pDialog);
+}
+
+// @0x1418a33d0
+void CUgcViewerBlueprintImage::vfunc_5()
+{
+    Unk_VwBpRefreshed(this) = 1;
+}
+
+// @0x1418a33f0
+CString CUgcViewerBlueprintImage::vfunc_11()
+{
+    CString str;
+    str = Unk_SocketFormat("[viewer={0}] [blueprint_item_sn={1}]", "UgcViewerBlueprintImage", m_n30);
+    return str;
+}
+
+// @0x1418a34a0
+void CUgcViewerBlueprintImage::vfunc_6(COutPacket& packet)
+{
+    Unk_VwBpProxy(this).Write(packet);
+}
+
+// @0x1418a34e0
+int CUgcViewerBlueprintImage::vfunc_8(MS2Ptr<IUgcProxy> spProxy, int nKind)
+{
+    if (spProxy == 0)
+        return 0;
+    if (nKind == 9)
+    {
+        IUgcProxy* pProxy = spProxy.get();
+        if (pProxy == 0)
+            return 0;
+        pProxy->CopyFrom(&Unk_VwBpProxy(this));
+    }
+    else if (nKind == 0xd1)
+    {
+        CUgcItemIconPC* pProxy = static_cast<CUgcItemIconPC*>(spProxy.get());
+        if (pProxy == 0)
+            return 0;
+        pProxy->CopyFrom(&Unk_VwBpIcon(this));
+        pProxy->m_nKind = 4;
+    }
+    return 1;
+}
+
+// @0x1418a6920
+UIItemBlueprintCreateDialog* FUN_1418a6920()
+{
+    if (FUN_1403ed2b0() == 0)
+        return 0;
+    Unk_CommandUIRef ref = FUN_141adcea0(FUN_1403ed2b0(), FUN_1418a7190());
+    if (FUN_140534e80(ref))
+        return 0;
+    return dynamic_cast<UIItemBlueprintCreateDialog*>(FUN_1403ed9e0(ref));
+}
+
+// ---- viewer vfunc_10 getters, base stubs --------------------------------------------------------------------------
+
+// @0x1418a70e0
+__int64 CUgcViewerBanner::vfunc_10()
+{
+    return (unsigned)m_nBannerId;
+}
+
+// @0x1418a70f0
+__int64 CUgcViewerBlueprintImage::vfunc_10()
+{
+    return m_n30;
+}
+
+// @0x1418a7100
+__int64 CUgcViewerCube::vfunc_10()
+{
+    return (unsigned)m_item.m_nItemId;
+}
+
+// @0x1418a7110
+__int64 CUgcViewerEquip::vfunc_10()
+{
+    return (unsigned)m_item.m_nItemId;
+}
+
+// @0x1418a7120
+__int64 CUgcViewerGuildMark::vfunc_10()
+{
+    return m_mark.m_nGuildId;
+}
+
+// @0x1418a7130
+__int64 CUgcViewerGuildPoster::vfunc_10()
+{
+    return m_poster.m_nGuildId;
+}
+
+// @0x1418a7140
+__int64 CUgcViewerProfile::vfunc_10()
+{
+    return m_user.m_characterId;
+}
+
+// @0x1418a7150
+__int64 CUgcViewerRidee::vfunc_10()
+{
+    return (unsigned)m_item.m_nItemId;
+}
+
+// @0x1418a7160
+__int64 CUgcViewerWeddingProfile::vfunc_10()
+{
+    return m_user.m_characterId;
+}
+
+// @0x1418a6c20
+IUgcViewer::IUgcViewer()
+{
+}
+
+// @0x1418a6c90
+IUgcViewer::~IUgcViewer()
+{
+}
+
+// @0x1418a70a0
+int IUgcViewer::vfunc_2()
+{
+    return 0;
+}
+
+// @0x1418a70b0
+int IUgcViewer::vfunc_8(MS2Ptr<IUgcProxy> spProxy, int nKind)
+{
+    return 0;
+}
+
+// @0x1418a7170
+__int64 IUgcViewer::vfunc_10()
+{
+    return 0;
+}
+
+// @0x1418a7180
+int IUgcViewer::vfunc_9()
+{
+    return 0x200;
+}
+
+// @0x1418a7190
+int FUN_1418a7190()
+{
+    return 0x4f7b;
+}
+
+// @0x1418a71a0
+void IUgcViewer::vfunc_6(COutPacket& packet)
+{
+}
+
+// @0x1418a71b0
+void IUgcViewer::vfunc_7()
+{
+}
+
+// @0x1418a71c0
+void IUgcViewer::vfunc_12(__int64 itemUid)
+{
+}
+
+// @0x1418a71d0
+void IUgcViewer::vfunc_5()
+{
+}
+
+// @0x1418a71e0
+void IUgcViewer::vfunc_1()
+{
 }
