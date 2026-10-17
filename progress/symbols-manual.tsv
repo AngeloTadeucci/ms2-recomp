@@ -2546,3 +2546,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??0Unk_SmPoint3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
 ??1Unk_CMISPropPtr@@QEAA@XZ	14112d4a0	func
 ?s_bInit@DungeonRoomTable@@2_NA	143aad200	data
+?DAT_142f67fe8@@3IB	142f67fe8	data
+?s_bInit@SoundPropertyMgr@@2_NA	143aea270	data
