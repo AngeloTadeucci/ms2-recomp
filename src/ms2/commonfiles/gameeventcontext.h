@@ -313,7 +313,7 @@ public:
     __int64 m_endTime;                              // +0x28
     CStringW m_name;                                // +0x30 info "name"
     std::vector<ItemEntity> m_conditions;           // +0x38 "condition"
-    std::set<std::pair<std::pair<unsigned, int>, unsigned> > m_conditionKeys;   // +0x50 item id / rarity / ...
+    std::map<std::pair<unsigned, int>, unsigned> m_conditionKeys;   // +0x50 (item id, rarity) -> amount
     ItemEntity m_result;                            // +0x60 "result"
 };
 class ArcadeOpenContext : public CPtred {

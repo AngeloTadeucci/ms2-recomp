@@ -1,7 +1,8 @@
-// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). GameEvent subclasses GameEventAttendGift / CashAttend /
-// DTReward, the *Context types the event XML loaders fill, and the CAtlArray / std:: glue over them.
+// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). GameEvent subclasses GameEventAttendGift / CashAttend, the
+// *Context types the event XML loaders fill, and the CAtlArray / std:: glue over them. GameEventDTReward is the next
+// obj (its registration 0x1400b86b0, .bss 0x143aaeeb0 and code 0x14041b140-0x14041c1a0 follow this unit's).
 // MS2-UNIT: commonfiles\gameeventcontext.cpp
-// MS2-RANGE: 0x1400b8480-0x1400b8700 .text$di
+// MS2-RANGE: 0x1400b8480-0x1400b86b0 .text$di
 // MS2-RANGE: 0x1403f4e10-0x14041b140 .text$mn
 // MS2-PIN: ??1GameEventAttendGift@@UEAA@XZ 0x1403fc070
 // MS2-PIN: ??1GameEventCashAttend@@UEAA@XZ 0x1403fc0d0
