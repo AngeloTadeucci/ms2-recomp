@@ -18,7 +18,7 @@ int FUN_140707660(int nKind);
 int FUN_140707710(int nKind);
 class Unk_UgcUiMgr { public: int FUN_141adc890(int nUIType); };
 Unk_UgcUiMgr* FUN_1403ed2b0();
-struct Unk_UgcRes16 { Unk_UgcRes16(const Unk_UgcRes16&); __int64 m_a, m_b; };
+struct Unk_UgcRes16 { Unk_UgcRes16(const Unk_UgcRes16& o) : m_a(o.m_a), m_b(o.m_b) {} __int64 m_a, m_b; };
 Unk_UgcRes16 FUN_1408a15b0(Unk_UgcCell cell, Unk_StreamPoint ptOrigin);   // the world point of a cell
 Unk_UgcRes16 FUN_14027dcf0(Unk_UgcRes16 res);
 class Unk_WorldToScreen { public: bool FUN_140af0700(Unk_UgcRes16 world, Unk_StreamPoint& out); };
