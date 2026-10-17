@@ -628,7 +628,6 @@ void FUN_140bd2f60(Unk_EdAlc* pAlc, Unk_EdNode* pNode)
 }
 
 // @0x140bd4d30
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd4d30(Unk_EdListVal* pList)
 {
     FUN_140bd4cc0(pList);
@@ -636,7 +635,6 @@ Unk_EdListVal* FUN_140bd4d30(Unk_EdListVal* pList)
 }
 
 // @0x140bd4d90
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4d90(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     FUN_140bd4e50(pIt, pNode, pList);
@@ -644,7 +642,6 @@ Unk_EdIter* FUN_140bd4d90(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd4e90
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4e90(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     FUN_140bd4e10(pIt, pNode, pList);
@@ -652,7 +649,6 @@ Unk_EdIter* FUN_140bd4e90(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd4f40
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd4f40(Unk_EdListVal* pList)
 {
     pList->m_pHead = 0;
@@ -675,7 +671,6 @@ void FUN_140bd52d0(Unk_EdListVal* pList)
 }
 
 // @0x140bd5330
-// MS2-FUNCTIONAL
 void FUN_140bd5330(Unk_EdListVal* pList)
 {
     FUN_140bd52d0(pList);
@@ -690,42 +685,36 @@ void FUN_140bd53d0(Unk_EdListVal* pList)
 }
 
 // @0x140bd5530
-// MS2-FUNCTIONAL
 bool FUN_140bd5530(const Unk_EdListVal* pList)
 {
     return pList->m_nSize == 0;
 }
 
 // @0x140bd5590
-// MS2-FUNCTIONAL
 bool FUN_140bd5590(const Unk_EdIter* pA, const Unk_EdIter* pB)
 {
     return pA->m_pNode == pB->m_pNode;
 }
 
 // @0x140bd55d0
-// MS2-FUNCTIONAL
 bool FUN_140bd55d0(const Unk_EdIter* pA, const Unk_EdIter* pB)
 {
     return pA->m_pNode == pB->m_pNode;
 }
 
 // @0x140bd5650
-// MS2-FUNCTIONAL
 bool FUN_140bd5650(const Unk_EdIter* pA, const Unk_EdIter* pB)
 {
     return !FUN_140bd5590(pA, pB);
 }
 
 // @0x140bd5690
-// MS2-FUNCTIONAL
 bool FUN_140bd5690(const Unk_EdIter* pA, const Unk_EdIter* pB)
 {
     return !FUN_140bd55d0(pA, pB);
 }
 
 // @0x140bd5710
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd5710(void* pTree, const int* pKey)
 {
     Unk_EdIter it;
@@ -733,28 +722,24 @@ Unk_EdListVal* FUN_140bd5710(void* pTree, const int* pKey)
 }
 
 // @0x140bd5750
-// MS2-FUNCTIONAL
 size_t FUN_140bd5750(const Unk_EdListVal* pList)
 {
     return pList->m_nSize;
 }
 
 // @0x140bd5790
-// MS2-FUNCTIONAL
 void* FUN_140bd5790(const Unk_EdIter* pIt)
 {
     return pIt->m_pNode + 1;
 }
 
 // @0x140bd57b0
-// MS2-FUNCTIONAL
 void* FUN_140bd57b0(const Unk_EdIter* pIt)
 {
     return pIt->m_pNode + 1;
 }
 
 // @0x140bd5810
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd5810(Unk_EdIter* pIt)
 {
     pIt->m_pNode = pIt->m_pNode->m_pNext;
@@ -762,7 +747,6 @@ Unk_EdIter* FUN_140bd5810(Unk_EdIter* pIt)
 }
 
 // @0x140bd5830
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd5830(Unk_EdIter* pIt)
 {
     pIt->m_pNode = pIt->m_pNode->m_pNext;
@@ -791,35 +775,30 @@ Unk_EdTreeIter* FUN_140bd58c0(Unk_EdTreeIter* pIt)
 }
 
 // @0x140bd5ba0
-// MS2-FUNCTIONAL
 int* FUN_140bd5ba0(Unk_EdOff18* p)
 {
     return &p->m_val;
 }
 
 // @0x140bd5bb0
-// MS2-FUNCTIONAL
 int* FUN_140bd5bb0(Unk_EdOff28* p)
 {
     return &p->m_val;
 }
 
 // @0x140bd5bd0
-// MS2-FUNCTIONAL
 int FUN_140bd5bd0()
 {
     return 0x4ec1;
 }
 
 // @0x140bd5c30
-// MS2-FUNCTIONAL
 void FUN_140bd5c30(CPtred* p)
 {
     CPtred::AddRefPtred(p);
 }
 
 // @0x140bd5c50
-// MS2-FUNCTIONAL
 void FUN_140bd5c50(Unk_EdRef* pRef, void* pUnused)
 {
     FUN_140bd5c10(pRef->m_p);
@@ -851,7 +830,6 @@ Unk_EdNode* FUN_140bd5d80(Unk_EdListVal* pList, Unk_EdNode* pNext, Unk_EdNode* p
 }
 
 // @0x140bd66f0
-// MS2-FUNCTIONAL
 void FUN_140bd66f0(Unk_EdListVal* pList, Unk_EdNode* pNode)
 {
     FUN_140bd2f60(FUN_140bd6a00(pList), pNode);
@@ -867,7 +845,6 @@ void FUN_140bd67b0(Unk_EdListVal* pList, Unk_EdNode* pNode)
 }
 
 // @0x140bd69b0
-// MS2-FUNCTIONAL
 void* FUN_140bd69b0(void* p)
 {
     return p;
@@ -881,21 +858,18 @@ Unk_EdAlc* FUN_140bd6a00(Unk_EdListVal* pList)
 }
 
 // @0x140bd6de0
-// MS2-FUNCTIONAL
 const Unk_EdListVal* FUN_140bd6de0(const Unk_EdListVal* pList)
 {
     return FUN_140a3e770(pList);
 }
 
 // @0x140bd6e00
-// MS2-FUNCTIONAL
 const Unk_EdListVal* FUN_140bd6e00(const Unk_EdListVal* pList)
 {
     return FUN_140a3e7b0(pList);
 }
 
 // @0x140bd6f70
-// MS2-FUNCTIONAL
 void FUN_140bd6f70(Unk_EdRef* pRef, void* pUnused)
 {
     if (CPtred::ReleasePtred(pRef->m_p) == 0)
@@ -906,14 +880,12 @@ void FUN_140bd6f70(Unk_EdRef* pRef, void* pUnused)
 }
 
 // @0x140bd7140
-// MS2-FUNCTIONAL
 void FUN_140bd7140(Unk_EdListVal* pList)
 {
     FUN_140bd7520(pList);
 }
 
 // @0x140bd7180
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd7180(Unk_EdListVal* pList, Unk_EdIter* pOut)
 {
     FUN_140bd4e90(pOut, (*FUN_140bd6dc0(pList))->m_pNext, 0);
@@ -921,7 +893,6 @@ Unk_EdIter* FUN_140bd7180(Unk_EdListVal* pList, Unk_EdIter* pOut)
 }
 
 // @0x140bd71c0
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd71c0(Unk_EdListVal* pList, Unk_EdIter* pOut)
 {
     FUN_140bd4ed0(pOut, (*FUN_140bd6e20(pList))->m_pNext, 0);
@@ -929,7 +900,6 @@ Unk_EdIter* FUN_140bd71c0(Unk_EdListVal* pList, Unk_EdIter* pOut)
 }
 
 // @0x140bd7230
-// MS2-FUNCTIONAL
 void* FUN_140bd7230(Unk_EdAlc* pAlc, size_t nCount)
 {
     return FUN_14015f9d0(FUN_14017ba40(nCount));
@@ -952,7 +922,6 @@ Unk_EdIter* FUN_140bd73c0(Unk_EdListVal* pList, Unk_EdIter* pOut)
 }
 
 // @0x140bd77a0
-// MS2-FUNCTIONAL
 void FUN_140bd77a0(Unk_EdAlc* pAlc, void* p, size_t nCount)
 {
     FUN_14015fc80(p, nCount * 0x20);
@@ -975,35 +944,30 @@ Unk_EdIter* FUN_140bd7920(Unk_EdListVal* pList, Unk_EdIter* pOut)
 }
 
 // @0x140bd4790
-// MS2-FUNCTIONAL
 void* FUN_140bd4790(void* p)
 {
     return p;
 }
 
 // @0x140bd47e0
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd47e0(void* p)
 {
     return static_cast<Unk_EdListVal*>(p);
 }
 
 // @0x140bd4890
-// MS2-FUNCTIONAL
 void FUN_140bd4890(Unk_EdAlc* pAlc, void* pWhere, Unk_EdNode** ppValue)
 {
     ::new (pWhere) Unk_EdNode*(*FUN_140bd4b60(ppValue));
 }
 
 // @0x140bd4b60
-// MS2-FUNCTIONAL
 Unk_EdNode** FUN_140bd4b60(Unk_EdNode** p)
 {
     return p;
 }
 
 // @0x140bd4d10
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd4d10(Unk_EdListVal* pList)
 {
     FUN_140bd4c70(pList);
@@ -1011,7 +975,6 @@ Unk_EdListVal* FUN_140bd4d10(Unk_EdListVal* pList)
 }
 
 // @0x140bd4e50
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4e50(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     pIt->m_pNode = pNode;
@@ -1020,7 +983,6 @@ Unk_EdIter* FUN_140bd4e50(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd4ed0
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4ed0(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     FUN_140bd4e50(pIt, pNode, pList);
@@ -1028,7 +990,6 @@ Unk_EdIter* FUN_140bd4ed0(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd4f10
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd4f10(Unk_EdListVal* pList)
 {
     pList->m_pHead = 0;
@@ -1037,7 +998,6 @@ Unk_EdListVal* FUN_140bd4f10(Unk_EdListVal* pList)
 }
 
 // @0x140bd5140
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd5140(Unk_EdListVal* pList)
 {
     FUN_140bd4d10(pList);
@@ -1045,14 +1005,12 @@ Unk_EdListVal* FUN_140bd5140(Unk_EdListVal* pList)
 }
 
 // @0x140bd5560
-// MS2-FUNCTIONAL
 bool FUN_140bd5560(const Unk_EdRef* pRef)
 {
     return pRef->m_p == 0;
 }
 
 // @0x140bd5760
-// MS2-FUNCTIONAL
 CPtred* FUN_140bd5760(const Unk_EdRef* pRef)
 {
     return pRef->m_p;
@@ -1066,14 +1024,12 @@ void* FUN_140bd6850(void* p)
 }
 
 // @0x140bd6930
-// MS2-FUNCTIONAL
 Unk_EdAlc* FUN_140bd6930(Unk_EdAlc* pAlc)
 {
     return pAlc;
 }
 
 // @0x140bd6960
-// MS2-FUNCTIONAL
 void* FUN_140bd6960(void* p)
 {
     return p;
@@ -1087,28 +1043,24 @@ void* FUN_140bd6a60(void* p)
 }
 
 // @0x140bd6dc0
-// MS2-FUNCTIONAL
 Unk_EdNode** FUN_140bd6dc0(Unk_EdListVal* pList)
 {
     return reinterpret_cast<Unk_EdNode**>(FUN_140bd6850(pList));
 }
 
 // @0x140bd6890
-// MS2-FUNCTIONAL
 Unk_EdListVal* FUN_140bd6890(Unk_EdListVal* pList)
 {
     return static_cast<Unk_EdListVal*>(FUN_140bd69d0(&pList->m_pHead));
 }
 
 // @0x140bd6e40
-// MS2-FUNCTIONAL
 Unk_EdNode** FUN_140bd6e40(Unk_EdListVal* pList)
 {
     return &FUN_140bd6890(pList)->m_pHead;
 }
 
 // @0x140bd6e60
-// MS2-FUNCTIONAL
 size_t* FUN_140bd6e60(Unk_EdListVal* pList)
 {
     return &static_cast<Unk_EdListVal*>(FUN_140bd6850(pList))->m_nSize;
@@ -1151,35 +1103,30 @@ void FUN_140bd7520(Unk_EdListVal* pList)
 }
 
 // @0x140bd7cd0
-// MS2-FUNCTIONAL
 size_t FUN_140bd7cd0(const Unk_EdAlc* pAlc)
 {
     return 0x7ffffffffffffffULL;
 }
 
 // @0x140bd4800
-// MS2-FUNCTIONAL
 void FUN_140bd4800(Unk_EdAlc* pAlc, void* pWhere, const int* pValue)
 {
     ::new (pWhere) int(*FUN_1401db5a0(pValue));
 }
 
 // @0x140bd4840
-// MS2-FUNCTIONAL
 void FUN_140bd4840(Unk_EdAlc* pAlc, void* pWhere, Unk_EdNode** ppValue)
 {
     ::new (pWhere) Unk_EdNode*(*FUN_140bd4b50(ppValue));
 }
 
 // @0x140bd4b50
-// MS2-FUNCTIONAL
 Unk_EdNode** FUN_140bd4b50(Unk_EdNode** p)
 {
     return p;
 }
 
 // @0x140bd4dd0
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4dd0(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     FUN_140bd4d50(pIt, pNode, pList);
@@ -1187,7 +1134,6 @@ Unk_EdIter* FUN_140bd4dd0(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd4e10
-// MS2-FUNCTIONAL
 Unk_EdIter* FUN_140bd4e10(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pList)
 {
     pIt->m_pNode = pNode;
@@ -1196,14 +1142,12 @@ Unk_EdIter* FUN_140bd4e10(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVa
 }
 
 // @0x140bd5770
-// MS2-FUNCTIONAL
 Unk_EdMapPair* FUN_140bd5770(Unk_EdIter* pIt)
 {
     return FUN_140bd7d50(FUN_140bd57f0(pIt));
 }
 
 // @0x140bd7d50
-// MS2-FUNCTIONAL
 Unk_EdMapPair* FUN_140bd7d50(Unk_EdMapPair* p)
 {
     return FUN_140bd47c0(p);
