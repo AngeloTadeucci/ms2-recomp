@@ -65,7 +65,6 @@
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x1402ff2f0 ; prop
 // MS2-PIN: ??1?$map@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@@std@@QEAA@XZ 0x1402ff6e0 ; unique
 // MS2-PIN: ??A?$map@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@@std@@QEAAAEAV?$ItemDropPicker@H@@$$QEAH@Z 0x1403005c0 ; unique
-// MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBHV?$ItemDropPicker@H@@@1@XZ 0x140300810 ; unique
 // MS2-PIN: ??D?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEBAAEBU?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@1@XZ 0x1403009b0 ; prop
 // MS2-PIN: ??D?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEBAAEBU?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@1@XZ 0x1403009f0 ; prop
 // MS2-PIN: ??D?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@1@XZ 0x140300a10 ; unique
@@ -117,7 +116,6 @@
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f180 ; prop
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f210 ; prop
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f2a0 ; prop
-// MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXXZ 0x140310e20 ; prop
 // MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@2@_K@Z 0x1403112e0 ; prop
 // MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1403117e0 ; prop
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@2@@Z 0x140312020 ; unique
@@ -125,6 +123,9 @@
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropGlobalGroup@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@std@@@std@@@2@AEBI@Z 0x140313020 ; unique
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropIndividualBox@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@@2@AEBI@Z 0x140313170 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??R?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@QEBA_KAEBI@Z 0x1403021d0 ; manual: hash operator(), exe copy called from every unordered_map<unsigned> _Hashval
+// MS2-PIN: ??_7ItemDropTable@@6B?$TSingleton@VItemDropTable@@@@@ 0x142d24b98 ; manual: RTTI pairing misses the base name
+// MS2-PIN: ??_7ItemDropTable@@6B?$CValidData@VItemDropTable@@@@@ 0x142d24ba8 ; manual
 // The unit name is a guess: the queue row commonfiles\dungeonmatch.cpp (0x1402e6c50-0x14031b800) is four TUs, see
 // commonfiles\dungeonmatch.cpp.
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemdroptable.cpp"
