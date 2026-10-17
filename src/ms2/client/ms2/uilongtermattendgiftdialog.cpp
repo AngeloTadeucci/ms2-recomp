@@ -468,16 +468,16 @@ bool UILongTermAttendGiftDialog::FUN_140c6bb80(int nResult, const CMsgBoxData&)
 }
 
 // @0x140c6bd40
-// MS2-FUNCTIONAL: behaviour-equivalent; codegen (temporaries / branch layout) not byte-identical to the exe
 bool UILongTermAttendGiftDialog::FUN_140c6bd40(int nResult, const CMsgBoxData&)
 {
-    if (nResult != 0)
-        return true;
-    if (!FUN_140166410()->FUN_14036d570(0xc2)) {
-        FUN_140d73cd0();
+    if (nResult == 0) {
+        if (!FUN_140166410()->FUN_14036d570(0xc2)) {
+            FUN_140d73cd0();
+            return true;
+        }
+        FUN_140d86260()->vfunc_45();
         return true;
     }
-    FUN_140d86260()->vfunc_45();
     return true;
 }
 
@@ -617,7 +617,6 @@ void UILongTermAttendGiftDialog::FUN_140c6cd00()
 }
 
 // @0x140c6d040
-// MS2-FUNCTIONAL: behaviour-equivalent; codegen (temporaries / branch layout) not byte-identical to the exe
 int UILongTermAttendGiftDialog::FUN_140c6d040(unsigned int nDay)
 {
     unsigned int nCur = FUN_140c6d570();
@@ -626,9 +625,11 @@ int UILongTermAttendGiftDialog::FUN_140c6d040(unsigned int nDay)
     FUN_1401d9a30(strDays, claimed, L",");
     if (FUN_1402bacf0(claimed, nDay) != -1)
         return 2;
-    if (nCur < nDay)
-        return 0;
-    return 1;
+    if (nDay <= nCur)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // @0x140c6d130
@@ -645,22 +646,21 @@ int UILongTermAttendGiftDialog::FUN_140c6d130()
 }
 
 // @0x140c6d200
-// MS2-FUNCTIONAL: behaviour-equivalent; codegen (temporaries / branch layout) not byte-identical to the exe
 CString UILongTermAttendGiftDialog::FUN_140c6d200(unsigned int nDay, unsigned int nCur, int nCatchUp)
 {
     CString strState;
-    if (nCur < nDay) {
-        if (nCur + nCatchUp < nDay)
-            strState = "disable";
-        else
-            strState = "release";
-    } else {
+    if (nDay <= nCur) {
         strState = "complete";
+    } else {
+        if (nDay <= nCur + nCatchUp)
+            strState = "release";
+        else
+            strState = "disable";
     }
     bool bReward = false;
     for (size_t i = 0; i < m_178->m_rewards.FUN_140412e80(); ++i) {
         MS2Ptr<Unk_LtaRecord> rec = m_178->m_rewards.FUN_140410eb0(i);
-        if ((unsigned int)rec->m_day == nDay) {
+        if (!((unsigned int)rec->m_day != nDay)) {
             bReward = true;
             break;
         }
