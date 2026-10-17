@@ -2,6 +2,7 @@
 // premium product records and table (Table/Server/shop_merat.xml), market products and packets.
 // MS2-UNIT: ?\meratmarketbasketinfo.cpp
 // MS2-RANGE: 0x14069c3e0-0x1406ae9c0 .text$mn
+// MS2-PIN: ??_7CMeratMarketPremium@@6B?$TSingleton@VCMeratMarketPremium@@@@@ 0x142d782c8
 // MS2-RANGE: 0x1400bb3f0-0x1400bb6a0 .text$di
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\meratmarketbasketinfo.cpp"   // no asserts of its own
 #include "ms2/placeholder/ms2stdafx.h"
@@ -11,6 +12,8 @@ extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const
 #include "ms2/ms2format.h"
 #include "ms2/commonfiles/gameevent.h"
 #include "ms2/commonfiles/timeutil.h"
+#include "ms2/commonfiles/filesystem.h"
+#include "ms2/commonfiles/logstring.h"
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/cshopeventmanager.h"
@@ -35,6 +38,19 @@ int FUN_1407ce100(PreminmMarketSaleEventContext* pContext, int nPrice);    // th
 bool FUN_1406a5840();
 __int64 FUN_1406a61c0(__int64 nPrice, int nRate);
 __int64 FUN_1406a6150(__int64 nPrice, int nRate);
+CStringA FUN_14071a5b0(const CStringA& strDir, const CStringA& strFile);    // Table/<dir>/<file>
+
+// The common log (FUN_140166440()).
+class Unk_MeratLog : public CLogString
+{
+public:
+    template <class T> void Log(unsigned __int64 a, unsigned __int64 b, int flags, const wchar_t* format, const T& value)
+    {
+        fmt::internal::Value values[] = { fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(value) };
+        FUN_1406535b0(a, b, flags, format, fmt::ArgList(fmt::internal::make_type(value), values));
+    }
+};
+Unk_MeratLog* FUN_140166440();
 
 // ---- CMeratMarketBasketInfo ------------------------------------------------------------------------------------------
 
@@ -1309,4 +1325,201 @@ CStringA FUN_1406a2470(__int64 nTime)
     int nMonth = t.GetMonth();
     int nYear = t.GetYear();
     return StringFormat("{0:04d}-{1:02d}-{2:02d} {3:02d}:{4:02d}:{5:02d}", nYear, nMonth, nDay, nHour, nMinute, nSecond);
+}
+
+// ---- CMeratMarketPremium -------------------------------------------------------------------------------------------
+
+CLockCriticalSection CMeratMarketPremium::s_lock;
+
+// @0x1406a2580
+CMeratMarketPremium::CMeratMarketPremium()
+{
+}
+
+// @0x1406a26b0
+CMeratMarketPremium::~CMeratMarketPremium()
+{
+}
+
+// @0x1406a2750
+void CMeratMarketPremium::Clear()
+{
+    m_products.RemoveAll();
+    m_productMap.RemoveAll();
+    m_categoryMap.RemoveAll();
+    m_ugcMap.RemoveAll();
+}
+
+// @0x1406a27b0
+int CMeratMarketPremium::Init()
+{
+    m_nShopType = 100000;
+    Clear();
+    LoadCategories();
+    CStringA strServerPath = FUN_14071a5b0("Table/Server", "shop_merat.xml");
+    FUN_1401d1160(strServerPath);
+    CStringA strPath = FUN_14071a5b0("Table", "shop_merat.xml");
+    return 1;
+}
+
+// @0x1406a2900
+int CMeratMarketPremium::LoadXml(const CStringA& strPath)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return 0;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == NULL)
+        return 0;
+    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("item"); pElem; pElem = pElem->FUN_140168650("item"))
+    {
+        MS2Ptr<CMeratMarketPremiumProduct> spProduct(new CMeratMarketPremiumProduct);
+        if (spProduct.get())
+        {
+            spProduct->LoadXml(pElem);
+            CStringA strCategory;
+            FUN_1408733e0(pElem, "category", strCategory);
+            unsigned nItemId = spProduct->m_nItemId;
+            {
+                MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+                if (spItem.get())
+                {
+                    if (strCategory.IsEmpty())
+                        strCategory = spItem->property.category;
+                }
+                else
+                {
+                    FUN_140166440()->Log(0, 0, 0x2d, L"CMeratMarket::Read - error item id ({0})", nItemId);
+                    continue;
+                }
+            }
+            spProduct->m_nCategoryId = GetCategoryId(strCategory);
+            m_products.Add(spProduct);
+            m_productMap.SetAt(spProduct->m_nId, spProduct);
+        }
+    }
+    return 1;
+}
+
+// @0x1406a2c50
+int CMeratMarketPremium::LoadUgcXml(const CStringA& strPath)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return 0;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == NULL)
+        return 0;
+    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("item"); pElem; pElem = pElem->FUN_140168650("item"))
+    {
+        MS2Ptr<CUgcPremiumProduct> spProduct(new CUgcPremiumProduct);
+        if (spProduct.get())
+        {
+            FUN_140873220(pElem, "id", spProduct->m_nId);
+            FUN_1408731e0(pElem, "sn", spProduct->m_nSn);
+            FUN_140873220(pElem, "price", spProduct->m_nPrice);
+            unsigned nId = spProduct->m_nId;
+            if (spProduct->m_nPrice > 0)
+                m_ugcMap.SetAt(nId, spProduct);
+        }
+    }
+    return 1;
+}
+
+// @0x1406a2e90
+int CMeratMarketPremium::LoadCategories()
+{
+    if (CShopCategoryTable::GetInstance() == NULL)
+        CShopCategoryTable::CreateInstance();
+    int nShopType = m_nShopType;
+    Unk_ShopCategoryBoxPtr<CShopCategoryTable::TabList> spTabs = CShopCategoryTable::GetInstance()->FUN_1407cb490(nShopType);
+    if (static_cast<bool>(spTabs.get()) && !spTabs->IsEmpty())
+    {
+        for (POSITION pos = spTabs->GetHeadPosition(); pos; spTabs->GetNext(pos))
+        {
+            MS2Ptr<CShopCategoryTable::TabInfo> spTab(spTabs->GetAt(pos));
+            if (spTab.get())
+            {
+                if (!spTab->m_subTabs.IsEmpty())
+                {
+                    CShopCategoryTable::TabList* pSubTabs = &spTab->m_subTabs;
+                    for (POSITION subPos = pSubTabs->GetHeadPosition(); subPos; pSubTabs->GetNext(subPos))
+                    {
+                        MS2Ptr<CShopCategoryTable::TabInfo> spSubTab(pSubTabs->GetAt(subPos));
+                        if (spSubTab.get())
+                            AddCategory(spSubTab);
+                    }
+                }
+                else
+                {
+                    AddCategory(spTab);
+                }
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
+// @0x1406a3100
+void CMeratMarketPremium::AddCategory(MS2Ptr<CShopCategoryTable::TabInfo> tab)
+{
+    CAtlArray<CStringA> names;
+    FUN_14015f050(tab->m_strCategories, names, ",");
+    for (unsigned i = 0; i < names.GetCount(); i++)
+    {
+        CStringA strName(names[i]);
+        if (m_categoryMap.Lookup(strName) == NULL)
+            m_categoryMap.SetAt(strName, tab->m_nId);
+    }
+}
+
+// @0x1406a3240
+int CMeratMarketPremium::GetCategoryId(CStringA strCategory)
+{
+    if (strCategory.IsEmpty())
+        return 0;
+    int nId = 0;
+    m_categoryMap.Lookup(strCategory, nId);
+    return nId;
+}
+
+// @0x1406a32d0
+MS2Ptr<CMeratMarketPremiumProduct> CMeratMarketPremium::FindProduct(int nId)
+{
+    if (Unk_LockGuard guard = s_lock) {} else
+    {
+        MS2Ptr<CMeratMarketPremiumProduct> spProduct(0);
+        m_productMap.Lookup(nId, spProduct);
+        return spProduct;
+    }
+}
+
+// @0x1406a3390
+MS2Ptr<CUgcPremiumProduct> CMeratMarketPremium::FindUgcProduct(unsigned nId)
+{
+    if (Unk_LockGuard guard = s_lock) {} else
+    {
+        MS2Ptr<CUgcPremiumProduct> spProduct(0);
+        m_ugcMap.Lookup(nId, spProduct);
+        return spProduct;
+    }
+}
+
+// @0x1406a3450
+int CMeratMarketPremium::GetShopType()
+{
+    return m_nShopType;
+}
+
+// @0x1406a3470
+CAtlMap<int, MS2Ptr<CMeratMarketPremiumProduct> >* CMeratMarketPremium::GetProductMap()
+{
+    return &m_productMap;
+}
+
+// @0x1406a3490
+CAtlArray<MS2Ptr<CMeratMarketPremiumProduct> >* CMeratMarketPremium::GetProducts()
+{
+    return &m_products;
 }

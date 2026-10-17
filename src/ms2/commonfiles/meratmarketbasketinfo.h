@@ -16,6 +16,8 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/cinpacket.h"
+#include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/placeholder/cshopcategorytable.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/mstime.h"
 
@@ -226,3 +228,51 @@ MS2_CHECK_SIZE(CMeratMarketPremiumProduct, 0x238);
 MS2_CHECK_OFFSET(CMeratMarketPremiumProduct, m_mapSub, 0x1d8);
 
 CStringA FUN_1406a2470(__int64 nTime);                      // "YYYY-MM-DD hh:mm:ss"
+
+// A UGC (player-designed) product's merat price (Table/Server shop_ugc entries).
+class CUgcPremiumProduct : public CPtred
+{
+public:
+    // @0x1406a84c0
+    CUgcPremiumProduct() { m_nSn = 0; m_nId = 0; m_nPrice = 0; }
+
+    int m_nSn;                                              // +0x18
+    unsigned m_nId;                                         // +0x1c
+    unsigned m_nPrice;                                      // +0x20
+};
+MS2_CHECK_SIZE(CUgcPremiumProduct, 0x28);
+
+// The premium product table (Table/Server/shop_merat.xml) with the item-category -> shop tab map.
+class CMeratMarketPremium : public TSingleton<CMeratMarketPremium>, public CCacheData
+{
+public:
+    CMeratMarketPremium();
+    virtual ~CMeratMarketPremium();
+
+    void Clear();
+    int Init();
+    int LoadXml(const CStringA& strPath);
+    int LoadUgcXml(const CStringA& strPath);
+    int LoadCategories();
+    void AddCategory(MS2Ptr<CShopCategoryTable::TabInfo> tab);
+    int GetCategoryId(CStringA strCategory);
+    MS2Ptr<CMeratMarketPremiumProduct> FindProduct(int nId);
+    MS2Ptr<CUgcPremiumProduct> FindUgcProduct(unsigned nId);
+    int GetShopType();
+    CAtlMap<int, MS2Ptr<CMeratMarketPremiumProduct> >* GetProductMap();
+    CAtlArray<MS2Ptr<CMeratMarketPremiumProduct> >* GetProducts();
+
+    static CLockCriticalSection s_lock;
+
+private:
+    MS2_LAYOUT_FRIEND;
+    int m_nShopType;                                        // +0x30 the CShopCategoryTable shop (100000)
+    CAtlArray<MS2Ptr<CMeratMarketPremiumProduct> > m_products;  // +0x38 in file order
+    CAtlMap<int, MS2Ptr<CMeratMarketPremiumProduct> > m_productMap; // +0x58 by product id
+    CAtlMap<CStringA, int, CStringElementTraits<CStringA> > m_categoryMap;  // +0xa0 item category -> tab id
+    CAtlMap<unsigned, MS2Ptr<CUgcPremiumProduct> > m_ugcMap;    // +0xe8 by UGC item id
+};
+MS2_CHECK_SIZE(CMeratMarketPremium, 0x130);
+MS2_CHECK_OFFSET(CMeratMarketPremium, m_nShopType, 0x30);
+MS2_CHECK_OFFSET(CMeratMarketPremium, m_categoryMap, 0xa0);
+MS2_CHECK_OFFSET(CMeratMarketPremium, m_ugcMap, 0xe8);
