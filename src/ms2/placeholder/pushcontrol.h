@@ -4,21 +4,21 @@
 // Slots: 0 scalar deleting dtor, 1 per-frame update (pushes the given actor, returns whether it moved).
 #pragma once
 #include "ms2/ms2layout.h"
+#include "ms2/client/ms2/hitcontrol.h"
 #include <efd/Point3.h>
 
 class GameObject;
 class IDistanceCalculator;
 
-class CPushControl
+class CPushControl : public CHitControl
 {
 public:
     CPushControl();                                                 // 0x1413fca60
     virtual ~CPushControl();                                        // 0x1413fcad0
     virtual bool vfunc_1(GameObject* pActor, double dTime);         // 0x1413fcb30
+    float FUN_1413fce30(double dTime);                              // advance the push clock, returns this frame's distance
     void FUN_1413fcf90();                                           // reset (stopped, no distance calculator)
     void FUN_1413fd050(int nCurve);                                 // set the distance calculator (FUN_14028e960)
-private:
-    void* m_unk_08[2];                                              // +0x08 CPtred / CHitControl
 public:
     efd::Point3 m_kDir;                                             // +0x18 push direction (ZERO: not pushing)
     float m_fSpeed;                                                 // +0x24
