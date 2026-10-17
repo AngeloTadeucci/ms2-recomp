@@ -285,7 +285,7 @@ public:
 };
 void FUN_14257ec50(Unk_BgDispHandle* p);
 void FUN_1422bcd70(Scaleform::GFx::Value* pValue, float f);
-class Unk_BgWorldMgr { public: void* FUN_141bd0cc0(); const NiPoint3& FUN_141bd3dc0(); };
+class Unk_BgWorldMgr { public: void* FUN_141bd0cc0(); NiPoint3 FUN_141bd3dc0(); };   // 3dc0 returns by value (hidden pointer, worldservice.h)
 Unk_BgWorldMgr* FUN_1403ed2d0();
 bool* FUN_1422dad70(void* pThis, void* pOut, char n);   // pOut: caller temp (key-state flags), returned
 NiMaterial* FUN_141d284a0(char* szName);
