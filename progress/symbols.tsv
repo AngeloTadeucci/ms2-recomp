@@ -57206,7 +57206,7 @@ atan2f	140a4e660	func
 ??0?$FunctorImplBase@_N@@QEAA@XZ	141628ee0	func
 ??1?$FunctorImplBase@_N@@UEAA@XZ	141629180	func
 ??1?$Delegate@$$A6A?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@_N@Z@@QEAA@XZ	1416291c0	func
-??1?$Delegate@$$A6A_NAEBVItemColorEx@@V?$MS2Ptr@VCItemData@@@@@Z@@QEAA@XZ	1416291c0	func
+??1?$Delegate@$$A6A_NAEBVItemColorEx@@V?$MS2Ptr@VCItemData@@@@@Z@@QEAA@XZ	14056c150	func
 ??0CPartyManager@@QEAA@XZ	14162a0d0	func
 ??1CPartyManager@@UEAA@XZ	14162a240	func
 ?FUN_14162a310@@YAXPEAVUnk_WsME_ShutdownB@@@Z	14162a310	func
@@ -63901,7 +63901,7 @@ atan2f	140a4e660	func
 ??_GUIAvatarRidee@@UEAAPEAXI@Z	1418c1a00	func
 ?Add@?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@QEAA_KAEBU?$pair@I_K@std@@@Z	1418c1a40	func
 ?CallDestructors@?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@CAXPEAU?$pair@I_K@std@@_K@Z	1418c1af0	func
-?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCItemData@@@@_K@Z	1418c1af0	func
+?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCItemData@@@@_K@Z	14056f5b0	func
 ??A?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItemData@@@@_K@Z	1418c1b70	func
 ?GrowBuffer@?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@AEAA_N_K@Z	1418c1bc0	func
 ?RelocateElements@?$CElementTraitsBase@U?$pair@I_K@std@@@ATL@@SAXPEAU?$pair@I_K@std@@0_K@Z	1418c1d90	func

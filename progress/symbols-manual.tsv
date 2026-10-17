@@ -1955,7 +1955,6 @@ D3DXFloat16To32Array	14230396f	func
 ?DAT_143ab2a90@@3UUnk_UgcInventory@@A	143ab2a90	data
 ?DAT_143af8a20@@3VNiRTTI@@A	143af8a20	data
 ?ms_RTTI@NiSourceTexture@@2VNiRTTI@@B	143afa930	data
-??1?$Delegate@$$A6A_NAEBVItemColorEx@@V?$MS2Ptr@VCItemData@@@@@Z@@QEAA@XZ	1416291c0	func
 ??1?$MS2Ptr@UUnk_GemPetRow@@@@QEAA@XZ	14052c420	func
 ??C?$MS2Ptr@UUnk_GemPetRow@@@@QEBAPEAUUnk_GemPetRow@@XZ	14052ceb0	func
 ?get@?$Unk_14102fe10@VUnk_140bfc2e0@@@@QEBAPEAVUnk_140bfc2e0@@XZ	140bfc340	func
