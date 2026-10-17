@@ -2529,3 +2529,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??1MergeInfo@@QEAA@XZ	1410682d0	func
 ??0NiTexturingProperty@@QEAA@PEAVNiPixelData@@@Z	141d1ce80	func
 ??0ASArray@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422bbbe0	func
+?s_instance@?$TSingleton@VCChatEmoticonTable@@@@2PEAVCChatEmoticonTable@@EA	143aac658	data
+?s_bInit@CChatEmoticonTable@@2_NA	143aac660	data
