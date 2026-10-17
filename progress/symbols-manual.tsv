@@ -2531,3 +2531,17 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??0ASArray@@QEAA@AEBVValue@GFx@Scaleform@@H@Z	1422bbbe0	func
 ?s_instance@?$TSingleton@VCChatEmoticonTable@@@@2PEAVCChatEmoticonTable@@EA	143aac658	data
 ?s_bInit@CChatEmoticonTable@@2_NA	143aac660	data
+?getMusicSystem@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEAPEAVMusicSystem@2@@Z	142303aa1	func
+?getCategory@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEBDPEAPEAVEventCategory@2@@Z	142303aa7	func
+?getGroup@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEBD_NPEAPEAVEventGroup@2@@Z	142303aad	func
+?getEvent@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEBDIPEAPEAVEvent@2@@Z	142303ab3	func
+?setReverbProperties@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEBUFMOD_REVERB_PROPERTIES@@@Z	142303ab9	func
+?getReverbPreset@EventSystem@FMOD@@QEAA?AW4FMOD_RESULT@@PEBDPEAUFMOD_REVERB_PROPERTIES@@PEAH@Z	142303abf	func
+?start@Event@FMOD@@QEAA?AW4FMOD_RESULT@@XZ	142303acb	func
+?setPitch@Event@FMOD@@QEAA?AW4FMOD_RESULT@@MW4FMOD_EVENT_PITCHUNITS@@@Z	142303afb	func
+?setMute@Event@FMOD@@QEAA?AW4FMOD_RESULT@@_N@Z	142303b01	func
+?getMute@Event@FMOD@@QEAA?AW4FMOD_RESULT@@PEA_N@Z	142303b07	func
+??0?$TSingleton@VCSoundEventMgr@@@@QEAA@XZ	141786300	func
+??0Unk_SmPoint3@@QEAA@MMM@Z	14097f250	func
+??0Unk_SmPoint3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
+??1Unk_CMISPropPtr@@QEAA@XZ	14112d4a0	func
