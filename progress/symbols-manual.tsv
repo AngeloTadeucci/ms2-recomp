@@ -2777,3 +2777,6 @@ inflateInit_	142723ad0	func
 ??1Unk_UlgBucket@@QEAA@XZ	14027dfa0	func
 ??0CKillCount@@QEAA@XZ	14064c590	func
 ??1CKillCount@@UEAA@XZ	14064c5d0	func
+??0Unk_RefT@@QEAA@XZ	14027cb10	func
+??0Unk_RefA@@QEAA@AEBU0@@Z	14027caa0	func
+??1Unk_RefA@@QEAA@XZ	14027dfd0	func
