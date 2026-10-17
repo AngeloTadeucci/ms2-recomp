@@ -149,3 +149,19 @@ template <class E> int XmlValue(Unk_140165cf0* pElem, const char* pszName, E& eO
     eOut = (E)nValue;
     return nRet;
 }
+
+// tinyxmlhelper.h: enum attribute given by name (the parser is the enum's string converter).
+template <class E, E (*Parse)(const CStringA&)>
+int XmlEnumName(Unk_140165cf0* pElem, const char* pszName, E& eOut)
+{
+    if (0) {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CStringA str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    eOut = Parse(str);
+    return nResult;
+}

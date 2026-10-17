@@ -21,6 +21,9 @@ class COutputStream;
 class DungeonBonusRewardCtx;   // gameeventcontext.h
 struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors (vftable emission in unit_1403e9650)
 struct OntimeEventContext;
+class BlueMarbleEventContext;   // gameeventcontext.h
+class EventTimeLimitDungeonContext;
+struct NpcEventDropEventContext;
 
 enum Unk_DungeonCooldownType {};
 class DungeonExtraRewardCountCtx : public CPtred {
@@ -92,6 +95,7 @@ public:
     virtual bool vfunc_9(void* other);          // 0x1402e2580
     void FUN_1402e3480(int kind);               // sets the flag `kind` in the set at +0x8c
     int FUN_1402e1d00();                        // the event id (m_id)
+    CMsTime FUN_1402e2730();                    // the end time (gameeventbase.cpp)
 
 protected:
     MS2_LAYOUT_FRIEND;
@@ -287,8 +291,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c27c0
     virtual void vfunc_5();                     // 0x1403c2ab0
     virtual void vfunc_6();                     // 0x1403c2b20
-private:
-    char m_pad_d0[0x10];
+    GameEventBlueMarble();
+    MS2Ptr<BlueMarbleEventContext> m_d0;
 };  // vftable 0x142d3fb08, ??_G 0x1403e9c50, dtor 0x1403e5d10
 MS2_CHECK_SIZE(GameEventBlueMarble, 0xe0);
 class GameEventBurningLevelup : public GameEvent {
@@ -395,8 +399,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c3170
     virtual void vfunc_5();                     // 0x1403c30b0
     virtual void vfunc_6();                     // 0x1403c30f0
-private:
-    char m_pad_d0[0x18];
+    GameEventDungeonEnterTimeLimit();
+    void FUN_1403c31c0(const CStringW& strXml);    // vfunc_2's loader: one context per "dungeonID" / "rangeTime" element
+    std::vector<MS2Ptr<EventTimeLimitDungeonContext> > m_d0;
 };  // vftable 0x142d3fc10, ??_G 0x1403e9e90, dtor 0x1403e5ec0
 MS2_CHECK_SIZE(GameEventDungeonEnterTimeLimit, 0xe8);
 class GameEventDungeonExtraReward : public GameEvent {
@@ -780,8 +785,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c2ec0
     virtual void vfunc_5();                     // 0x1403c2f40
     virtual void vfunc_6();                     // 0x1403c2f50
-private:
-    char m_pad_d0[0x8];
+    GameEventMeratMarketNotice();
+    CStringW m_d0;
 };  // vftable 0x142d3fbb8, ??_G 0x1403ea6d0, dtor 0x1403e6460
 MS2_CHECK_SIZE(GameEventMeratMarketNotice, 0xd8);
 class GameEventMeratMarketOpenTab : public GameEvent {
@@ -815,8 +820,8 @@ public:
     virtual void vfunc_2();                     // 0x1403c1f30
     virtual void vfunc_5();                     // 0x1403c2190
     virtual void vfunc_6();                     // 0x1403c2220
-private:
-    char m_pad_d0[0x10];
+    GameEventNpcEventDrop();
+    MS2Ptr<NpcEventDropEventContext> m_d0;      // NULL until vfunc_2 reads the xml
 };  // vftable 0x142d3fab0, ??_G 0x1403ea790, dtor 0x1403e64e0
 MS2_CHECK_SIZE(GameEventNpcEventDrop, 0xe0);
 class GameEventNpcShopGivePoint : public GameEvent {
@@ -1175,6 +1180,7 @@ public:
     virtual CStringW vfunc_1();                 // 0x1403c2be0
     virtual void vfunc_5();                     // 0x1403c2c90
     virtual void vfunc_6();                     // 0x1403c2cd0
+    GameEventSaleUGCDesign();
 };  // vftable 0x142d3fb60, ??_G 0x1403eaf10, dtor 0x1403e69e0
 MS2_CHECK_SIZE(GameEventSaleUGCDesign, 0xd8);
 class GameEventShutdownBillboard : public GameEvent {
@@ -1434,8 +1440,21 @@ struct MesoRevivalEventContext : public CPtred {
     int m_pad_1c;
 };  // vftable 0x142d41488, ??_G 0x1403eb510, dtor 0x1403e6dd0
 MS2_CHECK_SIZE(MesoRevivalEventContext, 0x20);
+enum Unk_NpcRank {};
+enum Unk_NpcEventTag {};     // by name: field_boss / field_elite / dungeon_boss / dungeon_elite / event_boss ...
 struct NpcEventDropEventContext : public CPtred {
-    char m_pad_18[0x48];
+    // @0x1403e4130
+    NpcEventDropEventContext() : m_minLevel(0), m_maxLevel(0), m_fieldId(0), m_npcRank((Unk_NpcRank)0),
+                                 m_eventTag((Unk_NpcEventTag)0), m_isShow(false) {}
+    unsigned short m_minLevel;                      // +0x18 "minLevel"
+    unsigned short m_maxLevel;                      // +0x1a "maxLevel"
+    unsigned m_fieldId;                             // +0x1c "fieldId"
+    Unk_NpcRank m_npcRank;                          // +0x20 "npcRank"
+    Unk_NpcEventTag m_eventTag;                     // +0x24 "eventTags"
+    char m_pad_28[8];
+    std::set<unsigned> m_customNpcIds;              // +0x30 "customNpcId"
+    std::vector<unsigned> m_dropIds;                // +0x40 "dropId"
+    bool m_isShow;                                  // +0x58 "isShow"
 };  // vftable 0x142d414b8, ??_G 0x1403eb550, dtor 0x1403e6df0
 MS2_CHECK_SIZE(NpcEventDropEventContext, 0x60);
 struct OntimeEventContext : public CPtred {
@@ -1744,7 +1763,10 @@ MS2_CHECK_SIZE(StampEventContext::Stamp, 0x28);
 // gameeventcontext.cpp element types that gameevent.cpp holds through MS2Ptr<> (layouts not recovered).
 // Start / end second of the day (two Unk_DayTime; inline ctor 0x1402e4a60).
 struct Unk_DayTimeRange {
+    typedef Unk_DayTime ValueType;      // not exe code: the token type of the "a,b" reader
     Unk_DayTimeRange() : m_start(0), m_end(0) {}
+    // the code of Unk_GameEventIntRange::Init (identical, folded)
+    void Init(Unk_DayTime start, Unk_DayTime end) { m_start = start; m_end = end; }
     Unk_DayTime m_start;
     Unk_DayTime m_end;
 };

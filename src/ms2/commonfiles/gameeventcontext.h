@@ -91,7 +91,7 @@ MS2_CHECK_OFFSET(GameEventCashAttend, m_entry, 0xe0);
 
 class BlueMarbleEventContext : public CPtred {
 public:
-    BlueMarbleEventContext(int eventId, CMsTime endTime);   // 0x1403fc710
+    BlueMarbleEventContext(int eventId, const CMsTime& endTime);   // 0x1403fc710
     void LoadRewards(Unk_140165cf0* pElem);                 // 0x1403fc7c0
     void LoadSlots(Unk_140165cf0* pElem);                   // 0x1403fc990
     void AddReward(int round, MS2Ptr<ItemEntity> spItem);   // 0x1403fcac0

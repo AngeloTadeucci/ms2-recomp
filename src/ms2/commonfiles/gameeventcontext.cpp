@@ -169,21 +169,7 @@ CString CoupleDanceStepName(int step);
 Unk_BlueMarbleSlotType FUN_140218100(const CStringA& name);
 Unk_DungeonCooldownType FUN_1402199e0(const CStringA& name);
 
-// tinyxmlhelper.h: enum attribute given by name (the parser is the enum's string converter).
-template <class E, E (*Parse)(const CStringA&)>
-int XmlEnumName(Unk_140165cf0* pElem, const char* pszName, E& eOut)
-{
-    if (0) {
-        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
-        return 2;
-    }
-    CStringA str;
-    int nResult = FUN_1408733e0(pElem, pszName, str);
-    if (nResult != 0)
-        return nResult;
-    eOut = Parse(str);
-    return nResult;
-}
+// XmlEnumName (enum attribute given by name): placeholder/xmlattr.h.
 
 // Count-prefixed vector streaming.
 template <class T> COutputStream& operator<<(COutputStream& out, const std::vector<T>& vec)
@@ -416,7 +402,7 @@ void BonusGameBlueMarbleSlot::Load(Unk_140165cf0* pElem)
 MS2_REPLACE_METHOD(0x1403fc6a0, BonusGameBlueMarbleSlot, Load, 106, 0xFB0C60DC);
 
 // @0x1403fc710
-BlueMarbleEventContext::BlueMarbleEventContext(int eventId, CMsTime endTime)
+BlueMarbleEventContext::BlueMarbleEventContext(int eventId, const CMsTime& endTime)
     : m_eventId(eventId), m_endTime(endTime), m_consumeItemID(0), m_consumeItemCount(0), m_rewards(10)
 {
 }

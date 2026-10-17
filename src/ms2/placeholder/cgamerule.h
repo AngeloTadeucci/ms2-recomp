@@ -6,6 +6,7 @@
 
 #include "ms2/ms2layout.h"
 #include <set>
+#include <vector>
 #include "ms2/commonfiles/os.h"
 
 template <class T> class MS2Ptr;
@@ -17,6 +18,9 @@ class EventQuestContext;
 class DungeonRoomShutdownContext;
 class DungeonExtraRewardCountCtx;
 struct SkillUpgradeSaleEventContext;
+struct NpcEventDropEventContext;
+class BlueMarbleEventContext;
+class EventTimeLimitDungeonContext;
 
 class CGameRule : public TSingleton<CGameRule>
 {
@@ -71,6 +75,13 @@ public:
     void FUN_14047b540(MS2Ptr<SkillUpgradeSaleEventContext> spContext);     // GameEventSaleSkillUpgrade
     void FUN_14047b5c0(unsigned skillId);
     void FUN_14047b6d0(const CStringW& str);
+    void FUN_14047a6a0(int eventId, MS2Ptr<NpcEventDropEventContext> spContext);   // GameEventNpcEventDrop
+    void FUN_14047a730(int eventId);
+    void FUN_14047b8f0(MS2Ptr<BlueMarbleEventContext> spContext);                  // GameEventBlueMarble
+    void FUN_14047b9d0(int eventId, int rate);                                     // GameEventSaleUGCDesign
+    void FUN_14047ba40(int eventId);
+    void FUN_140479f30(std::vector<MS2Ptr<EventTimeLimitDungeonContext> >& contexts); // GameEventDungeonEnterTimeLimit
+    void FUN_14047a0a0(int eventId);
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];
