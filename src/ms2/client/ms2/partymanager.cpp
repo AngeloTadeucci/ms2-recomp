@@ -540,12 +540,14 @@ MS2_REPLACE_METHOD(0x14162AB00, CPartyManager, FUN_14162ab00, 14, 0x92BE4827);
 bool CPartyManager::FUN_14162ab20() { return FUN_14162af00() > 1; }
 MS2_REPLACE_METHOD(0x14162AB20, CPartyManager, FUN_14162ab20, 52, 0x99BFAE5D);
 
-// MS2-FUNCTIONAL: equivalent control flow with different local scopes and temporary storage.
 // @0x14162ab60
 bool CPartyManager::FUN_14162ab60()
 {
-    if (FUN_14162ab20()) return FUN_141630c30(DAT_143ab2828);
-    return false;
+    if (!FUN_14162ab20())
+    {
+        return false;
+    }
+    return FUN_141630c30(DAT_143ab2828);
 }
 MS2_REPLACE_METHOD(0x14162AB60, CPartyManager, FUN_14162ab60, 52, 0x4F5E0B6C);
 
@@ -645,12 +647,14 @@ MS2Ptr<CPartyMember> CPartyManager::FUN_14162b260(__int64 id)
 }
 MS2_REPLACE_METHOD(0x14162B260, CPartyManager, FUN_14162b260, 235, 0x00372A3F);
 
-// MS2-FUNCTIONAL: equivalent control flow with different local scopes and temporary storage.
 // @0x14162b360
 MS2Ptr<CPartyMember> CPartyManager::FUN_14162b360(int index)
 {
-    if (index >= 0 && index < static_cast<int>(members.GetCount())) return members[index];
-    return MS2Ptr<CPartyMember>(0);
+    if (!(index >= 0 && index < static_cast<int>(members.GetCount())))
+    {
+        return MS2Ptr<CPartyMember>(0);
+    }
+    return members[index];
 }
 MS2_REPLACE_METHOD(0x14162B360, CPartyManager, FUN_14162b360, 143, 0x687FF358);
 
@@ -923,16 +927,16 @@ void CPartyManager::FUN_14162c4a0(int state)
 }
 MS2_REPLACE_METHOD(0x14162C4A0, CPartyManager, FUN_14162c4a0, 203, 0x1919D602);
 
-// MS2-FUNCTIONAL: equivalent control flow with different local scopes and temporary storage.
 // @0x14162c580
 void CPartyManager::FUN_14162c580(__int64 id, int state)
 {
     MS2Ptr<CPartyMember> p = FUN_14162afc0(id);
-    if (!(p == NULL)) {
-        p->FUN_141637b30(state);
-        void* ui = FUN_140a8a680(0x4e45);
-        if (ui != NULL) FUN_141a74d50(ui, p.get(), 1);
-    }
+    if (p == NULL)
+        return;
+    p->FUN_141637b30(state);
+    void* ui = FUN_140a8a680(0x4e45);
+    if (ui != NULL)
+        FUN_141a74d50(ui, p.get(), 1);
 }
 MS2_REPLACE_METHOD(0x14162C580, CPartyManager, FUN_14162c580, 170, 0x2201AA8A);
 
@@ -1044,21 +1048,21 @@ void CPartyManager::FUN_14162cea0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14162CEA0, CPartyManager, FUN_14162cea0, 458, 0xBE002F26);
 
-// MS2-FUNCTIONAL: equivalent control flow with different local scopes and temporary storage.
 // @0x14162d070
 void CPartyManager::FUN_14162d070(CInPacket& packet)
 {
     __int64 id = static_cast<CInputStream&>(packet).vfunc_o8_4();
     MS2Ptr<CPartyMember> p = FUN_14162afc0(id);
     if (p.get() != NULL) {
-        if (p->FUN_141637bb0() == DAT_143ab2828) {
+        if (DAT_143ab2828 == p->FUN_141637bb0()) {
             FUN_14162a370();
             FUN_141630fd0();
             FUN_141adc5d0(FUN_1403ed2b0(), 0x4e45);
             FUN_1412751b0(FUN_14028de60(799), 0xe);
         } else {
             int index = FUN_14162af30(id);
-            if (index == -1) return;
+            if (index == -1)
+                return;
             FUN_14162c670(index);
             CStringW text = FUN_14052bd00(800, p->FUN_141637bd0());
             FUN_1412751b0(text, 0xe);
@@ -1632,15 +1636,14 @@ void CPartyManager::FUN_141631180(const Unk_PartyRecruitRequest& request)
 }
 MS2_REPLACE_METHOD(0x141631180, CPartyManager, FUN_141631180, 109, 0xB559BF4D);
 
-// MS2-FUNCTIONAL: equivalent control flow with different local scopes and temporary storage.
 // @0x141631200
 void CPartyManager::FUN_141631200()
 {
-    if (recruitment.recruitId != 0) {
-        COutPacket packet(0x6e, 0);
-        packet.Encode1(1);
-        FUN_140710590(packet);
-    }
+    if (recruitment.recruitId == 0)
+        return;
+    COutPacket packet(0x6e, 0);
+    packet.Encode1(1);
+    FUN_140710590(packet);
 }
 MS2_REPLACE_METHOD(0x141631200, CPartyManager, FUN_141631200, 92, 0xF01C980A);
 
