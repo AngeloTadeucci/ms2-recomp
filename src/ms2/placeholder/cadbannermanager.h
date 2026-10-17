@@ -15,7 +15,9 @@ public:
     char m_pad_0[0x20];
     CStringW m_strTypeName;     // +0x20
     CStringW m_strName;         // +0x28 (compared with the type-name table value)
-    char m_pad_30[0x48 - 0x30];
+    CStringW m_str30;           // +0x30 (CBannerUrlGetter: copied into its +0x18)
+    CStringW m_str38;           // +0x38 (copied into its +0x20)
+    CStringW m_str40;           // +0x40 (converted into its +0x10: the banner url)
     int m_nSlot;                // +0x48 (locale / group, -1 = any)
     __int64 m_nBegin;           // +0x50 server time the banner starts
     __int64 m_nEnd;             // +0x58 server time the banner ends
@@ -29,6 +31,7 @@ struct Unk_AdBannerPtr
     Unk_AdBannerPtr(int);                         // 0x14096b950: the null pointer
     Unk_AdBannerPtr(const Unk_AdBannerPtr& o);      // 0x14016e2b0
     ~Unk_AdBannerPtr();                         // 0x14016e430
+    AdBannerData* get() const;                  // 0x1409fb8a0 (unit_1409faff0)
     void* m_pad_0;
     AdBannerData* m_p;
 };
