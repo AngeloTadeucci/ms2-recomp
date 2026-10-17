@@ -13,6 +13,7 @@ class CFeatureManager : public TSingleton<CFeatureManager>, public CValidData<CF
 public:
     CFeatureManager();                                      // 0x14036ca70
     virtual ~CFeatureManager();
+    bool FUN_14036ccb0();                                    // loads the feature file; false when missing
     int FUN_14036d8b0();                                     // the server number of the window title
     CString FUN_14036d8e0();                                 // the server name of the window title
 private:

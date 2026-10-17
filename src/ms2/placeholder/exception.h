@@ -11,6 +11,8 @@ public:
     explicit Exception(int code):m_code(code){}
     // @0x1407131b0 (first instantiated by commonfiles\packet.cpp; the message is taken by value)
     Exception(CString message,int code):m_code(code),m_message(message){}
+    // @0x14067b950 (first instantiated by commonfiles\luautil.cpp)
+    explicit Exception(CString message):m_code(0),m_message(message){}
     // @0x140203af0
     ~Exception(){}
 private:

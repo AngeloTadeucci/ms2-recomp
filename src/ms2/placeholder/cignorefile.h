@@ -5,6 +5,7 @@
 #pragma once
 
 #include "ms2/ms2layout.h"
+#include <string>
 #include "ms2/commonfiles/os.h"
 
 class CIgnoreFile : public TSingleton<CIgnoreFile>
@@ -12,6 +13,7 @@ class CIgnoreFile : public TSingleton<CIgnoreFile>
 public:
     CIgnoreFile();                                          // 0x14050e140
     virtual ~CIgnoreFile();
+    void FUN_14050e200(std::string strPath, int nMode);     // loads the ignore-pack-file list
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0x30 - 0x8];

@@ -96,6 +96,15 @@
 #include "ms2/client/ms2/cubemapinformationservice_3.h"
 #include "ms2/client/ms2/decoeditservice.h"
 #include "ms2/placeholder/cmainsystem.h"
+#include "ms2/placeholder/iclientplatform.h"
+#include "ms2/placeholder/cloadingdialog.h"
+#include "ms2/placeholder/exception.h"
+#include "ms2/client/ms2/inventory.h"
+#include "ms2/commonfiles/fielddata.h"
+#include "ms2/commonfiles/ugcmappackageinfo.h"
+#include <commctrl.h>
+#include <afxdisp.h>
+#include <NiInitOptions.h>
 #include "ms2/placeholder/citemservice.h"
 #include "ms2/placeholder/cwebbrowserservice.h"
 #include "ms2/placeholder/gfxservice.h"
@@ -991,10 +1000,1164 @@ efd::AsyncResult MS2::OnShutdown()
 }
 MS2_REPLACE_METHOD(0x14148F1C0, MS2, OnShutdown, 264, 0x260E0DAC);
 
+// ---- CGameApp::InitInstance callees
+extern CStringW g_143ac2fe0;                                    // the platform error text (shown when the platform init fails)
+extern CStringW g_143ac2fe8;                                    // the command line / launch arguments text
+extern int DAT_143ac2fd4;                                       // the client requires a minimum OS (checked with FUN_1406c34b0)
+extern int DAT_143ac2fd0;                                       // the platform auth was cancelled
+extern int DAT_1439f7de4;                                       // the configured log level
+extern int DAT_143ae08fc;                                       // the pack file mode (> 0: packed)
+extern int DAT_143ae2b30;                                       // the multi-scene updater is enabled
+extern int DAT_143af7d58;                                       // the loading dialog is up
+extern void (*DAT_143b023c0)();                                 // the out-of-memory handlers of two allocators
+extern int (*DAT_143b023c8)(size_t);
+extern void (*DAT_143b15f88)();
+extern int (*DAT_143b15f90)(size_t);
+extern MS2Ptr<CLoadingDialog> g_spLoadingDialog;                // 0x143ac2bd0
+extern Unk_Inventory g_kInventory;                              // 0x143ab2a90 (unit_1406125d0.h has its own view of DAT_143ab2a90)
+void FUN_14092f2c0(int n);
+int FUN_1414b1230();                                            // the single-instance / mutex check
+bool FUN_140d86270();                                           // the client platform init
+int FUN_1406c34c0();
+int FUN_1406c34b0();
+int FUN_141b6fcf0(const CStringW& strText, const CStringW& strCaption, unsigned nType);   // error message box (wide)
+int FUN_141b6fc50(const CStringA& strText, const CStringA& strCaption, unsigned nType);   // error message box
+void FUN_141b6de20();                                           // the out-of-memory handler
+int FUN_141b6db40(size_t nSize);
+CString FUN_14028dbd0();                                        // the machine id text
+CStringW FUN_140719630(int n);                                  // int -> CStringW
+int FUN_1414a5690(CFileSystem* pFileSystem);                    // the ignore file mode of the file system
+void FUN_141851840(int n);
+class CChatEmoticonCli;
+CChatEmoticonCli* FUN_140931510();
+void FUN_140d9f140(CChatEmoticonCli* p);
+void FUN_1401a2e40(CArcadeDataTable* p);
+void FUN_1401ae2f0(AttendGiftDataTable* p);
+void FUN_1401c06d0();
+void FUN_1401d6550(CChangeJobTable* p);
+void FUN_14029f3f0();
+void FUN_1402c6f50(CCoupleEmotionTable* p);
+void FUN_1402e9ad0(ItemDropTable* p);
+void FUN_140347180();
+void FUN_1403527a0(CExpTable* p);
+void FUN_14037c010(CFieldMissionTable* p);
+void FUN_1403826e0(FieldWarDataTable* p);
+void FUN_1403b1f00(CFishingTable* p);
+void FUN_1404c1290(CGloabalFactor* p);
+void FUN_14051a360(CIndividualArenaDataTable* p);
+void FUN_140556b70(CItemDataTable* p);
+void FUN_140557050(CItemDataTable* p);
+void FUN_14058dc50(CItemEnchantLimitTable* p);
+void FUN_1405915b0(CItemEnchantTransformTable* p);
+void FUN_1405943b0(CItemEnchantUtil* p);
+void FUN_1405951f0(CItemExchangeScrollTable* p);
+void FUN_140597150(CItemExtractionTable* p);
+void FUN_14059dea0(ItemGachaBoxTable* p);
+void FUN_1405abe50(CItemGemPropertyTable* p);
+void FUN_1405b0dc0(CItemGemStoneUpgradeTable* p);
+void FUN_1405b4880(CItemLapenshardTable* p);
+void FUN_1405bfc70(CItemMergeOptionTable* p);
+void FUN_140615700(CItemRemakeScrollTable* p);
+void FUN_14061d130(CItemRePackingScrollTable* p);
+void FUN_140624cc0(CItemSocketScrollTable* p);
+void FUN_140636000(CJobConditionTable* p);
+void FUN_140644540(JobTable* p);
+void FUN_140661d80(CMasteryInteriorTable* p);
+void FUN_140669c30(CMasteryTable* p);
+void FUN_14067eab0(CMaidExpTable* p);
+void FUN_14067ee90(CMaidInfoTable* p);
+void FUN_14067f320(CMaidDescTable* p);
+void FUN_14067f920(CMaidManufactureMsgTable* p);
+void FUN_140684ea0(CMaidRecipeTable* p);
+void FUN_140685760(CMaidRecipeGroupTable* p);
+void FUN_140698b10();
+void FUN_14069bd60(MentoringDataTable* p);
+void FUN_1406a9940();
+void FUN_1406c54d0(CNametagSymbolTable* p);
+void FUN_1406e55b0();
+void FUN_14071aff0(PaybackTable* p);
+void FUN_140728a30(CPetDataTable* p);
+void FUN_14072c670(CInstrumentDataTable* p);
+void FUN_140738ba0(CPriceTable* p);
+void FUN_1407649d0(CQuestMaskTable* p);
+void FUN_140768c90(CRankingArenaDataTable* p);
+void FUN_140770d30(RewardContentsTable* p);
+void FUN_140791c30(CSeasonDataTable* p);
+void FUN_1407c4ae0(SetItemTable* p);
+void FUN_14080bc00();
+void FUN_140810730(CSmartPushTable* p);
+void FUN_14081c880();
+void FUN_1408273f0(CSpecialDungeonDataTable* p);
+void FUN_140829730(StanceTable* p);
+void FUN_14082e4b0();
+void FUN_140837660();
+void FUN_140851750();
+void FUN_14087a4e0(CTitleTable* p);
+void FUN_14087f2f0(CServerString* p);
+void FUN_1408b9c90();
+void FUN_1408d2640();
+void FUN_140903250(WeddingEmotionTable* p);
+void FUN_140907d40(WeddingTable* p);
+void FUN_140978fb0();
+void FUN_140978fd0();
+void FUN_140a72170(LoginBgBgmTable* p);
+void FUN_140b67fa0(UgcHomeOptionData* p);
+void FUN_140cca010(CommonResource* p);
+void FUN_140d44590(CLoadingImageTable* p);
+void FUN_140d4fd50(CMachineIDManager* p);
+void FUN_140d86330();
+void FUN_140dc3c20(CRewardPreviewTable* p);
+void FUN_140dca800();
+void FUN_140dd82b0(CSmartPushManager* p);
+void FUN_141168710();
+void FUN_14138b3e0(CGuideManager* p);
+void FUN_14145c4b0();
+void FUN_14149fec0();
+void FUN_14149fee0();
+void FUN_14149ff40();
+void FUN_14149ffa0();
+void FUN_1414a0000();
+void FUN_1414a0060();
+void FUN_1414a00c0();
+void FUN_1414a0120();
+void FUN_1414a0180();
+void FUN_1414a01e0();
+void FUN_1414a0240();
+void FUN_1414a02a0();
+void FUN_1414a0300();
+void FUN_1414a0360();
+void FUN_1414a03c0();
+void FUN_1414a0420();
+void FUN_1414a0480();
+void FUN_1414a04e0();
+void FUN_1414a0540();
+void FUN_1414a05a0();
+void FUN_1414a0600();
+void FUN_1414a0660();
+void FUN_1414a06c0();
+void FUN_1414a0720();
+void FUN_1414a0780();
+void FUN_1414a07e0();
+void FUN_1414a0840();
+void FUN_1414a08a0();
+void FUN_1414a0900();
+void FUN_1414a0960();
+void FUN_1414a09c0();
+void FUN_1414a0a20();
+void FUN_1414a0a80();
+void FUN_1414a0ae0();
+void FUN_1414a0b40();
+void FUN_1414a0ba0();
+void FUN_1414a0c00();
+void FUN_1414a0c60();
+void FUN_1414a0cc0();
+void FUN_1414a0d20();
+void FUN_1414a0d80();
+void FUN_1414a0de0();
+void FUN_1414a0e40();
+void FUN_1414a0ea0();
+void FUN_1414a0f00();
+void FUN_1414a0f60();
+void FUN_1414a0fc0();
+void FUN_1414a1020();
+void FUN_1414a1080();
+void FUN_1414a10e0();
+void FUN_1414a1140();
+void FUN_1414a11a0();
+void FUN_1414a1200();
+void FUN_1414a1260();
+void FUN_1414a12c0();
+void FUN_1414a1320();
+void FUN_1414a1380();
+void FUN_1414a13e0();
+void FUN_1414a1440();
+void FUN_1414a14a0();
+void FUN_1414a1510();
+void FUN_1414a1570();
+void FUN_1414a15d0();
+void FUN_1414a1630();
+void FUN_1414a1690();
+void FUN_1414a16f0();
+void FUN_1414a1750();
+void FUN_1414a17b0();
+void FUN_1414a1810();
+void FUN_1414a1870();
+void FUN_1414a18d0();
+void FUN_1414a1930();
+void FUN_1414a1990();
+void FUN_1414a19f0();
+void FUN_1414a1a50();
+void FUN_1414a1ab0();
+void FUN_1414a1b10();
+void FUN_1414a1b70();
+void FUN_1414a1bd0();
+void FUN_1414a1c30();
+void FUN_1414a1c90();
+void FUN_1414a1cf0();
+void FUN_1414a1d50();
+void FUN_1414a1db0();
+void FUN_1414a1e10();
+void FUN_1414a1e70();
+void FUN_1414a1ed0();
+void FUN_1414a1f30();
+void FUN_1414a1f90();
+void FUN_1414a1ff0();
+void FUN_1414a2050();
+void FUN_1414a20b0();
+void FUN_1414a2110();
+void FUN_1414a2170();
+void FUN_1414a21d0();
+void FUN_1414a2230();
+void FUN_1414a2290();
+void FUN_1414a22f0();
+void FUN_1414a2350();
+void FUN_1414a23b0();
+void FUN_1414a2410();
+void FUN_1414a2470();
+void FUN_1414a24d0();
+void FUN_1414a2530();
+void FUN_1414a2590();
+void FUN_1414a25f0();
+void FUN_1414a2650();
+void FUN_1414a26b0();
+void FUN_1414a2710();
+void FUN_1414a2770();
+void FUN_1414a27d0();
+void FUN_1414a2830();
+void FUN_1414a2890();
+void FUN_1414a28f0();
+void FUN_1414a2950();
+void FUN_1414a29b0();
+void FUN_1414a2a70();
+void FUN_1414a2ad0();
+void FUN_1414a2b30();
+void FUN_1414a2b90();
+void FUN_1414a2bf0();
+void FUN_1414a2c50();
+void FUN_1414a2cb0();
+void FUN_1414a2d10();
+void FUN_1414a2d70();
+void FUN_1414a2dd0();
+void FUN_1414a2e30();
+void FUN_1414a2e90();
+void FUN_1414a2ef0();
+void FUN_1414a2f50();
+void FUN_1414a2fb0();
+void FUN_1414a3010();
+void FUN_1414a3070();
+void FUN_1414a30d0();
+void FUN_1414a3130();
+void FUN_1414a3190();
+void FUN_1414a31f0();
+void FUN_1414a3250();
+void FUN_1414a32b0();
+void FUN_1414a3310();
+void FUN_1414a3370();
+void FUN_1414a33d0();
+void FUN_1414a3430();
+void FUN_1414a3490();
+void FUN_1414a34f0();
+void FUN_1414a3550();
+void FUN_1414a35b0();
+void FUN_1414a3610();
+void FUN_1414a3670();
+void FUN_1414a36d0();
+void FUN_1414a3730();
+void FUN_1414a3790();
+void FUN_1414a37f0();
+void FUN_1414a3850();
+void FUN_1414a38b0();
+void FUN_1414a3910();
+void FUN_1414a3970();
+void FUN_1414a39d0();
+void FUN_1414a3a30();
+void FUN_1414a3a90();
+void FUN_1414a3af0();
+void FUN_1414a3b50();
+void FUN_1414a3bb0();
+void FUN_1414a3c10();
+void FUN_1414a3c70();
+void FUN_1414a3cd0();
+void FUN_1414a3d30();
+void FUN_1414a3d90();
+void FUN_1414a3df0();
+void FUN_1414a3e50();
+void FUN_1414a3eb0();
+void FUN_1414a3f70();
+void FUN_1414a3fd0();
+void FUN_1414a4030();
+void FUN_1414a4090();
+void FUN_1414a40f0();
+void FUN_1414a4150();
+void FUN_1414a41b0();
+void FUN_1414a4210();
+void FUN_1414a4270();
+void FUN_1414a42d0();
+void FUN_1414a4330();
+void FUN_1414a4390();
+void FUN_1414a43f0();
+void FUN_1414a4450();
+void FUN_1414a44b0();
+void FUN_1414a4510();
+void FUN_1414a4570();
+void FUN_1414a45d0();
+void FUN_1414a4630();
+void FUN_1414a4690();
+void FUN_1414a46f0();
+void FUN_1414a4750();
+void FUN_1414a47b0();
+void FUN_1414a4810();
+void FUN_1414a4870();
+void FUN_1414a48d0();
+void FUN_1414a4930();
+void FUN_1414a4990();
+void FUN_1414a49f0();
+void FUN_1414a4a50();
+void FUN_1414a4ab0();
+void FUN_1414a4b30();
+void FUN_1414a4b90();
+void FUN_1414a4bf0();
+void FUN_1414a4c50();
+void FUN_1414a4cb0();
+void FUN_1414a4d10();
+void FUN_1414a4d70();
+void FUN_1414a4dd0();
+void FUN_1414a4e30();
+void FUN_1414a4e90();
+void FUN_1414a4ef0();
+void FUN_1414a4f50();
+void FUN_1414a4fb0();
+void FUN_1414a5010();
+void FUN_1414a5070();
+void FUN_1414a50d0();
+void FUN_1414a5130();
+void FUN_1414a5190();
+void FUN_1414a51f0();
+void FUN_1414a5250();
+void FUN_1414a52d0();
+void FUN_1414a5330();
+void FUN_1414a5390();
+void FUN_1414a53f0();
+void FUN_1414a57a0();
+void FUN_14161baf0(COptimizer* p);
+void FUN_14161c490(COptimizer* p);
+void FUN_141627390();
+void FUN_1416275e0();
+void FUN_1416841f0(CPCEffectDummy* p);
+void FUN_1416bb2e0();
+void FUN_1416bb5f0();
+void FUN_1416bc0f0();
+void FUN_1416bc380();
+void FUN_1416be6d0();
+void FUN_1416bea60();
+void FUN_1416bf750();
+void FUN_1416bf8a0();
+void FUN_141791940(SoundPropertyMgr* p);
+void FUN_141810f70(CStringTable* p);
+void FUN_14183e690();
+void FUN_14186df80(CUgcDownloadLoad* p);
+void FUN_141875140(CUgcDownloadDown* p);
+void FUN_141b74720();
+
+// The platform error text table InitInstance keeps on its stack (0x48 bytes).
+struct Unk_PlatformErrorTable
+{
+    Unk_PlatformErrorTable();                                   // 0x140c79890
+    ~Unk_PlatformErrorTable();                                  // 0x140c79b50
+    CStringW FUN_140c7a360(const int& nIndex);                  // the error text of an index
+    char m_pad[0x48];
+};
+MS2_CHECK_SIZE(Unk_PlatformErrorTable, 0x48);
+
+// A "{0}"-style wide text formatter (0x10 bytes).
+class Unk_TextFormat
+{
+public:
+    explicit Unk_TextFormat(const CStringW& strFormat);         // 0x1410254e0
+    ~Unk_TextFormat();                                          // 0x141025530
+    Unk_TextFormat& FUN_14083ff40(const wchar_t* pszArg);
+    Unk_TextFormat& FUN_140840530(CStringW strArg);
+    CStringW FUN_1408405d0() const;                             // the formatted text
+    // @0x141492ba0 (COMDAT)
+    Unk_TextFormat& Arg(int nArg) { return FUN_140840530(FUN_140719630(nArg)); }
+private:
+    CStringW m_str;
+    int m_nArg, m_nPos;
+};
+MS2_CHECK_SIZE(Unk_TextFormat, 0x10);
+
+// The scoped log line of util.cpp ("<tag> begin" / "<tag> end").
+class Unk_UtilLogScope
+{
+public:
+    Unk_UtilLogScope(CStringA kTag);                            // 0x141b721f0
+    ~Unk_UtilLogScope();                                        // 0x141b722b0
+private:
+    DWORD m_dwThread;
+    CStringA m_kTag;
+};
+
+// @0x141492730 (folded with _AfxInitManaged)
+static int Unk_WorkerThreadCount()
+{
+    return 0;
+}
+
+// @0x141498c60 (COMDAT)
+inline void Unk_GameLog(CLogString* pLog, unsigned __int64 a, unsigned __int64 b, int nCategory, const wchar_t* pszFormat)
+{
+    pLog->FUN_140653690(a, b, nCategory, pszFormat, fmt::ArgList());
+}
+// @0x141492c10 (COMDAT)
+template <class T, class U>
+inline void Unk_GameLog(CLogString* pLog, unsigned __int64 a, unsigned __int64 b, int nCategory, const wchar_t* pszFormat,
+    const T& first, const U& second)
+{
+    const fmt::internal::ArgArray<2>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(first),
+        fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(second)};
+    pLog->FUN_140653690(a, b, nCategory, pszFormat, fmt::ArgList(fmt::internal::make_type(first, second), args));
+}
+
 // ---- CGameApp
 // @0x14148f2d0
 CGameApp::CGameApp() : CWinApp(NULL), m_nExitCode(0), m_profiler(CString("Loading"))
 {
+}
+// @0x14148f360
+// MS2-FUNCTIONAL: written from the decomp in one pass (stack slot order and temporaries not aligned)
+BOOL CGameApp::InitInstance()
+{
+    FUN_14092f2c0(1);
+    Unk_PlatformErrorTable kErrors;
+    if (FUN_1414b1230() == 0)
+        return FALSE;
+    if (!FUN_140d86270())
+    {
+        if (FUN_1406c34c0() != 0)
+            FUN_141b6fcf0(g_143ac2fe0, CStringW(L""), 0);
+        else
+            FUN_141b6fcf0(kErrors.FUN_140c7a360(1), CStringW(L""), 0);
+        return FALSE;
+    }
+    FUN_141b6de20();
+    DAT_143b023c0 = FUN_141b6de20;
+    DAT_143b023c8 = FUN_141b6db40;
+    DAT_143b15f88 = FUN_141b6de20;
+    DAT_143b15f90 = FUN_141b6db40;
+    AfxEnableControlContainer();
+    Unk_SingletonCreator<CLogString>::CreateInstance();
+    TSingleton<CLogString>::GetInstance()->FUN_140652a40(CStringW(L"client"));
+    if (DAT_1439f7de4 > 0)
+        TSingleton<CLogString>::GetInstance()->FUN_1406537e0(DAT_1439f7de4);
+    else
+        TSingleton<CLogString>::GetInstance()->FUN_1406537e0(11);
+    TSingleton<CLogString>::GetInstance()->FUN_140653800(11);
+    Unk_GameLog(TSingleton<CLogString>::GetInstance(), 0, 0, 1, L"==============================");
+    Unk_GameLog(TSingleton<CLogString>::GetInstance(), 0, 0, 1, L"Game Start: [build={0}] [tick={1}]", FUN_14028dbd0(),
+                GetTickCountMs2());
+    if (!TSingleton<CLogString>::GetInstance()->Start(0, THREAD_PRIORITY_LOWEST, 0, 0, 0))
+        throw Exception(CString("LogString thread failed"));
+    Unk_SingletonCreator<ClientLogManager>::CreateInstance();
+    m_profiler.FUN_1402e12c0("StartUp");
+    SetThreadLocale(0x412);
+    GetClientPlatform()->vfunc_28();
+    if (DAT_143ac2fd4 != 0 && FUN_1406c34b0() == 0)
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(11).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<CrashManagerCli>::CreateInstance();
+    TSingleton<CrashManagerCli>::GetInstance()->FUN_140a435a0();
+    Unk_UtilLogScope kLogScope(CString("CGameApp::InitInstance"));
+    if (FUN_1406c34b0() == 1 && DAT_143ac2fd4 != 0)
+        TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(CW2A(g_143ac2fe8));
+    TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(StringFormat("ver '{0}', '{1}'", 2525, 106302));
+    char szCurrentDirectory[MAX_PATH];
+    GetCurrentDirectoryA(MAX_PATH, szCurrentDirectory);
+    FILE* pRevisions = fopen("revisions.txt", "r");
+    if (pRevisions)
+    {
+        int nSize = 0;
+        fseek(pRevisions, 0, SEEK_END);
+        nSize = ftell(pRevisions);
+        fseek(pRevisions, 0, SEEK_SET);
+        char* pszRevisions = new char[nSize + 2];
+        memset(pszRevisions, 0, nSize + 2);
+        fread(pszRevisions, nSize, 1, pRevisions);
+        TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(pszRevisions);
+        delete[] pszRevisions;
+        fclose(pRevisions);
+    }
+    char szUserName[16];
+    char szComputerName[16];
+    DWORD dwSize = sizeof(szUserName);
+    GetUserNameA(szUserName, &dwSize);
+    GetComputerNameA(szComputerName, &dwSize);
+    CString strMachine;
+    strMachine.Format("ComputerName [%s] UserName [%s]", szComputerName, szUserName);
+    TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce270(strMachine);
+    Unk_SingletonCreator<CNPSMan>::CreateInstance();
+    MS2::SetWorkingDirectory(false);
+    if (FUN_1406c34c0() == 1)
+    {
+        GetClientPlatform()->vfunc_14();
+        GetClientPlatform()->vfunc_67();
+        GetClientPlatform()->vfunc_68();
+        GetClientPlatform()->vfunc_22(0x19a, "GameInit");
+        GetClientPlatform()->vfunc_22(0x1fe, "SecurityInit");
+        if (DAT_143ac2fd4 != 0)
+        {
+            GetClientPlatform()->vfunc_23(0x396, (const char*)CW2A(g_143ac2fe8));
+            FUN_141b6fcf0(g_143ac2fe8, CStringW(L""), 0);
+            return FALSE;
+        }
+        if (DAT_143ac2fd0 != 0)
+        {
+            FUN_141b6fcf0(g_143ac2fe0, CStringW(L""), 0);
+            return FALSE;
+        }
+        GetClientPlatform()->vfunc_22(0x262, "AuthInit");
+        int nAuth = GetClientPlatform()->vfunc_4();
+        if (nAuth != 1)
+        {
+            if (nAuth == 3)
+                FUN_141b6fcf0(g_143ac2fe0, CStringW(L""), 0);
+            return FALSE;
+        }
+        GetClientPlatform()->vfunc_16();
+        if (DAT_143ac2fd0 != 0)
+        {
+            FUN_141b6fcf0(g_143ac2fe0, CStringW(L""), 0);
+            return FALSE;
+        }
+        GetClientPlatform()->vfunc_22(0x276, "AuthSuccess");
+    }
+    Unk_SingletonCreator<CMachineIDManager>::CreateInstance();
+    FUN_140d4fd50(TSingleton<CMachineIDManager>::GetInstance());
+    Unk_SingletonCreator<COSInfo>::CreateInstance();
+    AfxInitRichEdit2();
+    Unk_SingletonCreator<GPUManager>::CreateInstance();
+    INITCOMMONCONTROLSEX kControls;
+    kControls.dwSize = sizeof(kControls);
+    kControls.dwICC = ICC_WIN95_CLASSES;
+    InitCommonControlsEx(&kControls);
+    CWinApp::InitInstance();
+    MS2::SetWorkingDirectory(true);
+    Unk_SingletonCreator<COptimizer>::CreateInstance();
+    FUN_14161baf0(TSingleton<COptimizer>::GetInstance());
+    NiInitOptions* pInitOptions = new NiInitOptions;
+    pInitOptions->SetFloodgateDefineWorkerThreadCountFunc(Unk_WorkerThreadCount);
+    pInitOptions->SetFloodgateParallelExecution(Unk_WorkerThreadCount() != 0);
+    pInitOptions->SetUseUnhandledExceptionFilter(false);
+    NiStaticDataManager::Init(pInitOptions, true);
+    Unk_SingletonCreator<COnlinePatchManagerCli>::CreateInstance();
+    FUN_140698b10();
+    Unk_SingletonCreator<CFileSystem>::CreateInstance();
+    if (TSingleton<CFileSystem>::GetInstance()->FUN_140396770(DAT_143ae08fc > 0, DAT_143ae08fc) == 0)
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x29).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    if (TSingleton<CFileSystem>::GetInstance()->FUN_1403981d0())
+    {
+        Unk_SingletonCreator<CIgnoreFile>::CreateInstance();
+        if (FUN_1406516b0() == 3)
+            TSingleton<CIgnoreFile>::GetInstance()->FUN_14050e200(std::string("./data/xmldebug/ignorepackfile_cn.xml"),
+                FUN_1414a5690(TSingleton<CFileSystem>::GetInstance()));
+        else
+            TSingleton<CIgnoreFile>::GetInstance()->FUN_14050e200(std::string("./data/xmldebug/ignorepackfile.xml"),
+                FUN_1414a5690(TSingleton<CFileSystem>::GetInstance()));
+    }
+    if (!TSingleton<CFileSystem>::GetInstance()->FUN_140398190())
+        FUN_141627390();
+    else
+        FUN_1416275e0();
+    Unk_SingletonCreator<CFilePreload>::CreateInstance();
+    FUN_1416bc0f0();
+    FUN_1416bb2e0();
+    FUN_1416be6d0();
+    FUN_1416bf750();
+    Unk_SingletonCreator<CFeatureManager>::CreateInstance();
+    if (!TSingleton<CFeatureManager>::GetInstance()->FUN_14036ccb0())
+    {
+        FUN_141b6fc50(CString("Cant find feature File"), CString(""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<Client::Constants>::CreateInstance();
+    TSingleton<Client::Constants>::GetInstance()->Load();
+    Unk_SingletonCreator<CommonResource>::CreateInstance();
+    FUN_140cca010(TSingleton<CommonResource>::GetInstance());
+    g_kInventory.FUN_140a5c8e0();
+    Unk_SingletonCreator<CGraphicOptionTable>::CreateInstance();
+    Unk_SingletonCreator<CGameOption>::CreateInstance();
+    FUN_14161c490(TSingleton<COptimizer>::GetInstance());
+    if (DAT_143ae2b30 != 0)
+        Unk_SingletonCreator<MultiSceneUpdater>::CreateInstance();
+    Unk_SingletonCreator<CommonString>::CreateInstance();
+    CLoadingDialog* pLoadingDialog = new CLoadingDialog;
+    if (pLoadingDialog->FUN_140d4a530("LoadingDialog", 0) == true)
+    {
+        g_spLoadingDialog.AssignRaw(pLoadingDialog);
+        DAT_143af7d58 = 1;
+    }
+    Unk_SingletonCreator<EngineLog>::CreateInstance();
+    FUN_14082e4b0();
+    FUN_14081c880();
+    Unk_SingletonCreator<GameDictionaryManager>::CreateInstance();
+    FUN_140738ba0(Unk_SingletonCreator<CPriceTable>::CreateInstance());
+    Unk_SingletonCreator<CItemDataTable>::CreateInstance();
+    FUN_140556b70(TSingleton<CItemDataTable>::GetInstance());
+    Unk_SingletonCreator<CommonEffectDummy>::CreateInstance();
+    TSingleton<CommonEffectDummy>::GetInstance()->Load();
+    Unk_SingletonCreator<NpcDataTableCli>::CreateInstance();
+    CFieldData::FUN_140373d50();
+    FUN_14029f3f0();
+    Unk_SingletonCreator<CItemEnchantUtil>::CreateInstance();
+    Unk_SingletonCreator<ItemDropTable>::CreateInstance();
+    Unk_SingletonCreator<CItemOptionTable>::CreateInstance();
+    FUN_14183e690();
+    Unk_SingletonCreator<CNiStreamLoadThread>::CreateInstance();
+    Unk_SingletonCreator<SetItemTable>::CreateInstance();
+    Unk_SingletonCreator<ApplyEffect>::CreateInstance();
+    Unk_SingletonCreator<UIItemEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIStatusEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIEntityEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIQuestEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIDialogEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIUGCEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIBuddyEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIServerEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIWorldShareInfoEventDispatcher>::CreateInstance();
+    Unk_SingletonCreator<UIBottomCenterAlignManager>::CreateInstance();
+    Unk_SingletonCreator<NotifySystem>::CreateInstance();
+    Unk_SingletonCreator<PacketHandlerManager>::CreateInstance();
+    Unk_SingletonCreator<GameEventUserValueManager>::CreateInstance();
+    Unk_SingletonCreator<CReservedWordTable>::CreateInstance();
+    FUN_140829730(Unk_SingletonCreator<StanceTable>::CreateInstance());
+    Unk_SingletonCreator<SkillDataTableCli>::CreateInstance();
+    Unk_SingletonCreator<CStringTable>::CreateInstance();
+    FUN_141810f70(TSingleton<CStringTable>::GetInstance());
+    FUN_140557050(TSingleton<CItemDataTable>::GetInstance());
+    Unk_SingletonCreator<CKeyTable>::CreateInstance();
+    FUN_14087f2f0(Unk_SingletonCreator<CServerString>::CreateInstance());
+    FUN_1406a9940();
+    Unk_SingletonCreator<CServerListTable>::CreateInstance();
+    Unk_SingletonCreator<CScriptTable>::CreateInstance();
+    Unk_SingletonCreator<CPCEffectDummy>::CreateInstance();
+    Unk_SingletonCreator<CameraMgr>::CreateInstance();
+    Unk_SingletonCreator<EffectDataManager>::CreateInstance();
+    Unk_SingletonCreator<EffectSkipMgr>::CreateInstance();
+    Unk_SingletonCreator<SoundPropertyMgr>::CreateInstance();
+    Unk_SingletonCreator<CSoundEventMgr>::CreateInstance();
+    Unk_SingletonCreator<CPartyManager>::CreateInstance();
+    Unk_SingletonCreator<CBuddyManager>::CreateInstance();
+    Unk_SingletonCreator<HomeBlockManager>::CreateInstance();
+    Unk_SingletonCreator<CPopupProfileImageMan>::CreateInstance();
+    Unk_SingletonCreator<CBlockManager>::CreateInstance();
+    Unk_SingletonCreator<CTradeManagerEx>::CreateInstance();
+    Unk_SingletonCreator<CBankTable>::CreateInstance();
+    TSingleton<CBankTable>::GetInstance()->Load();
+    Unk_SingletonCreator<CGuideManager>::CreateInstance();
+    FUN_14138b3e0(TSingleton<CGuideManager>::GetInstance());
+    Unk_SingletonCreator<CLoadingDescriptionTable>::CreateInstance();
+    Unk_SingletonCreator<CItemBreakManager>::CreateInstance();
+    Unk_SingletonCreator<CItemEnchantLimitTable>::CreateInstance();
+    Unk_SingletonCreator<CSmartRecommendShopTable>::CreateInstance();
+    Unk_SingletonCreator<CUserEventManager>::CreateInstance();
+    Unk_SingletonCreator<TermTagManagerCli>::CreateInstance();
+    Unk_SingletonCreator<GameEventManagerCli>::CreateInstance();
+    Unk_SingletonCreator<CAdBannerManagerCli>::CreateInstance();
+    Unk_SingletonCreator<CShopEventManager>::CreateInstance();
+    Unk_SingletonCreator<CFieldMaidManager>::CreateInstance();
+    Unk_SingletonCreator<CUserMaidManager>::CreateInstance();
+    Unk_SingletonCreator<CPVPManager>::CreateInstance();
+    Unk_SingletonCreator<CManufactureManager>::CreateInstance();
+    Unk_SingletonCreator<CUserCommandCli>::CreateInstance();
+    Unk_SingletonCreator<CItemLockManager>::CreateInstance();
+    Unk_SingletonCreator<CCoupleEmotionTable>::CreateInstance();
+    FUN_1402c6f50(TSingleton<CCoupleEmotionTable>::GetInstance());
+    Unk_SingletonCreator<WeddingEmotionTable>::CreateInstance();
+    FUN_140903250(TSingleton<WeddingEmotionTable>::GetInstance());
+    Unk_SingletonCreator<LoginBgBgmTable>::CreateInstance();
+    FUN_140a72170(TSingleton<LoginBgBgmTable>::GetInstance());
+    Unk_SingletonCreator<UGCCubeCategoryTable>::CreateInstance();
+    TSingleton<UGCCubeCategoryTable>::GetInstance()->Load();
+    Unk_SingletonCreator<CLocaleLanguage>::CreateInstance();
+    Unk_SingletonCreator<CReconnectionManagerCli>::CreateInstance();
+    Unk_SingletonCreator<CExpTable>::CreateInstance();
+    FUN_1403527a0(TSingleton<CExpTable>::GetInstance());
+    FUN_141b74720();
+    Unk_SingletonCreator<JobTable>::CreateInstance();
+    FUN_140644540(TSingleton<JobTable>::GetInstance());
+    FUN_140978fd0();
+    FUN_1416841f0(TSingleton<CPCEffectDummy>::GetInstance());
+    TSingleton<EffectSkipMgr>::GetInstance()->LoadOption();
+    TSingleton<EffectSkipMgr>::GetInstance()->LoadLimitCount();
+    FUN_141791940(TSingleton<SoundPropertyMgr>::GetInstance());
+    FUN_140347180();
+    FUN_1405943b0(TSingleton<CItemEnchantUtil>::GetInstance());
+    FUN_1402e9ad0(TSingleton<ItemDropTable>::GetInstance());
+    FUN_14058dc50(TSingleton<CItemEnchantLimitTable>::GetInstance());
+    FUN_1407c4ae0(TSingleton<SetItemTable>::GetInstance());
+    FUN_14067eab0(Unk_SingletonCreator<CMaidExpTable>::CreateInstance());
+    FUN_14067ee90(Unk_SingletonCreator<CMaidInfoTable>::CreateInstance());
+    FUN_14067f320(Unk_SingletonCreator<CMaidDescTable>::CreateInstance());
+    FUN_14067f920(Unk_SingletonCreator<CMaidManufactureMsgTable>::CreateInstance());
+    FUN_140684ea0(Unk_SingletonCreator<CMaidRecipeTable>::CreateInstance());
+    FUN_140685760(Unk_SingletonCreator<CMaidRecipeGroupTable>::CreateInstance());
+    Unk_SingletonCreator<CCashCallManager>::CreateInstance();
+    Unk_SingletonCreator<CGuildXmlData>::CreateInstance();
+    TSingleton<CGuildXmlData>::GetInstance()->FUN_1404d5960();
+    Unk_SingletonCreator<CClubDataTable>::CreateInstance();
+    TSingleton<CClubDataTable>::GetInstance()->FUN_1402113c0();
+    Unk_SingletonCreator<CSpecialDungeonDataTable>::CreateInstance();
+    FUN_1408273f0(TSingleton<CSpecialDungeonDataTable>::GetInstance());
+    Unk_SingletonCreator<CArcadeDataTable>::CreateInstance();
+    FUN_1401a2e40(TSingleton<CArcadeDataTable>::GetInstance());
+    FUN_140851750();
+    FUN_1408d2640();
+    Unk_SingletonCreator<CLuaClient>::CreateInstance();
+    Unk_SingletonCreator<StateEffectMgr>::CreateInstance();
+    Unk_SingletonCreator<AttendGiftDataTable>::CreateInstance();
+    FUN_1401ae2f0(TSingleton<AttendGiftDataTable>::GetInstance());
+    Unk_SingletonCreator<PCActionDataTable>::CreateInstance();
+    FUN_14059dea0(Unk_SingletonCreator<ItemGachaBoxTable>::CreateInstance());
+    Unk_SingletonCreator<CItemBreakIngredientTable>::CreateInstance();
+    Unk_SingletonCreator<CDynamicBanWordManager>::CreateInstance();
+    if (!TSingleton<CLuaClient>::GetInstance()->vfunc_1())
+    {
+        AfxMessageBox("error lua function");
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x33).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<CContentShutdownManager>::CreateInstance();
+    FUN_1401c06d0();
+    Unk_SingletonCreator<UITalkManager>::CreateInstance();
+    Unk_SingletonCreator<CGroupChatManager>::CreateInstance();
+    Unk_SingletonCreator<CGuildManager>::CreateInstance();
+    Unk_SingletonCreator<CClubClientManager>::CreateInstance();
+    Unk_SingletonCreator<CUgcManager>::CreateInstance();
+    Unk_SingletonCreator<CUgcGetCostTable>::CreateInstance();
+    Unk_SingletonCreator<CSoapClient>::CreateInstance();
+    Unk_SingletonCreator<CubeHolderManager>::CreateInstance();
+    Unk_SingletonCreator<CMeratMarketMan>::CreateInstance();
+    Unk_SingletonCreator<CBlackMarketMan>::CreateInstance();
+    Unk_SingletonCreator<CMesoMarketMan>::CreateInstance();
+    Unk_SingletonCreator<CCashMarketMan>::CreateInstance();
+    Unk_SingletonCreator<CRankViewer>::CreateInstance();
+    Unk_SingletonCreator<CFieldMetaTable>::CreateInstance();
+    Unk_SingletonCreator<CQuestTable>::CreateInstance();
+    Unk_SingletonCreator<CContinentRegionTable>::CreateInstance();
+    Unk_SingletonCreator<CJobConditionTable>::CreateInstance();
+    FUN_140636000(TSingleton<CJobConditionTable>::GetInstance());
+    Unk_SingletonCreator<WorldMapManager>::CreateInstance();
+    Unk_SingletonCreator<BGTransparencyMgr>::CreateInstance();
+    Unk_SingletonCreator<CTaxiManager>::CreateInstance();
+    Unk_SingletonCreator<CDirWatcher>::CreateInstance();
+    Unk_SingletonCreator<QuestDataTable>::CreateInstance();
+    Unk_SingletonCreator<CQuestManager>::CreateInstance();
+    Unk_SingletonCreator<CQuestNavigator>::CreateInstance();
+    Unk_SingletonCreator<CQuestNavigationMap>::CreateInstance();
+    Unk_SingletonCreator<CAchieveManager>::CreateInstance();
+    Unk_SingletonCreator<CItemLoader>::CreateInstance();
+    Unk_SingletonCreator<CSeasonDataTable>::CreateInstance();
+    Unk_SingletonCreator<CGameRankingCli>::CreateInstance();
+    Unk_SingletonCreator<CMenteeSearchManager>::CreateInstance();
+    Unk_SingletonCreator<CMentoringManager>::CreateInstance();
+    Unk_SingletonCreator<MentoringDataTable>::CreateInstance();
+    FUN_14069bd60(TSingleton<MentoringDataTable>::GetInstance());
+    Unk_SingletonCreator<CMicroGameManagerCli>::CreateInstance();
+    Unk_SingletonCreator<CReactorDataTable>::CreateInstance()->Reload();
+    Unk_SingletonCreator<CTailEffectDataTable>::CreateInstance()->Reload();
+    if (!TSingleton<CDirWatcher>::GetInstance()->Start(0, 0, 0, 0, 0))
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x34).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    if (FUN_1409f7c90()->FUN_1409f7ea0() != 0)
+    {
+        if (!TSingleton<CItemLoader>::GetInstance()->Start(0, 0, 0, 0, 0))
+        {
+            FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x35).FUN_1408405d0(), CStringW(L""), 0);
+            return FALSE;
+        }
+    }
+    Unk_SingletonCreator<CUgcDownloadDown>::CreateInstance();
+    if (!TSingleton<CUgcDownloadDown>::GetInstance()->Start(0, 0, 0, 0, 0))
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x36).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<CUgcDownloadLoad>::CreateInstance();
+    if (!TSingleton<CUgcDownloadLoad>::GetInstance()->Start(0, 0, 0, 0, 0))
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x36).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<CAsyncImageLoader>::CreateInstance();
+    if (!TSingleton<CAsyncImageLoader>::GetInstance()->Start(0, 0, 0, 0, 0))
+    {
+        FUN_141b6fcf0(Unk_TextFormat(kErrors.FUN_140c7a360(0)).Arg(0x37).FUN_1408405d0(), CStringW(L""), 0);
+        return FALSE;
+    }
+    Unk_SingletonCreator<CBigDataLogSystem>::CreateInstance();
+    Unk_SingletonCreator<CStoryBookTable>::CreateInstance();
+    Unk_SingletonCreator<BlindManager>::CreateInstance();
+    Unk_SingletonCreator<UIDungeonCategoryTable>::CreateInstance();
+    Unk_SingletonCreator<DungeonMissionDataTable>::CreateInstance();
+    Unk_SingletonCreator<DungeonRoomTable>::CreateInstance();
+    Unk_SingletonCreator<CGFxLanguage>::CreateInstance();
+    Unk_SingletonCreator<ItemPreviewMgr>::CreateInstance();
+    Unk_SingletonCreator<CGameRule>::CreateInstance();
+    Unk_SingletonCreator<CGameEventValueManager>::CreateInstance();
+    FUN_14051a360(Unk_SingletonCreator<CIndividualArenaDataTable>::CreateInstance());
+    FUN_140768c90(Unk_SingletonCreator<CRankingArenaDataTable>::CreateInstance());
+    Unk_SingletonCreator<CRewardPreviewTable>::CreateInstance();
+    FUN_140dc3c20(TSingleton<CRewardPreviewTable>::GetInstance());
+    if (DAT_143ae2b30 != 0)
+        Unk_SingletonCreator<AnimationCallbackManager>::CreateInstance();
+    Unk_SingletonCreator<StringManager>::CreateInstance();
+    Unk_SingletonCreator<CFishingManager>::CreateInstance();
+    Unk_SingletonCreator<CFishingTable>::CreateInstance();
+    FUN_1403b1f00(TSingleton<CFishingTable>::GetInstance());
+    Unk_SingletonCreator<CInstrumentDataTable>::CreateInstance();
+    FUN_14072c670(TSingleton<CInstrumentDataTable>::GetInstance());
+    Unk_SingletonCreator<CSkillCompactControlTable>::CreateInstance();
+    FUN_1414a57a0();
+    FUN_140dca800();
+    Unk_SingletonCreator<CGloabalFactor>::CreateInstance();
+    FUN_1404c1290(TSingleton<CGloabalFactor>::GetInstance());
+    Unk_SingletonCreator<CSmartPushTable>::CreateInstance();
+    FUN_140810730(TSingleton<CSmartPushTable>::GetInstance());
+    Unk_SingletonCreator<CSmartPushManager>::CreateInstance();
+    FUN_140dd82b0(TSingleton<CSmartPushManager>::GetInstance());
+    FUN_140615700(Unk_SingletonCreator<CItemRemakeScrollTable>::CreateInstance());
+    Unk_SingletonCreator<CTrafficOptimizer>::CreateInstance();
+    Unk_SingletonCreator<CItemSocketTable>::CreateInstance()->Load();
+    FUN_1405b0dc0(Unk_SingletonCreator<CItemGemStoneUpgradeTable>::CreateInstance());
+    Unk_SingletonCreator<CSpecialEffectFunctionManager>::CreateInstance();
+    Unk_SingletonCreator<CCharacterAbilityTable>::CreateInstance();
+    Unk_SingletonCreator<CCharacterAbilityManager>::CreateInstance();
+    Unk_SingletonCreator<CNametagSymbolTable>::CreateInstance();
+    FUN_1406c54d0(TSingleton<CNametagSymbolTable>::GetInstance());
+    FUN_140624cc0(Unk_SingletonCreator<CItemSocketScrollTable>::CreateInstance());
+    FUN_14061d130(Unk_SingletonCreator<CItemRePackingScrollTable>::CreateInstance());
+    FUN_1405951f0(Unk_SingletonCreator<CItemExchangeScrollTable>::CreateInstance());
+    FUN_140597150(Unk_SingletonCreator<CItemExtractionTable>::CreateInstance());
+    FUN_1405b4880(Unk_SingletonCreator<CItemLapenshardTable>::CreateInstance());
+    Unk_SingletonCreator<CSkillSetTable>::CreateInstance();
+    FUN_14037c010(Unk_SingletonCreator<CFieldMissionTable>::CreateInstance());
+    FUN_140d44590(Unk_SingletonCreator<CLoadingImageTable>::CreateInstance());
+    Unk_SingletonCreator<CVIPTable>::CreateInstance();
+    Unk_SingletonCreator<CUGCDesignTable>::CreateInstance();
+    FUN_140669c30(Unk_SingletonCreator<CMasteryTable>::CreateInstance());
+    FUN_140661d80(Unk_SingletonCreator<CMasteryInteriorTable>::CreateInstance());
+    Unk_SingletonCreator<CBattleRecordManager>::CreateInstance();
+    Unk_SingletonCreator<CMasteryManager>::CreateInstance();
+    FUN_140b67fa0(Unk_SingletonCreator<UgcHomeOptionData>::CreateInstance());
+    Unk_SingletonCreator<CEnchantScrollTable>::CreateInstance();
+    Unk_SingletonCreator<OnceCallbackTimer>::CreateInstance();
+    Unk_SingletonCreator<CAutoFindTaxiStation>::CreateInstance();
+    Unk_SingletonCreator<WebGuideTable>::CreateInstance();
+    FUN_1407649d0(Unk_SingletonCreator<CQuestMaskTable>::CreateInstance());
+    FUN_14087a4e0(Unk_SingletonCreator<CTitleTable>::CreateInstance());
+    Unk_SingletonCreator<CChapterBookTable>::CreateInstance()->Load();
+    FUN_140728a30(Unk_SingletonCreator<CPetDataTable>::CreateInstance());
+    Unk_SingletonCreator<CPetManager>::CreateInstance();
+    FUN_1405abe50(Unk_SingletonCreator<CItemGemPropertyTable>::CreateInstance());
+    FUN_14080bc00();
+    FUN_1405bfc70(Unk_SingletonCreator<CItemMergeOptionTable>::CreateInstance());
+    FUN_140837660();
+    Unk_SingletonCreator<CostumeSetTable>::CreateInstance();
+    FUN_140770d30(Unk_SingletonCreator<RewardContentsTable>::CreateInstance());
+    FUN_140791c30(TSingleton<CSeasonDataTable>::GetInstance());
+    FUN_1406e55b0();
+    Unk_SingletonCreator<CUGCMapSetItemTable>::CreateInstance();
+    Unk_SingletonCreator<CFameTable>::CreateInstance()->Load();
+    FUN_1405915b0(Unk_SingletonCreator<CItemEnchantTransformTable>::CreateInstance());
+    Unk_SingletonCreator<CMouseController>::CreateInstance();
+    Unk_SingletonCreator<CAdventureLevelTable>::CreateInstance()->LoadAll();
+    Unk_SingletonCreator<CSoundDataTable>::CreateInstance()->Load();
+    Unk_SingletonCreator<CAdventureLevelTableHelper>::CreateInstance()->FindCurrent();
+    FUN_1401d6550(Unk_SingletonCreator<CChangeJobTable>::CreateInstance());
+    Unk_SingletonCreator<CooltimeManager>::CreateInstance();
+    FUN_1403826e0(Unk_SingletonCreator<FieldWarDataTable>::CreateInstance());
+    Unk_SingletonCreator<CChatEmoticonTable>::CreateInstance()->Load();
+    Unk_SingletonCreator<CPortalTable>::CreateInstance()->Load();
+    FUN_140907d40(Unk_SingletonCreator<WeddingTable>::CreateInstance());
+    Unk_SingletonCreator<WeddingManager>::CreateInstance();
+    FUN_14071aff0(Unk_SingletonCreator<PaybackTable>::CreateInstance());
+    Unk_SingletonCreator<PaybackManagerClient>::CreateInstance();
+    FUN_14145c4b0();
+    Unk_SingletonCreator<RecodeMgr>::CreateInstance();
+    GetClientPlatform()->vfunc_50();
+    Unk_SingletonCreator<CDPSMeterSystem>::CreateInstance();
+    GetClientPlatform()->vfunc_22(0x27b, "");
+    efd::SmartPointer<MS2> spMS2 = EE_NEW MS2;
+    if (spMS2)
+        spMS2->Run(m_hInstance, NULL, GetCommandLineA(), SW_SHOW);
+    spMS2->Shutdown();
+    spMS2 = NULL;
+    FUN_1414a0a20();
+    if (DAT_143ae2b30 != 0)
+    {
+        FUN_14149fee0();
+        FUN_1414a4630();
+    }
+    FUN_140d9f140(FUN_140931510());
+    if (TSingleton<CUgcDownloadDown>::GetInstance())
+        FUN_141875140(TSingleton<CUgcDownloadDown>::GetInstance());
+    if (TSingleton<CUgcDownloadLoad>::GetInstance())
+        FUN_14186df80(TSingleton<CUgcDownloadLoad>::GetInstance());
+    if (TSingleton<CAsyncImageLoader>::GetInstance())
+        TSingleton<CAsyncImageLoader>::GetInstance()->FUN_140a58b10();
+    FUN_14149fec0();
+    FUN_1414a3430();
+    FUN_1414a2590();
+    FUN_1414a1690();
+    FUN_1414a0c00();
+    FUN_1414a38b0();
+    FUN_1414a49f0();
+    FUN_1414a3eb0();
+    FUN_1414a19f0();
+    FUN_1414a4bf0();
+    FUN_1414a1810();
+    FUN_1414a29b0();
+    FUN_1414a2950();
+    FUN_1414a06c0();
+    FUN_1414a3730();
+    FUN_1414a2bf0();
+    FUN_1414a5250();
+    FUN_1414a0b40();
+    FUN_1414a0300();
+    FUN_1414a4750();
+    FUN_1414a51f0();
+    FUN_1414a03c0();
+    FUN_1414a2e90();
+    FUN_1414a1e10();
+    FUN_1414a4d10();
+    FUN_1414a3850();
+    FUN_1414a3bb0();
+    FUN_1414a1db0();
+    FUN_1414a0d80();
+    FUN_1414a3250();
+    FUN_1414a2650();
+    FUN_1414a0720();
+    FUN_1414a0780();
+    FUN_1414a3550();
+    FUN_1414a4c50();
+    FUN_1414a31f0();
+    FUN_1414a1440();
+    FUN_1414a14a0();
+    FUN_1414a0ea0();
+    FUN_1414a0f00();
+    FUN_1414a3a90();
+    FUN_1414a0fc0();
+    FUN_1414a10e0();
+    FUN_1414a44b0();
+    FUN_1414a0ba0();
+    FUN_1414a22f0();
+    FUN_1414a2230();
+    FUN_1414a2290();
+    FUN_1414a4510();
+    FUN_1414a4210();
+    FUN_1414a36d0();
+    FUN_1414a0000();
+    FUN_1414a0de0();
+    if (TSingleton<CDirWatcher>::GetInstance())
+        TSingleton<CDirWatcher>::GetInstance()->FUN_1401d1cd0();
+    FUN_141851840(0);
+    FUN_1414a0ae0();
+    FUN_1414a1510();
+    FUN_1414a47b0();
+    FUN_14149ffa0();
+    CFieldData::FUN_140373d30();
+    FUN_1408b9c90();
+    FUN_1414a3670();
+    FUN_1414a2e30();
+    FUN_1414a2530();
+    FUN_1414a45d0();
+    FUN_1414a3010();
+    FUN_1414a23b0();
+    FUN_1414a1080();
+    FUN_1414a2350();
+    FUN_1414a0420();
+    FUN_1414a3f70();
+    FUN_1414a3a30();
+    FUN_1414a39d0();
+    FUN_1414a2410();
+    FUN_1414a24d0();
+    FUN_1414a0480();
+    FUN_1414a0660();
+    FUN_1414a2d70();
+    FUN_1414a0ba0();
+    FUN_1414a28f0();
+    FUN_1414a05a0();
+    FUN_1414a4390();
+    FUN_1414a2a70();
+    FUN_1414a0540();
+    FUN_1414a3790();
+    FUN_1414a1c30();
+    FUN_1414a53f0();
+    FUN_1414a1260();
+    FUN_1414a0120();
+    FUN_1414a42d0();
+    FUN_1414a4cb0();
+    FUN_1414a3af0();
+    FUN_1414a3190();
+    FUN_1414a0cc0();
+    FUN_1414a3b50();
+    FUN_1414a2890();
+    FUN_1414a21d0();
+    FUN_1414a3610();
+    FUN_1414a4ab0();
+    FUN_1414a4b90();
+    FUN_1414a1c90();
+    FUN_1414a30d0();
+    FUN_1414a3d90();
+    FUN_14149ff40();
+    FUN_1414a1020();
+    FUN_1414a26b0();
+    FUN_1414a11a0();
+    FUN_1414a3130();
+    FUN_1414a3070();
+    FUN_1414a2b30();
+    FUN_1414a46f0();
+    FUN_1414a15d0();
+    FUN_1414a4a50();
+    FUN_1414a16f0();
+    FUN_1414a43f0();
+    FUN_1414a0360();
+    FUN_1414a1ed0();
+    FUN_1414a3df0();
+    FUN_1414a0e40();
+    FUN_1414a12c0();
+    FUN_1414a0840();
+    FUN_1414a1200();
+    FUN_1414a04e0();
+    FUN_1414a2c50();
+    FUN_1414a2cb0();
+    FUN_1414a2b90();
+    FUN_1414a4930();
+    FUN_1414a2fb0();
+    FUN_1414a4330();
+    FUN_1414a4810();
+    FUN_1414a4690();
+    FUN_1414a4f50();
+    FUN_1414a5070();
+    FUN_1414a4ef0();
+    FUN_1414a4fb0();
+    FUN_1414a4e30();
+    FUN_1414a5130();
+    FUN_1414a4dd0();
+    FUN_1414a5010();
+    FUN_1414a5190();
+    FUN_1414a4d70();
+    FUN_1414a3cd0();
+    FUN_1414a2830();
+    FUN_1414a3c10();
+    FUN_1414a4090();
+    FUN_1414a40f0();
+    FUN_1414a4b30();
+    FUN_1414a3490();
+    FUN_1414a1a50();
+    FUN_1414a0240();
+    FUN_1414a34f0();
+    FUN_1414a1320();
+    FUN_1414a08a0();
+    FUN_1414a2f50();
+    FUN_1414a4270();
+    FUN_1414a50d0();
+    FUN_1414a2ef0();
+    FUN_1414a0ea0();
+    FUN_1414a0d20();
+    FUN_1414a2d10();
+    FUN_1414a0960();
+    FUN_1414a0a80();
+    FUN_1414a1930();
+    FUN_1414a33d0();
+    FUN_1414a3910();
+    FUN_1414a3970();
+    FUN_1414a02a0();
+    FUN_1414a2470();
+    FUN_1414a00c0();
+    FUN_140978fb0();
+    FUN_1414a1d50();
+    FUN_1414a1570();
+    FUN_1414a1630();
+    FUN_1414a3370();
+    FUN_1414a1ff0();
+    FUN_1414a2050();
+    FUN_1414a1f90();
+    FUN_1414a20b0();
+    FUN_1414a2170();
+    FUN_1414a2110();
+    FUN_1414a0600();
+    FUN_1414a0900();
+    FUN_1414a3d30();
+    FUN_1416bf8a0();
+    FUN_1416bea60();
+    FUN_1416bb5f0();
+    FUN_1416bc380();
+    FUN_1414a1140();
+    FUN_1414a1990();
+    FUN_1414a09c0();
+    FUN_1414a52d0();
+    FUN_1414a4570();
+    FUN_1414a2ad0();
+    FUN_1414a4450();
+    FUN_1414a1380();
+    NiStaticDataManager::Shutdown(true);
+    delete pInitOptions;
+    GetClientPlatform()->vfunc_29();
+    GetClientPlatform()->vfunc_15();
+    GetClientPlatform()->vfunc_51();
+    FUN_141168710();
+    FUN_1414a3c70();
+    GetClientPlatform()->vfunc_69();
+    GetClientPlatform()->vfunc_70();
+    if (TSingleton<CLogString>::GetInstance())
+        TSingleton<CLogString>::GetInstance()->FUN_140652bc0();
+    FUN_1414a1e70();
+    FUN_1414a48d0();
+    FUN_1414a4870();
+    FUN_1414a5390();
+    FUN_1414a5330();
+    FUN_1414a1f30();
+    FUN_1414a2710();
+    FUN_1414a27d0();
+    FUN_1414a35b0();
+    FUN_1414a0060();
+    FUN_1414a4030();
+    FUN_1414a3fd0();
+    FUN_1414a4e90();
+    FUN_1414a2dd0();
+    FUN_1414a13e0();
+    FUN_1414a0f60();
+    FUN_1414a0c60();
+    FUN_1414a3310();
+    FUN_1414a32b0();
+    FUN_1414a1ab0();
+    FUN_1414a1b10();
+    FUN_1414a37f0();
+    FUN_1414a1870();
+    FUN_1414a1b70();
+    FUN_1414a1bd0();
+    FUN_1414a4150();
+    FUN_1414a18d0();
+    FUN_1414a17b0();
+    FUN_1414a1750();
+    FUN_1414a1cf0();
+    FUN_1414a0180();
+    FUN_1414a01e0();
+    FUN_1414a3e50();
+    FUN_1414a41b0();
+    FUN_1414a07e0();
+    FUN_140d86330();
+    FUN_1414a2770();
+    FUN_1414a4990();
+    FUN_1414a25f0();
+    return FALSE;
 }
 // @0x141491d00
 int CGameApp::ExitInstance()

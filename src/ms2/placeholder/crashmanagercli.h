@@ -13,6 +13,7 @@ class CrashManagerCli : public CCrashManager, public TSingleton<CrashManagerCli>
 public:
     CrashManagerCli();                                      // 0x1414961b0
     virtual ~CrashManagerCli();
+    void FUN_140a435a0();                                   // installs the crash handler (InitInstance)
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_70[0xd0 - 0x70];

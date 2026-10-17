@@ -8,6 +8,7 @@ class CLua
 {
 public:
     virtual ~CLua();
+    virtual bool vfunc_1();                                 // +0x8: CGameApp::InitInstance fails with "error lua function" when false
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0x70 - 0x8];
