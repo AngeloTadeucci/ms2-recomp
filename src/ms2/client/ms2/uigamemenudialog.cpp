@@ -262,9 +262,15 @@ public:
     char m_pad_10[0x10];
 };
 class Unk_GmNodeRef;
-class Unk_GmNodeArr
+class Unk_GmNodeArr                             // CAtlArray<Unk_GmNodeRef>
 {
 public:
+    // The exe constructs the array before FUN_140cf7710 Adds to it and destroys it afterwards (an uninitialized
+    // local handed garbage m_pData/m_nSize to the exe's Add and leaked the node references)
+    Unk_GmNodeArr() { FUN_140c1c9d0(); }
+    ~Unk_GmNodeArr() { FUN_140c1cc60(); }
+    void FUN_140c1c9d0();                                        // ctor (all zero)
+    void FUN_140c1cc60();                                        // dtor (releases the elements)
     size_t FUN_140c1d2c0() const;
     const Unk_GmNodeRef& FUN_140c1cd50(size_t i) const;           // operator[] (returns a reference, bounds-checked)
     char m_pad[0x20];
