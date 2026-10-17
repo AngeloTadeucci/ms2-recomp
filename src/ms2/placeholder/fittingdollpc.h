@@ -138,6 +138,7 @@ public:
     void FUN_1416591e0(int nSlot, const NiColor& kColor);   // +0xd98 + nSlot*0xc = kColor (scenestategame 0x30)
     const NiColor& FUN_141659220(int nSlot);                // the colour at +0xd98 + nSlot*0xc
     void FUN_141656780();                                   // re-apply the appearance (scenestategame 0x30)
+    void FUN_14165d300(int nA, int nB, int nC);             // PCBase member (pcbase.cpp; scenestategame 0x5d)
     void FUN_1416629d0(Unk_StreamPoint kPos, Unk_StreamPoint kRot);   // scenestategame 0x141721a30
     MS2Ptr<Unk_PCWaterGunInfo> FUN_141664250();             // the water gun battle info (+0x1260)
     void FUN_141662640(__int64 nValue);                      // scenestategame 0x1417340f0

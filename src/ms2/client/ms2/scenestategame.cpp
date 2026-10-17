@@ -9785,6 +9785,44 @@ void CSceneStateGame::FUN_14171a2e0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x14171a2e0, CSceneStateGame, FUN_14171a2e0, 765, 0x54213933);
 
+extern CString DAT_143ae7998;                               // the pet sound on the owner's state change
+// @0x1417215a0
+void CSceneStateGame::FUN_1417215a0(CInPacket& packet)
+{
+    int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    int nA = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nB = static_cast<CInputStream&>(packet).vfunc_o8_1();
+    int nC = static_cast<CInputStream&>(packet).vfunc_o8_3();
+    bool bPet = static_cast<CInputStream&>(packet).vfunc_o8_0();
+    PC* pPC = FUN_1403ed2d0()->FUN_141bd1290(nId);
+    if (pPC == 0)
+        return;
+    pPC->FUN_14165d300(nA, nB, nC);
+    if (bPet)
+    {
+        CPet* pPet = static_cast<CPet*>(pPC->FUN_141676a10());
+        if (pPet != 0)
+        {
+            pPet->vfunc_59(1, 0, 0x11, 0);
+            GameObject* pOwner;
+            if (pPet->vfunc_127() != 0 && (pOwner = pPet->FUN_140b10320()) != 0)
+            {
+                Unk_SSGXform xf;
+                FUN_140a332d0(&xf);
+                xf.m_fScale = 1.0f;
+                Unk_SSGNiPt3 pos(pOwner->vfunc_18());
+                FUN_14097faa0(&xf.m_translate, pos);
+                Unk_SSGRot rot;
+                FUN_140a33240(&rot, &DAT_143a09600);
+                xf.m_rotate = rot;
+                FUN_1403ed280()->FUN_1411a5110(CString("ms2sound/sound/system"), CString(DAT_143ae7998), CString(""), 1,
+                    &xf, 1.0f, 0);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1417215a0, CSceneStateGame, FUN_1417215a0, 919, 0xDCE8365B);
+
 // Packet 0x5a: a pet is summoned (field add).
 // @0x141719a60
 void CSceneStateGame::FUN_141719a60(CInPacket& packet)
