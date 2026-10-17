@@ -152,9 +152,9 @@ public:
     int FUN_1410d2f40(int nKey);
     bool FUN_1410c68e0();
     void FUN_1410d0310();
-    void FUN_1410bf250(const int* pKey);
-    void FUN_1410bf320(const int* pKey);
-    int FUN_1410bf3e0(const int* pKey);
+    void FUN_1410bf250(const CString* pKey);
+    void FUN_1410bf320(const CString* pKey);
+    int FUN_1410bf3e0(const CString* pKey);
     unsigned char FUN_1410c3e00(int nKey);
     void FUN_1410c3e40(int nKey, unsigned char v);
     int FUN_1410c3e80(int nKey);
@@ -198,7 +198,7 @@ public:
     void FUN_1410c4d80(const Unk_StreamPoint& pt, float fDist);
     bool FUN_1410c2840(Unk_StreamPoint pt, float fDist);
     bool FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CMISPt2* b, float fLimX, float fLimY);
-    void FUN_1410caa60(const int* pKey, int v);
+    void FUN_1410caa60(const CString* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
     void FUN_1410c4240(int nGroup, int nBlock, const CStringW& strName, __int64 nUnused, __int64 nOwnerId);
@@ -280,6 +280,7 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410bf610(struct Unk_CMISCubeList* pPlaced, struct Unk_CMISSetRef rSet, struct Unk_CMISCubeList* pOthers);
     void FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
         unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
     void FUN_1410c4b50(Unk_Int3 pt, bool bKeep);

@@ -50,7 +50,7 @@ void FUN_14115ab30(Unk_CMISTree<260>*);
 void FUN_1409fabe0(void*);
 unsigned char* FUN_141128310(Unk_CMISTree<280>*, const int*);
 int* FUN_141128290(Unk_CMISTree<281>*, const int*);
-int* FUN_1411280d0(Unk_CMISTree<270>*, const int*);
+int* FUN_1411280d0(Unk_CMISTree<270>*, const CString*);
 void FUN_14114fae0(Unk_CMISTree<282>*);
 
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(CubeMapInformationService);
@@ -129,7 +129,7 @@ Unk_CMISIter<281>* FUN_141152210(Unk_CMISTree<281>*, Unk_CMISIter<281>*);
 Unk_CMISIter<281>* FUN_141158460(Unk_CMISTree<281>*, Unk_CMISIter<281>*, const int*);
 bool FUN_1408b7170(Unk_CMISIter<281>*, Unk_CMISIter<281>*);
 Unk_CMISIter<270>* FUN_141151fd0(Unk_CMISTree<270>*, Unk_CMISIter<270>*);
-Unk_CMISIter<270>* FUN_141158000(Unk_CMISTree<270>*, Unk_CMISIter<270>*, const int*);
+Unk_CMISIter<270>* FUN_141158000(Unk_CMISTree<270>*, Unk_CMISIter<270>*, const CString*);
 bool FUN_141127740(Unk_CMISIter<270>*, Unk_CMISIter<270>*);
 Unk_CMISIter<260>* FUN_141151af0(Unk_CMISTree<260>*, Unk_CMISIter<260>*);
 Unk_CMISIter<260>* FUN_141157580(Unk_CMISTree<260>*, Unk_CMISIter<260>*, const int*);
@@ -164,7 +164,7 @@ bool FUN_140965380(Unk_CMISIter<269>*, Unk_CMISIter<269>*);
 bool FUN_1409654d0(Unk_CMISIter<269>*, Unk_CMISIter<269>*);
 Unk_CubeOwnerPtr* FUN_1409656d0(Unk_CMISTree<269>*, const __int64*);                                 // operator[]
 void FUN_141156310(Unk_CMISTree<269>*, const __int64*);                                              // erase
-void FUN_1411552b0(Unk_CMISTree<270>*, const int*);                                   // erase
+void FUN_1411552b0(Unk_CMISTree<270>*, const CString*);                                   // erase
 void FUN_14114f0e0(Unk_CMISTree<260>*);
 void FUN_14114fa40(Unk_CMISTree<259>*);
 void FUN_1410b2760(Unk_CMISTree<277>*);
@@ -962,7 +962,7 @@ void CubeMapInformationService::FUN_1410bc320()
 
 // @0x1410bf250
 // MS2-FUNCTIONAL: exe local slot/branch layout differs by 2 bytes
-void CubeMapInformationService::FUN_1410bf250(const int* pKey)
+void CubeMapInformationService::FUN_1410bf250(const CString* pKey)
 {
     int n;
     Unk_CMISIter<270> itEnd, itFind;
@@ -974,7 +974,7 @@ void CubeMapInformationService::FUN_1410bf250(const int* pKey)
     }
 }
 // @0x1410bf320
-void CubeMapInformationService::FUN_1410bf320(const int* pKey)
+void CubeMapInformationService::FUN_1410bf320(const CString* pKey)
 {
     Unk_CMISIter<270> itEnd, itFind;
     if (FUN_141127740(FUN_141158000(&f358, &itFind, pKey), FUN_141151fd0(&f358, &itEnd))) {
@@ -985,7 +985,7 @@ void CubeMapInformationService::FUN_1410bf320(const int* pKey)
     }
 }
 // @0x1410bf3e0
-int CubeMapInformationService::FUN_1410bf3e0(const int* pKey)
+int CubeMapInformationService::FUN_1410bf3e0(const CString* pKey)
 {
     Unk_CMISIter<270> itEnd, itFind;
     if (FUN_141127740(FUN_141158000(&f358, &itFind, pKey), FUN_141151fd0(&f358, &itEnd))) {
@@ -1227,7 +1227,7 @@ bool CubeMapInformationService::FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CM
     return FUN_14029d220(a->x - b->x) <= fLimX && FUN_14029d220(a->y - b->y) <= fLimY;
 }
 // @0x1410caa60
-void CubeMapInformationService::FUN_1410caa60(const int* pKey, int v)
+void CubeMapInformationService::FUN_1410caa60(const CString* pKey, int v)
 {
     Unk_CMISIter<270> itEnd, itFind;
     if (FUN_141127740(FUN_141158000(&f1a0, &itFind, pKey), FUN_141151fd0(&f1a0, &itEnd)))
@@ -1486,7 +1486,7 @@ void CubeMapInformationService::FUN_1410c3630(int v) { f330 = v; }
 int CubeMapInformationService::FUN_1410c3650() { return f330; }
 
 // ---- w138 callees (unit-local, names invented) ----
-class Unk_CMISLog { public: unsigned __int64 FUN_1410db4f0(int nLevel, int nCategory, const wchar_t* pFormat, const int& a, const int& b, const int& c); unsigned __int64 FUN_1401859c0(int nLevel, int nCategory, const wchar_t* pMsg); };
+class Unk_CMISLog { public: unsigned __int64 FUN_1403d7960(int nLevel, int nCategory, const wchar_t* pFormat, const int* pA, const int* pB); unsigned __int64 FUN_1410db4f0(int nLevel, int nCategory, const wchar_t* pFormat, const int& a, const int& b, const int& c); unsigned __int64 FUN_1401859c0(int nLevel, int nCategory, const wchar_t* pMsg); };
 Unk_CMISLog* FUN_140166440();
 struct Unk_CMISEntId { Unk_CMISEntId(const Unk_CMISEntId&); __int64 m_id; };
 void FUN_14115b260(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId, float fFrom, float fTo, unsigned nMs);   // AddRotate
@@ -2563,7 +2563,7 @@ void FUN_140a52ef0(Unk_CMISEffReq* p);
 void FUN_1405a89e0(Unk_CMISEffReq* p);
 struct Unk_CMISConsts { char m_pad_00[0x300]; CString m_strSaleEffect; };                   // game-wide constants (the sale-post effect name at +0x300)
 Unk_CMISConsts* FUN_1401d31f0();
-class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); };
+class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); int FUN_1411a49c0(Unk_CMISEffReq* pRequest); void FUN_1411a6060(int nEffect); };
 Unk_CMISEffMgr* FUN_1403ed280();
 bool FUN_1411273c0(Unk_CMISIter<264>*, Unk_CMISIter<264>*);                                 // operator!=
 Unk_CMISEntityRef* FUN_141127b90(Unk_CMISTree<264>*, const int*);                           // operator[]
@@ -2846,4 +2846,378 @@ void CubeMapInformationService::FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, CubeI
         if (FUN_1410c35c0() != 0 && FUN_1410cb900())
             FUN_1410d54f0(true);
     }
+}
+// ---- w138 batch 7 ----
+struct Unk_CMISRec { char pad[0x3c]; Unk_CMISInvKey key; char pad2[0x50 - 0x3c - sizeof(Unk_CMISInvKey)]; int nSetId; };                                  // an item-table row (key at 0x3c)
+struct Unk_CMISRecRef { void* m_a; void* m_b; };                                            // handle of an item-table row
+class Unk_CMISItemTable;
+Unk_CMISItemTable* FUN_140281980();
+Unk_CMISRecRef* FUN_1405566e0(Unk_CMISItemTable*, Unk_CMISRecRef* pOut, int nItemId);
+__int64 FUN_140df5b00(Unk_CMISRecRef*);                                                     // the handle is set
+Unk_CMISRec* FUN_14056d580(Unk_CMISRecRef*);                                                // operator->
+void FUN_14056c300(Unk_CMISRecRef*);                                                        // dtor
+int* FUN_1411281d0(Unk_CMISTree<282>*, const int*);                                         // operator[]
+bool FUN_141127840(Unk_CMISIter<282>*, Unk_CMISIter<282>*);                                 // operator!=
+// @0x1410d4cb0
+// MS2-FUNCTIONAL: iterator/key stack slots swapped vs the exe (same calls and order)
+void CubeMapInformationService::FUN_1410d4cb0(int nItemId, bool bAdd)
+{
+    Unk_CMISInv* pInv = FUN_140886640(FUN_1409eed80());
+    Unk_CMISRecRef rec;
+    FUN_1405566e0(FUN_140281980(), &rec, nItemId);
+    if (FUN_140df5b00(&rec) != 0) {
+        Unk_CMISInvPtr spSlot(0);
+        if (pInv->FUN_14088acd0(&FUN_14056d580(&rec)->key, &spSlot) != 0) {
+            Unk_CMISIter<282> itEnd, itFind;
+            if (FUN_141127110(FUN_1411582a0(&f3c8, &itFind, &FUN_14056d580(&rec)->key.m_item), FUN_141152150(&f3c8, &itEnd)) == 0) {
+                int* pnCount = FUN_1411281d0(&f3c8, &FUN_14056d580(&rec)->key.m_item);
+                int nNew;
+                if (bAdd == 0) {
+                    nNew = *pnCount - 1;
+                    if (nNew < 0)
+                        nNew = 0;
+                } else {
+                    nNew = *pnCount + 1;
+                }
+                *FUN_1411281d0(&f3c8, &FUN_14056d580(&rec)->key.m_item) = nNew;
+            } else if (bAdd != 0) {
+                *FUN_1411281d0(&f3c8, &FUN_14056d580(&rec)->key.m_item) = 1;
+            }
+        }
+    }
+    Unk_CMISIter<282> it, itEnd2;
+    for (FUN_14114e470(&f3c8, &it); FUN_141127840(&it, FUN_141152150(&f3c8, &itEnd2)); FUN_141129cd0(&it)) {
+        Unk_CMISInvKey key;
+        key.m_item = FUN_1411287a0(&it)->m_key;
+        key.m_need = FUN_1411287a0(&it)->m_val;
+        Unk_CMISInvPtr spSlot2(0);
+        if (pInv->FUN_14088acd0(&key, &spSlot2) != 0 && spSlot2.FUN_140889010()->m_need <= key.m_need)
+            spSlot2.FUN_140889010();
+    }
+    t3e0.FUN_140868750(100);
+    FUN_14056c300(&rec);
+}
+// ---- w138 batch 8: set-item effects ----
+struct Unk_CMISPieceInfo { char pad[0x18]; unsigned nMax; CString strModelEffect; CString strFullEffect; CString strSetName; CString strAttachNode; };
+struct Unk_CMISPieceRef { void* m_a; void* m_b; };                                          // MS2Ptr<piece info>
+struct Unk_CMISPieceMap { void* m_head; unsigned __int64 m_count; };
+struct Unk_CMISPieceIter { void* m_p; };
+struct Unk_CMISPiecePair { int m_key; int m_pad; Unk_CMISPieceRef m_value; };
+struct Unk_CMISSetInfo { char pad[0x20]; Unk_CMISPieceMap m_pieces; unsigned m_nNeed; };
+struct Unk_CMISSetRef                                                                       // MS2Ptr<set info> passed by value (the callee destroys it)
+{
+    Unk_CMISSetRef() {}
+    Unk_CMISSetRef(const Unk_CMISSetRef&);                                                  // 0x140ba0950
+    ~Unk_CMISSetRef();                                                                      // 0x1409ed950
+    Unk_CMISSetInfo* FUN_1409ee2d0();                                                       // operator->
+    bool FUN_1409ede50(int);                                                                // operator==
+    void* m_a; void* m_b;
+};
+struct Unk_CMISCubeList { void* m_a; void* m_b; void* m_c; };
+struct Unk_CMISCountMap { void* m_head; unsigned __int64 m_count; };
+struct Unk_CMISCountIter { void* m_p; };
+class Unk_CMISSetEffect : public CPtred                                                      // SetItemEffectInfo (0x28; ctor 0x1411233c0)
+{
+public:
+    Unk_CMISSetEffect();
+    int m_nEffect;
+    CString m_strName;
+};
+class Unk_CMISFlatModel { public: bool FUN_14211e240(unsigned nModel); };                   // egf::FlatModel::ContainsModel
+class Unk_CMISEffSvc;
+Unk_CMISListIter* FUN_140367e30(Unk_CMISCubeList*, Unk_CMISListIter*);                      // begin
+Unk_CMISListEnd* FUN_140368110(Unk_CMISCubeList*, Unk_CMISListEnd*);                        // end
+Unk_CMISPieceIter* FUN_1409efa80(Unk_CMISPieceMap*, Unk_CMISPieceIter*);                    // begin
+Unk_CMISPieceIter* FUN_1409efe40(Unk_CMISPieceMap*, Unk_CMISPieceIter*);                    // end
+Unk_CMISPieceIter* FUN_140ba1ff0(Unk_CMISPieceMap*, Unk_CMISPieceIter*, const int*);        // find
+bool FUN_1409ee120(Unk_CMISPieceIter*, Unk_CMISPieceIter*);                                 // operator!=
+bool FUN_1409edfd0(Unk_CMISPieceIter*, Unk_CMISPieceIter*);                                 // operator==
+Unk_CMISPiecePair* FUN_1409ee2e0(Unk_CMISPieceIter*);                                       // operator*
+void FUN_1409ee490(Unk_CMISPieceIter*);                                                     // operator++
+Unk_CMISPieceRef* FUN_140ba0d00(Unk_CMISPieceMap*, const int*);                             // operator[] (const)
+Unk_CMISPieceRef* FUN_141128010(Unk_CMISPieceMap*, const int*);                             // operator[]
+void FUN_14111e900(Unk_CMISPieceRef* pDst, const Unk_CMISPieceRef* pSrc);                   // copy ctor
+__int64 FUN_141128400(Unk_CMISPieceRef*);                                                   // is set
+Unk_CMISPieceInfo* FUN_140ba0d40(Unk_CMISPieceRef*);                                        // operator->
+void FUN_140b9cda0(Unk_CMISPieceRef*);                                                      // dtor
+bool FUN_141126b50(Unk_CMISPieceRef*, int);                                                 // operator==
+void FUN_14025bf00(Unk_CMISCountMap*);                                                      // ctor
+void FUN_14025c810(Unk_CMISCountMap*);                                                      // dtor
+Unk_CMISCountIter* FUN_140265b50(Unk_CMISCountMap*, Unk_CMISCountIter*);                    // begin
+Unk_CMISCountIter* FUN_140265e30(Unk_CMISCountMap*, Unk_CMISCountIter*);                    // end
+Unk_CMISCountIter* FUN_140266230(Unk_CMISCountMap*, Unk_CMISCountIter*, const int*);        // find
+bool FUN_14025cdb0(Unk_CMISCountIter*, Unk_CMISCountIter*);                                 // operator!=
+Unk_CMISIntPair* FUN_14025cf40(Unk_CMISCountIter*);                                         // operator*
+void FUN_1403e8fb0(Unk_CMISCountIter*);                                                     // operator++
+int* FUN_141127f90(Unk_CMISCountMap*, const int*);                                          // operator[]
+Unk_CMISFlatModel* FUN_1408a9bd0(egf::Entity*);
+egf::Entity* FUN_1408a9090(const efd::SmartPointer<egf::Entity>*);
+Unk_CMISEffSvc* FUN_141b6f910();
+void FUN_1409a1fc0(Unk_CMISEffSvc*, const Unk_CMISEntityRef*, const efd::utf8string*, float fScale, int nFlag);
+struct Unk_CMISLimits { char pad[8]; };
+struct Unk_CMISRules { char pad[0xa288]; Unk_CMISLimits m_limits; };                        // game-wide rules (the effect-limit table at 0xa288)
+Unk_CMISRules* FUN_1401d3200();
+int* FUN_1402056b0(Unk_CMISLimits* pTable);
+Unk_CMISIter<279>* FUN_141151a90(Unk_CMISTree<279>*, Unk_CMISIter<279>*);
+Unk_CMISIter<279>* FUN_1411574a0(Unk_CMISTree<279>*, Unk_CMISIter<279>*, const int*);
+bool FUN_141127480(Unk_CMISIter<279>*, Unk_CMISIter<279>*);                                 // operator!=
+MS2Ptr<Unk_CMISSetEffect>* FUN_141127c90(Unk_CMISTree<279>*, const int*);                   // operator[]
+void FUN_141153af0(Unk_CMISTree<279>*, const int*);                                         // erase
+// @0x1410bf610
+// MS2-FUNCTIONAL: transliteration with typed stand-ins; iterator/ref temporaries are laid out differently from the exe
+void CubeMapInformationService::FUN_1410bf610(Unk_CMISCubeList* pPlaced, Unk_CMISSetRef rSet, Unk_CMISCubeList* pOthers)
+{
+    bool bAnyLimited = false;
+    Unk_CMISPieceIter itPiece, itPieceEnd;
+    FUN_1409efa80(&rSet.FUN_1409ee2d0()->m_pieces, &itPiece);
+    while (FUN_1409ee120(&itPiece, FUN_1409efe40(&rSet.FUN_1409ee2d0()->m_pieces, &itPieceEnd))) {
+        Unk_CMISPieceRef rPiece;
+        FUN_14111e900(&rPiece, &FUN_1409ee2e0(&itPiece)->m_value);
+        if (FUN_141128400(&rPiece) != 0 && FUN_140ba0d40(&rPiece)->nMax != 0) {
+            bAnyLimited = true;
+            FUN_140b9cda0(&rPiece);
+            break;
+        }
+        FUN_140b9cda0(&rPiece);
+        FUN_1409ee490(&itPiece);
+    }
+    unsigned nPlaced = 0;
+    Unk_CMISCountMap mapCount;
+    FUN_14025bf00(&mapCount);
+    Unk_CMISListIter itCube;
+    Unk_CMISListEnd itCubeEnd;
+    for (FUN_140367e30(pPlaced, &itCube); FUN_14035ea60(&itCube, FUN_140368110(pPlaced, &itCubeEnd)); FUN_14035ebf0(&itCube)) {
+        int nKey = *FUN_1403e8d70(&itCube);
+        MS2Ptr<Cube> spCube(FUN_1410b8b00(nKey));
+        if (spCube.get() != 0) {
+            int nCount = 0;
+            int nItem = FUN_1408b4f20(spCube.operator->());
+            Unk_CMISCountIter itFind, itEnd;
+            if (FUN_14025cdb0(FUN_140266230(&mapCount, &itFind, &nItem), FUN_140265e30(&mapCount, &itEnd))) {
+                int nItem2 = FUN_1408b4f20(spCube.operator->());
+                nCount = *FUN_141127f90(&mapCount, &nItem2);
+            }
+            nCount = nCount + 1;
+            int nItem3 = FUN_1408b4f20(spCube.operator->());
+            *FUN_141127f90(&mapCount, &nItem3) = nCount;
+            nPlaced = nPlaced + 1;
+        }
+    }
+    unsigned nLimited = 0;
+    if (bAnyLimited) {
+        Unk_CMISCountIter itCnt, itCntEnd;
+        FUN_140265b50(&mapCount, &itCnt);
+        while (FUN_14025cdb0(&itCnt, FUN_140265e30(&mapCount, &itCntEnd))) {
+            int nItem = FUN_14025cf40(&itCnt)->m_key;
+            unsigned nHave = FUN_14025cf40(&itCnt)->m_val;
+            Unk_CMISPieceIter itFind, itEnd;
+            if (FUN_1409edfd0(FUN_140ba1ff0(&rSet.FUN_1409ee2d0()->m_pieces, &itFind, &nItem), FUN_1409efe40(&rSet.FUN_1409ee2d0()->m_pieces, &itEnd)) == 0) {
+                Unk_CMISPieceRef rPiece;
+                FUN_14111e900(&rPiece, FUN_140ba0d00(&rSet.FUN_1409ee2d0()->m_pieces, &nItem));
+                if (FUN_141126b50(&rPiece, 0) == 0) {
+                    if (nHave < FUN_140ba0d40(&rPiece)->nMax)
+                        nLimited = nLimited + nHave;
+                    else
+                        nLimited = nLimited + FUN_140ba0d40(&rPiece)->nMax;
+                }
+                FUN_140b9cda0(&rPiece);
+            }
+            FUN_1403e8fb0(&itCnt);
+        }
+    }
+    bool bComplete = false;
+    if (bAnyLimited == 0) {
+        if (rSet.FUN_1409ee2d0()->m_nNeed <= nPlaced)
+            bComplete = true;
+    } else {
+        if (rSet.FUN_1409ee2d0()->m_nNeed <= nLimited)
+            bComplete = true;
+    }
+    Unk_CMISListIter itSel;
+    Unk_CMISListEnd itSelEnd;
+    for (FUN_140367e30(pPlaced, &itSel); FUN_14035ea60(&itSel, FUN_140368110(pPlaced, &itSelEnd)); FUN_14035ebf0(&itSel)) {
+        int nKey = *FUN_1403e8d70(&itSel);
+        MS2Ptr<Cube> spCube(FUN_1410b8b00(nKey));
+        if (spCube.get() == 0)
+            continue;
+        int nItem = FUN_1408b4f20(spCube.operator->());
+        Unk_CMISPieceIter itFind, itEnd;
+        if (FUN_1409edfd0(FUN_140ba1ff0(&rSet.FUN_1409ee2d0()->m_pieces, &itFind, &nItem), FUN_1409efe40(&rSet.FUN_1409ee2d0()->m_pieces, &itEnd)) != 0)
+            continue;
+        int nItem2 = FUN_1408b4f20(spCube.operator->());
+        Unk_CMISPieceRef rPiece;
+        FUN_14111e900(&rPiece, FUN_141128010(&rSet.FUN_1409ee2d0()->m_pieces, &nItem2));
+        if (spCube.get() != 0) {
+            if (FUN_1408a9bd0(FUN_1408a9280(&spCube->entity))->FUN_14211e240(0x48ccc02d)) {
+                const char* pszEffect = bComplete == 0 ? (const char*)FUN_140ba0d40(&rPiece)->strModelEffect : (const char*)FUN_140ba0d40(&rPiece)->strFullEffect;
+                efd::utf8string strEffect(pszEffect);
+                FUN_1409a1fc0(FUN_141b6f910(), FUN_1408b76f0(FUN_1408a9280(&spCube->entity)), &strEffect, 1.0f, 1);
+            }
+            if (!FUN_140ba0d40(&rPiece)->strSetName.IsEmpty()) {
+                if (bComplete == 0) {
+                    Unk_CMISIter<279> itE, itF;
+                    if (FUN_141127480(FUN_1411574a0(&f348, &itF, &nKey), FUN_141151a90(&f348, &itE))) {
+                        MS2Ptr<Unk_CMISSetEffect> spEff = *FUN_141127c90(&f348, &nKey);
+                        FUN_1403ed280()->FUN_1411a6060(spEff->m_nEffect);
+                        FUN_141153af0(&f348, &nKey);
+                        FUN_1410bf320(&spEff->m_strName);
+                    }
+                } else {
+                    int nUse = FUN_1410bf3e0(&FUN_140ba0d40(&rPiece)->strSetName);
+                    if (nUse >= *FUN_1402056b0(&FUN_1401d3200()->m_limits)) {
+                        FUN_140b9cda0(&rPiece);
+                        continue;
+                    }
+                    Unk_CMISEffReq request;
+                    FUN_140a52ef0(&request);
+                    request.m_strName = FUN_140ba0d40(&rPiece)->strSetName;
+                    if (FUN_140ba0d40(&rPiece)->strAttachNode.IsEmpty()) {
+                        FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(&spCube->entity))));
+                    } else {
+                        bool bAttached = false;
+                        NiAVObject* pRoot = FUN_141b6efc0(FUN_1408a9090(&spCube->entity));
+                        if (pRoot != 0) {
+                            NiObject* pNode = FUN_14098d8d0(&DAT_143afa4d8, pRoot->GetObjectByName(NiFixedString((const char*)FUN_140ba0d40(&rPiece)->strAttachNode)));
+                            if (pNode != 0) {
+                                FUN_1409fabf0(&request.m_pSlot10, pNode);
+                                bAttached = true;
+                            }
+                        }
+                        if (bAttached == 0)
+                            FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(&spCube->entity))));
+                    }
+                    bool bOff = false;
+                    FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0x2a7fd9f4, &bOff);
+                    int nEffect = FUN_1403ed280()->FUN_1411a49c0(&request);
+                    if (nEffect != 0) {
+                        Unk_CMISIter<279> itE, itF;
+                        if (FUN_141127480(FUN_1411574a0(&f348, &itF, &nKey), FUN_141151a90(&f348, &itE))) {
+                            MS2Ptr<Unk_CMISSetEffect> spOld = *FUN_141127c90(&f348, &nKey);
+                            FUN_1403ed280()->FUN_1411a6060(spOld->m_nEffect);
+                            FUN_1410bf320(&spOld->m_strName);
+                        }
+                        MS2Ptr<Unk_CMISSetEffect> spNew(new Unk_CMISSetEffect);
+                        spNew->m_nEffect = nEffect;
+                        spNew->m_strName = FUN_140ba0d40(&rPiece)->strSetName;
+                        *FUN_141127c90(&f348, &nKey) = spNew;
+                        FUN_1410bf250(&spNew->m_strName);
+                    }
+                    FUN_1405a89e0(&request);
+                }
+            }
+            FUN_140b9cda0(&rPiece);
+        } else {
+            FUN_140b9cda0(&rPiece);
+        }
+    }
+    Unk_CMISListIter itOther;
+    Unk_CMISListEnd itOtherEnd;
+    for (FUN_140367e30(pOthers, &itOther); FUN_14035ea60(&itOther, FUN_140368110(pOthers, &itOtherEnd)); FUN_14035ebf0(&itOther)) {
+        int nKey = *FUN_1403e8d70(&itOther);
+        MS2Ptr<Cube> spCube(FUN_1410b8b00(nKey));
+        if (spCube.get() == 0)
+            continue;
+        int nItem = FUN_1408b4f20(spCube.operator->());
+        Unk_CMISPieceIter itFind, itEnd;
+        if (FUN_1409edfd0(FUN_140ba1ff0(&rSet.FUN_1409ee2d0()->m_pieces, &itFind, &nItem), FUN_1409efe40(&rSet.FUN_1409ee2d0()->m_pieces, &itEnd)) != 0)
+            continue;
+        int nItem2 = FUN_1408b4f20(spCube.operator->());
+        Unk_CMISPieceRef rPiece;
+        FUN_14111e900(&rPiece, FUN_141128010(&rSet.FUN_1409ee2d0()->m_pieces, &nItem2));
+        if (spCube.get() != 0) {
+            if (!FUN_140ba0d40(&rPiece)->strSetName.IsEmpty()) {
+                Unk_CMISIter<279> itE, itF;
+                if (FUN_141127480(FUN_1411574a0(&f348, &itF, &nKey), FUN_141151a90(&f348, &itE))) {
+                    MS2Ptr<Unk_CMISSetEffect> spEff = *FUN_141127c90(&f348, &nKey);
+                    FUN_1403ed280()->FUN_1411a6060(spEff->m_nEffect);
+                    FUN_141153af0(&f348, &nKey);
+                    FUN_1410bf320(&spEff->m_strName);
+                }
+            }
+        }
+        FUN_140b9cda0(&rPiece);
+    }
+    FUN_14025c810(&mapCount);
+}
+// ---- w138 batch 9 ----
+Unk_CMISIter<283>* FUN_141157740(Unk_CMISTree<283>*, Unk_CMISIter<283>*, const int*);       // find
+Unk_CMISIter<283>* FUN_141151bb0(Unk_CMISTree<283>*, Unk_CMISIter<283>*);                   // end
+bool FUN_141126e10(Unk_CMISIter<283>*, Unk_CMISIter<283>*);                                 // operator==
+struct Unk_CMISBucket { void* m_head; unsigned __int64 m_count; };                          // set id -> placed cube keys
+struct Unk_CMISBucketIter { void* m_p; };
+Unk_CMISBucket* FUN_141127d50(Unk_CMISTree<283>*, const int*);                              // operator[]
+Unk_CMISBucketIter* FUN_141151f10(Unk_CMISBucket*, Unk_CMISBucketIter*);                    // end
+Unk_CMISBucketIter* FUN_141157e40(Unk_CMISBucket*, Unk_CMISBucketIter*, const int*);        // find
+bool FUN_141126f90(Unk_CMISBucketIter*, Unk_CMISBucketIter*);                               // operator==
+Unk_CMISCubeList* FUN_141128050(Unk_CMISBucket*, const int*);                               // operator[]
+Unk_CMISListIter* FUN_140368510(Unk_CMISCubeList*, Unk_CMISListIter*, const int*);          // find
+bool FUN_14035e9e0(Unk_CMISListIter*, Unk_CMISListEnd*);                                    // operator==
+void FUN_140e47160(Unk_CMISCubeList*, const int*);                                          // insert
+void FUN_14035dea0(Unk_CMISCubeList*);                                                      // ctor
+void FUN_14035e6c0(Unk_CMISCubeList*);                                                      // dtor
+void FUN_14035d1e0(Unk_CMISCubeList*, Unk_CMISListIter*, const int*);                       // insert
+class Unk_CMISSetMgr;
+Unk_CMISSetMgr* FUN_1409eed50();
+Unk_CMISSetRef* FUN_140b9df60(Unk_CMISSetMgr*, Unk_CMISSetRef* pOut, int nSetId);
+bool FUN_1401b5240(MS2Ptr<CItemData>*, int);                                                // operator==
+bool FUN_140885250(Unk_CMISRecRef*, int);                                                   // operator==
+// @0x1410bec60
+// MS2-FUNCTIONAL: MS2Ptr/iterator temporaries and the repeated unwind blocks are laid out differently from the exe
+void CubeMapInformationService::FUN_1410bec60(MS2Ptr<Cube> spCube)
+{
+    if (FUN_1408b4f20(spCube.operator->()) == 0)
+        return;
+    MS2Ptr<CItemData> spItem = FUN_14053f870(FUN_1408b4f20(spCube.operator->()));
+    if (spItem.get() == 0)
+        return;
+    Unk_CMISRecRef rec;
+    FUN_1405566e0(FUN_140281980(), &rec, FUN_1408b4f20(spCube.operator->()));
+    if (FUN_140885250(&rec, 0) != 0) {
+        FUN_14056c300(&rec);
+        return;
+    }
+    if (FUN_14056d580(&rec)->nSetId == 0) {
+        FUN_14056c300(&rec);
+        return;
+    }
+    Unk_CMISSetRef rSet;
+    FUN_140b9df60(FUN_1409eed50(), &rSet, FUN_14056d580(&rec)->nSetId);
+    if (rSet.FUN_1409ede50(0) != 0) {
+        FUN_14056c300(&rec);
+        return;
+    }
+    int nItem = FUN_1408b4f20(spCube.operator->());
+    Unk_CMISPieceIter itEnd, itFind;
+    if (FUN_1409ee120(FUN_140ba1ff0(&rSet.FUN_1409ee2d0()->m_pieces, &itFind, &nItem), FUN_1409efe40(&rSet.FUN_1409ee2d0()->m_pieces, &itEnd)) == 0) {
+        int nItemLog = FUN_1408b4f20(spCube.operator->());
+        FUN_140166440()->FUN_1403d7960(1, 0x13, L"세트아이템으로 지정된 아이템({0})이지만 SetItemTable({1})에는 등록되지 않았습니다", &nItemLog, &FUN_14056d580(&rec)->nSetId);
+        FUN_14056c300(&rec);
+        return;
+    }
+    Unk_CMISIter<283> itBucketEnd, itBucket;
+    if (FUN_141126e10(FUN_141157740(&f440, &itBucket, &spCube->field50), FUN_141151bb0(&f440, &itBucketEnd))) {
+        FUN_14056c300(&rec);
+        return;
+    }
+    Unk_CMISBucket* pBucket = FUN_141127d50(&f440, &spCube->field50);
+    Unk_CMISBucketIter itInnerEnd, itInner;
+    FUN_141151f10(pBucket, &itInnerEnd);
+    if (FUN_141126f90(FUN_141157e40(pBucket, &itInner, &FUN_14056d580(&rec)->nSetId), &itInnerEnd)) {
+        FUN_14056c300(&rec);
+        return;
+    }
+    int nCell = FUN_1408a03c0(spCube->position);
+    Unk_CMISCubeList* pCells = FUN_141128050(pBucket, &FUN_14056d580(&rec)->nSetId);
+    Unk_CMISListEnd itCellEnd;
+    Unk_CMISListIter itCell;
+    if (FUN_14035e9e0(FUN_140368510(pCells, &itCell, &nCell), FUN_140368110(pCells, &itCellEnd)) == 0) {
+        FUN_140e47160(pCells, &nCell);
+        Unk_CMISCubeList lstNew;
+        FUN_14035dea0(&lstNew);
+        Unk_CMISListIter itIns;
+        FUN_14035d1e0(&lstNew, &itIns, &nCell);
+        FUN_1410bf610(pCells, Unk_CMISSetRef(rSet), &lstNew);
+        FUN_14035e6c0(&lstNew);
+    }
+    FUN_14056c300(&rec);
 }
