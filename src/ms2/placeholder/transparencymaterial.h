@@ -8,6 +8,11 @@
 
 #include <NiRefObject.h>
 #include <NiBound.h>
+#include <NiAlphaProperty.h>
+#include <NiMaterialProperty.h>
+#include <NiVertexColorProperty.h>
+#include <NiZBufferProperty.h>
+#include <efd/SmartPointer.h>
 
 #include "ms2/ms2layout.h"
 
@@ -23,10 +28,14 @@ public:
     virtual void vfunc_4(float fAlpha) = 0;                         // MS2: slot 4 set alpha
 
     NiRenderObject* m_pGeometry;                                    // +0x10
-    void* m_sp18;                                                   // +0x18 smart pointers (types not recovered)
-    void* m_sp20;                                                   // +0x20
-    void* m_sp28;                                                   // +0x28
-    void* m_sp30;                                                   // +0x30
+    // The mesh's own render properties, swapped out while the mesh is faded (0x141860140) and put back (0x141860700).
+    void FUN_141860140();                                           // detach the mesh's properties, attach fade clones
+    void FUN_141860700();                                           // restore the saved properties
+
+    efd::SmartPointer<NiAlphaProperty> m_spAlpha;                   // +0x18
+    efd::SmartPointer<NiVertexColorProperty> m_spVertexColor;       // +0x20
+    efd::SmartPointer<NiMaterialProperty> m_spMaterial;             // +0x28
+    efd::SmartPointer<NiZBufferProperty> m_spZBuffer;               // +0x30
 };
 MS2_CHECK_SIZE(TransparencyMaterial, 0x38);
 
