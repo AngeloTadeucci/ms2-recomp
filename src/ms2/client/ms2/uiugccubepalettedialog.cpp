@@ -2808,13 +2808,11 @@ UIUGCHousingPointDialog* FUN_140ef4af0(int nId)
 // ---- local-type helpers (all COMDAT-sized inline accessors of the handle types) ----
 
 // @0x140ef04a0
-// MS2-FUNCTIONAL: implicit destructor (frees the CString member)
 Unk_CubePaletteFilter::~Unk_CubePaletteFilter()
 {
 }
 
 // @0x140ef04c0
-// MS2-FUNCTIONAL: implicit destructor (~Timer)
 Unk_CubeTimer::~Unk_CubeTimer()
 {
 }
