@@ -25,7 +25,15 @@ class NiAVObject;
 class CMeshUVPicker;       // RTTI .?AVCMeshUVPicker@@ (NiRefObject, 0x98), unit ?\meshuvpicker.cpp
 
 // Model facts of a pickable part: m_nKind 0 = ponytail hair, otherwise a morph hair (read by the controller factory).
-struct Unk_PickPartInfo { char m_pad[0x2c]; int m_nKind; };
+struct Unk_PickPartInfo
+{
+    char m_pad_00[8];
+    CString m_str08;            // +0x08 name of the part's attach node
+    char m_pad_10[0x10];
+    int m_n20;                  // +0x20 nonzero: the part's node lives in its loaded meshes only (unit_1411673f0)
+    char m_pad_24[8];
+    int m_nKind;
+};
 
 // One pickable attach part of the item model (CPtred-derived, held in MS2Ptr; methods in unit_1411673f0 /
 // ?\equipmodel.cpp). Only the members recovered code calls are declared.
@@ -39,9 +47,10 @@ struct Unk_PickTarget : public CPtred
     void FUN_1412014f0(Unk_StreamPoint kOffset);                // stores the offset (itemugcmesh.cpp)
     void FUN_141201620(Unk_StreamPoint kEuler);                 // stores the euler (itemugcmesh.cpp)
     void FUN_141201cb0(std::set<NiAVObjectPtr>& kOut);          // copies the node set of the part (itemugcmesh.cpp)
-    std::set<NiAVObjectPtr>& FUN_141201c90();                   // the part's node set (itemugcmesh.cpp)
+    std::set<NiAVObjectPtr>& FUN_141201c90() const;                // the part's node set (itemugcmesh.cpp)
     void FUN_141200160(Unk_StreamPoint kOffset);                // sets the part's model offset
     void FUN_141200100(Unk_StreamPoint kEuler);                 // sets the part's model rotation (euler degrees)
+    NiAVObject* FUN_1411673f0(const CString* pName) const;      // the scene node named pName (unit_1411673f0)
     NiAVObject* FUN_1411676d0(const CString* pPartName) const;  // the model node of one attach part (w22: NiRenderObject**)
     // highlight: fScale/fMode from CItemCustomizeController::vfunc_39, pNode = the picked mesh or NULL
     void FUN_1411679d0(float fScale, float fMode, NiAVObject* pNode);
