@@ -32,7 +32,7 @@ class Unk_GrBanFlags { public: int FUN_1402c4c90(int nFlag); };             // b
 struct Unk_GrConfig { char m_pad[8]; Unk_GrBanFlags m_8; };
 Unk_GrConfig* FUN_14025e7b0();                                              // global client config
 void FUN_141b6de20();                                                       // thread start-up
-struct Unk_GrThreadScope { char m_buf[0x10]; };
+struct Unk_GrThreadScope { void* m_00; void* m_08; };
 void FUN_141b721f0(Unk_GrThreadScope* p, CString strName);
 void FUN_141b722b0(Unk_GrThreadScope* p);
 class Unk_GrUIManager { public: MS2Ptr<UIObject> FUN_141adcea0(int nClass); };
@@ -44,7 +44,7 @@ class Unk_GrStrings { public: CStringW FUN_141811980(int nTable, int nId); };
 Unk_GrStrings* FUN_1401a9d70();                                             // the string tables
 DungeonRoomTable* FUN_14031c2a0();
 CStringW FUN_140811740(int nId, const int& n0, const int& n1);              // a string table text with two numbers
-CStringW FUN_14083bdc0(const CMsTime& t, int n, CStringW strSep, CStringW strSep2);    // date + time text
+CStringW FUN_14083bdc0(const CMsTime& t, bool bSeconds, CStringW strSep, CStringW strSep2);    // date + time text
 CString FUN_14016a600(const wchar_t* psz, int nCodePage);                   // narrows a string
 CString FUN_141028be0(__int64 nId, const CString& strName, int bNoDownload, CString strUrl);   // profile image path
 CString FUN_141029590(unsigned __int64 nGuildId, const CString& strName, const CString& strUrl, CString strDefault);
@@ -270,7 +270,7 @@ CStringW CGameRankingData::FormatTime(__int64 nTime)
 {
     CMsTime t(nTime);
     CStringW strTime;
-    strTime = FUN_14083bdc0(t, 1, CStringW(L"/"), CStringW(L":"));
+    strTime = FUN_14083bdc0(t, true, CStringW(L"/"), CStringW(L":"));
     return strTime;
 }
 
@@ -297,11 +297,11 @@ CGameRankingCli::~CGameRankingCli()
 // @0x140b2a9b0
 void CGameRankingCli::Update()
 {
-    if (FUN_140166410()->FUN_14036d570(0x3f)) {
-        DeliverRows();
-        DeliverPersonal();
-        DeliverSearch();
-    }
+    if (!FUN_140166410()->FUN_14036d570(0x3f))
+        return;
+    DeliverRows();
+    DeliverPersonal();
+    DeliverSearch();
 }
 
 // @0x140b2aa00
@@ -331,7 +331,10 @@ void CGameRankingCli::ClearPersonal()
 // @0x140b2ab70
 void CGameRankingCli::OnPacket(CByteBuffer& packet)
 {
-    if (FUN_140166410()->FUN_14036d570(0x3f) && packet.vfunc_o8_1() == 0x1f) {
+    if (!FUN_140166410()->FUN_14036d570(0x3f))
+        return;
+    int nMode = packet.vfunc_o8_1();
+    if (nMode == 0x1f) {
         DAT_1439f4d94 = packet.vfunc_o8_3();
         DAT_1439f4d98 = packet.vfunc_o8_3();
     }
@@ -344,17 +347,17 @@ MS2Ptr<GameRanking::IResponse> CGameRankingCli::QueryPrevious(const Key& key, in
     int bPersonal = FUN_140b3e700(key.m_type);
     if (Unk_LockGuard guard = m_lock) {}
     else {
-        if (bPersonal == 0) {
-            m_responses.Lookup(key, spResponse);
+        if (bPersonal != 0) {
+            m_personal.Lookup(key, spResponse);
             if (bCheckValid == 1 && spResponse.get() != 0 && spResponse->IsValid() == 0) {
-                m_responses.RemoveKey(key);
+                m_personal.RemoveKey(key);
                 spResponse = 0;
             }
         }
         else {
-            m_personal.Lookup(key, spResponse);
+            m_responses.Lookup(key, spResponse);
             if (bCheckValid == 1 && spResponse.get() != 0 && spResponse->IsValid() == 0) {
-                m_personal.RemoveKey(key);
+                m_responses.RemoveKey(key);
                 spResponse = 0;
             }
         }
@@ -365,7 +368,7 @@ MS2Ptr<GameRanking::IResponse> CGameRankingCli::QueryPrevious(const Key& key, in
 // @0x140b2add0
 MS2Ptr<GameRanking::Page> CGameRankingCli::Query(const Key& key, int nPage, int bCheckValid)
 {
-    if (nPage < 1)
+    if (nPage <= 0)
         return 0;
     MS2Ptr<GameRanking::Page> spPage(0);
     if (Unk_LockGuard guard = m_lock) {}
@@ -666,13 +669,13 @@ void CGameRankingCli::BuildMyRankKey(Key& key, int nBoard, int nSub, int nMode, 
 // @0x140b2bf30
 void CGameRankingCli::Request(const CGameRankingParam* pParam)
 {
-    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x32) != 1) {
-        if (FUN_140166410()->FUN_14036d570(0x3f)) {
-            MS2Ptr<CGameRankingParam> spParam = AddParam(pParam);
-            if (spParam.get() != 0)
-                AfxBeginThread(RequestWeb, spParam.get(), 0, 0, 0, 0);
-        }
-    }
+    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x32) == 1)
+        return;
+    if (!FUN_140166410()->FUN_14036d570(0x3f))
+        return;
+    MS2Ptr<CGameRankingParam> spParam = AddParam(pParam);
+    if (spParam.get() != 0)
+        AfxBeginThread(RequestWeb, spParam.get(), 0, 0, 0, 0);
 }
 
 // @0x140b2bff0
@@ -741,9 +744,8 @@ __int64 CGameRankingCli::OwnerId(int nBoard)
     __int64 nId = 0;
     if (nBoard == 1 || nBoard == 5) {
         if (FUN_1403ed290()->FUN_1413b6160() == 0)
-            nId = 0;
-        else
-            nId = FUN_1403ed290()->m_8.FUN_1404ccbd0();
+            return 0;
+        nId = FUN_1403ed290()->m_8.FUN_1404ccbd0();
     }
     else if (nBoard == 2 || nBoard == 3 || nBoard == 4 || nBoard == 7 || nBoard == 8 || nBoard == 9 || nBoard == 0xf ||
              nBoard == 0x11 || nBoard == 0xb || nBoard == 0xc || nBoard == 10 || nBoard == 0xe || nBoard == 0x10)
@@ -1476,11 +1478,11 @@ CGameRankingParam::Key::Key()
 CGameRankingParam::Key::Key(const CGameRankingParam* pParam)
 {
     Clear();
-    if (pParam != 0) {
-        m_type = pParam->m_key.m_type;
-        m_sub = pParam->m_key.m_sub;
-        m_date = pParam->m_key.m_date;
-    }
+    if (pParam == 0)
+        return;
+    m_type = pParam->m_key.m_type;
+    m_sub = pParam->m_key.m_sub;
+    m_date = pParam->m_key.m_date;
 }
 
 // @0x140b35780
@@ -1539,11 +1541,13 @@ int GameRanking::IResponse::IsValid()
     if (m_type == 0xd || m_type == 0x17 || m_type == 0x21 || m_type == 0x3f || m_type == 0x48 || m_type == 0x51 ||
         m_type == 0x5b || m_type == 0x67 || m_type == 0x70 || m_type == 0x79 || m_type == 0x84 || m_type == 0x8e ||
         m_type == 0x97 || m_type == 0xa2 || m_type == 0xb7 || m_type == 0xcb || FUN_140b3e700(m_type) == 1) {
-        if (GetServerTime() - m_time >= DAT_1439f4d94)
+        __int64 nElapsed = GetServerTime() - m_time;
+        if (nElapsed >= DAT_1439f4d94)
             return 0;
     }
     else {
-        if (GetServerTime() - m_time >= DAT_1439f4d98 * 60)
+        __int64 nElapsed = GetServerTime() - m_time;
+        if (nElapsed >= DAT_1439f4d98 * 60)
             return 0;
     }
     return 1;
@@ -1713,17 +1717,16 @@ MS2Ptr<GameRanking::Page> GameRanking::GuildTrophy::Search(CStringW strName)
 // @0x140b379e0
 void GameRanking::GuildTrophy::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         GuildTrophy* pList = static_cast<GuildTrophy*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::GuildTrophy> spItem(new GameRankingItem::GuildTrophy);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::GuildTrophy> spItem(new GameRankingItem::GuildTrophy);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -1785,17 +1788,16 @@ MS2Ptr<GameRanking::Page> GameRanking::UserTrophy::Search(CStringW strName)
 // @0x140b38110
 void GameRanking::UserTrophy::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         UserTrophy* pList = static_cast<UserTrophy*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::UserTrophy> spItem(new GameRankingItem::UserTrophy);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::UserTrophy> spItem(new GameRankingItem::UserTrophy);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -1857,17 +1859,16 @@ MS2Ptr<GameRanking::Page> GameRanking::DarkStream::Search(CStringW strName)
 // @0x140b38870
 void GameRanking::DarkStream::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         DarkStream* pList = static_cast<DarkStream*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::DarkStream> spItem(new GameRankingItem::DarkStream);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::DarkStream> spItem(new GameRankingItem::DarkStream);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -1929,17 +1930,16 @@ MS2Ptr<GameRanking::Page> GameRanking::UserPvp::Search(CStringW strName)
 // @0x140b38fd0
 void GameRanking::UserPvp::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         UserPvp* pList = static_cast<UserPvp*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::UserPvp> spItem(new GameRankingItem::UserPvp);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::UserPvp> spItem(new GameRankingItem::UserPvp);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2001,17 +2001,16 @@ MS2Ptr<GameRanking::Page> GameRanking::GuildPvp::Search(CStringW strName)
 // @0x140b39730
 void GameRanking::GuildPvp::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         GuildPvp* pList = static_cast<GuildPvp*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::GuildPvp> spItem(new GameRankingItem::GuildPvp);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::GuildPvp> spItem(new GameRankingItem::GuildPvp);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2073,17 +2072,16 @@ MS2Ptr<GameRanking::Page> GameRanking::UgcMapCommendation::Search(CStringW strNa
 // @0x140b39e90
 void GameRanking::UgcMapCommendation::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         UgcMapCommendation* pList = static_cast<UgcMapCommendation*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::UgcMapCommendation> spItem(new GameRankingItem::UgcMapCommendation);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::UgcMapCommendation> spItem(new GameRankingItem::UgcMapCommendation);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2145,17 +2143,16 @@ MS2Ptr<GameRanking::Page> GameRanking::BossKillCount::Search(CStringW strName)
 // @0x140b3a5f0
 void GameRanking::BossKillCount::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         BossKillCount* pList = static_cast<BossKillCount*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::BossKillCount> spItem(new GameRankingItem::BossKillCount);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::BossKillCount> spItem(new GameRankingItem::BossKillCount);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2256,17 +2253,16 @@ MS2Ptr<GameRanking::Page> GameRanking::Arcade::Search(CStringW strName)
 // @0x140b3b0f0
 void GameRanking::Arcade::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         Arcade* pList = static_cast<Arcade*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::Arcade> spItem(new GameRankingItem::Arcade);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::Arcade> spItem(new GameRankingItem::Arcade);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2328,17 +2324,16 @@ MS2Ptr<GameRanking::Page> GameRanking::BossDamageCount::Search(CStringW strName)
 // @0x140b3b850
 void GameRanking::BossDamageCount::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         BossDamageCount* pList = static_cast<BossDamageCount*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::BossDamageCount> spItem(new GameRankingItem::BossDamageCount);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::BossDamageCount> spItem(new GameRankingItem::BossDamageCount);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2478,17 +2473,16 @@ MS2Ptr<GameRanking::Page> GameRanking::BossRumbleCount::Search(CStringW strName)
 // @0x140b3c6f0
 void GameRanking::BossRumbleCount::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         BossRumbleCount* pList = static_cast<BossRumbleCount*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::BossRumbleCount> spItem(new GameRankingItem::BossRumbleCount);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::BossRumbleCount> spItem(new GameRankingItem::BossRumbleCount);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2589,17 +2583,16 @@ MS2Ptr<GameRanking::Page> GameRanking::WorldChampion::Search(CStringW strName)
 // @0x140b3d1f0
 void GameRanking::WorldChampion::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         WorldChampion* pList = static_cast<WorldChampion*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::WorldChampion> spItem(new GameRankingItem::WorldChampion);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::WorldChampion> spItem(new GameRankingItem::WorldChampion);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2661,17 +2654,16 @@ MS2Ptr<GameRanking::Page> GameRanking::BossColosseum::Search(CStringW strName)
 // @0x140b3d950
 void GameRanking::BossColosseum::Merge(CStringW strName, IResponse* pOther)
 {
-    if (m_names.Lookup(strName) == NULL && pOther != NULL) {
+    if (m_names.Lookup(strName) == NULL) {
         BossColosseum* pList = static_cast<BossColosseum*>(pOther);
-        if (pList->m_ranks.GetCount() == 0) {
-            MS2Ptr<GameRankingItem::BossColosseum> spItem(new GameRankingItem::BossColosseum);
-            m_names.SetAt(strName, spItem);
-        }
-        else {
-            POSITION pos = pList->m_ranks.GetHeadPosition();
-            while (pos != NULL) {
-                m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
-                pList->m_ranks.GetNext(pos);
+        if (pList != NULL) {
+            if (pList->m_ranks.GetCount() == 0) {
+                MS2Ptr<GameRankingItem::BossColosseum> spItem(new GameRankingItem::BossColosseum);
+                m_names.SetAt(strName, spItem);
+            }
+            else {
+                for (POSITION pos = pList->m_ranks.GetHeadPosition(); pos != NULL; pList->m_ranks.GetNext(pos))
+                    m_names.SetAt(strName, pList->m_ranks.GetValueAt(pos));
             }
         }
     }
@@ -2699,10 +2691,10 @@ GameRanking::Page::~Page()
 // @0x140b3dbd0
 void GameRanking::Page::Add(int nRank, GameRankingItem::IRankItem* pItem)
 {
-    if (pItem != 0) {
-        MS2Ptr<GameRankingItem::IRankItem> spItem(pItem);
-        m_items.SetAt(nRank, spItem);
-    }
+    if (pItem == 0)
+        return;
+    MS2Ptr<GameRankingItem::IRankItem> spItem(pItem);
+    m_items.SetAt(nRank, spItem);
 }
 
 // @0x140b3dc40
@@ -2739,11 +2731,11 @@ CGameRankingParam::CGameRankingParam()
 // @0x140b3de40
 void CGameRankingParam::Copy(const CGameRankingParam* pParam)
 {
-    if (pParam != 0) {
-        m_key = pParam->m_key;
-        m_38 = pParam->m_38;
-        m_search = pParam->m_search;
-    }
+    if (pParam == 0)
+        return;
+    m_key = pParam->m_key;
+    m_38 = pParam->m_38;
+    m_search = pParam->m_search;
 }
 
 // @0x140b3deb0
@@ -2767,10 +2759,10 @@ CGameRankingWebResult::CGameRankingWebResult(int nResult)
 int FUN_140b3df90(__int64 nTime, int nMonths)
 {
     CMsTime t(nTime);
-    int nYear = t.GetYear();
-    nYear = nYear - nMonths / 12;
-    int nMonth = t.GetMonth();
-    nMonth = nMonth - nMonths % 12;
+    int nYears = nMonths / 12;
+    int nRest = nMonths % 12;
+    int nYear = t.GetYear() - nYears;
+    int nMonth = t.GetMonth() - nRest;
     if (nMonth > 12) {
         nYear = nYear + 1;
         nMonth = nMonth - 12;
@@ -2779,7 +2771,8 @@ int FUN_140b3df90(__int64 nTime, int nMonths)
         nYear = nYear - 1;
         nMonth = nMonth + 12;
     }
-    return nYear * 100 + nMonth;
+    int nYearMonth = nYear * 100 + nMonth;
+    return nYearMonth;
 }
 
 // The first and the last second of the yyyymm month.
@@ -2787,13 +2780,16 @@ int FUN_140b3df90(__int64 nTime, int nMonths)
 void FUN_140b3e050(int nYearMonth, __int64& nBegin, __int64& nEnd)
 {
     int nYear = nYearMonth / 100;
-    nBegin = CMsTime(nYear, nYearMonth % 100, 1, 0, 0, 0).Get();
-    int nMonth = nYearMonth % 100 + 1;
+    int nMonth = nYearMonth % 100;
+    CMsTime tBegin(nYear, nMonth, 1, 0, 0, 0);
+    nBegin = tBegin.Get();
+    nMonth++;
     if (nMonth > 12) {
-        nYear = nYear + 1;
+        nYear++;
         nMonth = 1;
     }
-    nEnd = CMsTime(nYear, nMonth, 1, 0, 0, 0).Get() - 1;
+    CMsTime tEnd(nYear, nMonth, 1, 0, 0, 0);
+    nEnd = tEnd.Get() - 1;
 }
 
 // The yyyymmdd ranking day (it changes at 2 o'clock).
@@ -2801,9 +2797,12 @@ void FUN_140b3e050(int nYearMonth, __int64& nBegin, __int64& nEnd)
 int FUN_140b3e150()
 {
     CMsTime t(GetServerTime());
-    if (t.GetHour() < 2)
-        t = t - ATL::CTimeSpan(1, 0, 0, 0);
-    return t.GetYear() * 10000 + t.GetMonth() * 100 + t.GetDay();
+    if (t.GetHour() < 2) {
+        ATL::CTimeSpan span(1, 0, 0, 0);
+        t = t - span;
+    }
+    int nDay = t.GetYear() * 10000 + t.GetMonth() * 100 + t.GetDay();
+    return nDay;
 }
 
 // The board (dialog tab) of a board type; the boss boards by the dungeon group of the room.
@@ -2932,7 +2931,10 @@ CStringW FUN_140b3f4e0(CByteBuffer& s)
     memset(pBuffer, 0, nLength + 2);
     s.vfunc_o8_9(pBuffer, nLength);
     CStringW str(reinterpret_cast<wchar_t*>(pBuffer));
-    delete[] pBuffer;
+    if (pBuffer != NULL) {
+        delete[] pBuffer;
+        pBuffer = NULL;
+    }
     return str;
 }
 
@@ -2941,11 +2943,12 @@ CStringW FUN_140b3f4e0(CByteBuffer& s)
 __int64 FUN_140b3f610(CByteBuffer& s)
 {
     CStringW str = FUN_140b3f4e0(s);
-    int nYear = _wtoi(str.Mid(0));
-    int nMonth = _wtoi(str.Mid(5));
-    int nDay = _wtoi(str.Mid(8));
-    int nHour = _wtoi(str.Mid(11));
-    int nMinute = _wtoi(str.Mid(14));
-    int nSecond = _wtoi(str.Mid(17));
-    return CMsTime(nYear, nMonth, nDay, nHour, nMinute, nSecond).Get();
+    int nYear = _wtoi(str.Mid(0, 4));
+    int nMonth = _wtoi(str.Mid(5, 2));
+    int nDay = _wtoi(str.Mid(8, 2));
+    int nHour = _wtoi(str.Mid(11, 2));
+    int nMinute = _wtoi(str.Mid(14, 2));
+    int nSecond = _wtoi(str.Mid(17, 2));
+    CMsTime t(nYear, nMonth, nDay, nHour, nMinute, nSecond);
+    return t.Get();
 }

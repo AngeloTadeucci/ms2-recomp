@@ -294,7 +294,7 @@ public:
     int m_58;
     __int64 m_60;
     __int64 m_time;                                         // +0x68
-    __int64 m_70;
+    int m_70;
 };
 MS2_CHECK_SIZE(Survival, 0x78);
 
