@@ -61,6 +61,11 @@ public:
     MS2Ptr<class Unk_MyPCSkillSet> FUN_141768380();         // the temporary (ridee) skill set, if any
     void FUN_141768100(int nSkillId);                       // remove a temporary skill
     MS2Ptr<class CSkillRecord> FUN_141764e30(struct Unk_InventorySkillRequest& kReq);   // cast a request
+    float FUN_141765fe0(int nSkillId, int n);              // the cooldown left of nSkillId
+    int FUN_141768bd0(MS2Ptr<class CSkillRecord> spRecord); // the record may be cast during its cooldown
+    void FUN_141766cc0(MS2Ptr<class CSkillRecord> spRecord);
+    void FUN_141767990(int nSkillId, unsigned short nLevel); // start the cooldown
+    void FUN_141768900(MS2Ptr<class CSkillRecord> spRecord);
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
     unsigned char m_body[0x1e8];
 };
@@ -249,6 +254,9 @@ public:
     void FUN_1415294f0(int nObjectId, __int64 nExp);                                // the nearest talkable npc
     void FUN_141529d90();                                   // request the house design mode (packet 0x6c 4)
     void FUN_141529e90();                                   // request the blueprint mode (packet 0x6c 5)
+    bool FUN_141525580(MS2Ptr<class CSkillRecord> spRecord);   // the record may be cast now
+    void FUN_141525ff0(MS2Ptr<class CSkillRecord> spRecord, float fElapsed);   // send the cast
+    void FUN_141524a80(bool bForce);                        // stop moving for a cast
     void FUN_14152b2d0(__int64 nItemUid);                   // summon the pet of an inventory item
     void FUN_14152dee0(int nId);                            // packet 0x40 3
     void FUN_14152df80();                                   // packet 0x40 4 (camera reset first)

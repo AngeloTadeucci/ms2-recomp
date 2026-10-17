@@ -51,6 +51,7 @@
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/commonfiles/timeutil.h"
 #include "ms2/client/ms2/uimessagebox.h"
+#include "ms2/client/ms2/uimessageboxdata.h"
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/citemdata.h"
@@ -115,6 +116,8 @@ struct Unk_MyPCSkillSwap
 class Unk_MyPCSkillRow : public CPtred
 {
 public:
+    int FUN_1407e9a40();                                    // the skill id
+    bool FUN_1407e9d70();                                   // cast from an item only
     char m_pad_18[0xa4 - 0x18];
     Unk_MyPCSkillSwap m_kSwap;                              // +0xa4
     unsigned char m_bAC;                                    // +0xac
@@ -334,7 +337,7 @@ Unk_MyPCHud* FUN_140a94350();
 void FUN_141a8a730();
 class Unk_MyPCPlayerInfo { public: void FUN_1419f1880(int n); void FUN_1419f1c80(); void FUN_1419f1820(); };   // UIMainPlayerInfo (0x4e5f)
 Unk_MyPCPlayerInfo* FUN_140931900(int nId);
-class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); void FUN_14117e560(__int64 nExp); };
+class Unk_MyPCPartyMgr { public: void FUN_14117e860(int n); void FUN_14117e560(__int64 nExp); void FUN_14117e600(); };
 
 // The world object the exp came from (an npc/monster actor; ?\unit_14108e1e0 range).
 class Unk_MyPCExpSource : public PCBase
@@ -470,11 +473,22 @@ struct Unk_InventorySkillRequest
     __int64 item;
 };
 MS2_CHECK_SIZE(Unk_InventorySkillRequest, 0x48);
-class CSkillRecord : public CPtred                          // RTTI, 0x1c0 (?\skillrecord.cpp)
+// RTTI, 0x1c0 (?\skillrecord.cpp). PCBase hands the same record out as Unk_PCBaseComp_b18 (shared MS2Ptr bodies).
+class CSkillRecord : public Unk_PCBaseComp_b18
 {
 public:
-    char m_pad_18[0x1c0 - 0x18];
+    __int64 FUN_1417599c0();                                // the item of an item skill
+    MS2Ptr<Unk_InventorySkillLevel> m_spLevel;              // +0x40
+    char m_pad_50[0x90 - 0x50];
+    int m_n90;                                              // +0x90
+    char m_pad_94[0xac - 0x94];
+    bool m_bNoBindCheck;                                    // +0xac
+    bool m_bAD;
+    bool m_bStorageItem;                                    // +0xae the item may be in the storage
+    char m_pad_af[0x1c0 - 0xaf];
 };
+MS2_CHECK_OFFSET(CSkillRecord, m_spLevel, 0x40);
+MS2_CHECK_OFFSET(CSkillRecord, m_bStorageItem, 0xae);
 MS2_CHECK_SIZE(CSkillRecord, 0x1c0);
 class Unk_MyPCSkillBook : public CPtred
 {
@@ -1018,6 +1032,127 @@ void MyPC::vfunc_91(void* p)
     PC::vfunc_90(p);
 }
 MS2_REPLACE_METHOD(0x1415219A0, MyPC, vfunc_91, 34, 0x5BC77B81);
+
+bool FUN_140804450(Unk_InventorySkillLevel* pLevel);       // the level is a held (charged) skill
+float FUN_14028d280(unsigned int nTick);                    // ms to seconds
+// The storage (?\\storage.cpp) an item skill may take its item from.
+class Unk_MyPCStorage { public: MS2Ptr<CItem> FUN_140c87250(__int64 nItemUid); };
+class Unk_MyPCStorageMgr { public: Unk_MyPCStorage* FUN_140c8b410(); };
+Unk_MyPCStorageMgr* FUN_140535320();
+class Unk_ItemOwnerRef : public CItemTransfer {};
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);   // the formatted string of a key
+MS2Ptr<CMsgBoxData> FUN_140d73d20(int nType, CStringW strText, int nUnk, CStringW strTag);
+void FUN_140d73c60(MS2Ptr<CMsgBoxData> spBox);
+// The skill state (?\\stateskill.cpp; FUN_14166c930() == 0x10).
+class StateSkill : public State
+{
+public:
+    MS2Ptr<CSkillRecord> FUN_1417ed6f0();                   // the record being cast
+    void FUN_1417ed740(MS2Ptr<CSkillRecord> spRecord);      // queue the next record
+    // @0x141534030
+    unsigned int FUN_141534030() { return m_nElapsed; }
+    char m_pad_40[0x13c - 0x40];
+    unsigned int m_nElapsed;                                // +0x13c
+};
+int FUN_1417ea570(PCBase* pCaster, MS2Ptr<CSkillRecord> spRecord, int* pSend);   // start the cast
+void FUN_1417ea920(PCBase* pCaster, MS2Ptr<CSkillRecord> spRecord);
+
+// Cast a skill record: check the cooldown, the item a bound item skill uses, then start the skill state.
+// MS2-FUNCTIONAL: the held-skill list is typed by its PCBase alias (an extra MS2Ptr temp for AddTail); the unbound
+// flag and the box argument use different temps.
+// @0x141521fc0
+bool MyPC::vfunc_102(MS2Ptr<CSkillRecord> spRecord)
+{
+    if (spRecord == 0)
+        return false;
+    if (!FUN_141525580(spRecord))
+        return false;
+    float fCool = m_kSkillSystem.FUN_141765fe0(spRecord->m_spRow->FUN_1407e9a40(), 0);
+    int bAnyTime = m_kSkillSystem.FUN_141768bd0(spRecord);
+    if (bAnyTime == 0 && fCool > 0.0f)
+    {
+        // still cooling down: only queue it behind the skill being cast
+        if (FUN_14166c930() != 0x10)
+            return false;
+        StateSkill* pSkill = dynamic_cast<StateSkill*>(FUN_14166ccb0());
+        if (pSkill == 0)
+            return false;
+        pSkill->FUN_1417ed740(spRecord);
+        MS2Ptr<CSkillRecord> spCur = pSkill->FUN_1417ed6f0();
+        if (spCur.get() != 0)
+            spCur->m_n90 = 0;
+        return true;
+    }
+    if (spRecord->m_spRow->FUN_1407e9d70() && spRecord->FUN_1417599c0() == 0)
+        return false;
+    if (spRecord->FUN_1417599c0() != 0)
+    {
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(spRecord->FUN_1417599c0());
+        if (spItem == 0 && spRecord->m_bStorageItem)
+            spItem = FUN_140535320()->FUN_140c8b410()->FUN_140c87250(spRecord->FUN_1417599c0());
+        if (spItem == 0)
+            return false;
+        bool bUnbound = !spItem->FUN_140525640();
+        if (bUnbound && !spRecord->m_bNoBindCheck
+            && spItem->FUN_140527930()->FUN_140635100() != 0 && spItem->FUN_140527930()->FUN_140635120() == 0)
+        {
+            // using it binds the item: confirm first
+            CStringW strMsg = FUN_1405c2690(L"s_msg_transfer_bind_when_use", vfunc_77());
+            MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(0x11, strMsg, 0, s_strUseBindItemSkill);
+            if (spBox)
+            {
+                spBox->FUN_141a01600(spItem->FUN_140526a50());
+                spBox->FUN_141a01ee0(spItem, spItem->FUN_140527b10(), 1, 0, -1, -1, 1);
+                unsigned int nSkillId = spRecord->m_spRow->FUN_1407e9a40();
+                spBox->FUN_140534050(nSkillId);
+                spBox->FUN_141a01700(0x477, 0x478, 0);
+                FUN_140d73c60(spBox);
+                return true;
+            }
+        }
+    }
+    float fDelay = 0.0f;
+    float fElapsed = 0.0f;
+    StateSkill* pSkill = dynamic_cast<StateSkill*>(m_spStateMgr->FUN_1417db1c0());
+    if (pSkill != 0)
+    {
+        MS2Ptr<CSkillRecord> spCur = pSkill->FUN_1417ed6f0();
+        if (spCur.get() != 0)
+            fElapsed = FUN_14028d280(pSkill->FUN_141534030());
+    }
+    int bSend = 0;
+    int nStarted = FUN_1417ea570(this, spRecord, &bSend);
+    FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new NotifyUseSKill(spRecord->m_spRow->FUN_1407e9a40(),
+        ::FUN_140803df0(spRecord->m_spLevel.operator->()))));
+    m_kSkillSystem.FUN_141766cc0(spRecord);
+    if (nStarted != 0)
+    {
+        FUN_14109a6f0()->FUN_14117e600();
+        if (FUN_140804450(spRecord->m_spLevel.operator->()))
+        {
+            // a held skill: keep it until released
+            m_unk_8e8.AddTail(MS2Ptr<Unk_PCBaseComp_b18>(spRecord.get()));   // the list holds the same records
+            vfunc_59(0x10, 0, 0, 1);
+            fDelay = fElapsed;
+        }
+        else
+        {
+            Ridee* pRidee = FUN_1416764a0();
+            if (pRidee != 0)
+                pRidee->FUN_141706650(true);
+            else
+                FUN_141524a80(true);
+            FUN_1417ea920(this, spRecord);
+        }
+    }
+    m_kSkillSystem.FUN_141767990(spRecord->m_spRow->FUN_1407e9a40(), ::FUN_140803df0(spRecord->m_spLevel.operator->()));
+    if (bSend != 0)
+        FUN_141525ff0(spRecord, fDelay);
+    if (FUN_141675ed0() == 0)
+        m_kSkillSystem.FUN_141768900(spRecord);
+    return true;
+}
+MS2_REPLACE_METHOD(0x141521FC0, MyPC, vfunc_102, 3216, 0xFE30C703);
 
 // @0x141522c60
 void MyPC::vfunc_59(int nState, StateData* pData, int nSub, int bForce)
