@@ -703,11 +703,13 @@ int UIQuestGuideDialog::vfunc_54(void* pCfg)
 MS2_REPLACE_METHOD(0x141aab180, UIQuestGuideDialog, vfunc_54, 450, 0xB9B45FE4);
 
 // @0x141aab350
-// MS2-FUNCTIONAL: the exe materialises the m_30 test as a bool temporary
 void UIQuestGuideDialog::vfunc_18()
 {
-    if (m_30.get() && FUN_1422dc430())
-        FUN_141aadc50();
+    if ((bool)m_30.get())
+    {
+        if (FUN_1422dc430())
+            FUN_141aadc50();
+    }
 }
 MS2_REPLACE_METHOD(0x141aab350, UIQuestGuideDialog, vfunc_18, 81, 0x2DEC7D5B);
 
