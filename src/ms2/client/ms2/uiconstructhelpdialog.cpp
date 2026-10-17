@@ -121,14 +121,15 @@ void UIConstructHelpDialog::vfunc_79(void* p)
 }
 
 // @0x141906140
-// MS2-FUNCTIONAL: behaviour-equivalent; result slot of the FUN_1418fc760 test differs
 int UIConstructHelpDialog::vfunc_28(const char* szMethod, const Scaleform::GFx::Value* pArgs, unsigned int nArgs)
 {
     if (UIDialog::vfunc_28(szMethod, pArgs, nArgs) != 0)
         return 1;
-    if (FUN_1418fc760(szMethod, pArgs, nArgs, 0) == 0)
-        return 0;
-    return 1;
+    if (FUN_1418fc760(szMethod, pArgs, nArgs, 0) != 0)
+    {
+        return 1;
+    }
+    return 0;
 }
 
 // @0x1419061b0
