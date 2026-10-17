@@ -134,14 +134,12 @@ void FUN_140885810(MS2Ptr<Cube>* pPtr);
 Unk_CubeEntry* FUN_1408853a0(void* pIter);
 
 // @0x140884eb0
-// MS2-FUNCTIONAL: identity helper (std::addressof-like) of the map entry
 Unk_CubeEntry* FUN_140884eb0(Unk_CubeEntry* pEntry)
 {
     return pEntry;
 }
 
 // @0x140884f70
-// MS2-FUNCTIONAL: MS2Ptr<Cube> copy-construct (copies the pointer, then AddRef)
 MS2Ptr<Cube>* FUN_140884f70(MS2Ptr<Cube>* pDst, const MS2Ptr<Cube>* pSrc)
 {
     *(Cube**)((char*)pDst + 8) = *(Cube**)((char*)pSrc + 8);
@@ -150,21 +148,18 @@ MS2Ptr<Cube>* FUN_140884f70(MS2Ptr<Cube>* pDst, const MS2Ptr<Cube>* pSrc)
 }
 
 // @0x140885320
-// MS2-FUNCTIONAL: MS2Ptr<Cube>::get-like read of the held pointer
 Cube* FUN_140885320(const MS2Ptr<Cube>* pPtr)
 {
     return *(Cube**)((char*)pPtr + 8);
 }
 
 // @0x140885de0
-// MS2-FUNCTIONAL: wrapper around the identity helper
 Unk_CubeEntry* FUN_140885de0(Unk_CubeEntry* pEntry)
 {
     return FUN_140884eb0(pEntry);
 }
 
 // @0x140885360
-// MS2-FUNCTIONAL: _Tree_iterator::operator* spelled as a plain function (const operator*, then the identity wrapper)
 Unk_CubeEntry* FUN_140885360(void* pIter)
 {
     return FUN_140885de0(FUN_1408853a0(pIter));
