@@ -9,10 +9,6 @@
 // MS2-RANGE: 0x14119e920-0x1411b8510 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$_Insert_at@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@U_Not_a_node_tag@2@@?$_Tree@V?$_Tmap_traits@IPEAUUnk_EsEffectGroup@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@1@$$QEAU?$pair@$$CBIPEAUUnk_EsEffectGroup@@@1@U_Not_a_node_tag@1@@Z 0x1411acce0 ; unique
-// MS2-PIN: ??$destroy@V?$SmartPointer@VCEffect@@@efd@@@?$_Default_allocator_traits@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@SAXAEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@1@QEAV?$SmartPointer@VCEffect@@@efd@@@Z 0x1411ae290 ; unique
-// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1411ae4d0 ; unique
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1411af2d0 ; prop
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x1411afef0 ; unique
 // MS2-PIN: ??8?$MS2Ptr@VCEffectData@@@@QEBA_NPEAVCEffectData@@@Z 0x1411b02f0 ; unique
 // MS2-PIN: ?Invoke@?$ClassFunHandler@V?$TFunctor@IV?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VEmptyParam@@@@@@@@PEAVCEffectService@@P82@EAAIAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@0@Z@@UEAAIAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@0@Z 0x1411b0dc0 ; unique
 // MS2-PIN: ?Invoke@?$ClassFunHandler@V?$TFunctor@XVEmptyParam@@@@PEAVCEffectService@@P82@EAAXXZ@@UEAAXXZ 0x1411b0e00 ; unique
@@ -34,28 +30,26 @@
 // MS2-PIN: ?SetupClassInfo@CEffectService@@SAXPEAVClassInfo@efd@@_K@Z 0x1411b30a0 ; unique
 // MS2-PIN: ?_Reallocate_exactly@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAX_K@Z 0x1411b5e80 ; unique
 // MS2-PIN: ?_Tidy@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXXZ 0x1411b66d0 ; unique
-// MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1411b6e90 ; prop
 // MS2-PIN: ?clear@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAAXXZ 0x1411b7190 ; unique
 // MS2-PIN: ?empty@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEBA_NXZ 0x1411b75a0 ; unique
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IPEAUUnk_EsEffectGroup@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@std@@@std@@@2@@Z 0x1411b78c0 ; unique
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@0@Z 0x1411b7970 ; unique
 // MS2-PIN: ?reserve@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAAX_K@Z 0x1411b8420 ; unique
 // MS2-PINS-END tplpin
-// MS2-PIN: ?end@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@2@XZ 0x1411b7770
 // MS2-PIN: ??__Es_strSortTypeNames@@YAXXZ 0x1400e7890
 // MS2-PIN: ??__Es_strSkill@@YAXXZ 0x1400e7950
 // MS2-PIN: ??__Es_strStun@@YAXXZ 0x1400e7980
 // MS2-PIN: ??__Es_unk1402a9d70@@YAXXZ 0x1400e79b0
 // MS2-PIN: ??__Es_dat_143ad1638@@YAXXZ 0x1400e7cc0
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@2@_K@Z 0x1411b7370
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VNiLight@@@efd@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VNiLight@@@efd@@@std@@PEAX@2@_K@Z 0x1411b7430
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@2@_K@Z 0x1411b7370
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@2@_K@Z 0x1411b7430
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@2@_K@Z 0x1411b7460
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VNiLight@@@efd@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VNiLight@@@efd@@@std@@PEAX@2@_K@Z 0x1411b7490
 // MS2-PIN: ?TypeCast@CEffectService@@UEBA_NIPEAPEAX@Z 0x1411b3100
 // MS2-PIN: ?TypeCast@CEffectService@@UEBA_NIPEAPEBX@Z 0x1411b3150
 // MS2-PIN: ??_7CEffectService@@6BISystemService@efd@@@ 0x142ebb8b8
 // MS2-PIN: ??_7CEffectService@@6B?$TSingleton@VCEffectService@@@@@ 0x142ebb988
 // MS2-PIN: ??1?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@QEAA@XZ 0x1411af9b0
 // MS2-PIN: ?CallDestructors@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@CAXPEAV?$SmartPointer@VNiAVObject@@@efd@@_K@Z 0x1411b1780
-// MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1411ab400
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@0@Z 0x1411b77d0
 // MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x1411af390
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1411b03b0
@@ -74,91 +68,52 @@
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x1411b62d0
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@XZ 0x1411b6210
 // MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@XZ 0x1411b6270
+// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@PEAU32@@Z 0x1411b5c20
+// MS2-PIN: memcpy_s 0x1411a3170
 // MS2-PIN: ??1?$MessageWrapper@VEntityChangeMessage@egf@@$0CAAE@@efd@@UEAA@XZ 0x1411afb00
 // MS2-PIN: ??1?$MessageWrapper@VEntityChangeMessage@egf@@$0CADO@@efd@@UEAA@XZ 0x1411afb20
 // MS2-PIN: ??_G?$MessageWrapper@VEntityChangeMessage@egf@@$0CAAE@@efd@@UEAAPEAXI@Z 0x1411b1050
 // MS2-PIN: ??_G?$MessageWrapper@VEntityChangeMessage@egf@@$0CADO@@efd@@UEAAPEAXI@Z 0x1411b10b0
 // MS2-PIN: ??8?$SmartPointer@VCEffect@@@efd@@QEBA_NPEAVCEffect@@@Z 0x14119f440
 // MS2-PIN: ??C?$SmartPointer@VCEffect@@@efd@@QEBAPEAVCEffect@@XZ 0x14119f480
+// MS2-PIN: ??1?$TFunctor@IV?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VEmptyParam@@@@@@@@QEAA@XZ 0x1411afc30
+// MS2-PIN: ??0?$FunctorImpl@IV?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$ParamList@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@VEmptyParam@@@@@@@@QEAA@XZ 0x1411ae9b0
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$CustomAllocator@V?$SmartPointer@VNiObject@@@efd@@@efd@@V?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VNiObject@@@efd@@@std@@@std@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1411ab110
+// MS2-PIN: ??$?0AEBU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1411ab400
+// MS2-PIN: ??0?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VNiObject@@@efd@@V?$CustomAllocator@V?$SmartPointer@VNiObject@@@efd@@@2@@std@@@std@@QEAA@XZ 0x1411af5d0
+// MS2-PIN: ??1?$_Compressed_pair@V?$CustomAllocator@V?$SmartPointer@VNiObject@@@efd@@@efd@@V?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VNiObject@@@efd@@@std@@@std@@$00@std@@QEAA@XZ 0x1411afd70
+// MS2-PIN: ??1?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VNiObject@@@efd@@V?$CustomAllocator@V?$SmartPointer@VNiObject@@@efd@@@2@@std@@@std@@QEAA@XZ 0x1411aff90
+// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIPEAUUnk_EsEffectGroup@@@std@@@std@@@std@@@2@@Z 0x1411b3de0
+// MS2-PIN: ??$addressof@V?$SmartPointer@VCEffect@@@efd@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@AEAV12@@Z 0x1411ade80
 // MS2-PIN: ?GetInstance@?$TSingleton@VEffectSkipMgr@@@@SAPEAVEffectSkipMgr@@XZ 0x14119f490
 // MS2-PIN: ?GetRTTI@CEffect@@UEBAPEBVNiRTTI@@XZ 0x14119f4a0
 // MS2-PIN: ?GetAt@?$CAtlList@V?$MS2Ptr@VCEffectParam@@@@V?$CElementTraits@V?$MS2Ptr@VCEffectParam@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCEffectParam@@@@PEAU__POSITION@@@Z 0x1411a2130
 // MS2-PIN: ?GetNext@?$CAtlList@V?$MS2Ptr@VCEffectParam@@@@V?$CElementTraits@V?$MS2Ptr@VCEffectParam@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCEffectParam@@@@AEAPEAU__POSITION@@@Z 0x1411a2280
 // MS2-PIN: memmove_s 0x1411a4190
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1411ab110
-// MS2-PIN: ??$_Destroy_range1@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAXPEAV?$SmartPointer@VCEffect@@@efd@@0AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@U?$integral_constant@_N$0A@@0@@Z 0x1411ac100
-// MS2-PIN: ??$_Destroy_range@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAXPEAV?$SmartPointer@VCEffect@@@efd@@0AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@@Z 0x1411ac160
-// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBV?$SmartPointer@VCEffect@@@efd@@@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXAEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x1411ac270
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@PEAU01@@Z 0x1411ac6e0
-// MS2-PIN: ??$_Idl_distance1@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@@std@@YA_JAEBQEAV?$SmartPointer@VCEffect@@@efd@@0Urandom_access_iterator_tag@0@@Z 0x1411ac820
 // MS2-PIN: ??$_Insert@AEBV?$MS2Ptr@VPendingEffect@@@@@?$list@V?$MS2Ptr@VPendingEffect@@@@V?$allocator@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@U_Iterator_base0@2@@1@AEBV?$MS2Ptr@VPendingEffect@@@@@Z 0x1411ac900
-// MS2-PIN: ??$_Uninitialized_copy_al_unchecked@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@QEAV12@1AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@U_General_ptr_iterator_tag@0@U_Unused_parameter@0@@Z 0x1411adbd0
-// MS2-PIN: ??$_Uninitialized_move_al_unchecked@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@QEAV12@1AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@U_General_ptr_iterator_tag@0@U_Unused_parameter@0@@Z 0x1411add30
-// MS2-PIN: ??$emplace_back@AEBV?$SmartPointer@VCEffect@@@efd@@@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAAXAEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x1411ae3b0
-// MS2-PIN: ??0?$MessageWrapper@VEntityChangeMessage@egf@@$0CADN@@efd@@QEAA@XZ 0x1411ae9b0
 // MS2-PIN: ??0?$_List_alloc@U?$_List_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAA@XZ 0x1411aef00
-// MS2-PIN: ??0?$_Uninitialized_backout_al@PEAV?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAA@PEAV?$SmartPointer@VCEffect@@@efd@@AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@1@@Z 0x1411af560
-// MS2-PIN: ??0?$_String_alloc@U?$_String_base_types@DV?$allocator@D@std@@@std@@@std@@QEAA@XZ 0x1411af5d0
 // MS2-PIN: ??0Unk_EsEffectGroup@@QEAA@I@Z 0x1411af8b0
-// MS2-PIN: ??1?$_Uninitialized_backout_al@PEAV?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAA@XZ 0x1411aff50
 // MS2-PIN: ?CallConstructors@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@CAXPEAV?$SmartPointer@VNiAVObject@@@efd@@_K@Z 0x1411b1700
 // MS2-PIN: ?GetFreeNode@?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@AEAAXXZ 0x1411b1be0
 // MS2-PIN: ??BAtomicRefCount@efd@@QEAAIXZ 0x1411b1ed0
 // MS2-PIN: ?SetCount@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1411b2ee0
 // MS2-PIN: ?_Buyheadnode@?$_List_alloc@U?$_List_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAAPEAU?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@2@XZ 0x1411b32a0
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x1411b33a0
 // MS2-PIN: ?_Buynode0@?$_List_alloc@U?$_List_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAAPEAU?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@2@PEAU32@0@Z 0x1411b3520
-// MS2-PIN: ?_Calculate_growth@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEBA_K_K@Z 0x1411b3860
-// MS2-PIN: ?_Change_array@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXQEAV?$SmartPointer@VCEffect@@@efd@@_K1@Z 0x1411b38f0
-// MS2-PIN: ?_Destroy@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXPEAV?$SmartPointer@VCEffect@@@efd@@0@Z 0x1411b3b60
-// MS2-PIN: ?_Has_unused_capacity@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEBA_NXZ 0x1411b5680
 // MS2-PIN: ?_Incsize@?$list@V?$MS2Ptr@VPendingEffect@@@@V?$allocator@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@QEAAX_K@Z 0x1411b5750
-// MS2-PIN: ?_Orphan_range@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEBAXPEAV?$SmartPointer@VCEffect@@@efd@@0@Z 0x1411b5e70
 // MS2-PIN: ?Release@?$MS2Ptr@VCEffectData@@@@AEAAXXZ 0x1411b5f20
-// MS2-PIN: ?_Release@?$_Uninitialized_backout_al@PEAV?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAAPEAV?$SmartPointer@VCEffect@@@efd@@XZ 0x1411b6060
-// MS2-PIN: ?_Umove_if_noexcept@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXPEAV?$SmartPointer@VCEffect@@@efd@@00@Z 0x1411b68f0
 // MS2-PIN: ?_Unchecked_end@?$list@V?$MS2Ptr@VPendingEffect@@@@V?$allocator@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@QEAA?AV?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@@2@XZ 0x1411b6990
 // MS2-PIN: ?IsNull@?$Delegate@$$A6AXIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@_N@Z@@QEBA_NXZ 0x1411b80a0
 // MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_List_node@V?$MS2Ptr@VPendingEffect@@@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_List_node@V?$MS2Ptr@VPendingEffect@@@@PEAX@std@@@2@@Z 0x1411b8210
-// MS2-PIN: ?max_size@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEBA_KXZ 0x1411b82e0
-// MS2-PIN: ??$_Get_unwrapped@V?$SmartPointer@VCEffect@@@efd@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@QEAV12@@Z 0x1411ac800
-// MS2-PIN: ??$_Ptr_copy_cat@V?$SmartPointer@VCEffect@@@efd@@V12@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$SmartPointer@VCEffect@@@efd@@0@Z 0x1411ada70
-// MS2-PIN: ??$_Uninitialized_copy@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@QEAV12@0PEAV12@AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@@Z 0x1411adb00
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1411ade30
-// MS2-PIN: ??$addressof@V?$SmartPointer@VCEffect@@@efd@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@AEAV12@@Z 0x1411ade80
-// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAPEAU31@@Z 0x1411adfd0
-// MS2-PIN: ??1?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@$00@std@@QEAA@XZ 0x1411afd70
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$SmartPointer@VNiAVObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@@ATL@@AEAA_N_K@Z 0x1411b2120
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@ATL@@SAXPEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@0_K@Z 0x1411b29c0
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$SmartPointer@VNiAVObject@@@efd@@@ATL@@SAXPEAV?$SmartPointer@VNiAVObject@@@efd@@0_K@Z 0x1411b2a00
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@V?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VCEffect@@@efd@@@std@@@2@$00@std@@QEAAAEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@2@XZ 0x1411b52a0
-// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@2@XZ 0x1411b55a0
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEBAAEBQEAV?$SmartPointer@VCEffect@@@efd@@XZ 0x1411b5d50
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEBAAEBQEAV?$SmartPointer@VCEffect@@@efd@@XZ 0x1411b5dd0
-// MS2-PIN: ?_Umove_if_noexcept1@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAXPEAV?$SmartPointer@VCEffect@@@efd@@00U?$integral_constant@_N$0A@@2@@Z 0x1411b68b0
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x1411b6bb0
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1411ab1e0
 // MS2-PIN: ??$forward@AEAPEAU?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@std@@YAAEAPEAU?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@0@AEAPEAU10@@Z 0x1411ae4a0
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEAA@XZ 0x1411af500
 // MS2-PIN: ??0?$allocator@U?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@std@@@std@@QEAA@XZ 0x1411af700
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAA@XZ 0x1411af730
 // MS2-PIN: ??B?$MS2Ptr@VCEffectParam@@@@QEBAPEAVCEffectParam@@XZ 0x1411b0620
-// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@@Z 0x1411b3de0
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@XZ 0x1411b5400
 // MS2-PIN: ?max_size@?$list@V?$MS2Ptr@VPendingEffect@@@@V?$allocator@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@QEBA_KXZ 0x1411b82c0
 // MS2-PIN: ??$_Buynode@AEBV?$SmartPointer@VCEffect@@@efd@@@?$_List_buy@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEAAPEAU?$_List_node@V?$SmartPointer@VCEffect@@@efd@@PEAX@1@PEAU21@0AEBV?$SmartPointer@VCEffect@@@efd@@@Z 0x1411abe10
 // MS2-PIN: ?push_back@?$list@V?$MS2Ptr@VPendingEffect@@@@V?$allocator@V?$MS2Ptr@VPendingEffect@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VPendingEffect@@@@@Z 0x1411b83b0
-// MS2-PIN: ??$_Ptr_move_cat@V?$SmartPointer@VCEffect@@@efd@@V12@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$SmartPointer@VCEffect@@@efd@@0@Z 0x1411adaa0
-// MS2-PIN: ??$_Uninitialized_move@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@YAPEAV?$SmartPointer@VCEffect@@@efd@@QEAV12@0PEAV12@AEAV?$allocator@V?$SmartPointer@VCEffect@@@efd@@@0@@Z 0x1411adc60
-// MS2-PIN: ??1?$CSimpleArray@GV?$CSimpleArrayEqualHelper@G@ATL@@@ATL@@QEAA@XZ 0x1411afc30
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@AEAA_N_K@Z 0x1411b1f80
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAAAEAPEAV?$SmartPointer@VCEffect@@@efd@@XZ 0x1411b5d30
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@@std@@QEAAAEAPEAV?$SmartPointer@VCEffect@@@efd@@XZ 0x1411b5db0
-// MS2-PIN: ?_Umove@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@AEAAPEAV?$SmartPointer@VCEffect@@@efd@@PEAV34@00@Z 0x1411b6870
-// MS2-PIN: ?capacity@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEBA_KXZ 0x1411b6db0
-// MS2-PIN: ??$_Idl_distance@PEAV?$SmartPointer@VCEffect@@@efd@@PEAV12@@std@@YA_JAEBQEAV?$SmartPointer@VCEffect@@@efd@@0@Z 0x1411ac850
-// MS2-PIN: ??1?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@$00@2@$00@std@@QEAA@XZ 0x1411aff90
-// MS2-PIN: ?size@?$vector@V?$SmartPointer@VCEffect@@@efd@@V?$allocator@V?$SmartPointer@VCEffect@@@efd@@@std@@@std@@QEBA_KXZ 0x1411b84d0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "effectservice.h"
@@ -902,6 +857,10 @@ int FUN_1411a16c0(Unk_140165cf0* pNode, const char* pszName, int& nType)
     return nResult;
 }
 MS2_REPLACE(0x1411a16c0, FUN_1411a16c0, 188, 0x12156597);
+
+// The first CU's UCRT memcpy_s copy (unreferenced, 0x1411a3170) closes its COMDAT tail.
+__declspec(selectany) extern errno_t(__cdecl* const ms2_effectDataMemcpyS)(void*, size_t, const void*, size_t) = &memcpy_s;
+
 #undef MS2_THIS_FILE
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\effectservice.cpp"
 
@@ -2006,15 +1965,14 @@ void CEffectService::FUN_1411a76d0()
 MS2_REPLACE_METHOD(0x1411a76d0, CEffectService, FUN_1411a76d0, 133, 0xF7D68405);
 
 // @0x1411a7760
-// MS2-FUNCTIONAL: bytes match; vector<CEffectPtr>::push_back resolves to another unit's byte-identical copy (0x140a90fc0, exe 0x1411b1450): cross-TU COMDAT pairing
-void CEffectService::FUN_1411a7760(unsigned nId, std::vector<CEffectPtr>& vOut)
+void CEffectService::FUN_1411a7760(unsigned nId, ATL::CAtlArray<CEffectPtr>& aOut)
 {
     Unk_EsGroupMap::iterator it = m_mapGroups.find(nId);
     if (it == m_mapGroups.end())
         return;
     Unk_EsEffectGroup* pGroup = it->second;
     for (std::list<CEffectPtr>::iterator itEffect = pGroup->FUN_141044280(); itEffect != pGroup->FUN_1410443f0(); ++itEffect)
-        vOut.push_back(*itEffect);
+        aOut.Add(*itEffect);
 }
 MS2_REPLACE_METHOD(0x1411a7760, CEffectService, FUN_1411a7760, 200, 0x1C64A78D);
 

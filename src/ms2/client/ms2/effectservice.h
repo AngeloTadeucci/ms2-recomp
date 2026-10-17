@@ -202,8 +202,15 @@ class Unk_EsTracked : public NiRefObject
 {
 public:
     virtual bool vfunc_2();                                     // still alive
-    egf::EntityID FUN_1411b1ee0();                              // the entity (+0x28)
+    // @0x1411b1ee0
+    egf::EntityID FUN_1411b1ee0() { return m_entity; }          // the entity (+0x28)
+
+    void* m_unk_10;                                             // +0x10
+    void* m_unk_18;                                             // +0x18
+    void* m_unk_20;                                             // +0x20
+    egf::EntityID m_entity;                                     // +0x28
 };
+MS2_CHECK_OFFSET(Unk_EsTracked, m_entity, 0x28);
 typedef efd::SmartPointer<Unk_EsTracked> Unk_EsTrackedPtr;
 
 class CEffectService;
@@ -224,7 +231,7 @@ bool FUN_1411a4800(const CString& strName, int nArg);           // preload an ef
 
 class CEffectService : public efd::ISystemService, public IWorldServiceCallback, public TSingleton<CEffectService>
 {
-    EE_DECLARE_CLASS1(CEffectService, 0x0610000c, efd::ISystemService);
+    EE_DECLARE_CLASS1(CEffectService, 0x0610000c, efd::IBase);  // the exe's SetupClassInfo chains to IBase (like PostProcessingService)
     EE_DECLARE_CONCRETE_ATOMIC_REFCOUNT;
 public:
     CEffectService();                                           // 0x1411a4400
@@ -271,7 +278,7 @@ public:
     void FUN_1411a7420(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);
     void FUN_1411a74a0(egf::EntityID id, egf::Entity* pEntity);  // attach the light of a light entity
     void FUN_1411a76d0();                                       // UpdateEffects on the roots
-    void FUN_1411a7760(unsigned nId, std::vector<CEffectPtr>& vOut);    // the effects of an id
+    void FUN_1411a7760(unsigned nId, ATL::CAtlArray<CEffectPtr>& aOut); // the effects of an id
     bool FUN_1411a7830();                                       // enabled
     void FUN_1411a7850(bool bEnabled);
     void FUN_1411a7870(int nIndex);                             // re-show the sky object (0 = the first)
@@ -323,7 +330,8 @@ public:
     unsigned m_nTick;                                           // +0x138
     ATL::CAtlList<unsigned int> m_list140;                      // +0x140
     int m_unk_170;                                              // +0x170
-    std::map<int, int> m_map178;                                // +0x178 (element type unknown: unused in the own code)
+    std::map<CString, CEffectPtr> m_map178;                     // +0x178 (not used by the own code: only built and destroyed;
+                                                                //  the exe's tree dtor chain destroys pair<const CString, SmartPointer> nodes)
     int m_unk_188;                                              // +0x188 = 3
     ATL::CAtlArray<CString> m_a190;                             // +0x190
     ATL::CAtlArray<CString> m_a1b0;                             // +0x1b0
