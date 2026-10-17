@@ -4860,3 +4860,38 @@ int CubeMapInformationService::FUN_1410c6b90(unsigned nMask, int* pOutGroup, int
     }
     return 0;
 }
+
+// @0x1410d1320
+// MS2-FUNCTIONAL: the eight neighbour probes are a loop over a table instead of the exe's nested ifs
+int CubeMapInformationService::FUN_1410d1320(void* pArg, Unk_StreamPoint pt, float fStep, Unk_StreamPoint* pOut)
+{
+    Cube* pCube = static_cast<Cube*>(pArg);
+    Unk_StreamPoint ptCenter = DAT_143b01a60;
+    Unk_StreamPoint ptProbe = DAT_143b01a60;
+    float fHalf = fStep * 0.5f;
+    FUN_1408a15b0(pCube->position, ptCenter);
+    float fLimit = 75.0f;
+    if (FUN_1410d2340(reinterpret_cast<const Unk_CMISPt2*>(&pt), reinterpret_cast<const Unk_CMISPt2*>(&ptCenter), fLimit - fStep, fLimit - fStep)) {
+        if (pOut != 0)
+            *pOut = ptCenter;
+        return 0;
+    }
+    float fOff = fLimit - fHalf;
+    float fFar = fLimit - fStep;
+    // MS2: clockwise from the upper left; the sides use the far limit on their long axis
+    static const int s_dx[8] = { -1, 0, 1, 1, 1, 0, -1, -1 };
+    static const int s_dy[8] = { 1, 1, 1, 0, -1, -1, -1, 0 };
+    ptProbe.z = ptCenter.z;
+    for (int i = 0; i < 8; ++i) {
+        ptProbe.x = ptCenter.x + (float)s_dx[i] * fOff;
+        ptProbe.y = ptCenter.y + (float)s_dy[i] * fOff;
+        float fLimX = s_dx[i] == 0 ? fFar : fHalf;
+        float fLimY = s_dy[i] == 0 ? fFar : fHalf;
+        if (FUN_1410d2340(reinterpret_cast<const Unk_CMISPt2*>(&pt), reinterpret_cast<const Unk_CMISPt2*>(&ptProbe), fLimX, fLimY)) {
+            if (pOut != 0)
+                *pOut = ptProbe;
+            return i + 1;
+        }
+    }
+    return 9;
+}
