@@ -1021,7 +1021,7 @@ void UIQuestGuideDialog::FUN_141aaca80(ASObj& obj, CQuest* pQuest)
         MS2Ptr<CQuestData> spData = pQuest->GetData();
         if (!spData)
             return;
-        Unk_BattleRoomPtr spRoom = FUN_14031c2a0()->FUN_1403206b0(spData->m_roomId);
+        Unk_BattleRoomPtr spRoom = FUN_14031c2a0()->FUN_1403206b0(spData->m_30c.m_roomId);
         if (spRoom.FUN_140e36ca0())
             return;
         int nDungeonId = FUN_1402178b0(spRoom->m_1c);

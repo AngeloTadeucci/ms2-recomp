@@ -719,7 +719,7 @@ int CQuestProgressCinematicComponent::vfunc_2(int nMsg)
         return 0;
     if (nMsg == 0x493e2) {
         MS2Ptr<CQuestData> spQuest = FUN_14074bc40(m_spContent->m_questId);
-        if (bool(spQuest.get() != 0) && *reinterpret_cast<const int*>(spQuest->m_318) != 0) {
+        if (bool(spQuest.get() != 0) && spQuest->m_318.m_0 != 0) {
             COutPacket pkt(0x29, 0);
             pkt.Encode1(0x12);
             pkt.Encode4(m_spContent->m_questId);

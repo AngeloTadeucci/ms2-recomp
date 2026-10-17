@@ -13,6 +13,8 @@
 #include "ms2/placeholder/cguildxmldata.h"
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
 #include "ms2/placeholder/questdata.h"
+#include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/commonfiles/fielddata.h"
 #include "ms2/commonfiles/fieldmetatable.h"
@@ -62,6 +64,8 @@ public:
 };
 int FUN_140764480(Unk_PayloadPtr<CQuest> pQuest, int nState);
 
+bool FUN_14028f650(Unk_140165cf0* pElem);                    // the element is valid
+int FUN_14015f500(Unk_140165cf0* pElem, const char* pszName, int* pOut);
 MS2Ptr<CQuestData> FUN_14074bc40(int nQuestId);
 bool FUN_14074b090(CQuestData* pData);
 int FUN_14074b330(CQuestData* pData);
@@ -542,7 +546,7 @@ int CQuestManagerCommon::FUN_140746e60(int questId)
     if (nType == 3)
         return FUN_140747400(questId, data->m_338.m_value);
     if (nType == 5)
-        return FUN_140747440(questId, data->m_350);
+        return FUN_140747440(questId, data->m_350.m_value);
     if (nType == 8 || nType == 10)
         return 0;
     return FUN_140747350(questId);
@@ -650,4 +654,338 @@ int FUN_1407474d0(const ATL::CAtlArray<int>* pArr, const int* pValue)
 int CQuest::FUN_1407476d0() const
 {
     return m_state;
+}
+
+// Container comparison (true = same).
+template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlArray<T>& b)
+{
+    if (a.GetCount() == b.GetCount())
+    {
+        for (unsigned i = 0; i < a.GetCount(); i++)
+        {
+            if (a[i] != b[i])
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+// @0x140747910
+CQuestData::Require::Require()
+    : m_level(0), m_maxLevel(0), m_achievement(0), m_achievementGrade(0), m_unreqAchievement(0),
+      m_unreqAchievementGrade(0), m_groupId(0), m_gearScore(0), m_guildLevel(-1), m_guildNpcLevel(0),
+      m_dungeon(0), m_unrequireDungeon(0), m_enterDungeon(0), m_dungeonBeginner(),
+      m_mentor(0), m_mentee(0), m_vip(0), m_alliance(0), m_fameGrade(0), m_masteryType(0), m_masteryGrade(0)
+{
+}
+
+// @0x140747b10
+bool CQuestData::Require::operator!=(const Require& o) const
+{
+    if ((unsigned short)m_level != (unsigned short)o.m_level) return true;
+    if ((unsigned short)m_maxLevel != (unsigned short)o.m_maxLevel) return true;
+    if (m_achievement != o.m_achievement) return true;
+    if (m_achievementGrade != o.m_achievementGrade) return true;
+    if (m_unreqAchievement != o.m_unreqAchievement) return true;
+    if (m_unreqAchievementGrade != o.m_unreqAchievementGrade) return true;
+    if (m_groupId != o.m_groupId) return true;
+    if (m_gearScore != o.m_gearScore) return true;
+    if (m_guildLevel != o.m_guildLevel) return true;
+    if ((unsigned short)m_guildNpcLevel != (unsigned short)o.m_guildNpcLevel) return true;
+    if (m_dungeon != o.m_dungeon) return true;
+    if (m_unrequireDungeon != o.m_unrequireDungeon) return true;
+    if (m_enterDungeon != o.m_enterDungeon) return true;
+    if (!IsSameArray(m_dungeonBeginner, o.m_dungeonBeginner)) return true;
+    if (m_mentor != o.m_mentor) return true;
+    if (m_mentee != o.m_mentee) return true;
+    if (m_vip != o.m_vip) return true;
+    if (m_alliance != o.m_alliance) return true;
+    if (m_fameGrade != o.m_fameGrade) return true;
+    if (m_masteryType != o.m_masteryType) return true;
+    if (m_masteryGrade != o.m_masteryGrade) return true;
+    if (!IsSameArray(m_job, o.m_job)) return true;
+    if (!IsSameArray(m_subJob, o.m_subJob)) return true;
+    if (!IsSameArray(m_quest, o.m_quest)) return true;
+    if (!IsSameArray(m_selectableQuest, o.m_selectableQuest)) return true;
+    if (!IsSameArray(m_unrequire, o.m_unrequire)) return true;
+    if (!IsSameArray(m_progressQuest, o.m_progressQuest)) return true;
+    if (!IsSameArray(m_unrequireGroup, o.m_unrequireGroup)) return true;
+    if (!IsSameArray(m_equipment, o.m_equipment)) return true;
+    if (!IsSameArray(m_dayOfWeek, o.m_dayOfWeek)) return true;
+    if (!IsSameArray(m_followingQuests, o.m_followingQuests)) return true;
+    if (!IsSameArray(m_requiredBy, o.m_requiredBy)) return true;
+    if (!IsSameArray(m_selectableBy, o.m_selectableBy)) return true;
+    return false;
+}
+
+// @0x140747f60
+bool CQuestData::QuestRewardItem::operator!=(const QuestRewardItem& o) const
+{
+    if (m_itemId != o.m_itemId) return true;
+    if (m_count != o.m_count) return true;
+    if (m_job != o.m_job) return true;
+    return false;
+}
+
+// @0x140747fc0
+bool CQuestData::QuestRewardItem::LoadXml(Unk_140165cf0* pElem)
+{
+    if (!FUN_14028f650(pElem))
+        return false;
+    FUN_140873220(pElem, "code", (unsigned&)m_itemId);
+    FUN_14015f500(pElem, "rank", &m_count);
+    FUN_1408731e0(pElem, "count", m_job);
+    return true;
+}
+
+// The job restriction of an item (the "recommended jobs" set of its ItemLimit, 0x140545da0).
+class Unk_ItemLimitJobs { public: bool FUN_140545da0(int nJob); };
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+
+// @0x140748050
+int FUN_140748050(CQuestData::QuestRewardItem* pItem, int nJob)
+{
+    MS2Ptr<CItemData> item = FUN_14053f870(pItem->m_itemId);
+    if (!item)
+        return 0;
+    if (!reinterpret_cast<Unk_ItemLimitJobs*>(&item->limit)->FUN_140545da0(nJob))
+        return 0;
+    return 1;
+}
+
+// @0x140748100
+CQuestData::CompleteReward::CompleteReward()
+    : m_money(0), m_karma(0), m_lu(0), m_exp(0), m_guildFund(0), m_guildExp(0), m_guildCoin(0), m_menteeCoin(0),
+      m_missionPoint(0), m_useMainFamePoint(0), m_fameLog(0), m_weddingExp(0), m_38(1.0f), m_relativeExp(-1),
+      m_40(1.0f), m_relativeMeso(0), m_rewardExpExtra(0), m_choiceRewards()
+{
+}
+
+// @0x140748210
+bool CQuestData::CompleteReward::operator!=(const CompleteReward& o) const
+{
+    if (m_money != o.m_money) return true;
+    if (m_karma != o.m_karma) return true;
+    if (m_lu != o.m_lu) return true;
+    if (m_exp != o.m_exp) return true;
+    if (m_guildFund != o.m_guildFund) return true;
+    if (m_guildExp != o.m_guildExp) return true;
+    if (m_guildCoin != o.m_guildCoin) return true;
+    if (m_menteeCoin != o.m_menteeCoin) return true;
+    if (m_missionPoint != o.m_missionPoint) return true;
+    if (m_useMainFamePoint != o.m_useMainFamePoint) return true;
+    if (m_fameLog != o.m_fameLog) return true;
+    if (m_weddingExp != o.m_weddingExp) return true;
+    if (m_38 != o.m_38) return true;
+    if (m_relativeExp != o.m_relativeExp) return true;
+    if (m_40 != o.m_40) return true;
+    if (m_relativeMeso != o.m_relativeMeso) return true;
+    if (m_rewardExpExtra != o.m_rewardExpExtra) return true;
+    if (m_choiceRewards.GetCount() != o.m_choiceRewards.GetCount()) return true;
+    for (unsigned i = 0; i < m_choiceRewards.GetCount(); i++)
+    {
+        if (m_choiceRewards[i] != o.m_choiceRewards.GetAt(i))
+            return true;
+    }
+    return false;
+}
+
+// @0x1407484a0
+void FUN_1407484a0(CQuestData::CompleteReward* pReward, int nValue)
+{
+}
+
+// @0x1407484d0
+CQuestData::Grade::Grade()
+    : m_value(0), m_4(6), m_8(), m_levelRange()
+{
+}
+
+// @0x140748530
+bool CQuestData::Grade::operator!=(const Grade& o) const
+{
+    if (m_value != o.m_value) return true;
+    if (m_4 != o.m_4) return true;
+    if (m_8 != o.m_8) return true;
+    if (m_levelRange != o.m_levelRange) return true;
+    return false;
+}
+
+// @0x1407485c0
+CQuestData::Flag::Flag()
+    : m_value(0)
+{
+}
+
+// @0x1407485e0
+bool CQuestData::Flag::operator!=(const Flag& o) const
+{
+    if (m_value != o.m_value)
+        return true;
+    return false;
+}
+
+// @0x140748610
+CQuestData::Named::Named()
+    : m_0(1), m_4(0), m_8()
+{
+}
+
+// @0x140748660
+bool CQuestData::Named::operator!=(const Named& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_4 != o.m_4) return true;
+    if (m_8 != o.m_8) return true;
+    return false;
+}
+
+// @0x1407486d0
+CQuestData::Quad::Quad()
+    : m_0(0), m_4(0), m_8(0), m_c(0)
+{
+}
+
+// @0x140748710
+bool CQuestData::Quad::operator!=(const Quad& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_4 != o.m_4) return true;
+    if (m_8 != o.m_8) return true;
+    if (m_c != o.m_c) return true;
+    return false;
+}
+
+// @0x140748780
+CQuestData::Tri300::Tri300()
+    : m_0(0), m_4(0), m_8(0)
+{
+}
+
+// @0x1407487c0
+bool CQuestData::Tri300::operator!=(const Tri300& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_4 != o.m_4) return true;
+    if (m_8 != o.m_8) return true;
+    return false;
+}
+
+// @0x140748820
+CQuestData::Room::Room()
+    : m_0(0), m_roomId(0), m_fieldId(0)
+{
+}
+
+// @0x140748860
+bool CQuestData::Room::operator!=(const Room& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_roomId != o.m_roomId) return true;
+    if (m_fieldId != o.m_fieldId) return true;
+    return false;
+}
+
+// @0x1407488c0
+CQuestData::Pair::Pair()
+    : m_0(0), m_4(0)
+{
+}
+
+// @0x1407488f0
+bool CQuestData::Pair::operator!=(const Pair& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_4 != o.m_4) return true;
+    return false;
+}
+
+// @0x140748930
+CQuestData::Triple::Triple()
+    : m_0(0), m_4(0), m_8(0)
+{
+}
+
+// @0x140748970
+bool CQuestData::Triple::operator!=(const Triple& o) const
+{
+    if (m_0 != o.m_0) return true;
+    if (m_4 != o.m_4) return true;
+    if (m_8 != o.m_8) return true;
+    return false;
+}
+
+// @0x1407489d0
+CQuestData::Sound::Sound()
+    : m_id(-1), m_accept(), m_reward()
+{
+}
+
+// @0x140748a20
+bool CQuestData::Sound::operator!=(const Sound& o) const
+{
+    if (m_id != o.m_id) return true;
+    if (m_accept != o.m_accept) return true;
+    if (m_reward != o.m_reward) return true;
+    return false;
+}
+
+// @0x140748aa0
+CQuestData::NavigationTarget::NavigationTarget()
+    : m_kind(3), m_ids(), m_maps()
+{
+}
+
+// @0x140748b00
+bool CQuestData::NavigationTarget::operator!=(const NavigationTarget& o) const
+{
+    if (m_kind != o.m_kind) return true;
+    if (!IsSameArray(m_ids, o.m_ids)) return true;
+    if (!IsSameArray(m_maps, o.m_maps)) return true;
+    return false;
+}
+
+// @0x140748b80
+CQuestData::NavigationData::NavigationData()
+    : m_kind(0), m_targets()
+{
+}
+
+// @0x140748bd0
+bool CQuestData::NavigationData::operator!=(const NavigationData& o) const
+{
+    if (m_kind != o.m_kind) return true;
+    if (!IsSameArray(m_targets, o.m_targets)) return true;
+    return false;
+}
+
+// @0x140748c30
+CQuestData::GroupPickData::GroupPickData()
+    : m_18(0), m_count(1), m_kind(0)
+{
+}
+
+// @0x140748c90
+bool CQuestData::GroupPickData::operator!=(const GroupPickData& o) const
+{
+    if (m_18 != o.m_18) return true;
+    if (m_count != o.m_count) return true;
+    if (m_kind != o.m_kind) return true;
+    return false;
+}
+
+// @0x140748cf0
+CQuestData::CQuestData()
+    : m_id(0), m_type(0), m_20(0), m_level(0), m_28(0), m_2c(0), m_2d(0), m_2e(0), m_2f(0), m_30(0), m_31(0),
+      m_flag(0), m_33(0), m_34(0), m_durationMinutes(0), m_resetType(0), m_schedule(), m_48(-1), m_4c(0), m_50(5),
+      m_54(), m_require(), m_complete(), m_rewards(), m_2d0(), m_2e8(0), m_2ec(0), m_2f0(), m_300(), m_30c(),
+      m_318(), m_320(), m_32c(), m_338(), m_350(), m_358(), m_fields(), m_conditions(),
+      m_navigation(17, 0.75f, 0.25f, 2.25f, 10)
+{
+}
+
+// @0x140748fa0
+CQuestData::~CQuestData()
+{
 }

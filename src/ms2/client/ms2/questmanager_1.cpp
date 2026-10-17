@@ -263,7 +263,7 @@ int CQuest::HasMultiUserRoom(int field)
 {
     if (!FUN_14036d570(FUN_140166410(), 0xdc)) return 0;
     if (FUN_1407443e0(field) == 0) return 0;
-    int roomId = m_data->m_roomId;
+    int roomId = m_data->m_30c.m_roomId;
     if (roomId == 0) return 0;
     MS2Ptr<Unk_QuestRoom> room = FUN_14031c2a0()->FUN_1403206b0(roomId);
     if (FUN_140e36ca0(room)) return 0;
@@ -277,8 +277,8 @@ MS2_REPLACE_METHOD(0x1416C6CC0, CQuest, HasMultiUserRoom, 279, 0xA5783223);
 int CQuest::FUN_1407443e0(int field)
 {
     if (CQuestCommon::FUN_1407443e0(field) == 0) return 0;
-    int id = m_data->m_fieldId;
-    if (m_data->m_roomId != 0 && !FUN_140930b70()) return 0;
+    int id = m_data->m_30c.m_fieldId;
+    if (m_data->m_30c.m_roomId != 0 && !FUN_140930b70()) return 0;
     if (id == 0 || id != DAT_143ab2880) return 1;
     return 0;
 }
@@ -323,7 +323,7 @@ MS2_REPLACE_METHOD(0x1416C6EC0, CQuest, ShowProgress, 609, 0x0BFA9F42);
 // @0x1416c7130
 void CQuest::PlayAcceptSound()
 {
-    CString name(m_data->m_acceptSound);
+    CString name(m_data->m_2d0.m_accept);
     if (name.GetLength() == 0) name = s_accept;
     FUN_141276180(name, "");
 }
@@ -340,7 +340,7 @@ MS2_REPLACE_METHOD(0x1416C71D0, CQuest, PlayProgressSound, 143, 0x9CA37571);
 // @0x1416c7270
 void CQuest::PlayRewardSound()
 {
-    CString name(m_data->m_rewardSound);
+    CString name(m_data->m_2d0.m_reward);
     if (name.GetLength() == 0) name = s_reward;
     FUN_141276180(name, "");
 }

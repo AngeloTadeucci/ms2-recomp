@@ -670,7 +670,7 @@ int CQuestManager::vfunc_1(int questId, int flag)
                 if (field != parent) return 0;
             }
         } else if (FUN_14074b050(data.operator->()) == 5) {
-            if (data->m_350 == 2) {
+            if (data->m_350.m_value == 2) {
                 Unk_QmGameEventRef event = FUN_1401c0d90()->FUN_14047ca40(DAT_143ab2fc0);
                 if (event.IsNull()) return 0;
                 if (event.Get()->FUN_1403fd660(questId) == 0) return 0;
@@ -1615,7 +1615,7 @@ void CQuestManager::FUN_1416cf980(int questId, int leave)
     if (quest->HasMultiUserRoom(FUN_1403ed2d0()->FUN_141bd3060()) == 0) return;
     MS2Ptr<CQuestData> data = quest->GetData();
     if (!data) return;
-    Unk_QmRoomPtr room = FUN_14031c2a0()->FUN_1403206b0(data->m_roomId);
+    Unk_QmRoomPtr room = FUN_14031c2a0()->FUN_1403206b0(data->m_30c.m_roomId);
     if (!room) return;
     if (leave != 0) {
         COutPacket packet(0x2c, 0);
@@ -1627,7 +1627,7 @@ void CQuestManager::FUN_1416cf980(int questId, int leave)
         packet.vfunc_o10_1(0x20);
         packet.vfunc_o10_1(FUN_1402178b0(room->m_1c));
         packet.vfunc_o10_3(1);
-        packet.vfunc_o10_3(data->m_roomId);
+        packet.vfunc_o10_3(data->m_30c.m_roomId);
         packet.vfunc_o10_0(false);
         FUN_140710590(packet);
     }

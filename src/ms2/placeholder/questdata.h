@@ -2,9 +2,13 @@
 // Layout proved by ctor 0x140748cf0 and the 0x3f0 allocation in questdata.cpp.
 #pragma once
 #include <vector>
+#include <bitset>
 #include <atlcoll.h>
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cconditioncommon.h"
+#include "ms2/placeholder/dclevelrange.h"
+
+class Unk_140165cf0;
 
 class CQuestData : public CPtred
 {
@@ -15,6 +19,40 @@ public:
         QuestRewardItem();
         virtual ~QuestRewardItem();
         int m_itemId, m_count, m_job;
+        bool operator!=(const QuestRewardItem& o) const;   // 0x140747f60
+        bool LoadXml(Unk_140165cf0* pElem);                // 0x140747fc0
+    };
+    // <navigation> targets: ctor 0x140748aa0, compare 0x140748b00.
+    class NavigationTarget : public CPtred
+    {
+    public:
+        NavigationTarget();
+        virtual ~NavigationTarget();
+        bool operator!=(const NavigationTarget& o) const;
+        int m_kind;                                 // +0x18 ctor 3
+        ATL::CAtlArray<unsigned> m_ids;             // +0x20
+        ATL::CAtlArray<unsigned> m_maps;            // +0x40
+    };
+    // One navigation entry: ctor 0x140748b80, compare 0x140748bd0.
+    class NavigationData : public CPtred
+    {
+    public:
+        NavigationData();
+        virtual ~NavigationData();
+        bool operator!=(const NavigationData& o) const;
+        int m_kind;                                 // +0x18
+        ATL::CAtlArray<MS2Ptr<NavigationTarget> > m_targets;   // +0x20
+    };
+    // Random pick of a quest group: ctor 0x140748c30, compare 0x140748c90.
+    class GroupPickData : public CPtred
+    {
+    public:
+        GroupPickData();
+        virtual ~GroupPickData();
+        bool operator!=(const GroupPickData& o) const;
+        int m_18;                                   // ctor 0
+        int m_count;                                // +0x1c ctor 1
+        int m_kind;                                 // +0x20 ctor 0
     };
     CQuestData();
     virtual ~CQuestData();
@@ -30,6 +68,7 @@ public:
     {
         Require();
         ~Require();
+        bool operator!=(const Require& o) const;   // 0x140747b10
         short m_level;                      // +0x00 (+0x58)
         short m_maxLevel;                   // +0x02
         unsigned m_achievement;             // +0x04
@@ -70,6 +109,7 @@ public:
     {
         CompleteReward();
         ~CompleteReward();
+        bool operator!=(const CompleteReward& o) const;   // 0x140748210
         int m_money;                        // +0x00 (+0x248)
         int m_karma;                        // +0x04
         int m_lu;                           // +0x08
@@ -89,34 +129,83 @@ public:
         int m_rewardExpExtra;               // +0x48
         ATL::CAtlArray<QuestRewardItem> m_choiceRewards;   // +0x50 (+0x298)
     };
-    int m_48, m_4c, m_50, m_54;
+    int m_48, m_4c, m_50;
+    std::bitset<4> m_54;                // ctor 0x1402a5610
     Require m_require;
     CompleteReward m_complete;
     std::vector<QuestRewardItem> m_rewards;
-    void* m_2d0;
-    CString m_acceptSound, m_rewardSound;
-    int m_2e8, m_2ec;
-    void* m_2f0; void* m_2f8;
-    int m_300, m_304, m_308, m_30c;
-    int m_roomId, m_fieldId;
-    // +0x318..+0x368, typed from the member ctors called by CQuestData::CQuestData 0x140748cf0.
-    int m_318[2];                       // +0x318 ctor 0x1407488c0 zeroes both
-    struct Triple { int m_0, m_4, m_8; };   // ctor 0x140748930 zeroes all three
-    Triple m_320, m_32c;
-    struct Grade                        // ctor 0x1407484d0
+    struct Sound                        // ctor 0x1407489d0, compare 0x140748a20
     {
+        Sound();
+        bool operator!=(const Sound& o) const;
+        int m_id;                       // -1
+        CString m_accept, m_reward;
+    };
+    Sound m_2d0;
+    int m_2e8, m_2ec;
+    struct Quad                         // ctor 0x1407486d0, compare 0x140748710
+    {
+        Quad();
+        bool operator!=(const Quad& o) const;
+        int m_0, m_4, m_8, m_c;
+    };
+    Quad m_2f0;
+    struct Tri300                       // ctor 0x140748780, compare 0x1407487c0
+    {
+        Tri300();
+        bool operator!=(const Tri300& o) const;
+        int m_0, m_4, m_8;
+    };
+    Tri300 m_300;
+    struct Room                         // ctor 0x140748820, compare 0x140748860
+    {
+        Room();
+        bool operator!=(const Room& o) const;
+        int m_0, m_roomId, m_fieldId;
+    };
+    Room m_30c;
+    // +0x318..+0x368, typed from the member ctors called by CQuestData::CQuestData 0x140748cf0.
+    struct Pair                         // ctor 0x1407488c0, compare 0x1407488f0
+    {
+        Pair();
+        bool operator!=(const Pair& o) const;
+        int m_0, m_4;
+    };
+    Pair m_318;
+    struct Triple                       // ctor 0x140748930, compare 0x140748970
+    {
+        Triple();
+        bool operator!=(const Triple& o) const;
+        int m_0, m_4, m_8;
+    };
+    Triple m_320, m_32c;
+    struct Grade                        // ctor 0x1407484d0, compare 0x140748530
+    {
+        Grade();
+        bool operator!=(const Grade& o) const;
         int m_value;                    // +0x338 0; CQuestManager counts quests by ranges 1..2 / 3..5
         int m_4;                        // ctor 6
         CString m_8;
-        short m_10, m_12;               // ctor 0x140757bd0 zeroes both
+        Unk_DcLevelRange m_levelRange;  // +0x10 ctor 0x140757bd0 zeroes both
     };
     Grade m_338;
-    int m_350;                          // ctor 0x1407485c0 zeroes; CQuestManager::vfunc_1 tests == 2
-    struct Named { int m_0, m_4; CString m_8; };   // ctor 0x140748610: 1, 0
+    struct Flag                         // ctor 0x1407485c0, compare 0x1407485e0
+    {
+        Flag();
+        bool operator!=(const Flag& o) const;
+        int m_value;                    // CQuestManager::vfunc_1 tests == 2
+    };
+    Flag m_350;
+    struct Named                        // ctor 0x140748610, compare 0x140748660
+    {
+        Named();
+        bool operator!=(const Named& o) const;
+        int m_0, m_4; CString m_8;
+    };
     Named m_358;
     ATL::CAtlArray<int> m_fields;
     ATL::CAtlArray<MS2Ptr<CConditionCommonData>> m_conditions;
-    unsigned char m_3a8[0x48];
+    ATL::CAtlMap<int, MS2Ptr<NavigationData> > m_navigation;   // +0x3a8 (17 bins, 0.75, 0.25, 2.25, block 10)
 };
 MS2_CHECK_SIZE(CQuestData::QuestRewardItem, 0x28);
 MS2_CHECK_SIZE(CQuestData, 0x3f0);
@@ -136,11 +225,14 @@ MS2_CHECK_OFFSET(CQuestData::CompleteReward, m_choiceRewards, 0x50);
 MS2_CHECK_OFFSET(CQuestData, m_require, 0x58);
 MS2_CHECK_OFFSET(CQuestData, m_complete, 0x248);
 MS2_CHECK_OFFSET(CQuestData, m_rewards, 0x2b8);
-MS2_CHECK_OFFSET(CQuestData, m_acceptSound, 0x2d8);
-MS2_CHECK_OFFSET(CQuestData, m_roomId, 0x310);
+MS2_CHECK_OFFSET(CQuestData, m_2d0, 0x2d0);
+MS2_CHECK_OFFSET(CQuestData, m_2f0, 0x2f0);
+MS2_CHECK_OFFSET(CQuestData, m_navigation, 0x3a8);
+MS2_CHECK_OFFSET(CQuestData::Room, m_roomId, 4);
 MS2_CHECK_OFFSET(CQuestData, m_conditions, 0x388);
 MS2_CHECK_OFFSET(CQuestData, m_320, 0x320);
 MS2_CHECK_OFFSET(CQuestData, m_338, 0x338);
 MS2_CHECK_OFFSET(CQuestData, m_350, 0x350);
+MS2_CHECK_OFFSET(CQuestData, m_30c, 0x30c);
 MS2_CHECK_OFFSET(CQuestData, m_358, 0x358);
 MS2_CHECK_OFFSET(CQuestData, m_fields, 0x368);

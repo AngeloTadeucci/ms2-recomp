@@ -18,26 +18,7 @@ class CInPacket;
 class ASArray;
 class Unk_DcRoom;
 
-// The "level" attribute of a sub tab ("low-high"). Out-of-unit members; IsValid is an inline COMDAT of this unit.
-class Unk_DcLevelRange
-{
-public:
-    Unk_DcLevelRange();                                         // 0x140757bd0
-    void FUN_14075bc80(unsigned short nLow, unsigned short nHigh);   // set
-    bool FUN_1407790e0(unsigned short nLevel) const;            // nLow <= nLevel <= nHigh
-    bool IsValid() const                                        // 0x140c0e770
-    {
-        if (m_nLow > m_nHigh)
-            return false;
-        if (m_nLow == 0 && m_nHigh == 0)
-            return false;
-        return true;
-    }
-
-    unsigned short m_nLow;                                      // +0x0
-    unsigned short m_nHigh;                                     // +0x2
-};
-MS2_CHECK_SIZE(Unk_DcLevelRange, 4);
+#include "ms2/placeholder/dclevelrange.h"
 
 // A dungeon group type (attribute "groupType"; read through the enum attribute reader).
 enum Unk_DcGroupType
