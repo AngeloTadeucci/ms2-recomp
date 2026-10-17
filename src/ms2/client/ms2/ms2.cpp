@@ -5,21 +5,63 @@
 // MS2-RANGE: 0x142cb2a50-0x142cb2bf0 .text$yd
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0AEBU?$less@_J@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@_J@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1414928c0 ; unique
-// MS2-PIN: ??$?0V?$CustomAllocator@D@efd@@X@?$_String_alloc@U?$_String_base_types@DV?$CustomAllocator@D@efd@@@std@@@std@@QEAA@$$QEAV?$CustomAllocator@D@efd@@@Z 0x141492a20 ; unique
 // MS2-PIN: ??$?0_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@$0A@@?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@QEAA@$$QEAU?$pair@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@@Z 0x141492b40 ; unique
-// MS2-PIN: ??$StringFormat@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBHAEBV01@@Z 0x141492f60 ; unique
-// MS2-PIN: ??$StringFormat@HH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH1@Z 0x141493270 ; unique
 // MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@PEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@1@@Z 0x141493b00 ; unique
+// MS2-PIN: ??0?$CRBTree@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@H@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@IEAA@_K@Z 0x1414946d0 ; unique
 // MS2-PIN: ??0?$SmartPointer@VNiMaterialSwapProcessor@@@efd@@QEAA@AEBV01@@Z 0x1414953b0 ; unique
-// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VKFMCacheData@KFMCache@egmAnimation@@@efd@@@std@@@std@@QEAA@XZ 0x141495c70 ; unique
+// MS2-PIN: ??1?$CRBTree@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@H@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x1414964f0 ; unique
+// MS2-PIN: ??1?$FunctorHandler@V?$TFunctor@PEAVImage@Render@Scaleform@@V?$ParamList@AEBVProtocol@GFxImageLoader@@V?$ParamList@PEAVTextureManager@Render@Scaleform@@VEmptyParam@@@@@@@@P6APEAVImage@Render@Scaleform@@AEBVProtocol@GFxImageLoader@@PEAVTextureManager@34@@Z@@UEAA@XZ 0x1414965e0 ; prop
+// MS2-PIN: ??1?$FunctorImpl@PEAVImage@Render@Scaleform@@V?$ParamList@AEBVProtocol@GFxImageLoader@@V?$ParamList@PEAVTextureManager@Render@Scaleform@@VEmptyParam@@@@@@@@UEAA@XZ 0x141496600 ; prop
 // MS2-PIN: ??1?$SmartPointer@VServiceManager@efd@@@efd@@QEAA@XZ 0x141496f40 ; unique
+// MS2-PIN: ??1?$unordered_map@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@HU?$hash@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@@2@U?$equal_to@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@@2@V?$allocator@U?$pair@$$CBV?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@H@std@@@2@@std@@QEAA@XZ 0x141497320 ; prop
 // MS2-PIN: ??4?$SmartPointer@VServiceManager@efd@@@efd@@QEAAAEAV01@PEAVServiceManager@1@@Z 0x141497a20 ; unique
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCLoadingDialog@@@@QEAAAEAV1@PEAVCLoadingDialog@@@Z 0x141497ae0 ; unique
 // MS2-PIN: ??C?$SmartPointer@VServiceManager@efd@@@efd@@QEBAPEAVServiceManager@1@XZ 0x141497f60 ; unique
-// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1414980d0 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1414980f0 ; prop
+// MS2-PIN: ??_G?$CValidData@VReactorData@@@@UEAAPEAXI@Z 0x141498360 ; prop
+// MS2-PIN: ??_G?$CValidData@VCArcadeDataTable@@@@UEAAPEAXI@Z 0x1414983a0 ; prop
+// MS2-PIN: ??_G?$CValidData@VCLoadingDescriptionTable@@@@UEAAPEAXI@Z 0x1414983e0 ; prop
+// MS2-PIN: ??_G?$CValidData@VCSmartRecommendShopTable@@@@UEAAPEAXI@Z 0x141498420 ; prop
+// MS2-PIN: ??_G?$CValidData@VCSpecialDungeonDataTable@@@@UEAAPEAXI@Z 0x141498460 ; prop
+// MS2-PIN: ??_G?$FunctorImplBase@PEAVImage@Render@Scaleform@@@@UEAAPEAXI@Z 0x141498520 ; prop
 // MS2-PIN: ?DecRefCount@PickService@ecr@@UEBAXXZ 0x14149fcd0 ; prop
 // MS2-PIN: ?DecRefCount@PropertyVisualizationService@egmVisualizers@@UEBAXXZ 0x14149fd10 ; unique
 // MS2-PINS-END tplpin
+// Look-alike COMDATs paired by hand: the SmartPointer<MS2> pair and the texture palette ctor (callers in InitInstance /
+// RegisterServices), the CRBMap dtor, the map<__int64, CString> node helpers, the PhysX particle SDM initializer and
+// the event dispatcher creators (by the ctor each calls).
+// MS2-PIN: ??0?$SmartPointer@VMS2@@@efd@@QEAA@PEAVMS2@@@Z 0x141495190
+// MS2-PIN: ??1?$SmartPointer@VMS2@@@efd@@QEAA@XZ 0x141496c00
+// MS2-PIN: ??0?$SmartPointer@VNiTexturePalette@@@efd@@QEAA@PEAVNiTexturePalette@@@Z 0x141495430
+// MS2-PIN: ??1?$CRBMap@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@H@2@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x1414964d0
+// MS2-PIN: ??_G?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@QEAAPEAXI@Z 0x141498800
+// MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@@Z 0x141494010
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@1@AEAPEAU31@@Z 0x141493f60
+// MS2-PIN: ??__ENiPhysXParticleSDMObject@@YAXXZ 0x1400f8540
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIEntityEventDispatcher@@@@SAPEAVUIEntityEventDispatcher@@XZ 0x14149f590
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIServerEventDispatcher@@@@SAPEAVUIServerEventDispatcher@@XZ 0x14149f710
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIStatusEventDispatcher@@@@SAPEAVUIStatusEventDispatcher@@XZ 0x14149f790
+// The secondary-base vftables (no RTTI pairing for these multiple-inheritance subobjects), read from the ctors;
+// CValidData<CReactorDataTable> shares the exe's CValidData<ReactorData> table (see reactordata.h).
+// MS2-PIN: ??_7MS2@@6BISystemService@efd@@@ 0x142f1e0a0
+// MS2-PIN: ??_7MS2@@6B?$TSingleton@VMS2@@@@@ 0x142f1e128
+// MS2-PIN: ??_7MS2PickService@@6BPickService@ecr@@@ 0x142f1e398
+// MS2-PIN: ??_7CLoadingDescriptionTable@@6B?$TSingleton@VCLoadingDescriptionTable@@@@@ 0x142f1e4c8
+// MS2-PIN: ??_7CLoadingDescriptionTable@@6B?$CValidData@VCLoadingDescriptionTable@@@@@ 0x142f1e4d8
+// MS2-PIN: ??_7CSpecialDungeonDataTable@@6B?$TSingleton@VCSpecialDungeonDataTable@@@@@ 0x142f1e508
+// MS2-PIN: ??_7CSpecialDungeonDataTable@@6B?$CValidData@VCSpecialDungeonDataTable@@@@@ 0x142f1e518
+// MS2-PIN: ??_7CSmartRecommendShopTable@@6B?$TSingleton@VCSmartRecommendShopTable@@@@@ 0x142f1e548
+// MS2-PIN: ??_7CSmartRecommendShopTable@@6B?$CValidData@VCSmartRecommendShopTable@@@@@ 0x142f1e558
+// MS2-PIN: ??_7CArcadeDataTable@@6B?$TSingleton@VCArcadeDataTable@@@@@ 0x142f1e588
+// MS2-PIN: ??_7CArcadeDataTable@@6B?$CValidData@VCArcadeDataTable@@@@@ 0x142f1e598
+// MS2-PIN: ??_7?$CValidData@VReactorData@@@@6B@ 0x142f1e5b8
+// MS2-PIN: ??_7?$CValidData@VCReactorDataTable@@@@6B@ 0x142f1e5b8
+// MS2-PIN: ??_7CReactorDataTable@@6B?$TSingleton@VCReactorDataTable@@@@@ 0x142f1e5c8
+// MS2-PIN: ??_7CReactorDataTable@@6B?$CValidData@VCReactorDataTable@@@@@ 0x142f1e5d8
+// MS2-PIN: ??_7CrashManagerCli@@6B?$TSingleton@VCrashManagerCli@@@@@ 0x142f1e608
+// MS2-GUESS-LOOKALIKES: the vector deleting dtor of 8-byte SmartPointer elements (0x141498210) has no caller to tell
+// its element type; NiAVObject is assumed.
+// MS2-PIN: ??_E?$SmartPointer@VNiAVObject@@@efd@@QEAAPEAXI@Z 0x141498210
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ms2.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2.h"
@@ -427,6 +469,9 @@ efd::utf8string MakeWindowTitle();
 namespace Scaleform { namespace Render { class Image; class TextureManager; } }
 typedef TFunctor<Scaleform::Render::Image*, ParamList<const GFxImageLoader::Protocol&,
     ParamList<Scaleform::Render::TextureManager*, EmptyParam>>> Unk_GFxImageCallback;
+// The callback's copy assignment (0x141497aa0) and its Clone helper (0x141492f20) are first instantiated here; the
+// setter that uses them (Unk_GFxManager::FUN_1414a61c0) lives in unit_1414a6010.
+template Unk_GFxImageCallback& Unk_GFxImageCallback::operator=(const Unk_GFxImageCallback&);
 // The Scaleform UI manager singleton (no RTTI; DAT_143aaccf8).
 class Unk_GFxManager
 {
@@ -1544,6 +1589,22 @@ inline void Unk_GameLog(CLogString* pLog, unsigned __int64 a, unsigned __int64 b
     pLog->FUN_140653690(a, b, nCategory, pszFormat, fmt::ArgList(fmt::internal::make_type(first, second), args));
 }
 
+// ---- CReactorDataTable (constructed by InitInstance's creators; reactordata.h declares them only)
+// The exe's CReactorDataTable base is CValidData<ReactorData>; its COMDATs (ctor 0x141494730, dtor 0x141496530,
+// deleting dtor 0x141498360) are emitted here explicitly.
+template class CValidData<ReactorData>;
+// MS2-FUNCTIONAL: the exe's second base is CValidData<ReactorData> (0x1414947d0-like COMDATs elsewhere), reactordata.h
+// declares CValidData<CReactorDataTable>, so the base ctor/dtor calls bind to the other instantiation.
+// @0x141495fa0
+CReactorDataTable::CReactorDataTable()
+{
+}
+// MS2-FUNCTIONAL: see the ctor (the CValidData base).
+// @0x1414974d0
+CReactorDataTable::~CReactorDataTable()
+{
+}
+
 // ---- CGameApp
 // @0x14148f2d0
 CGameApp::CGameApp() : CWinApp(NULL), m_nExitCode(0), m_profiler(CString("Loading"))
@@ -1597,7 +1658,7 @@ BOOL CGameApp::InitInstance()
     Unk_UtilLogScope kLogScope(CString("CGameApp::InitInstance"));
     if (FUN_1406c34b0() == 1 && DAT_143ac2fd4 != 0)
         TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(CW2A(g_143ac2fe8));
-    TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(StringFormat("ver '{0}', '{1}'", 2525, 106302));
+    TSingleton<CrashManagerCli>::GetInstance()->FUN_1401ce2b0(StringFormat("ver '{0}', '{1}'", 2525u, 106302u));
     char szCurrentDirectory[MAX_PATH];
     GetCurrentDirectoryA(MAX_PATH, szCurrentDirectory);
     FILE* pRevisions = fopen("revisions.txt", "r");
@@ -2394,7 +2455,7 @@ efd::utf8string MakeWindowTitle()
     strPid.Format(" [PID:%u]", GetCurrentProcessId());
     CString strVersion;
     efd::utf8string strTitle(FUN_14028dc80(0xc3b));
-    CString strServer = StringFormat(" - S:{0}, {1}", CFeatureManager::GetInstance()->FUN_14036d8b0(), CFeatureManager::GetInstance()->FUN_14036d8e0());
+    CString strServer = Unk_SocketFormat(" - S:{0}, {1}", CFeatureManager::GetInstance()->FUN_14036d8b0(), CFeatureManager::GetInstance()->FUN_14036d8e0());
     strTitle += " (x64)";
     strVersion.Format(" (Ver.%X)", 0x9dd);
     if (DAT_143ab0248 == 1 || DAT_143ab0248 == 2 || DAT_143ab0248 == 3)

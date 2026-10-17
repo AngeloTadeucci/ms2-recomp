@@ -7,15 +7,25 @@
 #include "ms2/ms2layout.h"
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/cvaliddata.h"
+#include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/cptred.h"
+
+// The description list (?\loadingdescription.cpp: the pointer dtor 0x14144f1f0, Release 0x14144fc50); not recovered.
+class Unk_LoadingDescriptions : public CPtred
+{
+};
 
 class CLoadingDescriptionTable : public TSingleton<CLoadingDescriptionTable>,
                                  public CValidData<CLoadingDescriptionTable>
 {
 public:
-    CLoadingDescriptionTable();                             // 0x141495f20
-    virtual ~CLoadingDescriptionTable();
+    // @0x141495f20
+    CLoadingDescriptionTable() { FUN_14144e400(); }
+    // @0x141497470
+    virtual ~CLoadingDescriptionTable() {}
+    void FUN_14144e400();                                   // loads the descriptions (?\loadingdescription.cpp)
 private:
     MS2_LAYOUT_FRIEND;
-    char m_pad_10[0x20 - 0x10];
+    MS2Ptr<Unk_LoadingDescriptions> m_spData;               // +0x10
 };
 MS2_CHECK_SIZE(CLoadingDescriptionTable, 0x20);

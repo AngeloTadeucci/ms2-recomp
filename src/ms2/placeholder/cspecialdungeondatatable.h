@@ -12,7 +12,9 @@ class CSpecialDungeonDataTable : public TSingleton<CSpecialDungeonDataTable>,
                                  public CValidData<CSpecialDungeonDataTable>
 {
 public:
-    CSpecialDungeonDataTable();                             // 0x141496150
-    virtual ~CSpecialDungeonDataTable();
+    // @0x141496150
+    CSpecialDungeonDataTable() {}
+    // @0x1414975d0
+    virtual ~CSpecialDungeonDataTable() {}
 };
 MS2_CHECK_SIZE(CSpecialDungeonDataTable, 0x10);
