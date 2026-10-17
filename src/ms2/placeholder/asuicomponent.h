@@ -11,6 +11,8 @@ class ASUIComponent : public ASMovieClip
 {
 public:
     ASUIComponent(const Scaleform::GFx::Value& v, int nMovieId);   // 0x1422c7100 (the exe allocates 0x88 bytes)
+    ASUIComponent(CString strName, int nMovieId);                   // 0x1422c7170 (by name; asitemslot.cpp)
+    virtual ~ASUIComponent();                                       // 0x1422c7200 (asitemslot.cpp: the derived dtors call it)
     // Registers a (callback, id) pair on the component (Delegate passed by value: the callee destroys it).
     void FUN_1422c7a90(Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)> callback, long long n);
 

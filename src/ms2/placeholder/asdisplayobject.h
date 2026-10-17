@@ -11,6 +11,7 @@
 
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/delegate.h"
+#include "ms2/placeholder/delegate.h"
 
 class ASEventDispatcher : public AScript
 {
@@ -73,6 +74,8 @@ public:
     virtual void vfunc_14(int nFrame);                          // 14 0x1422c22d0
     virtual void vfunc_15(const CString& strLabel);             // 15 0x1422c2290
     int FUN_1422c2300();                                        // the "currentFrame" member
+    void FUN_1422c2c30(const Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)>& cb, int nUser);   // add a "rightClick" listener (asitemslot.cpp)
+    void FUN_1422c2cb0(const Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)>& cb);              // remove the "rightClick" listener
 };
 MS2_CHECK_SIZE(ASMovieClip, 0x80);                              // exe allocates 0x80 bytes (asequipicon 0x1409b93ed)
 

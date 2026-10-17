@@ -36,6 +36,11 @@ public:
     void FUN_1422b8270(const AScript& obj);                                         // append an AS object argument (astooltip.cpp)
     void FUN_1422b83f0(const Scaleform::GFx::Value& v);                             // append a value argument (uimessagebox.cpp)
     bool FUN_1422b8a90();                                                           // next argument as bool (UIChaosLightDialog)
+    void FUN_1422b8030(unsigned int n);                                             // append an unsigned argument (asitemslot.cpp)
+    void FUN_1422b8090(unsigned long n);                                            // append an unsigned long argument (asitemslot.cpp)
+    void FUN_1422b80f0(float f);                                                    // append a float argument (asitemslot.cpp)
+    void FUN_1422b81c0(__int64 n);                                                  // append a 64-bit argument (asitemslot.cpp)
+    void FUN_1422b82b0(const char* sz);                                             // append a string argument (asitemslot.cpp)
 
 private:
     void* m_pad_18; void* m_pad_20; void* m_pad_28; void* m_pad_30; void* m_pad_38; void* m_pad_40;

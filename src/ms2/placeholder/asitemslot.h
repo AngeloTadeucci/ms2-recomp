@@ -1,5 +1,5 @@
 // asitemslot.h - PLACEHOLDER for ASItemSlot (RTTI .?AVASItemSlot@@, 0x98 bytes, base ASUIComponent, vftable 0x142db7e38,
-// 26 slots): the AS item slot icon with an item tooltip. NOT an original header (asitemslot.cpp is not recovered).
+// 26 slots): the AS item slot icon with an item tooltip. NOT an original header (the code is in ?\asitemslot.cpp).
 // Ctor 0x1409ba310, dtor 0x1409ba410 (deleting 0x1409bb920), vfunc_25 (the item tooltip value) 0x1409ba800.
 //
 // ASUIComponent declares no virtuals (its derived classes elsewhere would all need the slot symbols), so the slots it
@@ -10,9 +10,12 @@
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/asuicomponent.h"
 
+class Unk_ItemSlotSource;
+
 class ASItemSlot : public ASUIComponent
 {
 public:
+    ASItemSlot(CString strName, int nUnused);// 0x1409ba1d0 (the base gets movie 2)
     ASItemSlot(const Scaleform::GFx::Value& v, int nMovieId);   // 0x1409ba310
     virtual ~ASItemSlot();                                      // 0 (0x1409ba410)
     virtual void vfunc_3(int nVisible);                         // 3 0x1422c7260
@@ -26,15 +29,25 @@ public:
     virtual void vfunc_22();                                    // 22 0x1422c8040
     virtual void vfunc_23();                                    // 23 0x1422c8080
     virtual void vfunc_24(bool bRefresh);                       // 24 0x1422c80c0
-    // Builds the item tooltip and returns its value through *ppOut (slot 25, 0x1409ba800).
+    // Builds the item tooltip and returns its value through *ppOut (slot 25, 0x1409ba800). ppOut is really the
+    // tooltip callback's Params (its first member is pRetVal).
     virtual void vfunc_25(Scaleform::GFx::Value** ppOut);
-    void FUN_1409ba630(void* pItemData);                        // fills the slot from a reward item record
+    void FUN_1409ba460();                                       // push the slot data (item id/rarity/count) to AS
+    void FUN_1409ba5d0(int nItemId, int nRarity, int nCount);   // set the item and refresh
+    void FUN_1409ba630(const Unk_ItemSlotSource& item);         // set the item from a reward record (its slots 0-2)
+    void FUN_1409ba6d0();                                       // enable the click preview (registers FUN_1409baa60)
+    void FUN_1409ba980(Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)> callback, __int64 nUser);   // setTooltipFunction
+    void FUN_1409baa20(const Scaleform::GFx::FunctionHandler::Params& params);   // the tooltip callback: vfunc_25
+    void FUN_1409baa60(const Scaleform::GFx::FunctionHandler::Params& params);   // the click callback: item preview
 
 protected:
     MS2_LAYOUT_FRIEND;
     int m_itemId;                                               // +0x88
     int m_rarity;                                               // +0x8c
-    void* m_pad_90;                                             // +0x90 (a flag byte at +0x95)
+    int m_nCount;                                               // +0x90
+    bool m_bLocked;                                             // +0x94 shown with the lock icon
+    bool m_bPreview;                                            // +0x95 click preview on; the tooltip compares
 };
 MS2_CHECK_SIZE(ASItemSlot, 0x98);
 MS2_CHECK_OFFSET(ASItemSlot, m_itemId, 0x88);
+MS2_CHECK_OFFSET(ASItemSlot, m_bPreview, 0x95);
