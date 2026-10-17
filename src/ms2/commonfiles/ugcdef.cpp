@@ -806,6 +806,14 @@ void CUgcBannerPost::Read(CInPacket& packet)
     }
 }
 
+// @0x140890b50
+CUgcBannerReservePtr CUgcBannerPost::FUN_140890b50(unsigned __int64 nKey)
+{
+    CUgcBannerReservePtr spReserve(0);
+    m_reserves.Lookup(nKey, spReserve);
+    return spReserve;
+}
+
 // @0x140890bd0
 __int64 CUgcBannerPost::FUN_140890bd0()
 {
@@ -905,7 +913,7 @@ int CUgcRegistBanner::FUN_1408911f0(unsigned __int64 nTime)
 // The banner serial / upload serial pair of a banner upload (no RTTI; two byte-identical copies, 0x140891300 / 0x140891490).
 struct Unk_BannerSN
 {
-    Unk_BannerSN() : m_nBannerSN(0), m_nUploadSN(0) {}
+    Unk_BannerSN();
     void Write(COutputStream& stream) const;
     void Read(CInPacket& packet);
     CStringA ToString() const;
@@ -913,6 +921,12 @@ struct Unk_BannerSN
     unsigned __int64 m_nUploadSN;
 };
 MS2_CHECK_SIZE(Unk_BannerSN, 0x10);
+
+// @0x140891300
+Unk_BannerSN::Unk_BannerSN()
+    : m_nBannerSN(0), m_nUploadSN(0)
+{
+}
 
 // @0x140891330
 void Unk_BannerSN::Write(COutputStream& stream) const
@@ -936,16 +950,62 @@ CStringA Unk_BannerSN::ToString() const
     return str;
 }
 
+// The second copy of the banner serial pair (byte-identical code, a different class).
+struct Unk_BannerSN2
+{
+    Unk_BannerSN2();
+    void Write(COutputStream& stream) const;
+    void Read(CInPacket& packet);
+    CStringA ToString() const;
+    unsigned int m_nBannerSN;
+    unsigned __int64 m_nUploadSN;
+};
+MS2_CHECK_SIZE(Unk_BannerSN2, 0x10);
+
+// @0x140891490
+Unk_BannerSN2::Unk_BannerSN2()
+    : m_nBannerSN(0), m_nUploadSN(0)
+{
+}
+
+// @0x1408914c0
+void Unk_BannerSN2::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_4(m_nBannerSN);
+    stream.vfunc_o10_4(m_nUploadSN);
+}
+
+// @0x140891520
+void Unk_BannerSN2::Read(CInPacket& packet)
+{
+    m_nBannerSN = packet.vfunc_o8_4();
+    m_nUploadSN = packet.vfunc_o8_4();
+}
+
+// @0x140891590
+CStringA Unk_BannerSN2::ToString() const
+{
+    CStringA str;
+    str.Format("m_bannerSN:%I64d, m_uploadSN:%I64d", m_nBannerSN, m_nUploadSN);
+    return str;
+}
+
 // The upload serials of a character (no RTTI).
 struct Unk_CharUploadSNs
 {
-    Unk_CharUploadSNs() { m_serials.RemoveAll(); }
+    Unk_CharUploadSNs();
     void Write(COutputStream& stream) const;
     void Read(CInPacket& packet);
     CStringW ToString() const;
     ATL::CAtlArray<__int64> m_serials;
     CStringW m_strCharName;
 };
+
+// @0x140891620
+Unk_CharUploadSNs::Unk_CharUploadSNs()
+{
+    m_serials.RemoveAll();
+}
 
 // @0x140891670
 void Unk_CharUploadSNs::Write(COutputStream& stream) const

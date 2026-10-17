@@ -254,6 +254,7 @@ public:
     virtual void Write(COutputStream& stream) const;        // 0x1408908e0
     virtual void Read(CInPacket& packet);                   // 0x1408909f0
 
+    CUgcBannerReservePtr FUN_140890b50(unsigned __int64 nKey);     // the reservation of a key (empty when none)
     __int64 FUN_140890bd0();                                // the total price of the reservations (hourly price)
 
     CUgcBannerReserveMap m_reserves;                        // +0x20
