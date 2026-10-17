@@ -176,7 +176,7 @@ public:
     void Clear();                                   // 0x140424ae0
     CLockCriticalSection m_lock;
     bool m_active;                                  // +0x30
-    ATL::CAtlMap<unsigned, int> m_items;            // +0x38
+    ATL::CAtlMap<unsigned, bool> m_items;           // +0x38
 };
 MS2_CHECK_SIZE(CGameEventValueSaleItemsRestricted, 0x80);
 
@@ -186,11 +186,11 @@ public:
     Unk_GameEventValue408();                        // 0x140424b40
     ~Unk_GameEventValue408();                       // 0x140424b70
     bool IsSet();                                   // 0x140424b80
-    int GetValue();                                 // 0x140424ba0
-    void SetValue(int value);                       // 0x140424bc0: a nonzero value sets the flag
+    unsigned GetValue();                            // 0x140424ba0
+    void SetValue(unsigned value);                  // 0x140424bc0: a nonzero value sets the flag
     void Reset();                                   // 0x140424bf0
     bool m_set;
-    int m_value;                                    // +0x4
+    unsigned m_value;                               // +0x4
 };
 MS2_CHECK_SIZE(Unk_GameEventValue408, 8);
 
@@ -217,7 +217,7 @@ public:
     __int64 GetBeginTime();                         // 0x140424e60
     void Reset();                                   // 0x140424ea0
     void GetIds(ATL::CAtlArray<unsigned>& ids);     // 0x140424ed0
-    bool HasId(unsigned id);                        // 0x140424f20
+    BOOL HasId(unsigned id);                        // 0x140424f20
     MS2Ptr<MentoringContext> m_spContext;
 };
 MS2_CHECK_SIZE(CGameEventValueMentoring, 0x10);
@@ -353,11 +353,11 @@ MS2_CHECK_SIZE(CGameEventValueDungeonOpenPeriod, 0x78);
 class Unk_GameEventValueIdSet {
 public:
     Unk_GameEventValueIdSet();                      // 0x140427970
-    void Add(int id);                               // 0x1404279c0
-    void Remove(int id);                            // 0x140427a20
+    void Add(unsigned id);                          // 0x1404279c0
+    void Remove(unsigned id);                       // 0x140427a20
     bool IsActive();                                // 0x140427a80: not empty
     CLockCriticalSection m_lock;
-    std::set<int> m_ids;                            // +0x30
+    std::set<unsigned> m_ids;                       // +0x30
 };
 MS2_CHECK_SIZE(Unk_GameEventValueIdSet, 0x40);
 
@@ -556,12 +556,12 @@ public:
     CGameEventValueLimitedQuantity();               // 0x140429e20
     ~CGameEventValueLimitedQuantity();              // 0x140429e80
     MS2Ptr<LimitedQuantityContext> Get(int eventId);               // 0x140429ed0
-    MS2Ptr<LimitedQuantityContext> GetByKey(int key);              // 0x140429fd0
+    MS2Ptr<LimitedQuantityContext> GetByKey(unsigned long key);    // 0x140429fd0
     void Add(MS2Ptr<LimitedQuantityContext> spContext);            // 0x14042a0e0
     void Remove(MS2Ptr<LimitedQuantityContext> spContext);         // 0x14042a260
     CLockCriticalSection m_lock;
     std::map<int, MS2Ptr<LimitedQuantityContext> > m_contexts;            // +0x30
-    std::map<int, int> m_keys;                                            // +0x40 key -> event id
+    std::map<unsigned long, unsigned long> m_keys;                        // +0x40 key -> event id
 };
 MS2_CHECK_SIZE(CGameEventValueLimitedQuantity, 0x50);
 
@@ -574,7 +574,7 @@ public:
     void Remove(int id);                            // 0x14042a5b0
     MS2Ptr<EventShopNpcContext> Find(unsigned long group, int npcId);  // 0x14042a7d0
     CLockCriticalSection m_lock;
-    std::map<unsigned long, MS2Ptr<EventShopNpcContext> > m_contexts;  // +0x30 Get18 ->
+    std::map<int, MS2Ptr<EventShopNpcContext> > m_contexts;            // +0x30 Get18 ->
     std::map<unsigned long, Contexts> m_groups;                         // +0x40 Get20 ->
 };
 MS2_CHECK_SIZE(CGameEventValueEventShopNpc, 0x50);
