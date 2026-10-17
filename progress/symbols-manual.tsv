@@ -2740,3 +2740,6 @@ inflateInit_	142723ad0	func
 ?DAT_1439f8ccc@@3HA	1439f8ccc	data
 ?DAT_1439f8cd0@@3HA	1439f8cd0	data
 ?DAT_1439f8cd4@@3HA	1439f8cd4	data
+?PTR_DAT_1439f4da0@@3PEBDEB	1439f4da0	data
+?PTR_DAT_1439f4da8@@3PEBDEB	1439f4da8	data
+?PTR_s_Eff_center_1439f4db0@@3PEBDEB	1439f4db0	data
