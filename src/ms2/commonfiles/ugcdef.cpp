@@ -2178,3 +2178,211 @@ void CUgcBookMark::Read(CInPacket& packet)
     m_strName = packet.vfunc_o8_8();
     m_strUrl = packet.vfunc_o8_6();
 }
+
+// @0x140897010
+RideeItemInfo::RideeItemInfo()
+{
+    Clear();
+}
+
+// @0x140897070
+RideeItemInfo::RideeItemInfo(const RideeItemInfo* pOther)
+{
+    Clear();
+    CopyFrom(pOther);
+}
+
+// @0x1408970e0
+RideeItemInfo::RideeItemInfo(int nId, __int64 nUid, const CUgcItemLook* pLook)
+{
+    Clear();
+    m_nId = nId;
+    m_nUid = nUid;
+    m_look.CopyFrom(pLook);
+}
+
+// @0x140897180
+RideeItemInfo::RideeItemInfo(CInPacket& packet)
+{
+    Read(packet);
+}
+
+// @0x1408971f0
+RideeItemInfo::~RideeItemInfo()
+{
+    Clear();
+}
+
+// @0x140897250
+void RideeItemInfo::CopyFrom(const RideeItemInfo* pOther)
+{
+    Clear();
+    if (pOther == 0)
+        return;
+    m_nId = pOther->m_nId;
+    m_nUid = pOther->m_nUid;
+    m_look.CopyFrom(&pOther->m_look);
+}
+
+// @0x1408972c0
+void RideeItemInfo::Clear()
+{
+    m_nId = 0;
+    m_nUid = 0;
+    m_look.Clear();
+}
+
+// @0x140897300
+int RideeItemInfo::IsValid() const
+{
+    if (m_nId != 0 && m_look.m_n18 != 0)
+        return 1;
+    return 0;
+}
+
+// MS2-FUNCTIONAL: early returns instead of the exe's single result register shape
+// @0x140897330
+int RideeItemInfo::Equals(const RideeItemInfo* pOther) const
+{
+    if (pOther == 0)
+        return 0;
+    if (IsValid() == 0)
+    {
+        if (pOther->IsValid() == 1)
+            return 0;
+        if (pOther->m_nId == m_nId)
+            return 1;
+        return 0;
+    }
+    if (pOther->IsValid() == 0)
+        return 0;
+    if (m_nId == pOther->m_nId)
+    {
+        if (m_look.m_n18 == pOther->m_look.m_n18)
+            return 1;
+        return 0;
+    }
+    return 0;
+}
+
+// @0x1408973e0
+void RideeItemInfo::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_3(m_nId);
+    stream.vfunc_o10_4(m_nUid);
+    m_look.Write(stream);
+}
+
+// @0x140897440
+void RideeItemInfo::Read(CInPacket& packet)
+{
+    Clear();
+    m_nId = packet.vfunc_o8_3();
+    m_nUid = packet.vfunc_o8_4();
+    m_look.Read(packet);
+}
+
+void FUN_140274fc0(CStringW& str, ATL::CAtlArray<unsigned>& out, const wchar_t* pszSep);
+
+// @0x1408975c0
+CUgcBannerRollingImage::CUgcBannerRollingImage()
+{
+    Clear();
+}
+
+// @0x140897680
+CUgcBannerRollingImage::~CUgcBannerRollingImage()
+{
+    Clear();
+}
+
+// @0x140897740
+int CUgcBannerRollingImage::FUN_140897740()
+{
+    m_strIds.Trim();
+    ATL::CAtlArray<unsigned> ids;
+    FUN_140274fc0(m_strIds, ids, L",");
+    int nCount = (int)ids.GetCount();
+    for (int i = 0; i < nCount; i++)
+    {
+        unsigned nId = ids[i];
+        m_idSet.insert(nId);
+        Unk_BannerPtr banner = CFieldBannerData::GetBanner(nId);
+        if (banner.get() != 0)
+            m_fieldSet.insert(banner->m_nField);
+        else
+            MS2_ASSERT_AT(0xdc5, FALSE);
+    }
+    return 1;
+}
+
+// @0x1408978a0
+void CUgcBannerRollingImage::Clear()
+{
+    m_n18 = 0;
+    m_n20 = 0;
+    m_n30 = 0;
+    m_n38 = 0;
+    m_n40 = 0;
+    m_str48.Empty();
+    m_str58.Empty();
+    m_str50.Empty();
+    m_fieldSet.clear();
+}
+
+// @0x140897940
+void CUgcBannerRollingImage::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_4(m_n18);
+    stream.vfunc_o10_8(m_strIds);
+    stream.vfunc_o10_1((unsigned char)m_n20);
+    stream.vfunc_o10_3(m_n30);
+    stream.vfunc_o10_4(m_n38);
+    stream.vfunc_o10_4(m_n40);
+    stream.vfunc_o10_6(m_str48);
+    stream.vfunc_o10_8(m_str50);
+    stream.vfunc_o10_8(m_str58);
+}
+
+// @0x140897a70
+void CUgcBannerRollingImage::Read(CInPacket& packet)
+{
+    Clear();
+    m_n18 = packet.vfunc_o8_4();
+    m_strIds = packet.vfunc_o8_8();
+    m_n20 = packet.vfunc_o8_1();
+    m_n30 = packet.vfunc_o8_3();
+    m_n38 = packet.vfunc_o8_4();
+    m_n40 = packet.vfunc_o8_4();
+    m_str48 = packet.vfunc_o8_6();
+    m_str50 = packet.vfunc_o8_8();
+    m_str58 = packet.vfunc_o8_8();
+}
+
+// @0x140897d70
+int CUgcBannerRollingImage::FUN_140897d70(__int64 nTime) const
+{
+    if (m_n38 == 0 || m_n40 == 0)
+        return 0;
+    if (nTime < m_n38 || nTime > m_n40)
+        return 0;
+    return 1;
+}
+
+// @0x140897dd0
+int CUgcBannerRollingImage::FUN_140897dd0(unsigned nId) const
+{
+    if (m_idSet.find(nId) != m_idSet.end())
+        return 1;
+    return 0;
+}
+
+// @0x140897e40
+int CUgcBannerRollingImage::FUN_140897e40(unsigned nField) const
+{
+    if (m_fieldSet.empty())
+        return 1;
+    if (m_fieldSet.find(nField) != m_fieldSet.end())
+        return 1;
+    return 0;
+}

@@ -8,6 +8,7 @@
 #include <afx.h>
 #include <atlcoll.h>
 #include <egf/EntityID.h>
+#include <set>
 #include <vector>
 
 #include "ms2/ms2layout.h"
@@ -614,3 +615,55 @@ public:
     CStringA m_strUrl;                                      // +0x30
 };
 MS2_CHECK_SIZE(CUgcBookMark, 0x38);
+
+// A ridee (vehicle) item: id, uid and the item look.
+class RideeItemInfo : public CPtred
+{
+public:
+    RideeItemInfo();                                        // 0x140897010
+    explicit RideeItemInfo(const RideeItemInfo* pOther);    // 0x140897070
+    RideeItemInfo(int nId, __int64 nUid, const CUgcItemLook* pLook);    // 0x1408970e0
+    explicit RideeItemInfo(CInPacket& packet);              // 0x140897180
+    virtual ~RideeItemInfo();                               // 0x1408971f0
+
+    void CopyFrom(const RideeItemInfo* pOther);             // 0x140897250
+    void Clear();                                           // 0x1408972c0
+    int IsValid() const;                                    // 0x140897300
+    int Equals(const RideeItemInfo* pOther) const;          // 0x140897330
+    void Write(COutputStream& stream) const;                // 0x1408973e0
+    void Read(CInPacket& packet);                           // 0x140897440
+
+    int m_nId;                                              // +0x18
+    __int64 m_nUid;                                         // +0x20
+    CUgcItemLook m_look;                                    // +0x28
+};
+MS2_CHECK_SIZE(RideeItemInfo, 0x90);
+
+// A banner rolling image: the image itself plus the fields (maps) it may be shown on.
+class CUgcBannerRollingImage : public CPtred
+{
+public:
+    CUgcBannerRollingImage();                               // 0x1408975c0
+    virtual ~CUgcBannerRollingImage();                      // 0x140897680
+
+    int FUN_140897740();                                    // trims the id list and fills both field sets
+    void Clear();                                           // 0x1408978a0
+    void Write(COutputStream& stream) const;                // 0x140897940
+    void Read(CInPacket& packet);                           // 0x140897a70
+    int FUN_140897d70(__int64 nTime) const;                 // nTime is inside [m_n38, m_n40]
+    int FUN_140897dd0(unsigned nId) const;                      // the banner id is in the m_idSet
+    int FUN_140897e40(unsigned nField) const;                    // no field restriction, or nField is in the m_fieldSet
+
+    __int64 m_n18;                                          // +0x18
+    int m_n20;                                              // +0x20
+    CStringW m_strIds;                                      // +0x28 comma separated banner ids
+    int m_n30;                                              // +0x30
+    __int64 m_n38;                                          // +0x38 start
+    __int64 m_n40;                                          // +0x40 end
+    CStringA m_str48;                                       // +0x48
+    CStringW m_str50;                                       // +0x50
+    CStringW m_str58;                                       // +0x58
+    std::set<unsigned> m_fieldSet;                          // +0x60
+    std::set<unsigned> m_idSet;                             // +0x70
+};
+MS2_CHECK_SIZE(CUgcBannerRollingImage, 0x80);
