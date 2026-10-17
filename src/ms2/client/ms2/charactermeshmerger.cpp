@@ -38,6 +38,15 @@
 #include <d3dx9.h>
 #include <efd/LoggerMacros.h>
 #include "ms2/commonfiles/logstring.h"
+#include "ms2/placeholder/unk_1402a9d70.h"
+
+// The header statics (the sort-name table, skill and stun of header_statics_a.h), then the atlas divisor and the condition table.
+static CString s_strSortTypeNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_strSkill = "skill";
+static CString s_strStun = "stun";
+static NiColor s_kAtlasDivisor(0.70710677f, 0.70710677f, 0.70710677f);   // 1/sqrt(2) grey, the atlas alpha divisor
+static Unk_1402a9d70 s_unk1402a9d70(17, 0.75f, 0.25f, 2.25f, 10);
+static int s_iAtlasFileCount;                                            // number of atlases dumped so far
 
 // Scene walker of the cube code (ctor 0x14098cb80); children are queued by AddChildren and Next returns the next object.
 class Unk_CubeSceneIterator {
@@ -116,8 +125,6 @@ typedef std::vector<MeshList> MeshGroupVector;
 
 bool FUN_14098dfc0(NiAVObject* pObject);                    // object is an attachment/helper that is not merged
 bool FUN_140a56f50(const NiColor* pA, const NiColor* pB);   // colours differ
-extern NiColor DAT_143acd488;                               // 1/sqrt(2) grey, atlas scale divisor
-extern int DAT_143acd4a0;                                   // atlas file counter
 extern const NiPixelFormat DAT_1439fb040;                   // atlas pixel format
 extern NiTexture::FormatPrefs DAT_1439fc800;          // atlas texture format preferences
 extern const NiFixedString DAT_143ae50c8;                   // customised texture extra data keys (0x143ae50c8-0x143ae5200)
@@ -1305,7 +1312,7 @@ void FUN_14104ddc0(std::vector<NiAVObject*>& kMeshes, MeshGroupVector& kOutGroup
             if (strKey != "")
                 kCache.insert(std::make_pair(strKey, pNode));
             NiMaterialProperty* pMaterial = NiDynamicCast(NiMaterialProperty, pMesh->GetProperty(3));
-            float fAlpha = pMaterial->GetDiffuseColor().r / DAT_143acd488.r;
+            float fAlpha = pMaterial->GetDiffuseColor().r / s_kAtlasDivisor.r;
             BlitTexturePixels(spTexture, spAlbedo, pNode->m_kRect, fAlpha);
         }
         else
@@ -1404,11 +1411,11 @@ NiTexturingProperty* FUN_141050fd0(NiPixelData* pAlbedo, NiPixelData* pShader)
     pTexturing->SetShaderMap(0, pShaderMap);
     NiSourceTexture* pBase = NiDynamicCast(NiSourceTexture, pTexturing->GetBaseTexture());
     CString strPath;
-    strPath.Format("CharacterAtlas%d.dds", DAT_143acd4a0);
+    strPath.Format("CharacterAtlas%d.dds", s_iAtlasFileCount);
     SaveTextureToFileA(&strPath, D3DXIFF_DDS, pBase);
-    strPath.Format("CharacterAtlasShaderMap%d.dds", DAT_143acd4a0);
+    strPath.Format("CharacterAtlasShaderMap%d.dds", s_iAtlasFileCount);
     SaveTextureToFileA(&strPath, D3DXIFF_DDS, spShaderTexture);
-    DAT_143acd4a0++;
+    s_iAtlasFileCount++;
     return pTexturing;
 }
 
