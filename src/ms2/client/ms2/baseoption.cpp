@@ -132,7 +132,7 @@ void CBaseOption::vfunc_13()
 }
 
 // @0x140a02d60
-int CBaseOption::vfunc_14()
+bool CBaseOption::vfunc_14()
 {
     return 0;
 }
