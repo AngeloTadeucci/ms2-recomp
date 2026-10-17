@@ -227,6 +227,7 @@ void FUN_14114dd70(Unk_CMISTree<260>*, Unk_CMISIter<260>*);                 // b
 bool FUN_1411274c0(Unk_CMISIter<260>*, Unk_CMISIter<260>*);                 // operator!=
 Unk_CMISCubeByKey* FUN_1411285e0(Unk_CMISIter<260>*);                       // operator*
 void FUN_141129b50(Unk_CMISIter<260>*);                                     // operator++
+Unk_CMISIter<260>* FUN_141129b00(Unk_CMISIter<260>*, Unk_CMISIter<260>*, int);        // operator++(int)
 int FUN_1408b4f20(Cube*);                                                   // the item id of a cube
 __int64 FUN_1408b4f50(Cube*);
 int FUN_14053fc10(int);                                                     // the item category
@@ -257,6 +258,10 @@ Unk_CMISIter<274>* FUN_141151a30(Unk_CMISTree<274>*, Unk_CMISIter<274>*);   // e
 bool FUN_141127440(Unk_CMISIter<274>*, Unk_CMISIter<274>*);                 // operator!=
 Unk_CMISHouseNode* FUN_1411285a0(Unk_CMISIter<274>*);                       // operator*
 void FUN_141129ac0(Unk_CMISIter<274>*);                                     // operator++
+Unk_CMISIter<274>* FUN_1411573c0(Unk_CMISTree<274>*, Unk_CMISIter<274>*, const int*);   // find
+Unk_CMISHousePtr* FUN_141127c50(Unk_CMISTree<274>*, const int*);             // operator[]
+char* FUN_141128470(Unk_CMISHousePtr*);                                      // the house info bytes
+int FUN_1408b5620(int);
 bool FUN_141126b10(Unk_CMISHousePtr*, int);                                 // operator==(0)
 Unk_CMISHouseInfo* FUN_141128800(Unk_CMISHousePtr*);                        // operator*
 class Unk_CMISPolyObj { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); };
@@ -1312,6 +1317,67 @@ void CubeMapInformationService::FUN_1410c6820(int nIdx)
         }
         f318[nIdx] = 0;
     }
+}
+// @0x1410c3020
+void CubeMapInformationService::FUN_1410c3020(int nField)
+{
+    f1b0 = nField;
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&f98, &it); FUN_1411274c0(&it, FUN_141151af0(&f98, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube->field48 != 0)
+            continue;
+        spCube->field54 = nField;
+    }
+}
+// @0x1410c54a0
+Unk_StreamPoint CubeMapInformationService::FUN_1410c54a0(Unk_EntRef spEnt)
+{
+    Unk_StreamPoint ptRes(150.0f, 150.0f, 150.0f);
+    Unk_StreamPoint ptProp;
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0xcb086a2d, &ptProp);
+    if (ptProp.FUN_140552700(DAT_143b01a60))
+        ptRes = ptProp;
+    return ptRes;
+}
+// @0x1410ce560
+void CubeMapInformationService::FUN_1410ce560()
+{
+    Unk_CMISIter<260> it, itEnd, itOld;
+    for (FUN_14114dd70(&f98, &it); FUN_1411274c0(&it, FUN_141151af0(&f98, &itEnd)); FUN_141129b00(&it, &itOld, 0))
+        FUN_1410c1910(FUN_1408a0400(FUN_1411285e0(&it)->first), 1);
+}
+// @0x1410ce310
+int CubeMapInformationService::FUN_1410ce310()
+{
+    int nCount = 0;
+    Unk_CMISIter<260> it, itEnd;
+    for (FUN_14114dd70(&fb8, &it); FUN_1411274c0(&it, FUN_141151af0(&fb8, &itEnd)); FUN_141129b50(&it)) {
+        MS2Ptr<Cube> spCube(FUN_1411285e0(&it)->second);
+        if (spCube.get() != 0) {
+            if (FUN_1408b5620(FUN_1408b4f20(spCube.operator->())) != 0)
+                nCount = nCount + 1;
+        }
+    }
+    return nCount;
+}
+// @0x1410d33a0
+int CubeMapInformationService::FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut)
+{
+    Unk_CMISIter<274> itEnd, itFind;
+    if (FUN_141127440(FUN_1411573c0(&f238, &itFind, &nKey), FUN_141151a30(&f238, &itEnd))) {
+        *pOut = *reinterpret_cast<Unk_StreamPoint*>(FUN_141128470(FUN_141127c50(&f238, &nKey)) + 0x1c);
+        return 1;
+    }
+    return 0;
+}
+// @0x1410c7f60
+CStringW CubeMapInformationService::FUN_1410c7f60(int nA, int nB)
+{
+    Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nA, nB);
+    if (spOwner == 0)
+        return CStringW(L"");
+    return CStringW(spOwner->ownerName);
 }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)

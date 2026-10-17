@@ -206,6 +206,12 @@ public:
     void FUN_1410c5340(Unk_CMISEntityRef ref);
     void FUN_1410c6070();
     void FUN_1410c6820(int nIdx);
+    Unk_StreamPoint FUN_1410c54a0(Unk_EntRef spEnt);
+    void FUN_1410ce560();
+    void FUN_1410c1910(const Unk_Int3& pt, int n);
+    int FUN_1410ce310();
+    int FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut);
+    CStringW FUN_1410c7f60(int nA, int nB);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
