@@ -362,7 +362,6 @@ void LobbyFieldTable::Clear()
 }
 
 // @0x14174d9a0
-// MS2-FUNCTIONAL: CAtlArray operator[] COMDAT is an ICF look-alike bound to a different exe copy
 unsigned int LobbyFieldTable::GetRandomSelectMap()
 {
     if (m_selectMaps.IsEmpty())
