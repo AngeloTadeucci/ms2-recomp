@@ -217,7 +217,6 @@ UIDialog::~UIDialog()
 {
 }
 
-// MS2-FUNCTIONAL: code bytes match; the stale symbols.tsv row binds this name to _purecall
 // @0x1419234e0
 CString UIDialog::vfunc_1()
 {
@@ -463,14 +462,13 @@ void UIDialog::FUN_141924680()
 }
 MS2_REPLACE_METHOD(0x141924680, UIDialog, FUN_141924680, 106, 0xD91882AE);
 
-// MS2-FUNCTIONAL: stack frame and temporary layout differ (extra/merged CString temporaries; no source form found within the time box)
 // @0x1419246f0
 void UIDialog::FUN_1419246f0()
 {
-    if (!vfunc_55())
-        vfunc_67();
-    else
+    if (vfunc_55())
         FUN_141924680();
+    else
+        vfunc_67();
 }
 MS2_REPLACE_METHOD(0x1419246f0, UIDialog, FUN_1419246f0, 68, 0x28E32DDD);
 
