@@ -26,6 +26,11 @@ struct Unk_QuestItemLink
     int m_kind = 2;            // 0 start item, 1 progress item
 };
 MS2_CHECK_SIZE(Unk_QuestItemLink, 0xc);
+// Quest progress state as filtered by FUN_1416cb4d0 (values of CQuest FUN_1407476d0; 4/5 select every quest). It is
+// an enum, not int: the exe's vector of it (0x1416d91c0.. 0x1416e3510) is a separate copy from vector<int>/<unsigned>.
+// Names invented.
+enum Unk_QmQuestState { QmQuestState0 = 0, QmQuestState1 = 1, QmQuestState2 = 2, QmQuestState3 = 3, QmQuestState4 = 4,
+                        QmQuestState5 = 5 };
 // Quest marker state of an npc (ctor 0x140964630 calls Reset 0x1409669c0; dtor 0x140964e40). Filled by
 // FUN_1416d12d0. cproxygameobject.h's Unk_ProxyValue88 (CProxyGameObject+0x88) is this record with +0x10..+0x1c opaque.
 struct Unk_QmNpcQuestState
@@ -64,7 +69,7 @@ public:
     void vfunc_21(void*) override;
     void vfunc_22(void*) override;
     void vfunc_33(int, int) override;
-    void vfunc_o10_0(int, int) override;
+    int vfunc_o10_0(int, int) override;
     int vfunc_o10_1(int) override;
     int vfunc_o10_2(int) override;
     Unk_PayloadPtr<CQuest> vfunc_o10_3(int) override;
@@ -111,7 +116,7 @@ public:
     int FUN_1416cae20(int);
     void FUN_1416caec0(Unk_PayloadPtr<CQuest>);
     void FUN_1416cb260(ATL::CAtlArray<unsigned>&, int, int, int);
-    void FUN_1416cb4d0(std::vector<unsigned>&, std::vector<int>, int, int);
+    void FUN_1416cb4d0(std::vector<unsigned>&, std::vector<Unk_QmQuestState>, int, int);
     void FUN_1416cb8b0(ATL::CAtlArray<Unk_PayloadPtr<CQuest>>&, int, int, int);
     void FUN_1416cbb20(std::vector<Unk_PayloadPtr<CQuest>>&, int, int, int);
     void FUN_1416cde50(int);
@@ -145,9 +150,9 @@ public:
     int FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all);
     void FUN_1416d16c0(int group, ATL::CAtlList<unsigned>& out);
     void FUN_1416d1800(int group, Unk_QmNpcQuestState* best);
-    void FUN_1416d1a30(int questId);
+    void FUN_1416d1a30(unsigned questId);
     std::pair<unsigned, __int64> FUN_1416d1e90();   // nearest live user of a tracked quest (quest id, user id)
-    const std::set<__int64>& FUN_1416d2510(int questId);   // users found for the quest (empty set if none)
+    const std::set<__int64>& FUN_1416d2510(unsigned questId);   // users found for the quest (empty set if none)
     unsigned FUN_1416d2600(int questId, int checkAccept);   // first available follow-up quest
     int FUN_1416d26c0(int questId, std::list<unsigned>& out, int checkAccept);
     int FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigned>>& paths, int verbose);
@@ -193,7 +198,7 @@ public:
     ATL::CAtlArray<unsigned> m_pinnedQuests; // +1a0
     ATL::CAtlMap<int, int> m_dailyCounts; // +1c0
     ATL::CAtlMap<int, int> m_weeklyCounts; // +208
-    std::map<int, std::set<__int64>> m_targets250;
+    std::map<unsigned, std::set<__int64>> m_targets250;   // key unsigned: the exe tree calls less<unsigned>
     // +260: only the ctor and dtor reach it. Its tree nodes are 0x38 bytes and the element dtor releases an
     // Unk_PayloadPtr<CQuest> at +8 (0x1416dbfa0), so the element is pair<const int, Unk_PayloadPtr<CQuest>>; the
     // mangled-name order of its deallocate COMDATs (0x1416e2840 before the map<int, set> one at 0x1416e2870) fixes

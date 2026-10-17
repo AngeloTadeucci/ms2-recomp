@@ -7,22 +7,19 @@
 // MS2-PIN: ??0<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEAA@I@Z 0x1416dbb80
 // MS2-PIN: ??R<lambda_6d510819a8f69a3a4b14e1326e882a6b>@@QEBA_NAEBUUnk_QmNpcQuestEntry@@0@Z 0x1416dcda0
 // MS2-PIN: ??R<lambda_ffd9fd9b7ed9f8dca7c54b6016c3fa67>@@QEBAXV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z 0x1416dcb40
-// MS2-PIN: ??R<lambda_bff28b45a42954530307e5b624f5a235>@@QEBAXAEBV?$list@IV?$allocator@I@std@@@std@@@Z 0x1416dcb90
-// MS2-PIN: ??R<lambda_832e90266cbc1c25f66c2f4ce9c7fe9e>@@QEBAXH@Z 0x1416dcd40
-// MS2-PIN: ??0<lambda_832e90266cbc1c25f66c2f4ce9c7fe9e>@@QEAA@AEAV?$list@IV?$allocator@I@std@@@std@@AEAV?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@2@AEBQEAV32@@Z 0x1416dad60
+// MS2-PIN: ??R<lambda_32cce3d07944f0fc8bfd10ee14b4b6f1>@@QEBAXAEBV?$list@IV?$allocator@I@std@@@std@@@Z 0x1416dcb90
 // MS2-PIN: ??0<lambda_ffd9fd9b7ed9f8dca7c54b6016c3fa67>@@QEAA@AEBH@Z 0x1416dad20
-// MS2-PIN: ??0<lambda_bff28b45a42954530307e5b624f5a235>@@QEAA@AEBH@Z 0x1416dad40
+// MS2-PIN: ??0<lambda_32cce3d07944f0fc8bfd10ee14b4b6f1>@@QEAA@AEBH@Z 0x1416dad40
 // MS2-PIN: ??_7CQuestManager@@6B?$TSingleton@VCQuestManager@@@@@ 0x142f57498
-// MS2-PIN: ??R<lambda_ec77cf7c45e6dcfdc158975356cf22e0>@@QEBA_NH@Z 0x1416dcd00
-// MS2-PIN: ?FUN_1416cb4d0@CQuestManager@@QEAAXAEAV?$vector@IV?$allocator@I@std@@@std@@V?$vector@HV?$allocator@H@std@@@3@HH@Z 0x1416cb4d0
+// MS2-PIN: ??R<lambda_6350e5a2645340f9cbac3e1d2031332b>@@QEBA_NH@Z 0x1416dcd00
+// MS2-PIN: ?FUN_1416cb4d0@CQuestManager@@QEAAXAEAV?$vector@IV?$allocator@I@std@@@std@@V?$vector@W4Unk_QmQuestState@@V?$allocator@W4Unk_QmQuestState@@@std@@@3@HH@Z 0x1416cb4d0
 // MS2-PIN: ?_Unchecked_begin@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1dd0
 // MS2-PIN: ?_Unchecked_end@?$vector@IV?$allocator@I@std@@@std@@QEBAPEBIXZ 0x1416e1e70
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?8PEAVCQuestManager@@P80@EAAXAEAVCInPacket@@@Z@std@@YA_NAEBU?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@0@0@Z 0x1416d4a40 ; prop
 // MS2-PIN: ??$?8PEAVCQuestManager@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x1416d4ab0 ; prop
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@_J@std@@@0@AEAV10@@Z 0x1416d9c70 ; prop
 // MS2-PIN: ??$destroy@V?$list@IV?$allocator@I@std@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@V?$list@IV?$allocator@I@std@@@std@@PEAX@std@@@1@QEAV?$list@IV?$allocator@I@std@@@1@@Z 0x1416da140 ; unique
-// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daec0 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daf60 ; unique
 // MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@PEAVCQuest@@@Z 0x1416db050 ; unique
 // MS2-PIN: ?IsEmpty@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEBA_NXZ 0x1416dc1d0 ; unique
 // MS2-PIN: ?SetStartTime@CQuest@@QEAAX_J@Z 0x1416ded20 ; unique
@@ -36,6 +33,37 @@
 // MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e3290 ; unique
 // MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e32f0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1416d4530
+// MS2-PIN: ??$_Insert_at@_JU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@1@_NPEAU?$_Tree_node@_JPEAX@1@$$QEA_JU_Not_a_node_tag@1@@Z 0x1416d6b40
+// MS2-PIN: ??$_Insert_nohint@_JU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@_N@1@_N$$QEA_JU_Not_a_node_tag@1@@Z 0x1416d7ef0
+// MS2-PIN: ?_Swap_all@?$_Tree_comp_alloc@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAXAEAV12@@Z 0x1416e18d0
+// MS2-PIN: ?FUN_1416d40a0@CQuestManager@@QEAAHHIIAEAV?$list@IV?$allocator@I@std@@@std@@AEAV?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@3@PEAV43@@Z 0x1416d40a0
+// MS2-PIN: ??$_Insert_range@V?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@std@@@?$list@IV?$allocator@I@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@1@V?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@1@1Uforward_iterator_tag@1@@Z 0x1416d8300
+// MS2-PIN: ??$_Insert_range@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@std@@@?$list@IV?$allocator@I@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@1@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@1@1Uforward_iterator_tag@1@@Z 0x1416d83c0
+// MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@PEAVCQuest@@@Z 0x1416db050
+// MS2-PIN: ?SetStartTime@CQuest@@QEAAX_J@Z 0x1416ded20
+// MS2-PIN: ?Set68@CQuest@@QEAAXH@Z 0x1416dedb0
+// MS2-PIN: ?_Assign_rv@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAX$$QEAV12@U?$integral_constant@_N$00@2@@Z 0x1416df0c0
+// MS2-PIN: ?_Move_alloc@?$_Tree_comp_alloc@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAXAEAV?$allocator@U?$_Tree_node@_JPEAX@std@@@2@@Z 0x1416e1250
+// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@0@AEAV10@@Z 0x1416da5c0
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daf60
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z 0x1416daec0
+// MS2-PIN: ??F?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1416dc9f0
+// MS2-PIN: ??$Call@VCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@CAXAEAU?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@AEAVCInPacket@@@Z 0x1416e3210
+// MS2-PIN: ??$Call@VCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@CAXAEAU?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@PEAVNotifyObject@@@Z 0x1416e3250
+// MS2-PIN: ?IsEmpty@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEBA_NXZ 0x1416dc1d0
+// MS2-PIN: ??R<lambda_df06528fad7761efa3e453193cccf6d6>@@QEBAXH@Z 0x1416dcd40
+// MS2-PIN: ??F?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@V?$list@IV?$allocator@I@std@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1416dca10
+// MS2-PIN: ?_Unchecked_erase@?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@V?$list@IV?$allocator@I@std@@@std@@@std@@@std@@U_Iterator_base0@2@@2@@Z 0x1416e1f10
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1416e2750
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1416e27b0
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEAAXAEAVCInPacket@@@Z 0x1416e31b0
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x1416e31e0
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e3290
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e32f0
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@@std@@QEAA@XZ 0x1416db570
+// MS2-PIN: ?_Unchecked_erase@?$list@IV?$allocator@I@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@2@@Z 0x1416e1e90
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1416d4310
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\questmanager.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "questmanager_2.h"
@@ -88,7 +116,7 @@ static CString s_progressSound = "quest_progress";
 
 // External services use declarations until their classes are recovered.
 CAchieveManager* FUN_1406c7600();
-void FUN_140936640(void*, int, int);
+int FUN_140936640(void*, int, int);
 // The npc talk manager.
 class Unk_QmTalkManager {
 public:
@@ -479,9 +507,9 @@ int CQuestManager::vfunc_o10_1(int id)
 MS2_REPLACE_METHOD_VIA(0x1416c9760, CQuestManager, CQuestManagerCommon, vfunc_o10_1, 161, 0xA6A22EE1);
 
 // @0x1416c9810
-void CQuestManager::vfunc_o10_0(int id, int state)
+int CQuestManager::vfunc_o10_0(int id, int state)
 {
-    FUN_140936640(FUN_1406c7600(), id, state);
+    return FUN_140936640(FUN_1406c7600(), id, state);
 }
 MS2_REPLACE_METHOD_VIA(0x1416c9810, CQuestManager, CQuestManagerCommon, vfunc_o10_0, 45, 0x8953D5C2);
 
@@ -976,7 +1004,7 @@ void CQuestManager::FUN_1416cb260(ATL::CAtlArray<unsigned>& ids, int state, int 
 MS2_REPLACE_METHOD(0x1416cb260, CQuestManager, FUN_1416cb260, 618, 0x631E6AA7);
 
 // @0x1416cb4d0
-void CQuestManager::FUN_1416cb4d0(std::vector<unsigned>& ids, std::vector<int> states, int type, int group)
+void CQuestManager::FUN_1416cb4d0(std::vector<unsigned>& ids, std::vector<Unk_QmQuestState> states, int type, int group)
 {
     bool all = false;
     if (states.empty() ||
@@ -1992,6 +2020,8 @@ int CQuestManager::FUN_1416d12d0(int npcId, Unk_QmNpcQuestState* state, int all)
         }
     }
     if (state->m_wantText != 0) {
+        // MS2: the exe's capture ctor (0x1416dbb80) ignores its argument and copies the member onto itself (no source
+        // form found in two probes); this one stores the argument (functional COMDAT).
         std::sort(entries.begin(), entries.end(), [bestQuest = state->m_questId](const Unk_QmNpcQuestEntry& a, const Unk_QmNpcQuestEntry& b) {
             if (a.m_questId == bestQuest) return true;
             if (b.m_questId == bestQuest) return false;
@@ -2059,7 +2089,7 @@ void CQuestManager::FUN_1416d1800(int group, Unk_QmNpcQuestState* best)
 MS2_REPLACE_METHOD(0x1416d1800, CQuestManager, FUN_1416d1800, 553, 0x44156FC6);
 
 // @0x1416d1a30
-void CQuestManager::FUN_1416d1a30(int questId)
+void CQuestManager::FUN_1416d1a30(unsigned questId)
 {
     WorldService* world = FUN_1403ed2d0();
     if (world == 0) return;
@@ -2087,8 +2117,8 @@ MS2_REPLACE_METHOD(0x1416d1a30, CQuestManager, FUN_1416d1a30, 699, 0x9270EB9B);
 void CQuestManager::FUN_1416d1d00(PCBase* pc)
 {
     if (pc != 0) {
-        for (std::map<int, std::set<__int64> >::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
-            int questId = it->first;
+        for (std::map<unsigned, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+            unsigned questId = it->first;
             Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
             if (!quest.IsNull()) {
                 if (quest->CheckUserFind(pc) != 0) {
@@ -2112,7 +2142,7 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
     float bestDistance = FLT_MAX;
     const NiPoint3& playerPos = player->vfunc_18();
     std::list<unsigned> stale;
-    for (std::map<int, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+    for (std::map<unsigned, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
         const unsigned questId = it->first;
         Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
         if (quest.IsNull()) {
@@ -2154,13 +2184,13 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
         }
         MS2_FOR_EACH(__int64 id, gone) users.erase(id);
     }
-    MS2_FOR_EACH(int id, stale) m_targets250.erase(id);
+    MS2_FOR_EACH(unsigned id, stale) m_targets250.erase(id);
     return best;
 }
 MS2_REPLACE_METHOD(0x1416d1e90, CQuestManager, FUN_1416d1e90, 1657, 0x68DA91B1);
 
 // @0x1416d2510
-const std::set<__int64>& CQuestManager::FUN_1416d2510(int questId)
+const std::set<__int64>& CQuestManager::FUN_1416d2510(unsigned questId)
 {
     static std::set<__int64> s_empty;
     if (m_targets250.find(questId) == m_targets250.end()) return s_empty;
@@ -2207,7 +2237,7 @@ int CQuestManager::FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigne
     auto logPath = [verbose](const std::list<unsigned>& path) {
         if (verbose) {
             CStringW text(L"[S]");
-            for (__int64 questId : path) {
+            for (unsigned __int64 questId : path) {
                 int level = -1;
                 MS2Ptr<CQuestData> data = FUN_14074bc40(static_cast<int>(questId));
                 if (data.get()) level = data->m_28;
@@ -2218,7 +2248,7 @@ int CQuestManager::FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigne
         }
     };
     std::vector<unsigned> epics;
-    FUN_140764020()->FUN_1416cb4d0(epics, {0, 1, 3}, 0, -1);
+    FUN_140764020()->FUN_1416cb4d0(epics, {QmQuestState0, QmQuestState1, QmQuestState3}, 0, -1);
     if (epics.empty()) {
         log(L"There is none progressEpicQuest.");
         return 0;
