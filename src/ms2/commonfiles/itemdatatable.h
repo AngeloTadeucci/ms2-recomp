@@ -39,7 +39,7 @@ public:
     typedef ATL::CAtlMap<int, MS2Ptr<ItemColorEx> > ColorMap;
 
     CColorPaletteInfo();                                    // 0x140555a70
-    virtual ~CColorPaletteInfo() {}
+    virtual ~CColorPaletteInfo() = default;
 
     void Init();                                            // 0x140555ae0 fresh array and map
     void Clear();                                           // 0x140555b80
@@ -64,7 +64,7 @@ public:
     class ItemTagParam : public CPtred
     {
     public:
-        virtual ~ItemTagParam() {}
+        virtual ~ItemTagParam() = default;
         CString m_strName;                                  // +0x18
         int m_nItemId;                                      // +0x20
         ItemTagKey m_eTag;                                  // +0x24
@@ -177,7 +177,7 @@ private:
     std::map<int, std::vector<MS2Ptr<DropNifData> > > m_mapDropNif;         // +0x330
     ATL::CAtlMap<ItemTagKey, MS2Ptr<ItemTagParam> > m_mapTag;               // +0x340
     ATL::CAtlMap<unsigned, CString> m_mapUiMaterialSound;                   // +0x388
-    ATL::CAtlMap<int, MS2Ptr<CColorPaletteInfo> > m_mapPalette;             // +0x3d0
+    ATL::CAtlMap<int, Unk_BmPtr<CColorPaletteInfo> > m_mapPalette;             // +0x3d0
     ATL::CRBMap<CStringW, int, ATL::CStringElementTraitsI<CStringW> > m_mapBlackMarketSearchable;  // +0x418
     std::vector<unsigned> m_vec448;                                         // +0x448
     ATL::CAtlMap<int, int> m_mapWeaponSpeed;                                // +0x460
