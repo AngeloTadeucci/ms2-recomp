@@ -6,6 +6,49 @@
 // MS2-UNIT: commonfiles\gameevent.cpp
 // MS2-RANGE: 0x1400b6380-0x1400b8480 .text$di
 // MS2-RANGE: 0x1403bb510-0x1403e4a90 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@$$QEA_N@Z 0x1403d6e70 ; prop
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@$$QEA_N@Z 0x1403d71f0 ; prop
+// MS2-PIN: ??$?0V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@$$QEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@@Z 0x1403d7290 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAH@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@HPEAX@1@PEAU21@AEAH@Z 0x1403d84f0 ; prop
+// MS2-PIN: ??$_Buynode@AEAU?$pair@$$CBHH@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAU?$pair@$$CBHH@1@@Z 0x1403d86c0 ; unique
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1403d87e0 ; unique
+// MS2-PIN: ??$_Copy@U_Copy_tag@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXAEBV01@U_Copy_tag@01@@Z 0x1403d8b30 ; prop
+// MS2-PIN: ??$_Copy@U_Copy_tag@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXAEBV01@U_Copy_tag@01@@Z 0x1403d8c50 ; unique
+// MS2-PIN: ??$_Copy_nodes@U_Copy_tag@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEAU21@0U_Copy_tag@01@@Z 0x1403d8d70 ; unique
+// MS2-PIN: ??$_Insert_at@AEAHPEAU?$_Tree_node@HPEAX@std@@@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@1@_NPEAU?$_Tree_node@HPEAX@1@AEAH1@Z 0x1403d9f20 ; prop
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHH@std@@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@AEAU?$pair@$$CBHH@1@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@@Z 0x1403dc660 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAHPEAU?$_Tree_node@HPEAX@std@@@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@_N@1@_NAEAHPEAU?$_Tree_node@HPEAX@1@@Z 0x1403ddee0 ; prop
+// MS2-PIN: ??$_Insert_nohint@AEBU?$pair@IH@std@@U_Not_a_node_tag@2@@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@_N@1@_NAEBU?$pair@IH@1@U_Not_a_node_tag@1@@Z 0x1403def20 ; unique
+// MS2-PIN: ??$_Insert_nohint@U?$pair@IH@std@@U_Not_a_node_tag@2@@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@_N@1@_N$$QEAU?$pair@IH@1@U_Not_a_node_tag@1@@Z 0x1403df740 ; unique
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1403e00d0 ; unique
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e0690 ; prop
+// MS2-PIN: ??$addressof@U?$pair@$$CBHH@std@@@std@@YAPEAU?$pair@$$CBHH@0@AEAU10@@Z 0x1403e06c0 ; prop
+// MS2-PIN: ??$addressof@U?$pair@IH@std@@@std@@YAPEAU?$pair@IH@0@AEAU10@@Z 0x1403e06d0 ; prop
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@0@AEAV10@@Z 0x1403e06e0 ; prop
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@0@AEAV10@@Z 0x1403e06f0 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAPEAU31@@Z 0x1403e07b0 ; prop
+// MS2-PIN: ??$_Idl_distance@PEAIPEAI@std@@YA_JAEBQEAI0@Z 0x1403e0d50 ; unique
+// MS2-PIN: ??$emplace_back@I@?$vector@IV?$allocator@I@std@@@std@@QEAAX$$QEAI@Z 0x1403e0df0 ; unique
+// MS2-PIN: ??$emplace_hint@AEBH@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@1@V21@AEBH@Z 0x1403e0ed0 ; unique
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e1080 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@0@AEAV10@@Z 0x1403e1110 ; prop
+// MS2-PIN: ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@_N@1@$$QEAI@Z 0x1403e12b0 ; unique
+// MS2-PIN: ??$move@AEAI@std@@YA$$QEAIAEAI@Z 0x1403e13c0 ; prop
+// MS2-PIN: ??0?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@@Z 0x1403e30c0 ; unique
+// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@@Z 0x1403e3150 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3230 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@XZ 0x1403e3270 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@IH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@1@@Z 0x1403e32b0 ; prop
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3330 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3390 ; prop
+// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@IH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@1@@Z 0x1403e3410 ; prop
+// MS2-PIN: ??0CNode@?$CAtlMap@IV?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@@3@@ATL@@QEAA@II@Z 0x1403e3ba0 ; prop
+// MS2-PIN: ??0CNode@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEAA@II@Z 0x1403e3be0 ; prop
+// MS2-PIN: ??0CPair@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@IEAA@I@Z 0x1403e3d80 ; prop
+// MS2-PIN: ??$forward_as_tuple@$$V@std@@YA?AV?$tuple@$$V@0@XZ 0x1403e40d0 ; prop
+// MS2-PIN: ??0SAHotTimeEventContext@@QEAA@XZ 0x1403e4540 ; unique
+// MS2-PINS-END tplpin
 // MS2-PIN: ??__Es_sortNames7@@YAXXZ 0x1400b8360
 // MS2-PIN: ??__Es_skill@@YAXXZ 0x1400b8420
 // MS2-PIN: ??__Es_stun@@YAXXZ 0x1400b8450
@@ -30,6 +73,7 @@
 #include "ms2/placeholder/gameeventuservaluenametable.h"
 #include "ms2/client/ms2/uiservice.h"
 #include "ms2/client/ms2/guildmanager.h"
+#include "ms2/client/ms2/uidialog.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -92,6 +136,14 @@ void FUN_140424040(Unk_GameEventLockedValue<0x38>* pValue, const CStringW& tab);
 void FUN_140424130(Unk_GameEventIntValue* pValue, int rate);
 void FUN_1404249f0(Unk_GameEventLockedValue<0x80>* pValue, ATL::CAtlArray<unsigned>& items);
 void FUN_140424ae0(Unk_GameEventLockedValue<0x80>* pValue);
+// The table attribute readers with a default (adventureleveltablehelper.cpp).
+int FUN_140197350(Unk_140165cf0* pElem, const char* pszName, int nDefault);
+unsigned FUN_140197390(Unk_140165cf0* pElem, const char* pszName, unsigned nDefault);
+bool FUN_1404246b0(Unk_GameEventLockedValue<0x40>* pValue, MS2Ptr<ItemBoxEventContext> spBox);
+void FUN_1404247e0(Unk_GameEventLockedValue<0x40>* pValue, MS2Ptr<ItemBoxEventContext> spBox);
+// The shut down interact objects (shutdownevent): add / remove one (field id, object id).
+void FUN_1407d0420(CShutdownEventInteractObject* pValue, unsigned nFieldId, int nObjectId);
+void FUN_1407d04c0(CShutdownEventInteractObject* pValue, unsigned nFieldId, int nObjectId);
 unsigned __int64 FUN_140718370(CStringW* text);                         // unsigned __int64
 CStringW FUN_140718600(const CStringW& value);                         // copy
 // The UGC cube palette (ugccubepalette.cpp): the show-item box.
@@ -3925,3 +3977,176 @@ MS2_REPLACE_METHOD(0x1403CA670, GameEventPetComposeSale, vfunc_5, 47, 0x7AD9EAA4
 // @0x1403ca6b0
 void GameEventPetComposeSale::vfunc_6() { FUN_1401c0d90()->FUN_14047f600(m_id); }
 MS2_REPLACE_METHOD(0x1403CA6B0, GameEventPetComposeSale, vfunc_6, 35, 0x448E3F17);
+
+// ---- GameEventItemBox -----------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regItemBox(L"GameEventItemBox", FUN_1403ca6e0);
+#endif
+// @0x1403ca6e0
+GameEvent* FUN_1403ca6e0() { return new GameEventItemBox; }
+
+// @0x1403ca740
+CStringW GameEventItemBox::vfunc_1() { return CStringW(L"GameEventItemBox"); }
+MS2_REPLACE_METHOD(0x1403CA740, GameEventItemBox, vfunc_1, 61, 0x0AF964E2);
+
+// @0x1403ca790
+GameEventItemBox::GameEventItemBox() : m_d0(0), m_e0(false)
+{
+    FUN_1402e3480(3);
+    FUN_1402e3480(1);
+}
+
+// @0x1403ca810
+void GameEventItemBox::vfunc_2()
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, m_68) == 0)
+        return;
+    MS2Ptr<ItemBoxEventContext> spBox(new ItemBoxEventContext);
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return;
+    spBox->m_3c = m_id;
+    spBox->Load(pRoot);
+    m_d0 = spBox;
+}
+MS2_REPLACE_METHOD(0x1403CA810, GameEventItemBox, vfunc_2, 319, 0x2F681F5C);
+
+// @0x1403ca960
+void GameEventItemBox::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    if (m_d0 == 0)
+        m_d0.AssignRaw(new ItemBoxEventContext);
+    m_d0->Write(MS2_GE_OUT(out));
+}
+MS2_REPLACE_METHOD(0x1403CA960, GameEventItemBox, vfunc_3, 186, 0x8A3F3283);
+
+// @0x1403caa20
+void GameEventItemBox::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0.AssignRaw(new ItemBoxEventContext);
+    m_d0->Read(*reinterpret_cast<CInPacket*>(in));
+}
+MS2_REPLACE_METHOD(0x1403CAA20, GameEventItemBox, vfunc_4, 158, 0xEF0D903E);
+
+// The open box dialog of the item box event (RTTI .?AVUIItemEventOpenBoxDialog@@, class id 0x4f42): only the refresh
+// vfunc_5 calls.
+class UIItemEventOpenBoxDialog : public UIDialog
+{
+public:
+    void FUN_140e48050();
+};
+
+// The ui object of a class id cast to its dialog class (0 while the ui service is not up).
+template <class T> T* Unk_GameEventDialog(eUIClassID nClass)
+{
+    if (FUN_1403ed2b0())
+    {
+        MS2Ptr<UIObject> p = FUN_1403ed2b0()->FUN_141adcea0(nClass);
+        if (p.get())
+            return dynamic_cast<T*>((UIObject*)p);
+    }
+    return 0;
+}
+
+// @0x1403caad0
+void GameEventItemBox::vfunc_5()
+{
+    m_e0 = FUN_1404246b0(FUN_140302b00()->ItemBox(), m_d0);
+    if (UIItemEventOpenBoxDialog* pDialog = Unk_GameEventDialog<UIItemEventOpenBoxDialog>(eUI_4f42))
+        pDialog->FUN_140e48050();
+}
+MS2_REPLACE_METHOD(0x1403CAAD0, GameEventItemBox, vfunc_5, 143, 0x2230898A);
+
+// @0x1403cab70
+void GameEventItemBox::vfunc_6()
+{
+    if (m_e0)
+        FUN_1404247e0(FUN_140302b00()->ItemBox(), m_d0);
+}
+MS2_REPLACE_METHOD(0x1403CAB70, GameEventItemBox, vfunc_6, 115, 0x11447945);
+
+// ---- GameEventShutdownInteractObjectId ------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regShutdownInteractObjectId(L"GameEventShutdownInteractObjectId", FUN_1403cabf0);
+#endif
+// @0x1403cabf0
+GameEvent* FUN_1403cabf0() { return new GameEventShutdownInteractObjectId; }
+
+// @0x1403cac50
+CStringW GameEventShutdownInteractObjectId::vfunc_1() { return CStringW(L"GameEventShutdownInteractObjectId"); }
+MS2_REPLACE_METHOD(0x1403CAC50, GameEventShutdownInteractObjectId, vfunc_1, 61, 0x2CDB7EE0);
+
+// @0x1403caca0
+GameEventShutdownInteractObjectId::GameEventShutdownInteractObjectId()
+{
+    FUN_1402e3480(3);
+    FUN_1402e3480(1);
+}
+
+// @0x1403cad10
+void GameEventShutdownInteractObjectId::vfunc_2()
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, m_68) == 0)
+        return;
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return;
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("v"); pNode; pNode = pNode->FUN_140168650("v"))
+    {
+        unsigned nFieldId = FUN_140197390(pNode, "fieldId", 0);
+        int nObjectId = FUN_140197350(pNode, "objectId", 0);
+        if (nFieldId == 0 || nObjectId == 0)
+            continue;
+        m_d0.insert(std::make_pair(nFieldId, nObjectId));
+    }
+}
+MS2_REPLACE_METHOD(0x1403CAD10, GameEventShutdownInteractObjectId, vfunc_2, 321, 0xA9508BF9);
+
+// @0x1403cae60
+void GameEventShutdownInteractObjectId::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt((int)m_d0.size());
+    for (std::set<std::pair<unsigned, int> >::iterator it = m_d0.begin(), itEnd = m_d0.end(); it != itEnd; ++it)
+    {
+        out->WriteInt((*it).first);
+        out->WriteInt((*it).second);
+    }
+}
+MS2_REPLACE_METHOD(0x1403CAE60, GameEventShutdownInteractObjectId, vfunc_3, 242, 0x1A39E46E);
+
+// @0x1403caf60
+void GameEventShutdownInteractObjectId::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0.clear();
+    int nCount = MS2_GE_R(in)->ReadInt();
+    for (int i = 0; i < nCount; i++)
+    {
+        std::pair<unsigned, int> v;
+        v.first = MS2_GE_R(in)->ReadInt();
+        v.second = MS2_GE_R(in)->ReadInt();
+        m_d0.insert(v);
+    }
+}
+MS2_REPLACE_METHOD(0x1403CAF60, GameEventShutdownInteractObjectId, vfunc_4, 241, 0x23A8AD86);
+
+// @0x1403cb060
+void GameEventShutdownInteractObjectId::vfunc_5()
+{
+    for (std::set<std::pair<unsigned, int> >::iterator it = m_d0.begin(), itEnd = m_d0.end(); it != itEnd; ++it)
+        FUN_1407d0420(FUN_140302b00()->ShutdownInteractObjectId(), (*it).first, (*it).second);
+}
+MS2_REPLACE_METHOD(0x1403CB060, GameEventShutdownInteractObjectId, vfunc_5, 165, 0x329092AB);
+
+// @0x1403cb110
+void GameEventShutdownInteractObjectId::vfunc_6()
+{
+    for (std::set<std::pair<unsigned, int> >::iterator it = m_d0.begin(), itEnd = m_d0.end(); it != itEnd; ++it)
+        FUN_1407d04c0(FUN_140302b00()->ShutdownInteractObjectId(), (*it).first, (*it).second);
+}
+MS2_REPLACE_METHOD(0x1403CB110, GameEventShutdownInteractObjectId, vfunc_6, 165, 0xD1095170);

@@ -60,6 +60,7 @@ enum eUIClassID
     eUI_4f34 = 0x4f34,
     eUI_4f38 = 0x4f38,
     eUI_4f3e = 0x4f3e,
+    eUI_4f42 = 0x4f42,
     eUI_4f5b = 0x4f5b,
     eUI_4f6d = 0x4f6d,
     eUI_4f76 = 0x4f76,

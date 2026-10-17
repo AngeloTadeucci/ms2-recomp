@@ -204,6 +204,7 @@
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1403eda10
 // MS2-PIN: ?GetInstance@?$TSingleton@VCShopEventManager@@@@SAPEAVCShopEventManager@@XZ 0x1403ed2a0
 // MS2-PIN: ?GetInstance@?$TSingleton@VGameEventUserValueNameTable@@@@SAPEAVGameEventUserValueNameTable@@XZ 0x1403ed2c0
+// MS2-PIN: ?InitHashTable@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEAA_NI_N@Z 0x1403eee80
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameevent.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>

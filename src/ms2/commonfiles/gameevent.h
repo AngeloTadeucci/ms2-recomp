@@ -28,6 +28,7 @@ class SaleCube;
 class StampEventContext;
 class TimeRunEventContext;
 class QuestAdditionalRewardContext;
+class ItemBoxEventContext;
 enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 enum Unk_DungeonCooldownType {};
@@ -715,8 +716,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403caa20
     virtual void vfunc_5();                     // 0x1403caad0
     virtual void vfunc_6();                     // 0x1403cab70
-private:
-    char m_pad_d0[0x18];
+    GameEventItemBox();
+    MS2Ptr<ItemBoxEventContext> m_d0;           // the box of m_68
+    bool m_e0;                                  // the box was registered by vfunc_5
+    char m_pad_e1[7];
 };  // vftable 0x142d40710, ??_G 0x1403ea4d0, dtor 0x1403e62e0
 MS2_CHECK_SIZE(GameEventItemBox, 0xe8);
 class GameEventItemBuff : public GameEvent {
@@ -1270,8 +1273,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403caf60
     virtual void vfunc_5();                     // 0x1403cb060
     virtual void vfunc_6();                     // 0x1403cb110
-private:
-    char m_pad_d0[0x10];
+    GameEventShutdownInteractObjectId();
+    std::set<std::pair<unsigned, int> > m_d0;   // (field id, object id) of the <v fieldId objectId> rows of m_68
 };  // vftable 0x142d40768, ??_G 0x1403eb010, dtor 0x1403e6a70
 MS2_CHECK_SIZE(GameEventShutdownInteractObjectId, 0xe0);
 class GameEventShutdownSkillItem : public GameEvent {
