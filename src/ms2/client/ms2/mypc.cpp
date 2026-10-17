@@ -1696,7 +1696,6 @@ template MS2Ptr<Unk_MyPCCastRecord>::MS2Ptr(int);
 // @0x1415219d0
 // The skill to cast now: the pending skill, else the one of the picked quick slot (its item's skill for an item);
 // held-key skills give up once the key was held longer than KeyIsDownSkill_MaxDurationTick.
-// MS2-FUNCTIONAL: the held-time compare loads the operands the other way round (cmp reg, [mem])
 MS2Ptr<Unk_PCBaseComp_b18> MyPC::vfunc_104(bool a, bool b, bool c)
 {
     if (FUN_1416595d0() != 0)
@@ -1749,8 +1748,7 @@ MS2Ptr<Unk_PCBaseComp_b18> MyPC::vfunc_104(bool a, bool b, bool c)
             }
             else if (m_n15f0 != 0 && nNow > (unsigned)m_n15f0)
             {
-                unsigned nHeld = nNow - m_n15f0;
-                if (nHeld > *static_cast<Client::Constants*>(FUN_1401d3200())->KeyIsDownSkill_MaxDurationTick.Get())
+                if ((nNow - m_n15f0) > *static_cast<Client::Constants*>(FUN_1401d3200())->KeyIsDownSkill_MaxDurationTick.Get())
                     return 0;
             }
         }
@@ -1758,6 +1756,7 @@ MS2Ptr<Unk_PCBaseComp_b18> MyPC::vfunc_104(bool a, bool b, bool c)
     FUN_141526c80(kReq.skill, kReq.level);
     return FUN_141523bc0()->FUN_141764e30(&kReq);
 }
+#line 1761
 MS2_REPLACE_METHOD(0x1415219D0, MyPC, vfunc_104, 1509, 0xDEE50707);
 
 // @0x1415248d0
