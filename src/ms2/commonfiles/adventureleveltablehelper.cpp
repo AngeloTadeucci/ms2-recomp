@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). Adventure level table, its singleton helper and mission rows.
 // MS2-UNIT: ?\adventureleveltablehelper.cpp
 // MS2-RANGE: 0x140195470-0x1401a2e40 .text$mn
+// MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??_G?$TSingleton@VCAdventureLevelTableHelper@@@@UEAAPEAXI@Z 0x1401957e0 ; unique
 // MS2-PIN: ??_GCAdventureLevelMissionData@@UEAAPEAXI@Z 0x140195820 ; unique
@@ -293,8 +294,20 @@
 // MS2-PIN: ??$_Emplace_reallocate@AEBI@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIQEAIAEBI@Z 0x1401977a0
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAA@XZ 0x14019c350
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2c00
-// MS2-PIN: ??_7CAdventureLevelTable@@6B?$TSingleton@VCAdventureLevelTable@@@@@ 0x142ceb9b8
+// MS2-PIN: ??_7CAdventureLevelTable@@6B?$TSingleton@VCAdventureLevelTable@@@@@ 0x142ceb9d8
 // MS2-PIN: ??_7CAdventureLevelTable@@6B?$CValidData@VCAdventureLevelTable@@@@@ 0x142ceb9e8
+// hand pins (w145): set<unsigned> / map<unsigned,unsigned> copies the loaders never call
+// MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x14019dfa0
+// MS2-PIN: ?_Erase@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x14019e040
+// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXXZ 0x1401a1340
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1470
+// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@V32@@Z 0x1401a2770
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1b50
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@2@QEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1b80
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@_K@Z 0x1401a1c10
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1c40
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAAXQEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1c70
+// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@@Z 0x1401a25d0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\adventureleveltablehelper.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "adventureleveltablehelper.h"
@@ -741,3 +754,20 @@ CAdventureLevelAbility* CAdventureLevelTableHelper::GetCurrent()
 }
 
 MS2_EMIT_CRT_MEMMOVE_S();
+
+// The exe also carries the unused members of these containers (tree erase / destroy paths), instantiated by the table's
+// ctor/dtor and loaders.
+template class std::map<unsigned, CAdventureLevelAbility>;
+template class std::map<unsigned, CAdventureLevelMission>;
+template class std::map<unsigned, CAdventureLevelReward>;
+template class std::map<unsigned, unsigned>;
+template class std::set<unsigned>;
+
+// The unused set / map members are cleared and erased by code the exe keeps but nothing here calls.
+void Unk_ALTreeAnchor(std::set<unsigned>& s, std::map<unsigned, unsigned>& m)
+{
+    s.clear();
+    m.clear();
+    s.erase(s.begin());
+    m.erase(m.begin());
+}
