@@ -162,7 +162,11 @@ struct Unk_UtilColor4                                               // four-floa
     float r, g, b, a;
 };
 unsigned FUN_1408a90b0(const Unk_UtilColor4& color);               // colour -> packed ARGB
-struct Unk_UtilFloat3 { float x, y, z; };
+struct Unk_UtilFloat3
+{
+    float x, y, z;
+    Unk_UtilFloat3 FUN_141b723e0(float fDivisor) const;           // 0x141b723e0 *this / fDivisor (this=rcx, hidden return=rdx)
+};
 struct Unk_UtilUInt3 { unsigned x, y, z; };
 struct Unk_UtilNxVec3
 {
@@ -1306,14 +1310,12 @@ double FUN_141b71a40(int nValue)
 }
 MS2_REPLACE(0x141b71a40, FUN_141b71a40, 11, 0xFC13D90A);
 
-Unk_UtilFloat3 FUN_141b723e0(const Unk_UtilFloat3& kValue, float fDivisor);
-
 // @0x141b71a60
 // MS2-FUNCTIONAL: exe copies the divided colour through an out-of-line copy ctor (0x140a0a3a0)
 void FUN_141b71a60(Unk_UtilFloat3* pColor)
 {
     if (pColor->x > 1.0f || pColor->y > 1.0f || pColor->z > 1.0f)
-        *pColor = FUN_141b723e0(*pColor, 255.0f);
+        *pColor = pColor->FUN_141b723e0(255.0f);
     FUN_141b71a40(FUN_141b6df90(pColor));
 }
 
@@ -1589,15 +1591,15 @@ Unk_UtilHolder* FUN_141b72360(const Unk_UtilObjRef& kRef)
 
 // @0x141b723e0
 // MS2-FUNCTIONAL: exe copies the 12-byte value through plain locals without a security cookie
-Unk_UtilFloat3 FUN_141b723e0(const Unk_UtilFloat3& kValue, float fDivisor)
+Unk_UtilFloat3 Unk_UtilFloat3::FUN_141b723e0(float fDivisor) const
 {
-    Unk_UtilFloat3 kResult = kValue;
+    Unk_UtilFloat3 kResult = *this;
     kResult.x = kResult.x / fDivisor;
     kResult.y = kResult.y / fDivisor;
     kResult.z = kResult.z / fDivisor;
     return kResult;
 }
-MS2_REPLACE(0x141b723e0, FUN_141b723e0, 124, 0x629791A5);
+MS2_REPLACE_METHOD(0x141b723e0, Unk_UtilFloat3, FUN_141b723e0, 124, 0x629791A5);
 
 // @0x141b72460
 // MS2-FUNCTIONAL: exe reads the NiColorA member inline; the header only offers the by-value GetValue()

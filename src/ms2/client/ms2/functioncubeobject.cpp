@@ -209,7 +209,7 @@ class Unk_FcFxMgr
 public:
     int FUN_1411a49c0(Unk_FcSoundReq* pRequest);                    // play, returns the handle
     void FUN_1411a6060(int nHandle);                                // stop
-    void FUN_1411a5580(int nId, int nOwner, int bFlag, const Unk_StreamPoint& vPos, unsigned nColor);
+    void FUN_1411a5580(int nId, int nOwner, int bFlag, const Unk_StreamPoint& vPos, float fRange);
 };
 Unk_FcFxMgr* FUN_1403ed280();
 void FUN_140a52ef0(Unk_FcSoundReq* p);                              // construct
@@ -224,15 +224,15 @@ struct Unk_FcCamFx
 {
     int m_nKind;                                                    // +0x00
     float m_fScale;                                                 // +0x04
-    int m_n8;                                                       // +0x08
-    int m_nC;                                                       // +0x0c
-    int m_n10;                                                      // +0x10
+    float m_f8;                                                     // +0x08
+    float m_fC;                                                     // +0x0c
+    float m_f10;                                                    // +0x10
     Unk_StreamPoint m_v14;                                          // +0x14
     Unk_StreamPoint m_v20;                                          // +0x20
     int m_n2c;                                                      // +0x2c
-    int m_n30;                                                      // +0x30
-    int m_n34;                                                      // +0x34
-    int m_n38;                                                      // +0x38
+    float m_f30;                                                    // +0x30
+    float m_f34;                                                    // +0x34
+    float m_f38;                                                    // +0x38
     char m_unk3c[12];                                               // +0x3c
     char m_unk48[56];                                               // +0x48
 };
@@ -241,9 +241,9 @@ class Unk_FcCamMgr
 {
 public:
     int FUN_140a18070();                                            // has a camera
-    int FUN_140ad4b40();
-    int FUN_140af7f00();
-    int FUN_140af7ea0();
+    float FUN_140ad4b40();
+    float FUN_140af7f00();
+    float FUN_140af7ea0();
     Unk_StreamPoint* FUN_140a17e10(Unk_StreamPoint* pOut);
     Unk_StreamPoint* FUN_140af8290(Unk_StreamPoint* pOut);
     void FUN_140aeb420(int nEffect, Unk_FcCamFx* pParam);
@@ -964,16 +964,16 @@ void CFunctionCubeObject::FUN_141227950()
             FUN_140947440(&kFx);
             kFx.m_nKind = 1;
             kFx.m_fScale = 1.0f;
-            kFx.m_n8 = FUN_1409478c0()->FUN_140ad4b40();
-            kFx.m_nC = FUN_1409478c0()->FUN_140af7f00();
-            kFx.m_n10 = FUN_1409478c0()->FUN_140af7ea0();
+            kFx.m_f8 = FUN_1409478c0()->FUN_140ad4b40();
+            kFx.m_fC = FUN_1409478c0()->FUN_140af7f00();
+            kFx.m_f10 = FUN_1409478c0()->FUN_140af7ea0();
             Unk_StreamPoint vTmpA;
             kFx.m_v14 = *FUN_1409478c0()->FUN_140a17e10(&vTmpA);
             Unk_StreamPoint vTmpB;
             kFx.m_v20 = *FUN_1409478c0()->FUN_140af8290(&vTmpB);
-            kFx.m_n30 = kFx.m_n8;
-            kFx.m_n34 = kFx.m_nC;
-            kFx.m_n38 = kFx.m_n10;
+            kFx.m_f30 = kFx.m_f8;
+            kFx.m_f34 = kFx.m_fC;
+            kFx.m_f38 = kFx.m_f10;
             FUN_141839640(kFx.m_unk3c, kFx.m_unk48);
             FUN_1409478c0()->FUN_140aeb420(11, &kFx);
             break;
@@ -996,16 +996,16 @@ void CFunctionCubeObject::FUN_141227950()
         FUN_140947440(&kFx);
         kFx.m_nKind = 1;
         kFx.m_fScale = 1.0f;
-        kFx.m_n8 = FUN_1409478c0()->FUN_140ad4b40();
-        kFx.m_nC = FUN_1409478c0()->FUN_140af7f00();
-        kFx.m_n10 = FUN_1409478c0()->FUN_140af7ea0();
+        kFx.m_f8 = FUN_1409478c0()->FUN_140ad4b40();
+        kFx.m_fC = FUN_1409478c0()->FUN_140af7f00();
+        kFx.m_f10 = FUN_1409478c0()->FUN_140af7ea0();
         Unk_StreamPoint vTmpA;
         kFx.m_v14 = *FUN_1409478c0()->FUN_140a17e10(&vTmpA);
         Unk_StreamPoint vTmpB;
         kFx.m_v20 = *FUN_1409478c0()->FUN_140af8290(&vTmpB);
-        kFx.m_n30 = kFx.m_n8;
-        kFx.m_n34 = kFx.m_nC;
-        kFx.m_n38 = kFx.m_n10;
+        kFx.m_f30 = kFx.m_f8;
+        kFx.m_f34 = kFx.m_fC;
+        kFx.m_f38 = kFx.m_f10;
         FUN_14183c3e0(kFx.m_unk3c, kFx.m_unk48);
         FUN_1409478c0()->FUN_140aeb420(2, &kFx);
     }
@@ -3104,7 +3104,7 @@ void CFunctionCubeService::FUN_141232260()
 
 // MS2-FUNCTIONAL: the map walk differs from the exe
 // @0x141232330
-void CFunctionCubeService::FUN_141232330(int nItem, int nState)
+void CFunctionCubeService::FUN_141232330(int nItem, float fValue)
 {
     POSITION pos = m_mapCubes.GetHeadPosition();
     while (pos)
@@ -3114,7 +3114,7 @@ void CFunctionCubeService::FUN_141232330(int nItem, int nState)
         {
             if (spCube->FUN_14112e110() == nItem)
             {
-                spCube->vfunc_5(*(float*)&nState);
+                spCube->vfunc_5(fValue);
                 return;
             }
         }

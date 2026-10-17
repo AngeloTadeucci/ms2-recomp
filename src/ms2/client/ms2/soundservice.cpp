@@ -61,11 +61,11 @@ void FUN_14177bda0(void* pMgr);
 void* FUN_1403ed280();                                              // the effect manager
 void FUN_1411a6160(void* pMgr);
 void FUN_14177ba30(void* pMgr);
-void FUN_14177bb70(void* pMgr, unsigned uTime);
+void FUN_14177bb70(void* pMgr, float fDelta);
 void* FUN_1411b1de0();
 void FUN_141793450(void* p);
 void* FUN_14086d260();                                              // the time source
-unsigned FUN_141473230(void* pTime);
+float FUN_141473230(void* pTime);   // frame delta (s), cvtsd2ss xmm0
 double FUN_141473260(void* pTime);
 void* FUN_140994450();
 void* FUN_14098d8d0(const char* pClass, void* p);
@@ -96,8 +96,8 @@ public:
     virtual void GetPosition(Unk_StreamPoint* pOut);                // slot 18
 };
 Unk_AudioCam* FUN_140a38d60(void* pCameras);
-Unk_StreamPoint* FUN_140af0340(void* pCameras, void* pTemp);        // right/up vector of the active camera
-Unk_StreamPoint* FUN_140af0250(void* pCameras);                     // forward vector
+// the camera manager's vectors return by value (member: this, hidden return pointer; exe 0x1417b0b1d / 0x1417b0b47)
+class Unk_SndCameras { public: Unk_StreamPoint FUN_140af0340(); Unk_StreamPoint FUN_140af0250(); };
 
 // the open-state strings of the voice streams: a vector<CStringA> of another unit, opaque here
 struct Unk_StrVec { void* m_p0; void* m_p1; void* m_p2; };
@@ -882,7 +882,7 @@ efd::AsyncResult CSoundService::OnInit()
 efd::AsyncResult CSoundService::OnTick()
 {
     FUN_141793450(FUN_1411b1de0());
-    unsigned uTime = FUN_141473230(FUN_14086d260());
+    float fDelta = FUN_141473230(FUN_14086d260());
     if (s_nReload != 0)
     {
         if (s_nReload == 2)
@@ -932,8 +932,8 @@ efd::AsyncResult CSoundService::OnTick()
         Unk_AudioCam* pCam = FUN_140a38d60(FUN_1409478c0());
         Unk_StreamPoint kPos;
         pCam->GetPosition(&kPos);
-        Unk_StreamPoint kForward = *FUN_140af0340(FUN_1409478c0(), 0);
-        Unk_StreamPoint kUp = *FUN_140af0250(FUN_1409478c0());
+        Unk_StreamPoint kForward = static_cast<Unk_SndCameras*>(FUN_1409478c0())->FUN_140af0340();
+        Unk_StreamPoint kUp = static_cast<Unk_SndCameras*>(FUN_1409478c0())->FUN_140af0250();
         if (FUN_1417ae720() != 0)
         {
             FMOD_VECTOR vPos = {kPos.x, kPos.z, kPos.y};
@@ -947,7 +947,7 @@ efd::AsyncResult CSoundService::OnTick()
             nResult = pEvents->update();
             FUN_1417ae7c0(nResult);
         }
-        FUN_14177bb70(FUN_140d13c40(), uTime);
+        FUN_14177bb70(FUN_140d13c40(), fDelta);
     }
     else if (FUN_1417ae720() != 0)
     {

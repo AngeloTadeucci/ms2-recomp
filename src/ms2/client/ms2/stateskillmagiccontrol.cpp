@@ -24,10 +24,10 @@ public:
     float FUN_1410a67d0();                       // stop radius
 };
 
-NiPoint3 FUN_14123c360(PCBase* p);                                  // move direction
-NiPoint3 FUN_141674b60(PCBase* p, NiPoint3 kDir);
+NiPoint3* FUN_14123c360(PCBase* p, NiPoint3* pOut);                 // move direction (member: this=rcx, hidden return=rdx)
+NiPoint3* FUN_141674b60(PCBase* p, NiPoint3* pOut, NiPoint3* pDir); // local dir -> world dir (by-value dir = pointer to a copy)
 void FUN_140968990(NiPoint3* p);                                    // normalize
-NiPoint3 FUN_14097fc90(NiPoint3* pIn, float f);                     // scale
+NiPoint3* FUN_14097fc90(const NiPoint3* pIn, NiPoint3* pOut, float f);   // scale (member: this=rcx, hidden return=rdx)
 float FUN_140966ea0(NiPoint3 a, NiPoint3 b);                        // horizontal distance
 void* FUN_14166d240(PCBase* p);                                     // buff container
 NiPoint3 FUN_141683900(void* pContainer);
@@ -81,10 +81,12 @@ void StateSkillMagicControl::vfunc_3(double fTime)
     Unk_ControlTarget* pTarget = FUN_140ac06f0(m_pOwner);
     if (!pTarget)
         return;
-    NiPoint3 kUnit = FUN_141674b60(m_pOwner, FUN_14123c360(m_pOwner));
+    NiPoint3 kDir, kUnit;
+    FUN_141674b60(m_pOwner, &kUnit, FUN_14123c360(m_pOwner, &kDir));
     FUN_140968990(&kUnit);
-    NiPoint3 kStep = FUN_14097fc90(&kUnit, pTarget->FUN_1410a6790());
-    NiPoint3 kMove = FUN_14097fc90(&kStep, (float)fTime);
+    NiPoint3 kStep, kMove;
+    FUN_14097fc90(&kUnit, &kStep, pTarget->FUN_1410a6790());
+    FUN_14097fc90(&kStep, &kMove, (float)fTime);
     NiPoint3 kOld = m_pOwner->vfunc_18();
     NiPoint3 kNew = kMove;
     m_pOwner->vfunc_68(&kNew, fTime, 0, 0, 1);

@@ -938,7 +938,7 @@ public:
     Unk_ChatMapData* FUN_140885340() const;
     void* m_00; void* m_08;
 };
-Unk_ChatMapPtr FUN_141bd30a0(void* pWorld);
+struct Unk_ChatWorldView { Unk_ChatMapPtr FUN_141bd30a0(); };   // WorldService member (this=rcx, hidden return=rdx)
 
 // @0x141276f80
 // MS2-FUNCTIONAL: named temporaries for the string-id / literal key differ (910 vs 867 bytes); logic equivalent
@@ -971,7 +971,7 @@ int FUN_141276f80(Unk_ChatInput* pChat)
         }
     }
     if (DAT_143ab2914 < 0x32) {
-        if (FUN_141bd30a0(FUN_1403ed2d0()).FUN_140885340()->FUN_140375660(0x100) != 0) {
+        if (reinterpret_cast<Unk_ChatWorldView*>(FUN_1403ed2d0())->FUN_141bd30a0().FUN_140885340()->FUN_140375660(0x100) != 0) {
             FUN_1412751b0(FUN_14028b8e0(CStringW(L"s_field_limit_content_chat")), 0x14);
             return 0;
         }

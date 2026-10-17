@@ -67,7 +67,6 @@ Unk_1403ed280* FUN_1403ed280();
 // Random float (about -1..1), tick counter, camera direction.
 float FUN_14109ace0();
 unsigned int FUN_140869420();
-Unk_StreamPoint FUN_140af0250(Unk_CameraManager* pManager);
 
 // Resource manager (singleton 0x140a0afd0): texture load by path. 0x140cc2ba0 joins directory + file name.
 class Unk_ResourceMgr
@@ -486,7 +485,7 @@ void LightningEffect::BuildPath(Unk_StreamPoint kStart, Unk_StreamPoint kEnd)
     Unk_StreamPoint kFlat = kDelta;
     kFlat.z = 0.0f;
     kFlat.FUN_140968990();
-    Unk_StreamPoint kCamera = FUN_140af0250(Unk_CameraManager::FUN_1409478c0());
+    Unk_StreamPoint kCamera = Unk_CameraManager::FUN_1409478c0()->FUN_140af0250();
     Unk_StreamPoint kSide = kFlat.FUN_140a00e10(kCamera);
     for (int i = 0; i < (int)m_arrPath.GetCount(); ++i)
     {

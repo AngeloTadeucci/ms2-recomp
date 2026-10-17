@@ -138,7 +138,7 @@ efd::utf8string FUN_1414d7990(const efd::utf8string& kName);
 CStringW FUN_1401ceea0(const wchar_t* sz, const int& n);
 CStringW FUN_14016a730(const char* sz, int n);
 const char* FUN_1408ac310(const efd::utf8string& s);
-efd::utf8string FUN_14147d2f0(MeshInstancing* p);
+struct Unk_DevInstView { efd::utf8string FUN_14147d2f0(); };   // MeshInstancing member (this=rcx, hidden return=rdx)
 
 // ---- statics (the same header statics as header_statics_a.h, in another order) ----
 #ifndef MS2_HOOK_DLL
@@ -493,7 +493,7 @@ void UIDevelopDialog::FUN_1412933f0(int nIndex)
             int nCount = 0;
             if (pInstancing != 0)
                 nCount = pInstancing->FUN_14147cf40();
-            FUN_141292ca0("m_modelName", FUN_14016a730(FUN_1408ac310(FUN_14147d2f0(pInstancing)), 0));
+            FUN_141292ca0("m_modelName", FUN_14016a730(FUN_1408ac310(reinterpret_cast<Unk_DevInstView*>(pInstancing)->FUN_14147d2f0()), 0));
             FUN_141292ca0("m_modelCount", FUN_1401ceea0(L"{0}", nCount));
         }
         else

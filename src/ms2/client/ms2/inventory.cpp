@@ -367,7 +367,7 @@ void FUN_141275260(int, int, int);
 void FUN_141276180(const CString&, const CString&);
 CStringW FUN_14028b8e0(const CStringW&);
 void FUN_140710590(COutPacket&);
-CString FUN_14053eca0(CItemData*);
+struct Unk_InvItemDataView { CString FUN_14053eca0(); };   // CItemData member (this=rcx, hidden return=rdx)
 class Unk_InventorySound { public: int FUN_1411a5110(CString, CString, CString, int, __int64, float, int); };
 Unk_InventorySound* FUN_1403ed280();
 class Unk_InventoryRestrictions { public: int FUN_14138c900(int); };
@@ -1297,7 +1297,7 @@ int Unk_Inventory::FUN_140a61db0(__int64 id, const CStringW& argument) {
     FUN_140710590(packet);
     MS2Ptr<CItemData> data(FUN_140527840(item.operator->()));
     if (data.get() != nullptr)
-        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", FUN_14053eca0(data.operator->()), "", 0, 0, 1.0f, 0);
+        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", reinterpret_cast<Unk_InvItemDataView*>(data.operator->())->FUN_14053eca0(), "", 0, 0, 1.0f, 0);
     return 1;
 }
 MS2_REPLACE_METHOD(0x140a61db0, Unk_Inventory, FUN_140a61db0, 1024, 0x39622B75);
@@ -1346,7 +1346,7 @@ int Unk_Inventory::FUN_140a62270(CItem* item, int slot, int mode, int skipBindin
     FUN_140710590(packet);
     MS2Ptr<CItemData> data(FUN_140527840(item));
     if (data.get() != nullptr)
-        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", FUN_14053eca0(data.operator->()), "", 0, 0, 1.0f, 0);
+        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", reinterpret_cast<Unk_InvItemDataView*>(data.operator->())->FUN_14053eca0(), "", 0, 0, 1.0f, 0);
     return 1;
 }
 MS2_REPLACE_METHOD(0x140a62270, Unk_Inventory, FUN_140a62270, 1692, 0x65CDD949);
@@ -1369,7 +1369,7 @@ int Unk_Inventory::FUN_140a62920(__int64 id) {
     FUN_140710590(packet);
     MS2Ptr<CItemData> data(FUN_140527840(item.operator->()));
     if (data.get() != nullptr)
-        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", FUN_14053eca0(data.operator->()), "", 0, 0, 1.0f, 0);
+        FUN_1403ed280()->FUN_1411a5110("ms2sound/sound/item", reinterpret_cast<Unk_InvItemDataView*>(data.operator->())->FUN_14053eca0(), "", 0, 0, 1.0f, 0);
     return 1;
 }
 MS2_REPLACE_METHOD(0x140a62920, Unk_Inventory, FUN_140a62920, 908, 0x22CFDA56);

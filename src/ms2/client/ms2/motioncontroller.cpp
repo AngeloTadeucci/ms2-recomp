@@ -31,8 +31,8 @@ float FUN_1411e0f50(void* pSkill, float fSpeed);                    // speed aft
 bool FUN_14028d470(float a, float b);                               // nearly equal
 int FUN_14028d260(float f);                                         // float -> fixed
 Unk_StreamPoint FUN_14123cc80(Unk_StreamPoint kDir);                // facing direction -> move direction
-Unk_StreamPoint FUN_14123c360(PCBase* p);                           // input move direction
-Unk_StreamPoint FUN_141674b60(PCBase* p, Unk_StreamPoint kDir);     // move direction on the ground
+Unk_StreamPoint* FUN_14123c360(PCBase* p, Unk_StreamPoint* pOut);   // input move direction (member: this=rcx, hidden return=rdx)
+Unk_StreamPoint* FUN_141674b60(PCBase* p, Unk_StreamPoint* pOut, Unk_StreamPoint* pDir);   // move direction on the ground (by-value dir = pointer to a copy)
 int FUN_1416725c0(PCBase* p, Unk_StreamPoint kDir, float fSpeed, float fMax, float fZero);  // move is blocked
 float FUN_141b71550(Unk_StreamPoint kStart, Unk_StreamPoint kCtrl, Unk_StreamPoint kEnd);   // bezier length
 Unk_StreamPoint FUN_141b71390(Unk_StreamPoint kStart, Unk_StreamPoint kCtrl, Unk_StreamPoint kEnd, float t);   // bezier point
@@ -401,7 +401,8 @@ bool CMoveMotionController::vfunc_5(double fTime)
         m_kMove = DAT_143b01a60;
         return false;
     }
-    m_kDir = FUN_141674b60(m_pTarget, FUN_14123c360(m_pTarget));
+    Unk_StreamPoint kInput, kGround;
+    m_kDir = *FUN_141674b60(m_pTarget, &kGround, FUN_14123c360(m_pTarget, &kInput));
     if (m_kDir.FUN_140552690(DAT_143b01a60))
     {
         m_kMove = DAT_143b01a60;

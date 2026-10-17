@@ -22,14 +22,14 @@ void FUN_14097f710(void* dst, void* src);   char FUN_1409a7f70(void* sp, int n);
 void FUN_141200ca0(void* self);
 void FUN_141209360(void* list, void* out);   void FUN_141209190(void* list, void* out);
 char FUN_140b029f0(void* a, void* b);   void* FUN_140b02a60(void* it);   void FUN_140b02a80(void* it);
-void* FUN_141b6dea0(void* out, unsigned v);   void* FUN_1414424f0(void* in, void* out, unsigned f);   void FUN_140a0a3a0(void* out, void* in);
+void* FUN_141b6dea0(void* out, unsigned v);   void* FUN_1414424f0(void* in, void* out, float f);   void FUN_140a0a3a0(void* out, void* in);
 unsigned FUN_140599fd0(void* o, int i);   void* FUN_140527870(void* p);   void FUN_141b6f000(void* o, int i, void* v);
 void* FUN_1409f7cb0(void* p);
 void* FUN_141200820(void* self);   void* FUN_1412008e0(void* self);
 void FUN_1412029d0(void* self, CString* out);   void FUN_141202ea0(void* self, CString* s);
 char FUN_1409f77a0(void* sp, int n);   void* FUN_1409475f0(void* sp);
 int FUN_141422110(void* a, void* b, void* c);   void FUN_141ab6e80(void* o);
-int FUN_141422340(void* self, int n);   void FUN_141167840(void* o, const CString& s, int n);
+float FUN_141422340(void* self, int n);   void FUN_141167840(void* o, const CString& s, float f);
 char FUN_140534e50(void* p);   void* FUN_140527840(void* p);   char FUN_14053d2b0(void* p);   unsigned FUN_1405258b0(void* p);
 void* FUN_1416561a0(void* p);   int FUN_1411e99a0(void* a, unsigned b, void* c, unsigned d, char e);
 void FUN_140984450(void* out, const char* s);   void FUN_1409845a0(void* s);   void* FUN_14098d8d0(void* tbl, void* key);
@@ -175,17 +175,17 @@ void CNifModel::vfunc_10()
             FUN_14097eb60(sp, FUN_140b02a60(it));
             {
                 CString s("HR:0");
-                int v = FUN_141422340(this, 0);
+                float v = FUN_141422340(this, 0);
                 FUN_141167840(FUN_1409849b0(sp), s, v);
             }
             {
                 CString s("HR0:0");
-                int v = FUN_141422340(this, 0);
+                float v = FUN_141422340(this, 0);
                 FUN_141167840(FUN_1409849b0(sp), s, v);
             }
             {
                 CString s("HR1:1");
-                int v = FUN_141422340(this, 1);
+                float v = FUN_141422340(this, 1);
                 FUN_141167840(FUN_1409849b0(sp), s, v);
             }
             FUN_1405a85c0(sp);
@@ -208,7 +208,7 @@ void CNifModel::vfunc_11()
             if (i == 1) {
                 char t38[12], t2c[28], v60[16];
                 void* a = FUN_141b6dea0(t38, FUN_140599fd0(pPartList, 0));
-                void* b = FUN_1414424f0(a, t2c, 0x3fa66666);
+                void* b = FUN_1414424f0(a, t2c, 1.3f);
                 FUN_140a0a3a0(v60, b);
                 memcpy(v70, v60, 12);
             }

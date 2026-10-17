@@ -113,14 +113,14 @@ struct Unk_IoCutData
     unsigned char m_b1fd;
     char m_pad_1fe[2];
     int m_n200;
-    int m_n204;
-    int m_n208;
+    float m_n204;
+    float m_n208;
     unsigned char m_b20c;
     char m_pad_20d[3];
     unsigned m_n210;
-    int m_n214;
-    int m_n218;
-    int m_n21c;
+    float m_n214;
+    float m_n218;
+    float m_n21c;
 };
 struct Unk_IoCutRef
 {
@@ -249,7 +249,7 @@ class Unk_IoCfg { public: int FUN_1402c4c90(int n); };
 struct Unk_IoCfgHolder { char m_pad_00[8]; Unk_IoCfg m_cfg; };
 Unk_IoCfgHolder* FUN_14025e7b0();
 void* FUN_140cc18a0();
-void FUN_141b794e0(void* p, CString* pUrl);
+void FUN_141b794e0(void* pSvc, CString& strOut, const char* szUrl);   // resolve the url macros (exe: this, out, url)
 MS2Ptr<CInteractObjectData> FUN_14051f670(int nId);
 class Unk_IoHintSvc { public: CStringW FUN_141811980(int nKind, int nId); };
 Unk_IoHintSvc* FUN_1401a9d70();
@@ -284,7 +284,7 @@ void FUN_140964aa0(void* p);
 int FUN_1409618c0(Unk_Entity* e, unsigned nHash, Unk_StreamPoint* pOut);
 int FUN_1408a2020(Unk_Entity* e, unsigned nHash, int* pOut);
 int FUN_1408a20a0(Unk_Entity* e, unsigned nHash, bool* pOut);
-int FUN_140961880(Unk_Entity* e, unsigned nHash, int* pOut);
+int FUN_140961880(Unk_Entity* e, unsigned nHash, float* pOut);   // float property
 int FUN_140b27ec0(Unk_Entity* e, unsigned nHash, Unk_StreamPoint* pOut);
 int FUN_1408a2060(Unk_Entity* e, unsigned nHash, efd::utf8string* pOut);
 int FUN_140998250(Unk_Entity* e, unsigned nHash, efd::AssetID* pOut);
@@ -330,23 +330,23 @@ Unk_IoHighlight* FUN_140ad4ba0();
 class Unk_IoPostFx
 {
 public:
-    void FUN_1409a4450(unsigned char bOn, int a, int b, unsigned nColor);
-    void FUN_1409a46a0(unsigned char bOn, unsigned* pColor, int a, int b, int c);
+    void FUN_1409a4450(unsigned char bOn, float a, float b, unsigned nColor);          // exe: xmm2/xmm3
+    void FUN_1409a46a0(unsigned char bOn, unsigned* pColor, float a, float b, float c);   // exe: xmm3 + 2 stack floats
 };
 Unk_IoPostFx* FUN_1409a8b00();
 Unk_IoPostFx* FUN_1409a8b10();
 char* FUN_140a58500(Unk_IoPostFx* p);
-class Unk_IoCamLock { public: void FUN_141863460(int n); };
+class Unk_IoCamLock { public: void FUN_141863460(float fFade); };
 Unk_IoCamLock* FUN_140ad4b90();
 void* FUN_1408e57f0();
 void FUN_1422b9fd0(void* pSound, unsigned nId);
-void FUN_1406c4340(float* pDst, int a, int b, int c);
+void FUN_1406c4340(float* pDst, float a, float b, float c);
 class Unk_IoHelp { public: void FUN_141907f80(int n, CStringW str); void FUN_141907d60(int n, CStringW a, CStringW b); };
 Unk_IoHelp* FUN_14136f290(int nId);
 CStringW FUN_14028de60(int nStringId);
 CStringW FUN_14028b8e0(const CStringW& str);
-void* FUN_1409331f0();
-CStringW FUN_14142d760(void* p, int nId, int n);
+struct Unk_IoGuideTable { CStringW FUN_14142d760(int nId, int n); };   // member (this=rcx, hidden return=rdx)
+Unk_IoGuideTable* FUN_1409331f0();
 class Unk_IoUiMgr { public: void FUN_141adc530(int n); int FUN_141adc940(int n); void FUN_141adc5d0(int n); };
 Unk_IoUiMgr* FUN_1403ed2b0();
 class Unk_IoUiCreator { public: void* FUN_1422d41b0(void* pRef, const CString& strName); };
@@ -1108,7 +1108,7 @@ void CInteractTelescopeObject::vfunc_2(Unk_InteractMsg* pMsg)
     {
         CStringW strTitle = FUN_14028de60(0x666);
         if (*FUN_140a58500(FUN_1409a8b10()) != 0)
-            strTitle = FUN_14142d760(FUN_1409331f0(), 0x49409, 2);
+            strTitle = FUN_1409331f0()->FUN_14142d760(0x49409, 2);
         pHelp->FUN_141907f80(9, strDesc);
         pHelp->FUN_141907d60(3, strTitle, FUN_14028de60(0x667));
         FUN_140939a10()->FUN_140da4e40(CStringW(L"NotifyCutSceneCinematicSkip"),
@@ -1116,11 +1116,11 @@ void CInteractTelescopeObject::vfunc_2(Unk_InteractMsg* pMsg)
     }
     Unk_StreamPoint colA;
     Unk_StreamPoint colB;
-    FUN_1406c4340(&colA.x, 0, 0, 0);
-    FUN_1406c4340(&colB.x, 0, 0, 0);
+    FUN_1406c4340(&colA.x, 0.0f, 0.0f, 0.0f);
+    FUN_1406c4340(&colB.x, 0.0f, 0.0f, 0.0f);
     bool bFilter = false;
     bool bColor = false;
-    int nFilterA, nFilterB, nColA, nColB, nColC;
+    float nFilterA, nFilterB, nColA, nColB, nColC;
     FUN_1408a20a0(m_ent.FUN_1408a9280(), 0x4c87bc48, &bFilter);
     FUN_140b27ec0(m_ent.FUN_1408a9280(), 0x22a89b35, &colA);
     FUN_140961880(m_ent.FUN_1408a9280(), 0x65832be6, &nFilterA);
@@ -1141,7 +1141,7 @@ void CInteractTelescopeObject::vfunc_2(Unk_InteractMsg* pMsg)
 // @0x1413fff60
 void CInteractTelescopeObject::OnCutSceneSkip(NotifyObject*)
 {
-    FUN_140ad4b90()->FUN_141863460(0);
+    FUN_140ad4b90()->FUN_141863460(0.0f);
     FUN_1422b9fd0(FUN_1408e57f0(), 0x620001d);
     Unk_IoCutRef ref;
     FUN_1403ed2d0()->FUN_141bd30a0(&ref);
@@ -1259,8 +1259,8 @@ int CInteractDisplayImage::vfunc_1(Unk_Entity* pEntity, int nState)
     }
     if (FUN_140166410()->FUN_14036e4c0() != 0)
     {
-        m_strUrl = m_spRow->m_strUrl;
-        FUN_141b794e0(FUN_140cc18a0(), &m_strUrl);
+        m_strUrl = "";
+        FUN_141b794e0(FUN_140cc18a0(), m_strUrl, (const char*)m_spRow->m_strUrl);
         if (m_strUrl.GetLength() > 0)
             m_pThread = AfxBeginThread(GetURLFromIndirectURL, this, 0, 0, 0, 0);
     }

@@ -120,7 +120,6 @@ void FUN_141d16040(void* pNode, float fTime, bool bUpdateControllers);    // NiA
 bool FUN_14098dad0(void* pNode);                                    // node is app-culled
 class Unk_1403ed280 { public: void* FUN_1411a6b10(); };             // the effect manager: scene root
 Unk_1403ed280* FUN_1403ed280();
-Unk_StreamPoint FUN_140af0250(Unk_CameraManager* pManager);         // camera direction
 void FUN_140a01250(Unk_StreamPoint kEuler, Unk_StreamPoint* pkOut1, Unk_StreamPoint* pkOut2);   // axes of an euler rotation
 
 // Resource manager (singleton, instance pointer at 0x143ab5bc8): texture load by path. 0x140cc2ba0 joins directory + file name.
@@ -392,7 +391,7 @@ void CBeamEffect::UpdateMesh()
     }
     m_spMesh->GetMesh()->UpdateProperties();
 
-    Unk_StreamPoint kCamera = FUN_140af0250(Unk_CameraManager::FUN_1409478c0());
+    Unk_StreamPoint kCamera = Unk_CameraManager::FUN_1409478c0()->FUN_140af0250();
     efd::vector<Unk_StreamPoint> kLeft;
     efd::vector<Unk_StreamPoint> kRight;
     for (unsigned int i = 0; i < kCurve.size(); ++i)

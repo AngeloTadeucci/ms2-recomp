@@ -37,6 +37,7 @@ public:
     virtual void vfunc_84();                                    // 0x1419bee10 "initData"
     virtual void vfunc_85(int nType);                           // 0x1419bee80 packet 0x22 op 4
     virtual void vfunc_86();                                    // 0x1412a4070 (another unit)
+    MS2Ptr<ASMovieClip> FUN_140ba7930(const CString& strName);  // 0x140ba7930 bind a movie clip child (a UIDialog member: this+0x30)
 protected:
     MS2_LAYOUT_FRIEND;
     int m_mode;                                                 // +0x178

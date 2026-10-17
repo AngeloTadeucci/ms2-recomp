@@ -113,7 +113,7 @@ float FUN_1404c1810(void* pThis, int a, int b);
 void* FUN_140166410();
 bool FUN_14036d570(void* pThis, int nId);
 void* FUN_14052d230();
-int FUN_14059eec0(void* pThis, int nItemId);
+bool FUN_14059eec0(void* pThis, int nItemId);
 int FUN_1403ba790(int nId);
 
 // Option-table lookups started by CItemData::FUN_14053ed00.

@@ -630,7 +630,7 @@ public:
     NiAVObjectPtr FUN_1411e2a60(void* pAttach, const CString& strName, bool bA);       // model node of the item by name
 };
 Unk_NifEquipSet* FUN_1416561a0(GameObject* pPC);
-Unk_NodePtr FUN_1411dd700(CEquipItem* pEquip);                      // the item's model node
+struct Unk_NifEquipView { Unk_NodePtr FUN_1411dd700(); };          // the item's model node (CEquipItem member: this=rcx, hidden return=rdx)
 int FUN_14052a170(CItem* pItem);                                    // the item's slot kind
 int FUN_1411dc670(CEquipItem* pEquip);
 int FUN_1411dc820(CEquipItem* pEquip);                              // the item id
@@ -1229,7 +1229,7 @@ void CNifEffect::FUN_14154c440(Unk_EffectTarget* pTarget, int nSlot)
         MS2Ptr<CEquipItem> spEquip = FUN_1416561a0(FUN_140aac440(&spPC))->FUN_1411e1860(nSlot, 6, 0);
         if (!spEquip.IsNull())
         {
-            m_spTarget = FUN_1411dd700(spEquip.get());
+            m_spTarget = reinterpret_cast<Unk_NifEquipView*>(spEquip.get())->FUN_1411dd700();
             FUN_14154c580();
         }
     }

@@ -138,6 +138,8 @@ public:
     float FUN_140af7ea0();                              // current mode: setting m_8
     Unk_StreamPoint FUN_140a17e10();                    // current mode: setting m_c (zero without one)
     Unk_StreamPoint FUN_140af8290();                    // current mode: setting m_18
+    Unk_StreamPoint FUN_140af0250();                    // camera world direction (by value: this, hidden return)
+    Unk_StreamPoint FUN_140af0340();                    // camera world up vector
     void FUN_140aeaf40(Unk_CameraTargetEntity* pTarget, int n);
     CCameraMode* FUN_140af24f0();                       // the current camera mode
     Unk_StreamPoint FUN_140a38d00();                    // m_138 (pending move input)

@@ -141,6 +141,7 @@
 class Unk_UisMovieMgr
 {
 public:
+    CStringW FUN_1422b0570(const CString& strKey);                  // $-prefixed key lookup
     void FUN_1422adc90(void* pMovie);                               // add a background movie
     void FUN_1422addb0();
     int FUN_1422ade10(void* pMovie);
@@ -270,7 +271,7 @@ void* FUN_14138fd50(int nClass);
 void FUN_14190f180(void* p);
 class Unk_UisUpperHpBar { public: void FUN_141b4d0a0(); };          // UIUpperHpBar
 Unk_UisUpperHpBar* FUN_14096e340(int nClass);
-class Unk_UisDlg4e52 { public: void FUN_141908690(); void FUN_141908720(unsigned uTime); };
+class Unk_UisDlg4e52 { public: void FUN_141908690(); void FUN_141908720(float fDelta); };
 Unk_UisDlg4e52* FUN_14136f290(int nClass);
 class Unk_UisCursor                                                 // IME / cursor controller
 {
@@ -1788,7 +1789,7 @@ void* FUN_141aee920();
 void FUN_140cf10d0(void* p);
 extern char DAT_143d6eb58;
 unsigned FUN_14086d260();
-unsigned FUN_141473230(void* p);
+float FUN_141473230(void* p);   // frame delta (s), cvtsd2ss xmm0
 void* FUN_141aef6d0(void* pMap);
 void* FUN_1412784d0(void* pRef);
 int FUN_1419244c0(void* pDlg, int n);
@@ -1843,7 +1844,7 @@ efd::AsyncResult CUIService::OnInit()
 // MS2-FUNCTIONAL: ATL list / map iteration goes through the unit's opaque container helpers
 efd::AsyncResult CUIService::OnTick()
 {
-    unsigned uTime = FUN_141473230((void*)(size_t)FUN_14086d260());
+    float fDelta = FUN_141473230((void*)(size_t)FUN_14086d260());
     if (!m_listOpen.IsEmpty())
     {
         for (unsigned i = 0; i < 3 && !m_listOpen.IsEmpty(); ++i)
@@ -1860,7 +1861,7 @@ efd::AsyncResult CUIService::OnTick()
         DAT_143af62e0 = 0;
     }
     FUN_141aec690();
-    FUN_141aec760(uTime);
+    FUN_141aec760(fDelta);
     void* pos = FUN_141aef6d0(&m_mapDlg);
     while (pos != 0)
     {
@@ -4560,7 +4561,7 @@ void FUN_141e310e0(NiDebugVisualizationClick* p, void* pArg);
 void* FUN_1413f9950();
 void* FUN_1422b9e80(Unk_UisSceneMgr* p);
 int FUN_1422db750(void* p);
-CString FUN_1422db790(void* p);
+struct Unk_UisSceneView { CString FUN_1422db790(); };   // scene name (member: this=rcx, hidden return=rdx)
 void FUN_1422dbf80(void* p, const CString& str, int n, int a, int b);
 void FUN_1410bc1c0(Unk_UisHousingSvc* p);
 int FUN_14151e8c0(void* p);
@@ -4591,10 +4592,10 @@ void CUIService::FUN_141aec690()
 
 // @0x141aec760
 // MS2-FUNCTIONAL: the cursor position temporaries are laid out per call in the exe
-void CUIService::FUN_141aec760(unsigned uTime)
+void CUIService::FUN_141aec760(float fDelta)
 {
     if (Unk_UisDlg4e52* pDlg = FUN_14136f290(0x4e52))
-        pDlg->FUN_141908720(uTime);
+        pDlg->FUN_141908720(fDelta);
     int nNow = FUN_140869420();
     if ((unsigned)(nNow - m_n130) > 0x32)
     {
@@ -4643,9 +4644,9 @@ void CUIService::FUN_141aec9c0()
     if (pService->FUN_141adbe00(FUN_140e09150(FUN_1409a8b10())->m_fValue, 0) != 0)
         static_cast<Unk_UisSlot6*>(FUN_140b632f0())->vfunc_6();
     if (void* pScene = FUN_1422b9e80(FUN_1408e57f0()))
-        FUN_1422dbf80(pScene, FUN_1422db790(pScene), FUN_1422db750(pScene), 0, 0);
+        FUN_1422dbf80(pScene, static_cast<Unk_UisSceneView*>(pScene)->FUN_1422db790(), FUN_1422db750(pScene), 0, 0);
     if (void* pScene = FUN_1422b9e50(FUN_1408e57f0()))
-        FUN_1422dbf80(pScene, FUN_1422db790(pScene), FUN_1422db750(pScene), 0, 0);
+        FUN_1422dbf80(pScene, static_cast<Unk_UisSceneView*>(pScene)->FUN_1422db790(), FUN_1422db750(pScene), 0, 0);
     int nScene = FUN_1422b9e00(FUN_1408e57f0());
     pService->FUN_141ada6f0(nScene);
     pService->FUN_141ad9e50(nScene);
@@ -4862,7 +4863,7 @@ typedef Scaleform::GFx::FunctionHandler::Params Unk_UisAsParams;
 int FUN_1418dd0c0();
 int FUN_1418dd110();
 int FUN_1418dd0d0();
-CStringW FUN_14036da50(void* p, int n);
+struct Unk_UisFeatureView { CStringW FUN_14036da50(int n); };   // feature name (member: this=rcx, hidden return=rdx)
 CStringW FUN_14061ad70(const CStringW& str, const wchar_t* sz);
 CStringW FUN_140e70010(CStringW str);
 CStringW FUN_14083ccf0(const CStringW& str);
@@ -4921,7 +4922,7 @@ void FUN_141ade430(void* p, int nMovieId)
     for (int i = 1; i < 0x118; ++i)
     {
         if (FUN_14036d570(FUN_140166410(), i))
-            strFeatures += FUN_14061ad70(FUN_14036da50(FUN_140166410(), i), L",");
+            strFeatures += FUN_14061ad70(static_cast<Unk_UisFeatureView*>(FUN_140166410())->FUN_14036da50(i), L",");
     }
     pObj->FUN_1407cbb20("m_currentFeatureByString", CStringW(strFeatures));
     pObj->FUN_1409c0d20("m_bottomMarginOfStage", FUN_1418dd0c0() + FUN_1418dd110());
@@ -4989,7 +4990,6 @@ void CUIService::FUN_141aec3e0()
 }
 
 // ---- AS callback: localized text with fmt arguments ----
-CStringW FUN_1422b0570(Unk_UisMovieMgr* pMgr, const CString& strKey);       // $-prefixed key lookup
 int FUN_1407cccd0(const Scaleform::GFx::Value* pValue);                      // Value type
 unsigned FUN_1409c17e0(const Scaleform::GFx::Value* pValue);
 double FUN_140f17ed0(const Scaleform::GFx::Value* pValue);
@@ -5022,7 +5022,7 @@ void FUN_141addb30(long long n)
         return;
     CStringW strFormat;
     if (strKeyW.Find(L"$", 0) == 0)
-        strFormat = FUN_1422b0570(FUN_14025e7a0(), strKey);
+        strFormat = FUN_14025e7a0()->FUN_1422b0570(strKey);
     else if (strKeyW.Find(L"s_", 0) == 0)
         strFormat = FUN_14028b8e0(strKeyW);
     else

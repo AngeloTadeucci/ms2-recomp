@@ -198,7 +198,7 @@ public:                                        // the local player (fields as ac
     unsigned char m_pad1f1[3];
     float m_1f4;                               // base value of a speed/range scale (FUN_141bcfc50)
     unsigned char m_pad1f8[0x23c - 0x1f8];
-    int m_23c;
+    float m_23c;                               // camera distance (exe 0x141bbbdde movss xmm1)
     unsigned char m_pad240[0x24c - 0x240];
     char m_24c;                                // flag tested at the end of FUN_141bcda90
     unsigned char m_pad24d[0x254 - 0x24d];
@@ -429,8 +429,8 @@ public:
     void FUN_141bd1ed0(std::list<class Unk_WsC_GameObj*>* outA, std::list<class Unk_WsC_GameObj*>* outB, int skipOwned, int a, int b);
     void FUN_141bd2030(std::list<class Unk_WsC_GameObj*>* out);
     class Unk_WsC_GameObj* FUN_141bd2170(int type, float range, int useFront, int addBonus);
-    class Unk_WsC_GameObj* FUN_141bd2690(const Unk_StreamPoint& pos, float maxDist, int up, int down, int needHp, int includeDead);
-    class Unk_WsC_GameObj* FUN_141bd28d0(const Unk_StreamPoint& pos, float maxDist, int up, int down, int needHp, class Unk_WsC_GameObj* exclude, int includeDead);
+    class Unk_WsC_GameObj* FUN_141bd2690(const Unk_StreamPoint& pos, float maxDist, float up, float down, int needHp, int includeDead);
+    class Unk_WsC_GameObj* FUN_141bd28d0(const Unk_StreamPoint& pos, float maxDist, float up, float down, int needHp, class Unk_WsC_GameObj* exclude, int includeDead);
     class Unk_WsC_GameObj* FUN_141bd2bf0(const Unk_StreamPoint& pos, int id);   // pos unused (exe caller 0x14176b489)
     efd::SmartPointer<egf::Entity> FUN_141bd2cd0(CString name);
     void FUN_141bd2db0(ATL::CAtlList<efd::SmartPointer<class Unk_WsC_GameObj> >* out, int (*filter)(class Unk_WsC_GameObj*));
@@ -503,7 +503,7 @@ public:
     Unk_WsP8* FUN_141bd87a0(Unk_WsP8* out, unsigned __int64 id);   // m_990 lookup
     bool FUN_141bd8860(void* pNpc);                     // move a pending npc from m_990 to m_980
     bool FUN_141bd8ae0(void* pNpc);                     // move a pending npc from m_980 to m_990
-    bool FUN_141bd8e30(unsigned __int64 entityId, char show, int hint);   // fade an entity in or out
+    bool FUN_141bd8e30(unsigned __int64 entityId, char show, float fFade);   // fade an entity in or out over fFade seconds
     void FUN_141bd92c0(float scale, float scale2, float duration, int mode);   // start the time-scale change
     void FUN_141bd9380();                               // end the time-scale change
     void FUN_141bd9410(Unk_WsP16* pObj);                 // show a debug tooltip over an interactive object

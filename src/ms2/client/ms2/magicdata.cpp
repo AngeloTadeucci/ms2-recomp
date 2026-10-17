@@ -622,7 +622,7 @@ void FUN_140a0b1f0(const Unk_NiMatrix3& matRotation, Unk_StreamPoint* pOut);    
 static inline void FUN_14146aa10(Unk_EfdMatrix3* pMatrix, unsigned nRow, unsigned nCol, float fValue) { pMatrix->m_afEntry[nRow][nCol] = fValue; }
 
 // ---- callees of the projectile logic (unit-local declarations; names invented) ----
-struct Unk_MagicCullCfg { float FUN_1410a71d0(); };                 // the cull distance
+struct Unk_MagicCullCfg { const float* FUN_1410a71d0(); };          // the cull distance (exe returns this+4)
 class Unk_MagicEffectFiles { public: Unk_MagicEffectFile FUN_14119f870(const CString& strName); };
 void FUN_14101ac20(void* pSet);                                     // clear the hit set
 int FUN_14028d260(float fMs);                                       // float -> int (rounds)
@@ -638,7 +638,7 @@ void FUN_141467f60(const Unk_StreamPoint& ptPos, const Unk_StreamPoint* pDirecti
 const Unk_NiMatrix3& FUN_1410b23c0(void* pNode);                      // NiAVObject::GetRotate
 const CString* FUN_1417590d0(Unk_MagicTag* pTag);                   // the effect name of the skill
 Unk_MagicEffectFiles* FUN_1411b1dd0();
-int FUN_14119f5f0(void* pFile);
+bool FUN_14119f5f0(void* pFile);
 void* FUN_1409f7c90();
 int FUN_14161ce60(void* pArg, int nId);
 int FUN_14161d0f0(void* pArg);
@@ -1908,7 +1908,7 @@ void CMagic::FUN_141464d00(unsigned nNow, const Unk_MagicSkillRow* pRow)
 
 // ---- callees of the box piercing pick (unit-local; names invented) ----
 int FUN_1401862e0(Unk_MagicUIntMap* pMap);                          // count
-void FUN_140188ca0(Unk_MagicUIntMap* pMap, unsigned nId, int nValue = 0);   // insert / mark
+void FUN_140188ca0(Unk_MagicUIntMap* pMap, unsigned nId, float fValue = 0.0f);   // insert / mark
 float FUN_141198810();                                              // random in [0, 1]
 Unk_MagicEntity* FUN_140961420(Unk_MagicHitRef* pRef);              // the hit entity (null when gone)
 int FUN_14166c930(Unk_MagicEntity* pEntity);                        // the entity type
@@ -2300,7 +2300,7 @@ bool CMagic::FUN_141464220()
         return false;
     Unk_StreamPoint ptLocal = pLocal->vf18_GetPosition();
     float fDist = FUN_140966f00(m_ptCurrent, ptLocal);
-    return pCfg->FUN_1410a71d0() < fDist;
+    return *pCfg->FUN_1410a71d0() < fDist;
 }
 MS2_REPLACE_METHOD(0x141464220, CMagic, FUN_141464220, 309, 0xDB62E170);
 

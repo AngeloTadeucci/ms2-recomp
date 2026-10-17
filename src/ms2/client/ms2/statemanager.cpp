@@ -655,9 +655,9 @@ MS2Ptr<StateData> CStateManager::FUN_1417dc9a0(int nState)
 
 // ---- StateMoveSkill ----
 
-class Unk_SMBlk180 { public: int m_pad[2]; int m_n8; };
+class Unk_SMBlk180 { public: int m_pad[2]; float m_n8; };   // +8 move speed (exe movss xmm1, [rax+8])
 Unk_SMBlk180* FUN_141671920(PCBase* p);
-void FUN_141671960(PCBase* p, int n);
+void FUN_141671960(PCBase* p, float fSpeed);   // PCBase::FUN_141671960
 long long FUN_141670a00(PCBase* p, int n);
 class Unk_SMSkills { public: bool FUN_141765b80(int nSkill); };
 Unk_SMSkills* FUN_141523bc0(MyPC* p);

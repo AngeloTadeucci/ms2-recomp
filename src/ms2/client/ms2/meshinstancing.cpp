@@ -22,7 +22,7 @@ void FUN_141568ac0(egf::Entity*, const efd::Point3*);
 bool FUN_1413fa390(egf::Entity*);
 void FUN_1413fa4c0(egf::Entity*);
 void FUN_141567330(NiAVObject*, bool);
-void FUN_141851f90(NiNode*);
+void FUN_141851f90(NiNode*, float fTime);   // seek the animations (exe: xorps xmm1)
 void FUN_1410865e0(NiObjectNET*, const NiFixedString&, bool);
 void FUN_1415690f0(NiMesh*);
 extern NiFixedString DAT_143ae51d0;
@@ -124,7 +124,7 @@ void MeshInstancing::FUN_14147c830() {
     if ((NiNode*)root != NULL) {
         NiNode* node = root;
         FUN_14147dae0(node, true);
-        FUN_141851f90((NiNode*)root);
+        FUN_141851f90((NiNode*)root, 0.0f);
         root->UpdateEffects();
         root->UpdateProperties();
         root->Update(0.0f, true);

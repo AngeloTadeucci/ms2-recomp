@@ -31,7 +31,7 @@ CStringW FUN_14028de60(int nStringId);
 CStringW FUN_14028b8e0(const CStringW& str);
 CStringW FUN_1405c2690(const CStringW& fmt, const CStringW& arg);
 CStringW FUN_1408f71a0(const CStringW& fmt, const CStringW& a, const CStringW& b);
-CStringW FUN_141093310(PCBase* pNpc);                    // npc name
+struct Unk_MiNpcView { CStringW FUN_141093310(); };       // npc name (member: this=rcx, hidden return=rdx)
 unsigned FUN_141092fa0(PCBase* pNpc);                    // npc id
 int FUN_141093c60(PCBase* pNpc);
 void FUN_140194470(Unk_Vec3* pDst, const Unk_Vec3* pSrc);
@@ -159,25 +159,24 @@ Unk_NpcNode* Unk_NpcTree::Successor(Unk_NpcNode* p)
 }
 
 // ---- hit-result wrappers (16 bytes: unknown qword + the pointer at +8) ----
-struct Unk_Portal { char m_pad[0x4c]; float m_fRadius; };
+struct Unk_Portal { char m_pad[0x4c]; float m_fRadius; CStringW FUN_14169c3b0(); };   // cursor text (member: this=rcx, hidden return=rdx)
 struct Unk_PortalHit { void* m_pad; Unk_Portal* m_p; };
 Unk_PortalHit* FUN_140964110(Unk_PortalHit* p, int n);
 char FUN_140965190(Unk_PortalHit* p);
-char FUN_1409652c0(Unk_PortalHit* p);
+char FUN_1409652c0(Unk_PortalHit* p, void* pCmp);           // p->m_p == pCmp
 Unk_Portal* FUN_140965960(Unk_PortalHit* p);
 void FUN_140964a70(Unk_PortalHit* p);
 Unk_Vec3* FUN_14169d2f0(Unk_Portal* p, Unk_Vec3* pTmp);
 int FUN_14169d280(Unk_Portal* p);
-CStringW FUN_14169c3b0(Unk_Portal* p);
 
-struct Unk_ObjectEnt { virtual int vf0(); virtual int vf1(); virtual int vf2(); virtual int vf3(); virtual int vf4(); virtual int vf5(); };
+struct Unk_ObjectEnt { virtual int vf0(); virtual int vf1(); virtual int vf2(); virtual int vf3(); virtual int vf4(); virtual int vf5();
+    CStringA FUN_140967060(); };   // object id (member: this=rcx, hidden return=rdx)
 struct Unk_ObjectHit { void* m_pad; Unk_ObjectEnt* m_p; };
 Unk_ObjectHit* FUN_140963fd0(Unk_ObjectHit* p, int n);
 Unk_ObjectEnt* FUN_140965920(Unk_ObjectHit* p);
 void FUN_1409649b0(Unk_ObjectHit* p);
 Unk_Vec3* FUN_1409673c0(Unk_ObjectEnt* p, Unk_Vec3* pTmp);
 unsigned FUN_140967110(Unk_ObjectEnt* p);
-CStringA FUN_140967060(Unk_ObjectEnt* p);
 struct Unk_IdArray { char raw[0x20]; };
 struct Unk_ObjArray { char raw[0x20]; };
 void FUN_140182ea0(Unk_IdArray* p);
@@ -396,9 +395,9 @@ int CMouseInteractNpc::vfunc_1(Unk_MouseRay* pRay)
         CStringW strName = FUN_1401a9d70()->FUN_141811980(0xe, nNpcId);
         if (strName.GetLength() == 0)
             strName = FUN_14028de60(0x62d);
-        pRay->strCursor = FUN_1408f71a0(CStringW(L"s_mouse_interact_talk"), strName, FUN_141093310(pNpc));
+        pRay->strCursor = FUN_1408f71a0(CStringW(L"s_mouse_interact_talk"), strName, reinterpret_cast<Unk_MiNpcView*>(pNpc)->FUN_141093310());
     } else {
-        pRay->strCursor = FUN_1405c2690(CStringW(L"s_mouse_interact_hold"), FUN_141093310(pNpc));
+        pRay->strCursor = FUN_1405c2690(CStringW(L"s_mouse_interact_hold"), reinterpret_cast<Unk_MiNpcView*>(pNpc)->FUN_141093310());
     }
     return true;
 }
@@ -528,7 +527,7 @@ int CMouseInteractPortal::vfunc_1(Unk_MouseRay* pRay)
     Unk_Vec3 vTmp;
     FUN_140194470(&pRay->vPick, FUN_14169d2f0(FUN_140965960(&hit), &vTmp));
     if (FUN_14169d280(FUN_140965960(&hit)) == 0) {
-        pRay->strCursor = FUN_14169c3b0(FUN_140965960(&hit));
+        pRay->strCursor = FUN_140965960(&hit)->FUN_14169c3b0();
     } else {
         unsigned nId = FUN_14169d280(FUN_140965960(&hit));
         CStringW strName = FUN_1401a9d70()->FUN_141811980(3, nId);
@@ -585,7 +584,7 @@ Unk_PortalHit* CMouseInteractPortal::FindTarget(Unk_PortalHit* pOut, const Unk_V
         unsigned* pId = FUN_1404f0a10(&aIds, i);
         Unk_PortalHit hit;
         FUN_1403ed2d0()->FUN_141bc2800(&hit, *pId);
-        if (FUN_1409652c0(&hit) != 0) {
+        if (FUN_1409652c0(&hit, 0) != 0) {
             FUN_140964a70(&hit);
             continue;
         }
@@ -667,7 +666,7 @@ int CMouseInteractObject::vfunc_2(Unk_MouseRay* pRay)
         m_nAction = 0x18;
     else
         m_nAction = 0x12;
-    m_strObjectId = FUN_140967060(FUN_140965920(&hit));
+    m_strObjectId = FUN_140965920(&hit)->FUN_140967060();
     FUN_1409649b0(&hit);
     return true;
 }

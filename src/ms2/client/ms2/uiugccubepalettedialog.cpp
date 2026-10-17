@@ -316,7 +316,7 @@ public:
 class Unk_UserSvc
 {
 public:
-    int FUN_14036d570(int n);
+    bool FUN_14036d570(int n);
 };
 
 class Unk_MetaMgr
@@ -455,7 +455,7 @@ public:
     virtual void vfunc_2();
     int FUN_1410b7e80(const Unk_StreamPoint& pt);
     int FUN_1410c35c0();
-    int FUN_1410c3600(int n);
+    bool FUN_1410c3600(int n);
     void* FUN_1410c8030(int a, int b);
     int FUN_1410d55d0(int a, int b);
     void* FUN_1410b8790(Unk_StreamPoint pt);
@@ -485,11 +485,13 @@ struct Unk_CubeSpRef
 // ---- exe functions: managers and singletons ----
 
 Unk_UIMgr* FUN_1403ed2b0();
+class Unk_PalPtred298 : public CPtred {};   // WorldService::m_298 (worldservice.h Unk_WsPtred298)
 class Unk_WorldMgr
 {
 public:
     int FUN_141bd1050(int n);
     int FUN_141bd3060();
+    MS2Ptr<Unk_PalPtred298> FUN_141bd30a0();   // copy of m_298 (by value: hidden return in rdx)
 };
 Unk_WorldMgr* FUN_1403ed2d0();
 Unk_InputSvc* FUN_14025e7a0();
@@ -510,7 +512,6 @@ Unk_CubeMgr* FUN_1409670e0();
 Unk_CubeSpRef FUN_1401cd040(void* pSingleton);
 UGCCubePalette* FUN_140ef0b20();
 struct Unk_ItemMgr { MS2Ptr<CItem> FUN_1408fbf90(unsigned __int64 uid); };
-MS2Ptr<CItem> FUN_1408fbf90(Unk_ItemMgr* p, unsigned __int64 uid);
 int FUN_1408fc1b0(void* pBag, int nItemId);
 int FUN_140dfcb00(void* pBag, int nItemId);
 
@@ -623,14 +624,16 @@ CStringW FUN_1401ceea0(const wchar_t* szFmt, int n);
 CStringW FUN_1409404f0(int n);
 CStringW FUN_1409e97f0(int nId, int* pArg);
 CStringW FUN_14028de60(int nStringId);
-CStringW FUN_141811980(void* p, int a, int b);
 CStringW FUN_1418fec00(int nCurrency, int nPrice, int n);
-void* FUN_1401a9d70();
+class Unk_PalStrings
+{
+public:
+    CStringW FUN_141811980(int nTable, int nId);   // string table lookup (exe member: this=rcx, hidden return=rdx)
+};
+Unk_PalStrings* FUN_1401a9d70();
 CStringW FUN_1408f71a0(const CStringW& strKey, const CStringW& strA, const CStringW& strB);
 CStringW FUN_1405c2690(const CStringW& strKey, const CStringW& strA);
-int FUN_140375130(void* p);
-void* FUN_140885340(void* p);
-void* FUN_141bd30a0(void* p);
+bool FUN_140375130(void* p);
 int FUN_14036e5b0(Unk_UserSvc* p);
 MS2Ptr<CMsgBoxData> FUN_140d73d20(int nType, const CStringW& strText, int n, const CStringW& strTag);
 void FUN_140d73c60(const MS2Ptr<CMsgBoxData>& sp);
@@ -652,9 +655,9 @@ void FUN_141925e70(int a, int b);
 void FUN_14138bf00(void* p, int a, int b, int c);
 int FUN_14138c930(void* p, int n);
 int FUN_14138c9c0(void* p, int n);
-int FUN_14116d840(Unk_KeySvc* p);
+bool FUN_14116d840(Unk_KeySvc* p);
 int FUN_14116d9c0(Unk_KeySvc* p, int a, int b, int c);
-int FUN_14116dd30(Unk_KeySvc* p, int a, int b, int c);
+bool FUN_14116dd30(Unk_KeySvc* p, int a, int b, int c);
 int FUN_1422af2d0(Unk_InputSvc* p, int n);
 int FUN_14151f6e0();
 int FUN_1418dd110();
@@ -690,7 +693,7 @@ void FUN_1410a8a20(void* pEditor, int n);
 int FUN_1410a8a90(void* pEditor);
 int FUN_1410a8ab0(void* pEditor);
 void FUN_1410aa0c0(void* pEditor, CubeItemInfo* p);
-Unk_StreamPoint FUN_1410aa520(void* pEditor);
+struct Unk_PalEditorView { Unk_StreamPoint FUN_1410aa520(); };   // cursor cell (member: this=rcx, hidden return=rdx)
 void FUN_1410aad50(void* pEditor);
 void FUN_1410ab5a0(void* p);
 void FUN_1410abb40(void* pEditor);
@@ -1990,7 +1993,7 @@ void UIUGCCubePaletteDialog::FUN_140eef140()
     MS2Ptr<CubeItemInfo> spSel = FUN_140ef0b20()->FUN_1410b55b0();
     if (spSel.get() == 0)
         return;
-    MS2Ptr<CItem> spItem = FUN_1408fbf90(&DAT_143ab2e20, spSel->instanceId);
+    MS2Ptr<CItem> spItem = DAT_143ab2e20.FUN_1408fbf90(spSel->instanceId);
     if (spItem == (CItem*)0)
         return;
     int nCount = spItem->FUN_140526c50();
@@ -2037,7 +2040,7 @@ void UIUGCCubePaletteDialog::FUN_140eef670(int nRow)
         nRow = FUN_1422cf520(FUN_140acd9f0(&spList)) * 10 + nRow;
         if (FUN_140ef0b20()->FUN_1410b6060(nRow) == 3)
         {
-            if (FUN_140375130(FUN_140885340(FUN_141bd30a0(FUN_1403ed2d0()))) == 0)
+            if (FUN_140375130(FUN_1403ed2d0()->FUN_141bd30a0().get()) == 0)
                 FUN_141275260(0x6f6, 1, 1);
             else
                 FUN_141275260(0x6f7, 1, 1);
@@ -2230,7 +2233,7 @@ void UGCKeyMode1::vfunc_5(void*, float, float)
     void* pEditor = FUN_141530290(pWorld);
     if (pEditor == 0)
         return;
-    Unk_StreamPoint pt = FUN_1410aa520(pEditor);
+    Unk_StreamPoint pt = static_cast<Unk_PalEditorView*>(pEditor)->FUN_1410aa520();
     if (spMgr.FUN_1401cd1a0()->FUN_1410b7e80(pt) == 0)
         FUN_140ef2fb0();
     else
@@ -2314,7 +2317,7 @@ void UGCKeyMode2::vfunc_5(void*, float, float)
     void* pEditor = FUN_141530290(pWorld);
     if (pEditor == 0)
         return;
-    Unk_StreamPoint pt = FUN_1410aa520(pEditor);
+    Unk_StreamPoint pt = static_cast<Unk_PalEditorView*>(pEditor)->FUN_1410aa520();
     if (spMgr.FUN_1401cd1a0()->FUN_1410b7e80(pt) == 0)
         FUN_140ef2fb0();
     else
@@ -2522,9 +2525,9 @@ void FUN_140ef3840()
     if (pDlg == 0)
         return;
     bool bShown = false;
-    if (spMgr.FUN_1401cd1a0()->FUN_1410b7e80(FUN_1410aa520(pEditor)) != 0)
+    if (spMgr.FUN_1401cd1a0()->FUN_1410b7e80(static_cast<Unk_PalEditorView*>(pEditor)->FUN_1410aa520()) != 0)
     {
-        MS2Ptr<Unk_CubeInfo> spCube((Unk_CubeInfo*)spMgr.FUN_1401cd1a0()->FUN_1410b8ab0(FUN_1410aa520(pEditor)));
+        MS2Ptr<Unk_CubeInfo> spCube((Unk_CubeInfo*)spMgr.FUN_1401cd1a0()->FUN_1410b8ab0(static_cast<Unk_PalEditorView*>(pEditor)->FUN_1410aa520()));
         IMessageListener* pOwner = static_cast<IMessageListener*>(pDlg);
         Unk_CubeInfo* pInfo = spCube.get();
         void* pLayer = spMgr.FUN_1401cd1a0()->FUN_1410c8030(pInfo->m_50, pInfo->m_54);
@@ -2544,7 +2547,7 @@ void FUN_140ef3840()
                     {
                         if (FUN_1408b5b50(nKind) != 0)
                         {
-                            CStringW strMsg = FUN_14052bd00(0x474, FUN_141811980(FUN_1401a9d70(), 1, nKind));
+                            CStringW strMsg = FUN_14052bd00(0x474, FUN_1401a9d70()->FUN_141811980(1, nKind));
                             FUN_1416fb340(FUN_1403b4750(), strMsg);
                             FUN_140d73aa0(CStringW(strMsg), 1, pOwner, CStringW(L"remove"));
                             bShown = true;

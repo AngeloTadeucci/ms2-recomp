@@ -93,7 +93,7 @@ public:
 };
 Unk_TradeText* FUN_1401a9d70();
 
-CString FUN_1416612e0(PCBase* pPlayer);                 // the player's account/character name
+struct Unk_TmPlayerView { CString FUN_1416612e0(); };   // the player's account/character name (PCBase member: this=rcx, hidden return=rdx)
 CBlockManager* FUN_140a6a830();
 CStringW FUN_1401ca400(const BlockPtr& record, int action);
 Unk_MessageBoxPtr FUN_14151f820();
@@ -539,7 +539,7 @@ void CTradeManagerEx::FUN_14185cd10(CInPacket& packet)
     PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd1530(uid);
     if (pPlayer != 0)
     {
-        FUN_14185d820(uid, pPlayer->vfunc_77(), FUN_1416612e0(pPlayer));
+        FUN_14185d820(uid, pPlayer->vfunc_77(), reinterpret_cast<Unk_TmPlayerView*>(pPlayer)->FUN_1416612e0());
         FUN_1403ed2b0()->FUN_141adc5d0(0x4e3b);
         FUN_1403ed2b0()->FUN_141adc5d0(0x4ec1);
         FUN_1403ed2b0()->FUN_141adc5d0(0x4e47);

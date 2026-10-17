@@ -144,8 +144,8 @@ public:
     unsigned int FUN_1409a8ab0();               // width
     unsigned int FUN_1409a8aa0();               // height
     void FUN_14125e1f0(int nValue, int bFlag);
-    bool FUN_14125e820(int nValue);
-    void FUN_14125eb00(int nValue);
+    bool FUN_14125e820(int nWidth, int nHeight);
+    void FUN_14125eb00(int nWidth, int nHeight);
     // @0x1414f0470
     int GetMode() const { return m_nMode; }
 public:
@@ -784,7 +784,7 @@ efd::AsyncResult MS2RenderService::OnInit()
             return efd::AsyncResult_Failure;
         }
     }
-    if (!FUN_1409a8b10()->FUN_1409a8ac0()->FUN_14125e820(width)) {
+    if (!FUN_1409a8b10()->FUN_1409a8ac0()->FUN_14125e820(width, height)) {
         width = 0x400;
         height = 0x300;
         if (!FUN_140aadf80()->FUN_141b91010(bFullscreenFlag, 0x400, 0x300)) {
@@ -798,7 +798,7 @@ efd::AsyncResult MS2RenderService::OnInit()
     }
     if (fullscreenMode != 0) {
         FUN_1409a8b10()->FUN_1409a8ac0()->m_nMode = 2;
-        FUN_1409a8b10()->FUN_1409a8ac0()->FUN_14125eb00(width);
+        FUN_1409a8b10()->FUN_1409a8ac0()->FUN_14125eb00(width, height);
         FUN_1409a8b10()->FUN_1412432d0();
     }
     FUN_140aadf80();

@@ -70,7 +70,7 @@ public:
     virtual void GetPosition(Unk_SkipActorPos* pOut);       // slot 18 (+0x90)
 };
 Unk_SkipActor* FUN_140a38d60(Unk_SkipHost*);
-int FUN_14028d470(float a, float b);                       // float equality test
+bool FUN_14028d470(float a, float b);                      // float equality test
 
 // The live effect list the skip query walks.
 class Unk_SkipEffect

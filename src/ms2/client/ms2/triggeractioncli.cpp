@@ -478,7 +478,7 @@ void FUN_140b60e10(void* pObj, char b);
 
 // sound manager (0x140d13c40)
 void* FUN_140d13c40();
-void FUN_14177c100(void* pMgr, int nId, int a, int b, int c);
+void FUN_14177c100(void* pMgr, int nId, float fVolume, unsigned nPriority, int nForce);   // PlayMusic
 void FUN_14177ce30(void* pMgr, Unk_EntRef ent, unsigned bOn);
 
 // effect manager (0x1403ed280) and its request (as in unit_140b0e5f0)
@@ -512,7 +512,7 @@ Unk_TrigWorldSvc* FUN_1403ed2d0();
 class Unk_TrigAnimSvc { public: void FUN_1409a1fc0(const void* pEntId, const efd::utf8string& kName, float fBlend, bool b); };
 Unk_TrigAnimSvc* FUN_141b6f910();
 NiAVObject* FUN_141b6efc0(void* pEnt);                  // root scene node of the entity
-void FUN_141851f90(NiAVObject* p, int n);
+void FUN_141851f90(NiAVObject* p, float fTime);
 void* FUN_14086d260();
 double FUN_141473280(void* pClock);
 void FUN_141545250(void* pEntId, unsigned b);
@@ -690,7 +690,7 @@ void TriggerObjectMesh::vfunc_2(Unk_TriggerEvent* pEvent, bool bSkipFx)
     NiAVObject* pRoot = FUN_141b6efc0(TRIG_ENT_RAW());
     if (pRoot != 0)
     {
-        FUN_141851f90(pRoot, 0);
+        FUN_141851f90(pRoot, 0.0f);
         double dTime = FUN_141473280(FUN_14086d260());
         pRoot->Update((float)dTime, true);
     }
@@ -799,7 +799,7 @@ TriggerObjectEffect::~TriggerObjectEffect()
 
 void FUN_140b60d30(float* pOut, void* pObj);                 // rotation (degrees)
 void FUN_1409f7320(efd::Matrix3* p);
-int FUN_140b60c90(void* pObj);
+float FUN_140b60c90(void* pObj);
 void FUN_140b60cd0(void* pOut, void* pObj);
 void FUN_14027dcf0(void* pOut, void* pIn);
 void FUN_14097faa0(void* pDst, void* pSrc);
@@ -823,7 +823,7 @@ void TriggerObjectEffect::vfunc_2(Unk_TriggerEvent* pEvent, bool bSkipFx)
         kRot.MakeZRotation(aRot[2]);
         Unk_TrigFxXform xf;
         FUN_140a332d0(&xf);
-        xf.m_fScale = (float)FUN_140b60c90(TRIG_ENT_RAW());
+        xf.m_fScale = FUN_140b60c90(TRIG_ENT_RAW());
         char aTmp[24];
         FUN_140b60cd0(aTmp, TRIG_ENT_RAW());
         char aPos[16];
@@ -885,7 +885,7 @@ void FUN_1405a85c0(void* pHandle);
 void* FUN_1409478e0(void* pNode);
 void* FUN_140947900(void* pNode);
 void FUN_140194470(void* pDst, const void* pSrc);
-unsigned FUN_141bcfc50(void* pPlayer);
+float FUN_141bcfc50(void* pPlayer);
 void* FUN_141551ea0(void* pSvc, void* pOut, CStringA strPath, int a, int b, int c, int d);
 
 class Unk_TrigCamMgr
@@ -903,13 +903,13 @@ public:
     void FUN_140aed750(int n, int b);
     void FUN_140aed1c0();
     int FUN_140af7e30();
+    Unk_StreamPoint FUN_140a17e10();                    // current mode: setting m_c (hidden return=rdx)
+    Unk_StreamPoint FUN_140af8290();                    // current mode: setting m_18
 };
 Unk_TrigCamMgr* FUN_1409478c0();
 float FUN_140ad4b40(Unk_TrigCamMgr* p);
 float FUN_140af7f00(Unk_TrigCamMgr* p);
 float FUN_140af7ea0(Unk_TrigCamMgr* p);
-Unk_StreamPoint FUN_140a17e10(Unk_TrigCamMgr* p);
-Unk_StreamPoint FUN_140af8290(Unk_TrigCamMgr* p);
 CCameraMode* FUN_140af24f0(Unk_TrigCamMgr* p);
 
 // @0x140de7d40
@@ -1081,8 +1081,8 @@ void TriggerObjectCamera::vfunc_4()
             fb.m_from.m_0 = FUN_140ad4b40(FUN_1409478c0());
             fb.m_from.m_4 = FUN_140af7f00(FUN_1409478c0());
             fb.m_from.m_8 = FUN_140af7ea0(FUN_1409478c0());
-            fb.m_from.m_c = FUN_140a17e10(FUN_1409478c0());
-            fb.m_from.m_18 = FUN_140af8290(FUN_1409478c0());
+            fb.m_from.m_c = FUN_1409478c0()->FUN_140a17e10();
+            fb.m_from.m_18 = FUN_1409478c0()->FUN_140af8290();
             FUN_140ae7de0(&fb.m_to, &fb.m_from);
             fb.m_to.m_0 = FUN_140af24f0(FUN_1409478c0())->m_setting.m_0;
             fb.m_to.m_4 = FUN_140af24f0(FUN_1409478c0())->m_setting.m_4;

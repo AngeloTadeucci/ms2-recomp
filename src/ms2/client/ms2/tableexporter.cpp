@@ -134,7 +134,7 @@ public:
     void* m_pad[0x15];
 };
 MS2_CHECK_SIZE(Unk_ModelMgr, 0xa8);
-int FUN_140a2a180();                                            // loads the model tables
+int FUN_140a2a180(Unk_ModelMgr* pMgr);                          // loads the model tables
 int FUN_140a2a920(Unk_ModelMgr* pMgr, const CString& strModel, CString strFilter);
 
 // Containers filled by the field meta table export.
@@ -215,7 +215,7 @@ void FUN_140177e10(const CString& str, ATL::CAtlArray<unsigned int>& rOut, const
 void FUN_14015eb90(void* pLogger, int nLevel, int nCategory, const wchar_t* pszFormat, const CString& strArg);
 void* FUN_140166440();                                                  // logger
 CString FUN_1409a2360(const char* psz, int n);                          // text conversion
-CString FUN_14036d8e0(void* pObj);                                      // language directory name
+struct Unk_TeLangView { CString FUN_14036d8e0(); };                       // language directory name (member: this=rcx, hidden return=rdx)
 void* FUN_140166410();
 bool FUN_1408710c0(TiXmlDocument* pDoc, const char* pszPath);           // SaveFile
 bool FUN_140184310(const CString& str, const char* psz);                // str == psz
@@ -308,7 +308,7 @@ void FUN_141821bf0(CString strModelFilter, CString strDeleteProps)
     FUN_1411683e0(FUN_141168200(), "Export FieldMetaTable");
     FUN_1411683e0(FUN_141168200(), "Read Model....");
     Unk_ModelMgr mgr;
-    if (FUN_140a2a180() == 0) {
+    if (FUN_140a2a180(&mgr) == 0) {
         MessageBoxA(NULL, "Fail to initialize Model Manager.", "Error", 0);
         return;
     }
@@ -667,7 +667,7 @@ bool FUN_1418226b0(bool bLog)
         FUN_1411683e0(FUN_141168200(), "Read Model....");
     }
     Unk_ModelMgr mgr;
-    if (FUN_140a2a180() == 0) {
+    if (FUN_140a2a180(&mgr) == 0) {
         MessageBoxA(NULL, "Fail to initialize Model Manager.", "Error", 0);
         return false;
     }
@@ -1075,7 +1075,7 @@ bool FUN_1418226b0(bool bLog)
     if (bLog)
         FUN_1411683e0(FUN_141168200(), "Write FieldMetaTable Complete.");
     FUN_14086e000(&docOut, &elemRoot);
-    CString strLang = FUN_14036d8e0(FUN_140166410());
+    CString strLang = static_cast<Unk_TeLangView*>(FUN_140166410())->FUN_14036d8e0();
     const fmt::internal::ArgArray<1>::Type arrOut = {fmt::internal::MakeValue< fmt::BasicFormatter<char> >(strLang)};
     CString strOut = FUN_1402bf9a0("./Data/Xml/Table/{0}/FieldMetaData.xml", fmt::ArgList(fmt::internal::make_type(strLang), arrOut));
     if (!FUN_1408710c0(&docOut, strOut))

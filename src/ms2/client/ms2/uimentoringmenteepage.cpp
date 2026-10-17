@@ -76,8 +76,11 @@ void FUN_140bf2260(Scaleform::GFx::Value& v);                            // clea
 CString FUN_141028be0(unsigned __int64 nSerial, CString strPath, int n, CString strExtra);   // profile image url
 CString FUN_14016a600(const wchar_t* sz, int n);                         // wide to narrow
 CString FUN_140719530(unsigned __int64 n);                               // number to string
-CStringW FUN_141811980(int nCategory, int nId);                          // localized name
-class Unk_Localizer;
+class Unk_Localizer
+{
+public:
+    CStringW FUN_141811980(int nCategory, int nId);   // localized name (exe member: this=rcx, hidden return=rdx)
+};
 Unk_Localizer* FUN_1401a9d70();
 CStringW FUN_14052b9d0(CStringW strFormat, const CStringW& a, const CStringW& b);
 
@@ -264,7 +267,7 @@ void UIMentoringPage::FUN_140c6f7a0(CString strName, MS2Ptr<Unk_MentorEntry> pEn
             obj.FUN_1407cba60("iconPath", FUN_141028be0(pEntry->m_30, FUN_14016a600(pEntry->m_48, 0), 1, ""));
             obj.FUN_1407cbbe0("isOnline", pEntry->m_58);
             obj.FUN_1407cbb20("name", pEntry->m_38);
-            obj.FUN_1407cbb20("extra", FUN_14052b9d0(L"s_mentoring_user_info", pEntry->m_40, FUN_141811980(6, pEntry->m_54)));
+            obj.FUN_1407cbb20("extra", FUN_14052b9d0(L"s_mentoring_user_info", pEntry->m_40, FUN_1401a9d70()->FUN_141811980(6, pEntry->m_54)));
             obj.FUN_1407cbb20("charName", pEntry->m_38);
             obj.FUN_1407cba60("charSN", FUN_140719530(pEntry->m_30));
         }

@@ -123,7 +123,7 @@ float FUN_140af0c70(Unk_CameraManager* cam);
 float FUN_140af0d30(Unk_CameraManager* cam);
 struct Unk_TaxiCamMove { int m_nKind; int m_04; void* m_pad[16]; };
 void FUN_140aeffd0(Unk_CameraManager* cam, Unk_TaxiCamMove* out, float t, Unk_CameraSetting* setting);
-void FUN_140aed580(Unk_CameraManager* cam, Unk_TaxiCamMove* mv, int n, int fOneBits);
+void FUN_140aed580(Unk_CameraManager* cam, Unk_TaxiCamMove* mv, int n, float fDuration);
 void FUN_140aed750(Unk_CameraManager* cam, int a, bool b);
 void FUN_140947980(Unk_CameraManager* cam, int n);
 float FUN_14029cc60(float f);
@@ -234,7 +234,7 @@ void CAutoFindTaxiStation::FUN_1409f1450()
                                 Unk_TaxiCamMove mv;
                                 FUN_140aeffd0(Unk_CameraManager::FUN_1409478c0(), &mv, (fLen * 0.8) / 1000.0, &setting);
                                 mv.m_nKind = 2;
-                                FUN_140aed580(Unk_CameraManager::FUN_1409478c0(), &mv, 1, 0x3f800000);
+                                FUN_140aed580(Unk_CameraManager::FUN_1409478c0(), &mv, 1, 1.0f);
                                 FUN_140aed750(Unk_CameraManager::FUN_1409478c0(), 4, false);
                                 FUN_140ca7230(FUN_1409f24b0(), (unsigned)(long long)(fLen * 0.8),
                                               Unk_TaxiCallback(this, &CAutoFindTaxiStation::FUN_1409f1890));
@@ -321,7 +321,7 @@ void CAutoFindTaxiStation::FUN_1409f1af0()
         Unk_TaxiCamMove mv;
         FUN_140aeffd0(Unk_CameraManager::FUN_1409478c0(), &mv, (fLen * 0.5) / 1000.0, &setting);
         mv.m_nKind = 2;
-        FUN_140aed580(Unk_CameraManager::FUN_1409478c0(), &mv, 1, 0x3f800000);
+        FUN_140aed580(Unk_CameraManager::FUN_1409478c0(), &mv, 1, 1.0f);
         FUN_140aed750(Unk_CameraManager::FUN_1409478c0(), 2, true);
         FUN_140ca7230(FUN_1409f24b0(), (unsigned)(long long)(fLen * 0.5),
                       Unk_TaxiCallback(this, &CAutoFindTaxiStation::FUN_1409f1a70));

@@ -145,7 +145,7 @@ public:
     void FUN_141add040(eUIClassID nClass);          // 0x141add040 close a dialog
     void FUN_141aec3e0();                           // 0x141aec3e0 reset the saved UI layout
     void FUN_141aec690();                           // 0x141aec690
-    void FUN_141aec760(unsigned uTime);             // 0x141aec760
+    void FUN_141aec760(float fDelta);               // 0x141aec760
     void FUN_141aec9c0();                           // 0x141aec9c0
     void FUN_141aece70();                           // 0x141aece70 reset the input handlers
     void FUN_141adf250();                           // 0x141adf250 create the click render steps

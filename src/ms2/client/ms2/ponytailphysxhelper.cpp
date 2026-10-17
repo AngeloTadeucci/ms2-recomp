@@ -169,7 +169,7 @@ float FUN_141d57ca0(void* pExtra, int nIndex);                  // NiFloatsExtra
 Unk_EfdMatrix3* FUN_141024c90(NiObjectNET* pNode);              // the node's rotation
 int FUN_1409a8f90(const float* pf);                             // is finite
 void* FUN_140a44830();
-void FUN_1401ce2f0(void* pLog, const char* pszFormat, double dValue);
+void FUN_1401ce2f0(void* pLog, const char* pszFormat, ...);   // printf-style log (variadic: the double goes in r8 too)
 
 // The joint of a hair part (an NxD6Joint wrapper): slot 23 = name, 25 = loadFromDesc, 26 = saveToDesc.
 class Unk_PonyJoint

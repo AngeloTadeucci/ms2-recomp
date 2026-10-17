@@ -161,9 +161,12 @@ void FUN_14123c680(GameObject*, int);
 void FUN_14123fbf0(void*, int);
 void FUN_14123fd30(void*, int);
 CStringW FUN_141277910(MS2Ptr<CItemData> spData);              // by value (exe: copy ctor 0x1403bb3b0 into a temporary)
-class Unk_StringTable;
+class Unk_StringTable
+{
+public:
+    CStringW FUN_141811980(int nTable, int nId);   // string table lookup (exe member: this=rcx, hidden return=rdx)
+};
 Unk_StringTable* FUN_1401a9d70();
-CStringW FUN_141811980(Unk_StringTable*, int, int);
 CStringW FUN_14028de60(int);
 CStringW FUN_1402758a0(const wchar_t*, const CStringW&, const int&);
 CString FUN_140536a50(const char*, const CString&);
@@ -205,8 +208,8 @@ class Unk_FishRodState { public: int FUN_1409700d0(int nKind); };
 Unk_FishRodState* FUN_1416749a0(PCBase*);
 class Unk_GemItem : public CPtred { public: char m_pad[0x40]; };
 class CGemFishing : public Unk_GemItem { public: int FUN_1405a5be0(); };
-void* FUN_14165f460(PCBase*);
-MS2Ptr<Unk_GemItem> FUN_141270740(void*, int);
+struct Unk_CcInvView { MS2Ptr<Unk_GemItem> FUN_141270740(int nTab); };   // member (this=rcx, hidden return=rdx)
+Unk_CcInvView* FUN_14165f460(PCBase*);
 Unk_GemItem* FUN_140ddcc50(MS2Ptr<Unk_GemItem>&);
 
 class Unk_MagicTarget : public CPtred { public: char m_pad[0x40]; };
@@ -230,7 +233,7 @@ MS2Ptr<Unk_MagicTarget>* FUN_1410a7640(Unk_MagicTargetList*, void**);
 void FUN_141467500(CMagicModel*, MS2Ptr<Unk_MagicTarget>, MS2Ptr<Unk_GuideEntity>, efd::Point3, int, int, int);
 void FUN_14146c6c0(long long, long long, int, int);
 long long FUN_1410a7630();
-struct Unk_SkillRow { char m_pad_00[0x154]; int m_nDc8Src; char m_pad_158[4]; float m_fDccSrc; };
+struct Unk_SkillRow { char m_pad_00[0x154]; float m_fDc8Src; char m_pad_158[4]; float m_fDccSrc; };
 class Unk_SkillRowRef
 {
 public:
@@ -773,7 +776,7 @@ int CConstructionGuideObject::FUN_1410a2a60(void* pCube)
     if (m_spBirdHead.get() && m_bLocal)
     {
         CStringW strName = FUN_141277910(spData);
-        CStringW strExtra = FUN_141811980(FUN_1401a9d70(), 1, m_spItem->itemId);
+        CStringW strExtra = FUN_1401a9d70()->FUN_141811980(1, m_spItem->itemId);
         m_spBirdHead->FUN_1418ce8f0(strName, strExtra);
         m_spBirdHead->FUN_1418ce800();
     }
@@ -1189,7 +1192,7 @@ void CFishingGuideObject::FUN_1410a4d30(void* pCatch)
         {
             Unk_FishAmount kAmount;
             FUN_1408a0400(&kAmount, pFish->m_nCount);
-            CStringW strName = FUN_141811980(FUN_1401a9d70(), 0x1d, pFish->m_nFishId);
+            CStringW strName = FUN_1401a9d70()->FUN_141811980(0x1d, pFish->m_nFishId);
             CStringW strInfo = FUN_1402758a0(L"{0} {1}cm", strName, pFish->m_nSize);
             CStringW strGrade;
             int nGrade = spRow->FUN_1403b1520(pFish->m_nSize);
@@ -1328,7 +1331,7 @@ void CFishingGuideObject::FUN_1410a59f0()
     PCBase* pOwner = FUN_1410a1310();
     if (pOwner != 0)
     {
-        MS2Ptr<Unk_GemItem> spItem = FUN_141270740(FUN_14165f460(pOwner), 8);
+        MS2Ptr<Unk_GemItem> spItem = FUN_14165f460(pOwner)->FUN_141270740(8);
         if (spItem.get() != 0)
         {
             MS2Ptr<CGemFishing> spGem(dynamic_cast<CGemFishing*>(FUN_140ddcc50(spItem)));
@@ -1373,7 +1376,7 @@ CSkillMagicControlGuide::CSkillMagicControlGuide()
 {
     m_kAim = DAT_143b01a60;
     m_bControl = false;
-    m_nDc8 = 0;
+    m_fDc8 = 0.0f;
     m_fDcc = 0.0f;
     m_bReleased = false;
     FUN_141682f60(&m_unk_6d8, this);
@@ -1407,7 +1410,7 @@ int CSkillMagicControlGuide::FUN_1410a5ea0(int nOwnerId, efd::Point3 kPos, efd::
     FUN_1407ee1d0(FUN_1401958b0(), &kRow, m_spInfo->m_nSkillId);
     if (kRow.FUN_14063ed10() != 0)
     {
-        m_nDc8 = kRow.FUN_14063ed50()->m_nDc8Src;
+        m_fDc8 = kRow.FUN_14063ed50()->m_fDc8Src;
         m_fDcc = kRow.FUN_14063ed50()->m_fDccSrc;
     }
     kRow.FUN_14063e5c0();
@@ -1520,7 +1523,7 @@ bool CSkillMagicControlGuide::FUN_1410a6730() { return m_bReleased; }
 efd::Point3 CSkillMagicControlGuide::FUN_1410a6750() { return *(efd::Point3*)&m_kAim; }
 
 // @0x1410a6790
-int CSkillMagicControlGuide::FUN_1410a6790() { return FUN_1410a6730() ? 0 : m_nDc8; }
+float CSkillMagicControlGuide::FUN_1410a6790() { return FUN_1410a6730() ? 0.0f : m_fDc8; }
 
 // @0x1410a67d0
 float CSkillMagicControlGuide::FUN_1410a67d0() { return m_fDcc; }

@@ -223,7 +223,7 @@ unsigned FUN_14047b9b0(void*);
 #include "ms2/placeholder/mstime.h"
 __int64 FUN_140869440();
 // ---- the actor search (FUN_14174f0f0) ----
-class Unk_LobbyScanner { public: void FUN_141b90e30(unsigned*, unsigned*); };
+class Unk_LobbyScanner { public: void FUN_141b90e30(float* pfX, float* pfY); };   // cursor position inside the window
 Unk_LobbyScanner* FUN_140aadf80();
 class Unk_QueryList { public: void* FUN_140a17e00(); unsigned FUN_140a17ea0(); void* FUN_140a17d70(unsigned); };
 class Unk_QueryResult
@@ -242,7 +242,7 @@ public:
     bool FUN_140aeb590(Unk_140ae7ce0*);
     void FUN_140aed720(Unk_140ae7ce0*);
     void FUN_140aed750(int, int);
-    Unk_QueryResult FUN_140af0850(unsigned, unsigned, int, int, int, int);
+    Unk_QueryResult FUN_140af0850(float fX, float fY, bool b1, bool b2, bool b3, void* p);   // pick at the cursor (cameramode.h)
 };
 Unk_QueryMgr* FUN_1409478c0();
 class Unk_QueryRow { public: void* FUN_140a17cb0(); };
@@ -702,11 +702,11 @@ void CSceneStateMulti::FUN_14174ee00(BackUpCharacterInfo* pInfo)
 // MS2-FUNCTIONAL: std::vector helpers are inlined here (the exe calls out-of-line ctor/size/dtor)
 Unk_LobbyChar* CSceneStateMulti::FUN_14174f0f0()
 {
-    unsigned nMapX, nMapY;
-    FUN_140aadf80()->FUN_141b90e30(&nMapX, &nMapY);
+    float fMapX, fMapY;
+    FUN_140aadf80()->FUN_141b90e30(&fMapX, &fMapY);
     if (FUN_1409478c0()->FUN_140a18070() == 0)
         return 0;
-    Unk_QueryResult result = FUN_1409478c0()->FUN_140af0850(nMapX, nMapY, 1, 1, 0, 0);
+    Unk_QueryResult result = FUN_1409478c0()->FUN_140af0850(fMapX, fMapY, true, true, false, 0);
     if (result.FUN_140a16c00() == 0)
         return 0;
     Unk_FieldMgr* pMgr = FUN_1403ed2d0();

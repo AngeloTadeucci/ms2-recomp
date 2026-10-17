@@ -240,7 +240,7 @@ void FUN_1427d5390(NiDX9Renderer*);
 void FUN_1427cb2a0(NiDX9Renderer*, unsigned);
 void FUN_140d4a600(Unk_Worker*);
 void* FUN_14025e7a0();
-Unk_HudPtr FUN_1422b0370(void*, int);
+struct Unk_WinMovieMgrView { Unk_HudPtr FUN_1422b0370(int nLayer); };   // member (this=rcx, hidden return=rdx)
 void FUN_1422cec40(void*, char);
 void FUN_14209cc20(void*, void*);
 void* FUN_140d8ee90();
@@ -260,7 +260,7 @@ Unk_MsgCallback FUN_140b76b10(bool (*)(int));
 bool FUN_141902530(int);
 void* FUN_140aa6d30();
 int FUN_1417e2610(void*);
-Unk_StateRef FUN_1417e26d0(void*);
+struct Unk_WinSceneView { Unk_StateRef FUN_1417e26d0(); };   // current state (member: this=rcx, hidden return=rdx)
 void FUN_14174ebc0(void*);
 void* FUN_140714f90();
 void FUN_141538f80(void*);
@@ -546,7 +546,7 @@ int FUN_141b91ab0()
 void FUN_141b91b20(char bValue)
 {
     g_byteFlag1439faadc = bValue;
-    Unk_HudPtr hud = FUN_1422b0370(FUN_14025e7a0(), 6);
+    Unk_HudPtr hud = static_cast<Unk_WinMovieMgrView*>(FUN_14025e7a0())->FUN_1422b0370(6);
     if (hud.FUN_140a58470())
         FUN_1422cec40(hud.FUN_140a584a0(), bValue);
 }
@@ -576,7 +576,7 @@ LRESULT CALLBACK Unk_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         {
             if (FUN_1417e2610(FUN_140aa6d30()) == 0x620000d)
             {
-                void* pState = FUN_1417e26d0(FUN_140aa6d30()).FUN_140f30a30();
+                void* pState = static_cast<Unk_WinSceneView*>(FUN_140aa6d30())->FUN_1417e26d0().FUN_140f30a30();
                 if (pState != 0)
                     FUN_14174ebc0(pState);
             }
@@ -845,7 +845,7 @@ LRESULT CALLBACK Unk_WindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
         unsigned bRight = ((wParam & 2) != 0);
         if (FUN_140aa6d30() != 0)
         {
-            Unk_MouseTarget* pTarget = (Unk_MouseTarget*)FUN_1417e26d0(FUN_140aa6d30()).FUN_140f30a30();
+            Unk_MouseTarget* pTarget = (Unk_MouseTarget*)static_cast<Unk_WinSceneView*>(FUN_140aa6d30())->FUN_1417e26d0().FUN_140f30a30();
             if (pTarget != 0)
                 pTarget->vfunc_13(uMsg, nPosX, nPosY, bLeft, bRight, nWheel);
         }

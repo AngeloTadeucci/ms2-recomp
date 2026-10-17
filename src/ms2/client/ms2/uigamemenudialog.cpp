@@ -369,7 +369,7 @@ public:
     MS2Ptr<Unk_GmClip> FUN_1409b4560(const CString& strName);
     template <class T> MS2Ptr<T> FUN_140bbe700(const CString& strName);
 };
-class Unk_GmPoint { public: float x; float y; };
+class Unk_GmPoint { public: int x; int y; };   // exe 0x141937345 loads both with integer moves
 class Unk_UISwfEntity_25 { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4(); virtual Unk_GmPoint* vfunc_5(Unk_GmPoint* pOut); };
 class Unk_GmSlot : public CPtred { public: char m_pad[0x20]; };
 class Unk_GmStatusTmp { public: char m_pad[0x20]; };
@@ -539,8 +539,12 @@ class Unk_GmTrigCmd { public: void FUN_14138bf00(int nKind, int nId, int nArg); 
 class Unk_GmMentorStatus { public: int FUN_140424de0(); };
 class Unk_GmMentorConfig { public: Unk_GmMentorStatus* FUN_14041d160(); };
 class Unk_GmEventHolder { public: void FUN_140428700(Unk_GmEvtList* pOut); };
-class Unk_GmGuideTable;
-class Unk_GmPetBoxStrings;
+class Unk_GmGuideTable { public: CStringW FUN_14142d760(int nId, int n); };   // member (this=rcx, hidden return=rdx)
+class Unk_GmPetBoxStrings
+{
+public:
+    CStringW FUN_141811980(int nTable, int nId);   // string table lookup (exe member: this=rcx, hidden return=rdx)
+};
 class Unk_GmShieldUIScale;
 class Unk_GmUtilHolder;
 
@@ -716,7 +720,7 @@ bool FUN_14193fc00(Unk_GmMenuRef*, void* p);
 int FUN_14193f100(const ATL::CAtlArray<int>& arr, const int& nValue);
 bool FUN_140a467d0(const MS2Ptr<AScript>*);
 void FUN_141ab7200(Unk_GmSlot*, TPtr<Unk_UISwfEntity_25>, void*);
-Unk_GmSlot* FUN_141a90540(float x, float y, Unk_GmField* pField, float fScale);
+Unk_GmSlot* FUN_141a90540(int x, int y, Unk_GmField* pField, float fScale);
 
 // ---- exe functions: grid / map service ----
 
@@ -748,7 +752,7 @@ void* FUN_14063ed30(Unk_GmIdEntry*);
 bool FUN_140ecf630(Unk_GmEntryPtr* pByValue, int);           // takes the pointer by value (the callee destroys it)
 Unk_GmPetRow* FUN_14052ceb0(void*);
 void FUN_14052c420(Unk_GmPetInfoRef*);
-MS2Ptr<Unk_GmStatusInfo> FUN_141707750(void*);
+struct Unk_GmStatusView { MS2Ptr<Unk_GmStatusInfo> FUN_141707750(); };   // member (this=rcx, hidden return=rdx)
 int FUN_1418dd0c0();
 int FUN_1418dd110();
 bool FUN_1418fe060();
@@ -761,10 +765,8 @@ CStringW FUN_140298ea0(CStringW strKey);
 CStringW FUN_1401e8510(const wchar_t* szFormat, const CStringW& a1);
 CStringW FUN_1401ceea0(const wchar_t* szFormat, const int* pArg);
 CStringW FUN_1405c2690(CStringW, const CStringW&);
-CStringW FUN_14142d760(Unk_GmGuideTable*, int, int);
-CStringW FUN_141811980(Unk_GmPetBoxStrings*, int, int);
 CString FUN_140536a50(const char* szFormat, const CString& a1);
-CStringW FUN_1422b0570(void* pScale, Unk_GmMenuEntry* pEntry);
+struct Unk_GmMovieMgrView { CStringW FUN_1422b0570(Unk_GmMenuEntry* pEntry); };   // $-key lookup (member: this=rcx, hidden return=rdx)
 void FUN_1412751f0(const CStringW&, int, int);
 void FUN_141275260(int, int, int);
 void FUN_1412752d0(const CStringW& str, int n);
@@ -1592,7 +1594,7 @@ void UIGameMenuDialog::FUN_141939ec0()
     if (pPc != NULL) {
         Unk_GmPtrBase spInfo(FUN_1416764a0(pPc));
         if (spInfo.FUN_140ba7bb0(0)) {
-            MS2Ptr<Unk_GmStatusInfo> spStatus = FUN_141707750(spInfo.FUN_140975bc0());
+            MS2Ptr<Unk_GmStatusInfo> spStatus = static_cast<Unk_GmStatusView*>(spInfo.FUN_140975bc0())->FUN_141707750();
             if (spStatus->m_6c != 0)
                 nEnable = 0;
         }
@@ -1688,9 +1690,9 @@ int UIGameMenuDialog::FUN_14193a7b0(int nId, ASObj* pObj)
         return 0;
     if (!ref.FUN_140c1cda0()->m_period.FUN_140c1d130() && ref.FUN_140c1cda0()->m_period.FUN_140c1cdc0() == 0)
         return 0;
-    CStringW strTip = FUN_1422b0570(FUN_14025e7a0(), ref.FUN_140c1cda0());
+    CStringW strTip = static_cast<Unk_GmMovieMgrView*>(FUN_14025e7a0())->FUN_1422b0570(ref.FUN_140c1cda0());
     if (FUN_14193b570(nId) != 0 && ref.FUN_140c1cda0()->m_58 != 0) {
-        CStringW strExtra = FUN_14142d760(FUN_1409331f0(), ref.FUN_140c1cda0()->m_58, 0);
+        CStringW strExtra = FUN_1409331f0()->FUN_14142d760(ref.FUN_140c1cda0()->m_58, 0);
         if (strExtra.GetLength() > 0)
             strTip += FUN_1401e8510(L" [{0}]", strExtra);
     }
@@ -2020,7 +2022,7 @@ void FUN_14193c3c0()
     if (nItem == 0) {
         FUN_1412751f0(FUN_14028b8e0(CStringW(L"s_quest_scroll_package_invalid_event")), 1, 1);
     } else if (FUN_140ea4b70(pDlg) == 0) {
-        FUN_1412751f0(FUN_1405c2690(CStringW(L"s_quest_scroll_package_use_item_warn"), FUN_141811980(FUN_1401a9d70(), 1, nItem)), 1, 1);
+        FUN_1412751f0(FUN_1405c2690(CStringW(L"s_quest_scroll_package_use_item_warn"), FUN_1401a9d70()->FUN_141811980(1, nItem)), 1, 1);
     } else {
         FUN_141924680(pDlg);
     }
@@ -2409,7 +2411,7 @@ void UIGameMenuDialog::FUN_14193dd70()
 // @0x14193dd90
 void UIGameMenuDialog::FUN_14193dd90(Scaleform::GFx::Value* pOut, int nId, CStringW strFmt, int nTipId)
 {
-    CStringW strTip = FUN_14142d760(FUN_1409331f0(), nTipId, 0);
+    CStringW strTip = FUN_1409331f0()->FUN_14142d760(nTipId, 0);
     CStringW strBracket;
     if (!strTip.IsEmpty())
         strBracket = FUN_1401e8510(L"[{0}]", strTip);

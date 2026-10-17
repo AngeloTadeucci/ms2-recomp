@@ -15,7 +15,7 @@ struct Unk_Color { float r, g, b, a; };
 // ---- out-of-unit callees (bound to the exe by name) ----
 void FUN_1409a73e0(void* sp, void* p);   void FUN_14127c2a0(void* sp, void* p);   void FUN_1414748a0(void* sp, void* p);
 void FUN_141476010(void* click, int b);  void FUN_141476070(void* click, int b);
-void* FUN_14097f1d0(void* out, int r, int g, int b, int a);   void FUN_1414a6200(void* click, void* color);
+void* FUN_14097f1d0(void* out, float r, float g, float b, float a);   void FUN_1414a6200(void* click, void* color);
 void FUN_140984450(void* out, const char* s);   void FUN_140985020(void* click, void* name);   void FUN_1409845a0(void* s);
 void FUN_141546340(void* sp, void* p);   void FUN_14127c7f0(void* sp, void* p);   void FUN_1414803f0(void* sp, void* p);
 void FUN_141474d60(void* sp);   void FUN_14127c650(void* sp);   void FUN_1409a7ad0(void* sp);

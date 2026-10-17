@@ -116,7 +116,6 @@ void FUN_140aed1c0(Unk_CameraManager* p);
 float FUN_140ad4b30(CCameraMode* p);
 float FUN_140af7ef0(CCameraMode* p);
 float FUN_140af7e90(CCameraMode* p);
-Unk_StreamPoint FUN_140af8260(CCameraMode* p);
 
 // ---- world service objects ----
 class Unk_TrigNpc;
@@ -135,8 +134,11 @@ public:
 private: void* unknown; UIObject* object;
 };
 MS2_CHECK_SIZE(Unk_CommandUIRef, 0x10);
-Unk_CommandUIRef FUN_141adcea0(void* pUiManager, int nId);
-Unk_CommandUIRef FUN_141adcf50(void* pUiManager, const CString& strName);
+struct Unk_TsUiMgrView                                              // UI manager members (this=rcx, hidden return=rdx)
+{
+    Unk_CommandUIRef FUN_141adcea0(int nId);
+    Unk_CommandUIRef FUN_141adcf50(const CString& strName);
+};
 UIObject* FUN_1403ed9e0(Unk_CommandUIRef& rRef);
 bool FUN_140534e80(Unk_CommandUIRef& rRef);                         // is the reference empty
 
@@ -709,7 +711,7 @@ void CTriggerService::FUN_141862d30(CInPacket* pEvent)
     FUN_14015f050(strNames, aNames, ",");
     for (size_t i = 0; i < aNames.GetCount(); i++)
     {
-        Unk_CommandUIRef kRef = FUN_141adcf50(FUN_1403ed2b0(), aNames[i]);
+        Unk_CommandUIRef kRef = static_cast<Unk_TsUiMgrView*>(FUN_1403ed2b0())->FUN_141adcf50(aNames[i]);
         if (!FUN_140534e80(kRef))
         {
             if (kRef.FUN_141371280()->vfunc_9() != nState)
@@ -753,7 +755,7 @@ static UITypingGameDialog* FUN_1418644d0(int nId)
 {
     if (FUN_1403ed2b0() != 0)
     {
-        Unk_CommandUIRef kRef = FUN_141adcea0(FUN_1403ed2b0(), nId);
+        Unk_CommandUIRef kRef = static_cast<Unk_TsUiMgrView*>(FUN_1403ed2b0())->FUN_141adcea0(nId);
         if (kRef.FUN_1403e8a70() != 0)
             return dynamic_cast<UITypingGameDialog*>(FUN_1403ed9e0(kRef));
     }
@@ -864,7 +866,7 @@ void CTriggerService::FUN_141863460(float fFade)
         kData.m_to.m_0 = FUN_140ad4b30(Unk_CameraManager::FUN_1409478c0()->FUN_140af24f0());
         kData.m_to.m_4 = FUN_140af7ef0(Unk_CameraManager::FUN_1409478c0()->FUN_140af24f0());
         kData.m_to.m_8 = FUN_140af7e90(Unk_CameraManager::FUN_1409478c0()->FUN_140af24f0());
-        kData.m_to.m_18 = FUN_140af8260(Unk_CameraManager::FUN_1409478c0()->FUN_140af24f0());
+        kData.m_to.m_18 = Unk_CameraManager::FUN_1409478c0()->FUN_140af24f0()->FUN_140af8260();
         FUN_140aed580(Unk_CameraManager::FUN_1409478c0(), &kData, 1, 1.0f);
     }
     FUN_140aed1c0(Unk_CameraManager::FUN_1409478c0());

@@ -161,8 +161,11 @@ extern Unk_StreamPoint DAT_143b01a60;                               // the zero 
 typedef Scaleform::GFx::Value GfxValue;
 void* FUN_1403ed2b0();                                              // UI manager
 void* FUN_1403ed2d0();                                              // world service
-MS2Ptr<UIObject> FUN_141adcea0(void*,int);                          // UI by type id
-MS2Ptr<UIObject> FUN_141adcf50(void*,const CString&);               // UI by name
+struct Unk_GeaUiMgrView                                             // UI manager members (this=rcx, hidden return=rdx)
+{
+    MS2Ptr<UIObject> FUN_141adcea0(int nId);                        // UI by type id
+    MS2Ptr<UIObject> FUN_141adcf50(const CString& strName);         // UI by name
+};
 int FUN_141274f80();
 float FUN_141adbe70(void*);                                         // UI scale
 Unk_StreamPoint* FUN_140ad0c10(Unk_StreamPoint*,float);             // efd::Point3::operator*=
@@ -631,7 +634,7 @@ static int GuideKindOf(const CString& name)
 static UIObject* GuideUIById(int id)
 {
     if (FUN_1403ed2b0() != 0) {
-        MS2Ptr<UIObject> ref = FUN_141adcea0(FUN_1403ed2b0(), id);
+        MS2Ptr<UIObject> ref = static_cast<Unk_GeaUiMgrView*>(FUN_1403ed2b0())->FUN_141adcea0(id);
         if (ref.get() != 0)
             return ref.operator->();
     }
@@ -642,7 +645,7 @@ static UIObject* GuideUIById(int id)
 static UIObject* GuideUIByName(const CString& name)
 {
     if (FUN_1403ed2b0() != 0) {
-        MS2Ptr<UIObject> ref = FUN_141adcf50(FUN_1403ed2b0(), name);
+        MS2Ptr<UIObject> ref = static_cast<Unk_GeaUiMgrView*>(FUN_1403ed2b0())->FUN_141adcf50(name);
         if (ref.get() != 0)
             return ref.operator->();
     }
@@ -654,7 +657,7 @@ static UIObject* GuideUIByName(const CString& name)
 static UIObject* GuideUIByName2(const CString& name)
 {
     if (FUN_1403ed2b0() != 0) {
-        MS2Ptr<UIObject> ref = FUN_141adcf50(FUN_1403ed2b0(), name);
+        MS2Ptr<UIObject> ref = static_cast<Unk_GeaUiMgrView*>(FUN_1403ed2b0())->FUN_141adcf50(name);
         if (ref.get() != 0)
             return ref.operator->();
     }

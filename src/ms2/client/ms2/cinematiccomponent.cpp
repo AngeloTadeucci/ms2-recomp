@@ -53,7 +53,7 @@ public:
 private:
     void* m_0; Unk_CinAffinity* m_p;
 };
-Unk_CinAffinityPtr FUN_141093800(Unk_CinNpc*);
+struct Unk_CinNpcView { Unk_CinAffinityPtr FUN_141093800(); };   // npc member (this=rcx, hidden return=rdx)
 
 // The reward block of the open talk (inside the talk manager).
 class Unk_CinRewardItems
@@ -495,13 +495,13 @@ unsigned CCinematicComponent::FUN_14107d760(ASObj& obj)
             CStringW affinity(L"");
             Unk_CinNpc* pNpc = FUN_140967100()->FUN_141b21350();
             if (pNpc != 0) {
-                Unk_CinAffinity* pAffinity = FUN_141093800(pNpc).FUN_1409ee260();
+                Unk_CinAffinity* pAffinity = reinterpret_cast<Unk_CinNpcView*>(pNpc)->FUN_141093800().FUN_1409ee260();
                 if (pAffinity != 0) {
                     if (pReward->m_affinityBonus == 0) {
                         affinity = FUN_1408116a0(0x7c2, pReward->m_affinityExp);
                     } else {
                         affinity = FUN_140656190(L"{0} {1}", FUN_1408116a0(0x7c2, pReward->m_affinityExp),
-                                                 FUN_1408116a0(0x7c3, FUN_141093800(pNpc).FUN_14067e8c0()->m_54));
+                                                 FUN_1408116a0(0x7c3, reinterpret_cast<Unk_CinNpcView*>(pNpc)->FUN_141093800().FUN_14067e8c0()->m_54));
                     }
                 }
             }

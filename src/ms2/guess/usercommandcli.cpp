@@ -129,7 +129,7 @@ void* FUN_140ad4b90(); void FUN_141863340(void*,const ATL::CAtlArray<int>&,unsig
 void* FUN_1403ed2d0(); void* FUN_141bd0cc0(void*); void* FUN_1409478c0();
 int FUN_14123c580(void*); void FUN_140aecbb0(void*,int,int,bool);
 void* FUN_140af2520(void*); void* FUN_140947880(void*);
-void FUN_140aed580(void*,int,int,int); void FUN_140aed720(void*,void*); void FUN_140aed750(void*,int,bool);
+void FUN_140aed580(void*,void*,int,float); void FUN_140aed720(void*,void*); void FUN_140aed750(void*,int,bool);
 void FUN_1412751f0(const CStringW&,int,int); void FUN_1412751b0(const CStringW&,int);
 void FUN_140710590(COutPacket&);
 struct Unk_CommandToggle { void* m_00; bool enabled; };
@@ -140,7 +140,7 @@ CString FUN_14016a600(const wchar_t*,int); CString FUN_1401d4330(const wchar_t*,
 void FUN_14138d090(void*,CString); void FUN_14138d790(void*); void FUN_14138ba40(void*);
 __int64 FUN_140869440();
 void* FUN_1403ed280(); void FUN_1411a4f40(void*,CString,const Unk_StreamPoint&);
-void* FUN_140d13c40(); void FUN_14177c100(void*,int,int,int,int); CStringW FUN_14177e020(void*);
+void* FUN_140d13c40(); void FUN_14177c100(void*,int,float,unsigned,int); struct Unk_UcSoundView { CStringW FUN_14177e020(); };
 void* FUN_14025e7d0(); void FUN_140259930(void*); void FUN_1409c51f0(); void* FUN_141371b20(); void FUN_141815db0(void*);
 void* FUN_14136f3e0(int); void FUN_14195b970(void*); void* FUN_14136f5c0(int); void FUN_14134dc50(void*,int);
 void* FUN_1403ed2b0(); int FUN_141adc940(void*,int); void FUN_141adc5d0(void*,int); void FUN_141adc530(void*,int);
@@ -473,7 +473,7 @@ void FUN_140bea390(void*,CStringW,CString);
 void FUN_141530910(unsigned);
 void FUN_140cca840(int);
 void* FUN_140a44830();
-CString FUN_1401ce8d0(void*);
+struct Unk_UcLogView { CString FUN_1401ce8d0(); };   // member of the logger (this=rcx, hidden return=rdx)
 CStringW FUN_14016a730(const char*,int);
 void FUN_14083d890(CStringW);
 void* FUN_140714f90();
@@ -857,7 +857,7 @@ int CUserCommandCli::FUN_141365bf0(Unk_CommandArgs& args) {
 // @0x141365c60
 int CUserCommandCli::FUN_141365c60(Unk_CommandArgs&) {
     if(DAT_143ab2914<50) return 0;
-    if(FUN_140d13c40()) { CStringW text=FUN_14177e020(FUN_140d13c40()); FUN_1412751b0(text,20); }
+    if(FUN_140d13c40()) { CStringW text=static_cast<Unk_UcSoundView*>(FUN_140d13c40())->FUN_14177e020(); FUN_1412751b0(text,20); }
     return 1;
 }
 // @0x141365cd0
@@ -2090,7 +2090,7 @@ int CUserCommandCli::FUN_14136d4e0(Unk_CommandArgs& args) {
 }
 // @0x14136d520
 int CUserCommandCli::FUN_14136d520(Unk_CommandArgs&) {
-    CString path=FUN_1401ce8d0(FUN_140a44830());
+    CString path=static_cast<Unk_UcLogView*>(FUN_140a44830())->FUN_1401ce8d0();
     CStringW message=FUN_14016a730(path,0);
     FUN_1412751b0(message,20);
     FUN_14083d890(FUN_14016a730(path,0));

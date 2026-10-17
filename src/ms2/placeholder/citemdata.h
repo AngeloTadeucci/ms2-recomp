@@ -111,7 +111,7 @@ struct ItemLimit                    // <limit ...>
     int FUN_140545510(void* pParent);
     bool FUN_140545ad0(const ItemLimit* pOther);
     bool FUN_140545c80(int nJob);                   // job allowed
-    int FUN_140545f30();
+    bool FUN_140545f30();
     unsigned levelLimit;            // +0x00
     int genderLimit;                // +0x04
     ATL::CAtlArray<unsigned> jobLimit;          // +0x08

@@ -94,7 +94,7 @@ void FUN_141201780(void* self, efd::utf8string* out);
 char FUN_1409f77a0(void* sp, int n);   void* FUN_1409475f0(void* sp);   void* FUN_1409475d0(void* sp);
 void* FUN_1409478e0(void* p);
 int FUN_141422110(void* a, void* b, void* c);
-int FUN_141422340(void* self, int n);   void FUN_141167840(void* o, const CString& s, int n);
+float FUN_141422340(void* self, int n);   void FUN_141167840(void* o, const CString& s, float f);
 char FUN_140534e50(void* p);   void* FUN_140527840(void* p);   char FUN_14053d2b0(void* p);   unsigned FUN_1405258b0(void* p);
 void* FUN_140527870(void* p);   unsigned FUN_140599fd0(void* o, int i);   void FUN_141b6f000(void* o, int i, void* v);
 void* FUN_141b6dea0(void* out, unsigned v);   void* FUN_1414424f0(void* in, void* out, float f);   void FUN_140a0a3a0(void* out, void* in);
@@ -153,7 +153,7 @@ void FUN_141209360(void* list, void* out);   void FUN_141209190(void* list, void
 char FUN_140b029f0(void* a, void* b);   void* FUN_140b02a60(void* it);   void FUN_140b02a80(void* it);
 void* FUN_141c43700(void* a, int b, unsigned c, int d);
 void FUN_141c435b0(void* a, int b, unsigned c);
-void* FUN_140d821f0(void* p);
+bool FUN_140d821f0(void* p);
 void* FUN_14098db90(void* pClassInfo);   // ClassInfo::GetParent
 void FUN_140de91f0(void* pStr);
 char FUN_140de0b00(void* pChar, char c);
@@ -447,17 +447,17 @@ void CKfmModel::vfunc_10()
         if (FUN_14053cfd0(ow) != 0) {
             {
                 CString s("HR:0");
-                int v = FUN_141422340(this, 0);
+                float v = FUN_141422340(this, 0);
                 FUN_141167840(vfunc_14(), s, v);
             }
             {
                 CString s("HR0:0");
-                int v = FUN_141422340(this, 0);
+                float v = FUN_141422340(this, 0);
                 FUN_141167840(vfunc_14(), s, v);
             }
             {
                 CString s("HR1:1");
-                int v = FUN_141422340(this, 1);
+                float v = FUN_141422340(this, 1);
                 FUN_141167840(vfunc_14(), s, v);
             }
         }

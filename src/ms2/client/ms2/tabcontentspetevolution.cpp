@@ -196,7 +196,7 @@ unsigned short FUN_1405282d0(CItem* pItem);                             // item 
 unsigned short FUN_140528c20(CItem* pItem);                             // pet class
 Unk_PetItemInfo* FUN_1405278a0(CItem* pItem);
 Unk_PetBind* FUN_140527930(CItem* pItem);
-CStringW FUN_140528160(CItem* pItem);                                   // item name
+struct Unk_PeItemView { CStringW FUN_140528160(); };                     // item name (CItem member: this=rcx, hidden return=rdx)
 CStringW FUN_140527b10(CItem* pItem);
 __int64 FUN_140528e00(CItem* pItem);                                    // item price
 int FUN_140528c60(CItem* pItem);
@@ -666,7 +666,7 @@ void PetEvolutionPetEnchant::FUN_140ac8a00()
     else
     {
         obj.FUN_1409c0dc0("frame", "select");
-        obj.FUN_1407cbb20(s_itemName, FUN_140528160(pet));
+        obj.FUN_1407cbb20(s_itemName, reinterpret_cast<Unk_PeItemView*>(pet.get())->FUN_140528160());
         obj.FUN_1409c48f0(s_itemLevel, nPetClass);
         int nZero = 0;
         obj.FUN_1407cbb20(s_meso, FUN_1408116a0(0x986, nZero));
@@ -735,7 +735,7 @@ void PetEvolutionPetEnchant::FUN_140ac9520()
     CStringW strResult = FUN_140938ae0(CStringW(L"s_pet_evolution_success"), nState);
     CStringW strMax = FUN_140298ea0(CStringW(L"s_pet_evolution_max"));
     ASObj obj(2);
-    obj.FUN_1407cbb20(s_itemName, FUN_140528160(pet));
+    obj.FUN_1407cbb20(s_itemName, reinterpret_cast<Unk_PeItemView*>(pet.get())->FUN_140528160());
     obj.FUN_1407cbb20("resultMsg", strResult);
     if (nNeed == 0)
         obj.FUN_1407cbb20("evolutionMsg", strMax);
@@ -815,7 +815,7 @@ void PetEvolutionPetEnchant::FUN_140ac9e20(ASObj& obj)
         return;
     FUN_141415600(m_strResult);
     FUN_141415450(m_strResult, ItemPtr(preview), 0, 0, 0x10800);
-    obj.FUN_1407cbb20(FUN_14038f6d0(s_itemName, "2"), FUN_140528160(preview));
+    obj.FUN_1407cbb20(FUN_14038f6d0(s_itemName, "2"), reinterpret_cast<Unk_PeItemView*>(preview.get())->FUN_140528160());
     slot->Invoke("setData", CString(m_strResult));
 }
 

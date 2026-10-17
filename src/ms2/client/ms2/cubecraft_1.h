@@ -210,14 +210,14 @@ public:
     bool FUN_1410a65f0(int nSkill);                         // true when the target is out of range
     bool FUN_1410a6730();                                   // +0xdd0 released
     efd::Point3 FUN_1410a6750();                            // 12 bytes at +0xdb8
-    int FUN_1410a6790();
+    float FUN_1410a6790();                                  // +0xdc8 (0 once released)
     float FUN_1410a67d0();                                  // +0xdcc
     long long FUN_1410a67f0();
 
     MS2Ptr<Unk_SkillMagicInfo> m_spInfo;                    // +0xda8
     Unk_StreamPoint m_kAim;                                 // +0xdb8
     bool m_bControl;                                        // +0xdc4
-    int m_nDc8;                                             // +0xdc8
+    float m_fDc8;                                           // +0xdc8
     float m_fDcc;                                           // +0xdcc
     bool m_bReleased;                                       // +0xdd0
 };

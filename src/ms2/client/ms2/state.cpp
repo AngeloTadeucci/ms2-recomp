@@ -337,8 +337,8 @@ public:
     GameObjectControllerHitReport* FUN_141240f20();
 };
 Unk_StBody* FUN_14166d220(PCBase* pOwner);
-class Unk_StSpeedSrc { public: float FUN_14059d930(); };
-Unk_StSpeedSrc* FUN_141240c40(bool b);
+float FUN_14059d930(float f);                                         // fabs
+float FUN_141240c40(bool b);                                          // the move speed (xmm0)
 
 // The actor's buffs.
 class Unk_StBuff
@@ -1748,7 +1748,7 @@ void StateCrawl::vfunc_9(double fTime)
 {
     State::vfunc_9(fTime);
     int bFalling = FUN_141675ed0(m_pOwner);
-    static int s_nFallDelay = FUN_14028d260(FUN_14096b1c0(3.0f / FUN_141240c40(true)->FUN_14059d930()));
+    static int s_nFallDelay = FUN_14028d260(FUN_14096b1c0(3.0f / FUN_14059d930(FUN_141240c40(true))));
     if (bFalling == 0) {
         if (m_pOwner->vfunc_99(s_nFallDelay) == 0) {
             switch (m_n10) {

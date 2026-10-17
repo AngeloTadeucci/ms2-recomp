@@ -126,7 +126,7 @@ public:
 };
 Unk_PCItems* FUN_1416561a0(MyPC* pc);
 void FUN_1411e1ce0(Unk_PCItems* items, ATL::CAtlList<MS2Ptr<Unk_BackUpItem> >* out, int a);
-int FUN_1411e1110(Unk_PCItems* items, int id);
+float FUN_1411e1110(Unk_PCItems* items, int id);
 
 class Unk_EnPC : public MyPC
 {
@@ -173,7 +173,6 @@ public:
     void FUN_1422bbf00(const ASObj& obj);                   // push an object
     void FUN_1422bbfe0(const wchar_t* text);                // push a string
 };
-MS2Ptr<ASMovieClip> FUN_140ba7930(const CString& name);
 
 // Inventory window / item slots.
 class Unk_EnInvDialog
@@ -195,7 +194,7 @@ public:
     virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
     virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23(); virtual void vfunc_24();
     virtual MS2Ptr<CItem> vfunc_25();
-    void FUN_141416740(int v);
+    void FUN_141416740(int nHave, int nCount);
 };
 Unk_EnSlot* FUN_140f6e830(const CString& name);
 void FUN_141415600(const CString& key);
@@ -224,9 +223,8 @@ int FUN_14047e370(Unk_GEManagerA* mgr, int level);
 int FUN_140478b60(Unk_GEManagerA* mgr);
 
 // Ingredient / string tables.
-class Unk_IngTable;
+class Unk_IngTable { public: CStringW FUN_140556a40(int rank); };   // member: this=rcx, hidden return=rdx
 Unk_IngTable* FUN_140281980();
-CStringW FUN_140556a40(Unk_IngTable* t, int rank);
 unsigned FUN_1405569f0(Unk_IngTable* t, int rank);
 CStringW FUN_14183e930(CStringW text, unsigned color);
 CStringW FUN_14183e9c0(CStringW text, int rank);
@@ -292,7 +290,7 @@ class Unk_ItemEnchantData
 {
 public:
     int FUN_14062ffb0(unsigned key, int a, int b);
-    int FUN_1406303e0(unsigned key);
+    float FUN_1406303e0(unsigned key);
     CItemEnchantInfo* FUN_140630d60();
 };
 class Unk_EnOwner { public: __int64 FUN_14052d1c0(); };
@@ -1029,7 +1027,7 @@ void UIItemEnchantDialog::FUN_1419c1f20(CInPacket& pkt)
             m_220 = id1;
         }
         m_2b4 = (float)FUN_140478b60(FUN_1401c0d90()) / 10000.0f;
-        m_2b4 = m_2b4 + (float)FUN_1411e1110(FUN_1416561a0(pc), 0x41);
+        m_2b4 = m_2b4 + FUN_1411e1110(FUN_1416561a0(pc), 0x41);
     } else if (m_expMode == 2) {
         m_228 = 100.0f;
         m_23c = 100.0f;
@@ -1037,7 +1035,7 @@ void UIItemEnchantDialog::FUN_1419c1f20(CInPacket& pkt)
         m_result.FUN_14026b1c0(pkt.vfunc_o8_2());
         m_result.m_count = pkt.vfunc_o8_3();
         m_2b4 = (float)FUN_140478b60(FUN_1401c0d90()) / 10000.0f;
-        m_2b4 = m_2b4 + (float)FUN_1411e1110(FUN_1416561a0(pc), 0x41);
+        m_2b4 = m_2b4 + FUN_1411e1110(FUN_1416561a0(pc), 0x41);
     }
     FUN_1419c81a0();
     FUN_1419bff60();
@@ -1236,9 +1234,10 @@ void UIItemEnchantDialog::FUN_1419c41b0()
             if (slot != 0) {
                 MS2Ptr<CItem> item = slot->vfunc_25();
                 if (!(item == 0)) {
-                    if (item->FUN_140526c50() != 0) {
+                    int count = item->FUN_140526c50();
+                    if (count != 0) {
                         int v = DAT_143ab2a90.FUN_140a5f780(ItemData(item)->FUN_14053c6f0(), 0);
-                        slot->FUN_141416740(v);
+                        slot->FUN_141416740(v, count);
                     }
                 }
             }
@@ -1573,7 +1572,7 @@ CStringW UIItemEnchantDialog::FUN_1419c65b0(MS2Ptr<CItem> item, CEnchantOption* 
         if (!(!opt)) {
             if (opt->FUN_140266ce0()) {
                 __int64 base = item->FUN_1405278a0()->FUN_14062ffb0(key, 0, 0);
-                float extra = (float)item->FUN_1405278a0()->FUN_1406303e0(key);
+                float extra = item->FUN_1405278a0()->FUN_1406303e0(key);
                 float rate = opt->FUN_140266e10();
                 __int64 value = FUN_140632990(base, extra + rate);
                 out += StringFormat((LPCWSTR)FUN_14082f090(key), value);
@@ -1598,7 +1597,7 @@ void UIItemEnchantDialog::FUN_1419c6840(MS2Ptr<CItem> item, CEnchantOption* pOpt
             if (opt->FUN_140266ce0()) {
                 ASObj obj(2);
                 __int64 base = item->FUN_1405278a0()->FUN_14062ffb0(key, 0, 0);
-                float extra = (float)item->FUN_1405278a0()->FUN_1406303e0(key);
+                float extra = item->FUN_1405278a0()->FUN_1406303e0(key);
                 float rate = opt->FUN_140266e10();
                 __int64 before = FUN_140632990(base, extra);
                 __int64 after = FUN_140632990(base, extra + rate);
@@ -1787,7 +1786,7 @@ CStringW UIItemEnchantDialog::FUN_1419c7e20(CItem* item)
 // @0x1419c7ec0
 CStringW UIItemEnchantDialog::FUN_1419c7ec0(int level, int rank)
 {
-    return StringFormat(L"<font color='{0}'>+{1}</font>", FUN_140556a40(FUN_140281980(), rank), level);
+    return StringFormat(L"<font color='{0}'>+{1}</font>", FUN_140281980()->FUN_140556a40(rank), level);
 }
 
 // @0x1419c7f50

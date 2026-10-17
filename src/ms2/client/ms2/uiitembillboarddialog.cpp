@@ -154,7 +154,7 @@ bool FUN_140930b70();
 int FUN_1409313b0();                                            // the level restriction of a spammer: 0 ok, 1 level, 2 adventure level
 void* FUN_140302b00();
 void* FUN_1403f31f0(void* p);
-int FUN_1407d1d00(void* p);                                     // the billboard is shut down
+bool FUN_1407d1d00(void* p);                                    // the billboard is shut down
 struct Unk_EntityAppFramework { char m_pad[8]; };
 extern Unk_EntityAppFramework DAT_143b059e8;
 class Unk_RxCellInfo

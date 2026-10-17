@@ -184,7 +184,7 @@ Unk_Int3 FUN_1408a14c0(Unk_StreamPoint pt);                     // cell of a poi
 int FUN_1408a03c0(Unk_Int3 cell);                               // cell id
 Unk_Int3 FUN_1408a0400(int nCellId);
 Unk_StreamPoint FUN_1408a15b0(Unk_Int3 cell, Unk_StreamPoint& ptCenter);   // fills the cell center
-Unk_StreamPoint FUN_1409673c0(void* pActor);                    // actor position copy
+struct Unk_RxActorView { Unk_StreamPoint FUN_1409673c0(); };     // actor position copy (member: this=rcx, hidden return=rdx)
 class Unk_RxNpcData : public CPtred { public: int FUN_1406ccfc0(); };
 class Unk_RxNpc : public CPtred { public: MS2Ptr<Unk_RxNpcData> FUN_141093270(); };
 static const int DAT_142de2684 = -2060086266;   // rdata constant copied from 0x142de2684
@@ -657,7 +657,7 @@ int FUN_140b7a650(PCBase* pPc)
         MS2Ptr<Unk_WsPtred298> spObj = arrNear[i];
         if (!spObj.IsNull())
         {
-            Unk_StreamPoint pt = FUN_1409673c0(spObj.get());
+            Unk_StreamPoint pt = reinterpret_cast<Unk_RxActorView*>(spObj.get())->FUN_1409673c0();
             if (pt.FUN_140965c40(ptCenter).FUN_140967ac0() < 230.0f)
                 return 1;
         }

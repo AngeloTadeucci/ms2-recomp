@@ -520,7 +520,7 @@ public:
     void FUN_141231ce0(int nKey, CString str, int bAppend);
     int FUN_141231eb0(int nKey, int* pnItem);
     void FUN_141232260();
-    void FUN_141232330(int nItem, int nState);
+    void FUN_141232330(int nItem, float fValue);
     int FUN_141232430(int nItem, __int64 nOwner);
     void FUN_141232660(ATL::CAtlArray<MS2Ptr<CHomemadeCubeObject> >& aOut, __int64 nOwner);
     void FUN_141232810(ATL::CAtlArray<MS2Ptr<CNurturingCubeObject> >& aOut);
