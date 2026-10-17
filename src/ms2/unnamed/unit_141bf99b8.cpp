@@ -128,6 +128,9 @@
 #include "ms2/client/ms2/worldservice.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/tfunctor.h"
+#include "ms2/placeholder/notifyobject.h"
+#include "ms2/placeholder/coptimizer.h"
 #include <efd/MessageService.h>
 #include <efd/AssetLoadResponse.h>
 #include <egf/EntityChangeMessage.h>
@@ -213,6 +216,13 @@ struct Unk_W6V5a0 { ~Unk_W6V5a0(); void* p; };               // dtor 0x1410a6c00
 struct Unk_W6V420 { ~Unk_W6V420(); void* p0; void* p1; };   // dtor 0x140a00490
 struct Unk_W6V2f8 { ~Unk_W6V2f8(); void* p0; void* p1; };   // dtor 0x14123ebe0
 struct Unk_W6V468 { ~Unk_W6V468(); void* p0; void* p1; };   // dtor 0x1410b4290
+// The Notify* messages WorldService posts (vftable slot 1 = the name, an exe COMDAT of another range): constructing them here emits the
+// vftable and the scalar deleting dtors this tail holds.
+class NotifyChangeServer : public NotifyObject { public: NotifyChangeServer() {} virtual CStringW vfunc_1(); };
+class NotifyCreateMyPC : public NotifyObject { public: NotifyCreateMyPC() {} virtual CStringW vfunc_1(); };
+class NotifyGameStart : public NotifyObject { public: NotifyGameStart() {} virtual CStringW vfunc_1(); };
+class NotifyRemoveGameObject : public NotifyObject { public: NotifyRemoveGameObject() {} virtual CStringW vfunc_1(); };
+struct Unk_W6Access : WorldService { Unk_W6Access(); static void Del(WorldService* w) { static_cast<Unk_W6Access*>(w)->WorldService::DeleteThis(); } };   // reaches the protected DeleteThis
 void Unk_WsInst6(WorldService* w)
 {
     WsDriveAtl(w->m_208, 1);
@@ -252,6 +262,18 @@ void Unk_WsInst6(WorldService* w)
     WsDriveRB(w->m_618, 1);
     WsDriveRB(w->m_7c8, 1);
     w->m_1e8[1].insert(2);
+    TFunctor<void, EmptyParam> fnWs(w, &WorldService::FUN_141bc1640);
+    COptimizer* pOptimizer = 0;
+    TFunctor<void, EmptyParam> fnOpt(pOptimizer, reinterpret_cast<void (COptimizer::*)()>(&COptimizer::FUN_1414a5a30));
+    delete new NotifyChangeServer;
+    delete new NotifyCreateMyPC;
+    delete new NotifyGameStart;
+    delete new NotifyRemoveGameObject;
+    // inline virtuals of the class macros, emitted here as COMDATs
+    w->WorldService::DecRefCount();
+    Unk_W6Access::Del(w);
+    w->WorldService::GetClassDesc();
+    w->WorldService::GetRefCount();
     WsConstruct(w->m_1d8);
     WsDestroy(w->m_1d8);
     WsConstruct(w->m_2e8);
