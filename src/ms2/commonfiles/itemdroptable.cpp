@@ -165,6 +165,13 @@ class Unk_OptionMgr { public: int FUN_1405f4d30(unsigned nItemId, int nArg, shor
 Unk_OptionMgr* FUN_140166430();
 
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+
+// The exe's callers test the gender check as a full int (test eax, eax, no movzx of the bool).
+class Unk_DropItemData : public CItemData
+{
+public:
+    int FUN_14053c940(int nGender);
+};
 bool FUN_14053ff30(int nItemId, int nRank);                 // the item exists in that rank
 int FUN_14053feb0(int nItemId);                             // default rank of an item
 unsigned FUN_140768010(unsigned nRange, unsigned nBase);    // random number in base..base+range-1
@@ -1236,7 +1243,7 @@ bool ItemDropTable::GetBoxItems(unsigned nBoxId, ItemDropContext& ctx, std::vect
                 continue;
             if (bSkipHidden && pData->GetShowTooltip() == 2)
                 continue;
-            if (pGroup->IsApplySmartGenderDrop() && pItem->FUN_14053c940(ctx.m_gender) == 0)
+            if (pGroup->IsApplySmartGenderDrop() && static_cast<Unk_DropItemData*>(pItem.operator->())->FUN_14053c940(ctx.m_gender) == 0)
                 continue;
             if (pGroup->GetSmartDropRate() > 0 && !pItem->limit.FUN_140545da0(ctx.m_job))
                 continue;
@@ -1290,7 +1297,7 @@ bool ItemDropTable::GetUniqueBoxItems(unsigned nBoxId, ItemDropContext& ctx, std
                 continue;
             if (pData->GetShowTooltip() == 2)
                 continue;
-            if (pGroup->IsApplySmartGenderDrop() && pItem->FUN_14053c940(ctx.m_gender) == 0)
+            if (pGroup->IsApplySmartGenderDrop() && static_cast<Unk_DropItemData*>(pItem.operator->())->FUN_14053c940(ctx.m_gender) == 0)
                 continue;
             if (pGroup->GetSmartDropRate() > 0 && !pItem->limit.FUN_140545da0(ctx.m_job))
                 continue;
@@ -1555,7 +1562,7 @@ void ItemDropTable::DropIndividualGroup(ItemDropIndividualGroup* pGroup, ItemDro
             MS2Ptr<CItemData> pItem = FUN_14053f870(pData->GetItemId());
             if (pItem == 0)
                 continue;
-            if (pGroup->IsApplySmartGenderDrop() && pItem->FUN_14053c940(ctx.m_gender) == 0)
+            if (pGroup->IsApplySmartGenderDrop() && static_cast<Unk_DropItemData*>(pItem.operator->())->FUN_14053c940(ctx.m_gender) == 0)
                 continue;
             if (pGroup->IsServerDrop() && !ctx.m_serverDrop)
                 continue;
