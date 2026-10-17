@@ -337,7 +337,6 @@ void UIHomeMenuDialog::FUN_140c296e0(bool bCraft)
 }
 
 // @0x140c29710
-// MS2-FUNCTIONAL: behaviour-equivalent; codegen (temporaries / branch layout) not byte-identical to the exe
 void UIHomeMenuDialog::FUN_140c29710()
 {
     Unk_HmPc* pPc = FUN_141bd0cc0(FUN_1403ed2d0());
