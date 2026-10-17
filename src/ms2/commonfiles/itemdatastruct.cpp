@@ -16,6 +16,7 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include <typeinfo>
+#include <algorithm>
 #include "hook/ms2hook.h"
 
 // Unrecovered helpers.
@@ -35,7 +36,45 @@ void FUN_1408740a0(void* pElem, const char* pszName, const CStringW& strValue); 
 void FUN_140873e30(void* pElem, const char* pszName, float fValue);         // SetAttribute(name, float)
 void FUN_140874ad0(void* pElem, const char* pszName, const efd::Point3& kValue);    // SetAttribute(name, "x, y, z")
 void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);   // Point3 attribute
-template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlArray<T>& b);   // additionalactionadditional.cpp
+__int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
+
+#define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
+
+// Container comparisons (true = same; the templates of additionalactionadditional.cpp).
+template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlArray<T>& b)
+{
+    if (a.GetCount() != b.GetCount())
+        return false;
+    for (unsigned i = 0; i < a.GetCount(); i++)
+    {
+        if (a[i] != b[i])
+            return false;
+    }
+    return true;
+}
+template <class T> bool IsSameVector(const std::vector<T>& a, const std::vector<T>& b)
+{
+    if (a.size() != b.size())
+        return false;
+    for (size_t i = 0; i < a.size(); i++)
+    {
+        if (a[i] != b[i])
+            return false;
+    }
+    return true;
+}
+
+// The __int64 lists convert their tokens with ParseInt64.
+template <> void XmlSplitImpl(const CString& str, std::vector<__int64>& vec, const char* pszDelim)
+{
+    int nPos = 0;
+    CString strToken = str.Tokenize(pszDelim, nPos);
+    while (!strToken.IsEmpty())
+    {
+        vec.push_back(ParseInt64(strToken));
+        strToken = str.Tokenize(pszDelim, nPos);
+    }
+}
 
 // The game settings: feature switches by number.
 class Unk_GameFeatures
@@ -945,4 +984,172 @@ bool ItemMaterial::FUN_140547460(const ItemMaterial* pOther)
     if (attack != pOther->attack)
         return true;
     return false;
+}
+
+// @0x1405474a0
+ItemProperty::ItemProperty()
+    : flag08(false), flag09(false), collection(0), doNotPreview(0), applyFatiguePenalty(0), slotMax(1), gearScore(0),
+      remakeDisable(false), tradableCountDeduction(0), unlimitedEnchantMaxGrade(0), socketDataId(0),
+      rePackingLimitCount(0), rePackingItemConsumeCount(0), moveDisable(false)
+{
+}
+
+// @0x1405475c0
+void ItemProperty::FUN_1405475c0(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "slotMax", slotMax);
+    slotMax = (std::min<unsigned>)(slotMax, 99999);
+    FUN_1408731e0(pElem, "collection", collection);
+    FUN_1408731e0(pElem, "doNotPreview", doNotPreview);
+    FUN_1408731e0(pElem, "applyFatiguePenalty", applyFatiguePenalty);
+    FUN_1408733e0(pElem, "category", category);
+    FUN_1408733e0(pElem, "blackMarketCategory", blackMarketCategory);
+    FUN_1408733e0(pElem, "slotIcon", slotIcon);
+    FUN_1408733e0(pElem, "movie", movie);
+    FUN_1408730a0(pElem, "remakeDisable", remakeDisable);
+    Unk_140165cf0* pSell = pElem->FUN_140165cf0("sell");
+    if (pSell != 0)
+        XmlTokenList(pSell, "price", sellPrice);
+    FUN_140873220(pElem, "gearScore", gearScore);
+    FUN_1408731e0(pElem, "tradableCountDeduction", tradableCountDeduction);
+    FUN_1408731e0(pElem, "unlimitedEnchantMaxGrade", unlimitedEnchantMaxGrade);
+    FUN_1408731e0(pElem, "rePackingLimitCount", rePackingLimitCount);
+    FUN_1408731e0(pElem, "rePackingItemConsumeCount", rePackingItemConsumeCount);
+    if (FUN_140166410()->FUN_14036d570(0x84) && FUN_14086f4b0(pElem, "globalRePackingLimitCount") != 0)
+        FUN_1408731e0(pElem, "globalRePackingLimitCount", rePackingLimitCount);
+    if (FUN_140166410()->FUN_14036d570(0x84) && FUN_14086f4b0(pElem, "globalRePackingItemConsumeCount") != 0)
+        FUN_1408731e0(pElem, "globalRePackingItemConsumeCount", rePackingItemConsumeCount);
+    CString strScrollIds;
+    FUN_1408733e0(pElem, "rePackingScrollID", strScrollIds);
+    if (!strScrollIds.IsEmpty())
+        XmlSplit(strScrollIds, rePackingScrollID, ",");
+    if (FUN_140166410()->FUN_14036d570(0x84) && FUN_14086f4b0(pElem, "globalRePackingScrollID") != 0)
+    {
+        CString strGlobalScrollIds;
+        FUN_1408733e0(pElem, "globalRePackingScrollID", strGlobalScrollIds);
+        if (!strGlobalScrollIds.IsEmpty())
+            XmlSplit(strGlobalScrollIds, rePackingScrollID, ",");
+    }
+    FUN_140873220(pElem, "socketDataId", socketDataId);
+    FUN_1408730a0(pElem, "moveDisable", moveDisable);
+}
+
+// @0x1405479a0
+void ItemProperty::FUN_1405479a0(void* pElem)
+{
+    if (slotMax != 1)
+        FUN_140873ce0(pElem, "slotMax", slotMax);
+    if (!slotIcon.IsEmpty())
+        FUN_140874050(pElem, "slotIcon", slotIcon);
+    if (!category.IsEmpty())
+        FUN_140874050(pElem, "category", category);
+    if (!blackMarketCategory.IsEmpty())
+        FUN_140874050(pElem, "blackMarketCategory", blackMarketCategory);
+    if (remakeDisable)
+        FUN_140873bc0(pElem, "remakeDisable", remakeDisable);
+    if (!movie.IsEmpty())
+        FUN_140874050(pElem, "movie", movie);
+    if (gearScore != 0)
+        FUN_140873ce0(pElem, "gearScore", gearScore);
+    if (unlimitedEnchantMaxGrade > 0)
+        FUN_140873ca0(pElem, "unlimitedEnchantMaxGrade", unlimitedEnchantMaxGrade);
+    if (tradableCountDeduction > 0)
+        FUN_140873ca0(pElem, "tradableCountDeduction", tradableCountDeduction);
+    if (rePackingLimitCount != 0)
+        FUN_140873ca0(pElem, "rePackingLimitCount", rePackingLimitCount);
+    if (rePackingItemConsumeCount != 0)
+        FUN_140873ca0(pElem, "rePackingItemConsumeCount", rePackingItemConsumeCount);
+    if (!rePackingScrollID.IsEmpty())
+    {
+        CString str;
+        for (unsigned i = 0; i < rePackingScrollID.GetCount(); i++)
+            str.AppendFormat(",%d", rePackingScrollID[i]);
+        TrimCommas(str);
+        FUN_140874050(pElem, "rePackingScrollID", str);
+    }
+    if (moveDisable)
+        FUN_140873bc0(pElem, "moveDisable", moveDisable);
+    if (collection != 0)
+        FUN_140873ca0(pElem, "collection", collection);
+    if (doNotPreview != 0)
+        FUN_140873ca0(pElem, "doNotPreview", doNotPreview);
+    if (socketDataId != 0)
+        FUN_140873ce0(pElem, "socketDataId", socketDataId);
+    if (applyFatiguePenalty != 0)
+        FUN_140873ca0(pElem, "applyFatiguePenalty", applyFatiguePenalty);
+    if (sellPrice.size() > 0)
+    {
+        CString str;
+        for (size_t i = 0; i < sellPrice.size(); i++)
+            str.AppendFormat(",%I64d", sellPrice[i]);
+        TrimCommas(str);
+        if (!str.IsEmpty())
+        {
+            Unk_TiXmlElement sell("sell");
+            if (!str.IsEmpty())
+                FUN_140874050(&sell, "price", str);
+            FUN_14086e000(pElem, &sell);
+        }
+    }
+}
+
+// @0x140547ec0
+bool ItemProperty::FUN_140547ec0(const ItemProperty* pOther)
+{
+    if (slotMax != pOther->slotMax)
+        return true;
+    if (collection != pOther->collection)
+        return true;
+    if (doNotPreview != pOther->doNotPreview)
+        return true;
+    if (applyFatiguePenalty != pOther->applyFatiguePenalty)
+        return true;
+    if (category != pOther->category)
+        return true;
+    if (blackMarketCategory != pOther->blackMarketCategory)
+        return true;
+    if (slotIcon != pOther->slotIcon)
+        return true;
+    if (movie != pOther->movie)
+        return true;
+    if (remakeDisable != pOther->remakeDisable)
+        return true;
+    if (!IsSameVector(sellPrice, pOther->sellPrice))
+        return true;
+    if (gearScore != pOther->gearScore)
+        return true;
+    if (tradableCountDeduction != pOther->tradableCountDeduction)
+        return true;
+    if (unlimitedEnchantMaxGrade != pOther->unlimitedEnchantMaxGrade)
+        return true;
+    if (rePackingLimitCount != pOther->rePackingLimitCount)
+        return true;
+    if (rePackingItemConsumeCount != pOther->rePackingItemConsumeCount)
+        return true;
+    if (!IsSameArray(rePackingScrollID, pOther->rePackingScrollID))
+        return true;
+    if (socketDataId != pOther->socketDataId)
+        return true;
+    if (moveDisable != pOther->moveDisable)
+        return true;
+    return false;
+}
+
+// @0x1405480f0
+__int64 ItemProperty::FUN_1405480f0(int nRarity)
+{
+    if (sellPrice.empty())
+        return 0;
+    if (sellPrice.size() == 1)
+        return sellPrice[0];
+    MS2_ASSERT_MSG_AT(0x623, L"m_sellPrice.size() == 6", sellPrice.size() == 6);
+    if (sellPrice.size() != 6)
+        return 0;
+    return sellPrice[nRarity - 1];
+}
+
+// @0x1405481d0
+CString* ItemProperty::FUN_1405481d0()
+{
+    return &slotIcon;
 }

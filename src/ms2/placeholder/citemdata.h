@@ -10,6 +10,7 @@
 #include <efd/Point3.h>
 #include <atlcoll.h>
 #include <set>
+#include <vector>
 #include "ms2/placeholder/cxmldata.h"
 #include "ms2/placeholder/mstime.h"
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
@@ -21,14 +22,6 @@ class CItemExtraData;               // citemextradata.h
 // The blocks of an item row. Their constructors, XML readers/writers and comparisons live in
 // commonfiles\itemdatastruct.cpp; the destructors of the blocks that own heap data are in commonfiles\itemdata.cpp.
 // Names of the members that are not read by recovered code are invented from the XML attribute they hold.
-struct alignas(8) ItemPriceData                // <property><price> block, 0x18 bytes (layout not recovered)
-{
-    ItemPriceData();                // 0x140356530
-    ~ItemPriceData();               // 0x1403566d0
-    unsigned char m_raw[0x18];
-};
-MS2_CHECK_SIZE(ItemPriceData, 0x18);
-
 struct ItemSkill                    // <skill skillID skillLevel>
 {
     ItemSkill();                    // 0x140546740
@@ -58,8 +51,8 @@ struct ItemProperty                 // <property> block: slotMax, collection, pr
     ~ItemProperty();                // 0x140540eb0
     void FUN_1405475c0(Unk_140165cf0* pElem);       // XML read
     void FUN_1405479a0(void* pElem);                // XML write (attributes of the <property> element)
-    bool FUN_140547ec0(const ItemProperty* pOther);
-    unsigned long long FUN_1405480f0(int a);        // base price
+    bool FUN_140547ec0(const ItemProperty* pOther); // operator!=
+    __int64 FUN_1405480f0(int nRarity);             // sell price (one value, or one per rarity 1..6)
     CString* FUN_1405481d0();                       // &slotIcon
     CString slotIcon;               // +0x00
     bool flag08;                    // +0x08
@@ -76,17 +69,17 @@ struct ItemProperty                 // <property> block: slotMax, collection, pr
     bool remakeDisable;             // +0x3c
     int tradableCountDeduction;     // +0x40
     int unlimitedEnchantMaxGrade;   // +0x44
-    int socketDataId;               // +0x48
+    unsigned socketDataId;          // +0x48
     int rePackingLimitCount;        // +0x4c
     int rePackingItemConsumeCount;  // +0x50
     ATL::CAtlArray<int> rePackingScrollID;  // +0x58
     bool moveDisable;               // +0x78
-    ItemPriceData price;            // +0x80
+    std::vector<__int64> sellPrice; // +0x80 <sell price>: one value or six
 };
 MS2_CHECK_SIZE(ItemProperty, 0x98);
 MS2_CHECK_OFFSET(ItemProperty, slotMax, 0x18);
 MS2_CHECK_OFFSET(ItemProperty, rePackingScrollID, 0x58);
-MS2_CHECK_OFFSET(ItemProperty, price, 0x80);
+MS2_CHECK_OFFSET(ItemProperty, sellPrice, 0x80);
 
 enum ItemExpirationType { ItemExpirationTypeNone = 0 };     // <life> "expirationType" (enumerators not recovered)
 
