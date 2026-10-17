@@ -447,7 +447,6 @@ const char* CUIService::GetDisplayName() const
 {
     return "CUIService";
 }
-MS2_REPLACE_METHOD(0x141ad9330, CUIService, GetDisplayName, 13, 0xDFB7B125);
 MS2_REPLACE_METHOD(0x141AD9330, CUIService, GetDisplayName, 13, 0xDFB7B125);
 
 // ---- more exe helpers (chunk 2) ----

@@ -54,7 +54,7 @@ void ASEquipIcon::FUN_1409b90d0(const Scaleform::GFx::Value& v)
 {
     m_70.AssignRaw(new AScript(v, 2));
 }
-MS2_REPLACE_METHOD(0x1409B90D0, ASEquipIcon, FUN_1409b90d0, 120, 0);
+MS2_REPLACE_METHOD(0x1409B90D0, ASEquipIcon, FUN_1409b90d0, 120, 0x0BAD6E15);
 
 // @0x1409b9150
 void ASEquipIcon::FUN_1409b9150(MS2Ptr<AScript> p)
