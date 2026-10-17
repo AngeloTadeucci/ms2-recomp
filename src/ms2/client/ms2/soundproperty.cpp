@@ -263,15 +263,15 @@ Unk_HitSoundKey& Unk_HitSoundKey::operator=(const Unk_HitSoundKey& o)
 // @0x141790950
 bool Unk_HitSoundKey::operator<(const Unk_HitSoundKey& o) const
 {
-    return m_nAttack < o.m_nAttack || ((m_nAttack == o.m_nAttack) & (m_nDefence < o.m_nDefence));
+    if (m_nAttack < o.m_nAttack)
+        return true;
+    return (m_nAttack == o.m_nAttack ? 1 : 0) & (m_nDefence < o.m_nDefence ? 1 : 0);
 }
 
 // @0x1417909d0
 bool Unk_HitSoundKey::operator==(const Unk_HitSoundKey& o) const
 {
-    if (m_nAttack == o.m_nAttack && m_nDefence == o.m_nDefence)
-        return true;
-    return false;
+    return (m_nAttack == o.m_nAttack && m_nDefence == o.m_nDefence) ? 1 : 0;
 }
 
 // @0x141790a20
@@ -473,178 +473,187 @@ SoundPropertyMgr::SoundPropertyMgr()
 // @0x141791940
 unsigned SoundPropertyMgr::Load()
 {
-    m_cacheFiles.RemoveAll();
+    m_cacheFiles.clear();
+    unsigned bOk = 1;
     CString strPath;
-    strPath = FUN_14071a5b0(CString("Table"), CString("hitSound.xml"));
-    unsigned bHit = LoadHitSound(strPath);
-    CachePtr spHit(new CCacheData);
-    spHit->FUN_1401d1160(CString(strPath));
-    m_cacheFiles.AddHead(spHit);
-
-    strPath = FUN_14071a5b0(CString("Table"), CString("systemSound.xml"));
-    unsigned bSystem = LoadSystemSound(strPath);
-    CachePtr spSystem(new CCacheData);
-    spSystem->FUN_1401d1160(CString(strPath));
-    m_cacheFiles.AddHead(spSystem);
-
-    strPath = FUN_14071a5b0(CString("Table"), CString("pitchSound.xml"));
-    unsigned bPitch = LoadPitchSound(strPath);
-    CachePtr spPitch(new CCacheData);
-    spPitch->FUN_1401d1160(CString(strPath));
-    m_cacheFiles.AddHead(spPitch);
-
-    strPath = FUN_14071a5b0(CString("Table"), CString("EventSound.xml"));
-    unsigned bEvent = LoadEventSound(strPath);
-    CachePtr spEvent(new CCacheData);
-    spEvent->FUN_1401d1160(CString(strPath));
-    m_cacheFiles.AddHead(spEvent);
-
-    strPath = FUN_14071a5b0(CString("Table"), CString("TriggerVoice.xml"));
-    unsigned bVoice = LoadTriggerVoice(strPath);
-    CachePtr spVoice(new CCacheData);
-    spVoice->FUN_1401d1160(CString(strPath));
-    m_cacheFiles.AddHead(spVoice);
-
+    strPath = FUN_14071a5b0("Table", "hitSound.xml");
+    bOk = LoadHitSound(strPath) & bOk;
+    {
+        CachePtr spCache(new CCacheData);
+        spCache->FUN_1401d1160(CString(strPath));
+        m_cacheFiles.push_front(spCache);
+    }
+    strPath = FUN_14071a5b0("Table", "systemSound.xml");
+    bOk = LoadSystemSound(strPath) & bOk;
+    {
+        CachePtr spCache(new CCacheData);
+        spCache->FUN_1401d1160(CString(strPath));
+        m_cacheFiles.push_front(spCache);
+    }
+    strPath = FUN_14071a5b0("Table", "pitchSound.xml");
+    bOk = LoadPitchSound(strPath) & bOk;
+    {
+        CachePtr spCache(new CCacheData);
+        spCache->FUN_1401d1160(CString(strPath));
+        m_cacheFiles.push_front(spCache);
+    }
+    strPath = FUN_14071a5b0("Table", "EventSound.xml");
+    bOk = LoadEventSound(strPath) & bOk;
+    {
+        CachePtr spCache(new CCacheData);
+        spCache->FUN_1401d1160(CString(strPath));
+        m_cacheFiles.push_front(spCache);
+    }
+    strPath = FUN_14071a5b0("Table", "TriggerVoice.xml");
+    bOk = LoadTriggerVoice(strPath) & bOk;
+    {
+        CachePtr spCache(new CCacheData);
+        spCache->FUN_1401d1160(CString(strPath));
+        m_cacheFiles.push_front(spCache);
+    }
     SetInit(true);
-    return bVoice & bEvent & bPitch & bSystem & bHit & 1;
+    return bOk;
 }
 
 // @0x141792180
-bool SoundPropertyMgr::LoadHitSound(const char* pszPath)
+int SoundPropertyMgr::LoadHitSound(const char* pszPath)
 {
     TiXmlDocument doc;
     if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
-        return false;
+        return 0;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-    if (pRoot == 0)
+    if (pRoot != 0)
     {
-        FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
-        return false;
+        for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("hitSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
+        {
+            int nAttack;
+            int nDefence;
+            int nSoundId;
+            nAttack ^= nAttack;
+            nDefence ^= nDefence;
+            nSoundId ^= nSoundId;
+            FUN_1408731e0(pElem, "AttackMaterial", nAttack);
+            FUN_1408731e0(pElem, "DefenceMeterial", nDefence);
+            FUN_1408731e0(pElem, "soundID", nSoundId);
+            Unk_HitSoundKey key(nAttack, nDefence);
+            m_hitSounds[key].Add(nSoundId);
+        }
+        return 1;
     }
-    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("hitSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
-    {
-        int nAttack = 0;
-        int nDefence = 0;
-        int nSoundId = 0;
-        FUN_1408731e0(pElem, "AttackMaterial", nAttack);
-        FUN_1408731e0(pElem, "DefenceMeterial", nDefence);
-        FUN_1408731e0(pElem, "soundID", nSoundId);
-        Unk_HitSoundKey key(nAttack, nDefence);
-        m_hitSounds[key].Add(nSoundId);
-    }
-    return true;
+    FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
+    return 0;
 }
 
 // @0x141792360
-bool SoundPropertyMgr::LoadSystemSound(const char* pszPath)
+int SoundPropertyMgr::LoadSystemSound(const char* pszPath)
 {
     TiXmlDocument doc;
     if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
-        return false;
+        return 0;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-    if (pRoot == 0)
+    if (pRoot != 0)
     {
-        FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
-        return false;
+        for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("systemSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
+        {
+            CString strKey = FUN_140188f50(FUN_14086f4b0(pElem, "key"), 0);
+            SystemPtr spProp(new SystemSoundProperty);
+            spProp->Load(pElem);
+            m_systemSounds.SetAt(strKey, spProp);
+        }
+        return 1;
     }
-    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("systemSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
-    {
-        CString strKey = FUN_140188f50(FUN_14086f4b0(pElem, "key"), 0);
-        SystemPtr spProp(new SystemSoundProperty);
-        spProp->Load(pElem);
-        m_systemSounds.SetAt(strKey, spProp);
-    }
-    return true;
+    FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
+    return 0;
 }
 
 // @0x141792570
-bool SoundPropertyMgr::LoadPitchSound(const char* pszPath)
+int SoundPropertyMgr::LoadPitchSound(const char* pszPath)
 {
     TiXmlDocument doc;
     if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
-        return false;
+        return 0;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-    if (pRoot == 0)
+    if (pRoot != 0)
     {
-        FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
-        return false;
+        for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("pitchSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
+        {
+            int nId = 0;
+            float fPitch = 0.0f;
+            int nUnit = 0;
+            FUN_1408731e0(pElem, "id", nId);
+            FUN_1408731e0(pElem, "pitchUnit", nUnit);
+            FUN_140873360(pElem, "pitch", fPitch);
+            m_pitches[nId].m_fPitch = fPitch;
+            m_pitches[nId].m_nUnits = nUnit;
+        }
+        return 1;
     }
-    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("pitchSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
-    {
-        int nId = 0;
-        float fPitch = 0.0f;
-        int nUnit = 0;
-        FUN_1408731e0(pElem, "id", nId);
-        FUN_1408731e0(pElem, "pitchUnit", nUnit);
-        FUN_140873360(pElem, "pitch", fPitch);
-        m_pitches[nId].m_fPitch = fPitch;
-        m_pitches[nId].m_nUnits = nUnit;
-    }
-    return true;
+    FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
+    return 0;
 }
 
 // @0x141792740
-bool SoundPropertyMgr::LoadEventSound(const char* pszPath)
+int SoundPropertyMgr::LoadEventSound(const char* pszPath)
 {
     TiXmlDocument doc;
     if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
-        return false;
+        return 0;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-    if (pRoot == 0)
+    if (pRoot != 0)
     {
-        FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
-        return false;
-    }
-    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("eventSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
-    {
-        Unk_EventVoice voice;
-        int nType = 0;
-        CString strEvent = FUN_14028d1f0(FUN_14086f4b0(pElem, "event"));
-        voice.m_strSoundId = FUN_14028d1f0(FUN_14086f4b0(pElem, "soundID"));
-        voice.m_strRestoreSoundId = FUN_14028d1f0(FUN_14086f4b0(pElem, "restoreSoundID"));
-        if (strEvent.IsEmpty() || (voice.m_strSoundId.IsEmpty() && voice.m_strRestoreSoundId.IsEmpty()))
-            continue;
-        nType = FUN_141793500(CString(strEvent));
-        if (nType == 0)
-            continue;
-        const char* pszCaster = FUN_14086f4b0(pElem, "onlyCasterMyPC");
-        if (pszCaster != 0)
+        for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("eventSound"); pElem != 0; pElem = FUN_1403f0510(pElem))
         {
-            unsigned bOnlyCaster = strcmp(pszCaster, "true") == 0;
-            voice.m_bOnlyCasterMyPC = bOnlyCaster;
+            Unk_EventVoice voice;
+            int nType = 0;
+            CString strEvent = FUN_14028d1f0(FUN_14086f4b0(pElem, "event"));
+            voice.m_strSoundId = FUN_14028d1f0(FUN_14086f4b0(pElem, "soundID"));
+            voice.m_strRestoreSoundId = FUN_14028d1f0(FUN_14086f4b0(pElem, "restoreSoundID"));
+            if (strEvent.IsEmpty() || (voice.m_strSoundId.IsEmpty() && voice.m_strRestoreSoundId.IsEmpty()))
+                continue;
+            nType = FUN_141793500(CString(strEvent));
+            if (nType == 0)
+                continue;
+            const char* pszCaster = FUN_14086f4b0(pElem, "onlyCasterMyPC");
+            if (pszCaster != 0)
+            {
+                unsigned bOnlyCaster = strcmp(pszCaster, "true") == 0;
+                voice.m_bOnlyCasterMyPC = bOnlyCaster;
+            }
+            voice.m_strGroup = FUN_14086f4b0(pElem, "group");
+            if (!voice.m_strGroup.IsEmpty())
+                FUN_1401d3700(voice.m_strGroup);
+            int nJob = 0;
+            int nGender = 0;
+            FUN_1408731e0(pElem, "job", nJob);
+            FUN_1408731e0(pElem, "gender", nGender);
+            m_events[nType][nGender][nJob][voice.m_bOnlyCasterMyPC] = voice;
         }
-        voice.m_strGroup = FUN_14086f4b0(pElem, "group");
-        if (!voice.m_strGroup.IsEmpty())
-            FUN_1401d3700(voice.m_strGroup);
-        int nJob = 0;
-        int nGender = 0;
-        FUN_1408731e0(pElem, "job", nJob);
-        FUN_1408731e0(pElem, "gender", nGender);
-        m_events[nType][nGender][nJob][voice.m_bOnlyCasterMyPC] = voice;
+        return 1;
     }
-    return true;
+    FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
+    return 0;
 }
 
 // @0x141792b60
-bool SoundPropertyMgr::LoadTriggerVoice(const char* pszPath)
+int SoundPropertyMgr::LoadTriggerVoice(const char* pszPath)
 {
     TiXmlDocument doc;
     if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
-        return false;
+        return 0;
     Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
-    if (pRoot == 0)
+    if (pRoot != 0)
     {
-        FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
-        return false;
+        for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("voice"); pElem != 0; pElem = FUN_1403f0510(pElem))
+        {
+            CString strKey = FUN_140188f50(FUN_14086f4b0(pElem, "key"), 0);
+            VoicePtr spProp(new TriggerVoiceProperty);
+            spProp->Load(pElem);
+            m_triggerVoices.SetAt(strKey, spProp);
+        }
+        return 1;
     }
-    for (Unk_140165cf0* pElem = pRoot->FUN_140165cf0("voice"); pElem != 0; pElem = FUN_1403f0510(pElem))
-    {
-        CString strKey = FUN_140188f50(FUN_14086f4b0(pElem, "key"), 0);
-        VoicePtr spProp(new TriggerVoiceProperty);
-        spProp->Load(pElem);
-        m_triggerVoices.SetAt(strKey, spProp);
-    }
-    return true;
+    FUN_1403a1280(FUN_140166440(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]", pszPath);
+    return 0;
 }
 
 // @0x141792d70
@@ -653,9 +662,9 @@ unsigned SoundPropertyMgr::FUN_141792d70(int nAttack, int nDefence)
     CheckInit();
     ATL::CAtlArray<int>& ids = m_hitSounds[Unk_HitSoundKey(nAttack, nDefence)];
     size_t nCount = ids.GetCount();
-    if (nCount == 0)
-        return 0;
-    return ids[FUN_140767ff0() % nCount];
+    if (nCount != 0)
+        return ids[FUN_140767ff0() % nCount];
+    return 0;
 }
 
 // @0x141792e00
@@ -699,9 +708,9 @@ SoundPropertyMgr::VoicePtr SoundPropertyMgr::FUN_141793110(const CString& strNam
     if (m_triggerVoices.IsEmpty())
         return VoicePtr(0);
     VoicePtr spProp(0);
-    if (!m_triggerVoices.Lookup(strName, spProp))
-        return VoicePtr(0);
-    return spProp;
+    if (m_triggerVoices.Lookup(strName, spProp))
+        return spProp;
+    return VoicePtr(0);
 }
 
 // @0x141793210
@@ -730,10 +739,12 @@ bool SoundPropertyMgr::FUN_141793340(int nObjectId, Unk_SoundPitch* pOut)
 {
     CheckInit();
     std::map<int, Unk_SoundPitch>::iterator it = m_pitches.find(nObjectId);
-    bool bFound = it != m_pitches.end();
-    if (bFound)
+    if (it != m_pitches.end())
+    {
         *pOut = it->second;
-    return bFound;
+        return true;
+    }
+    return false;
 }
 
 // @0x1417933d0
@@ -751,11 +762,9 @@ void SoundPropertyMgr::Reload()
 void SoundPropertyMgr::FUN_141793450()
 {
     bool bChanged = false;
-    POSITION pos = m_cacheFiles.GetHeadPosition();
-    while (pos != 0)
+    for (std::list<CachePtr>::iterator it = m_cacheFiles.begin(); it != m_cacheFiles.end(); ++it)
     {
-        CachePtr& spCache = m_cacheFiles.GetNext(pos);
-        if (FUN_1401d1320(spCache.get()) != 0)
+        if (FUN_1401d1320((*it).get()) != 0)
         {
             bChanged = true;
             break;

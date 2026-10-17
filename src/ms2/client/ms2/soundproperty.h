@@ -7,6 +7,7 @@
 #pragma once
 #include <afx.h>
 #include <atlcoll.h>
+#include <list>
 #include <map>
 #include <set>
 #include "ms2/ms2layout.h"
@@ -142,11 +143,11 @@ public:
     static bool s_bInit;                                        // 0x143aea270
 
 private:
-    bool LoadHitSound(const char* pszPath);                     // 0x141792180
-    bool LoadSystemSound(const char* pszPath);                  // 0x141792360
-    bool LoadPitchSound(const char* pszPath);                   // 0x141792570
-    bool LoadEventSound(const char* pszPath);                   // 0x141792740
-    bool LoadTriggerVoice(const char* pszPath);                 // 0x141792b60
+    int LoadHitSound(const char* pszPath);                     // 0x141792180
+    int LoadSystemSound(const char* pszPath);                  // 0x141792360
+    int LoadPitchSound(const char* pszPath);                   // 0x141792570
+    int LoadEventSound(const char* pszPath);                   // 0x141792740
+    int LoadTriggerVoice(const char* pszPath);                 // 0x141792b60
 
     MS2_LAYOUT_FRIEND;
     std::map<Unk_HitSoundKey, ATL::CAtlArray<int> > m_hitSounds;    // +0x10
@@ -154,7 +155,7 @@ private:
     Unk_TriggerVoiceMap m_triggerVoices;                        // +0x68
     std::map<int, Unk_SoundPitch> m_pitches;                    // +0xb0
     Unk_EventMap m_events;                                      // +0xc0
-    ATL::CAtlList<CachePtr> m_cacheFiles;                       // +0xd0
+    std::list<CachePtr> m_cacheFiles;                       // +0xd0
 };
 MS2_CHECK_OFFSET(SoundPropertyMgr, m_hitSounds, 0x10);
 MS2_CHECK_OFFSET(SoundPropertyMgr, m_systemSounds, 0x20);
