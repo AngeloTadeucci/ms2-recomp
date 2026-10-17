@@ -73,6 +73,7 @@
 // MS2-PIN: ??1NotifyChangedTokenMoney@@UEAA@XZ 0x141746c00 ; w131 manual (called by its ??_G 0x1417478d0)
 // MS2-PIN: ??_GNotifyChangedTokenMoney@@UEAAPEAXI@Z 0x1417478d0 ; w131 manual (vftable slot 0)
 // MS2-PIN: ??1NotifyActiveMyCodiTab@@UEAA@XZ 0x141746ba0 ; w131 manual (called by its ??_G 0x141747810)
+// MS2-PIN: ??_GNotifyKillPlayer@@UEAAPEAXI@Z 0x141747910 ; w131 manual (look-alike of the enchant map's CNode ??_G)
 #define NOMINMAX                        // NxPhysics (interactobject.h)
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\scenestategame.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -89,6 +90,7 @@
 #include "ms2/placeholder/fittingdollpc.h"
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/placeholder/citem.h"
+#include "ms2/commonfiles/itemenchantinfo.h"
 #include "ridee.h"
 #include "reactor.h"
 #include "cubecraft_1.h"
@@ -6216,10 +6218,12 @@ template <class A, class B> void Unk_AkoMessage(int nStringId, int nA, int nB, c
 class CEnchantOption : public CPtred                         // the enchant result options (0x68)
 {
 public:
-    CEnchantOption();
+    CEnchantOption() : m_18(0) {}                           // 0x141745c40
     void FUN_14058d5c0(CInPacket& packet);                  // decode
-    char m_pad_18[0x68 - 0x18];
+    void* m_18;
+    Unk_EnchantMap m_options;                               // +0x20
 };
+MS2_CHECK_SIZE(CEnchantOption, 0x68);
 class UIItemEnchantDialog : public UIDialog
 {
 public:
@@ -6234,7 +6238,6 @@ public:
     void FUN_1419c41b0();
 };
 UIItemEnchantDialog* FUN_1413b1bc0(int nId);
-class CItemEnchantInfo { public: int FUN_14058c5f0(); };    // the enchant level
 class Unk_ItemEnchantData { public: CItemEnchantInfo* FUN_140630d60(); };   // CItemStatus
 void FUN_140d73ff0(CStringW strKey);                        // system message box by string key
 enum Unk_SSGEnchantExpError { };                            // the 0x97 mode 12 error code
