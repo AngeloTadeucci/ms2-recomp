@@ -3,7 +3,19 @@
 // base IUgcViewer, and CUgcUploadCtrl itself (the upload in progress: content kind, the viewer, the local file and the
 // result text). Class names are the RTTI names; the unit name is a guess (queue row ?\ugcviewerequip.cpp).
 // MS2-UNIT: ?\ugcviewerequip.cpp
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x14189eae0-0x1418a7310 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0$$BY0BG@D@ArgType@internal@fmt@@QEAA@AEAY0BG@$$CBD@Z 0x1418a4900 ; prop
+// MS2-PIN: ??$?0$$BY0O@D@ArgType@internal@fmt@@QEAA@AEAY0O@$$CBD@Z 0x1418a4930 ; prop
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0BA@DH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BA@$$CBDAEBH@Z 0x1418a4a60 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0BD@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BD@$$CBDAEB_JAEBV01@@Z 0x1418a5080 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0BG@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BG@$$CBDAEB_JAEBV01@@Z 0x1418a5400 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0BI@D_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BI@$$CBDAEB_J@Z 0x1418a5780 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0O@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0O@$$CBDAEBV01@AEB_J@Z 0x1418a5a90 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0P@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEBV01@AEBH3@Z 0x1418a5e10 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@$$BY0P@D_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEB_J@Z 0x1418a61d0 ; unique
+// MS2-PINS-END tplpin
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ugcviewerequip.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -107,6 +119,7 @@ int FUN_14186d050(NiTexture* pTexture, int nBannerId, CStringW& strOut);
 CString FUN_1411c0aa0(const char* szText);                  // a text without arguments
 void FUN_14186bd30(Unk_PPSmartC* pOut, const CStringW& strPath, int nSize, int nFlag);   // the texture of an image file (null on error)
 
+enum class Unk_VwDialogId : int { None = 0 };               // a dialog id (formatted as a custom argument)
 // A dialog of the UI service by id; slot 55 is its "is hidden" state.
 class Unk_VwDialogUi
 {
@@ -197,6 +210,8 @@ extern __int64 DAT_143ab2820;                               // my account id
 extern __int64 DAT_143ab2828;                               // my character id
 CString FUN_14016a600(const wchar_t* psz, int n);          // wide -> narrow
 extern unsigned DAT_143ab2830;                              // my character's type
+
+// MS2-PIN: ??$format_arg@DW4Unk_VwDialogId@@@fmt@@YAXAEAV?$BasicFormatter@D@0@AEAPEBDAEBW4Unk_VwDialogId@@@Z 0x1418a69d0
 
 // ---- CUgcViewerEquip ----------------------------------------------------------------------------------------------
 
@@ -1539,7 +1554,7 @@ CString CUgcUploadCtrl::FUN_1418a41e0()
     CString strViewer;
     if (m_spViewer.get() != 0)
         strViewer = m_spViewer->vfunc_11();
-    str = Unk_SocketFormat("[accSN={0}] [charSN={1}] [dialog={2}] [extraParam={3}] [uploadPath={4}] {5}", DAT_143ab2820, DAT_143ab2828, m_nDialog, m_nExtra, FUN_14016a600(m_strResult, 0), strViewer);
+    str = Unk_SocketFormat("[accSN={0}] [charSN={1}] [dialog={2}] [extraParam={3}] [uploadPath={4}] {5}", DAT_143ab2820, DAT_143ab2828, reinterpret_cast<Unk_VwDialogId&>(m_nDialog), m_nExtra, FUN_14016a600(m_strResult, 0), strViewer);
     return str;
 }
 
@@ -1604,4 +1619,21 @@ int CUgcUploadCtrl::FUN_1418a4780()
         nResult = 0;
     }
     return nResult;
+}
+
+// @0x1418a71f0
+// MS2-FUNCTIONAL: CRT memcpy_s copy (library lane); same checks and errno values as the CRT
+unsigned __int64 FUN_1418a71f0(void* pDst, unsigned __int64 nDstSize, const void* pSrc, unsigned __int64 nCount)
+{
+    if (nCount == 0)
+        return 0;
+    if (pDst == 0 || pSrc == 0 || nDstSize < nCount)
+    {
+        int nErr = (pDst == 0 || pSrc == 0) ? 22 : 34;
+        *_errno() = nErr;
+        _invalid_parameter_noinfo();
+        return nErr;
+    }
+    memmove(pDst, pSrc, nCount);
+    return 0;
 }

@@ -125,8 +125,9 @@ public:
 
     CUgcItemRidee m_item;                                   // +0x18
     CUgcItemIconPC m_icon;                                  // +0x68
+    char m_pad_100[8];                                      // +0x100 (never written; the sized delete frees 0x108)
 };
-MS2_CHECK_SIZE(CUgcViewerRidee, 0x100);
+MS2_CHECK_SIZE(CUgcViewerRidee, 0x108);
 MS2_CHECK_OFFSET(CUgcViewerRidee, m_item, 0x18);
 MS2_CHECK_OFFSET(CUgcViewerRidee, m_icon, 0x68);
 
