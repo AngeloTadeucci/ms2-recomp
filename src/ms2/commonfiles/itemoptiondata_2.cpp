@@ -169,6 +169,8 @@
 // MS2-PIN: ?size@?$vector@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$pair@IH@std@@@std@@V?$allocator@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$pair@IH@std@@@std@@@2@@std@@QEBA_KXZ 0x1405f4010 ; prop
 // MS2-PIN: ?size@?$vector@U?$pair@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@I@std@@V?$allocator@U?$pair@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@I@std@@@2@@std@@QEBA_KXZ 0x1405f4050 ; prop
 // MS2-PINS-END tplpin
+// Functional glue: the pair<int,int>(int&,int&) ctor forwards through exe COMDATs (e6670/180c20) shaped differently from
+// ours, and pow<int,int> differs by the 14.16 <cmath> form; both are pinned to their exe copies.
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemoptiondata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <ppl.h>
@@ -2032,6 +2034,7 @@ void ItemOptionRandom::FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, un
 }
 
 // @0x1405d68f0
+// MS2-FUNCTIONAL: exe evaluates the d9660 call before vProb[j] in the += and spills the StringFormat results differently; 2 attempts used
 // The pick chance of every row for nPick picks (the rank's pick count when 0); the exclusive (armor) rows and the
 // special abilities count as one entry each, split by weight.
 void ItemOptionRandom::FUN_1405d68f0(unsigned nItemId, int nRank, unsigned& nPick, std::vector<CStringW>* pOut)
@@ -2057,28 +2060,25 @@ void ItemOptionRandom::FUN_1405d68f0(unsigned nItemId, int nRank, unsigned& nPic
         vInfo.push_back(std::make_pair(strName, kInfo));
         bool bArmor = spContext->FUN_1405d9e00() == 2 &&
                       FUN_140166430()->FUN_1405f6e40(spValue->FUN_1405d26c0()).get() != 0;
-        if (!bArmor)
-        {
-            if (!spValue->FUN_1405d29b0())
-            {
-                vWeights.push_back(nWeight);
-                unsigned nStatId = spValue->FUN_1405d27c0();
-                vLines.push_back(StringFormat(L"OptionName : {0}, Weight : {1}, statID : {2}", strName, nWeight, nStatId));
-            }
-            else
-            {
-                nSpecial += nWeight;
-                unsigned nStatId = spValue->FUN_1405d27c0();
-                vSpecial.push_back(std::make_pair(
-                    StringFormat(L"OptionName: {0}, Weight : {1}, statID: {2}", strName, nWeight, nStatId), nWeight));
-            }
-        }
-        else
+        if (bArmor)
         {
             nArmor += nWeight;
             unsigned nStatId = spValue->FUN_1405d27c0();
             vArmor.push_back(std::make_pair(
                 StringFormat(L"OptionName: {0}, Weight : {1}, statID: {2}", strName, nWeight, nStatId), nWeight));
+        }
+        else if (spValue->FUN_1405d29b0())
+        {
+            nSpecial += nWeight;
+            unsigned nStatId = spValue->FUN_1405d27c0();
+            vSpecial.push_back(std::make_pair(
+                StringFormat(L"OptionName: {0}, Weight : {1}, statID: {2}", strName, nWeight, nStatId), nWeight));
+        }
+        else
+        {
+            vWeights.push_back(nWeight);
+            unsigned nStatId = spValue->FUN_1405d27c0();
+            vLines.push_back(StringFormat(L"OptionName : {0}, Weight : {1}, statID : {2}", strName, nWeight, nStatId));
         }
     }
     if (nArmor != 0)
@@ -2087,7 +2087,7 @@ void ItemOptionRandom::FUN_1405d68f0(unsigned nItemId, int nRank, unsigned& nPic
         vWeights.push_back(nSpecial);
     size_t nCount = vWeights.size();
     std::vector<double> vProb(nCount, 0.0);
-    for (unsigned i = 1; i <= nPick; i++)
+    for (size_t i = 1; i <= nPick; i++)
     {
         for (size_t j = 0; j < nCount; j++)
             vProb[j] += FUN_1405d9660(vWeights, i, j);
@@ -2224,8 +2224,8 @@ int ItemOptionRandom::FUN_1405d7940(std::vector<ItemOptionValueRandom*>& vOut, C
 }
 
 // @0x1405d7bf0
-// The weighted pick of nCount rows: the locked stats first, then one of the exclusive (armor) group and one special
-// ability (each counts as one weighted entry of the main pick when not locked), then the rest by weight.
+// MS2-FUNCTIONAL: exe frame 0x10 smaller, the MS2Ptr temps of the locked rows get other slots; 2 attempts used
+// The weighted pick of nCount rows: locked stats, one armor and one special entry each, then the rest by weight.
 bool ItemOptionRandom::FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, unsigned& nCount, Unk_Random* pRandom,
                                      BOOL bFixedCount, MS2Ptr<ItemOptionRandomContext> spContext,
                                      const std::vector<std::pair<int, int> >& vLocked, Unk_ProbabilityLog* pLogs)
@@ -2248,27 +2248,35 @@ bool ItemOptionRandom::FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, 
             continue;
         if (spContext->FUN_1405d9e00() == 2 &&
             FUN_140166430()->FUN_1405f6e40(spValue->FUN_1405d26c0()).get() != 0)
+        {
             spLockedArmor = spValue;
-        else if (spValue->FUN_1405d29b0())
+            continue;
+        }
+        if (spValue->FUN_1405d29b0())
+        {
             spLockedSpecial = spValue;
-        else
-            vLockedValues.push_back(spValue);
+            continue;
+        }
+        vLockedValues.push_back(spValue);
     }
     for (auto& spValue : m_vValues)
     {
         CString strName = spValue->FUN_1405d26c0();
         int nWeight = spValue->FUN_1405d27e0();
         if (spContext->FUN_1405d9e00() == 2 && FUN_140166430()->FUN_1405f6e40(strName).get() != 0)
-            pickerArmor.Register(nWeight, spValue.get());
-        else if (spValue->FUN_1405d29b0())
-            pickerSpecial.Register(nWeight, spValue.get());
-        else
         {
-            if (!vLockedValues.empty() &&
-                std::find(vLockedValues.begin(), vLockedValues.end(), spValue) != vLockedValues.end())
-                continue;
-            picker.Register(nWeight, spValue.get());
+            pickerArmor.Register(nWeight, spValue.get());
+            continue;
         }
+        if (spValue->FUN_1405d29b0())
+        {
+            pickerSpecial.Register(nWeight, spValue.get());
+            continue;
+        }
+        if (!vLockedValues.empty() &&
+            std::find(vLockedValues.begin(), vLockedValues.end(), spValue) != vLockedValues.end())
+            continue;
+        picker.Register(nWeight, spValue.get());
     }
     if (!bFixedCount)
         nCount = FUN_1405d5fe0(spContext->FUN_1405d9e30());
@@ -2284,7 +2292,7 @@ bool ItemOptionRandom::FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, 
         {
             pickerArmor.Pick(pRandom, pValue);
             picker.Register(pickerArmor.m_total, pValue);
-            int nWeight = pValue->FUN_1405d27e0();
+            unsigned nWeight = pValue->FUN_1405d27e0();
             kArmor.first = pValue;
             kArmor.second = (double)nWeight / (double)pickerArmor.m_total;
         }
@@ -2298,7 +2306,7 @@ bool ItemOptionRandom::FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, 
         {
             pickerSpecial.Pick(pRandom, pValue);
             picker.Register(pickerSpecial.m_total, pValue);
-            int nWeight = pValue->FUN_1405d27e0();
+            unsigned nWeight = pValue->FUN_1405d27e0();
             kSpecial.first = pValue;
             kSpecial.second = (double)nWeight / (double)pickerSpecial.m_total;
         }
