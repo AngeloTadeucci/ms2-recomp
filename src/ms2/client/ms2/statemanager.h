@@ -17,40 +17,62 @@
 #include "ms2/placeholder/state.h"
 #include "ms2/placeholder/timer.h"
 #include "ms2/placeholder/ascript.h"
+#include "ms2/placeholder/partybits.h"
 #include "ms2/client/ms2/scenestatebase.h"
 
 class PCBase;
 class StateData;
 class CInPacket;
+class COutPacket;
+class COutputStream;
 
 // A queued state request (the record PCBase/the network feed the state machine): CPtred-derived, held in MS2Ptr<>.
-// Fields proven from CStateManager::FUN_1417db550 (applies one request to the actor).
+// RTTI StateSyncObject (defined in ?\statesyncobject.cpp, subclasses in commonfiles/statesyncobject.h). The exe object
+// is 0xb8: its last field (void* +0xb0, not set by the ctor) is left out here because ?\state.cpp's local subclasses pad it.
+// Fields proven from CStateManager::FUN_1417db550 (applies one request to the actor) and the packet coders.
 class Unk_StateArg22 : public CPtred
 {
 public:
+    explicit Unk_StateArg22(int nState);        // 0x140835210
+    virtual ~Unk_StateArg22();                  // 0x1408353e0
+    virtual void vfunc_1(COutputStream& kOut);  // write
+    virtual void vfunc_2(CInPacket& kIn);       // read
+    void FUN_1408356c0(COutPacket& packet);     // write the request
+    void FUN_1408356f0(CInPacket& packet);      // read the request (scenestategame 0x1417127b0)
+    void FUN_140835720(COutputStream& kOut);
+    void FUN_140836250(COutputStream& kOut);    // packs the direction flags, then writes
+    void FUN_140836540(CInPacket& kIn);
+    void FUN_1408365a0(COutputStream& kOut);
+    void FUN_1408365d0(CInPacket& kIn);         // reads, then unpacks the direction flags
+
     int m_nState;                       // +0x18 state id
     int m_nSub;                         // +0x1c sub state id
     efd::Point3 m_pos20;                // +0x20 position
     efd::Point3 m_dir2c;                // +0x2c direction
-    char m_pad_38[4];
+    unsigned char m_nDirFlags;          // +0x38 m_vel3c x/y packed as -1/0/1 (bits 0-1, 2-3), 0x80 = sent as floats
     efd::Point3 m_vel3c;                // +0x3c velocity (actor slot 22)
     efd::Point3 m_pos48;                // +0x48
     int m_n54;                          // +0x54
     float m_f58;                        // +0x58 (PCBase +0x934)
     float m_fTime;                      // +0x5c remaining time of the request
-    char m_pad_60[4];
-    int m_n64;                          // +0x64
-    char m_pad_68[0x10];
-    efd::Point3 m_pos78;                // +0x78
-    char m_pad_84[4];
-    CStringA m_str88;                   // +0x88 object name
-    char m_pad_90[0x10];
+    Unk_PartyBits m_optional;           // +0x60 which of the optional fields below are sent
+    int m_n64;                          // +0x64 (bit 0)
+    int m_n68;                          // +0x68 (bit 1)
+    unsigned short m_n6c;               // +0x6c (bit 2)
+    CStringA m_str70;                   // +0x70 (bit 3)
+    efd::Point3 m_pos78;                // +0x78 (bit 4)
+    CStringA m_str88;                   // +0x88 object name (bit 4)
+    int m_n90;                          // +0x90 (bit 5)
+    CStringA m_str98;                   // +0x98 (bit 5)
     int m_nA0;                          // +0xa0 (0x7fffffff = unset)
     float m_fA4;                        // +0xa4
     int m_nA8;                          // +0xa8 already-fired flag
     int m_nAC;                          // +0xac server tick (Ridee::FUN_141706650)
-    void FUN_1408356f0(CInPacket& packet);    // read the request (scenestategame 0x1417127b0)
 };
+MS2_CHECK_SIZE(Unk_StateArg22, 0xb0);
+MS2_CHECK_OFFSET(Unk_StateArg22, m_optional, 0x60);
+MS2_CHECK_OFFSET(Unk_StateArg22, m_str70, 0x70);
+MS2_CHECK_OFFSET(Unk_StateArg22, m_str98, 0x98);
 MS2_CHECK_OFFSET(Unk_StateArg22, m_nState, 0x18);
 MS2_CHECK_OFFSET(Unk_StateArg22, m_pos20, 0x20);
 MS2_CHECK_OFFSET(Unk_StateArg22, m_vel3c, 0x3c);

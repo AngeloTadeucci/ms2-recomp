@@ -18,6 +18,7 @@ struct Unk_PartyBitRef {
     // @0x1402e4c00
     Unk_PartyBitRef(Unk_Bitset8* pBits, int nPos);
     Unk_PartyBitRef& operator=(bool bValue);     // 0x1402e4dc0
+    operator bool() const;                      // 0x140837280 (statesyncobject.cpp)
     Unk_Bitset8* m_pBits;
     int m_nPos;
 };
@@ -36,7 +37,7 @@ struct Unk_PartyBits : Unk_Bitset8 {
     Unk_PartyBits(); // 1402e49d0
     bool FUN_1402e4ee0(int);
     bool FUN_140b912f0();
-    void FUN_140837500();
+    Unk_PartyBits& FUN_140837500();         // reset (statesyncobject.cpp)
     void FUN_1402e69d0(unsigned nBit, bool bSet);
 };
 MS2_CHECK_SIZE(Unk_PartyBits, 1);
