@@ -4,8 +4,6 @@
 // MS2-RANGE: 0x14088e340-0x14089e270 .text$mn
 // MS2-RANGE: 0x1400bd940-0x1400bdb40 .text$di
 // MS2-PIN: ??1IUgcProxy@@UEAA@XZ 0x1408999a0
-// MS2-PIN: ??0Unk_UgcLock@@QEAA@AEAVCLockCriticalSection@@H@Z 0x140203610
-// MS2-PIN: ??1Unk_UgcLock@@QEAA@XZ 0x1401b5120
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\ugcdef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ugcdef.h"
@@ -65,8 +63,8 @@ Unk_MusicBookTable* FUN_14052d1d0();
 static CStringA s_orderNames[7] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
 
 // The scoped lock of a CLockCriticalSection (ctor 0x140203610, dtor 0x1401b5120).
-struct Unk_UgcLock { Unk_UgcLock(CLockCriticalSection& cs, int n); ~Unk_UgcLock(); void* p; };
-MS2_CHECK_SIZE(Unk_UgcLock, 8);
+struct Unk_PetLock { Unk_PetLock(CLockCriticalSection& cs, int n); ~Unk_PetLock(); void* p; };
+MS2_CHECK_SIZE(Unk_PetLock, 8);
 
 // Market lookups of the item and merat market units.
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);
@@ -306,6 +304,12 @@ void CUgcItemProxy::FUN_14088f100(CItem* pItem)
         m_nRarity = reinterpret_cast<Unk_UgcItemInfoView*>(pItem->FUN_1405278d0())->m_nRarity;
         return;
     }
+    Clear();
+}
+
+// @0x14088f1c0
+CUgcItemPC::CUgcItemPC()
+{
     Clear();
 }
 
@@ -1965,14 +1969,14 @@ void CUgcMarketProduct::Read(CInPacket& packet)
 // @0x140895dd0
 CStringW CUgcMarketProduct::GetStr200()
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     return CStringW(m_str200);
 }
 
 // @0x140895e50
 void CUgcMarketProduct::SetStr200(CStringW str)
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     m_str200 = str;
 }
 
@@ -1997,28 +2001,28 @@ CStringW CUgcMarketProduct::GetStr200Head()
 // @0x140895fa0
 CStringW CUgcMarketProduct::GetStr208()
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     return CStringW(m_str208);
 }
 
 // @0x140896020
 void CUgcMarketProduct::SetStr208(CStringW str)
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     m_str208 = str;
 }
 
 // @0x1408960a0
 CStringW CUgcMarketProduct::GetStr210()
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     return CStringW(m_str210);
 }
 
 // @0x140896120
 void CUgcMarketProduct::SetStr210(CStringW str)
 {
-    Unk_UgcLock lock(m_lock, 1);
+    Unk_PetLock lock(m_lock, 1);
     m_str210 = str;
 }
 
