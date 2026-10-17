@@ -1751,3 +1751,130 @@ int ItemFunction::FUN_14054a460()
     }
     return 0;
 }
+
+// ---- ItemMusicScore -----------------------------------------------------------------------------------------------------
+// The music book table (item.cpp; the title of a book lives at +0x28).
+class Unk_MusicBookInfo : public CPtred { public: char m_pad18[0x10]; CString m_str28; CStringW FUN_14072c480(); };
+class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsigned); };
+Unk_MusicBookTable* FUN_14052d1d0();
+
+// @0x14054a720
+ItemMusicScore::ItemMusicScore()
+    : playCount(0), masteryValueMax(0), isCustomNote(false), recommendCategoryId(0), noteLengthMax(0), playTime(0)
+{
+}
+
+// @0x14054a7b0
+int ItemMusicScore::FUN_14054a7b0(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* p = pElem->FUN_140165cf0("MusicScore");
+    if (p != 0)
+    {
+        FUN_1408731e0(p, "playCount", playCount);
+        FUN_1408731e0(p, "masteryValueMax", masteryValueMax);
+        FUN_1408730a0(p, "isCustomNote", isCustomNote);
+        FUN_1408731e0(p, "noteLengthMax", noteLengthMax);
+        FUN_1408733e0(p, "fileName", fileName);
+        FUN_1408731e0(p, "playTime", playTime);
+        FUN_1408731e0(p, "recommendCategoryId", recommendCategoryId);
+    }
+    return 1;
+}
+
+// @0x14054a8c0
+int ItemMusicScore::FUN_14054a8c0(Unk_140165cf0* pElem)
+{
+    FUN_1408731e0(pElem, "playCount", playCount);
+    FUN_1408731e0(pElem, "masteryValueMax", masteryValueMax);
+    FUN_1408730a0(pElem, "isCustomNote", isCustomNote);
+    FUN_1408731e0(pElem, "noteLengthMax", noteLengthMax);
+    FUN_1408733e0(pElem, "fileName", fileName);
+    FUN_1408731e0(pElem, "playTime", playTime);
+    FUN_1408731e0(pElem, "recommendCategoryId", recommendCategoryId);
+    return 1;
+}
+
+// @0x14054a9b0
+int ItemMusicScore::FUN_14054a9b0(void* pParent)
+{
+    static ItemMusicScore s_default;
+    if (FUN_14054abd0(&s_default))
+    {
+        Unk_TiXmlElement elem("MusicScore");
+        if (playCount != 0)
+            FUN_140873ca0(&elem, "playCount", playCount);
+        if (masteryValueMax != 0)
+            FUN_140873ca0(&elem, "masteryValueMax", masteryValueMax);
+        if (isCustomNote)
+            FUN_140873bc0(&elem, "isCustomNote", isCustomNote);
+        if (noteLengthMax != 0)
+            FUN_140873ca0(&elem, "noteLengthMax", noteLengthMax);
+        if (!fileName.IsEmpty())
+            FUN_140874050(&elem, "fileName", fileName);
+        if (playTime != 0)
+            FUN_140873ca0(&elem, "playTime", playTime);
+        if (recommendCategoryId != 0)
+            FUN_140873ca0(&elem, "recommendCategoryId", recommendCategoryId);
+        FUN_14086e000(pParent, &elem);
+    }
+    return 1;
+}
+
+// @0x14054abd0
+bool ItemMusicScore::FUN_14054abd0(const ItemMusicScore* pOther)
+{
+    if (playCount != pOther->playCount)
+        return true;
+    if (masteryValueMax != pOther->masteryValueMax)
+        return true;
+    if (isCustomNote != pOther->isCustomNote)
+        return true;
+    if (noteLengthMax != pOther->noteLengthMax)
+        return true;
+    if (fileName != pOther->fileName)
+        return true;
+    if (playTime != pOther->playTime)
+        return true;
+    if (recommendCategoryId != pOther->recommendCategoryId)
+        return true;
+    return false;
+}
+
+// @0x14054aca0
+bool ItemMusicScore::FUN_14054aca0()
+{
+    return isCustomNote;
+}
+
+// @0x14054acc0
+int ItemMusicScore::FUN_14054acc0()
+{
+    return noteLengthMax;
+}
+
+// @0x14054ace0
+int ItemMusicScore::FUN_14054ace0()
+{
+    return playTime;
+}
+
+// @0x14054ad00
+int ItemMusicScore::FUN_14054ad00()
+{
+    return playCount;
+}
+
+// @0x14054ad20
+CStringW ItemMusicScore::FUN_14054ad20()
+{
+    MS2Ptr<Unk_MusicBookInfo> spInfo = FUN_14052d1d0()->FUN_14072cc10(recommendCategoryId);
+    if (spInfo == 0)
+        return L"";
+    return spInfo->FUN_14072c480();
+}
+
+// @0x14054ade0
+int ItemMusicScore::FUN_14054ade0()
+{
+    return masteryValueMax;
+}

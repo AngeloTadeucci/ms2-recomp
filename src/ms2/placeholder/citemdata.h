@@ -208,6 +208,34 @@ MS2_CHECK_SIZE(ItemEffect, 0x30);
 enum ItemHousingFilter { ItemHousingFilterDefault = 100 };          // <housing> "filter" (enumerators not recovered)
 enum ItemHousingCategory { ItemHousingCategoryDefault = 10000 };    // <housing> "categoryIndex"
 
+// The <MusicScore> block of a music score item (RTTI ItemMusicScore, 0x40 bytes, vftable 0x142d5c068). Ctor, reader,
+// writer and comparison are in commonfiles\itemdatastruct.cpp.
+class ItemMusicScore : public CPtred
+{
+public:
+    ItemMusicScore();                                       // 0x14054a720
+    int FUN_14054a7b0(Unk_140165cf0* pElem);                // XML read (the <MusicScore> child of pElem)
+    int FUN_14054a8c0(Unk_140165cf0* pElem);                // XML read (the attributes of pElem)
+    int FUN_14054a9b0(void* pParent);                       // XML write (nothing when equal to the default)
+    bool FUN_14054abd0(const ItemMusicScore* pOther);       // operator!=
+    bool FUN_14054aca0();                                   // isCustomNote
+    int FUN_14054acc0();                                    // noteLengthMax
+    int FUN_14054ace0();                                    // playTime
+    int FUN_14054ad00();                                    // playCount
+    CStringW FUN_14054ad20();                               // the title of the recommended music book
+    int FUN_14054ade0();                                    // masteryValueMax
+    int playCount;                      // +0x18 "playCount"
+    int unknown1c;
+    int masteryValueMax;                // +0x20 "masteryValueMax"
+    bool isCustomNote;                  // +0x24 "isCustomNote"
+    int recommendCategoryId;            // +0x28 "recommendCategoryId" (a music book id)
+    int noteLengthMax;                  // +0x2c "noteLengthMax"
+    CString fileName;                   // +0x30 "fileName"
+    int playTime;                       // +0x38 "playTime"
+};
+MS2_CHECK_SIZE(ItemMusicScore, 0x40);
+MS2_CHECK_OFFSET(ItemMusicScore, fileName, 0x30);
+
 // <housing> block (RTTI .?AVItemHousing@@, vftable 0x142d5c058 holds only the destructor). Its constructor, XML
 // reader/writer and comparison are in commonfiles\itemdatastruct.cpp; the price fields come from the price table
 // (commonfiles\pricetable.cpp) for the item id.
