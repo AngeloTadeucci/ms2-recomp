@@ -67,7 +67,7 @@ public:
     Unk_BuddyPtr& operator=(T* value) { Unk_BuddyPtr temp(value); T* old=p; p=temp.p; temp.p=old; return *this; }
     T* get() const; T* operator->() const; bool operator==(T*) const;
     bool operator!() const { return p==0; }
-private: void AddRef() const; void Release(); void* pad; T* p;
+private: void AddRef() const; void Release(); void AddRefImpl(void*) const; void ReleaseImpl(void*); static void Reference(CPtred*); void* pad; T* p;
 };
 MS2_CHECK_SIZE(Unk_BuddyPtr<CBuddy>,16);
 struct Unk_BuddyRequest {
