@@ -247,7 +247,7 @@ bool FUN_141126e90(Unk_CMISIter<262>*, Unk_CMISIter<262>*);                 // o
 Unk_CMISIntList* FUN_141127e10(Unk_CMISTree<262>*, const int*);             // operator[]
 void FUN_141126700(Unk_CMISIntList*, Unk_CMISIntList*);                     // operator=
 struct Unk_CMISListIter { void* m_p; };
-void FUN_14114e630(Unk_CMISIntList*, Unk_CMISListIter*);                    // begin
+Unk_CMISListIter* FUN_14114e630(Unk_CMISIntList*, Unk_CMISListIter*);                    // begin
 struct Unk_CMISListEnd { void* m_p; void* m_a; };
 Unk_CMISListEnd* FUN_1411522d0(Unk_CMISIntList*, Unk_CMISListEnd*);         // end
 bool FUN_14035ea60(Unk_CMISListIter*, Unk_CMISListEnd*);                   // operator!=
@@ -2292,4 +2292,81 @@ void CubeMapInformationService::FUN_1410c7a50(int nA, int nB, int nState, __int6
     spHouse.FUN_1411284b0()->m_state = nState;
     spHouse.FUN_1411284b0()->m_value = nValue;
     FUN_1410bbcd0(nA, nB);
+}
+// @0x1410c81c0
+// MS2-FUNCTIONAL: exe spills the iterator and list temporaries; frame is larger
+int CubeMapInformationService::FUN_1410c81c0(int nGroup, int* pnWidth, int* pnHeight, int* pnDepth)
+{
+    *pnWidth = 0;
+    *pnHeight = 0;
+    *pnDepth = 0;
+    if (FUN_140965240(&f208, 0))
+        return 0;
+    if (FUN_140885340(&f208)->FUN_140375130())
+        nGroup = 1;
+    Unk_CMISIter<262> itEnd, itFind;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind, &nGroup), FUN_141151c70(&fd8, &itEnd)))
+        return 0;
+    int nMinX = 0x7fffffff, nMaxX = -0x7fffffff - 1;
+    int nMinY = 0x7fffffff, nMaxY = -0x7fffffff - 1;
+    Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+    Unk_CMISListIter it;
+    Unk_CMISListEnd itListEnd;
+    for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+        Unk_Int3 pt = FUN_1408a0400(*FUN_1403e8d70(&it));
+        if (FUN_1410b8980(pt) != 0) {
+            if (pt.x < nMinX)
+                nMinX = pt.x;
+            if (nMaxX < pt.x)
+                nMaxX = pt.x;
+            if (pt.y < nMinY)
+                nMinY = pt.y;
+            if (nMaxY < pt.y)
+                nMaxY = pt.y;
+        }
+    }
+    *pnWidth = nMaxX - nMinX + 1;
+    *pnHeight = f218->groups[nGroup].heightLimit + 1;
+    *pnDepth = nMaxY - nMinY + 1;
+    return 1;
+}
+// @0x1410c88b0
+// MS2-FUNCTIONAL: std::map floors vs the exe's inlined tree helpers; stack frame differs
+int CubeMapInformationService::FUN_1410c88b0(PCBase* pActor)
+{
+    int nFound = 0;
+    if (f218 == 0)
+        return 0;
+    Unk_StreamPoint ptFront;
+    FUN_1410b7ad0(pActor, 0, &ptFront, 0);
+    Unk_StreamPoint ptCell;
+    FUN_1410b7a20(ptFront, &ptCell);
+    for (unsigned __int64 nFloor = 1; nFloor <= (unsigned __int64)(__int64)f1dc; ++nFloor) {
+        int nKey = (int)nFloor;
+        std::map<int, Unk_UGCFloor>::iterator itEnd = f218->floors.end();
+        if (f218->floors.find(nKey) == itEnd)
+            continue;
+        if (f218->floors[nKey].startHeight <= ptCell.z)
+            nFound = (int)nFloor;
+    }
+    return nFound;
+}
+__int64 FUN_141656ad0(Unk_CMISRoster*);
+// @0x1410ca900
+int CubeMapInformationService::FUN_1410ca900(int nGroup)
+{
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster != 0) {
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+        if (!(spOwner == 0)) {
+            if (spOwner->ownerID == FUN_141656ad0(pRoster)) {
+                Unk_CMISListIter it;
+                Unk_CMISListEnd itListEnd;
+                Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+                if (FUN_14035ea60(FUN_14114e630(pList, &it), FUN_1411522d0(pList, &itListEnd)))
+                    return 1;
+            }
+        }
+    }
+    return 0;
 }

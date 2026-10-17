@@ -200,6 +200,9 @@ public:
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
+    int FUN_1410ca900(int nGroup);
+    int FUN_1410c88b0(PCBase* pActor);
+    int FUN_1410c81c0(int nGroup, int* pnWidth, int* pnHeight, int* pnDepth);
     void FUN_1410c7a50(int nA, int nB, int nState, __int64 nValue);
     int FUN_1410c6980(class Cube* pCube, int nKind, class Unk_CMISItemRef& rItem, __int64 nOwner, int nMode);
     int FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos);
