@@ -201,6 +201,8 @@ public:
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
+    CStringW FUN_1410c7ce0(int nA, int nB);
+    void FUN_1410ce020(MS2Ptr<Cube> spCube);
     void FUN_1410ce1e0(int nNotify, const int* pCount);
     void FUN_1410cef70(const egf::EntityChangeMessage* pMsg, efd::Category cat);
     void FUN_1410cf160(egf::Entity* pEntity);

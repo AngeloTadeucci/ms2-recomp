@@ -2457,3 +2457,50 @@ void CubeMapInformationService::FUN_1410ce1e0(int nNotify, const int* pCount)
         FUN_140939a10()->FUN_140da4fe0(MS2Ptr<NotifyObject>(new Unk_CMISNotifyBuilding(pCount)));
     }
 }
+int FUN_1408b56c0(MS2Ptr<CItemData> spItem);
+int FUN_1408b58c0(MS2Ptr<CItemData> spItem);
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+int FUN_1408b4f20(Cube* pCube);
+// @0x1410ce020
+// MS2-FUNCTIONAL: the exe's by-value item-ptr copies carry fewer unwind states (10 vs 13); symbol pairing of the MS2Ptr helpers differs
+void CubeMapInformationService::FUN_1410ce020(MS2Ptr<Cube> spCube)
+{
+    if (spCube.IsNull())
+        return;
+    int nItemId = FUN_1408b4f20(spCube.operator->());
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem == 0)
+        return;
+    if (!spItem->FUN_14053d940()) {
+        if (FUN_1408b56c0(spItem) == 0 && FUN_1408b58c0(spItem) == 0)
+            return;
+    }
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster != 0) {
+        __int64 nMe = FUN_141656ad0(pRoster);
+        Cube* pCube = spCube.operator->();
+        __int64 nOwner = FUN_1410c8030(spCube->field50, pCube->field54);
+        if (nMe == nOwner)
+            FUN_1410ce1e0(1, &nItemId);
+    }
+}
+CStringW FUN_14028de60(int nStringId);
+// @0x1410c7ce0
+// MS2-FUNCTIONAL: exe spills the owner-temporary pointer through two extra locals; frame 0x10 larger
+CStringW CubeMapInformationService::FUN_1410c7ce0(int nA, int nB)
+{
+    CStringW strText;
+    bool bHasOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nA, nB) != 0;
+    if (bHasOwner)
+        return strText;
+    strText = FUN_14028de60(0x7e7);
+    int nState = 2;
+    Unk_CMISHouseRef spHouse(FUN_1410c7c20(nA, nB));
+    if (spHouse.FUN_141128410() != 0)
+        nState = spHouse.FUN_1411284b0()->m_state;
+    if (nState == 4)
+        strText = FUN_14028de60(0x7e8);
+    if (FUN_1410c80d0(nB) == 0)
+        strText = FUN_14028de60(0x7e9);
+    return strText;
+}
