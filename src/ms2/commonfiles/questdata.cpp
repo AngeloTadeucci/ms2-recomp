@@ -39,6 +39,17 @@ const __int64& FUN_1402e49a0(const __int64& a, const __int64& b);   // the small
 CFieldMetaTable* FUN_140700390();
 CGuildXmlData* FUN_1404f4530();
 
+// The game random generator (0x40 bytes; defined in randomeffectparam.h of the client unit). Seeded ctor 0x140768210.
+class Unk_Random
+{
+public:
+    explicit Unk_Random(int nSeed);                 // 0x140768210
+    ~Unk_Random();                                  // 0x1401cdc30
+    unsigned int FUN_1407684c0();                   // next
+private:
+    void* m_unk[8];
+};
+
 // A scheduled game event (the <eventTag> lookup), handed out as an intrusive pointer.
 class Unk_EventEntry;
 bool FUN_140866880(Unk_EventEntry* pEntry, __int64* pTime);          // the time falls into the event
@@ -1627,4 +1638,379 @@ unsigned short FUN_14074bd10(int nQuestId)
     if (data.IsNull())
         return 0;
     return (unsigned short)data->m_level;
+}
+
+// @0x14074bd90
+QuestDataTable::QuestDataTable()
+{
+}
+
+// @0x14074c130
+QuestDataTable::~QuestDataTable()
+{
+    FUN_1407511e0();
+}
+
+
+// @0x14074c9d0
+MS2Ptr<CQuestData> QuestDataTable::FUN_14074c9d0(int nQuestId)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = m_quests.find(nQuestId);
+    if (it == m_quests.end())
+        return MS2Ptr<CQuestData>(nullptr);
+    return it->second;
+}
+
+// @0x14074cad0
+void QuestDataTable::FUN_14074cad0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int nType)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (nType != 11 && FUN_14074b050(spData.operator->()) != nType)
+            continue;
+        out.Add(spData);
+    }
+}
+
+// @0x14074cbf0
+void QuestDataTable::FUN_14074cbf0(int nMapId, ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    IdsPtr spIds(0);
+    if (m_1f8.Lookup(nMapId, spIds))
+        out.Copy(*spIds.operator->());
+}
+
+// @0x14074cca0
+void QuestDataTable::FUN_14074cca0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int nGrade)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (FUN_14074b050(spData.operator->()) != 3)
+            continue;
+        if (nGrade != 0 && spData->m_338.m_value != nGrade)
+            continue;
+        out.Add(spData);
+    }
+}
+
+// @0x14074cde0
+void QuestDataTable::FUN_14074cde0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int nFlag)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (FUN_14074b050(spData.operator->()) != 5)
+            continue;
+        if (nFlag != 0 && spData->m_350.m_value != nFlag)
+            continue;
+        out.Add(spData);
+    }
+}
+
+// @0x14074cf20
+void QuestDataTable::FUN_14074cf20(ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    for (POSITION pos = m_chapter.GetStartPosition(); pos != 0; m_chapter.GetNext(pos))
+        out.Add(m_chapter.GetKeyAt(pos));
+}
+
+// @0x14074cfd0
+void QuestDataTable::FUN_14074cfd0(int nChapter, ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    IdsPtr spIds(0);
+    Unk_1401b4ec0 guard(m_lock, 1);
+    m_chapter.Lookup(nChapter, spIds);
+    if (spIds.get() != 0)
+        out.Copy(*spIds.operator->());
+}
+
+// @0x14074d080
+void QuestDataTable::FUN_14074d080(int nMapId, ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    out.Copy(m_128);
+    IdsPtr spIds(0);
+    if (m_1f8.Lookup(nMapId, spIds))
+        out.Append(*spIds.operator->());
+}
+
+// MS2-FUNCTIONAL: frame has an extra unwritten 8-byte local before the loop counter that the source cannot reproduce.
+// @0x14074d140
+void QuestDataTable::FUN_14074d140(unsigned short nLevel, int nJob, ATL::CAtlArray<int>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    for (size_t i = 0; i < m_378.size(); ++i)
+    {
+        MS2Ptr<CQuestData> spData = m_378[i];
+        if ((unsigned short)spData->m_require.m_level < nLevel)
+        {
+            if (spData->m_require.m_job.GetCount() != 0)
+            {
+                if (FUN_1407474d0(&spData->m_require.m_job, &nJob) == -1)
+                    continue;
+            }
+            out.Add(FUN_14074b030(spData.operator->()));
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14074D140, QuestDataTable, FUN_14074d140, 350, 0x3F8920CF);
+
+// @0x14074d2b0
+void QuestDataTable::FUN_14074d2b0(Unk_FameAlliance nAlliance, ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    IdsPtr spIds(0);
+    if (m_318.Lookup(nAlliance, spIds))
+        out.Copy(*spIds.operator->());
+}
+
+// @0x14074d360
+void QuestDataTable::FUN_14074d360(unsigned nKey, ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    IdsPtr spIds(0);
+    if (m_240.Lookup(nKey, spIds))
+        out.Copy(*spIds.operator->());
+}
+
+// @0x14074d410
+void QuestDataTable::FUN_14074d410(ATL::CAtlArray<unsigned>& out)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    out.Copy(m_1d8);
+}
+
+// @0x14074df70
+QuestDataTable::IdsPtr QuestDataTable::FUN_14074df70(unsigned nKey, int nIndex)
+{
+    CheckInit();
+    IdsPtr spIds(0);
+    Unk_1401b4ec0 guard(m_lock, 1);
+    m_148[nIndex].Lookup(nKey, spIds);
+    return spIds;
+}
+
+// @0x14074e030
+bool QuestDataTable::FUN_14074e030(int nNpcId)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    return m_430.find(nNpcId) != m_430.end();
+}
+
+// @0x14074e0d0
+std::vector<unsigned>& QuestDataTable::FUN_14074e0d0()
+{
+    return m_360;
+}
+
+// @0x14074e0f0
+std::set<unsigned>* QuestDataTable::FUN_14074e0f0(int nNpcId)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, std::set<unsigned> >::iterator it = m_430.find(nNpcId);
+    if (it == m_430.end())
+        return 0;
+    return &it->second;
+}
+
+// @0x14074e1c0
+unsigned QuestDataTable::FUN_14074e1c0(int nKey)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    unsigned nValue = 0;
+    m_98.Lookup(nKey, nValue);
+    return nValue;
+}
+
+// @0x14074e240
+unsigned QuestDataTable::FUN_14074e240(int nKey)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    unsigned nValue = 0;
+    m_e0.Lookup(nKey, nValue);
+    return nValue;
+}
+
+// @0x14074e2c0
+unsigned QuestDataTable::FUN_14074e2c0(int nKey)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, unsigned>::iterator it = m_420.find(nKey);
+    if (it == m_420.end())
+        return 0;
+    return it->second;
+}
+
+// @0x14074e390
+int QuestDataTable::FUN_14074e390(int nGroupId)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    Unk_SocketPtr<CQuestData::GroupPickData> spPick(0);
+    if (m_3d8.Lookup(nGroupId, spPick))
+        return spPick->m_kind;
+    return 0;
+}
+
+// @0x14074e450
+int QuestDataTable::FUN_14074e450(int nGroupId)
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    Unk_SocketPtr<CQuestData::GroupPickData> spPick(0);
+    if (m_3d8.Lookup(nGroupId, spPick))
+        return spPick->m_count;
+    return 1;
+}
+
+// MS2-FUNCTIONAL: stack-frame slot order of the temporaries differs from the exe.
+// @0x14074e6c0
+void QuestDataTable::FUN_14074e6c0(int nGroupId, int nSelector, int nSeed, ATL::CAtlArray<unsigned>& out)
+{
+    IdsPtr spIds(0);
+    {
+        Unk_1401b4ec0 guard(m_lock, 1);
+        if (!m_390.Lookup(nGroupId, spIds))
+            return;
+    }
+    if (spIds.operator->()->GetCount() == 0)
+        return;
+    int nFirstId = spIds.operator->()->GetAt(0);
+    MS2Ptr<CQuestData> spFirst = FUN_14074c9d0(nFirstId);
+    if (spFirst.IsNull())
+        return;
+    CMsTime now(FUN_140869440());
+    int nRandSeed = 0;
+    if (nSelector != 0)
+        nRandSeed = nSelector;
+    else
+    {
+        if (FUN_14074b070(spFirst.operator->()) == 2)
+        {
+            int nYear = now.GetYear() * 10000;
+            int nYearMonth = nYear + now.GetMonth() * 100;
+            nRandSeed = (nYearMonth + now.GetDay()) * nGroupId;
+            nRandSeed = nRandSeed + nSeed;
+        }
+        else if (FUN_14074b070(spFirst.operator->()) == 3)
+        {
+            __int64 tWeek = FUN_14086b190(6, now.Get());
+            CMsTime weekStart(tWeek);
+            int nDay = weekStart.GetDay();
+            int nMonth = weekStart.GetMonth();
+            int nDayNo = (int)FUN_14086b590(weekStart.GetYear(), nMonth, nDay);
+            nRandSeed = (weekStart.GetYear() * 10000 + nDayNo) * nGroupId;
+            nRandSeed = nRandSeed + nSeed;
+        }
+    }
+    Unk_Random rnd(nRandSeed);
+    ATL::CAtlArray<unsigned> candidates;
+    candidates.Copy(*spIds.operator->());
+    int nPicks = GetInstance()->FUN_14074e450(nGroupId);
+    for (int i = 0; i < nPicks && candidates.GetCount() != 0; ++i)
+    {
+        unsigned __int64 nIndex = rnd.FUN_1407684c0() % candidates.GetCount();
+        out.Add(candidates[nIndex]);
+        candidates.RemoveAt(nIndex, 1);
+    }
+}
+MS2_REPLACE_METHOD(0x14074E6C0, QuestDataTable, FUN_14074e6c0, 1004, 0x40F04FF7);
+
+// @0x14074e510
+int QuestDataTable::FUN_14074e510(int nQuestId)
+{
+    int nValue = 0;
+    if (!m_2d0.Lookup(nQuestId, nValue))
+        return 0;
+    return nValue;
+}
+
+// MS2-FUNCTIONAL: stack-frame slot order of the temporaries differs from the exe.
+// @0x14074e560
+bool QuestDataTable::FUN_14074e560(unsigned nFirst, unsigned nLast)
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if ((unsigned)FUN_14074b030(spData.operator->()) >= nFirst)
+        {
+            if ((unsigned)FUN_14074b030(spData.operator->()) <= nLast)
+            {
+                if (spData->m_30 == 0)
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x14074E560, QuestDataTable, FUN_14074e560, 346, 0x400E3FB6);
+
+// @0x14074eac0
+void QuestDataTable::FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& visited)
+{
+    MS2Ptr<CQuestData> spData = FUN_14074bc40(nQuestId);
+    if (spData.IsNull())
+        return;
+    if (visited.Lookup(nQuestId) != 0)
+        return;
+    visited.SetAt(nQuestId, 1);
+    for (size_t i = 0; i < spData->m_require.m_requiredBy.GetCount(); ++i)
+        FUN_14074eac0(spData->m_require.m_requiredBy[i], visited);
+}
+
+// @0x14075a3f0
+CString FUN_14016a5c0(const char* psz, int n);
+#ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv)
+bool QuestDataTable::s_bInit;
+#endif
+void QuestDataTable::CheckInit()
+{
+    if (!s_bInit)
+    {
+        CString msg;
+        msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(QuestDataTable).name(), 0));
+        MessageBoxA(0, msg, "Error", 0);
+    }
 }
