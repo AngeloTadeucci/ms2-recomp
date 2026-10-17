@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The dungeon room table: DungeonRoom.xml and its companion
 // tables (DungeonRankReward, DungeonSeason, DungeonRoundData, DungeonConfig, DungeonRewardCoupon).
 // MS2-UNIT: commonfiles\dungeonroom.cpp
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x14031c970-0x140343e50 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VDungeonRankRewardBase@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VDungeonRankRewardBase@@@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140322990 ; prop
