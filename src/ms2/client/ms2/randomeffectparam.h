@@ -9,19 +9,33 @@
 #include <atlcoll.h>
 #include "ms2/client/ms2/effectparam.h"
 #include "ms2/placeholder/ascript.h"   // MS2Ptr<T>
+#include "ms2/placeholder/clockcriticalsection.h"
 
-// Game random generator (0x40 bytes; commonfiles). Seeded ctor 0x140768210, default ctor 0x140768110,
-// dtor 0x1401cdc30, next value 0x1407684c0.
+// Game random generator (0x40 bytes; commonfiles\questmasktable.cpp holds its methods): a three-word generator behind
+// a lock. Seeded ctor 0x140768210, default ctor 0x140768110 (seeded from the clock), dtor 0x1401cdc30,
+// next value 0x1407684c0.
 class Unk_Random
 {
 public:
     Unk_Random();                                   // 0x140768110
     explicit Unk_Random(int nSeed);                 // 0x140768210
+    Unk_Random(unsigned s1, unsigned s2, unsigned s3);      // 0x140768290
+    Unk_Random(const Unk_Random& o);                // 0x1407681b0
     ~Unk_Random();                                  // 0x1401cdc30
+    void Seed(int nSeed);                           // 0x1407682f0
+    void SetState(unsigned s1, unsigned s2, unsigned s3);   // 0x140768350 (forces the low bits)
+    void GetState(unsigned* s1, unsigned* s2, unsigned* s3);        // 0x1407683d0
+    void SetRaw(unsigned s1, unsigned s2, unsigned s3);     // 0x140768450
     unsigned int FUN_1407684c0();                   // next
+    int Range(unsigned nCount, int nBase);          // 0x1407685b0 nBase + next % nCount
 private:
-    void* m_unk[8];
+    unsigned m_s1;                                  // +0x00
+    unsigned m_s2;                                  // +0x04
+    unsigned m_s3;                                  // +0x08
+    unsigned m_pad_0c;
+    CLockCriticalSection m_lock;                    // +0x10
 };
+MS2_CHECK_SIZE(Unk_Random, 0x40);
 
 // 0x68 bytes. ctor 0x1416f4e10, implicit dtor 0x1416f4eb0.
 class Unk_WeightedPicker
