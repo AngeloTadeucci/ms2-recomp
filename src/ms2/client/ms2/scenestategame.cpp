@@ -77,32 +77,16 @@
 // MS2-PIN: ??0CAdventureLevelMissionData@@QEAA@AEBV0@@Z 0x141745bd0 ; w131 manual (copy; called by the make_pair pair ctor 0x141740490)
 // MS2-PIN: ??0CAdventureLevelMissionData@@QEAA@$$QEAV0@@Z 0x141745b60 ; w131 manual (move; called by the pair ctor 0x141740530)
 // MS2-PIN: ??$?0AEBIAEAVCAdventureLevelMissionData@@$0A@@?$pair@IVCAdventureLevelMissionData@@@std@@QEAA@AEBIAEAVCAdventureLevelMissionData@@@Z 0x141740490 ; w131 manual (make_pair in FUN_14173d4d0)
-// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@2@XZ 0x14174abd0 ; w131 manual (call site 0x141743850)
-// MS2-PIN: ??$construct@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEBV12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@std@@@1@QEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEBV34@@Z 0x141744b10 ; w131 manual (call site 0x141743850)
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@std@@@2@XZ 0x14174b140 ; w131 manual (call site 0x14174bd50)
-// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@std@@@2@@Z 0x14174bd10 ; w131 manual (call site 0x14174bd50)
-// MS2-PIN: ??$_Buynode@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@1@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z 0x141743850 ; w131 manual (call site 0x141743820)
-// MS2-PIN: ?max_size@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEBA_KXZ 0x14174bd50 ; w131 manual (call site 0x141743e60)
-// MS2-PIN: ??$_Buy_if_not_node@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@1@U_Not_a_node_tag@1@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z 0x141743820 ; w131 manual (call site 0x141743e60)
-// MS2-PIN: ??$_Insert_at@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@1@_NPEAU?$_Tree_node@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEAX@1@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U_Not_a_node_tag@1@@Z 0x141743e60 ; w131 manual (call site 0x1417445d0)
-// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@IEAAXU_Not_a_node_tag@2@@Z 0x14174ad70 ; w131 manual (call site 0x141743e60/0x1417445d0)
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@2@_K@Z 0x14174b550 ; w131 manual (call site 0x14174aa30)
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@1@AEAPEAU31@@Z 0x141744a80 ; w131 manual (call site 0x14174aa30)
 // MS2-PIN: ??1?$Unk_EnchantPtr@VBaseOption@@@@QEAA@XZ 0x14174b500 ; w131 manual (call site 0x141746860)
-// MS2-PIN: ??0?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAA@AEBU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@@Z 0x141745b30 ; w131 manual (call site 0x141745b10)
-// MS2-PIN: ??$_Insert_nohint@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@_N@1@_NAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U_Not_a_node_tag@1@@Z 0x1417445d0 ; w131 manual (call site 0x1417451e0)
 // MS2-PIN: ??1CPair@?$CAtlMap@HV?$Unk_EnchantPtr@VBaseOption@@@@UUnk_EnchantKeyTraits@@V?$CElementTraits@V?$Unk_EnchantPtr@VBaseOption@@@@@ATL@@@ATL@@QEAA@XZ 0x141746860 ; w131 manual (call site 0x141746910)
-// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAAAEAU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@XZ 0x14174b170 ; w131 manual (call site 0x1417445d0/0x14174bad0)
 // MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@IEBAAEBHAEBU?$pair@$$CBH_N@2@@Z 0x14174b1e0 ; w131 manual (call site 0x1417445d0/0x14174b1b0)
 // MS2-PIN: ?_Key@?$_Tree@V?$_Tmap_traits@H_NU?$less@H@std@@V?$allocator@U?$pair@$$CBH_N@std@@@2@$0A@@std@@@std@@IEBAAEBHPEAU?$_Tree_node@U?$pair@$$CBH_N@std@@PEAX@2@@Z 0x14174b1b0 ; w131 manual (call site 0x1417449e0)
 // MS2-PIN: ??$format_arg@_WW4Unk_SSGInteractResult@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4Unk_SSGInteractResult@@@Z 0x141744d40 ; w131 manual (call site 0x1417450d0)
 // MS2-PIN: ??$format_arg@_WW4Unk_SSGEnchantExpError@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4Unk_SSGEnchantExpError@@@Z 0x141744e60 ; w131 manual (call site 0x141745100)
 // MS2-PIN: ??$format_arg@_WW4Unk_SSGJobError@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4Unk_SSGJobError@@@Z 0x141744f80 ; w131 manual (call site 0x141745130)
-// MS2-PIN: ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@_N@1@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z 0x1417451e0 ; w131 manual (call site 0x141729250)
 // MS2-PIN: ??$forward@AEBH@std@@YAAEBHAEBH@Z 0x141745310 ; w131 manual (call site 0x1417406d0)
-// MS2-PIN: ??0?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@QEAA@XZ 0x141745b10 ; w131 manual (call site 0x141729250)
-// MS2-PIN: ??1?$set@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@@std@@QEAA@XZ 0x1417468f0 ; w131 manual (call site 0x141729250)
-// MS2-PIN: ?find@?$_Tree@V?$_Tset_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z 0x14174bad0 ; w131 manual (call site 0x141729250)
 // MS2-PIN: ??1Unk_1407a7d20@@QEAA@XZ 0x141746960 ; w131 manual (call site 0x141728c20)
 // MS2-PIN: ??C?$MS2Ptr@VCEnchantOption@@@@QEBAPEAVCEnchantOption@@XZ 0x141747350 ; w131 manual (call site 0x141732b20)
 // MS2-PIN: ?Find@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@_J@Z 0x141747bc0 ; w131 manual (call site 0x14174a3d0)
@@ -7478,7 +7462,12 @@ void CSceneStateGame::FUN_14171ee80(CInPacket& packet)
         spPortal->m_str190 = str190;
         spPortal->m_str198 = str198;
         if (!strModel.IsEmpty())
+#ifdef __clang__
+            // clang otherwise emits an unavailable CopyChars DLL import; bind the exe's operator+.
+            spPortal->m_strModel = FUN_140298360("urn:gamebryo-scenegraph:", strModel);
+#else
             spPortal->m_strModel = "urn:gamebryo-scenegraph:" + strModel;
+#endif
         if (nMapType != 0)
             spPortal->m_nMapType = nMapType;
         FUN_1403ed2d0()->FUN_141bc1720(spPortal);
@@ -12201,8 +12190,6 @@ void FUN_1401d3700(CString& str);                           // normalise a name
 Unk_Int3 FUN_1408a1430(efd::Point3 kPos);                   // the cube cell of a world position
 
 // Packet 0x73: named field objects (state sync, remove).
-// MS2-FUNCTIONAL: code bytes match; set<CString> ctor/insert/dtor are bound in symbols.tsv to uihideandseekresultdialog's
-// (different-bodied) copies, the exe uses this unit's in-range instances 0x141745b10/0x1417451e0/0x1417468f0
 // @0x141729250
 void CSceneStateGame::FUN_141729250(CInPacket& packet)
 {
@@ -12212,7 +12199,7 @@ void CSceneStateGame::FUN_141729250(CInPacket& packet)
     case 0:
     {
         int nCount = static_cast<CInputStream&>(packet).vfunc_o8_3();
-        std::set<CString> names;
+        efd::set<CString> names;
         for (int i = 0; i < nCount; i++)
         {
             CString strName = static_cast<CInputStream&>(packet).vfunc_o8_7();
