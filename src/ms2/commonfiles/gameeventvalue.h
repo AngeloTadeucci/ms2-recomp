@@ -490,6 +490,7 @@ public:
     class RestrictionData : public CPtred {
     public:
         RestrictionData();                          // 0x140428f00
+        explicit RestrictionData(Unk_VftableEmitTag) {}   // not exe code: emits the vftable in unit_14044a880
         void SetLimit(Unk_ItemTradeRestrictionType eType, unsigned itemId, unsigned short limit);  // 0x1404290b0
         unsigned short GetLimit(Unk_ItemTradeRestrictionType eType, unsigned itemId);           // 0x1404291d0
         typedef ATL::CAtlMap<unsigned, unsigned short> Limits;   // item id -> limit
