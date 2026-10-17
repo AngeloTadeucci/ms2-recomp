@@ -747,6 +747,32 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
                     how[n2] = "auto-ref"
                     used.add(v2)
         hits = {n: h for n, h in hits.items() if n not in known and n in good}
+    # late multicopy pass: what the exact trials could not pair may call a byte-identical COMDAT copy of a callee that
+    # the unit paired elsewhere (std::less<int>::operator() in the unit's TU and in the global table): accept the
+    # unambiguous pairs under that leniency only now, so it cannot blur the look-alike groups decided above
+    if hits and not os.environ.get("MS2_NO_MULTICOPY"):
+        bm.LENIENT_TRIAL = True
+        try:
+            while True:
+                lg = {}
+                for name in sorted(hits):
+                    g = [va for va in hits0[name] if va not in used and order_ok(name, va) and trial(name, va)]
+                    if g:
+                        lg[name] = g
+                cl = {}
+                for name, g in lg.items():
+                    for va in g:
+                        cl.setdefault(va, []).append(name)
+                acc = [(n, g[0]) for n, g in lg.items() if len(g) == 1 and cl[g[0]] == [n]]
+                if not acc:
+                    break
+                for name, va in acc:
+                    known[name] = va
+                    how[name] = "auto-multicopy"
+                    used.add(va)
+                hits = {n: h for n, h in hits.items() if n not in known}
+        finally:
+            bm.LENIENT_TRIAL = False
     # identical functions left over (same bytes, unknown callees): COMDAT tail order = sorted by mangled name
     groups = {}
     for name in hits:

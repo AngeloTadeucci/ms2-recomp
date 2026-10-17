@@ -568,6 +568,7 @@ NO_HARVEST_PREFIXES = ("__imp_", "??_C@", "__real@", "__xmm@", "__mask@", "__ymm
 
 
 MULTICOPY = []     # (name, table va, exe va): one name, several byte-identical exe copies (info only, not a conflict)
+LENIENT_TRIAL = False    # tools/progress.py late pass: strict pairing trials accept same-code copies of a known callee
 STRICT_SYMBOLS = False  # tools/progress.py pairing trials: only the unit's own pairs override the table (the table's
                         # other copy stays a hint against look-alike candidates)
 CUR_EXE = None     # the Exe of the current match_one call (note_symbol needs it for same_code)
@@ -845,8 +846,11 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
         if want is not None and want != tgt:
             # the unit pairs the name with one exe copy but this function calls another, byte-identical COMDAT copy
             # (e.g. std::less<int>::operator() exists in the global table and again in the unit's own TU): same code
-            if same_code(CUR_EXE, want, tgt):
+            # (not in pairing trials unless tools/progress.py's late multicopy pass asks: identical look-alikes of other
+            # types call the same bytes through a same-code copy, and only exact trials tell them apart)
+            if (not STRICT_SYMBOLS or LENIENT_TRIAL) and same_code(CUR_EXE, want, tgt):
                 MULTICOPY.append((sname, want, tgt))
+                targets[sname] = want       # the unit's own binding is what harvest/refs see, not the other copy
                 continue
             rep.bad(f"{sname} is paired with 0x{want:x}, exe calls/uses 0x{tgt:x}")
     LAST_TARGETS.clear()
