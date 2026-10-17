@@ -2413,3 +2413,16 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??0CubeItemInfo@@QEAA@AEBV0@@Z	1408b34b0	func
 ?DAT_143acf6c0@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143acf6c0	data
 ?DAT_143acf6b8@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143acf6b8	data
+?DAT_143ae7980@@3V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@A	143ae7980	data
+??0Unk_SSGNiPt3@@QEAA@AEBVPoint3@efd@@@Z	14027dcf0	func
+?FUN_14050da30@CHomePrivilege@@QEAAHXZ	14050da30	func
+?FUN_14085f730@Unk_SSGTaxiTable@@QEAA_NH@Z	14085f730	func
+?FUN_1409f24a0@@YAPEAVUnk_SSGTaxiTable@@XZ	1409f24a0	func
+?DAT_143ae7998@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae7998	data
+?FUN_14165d300@PC@@QEAAXHHH@Z	14165d300	func
+?s_empty@?1??FUN_1416d2510@CQuestManager@@QEAAAEBV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@I@Z@4V34@A	143ae65c8	data
+?$TSS0@?1??FUN_1416d2510@CQuestManager@@QEAAAEBV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@I@Z@4HA	143ae65d8	data
+??0Unk_ItemOptionSimulator@@QEAA@XZ	1419b86c0	func
+?FUN_1419b8730@Unk_ItemOptionSimulator@@QEAAXXZ	1419b8730	func
+?FUN_1419b8810@Unk_ItemOptionSimulator@@QEAAXXZ	1419b8810	func
+?FUN_1419b9030@Unk_ItemOptionSimulator@@QEAAXHHV?$MS2Ptr@VCItemOption@@@@@Z	1419b9030	func

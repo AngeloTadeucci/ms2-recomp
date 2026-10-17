@@ -59980,9 +59980,9 @@ atan2f	140a4e660	func
 ??0?$CAtlArray@V?$MS2Ptr@VCChapterBookData@@@@V?$CElementTraits@V?$MS2Ptr@VCChapterBookData@@@@@ATL@@@ATL@@QEAA@XZ	1416dadf0	func
 ??0?$CRBMap@IV?$Unk_PayloadPtr@VCQuest@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCQuest@@@@@3@@ATL@@QEAA@_K@Z	1416dae30	func
 ??0?$CRBTree@IV?$Unk_PayloadPtr@VCQuest@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_PayloadPtr@VCQuest@@@@@3@@ATL@@IEAA@_K@Z	1416dae60	func
-??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z	1416daec0	func
+??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z	1416daf60	func
 ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBU?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@Z	1416daf10	func
-??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z	1416daf60	func
+??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z	1416daec0	func
 ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBU?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@Z	1416dafb0	func
 ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@$$QEAV0@@Z	1416db000	func
 ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@H@Z	1416db030	func
@@ -60249,7 +60249,7 @@ atan2f	140a4e660	func
 ?capacity@?$vector@UUnk_QmNpcQuestEntry@@V?$allocator@UUnk_QmNpcQuestEntry@@@std@@@std@@QEBA_KXZ	1416e24a0	func
 ?clear@?$_Tree@V?$_Tset_traits@PEAVUnk_QmTreeItem@@U?$less@PEAVUnk_QmTreeItem@@@std@@V?$allocator@PEAVUnk_QmTreeItem@@@3@$0A@@std@@@std@@QEAAXXZ	1416e2530	func
 ?clear@?$_Tree@V?$_Tmap_traits@HV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@@2@$0A@@std@@@std@@QEAAXXZ	1416e25d0	func
-?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBAPEAVDelegateImplBase@2@XZ	1416e27b0	func
+?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@UEBAPEAVDelegateImplBase@2@XZ	1416e2750	func
 ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ	1416e27b0	func
 ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@PEAVUnk_QmTreeItem@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@PEAVUnk_QmTreeItem@@PEAX@std@@@2@QEAU?$_Tree_node@PEAVUnk_QmTreeItem@@PEAX@2@_K@Z	1416e2840	func
 ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@PEAX@2@_K@Z	1416e2870	func
@@ -60273,7 +60273,7 @@ atan2f	140a4e660	func
 ?max_size@?$_Default_allocator_traits@V?$allocator@V?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@SA_KAEBV?$allocator@V?$Unk_PayloadPtr@VCQuest@@@@@2@@Z	1416e33e0	func
 ?max_size@?$_Default_allocator_traits@V?$allocator@UUnk_QmNpcQuestEntry@@@std@@@std@@SA_KAEBV?$allocator@UUnk_QmNpcQuestEntry@@@2@@Z	1416e33f0	func
 ?max_size@?$_Tree@V?$_Tmap_traits@HV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@@2@$0A@@std@@@std@@QEBA_KXZ	1416e3410	func
-?max_size@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEBA_KXZ	1416e3430	func
+?max_size@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEBA_KXZ	14046c1c0	func
 ?max_size@?$vector@V?$Unk_PayloadPtr@VCQuest@@@@V?$allocator@V?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@QEBA_KXZ	1416e3470	func
 ?max_size@?$vector@UUnk_QmNpcQuestEntry@@V?$allocator@UUnk_QmNpcQuestEntry@@@std@@@std@@QEBA_KXZ	1416e34c0	func
 ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@std@@@std@@SAPEAU?$pair@$$CBHV?$set@_JU?$less@_J@std@@V?$allocator@_J@2@@std@@@2@AEAU32@@Z	1416e3560	func
