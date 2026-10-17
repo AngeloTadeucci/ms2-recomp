@@ -8418,7 +8418,9 @@ int FUN_141bfed80(void* npc);                           // fade delay (ms)
 void* FUN_1416764a0(void* npc);                         // npc's mount holder
 void FUN_141707750(void* mountHolder, Unk_WsP8* out);
 void* FUN_1409f78a0(Unk_WsP8* p);                       // get
-Unk_WsD_ZoneRec* FUN_1407895d0(Unk_WsP8* p);            // get (mount info)
+struct Unk_WsD_MountRec { char pad[0xb4]; int m_zone; };   // the exe reads +0xb4 (0x141bd7974)
+MS2_CHECK_OFFSET(Unk_WsD_MountRec, m_zone, 0xb4);
+Unk_WsD_MountRec* FUN_1407895d0(Unk_WsP8* p);           // get (mount info)
 void FUN_140788ed0(Unk_WsP8* p);                        // release
 void* FUN_1403ed280();                                  // nameplate manager singleton
 void FUN_1411a6f00(void* mgr, void* name);

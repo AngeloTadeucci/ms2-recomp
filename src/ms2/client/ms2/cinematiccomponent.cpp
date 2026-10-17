@@ -41,8 +41,8 @@ public:
 int FUN_141092fa0(Unk_CinNpc*);                                 // npc id
 
 // The affinity record of the npc (found through FUN_141093800).
-class Unk_CinAffinity { public: void* m_0; void* m_8; void* m_10; void* m_18; void* m_20; void* m_28; void* m_30; void* m_38;
-    void* m_40; void* m_48; void* m_50; int m_54; };
+class Unk_CinAffinity { public: char m_pad_00[0x54]; int m_54; };   // the exe reads +0x54 (0x14107d760: add rax, 0x54)
+MS2_CHECK_OFFSET(Unk_CinAffinity, m_54, 0x54);
 class Unk_CinAffinityPtr
 {
 public:

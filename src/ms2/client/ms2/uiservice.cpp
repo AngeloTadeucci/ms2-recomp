@@ -713,7 +713,7 @@ void CUIService::FUN_141ad9e50(int nScene)
         }
         if (!reinterpret_cast<Unk_ConfigString*>(&static_cast<Client::Constants*>(FUN_1401d3200())->NoticeDialogUrl)->FUN_140298f80()->IsEmpty())
             AddOpenId(m_listOpen, 0x4ee9);
-        if (*(char*)FUN_1409a8ac0(FUN_1409a8b10()) != 0)
+        if (static_cast<char*>(FUN_1409a8ac0(FUN_1409a8b10()))[0x14] != 0)   // flag byte at +0x14 (0x141ada11b)
             AddOpenId(m_listOpen, 0x4e7d);
         if (FUN_140ee0d10() != 0)
             FUN_140b8cbe0(FUN_140ee0d10());

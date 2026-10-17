@@ -396,7 +396,7 @@ bool CReactor::FUN_140b79490(CInPacket* pPacket)
     vfunc_19(efd::Point3(pos.x, pos.y, pos.z));
     vfunc_21(efd::Point3(rot.x, rot.y, rot.z));
     m_listAnims.RemoveAll();
-    FUN_140b78ea0(spState->m_strStartAni);
+    FUN_140b78ea0(spState->m_strIdleAni);
     return true;
 }
 

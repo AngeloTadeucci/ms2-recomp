@@ -347,7 +347,8 @@ public:
 class Unk_GmStatusInfo : public CPtred { public: char m_pad_18[0x6c - 0x18]; int m_6c; };
 class Unk_GmPetInfoRef { public: char m_pad[0x20]; };
 class Unk_GmPetRow { public: char m_pad_0[0x18]; int m_18; };
-class Unk_GmIdEntry { public: char m_pad[0x20]; };
+class Unk_GmIdEntry { public: char m_pad[0x10]; };   // 16 bytes: the exe iterates the list with add rax, 0x10 (0x141938700)
+MS2_CHECK_SIZE(Unk_GmIdEntry, 0x10);
 class Unk_GmIdList
 {
 public:
