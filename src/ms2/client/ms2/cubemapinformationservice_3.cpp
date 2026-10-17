@@ -4808,3 +4808,55 @@ void CubeMapInformationService::GenerateAreaPhysX(int n)
         pActor->userData = 0;
     FUN_14168a570(FUN_1409f7ca0());
 }
+
+// @0x1410c6b90
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+int CubeMapInformationService::FUN_1410c6b90(unsigned nMask, int* pOutGroup, int nMode, Unk_CMISEntityRef* pOutEnt)
+{
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster == 0)
+        return 0;
+    Unk_StreamPoint ptA = DAT_143b01a60, ptB = DAT_143b01a60;
+    FUN_1410b7ad0(reinterpret_cast<PCBase*>(pRoster), 0.0f, &ptA, 1);
+    FUN_1410b7ad0(reinterpret_cast<PCBase*>(pRoster), 0.0f, &ptB, 0);
+    Unk_Int3 cellA = FUN_1408a1430(ptA);
+    Unk_Int3 cellB = FUN_1408a1430(ptB);
+    Unk_CMISIter<264> it, itEnd;
+    FUN_14114dbb0(&ff8, &it);
+    while (FUN_1411273c0(&it, FUN_141151970(&ff8, &itEnd))) {
+        int nGroup = FUN_141128560(&it)->m_key;
+        egf::EntityPtr spEnt = FUN_1408a7ed0(&FUN_141128560(&it)->m_ref);
+        if (!FUN_1408b70b0(&spEnt, 0)) {
+            FUN_140899bd0(pOutEnt, *FUN_1408b76f0(FUN_1408a9280(&spEnt)));
+            Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+            bool bOwned = FUN_140965820(&spOwner) != 0;
+            bool bSkip = (nMode == 1 || nMode == 2) && !bOwned;
+            if (!bSkip && nMode == 1 && spOwner->ownerID != FUN_141656ad0(pRoster))
+                bSkip = true;
+            if (!bSkip && nMode == 2 && spOwner->ownerID == FUN_141656ad0(pRoster))
+                bSkip = true;
+            if (!bSkip) {
+                Unk_CMISHouseRef spHouse(FUN_1410c7c20(nGroup, f1b0));
+                if (spHouse.FUN_141128410() != 0 && (nMask & (unsigned)spHouse.FUN_1411284b0()->m_state) == 0)
+                    bSkip = true;
+                else if ((nMask & 2) && bOwned)
+                    bSkip = true;
+                else if ((nMask & 1) && !bOwned)
+                    bSkip = true;
+                else if ((nMask & 4) && bOwned)
+                    bSkip = true;
+                else {
+                    Unk_StreamPoint ptEnt = DAT_143b01a60;
+                    FUN_1409618c0(FUN_1408a9280(&spEnt), 0xfd95ca52, &ptEnt);
+                    Unk_Int3 cell = FUN_1408a1430(ptEnt);
+                    if (FUN_1411272b0(&cell, &cellA) || FUN_1411272b0(&cell, &cellB)) {
+                        *pOutGroup = nGroup;
+                        return 1;
+                    }
+                }
+            }
+        }
+        FUN_141129a80(&it);
+    }
+    return 0;
+}
