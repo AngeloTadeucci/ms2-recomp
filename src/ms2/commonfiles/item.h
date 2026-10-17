@@ -10,6 +10,7 @@
 #include "ms2/placeholder/cubeiteminfo.h"
 #include "ms2/placeholder/blueprintitemdata.h"
 #include "ms2/commonfiles/itemenchantinfo.h"
+#include "ms2/commonfiles/itemoption.h"
 #include "ms2/placeholder/unlimitedenchantinfo.h"
 #include <atlcoll.h>
 #include "ms2/commonfiles/os.h"
@@ -20,33 +21,6 @@
 class Unk_ItemPlusInfo;
 
 // Opaque parts defined in their own units; only the allocation sizes and constructors are known here.
-// The option block behind CItemStatus +0x18 (alloc 0x2f8; its unit is not recovered): only the members CItem and
-// CItemStatus call. Names are by address.
-class CItemOption : public CPtred
-{
-public:
-    CItemOption(unsigned nItemId);              // 0x1405caed0
-    int FUN_1405cbbb0(int nSlot);               // 0x1405cbbb0
-    int FUN_1405cbc90();                        // 0x1405cbc90
-    int FUN_1405cb3a0(unsigned nType);          // 0x1405cb3a0 the summed value of a stat type
-    int FUN_1405cb440(unsigned nType);          // 0x1405cb440
-    Unk_EnchantPtr<BaseOption> FUN_1405cb760(int nSub, unsigned nType);     // 0x1405cb760
-    Unk_EnchantPtr<BaseOption> FUN_1405cb800(int nSub, unsigned nType);     // 0x1405cb800
-    void FUN_1405cb190(int);                    // 0x1405cb190
-    void FUN_1405cb360(int);                    // 0x1405cb360
-    int FUN_1405cb380();                        // 0x1405cb380
-    Unk_EnchantMap& FUN_1405cb8a0(int nGroup);  // 0x1405cb8a0 the first option map of a group
-    Unk_EnchantMap& FUN_1405cb8d0(int nGroup);  // 0x1405cb8d0 the second option map of a group
-    void FUN_1405cb200(int nGroup, unsigned nIndex, Unk_EnchantPtr<BaseOption> spOption);   // 0x1405cb200
-    void FUN_1405cb2a0(int nGroup, unsigned nIndex, Unk_EnchantPtr<BaseOption> spOption);   // 0x1405cb2a0
-    bool FUN_1405cc410();                       // 0x1405cc410
-    MS2Ptr<CItemOption> FUN_1405caf90();        // 0x1405caf90 copy
-    void FUN_1405cbeb0(COutputStream&);         // 0x1405cbeb0 write
-    void FUN_1405cc190(CInputStream&);          // 0x1405cc190 read
-private:
-    char m_pad_18[0x2f8 - 0x18];                // unrecovered members (the exe ctor fills all 0x2f8 bytes; the DLL allocates them)
-};
-MS2_CHECK_SIZE(CItemOption, 0x2f8);
 // The status block of an item (CItem +0xf8): the option record, the enchant record and the unlimited-enchant record.
 class CItemStatus : public CPtred
 {
@@ -104,9 +78,6 @@ public:
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
 class Unk_SocketSlot;
-// The special-stat options of a socket (the key is the special stat; ctor 0x1405cccb0 in itemoptiondata.cpp).
-enum Unk_SocketSpecialStat { };
-typedef ATL::CAtlMap<Unk_SocketSpecialStat, Unk_EnchantPtr<BaseOption> > Unk_SocketSpecialMap;
 class CItemSocket : public CPtred
 {
 public:

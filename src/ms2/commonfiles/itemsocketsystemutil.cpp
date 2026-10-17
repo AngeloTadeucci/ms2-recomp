@@ -153,7 +153,6 @@ bool CItemSocketSystemUtil::EnableSocketUnlockFunction::Matches(MS2Ptr<CItem> pI
 }
 
 // @0x140626e20
-// MS2-FUNCTIONAL: written from the decompile; not byte-compared yet
 bool CItemSocketSystemUtil::EnableSocketUnlockFunction::InitPair(MS2Ptr<CItem> pItem, MS2Ptr<CItem> pOther, int nSocketMode, int nUnlockMode)
 {
     if (!Init(pItem, nSocketMode, nUnlockMode))
@@ -1346,7 +1345,7 @@ CStringW FUN_14062b020(MS2Ptr<CItemOption> spOption)
         if (!(spBase == (BaseOption*)0))
             return FUN_140631600(nType, spBase.get());
     }
-    Unk_EnchantMap& mapExtra = spOption->FUN_1405cb8d0(0);
+    Unk_SocketSpecialMap& mapExtra = spOption->FUN_1405cb8d0(0);
     for (POSITION pos = mapExtra.GetStartPosition(); pos; mapExtra.GetNext(pos))
     {
         int nType = mapExtra.GetKeyAt(pos);

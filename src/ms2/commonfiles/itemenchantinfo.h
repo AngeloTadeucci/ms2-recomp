@@ -27,6 +27,7 @@ public:
     Unk_EnchantPtr(const Unk_EnchantPtr&);
     Unk_EnchantPtr(Unk_EnchantPtr&& o) : p(o.p) { o.p=0; }
     Unk_EnchantPtr(T* value) : p(value) { AddRef(); }
+    explicit Unk_EnchantPtr(int) : p(0) {}  // `Unk_EnchantPtr<T>(0)`: the int is homed as a dword (0x1405ccda0, itemoptiondata.cpp)
     ~Unk_EnchantPtr() { Release(); }
     Unk_EnchantPtr& operator=(const Unk_EnchantPtr&);
     T* operator->() const { return p; }
@@ -55,6 +56,7 @@ public:
     void FUN_140266d20(Unk_EnchantWrite&) const;
     void FUN_140266d60(Unk_EnchantRead&);
     void FUN_140266da0(const BaseOption* pSource);   // copy
+    bool FUN_140266ee0(const BaseOption* pOther) const;   // the same option (itemoptiondata.cpp)
 private: void* p0; void* p8; void* p10; void* p18;
 };
 MS2_CHECK_SIZE(BaseOption, 0x20);
