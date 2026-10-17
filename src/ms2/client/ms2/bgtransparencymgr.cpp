@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13).
 // MS2-UNIT: ?\bgtransparencymgr.cpp
 // MS2-RANGE: 0x140a0cd30-0x140a1f250 .text$mn
+// MS2-PIN: ??_7BGTransparencyMgr@@6B?$TSingleton@VBGTransparencyMgr@@@@@ 0x142dc3ae8
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140a0f6c0 ; prop
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140a0f6f0 ; prop
