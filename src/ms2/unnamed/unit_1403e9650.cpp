@@ -346,11 +346,18 @@ template void Unk_GameEventCopy<SkillUpgradeSaleEventContext>(void*, const Skill
 template void Unk_GameEventCopy<SnowmanContext::Snowman>(void*, const SnowmanContext::Snowman&);
 template void Unk_GameEventCopy<SnowmanContext>(void*, const SnowmanContext&);
 template void Unk_GameEventCopy<StampEventContext::Stamp>(void*, const StampEventContext::Stamp&);
-template void Unk_GameEventCopy<StampEventContext>(void*, const StampEventContext&);
 template void Unk_GameEventCopy<TreeWateringContext>(void*, const TreeWateringContext&);
 template void Unk_GameEventCopy<TreeWatering_EmotionDay>(void*, const TreeWatering_EmotionDay&);
 template void Unk_GameEventCopy<TreeWatering_TreeResource>(void*, const TreeWatering_TreeResource&);
 template void Unk_GameEventCopy<TreeWatering_TreeStep>(void*, const TreeWatering_TreeStep&);
+// The same for the classes with non-copyable (CAtlArray / CAtlMap) members, through the implicit default ctor. Not exe
+// code.
+template <class T>
+void Unk_GameEventConstruct(void* p)
+{
+    new (p) T;
+}
+template void Unk_GameEventConstruct<StampEventContext>(void*);
 
 enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 

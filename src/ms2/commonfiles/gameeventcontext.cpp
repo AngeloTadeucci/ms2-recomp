@@ -14,6 +14,9 @@
 #include <new>
 #include <vector>
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/cinpacket.h"
+#include "ms2/commonfiles/stream.h"
 #include "gameeventcontext.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -39,6 +42,55 @@ Unk_GEReader* FUN_14070f6b0(Unk_GEReader* in, Unk_GE16* date);
 Unk_GEReader* FUN_14070f5f0(Unk_GEReader* in, CStringW* text);
 Unk_GEReader* FUN_14070f580(Unk_GEReader* in, CStringA* text);
 Unk_AttendGiftDataGroup* FUN_1403fc330();
+// Typed stream operators (packet.cpp).
+COutputStream& FUN_14070f860(COutputStream& out, unsigned char value);
+COutputStream& FUN_14070f960(COutputStream& out, long value);
+COutputStream& FUN_14070f9a0(COutputStream& out, unsigned int value);
+COutputStream& FUN_14070fa60(COutputStream& out, float value);
+CInputStream& FUN_14070f440(CInputStream& in, long& value);
+CInputStream& FUN_14070f480(CInputStream& in, int& value);
+CInputStream& FUN_14070f480(CInputStream& in, unsigned& value);
+CInputStream& FUN_14070f540(CInputStream& in, float& value);
+int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);   // tinyxmlhelper int attribute, long overload
+// Enum name parsers (commonenum.cpp).
+Unk_BlueMarbleSlotType FUN_140218100(const CStringA& name);
+Unk_DungeonCooldownType FUN_1402199e0(const CStringA& name);
+
+// tinyxmlhelper.h: enum attribute given by name (the parser is the enum's string converter).
+template <class E, E (*Parse)(const CStringA&)>
+int XmlEnumName(Unk_140165cf0* pElem, const char* pszName, E& eOut)
+{
+    if (0) {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CStringA str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    eOut = Parse(str);
+    return nResult;
+}
+
+// Count-prefixed vector streaming.
+template <class T> COutputStream& operator<<(COutputStream& out, const std::vector<T>& vec)
+{
+    out.vfunc_o10_3(vec.size());
+    for (typename std::vector<T>::const_iterator it = vec.begin(); it != vec.end(); it++)
+        FUN_14070f9a0(out, *it);
+    return out;
+}
+template <class T> CInputStream& operator>>(CInputStream& in, std::vector<T>& vec)
+{
+    unsigned count = in.vfunc_o8_3();
+    vec.reserve(count);
+    for (unsigned i = 0; i < count; i++) {
+        T value;
+        FUN_14070f480(in, value);
+        vec.push_back(value);
+    }
+    return in;
+}
 GameEvent* FUN_1403fb400();
 GameEvent* FUN_1403fb9a0();
 void FUN_1403fbe50(Unk_GEReader* in, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts);
@@ -217,3 +269,346 @@ void FUN_1403fbf30(Unk_GEOut* out, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts)
 
 // @0x1403fc330
 Unk_AttendGiftDataGroup* FUN_1403fc330() { return DAT_143aac2a8; }
+
+// @0x1403fc640
+BonusGameBlueMarbleSlot::BonusGameBlueMarbleSlot() : m_type((Unk_BlueMarbleSlotType)0), m_arg1(0), m_arg2(0) {}
+
+// @0x1403fc6a0
+void BonusGameBlueMarbleSlot::Load(Unk_140165cf0* pElem)
+{
+    XmlEnumName<Unk_BlueMarbleSlotType, FUN_140218100>(pElem, "type", m_type);
+    FUN_1408731e0(pElem, "arg1", m_arg1);
+    FUN_1408731e0(pElem, "arg2", m_arg2);
+}
+
+// @0x1403fc710
+BlueMarbleEventContext::BlueMarbleEventContext(int eventId, CMsTime endTime)
+    : m_eventId(eventId), m_endTime(endTime), m_consumeItemID(0), m_consumeItemCount(0), m_rewards(10)
+{
+}
+
+// @0x1403fc7c0
+void BlueMarbleEventContext::LoadRewards(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "consumeItemID", m_consumeItemID);
+    FUN_1408731e0(pElem, "consumeItemCount", m_consumeItemCount);
+    for (Unk_140165cf0* pNode : pElem->FUN_140165cf0("v")) {
+        int round = 0;
+        FUN_1408731e0(pNode, "round", round);
+        MS2Ptr<ItemEntity> spItem(new ItemEntity);
+        spItem->vfunc_2(pNode);
+        AddReward(round, spItem);
+    }
+}
+
+// @0x1403fc990
+void BlueMarbleEventContext::LoadSlots(Unk_140165cf0* pElem)
+{
+    for (Unk_140165cf0* pNode : pElem->FUN_140165cf0("v")) {
+        MS2Ptr<BonusGameBlueMarbleSlot> spSlot(new BonusGameBlueMarbleSlot);
+        spSlot->Load(pNode);
+        m_slots.push_back(spSlot);
+    }
+}
+
+// @0x1403fcac0
+void BlueMarbleEventContext::AddReward(int round, MS2Ptr<ItemEntity> spItem) { m_rewards.SetAt(round, spItem); }
+
+// @0x1403fcb10
+EventTimeLimitDungeonContext::EventTimeLimitDungeonContext() : m_eventId(0), m_dungeonId(0) {}
+
+// @0x1403fcb80
+void EventTimeLimitDungeonContext::Write(COutputStream& out)
+{
+    FUN_14070f9a0(out, m_eventId);
+    FUN_14070f9a0(out, m_dungeonId);
+    FUN_14070f9a0(out, m_rangeTime.m_start.GetSeconds());
+    FUN_14070f9a0(out, m_rangeTime.m_end.GetSeconds());
+}
+
+// @0x1403fcc00
+void EventTimeLimitDungeonContext::Read(CInputStream& in)
+{
+    FUN_14070f480(in, m_eventId);
+    FUN_14070f480(in, m_dungeonId);
+    m_rangeTime.m_start.SetSeconds(in.vfunc_o8_3());
+    m_rangeTime.m_end.SetSeconds(in.vfunc_o8_3());
+}
+
+// @0x1403fcc90
+void StampEventContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_8(m_strTitle);
+    out.vfunc_o10_4(m_endTime);
+    out.vfunc_o10_3(m_stamps.GetCount());
+    out.vfunc_o10_3(m_98);
+    out.vfunc_o10_0(m_b9c);
+    for (size_t i = 0; i < m_stamps.GetCount(); i++) {
+        out.vfunc_o10_3(m_stamps[i]->m_id);
+        out.vfunc_o10_1(m_stamps[i]->m_bStamped);
+        out.vfunc_o10_3(m_stamps[i]->m_20);
+        out.vfunc_o10_3(m_stamps[i]->m_24);
+    }
+    out.vfunc_o10_3(m_rewards.GetCount());
+    for (size_t i = 0; i < m_rewards.GetCount(); i++) {
+        out.vfunc_o10_3(m_rewards[i]->m_count);
+        out.vfunc_o10_1(m_rewards[i]->m_bReceived);
+        m_rewards[i]->m_item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+        m_rewards[i]->m_item2.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    m_item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+}
+
+// @0x1403fd060
+void StampEventContext::Read(CInPacket& packet)
+{
+    m_strTitle = packet.vfunc_o8_8();
+    m_endTime = packet.vfunc_o8_4();
+    size_t count = (unsigned)packet.vfunc_o8_3();
+    m_98 = packet.vfunc_o8_3();
+    m_b9c = packet.vfunc_o8_0();
+    for (size_t i = 0; i < count; i++) {
+        MS2Ptr<Stamp> spStamp(new Stamp);
+        spStamp->m_id = packet.vfunc_o8_3();
+        spStamp->m_bStamped = packet.vfunc_o8_1();
+        spStamp->m_20 = packet.vfunc_o8_3();
+        spStamp->m_24 = packet.vfunc_o8_3();
+        m_stamps.Add(spStamp);
+    }
+    count = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < count; i++) {
+        MS2Ptr<Reward> spReward(new Reward);
+        spReward->m_count = packet.vfunc_o8_3();
+        spReward->m_bReceived = packet.vfunc_o8_1();
+        spReward->m_item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        spReward->m_item2.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_rewards.Add(spReward);
+    }
+    m_item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+}
+
+// @0x1403fd5a0
+int StampEventContext::GetStampFlag(int id)
+{
+    for (size_t i = 0; i < m_stamps.GetCount(); i++) {
+        if (m_stamps[i]->m_id == id)
+            return m_stamps[i]->m_bStamped != 0;
+    }
+    return -1;
+}
+
+// @0x1403fd660
+BOOL StampEventContext::HasStamp(int id)
+{
+    for (size_t i = 0; i < m_stamps.GetCount(); i++) {
+        if (m_stamps[i]->m_id == id)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// @0x1403fd6e0
+DungeonExtraRewardCountCtx::DungeonExtraRewardCountCtx()
+    : m_18(0), m_dungeonID(0), m_count(0), m_cooldownType((Unk_DungeonCooldownType)0), m_cooldownValue(0)
+{
+}
+
+// @0x1403fd750
+void DungeonExtraRewardCountCtx::Load(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "dungeonID", m_dungeonID);
+    FUN_140873220(pElem, "count", m_count);
+    XmlEnumName<Unk_DungeonCooldownType, FUN_1402199e0>(pElem, "cooldownType", m_cooldownType);
+    FUN_1408731e0(pElem, "cooldownValue", m_cooldownValue);
+}
+
+// @0x1403fd7e0
+CInputStream& operator>>(CInputStream& in, DungeonExtraRewardCountCtx& ctx)
+{
+    FUN_14070f480(in, ctx.m_dungeonID);
+    FUN_14070f480(in, ctx.m_18);
+    FUN_14070f480(in, ctx.m_count);
+    return in;
+}
+
+// @0x1403fd840
+COutputStream& operator<<(COutputStream& out, const DungeonExtraRewardCountCtx& ctx)
+{
+    FUN_14070f9a0(out, ctx.m_dungeonID);
+    FUN_14070f9a0(out, ctx.m_18);
+    FUN_14070f9a0(out, ctx.m_count);
+    return out;
+}
+
+// @0x1403fd8a0
+DungeonBonusRewardCtx::DungeonBonusRewardCtx()
+    : m_dungeonID(0), m_groupType((Unk_DungeonGroupType)0), m_itemRolls(0), m_mesoRate(0), m_expRate(0)
+{
+}
+
+// @0x1403fd930
+void DungeonBonusRewardCtx::Load(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "dungeonID", m_dungeonID);
+    XmlValue(pElem, "groupType", m_groupType);
+    FUN_140873360(pElem, "mesoRate", m_mesoRate);
+    FUN_140873360(pElem, "expRate", m_expRate);
+    FUN_1408731e0(pElem, "itemRolls", m_itemRolls);
+    XmlTokenList(pElem, "customDropBoxIds", m_customDropBoxIds);
+}
+
+// @0x1403fda00
+void DungeonBonusRewardCtx::Write(COutputStream& out) const
+{
+    FUN_14070f9a0(out, m_dungeonID);
+    FUN_14070f860(out, (unsigned char)m_groupType);
+    FUN_14070fa60(out, m_mesoRate);
+    FUN_14070fa60(out, m_expRate);
+    FUN_14070f960(out, m_itemRolls);
+    out << m_customDropBoxIds;
+}
+
+// @0x1403fda90
+void DungeonBonusRewardCtx::Read(CInputStream& in)
+{
+    FUN_14070f480(in, m_dungeonID);
+    m_groupType = (Unk_DungeonGroupType)in.vfunc_o8_1();
+    FUN_14070f540(in, m_mesoRate);
+    FUN_14070f540(in, m_expRate);
+    FUN_14070f440(in, m_itemRolls);
+    in >> m_customDropBoxIds;
+}
+
+// @0x1403fdb40
+void DungeonBonusRewardCtx::Merge(const MS2Ptr<DungeonBonusRewardCtx>& other)
+{
+    if (other == NULL)
+        return;
+    m_itemRolls += other->m_itemRolls;
+    m_mesoRate += other->m_mesoRate;
+    m_expRate += other->m_expRate;
+    std::copy(other->m_customDropBoxIds.begin(), other->m_customDropBoxIds.end(), std::back_inserter(m_customDropBoxIds));
+}
+
+// @0x1403fdc50
+__int64 DungeonBonusRewardCtx::ApplyMesoRate(__int64 value)
+{
+    const double epsilon = 0.001;
+    return (__int64)((double)value * m_mesoRate + epsilon);
+}
+
+// @0x1403fdca0
+__int64 DungeonBonusRewardCtx::ApplyExpRate(__int64 value)
+{
+    const double epsilon = 0.001;
+    return (__int64)((double)value * m_expRate + epsilon);
+}
+
+// @0x1403fdcf0
+CInputStream& operator>>(CInputStream& in, DungeonBonusRewardCtx& ctx)
+{
+    ctx.Read(in);
+    return in;
+}
+
+// @0x1403fdd20
+COutputStream& operator<<(COutputStream& out, const DungeonBonusRewardCtx& ctx)
+{
+    ctx.Write(out);
+    return out;
+}
+
+// @0x1403fdd50
+ItemBoxEventContext::ItemBoxEventContext() : m_fieldID(0), m_boxItemID(0), m_3c(0) {}
+
+// @0x1403fdde0
+void ItemBoxEventContext::Load(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "fieldID", m_fieldID);
+    FUN_140873220(pElem, "boxItemID", m_boxItemID);
+    FUN_140873420(pElem, "bannerPath", m_bannerPath);
+    FUN_140873420(pElem, "title", m_title);
+    FUN_140873420(pElem, "desc", m_desc);
+}
+
+// @0x1403fde90
+void ItemBoxEventContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_fieldID);
+    out.vfunc_o10_3(m_boxItemID);
+    out.vfunc_o10_8(m_title);
+    out.vfunc_o10_8(m_desc);
+    out.vfunc_o10_8(m_bannerPath);
+    out.vfunc_o10_3(m_3c);
+}
+
+// @0x1403fdf70
+void ItemBoxEventContext::Read(CInPacket& packet)
+{
+    m_fieldID = packet.vfunc_o8_3();
+    m_boxItemID = packet.vfunc_o8_3();
+    m_title = packet.vfunc_o8_8();
+    m_desc = packet.vfunc_o8_8();
+    m_bannerPath = packet.vfunc_o8_8();
+    m_3c = packet.vfunc_o8_3();
+}
+
+// @0x1403fe170
+TimeRunEventContext::TimeRunEventContext(int eventId) : m_eventId(eventId), m_1c(0), m_value(0), m_endTime(0), m_rewards(10) {}
+
+// @0x1403fe250
+void TimeRunEventContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_value);
+    out.vfunc_o10_3(m_1c);
+    out.vfunc_o10_3(m_quests.GetCount());
+    for (POSITION pos = m_quests.GetStartPosition(); pos != NULL; m_quests.GetNext(pos)) {
+        MS2Ptr<QuestContext> spQuest = m_quests.GetValueAt(pos);
+        out.vfunc_o10_3(spQuest->m_questId);
+        out.vfunc_o10_3(spQuest->m_1c);
+        out.vfunc_o10_2(spQuest->m_20);
+    }
+    m_item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    out.vfunc_o10_3(m_rewards.GetCount());
+    for (POSITION pos = m_rewards.GetHeadPosition(); pos != NULL; m_rewards.GetNext(pos)) {
+        unsigned key = m_rewards.GetKeyAt(pos);
+        MS2Ptr<ItemEntity> spItem = m_rewards.GetValueAt(pos);
+        out.vfunc_o10_3(key);
+        spItem->FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+}
+
+// @0x1403fe520
+void TimeRunEventContext::Read(CInPacket& packet)
+{
+    m_quests.RemoveAll();
+    m_value = packet.vfunc_o8_3();
+    m_1c = packet.vfunc_o8_3();
+    size_t count = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < count; i++) {
+        MS2Ptr<QuestContext> spQuest(new QuestContext);
+        spQuest->m_questId = packet.vfunc_o8_3();
+        spQuest->m_1c = packet.vfunc_o8_3();
+        spQuest->m_20 = (unsigned short)packet.vfunc_o8_2();
+        m_quests.SetAt(spQuest->m_questId, spQuest);
+    }
+    m_item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+    count = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < count; i++) {
+        MS2Ptr<ItemEntity> spItem(new ItemEntity);
+        unsigned key = packet.vfunc_o8_3();
+        spItem->FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_rewards.SetAt(key, spItem);
+    }
+}
+
+// @0x1403fe8f0
+unsigned TimeRunEventContext::GetNextRewardKey(unsigned value)
+{
+    for (POSITION pos = m_rewards.GetHeadPosition(); pos != NULL; m_rewards.GetNext(pos)) {
+        unsigned key = m_rewards.GetKeyAt(pos);
+        if (key > value)
+            return key;
+    }
+    return 0;
+}

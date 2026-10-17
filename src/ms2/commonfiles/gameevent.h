@@ -4,7 +4,15 @@
 // Members of the base are opaque padding until the base unit is recovered.
 #pragma once
 #include <afx.h>
+#include <atlcoll.h>
 #include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/ascript.h"
+#include "ms2/commonfiles/itemgift.h"
+#include "ms2/commonfiles/timeutil.h"
+class Unk_140165cf0;
+class CInPacket;
+class CInputStream;
+class COutputStream;
 
 // Output / input stream stand-ins: only the virtual slot used by GameEvent subclasses (slot 3) is exact.
 class Unk_GEOut {
@@ -1321,16 +1329,37 @@ private:
     char m_pad_18[0x38];
 };  // vftable 0x142d41558, ??_G 0x1403eb890, dtor 0x1403e7090
 MS2_CHECK_SIZE(SnowmanContext, 0x50);
+// Members recovered by gameeventcontext.cpp (stream Write 0x1403fcc90 / Read 0x1403fd060). The ctors are in
+// gameevent.cpp (not recovered).
 class StampEventContext : public CPtred {
 public:
     struct Reward : public CPtred {
-        char m_pad_18[0x68];
+        Reward();
+        int m_count;                    // +0x18 stamps needed
+        int m_bReceived;                // +0x1c (a byte on the wire)
+        ItemEntity m_item;              // +0x20
+        ItemEntity m_item2;             // +0x50
     };  // vftable 0x142d414e8, ??_G 0x1403eb6d0, dtor 0x1403e6f10
     struct Stamp : public CPtred {
-        char m_pad_18[0x10];
+        Stamp();
+        int m_id;                       // +0x18
+        int m_bStamped;                 // +0x1c (a byte on the wire)
+        int m_20;
+        int m_24;
     };  // vftable 0x142d414d8, ??_G 0x1403eb8d0, dtor 0x1403e70d0
-private:
-    char m_pad_18[0x90];
+    void Write(COutputStream& out);                 // 0x1403fcc90
+    void Read(CInPacket& packet);                   // 0x1403fd060
+    int GetStampFlag(int id);                       // 0x1403fd5a0: 1/0 stamped, -1 unknown stamp
+    BOOL HasStamp(int id);                          // 0x1403fd660
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    ATL::CAtlArray<MS2Ptr<Stamp> > m_stamps;        // +0x20
+    ATL::CAtlArray<MS2Ptr<Reward> > m_rewards;      // +0x40
+    ItemEntity m_item;                              // +0x60
+    __int64 m_endTime;                              // +0x90
+    int m_98;
+    bool m_b9c;
+    CStringW m_strTitle;                            // +0xa0
 };  // vftable 0x142d414f8, ??_G 0x1403eb910, dtor 0x1403e70f0
 MS2_CHECK_SIZE(StampEventContext, 0xa8);
 // Members proven by the dtor 0x1403e7150 (CString dtors at +0x118/+0x110/+0x108/+0xf8, then the CAtlMap/CAtlArray
@@ -1374,13 +1403,30 @@ class TreeWatering_TreeStep : public CPtred {
     char m_pad_18[0x28];
 };  // vftable 0x142d415c0, ??_G 0x1403eba10, dtor 0x1403e7240
 MS2_CHECK_SIZE(TreeWatering_TreeStep, 0x40);
-// TimeRunEventContext: only the nested class (the outer class is a gameeventcontext.cpp type, not recovered here).
+// TimeRunEventContext: outer class recovered by gameeventcontext.cpp (ctor 0x1403fe170, Write / Read); the nested
+// QuestContext ctor 0x1403e42a0 is in gameevent.cpp.
 class TimeRunEventContext : public CPtred {
 public:
     struct QuestContext : public CPtred {
-        char m_pad_18[0x10];
+        QuestContext();
+        unsigned m_questId;             // +0x18
+        int m_1c;
+        int m_20;                       // +0x20 (a short on the wire)
     };  // vftable 0x142d41518, ??_G 0x1403eb610, dtor 0x1403e6e80
+    TimeRunEventContext(int eventId);               // 0x1403fe170
+    void Write(COutputStream& out);                 // 0x1403fe250
+    void Read(CInPacket& packet);                   // 0x1403fe520
+    unsigned GetNextRewardKey(unsigned value);      // 0x1403fe8f0: first reward key above `value`, 0 if none
+    int m_eventId;                                  // +0x18
+    int m_1c;
+    int m_value;                                    // +0x20
+    __int64 m_endTime;                              // +0x28
+    ATL::CAtlMap<unsigned, MS2Ptr<QuestContext> > m_quests;     // +0x30
+    ItemEntity m_item;                                          // +0x78
+    ATL::CRBMap<unsigned, MS2Ptr<ItemEntity> > m_rewards;       // +0xa8
 };
+MS2_CHECK_SIZE(TimeRunEventContext, 0xd8);
+MS2_CHECK_OFFSET(TimeRunEventContext, m_rewards, 0xa8);
 // LongTermAttendGiftContext: only the nested class (the outer class is a gameeventcontext.cpp type, not recovered here).
 class LongTermAttendGiftContext : public CPtred {
 public:
@@ -1397,14 +1443,32 @@ MS2_CHECK_SIZE(SnowmanContext::Snowman, 0x68);
 MS2_CHECK_SIZE(StampEventContext::Stamp, 0x28);
 
 // gameeventcontext.cpp element types that gameevent.cpp holds through MS2Ptr<> (layouts not recovered).
+// Start / end second of the day (two Unk_DayTime; inline ctor 0x1402e4a60).
+struct Unk_DayTimeRange {
+    Unk_DayTimeRange() : m_start(0), m_end(0) {}
+    Unk_DayTime m_start;
+    Unk_DayTime m_end;
+};
 class EventTimeLimitDungeonContext : public CPtred {   // operator new(0x28) in the 0x1403c31c0 xml loader
-    char m_pad_18[0x10];
+public:
+    EventTimeLimitDungeonContext();                 // 0x1403fcb10
+    void Write(COutputStream& out);                 // 0x1403fcb80
+    void Read(CInputStream& in);                    // 0x1403fcc00
+    int m_eventId;                                  // +0x18
+    unsigned m_dungeonId;                           // +0x1c "dungeonID"
+    Unk_DayTimeRange m_rangeTime;                   // +0x20 "rangeTime"
 };
 MS2_CHECK_SIZE(EventTimeLimitDungeonContext, 0x28);
 // The CRBMap<unsigned int, MS2Ptr<.>> value of BlueMarbleEventContext (+0x38); vftable 0x142d44130, ??_G 0x140411ac0
 // (operator delete 0x28, dtor 0x1404105a0), both in gameeventcontext.cpp.
+enum Unk_BlueMarbleSlotType {};
 class BonusGameBlueMarbleSlot : public CPtred {
-    char m_pad_18[0x10];
+public:
+    BonusGameBlueMarbleSlot();                      // 0x1403fc640
+    void Load(Unk_140165cf0* pElem);                // 0x1403fc6a0
+    Unk_BlueMarbleSlotType m_type;                  // +0x18 "type"
+    int m_arg1;                                     // +0x1c "arg1"
+    int m_arg2;                                     // +0x20 "arg2"
 };
 MS2_CHECK_SIZE(BonusGameBlueMarbleSlot, 0x28);
 // The CAtlMap value of the CNode ??_G 0x1403e9950 (MS2Ptr<T> dtor 0x1403e5240, sorted between
