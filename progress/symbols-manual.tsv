@@ -2726,3 +2726,9 @@ inflateInit_	142723ad0	func
 ?DAT_143aab3b0@@3VCLockCriticalSection@@A	143aab3b0	data
 ?s_bInit@CQuestTable@@2_NA	143ae65dc	data
 ?s_bInit@CScriptTable@@2_NA	143acce40	data
+?FUN_1401d3200@@YAPEAUUnk_AuConfig@@XZ	1401d3200	func
+?FUN_1402bac70@Unk_AuCfgValue@@QEAAMXZ	1402bac70	func
+?FUN_140298f40@Unk_AuCfgValue@@QEAAAEBMXZ	140298f40	func
+?FUN_1403ed2d0@@YAPEAVUnk_AuWorld@@XZ	1403ed2d0	func
+?FUN_141bdb5c0@Unk_AuWorld@@QEAAHXZ	141bdb5c0	func
+?DAT_143ae37d0@@3PADA	143ae37d0	data
