@@ -3403,3 +3403,85 @@ void CubeMapInformationService::FUN_1410bbf20(int nGroup, const egf::EntityID& i
         pMark->FUN_14198cb00(*FUN_141128800(&spInfo));
     FUN_141123790(&spInfo);
 }
+
+// ---- w138 batch 12 ----
+struct Unk_CMISDollRec { char m_pad0[0x18]; int m_nId; int m_pad1c; __int64 m_nChar; int m_nSlot; Unk_StreamPoint m_ptPos; Unk_StreamPoint m_ptRot; int m_bItems; int m_pad48[2]; char m_items[1]; };
+class Unk_CMISDoll
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
+    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9();
+    virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14();
+    virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18();
+    virtual void vfunc_19(Unk_StreamPoint ptPos);
+    virtual void vfunc_20();
+    virtual void vfunc_21(Unk_StreamPoint ptRot);
+    void FUN_141656a50(__int64 nCharId);
+    void FUN_14121c6e0(__int64 nCharId);
+    void FUN_14123c5a0(int nId);
+    int FUN_14121bab0(int nSlot);
+    egf::EntityID FUN_14123c460();
+    egf::Entity* FUN_14123c410();
+    void FUN_141653d10(void* pItem);
+};
+struct Unk_CMISWorldBind { int FUN_141bbb1e0(Unk_CMISDoll* pObj, int bFullInit, unsigned nCamera); };
+void* FUN_14121b350(void* pMem);                                // FittingDollPC::FittingDollPC
+void* FUN_140876480(void* out, int cat);   void* FUN_14208a860(unsigned __int64 size, unsigned cat);
+struct Unk_CMISItemElem { char m_pad[0x18]; };
+unsigned FUN_140720ca0(void* pArr);
+void* FUN_140a69ee0(void* pArr, unsigned nIdx);
+Unk_CMISItemElem* FUN_1402034d0(Unk_CMISItemElem* pOut, void* pSrc);
+void FUN_1401bfde0(Unk_CMISItemElem* p);
+
+static Unk_CMISDoll* NewCMISDoll()
+{
+    int tmp;
+    int* cat = (int*)FUN_140876480(&tmp, 0);
+    void* mem = FUN_14208a860(0x1300, *cat);
+    return mem == 0 ? 0 : (Unk_CMISDoll*)FUN_14121b350(mem);
+}
+
+// @0x1410bc7f0
+// MS2-FUNCTIONAL: the exe's CComPtr temp and EH frame are not reproduced
+egf::EntityPtr CubeMapInformationService::FUN_1410bc7f0(Unk_StreamPoint ptPos, Unk_StreamPoint ptRot, unsigned nIdx, int nItemId)
+{
+    Unk_CMISDoll* pc = NewCMISDoll();
+    pc->FUN_141656a50(0);
+    pc->FUN_14121c6e0(0);
+    pc->FUN_14123c5a0(nItemId);
+    pc->vfunc_19(ptPos);
+    pc->vfunc_21(ptRot);
+    if (pc->FUN_14121bab0(nIdx) == 0)
+        return egf::EntityPtr(0);
+    ((Unk_CMISWorldBind*)FUN_1403ed2d0())->FUN_141bbb1e0(pc, 0, 1);
+    egf::EntityID id = pc->FUN_14123c460();
+    FUN_1410cb380(*(Unk_Int3*)&ptPos, reinterpret_cast<const Unk_CMISEntityRef&>(id));
+    return egf::EntityPtr(pc->FUN_14123c410());
+}
+
+// @0x1410bc3d0
+// MS2-FUNCTIONAL: the exe's CComPtr temp and EH frame are not reproduced
+egf::EntityPtr CubeMapInformationService::FUN_1410bc3d0(Unk_CMISBlock rec)
+{
+    Unk_CMISDollRec* r = (Unk_CMISDollRec*)&rec;
+    Unk_CMISDoll* pc = NewCMISDoll();
+    pc->FUN_141656a50(r->m_nChar);
+    pc->FUN_14121c6e0(r->m_nChar);
+    pc->FUN_14123c5a0(r->m_nId);
+    pc->vfunc_19(r->m_ptPos);
+    pc->vfunc_21(r->m_ptRot);
+    if (pc->FUN_14121bab0(r->m_nSlot) == 0)
+        return egf::EntityPtr(0);
+    if (r->m_bItems != 0) {
+        for (unsigned i = 0; i < FUN_140720ca0(r->m_items); i++) {
+            Unk_CMISItemElem e;
+            FUN_1402034d0(&e, FUN_140a69ee0(r->m_items, i));
+            pc->FUN_141653d10(&e);
+            FUN_1401bfde0(&e);
+        }
+    }
+    ((Unk_CMISWorldBind*)FUN_1403ed2d0())->FUN_141bbb1e0(pc, 0, 1);
+    egf::EntityID id = pc->FUN_14123c460();
+    FUN_1410cb380(*(Unk_Int3*)&r->m_ptPos, reinterpret_cast<const Unk_CMISEntityRef&>(id));
+    return egf::EntityPtr(pc->FUN_14123c410());
+}
