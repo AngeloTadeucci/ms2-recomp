@@ -417,7 +417,7 @@ public:
     bool ParseRange(CStringW str);                  // 0x140406ea0
     bool LoadItems(CStringW strPath);               // 0x140406f70
     unsigned m_eventId;                             // +0x18 (unsigned: CGameEventValueLimitedQuantity::Add indexes its map<unsigned> with it)
-    unsigned long m_1c;                             // key of CGameEventValueLimitedQuantity::m_keys
+    unsigned m_1c;                                  // key of CGameEventValueLimitedQuantity::m_keys
     int m_20;
     int m_pad_24;
     std::map<unsigned long, int> m_items;           // +0x28 item id -> quantity

@@ -39,10 +39,10 @@ public:
     Unk_GameEventValueSum();                        // 0x140422d20
     ~Unk_GameEventValueSum();                       // 0x140422d70
     int GetSum();                                   // 0x140422db0
-    void SetValue(unsigned long eventId, int value); // 0x140422e00: 0 removes the event
+    void SetValue(unsigned eventId, int value);     // 0x140422e00: 0 removes the event
     CLockCriticalSection m_lock;
     int m_sum;                                      // +0x30
-    std::map<unsigned long, unsigned long> m_values; // +0x38 event id -> value
+    std::map<unsigned, unsigned> m_values; // +0x38 event id -> value
 };
 MS2_CHECK_SIZE(Unk_GameEventValueSum, 0x48);
 
@@ -556,12 +556,12 @@ public:
     CGameEventValueLimitedQuantity();               // 0x140429e20
     ~CGameEventValueLimitedQuantity();              // 0x140429e80
     MS2Ptr<LimitedQuantityContext> Get(unsigned eventId);          // 0x140429ed0
-    MS2Ptr<LimitedQuantityContext> GetByKey(unsigned long key);    // 0x140429fd0
+    MS2Ptr<LimitedQuantityContext> GetByKey(unsigned key);         // 0x140429fd0
     void Add(MS2Ptr<LimitedQuantityContext> spContext);            // 0x14042a0e0
     void Remove(MS2Ptr<LimitedQuantityContext> spContext);         // 0x14042a260
     CLockCriticalSection m_lock;
     std::map<unsigned, MS2Ptr<LimitedQuantityContext> > m_contexts;            // +0x30
-    std::map<unsigned long, unsigned long> m_keys;                        // +0x40 key -> event id
+    std::map<unsigned, unsigned> m_keys;                        // +0x40 key -> event id
 };
 MS2_CHECK_SIZE(CGameEventValueLimitedQuantity, 0x50);
 
