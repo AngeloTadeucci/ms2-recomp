@@ -104,6 +104,9 @@ public:
 };
 MS2_CHECK_SIZE(CItemUgc, 0xd8);
 class Unk_SocketSlot;
+// The special-stat options of a socket (the key is the special stat; ctor 0x1405cccb0 in itemoptiondata.cpp).
+enum Unk_SocketSpecialStat { };
+typedef ATL::CAtlMap<Unk_SocketSpecialStat, Unk_EnchantPtr<BaseOption> > Unk_SocketSpecialMap;
 class CItemSocket : public CPtred
 {
 public:
@@ -127,6 +130,8 @@ public:
     bool FUN_1406228d0();
     bool FUN_140622a00(const __int64* pCharacterId);
     void FUN_140622b40(__int64* pCharacterId, CStringW* pName);
+    bool FUN_140621b10(Unk_EnchantMap& kOut);               // copy the stat options (+0x40)
+    bool FUN_140621b80(Unk_SocketSpecialMap& kOut);         // copy the special-stat options (+0x88)
     char m_pad18[0xd8];
 };
 MS2_CHECK_SIZE(CItemSocket, 0xf0);

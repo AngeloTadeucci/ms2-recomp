@@ -60,6 +60,7 @@
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/commonfiles/itemdata.h"
+#include "ms2/commonfiles/item.h"
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/client/ms2/inventory.h"
 #include "ms2/client/ms2/networkservice.h"
@@ -1445,6 +1446,86 @@ void MyPC::FUN_141523e60(CItem* pItem, int* pStatDiff, int* pSpecialDiff, int* p
     *pScoreDiff = nNewScore - nOldScore;
 }
 MS2_REPLACE_METHOD(0x141523E60, MyPC, FUN_141523e60, 2576, 0xA6B50CC8);
+
+enum Unk_MyPCStatType { };                                  // the basic stats (0x23)
+enum Unk_MyPCSpecialType { };                               // the special stats (0xcf)
+// CItem::FUN_1405278a0's record (the CItemStatus accessors take the stat enums).
+class Unk_ItemEnchantData : public CItemStatus
+{
+public:
+    int FUN_14062ffb0(Unk_MyPCStatType nType, int nWhich, int nSub);
+    int FUN_140630290(Unk_MyPCSpecialType nType, int nWhich, int nSub);
+};
+
+// Sum the stats of the items (the status totals, the enabled socket options) into pStats/pSpecials; pScore gets
+// the mean item score.
+// @0x141531470
+void MyPC::FUN_141531470(ATL::CAtlArray<MS2Ptr<CItem> >& aItems, int* pStats, int* pSpecials, int* pScore)
+{
+    size_t nCount = aItems.GetCount();
+    if (nCount <= 0)
+        return;
+    {
+        for (size_t i = 0; i < nCount; i++)
+        {
+            MS2Ptr<CItem> spItem = aItems[i];
+            if (spItem == 0)
+                continue;
+            *pScore += spItem->FUN_140529070();
+            Unk_ItemEnchantData* pStatus = spItem->FUN_1405278a0();
+            if (pStatus == 0)
+                continue;
+            for (unsigned int nStat = 0; nStat < 0x23; nStat++)
+            {
+                Unk_MyPCStatType eType = static_cast<Unk_MyPCStatType>(nStat);
+                pStats[nStat] += pStatus->FUN_14062ffb0(eType, 3, 5);
+            }
+            for (unsigned int nStat = 1; nStat < 0xcf; nStat++)
+            {
+                Unk_MyPCSpecialType eType = static_cast<Unk_MyPCSpecialType>(nStat);
+                pSpecials[nStat] += pStatus->FUN_140630290(eType, 3, 5);
+            }
+            CItemSocket* pSocket = spItem->FUN_1405279c0();
+            if (pSocket != 0)
+            {
+                Unk_EnchantMap kStats;
+                bool bHas = pSocket->FUN_140621b10(kStats);
+                if (bHas)
+                {
+                    for (POSITION pos = kStats.GetStartPosition(); pos != 0; kStats.GetNext(pos))
+                    {
+                        Unk_EnchantPtr<BaseOption> spOption = kStats.GetValueAt(pos);
+                        if (spOption == 0)
+                            continue;
+                        if (spOption->FUN_140266ce0())
+                        {
+                            int nStat = kStats.GetKeyAt(pos);
+                            pStats[nStat] += spOption->FUN_140266e30();
+                        }
+                    }
+                }
+                Unk_SocketSpecialMap kSpecials;
+                bHas = pSocket->FUN_140621b80(kSpecials);
+                if (bHas)
+                {
+                    for (POSITION pos = kSpecials.GetStartPosition(); pos != 0; kSpecials.GetNext(pos))
+                    {
+                        Unk_EnchantPtr<BaseOption> spOption = kSpecials.GetValueAt(pos);
+                        if (spOption == 0)
+                            continue;
+                        if (spOption->FUN_140266ce0())
+                        {
+                            int nStat = kSpecials.GetKeyAt(pos);
+                            pSpecials[nStat] += spOption->FUN_140266e30();
+                        }
+                    }
+                }
+            }
+        }
+        *pScore = *pScore / nCount;
+    }
+}
+MS2_REPLACE(0x141531470, MyPC::FUN_141531470, 1322, 0xF9E6B7A2);
 
 // @0x141523ba0
 void MyPC::FUN_141523ba0()
