@@ -65,6 +65,7 @@ void FUN_140873e30(void* pElem, const char* pszName, float fValue);         // S
 void FUN_140874ad0(void* pElem, const char* pszName, const efd::Point3& kValue);    // SetAttribute(name, "x, y, z")
 void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);   // Point3 attribute
 int FUN_140874670(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);    // Point3 attribute (drop effect)
+CString FUN_140298360(const char* psz, const CString& str);                              // ATL operator+(const char*, const CString&) (commonutil.cpp)
 __int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
 CString FUN_1401d4330(const wchar_t* pszWide, int nCodePage);              // wide to ansi
 CString FUN_140188f50(const char* psz, int nCodePage);                     // string from an attribute value
@@ -287,7 +288,7 @@ int ModelPart::FUN_140543ca0(Unk_140165cf0* pElem)
     {
         isNif = 0;
         if (name0.Find("urn:gamebryo-animation:") == -1)
-            name0 = "urn:gamebryo-animation:" + name0;
+            name0 = FUN_140298360("urn:gamebryo-animation:", name0);
     }
     FUN_1408731e0(pElem, "pony", pony);
     FUN_140873220(pElem, "zalign", zalign);
