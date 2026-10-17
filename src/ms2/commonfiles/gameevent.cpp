@@ -5811,14 +5811,7 @@ inline void Unk_BurningLevelupLog(Unk_CommonLog* log, int level, int category, c
     log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second), args));
 }
 
-// @0x1403d8110
-int CXmlData::GetInt(const CStringW& strKey, const int& nDefault)
-{
-    CStringW strValue;
-    if (!reinterpret_cast<Values*>(m_unknown18)->Lookup(strKey, strValue))
-        return nDefault;
-    return FUN_1407181a0(strValue);
-}
+// CXmlData::GetInt (COMDAT 0x1403d8110) is the inline in cxmldata.h.
 MS2_REPLACE_METHOD(0x1403D8110, CXmlData, GetInt, 142, 0xEF9D94D9);
 
 #ifndef MS2_HOOK_DLL

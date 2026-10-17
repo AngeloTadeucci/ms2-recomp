@@ -267,8 +267,10 @@ MS2_CHECK_SIZE(ItemAdditionalEffect, 0x48);
 
 struct ItemFunctionArgs             // the <function> parameter string split into arguments, 0x70 bytes
 {
-    ItemFunctionArgs();
+    ItemFunctionArgs();             // 0x1408d1bd0
     ~ItemFunctionArgs();            // 0x140540c00
+    void FUN_1408d1e00(CStringW strText, CStringW strSeparators);   // split strText into args
+    unsigned FUN_1408d2380();       // the argument count
     unsigned FUN_1408d1f60(int nIndex, int nDefault);
     int FUN_1408d1fd0(int nIndex, int nDefault);   // the nIndex-th argument as a number (usercommandcli.h: Unk_CommandArgs)
     CStringW text;                  // +0x00
@@ -282,7 +284,11 @@ struct ItemFunction                 // <function name parameter ...>
     ItemFunction();                 // 0x140549e70
     ~ItemFunction();                // 0x140540d10
     int FUN_140549f00(Unk_140165cf0* pElem);
-    bool FUN_14054a2b0(const ItemFunction* pOther);
+    bool FUN_14054a2b0(const ItemFunction* pOther);    // operator!=
+    int FUN_14054a350();            // 0 when the parameter is malformed
+    bool FUN_14054a3d0();           // has a name
+    bool FUN_14054a410();           // has xml values
+    int FUN_14054a460();            // the box (drop group) id an OpenItemBox* / SelectItemBox / OpenGachaBox opens
     CStringW name;                  // +0x00 (functionName)
     CStringW name2;                 // +0x08
     int arg0, arg1, arg2;           // +0x10

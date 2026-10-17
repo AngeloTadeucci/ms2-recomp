@@ -5,6 +5,7 @@
 // MS2-RANGE: 0x140543a30-0x140555a70 .text$mn
 // MS2-RANGE: 0x1400b9950-0x1400b9a40 .text$di
 // MS2-RANGE: 0x142c9ad60-0x142c9ae90 .text$yd
+// MS2-PIN: ?GetInt@CXmlData@@QEAAHAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEBH@Z 0x14054c530
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemdatastruct.cpp"
 // The _stricmp calls of this unit go through the IAT, so not ms2/placeholder/ms2stdafx.h (its plain redeclaration).
 #include <afx.h>
@@ -14,6 +15,9 @@
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/commonfiles/logstring.h"
+#include "ms2/commonfiles/itemgachaboxtable.h"
+#include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include <typeinfo>
 #include <algorithm>
@@ -37,6 +41,7 @@ void FUN_140873e30(void* pElem, const char* pszName, float fValue);         // S
 void FUN_140874ad0(void* pElem, const char* pszName, const efd::Point3& kValue);    // SetAttribute(name, "x, y, z")
 void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);   // Point3 attribute
 __int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
+CString FUN_1401d4330(const wchar_t* pszWide, int nCodePage);              // wide to ansi
 CString FUN_140188f50(const char* psz, int nCodePage);                     // string from an attribute value
 efd::Point3 FUN_14028f060(CString str);                                    // "x, y, z" -> point (ZERO when malformed)
 int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);  // bool attribute (TinyXML query)
@@ -1626,4 +1631,123 @@ unsigned short ItemAdditionalEffect::FUN_140549e20()
     if (levels.IsEmpty())
         return 0;
     return levels.GetAt(0);
+}
+
+// ---- ItemFunction -------------------------------------------------------------------------------------------------------
+// The unit's two-argument log call (FMT_VARIADIC wrapper over CLogString::FUN_1406530d0).
+template <class T, class U>
+inline void Unk_ItemDataLog(CLogString* log, int level, int category, const wchar_t* format, const T& first,
+                            const U& second)
+{
+    const fmt::internal::ArgArray<2>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(first),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(second)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second), args));
+}
+
+// @0x140549e70
+ItemFunction::ItemFunction()
+    : arg0(0), arg1(0), arg2(0)
+{
+}
+
+// @0x140549f00
+int ItemFunction::FUN_140549f00(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* p = pElem->FUN_140165cf0("function");
+    if (p != 0)
+    {
+        FUN_140873420(p, "name", name);
+        FUN_140873420(p, "parameter", name2);
+        FUN_1408731e0(p, "param1", arg0);
+        FUN_1408731e0(p, "param2", arg1);
+        FUN_1408731e0(p, "param3", arg2);
+        // "<key=value,...>" is parsed as xml values, anything else as a comma separated argument list
+        bool bXml = name2.GetLength() > 1 && name2.Left(1) == L"<" && name2.Right(1) == L">";
+        if (bXml)
+            xml.FUN_14092c400(name2);
+        else
+            parameter.FUN_1408d1e00(name2, L",");
+        if (FUN_14054a350() == 0)
+            Unk_ItemDataLog(CLogString::GetInstance(), 1, 0x13, L"xml 형식이 잘못 되었습니다ItemFunction!! [{0}] [{1}]",
+                            FUN_1401d4330(name, 0), FUN_1401d4330(name2, 0));
+    }
+    return 1;
+}
+
+// @0x14054a2b0
+bool ItemFunction::FUN_14054a2b0(const ItemFunction* pOther)
+{
+    if (name != pOther->name)
+        return true;
+    if (name2 != pOther->name2)
+        return true;
+    if (arg0 != pOther->arg0)
+        return true;
+    if (arg1 != pOther->arg1)
+        return true;
+    if (arg2 != pOther->arg2)
+        return true;
+    return false;
+}
+
+// @0x14054a350
+int ItemFunction::FUN_14054a350()
+{
+    if (name == L"ExpandInven")
+    {
+        if (parameter.FUN_1408d2380() < 1)
+            return 0;
+        unsigned nSlots = parameter.FUN_1408d1fd0(0, 0);
+        if (nSlots % 6 != 0)
+            return 0;
+    }
+    return 1;
+}
+
+// @0x14054a3d0
+bool ItemFunction::FUN_14054a3d0()
+{
+    return name.GetLength() > 0;
+}
+
+// @0x14054a410
+bool ItemFunction::FUN_14054a410()
+{
+    return !xml.FUN_14092c5c0();
+}
+
+// @0x14054a460
+int ItemFunction::FUN_14054a460()
+{
+    if (name == L"OpenItemBox")
+    {
+        return arg0;
+    }
+    else if (name == L"OpenItemBoxWithKey")
+    {
+        if (arg0 != 0)
+            return arg0;
+        else
+            return parameter.FUN_1408d1fd0(5, 0);
+    }
+    else if ((name == L"OpenItemBoxLullu" || name == L"OpenItemBoxLulluSimple") && !xml.FUN_14092c5c0())
+    {
+        return xml.GetInt(L"commonBoxId", 0);
+    }
+    else if (name == L"SelectItemBox")
+    {
+        if (FUN_14054a410())
+            return xml.GetInt(L"individualDropBoxId", 0);
+        else
+            return parameter.FUN_1408d1fd0(1, 0);
+    }
+    else if (name == L"OpenGachaBox")
+    {
+        int nBoxId = parameter.FUN_1408d1fd0(0, 0);
+        GachaBoxDataPtr spBox = ItemGachaBoxTable::GetInstance()->FUN_14059e340(nBoxId);
+        if (spBox == 0)
+            return 0;
+        return spBox->m_nIndividualDropBoxID;
+    }
+    return 0;
 }
