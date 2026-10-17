@@ -6,6 +6,7 @@ class Unk_ShutdownOutput;
 class Unk_ShutdownInput;
 class CContentShutdown {
 public:
+    CContentShutdown();   // inline COMDAT: Clear()
     enum Content { None = 0, End = 117 };
     void Encode(Unk_ShutdownOutput&);
     void Decode(Unk_ShutdownInput&);
