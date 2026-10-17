@@ -2695,3 +2695,6 @@ inflateInit_	142723ad0	func
 ?Write@CUgcGuildMarkProxy@@UEBAXAEAVCOutputStream@@@Z	140891b00	func
 ?Clear@CUgcGuildPosterProxy@@UEAAXXZ	140891c50	func
 ?Write@CUgcGuildPosterProxy@@UEBAXAEAVCOutputStream@@@Z	140891d20	func
+?s_instance@?$TSingleton@VJobTable@@@@2PEAVJobTable@@EA	143aac638	data
+?s_bInit@JobTable@@2_NA	143ab01f8	data
+?s_skillMaxLevel@JobData@@2V?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@A	143ab01b0	data
