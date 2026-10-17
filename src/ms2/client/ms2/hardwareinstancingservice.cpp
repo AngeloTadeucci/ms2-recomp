@@ -307,6 +307,41 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
+// ---- the entity property cache (MS2's keyed Entity::SetPropertyValue<T>) ----
+// @0x1413d9bb0
+template<typename T>
+void Unk_HwiCachedEntity::CacheKeyedPropertyValue(egf::PropertyID propID, const efd::utf8string& key, const T& data)
+{
+    if (m_bCaching)
+    {
+        efd::map<unsigned, efd::map<efd::utf8string, Unk_PropertyCacheEntry> >::iterator it = m_mapKeyedCache.find(propID);
+        if (it == m_mapKeyedCache.end())
+        {
+            T kOld;
+            GetPropertyValueUnsafe(propID, key, &kOld, efd::GetClassIDFromType<T>());
+            m_mapKeyedCache[propID][key] = Unk_PropertyCacheEntry(propID, new T(kOld), efd::GetClassIDFromType<T>());
+        }
+        else
+        {
+            efd::map<efd::utf8string, Unk_PropertyCacheEntry>::iterator itKey = it->second.find(key);
+            if (itKey == it->second.end())
+            {
+                T kOld;
+                GetPropertyValueUnsafe(propID, key, &kOld, efd::GetClassIDFromType<T>());
+                it->second[key] = Unk_PropertyCacheEntry(propID, new T(kOld), efd::GetClassIDFromType<T>());
+            }
+        }
+    }
+}
+
+// @0x1413d9ec0
+template<typename T>
+egf::PropertyResult Unk_HwiCachedEntity::SetPropertyValue(egf::PropertyID propID, const efd::utf8string& key, const T& data)
+{
+    CacheKeyedPropertyValue(propID, key, data);
+    return SetPropertyValueUnsafe(propID, key, &data, efd::GetClassIDFromType<T>());
+}
+
 // ---- services reached through globals ----
 extern char DAT_143b059e8;                                          // the application framework
 HardwareInstancingService* FUN_14098c5b0(char* pFramework);
@@ -955,7 +990,7 @@ void HardwareInstancingService::FUN_1413d5710()
                     egf::Entity* pNear = itNear->m_pEntity;
                     sprintf(szKey, "%I64u", (*it)->FUN_1413ebb00().GetValue());
                     efd::utf8string strKey(szKey);
-                    pNear->SetPropertyValue(0xe68ebfdf, strKey, (*it)->FUN_1413ebb00());
+                    static_cast<Unk_HwiCachedEntity*>(pNear)->SetPropertyValue(0xe68ebfdf, strKey, (*it)->FUN_1413ebb00());
                 }
             }
         }
@@ -968,7 +1003,7 @@ void HardwareInstancingService::FUN_1413d5710()
                 {
                     sprintf(szKey, "%I64u", (*it)->FUN_1413ebb00().GetValue());
                     efd::utf8string strKey(szKey);
-                    itNear->m_pEntity->SetPropertyValue(0xe68ebfdf, strKey, (*it)->FUN_1413ebb00());
+                    static_cast<Unk_HwiCachedEntity*>(itNear->m_pEntity)->SetPropertyValue(0xe68ebfdf, strKey, (*it)->FUN_1413ebb00());
                 }
             }
         }
@@ -1531,7 +1566,7 @@ bool HardwareInstancingService::FUN_1413d84e0(egf::Entity* pEntity, NiTransform*
                         char szKey[0x100];
                         sprintf(szKey, "%I64u", pInstancing->FUN_1413ebb00().GetValue());
                         efd::utf8string strKey(szKey);
-                        pNear->SetPropertyValue(0xe68ebfdf, strKey, pInstancing->FUN_1413ebb00());
+                        static_cast<Unk_HwiCachedEntity*>(pNear)->SetPropertyValue(0xe68ebfdf, strKey, pInstancing->FUN_1413ebb00());
                     }
                 }
             }

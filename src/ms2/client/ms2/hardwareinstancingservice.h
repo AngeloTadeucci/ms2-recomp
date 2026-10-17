@@ -15,6 +15,8 @@
 #include <efd/ISystemService.h>
 #include <efd/SmartPointer.h>
 #include <efd/Point3.h>
+#include <efd/StdContainers.h>
+#include <efd/utf8string.h>
 #include <egf/IPropertyCallback.h>
 #include <egf/EntityID.h>
 #include <egf/Entity.h>
@@ -74,6 +76,38 @@ struct Unk_HwiMapData
     std::map<egf::EntityID, MeshInstancing*> m_mapDynamic;          // +0x50 entity id -> DynamicInstancing
 };
 MS2_CHECK_SIZE(Unk_HwiMapData, 0x60);
+
+// A property write saved while an entity's property cache is on (id, a heap copy of the old value, its class id).
+// Same view as bosstargetcamera.cpp (its ctor 0x140947490) and scenestategame.cpp.
+struct Unk_PropertyCacheEntry
+{
+    Unk_PropertyCacheEntry() : m_id(0), m_pValue(NULL), m_type(0) {}       // 0x1409474d0
+    Unk_PropertyCacheEntry(unsigned nId, void* pValue, unsigned nType) : m_id(nId), m_pValue(pValue), m_type(nType) {}
+
+    unsigned m_id;
+    void* m_pValue;
+    unsigned m_type;
+};
+MS2_CHECK_SIZE(Unk_PropertyCacheEntry, 0x18);
+
+// A client entity with a property cache (egf::Entity subclass: +0xc8 caching on, +0xd0 the plain writes, +0xe0 the
+// keyed writes; scenestategame.cpp's Unk_SSGCachedEntity writes them back). MS2's keyed SetPropertyValue<T> first
+// saves the property's old value into the cache, then sets it. Names invented.
+class Unk_HwiCachedEntity : public egf::Entity
+{
+public:
+    template<typename T>
+    void CacheKeyedPropertyValue(egf::PropertyID propID, const efd::utf8string& key, const T& data);
+    template<typename T>
+    egf::PropertyResult SetPropertyValue(egf::PropertyID propID, const efd::utf8string& key, const T& data);
+
+    bool m_bCaching;                                                        // +0xc8
+    efd::map<unsigned, Unk_PropertyCacheEntry> m_mapCache;                  // +0xd0
+    efd::map<unsigned, efd::map<efd::utf8string, Unk_PropertyCacheEntry> > m_mapKeyedCache;   // +0xe0
+};
+MS2_CHECK_OFFSET(Unk_HwiCachedEntity, m_bCaching, 0xc8);
+MS2_CHECK_OFFSET(Unk_HwiCachedEntity, m_mapCache, 0xd0);
+MS2_CHECK_OFFSET(Unk_HwiCachedEntity, m_mapKeyedCache, 0xe0);
 
 class HardwareInstancingService : public efd::ISystemService, public egf::IPropertyCallback, public IWorldServiceCallback
 {
