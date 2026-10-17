@@ -9,6 +9,8 @@
 #include <set>
 #include <map>
 #include "ms2/placeholder/cptred.h"
+#include "ms2/placeholder/classobject.h"
+#include "ms2/placeholder/partybits.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/commonfiles/itemgift.h"
 #include "ms2/commonfiles/timeutil.h"
@@ -97,9 +99,31 @@ struct Unk_GEIn {
 #define MS2_GE_READ_INT(in) ((in)->reader.ReadInt())
 #endif
 
-class GameEvent : public CPtred {
+// Start / end second of the day (two Unk_DayTime).
+struct Unk_DayTimeRange {
+    typedef Unk_DayTime ValueType;      // not exe code: the token type of the "a,b" reader
+    // @0x1402e4a60
+    Unk_DayTimeRange() : m_start(0), m_end(0) {}
+    // @0x1402e4a30
+    Unk_DayTimeRange(Unk_DayTime start, Unk_DayTime end) : m_start(start), m_end(end) {}
+    // the code of Unk_GameEventIntRange::Init (identical, folded)
+    void Init(Unk_DayTime start, Unk_DayTime end) { m_start = start; m_end = end; }
+    Unk_DayTime m_start;
+    Unk_DayTime m_end;
+};
+
+class GameEvent : public ClassObject {
 public:
     GameEvent();                                // 0x1402e1b80
+    // Not exe code (the exe has no copy ctor): lets the implicit copy ctors of the subclasses compile, which
+    // unit_1403e9650 instantiates only to emit their vftables / deleting dtors.
+    GameEvent(const GameEvent& o)
+        : ClassObject(o), m_id(o.m_id), m_20(o.m_20), m_28(o.m_28), m_38(o.m_38), m_48(o.m_48), m_58(o.m_58),
+          m_68(o.m_68), m_70(o.m_70), m_78(o.m_78), m_80(o.m_80), m_88(o.m_88), m_flags(o.m_flags),
+          m_bValid(o.m_bValid), m_90(o.m_90), m_b8(o.m_b8), m_c0(o.m_c0)
+    {
+        m_98.Copy(o.m_98);
+    }
     virtual ~GameEvent();                       // slot 0 (body 0x1402e4cf0)
     virtual CStringW vfunc_1();                 // event name (0x1401f8450: GameEventSale inherits it)
     virtual void vfunc_2() = 0;                 // parse the CString at +0x68
@@ -110,6 +134,28 @@ public:
     virtual void vfunc_7(MS2Ptr<GameEvent> spPrev);   // 0x1402e2220: spPrev->vfunc_6() (if any), then vfunc_5()
     virtual int vfunc_8();                      // 0x1402e5510 (empty: returns no value; GameEventTreeWatering returns int)
     virtual bool vfunc_9(void* other);          // 0x1402e2580
+    bool Init(int id, const CMsTime& start, const CMsTime& end, const CStringW& value1, const CStringW& value2,
+              const CStringW& value3, const CStringW& value4, const CStringW& partTime, const CStringW& dayOfWeek,
+              int type);                        // 0x1402e1d20
+    bool LoadXml(Unk_140165cf0* pElem);         // 0x1402e1f40
+    bool HasFlag(int kind);                     // 0x1402e2290
+    bool IsInEventTime(const CMsTime& now);     // 0x1402e22c0
+    bool IsInPeriodTime(const CMsTime& now);    // 0x1402e2320
+    bool IsInEventRange(const CMsTime& now);    // 0x1402e2370
+    bool IsInPeriodRange(const CMsTime& now);   // 0x1402e23e0
+    bool HasTimeRestriction();                  // 0x1402e2450
+    void SetValid(bool bValid);                 // 0x1402e24c0
+    void SetName(const CStringW& name);         // 0x1402e24e0
+    CStringW GetName();                         // 0x1402e2510
+    int GetType();                              // 0x1402e2560
+    void UpdatePeriod(const CMsTime& now);      // 0x1402e2770
+    void SetPeriod(const CMsTime& start, const CMsTime& end); // 0x1402e32b0
+    CMsTime GetPeriodBegin();                   // 0x1402e33b0
+    CMsTime GetPeriodEnd();                     // 0x1402e33f0
+    void SetEventRange(const CMsTime& start, const CMsTime& end);   // 0x1402e3430
+    CStringW GetValuesText();                   // 0x1402e34c0
+    bool ParsePartTime(const CStringW& text, ATL::CAtlArray<Unk_DayTimeRange>& ranges);   // 0x1402e3560
+    bool ParseDayOfWeek(const CStringW& text, std::set<int>& days);    // 0x1402e3810
     void FUN_1402e3480(int kind);               // sets the flag `kind` in the set at +0x8c
     int FUN_1402e1d00();                        // the event id (m_id)
     CMsTime FUN_1402e26f0();                    // the begin time (gameeventbase.cpp)
@@ -128,7 +174,13 @@ protected:
     CStringW m_70;          // +0x70
     CStringW m_78;          // +0x78
     CStringW m_80;          // +0x80
-    char m_pad_88[0x48];
+    int m_88;               // +0x88
+    Unk_PartyBits m_flags;  // +0x8c
+    bool m_bValid;          // +0x8d
+    CStringW m_90;          // +0x90 "partTime"
+    ATL::CAtlArray<Unk_DayTimeRange> m_98;  // +0x98 the parsed partTime ranges
+    CStringW m_b8;          // +0xb8 "dayOfWeek"
+    std::set<int> m_c0;     // +0xc0 the parsed days of the week (1..7)
 };
 MS2_CHECK_SIZE(GameEvent, 0xd0);
 MS2_CHECK_OFFSET(GameEvent, m_id, 0x18);
@@ -136,6 +188,11 @@ MS2_CHECK_OFFSET(GameEvent, m_38, 0x38);
 MS2_CHECK_OFFSET(GameEvent, m_68, 0x68);
 MS2_CHECK_OFFSET(GameEvent, m_28, 0x28);
 MS2_CHECK_OFFSET(GameEvent, m_78, 0x78);
+MS2_CHECK_OFFSET(GameEvent, m_flags, 0x8c);
+MS2_CHECK_OFFSET(GameEvent, m_90, 0x90);
+MS2_CHECK_OFFSET(GameEvent, m_98, 0x98);
+MS2_CHECK_OFFSET(GameEvent, m_b8, 0xb8);
+MS2_CHECK_OFFSET(GameEvent, m_c0, 0xc0);
 
 // ---- GameEvent subclasses and the CPtred-derived *Context element types of commonfiles/gameevent.cpp (w116) ----------
 // Generated from the exe RTTI: vftable slot lists (overridden slots declared, VAs in the comments) and the sizes of the
@@ -1925,15 +1982,7 @@ MS2_CHECK_SIZE(SnowmanContext::Snowman, 0x68);
 MS2_CHECK_SIZE(StampEventContext::Stamp, 0x28);
 
 // gameeventcontext.cpp element types that gameevent.cpp holds through MS2Ptr<> (layouts not recovered).
-// Start / end second of the day (two Unk_DayTime; inline ctor 0x1402e4a60).
-struct Unk_DayTimeRange {
-    typedef Unk_DayTime ValueType;      // not exe code: the token type of the "a,b" reader
-    Unk_DayTimeRange() : m_start(0), m_end(0) {}
-    // the code of Unk_GameEventIntRange::Init (identical, folded)
-    void Init(Unk_DayTime start, Unk_DayTime end) { m_start = start; m_end = end; }
-    Unk_DayTime m_start;
-    Unk_DayTime m_end;
-};
+
 class EventTimeLimitDungeonContext : public CPtred {   // operator new(0x28) in the 0x1403c31c0 xml loader
 public:
     EventTimeLimitDungeonContext();                 // 0x1403fcb10

@@ -35,13 +35,13 @@ COutputStream& FUN_14070fa20(COutputStream& out, __int64 value);
 inline void ReadBits(Unk_PartyBits& bits, CInputStream& in)
 {
     for (int i = 0; i < 1; i++)
-        (&bits.bits)[i] = in.vfunc_o8_1();
+        bits.m_bits[i] = in.vfunc_o8_1();
 }
 // @0x14031c240
 inline void WriteBits(Unk_PartyBits& bits, COutputStream& out)
 {
     for (int i = 0; i < 1; i++)
-        out.vfunc_o10_1((&bits.bits)[i]);
+        out.vfunc_o10_1(bits.m_bits[i]);
 }
 // @0x14031bf10
 inline CInputStream& operator>>(CInputStream& in, Unk_PartyBits& bits)
