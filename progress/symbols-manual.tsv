@@ -2701,3 +2701,6 @@ inflateInit_	142723ad0	func
 ?s_bInit@FieldWarDataTable@@2_NA	143aaec58	data
 ?s_bInit@CRankingArenaDataTable@@2_NA	143ab0e58	data
 ?g_kSpecialAbilityMap@@3V?$CAtlMap@W4Unk_SocketSpecialStat@@IV?$CElementTraits@W4Unk_SocketSpecialStat@@@ATL@@V?$CElementTraits@I@3@@ATL@@A	143ab1ab0	data
+?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z	1403fa0c0	func
+??0?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ	1406ed950	func
+??1?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ	1406eed00	func
