@@ -18,6 +18,11 @@ public:
     virtual void vfunc_4(bool b);                                   // 0x1422c7230 (overrides ASDisplayObject::vfunc_4)
     // Registers a (callback, id) pair on the component (Delegate passed by value: the callee destroys it).
     void FUN_1422c7a90(Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)> callback, long long n);
+    // The component's size, measured from its ActionScript object (the exe folds these three with ASDialog's and
+    // ASGameEntity's copies; screenmask.cpp calls them on an ASUIComponent).
+    int FUN_1422c1500();                                            // 0x1422c1500 width
+    int FUN_1422c1530();                                            // 0x1422c1530 height
+    void FUN_1422c79e0(int nWidth, int nHeight);                    // 0x1422c79e0 resize
 
 private:
     void* m_pad_80;
