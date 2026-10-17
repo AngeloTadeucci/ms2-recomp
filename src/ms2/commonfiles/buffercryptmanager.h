@@ -1,6 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13).
 // Original CU: e:\build\kr\22_04\ms2code\commonfiles\buffercryptmanager.cpp  -- NAME GUESSED (no __FILE__ string):
-// the code sits at 0x1401cd3b0..0x1401cdfd0 between blockchecker.cpp (0x1401c9ea0) and chatemoticontable.cpp
+// the code sits at 0x1401cd310..0x1401ce010 between blockchecker.cpp (0x1401c9ea0) and chatemoticontable.cpp
 // (0x1401e6a40); commonfiles objs are linked in alphabetical order.
 //
 // Packet buffer crypters. The server side counterpart is Maple2's MapleCipher (XOR/Table/Rearrange crypt).
@@ -10,22 +10,27 @@
 
 #include <windows.h>
 
-// vftable 0x142cee440: 3 slots, all _purecall. No virtual destructor.
+// vftable 0x142cee440: 3 slots, all _purecall. No virtual destructor (the crypters are only ever used embedded, and
+// the manager destroys them through their concrete type).
 class IBufferCrypter
 {
 public:
+    IBufferCrypter();                                                       // 0x1401cdc10 (stores the vftable)
+
     virtual void Init() = 0;
-    virtual void Encrypt(BYTE* pBuffer, UINT nSize, void* pReserved) = 0;   // pReserved: passed through, unused
-    virtual BOOL Decrypt(BYTE* pBuffer, UINT nSize, void* pReserved) = 0;
+    virtual void Encrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) = 0;    // pKey: the packet key, unused here
+    virtual BOOL Decrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) = 0;
 };
 
 // vftable 0x142cee460, size 0x10.
 class CXORCrypter : public IBufferCrypter
 {
 public:
-    void Init() override;                                                   // 0x1401cd3b0 (not recovered)
-    void Encrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd490
-    BOOL Decrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd530
+    CXORCrypter();                                                          // 0x1401cd310
+    ~CXORCrypter();                                                         // 0x1401cd350 (not virtual: 3 vftable slots)
+    void Init() override;                                                   // 0x1401cd3b0
+    void Encrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd490
+    BOOL Decrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd530
 
     BYTE* m_pKey;   // +0x08, new BYTE[2]
 };
@@ -34,9 +39,11 @@ public:
 class CTableCrypter : public IBufferCrypter
 {
 public:
-    void Init() override;                                                   // 0x1401cd6b0 (not recovered)
-    void Encrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd7d0
-    BOOL Decrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd840
+    CTableCrypter();                                                        // 0x1401cd5d0
+    ~CTableCrypter();                                                       // 0x1401cd620 (not virtual)
+    void Init() override;                                                   // 0x1401cd6b0
+    void Encrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd7d0
+    BOOL Decrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd840
 
     BYTE* m_pEncryptTable;  // +0x08, new BYTE[256], shuffled 0..255
     BYTE* m_pDecryptTable;  // +0x10, new BYTE[256], inverse permutation
@@ -46,7 +53,9 @@ public:
 class CRearrangeCrypter : public IBufferCrypter
 {
 public:
+    CRearrangeCrypter();                                                    // 0x1401cd8b0
+    ~CRearrangeCrypter();                                                   // 0x1401cd8f0 (not virtual)
     void Init() override;                                                   // 0x1401cd910 (empty)
-    void Encrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd920
-    BOOL Decrypt(BYTE* pBuffer, UINT nSize, void* pReserved) override;      // 0x1401cd9b0
+    void Encrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd920
+    BOOL Decrypt(BYTE* pBuffer, UINT nSize, unsigned* pKey) override;        // 0x1401cd9b0
 };
