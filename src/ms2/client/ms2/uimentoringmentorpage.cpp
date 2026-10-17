@@ -118,7 +118,6 @@ ASMentoringMentorPage::ASMentoringMentorPage(UIMentoringPage* p) : m_owner(p) {}
 ASMentoringMentorPage::~ASMentoringMentorPage() {}
 
 // @0x140c713e0
-// MS2-FUNCTIONAL: ASObj/CString temp order differs from exe
 void ASMentoringMentorPage::OnInit()
 {
     if (!m_owner) return;
