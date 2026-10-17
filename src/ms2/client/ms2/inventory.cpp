@@ -477,7 +477,6 @@ void Unk_Inventory::FUN_140a5c970() {
     }
 }
 MS2_REPLACE_METHOD(0x140a5c970, Unk_Inventory, FUN_140a5c970, 224, 0x268914F8);
-// MS2-FUNCTIONAL: typed accessors and equivalent control flow produce different temporaries.
 // @0x140a5ca60
 void Unk_Inventory::FUN_140a5ca60(int category) {
     ItemArray found;
@@ -628,7 +627,6 @@ void Unk_Inventory::FUN_140a5d530(CItem* item) {
     }
 }
 MS2_REPLACE_METHOD(0x140a5d530, Unk_Inventory, FUN_140a5d530, 324, 0x1F7F4993);
-// MS2-FUNCTIONAL: shared pointer declaration does not expose the move constructor.
 // @0x140a5d680
 Unk_Inventory::ItemPtr Unk_Inventory::FUN_140a5d680(__int64 id) {
     if (id == 0) return ItemPtr(0);
@@ -657,7 +655,6 @@ Unk_Inventory::ItemPtr Unk_Inventory::FUN_140a5d760(int skill, int ignoreUsabili
     return ItemPtr(0);
 }
 MS2_REPLACE_METHOD(0x140a5d760, Unk_Inventory, FUN_140a5d760, 555, 0xDC051FD2);
-// MS2-FUNCTIONAL: named STL iterators and early returns change temporary lifetimes.
 // @0x140a5d9a0
 Unk_Inventory::ItemPtr Unk_Inventory::FUN_140a5d9a0(CStringW function, int ignoreUsability) {
     if (function.IsEmpty()) return ItemPtr(0);
@@ -1469,13 +1466,12 @@ unsigned Unk_Inventory::FUN_140a635f0(CItem* item) {
     return player->vfunc_102(record);
 }
 MS2_REPLACE_METHOD(0x140a635f0, Unk_Inventory, FUN_140a635f0, 650, 0x3575D5E0);
-// MS2-FUNCTIONAL: typed accessors and equivalent control flow produce different temporaries.
 // @0x140a63880
 int Unk_Inventory::FUN_140a63880(CItem* item, const CStringW& argument) {
-    if (item != nullptr && FUN_140527840(item) != nullptr) {
-        if (FUN_14053cd90(FUN_140527840(item))) return FUN_140a61db0(item->FUN_140526a50(), argument);
+    if (!(item != nullptr && FUN_140527840(item) != nullptr))
         return 0;
-    }
+    if (FUN_14053cd90(FUN_140527840(item)))
+        return FUN_140a61db0(item->FUN_140526a50(), argument);
     return 0;
 }
 MS2_REPLACE_METHOD(0x140a63880, Unk_Inventory, FUN_140a63880, 108, 0x9F2455BA);
