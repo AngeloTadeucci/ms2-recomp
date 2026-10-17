@@ -43,7 +43,10 @@ public:
     MS2Ptr<CItemOption> FUN_1405caf90();        // 0x1405caf90 copy
     void FUN_1405cbeb0(COutputStream&);         // 0x1405cbeb0 write
     void FUN_1405cc190(CInputStream&);          // 0x1405cc190 read
+private:
+    char m_pad_18[0x2f8 - 0x18];                // unrecovered members (the exe ctor fills all 0x2f8 bytes; the DLL allocates them)
 };
+MS2_CHECK_SIZE(CItemOption, 0x2f8);
 // The status block of an item (CItem +0xf8): the option record, the enchant record and the unlimited-enchant record.
 class CItemStatus : public CPtred
 {
