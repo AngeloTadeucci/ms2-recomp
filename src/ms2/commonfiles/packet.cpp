@@ -493,9 +493,10 @@ int CIOBuffer::FUN_1407145e0(CStringW& value, const unsigned char* data, unsigne
 void CInPacket::FUN_140713940() { m_nState = RS_HEADER; m_length = 0; m_offset = 0; }
 // @0x140714fb0
 unsigned CInPacket::vfunc_0() { return m_offset; }
-// MS2-FUNCTIONAL: const array operator[] resolves to the other exe copy
 // @0x140714fd0
-short CInPacket::vfunc_1() { const ATL::CAtlArray<unsigned char>& bytes = m_data; return *(const short*)(&bytes[0] + 6); }
+short CInPacket::vfunc_1() {
+    return *(const short*)(&m_data[0] + 6);
+}
 // @0x140713a60
 unsigned char CInPacket::vfunc_o8_1()
 {
