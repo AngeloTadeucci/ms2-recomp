@@ -2334,11 +2334,16 @@ void ItemOptionRandom::FUN_1405d8880(MS2Ptr<Unk_ItemOptionPreset> spPreset, std:
     {
         CString strName = spValue->FUN_1405d26c0();
         if (spContext->FUN_1405d9e00() == 2 && FUN_140166430()->FUN_1405f6e40(strName).get() != 0)
+        {
             arrArmor.Add(spValue.get());
-        else if (spValue->FUN_1405d29b0())
+            continue;
+        }
+        if (spValue->FUN_1405d29b0())
+        {
             arrSpecial.Add(spValue.get());
-        else
-            vOut.push_back(spValue.get());
+            continue;
+        }
+        vOut.push_back(spValue.get());
     }
     if (!arrArmor.IsEmpty())
     {
@@ -2360,7 +2365,10 @@ void ItemOptionRandom::FUN_1405d8880(MS2Ptr<Unk_ItemOptionPreset> spPreset, std:
                 break;
         }
         if (!bFound)
-            vOut.push_back(arrArmor[FUN_140768010((int)arrArmor.GetCount(), 0)]);
+        {
+            unsigned nIndex = FUN_140768010((int)arrArmor.GetCount(), 0);
+            vOut.push_back(arrArmor[nIndex]);
+        }
     }
     if (!arrSpecial.IsEmpty())
     {
@@ -2382,7 +2390,10 @@ void ItemOptionRandom::FUN_1405d8880(MS2Ptr<Unk_ItemOptionPreset> spPreset, std:
                 break;
         }
         if (!bFound)
-            vOut.push_back(arrSpecial[FUN_140768010((int)arrSpecial.GetCount(), 0)]);
+        {
+            unsigned nIndex = FUN_140768010((int)arrSpecial.GetCount(), 0);
+            vOut.push_back(arrSpecial[nIndex]);
+        }
     }
 }
 
