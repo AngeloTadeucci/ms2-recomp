@@ -270,6 +270,7 @@ public:
     void FUN_141525ff0(MS2Ptr<class CSkillRecord> spRecord, float fElapsed);   // send the cast
     void FUN_141524a80(bool bForce);                        // stop moving for a cast
     void FUN_14152b2d0(__int64 nItemUid);                   // summon the pet of an inventory item
+    MS2Ptr<CItem> FUN_14152e2f0(MS2Ptr<CItem> spItem);       // the worn item spItem would replace
     void FUN_141523e60(CItem* pItem, int* pStatDiff, int* pSpecialDiff, int* pScoreDiff);   // the stat change of equipping pItem
     static void FUN_141531470(ATL::CAtlArray<MS2Ptr<CItem> >& aItems, int* pStats, int* pSpecials, int* pScore);   // sum the items' stats
     void FUN_14152dee0(int nId);                            // packet 0x40 3

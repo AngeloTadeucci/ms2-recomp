@@ -3866,6 +3866,52 @@ void MyPC::FUN_14152e240(int n)
 }
 MS2_REPLACE_METHOD(0x14152E240, MyPC, FUN_14152e240, 47, 0x9800B2A6);
 
+// The worn item spItem would replace (the compare target): the weapon slots by kind, the slot of the item otherwise.
+// @0x14152e2f0
+MS2Ptr<CItem> MyPC::FUN_14152e2f0(MS2Ptr<CItem> spItem)
+{
+    if (spItem == 0)
+        return 0;
+    int nKind = spItem->FUN_1405258b0() != 0;
+    if (spItem->FUN_140527840()->FUN_14053d460())
+    {
+        {
+            MS2Ptr<CEquipItem> spRight = FUN_1416561a0()->FUN_1411e1780(5, nKind);
+            if (spRight.get() != 0)
+                return spRight->FUN_1411dc7a0();
+        }
+        MS2Ptr<CEquipItem> spLeft = FUN_1416561a0()->FUN_1411e1780(4, nKind);
+        if (spLeft.get() != 0)
+            return spLeft->FUN_1411dc7a0();
+    }
+    else if (spItem->FUN_140527840()->FUN_14053d510())
+    {
+        int nSlot = FUN_1403ed2b0()->FUN_141adcb40() != 0 ? 4 : 5;
+        MS2Ptr<CEquipItem> spSlot = FUN_1416561a0()->FUN_1411e1780(nSlot, nKind);
+        if (spSlot.get() != 0)
+            return spSlot->FUN_1411dc7a0();
+    }
+    else if (spItem->FUN_140527840()->FUN_14053d2b0())
+    {
+        {
+            MS2Ptr<CEquipItem> spFirst = FUN_1416561a0()->FUN_1411e1780(8, nKind);
+            if (spFirst.get() != 0)
+                return spFirst->FUN_1411dc7a0();
+        }
+        MS2Ptr<CEquipItem> spSecond = FUN_1416561a0()->FUN_1411e1780(9, nKind);
+        if (spSecond.get() != 0)
+            return spSecond->FUN_1411dc7a0();
+    }
+    else
+    {
+        MS2Ptr<CEquipItem> spSlot = FUN_1416561a0()->FUN_1411e1780(spItem->FUN_140527a20(), nKind);
+        if (spSlot.get() != 0)
+            return spSlot->FUN_1411dc7a0();
+    }
+    return 0;
+}
+MS2_REPLACE_METHOD(0x14152E2F0, MyPC, FUN_14152e2f0, 1259, 0x53855567);
+
 // @0x14152e280
 // MS2-FUNCTIONAL: std::set<int>::find binds to another identical exe copy (0x141905d20, exe calls 0x140312be0)
 int MyPC::FUN_14152e280(int n)
