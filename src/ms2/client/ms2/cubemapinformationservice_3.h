@@ -315,6 +315,8 @@ public:
     void FUN_1410c3630(int v);
     int FUN_1410c3650();
 
+    void FUN_1410cab10(Cube* pCube);
+
     // w138
     int FUN_1410b77e0(int nItemId, struct Unk_CMISStr* pOut);
     int FUN_1410cb980(int nItemId);

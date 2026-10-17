@@ -4220,3 +4220,81 @@ bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int n
     FUN_1408a8900(&strKind);
     return bResult;
 }
+
+// ---- w142 batch 1 ----
+#include <NiTexturingProperty.h>
+#include <NiMesh.h>
+struct Unk_CMISTexPtr;
+void FUN_14097f4a0(Unk_CMISTexPtr* p);                                                      // release
+struct Unk_CMISTexPtr { ~Unk_CMISTexPtr() { FUN_14097f4a0(this); } void* m_p; };           // texture handle (8 bytes)
+void* FUN_14097fbf0(Unk_CMISTexPtr* p);                                                     // handle -> texture
+class Unk_CMISResMgr { public: Unk_CMISTexPtr FUN_141552f90(CString strPath, int nFlags); };    // texture load by path
+Unk_CMISResMgr* FUN_140a0afd0();
+struct Unk_CMISSceneIter                                                                    // scene walker (0x30 bytes; ctor 0x14098cb80, dtor 0x14098cf00)
+{
+    void* m_p0; void* m_p1; void* m_p2; void* m_p3; void* m_p4; void* m_p5;
+};
+MS2_CHECK_SIZE(Unk_CMISSceneIter, 0x30);
+void FUN_14098cb80(Unk_CMISSceneIter* pIter, NiAVObject* pRoot);
+NiAVObject* FUN_14098e0d0(Unk_CMISSceneIter* pIter, int bDescend);
+void FUN_14098cf00(Unk_CMISSceneIter* pIter);
+int FUN_1413d6f40(HardwareInstancingService* pSvc, egf::Entity* pEntity);
+NiTexturingProperty::Map* FUN_14109a6b0(NiTexturingProperty* pProp);                        // GetBaseMap
+unsigned FUN_140d89850(NiTexturingProperty::Map* pMap);                                     // GetClampMode
+void FUN_140980e20(NiTexturingProperty::Map* pMap, unsigned nClamp);                        // SetClampMode
+void FUN_140981040(NiTexturingProperty::Map* pMap, void* pTexture);                         // SetTexture
+
+// @0x1410cab10
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cab10(Cube* pCube)
+{
+    bool bFlag = false;
+    FUN_1408a20a0(FUN_1408a9280(&pCube->entity), 0x23f9860e, &bFlag);
+    if (bFlag) {
+        Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+        if (spInst.FUN_14098d090() != 0) {
+            if (FUN_1413d6f40(spInst.FUN_14098d0e0(), FUN_1408a9090(&pCube->entity)) != 0) {
+                bool bOn = true;
+                FUN_14098c6e0(FUN_1408a9280(&pCube->entity), 0xa0b6b179, &bOn);
+            }
+        }
+    }
+    int nPick = rand() % 4;
+    CString strTex = FUN_1401d31f0()->m_strCubeFlash[0];
+    if (nPick == 0)
+        strTex += FUN_1401d31f0()->m_strCubeFlash[1];
+    else if (nPick == 1)
+        strTex += FUN_1401d31f0()->m_strCubeFlash[2];
+    else if (nPick == 2)
+        strTex += FUN_1401d31f0()->m_strCubeFlash[3];
+    else if (nPick == 3)
+        strTex += FUN_1401d31f0()->m_strCubeFlash[4];
+    Unk_CMISTexPtr spTexture = FUN_140a0afd0()->FUN_141552f90(strTex, 1);
+    Unk_CMISSvcPtr spInst2(FUN_14098c5b0(&DAT_143b059e8));
+    NiAVObject* pRoot = FUN_141b6efc0(FUN_1408a9090(&pCube->entity));
+    if (pRoot != 0) {
+        Unk_CMISSceneIter iter;
+        FUN_14098cb80(&iter, pRoot);
+        for (;;) {
+            NiAVObject* pObj = FUN_14098e0d0(&iter, 1);
+            if (pObj == 0)
+                break;
+            NiMesh* pMesh = NiDynamicCast(NiMesh, pObj);
+            if (pMesh == 0)
+                continue;
+            NiTexturingProperty* pTex = NiDynamicCast(NiTexturingProperty, pMesh->GetProperty(8));
+            if (FUN_14109a6b0(pTex) == 0)
+                continue;
+            NiTexturingProperty::Map* pMap = NiNew NiTexturingProperty::Map;
+            FUN_140980e20(pMap, FUN_140d89850(FUN_14109a6b0(pTex)));
+            FUN_140981040(pMap, FUN_14097fbf0(&spTexture));
+            pTex->SetDecalMap(0, pMap);
+            pMesh->UpdateProperties();
+            break;
+        }
+        pRoot->UpdateProperties();
+        pRoot->UpdateEffects();
+        pRoot->Update(0.0f, true);
+        FUN_14098cf00(&iter);
+    }
+}
