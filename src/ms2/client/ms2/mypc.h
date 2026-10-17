@@ -288,6 +288,7 @@ public:
     int FUN_14152ed10(__int64 n);
     void FUN_141528c30(CInPacket& packet);
     void FUN_141528c90(efd::Point3 kPos, efd::Point3 kDir); // warp the ridee (ground snapped)
+    void FUN_141528e50(efd::Point3 kPos, efd::Point3 kRot, int bFlyCamera);   // warp (and the ridee)
     int FUN_14152f860(unsigned int nKey);
     void FUN_141530700(int n);
     void FUN_141530720(Unk_MyPCHouseSetting nKind, CStringW strValue, unsigned char bFlag);   // house setting (packet 0x37 0x18)

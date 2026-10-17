@@ -480,6 +480,7 @@ extern Unk_StreamPoint DAT_143b01a60;                       // the zero point
 int FUN_14165b500(PCBase* pPC, int nKind);                  // PCBase member: holds a usable item of nKind
 int FUN_14165c1b0(PCBase* pPC, int* pOut, CString& strOut, float f);   // PCBase member
 extern int DAT_143ab2914;                                   // the local character level
+extern int DAT_143ab288c;                                   // the id of the last portal used
 class Unk_MyPCNoticeSound { public: void FUN_141276180(const CString& str); };
 extern Unk_MyPCNoticeSound DAT_143ae14c8;                   // the blocked-action notice sound
 extern Unk_MyPCNoticeSound DAT_143ae14b8;                   // the build mode off / on sounds
@@ -2710,6 +2711,64 @@ unsigned short MyPC::FUN_141528b80(int nSkillId)
     return 1;
 }
 MS2_REPLACE_METHOD(0x141528b80, MyPC, FUN_141528b80, 158, 0xB55D0601);
+
+// Warp to kPos facing kRot (the ridee too); bFlyCamera flies the orbit camera over from the old position.
+// @0x141528e50
+void MyPC::FUN_141528e50(efd::Point3 kPos, efd::Point3 kRot, int bFlyCamera)
+{
+    efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
+    if (spRidee)
+        spRidee->FUN_141707270();
+    else
+        m_kStateCtl.FUN_1417b7450();
+    m_b15d6 = false;
+    if (FUN_14166ce30() == 0 && spRidee == 0 && FUN_14166c930() != 0x3a)
+        vfunc_59(5, 0, 0, 0);
+    NiPoint3 kOldPos = vfunc_18();
+    FUN_141676060(reinterpret_cast<const NiPoint3&>(DAT_143b01a60));
+    vfunc_19(kPos);
+    vfunc_21(kRot);
+    FUN_14166d8b0(kRot.z);
+    if (FUN_14166d220() != 0)
+    {
+        ::FUN_141240730(FUN_14166d220());
+        ::FUN_140cfaf30(::FUN_141240f20(FUN_14166d220()));
+    }
+    m_pushControl.FUN_1413fcf90();
+    if (spRidee)
+    {
+        spRidee->vfunc_19(kPos);
+        spRidee->vfunc_21(kRot);
+        spRidee->FUN_14166d8b0(kRot.z);
+        Unk_PCBaseBody* pBody = spRidee->FUN_14166d220();
+        if (pBody != 0)
+        {
+            ::FUN_141240730(pBody);
+            ::FUN_140cfaf30(::FUN_141240f20(pBody));
+        }
+        spRidee->vfunc_59(1, 0, 0, 0);
+    }
+    DAT_143ab288c = 0;
+    if (FUN_1409478c0()->FUN_140af7e30() == 2 && bFlyCamera != 0)
+    {
+        static float s_fVelocity = FUN_1401d3200()->CameraVelocityInPortalMove.Read();
+        Unk_MyPCCameraCtl* pCtl = FUN_1409478c0()->FUN_140af2520();
+        Unk_CameraFlyBy kFlyBy;
+        kFlyBy.m_nKind = 1;
+        kFlyBy.m_fDuration = (kOldPos - kPos).Length() / s_fVelocity;
+        kFlyBy.m_from.m_0 = pCtl->FUN_140ad4b30();
+        kFlyBy.m_from.m_4 = pCtl->FUN_140af7ef0();
+        kFlyBy.m_from.m_8 = pCtl->FUN_140af7e90();
+        kFlyBy.m_from.m_c = pCtl->FUN_141533e80();
+        kFlyBy.m_from.m_18 = pCtl->FUN_140af8260();
+        kFlyBy.m_to = kFlyBy.m_from;
+        FUN_1409478c0()->FUN_140aed580(&kFlyBy, 1, 1.0f);
+        FUN_1409478c0()->FUN_140aed750(2, 1);
+    }
+    if (FUN_14166ccb0() != 0)
+        FUN_14166ccb0()->vfunc_24();
+}
+MS2_REPLACE_METHOD(0x141528E50, MyPC, FUN_141528e50, 1366, 0xCA73BEB3);
 
 // @0x141528c90
 void MyPC::FUN_141528c90(efd::Point3 kPos, efd::Point3 kDir)
