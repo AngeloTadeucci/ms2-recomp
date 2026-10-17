@@ -55,6 +55,22 @@ private:
 };
 MS2_CHECK_SIZE(CColorPaletteInfo, 0x38);
 
+// (trophyID, trophyLevel) of a housing row: the key of CItemDataTable::m_setTrophy.
+struct Unk_TrophyKey
+{
+    Unk_TrophyKey(unsigned nId, unsigned nLevel) : m_nId(nId), m_nLevel(nLevel) {}  // 0x14056beb0
+    bool operator<(const Unk_TrophyKey& o) const                                     // 0x14056e500
+    {
+        if (m_nId != o.m_nId)
+            return m_nId < o.m_nId;
+        else
+            return m_nLevel < o.m_nLevel;
+    }
+    unsigned m_nId;     // +0x00
+    unsigned m_nLevel;  // +0x04
+};
+MS2_CHECK_SIZE(Unk_TrophyKey, 0x8);
+
 class CItemDataTable : public CCacheData,
                        public TSingleton<CItemDataTable>,
                        public CValidData<CItemDataTable>
@@ -92,15 +108,15 @@ public:
     void Reload();                                                          // 0x140556ea0
     void LoadAllItemData();                                                 // 0x140556f50
     void LoadBlackMarketSearchable();                                       // 0x140557050
-    std::set<std::pair<int, int> >* GetTrophySet();                         // 0x140557250
+    std::set<Unk_TrophyKey>* GetTrophySet();                         // 0x140557250
     CString GetEnchantNif(int nWeapon, int nEnchant, int nUnlimited, unsigned nType);   // 0x140557270
     int GetTagItemId(ItemTagKey eTag);                                      // 0x1405575b0
     ItemTagKey GetTagByName(const CString& strName);                        // 0x140557640
     CString GetTagName(ItemTagKey eTag);                                    // 0x140557730
     ModelPtr GetModel(unsigned nPreset);                                    // 0x1405577f0
     void FUN_140557910();                                                   // 0x140557910 (empty)
-    void GetHousingByCategory(int nCategory, std::vector<MS2Ptr<ItemHousing> >& out);  // 0x140557920
-    bool FindItems(unsigned short nLevel, int nGender, int nJob, int nType, std::vector<ItemDataPtr>& out);    // 0x140557a30
+    void GetHousingByCategory(int nCategory, ATL::CAtlArray<MS2Ptr<ItemHousing> >& out);  // 0x140557920
+    bool FindItems(unsigned short nLevel, int nGender, int nJob, int nType, ATL::CAtlArray<ItemDataPtr>& out);    // 0x140557a30
     ItemDataPtr GetItemData(int nItemId);                                   // 0x140557f70
     void LoadItemFile(const CString& strPath, std::vector<ItemDataPtr>& out);   // 0x140558060
     void LoadItemDataFile(unsigned nFile);                                  // 0x140558260
@@ -162,7 +178,7 @@ private:
     std::map<unsigned, ModelPtr> m_mapModel;                                // +0x68
     std::map<int, MS2Ptr<ItemMusicScore> > m_mapMusicScore;                 // +0x78
     std::map<int, MS2Ptr<ItemHousing> > m_mapHousing;                       // +0x88
-    std::set<std::pair<int, int> > m_setTrophy;                             // +0x98 (trophyID, trophyLevel) of housing rows
+    std::set<Unk_TrophyKey> m_setTrophy;                                    // +0x98 (trophyID, trophyLevel) of housing rows
     std::set<unsigned> m_setModelFile;                                      // +0xa8 loaded model files
     CLockCriticalSection m_cs;                                              // +0xb8
     std::unordered_map<int, ItemDataPtr> m_mapItem;                         // +0xe8
