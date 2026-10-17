@@ -94,13 +94,16 @@ public:
     BurningLevelupContext();                        // 0x1403e39b0 (gameevent.cpp)
     void Write(COutputStream& out);                 // 0x140404440
     void Read(CInPacket& packet);                   // 0x140404920
+    bool IsBurningLevel(unsigned short level);      // 0x140405130
+    int GetBonusLevel(unsigned short level);        // 0x140405190
+    bool HasTarget(int id);                         // 0x140405230
     int m_eventId;                                  // +0x18
     int m_pad_1c;
     __int64 m_endTime;                              // +0x20
     std::set<int> m_28;                             // +0x28 the comma list of the event's m_78
-    unsigned short m_beginLevel;                           // +0x38 "beginLevel"
-    unsigned short m_endLevel;                           // +0x3a "endLevel"
-    int m_burningBonus;                             // +0x3c "burningBonus"
+    unsigned short m_beginLevel;                    // +0x38 "beginLevel"
+    unsigned short m_endLevel;                      // +0x3a "endLevel"
+    unsigned m_burningBonus;                        // +0x3c "burningBonus"
     int m_additionalEffectId;                       // +0x40 "additionalEffectId"
     int m_pad_44;
     CStringW m_setCharacterPopupStringKey;          // +0x48 "setCharacterPopupStringKey"
@@ -1587,13 +1590,33 @@ public:
 };
 MS2_CHECK_SIZE(TimeRunEventContext, 0xd8);
 MS2_CHECK_OFFSET(TimeRunEventContext, m_rewards, 0xa8);
-// LongTermAttendGiftContext: only the nested class (the outer class is a gameeventcontext.cpp type, not recovered here).
+// Members recovered by gameeventcontext.cpp (ctor 0x140407210, stream Write 0x140407300 / Read 0x140407580).
 class LongTermAttendGiftContext : public CPtred {
 public:
     struct Reward : public CPtred {
-        char m_pad_18[0x68];
+        Reward();                                   // 0x1403e4360 (gameevent.cpp)
+        int m_count;                                // +0x18 "count"
+        bool m_1c;
+        ItemEntity m_item01;                        // +0x20
+        ItemEntity m_item02;                        // +0x50
     };  // vftable 0x142d41610, ??_G 0x1403eb690, dtor 0x1403e6ed0
-};
+    LongTermAttendGiftContext(int eventId);         // 0x140407210
+    void Write(COutputStream& out);                 // 0x140407300
+    void Read(CInPacket& packet);                   // 0x140407580
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    ATL::CAtlArray<MS2Ptr<Reward> > m_rewards;      // +0x20
+    __int64 m_40;
+    int m_48;
+    bool m_4c;
+    CMsTime m_beginTime;                            // +0x50
+    CMsTime m_endTime;                              // +0x60
+    CStringW m_eventTag;                            // +0x70
+    CStringW m_title;                               // +0x78
+    int m_maxAttendance;                            // +0x80
+    int m_merat;                                    // +0x84
+};  // vftable 0x142d44250, ??_G 0x140411e80 (gameeventcontext.cpp)
+MS2_CHECK_SIZE(LongTermAttendGiftContext, 0x88);
 MS2_CHECK_SIZE(GalleryContext::Card, 0x20);
 MS2_CHECK_SIZE(TimeRunEventContext::QuestContext, 0x28);
 MS2_CHECK_SIZE(LongTermAttendGiftContext::Reward, 0x80);

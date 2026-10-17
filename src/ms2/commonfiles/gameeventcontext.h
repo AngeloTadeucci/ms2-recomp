@@ -9,6 +9,8 @@
 #include "ms2/commonfiles/gameevent.h"
 #include "ms2/commonfiles/itemgift.h"
 #include <vector>
+#include <map>
+#include <set>
 #include "ms2/placeholder/mstime.h"
 
 // clang-cl devirtualizes a call on an embedded member object into a direct call to an undefined function; go through
@@ -276,3 +278,175 @@ MS2_CHECK_SIZE(Unk_FieldObjectDropContext, 0x80);
 MS2_CHECK_SIZE(Unk_FieldObjectDropListContext, 0x98);
 MS2_CHECK_SIZE(Unk_DayItemContext::Period, 0x48);
 MS2_CHECK_SIZE(Unk_DayItemContext, 0x88);
+
+// The *Context types of the remaining GameEvent subclasses (vftables 0x142d441e0..0x142d44240; ??_G and dtors are
+// COMDATs of this unit). Member names from the GameEvent::vfunc_2 XML loaders in gameevent.cpp.
+class FestivalContext : public CPtred {
+public:
+    FestivalContext();                              // 0x1404052c0
+    void Write(COutputStream& out);                 // 0x140405350
+    void Read(CInPacket& packet);                   // 0x1404053a0
+    int m_18;                                       // the event's m_68 number (a byte on the wire)
+    int m_1c;                                       // the event's m_70 number (a byte on the wire)
+    CMsTime m_beginTime;                            // +0x20
+    CMsTime m_endTime;                              // +0x30
+};
+class FieldEffectContext : public CPtred {
+public:
+    FieldEffectContext();                           // 0x140405420
+    void Clear();                                   // 0x140405490
+    BOOL HasField(int id);                          // 0x1404054d0
+    void Write(COutputStream& out);                 // 0x140405550
+    void Read(CInPacket& packet);                   // 0x140405610
+    ATL::CAtlArray<unsigned> m_fieldIds;            // +0x18
+    CStringW m_effect;                              // +0x38
+};
+class CollectItemGroupContext : public CPtred {
+public:
+    CollectItemGroupContext();                      // 0x140405720
+    void Write(COutputStream& out);                 // 0x1404057d0
+    void Read(CInPacket& packet);                   // 0x1404058e0
+    void AddCondition(ItemEntity& item);            // 0x140405ae0
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    __int64 m_beginTime;                            // +0x20
+    __int64 m_endTime;                              // +0x28
+    CStringW m_name;                                // +0x30 info "name"
+    std::vector<ItemEntity> m_conditions;           // +0x38 "condition"
+    std::set<std::pair<std::pair<unsigned, int>, unsigned> > m_conditionKeys;   // +0x50 item id / rarity / ...
+    ItemEntity m_result;                            // +0x60 "result"
+};
+class ArcadeOpenContext : public CPtred {
+public:
+    ArcadeOpenContext();                            // 0x140405be0
+    void Write(COutputStream& out);                 // 0x140405c50
+    void Read(CInPacket& packet);                   // 0x140405c90
+    int m_eventId;                                  // +0x18
+    int m_arcadeId;                                 // +0x1c "arcadeId"
+    int m_rewardCountPerDay;                        // +0x20 "rewardCountPerDay"
+    int m_pad_24;
+    std::vector<ItemEntity> m_rewards;              // +0x28
+};
+
+// The creating-constructor tag and the 16-byte smart pointer of a boxed value (TPtr<T> over TPtredDummy<T>; same
+// template as Unk_FieldPtr in fieldmetatable.h). Members are defined out of the class so that they stay out-of-line
+// COMDATs like the exe's (0x14040f040..0x140418e80).
+#include "ms2/placeholder/tptreddummy.h"
+struct Unk_BingoNewTag { explicit Unk_BingoNewTag(int); };     // 0x1401b7b90 (returns its this, no code)
+CPtred* FUN_1401ba820(CPtred* p);                               // marks a freshly allocated box (sets the count to 1)
+template <class T>
+class Unk_GEBoxPtr
+{
+public:
+    Unk_GEBoxPtr();
+    Unk_GEBoxPtr(int);
+    Unk_GEBoxPtr(const Unk_BingoNewTag&);
+    Unk_GEBoxPtr(const Unk_GEBoxPtr& o);
+    ~Unk_GEBoxPtr();
+    Unk_GEBoxPtr& operator=(const Unk_GEBoxPtr& o);
+    T* get() const;
+    T* operator->() const;
+    T& operator*() const;
+
+private:
+    void AddRef() const;
+    void Make();
+    void Release();
+    static TPtredDummy<T>* Allocate(void*);
+    static T* Value(TPtredDummy<T>* p);
+    static TPtredDummy<T>* Owner(T* p);
+    static void Ref(CPtred* p);
+    static T* Create(void*);
+    void AddRefImpl(void*) const;
+    void ReleaseImpl(void*);
+    void* m_00;
+    T* m_p;
+};
+template <class T> Unk_GEBoxPtr<T>::Unk_GEBoxPtr() { m_p = 0; }
+template <class T> Unk_GEBoxPtr<T>::Unk_GEBoxPtr(int) { m_p = 0; }
+template <class T> Unk_GEBoxPtr<T>::Unk_GEBoxPtr(const Unk_BingoNewTag&) { m_p = 0; Make(); }
+template <class T> Unk_GEBoxPtr<T>::Unk_GEBoxPtr(const Unk_GEBoxPtr& o) { m_p = o.m_p; AddRef(); }
+template <class T> Unk_GEBoxPtr<T>::~Unk_GEBoxPtr() { Release(); }
+template <class T> Unk_GEBoxPtr<T>& Unk_GEBoxPtr<T>::operator=(const Unk_GEBoxPtr& o)
+{
+    o.AddRef();
+    Release();
+    m_p = o.m_p;
+    return *this;
+}
+template <class T> T* Unk_GEBoxPtr<T>::get() const { return m_p; }
+template <class T> T* Unk_GEBoxPtr<T>::operator->() const { return m_p; }
+template <class T> T& Unk_GEBoxPtr<T>::operator*() const { return *m_p; }
+template <class T> void Unk_GEBoxPtr<T>::AddRef() const { if (m_p) AddRefImpl(0); }
+template <class T> void Unk_GEBoxPtr<T>::Make() { Release(); m_p = Create(0); }
+template <class T> void Unk_GEBoxPtr<T>::Release() { if (m_p) { ReleaseImpl(0); m_p = 0; } }
+template <class T> TPtredDummy<T>* Unk_GEBoxPtr<T>::Allocate(void*) { return new TPtredDummy<T>(); }
+template <class T> T* Unk_GEBoxPtr<T>::Value(TPtredDummy<T>* p) { return p == NULL ? NULL : &p->value; }
+template <class T> TPtredDummy<T>* Unk_GEBoxPtr<T>::Owner(T* p)
+{
+    return p == NULL ? NULL : reinterpret_cast<TPtredDummy<T>*>(reinterpret_cast<char*>(p) - offsetof(TPtredDummy<T>, value));
+}
+template <class T> void Unk_GEBoxPtr<T>::Ref(CPtred* p) { CPtred::AddRefPtred(p); }
+template <class T> T* Unk_GEBoxPtr<T>::Create(void*) { return Value(static_cast<TPtredDummy<T>*>(FUN_1401ba820(Allocate(0)))); }
+template <class T> void Unk_GEBoxPtr<T>::AddRefImpl(void*) const { Ref(Owner(m_p)); }
+template <class T> void Unk_GEBoxPtr<T>::ReleaseImpl(void*)
+{
+    CPtred* owner = Owner(m_p);
+    if (CPtred::ReleasePtred(owner) == 0) { Ref(owner); CPtred::DeletePtred(owner); }
+}
+
+class BingoContext : public CPtred {
+public:
+    typedef Unk_GEBoxPtr<ATL::CAtlArray<ItemEntity> > RewardPtr;
+    typedef Unk_GEBoxPtr<ATL::CAtlArray<int> > NumbersPtr;
+    static const size_t kBoardSize = 5;            // 5x5 board
+    BingoContext();                                 // 0x140405ce0
+    bool LoadNumbers(CStringW strPath);             // 0x140405d70
+    bool LoadRewards(CStringW strPath);             // 0x140406120
+    bool LoadFreeItem(CStringW str);                // 0x140406320
+    bool LoadCashItem(CStringW str);                // 0x140406370
+    NumbersPtr GetTodayNumbers();                   // 0x1404063c0: the number board of the day since the begin date
+    int CountLines(__int64 seed, ATL::CAtlArray<int>& checked);     // 0x140406550: completed rows/columns/diagonals
+    void Write(COutputStream& out);                 // 0x140406880
+    void Read(CInPacket& packet);                   // 0x1404069d0
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    CMsTime m_beginTime;                            // +0x20
+    CMsTime m_endTime;                              // +0x30
+    int m_freeItemId;                               // +0x40
+    int m_cashItemId;                               // +0x44
+    ATL::CAtlArray<RewardPtr> m_rewards;            // +0x48 one item list per line count
+    ATL::CAtlArray<NumbersPtr> m_numbers;           // +0x68 one board per day
+};
+class LimitedQuantityContext : public CPtred {
+public:
+    LimitedQuantityContext();                       // 0x140406bb0
+    void Write(COutputStream& out);                 // 0x140406c30
+    void Read(CInPacket& packet);                   // 0x140406d70
+    bool ParseRange(CStringW str);                  // 0x140406ea0
+    bool LoadItems(CStringW strPath);               // 0x140406f70
+    int m_eventId;                                  // +0x18
+    int m_1c;
+    int m_20;
+    int m_pad_24;
+    std::map<unsigned long, int> m_items;           // +0x28 item id -> quantity
+};
+class EventShopNpcContext : public CPtred {
+public:
+    EventShopNpcContext(int a, int b, int c, int d);    // 0x140407120
+    int Get18();                                    // 0x140407190
+    int Get1c();                                    // 0x1404071b0
+    int Get20();                                    // 0x1404071d0
+    int Get24();                                    // 0x1404071f0
+    int m_18;
+    int m_1c;
+    int m_20;
+    int m_24;
+};
+MS2_CHECK_SIZE(FestivalContext, 0x40);
+MS2_CHECK_SIZE(FieldEffectContext, 0x40);
+MS2_CHECK_SIZE(CollectItemGroupContext, 0x90);
+MS2_CHECK_SIZE(ArcadeOpenContext, 0x40);
+MS2_CHECK_SIZE(BingoContext, 0x88);
+MS2_CHECK_SIZE(LimitedQuantityContext, 0x38);
+MS2_CHECK_SIZE(EventShopNpcContext, 0x28);

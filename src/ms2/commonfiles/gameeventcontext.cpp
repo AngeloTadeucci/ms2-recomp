@@ -61,6 +61,13 @@ CInputStream& FUN_14070f540(CInputStream& in, float& value);
 COutputStream& FUN_1403d7730(COutputStream& out, const ATL::CAtlArray<unsigned>& arr);   // count + values (gameevent.cpp)
 CInputStream& FUN_1403d7440(CInputStream& in, ATL::CAtlArray<unsigned>& arr);          // count + values (gameevent.cpp)
 __int64 FUN_140869440();                                                               // server time
+int FUN_140873b30(Unk_140165cf0* pElem, const char* pszName, CStringW& strOut);   // tinyxmlhelper string attribute
+int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, unsigned long& nOut);
+void FUN_1401d9a30(const CStringW& str, ATL::CAtlArray<int>& rOut, const wchar_t* pszSep);  // split into ints
+void FUN_1402929a0(const CStringW& str, std::vector<int>& rOut, const wchar_t* pszSep);    // split into ints
+int FUN_140274f40(const CStringW& str);                                                // _wtoi
+void FUN_1401cdae0(ATL::CAtlArray<int>& arr, unsigned seed);                            // shuffle by the seed
+int FUN_1402bacf0(ATL::CAtlArray<int>& arr, const int& value);                           // index of the value or -1
 int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);   // tinyxmlhelper int attribute, long overload
 Unk_140165cf0* FUN_140345b40(TiXmlDocument* pDoc);   // the document's first child element
 Unk_140165cf0* FUN_140345b40(Unk_140165cf0* pNode);  // first child element
@@ -1703,6 +1710,484 @@ void BurningLevelupContext::Read(CInPacket& packet)
         m_jumpingItemNotifyStringKey = packet.vfunc_o8_8();
         m_jumpingCompleteStringKey = packet.vfunc_o8_8();
     }
+}
+
+// @0x140405130
+bool BurningLevelupContext::IsBurningLevel(unsigned short level)
+{
+    return level > m_beginLevel && level < m_endLevel;
+}
+
+// @0x140405190
+int BurningLevelupContext::GetBonusLevel(unsigned short level)
+{
+    if (!IsBurningLevel(level))
+        return 0;
+    unsigned remain = (level - m_beginLevel) % (m_burningBonus + 1);
+    if (remain == 0)
+        return 0;
+    unsigned bonus = m_burningBonus + 1 - remain;
+    if (level + bonus > m_endLevel)
+        return m_endLevel - level;
+    return bonus;
+}
+
+// @0x140405230
+bool BurningLevelupContext::HasTarget(int id)
+{
+    return m_28.size() == 0 || m_28.find(id) != m_28.end();
+}
+
+// @0x1404052c0
+FestivalContext::FestivalContext() : m_18(0), m_1c(0), m_beginTime(FUN_140869440()), m_endTime(FUN_140869440())
+{
+}
+
+// @0x140405350
+void FestivalContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_1((unsigned char)m_18);
+    out.vfunc_o10_1((unsigned char)m_1c);
+}
+
+// @0x1404053a0
+void FestivalContext::Read(CInPacket& packet)
+{
+    m_18 = packet.vfunc_o8_1();
+    m_1c = packet.vfunc_o8_1();
+}
+
+// @0x140405420
+FieldEffectContext::FieldEffectContext()
+{
+    Clear();
+}
+
+// @0x140405490
+void FieldEffectContext::Clear()
+{
+    m_fieldIds.RemoveAll();
+    m_effect = L"";
+}
+
+// @0x1404054d0
+BOOL FieldEffectContext::HasField(int id)
+{
+    for (size_t i = 0; i < m_fieldIds.GetCount(); i++) {
+        if (m_fieldIds[i] == id)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// @0x140405550
+void FieldEffectContext::Write(COutputStream& out)
+{
+    int count = (int)m_fieldIds.GetCount();
+    out.vfunc_o10_1((unsigned char)count);
+    for (int i = 0; i < count; i++)
+        out.vfunc_o10_3(m_fieldIds[i]);
+    out.vfunc_o10_8(m_effect);
+}
+
+// @0x140405610
+void FieldEffectContext::Read(CInPacket& packet)
+{
+    m_fieldIds.RemoveAll();
+    int count = packet.vfunc_o8_1();
+    for (int i = 0; i < count; i++)
+        m_fieldIds.Add(packet.vfunc_o8_3());
+    m_effect = packet.vfunc_o8_8();
+}
+
+// @0x140405720
+CollectItemGroupContext::CollectItemGroupContext()
+{
+    m_eventId = 0;
+    m_beginTime = 0;
+    m_endTime = 0;
+}
+
+// @0x1404057d0
+void CollectItemGroupContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_eventId);
+    out.vfunc_o10_8(m_name);
+    out.vfunc_o10_4(m_beginTime);
+    out.vfunc_o10_4(m_endTime);
+    int count = (int)m_conditions.size();
+    out.vfunc_o10_3(count);
+    for (int i = 0; i < count; i++)
+        m_conditions[i].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    m_result.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+}
+
+// @0x1404058e0
+void CollectItemGroupContext::Read(CInPacket& packet)
+{
+    m_eventId = packet.vfunc_o8_3();
+    m_name = packet.vfunc_o8_8();
+    m_beginTime = packet.vfunc_o8_4();
+    m_endTime = packet.vfunc_o8_4();
+    m_conditions.clear();
+    m_conditionKeys.clear();
+    int count = packet.vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        ItemEntity item;
+        item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        AddCondition(item);
+    }
+    m_result.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+}
+
+// @0x140405ae0
+void CollectItemGroupContext::AddCondition(ItemEntity& item)
+{
+    m_conditions.push_back(item);
+    m_conditionKeys.insert(std::make_pair(std::make_pair(item.vfunc_o18_0(), item.vfunc_o18_1()), item.vfunc_o18_2()));
+}
+
+// @0x140405be0
+ArcadeOpenContext::ArcadeOpenContext()
+{
+    m_eventId = 0;
+    m_arcadeId = 0;
+    m_rewardCountPerDay = 0;
+}
+
+// @0x140405c50
+void ArcadeOpenContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_arcadeId);
+}
+
+// @0x140405c90
+void ArcadeOpenContext::Read(CInPacket& packet)
+{
+    m_arcadeId = packet.vfunc_o8_3();
+}
+
+// @0x140405ce0
+BingoContext::BingoContext()
+{
+}
+
+// @0x140405d70
+bool BingoContext::LoadNumbers(CStringW strPath)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, strPath) == 0)
+        return false;
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return false;
+    ATL::CAtlMap<unsigned, bool> used(17, 0.75f, 0.25f, 2.25f, 10);
+    for (Unk_140165cf0* pNumber = pRoot->FUN_140165cf0("number"); pNumber != NULL;
+         pNumber = pNumber->FUN_140168650("number")) {
+        CStringW value;
+        NumbersPtr spNumbers(Unk_BingoNewTag(0));
+        FUN_140873b30(pNumber, "value", value);
+        if (value.GetLength() == 0)
+            return false;
+        FUN_1401d9a30(value, *spNumbers, L",");
+        if (spNumbers->GetCount() == 0)
+            return false;
+        for (size_t i = 0; i < spNumbers->GetCount(); i++) {
+            if (used.Lookup(spNumbers->GetAt(i)) != NULL)
+                return false;
+            used.SetAt(spNumbers->GetAt(i), true);
+            if (used.GetCount() >= 25)
+                used.RemoveAll();
+        }
+        m_numbers.Add(spNumbers);
+    }
+    return true;
+}
+
+// @0x140406120
+bool BingoContext::LoadRewards(CStringW strPath)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, strPath) == 0)
+        return false;
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return false;
+    for (Unk_140165cf0* pReward = pRoot->FUN_140165cf0("reward"); pReward != NULL;
+         pReward = pReward->FUN_140168650("reward")) {
+        RewardPtr spItems(Unk_BingoNewTag(0));
+        for (Unk_140165cf0* pItem = pReward->FUN_140165cf0("item"); pItem != NULL;
+             pItem = pItem->FUN_140168650("item")) {
+            ItemEntity item;
+            item.vfunc_2(pItem);
+            spItems->Add(item);
+        }
+        if (spItems->GetCount() > 0)
+            m_rewards.Add(spItems);
+    }
+    return true;
+}
+
+// @0x140406320
+bool BingoContext::LoadFreeItem(CStringW str)
+{
+    m_freeItemId = FUN_140274f40(str);
+    return true;
+}
+
+// @0x140406370
+bool BingoContext::LoadCashItem(CStringW str)
+{
+    m_cashItemId = FUN_140274f40(str);
+    return true;
+}
+
+// @0x1404063c0
+BingoContext::NumbersPtr BingoContext::GetTodayNumbers()
+{
+    if (m_numbers.GetCount() == 0)
+        return 0;
+    int days = (int)(CMsTime(FUN_140869440()) - CMsTime(m_beginTime.GetYear(), m_beginTime.GetMonth(),
+                                                          m_beginTime.GetDay(), 0, 0, 0)).GetDays();
+    days = days % m_numbers.GetCount();
+    return m_numbers[days];
+}
+
+// @0x140406550
+int BingoContext::CountLines(__int64 seed, ATL::CAtlArray<int>& checked)
+{
+    ATL::CAtlArray<int> board;
+    for (int n = 1; n <= kBoardSize * kBoardSize; n++)
+        board.Add(n);
+    FUN_1401cdae0(board, (unsigned)seed);
+    bool cells[kBoardSize][kBoardSize];
+    for (size_t i = 0; i < board.GetCount(); i++) {
+        if (FUN_1402bacf0(checked, board[i]) == -1) {
+            bool* row = cells[i % kBoardSize];
+            row[i / kBoardSize] = false;
+        } else {
+            bool* row = cells[i % kBoardSize];
+            row[i / kBoardSize] = true;
+        }
+    }
+    int lines = 0;
+    for (int x = 0; x < kBoardSize; x++) {
+        for (int y = 0; y < kBoardSize; y++) {
+            if (!cells[y][x])
+                break;
+            if (y == 4)
+                lines++;
+        }
+    }
+    for (int x = 0; x < kBoardSize; x++) {
+        for (int y = 0; y < kBoardSize; y++) {
+            if (!cells[x][y])
+                break;
+            if (y == kBoardSize - 1)
+                lines++;
+        }
+    }
+    for (int i = 0; i < kBoardSize; i++) {
+        if (!cells[i][i])
+            break;
+        if (i == kBoardSize - 1)
+            lines++;
+    }
+    for (int i = 0; i < kBoardSize; i++) {
+        if (!cells[i][kBoardSize - 1 - i])
+            break;
+        if (i == 4)
+            lines++;
+    }
+    return lines;
+}
+
+// @0x140406880
+void BingoContext::Write(COutputStream& out)
+{
+    int count = (int)m_rewards.GetCount();
+    out.vfunc_o10_3(count);
+    for (int i = 0; i < count; i++) {
+        RewardPtr spItems = m_rewards[i];
+        int itemCount = (int)spItems->GetCount();
+        out.vfunc_o10_3(itemCount);
+        for (int j = 0; j < itemCount; j++)
+            spItems->GetAt(j).FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_3(m_freeItemId);
+    out.vfunc_o10_3(m_cashItemId);
+}
+
+// @0x1404069d0
+void BingoContext::Read(CInPacket& packet)
+{
+    m_numbers.RemoveAll();
+    m_rewards.RemoveAll();
+    int count = packet.vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        RewardPtr spItems(Unk_BingoNewTag(0));
+        int itemCount = packet.vfunc_o8_3();
+        for (int j = 0; j < itemCount; j++) {
+            ItemEntity item;
+            item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+            spItems->Add(item);
+        }
+        m_rewards.Add(spItems);
+    }
+    m_freeItemId = packet.vfunc_o8_3();
+    m_cashItemId = packet.vfunc_o8_3();
+}
+
+// @0x140406bb0
+LimitedQuantityContext::LimitedQuantityContext() : m_eventId(0), m_1c(0), m_20(0)
+{
+}
+
+// @0x140406c30
+void LimitedQuantityContext::Write(COutputStream& out)
+{
+    if (m_1c == 0 || m_20 == 0)
+        return;
+    out.vfunc_o10_3(m_1c);
+    out.vfunc_o10_3(m_20);
+    int count = (int)m_items.size();
+    std::map<unsigned long, int>::iterator it = m_items.begin();
+    std::map<unsigned long, int>::iterator end = m_items.end();
+    out.vfunc_o10_3(count);
+    for (; it != end; it++) {
+        out.vfunc_o10_3((*it).first);
+        out.vfunc_o10_3((*it).second);
+    }
+}
+
+// @0x140406d70
+void LimitedQuantityContext::Read(CInPacket& packet)
+{
+    m_1c = packet.vfunc_o8_3();
+    m_20 = packet.vfunc_o8_3();
+    unsigned count = packet.vfunc_o8_3();
+    m_items.clear();
+    for (unsigned i = 0; i < count; i++) {
+        unsigned long itemId = packet.vfunc_o8_3();
+        int quantity = packet.vfunc_o8_3();
+        m_items[itemId] = quantity;
+    }
+}
+
+// @0x140406ea0
+bool LimitedQuantityContext::ParseRange(CStringW str)
+{
+    std::vector<int> parts;
+    FUN_1402929a0(str, parts, L",");
+    if (parts.size() != 2)
+        return false;
+    m_1c = parts[0];
+    m_20 = parts[1];
+    return true;
+}
+
+// @0x140406f70
+bool LimitedQuantityContext::LoadItems(CStringW strPath)
+{
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, strPath) == 0)
+        return false;
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return false;
+    for (Unk_140165cf0* pItem = pRoot->FUN_140165cf0("item"); pItem != NULL; pItem = pItem->FUN_140168650("item")) {
+        unsigned long itemId = 0;
+        int quantity = 0;
+        FUN_140873220(pItem, "itemID", itemId);
+        FUN_1408731e0(pItem, "quantity", quantity);
+        if (itemId == 0 || quantity < 0)
+            return false;
+        m_items[itemId] = quantity;
+    }
+    return true;
+}
+
+// @0x140407120
+EventShopNpcContext::EventShopNpcContext(int a, int b, int c, int d)
+{
+    m_18 = a;
+    m_1c = b;
+    m_20 = c;
+    m_24 = d;
+}
+
+// @0x140407190
+int EventShopNpcContext::Get18()
+{
+    return m_18;
+}
+
+// @0x1404071b0
+int EventShopNpcContext::Get1c()
+{
+    return m_1c;
+}
+
+// @0x1404071d0
+int EventShopNpcContext::Get20()
+{
+    return m_20;
+}
+
+// @0x1404071f0
+int EventShopNpcContext::Get24()
+{
+    return m_24;
+}
+
+// @0x140407210
+LongTermAttendGiftContext::LongTermAttendGiftContext(int eventId)
+    : m_eventId(eventId), m_40(0), m_48(0), m_4c(1), m_maxAttendance(0), m_merat(0)
+{
+}
+
+// @0x140407300
+void LongTermAttendGiftContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_8(m_eventTag);
+    out.vfunc_o10_4(m_40);
+    out.vfunc_o10_3(m_48);
+    out.vfunc_o10_0(m_4c);
+    out.vfunc_o10_3((int)m_rewards.GetCount());
+    for (size_t i = 0; i < m_rewards.GetCount(); i++) {
+        out.vfunc_o10_3(m_rewards[i]->m_count);
+        out.vfunc_o10_1(m_rewards[i]->m_1c);
+        m_rewards[i]->m_item01.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+        m_rewards[i]->m_item02.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_4(m_beginTime.Get());
+    out.vfunc_o10_4(m_endTime.Get());
+    out.vfunc_o10_8(m_title);
+    out.vfunc_o10_3(m_merat);
+    out.vfunc_o10_3(m_maxAttendance);
+}
+
+// @0x140407580
+void LongTermAttendGiftContext::Read(CInPacket& packet)
+{
+    m_eventTag = packet.vfunc_o8_8();
+    m_40 = packet.vfunc_o8_4();
+    m_48 = packet.vfunc_o8_3();
+    m_4c = packet.vfunc_o8_0();
+    size_t count = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < count; i++) {
+        MS2Ptr<Reward> spReward(new Reward);
+        spReward->m_count = packet.vfunc_o8_3();
+        spReward->m_1c = (bool)packet.vfunc_o8_1();
+        spReward->m_item01.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        spReward->m_item02.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_rewards.Add(spReward);
+    }
+    m_beginTime = CMsTime(packet.vfunc_o8_4());
+    m_endTime = CMsTime(packet.vfunc_o8_4());
+    m_title = packet.vfunc_o8_8();
+    m_merat = packet.vfunc_o8_3();
+    m_maxAttendance = packet.vfunc_o8_3();
 }
 
 // ==== 0x140402080 .. 0x140407a20 continue above this line ====
