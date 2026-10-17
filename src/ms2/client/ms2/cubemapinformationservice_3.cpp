@@ -6352,3 +6352,64 @@ int CubeMapInformationService::FUN_1410d1820(void* pArg, int nDir, Unk_StreamPoi
     }
     return nDir;
 }
+
+// ---- w142 batch 17 ----
+void FUN_141150260(Unk_CMISMarkList*);                                                      // clear
+void FUN_141152fe0(Unk_CMISTree<275>*, const int*);                                         // erase
+// @0x1410ccc00
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410ccc00(int nGroup, int nA, int nB)
+{
+    Unk_CMISIter<275> itMark, itMarkEnd;
+    if (nA == 0) {
+        if (!FUN_141126bd0(FUN_141156e80(&f288, &itMark, &nGroup), FUN_141151850(&f288, &itMarkEnd))) {
+            Unk_CMISMarkRec* pRec = FUN_141127a90(&f288, &nGroup);
+            Unk_CMISMarkList* pMarks = reinterpret_cast<Unk_CMISMarkList*>(pRec->m_b + 0x38);
+            Unk_CMISEntSetIter itTmp, itEnt, itEntEnd;
+            itEntEnd = *FUN_141152570(pMarks, &itTmp);
+            itEnt = *FUN_14114e930(pMarks, &itTmp);
+            while (FUN_141127980(&itEnt, &itEntEnd)) {
+                egf::EntityPtr spEnt = FUN_1408a7ed0(FUN_141128e50(&itEnt));
+                static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf570(FUN_1408a9090(&spEnt));
+                FUN_1408a8720(&spEnt);
+                FUN_14112ab20(&itEnt);
+            }
+            FUN_141150260(pMarks);
+            FUN_141152fe0(&f288, &nGroup);
+        }
+        return;
+    }
+    if (FUN_141127300(FUN_141156e80(&f288, &itMark, &nGroup), FUN_141151850(&f288, &itMarkEnd)) != 0)
+        return;
+    Unk_CMISXformVec vecXform;
+    Unk_CMISIntList setSeen;
+    Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+    Unk_CMISListIter it;
+    Unk_CMISListEnd itListEnd;
+    for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+        Unk_Int3 cell = FUN_1408a0400(*FUN_1403e8d70(&it));
+        Cube* pCube = FUN_1410b8980(cell);
+        if (pCube == 0)
+            continue;
+        int nCellKey = FUN_1408a03c0(pCube->position);
+        Unk_CMISListIter itFind;
+        Unk_CMISListEnd itSeenEnd;
+        if (FUN_14035ea60(FUN_141158620(&setSeen, &itFind, &nCellKey), FUN_1411522d0(&setSeen, &itSeenEnd)))
+            continue;
+        int nCellKey2 = FUN_1408a03c0(pCube->position);
+        Unk_CMISInsRes resIns;
+        FUN_14111d240(&setSeen, &resIns, &nCellKey2);
+        Unk_StreamPoint ptGuide;
+        FUN_1402bd040(&ptGuide);
+        FUN_1408a15b0(pCube->position, ptGuide);
+        static const int s_aSides[4][2] = { {-1, 0}, {1, 0}, {0, -1}, {0, 1} };
+        for (int i = 0; i < 4; i++) {
+            Unk_CMISPt3 ptWalk(ptGuide);
+            Unk_Int3 cellSide = pCube->position;
+            cellSide.x = cellSide.x + s_aSides[i][0];
+            cellSide.y = cellSide.y + s_aSides[i][1];
+            if (FUN_1410cba80(pCube->field44, nGroup, &cellSide, &ptWalk) != 0)
+                FUN_1410cbb40(&vecXform, 1, nGroup, Unk_StreamPoint(ptWalk.x, ptWalk.y, ptWalk.z), cellSide, i < 2, nB);
+        }
+    }
+}
