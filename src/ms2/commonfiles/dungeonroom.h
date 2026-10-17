@@ -43,6 +43,11 @@ MS2_CHECK_SIZE(DungeonLobbyCtx, 0x38);
 
 struct DungeonRankRewardItem
 {
+    // The exe's vector<DungeonRankRewardItem> moves element-wise (_Uninitialized_move_al_unchecked loop, _Ptr_move_cat ->
+    // _General_ptr_iterator_tag 0x14032daa0) while copy-constructing inline: a user default ctor and a user-provided
+    // copy assignment (never instantiated in this unit, body assumed memberwise).
+    DungeonRankRewardItem() : itemID(0), systemMailID(0) {}   // 0x140323380 (vector::resize value-constructs through it)
+    DungeonRankRewardItem& operator=(const DungeonRankRewardItem& o) { itemID = o.itemID; systemMailID = o.systemMailID; return *this; }
     unsigned itemID;                    // +0
     int systemMailID;                   // +4
 };

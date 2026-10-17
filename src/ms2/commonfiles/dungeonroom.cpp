@@ -10,7 +10,7 @@
 // MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$MS2Ptr@VDungeonRewardCoupon@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VDungeonRewardCoupon@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140322fa0 ; unique
 // MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140323040 ; unique
 // MS2-PIN: ??$?0V?$tuple@$$QEAI@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBIV?$MS2Ptr@VDungeonRewardCoupon@@@@@std@@QEAA@AEAV?$tuple@$$QEAI@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x140323740 ; unique
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VDungeonRoom@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140323920 ; unique
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VDungeonRoom@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140334460 ; w203: set erase(first, last) calls it (0x140323920 is the reverse_iterator operator!=)
 // MS2-PIN: ??$Log@I@Unk_CommonLog@@QEAAX_K0HPEB_WAEBI@Z 0x1403239a0 ; unique
 // MS2-PIN: ??$_Advance1@V?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VDungeonRoom@@@@@std@@@std@@U_Iterator_base0@2@@std@@_J@std@@YAXAEAV?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VDungeonRoom@@@@@std@@@std@@U_Iterator_base0@2@@0@_JUbidirectional_iterator_tag@0@@Z 0x140324150 ; unique
 // MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@std@@@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VDungeonRoundGroup@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@std@@@3@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBIV?$MS2Ptr@VDungeonRoundGroup@@@@@1@@Z 0x140324210 ; unique
@@ -127,6 +127,15 @@ public:
 Unk_CommonLog* FUN_140166440();
 
 class Unk_140166410 { public: bool FUN_14036d570(int nId); };   // the content switches
+
+// Common::Constants::Value<T>::Get, header-inline in the original (the Value<bool> instance 0x140336990 is in this
+// unit's COMDAT tail); same body as unit_1402ab440's.
+template<class T> T* Common::Constants::Value<T>::Get()
+{
+    if (!m_defined)
+        Error("constants is not set");
+    return &m_value;
+}
 Unk_140166410* FUN_140166410();
 
 int FUN_140768010(int nRange, int nBase);              // random number in [nBase, nBase + nRange)
@@ -1242,8 +1251,8 @@ void DungeonRoomTable::GetRooms(unsigned nDungeonId, ATL::CAtlArray<DungeonRoomP
 // @0x140320c30
 void DungeonRoomTable::GetRoomsForLevel(unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out)
 {
-    DungeonRoomSet::iterator it = std::lower_bound(m_allRooms.begin(), m_allRooms.end(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
-    for (; it != m_allRooms.end(); it++)
+    DungeonRoomSet::reverse_iterator it = std::lower_bound(m_allRooms.rbegin(), m_allRooms.rend(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
+    for (; it != m_allRooms.rend(); it++)
     {
         DungeonRoomPtr pRoom = *it;
         if (nLevel < pRoom->m_limitPlayerLevel)
@@ -1256,11 +1265,11 @@ MS2_REPLACE_METHOD(0x140320C30, DungeonRoomTable, GetRoomsForLevel, 362, 0x6BA38
 // @0x140320da0
 void DungeonRoomTable::GetMatchRooms(unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out)
 {
-    DungeonRoomSet::iterator it = std::lower_bound(m_matchRooms.begin(), m_matchRooms.end(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
+    DungeonRoomSet::reverse_iterator it = std::lower_bound(m_matchRooms.rbegin(), m_matchRooms.rend(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
     if ((unsigned)FUN_1401d3200()->DungeonMatchRecommendPickCount > 0)
         out.reserve((unsigned)FUN_1401d3200()->DungeonMatchRecommendPickCount);
     unsigned nCount = 0;
-    for (; it != m_matchRooms.end(); it++)
+    for (; it != m_matchRooms.rend(); it++)
     {
         DungeonRoomPtr pRoom = *it;
         if (nLevel < pRoom->m_limitPlayerLevel)
@@ -1277,11 +1286,11 @@ MS2_REPLACE_METHOD(0x140320DA0, DungeonRoomTable, GetMatchRooms, 466, 0xB930BA65
 void DungeonRoomTable::GetGroupMatchRooms(DungeonGroupType nGroup, unsigned short nLevel, unsigned nGearScore, std::vector<DungeonRoomPtr>& out)
 {
     DungeonRoomSet& rooms = GetGroupSet(nGroup);
-    DungeonRoomSet::iterator it = std::lower_bound(rooms.begin(), rooms.end(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
+    DungeonRoomSet::reverse_iterator it = std::lower_bound(rooms.rbegin(), rooms.rend(), std::make_pair(nGearScore, nLevel), DungeonRoomLess());
     if ((unsigned)FUN_1401d3200()->DungeonMatchRecommendPickCount > 0)
         out.reserve((unsigned)FUN_1401d3200()->DungeonMatchRecommendPickCount);
     unsigned nCount = 0;
-    for (; it != rooms.end(); it++)
+    for (; it != rooms.rend(); it++)
     {
         DungeonRoomPtr pRoom = *it;
         if (nLevel < pRoom->m_limitPlayerLevel)
