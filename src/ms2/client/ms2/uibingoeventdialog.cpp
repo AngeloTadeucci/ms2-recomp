@@ -262,14 +262,12 @@ MS2Ptr<ASItemSlot> FUN_140bb4a60(int nMovieId, const Scaleform::GFx::Value& v)
 }
 
 // @0x140bb4ba0
-// MS2-FUNCTIONAL: behaviour-equivalent; codegen (temporaries / branch layout) not byte-identical to the exe
 MS2Ptr<ASItemSlot> Unk_BingoClip::FUN_140bb4ba0(const CString& strName)
 {
     Scaleform::GFx::Value v = FUN_1422baa20(strName);
     if (v.IsObject())
         return FUN_140bb4a60(m_nMovieId, v);
-    else
-        return MS2Ptr<ASItemSlot>(0);
+    return MS2Ptr<ASItemSlot>(0);
 }
 
 // @0x140bb4c60
