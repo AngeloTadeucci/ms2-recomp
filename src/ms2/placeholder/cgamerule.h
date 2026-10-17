@@ -112,6 +112,17 @@ public:
     void FUN_1404796b0(int eventId);
     void FUN_140479790(int eventId, int rate);                                    // GameEventUGCMapExtensionSale
     void FUN_140479800(int eventId);
+    void FUN_1404784b0(int a, __int64 b, CStringW str);                           // GameEventUgcMapCommendationGM
+    void FUN_140478640(int a);
+    void FUN_140478a40(int value);                                                // GameEventDeleteUrlCache
+    void FUN_14047ef70(int eventId, int value);                                   // GameEventPetMastery
+    void FUN_14047f180(int eventId, int value);
+    void FUN_14047efe0(int eventId);
+    void FUN_14047f1f0(int eventId);
+    void FUN_14047f390(int eventId, int rate);                                    // GameEventPetBattleExp
+    void FUN_14047f400(int eventId);
+    void FUN_14047f590(int eventId, int rate);                                    // GameEventPetComposeSale
+    void FUN_14047f600(int eventId);
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

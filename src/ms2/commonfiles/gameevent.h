@@ -393,8 +393,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c9cd0
     virtual void vfunc_5();                     // 0x1403c9d30
     virtual void vfunc_6();                     // 0x1403c9d60
-private:
-    char m_pad_d0[0x8];
+    GameEventDeleteUrlCache();
+    int m_d0;                                   // m_68 (a byte on the wire)
+    int m_pad_d4;
 };  // vftable 0x142d405b0, ??_G 0x1403e9e10, dtor 0x1403e5e70
 MS2_CHECK_SIZE(GameEventDeleteUrlCache, 0xd8);
 class GameEventDungeonBonusReward : public GameEvent {
@@ -935,8 +936,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403ca3a0
     virtual void vfunc_5();                     // 0x1403ca400
     virtual void vfunc_6();                     // 0x1403ca440
-private:
-    char m_pad_d0[0x8];
+    GameEventPetBattleExp();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d40660, ??_G 0x1403ea910, dtor 0x1403e65d0
 MS2_CHECK_SIZE(GameEventPetBattleExp, 0xd8);
 class GameEventPetComposeSale : public GameEvent {
@@ -947,8 +949,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403ca610
     virtual void vfunc_5();                     // 0x1403ca670
     virtual void vfunc_6();                     // 0x1403ca6b0
-private:
-    char m_pad_d0[0x8];
+    GameEventPetComposeSale();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d406b8, ??_G 0x1403ea950, dtor 0x1403e65f0
 MS2_CHECK_SIZE(GameEventPetComposeSale, 0xd8);
 class GameEventPetMastery : public GameEvent {
@@ -959,8 +962,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403ca0d0
     virtual void vfunc_5();                     // 0x1403ca160
     virtual void vfunc_6();                     // 0x1403ca1c0
-private:
-    char m_pad_d0[0x8];
+    GameEventPetMastery();
+    unsigned m_d0;                              // type 1 value
+    unsigned m_d4;                              // type 2 value
 };  // vftable 0x142d40608, ??_G 0x1403ea990, dtor 0x1403e6610
 MS2_CHECK_SIZE(GameEventPetMastery, 0xd8);
 class GameEventPremiumMarketSale : public GameEvent {
@@ -1164,8 +1168,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c9630
     virtual void vfunc_5();                     // 0x1403c9690
     virtual void vfunc_6();                     // 0x1403c96f0
-private:
-    char m_pad_d0[0x20];
+    GameEventSaleItemsRestricted();
+    explicit GameEventSaleItemsRestricted(Unk_VftableEmitTag) {}
+    ATL::CAtlArray<unsigned> m_d0;              // item ids (m_68)
 };  // vftable 0x142d40500, ??_G 0x1403eadd0, dtor 0x1403e68e0
 MS2_CHECK_SIZE(GameEventSaleItemsRestricted, 0xf0);
 class GameEventSaleLapenshardUpgradeRGB : public GameEventSale {
@@ -1375,8 +1380,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c9350
     virtual void vfunc_5();                     // 0x1403c93b0
     virtual void vfunc_6();                     // 0x1403c93e0
-private:
-    char m_pad_d0[0x8];
+    GameEventTransferItemBound();
+    bool m_d0;                                  // m_68 (true when unset)
+    char m_pad_d1[7];
 };  // vftable 0x142d404a8, ??_G 0x1403eb290, dtor 0x1403e6c20
 MS2_CHECK_SIZE(GameEventTransferItemBound, 0xd8);
 class GameEventTreeWatering : public GameEvent {
@@ -1439,8 +1445,11 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c9980
     virtual void vfunc_5();                     // 0x1403c9a70
     virtual void vfunc_6();                     // 0x1403c9af0
-private:
-    char m_pad_d0[0x18];
+    GameEventUgcMapCommendationGM();
+    int m_d0;                                   // m_68
+    int m_pad_d4;
+    __int64 m_d8;                               // m_70
+    CStringW m_e0;                              // m_78
 };  // vftable 0x142d40558, ??_G 0x1403eb3d0, dtor 0x1403e6ce0
 MS2_CHECK_SIZE(GameEventUgcMapCommendationGM, 0xe8);
 class GameEventUpdateString : public GameEvent {
