@@ -7,7 +7,6 @@
 // MS2-RANGE: 0x14189eae0-0x1418a7310 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$BY0BG@D@ArgType@internal@fmt@@QEAA@AEAY0BG@$$CBD@Z 0x1418a4900 ; prop
-// MS2-PIN: ??$?0$$BY0O@D@ArgType@internal@fmt@@QEAA@AEAY0O@$$CBD@Z 0x1418a4930 ; prop
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0BA@DH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BA@$$CBDAEBH@Z 0x1418a4a60 ; unique
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0BD@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BD@$$CBDAEB_JAEBV01@@Z 0x1418a5080 ; unique
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0BG@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BG@$$CBDAEB_JAEBV01@@Z 0x1418a5400 ; unique
@@ -15,6 +14,7 @@
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0O@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0O@$$CBDAEBV01@AEB_J@Z 0x1418a5a90 ; unique
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0P@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEBV01@AEBH3@Z 0x1418a5e10 ; unique
 // MS2-PIN: ??$Unk_SocketFormat@$$BY0P@D_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEB_J@Z 0x1418a61d0 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@_J_JW4Unk_VwDialogId@@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V23@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_J1AEBW4Unk_VwDialogId@@1AEBV01@3@Z 0x1418a64e0 ; unique
 // MS2-PINS-END tplpin
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ugcviewerequip.cpp"
@@ -119,6 +119,9 @@ int FUN_14186d050(NiTexture* pTexture, int nBannerId, CStringW& strOut);
 CString FUN_1411c0aa0(const char* szText);                  // a text without arguments
 void FUN_14186bd30(Unk_PPSmartC* pOut, const CStringW& strPath, int nSize, int nFlag);   // the texture of an image file (null on error)
 
+// The exe formats ids as unsigned values (the unsigned ArgType constructors).
+#define VW_U(x) reinterpret_cast<const unsigned&>(x)
+#define VW_U64(x) reinterpret_cast<const unsigned __int64&>(x)
 enum class Unk_VwDialogId : int { None = 0 };               // a dialog id (formatted as a custom argument)
 // A dialog of the UI service by id; slot 55 is its "is hidden" state.
 class Unk_VwDialogUi
@@ -314,7 +317,7 @@ void CUgcViewerEquip::vfunc_5()
 CString CUgcViewerEquip::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [strUgcMesh={1}] [dropOid={2}] [pcOid={3}]", "UgcViewerEquip", m_strMesh, m_item.m_nSlot, m_item.m_nObjectId);
+    str = Unk_SocketFormat("[viewer={0}] [strUgcMesh={1}] [dropOid={2}] [pcOid={3}]", "UgcViewerEquip", m_strMesh, VW_U(m_item.m_nSlot), VW_U(m_item.m_nObjectId));
     return str;
 }
 
@@ -448,7 +451,7 @@ void CUgcViewerCube::vfunc_5()
 CString CUgcViewerCube::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [strUgcMesh={1}] [itemSN={2}]", "UgcViewerCube", m_strMesh, m_item.m_itemUid);
+    str = Unk_SocketFormat("[viewer={0}] [strUgcMesh={1}] [itemSN={2}]", "UgcViewerCube", m_strMesh, VW_U64(m_item.m_itemUid));
     return str;
 }
 
@@ -648,7 +651,7 @@ void CUgcViewerBanner::vfunc_5()
 CString CUgcViewerBanner::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [bannerSN={1}]", "UgcViewerBanner", m_nBannerId);
+    str = Unk_SocketFormat("[viewer={0}] [bannerSN={1}]", "UgcViewerBanner", VW_U(m_nBannerId));
     return str;
 }
 
@@ -912,7 +915,7 @@ void CUgcViewerGuildMark::vfunc_5()
 CString CUgcViewerGuildMark::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "UgcViewerGuildMark", m_mark.m_nGuildId, m_mark.m_strName);
+    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "UgcViewerGuildMark", VW_U64(m_mark.m_nGuildId), m_mark.m_strName);
     return str;
 }
 
@@ -999,7 +1002,7 @@ void CUgcViewerGuildPoster::vfunc_5()
 CString CUgcViewerGuildPoster::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "CUgcViewerGuildPoster", m_poster.m_nGuildId, m_poster.m_strName);
+    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "CUgcViewerGuildPoster", VW_U64(m_poster.m_nGuildId), m_poster.m_strName);
     return str;
 }
 
@@ -1091,7 +1094,7 @@ void CUgcViewerRidee::vfunc_5()
 CString CUgcViewerRidee::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [itemSN={1}]", "UgcViewerRidee", m_item.m_itemUid);
+    str = Unk_SocketFormat("[viewer={0}] [itemSN={1}]", "UgcViewerRidee", VW_U64(m_item.m_itemUid));
     return str;
 }
 
@@ -1219,7 +1222,7 @@ void CUgcViewerBlueprintImage::vfunc_5()
 CString CUgcViewerBlueprintImage::vfunc_11()
 {
     CString str;
-    str = Unk_SocketFormat("[viewer={0}] [blueprint_item_sn={1}]", "UgcViewerBlueprintImage", m_n30);
+    str = Unk_SocketFormat("[viewer={0}] [blueprint_item_sn={1}]", "UgcViewerBlueprintImage", VW_U64(m_n30));
     return str;
 }
 
@@ -1554,7 +1557,7 @@ CString CUgcUploadCtrl::FUN_1418a41e0()
     CString strViewer;
     if (m_spViewer.get() != 0)
         strViewer = m_spViewer->vfunc_11();
-    str = Unk_SocketFormat("[accSN={0}] [charSN={1}] [dialog={2}] [extraParam={3}] [uploadPath={4}] {5}", DAT_143ab2820, DAT_143ab2828, reinterpret_cast<Unk_VwDialogId&>(m_nDialog), m_nExtra, FUN_14016a600(m_strResult, 0), strViewer);
+    str = Unk_SocketFormat("[accSN={0}] [charSN={1}] [dialog={2}] [extraParam={3}] [uploadPath={4}] {5}", VW_U64(DAT_143ab2820), VW_U64(DAT_143ab2828), reinterpret_cast<Unk_VwDialogId&>(m_nDialog), VW_U64(m_nExtra), FUN_14016a600(m_strResult, 0), strViewer);
     return str;
 }
 
