@@ -49,7 +49,7 @@ class Unk_140165cf0                                                     // game 
 {
 public:
     Unk_140165cf0* FUN_140165cf0(const char* pszName);                  // FirstChildElement(name)
-    Unk_140165cf0* FUN_140168650();                                     // next sibling with the same name
+    Unk_140165cf0* FUN_140168650(const char* pszName);                  // NextSiblingElement(name)
 };
 const char* FUN_14086f4b0(Unk_140165cf0* pNode, const char* pszName);
 int FUN_140873360(Unk_140165cf0* pNode, const char* pszName, float& fOut);
@@ -134,7 +134,7 @@ void ChaosLightEffectParam::vfunc_1(Unk_140165cf0* pNode)
     spFirst->m_fBlue = m_fBlue;
     ChaosLightTransitionData* pPrev = spFirst;
     float fTime = m_fStartDelay;
-    for (Unk_140165cf0* pKey = pNode->FUN_140165cf0("transition"); pKey != 0; pKey = pKey->FUN_140168650())
+    for (Unk_140165cf0* pKey = pNode->FUN_140165cf0("transition"); pKey != 0; pKey = pKey->FUN_140168650("transition"))
     {
         NiPointer<ChaosLightTransitionData> spData(new (efd::MemHint(efd::MemHint::NONE)) ChaosLightTransitionData);
         FUN_14185f0b0(spData.operator->(), pKey, &fTime);

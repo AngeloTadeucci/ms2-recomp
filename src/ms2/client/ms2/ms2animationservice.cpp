@@ -59,7 +59,6 @@ class Unk_XmlNode
 public:
     Unk_XmlNode* FUN_140165cf0(const char* pcName);     // FirstChild(name)
     Unk_XmlNode* FUN_140168650(const char* pcName);     // NextSibling(name)
-    Unk_XmlNode* FUN_140168650();                       // NextSibling()
     const char* FUN_14086f4b0(const char* pcName);      // Attribute(name)
     void FUN_140873ca0(const char* pcName, int nValue); // SetAttribute(name, int)
 };
@@ -414,7 +413,7 @@ int FUN_1414a90c0(NiString kPath, NiString kAnim, Unk_PreloadEntry** ppEntries)
             Unk_XmlNode* pAnim = pRoot->FUN_140165cf0((const char*)kAnim);
             if (pAnim != 0)
             {
-                for (Unk_XmlNode* pKey = pAnim->FUN_140165cf0("key"); pKey != 0; pKey = pKey->FUN_140168650())
+                for (Unk_XmlNode* pKey = pAnim->FUN_140165cf0("key"); pKey != 0; pKey = pKey->FUN_140168650("key"))
                     ++nCount;
                 if (nCount > 0)
                     *ppEntries = EE_NEW Unk_PreloadEntry[nCount];
