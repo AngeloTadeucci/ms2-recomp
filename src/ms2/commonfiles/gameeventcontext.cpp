@@ -223,9 +223,11 @@ static Unk_GEFactoryRegistry s_regCashAttend(L"GameEventCashAttend", FUN_1403fb9
 
 // @0x1403fb400
 GameEvent* FUN_1403fb400() { return new GameEventAttendGift; }
+MS2_REPLACE(0x1403fb400, FUN_1403fb400, 82, 0xE4859B6C);
 
 // @0x1403fb460
 CStringW GameEventAttendGift::vfunc_1() { return CStringW(L"GameEventAttendGift"); }
+MS2_REPLACE_METHOD(0x1403fb460, GameEventAttendGift, vfunc_1, 61, 0x6936B364);
 
 // @0x1403fb4b0
 GameEventAttendGift::GameEventAttendGift()
@@ -237,6 +239,7 @@ GameEventAttendGift::GameEventAttendGift()
 
 // @0x1403fb5e0
 void GameEventAttendGift::vfunc_2() {}
+MS2_REPLACE_METHOD(0x1403fb5e0, GameEventAttendGift, vfunc_2, 6, 0xA9AF6E37);
 
 // @0x1403fb5f0
 void GameEventAttendGift::vfunc_3(Unk_GEOut* out)
@@ -259,6 +262,7 @@ void GameEventAttendGift::vfunc_3(Unk_GEOut* out)
     }
     FUN_1403fbf30(out, &m_gifts);
 }
+MS2_REPLACE_METHOD(0x1403fb5f0, GameEventAttendGift, vfunc_3, 370, 0xF9D3D0D4);
 
 // @0x1403fb770
 void GameEventAttendGift::vfunc_4(Unk_GEIn* in)
@@ -282,21 +286,27 @@ void GameEventAttendGift::vfunc_4(Unk_GEIn* in)
     FUN_1403fbe50(&in->reader, &m_gifts);
     vfunc_10();
 }
+MS2_REPLACE_METHOD(0x1403fb770, GameEventAttendGift, vfunc_4, 492, 0x9553F7C9);
 
 // @0x1403fb970
 void GameEventAttendGift::vfunc_5() {}
+MS2_REPLACE_METHOD(0x1403fb970, GameEventAttendGift, vfunc_5, 6, 0xA9AF6E37);
 
 // @0x1403fb980
 void GameEventAttendGift::vfunc_6() {}
+MS2_REPLACE_METHOD(0x1403fb980, GameEventAttendGift, vfunc_6, 6, 0xA9AF6E37);
 
 // @0x1403fb990
 void GameEventAttendGift::vfunc_10() {}
+MS2_REPLACE_METHOD(0x1403fb990, GameEventAttendGift, vfunc_10, 6, 0xA9AF6E37);
 
 // @0x1403fb9a0
 GameEvent* FUN_1403fb9a0() { return new GameEventCashAttend; }
+MS2_REPLACE(0x1403fb9a0, FUN_1403fb9a0, 82, 0xF5361299);
 
 // @0x1403fba00
 CStringW GameEventCashAttend::vfunc_1() { return CStringW(L"GameEventCashAttend"); }
+MS2_REPLACE_METHOD(0x1403fba00, GameEventCashAttend, vfunc_1, 61, 0xB5B435BC);
 
 // @0x1403fba50
 GameEventCashAttend::GameEventCashAttend() : m_i0(0), m_i4(0)
@@ -313,6 +323,7 @@ void GameEventCashAttend::vfunc_2()
     m_strDesc = m_78;
     m_entry = FUN_1403fc330()->FUN_1401ae630(m_i0);
 }
+MS2_REPLACE_METHOD(0x1403fbb00, GameEventCashAttend, vfunc_2, 189, 0x68160277);
 
 // @0x1403fbbd0
 void GameEventCashAttend::vfunc_3(Unk_GEOut* out)
@@ -324,6 +335,7 @@ void GameEventCashAttend::vfunc_3(Unk_GEOut* out)
     FUN_14070f9a0(out, m_i4);
     FUN_14070fae0(out, &m_strDesc);
 }
+MS2_REPLACE_METHOD(0x1403fbbd0, GameEventCashAttend, vfunc_3, 144, 0xD55548FA);
 
 // @0x1403fbc70
 void GameEventCashAttend::vfunc_4(Unk_GEIn* in)
@@ -337,15 +349,19 @@ void GameEventCashAttend::vfunc_4(Unk_GEIn* in)
     m_entry = FUN_1403fc330()->FUN_1401ae630(m_i0);
     vfunc_10();
 }
+MS2_REPLACE_METHOD(0x1403fbc70, GameEventCashAttend, vfunc_4, 275, 0x71A9551D);
 
 // @0x1403fbd90
 void GameEventCashAttend::vfunc_5() {}
+MS2_REPLACE_METHOD(0x1403fbd90, GameEventCashAttend, vfunc_5, 6, 0xA9AF6E37);
 
 // @0x1403fbda0
 void GameEventCashAttend::vfunc_6() {}
+MS2_REPLACE_METHOD(0x1403fbda0, GameEventCashAttend, vfunc_6, 6, 0xA9AF6E37);
 
 // @0x1403fbdb0
 void GameEventCashAttend::vfunc_10() {}
+MS2_REPLACE_METHOD(0x1403fbdb0, GameEventCashAttend, vfunc_10, 6, 0xA9AF6E37);
 
 // @0x1403fbde0
 int FUN_1403fbde0(const CStringA& name)
@@ -358,6 +374,7 @@ int FUN_1403fbde0(const CStringA& name)
         return 3;
     return 0;
 }
+MS2_REPLACE(0x1403fbde0, FUN_1403fbde0, 103, 0xCBF0F47C);
 
 // @0x1403fbe50
 void FUN_1403fbe50(Unk_GEReader* in, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts)
@@ -369,6 +386,7 @@ void FUN_1403fbe50(Unk_GEReader* in, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts)
         gifts->Add(gift);
     }
 }
+MS2_REPLACE(0x1403fbe50, FUN_1403fbe50, 211, 0x95AACE8B);
 
 // @0x1403fbf30
 void FUN_1403fbf30(Unk_GEOut* out, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts)
@@ -379,9 +397,11 @@ void FUN_1403fbf30(Unk_GEOut* out, ATL::CAtlArray<MS2Ptr<ItemGift> >* gifts)
         gift->FUN_14026b030(*reinterpret_cast<Unk_GiftOutput*>(out));
     }
 }
+MS2_REPLACE(0x1403fbf30, FUN_1403fbf30, 152, 0x0FCC86CE);
 
 // @0x1403fc330
 Unk_AttendGiftDataGroup* FUN_1403fc330() { return DAT_143aac2a8; }
+MS2_REPLACE(0x1403fc330, FUN_1403fc330, 8, 0xA0DCC569);
 
 // @0x1403fc640
 BonusGameBlueMarbleSlot::BonusGameBlueMarbleSlot() : m_type((Unk_BlueMarbleSlotType)0), m_arg1(0), m_arg2(0) {}
@@ -393,6 +413,7 @@ void BonusGameBlueMarbleSlot::Load(Unk_140165cf0* pElem)
     FUN_1408731e0(pElem, "arg1", m_arg1);
     FUN_1408731e0(pElem, "arg2", m_arg2);
 }
+MS2_REPLACE_METHOD(0x1403fc6a0, BonusGameBlueMarbleSlot, Load, 106, 0xFB0C60DC);
 
 // @0x1403fc710
 BlueMarbleEventContext::BlueMarbleEventContext(int eventId, CMsTime endTime)
@@ -413,6 +434,7 @@ void BlueMarbleEventContext::LoadRewards(Unk_140165cf0* pElem)
         AddReward(round, spItem);
     }
 }
+MS2_REPLACE_METHOD(0x1403fc7c0, BlueMarbleEventContext, LoadRewards, 455, 0x827CB681);
 
 // @0x1403fc990
 void BlueMarbleEventContext::LoadSlots(Unk_140165cf0* pElem)
@@ -423,6 +445,7 @@ void BlueMarbleEventContext::LoadSlots(Unk_140165cf0* pElem)
         m_slots.push_back(spSlot);
     }
 }
+MS2_REPLACE_METHOD(0x1403fc990, BlueMarbleEventContext, LoadSlots, 297, 0x14879088);
 
 // @0x1403fcac0
 void BlueMarbleEventContext::AddReward(int round, MS2Ptr<ItemEntity> spItem) { m_rewards.SetAt(round, spItem); }
@@ -438,6 +461,7 @@ void EventTimeLimitDungeonContext::Write(COutputStream& out)
     FUN_14070f9a0(out, m_rangeTime.m_start.GetSeconds());
     FUN_14070f9a0(out, m_rangeTime.m_end.GetSeconds());
 }
+MS2_REPLACE_METHOD(0x1403fcb80, EventTimeLimitDungeonContext, Write, 113, 0x253F88D9);
 
 // @0x1403fcc00
 void EventTimeLimitDungeonContext::Read(CInputStream& in)
@@ -447,6 +471,7 @@ void EventTimeLimitDungeonContext::Read(CInputStream& in)
     m_rangeTime.m_start.SetSeconds(in.vfunc_o8_3());
     m_rangeTime.m_end.SetSeconds(in.vfunc_o8_3());
 }
+MS2_REPLACE_METHOD(0x1403fcc00, EventTimeLimitDungeonContext, Read, 127, 0x829B1FA2);
 
 // @0x1403fcc90
 void StampEventContext::Write(COutputStream& out)
@@ -471,6 +496,7 @@ void StampEventContext::Write(COutputStream& out)
     }
     m_item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
 }
+MS2_REPLACE_METHOD(0x1403fcc90, StampEventContext, Write, 955, 0xDD356D28);
 
 // @0x1403fd060
 void StampEventContext::Read(CInPacket& packet)
@@ -499,6 +525,7 @@ void StampEventContext::Read(CInPacket& packet)
     }
     m_item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
 }
+MS2_REPLACE_METHOD(0x1403fd060, StampEventContext, Read, 1335, 0xA48E1978);
 
 // @0x1403fd5a0
 int StampEventContext::GetStampFlag(int id)
@@ -509,6 +536,7 @@ int StampEventContext::GetStampFlag(int id)
     }
     return -1;
 }
+MS2_REPLACE_METHOD(0x1403fd5a0, StampEventContext, GetStampFlag, 175, 0x15B2AC45);
 
 // @0x1403fd660
 BOOL StampEventContext::HasStamp(int id)
@@ -519,6 +547,7 @@ BOOL StampEventContext::HasStamp(int id)
     }
     return FALSE;
 }
+MS2_REPLACE_METHOD(0x1403fd660, StampEventContext, HasStamp, 116, 0x79A6A7C0);
 
 // @0x1403fd6e0
 DungeonExtraRewardCountCtx::DungeonExtraRewardCountCtx()
@@ -534,6 +563,7 @@ void DungeonExtraRewardCountCtx::Load(Unk_140165cf0* pElem)
     XmlEnumName<Unk_DungeonCooldownType, FUN_1402199e0>(pElem, "cooldownType", m_cooldownType);
     FUN_1408731e0(pElem, "cooldownValue", m_cooldownValue);
 }
+MS2_REPLACE_METHOD(0x1403fd750, DungeonExtraRewardCountCtx, Load, 135, 0x7AA036E1);
 
 // @0x1403fd7e0
 CInputStream& operator>>(CInputStream& in, DungeonExtraRewardCountCtx& ctx)
@@ -543,6 +573,7 @@ CInputStream& operator>>(CInputStream& in, DungeonExtraRewardCountCtx& ctx)
     FUN_14070f480(in, ctx.m_count);
     return in;
 }
+MS2_REPLACE_OVERLOAD(0x1403fd7e0, CInputStream&(CInputStream&, DungeonExtraRewardCountCtx&), operator>>, 90, 0x68A75E42);
 
 // @0x1403fd840
 COutputStream& operator<<(COutputStream& out, const DungeonExtraRewardCountCtx& ctx)
@@ -552,6 +583,7 @@ COutputStream& operator<<(COutputStream& out, const DungeonExtraRewardCountCtx& 
     FUN_14070f9a0(out, ctx.m_count);
     return out;
 }
+MS2_REPLACE_OVERLOAD(0x1403fd840, COutputStream&(COutputStream&, const DungeonExtraRewardCountCtx&), operator<<, 78, 0x68D550D8);
 
 // @0x1403fd8a0
 DungeonBonusRewardCtx::DungeonBonusRewardCtx()
@@ -569,6 +601,7 @@ void DungeonBonusRewardCtx::Load(Unk_140165cf0* pElem)
     FUN_1408731e0(pElem, "itemRolls", m_itemRolls);
     XmlTokenList(pElem, "customDropBoxIds", m_customDropBoxIds);
 }
+MS2_REPLACE_METHOD(0x1403fd930, DungeonBonusRewardCtx, Load, 193, 0xC7A5F22F);
 
 // @0x1403fda00
 void DungeonBonusRewardCtx::Write(COutputStream& out) const
@@ -580,6 +613,7 @@ void DungeonBonusRewardCtx::Write(COutputStream& out) const
     FUN_14070f960(out, m_itemRolls);
     out << m_customDropBoxIds;
 }
+MS2_REPLACE_METHOD(0x1403fda00, DungeonBonusRewardCtx, Write, 136, 0xABDF08DD);
 
 // @0x1403fda90
 void DungeonBonusRewardCtx::Read(CInputStream& in)
@@ -591,6 +625,7 @@ void DungeonBonusRewardCtx::Read(CInputStream& in)
     FUN_14070f440(in, m_itemRolls);
     in >> m_customDropBoxIds;
 }
+MS2_REPLACE_METHOD(0x1403fda90, DungeonBonusRewardCtx, Read, 156, 0xFFB55CCC);
 
 // @0x1403fdb40
 void DungeonBonusRewardCtx::Merge(const MS2Ptr<DungeonBonusRewardCtx>& other)
@@ -602,6 +637,7 @@ void DungeonBonusRewardCtx::Merge(const MS2Ptr<DungeonBonusRewardCtx>& other)
     m_expRate += other->m_expRate;
     std::copy(other->m_customDropBoxIds.begin(), other->m_customDropBoxIds.end(), std::back_inserter(m_customDropBoxIds));
 }
+MS2_REPLACE_METHOD(0x1403fdb40, DungeonBonusRewardCtx, Merge, 259, 0xBC70E8D4);
 
 // @0x1403fdc50
 __int64 DungeonBonusRewardCtx::ApplyMesoRate(__int64 value)
@@ -609,6 +645,7 @@ __int64 DungeonBonusRewardCtx::ApplyMesoRate(__int64 value)
     const double epsilon = 0.001;
     return (__int64)((double)value * m_mesoRate + epsilon);
 }
+MS2_REPLACE_METHOD(0x1403fdc50, DungeonBonusRewardCtx, ApplyMesoRate, 66, 0x6B05F779);
 
 // @0x1403fdca0
 __int64 DungeonBonusRewardCtx::ApplyExpRate(__int64 value)
@@ -616,6 +653,7 @@ __int64 DungeonBonusRewardCtx::ApplyExpRate(__int64 value)
     const double epsilon = 0.001;
     return (__int64)((double)value * m_expRate + epsilon);
 }
+MS2_REPLACE_METHOD(0x1403fdca0, DungeonBonusRewardCtx, ApplyExpRate, 66, 0x5161F364);
 
 // @0x1403fdcf0
 CInputStream& operator>>(CInputStream& in, DungeonBonusRewardCtx& ctx)
@@ -623,6 +661,7 @@ CInputStream& operator>>(CInputStream& in, DungeonBonusRewardCtx& ctx)
     ctx.Read(in);
     return in;
 }
+MS2_REPLACE_OVERLOAD(0x1403fdcf0, CInputStream&(CInputStream&, DungeonBonusRewardCtx&), operator>>, 39, 0x480D13CD);
 
 // @0x1403fdd20
 COutputStream& operator<<(COutputStream& out, const DungeonBonusRewardCtx& ctx)
@@ -630,6 +669,7 @@ COutputStream& operator<<(COutputStream& out, const DungeonBonusRewardCtx& ctx)
     ctx.Write(out);
     return out;
 }
+MS2_REPLACE_OVERLOAD(0x1403fdd20, COutputStream&(COutputStream&, const DungeonBonusRewardCtx&), operator<<, 39, 0xB772769A);
 
 // @0x1403fdd50
 ItemBoxEventContext::ItemBoxEventContext() : m_fieldID(0), m_boxItemID(0), m_3c(0) {}
@@ -643,6 +683,7 @@ void ItemBoxEventContext::Load(Unk_140165cf0* pElem)
     FUN_140873420(pElem, "title", m_title);
     FUN_140873420(pElem, "desc", m_desc);
 }
+MS2_REPLACE_METHOD(0x1403fdde0, ItemBoxEventContext, Load, 164, 0xF3C4745F);
 
 // @0x1403fde90
 void ItemBoxEventContext::Write(COutputStream& out)
@@ -654,6 +695,7 @@ void ItemBoxEventContext::Write(COutputStream& out)
     out.vfunc_o10_8(m_bannerPath);
     out.vfunc_o10_3(m_3c);
 }
+MS2_REPLACE_METHOD(0x1403fde90, ItemBoxEventContext, Write, 205, 0x94E651EB);
 
 // @0x1403fdf70
 void ItemBoxEventContext::Read(CInPacket& packet)
@@ -665,6 +707,7 @@ void ItemBoxEventContext::Read(CInPacket& packet)
     m_bannerPath = packet.vfunc_o8_8();
     m_3c = packet.vfunc_o8_3();
 }
+MS2_REPLACE_METHOD(0x1403fdf70, ItemBoxEventContext, Read, 502, 0x43A428F1);
 
 // @0x1403fe170
 TimeRunEventContext::TimeRunEventContext(int eventId) : m_eventId(eventId), m_1c(0), m_value(0), m_endTime(0), m_rewards(10) {}
@@ -690,6 +733,7 @@ void TimeRunEventContext::Write(COutputStream& out)
         spItem->FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
     }
 }
+MS2_REPLACE_METHOD(0x1403fe250, TimeRunEventContext, Write, 706, 0x6519EA38);
 
 // @0x1403fe520
 void TimeRunEventContext::Read(CInPacket& packet)
@@ -714,6 +758,7 @@ void TimeRunEventContext::Read(CInPacket& packet)
         m_rewards.SetAt(key, spItem);
     }
 }
+MS2_REPLACE_METHOD(0x1403fe520, TimeRunEventContext, Read, 958, 0x0E738D7A);
 
 // @0x1403fe8f0
 unsigned TimeRunEventContext::GetNextRewardKey(unsigned value)
@@ -725,6 +770,7 @@ unsigned TimeRunEventContext::GetNextRewardKey(unsigned value)
     }
     return 0;
 }
+MS2_REPLACE_METHOD(0x1403fe8f0, TimeRunEventContext, GetNextRewardKey, 126, 0x64E1F2D2);
 
 // @0x1403fe980
 QuestAdditionalRewardContext::QuestAdditionalRewardContext() : m_itemRates(17, 0.75f, 0.25f, 2.25f, 10)
@@ -762,6 +808,7 @@ void QuestAdditionalRewardContext::Load(CStringW* pValue)
         }
     }
 }
+MS2_REPLACE_METHOD(0x1403fea10, QuestAdditionalRewardContext, Load, 681, 0xFA2E5509);
 
 // @0x1403fecc0
 void QuestAdditionalRewardContext::Write(COutputStream& out)
@@ -775,6 +822,7 @@ void QuestAdditionalRewardContext::Write(COutputStream& out)
         out.vfunc_o10_3(m_itemRates.GetValueAt(pos));
     }
 }
+MS2_REPLACE_METHOD(0x1403fecc0, QuestAdditionalRewardContext, Write, 283, 0x9A1480C0);
 
 // @0x1403fedf0
 void QuestAdditionalRewardContext::Read(CInPacket& packet)
@@ -788,6 +836,7 @@ void QuestAdditionalRewardContext::Read(CInPacket& packet)
         m_itemRates.SetAt(id, itemRate);
     }
 }
+MS2_REPLACE_METHOD(0x1403fedf0, QuestAdditionalRewardContext, Read, 278, 0xC6FE4CCE);
 
 // @0x1403fef10
 void GalleryContext::Write(COutputStream& out)
@@ -802,6 +851,7 @@ void GalleryContext::Write(COutputStream& out)
     out.vfunc_o10_8(m_strTitle);
     out.vfunc_o10_4(m_endTime);
 }
+MS2_REPLACE_METHOD(0x1403fef10, GalleryContext, Write, 392, 0x0AAA5A49);
 
 // @0x1403ff0a0
 void GalleryContext::Read(CInPacket& packet)
@@ -822,6 +872,7 @@ void GalleryContext::Read(CInPacket& packet)
     m_strTitle = packet.vfunc_o8_8();
     m_endTime = packet.vfunc_o8_4();
 }
+MS2_REPLACE_METHOD(0x1403ff0a0, GalleryContext, Read, 689, 0x223A401A);
 
 // @0x1403ff360
 BOOL GalleryContext::HasCard(int id)
@@ -832,6 +883,7 @@ BOOL GalleryContext::HasCard(int id)
     }
     return FALSE;
 }
+MS2_REPLACE_METHOD(0x1403ff360, GalleryContext, HasCard, 116, 0x3A942D56);
 
 // @0x1403ff3e0
 MS2Ptr<GalleryContext::Card> GalleryContext::GetCard(int index)
@@ -843,6 +895,7 @@ MS2Ptr<GalleryContext::Card> GalleryContext::GetCard(int index)
     }
     return m_cards[index];
 }
+MS2_REPLACE_METHOD(0x1403ff3e0, GalleryContext, GetCard, 185, 0x2AA08563);
 
 // @0x1403ff4a0
 void MentoringContext::Write(COutputStream& out)
@@ -854,6 +907,7 @@ void MentoringContext::Write(COutputStream& out)
     for (size_t i = 0; i < m_ids.GetCount(); i++)
         out.vfunc_o10_3(m_ids[i]);
 }
+MS2_REPLACE_METHOD(0x1403ff4a0, MentoringContext, Write, 238, 0xB91500A1);
 
 // @0x1403ff5a0
 void MentoringContext::Read(CInPacket& packet)
@@ -865,6 +919,7 @@ void MentoringContext::Read(CInPacket& packet)
     for (unsigned i = 0; i < count; i++)
         m_ids.Add(packet.vfunc_o8_3());
 }
+MS2_REPLACE_METHOD(0x1403ff5a0, MentoringContext, Read, 267, 0x6959083B);
 
 // @0x1403ff6c0
 DungeonBuffEventCtx::DungeonBuffEventCtx() : m_dungeonID(0), m_isBeginner(false)
@@ -887,24 +942,28 @@ bool DungeonBuffEventCtx::Load(Unk_140165cf0* pElem)
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x1403ff720, DungeonBuffEventCtx, Load, 136, 0x8EE196D9);
 
 // @0x1403ff7b0
 bool SnowmanContext::Snowman::ReachedGoal(int value)
 {
     return value >= m_18;
 }
+MS2_REPLACE_METHOD(0x1403ff7b0, SnowmanContext::Snowman, ReachedGoal, 52, 0x05947B3A);
 
 // @0x1403ff7f0
 bool SnowmanContext::Snowman::BelowLimit(int value)
 {
     return value < m_1c;
 }
+MS2_REPLACE_METHOD(0x1403ff7f0, SnowmanContext::Snowman, BelowLimit, 52, 0x1FA24CFD);
 
 // @0x1403ff830
 bool SnowmanContext::Snowman::ReachedBonus(int value)
 {
     return value >= m_20;
 }
+MS2_REPLACE_METHOD(0x1403ff830, SnowmanContext::Snowman, ReachedBonus, 52, 0xB882FE12);
 
 // @0x1403ff870
 bool SnowmanContext::Snowman::CanProceed(int goalValue, int limitValue)
@@ -917,6 +976,7 @@ bool SnowmanContext::Snowman::CanProceed(int goalValue, int limitValue)
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x1403ff870, SnowmanContext::Snowman, CanProceed, 111, 0xE46AF0B0);
 
 // @0x1403ff8f0
 void SnowmanContext::Write(COutputStream& out)
@@ -944,6 +1004,7 @@ void SnowmanContext::Write(COutputStream& out)
     }
     out.vfunc_o10_4(m_endTime);
 }
+MS2_REPLACE_METHOD(0x1403ff8f0, SnowmanContext, Write, 769, 0x8D6B039E);
 
 // @0x1403ffc00
 void SnowmanContext::Read(CInPacket& packet)
@@ -972,6 +1033,7 @@ void SnowmanContext::Read(CInPacket& packet)
     }
     m_endTime = packet.vfunc_o8_4();
 }
+MS2_REPLACE_METHOD(0x1403ffc00, SnowmanContext, Read, 1008, 0xEA8CA9B2);
 
 // @0x140400000
 MS2Ptr<SnowmanContext::Snowman> SnowmanContext::GetSnowman(int index)
@@ -983,6 +1045,7 @@ MS2Ptr<SnowmanContext::Snowman> SnowmanContext::GetSnowman(int index)
     }
     return m_snowmen[index];
 }
+MS2_REPLACE_METHOD(0x140400000, SnowmanContext, GetSnowman, 185, 0xF55D4007);
 
 // @0x1404000c0
 bool RpsGameData::Load(Unk_140165cf0* pElem)
@@ -1055,6 +1118,7 @@ bool RpsGameData::Load(Unk_140165cf0* pElem)
     }
     return true;
 }
+MS2_REPLACE_METHOD(0x1404000c0, RpsGameData, Load, 1295, 0x81870CB5);
 
 // @0x1404005e0
 // Sort callback over CAtlArray<MS2Ptr<RpsContext::RewardData> > (not called from the client).
@@ -1068,6 +1132,7 @@ int CompareRpsReward(const void* pLeft, const void* pRight)
     MS2Ptr<RpsContext::RewardData> spRight = *static_cast<const MS2Ptr<RpsContext::RewardData>*>(pRight);
     return spLeft->m_count < spRight->m_count ? -1 : 1;
 }
+MS2_REPLACE(0x1404005e0, CompareRpsReward, 203, 0xA1C87D62);
 
 // @0x1404006c0
 void RpsContext::Write(COutputStream& out)
@@ -1091,6 +1156,7 @@ void RpsContext::Write(COutputStream& out)
     out.vfunc_o10_3(m_48);
     out.vfunc_o10_4(m_endTime);
 }
+MS2_REPLACE_METHOD(0x1404006c0, RpsContext, Write, 503, 0xC8BA33F0);
 
 // @0x1404008c0
 void RpsContext::Read(CInPacket& packet)
@@ -1111,7 +1177,9 @@ void RpsContext::Read(CInPacket& packet)
     m_48 = packet.vfunc_o8_3();
     m_endTime = packet.vfunc_o8_4();
 }
+MS2_REPLACE_METHOD(0x1404008c0, RpsContext, Read, 813, 0xBB5BDB82);
 
+// MS2-FUNCTIONAL: symbols.tsv binds set<int>::insert to the ICF-shared copy 0x1403455f0, the exe calls 0x14035d1e0
 // @0x140400c00
 bool CoupleDanceContext::LoadReward(Unk_140165cf0* pElem)
 {
@@ -1160,6 +1228,7 @@ bool CoupleDanceContext::LoadReward(Unk_140165cf0* pElem)
     }
     return true;
 }
+MS2_REPLACE_METHOD(0x140400c00, CoupleDanceContext, LoadReward, 1117, 0xE66847B2);
 
 // @0x140401070
 bool CoupleDanceContext::LoadDance(Unk_140165cf0* pElem)
@@ -1232,6 +1301,7 @@ bool CoupleDanceContext::LoadDance(Unk_140165cf0* pElem)
     }
     return true;
 }
+MS2_REPLACE_METHOD(0x140401070, CoupleDanceContext, LoadDance, 1339, 0x8638015F);
 
 // @0x1404015c0
 void CoupleDanceContext::Write(COutputStream& out)
@@ -1261,6 +1331,7 @@ void CoupleDanceContext::Write(COutputStream& out)
     }
     out.vfunc_o10_3(m_fieldId);
 }
+MS2_REPLACE_METHOD(0x1404015c0, CoupleDanceContext, Write, 1197, 0x1BF42E6B);
 
 // @0x140401a80
 void CoupleDanceContext::Read(CInPacket& packet)
@@ -1301,12 +1372,14 @@ void CoupleDanceContext::Read(CInPacket& packet)
     }
     m_fieldId = packet.vfunc_o8_3();
 }
+MS2_REPLACE_METHOD(0x140401a80, CoupleDanceContext, Read, 1517, 0xCC3E3829);
 
 // @0x140402080
 const CoupleDanceContext::Step& CoupleDanceContext::GetStep(int index) const
 {
     return m_steps[index];
 }
+MS2_REPLACE_METHOD(0x140402080, CoupleDanceContext, GetStep, 40, 0xEE1EF5A5);
 
 // @0x1404020b0
 // MS2-FUNCTIONAL: ceil is the CRT import call in the exe, a direct call here (as in uinametag.cpp)
@@ -1322,6 +1395,7 @@ __int64 CNpcShopGivePointContextCNSpring::GetGivePoint(__int64 price, int curren
     double point = price * percent / 10000.0;
     return (__int64)ceil(point);
 }
+MS2_REPLACE_METHOD(0x1404020b0, CNpcShopGivePointContextCNSpring, GetGivePoint, 142, 0x7525554E);
 
 // @0x140402150
 MS2Ptr<CNpcShopGivePointContextBase> CNpcShopGivePointContextBase::Create(int type, const CStringW& strPath)
@@ -1344,6 +1418,7 @@ MS2Ptr<CNpcShopGivePointContextBase> CNpcShopGivePointContextBase::Create(int ty
     }
     return 0;
 }
+MS2_REPLACE(0x140402150, CNpcShopGivePointContextBase::Create, 562, 0xADC16AE1);
 
 // @0x140402390
 __int64 CNpcShopGivePointContextBase::GetGivePoint(MS2Ptr<CNpcShopGivePointContextBase> spContext,
@@ -1371,6 +1446,7 @@ void ReactorContext::Write(COutputStream& out)
     for (int i = 0; i < count; i++)
         out.vfunc_o10_3(m_30[i]);
 }
+MS2_REPLACE_METHOD(0x140402560, ReactorContext, Write, 215, 0x53831722);
 
 // @0x140402640
 void ReactorContext::Read(CInPacket& packet)
@@ -1385,6 +1461,7 @@ void ReactorContext::Read(CInPacket& packet)
         m_30.Add(value);
     }
 }
+MS2_REPLACE_METHOD(0x140402640, ReactorContext, Read, 292, 0x39050600);
 
 // @0x140402770
 void TreeWateringContext::Write(COutputStream& out)
@@ -1427,6 +1504,7 @@ void TreeWateringContext::Write(COutputStream& out)
     out.vfunc_o10_7(m_strStateBonus);
     out.vfunc_o10_7(m_str118);
 }
+MS2_REPLACE_METHOD(0x140402770, TreeWateringContext, Write, 1437, 0x7D2AE94E);
 
 // @0x140402d20
 void TreeWateringContext::Read(CInPacket& packet)
@@ -1472,6 +1550,7 @@ void TreeWateringContext::Read(CInPacket& packet)
     m_strStateBonus = packet.vfunc_o8_7();
     m_str118 = packet.vfunc_o8_7();
 }
+MS2_REPLACE_METHOD(0x140402d20, TreeWateringContext, Read, 2538, 0x9A328910);
 
 // @0x140403710
 MS2Ptr<TreeWatering_TreeStep> TreeWateringContext::GetStep(const CMsTime& time)
@@ -1483,6 +1562,7 @@ MS2Ptr<TreeWatering_TreeStep> TreeWateringContext::GetStep(const CMsTime& time)
     }
     return 0;
 }
+MS2_REPLACE_METHOD(0x140403710, TreeWateringContext, GetStep, 249, 0x02ADFBA6);
 
 // @0x140403810
 MS2Ptr<TreeWatering_TreeResource> TreeWateringContext::GetResource(int id)
@@ -1492,6 +1572,7 @@ MS2Ptr<TreeWatering_TreeResource> TreeWateringContext::GetResource(int id)
         return spResource;
     return 0;
 }
+MS2_REPLACE_METHOD(0x140403810, TreeWateringContext, GetResource, 170, 0x64A4C01A);
 
 // @0x1404038c0
 bool TreeWateringContext::FUN_1404038c0(const CMsTime& now)
@@ -1502,6 +1583,7 @@ bool TreeWateringContext::FUN_1404038c0(const CMsTime& now)
     }
     return false;
 }
+MS2_REPLACE_METHOD(0x1404038c0, TreeWateringContext, FUN_1404038c0, 186, 0xD98CD175);
 
 // @0x140403980
 void Unk_FieldObjectDropContext::Write(COutputStream& out)
@@ -1511,6 +1593,7 @@ void Unk_FieldObjectDropContext::Write(COutputStream& out)
     FUN_1403d7730(out, m_itemIds);
     FUN_14070f9a0(out, m_percent);
 }
+MS2_REPLACE_METHOD(0x140403980, Unk_FieldObjectDropContext, Write, 103, 0x40D0EDB5);
 
 // @0x1404039f0
 void Unk_FieldObjectDropContext::Read(CInPacket& packet)
@@ -1520,6 +1603,7 @@ void Unk_FieldObjectDropContext::Read(CInPacket& packet)
     FUN_1403d7440(packet, m_itemIds);
     FUN_14070f480(packet, m_percent);
 }
+MS2_REPLACE_METHOD(0x1404039f0, Unk_FieldObjectDropContext, Read, 123, 0xAE40BE2F);
 
 // @0x140403a80
 CStringW Unk_FieldObjectDropContext::ToString()
@@ -1528,6 +1612,7 @@ CStringW Unk_FieldObjectDropContext::ToString()
                                 m_objectIds.GetCount(), m_itemIds.GetCount(), m_percent);
     return str;
 }
+MS2_REPLACE_METHOD(0x140403a80, Unk_FieldObjectDropContext, ToString, 197, 0xDF76F612);
 
 // @0x140403b50
 bool Unk_FieldObjectDropContext::IsValid()
@@ -1542,6 +1627,7 @@ bool Unk_FieldObjectDropContext::IsValid()
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x140403b50, Unk_FieldObjectDropContext, IsValid, 115, 0x61835F4F);
 
 // @0x140403bd0
 void Unk_FieldObjectDropListContext::Write(COutputStream& out)
@@ -1551,6 +1637,7 @@ void Unk_FieldObjectDropListContext::Write(COutputStream& out)
     FUN_1403d7730(out, m_itemIds);
     FUN_1403d7730(out, m_percents);
 }
+MS2_REPLACE_METHOD(0x140403bd0, Unk_FieldObjectDropListContext, Write, 107, 0x20FA03BD);
 
 // @0x140403c50
 void Unk_FieldObjectDropListContext::Read(CInPacket& packet)
@@ -1560,6 +1647,7 @@ void Unk_FieldObjectDropListContext::Read(CInPacket& packet)
     FUN_1403d7440(packet, m_itemIds);
     FUN_1403d7440(packet, m_percents);
 }
+MS2_REPLACE_METHOD(0x140403c50, Unk_FieldObjectDropListContext, Read, 123, 0x9D600FC0);
 
 // @0x140403ce0
 CStringW Unk_FieldObjectDropListContext::ToString()
@@ -1568,6 +1656,7 @@ CStringW Unk_FieldObjectDropListContext::ToString()
                                 m_objectIds.GetCount(), m_itemIds.GetCount(), m_percents.GetCount());
     return str;
 }
+MS2_REPLACE_METHOD(0x140403ce0, Unk_FieldObjectDropListContext, ToString, 233, 0x855AAB70);
 
 // @0x140403dd0
 bool Unk_FieldObjectDropListContext::IsValid()
@@ -1584,26 +1673,31 @@ bool Unk_FieldObjectDropListContext::IsValid()
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x140403dd0, Unk_FieldObjectDropListContext, IsValid, 181, 0x1E077BD0);
 
 // @0x140403e90
 void Unk_DayItemContext::Write(COutputStream& out)
 {
 }
+MS2_REPLACE_METHOD(0x140403e90, Unk_DayItemContext, Write, 11, 0x02239C70);
 
 // @0x140403eb0
 void Unk_DayItemContext::Read(CInPacket& packet)
 {
 }
+MS2_REPLACE_METHOD(0x140403eb0, Unk_DayItemContext, Read, 11, 0x02239C70);
 
 // @0x140403ed0
 void Unk_DayItemContext::Period::Write(COutputStream& out)
 {
 }
+MS2_REPLACE_METHOD(0x140403ed0, Unk_DayItemContext::Period, Write, 11, 0x02239C70);
 
 // @0x140403ef0
 void Unk_DayItemContext::Period::Read(CInPacket& packet)
 {
 }
+MS2_REPLACE_METHOD(0x140403ef0, Unk_DayItemContext::Period, Read, 11, 0x02239C70);
 
 // @0x140403f10
 CStringW Unk_DayItemContext::ToString()
@@ -1612,11 +1706,13 @@ CStringW Unk_DayItemContext::ToString()
                                 m_weekends, m_weekdays, m_customized);
     return str;
 }
+MS2_REPLACE_METHOD(0x140403f10, Unk_DayItemContext, ToString, 164, 0x1782E300);
 
 // @0x140403fc0
 void Unk_DayItemContext::GetItemIds(ATL::CAtlArray<unsigned>& rOut)
 {
 }
+MS2_REPLACE_METHOD(0x140403fc0, Unk_DayItemContext, GetItemIds, 11, 0x02239C70);
 
 // @0x140403fe0
 void Unk_DayItemContext::GetActivePeriodIds(ATL::CAtlArray<unsigned>& rOut)
@@ -1628,6 +1724,7 @@ void Unk_DayItemContext::GetActivePeriodIds(ATL::CAtlArray<unsigned>& rOut)
         rOut.Add(pPeriod->m_id);
     }
 }
+MS2_REPLACE_METHOD(0x140403fe0, Unk_DayItemContext, GetActivePeriodIds, 144, 0xA44FADDC);
 
 // @0x140404080
 bool Unk_DayItemContext::IsValid()
@@ -1638,6 +1735,7 @@ bool Unk_DayItemContext::IsValid()
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x140404080, Unk_DayItemContext, IsValid, 81, 0xEE8F8925);
 
 // @0x1404040e0
 bool Unk_DayItemContext::IsActive()
@@ -1654,6 +1752,7 @@ bool Unk_DayItemContext::IsActive()
     }
     return bActive;
 }
+MS2_REPLACE_METHOD(0x1404040e0, Unk_DayItemContext, IsActive, 157, 0xB469CA6D);
 
 // The index of a value in an array, -1 when absent (instantiated here first; name invented).
 template <class T>
@@ -1679,11 +1778,13 @@ bool Unk_DayItemContext::IsTodayEnabled()
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x140404190, Unk_DayItemContext, IsTodayEnabled, 195, 0xBBCB0884);
 
 // @0x140404260
 void Unk_DayItemContext::Update()
 {
 }
+MS2_REPLACE_METHOD(0x140404260, Unk_DayItemContext, Update, 6, 0xA9AF6E37);
 
 // @0x140404270
 void Unk_DayItemContext::Period::Update()
@@ -1692,6 +1793,7 @@ void Unk_DayItemContext::Period::Update()
     if (m_state == 2 && now > m_endTime)
         m_state = 4;
 }
+MS2_REPLACE_METHOD(0x140404270, Unk_DayItemContext::Period, Update, 84, 0x2C6AEA11);
 
 // @0x1404042d0
 bool Unk_DayItemContext::Period::IsActive()
@@ -1705,17 +1807,20 @@ bool Unk_DayItemContext::Period::IsActive()
         return false;
     return true;
 }
+MS2_REPLACE_METHOD(0x1404042d0, Unk_DayItemContext::Period, IsActive, 115, 0xB7BDAEA0);
 
 // @0x140404370
 void Unk_DayItemContext::Period::Clear()
 {
 }
+MS2_REPLACE_METHOD(0x140404370, Unk_DayItemContext::Period, Clear, 6, 0xA9AF6E37);
 
 // @0x140404380
 void Unk_DayItemContext::GetPeriods(ATL::CAtlArray<MS2Ptr<Period>>& rOut)
 {
     rOut.Append(m_periods);
 }
+MS2_REPLACE_METHOD(0x140404380, Unk_DayItemContext, GetPeriods, 41, 0x33354AC0);
 
 // @0x1404043b0
 Unk_DayItemContext::Period* Unk_DayItemContext::FindPeriod(int id)
@@ -1727,7 +1832,9 @@ Unk_DayItemContext::Period* Unk_DayItemContext::FindPeriod(int id)
     }
     return 0;
 }
+MS2_REPLACE_METHOD(0x1404043b0, Unk_DayItemContext, FindPeriod, 129, 0x280E7C47);
 
+// MS2-FUNCTIONAL: _Vector_iterator<ItemEntity>::operator++ (exe 0x14027f6b0, unrecovered commonstruct #3) auto-pairs with an in-range look-alike
 // @0x140404440
 void BurningLevelupContext::Write(COutputStream& out)
 {
@@ -1760,6 +1867,7 @@ void BurningLevelupContext::Write(COutputStream& out)
         out.vfunc_o10_8(m_jumpingCompleteStringKey);
     }
 }
+MS2_REPLACE_METHOD(0x140404440, BurningLevelupContext, Write, 1228, 0xEBF6AE9B);
 
 // @0x140404920
 void BurningLevelupContext::Read(CInPacket& packet)
@@ -1800,12 +1908,14 @@ void BurningLevelupContext::Read(CInPacket& packet)
         m_jumpingCompleteStringKey = packet.vfunc_o8_8();
     }
 }
+MS2_REPLACE_METHOD(0x140404920, BurningLevelupContext, Read, 2047, 0x658E5ECE);
 
 // @0x140405130
 bool BurningLevelupContext::IsBurningLevel(unsigned short level)
 {
     return level > m_beginLevel && level < m_endLevel;
 }
+MS2_REPLACE_METHOD(0x140405130, BurningLevelupContext, IsBurningLevel, 75, 0x6821B9A1);
 
 // @0x140405190
 int BurningLevelupContext::GetBonusLevel(unsigned short level)
@@ -1820,12 +1930,14 @@ int BurningLevelupContext::GetBonusLevel(unsigned short level)
         return m_endLevel - level;
     return bonus;
 }
+MS2_REPLACE_METHOD(0x140405190, BurningLevelupContext, GetBonusLevel, 154, 0x642A77BE);
 
 // @0x140405230
 bool BurningLevelupContext::HasTarget(int id)
 {
     return m_28.size() == 0 || m_28.find(id) != m_28.end();
 }
+MS2_REPLACE_METHOD(0x140405230, BurningLevelupContext, HasTarget, 137, 0x25E725D3);
 
 // @0x1404052c0
 FestivalContext::FestivalContext() : m_18(0), m_1c(0), m_beginTime(FUN_140869440()), m_endTime(FUN_140869440())
@@ -1838,6 +1950,7 @@ void FestivalContext::Write(COutputStream& out)
     out.vfunc_o10_1((unsigned char)m_18);
     out.vfunc_o10_1((unsigned char)m_1c);
 }
+MS2_REPLACE_METHOD(0x140405350, FestivalContext, Write, 69, 0x4AA66412);
 
 // @0x1404053a0
 void FestivalContext::Read(CInPacket& packet)
@@ -1845,6 +1958,7 @@ void FestivalContext::Read(CInPacket& packet)
     m_18 = packet.vfunc_o8_1();
     m_1c = packet.vfunc_o8_1();
 }
+MS2_REPLACE_METHOD(0x1404053a0, FestivalContext, Read, 109, 0x9B9542AA);
 
 // @0x140405420
 FieldEffectContext::FieldEffectContext()
@@ -1858,6 +1972,7 @@ void FieldEffectContext::Clear()
     m_fieldIds.RemoveAll();
     m_effect = L"";
 }
+MS2_REPLACE_METHOD(0x140405490, FieldEffectContext, Clear, 56, 0x47BE3FD7);
 
 // @0x1404054d0
 BOOL FieldEffectContext::HasField(int id)
@@ -1868,6 +1983,7 @@ BOOL FieldEffectContext::HasField(int id)
     }
     return FALSE;
 }
+MS2_REPLACE_METHOD(0x1404054d0, FieldEffectContext, HasField, 107, 0xC6AF9F2C);
 
 // @0x140405550
 void FieldEffectContext::Write(COutputStream& out)
@@ -1878,6 +1994,7 @@ void FieldEffectContext::Write(COutputStream& out)
         out.vfunc_o10_3(m_fieldIds[i]);
     out.vfunc_o10_8(m_effect);
 }
+MS2_REPLACE_METHOD(0x140405550, FieldEffectContext, Write, 181, 0x40FE575D);
 
 // @0x140405610
 void FieldEffectContext::Read(CInPacket& packet)
@@ -1888,6 +2005,7 @@ void FieldEffectContext::Read(CInPacket& packet)
         m_fieldIds.Add(packet.vfunc_o8_3());
     m_effect = packet.vfunc_o8_8();
 }
+MS2_REPLACE_METHOD(0x140405610, FieldEffectContext, Read, 257, 0xAE99D2C4);
 
 // @0x140405720
 CollectItemGroupContext::CollectItemGroupContext()
@@ -1910,6 +2028,7 @@ void CollectItemGroupContext::Write(COutputStream& out)
         m_conditions[i].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
     m_result.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
 }
+MS2_REPLACE_METHOD(0x1404057d0, CollectItemGroupContext, Write, 261, 0x10B258AA);
 
 // @0x1404058e0
 void CollectItemGroupContext::Read(CInPacket& packet)
@@ -1928,6 +2047,7 @@ void CollectItemGroupContext::Read(CInPacket& packet)
     }
     m_result.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
 }
+MS2_REPLACE_METHOD(0x1404058e0, CollectItemGroupContext, Read, 500, 0xD4A02B48);
 
 // @0x140405ae0
 void CollectItemGroupContext::AddCondition(ItemEntity& item)
@@ -1935,6 +2055,7 @@ void CollectItemGroupContext::AddCondition(ItemEntity& item)
     m_conditions.push_back(item);
     m_conditionKeys.insert(std::make_pair(std::make_pair(item.vfunc_o18_0(), item.vfunc_o18_1()), item.vfunc_o18_2()));
 }
+MS2_REPLACE_METHOD(0x140405ae0, CollectItemGroupContext, AddCondition, 241, 0x2F1A2F54);
 
 // @0x140405be0
 ArcadeOpenContext::ArcadeOpenContext()
@@ -1949,12 +2070,14 @@ void ArcadeOpenContext::Write(COutputStream& out)
 {
     out.vfunc_o10_3(m_arcadeId);
 }
+MS2_REPLACE_METHOD(0x140405c50, ArcadeOpenContext, Write, 43, 0xD74A2FC1);
 
 // @0x140405c90
 void ArcadeOpenContext::Read(CInPacket& packet)
 {
     m_arcadeId = packet.vfunc_o8_3();
 }
+MS2_REPLACE_METHOD(0x140405c90, ArcadeOpenContext, Read, 61, 0x85F0495A);
 
 // @0x140405ce0
 BingoContext::BingoContext()
@@ -2041,6 +2164,7 @@ BingoContext::NumbersPtr BingoContext::GetTodayNumbers()
     days = days % m_numbers.GetCount();
     return m_numbers[days];
 }
+MS2_REPLACE_METHOD(0x1404063c0, BingoContext, GetTodayNumbers, 385, 0xB12A9063);
 
 // @0x140406550
 int BingoContext::CountLines(__int64 seed, ATL::CAtlArray<int>& checked)
@@ -2090,6 +2214,7 @@ int BingoContext::CountLines(__int64 seed, ATL::CAtlArray<int>& checked)
     }
     return lines;
 }
+MS2_REPLACE_METHOD(0x140406550, BingoContext, CountLines, 800, 0x948ECF4F);
 
 // @0x140406880
 void BingoContext::Write(COutputStream& out)
@@ -2106,6 +2231,7 @@ void BingoContext::Write(COutputStream& out)
     out.vfunc_o10_3(m_freeItemId);
     out.vfunc_o10_3(m_cashItemId);
 }
+MS2_REPLACE_METHOD(0x140406880, BingoContext, Write, 325, 0x87EA28D3);
 
 // @0x1404069d0
 void BingoContext::Read(CInPacket& packet)
@@ -2126,6 +2252,7 @@ void BingoContext::Read(CInPacket& packet)
     m_freeItemId = packet.vfunc_o8_3();
     m_cashItemId = packet.vfunc_o8_3();
 }
+MS2_REPLACE_METHOD(0x1404069d0, BingoContext, Read, 467, 0x77CEB52C);
 
 // @0x140406bb0
 LimitedQuantityContext::LimitedQuantityContext() : m_eventId(0), m_1c(0), m_20(0)
@@ -2148,6 +2275,7 @@ void LimitedQuantityContext::Write(COutputStream& out)
         out.vfunc_o10_3((*it).second);
     }
 }
+MS2_REPLACE_METHOD(0x140406c30, LimitedQuantityContext, Write, 300, 0x4F24E218);
 
 // @0x140406d70
 void LimitedQuantityContext::Read(CInPacket& packet)
@@ -2162,6 +2290,7 @@ void LimitedQuantityContext::Read(CInPacket& packet)
         m_items[itemId] = quantity;
     }
 }
+MS2_REPLACE_METHOD(0x140406d70, LimitedQuantityContext, Read, 294, 0x17D11A9A);
 
 // @0x140406ea0
 bool LimitedQuantityContext::ParseRange(CStringW str)
@@ -2210,24 +2339,28 @@ int EventShopNpcContext::Get18()
 {
     return m_18;
 }
+MS2_REPLACE_METHOD(0x140407190, EventShopNpcContext, Get18, 14, 0x72E52537);
 
 // @0x1404071b0
 int EventShopNpcContext::Get1c()
 {
     return m_1c;
 }
+MS2_REPLACE_METHOD(0x1404071b0, EventShopNpcContext, Get1c, 14, 0x8AEE455B);
 
 // @0x1404071d0
 int EventShopNpcContext::Get20()
 {
     return m_20;
 }
+MS2_REPLACE_METHOD(0x1404071d0, EventShopNpcContext, Get20, 14, 0xA25B27BF);
 
 // @0x1404071f0
 int EventShopNpcContext::Get24()
 {
     return m_24;
 }
+MS2_REPLACE_METHOD(0x1404071f0, EventShopNpcContext, Get24, 14, 0xBA6447E3);
 
 // @0x140407210
 LongTermAttendGiftContext::LongTermAttendGiftContext(int eventId)
@@ -2255,6 +2388,7 @@ void LongTermAttendGiftContext::Write(COutputStream& out)
     out.vfunc_o10_3(m_merat);
     out.vfunc_o10_3(m_maxAttendance);
 }
+MS2_REPLACE_METHOD(0x140407300, LongTermAttendGiftContext, Write, 629, 0x77209FF9);
 
 // @0x140407580
 void LongTermAttendGiftContext::Read(CInPacket& packet)
@@ -2278,6 +2412,7 @@ void LongTermAttendGiftContext::Read(CInPacket& packet)
     m_merat = packet.vfunc_o8_3();
     m_maxAttendance = packet.vfunc_o8_3();
 }
+MS2_REPLACE_METHOD(0x140407580, LongTermAttendGiftContext, Read, 1174, 0xE734B2EC);
 
 // ==== 0x140402080 .. 0x140407a20 continue above this line ====
 
@@ -2306,3 +2441,4 @@ CString CoupleDanceStepName(int step)
         return "none";
     }
 }
+MS2_REPLACE(0x140407a20, CoupleDanceStepName, 406, 0x124427D1);
