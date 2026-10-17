@@ -3,6 +3,23 @@
 // MS2-RANGE: 0x1400f82a0-0x1400f8710 .text$di
 // MS2-RANGE: 0x141489aa0-0x14149fd50 .text$mn
 // MS2-RANGE: 0x142cb2a50-0x142cb2bf0 .text$yd
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0AEBU?$less@_J@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@_J@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1414928c0 ; unique
+// MS2-PIN: ??$?0V?$CustomAllocator@D@efd@@X@?$_String_alloc@U?$_String_base_types@DV?$CustomAllocator@D@efd@@@std@@@std@@QEAA@$$QEAV?$CustomAllocator@D@efd@@@Z 0x141492a20 ; unique
+// MS2-PIN: ??$?0_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@$0A@@?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@QEAA@$$QEAU?$pair@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@@Z 0x141492b40 ; unique
+// MS2-PIN: ??$StringFormat@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBHAEBV01@@Z 0x141492f60 ; unique
+// MS2-PIN: ??$StringFormat@HH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH1@Z 0x141493270 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@PEAU?$_Tree_node@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@1@@Z 0x141493b00 ; unique
+// MS2-PIN: ??0?$SmartPointer@VNiMaterialSwapProcessor@@@efd@@QEAA@AEBV01@@Z 0x1414953b0 ; unique
+// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@V?$SmartPointer@VKFMCacheData@KFMCache@egmAnimation@@@efd@@@std@@@std@@QEAA@XZ 0x141495c70 ; unique
+// MS2-PIN: ??1?$SmartPointer@VServiceManager@efd@@@efd@@QEAA@XZ 0x141496f40 ; unique
+// MS2-PIN: ??4?$SmartPointer@VServiceManager@efd@@@efd@@QEAAAEAV01@PEAVServiceManager@1@@Z 0x141497a20 ; unique
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCLoadingDialog@@@@QEAAAEAV1@PEAVCLoadingDialog@@@Z 0x141497ae0 ; unique
+// MS2-PIN: ??C?$SmartPointer@VServiceManager@efd@@@efd@@QEBAPEAVServiceManager@1@XZ 0x141497f60 ; unique
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1414980d0 ; prop
+// MS2-PIN: ?DecRefCount@PickService@ecr@@UEBAXXZ 0x14149fcd0 ; prop
+// MS2-PIN: ?DecRefCount@PropertyVisualizationService@egmVisualizers@@UEBAXXZ 0x14149fd10 ; unique
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ms2.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2.h"
@@ -105,6 +122,10 @@
 #include <commctrl.h>
 #include <afxdisp.h>
 #include <NiInitOptions.h>
+#include <NiFragmentMaterial.h>
+#include <efd/PathUtils.h>
+#include "ms2/placeholder/tixmldocument.h"
+#include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/citemservice.h"
 #include "ms2/placeholder/cwebbrowserservice.h"
 #include "ms2/placeholder/gfxservice.h"
@@ -655,6 +676,111 @@ void MS2::MessageLoop()
     }
 }
 MS2_REPLACE_METHOD(0x14148A820, MS2, MessageLoop, 372, 0x6165E8A6);
+// ---- MS2::PrepareShaderCache callees: the game TinyXML (bare global names, not efd::) and the shader file helpers
+class Unk_TiXmlElement
+{
+public:
+    Unk_TiXmlElement(const char* pszName);                      // 0x14086f2f0
+    ~Unk_TiXmlElement();                                        // 0x14086f450
+private:
+    void* m_data[0x12];
+};
+MS2_CHECK_SIZE(Unk_TiXmlElement, 0x90);
+class Unk_TiXmlDeclaration
+{
+public:
+    Unk_TiXmlDeclaration(const char* pszVersion, const char* pszEncoding, const char* pszStandalone);   // 0x1408704d0
+    ~Unk_TiXmlDeclaration();                                    // 0x14081ad20
+private:
+    void* m_data[0xd];
+};
+MS2_CHECK_SIZE(Unk_TiXmlDeclaration, 0x68);
+class Unk_TiXmlComment
+{
+public:
+    explicit Unk_TiXmlComment(const char* pszValue);            // 0x140a27ec0
+    ~Unk_TiXmlComment();                                        // 0x1408724d0
+private:
+    void* m_data[0xa];
+};
+MS2_CHECK_SIZE(Unk_TiXmlComment, 0x50);
+Unk_140165cf0* FUN_14081b310(TiXmlDocument* pDoc);              // the root element
+void* FUN_14086e000(void* pParent, const void* pChild);         // InsertEndChild
+void FUN_140873ca0(void* pElem, const char* pszName, int nValue);   // SetAttribute(name, int)
+bool FUN_1408710c0(TiXmlDocument* pDoc, const char* pszPath);   // SaveFile
+CString FUN_1409a2360(const char* psz, int n);                  // text conversion
+void FUN_141b70490(const CStringA& strDir);                     // deletes a directory tree
+
+// @0x14148a9a0
+// MS2-FUNCTIONAL: written from the decomp (the CFileSystem getter whose result the static file search ignores is not
+// called; the comment text temporary dies before the insert)
+void MS2::PrepareShaderCache()
+{
+    int nVersion = 0;
+    bool bWriteVersion = true;
+    TiXmlDocument kDoc;
+    CString strVersionFile("Config/ShaderVer.xml");
+    CString strCurrent("Data/Shaders/Current");
+    CString strPreGenerated("Data/Shaders/PreGenerated");
+    efd::utf8string kWorkDir = efd::PathUtils::PathMakeNative(efd::utf8string((const char*)strCurrent));
+    kWorkDir = efd::PathUtils::ConvertToAbsolute(kWorkDir);
+    NiMaterial::SetDefaultWorkingDirectory(kWorkDir.c_str());
+    NiFragmentMaterial::SetDefaultAutoSaveProgramCache(true);
+    NiFragmentMaterial::SetDefaultWriteDebugProgramData(true);
+    NiFragmentMaterial::SetDefaultLoadProgramCacheOnCreation(true);
+    NiFragmentMaterial::SetDefaultLockProgramCache(false);
+    if (kDoc.FUN_140870fc0(strVersionFile, 0))
+    {
+        Unk_140165cf0* pRoot;
+        Unk_140165cf0* pShader;
+        if (CreateDirectoryA(strCurrent, NULL) == 0 && (pRoot = FUN_14081b310(&kDoc)) != NULL &&
+            (pShader = pRoot->FUN_140165cf0("shader")) != NULL)
+        {
+            FUN_1408731e0(pShader, "ver", nVersion);
+            if (nVersion != 8)
+            {
+                FUN_140873ca0(pShader, "ver", 8);
+                FUN_1408710c0(&kDoc, strVersionFile);
+            }
+            bWriteVersion = false;
+        }
+    }
+    if (bWriteVersion)
+    {
+        TiXmlDocument kNewDoc;
+        Unk_TiXmlDeclaration kDeclaration("1.0", "utf-8", "");
+        FUN_14086e000(&kNewDoc, &kDeclaration);
+        {
+            Unk_TiXmlComment kComment(FUN_1409a2360(" \xc6\xc4\xbd\xcc\xc7\xd8\xbc\xad \xbb\xe7\xbf\xeb\xc7\xcf\xb4\xc2 "
+                "\xb5\xa5\xc0\xcc\xc5\xcd\xc0\xcc\xb4\xcf \xc1\xf7\xc1\xa2 \xbc\xf6\xc1\xa4\xc7\xcf\xc1\xf6 \xb8\xb6\xbc\xbc\xbf\xe4 ", 0));
+            FUN_14086e000(&kNewDoc, &kComment);
+        }
+        Unk_TiXmlElement kRoot("ms2");
+        Unk_TiXmlElement kShader("shader");
+        FUN_140873ca0(&kShader, "ver", 8);
+        FUN_14086e000(&kRoot, &kShader);
+        FUN_14086e000(&kNewDoc, &kRoot);
+        FUN_1408710c0(&kNewDoc, strVersionFile);
+    }
+    if (nVersion != 8)
+    {
+        FUN_141b70490(strCurrent);
+        CreateDirectoryA(strCurrent, NULL);
+        ATL::CAtlArray<CString> kSources;
+        FUN_140399620(CString("*.cache"), CString(strPreGenerated), kSources, CString(""));
+        if (kSources.GetCount() == 0)
+            return;
+        ATL::CAtlArray<CString> kTargets;
+        for (unsigned int i = 0; i < kSources.GetCount(); i++)
+        {
+            CString strTarget(kSources[i]);
+            strTarget.Replace(strPreGenerated, strCurrent);
+            kTargets.Add(strTarget);
+        }
+        for (unsigned int i = 0; i < kSources.GetCount(); i++)
+            CopyFileA(kSources[i], kTargets[i], FALSE);
+    }
+}
 // @0x14148b090
 void MS2::SetCrashOnShutdown()
 {
