@@ -23,12 +23,36 @@ class NiTexture;
 class ASObj;
 class CItem;
 
-// A local file queued for upload (ugcmanager.cpp#4; members not recovered yet).
+// A local image file offered for upload (0x58, vftable 0x142f8dd48; ugcmanager.cpp#4). Name from RTTI.
 class CUploadFile : public CPtred
 {
 public:
-    CStringW FUN_14187e9f0();                               // the local file path
+    CUploadFile();                                          // 0x14187e420
+    void Set(const CStringW& strPath, const CStringW& strName, __int64 tWrite, __int64 tCreate, int bThumbnail);
+    void SetInDir(const CStringW& strFile, const CStringW& strDir, __int64 tWrite, __int64 tCreate, int bThumbnail);
+    void SplitPath(int bThumbnail);
+    CStringW GetPath();
+    CStringW GetName();
+    __int64 GetCreateTime();
+    __int64 GetWriteTime();
+    void SetWriteTime(__int64 t);
+    CStringW GetTitle();
+    CStringW GetExt();
+    CStringW GetThumbnailDir();
+    CStringW GetThumbnailPath();
+    int Refresh();                                          // re-read the write time; 1 if it changed
+private:
+    MS2_LAYOUT_FRIEND;
+    CStringW m_strName;                                     // +0x18 file name with extension
+    CStringW m_strPath;                                     // +0x20 full path
+    __int64 m_tWrite;                                       // +0x28
+    __int64 m_tCreate;                                      // +0x30
+    CStringW m_strTitle;                                    // +0x38 file name without extension
+    CStringW m_strExt;                                      // +0x40 extension with the dot
+    CStringW m_strThumbDir;                                 // +0x48
+    CStringW m_strThumbPath;                                // +0x50
 };
+MS2_CHECK_SIZE(CUploadFile, 0x58);
 
 // zlib packer for UGC files: Compress writes "<convert dir>\upload.m2u" from a file, Decompress inflates a downloaded
 // .m2u into memory. Name from the log text "CUgcCompress::Decompress".

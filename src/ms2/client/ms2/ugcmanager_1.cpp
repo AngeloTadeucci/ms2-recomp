@@ -814,7 +814,7 @@ Unk_UgcFileResult ChangeFormat(int nType, MS2Ptr<CUploadFile> pUploadFile, int n
     {
         if (pUploadFile == NULL)
             throw Exception("pUploadFile", 0xb);
-        CStringW strPath = pUploadFile->FUN_14187e9f0();
+        CStringW strPath = pUploadFile->GetPath();
         int nResult = 1;
         CUgcImageConverter converter;
         if (nType == 1 || nType == 3 || nType == 2 || nType == 7)
