@@ -22,6 +22,7 @@
 #include "ms2/commonfiles/fielddata.h"
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/client/ms2/cubespawnobject.h"
+namespace egf { class Entity; class EntityChangeMessage; }
 
 // RTTI name; layout from 1410b68a0, storage size 0x70.
 class FittingDollData : public CPtred {
@@ -200,11 +201,15 @@ public:
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
+    void FUN_1410cef70(const egf::EntityChangeMessage* pMsg, efd::Category cat);
+    void FUN_1410cf160(egf::Entity* pEntity);
+    void FUN_1410cf5c0(egf::Entity* pEntity);
+    int FUN_1410cdd80(Unk_StreamPoint* pFrom, Unk_StreamPoint* pTo, float fDist, Unk_Int3* pOffset);
     int FUN_1410ca900(int nGroup);
     int FUN_1410c88b0(PCBase* pActor);
     int FUN_1410c81c0(int nGroup, int* pnWidth, int* pnHeight, int* pnDepth);
     void FUN_1410c7a50(int nA, int nB, int nState, __int64 nValue);
-    int FUN_1410c6980(class Cube* pCube, int nKind, class Unk_CMISItemRef& rItem, __int64 nOwner, int nMode);
+    int FUN_1410c6980(class Cube* pCube, int nKind, class Unk_CMISItemRef rItem, __int64 nOwner, int nMode);
     int FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos);
     void FUN_1410ce3f0(Unk_CubeOwnerPtr spOwner);
     void FUN_1410ce4b0(Unk_CubeOwnerPtr spOwner);

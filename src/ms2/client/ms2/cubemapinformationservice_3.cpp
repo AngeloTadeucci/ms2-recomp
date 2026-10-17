@@ -22,6 +22,7 @@
 #include <efd/ISystemService.h>
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/coutpacket.h"
+#include "ms2/placeholder/hardwareinstancingservice.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #if defined(__clang__)
@@ -106,6 +107,7 @@ class Unk_CMISWorld
 public:
     Unk_CMISRoster* FUN_141bd0cc0();                            // the party/roster manager
     int FUN_141bd3060();                                        // the current map id
+    int FUN_141bcfd10();                                        // the world state (4 = in field, 6 = loading)
     Unk_PayloadPtr<Unk_CMISObj208> FUN_141bd30a0();             // the current field data
 };
 Unk_CMISWorld* FUN_1403ed2d0();
@@ -2238,42 +2240,43 @@ void CubeMapInformationService::FUN_1410c3fc0(PCBase* pActor, float* pOutLo, flo
 }
 // ---- w138 batch 4 ----
 struct Unk_CMISItemData { char pad[0x1c4]; int field1c4; };
-class Unk_CMISItemRef
+class Unk_CMISItemRef                                                                       // item ptr passed by value (the callee destroys it)
 {
 public:
-    void FUN_1401b50d0();                               // release
+    ~Unk_CMISItemRef();                                                                     // 0x1401b50d0
     Unk_CMISItemData* FUN_1401b52a0();
-    __int64 FUN_140203c60();
+    void* FUN_140203c60();
+    bool IsSet() { return FUN_140203c60() ? true : false; }
+    void* m_unknown;
+    void* m_pObject;
 };
 bool FUN_140930c90(__int64 nOwner);
 bool FUN_140930d20(__int64 nOwner);
 extern int DAT_143ae0fb4;
 // @0x1410c6980
-
-int CubeMapInformationService::FUN_1410c6980(Cube* pCube, int nKind, Unk_CMISItemRef& rItem, __int64 nOwner, int nMode)
+// MS2-FUNCTIONAL: item-ptr bool test is an inlined operator bool with a byte temporary in the exe; frame 0x4 larger
+int CubeMapInformationService::FUN_1410c6980(Cube* pCube, int nKind, Unk_CMISItemRef rItem, __int64 nOwner, int nMode)
 {
-    if (DAT_143ae0fb4 == 0) {
-        if (!FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820)) {
-            if (nMode == 3) {
-                if (rItem.FUN_140203c60() != 0 && rItem.FUN_1401b52a0()->field1c4 != 0) {
-                    rItem.FUN_1401b50d0();
-                    return 0;
-                }
-                __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
-                if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur)) {
-                    rItem.FUN_1401b50d0();
-                    return 0;
-                }
-            } else if (nMode == 4) {
-                __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
-                if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur)) {
-                    rItem.FUN_1401b50d0();
-                    return 0;
-                }
-            }
-        }
+    if (DAT_143ae0fb4 != 0)
+        return 1;
+    if (FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820))
+        return 1;
+    switch (nMode) {
+    case 3: {
+        if (rItem.IsSet() && rItem.FUN_1401b52a0()->field1c4 != 0)
+            return 0;
+        __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
+        if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur))
+            return 0;
+        break;
     }
-    rItem.FUN_1401b50d0();
+    case 4: {
+        __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
+        if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur))
+            return 0;
+        break;
+    }
+    }
     return 1;
 }
 struct Unk_CMISSaleState { Unk_CMISSaleState(); char m_pad[0x28]; };                        // ctor 0x141123290
@@ -2369,4 +2372,58 @@ int CubeMapInformationService::FUN_1410ca900(int nGroup)
         }
     }
     return 0;
+}
+// @0x1410cdd80
+int CubeMapInformationService::FUN_1410cdd80(Unk_StreamPoint* pFrom, Unk_StreamPoint* pTo, float fDist, Unk_Int3* pOffset)
+{
+    if (DAT_143ae0fb4 != 0)
+        return 1;
+    if (FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820))
+        return 1;
+    Unk_StreamPoint ptHit;
+    FUN_1410b7ba0(*pFrom, *pTo, -fDist, &ptHit, 0);
+    Unk_Int3 kCell = FUN_1408a1430(ptHit);
+    Unk_Int3 kSum;
+    kCell = *FUN_14112ca20(&kCell, &kSum, pOffset);
+    int nKey = FUN_1408a03c0(kCell);
+    Unk_CMISIter<276> itEnd, itFind;
+    return FUN_140d7b400(FUN_141157c80(&f298, &itFind, &nKey), FUN_141151df0(&f298, &itEnd)) ? 1 : 0;
+}
+struct Unk_EntityAppFramework;
+extern Unk_EntityAppFramework DAT_143b059e8;
+HardwareInstancingService* FUN_14098c5b0(Unk_EntityAppFramework*);
+int FUN_1413d6890(HardwareInstancingService*, egf::Entity*);
+egf::Entity* FUN_14112e0d0(const egf::EntityChangeMessage*);
+void FUN_1408b4fd0(Cube* pCube, egf::Entity* pEntity);                                      // Cube::SetEntity
+class Unk_CMISSvcPtr                                                                        // smart pointer to a framework service
+{
+public:
+    Unk_CMISSvcPtr(HardwareInstancingService* p);                                           // 0x14098c7d0
+    ~Unk_CMISSvcPtr();                                                                      // 0x14098cc60
+    HardwareInstancingService* FUN_14098d0e0() const;                                       // operator->
+    void* FUN_14098d090() const;                                                            // operator bool (returns the pointer)
+private:
+    void* m_p;
+};
+// @0x1410cef70
+// MS2-FUNCTIONAL: the exe's service-pointer truth test is an inlined bool conversion with a byte temporary; frame differs
+void CubeMapInformationService::FUN_1410cef70(const egf::EntityChangeMessage* pMsg, efd::Category)
+{
+    if (FUN_1403ed2d0()->FUN_141bcfd10() == 6)
+        return;
+    egf::Entity* pEntity = FUN_14112e0d0(pMsg);
+    Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+    if (spInst.FUN_14098d090() != 0 && FUN_1413d6890(spInst.FUN_14098d0e0(), pEntity) != 0)
+        return;
+    if (FUN_1403ed2d0()->FUN_141bcfd10() == 4)
+        FUN_1410cf5c0(pEntity);
+    else
+        FUN_1410cf160(pEntity);
+    Unk_StreamPoint pt = DAT_143b01a60;
+    FUN_1409618c0(pEntity, 0xfd95ca52, &pt);
+    int nKey = FUN_1408a13d0(pt);
+    Cube* pCube = FUN_1410b8b00(nKey);
+    if (pCube != 0)
+        FUN_1408b4fd0(pCube, pEntity);
+    FUN_1410c5280(nKey);
 }
