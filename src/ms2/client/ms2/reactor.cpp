@@ -853,11 +853,9 @@ void* FUN_140b7c620(void* p) { return p; }
 void* FUN_140b7c6a0(void* p) { return FUN_140b7c620(p); }
 
 // @0x140b7c870
-// MS2-FUNCTIONAL: iterator equality stand-in
 bool FUN_140b7c870(const Unk_GluePair* pIt, void* pOther) { return pIt->first == pOther; }
 
 // @0x140b7c8b0
-// MS2-FUNCTIONAL: iterator equality stand-in
 bool FUN_140b7c8b0(const Unk_GluePair* pIt, void* pOther) { return pIt->second == pOther; }
 
 // @0x140b7c930
@@ -865,7 +863,6 @@ bool FUN_140b7c8b0(const Unk_GluePair* pIt, void* pOther) { return pIt->second =
 Unk_Int3* FUN_140b7c930(Unk_GlueVec* pVec, __int64 nIdx) { return pVec->first + nIdx; }
 
 // @0x140b7c960
-// MS2-FUNCTIONAL: second pointer accessor stand-in
 void* FUN_140b7c960(const Unk_GluePair* p) { return p->second; }
 
 // Animation-service current-name lookup
@@ -909,11 +906,9 @@ efd::utf8string Unk_RxAnimSvc::FUN_140b7cc50(const egf::EntityID& id)
 }
 
 // @0x140b7ce20
-// MS2-FUNCTIONAL: std::set<__int64> clear helper stand-in
 void FUN_140b7ce20(Unk_GlueNode** ppRoot) { FUN_140b7d300(ppRoot, *ppRoot); }
 
 // @0x140b7cec0
-// MS2-FUNCTIONAL: std::set<__int64> iterator advance stand-in
 Unk_GlueNode* FUN_140b7cec0(void* pTree, Unk_GlueNode** ppIt)
 {
     Unk_GlueNode* pOld = *ppIt;
@@ -943,19 +938,15 @@ Unk_GlueNode* FUN_140b7d300(void* pTree, Unk_GlueNode* pNode)
 }
 
 // @0x140b7e710
-// MS2-FUNCTIONAL: std::vector<Unk_Int3> destroy-range stand-in
 void FUN_140b7e710(void* pVec, void* pFirst, void* pLast) { FUN_140b7bb00(pFirst, pLast, FUN_140b7e7d0(pVec)); }
 
 // @0x140b7e8c0
-// MS2-FUNCTIONAL: container proxy accessor stand-in
 void FUN_140b7e8c0(void* p) { FUN_140b7e770(p); }
 
 // @0x140b7e900
-// MS2-FUNCTIONAL: container proxy accessor stand-in
 void* FUN_140b7e900(void* p) { return static_cast<char*>(FUN_140b7e770(p)) + 8; }
 
 // @0x140b7e920
-// MS2-FUNCTIONAL: container proxy release stand-in
 void FUN_140b7e920(void* p) { FUN_14016c7c0(FUN_140b7e750(p)); }
 
 // @0x140b7ea10
@@ -975,11 +966,9 @@ void FUN_140b7ea10(void* pVec)
 }
 
 // @0x140b7eb20
-// MS2-FUNCTIONAL: std::vector<Unk_Int3> uninitialized copy stand-in
 void FUN_140b7eb20(void* pVec, Unk_Int3* pFirst, Unk_Int3* pLast, Unk_Int3* pDest) { FUN_140b7c2a0(pFirst, pLast, pDest, FUN_140b7e7d0(pVec)); }
 
 // @0x140b7ec60
-// MS2-FUNCTIONAL: std::allocator<Unk_Int3>::deallocate stand-in
 void FUN_140b7ec60(void* pAlloc, void* pMem, __int64 nCount) { FUN_14015fc80(pMem, nCount * 0xc); }
 
 // @0x140b7ec90
