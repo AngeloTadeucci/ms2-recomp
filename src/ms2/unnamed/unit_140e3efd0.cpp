@@ -3,6 +3,48 @@
 // MS2-UNIT: unit_140e3efd0
 // MS2-RANGE: 0x140e3efd0-0x140e47540 .text$mn
 // MS2-RANGE: 0x1400d7e80-0x1400d81b0 .text$di
+// MS2-GUESS-LOOKALIKES
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ?FUN_140e42540@AdPushEntityBase@@QEAAHXZ 0x140e42540 ; unique
+// MS2-PIN: ?FUN_140e42560@AdPushEntityBase@@QEAAHXZ 0x140e42560 ; unique
+// MS2-PIN: ?FUN_140e42580@AdPushEntityBase@@QEAA_NXZ 0x140e42580 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@AEAV01@$0A@@?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@V12@@std@@QEAA@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@1@0@Z 0x140e43bf0 ; unique
+// MS2-PIN: ??$?0VAdPushEntityLimitedBundle@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBQEAVAdPushEntityLimitedBundle@@AEBQ81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140e43c80 ; unique
+// MS2-PIN: ??$?0VUIAdPushDialog@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBQEAVUIAdPushDialog@@AEBQ81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140e43d50 ; unique
+// MS2-PIN: ??$?8PEAVUIAdPushDialog@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVUIAdPushDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x140e43f00 ; prop
+// MS2-PIN: ??$?8PEAVUIAdPushDialog@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVUIAdPushDialog@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x140e43f70 ; prop
+// MS2-PIN: ??$StringFormat@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HH@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBV01@AEBH2@Z 0x140e44090 ; unique
+// MS2-PIN: ??$_Distance1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@@std@@YA_JV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@0@0Uinput_iterator_tag@0@@Z 0x140e444d0 ; unique
+// MS2-PIN: ??$_Eqrange@H@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@V12@@1@AEBH@Z 0x140e44530 ; unique
+// MS2-PIN: ??$_Eqrange@H@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@V12@@1@AEBH@Z 0x140e445c0 ; unique
+// MS2-PIN: ??$distance@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@@std@@YA_JV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@0@0@Z 0x140e44800 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x140e44b40 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VAdPushEntityBase@@@@QEAA@PEAVAdPushEntityBase@@@Z 0x140e44d20 ; prop
+// MS2-PIN: ?get@?$MS2Ptr@VUIAdPushLimitedDialog@@@@QEBAPEAVUIAdPushLimitedDialog@@XZ 0x140e452b0 ; unique
+// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x140e45500 ; unique
+// MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@H@ATL@@SAHAEBH0@Z 0x140e45550 ; unique
+// MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VAdPushEntityBase@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VAdPushEntityBase@@@@@3@@ATL@@IEBAPEAVCNode@12@H@Z 0x140e45590 ; unique
+// MS2-PIN: ?vfunc_8@AdPushEntityBase@@UEAAXPEAVValue@GFx@Scaleform@@PEAVASData@@@Z 0x140e457b0 ; unique
+// MS2-PIN: ?vfunc_48@UIAdPushDialog@@UEAAHXZ 0x140e457c0 ; unique
+// MS2-PIN: ?vfunc_6@AdPushEntityBase@@UEAA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@XZ 0x140e45830 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VAdPushEntityBase@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VAdPushEntityBase@@@@@3@@ATL@@AEAAPEAVCNode@12@HAEBV?$MS2Ptr@VAdPushEntityBase@@@@@Z 0x140e45870 ; unique
+// MS2-PIN: ?vfunc_10@AdPushEntityBase@@UEAA_NXZ 0x140e459e0 ; unique
+// MS2-PIN: ?vfunc_7@AdPushEntityBase@@UEAA_NXZ 0x140e459f0 ; unique
+// MS2-PIN: ?vfunc_1@AdPushEntityBase@@UEAA_NXZ 0x140e45ed0 ; unique
+// MS2-PIN: ?vfunc_11@AdPushEntityBase@@UEAA_NXZ 0x140e45fb0 ; unique
+// MS2-PIN: ?vfunc_3@AdPushEntityBase@@UEAAXXZ 0x140e46880 ; unique
+// MS2-PIN: ?vfunc_4@AdPushEntityBase@@UEAAXPEAVUnk_AdXmlNode@@0@Z 0x140e469a0 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140e47060 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140e470c0 ; unique
+// MS2-PIN: ?equal_range@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@V12@@2@AEBH@Z 0x140e47120 ; unique
+// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA_KAEBH@Z 0x140e47160 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVAdPushEntityLimitedBundle@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140e471c0 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140e471f0 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x140e47220 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVAdPushEntityLimitedBundle@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140e47300 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140e47360 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVUIAdPushDialog@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140e473c0 ; unique
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 #include "unit_140e3efd0.h"
@@ -23,7 +65,8 @@
 // controller, then three more attribute names) ----
 
 static CString s_strIconPath = "iconPath";
-static CString s_strSortTypeNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_strSortTypeNames[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd"};
+static CString s_strSortTypeNamesLike[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static CString s_strSkill = "skill";
 static CString s_strStun = "stun";
 static Unk_1402a9d70 s_unk1402a9d70(17, 0.75f, 0.25f, 2.25f, 10);
@@ -43,7 +86,10 @@ public:
     int FUN_1422c1530();                                           // height
     float FUN_1422c10a0();                                         // x
     float FUN_1422c1110();                                         // y
+private:
+    void* m_unrecovered_80;
 };
+MS2_CHECK_SIZE(ASDialog, 0x88);
 class UIAdPushLimitedDialog : public UIDialog {
 public:
     UIAdPushLimitedDialog();
@@ -77,10 +123,10 @@ Unk_AdActor* FUN_141bd0cc0(Unk_AdPlayerMgr* pMgr);
 void* FUN_14041beb0();
 int FUN_1408d7e60(void* p, unsigned short n);
 class Unk_140e45740 { public: int FUN_1422e6bf0(UIDialog* p, int n); void FUN_1422e6d00(int n); };
-Unk_140e45740* FUN_140e45740();
 UIObject* FUN_140c9b540(int nClass);
 UIObject* FUN_140ce8270(int nClass);
 int FUN_1422dc430(UIObject* p);
+Unk_140e45740* FUN_140e45740();
 bool FUN_1418ffe80(int, int);
 void FUN_1418ffec0(int*, int);
 void FUN_1418ffef0(int*, int);
@@ -89,7 +135,9 @@ CStringA FUN_1412755f0();
 CStringA FUN_141275640();
 CString FUN_14038f6d0(const CString&, const char*);
 CStringA FUN_140cc2a00(const CStringA& strRoot, const CStringA& strFile);   // path join
+bool FUN_140164830(const CStringW& a, const CStringW& b);
 bool FUN_140e45240(const CStringW& s, const char* c);
+extern Unk_140e45740* DAT_143ac5d88;
 bool FUN_1409c1720(const Scaleform::GFx::Value& v);
 int FUN_1422b8a10(ASData* p);
 bool FUN_1406c4cc0(const CMsTime& a, const CMsTime& b);
@@ -105,6 +153,20 @@ void FUN_1407cbbe0(AScript* p, const char* szName, bool v);
 void FUN_1407cb9c0(AScript* p, const char* szName, int v);
 // Bit flags of the XML/refresh state (m_nFlags): 1 default loaded, 2 my-pc complete, 4 swf loaded.
 extern long DAT_1439f60ac;              // the next entity id
+
+// The child-control creators (the same shapes as uicashattenddialog.cpp's COMDATs).
+template<class T> MS2Ptr<T> Unk_ASCreate(int nMovieId, const Scaleform::GFx::Value& v)
+{
+    MS2Ptr<T> sp(new T(v, nMovieId));
+    return sp;
+}
+template<class T> MS2Ptr<T> AScript::FUN_140e159f0(const CString& strName)
+{
+    Scaleform::GFx::Value v = FUN_1422baa20(strName);
+    if (v.IsObject())
+        return Unk_ASCreate<T>(m_nMovieId, v);
+    return MS2Ptr<T>(0);
+}
 
 // ---- AdPushEntityBase / AdPushEntityLimitedBundle ----
 
@@ -143,7 +205,7 @@ class Unk_AdXmlNode {};
 // UIAdPushDialog
 // @0x140e3efd0
 UIAdPushDialog::UIAdPushDialog()
-    : m_entities(10), m_pending(10), m_nFlags(0), m_nShowState(1), m_limitedBundle(0)
+    : m_entities(10), m_pending(10), m_nFlags(0), m_nShowState(1)
 {
     m_2c = 0x19;
     FUN_141925e70(0, 1);
@@ -834,7 +896,7 @@ bool AdPushEntityLimitedBundle::UpdateRemainTime()
     ATL::CTimeSpan left(m_endTime - FUN_140869440());
     if (left < ATL::CTimeSpan(0))
         return vfunc_3(), false;
-    long nSeconds = left.GetSeconds();
+    int nSeconds = left.GetSeconds();
     __int64 nHours = left.GetTotalHours();
     CStringW strHours;
     if (nHours < 100)
@@ -876,7 +938,7 @@ bool AdPushEntityLimitedBundle::vfunc_1()
         return false;
     if (!m_bMinimized)
     {
-        if (m_dlg.IsNull())
+        if (m_dlg == 0)
             m_dlg.AssignRaw(new UIAdPushLimitedDialog());
         if (m_dlg.get())
         {
@@ -1042,6 +1104,25 @@ bool AdPushEntityLimitedBundle::vfunc_11()
     if (!m_bMinimized)
         SetMinimized(true);
     return true;
+}
+
+// @0x140e42cd0
+NiPoint2* AdPushEntityLimitedBundle::GetMaximizePos()
+{
+    return &m_max;
+}
+
+// @0x140e45240
+bool FUN_140e45240(const CStringW& s, const char* c)
+{
+    CStringW t(c, s.GetManager());
+    return FUN_140164830(s, t);
+}
+
+// @0x140e45740
+Unk_140e45740* FUN_140e45740()
+{
+    return DAT_143ac5d88;
 }
 
 // @0x140e44fb0

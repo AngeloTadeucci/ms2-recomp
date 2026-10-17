@@ -39,7 +39,7 @@ public:
     explicit AdPushEntityBase(const int& nId);                  // 0x140e424e0
     virtual ~AdPushEntityBase();                                // 0x140e44fb0
     virtual bool vfunc_1() { return false; }
-    virtual void vfunc_2(bool bRemove) = 0;
+    virtual void vfunc_2(bool bRemove) {}
     virtual void vfunc_3() {}
     virtual void vfunc_4(Unk_AdXmlNode* pRoot, Unk_AdXmlNode* pNode) {}
     virtual void vfunc_5(Unk_AdXmlNode* pNode) {}
@@ -110,7 +110,7 @@ public:
     void SetMinimized(bool b);                                  // 0x140e42a20
     bool UpdateRemainTime();                                    // 0x140e42a60
     void SetMaximizePos(float x, float y);                      // 0x140e42c90
-    NiPoint2* GetMaximizePos() { return &m_max; }               // 0x140e42cd0
+    NiPoint2* GetMaximizePos();               // 0x140e42cd0
     void SetMarketItem(MS2Ptr<Unk_AdMarketItem> p);             // 0x140e42cf0
     void Update(MS2Ptr<Unk_AdMarketItem> p);                    // 0x140e42740
     void SetBadge(MS2Ptr<ASMovieClip> badge);                   // 0x140e42860
@@ -140,6 +140,7 @@ public:
     virtual CString vfunc_1();
     virtual int vfunc_4();
     virtual int vfunc_5();
+    virtual int vfunc_48() { return 0x4f34; }
     virtual void OnLoadComplete();
     virtual void vfunc_26();
     virtual void vfunc_43();
