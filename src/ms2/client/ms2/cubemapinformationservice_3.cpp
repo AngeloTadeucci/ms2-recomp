@@ -40,6 +40,9 @@ void FUN_1410db4c0(efd::IDependencyRegistrar*, unsigned);
 void FUN_1410db460(efd::IDependencyRegistrar*, unsigned);
 unsigned char* FUN_1411282d0(Unk_CMISTree<280>*, const int*);
 int* FUN_141128250(Unk_CMISTree<281>*, const int*);
+unsigned char* FUN_141128310(Unk_CMISTree<280>*, const int*);
+int* FUN_141128290(Unk_CMISTree<281>*, const int*);
+int* FUN_1411280d0(Unk_CMISTree<270>*, const int*);
 void FUN_14114fae0(Unk_CMISTree<282>*);
 
 EE_IMPLEMENT_CONCRETE_CLASS_INFO(CubeMapInformationService);
@@ -109,6 +112,12 @@ Unk_Int3 FUN_1408a1430(Unk_StreamPoint pt);                     // the cube cell
 int FUN_1408a13d0(Unk_StreamPoint pt);                          // the cell key of a world point
 int FUN_1408a0370(int x, int y, int z);                         // the cell key of a cube point
 template <unsigned __int64 N> struct Unk_CMISIter { void* node; };
+Unk_CMISIter<281>* FUN_141152210(Unk_CMISTree<281>*, Unk_CMISIter<281>*);
+Unk_CMISIter<281>* FUN_141158460(Unk_CMISTree<281>*, Unk_CMISIter<281>*, const int*);
+bool FUN_1408b7170(Unk_CMISIter<281>*, Unk_CMISIter<281>*);
+Unk_CMISIter<270>* FUN_141151fd0(Unk_CMISTree<270>*, Unk_CMISIter<270>*);
+Unk_CMISIter<270>* FUN_141158000(Unk_CMISTree<270>*, Unk_CMISIter<270>*, const int*);
+bool FUN_141127740(Unk_CMISIter<270>*, Unk_CMISIter<270>*);
 Unk_CMISIter<260>* FUN_141151af0(Unk_CMISTree<260>*, Unk_CMISIter<260>*);
 Unk_CMISIter<260>* FUN_141157580(Unk_CMISTree<260>*, Unk_CMISIter<260>*, const int*);
 bool FUN_141126d90(Unk_CMISIter<260>*, Unk_CMISIter<260>*);
@@ -869,6 +878,64 @@ void CubeMapInformationService::FUN_1410bc320()
     }
 }
 
+// @0x1410bf250
+// MS2-FUNCTIONAL: exe local slot/branch layout differs by 2 bytes
+void CubeMapInformationService::FUN_1410bf250(const int* pKey)
+{
+    int n;
+    Unk_CMISIter<270> itEnd, itFind;
+    if (FUN_141127740(FUN_141158000(&f358, &itFind, pKey), FUN_141151fd0(&f358, &itEnd))) {
+        n = *FUN_1411280d0(&f358, pKey);
+        *FUN_1411280d0(&f358, pKey) = n + 1;
+    } else {
+        *FUN_1411280d0(&f358, pKey) = 1;
+    }
+}
+// @0x1410bf320
+void CubeMapInformationService::FUN_1410bf320(const int* pKey)
+{
+    Unk_CMISIter<270> itEnd, itFind;
+    if (FUN_141127740(FUN_141158000(&f358, &itFind, pKey), FUN_141151fd0(&f358, &itEnd))) {
+        int n = *FUN_1411280d0(&f358, pKey);
+        if (0 < n)
+            n = n - 1;
+        *FUN_1411280d0(&f358, pKey) = n;
+    }
+}
+// @0x1410bf3e0
+int CubeMapInformationService::FUN_1410bf3e0(const int* pKey)
+{
+    Unk_CMISIter<270> itEnd, itFind;
+    if (FUN_141127740(FUN_141158000(&f358, &itFind, pKey), FUN_141151fd0(&f358, &itEnd))) {
+        int nVal = *FUN_1411280d0(&f358, pKey);
+        return nVal;
+    }
+    return 0;
+}
+// @0x1410c3e00
+unsigned char CubeMapInformationService::FUN_1410c3e00(int nKey) { return *FUN_141128310(&f368, &nKey); }
+// @0x1410c3e40
+void CubeMapInformationService::FUN_1410c3e40(int nKey, unsigned char v) { *FUN_141128310(&f368, &nKey) = v; }
+// @0x1410c3e80
+int CubeMapInformationService::FUN_1410c3e80(int nKey)
+{
+    Unk_CMISIter<281> itEnd, itFind;
+    if (FUN_1408b7170(FUN_141158460(&f378, &itFind, &nKey), FUN_141152210(&f378, &itEnd)))
+        return 0;
+    return *FUN_141128290(&f378, &nKey);
+}
+// @0x1410c3f10
+void CubeMapInformationService::FUN_1410c3f10(int nKey, int v) { *FUN_141128290(&f378, &nKey) = v; }
+// @0x1410c3f50
+void CubeMapInformationService::FUN_1410c3f50(int n)
+{
+    if (f1dc == n)
+        return;
+    f1dc = n;
+    GenerateFloorPhysX();
+}
+// @0x1410c3fa0
+int CubeMapInformationService::FUN_1410c3fa0() { return f1dc; }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
 {

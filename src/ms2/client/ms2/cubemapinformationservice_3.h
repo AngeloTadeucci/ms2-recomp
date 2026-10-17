@@ -148,6 +148,16 @@ public:
     int FUN_1410d2f40(int nKey);
     void FUN_1410c68e0();
     void FUN_1410d0310();
+    void FUN_1410bf250(const int* pKey);
+    void FUN_1410bf320(const int* pKey);
+    int FUN_1410bf3e0(const int* pKey);
+    unsigned char FUN_1410c3e00(int nKey);
+    void FUN_1410c3e40(int nKey, unsigned char v);
+    int FUN_1410c3e80(int nKey);
+    void FUN_1410c3f10(int nKey, int v);
+    void FUN_1410c3f50(int n);
+    int FUN_1410c3fa0();
+    void GenerateFloorPhysX();
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
