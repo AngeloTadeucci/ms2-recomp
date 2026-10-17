@@ -161,9 +161,12 @@ struct ItemInstallData {
     bool useInstancing;       // +0x5c "useInstancing" (default true)
     int FUN_140548320(Unk_140165cf0* pElem);     // XML read
     int FUN_1405485b0(void* pParent);            // XML write
+    bool FUN_140548a50(const ItemInstallData* pOther);   // operator==
     bool FUN_140548aa0(const ItemInstallData* pOther);   // operator!=
-    bool FUN_140548d10();     // 0x140548d10 (ugccubepalette.cpp)
-    bool FUN_140548cd0();     // 0x140548cd0
+    int FUN_140548cb0();      // stackable
+    bool FUN_140548cd0();     // space & 6
+    bool FUN_140548d10();     // space & 1 (ugccubepalette.cpp)
+    bool FUN_140548d50();     // stackable has all of bits 1, 2 and 4
 };
 MS2_CHECK_SIZE(ItemInstallData, 0x60);
 MS2_CHECK_OFFSET(ItemInstallData, space, 0x10);

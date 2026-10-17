@@ -37,6 +37,8 @@ void FUN_140873e30(void* pElem, const char* pszName, float fValue);         // S
 void FUN_140874ad0(void* pElem, const char* pszName, const efd::Point3& kValue);    // SetAttribute(name, "x, y, z")
 void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);   // Point3 attribute
 __int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
+CString FUN_140188f50(const char* psz, int nCodePage);                     // string from an attribute value
+efd::Point3 FUN_14028f060(CString str);                                    // "x, y, z" -> point (ZERO when malformed)
 
 #define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
 
@@ -1152,4 +1154,169 @@ __int64 ItemProperty::FUN_1405480f0(int nRarity)
 CString* ItemProperty::FUN_1405481d0()
 {
     return &slotIcon;
+}
+
+// @0x1405481f0
+ItemInstallData::ItemInstallData()
+    : asset(""), preset(""), space(0), placeable(0), stackable(0), attachable(0), wall(0), cubeProp(0), animatable(0),
+      generatePhysX(0), unchangeable(0), cannotStackAttach(0), objCode(0), staticAngle(0), physXdimension(0, 0, 0),
+      propCollisionGroup(0), useInstancing(true)
+{
+}
+
+// @0x140548320
+int ItemInstallData::FUN_140548320(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pInstall = pElem->FUN_140165cf0("install");
+    if (pInstall != 0)
+    {
+        FUN_1408731e0(pInstall, "placeable", placeable);
+        FUN_1408731e0(pInstall, "unchangeable", unchangeable);
+        FUN_1408731e0(pInstall, "cannotStackAttach", cannotStackAttach);
+        FUN_1408731e0(pInstall, "stackable", stackable);
+        FUN_1408731e0(pInstall, "attachable", attachable);
+        FUN_1408731e0(pInstall, "wall", wall);
+        FUN_1408731e0(pInstall, "generatePhysX", generatePhysX);
+        FUN_1408731e0(pInstall, "cubeProp", cubeProp);
+        FUN_1408731e0(pInstall, "space", space);
+        FUN_1408731e0(pInstall, "animatable", animatable);
+        FUN_140873220(pInstall, "objCode", objCode);
+        FUN_140873360(pInstall, "staticAngle", staticAngle);
+        FUN_1408733e0(pInstall, "asset", asset);
+        FUN_1408733e0(pInstall, "preset", preset);
+        FUN_1408733e0(pInstall, "mapAttribute", mapAttribute);
+        FUN_1408731e0(pInstall, "propCollisionGroup", propCollisionGroup);
+        FUN_1408730a0(pInstall, "useInstancing", useInstancing);
+        const char* pszDimension = FUN_14086f4b0(pInstall, "physXdimension");
+        if (pszDimension != 0)
+            physXdimension = FUN_14028f060(FUN_140188f50(pszDimension, 0));
+    }
+    return 1;
+}
+
+// @0x1405485b0
+int ItemInstallData::FUN_1405485b0(void* pParent)
+{
+    static ItemInstallData s_default;
+    if (FUN_140548a50(&s_default))
+        return 1;
+    Unk_TiXmlElement elem("install");
+    if (placeable != 0)
+        FUN_140873ca0(&elem, "placeable", placeable);
+    if (unchangeable != 0)
+        FUN_140873ca0(&elem, "unchangeable", unchangeable);
+    if (cannotStackAttach != 0)
+        FUN_140873ca0(&elem, "cannotStackAttach", cannotStackAttach);
+    if (stackable != 0)
+        FUN_140873ca0(&elem, "stackable", stackable);
+    if (attachable != 0)
+        FUN_140873ca0(&elem, "attachable", attachable);
+    if (wall != 0)
+        FUN_140873ca0(&elem, "wall", wall);
+    if (generatePhysX != 0)
+        FUN_140873ca0(&elem, "generatePhysX", generatePhysX);
+    if (cubeProp != 0)
+        FUN_140873ca0(&elem, "cubeProp", cubeProp);
+    if (space != 0)
+        FUN_140873ca0(&elem, "space", space);
+    if (animatable != 0)
+        FUN_140873ca0(&elem, "animatable", animatable);
+    if (objCode != 0)
+        FUN_140873ce0(&elem, "objCode", objCode);
+    if (staticAngle != 0)
+        FUN_140873e30(&elem, "staticAngle", staticAngle);
+    if (!asset.IsEmpty())
+        FUN_140874050(&elem, "asset", asset);
+    if (!preset.IsEmpty())
+        FUN_140874050(&elem, "preset", preset);
+    if (!useInstancing)
+        FUN_140873bc0(&elem, "useInstancing", useInstancing);
+    if (physXdimension != efd::Point3::ZERO)
+    {
+        CString str;
+        str.Format("%.6f, %.6f, %.6f", physXdimension.x, physXdimension.y, physXdimension.z);
+        FUN_140874050(&elem, "physXdimension", str);
+    }
+    if (!mapAttribute.IsEmpty())
+        FUN_140874050(&elem, "mapAttribute", mapAttribute);
+    if (propCollisionGroup != 0)
+        FUN_140873ca0(&elem, "propCollisionGroup", propCollisionGroup);
+    FUN_14086e000(pParent, &elem);
+    return 1;
+}
+
+// @0x140548a50
+bool ItemInstallData::FUN_140548a50(const ItemInstallData* pOther)
+{
+    return !FUN_140548aa0(pOther);
+}
+
+// @0x140548aa0
+bool ItemInstallData::FUN_140548aa0(const ItemInstallData* pOther)
+{
+    if (placeable != pOther->placeable)
+        return true;
+    if (unchangeable != pOther->unchangeable)
+        return true;
+    if (cannotStackAttach != pOther->cannotStackAttach)
+        return true;
+    if (stackable != pOther->stackable)
+        return true;
+    if (attachable != pOther->attachable)
+        return true;
+    if (wall != pOther->wall)
+        return true;
+    if (generatePhysX != pOther->generatePhysX)
+        return true;
+    if (cubeProp != pOther->cubeProp)
+        return true;
+    if (space != pOther->space)
+        return true;
+    if (animatable != pOther->animatable)
+        return true;
+    if (objCode != pOther->objCode)
+        return true;
+    if (staticAngle != pOther->staticAngle)
+        return true;
+    if (asset != pOther->asset)
+        return true;
+    if (preset != pOther->preset)
+        return true;
+    if (mapAttribute != pOther->mapAttribute)
+        return true;
+    if (propCollisionGroup != pOther->propCollisionGroup)
+        return true;
+    if (useInstancing != pOther->useInstancing)
+        return true;
+    if (physXdimension != pOther->physXdimension)
+        return true;
+    return false;
+}
+
+// @0x140548cb0
+int ItemInstallData::FUN_140548cb0()
+{
+    return stackable;
+}
+
+// @0x140548cd0
+bool ItemInstallData::FUN_140548cd0()
+{
+    const int nMask = 6;
+    return (space & nMask) > 0;
+}
+
+// @0x140548d10
+bool ItemInstallData::FUN_140548d10()
+{
+    const int nMask = 1;
+    return (space & nMask) > 0;
+}
+
+// @0x140548d50
+bool ItemInstallData::FUN_140548d50()
+{
+    if ((stackable & 1) != 0 && (stackable & 2) != 0 && (stackable & 4) != 0)
+        return true;
+    return false;
 }
