@@ -122,6 +122,7 @@ public:
     T* operator->() const;
     T& operator*() const;
     bool operator==(T* p) const;
+    bool operator!() const;
 
 private:
     void AddRef() const;
@@ -157,6 +158,7 @@ template <class T> T* Unk_BmBoxPtr<T>::get() const { return m_p; }
 template <class T> T* Unk_BmBoxPtr<T>::operator->() const { return m_p; }
 template <class T> T& Unk_BmBoxPtr<T>::operator*() const { return *m_p; }
 template <class T> bool Unk_BmBoxPtr<T>::operator==(T* p) const { return m_p == p; }
+template <class T> bool Unk_BmBoxPtr<T>::operator!() const { return m_p == 0; }
 template <class T> void Unk_BmBoxPtr<T>::AddRef() const { if (m_p) AddRefImpl(0); }
 template <class T> void Unk_BmBoxPtr<T>::Make() { Release(); m_p = Create(0); }
 template <class T> void Unk_BmBoxPtr<T>::Release() { if (m_p) { ReleaseImpl(0); m_p = 0; } }
