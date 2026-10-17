@@ -18,6 +18,8 @@
 #include "ms2/placeholder/exception.h"
 #include "ms2/unnamed/unit_1401b6d10.h"
 #include "commonstruct.h"
+#include "ms2/ms2format.h"
+#include "ms2/placeholder/cugcgetcosttable.h"
 
 // The UGC info behind CItem::FUN_1405278d0 as this unit reads it (name at +0x40, rarity at +0x48).
 struct Unk_UgcItemInfoView
@@ -2385,4 +2387,200 @@ int CUgcBannerRollingImage::FUN_140897e40(unsigned nField) const
     if (m_fieldSet.find(nField) != m_fieldSet.end())
         return 1;
     return 0;
+}
+
+// @0x140897ed0
+TUgcGetCostInfo::TUgcGetCostInfo()
+{
+    m_nBase = 0;
+    m_nCost = 0;
+    m_nLeft = 0;
+}
+
+// @0x140897f30
+void TUgcGetCostInfo::FUN_140897f30(__int64 nBase, int nPercent)
+{
+    m_nBase = nBase;
+    m_nCost = (nBase * nPercent) / 100;
+    m_nLeft = 100 - nPercent;
+}
+
+// The exe instantiates this 3-argument form against its own copy of the formatter (the one the socket code uses).
+CStringA FUN_1402bf9a0(const char* format, const fmt::ArgList& args);
+// @0x140898c00
+template<> CString StringFormat<__int64, __int64, int>(const char* format, const __int64& first, const __int64& second,
+                                                      const int& third)
+{
+    const fmt::internal::ArgArray<3>::Type array = {fmt::internal::MakeValue<fmt::BasicFormatter<char>>(first),
+                                                  fmt::internal::MakeValue<fmt::BasicFormatter<char>>(second),
+                                                  fmt::internal::MakeValue<fmt::BasicFormatter<char>>(third)};
+    return FUN_1402bf9a0(format, fmt::ArgList(fmt::internal::make_type(first, second, third), array));
+}
+
+// @0x140897f90
+CString TUgcGetCostInfo::FUN_140897f90() const
+{
+    return StringFormat("[{0}->{1}({2}%%)]", m_nBase, m_nCost, m_nLeft);
+}
+
+// @0x140898780
+UGCMapDesignInfo::UGCMapDesignInfo()
+{
+    m_nId = 0;
+    m_strName.Empty();
+    m_nTime = 0;
+}
+
+// @0x1408987f0
+UGCMapBlueprintInfo::UGCMapBlueprintInfo()
+{
+    m_nId = 0;
+    m_strName.Empty();
+    m_nTime = 0;
+}
+
+// @0x140898b80
+unsigned char FUN_140898b80(CInPacket& packet, Unk_1402c45d0 checker)
+{
+    unsigned char nValue = packet.vfunc_o8_1();
+    if (!checker.Check(nValue))
+        throw Exception(13);
+    return nValue;
+}
+
+// @0x140898000
+CUgcGetCostTable::CUgcGetCostTable()
+    : m_table(10)
+{
+}
+
+// @0x140898070
+CUgcGetCostTable::~CUgcGetCostTable()
+{
+    m_table.RemoveAll();
+}
+
+// @0x1408980d0
+void CUgcGetCostTable::SetTable(const CostMap& src)
+{
+    Unk_LockGuard guard(m_lock);
+    if (guard != 0) {} else {
+        m_table.RemoveAll();
+        for (POSITION pos = src.GetHeadPosition(); pos != NULL; src.GetNext(pos))
+        {
+            const int* pnPercent = &src.GetValueAt(pos);
+            m_table.SetAt(src.GetKeyAt(pos), *pnPercent);
+        }
+    }
+}
+
+// MS2-FUNCTIONAL: map accessor call order / this materialisation
+// @0x1408981a0
+void CUgcGetCostTable::GetTable(CostMap& dst)
+{
+    Unk_LockGuard guard(m_lock);
+    if (guard != 0) {} else {
+        dst.RemoveAll();
+        for (POSITION pos = m_table.GetHeadPosition(); pos != NULL; m_table.GetNext(pos))
+        {
+            const int* pnPercent = &m_table.GetValueAt(pos);
+            dst.SetAt(m_table.GetKeyAt(pos), *pnPercent);
+        }
+    }
+}
+
+// MS2-FUNCTIONAL: stack frame 0x10 larger than the exe
+// @0x140898280
+void CUgcGetCostTable::Write(COutputStream& stream)
+{
+    CostMap table(10);
+    GetTable(table);
+    stream.vfunc_o10_3((int)table.GetCount());
+    for (POSITION pos = table.GetHeadPosition(); pos != NULL; table.GetNext(pos))
+    {
+        __int64 nKey = table.GetKeyAt(pos);
+        int nPercent = table.GetValueAt(pos);
+        stream.vfunc_o10_4(nKey);
+        stream.vfunc_o10_3(nPercent);
+    }
+}
+
+// @0x140898390
+void CUgcGetCostTable::Read(CInPacket& packet)
+{
+    CostMap table(10);
+    unsigned nCount = packet.vfunc_o8_3();
+    for (unsigned i = 0; i < nCount; i++)
+    {
+        __int64 nKey = packet.vfunc_o8_4();
+        int nPercent = packet.vfunc_o8_3();
+        table.SetAt(nKey, nPercent);
+    }
+    SetTable(table);
+}
+
+// MS2-FUNCTIONAL: stack frame and loop shape differ from the exe
+// @0x1408984b0
+bool CUgcGetCostTable::FUN_1408984b0(__int64 nStart, __int64 nLength, CostList& out)
+{
+    CostMap table(10);
+    GetTable(table);
+    POSITION posLast = NULL;
+    __int64 nEnd = nStart + nLength;
+    POSITION pos = table.GetHeadPosition();
+    while (pos != NULL)
+    {
+        __int64 nKey = table.GetKeyAt(pos);
+        if (nEnd < nKey)
+        {
+            posLast = pos;
+            break;
+        }
+        posLast = pos;
+        table.GetNext(pos);
+    }
+    if (posLast != NULL)
+    {
+        POSITION posCur = posLast;
+        __int64 nLeft = nLength;
+        while (posCur != NULL)
+        {
+            __int64 nKey = table.GetKeyAt(posCur);
+            if (nKey <= nEnd)
+            {
+                __int64 nSpan = nEnd - nKey;
+                if (nLeft < nSpan)
+                    nSpan = nLeft;
+                __int64 nPart = nSpan;
+                int nPercent = table.GetValueAt(posCur);
+                MS2Ptr<TUgcGetCostInfo> spInfo(new TUgcGetCostInfo);
+                if (spInfo.get() != 0)
+                {
+                    spInfo->FUN_140897f30(nPart, nPercent);
+                    out.AddTail(spInfo);
+                }
+                nEnd -= nPart;
+                nLeft -= nPart;
+                if (nLeft < 1)
+                    return true;
+            }
+            table.GetPrev(posCur);
+        }
+    }
+    return true;
+}
+
+// @0x1408999c0
+TUgcGetCostInfo::~TUgcGetCostInfo()
+{
+}
+
+// @0x1408999e0
+UGCMapBlueprintInfo::~UGCMapBlueprintInfo()
+{
+}
+
+// @0x140899a10
+UGCMapDesignInfo::~UGCMapDesignInfo()
+{
 }
