@@ -52,6 +52,56 @@
 #include "ms2physxallocator.h"
 #include "ms2shadowclickgenerator.h"
 #include "networkservice.h"
+#include <efd/ConfigManager.h>
+#include <efd/AssetLocatorService.h>
+#include <efd/AssetFactoryManager.h>
+#include <efd/EnumManager.h>
+#include <egf/RapidIterationService.h>
+#include "ms2/placeholder/schedulerlua.h"
+#include <NiSPWorkflowManager.h>
+#include <ecr/TextureRapidIterationService.h>
+#pragma push_macro("min")
+#pragma push_macro("max")
+#undef min
+#undef max
+#include "ms2/placeholder/physxwhiteboxservice.h"
+#include "ms2/client/ms2/ms2propservice.h"
+#include "ms2/client/ms2/ms2sceneservice.h"
+#pragma pop_macro("max")
+#pragma pop_macro("min")
+#include "ms2/client/ms2/ms2messageservice.h"
+#include "ms2/client/ms2/ms2entitymanagerservice.h"
+#include "ms2/client/ms2/ms2flatmodelmanager.h"
+#include "ms2/client/ms2/ms2entityloaderservice.h"
+#include "ms2/client/ms2/ms2scenegraphservice.h"
+#include "ms2/client/ms2/ms2renderservice.h"
+#include "ms2/client/ms2/ms2lightservice.h"
+#include "ms2/client/ms2/ms2animationservice.h"
+#include "ms2/client/ms2/ms2cameraservice.h"
+#include "ms2/client/ms2/ms2inputservice.h"
+#include "ms2/client/ms2/ms2visualtrackermanager.h"
+#include "ms2/client/ms2/ms2pickservice.h"
+#include "ms2/client/ms2/windowservice.h"
+#include "ms2/client/ms2/worldservice.h"
+#include "ms2/client/ms2/nifanimationservice.h"
+#include "ms2/client/ms2/triggerservice.h"
+#include "ms2/client/ms2/functioncubeobject.h"
+#include "ms2/client/ms2/postprocessing/postprocessingservice.h"
+#include "ms2/client/ms2/uiservice.h"
+#include "ms2/client/ms2/statemanager.h"
+#include "ms2/client/ms2/magicdata.h"
+#include "ms2/client/ms2/soundservice.h"
+#include "ms2/client/ms2/hardwareinstancingservice.h"
+#include "ms2/client/ms2/entityworldmanager.h"
+#include "ms2/client/ms2/cubemapinformationservice_3.h"
+#include "ms2/client/ms2/decoeditservice.h"
+#include "ms2/placeholder/cmainsystem.h"
+#include "ms2/placeholder/citemservice.h"
+#include "ms2/placeholder/cwebbrowserservice.h"
+#include "ms2/placeholder/gfxservice.h"
+#include "ms2/placeholder/gfximageloader.h"
+#include "ms2/placeholder/ms2propertyvisualizationservice.h"
+#include "ms2/placeholder/tfunctor2.h"
 // the manager singletons CGameApp::InitInstance creates
 #include "ms2/client/ms2/achievemanager.h"
 #include "ms2/client/ms2/animationcallbackmanager.h"
@@ -303,7 +353,7 @@ MS2_CHECK_SIZE(Unk_InstanceEvent, 0x30);
 struct Unk_EngineLogLock { Unk_EngineLogLock(CLockCriticalSection& cs, int n); ~Unk_EngineLogLock(); void* p; };
 MS2_CHECK_SIZE(Unk_EngineLogLock, 8);
 
-class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };     // ctor 0x1401cd100
+// Unk_1401cd100 (ctor 0x1401cd100) comes from cubemapinformationservice_3.h.
 
 // The UI scenes: UISceneEntity subclasses registered with the UISwfEntityManager (?\uiscene*.cpp, not recovered).
 class UISceneEntity : public UISwfEntity { };
@@ -320,16 +370,6 @@ class Unk_Ms2Window { public: HWND FUN_14209c720(); };                       // 
 Unk_Ms2Window* FUN_140aadf80();
 class Unk_Ms2SceneState { public: void FUN_1417e25a0(int nScene); };
 Unk_Ms2SceneState* FUN_140aa6d30();
-class Unk_Ms2Input
-{
-public:
-    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); virtual void vfunc_4();
-    virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9();
-    virtual void vfunc_10(); virtual void vfunc_11(); virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14();
-    virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18();
-    virtual void vfunc_19(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);   // sees every message before dispatch
-};
-Unk_Ms2Input* FUN_1414a56c0();
 CNetworkService* FUN_140714f90();
 COptimizer* FUN_1409f7c90();
 void FUN_14161c360(COptimizer* pOptimizer);
@@ -353,6 +393,32 @@ int FUN_1414a5a40(CStringW sPath);                              // _wmkdir
 // Clears a ServiceManager flag (+0x119) before the shutdown request: an MS2 engine addition missing from the SDK
 // headers (the exe calls it through SmartPointer::operator->).
 void FUN_1414a6180(efd::ServiceManager* pServiceManager);
+efd::utf8string MakeWindowTitle();
+namespace Scaleform { namespace Render { class Image; class TextureManager; } }
+typedef TFunctor<Scaleform::Render::Image*, ParamList<const GFxImageLoader::Protocol&,
+    ParamList<Scaleform::Render::TextureManager*, EmptyParam>>> Unk_GFxImageCallback;
+// The Scaleform UI manager singleton (no RTTI; DAT_143aaccf8).
+class Unk_GFxManager
+{
+public:
+    void FUN_1422af0b0(BOOL bArchive, int n);                  // loads ./Data/Resource/gfx/fontconfig.txt
+    void FUN_1414a61c0(Unk_GFxImageCallback fnCallback);        // the image creator callback (+0x138)
+};
+Unk_GFxManager* FUN_14025e7a0();
+Scaleform::Render::Image* FUN_140a59830(const GFxImageLoader::Protocol& kProtocol,
+    Scaleform::Render::TextureManager* pTextureManager);       // ?\asyncimageloader.cpp
+int FUN_1406516b0();                                            // the service locale: 1 jp, 2 en, 3 cn, else kr
+CString FUN_140652330(int nLocale);                             // the locale's UI font name
+void FUN_1414a6230(efd::IBase* (*pfnFactory)());                // the KFM cache factory of egmAnimation
+efd::IBase* FUN_1414a9a10();                                    // creates an MS2KFMCache
+struct Unk_MCPPtr;
+Unk_MCPPtr FUN_140d96230(NiVisibleArray* pVisibleSet, NiSPWorkflowManager* pWorkflowManager);  // MS2MeshCullingProcess
+extern Unk_MCPPtr (*DAT_143afe6f8)(NiVisibleArray*, NiSPWorkflowManager*);   // the mesh culling process factory
+extern void (*DAT_143b0d368)();
+int luaopen_egmAnimation(lua_State* L);
+int luaopen_ecr(lua_State* L);
+int luaopen_bapiPhysXBase(lua_State* L);
+int luaopen_PhysX(lua_State* L);
 
 // ---- statics (.text$di 0x1400f82a0..)
 // @0x1400f82a0
@@ -629,6 +695,174 @@ bool MS2::OnLostDevice(void* pvData)
     return true;
 }
 MS2_REPLACE(0x14148B340, MS2::OnLostDevice, 29, 0x4B7A9898);
+// @0x14148b370
+bool MS2::RegisterServices(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
+{
+    bool bResult = true;
+    m_spServiceManager = EE_NEW efd::ServiceManager;
+    if (!m_spServiceManager)
+        return false;
+    m_spServiceManager->SetProgramType(efd::ServiceManager::kProgType_Client, true);
+    m_spServiceManager->SetVirtualProcessName("MapleStory2");
+
+    efd::IConfigManagerPtr spConfig = EE_NEW efd::ConfigManager("Config.ini", __argc, __argv);
+    m_spServiceManager->RegisterSystemService(spConfig);
+    efd::SmartPointer<efd::EnumManager> spEnumManager = NULL;
+    CreateLogger()->ReadConfig(spConfig, spEnumManager, false);
+
+    efd::SmartPointer<CMainSystem> spMainSystem = EE_NEW CMainSystem;
+    spMainSystem->FUN_141473920(GetCurrentThreadId());
+    spMainSystem->FUN_141472eb0(spConfig);
+    m_spServiceManager->RegisterSystemService(spMainSystem, 9999);
+
+    efd::MessageServicePtr spMessageService = EE_NEW MS2MessageService;
+    spMessageService->SetOfflineMode(true);
+    m_spServiceManager->RegisterSystemService(spMessageService);
+
+    efd::SmartPointer<egf::RapidIterationSystemService> spRapidIteration = EE_NEW egf::RapidIterationSystemService;
+    m_spServiceManager->RegisterSystemService(spRapidIteration);
+
+    efd::utf8string strUrn("urn:kr");
+    switch (FUN_1406516b0()) {
+    case 1:
+        strUrn = "urn:jp";
+        break;
+    case 2:
+        strUrn = "urn:en";
+        break;
+    case 3:
+        strUrn = "urn:cn";
+        break;
+    default:
+        strUrn = "urn:kr";
+        break;
+    }
+    efd::SmartPointer<efd::AssetLocatorService> spAssetLocator = EE_NEW efd::AssetLocatorService(m_spServiceManager, strUrn);
+    m_spServiceManager->RegisterSystemService(spAssetLocator);
+    efd::SmartPointer<efd::AssetFactoryManager> spAssetFactory = EE_NEW efd::AssetFactoryManager(0x10, 8, NULL);
+    m_spServiceManager->RegisterSystemService(spAssetFactory);
+
+    efd::SmartPointer<egf::EntityManager> spEntityManager = EE_NEW MS2EntityManagerService;
+    m_spServiceManager->RegisterSystemService(spEntityManager);
+    egf::SchedulerPtr spScheduler = EE_NEW egf::Scheduler;
+    m_spServiceManager->RegisterSystemService(spScheduler);
+    efd::SmartPointer<egf::SchedulerLua> spSchedulerLua = EE_NEW egf::SchedulerLua;
+    spScheduler->RegisterScriptingRuntime("Lua", egf::BehaviorType_Lua, spSchedulerLua);
+    bool bLua = false;
+    bLua = spSchedulerLua->AddStaticBuiltinInitFunction(luaopen_egmAnimation);
+    bLua &= spSchedulerLua->AddStaticBuiltinInitFunction(luaopen_ecr);
+    bLua &= spSchedulerLua->AddStaticBuiltinInitFunction(luaopen_bapiPhysXBase);
+    bLua &= spSchedulerLua->AddStaticBuiltinInitFunction(luaopen_PhysX);
+
+    efd::SmartPointer<egf::FlatModelManager> spFlatModelManager = EE_NEW MS2FlatModelManager;
+    spFlatModelManager->SetModelPath((const char*)CMainSystem::GetInstance()->FUN_1414736e0());
+    m_spServiceManager->RegisterSystemService(spFlatModelManager);
+    efd::SmartPointer<egf::EntityLoaderService> spEntityLoader = EE_NEW MS2EntityLoaderService;
+    m_spServiceManager->RegisterSystemService(spEntityLoader);
+
+    NiPointer<NiTexturePalette> spTexturePalette = EE_NEW MS2DefaultTexturePalette;
+    CNiStreamLoadThread::GetInstance()->SetTexturePalette(spTexturePalette);
+    NiSPWorkflowManager* pWorkflowManager = EE_NEW NiSPWorkflowManager(0x40, NiStreamProcessor::MEDIUM, 3);
+    ecr::SceneGraphServicePtr spSceneGraph = EE_NEW MS2SceneGraphService(pWorkflowManager, spTexturePalette, false);
+    spSceneGraph->SetDataPath(CMainSystem::GetInstance()->FUN_1414736e0());
+    m_spServiceManager->RegisterSystemService(spSceneGraph, 1500);
+
+    DAT_143afe6f8 = FUN_140d96230;
+    ecr::RenderServicePtr spRender = EE_NEW MS2RenderService(0);
+    m_pSurfaceCreator = new CMS2DefaultSurfaceCreator;
+    spRender->SetDefaultSurfaceCreator(m_pSurfaceCreator);
+    m_spServiceManager->RegisterSystemService(spRender, 1000);
+    efd::SmartPointer<ecr::ShaderService> spShader = EE_NEW ecr::ShaderService(true);
+    m_spServiceManager->RegisterSystemService(spShader);
+    efd::SmartPointer<ecr::LightService> spLight = EE_NEW MS2LightService;
+    m_spServiceManager->RegisterSystemService(spLight);
+    efd::SmartPointer<ecr::TextureRapidIterationService> spTextureRapidIteration = EE_NEW ecr::TextureRapidIterationService;
+    if (FUN_1409f7c90()->FUN_1414a5a30())
+        FUN_1414a6230(FUN_1414a9a10);
+    efd::SmartPointer<egmAnimation::AnimationService> spAnimation = EE_NEW MS2AnimationService;
+    m_spServiceManager->RegisterSystemService(spAnimation, 1785);
+    efd::SmartPointer<ecr::CameraService> spCamera = EE_NEW MS2CameraService;
+    m_spServiceManager->RegisterSystemService(spCamera);
+    efd::SmartPointer<ecrInput::InputService> spInput = EE_NEW MS2InputService;
+    m_spServiceManager->RegisterSystemService(spInput);
+
+    efd::SmartPointer<CWindowService> spWindow = EE_NEW CWindowService(hInstance, hPrevInstance, lpCmdLine, 1);
+    efd::utf8string strTitle = MakeWindowTitle();
+    spWindow->SetWindowTitle(strTitle);
+    spWindow->SetWindowClass("MapleStory2");
+    m_spServiceManager->RegisterSystemService(spWindow);
+
+    bool bSyncPhysX = true;
+    m_pPhysXManager->Configure(spConfig);
+    efd::SmartPointer<MS2SceneService> spScene = EE_NEW MS2SceneService;
+    m_spServiceManager->RegisterSystemService(spScene);
+    efd::SmartPointer<MS2PropService> spProp = EE_NEW MS2PropService;
+    spProp->SetAsynchronousSimulation(!bSyncPhysX);
+    spProp->FUN_142064e10(spSceneGraph->GetSceneGraphCache());
+    m_spServiceManager->RegisterSystemService(spProp);
+    efd::SmartPointer<egmPhysXWhitebox::PhysXWhiteboxService> spWhitebox = EE_NEW egmPhysXWhitebox::PhysXWhiteboxService;
+    m_spServiceManager->RegisterSystemService(spWhitebox);
+    efd::SmartPointer<egmVisualTracker::VisualTrackerService> spVisualTracker = EE_NEW MS2VisualTrackerManager;
+    m_spServiceManager->RegisterSystemService(spVisualTracker);
+
+    efd::SmartPointer<WorldService> spWorld = EE_NEW WorldService;
+    m_spServiceManager->RegisterSystemService(spWorld, 2001);
+    efd::SmartPointer<CNifAnimationService> spNifAnimation = EE_NEW CNifAnimationService;
+    m_spServiceManager->RegisterSystemService(spNifAnimation, 2001);
+    efd::SmartPointer<CTriggerService> spTrigger = EE_NEW CTriggerService;
+    m_spServiceManager->RegisterSystemService(spTrigger, 2001);
+    efd::SmartPointer<CFunctionCubeService> spFunctionCube = EE_NEW CFunctionCubeService;
+    m_spServiceManager->RegisterSystemService(spFunctionCube, 2001);
+    efd::SmartPointer<CItemService> spItem = EE_NEW CItemService;
+    m_spServiceManager->RegisterSystemService(spItem, 2001);
+    m_spServiceManager->RegisterSystemService(this, 10000);
+
+    efd::SmartPointer<PostProcessingService> spPostProcessing = EE_NEW PostProcessingService;
+    m_spServiceManager->RegisterSystemService(spPostProcessing, 1998);
+    efd::SmartPointer<CUIService> spUI = EE_NEW CUIService;
+    m_spServiceManager->RegisterSystemService(spUI, 1997);
+    efd::SmartPointer<CStateService> spState = EE_NEW CStateService;
+    m_spServiceManager->RegisterSystemService(spState, 1996);
+    efd::SmartPointer<CNetworkService> spNetwork = EE_NEW CNetworkService;
+    m_spServiceManager->RegisterSystemService(spNetwork, 1995);
+    efd::SmartPointer<CMagicService> spMagic = EE_NEW CMagicService;
+    m_spServiceManager->RegisterSystemService(spMagic);
+    efd::SmartPointer<CEffectService> spEffect = EE_NEW CEffectService;
+    m_spServiceManager->RegisterSystemService(spEffect);
+    efd::SmartPointer<CSoundService> spSound = EE_NEW CSoundService;
+    m_spServiceManager->RegisterSystemService(spSound);
+    efd::SmartPointer<ecr::PickService> spPick = EE_NEW MS2PickService();
+    m_spServiceManager->RegisterSystemService(spPick);
+    efd::SmartPointer<CNifLoadingService> spNifLoading = EE_NEW CNifLoadingService;
+    m_spServiceManager->RegisterSystemService(spNifLoading);
+    efd::SmartPointer<HardwareInstancingService> spHardwareInstancing = EE_NEW HardwareInstancingService;
+    m_spServiceManager->RegisterSystemService(spHardwareInstancing);
+    efd::SmartPointer<EntityWorldManager> spEntityWorld = EE_NEW EntityWorldManager;
+    m_spServiceManager->RegisterSystemService(spEntityWorld);
+    efd::SmartPointer<CubeMapInformationService> spCubeMapInformation = EE_NEW CubeMapInformationService;
+    m_spServiceManager->RegisterSystemService(spCubeMapInformation);
+
+    m_spServiceManager->RegisterSystemService(EE_NEW GFxService, 1997);
+    m_spServiceManager->RegisterSystemService(EE_NEW GFxSceneService, 1997);
+    DAT_143b0d368 = CUIService::FUN_141ade400;
+    FUN_1414a56c0()->FUN_1422ea230(FUN_140652330(DAT_143ab0248));
+    efd::SmartPointer<CWebBrowserService> spWebBrowser = EE_NEW CWebBrowserService(hInstance);
+    spWebBrowser->FUN_141b77e10();
+    m_spServiceManager->RegisterSystemService(spWebBrowser);
+    efd::SmartPointer<MS2PropertyVisualizationService> spPropertyVisualization = EE_NEW MS2PropertyVisualizationService();
+    m_spServiceManager->RegisterSystemService(spPropertyVisualization);
+
+    int n = 0;
+    FUN_14025e7a0()->FUN_1422af0b0(FUN_140166420()->FUN_140398190(), n);
+    FUN_14025e7a0()->FUN_1414a61c0(Unk_GFxImageCallback(FUN_140a59830));
+    RegisterUIScenes();
+    efd::SmartPointer<DecoEditService> spDecoEdit = EE_NEW DecoEditService;
+    m_spServiceManager->RegisterSystemService(spDecoEdit, 0x6100014);
+    efdPhysX::PhysXSDKManager* pPhysXManager = efdPhysX::PhysXSDKManager::GetManager();
+    pPhysXManager->m_pPhysXSDK->setParameter(NX_BOUNCE_THRESHOLD, -10.0f);
+    return bResult;
+}
+MS2_REPLACE_METHOD(0x14148B370, MS2, RegisterServices, 13544, 0x09D796FF);
 // @0x14148e860
 efd::Logger* MS2::CreateLogger()
 {

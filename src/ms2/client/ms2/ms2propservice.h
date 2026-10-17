@@ -7,6 +7,8 @@
 #include <egf/IPropertyCallback.h>
 #include "ms2/ms2layout.h"
 
+namespace ecr { class SceneGraphCache; }
+
 class MS2PropService : public ecrPhysX::PropService, public egf::IPropertyCallback {
 public:
     static const efd::ClassInfo ms_ClassInfo;
@@ -31,6 +33,9 @@ public:
                                   const egf::IProperty*, efd::UInt32);
     virtual bool AddPhysXPropToPropData(egf::Entity*, PropData*);
     virtual bool RemovePropFromScene(PropData*);
+    // An MS2 engine addition to ecrPhysX::PropService (base at +0, missing from the SDK header): keeps a reference to the
+    // scene graph cache (+0x68). MS2::RegisterServices calls it through SmartPointer<MS2PropService>::operator->.
+    void FUN_142064e10(ecr::SceneGraphCache* pCache);
 };
 
 MS2_CHECK_SIZE(ecrPhysX::PropService, 0x78);
