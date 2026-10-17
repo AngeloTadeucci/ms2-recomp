@@ -1599,17 +1599,15 @@ void CMagic::FUN_1414607e0()
 }
 MS2_REPLACE_METHOD(0x1414607e0, CMagic, FUN_1414607e0, 496, 0x890BF44E);
 
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x141468360
-// MS2-FUNCTIONAL: exe has a dead jmp after the return (template cast helper); no source form found
 Unk_MagicRidee* FUN_141468360(Unk_MagicEntity* pEntity)
 {
     Unk_MagicRidee* pResult = 0;
-    if (pEntity != 0) {
-        if (pEntity->vf5_GetProperty(0x6200045, reinterpret_cast<unsigned long long*>(&pResult)))
-            return pResult;
+    if (pEntity != 0 && pEntity->vf5_GetProperty(0x6200045, reinterpret_cast<unsigned long long*>(&pResult)))
+        return pResult;
+    else {
+        return 0;
     }
-    return 0;
 }
 
 // @0x141462490
@@ -2227,7 +2225,6 @@ void CMagic::FUN_141461a80(Unk_StreamPoint ptNew)
 MS2_REPLACE_METHOD(0x141461A80, CMagic, FUN_141461a80, 210, 0x555ADF73);
 
 // @0x141461b60
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_141461b60(const Unk_StreamPoint& ptDirection)
 {
     m_ptDirection = ptDirection;
@@ -2236,7 +2233,6 @@ void CMagic::FUN_141461b60(const Unk_StreamPoint& ptDirection)
 MS2_REPLACE_METHOD(0x141461B60, CMagic, FUN_141461b60, 53, 0x479E3C1A);
 
 // @0x141461ba0
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_141461ba0(const Unk_NiMatrix3& matRotation)
 {
     m_matRotation = matRotation;
@@ -2273,15 +2269,14 @@ void CMagic::FUN_141463fb0(unsigned nNow)
 MS2_REPLACE_METHOD(0x141463FB0, CMagic, FUN_141463fb0, 415, 0x3990B4E8);
 
 // @0x141464160
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_141464160()
 {
-    if (!m_spScene.FUN_1409f77a0(0)) {
-        bool bHidden = FUN_141464220();
-        if (FUN_14098dad0(FUN_1409475f0(&m_spScene)) != bHidden) {
-            FUN_140a0b300(FUN_1409475f0(&m_spScene), bHidden);
-            FUN_1403ed280()->FUN_1411a68f0(m_nEffectId, !bHidden);
-        }
+    if (!(!m_spScene.FUN_1409f77a0(0)))
+        return;
+    bool bHidden = FUN_141464220();
+    if (FUN_14098dad0(FUN_1409475f0(&m_spScene)) != bHidden) {
+        FUN_140a0b300(FUN_1409475f0(&m_spScene), bHidden);
+        FUN_1403ed280()->FUN_1411a68f0(m_nEffectId, !bHidden);
     }
 }
 MS2_REPLACE_METHOD(0x141464160, CMagic, FUN_141464160, 183, 0x56FAAEF6);
@@ -2305,7 +2300,6 @@ bool CMagic::FUN_141464220()
 MS2_REPLACE_METHOD(0x141464220, CMagic, FUN_141464220, 309, 0xDB62E170);
 
 // @0x141464360
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 Unk_MagicEntity* CMagic::FUN_141464360()
 {
     Unk_MagicEntity* pEntity = NULL;
