@@ -1,6 +1,7 @@
 // ugcmanager.h - types shared by the four client\ms2\ugcmanager.cpp translation units (#1..#4). NOT an original header.
 // #1 ugcmanager_1.cpp: CUgcCompress (zlib .m2u packages), the D3DX image converter, the upload/thumbnail file helpers
 //    and the CUgcDownloadLoad worker.
+// #3 ugcmanager_3.cpp: UGCItemSlot.
 #pragma once
 
 #include <afx.h>
@@ -9,9 +10,12 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
+#include "ms2/client/ms2/ms2dragslot.h"
 
 namespace efd { class File; }
 class NiTexture;
+class ASObj;
+class CItem;
 
 // A local file queued for upload (ugcmanager.cpp#4; members not recovered yet).
 class CUploadFile : public CPtred
@@ -107,3 +111,34 @@ Unk_UgcFileResult ChangeFormat(int nType, MS2Ptr<CUploadFile> pUploadFile, int n
 efd::SmartPointer<NiTexture> LoadUgcTexture(const CStringW& strPath, int nSize, bool bPng);
 efd::SmartPointer<NiTexture> LoadCachedTexture(const CStringW& strPath);
 int ConvertIconFile(const CStringW& strPath);
+
+// 0xa0 bytes. vftable 0x142f8b450 (27 slots, ??_G 0x14187dfa0 sized delete 0xa0), ITooltip @+0x78 0x142f8b530.
+// A drag slot showing one item of a UGC (design shop) list.
+class UGCItemSlot : public MS2DragSlot
+{
+public:
+    UGCItemSlot(const CString& strName, MS2Ptr<CItem> spItem);   // 0x14187d7e0
+    virtual ~UGCItemSlot() = default;               // 0x14187df70 (implicit: the exe's dtor writes no vptr)
+
+    // slots 2-4: GetClassDesc 0x14187e000, TypeCast 0x14187e070 / 0x14187e0c0; ms_ClassInfo 0x143af0880,
+    // SetupClassInfo 0x14187e010 (parent MS2DragSlot, id 0x620003e).
+    EE_DECLARE_CLASS1(UGCItemSlot, 0x0620003E, MS2DragSlot);
+public:
+    virtual int vfunc_8(void* p);                   // 8  0x14187dd50 build the item slot into p
+    virtual int vfunc_11();                         // 11 0x14187d960 drop the item
+    virtual MS2Ptr<CItem> vfunc_25();               // 25 0x14187d910 the item in the slot
+    virtual int vfunc_26(ASObj& obj);               // 26 0x14187d9a0 fill the AS slot data
+    virtual int vfunc_0(void* p);                   // ITooltip 0x14187dc70 build the item tooltip into p
+
+    int FUN_14187d870();                            // item template id, 0 if empty
+    void FUN_14187d8c0(MS2Ptr<CItem> spItem);       // m_spItem = spItem
+
+public:
+    MS2_LAYOUT_FRIEND;
+    MS2Ptr<CItem> m_spItem;                         // +0x90
+};
+MS2_CHECK_SIZE(UGCItemSlot, 0xa0);
+MS2_CHECK_OFFSET(UGCItemSlot, m_spItem, 0x90);
+
+void FUN_14187de00(const CString& strName, MS2Ptr<CItem> spItem);   // create a UGCItemSlot and bind it by name
+void FUN_14187dee0(const CString& strName);                         // unbind the named UGCItemSlot
