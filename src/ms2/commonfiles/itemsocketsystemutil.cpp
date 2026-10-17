@@ -1372,7 +1372,6 @@ CStringW FUN_14062ad80(MS2Ptr<CItem> spItem)
 MS2_REPLACE(0x14062AD80, FUN_14062ad80, 215, 0x5D6DA17D);
 
 // @0x14062aeb0
-// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
 CStringW FUN_14062aeb0(int nItemId, int nRank)
 {
     MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
@@ -1439,7 +1438,6 @@ CItemSocketDataContainer::~CItemSocketDataContainer()
 }
 
 // @0x14062c900
-// MS2-FUNCTIONAL: Ptr temp order differs
 MS2Ptr<CItemSocketData> CItemSocketDataContainer::Find(int nGrade)
 {
     if (m_rows.IsEmpty())
@@ -1712,7 +1710,6 @@ int FUN_1408934f0(CUgcItemLook* pLook);
 int FUN_140893520(CUgcItemLook* pLook);
 
 // @0x14062fa00
-// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
 CItemStatus::CItemStatus(unsigned nItemId, unsigned nRarity, unsigned nArg)
 {
     m_spOption.AssignRaw(new CItemOption(nItemId));
@@ -2329,14 +2326,13 @@ CStringW FUN_1406313f0(int nStat, BaseOption* pBase)
 MS2_REPLACE(0x1406313F0, FUN_1406313f0, 515, 0x242D2E53);
 
 // @0x140631600
-// MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
 CStringW FUN_140631600(int nStat, BaseOption* pBase)
 {
     CStringW str;
-    if (!FUN_14082f250(nStat))
-        str = FUN_1409e0970(nStat, pBase->FUN_140266e30());
-    else
+    if (!(!FUN_14082f250(nStat)))
         str = FUN_1409e0bf0(nStat, pBase->FUN_140266e30());
+    else
+        str = FUN_1409e0970(nStat, pBase->FUN_140266e30());
     return str;
 }
 MS2_REPLACE(0x140631600, FUN_140631600, 274, 0xEA930C7D);
