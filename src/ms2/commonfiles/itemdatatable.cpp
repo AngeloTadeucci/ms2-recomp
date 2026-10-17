@@ -149,6 +149,7 @@
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/clientconstants.h"
+#include "ms2/commonfiles/gameevent.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
@@ -174,17 +175,6 @@ unsigned FUN_14053c690(unsigned nItemId);                               // the i
 // The client string tables (singleton at 0x143aac298): FUN_141811980(table, id) is the string of id in table.
 class Unk_1401a9d70 { public: CStringW FUN_141811980(int nTable, int nId); };
 Unk_1401a9d70* FUN_1401a9d70();
-
-// An inclusive int range (enchant level bands).
-class Unk_IntRange
-{
-public:
-    Unk_IntRange(int nMin, int nMax);                       // 0x1403e19f0
-    bool FUN_1403ef200(int n) const;                        // contains
-private:
-    int m_nMin;
-    int m_nMax;
-};
 
 // The empty-delegate error (the implicit default ctor 0x14056be40: `throw InvalidCallException()` value-initialises).
 class InvalidCallException : public std::exception
@@ -234,6 +224,7 @@ CColorPaletteInfo::CColorPaletteInfo()
     Init();
 }
 
+// MS2-FUNCTIONAL: box ptr NewTag temporaries / SEH state layout differ; behaviour equivalent
 // @0x140555ae0
 void CColorPaletteInfo::Init()
 {
@@ -476,6 +467,7 @@ std::set<Unk_TrophyKey>* CItemDataTable::GetTrophySet()
     return &m_setTrophy;
 }
 
+// MS2-FUNCTIONAL: string temporaries and SEH state layout differ; behaviour equivalent
 // @0x140557270
 CString CItemDataTable::GetEnchantNif(int nWeapon, int nEnchant, int nUnlimited, unsigned nType)
 {
@@ -490,18 +482,18 @@ CString CItemDataTable::GetEnchantNif(int nWeapon, int nEnchant, int nUnlimited,
             return str;
         }
     }
-    Unk_IntRange range0(5, 9);
-    Unk_IntRange range1(10, 12);
-    Unk_IntRange range2(13, 14);
-    Unk_IntRange range3(15, 15);
+    Unk_GameEventIntRange range0(5, 9);
+    Unk_GameEventIntRange range1(10, 12);
+    Unk_GameEventIntRange range2(13, 14);
+    Unk_GameEventIntRange range3(15, 15);
     int nLevel;
-    if (range0.FUN_1403ef200(nEnchant))
+    if (range0.IsInRange(nEnchant))
         nLevel = 0;
-    else if (range1.FUN_1403ef200(nEnchant))
+    else if (range1.IsInRange(nEnchant))
         nLevel = 1;
-    else if (range2.FUN_1403ef200(nEnchant))
+    else if (range2.IsInRange(nEnchant))
         nLevel = 2;
-    else if (range3.FUN_1403ef200(nEnchant))
+    else if (range3.IsInRange(nEnchant))
         nLevel = 3;
     else
         return CString("");
@@ -575,6 +567,7 @@ void CItemDataTable::GetHousingByCategory(int nCategory, ATL::CAtlArray<MS2Ptr<I
     }
 }
 
+// MS2-FUNCTIONAL: job switch lowering and SEH state layout differ; behaviour equivalent
 // @0x140557a30
 bool CItemDataTable::FindItems(unsigned short nLevel, int nGender, int nJob, int nType, ATL::CAtlArray<ItemDataPtr>& out)
 {
@@ -724,6 +717,7 @@ CString CItemDataTable::GetUiMaterialSound(unsigned nMaterial)
     return s_strDefault;
 }
 
+// MS2-FUNCTIONAL: exe materialises the box null test into a bool temporary; behaviour equivalent
 // @0x1405587f0
 MS2Ptr<ItemColorEx> CItemDataTable::GetPaletteColor(int nPalette, unsigned nIndex)
 {
@@ -738,6 +732,7 @@ MS2Ptr<ItemColorEx> CItemDataTable::GetPaletteColor(int nPalette, unsigned nInde
     return MS2Ptr<ItemColorEx>(0);
 }
 
+// MS2-FUNCTIONAL: exe materialises the box null test into a bool temporary; behaviour equivalent
 // @0x140558960
 MS2Ptr<ItemColorEx> CItemDataTable::GetPaletteColorBySN(int nPalette, int nColorSN)
 {
@@ -766,6 +761,7 @@ Unk_BmBoxPtr<CColorPaletteInfo::ColorArray> CItemDataTable::GetPaletteColors(int
     return Unk_BmBoxPtr<CColorPaletteInfo::ColorArray>(0);
 }
 
+// MS2-FUNCTIONAL: random index temporaries / frame layout differ; behaviour equivalent
 // @0x140558b90
 MS2Ptr<ItemColorEx> CItemDataTable::GetPaletteColorOrRandom(int nPalette, int nIndex)
 {
@@ -780,6 +776,7 @@ MS2Ptr<ItemColorEx> CItemDataTable::GetPaletteColorOrRandom(int nPalette, int nI
     return spColors->GetAt(nSel);
 }
 
+// MS2-FUNCTIONAL: iteration temporaries and SEH state layout differ; behaviour equivalent
 // @0x140558cc0
 MS2Ptr<ItemColorEx> CItemDataTable::FindPaletteColor(int nPalette, const int& nCh0)
 {
@@ -800,6 +797,7 @@ MS2Ptr<ItemColorEx> CItemDataTable::FindPaletteColor(int nPalette, const int& nC
     return MS2Ptr<ItemColorEx>(0);
 }
 
+// MS2-FUNCTIONAL: delegate call temporaries and SEH state layout differ; behaviour equivalent
 // @0x140558e80
 MS2Ptr<ItemColorEx> CItemDataTable::FindPaletteColor(int nPalette, ItemDataPtr spItem, ColorFilter fnFilter)
 {
@@ -820,6 +818,7 @@ MS2Ptr<ItemColorEx> CItemDataTable::FindPaletteColor(int nPalette, ItemDataPtr s
     return MS2Ptr<ItemColorEx>(0);
 }
 
+// MS2-FUNCTIONAL: iteration temporaries and SEH state layout differ; behaviour equivalent
 // @0x1405590e0
 MS2Ptr<ItemColorEx> CItemDataTable::FindPaletteColor(int nPalette, const int& nCh0, const int& nCh1)
 {
@@ -864,6 +863,7 @@ void CItemDataTable::GetAllModels(std::vector<ModelPtr>& out)
         out.push_back(it->second);
 }
 
+// MS2-FUNCTIONAL: XML attribute temporaries and SEH state layout differ; behaviour equivalent
 // @0x1405594b0
 void CItemDataTable::LoadItemNameIds(std::vector<unsigned>& out)
 {
@@ -913,6 +913,7 @@ void CItemDataTable::LoadDropStyle(Unk_140165cf0* pRoot)
     }
 }
 
+// MS2-FUNCTIONAL: XML node temporaries and SEH state layout differ; behaviour equivalent
 // @0x1405598c0
 void CItemDataTable::LoadDropItemAsset(Unk_140165cf0* pRoot)
 {
@@ -1071,6 +1072,7 @@ void CItemDataTable::LoadUiMaterialSound()
     }
 }
 
+// MS2-FUNCTIONAL: CString temporaries order and SEH state layout differ; behaviour equivalent
 // @0x14055a4a0
 void CItemDataTable::LoadColorPalette(const CString& strPath)
 {
@@ -1434,6 +1436,7 @@ void CItemDataTable::OnItemLoaded(ItemDataPtr spItem)
     spItem->FUN_14053ecf0();
 }
 
+// MS2-FUNCTIONAL: iterator temporaries and SEH state layout differ; behaviour equivalent
 // @0x14055f300
 CItemDataTable::ItemDataPtr CItemDataTable::FindItemData(int nItemId)
 {
