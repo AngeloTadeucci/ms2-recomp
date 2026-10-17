@@ -1320,7 +1320,6 @@ const char* CEffectService::GetDisplayName() const
 MS2_REPLACE_METHOD(0x1411a47e0, CEffectService, GetDisplayName, 13, 0x9D4B06A7);
 
 // @0x1411a4800
-// MS2-FUNCTIONAL: bytes match; the exe calls a second, byte-identical CAtlList<MS2Ptr<CEffectParam>> GetAt/GetNext copy (0x140a90440/0x140a904c0) instead of the first CU's, not reproducible from one TU
 bool FUN_1411a4800(const CString& strName, int nArg)
 {
     if (strName.IsEmpty())
