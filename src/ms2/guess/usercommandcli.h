@@ -167,8 +167,8 @@ public:
 
     int FUN_141365560(Unk_CommandArgs&);
     int FUN_1413678e0(Unk_CommandArgs&);
-    ATL::CAtlMap<CStringW,Command,ATL::CStringElementTraits<CStringW>> commands,internalCommands;
-    ATL::CAtlMap<CStringW,MS2Ptr<TUserCommandInfo>,ATL::CStringElementTraits<CStringW>> aliases;
+    ATL::CAtlMap<CStringW,Command,ATL::CStringElementTraitsI<CStringW>> commands,internalCommands;   // case-insensitive (GetNode 0x141371b80: towupper hash, _wcsicmp)
+    ATL::CAtlMap<CStringW,MS2Ptr<TUserCommandInfo>,ATL::CStringElementTraitsI<CStringW>> aliases;   // case-insensitive (GetNode 0x141371c80)
     ATL::CRBMap<int,MS2Ptr<TUserCommandInfo>> ordered;
     CStringW text,tooltip;
 };

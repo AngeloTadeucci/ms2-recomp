@@ -230,7 +230,7 @@ public:
 class CommonString : public CCacheData, public TSingleton<CommonString>, public CValidData<CommonString>
 {
 public:
-    typedef ATL::CRBMap<CStringW, CStringW, ATL::CStringElementTraits<CStringW> > TextMap;
+    typedef ATL::CRBMap<CStringW, CStringW, ATL::CStringElementTraitsI<CStringW> > TextMap;   // case-insensitive (Find/InsertImpl call the _wcsicmp traits 0x1401f8280/0x140212e70)
 
     CommonString();                                     // 0x140229230
     virtual ~CommonString();                            // 0x1402293a0
