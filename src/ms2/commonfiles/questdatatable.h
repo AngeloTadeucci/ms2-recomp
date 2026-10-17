@@ -84,6 +84,6 @@ public:
     ATL::CAtlMap<int, IdsPtr> m_390;                                        // +0x390 group id -> quest ids
     ATL::CAtlMap<int, Unk_SocketPtr<CQuestData::GroupPickData> > m_3d8;     // +0x3d8 group id -> pick data
     std::map<int, unsigned> m_420;                                              // +0x420
-    std::map<int, std::vector<unsigned> > m_430;                              // +0x430 npc id -> quest ids
+    std::map<unsigned, std::vector<unsigned> > m_430;                              // +0x430 npc id -> quest ids
 };
 MS2_CHECK_SIZE(QuestDataTable, 0x440);

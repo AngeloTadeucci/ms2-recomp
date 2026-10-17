@@ -14,6 +14,15 @@
 #include <vector>
 #include "ms2/ms2layout.h"
 
+// TinyXML's own TiXmlString (reference to a rep {size, capacity, str[]}); the exe's c_str is this 18-byte accessor, not
+// std::string::c_str (0x1401d4890).
+struct Unk_TiXmlString
+{
+    struct Rep { size_t size; size_t capacity; char str[1]; };
+    Rep* m_rep;
+    const char* c_str() const { return m_rep->str; }
+};
+
 // Game TinyXML element. Only the members the helpers touch are modelled: TiXmlNode::value (TIXML_USE_STL) at +0x38.
 class Unk_140165cf0
 {
@@ -27,7 +36,7 @@ public:
     const char* Value() const { return m_value.c_str(); }
 private:
     void* m_unk_00[7];
-    std::string m_value;                // +0x38
+    Unk_TiXmlString m_value;            // +0x38
 };
 
 int FUN_1408730a0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);
