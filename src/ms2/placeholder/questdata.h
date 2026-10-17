@@ -19,6 +19,8 @@ public:
     {
     public:
         QuestRewardItem();
+        QuestRewardItem(const QuestRewardItem& o) : CPtred(o), m_itemId(o.m_itemId), m_count(o.m_count), m_job(o.m_job) {}   // 0x1407585c0
+        QuestRewardItem(QuestRewardItem&& o) : CPtred(o), m_itemId(o.m_itemId), m_count(o.m_count), m_job(o.m_job) {}        // 0x140758550
         virtual ~QuestRewardItem();
         int m_itemId, m_count, m_job;
         bool operator!=(const QuestRewardItem& o) const;   // 0x140747f60
@@ -29,7 +31,6 @@ public:
     {
     public:
         NavigationTarget();
-        virtual ~NavigationTarget();
         bool operator!=(const NavigationTarget& o) const;
         int m_kind;                                 // +0x18 ctor 3
         ATL::CAtlArray<unsigned> m_ids;             // +0x20
@@ -40,7 +41,6 @@ public:
     {
     public:
         NavigationData();
-        virtual ~NavigationData();
         bool operator!=(const NavigationData& o) const;
         int m_kind;                                 // +0x18
         ATL::CAtlArray<Unk_SocketPtr<NavigationTarget> > m_targets;   // +0x20

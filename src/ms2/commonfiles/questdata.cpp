@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). Quest table row (CQuestData) and the quest table (QuestDataTable).
 // MS2-UNIT: commonfiles\questdata.cpp
 // MS2-RANGE: 0x140744670-0x140761a40 .text$mn
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x1400bc1a0-0x1400bc3d0 .text$di
 // MS2-PIN: ??_7QuestDataTable@@6B?$TSingleton@VQuestDataTable@@@@@ 0x142d87198
 // MS2-PIN: ??_7QuestDataTable@@6B?$CValidData@VQuestDataTable@@@@@ 0x142d871a8
@@ -764,10 +765,7 @@ inline CQuestData::QuestRewardItem::QuestRewardItem()
 inline CQuestData::QuestRewardItem::~QuestRewardItem()
 {
 }
-inline CQuestData::NavigationTarget::~NavigationTarget()
-{
-}
-inline CQuestData::NavigationData::~NavigationData()
+inline CQuestData::CompleteReward::~CompleteReward()
 {
 }
 inline CQuestData::GroupPickData::~GroupPickData()
