@@ -10,6 +10,8 @@
 #include "ms2/placeholder/classobject.h"
 
 class Unk_140165cf0;     // game TinyXML element
+class DungeonMissionCli;  // the client side missions (?\dungeonmissioncli.cpp) read the base fields
+class DungeonMissionEvent;
 
 // Base mission: a score of maxScore split into applyCount steps (vftable 0x142d25af0, 4 slots). 0x30 bytes.
 class DungeonMissionData : public ClassObject
@@ -27,6 +29,8 @@ public:
 
 protected:
     MS2_LAYOUT_FRIEND;
+    friend class DungeonMissionCli;
+    friend class DungeonMissionEvent;
     unsigned m_id;                                          // +0x18 "id"
     CStringW m_type;                                        // +0x20 "type"
     short m_maxScore;                                       // +0x28 "maxScore"
