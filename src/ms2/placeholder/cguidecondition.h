@@ -22,10 +22,12 @@ public:
     virtual void vfunc_4();                                 // 4 0x1413a56e0
     virtual void vfunc_5();                                 // 5 0x1413a56f0: logs "Nothing TestCase"
     virtual bool vfunc_6();                                 // 6 0x1413a5740: false
-    virtual CStringW vfunc_7(void* a, void* b);             // 7 0x1413a5760: description
+    virtual CStringW vfunc_7();                       // 7 0x1413a5760: description
     virtual int vfunc_8();                                  // 8 0x1413a5810: 0
 
-    int FUN_1413a5600(bool bResult);                        // 0x1413a5600 applies m_b1c (negation) to a check result
+    int FUN_1413a5600(bool bResult);
+    int FUN_1413a55a0(int nResult);                         // 0x1413a55a0 like FUN_1413a5600 for an int result (negated when m_b1c)
+    CStringW FUN_1413a5820();                                // 0x1413a5820    // 0x1413a5820 the base description text                        // 0x1413a5600 applies m_b1c (negation) to a check result
 
     int m_n18;                                              // +0x18
     bool m_b1c;                                             // +0x1c
@@ -73,3 +75,53 @@ public:
     int FUN_1413a9ac0();                                    // 0x1413a9ac0 the number of placeable items in the inventory tab 4
 };
 MS2_CHECK_SIZE(CGuideConditionCountInDoorInstallItem, 0x38);
+
+// 0x30. Passes after the key/condition m_n20 has been held for m_nTick ms (0 = immediately).
+class CGuideConditionInput : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a6580
+    CGuideConditionInput();                                 // 0x1413a6630
+    virtual CStringW vfunc_1();                             // 1 0x1413a65e0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a6670
+    virtual int vfunc_3();                                  // 3 0x1413a66c0
+    virtual void vfunc_4();                                 // 4 0x1413a67d0
+    virtual CStringW vfunc_7();                       // 7 0x1413a6800
+
+    unsigned m_nTick;                                           // +0x28
+    int m_nDeadline;                                        // +0x2c
+};
+MS2_CHECK_SIZE(CGuideConditionInput, 0x30);
+
+// 0x28. Passes when any of the key bindings of action m_n20 is pressed.
+class CGuideConditionActionInput : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a68b0
+    CGuideConditionActionInput();
+    virtual CStringW vfunc_1();                             // 1 0x1413a6910
+    virtual int vfunc_3();                                  // 3 0x1413a6960
+};
+MS2_CHECK_SIZE(CGuideConditionActionInput, 0x28);
+
+// 0x28. Passes while a field object of type 6 exists.
+class CGuideConditionReturnPortal : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a6bc0
+    CGuideConditionReturnPortal();
+    virtual CStringW vfunc_1();                             // 1 0x1413a6c20
+    virtual int vfunc_3();                                  // 3 0x1413a6c70
+};
+MS2_CHECK_SIZE(CGuideConditionReturnPortal, 0x28);
+
+// 0x28. Passes while a field portal contains the local player's position.
+class CGuideConditionPortalEnable : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a6ca0
+    CGuideConditionPortalEnable();
+    virtual CStringW vfunc_1();                             // 1 0x1413a6d00
+    virtual int vfunc_3();                                  // 3 0x1413a6d50
+};
+MS2_CHECK_SIZE(CGuideConditionPortalEnable, 0x28);
