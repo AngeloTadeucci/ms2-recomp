@@ -307,10 +307,17 @@
 // MS2-PIN: ??$construct@II@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@QEAI$$QEAI@Z 0x14017fc10
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@1@AEAPEAU31@@Z 0x14017fcf0
 // MS2-PIN: ??$construct@PEA_WAEBQEA_W@?$_Default_allocator_traits@V?$allocator@_W@std@@@std@@SAXAEAV?$allocator@_W@1@QEAPEA_WAEBQEA_W@Z 0x14017fd90
-// MS2-PIN: ??$forward@AEBQEA_W@std@@YAAEBQEA_WAEBQEA_W@Z 0x140180900
+// MS2-PIN: ??$forward@AEBQEA_W@std@@YAAEBQEA_WAEBQEA_W@Z 0x140180ba0
 // MS2-PIN: ?_Get_data@?$_String_alloc@U?$_String_base_types@_WV?$allocator@_W@std@@@std@@@std@@QEBAAEBV?$_String_val@U?$_Simple_types@_W@std@@@2@XZ 0x14018bc90
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@$00@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@XZ 0x14018c270
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@2@XZ 0x14018d790
+// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@0@AEAPEAU10@@Z 0x140180900
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalActionSkill@@@@V?$allocator@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VAdditionalActionSkill@@@@XZ 0x14018d110
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalLevelData@@@@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VAdditionalLevelData@@@@XZ 0x14018d150
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalActionSkill@@@@V?$allocator@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@XZ 0x14018bef0
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalLevelData@@@@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018bf30
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@XZ 0x14018c260
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018c280
 // MS2-PINS-END w150-callsite
 // byte-identical IsSame* instances, pinned from their (exact) callers' call sites (AdditionalActionAdditional::IsDifferent
 // 0x14017005b, AdditionalLevelData::IsDifferent 0x140172265 / 0x1401720fd / 0x14017292e / 0x140172961 / 0x140172994)
@@ -364,6 +371,7 @@ Unk_SkillMasteryType FUN_14021c400(const CString& str);
 struct Unk_SATypeInfo { void* m_0; int m_bAllowAdditional; int m_c; void* m_10; void* m_18; };
 extern std::vector<Unk_SATypeInfo> DAT_143ab1a40;
 CString FUN_14016a5c0(const char* psz, int nCodePage);                     // multibyte copy
+bool FUN_14028d470(float fValue, float fTolerance);                          // commonutil: nearly equal
 extern int DAT_1439f4840;                                                   // the default code page
 
 // @0x140188f50
@@ -1868,6 +1876,22 @@ inline void AdditionalLevelData::ReflectProperty::Clear()
     m_fReflectionDamageReduceRate = 0;
 }
 
+// The four checks below are called from other units only (0x1401927c0 also from uinpcduelhpbardialog).
+// @0x1401927c0
+bool AdditionalLevelData::UIProperty::FUN_1401927c0(bool bFlag)
+{
+    if (m_eIconOnOff == AdditionalUIIconOnOff_Off) return false;
+    if (m_eIconOnOff == AdditionalUIIconOnOff_Unk2 && !bFlag) return false;
+    if (m_strIcon.IsEmpty()) return false;
+    return !m_strIcon.IsEmpty();
+}
+
+// @0x140192900
+bool AdditionalLevelData::ShieldProperty::FUN_140192900()
+{
+    return m_nHpValue != 0 || !FUN_14028d470(m_fHpByTargetMaxHP, 0.0f);
+}
+
 // @0x140192950
 inline bool AdditionalLevelData::InvokeEffectProperty::IsDifferent(const InvokeEffectProperty& o)
 {
@@ -1879,6 +1903,13 @@ inline bool AdditionalLevelData::InvokeEffectProperty::IsDifferent(const InvokeE
     if (m_vValues != o.m_vValues) return true;
     if (m_vRates != o.m_vRates) return true;
     return false;
+}
+
+// @0x140192ac0
+bool AdditionalLevelData::InvokeEffectProperty::FUN_140192ac0()
+{
+    return (m_nSkillID != 0 || m_nEffectID != 0 || m_nSkillGroupID != 0 || m_nEffectGroupID != 0)
+        && m_vTypes.empty() && m_vValues.empty() && m_vRates.empty();
 }
 
 // @0x140192b60
@@ -1909,6 +1940,12 @@ inline void AdditionalLevelData::SpecialEffectProperty::Parse()
         m_xml->FUN_14092c590();
         m_xml->FUN_14092c400(m_strValues);
     }
+}
+
+// @0x140192d70
+bool AdditionalLevelData::SpecialEffectProperty::FUN_140192d70()
+{
+    return m_eType != AdditionalSpecialEffectType_None;
 }
 
 // @0x140192db0

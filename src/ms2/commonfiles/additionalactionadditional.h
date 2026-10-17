@@ -27,7 +27,7 @@ class CInPacket;
 // XmlValue<E> instantiations (0x140178970 ... 0x140178f10).
 enum AdditionalSpecialEffectType { AdditionalSpecialEffectType_None };
 enum AdditionalSpreadType { AdditionalSpreadType_None };
-enum AdditionalUIIconOnOff { AdditionalUIIconOnOff_Off, AdditionalUIIconOnOff_On };
+enum AdditionalUIIconOnOff { AdditionalUIIconOnOff_Off, AdditionalUIIconOnOff_On, AdditionalUIIconOnOff_Unk2 };
 enum ApplyFieldType { ApplyFieldType_None };
 enum BuffMainType { BuffMainType_None };
 enum CompulsionEventType { CompulsionEventType_None };
@@ -157,10 +157,13 @@ struct Unk_RangeShape
 {
     int m_nType;                        // +0x00
     CString m_str;                      // +0x08
-    float m_f10[4];                     // +0x10
+    float m_f10, m_f14, m_f18, m_f1c;   // +0x10 (copied one by one in 0x1401945c0)
     NiPoint3 m_pt20;                    // +0x20
     NiPoint3 m_pt2c;                    // +0x2c
     float m_f38;                        // +0x38
+
+    // Declared (0x140184190), so SpreadProperty::Clear assigns through the copy operator= 0x1401945c0 like the exe.
+    ~Unk_RangeShape() {}
 };
 MS2_CHECK_SIZE(Unk_RangeShape, 0x40);
 // The shape is a base: ~Unk_RangeProperty 0x140184170 calls ~Unk_RangeShape 0x140184190 on `this` itself.
@@ -168,10 +171,16 @@ class Unk_RangeProperty : public Unk_RangeShape
 {
 public:
     Unk_RangeProperty();                                                // 0x140800860
+    ~Unk_RangeProperty() {}                                             // 0x140184170 (no move: copy operator= 0x1401944c0)
     bool FUN_140800920(const Unk_RangeProperty& o);                     // is different
     int FUN_140800b50(Unk_140165cf0* pElem, CString strName);           // reads the named child element
 
-    int m_n40[13];                      // +0x40
+    // Thirteen scalars, not an array: SpreadProperty::Clear 0x140192e20 has no /GS cookie for the 0x78 temporary and
+    // operator= 0x1401944c0 copies them one by one.
+    int m_n40, m_n44, m_n48, m_n4c; // +0x40
+    int m_n50, m_n54, m_n58, m_n5c; // +0x50
+    int m_n60, m_n64, m_n68, m_n6c; // +0x60
+    int m_n70;                      // +0x70
 };
 MS2_CHECK_SIZE(Unk_RangeProperty, 0x78);
 
@@ -235,6 +244,7 @@ public:
             m_bInfinitySP = false;
             m_bVisibleItemOption = true;
         }
+        bool FUN_1401927c0(bool bFlag);                 // 0x1401927c0: icon shown (_Unk2 only with bFlag)
 
         AdditionalUIIconOnOff m_eIconOnOff;     // +0x00 "iconOnOff"
         bool m_bIconBalloonOnOff;               // +0x04
@@ -441,6 +451,7 @@ public:
             if (m_nUITypeValue != o.m_nUITypeValue) return true;
             return false;
         }
+        bool FUN_140192900();                           // 0x140192900: has an hp value
         // @0x1401928c0
         void Clear() { m_nHpValue = 0; m_fHpByTargetMaxHP = 0; m_eUIType = UIShieldType_None; m_nUITypeValue = 0; }
 
@@ -456,6 +467,7 @@ public:
         // @0x140183030
         InvokeEffectProperty() { Clear(); }
         bool IsDifferent(const InvokeEffectProperty& o);    // 0x140192950
+        bool FUN_140192ac0();                               // 0x140192ac0: an id is set and every list is empty
         // @0x140192a40
         void Clear()
         {
@@ -485,6 +497,7 @@ public:
         bool IsDifferent(const SpecialEffectProperty& o);   // 0x140192b60
         void Clear();                                   // 0x140192c40
         void Parse();                                   // 0x140192ce0: values -> m_xml
+        bool FUN_140192d70();                           // 0x140192d70: has a type
 
         AdditionalSpecialEffectType m_eType;            // +0x00 "type"
         float m_fProbability;                           // +0x04 (1.0)
