@@ -989,3 +989,359 @@ CQuestData::CQuestData()
 CQuestData::~CQuestData()
 {
 }
+
+// Array of condition pointers (true = same): every pair compares equal through IsDifferent.
+bool IsSameCondArray(const ATL::CAtlArray<MS2Ptr<CConditionCommonData> >& a, const ATL::CAtlArray<MS2Ptr<CConditionCommonData> >& b)
+{
+    if (a.GetCount() == b.GetCount())
+    {
+        for (unsigned i = 0; i < a.GetCount(); i++)
+        {
+            if (a.GetAt(i).get()->IsDifferent(b.GetAt(i).get()))
+                return false;
+        }
+        return true;
+    }
+    return false;
+}
+
+// Map of pointers compared by pointee (true = same).
+template <class K, class T> bool IsSamePtrMap(const ATL::CAtlMap<K, Unk_SocketPtr<T> >& a, const ATL::CAtlMap<K, Unk_SocketPtr<T> >& b)
+{
+    if (a.GetCount() == b.GetCount())
+    {
+        POSITION posA = a.GetStartPosition();
+        POSITION posB = b.GetStartPosition();
+        for (unsigned i = 0; i < a.GetCount(); i++)
+        {
+            const K& keyA = a.GetKeyAt(posA);
+            if (keyA != b.GetKeyAt(posB))
+                return false;
+            const Unk_SocketPtr<T>& valueB = b.GetValueAt(posB);
+            const Unk_SocketPtr<T>& valueA = a.GetValueAt(posA);
+            if (*valueA.get() != *valueB.get())
+                return false;
+            a.GetNext(posA);
+            b.GetNext(posB);
+        }
+        return true;
+    }
+    return false;
+}
+
+// @0x140749090
+bool CQuestData::operator!=(const CQuestData& o) const
+{
+    if (m_id != o.m_id) return true;
+    if (m_type != o.m_type) return true;
+    if (m_20 != o.m_20) return true;
+    if (m_2c != o.m_2c) return true;
+    if (m_level != o.m_level) return true;
+    if (m_28 != o.m_28) return true;
+    if (m_2d != o.m_2d) return true;
+    if (m_2e != o.m_2e) return true;
+    if (m_2f != o.m_2f) return true;
+    if (m_durationMinutes != o.m_durationMinutes) return true;
+    if (m_resetType != o.m_resetType) return true;
+    if (m_schedule != o.m_schedule) return true;
+    if (m_30 != o.m_30) return true;
+    if (m_48 != o.m_48) return true;
+    if (m_31 != o.m_31) return true;
+    if (m_flag != o.m_flag) return true;
+    if (m_4c != o.m_4c) return true;
+    if (m_50 != o.m_50) return true;
+    if (m_33 != o.m_33) return true;
+    if (m_34 != o.m_34) return true;
+    if (m_54 != o.m_54) return true;
+    if (m_require != o.m_require) return true;
+    if (m_complete != o.m_complete) return true;
+    if (m_2d0 != o.m_2d0) return true;
+    if (m_2e8 != o.m_2e8) return true;
+    if (m_2ec != o.m_2ec) return true;
+    if (m_2f0 != o.m_2f0) return true;
+    if (m_300 != o.m_300) return true;
+    if (m_30c != o.m_30c) return true;
+    if (m_318 != o.m_318) return true;
+    if (m_320 != o.m_320) return true;
+    if (m_32c != o.m_32c) return true;
+    if (m_338 != o.m_338) return true;
+    if (m_350 != o.m_350) return true;
+    if (m_358 != o.m_358) return true;
+    if (!IsSameArray(m_fields, o.m_fields)) return true;
+    if (!IsSameCondArray(m_conditions, o.m_conditions)) return true;
+    if (!IsSamePtrMap(m_navigation, o.m_navigation)) return true;
+    return false;
+}
+
+// The attribute readers used by the quest loader (the enum parsers are defined further down in this unit).
+int FUN_14035ba10(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_14051fd20(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140354050(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);
+int FUN_140873ad0(Unk_140165cf0* pElem, const char* pszName, CString& strOut);
+int FUN_140873b30(Unk_140165cf0* pElem, const char* pszName, CStringW& strOut);
+int FUN_14028e160(CString& str);
+int FUN_140718170(const CString& str);
+int FUN_1407181d0(const CString& str);
+int FUN_1407514d0(const CString& str);
+int FUN_140751e50(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140751ee0(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140751f70(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_1407520f0(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_1407521b0(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140752270(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140752330(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_1407523f0(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_1407524b0(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140752570(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_140752630(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+class Unk_FeatureFlags;
+Unk_FeatureFlags* FUN_140166410();
+unsigned char FUN_14036d570(Unk_FeatureFlags* pFlags, int nFeature);
+
+// MS2-FUNCTIONAL: stack temporaries of the XML loader (default-string and condition-loop slots) differ.
+// @0x1407495d0
+int CQuestData::FUN_1407495d0(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "id", (unsigned&)m_id);
+    Unk_140165cf0* pBasic = pElem->FUN_140165cf0("basic");
+    if (pBasic)
+    {
+        FUN_1408731e0(pBasic, "chapterID", m_28);
+        FUN_1408731e0(pBasic, "standardLevel", m_level);
+        FUN_1408730a0(pBasic, "autoStart", (bool&)m_2d);
+        FUN_1408730a0(pBasic, "disableGiveup", (bool&)m_2e);
+        FUN_1408730a0(pBasic, "exceptChapterClear", (bool&)m_2f);
+        FUN_14035ba10(pBasic, "repeatable", &m_20);
+        FUN_140751ee0(pBasic, "questType", &m_type);
+        FUN_1408730a0(pBasic, "account", (bool&)m_2c);
+        FUN_140873b30(pBasic, "eventTag", m_schedule);
+        FUN_1408730a0(pBasic, "locking", (bool&)m_30);
+        FUN_1408731e0(pBasic, "tabIndex", m_48);
+        FUN_1408730a0(pBasic, "forceRegistGuide", (bool&)m_31);
+        FUN_1408730a0(pBasic, "useNavi", (bool&)m_flag);
+        FUN_14035bc20(pBasic, "alliance", &m_4c);
+        FUN_140752570(pBasic, "rank", &m_50);
+        FUN_1408736d0(pBasic, "usePostbox", (bool&)m_33);
+        FUN_1408736d0(pBasic, "useReEntryHiddenMap", (bool&)m_34);
+        ATL::CAtlArray<CString> arrProperty;
+        XmlTokenList(pBasic, "property", arrProperty);
+        for (size_t i = 0; i < arrProperty.GetCount(); i++)
+        {
+            int nProperty = FUN_1407514d0(arrProperty[i]);
+            if (nProperty < 4)
+                m_54.set(nProperty, true);
+        }
+        CString strPeriod;
+        FUN_140873ad0(pBasic, "usePeriod", strPeriod);
+        int nResetType = FUN_14028e160(strPeriod);
+        if (nResetType != 0)
+            m_resetType = nResetType;
+        else
+            m_durationMinutes = FUN_140718170(strPeriod);
+    }
+    Unk_140165cf0* pNotify = pElem->FUN_140165cf0("notify");
+    if (pNotify)
+    {
+        FUN_1407521b0(pNotify, "completeUiEffect", &m_2d0.m_id);
+        FUN_1408733e0(pNotify, "acceptSoundKey", m_2d0.m_accept);
+        FUN_1408733e0(pNotify, "completeSoundKey", m_2d0.m_reward);
+    }
+    Unk_140165cf0* pRequire = pElem->FUN_140165cf0("require");
+    if (pRequire)
+    {
+        FUN_1408731a0(pRequire, "level", (unsigned short&)m_require.m_level);
+        FUN_1408731a0(pRequire, "maxLevel", (unsigned short&)m_require.m_maxLevel);
+        FUN_140873220(pRequire, "achievement", m_require.m_achievement);
+        FUN_1408731e0(pRequire, "achievementGrade", m_require.m_achievementGrade);
+        FUN_140873220(pRequire, "gearScore", m_require.m_gearScore);
+        FUN_1408731a0(pRequire, "guildNpcLevel", (unsigned short&)m_require.m_guildNpcLevel);
+        FUN_140873220(pRequire, "dungeon", m_require.m_dungeon);
+        FUN_140873220(pRequire, "unrequireDungeon", m_require.m_unrequireDungeon);
+        FUN_140873220(pRequire, "enterDungeon", m_require.m_enterDungeon);
+        FUN_14035bc20(pRequire, "alliance", &m_require.m_alliance);
+        FUN_1408731e0(pRequire, "fameGrade", m_require.m_fameGrade);
+        FUN_14051fd20(pRequire, "masteryType", &m_require.m_masteryType);
+        FUN_1408731e0(pRequire, "masteryGrade", m_require.m_masteryGrade);
+        XmlTokenList(pRequire, "dungeonBeginner", m_require.m_dungeonBeginner);
+        FUN_1408731e0(pRequire, "mentor", m_require.m_mentor);
+        FUN_1408731e0(pRequire, "mentee", m_require.m_mentee);
+        FUN_1408731e0(pRequire, "vip", m_require.m_vip);
+        XmlTokenList(pRequire, "equipment", m_require.m_equipment);
+        XmlTokenList(pRequire, "subJob", m_require.m_subJob);
+        XmlTokenList(pRequire, "progressQuest", m_require.m_progressQuest);
+        CString strUnreqAchievement = FUN_14015f710(pRequire, "unreqAchievement", "");
+        CString strQuest = FUN_14015f710(pRequire, "quest", "");
+        CString strJob = FUN_14015f710(pRequire, "job", "");
+        CString strUnrequire = FUN_14015f710(pRequire, "unrequire", "");
+        CString strSelectableQuest = FUN_14015f710(pRequire, "selectableQuest", "");
+        CString strUnrequireGroup = FUN_14015f710(pRequire, "unrequireGroup", "");
+        CString strGuildLevel = FUN_14015f710(pRequire, "guildLevel", "");
+        if (strGuildLevel.GetLength() > 0)
+            m_require.m_guildLevel = FUN_140718170(strGuildLevel);
+        ATL::CAtlArray<CString> arrUnreqAchievement;
+        FUN_14015f050(strUnreqAchievement, arrUnreqAchievement, ",");
+        if (arrUnreqAchievement.GetCount() == 2)
+        {
+            m_require.m_unreqAchievement = FUN_1407181d0(arrUnreqAchievement[0]);
+            m_require.m_unreqAchievementGrade = FUN_140718170(arrUnreqAchievement[1]);
+        }
+        XmlSplit(strQuest, m_require.m_quest, ",");
+        XmlSplit(strSelectableQuest, m_require.m_selectableQuest, ",");
+        XmlSplit(strJob, m_require.m_job, ",");
+        XmlSplit(strUnrequire, m_require.m_unrequire, ",");
+        XmlSplit(strUnrequireGroup, m_require.m_unrequireGroup, ",");
+        CString strStartTime;
+        CString strEndTime;
+        FUN_1408733e0(pRequire, "startTime", strStartTime);
+        FUN_1408733e0(pRequire, "endTime", strEndTime);
+        CString strDayOfWeek = FUN_14015f710(pRequire, "dayOfWeek", "");
+        XmlSplit(strDayOfWeek, m_require.m_dayOfWeek, ",");
+        int nGroupId = 0;
+        FUN_1408731e0(pRequire, "groupID", nGroupId);
+        if (nGroupId != 0 && m_30 == 0)
+            m_require.m_groupId = nGroupId;
+    }
+    for (Unk_140165cf0* pCond = pElem->FUN_140165cf0("condition"); pCond != 0; pCond = pCond->FUN_140168650("condition"))
+    {
+        MS2Ptr<CConditionCommonData> spCond(new CConditionCommonData());
+        unsigned nQuestId = FUN_14074b030(this);
+        if (spCond->Load(reinterpret_cast<Unk_ConditionXml*>(pCond), CStringW(L"QuestData"), nQuestId) != 0)
+        {
+            unsigned nIndex = (unsigned)m_conditions.GetCount();
+            m_conditions.Add(spCond);
+            Unk_SocketPtr<NavigationData> spNavigation(0);
+            for (Unk_140165cf0* pNavi = pCond->FUN_140165cf0("navi"); pNavi != 0; pNavi = pNavi->FUN_140168650("navi"))
+            {
+                Unk_SocketPtr<NavigationTarget> spTarget(new NavigationTarget());
+                FUN_140752630(pNavi, "type", &spTarget->m_kind);
+                XmlTokenList(pNavi, "code", spTarget->m_ids);
+                XmlTokenList(pNavi, "map", spTarget->m_maps);
+                if (spNavigation == 0)
+                {
+                    spNavigation = Unk_SocketNew(0);
+                    spNavigation->m_kind = nIndex;
+                }
+                spNavigation->m_targets.Add(spTarget);
+            }
+            if (spNavigation.get() != 0)
+                m_navigation.SetAt(nIndex, spNavigation);
+        }
+    }
+    Unk_140165cf0* pStart = pElem->FUN_140165cf0("start");
+    if (pStart)
+        FUN_140873220(pStart, "npc", (unsigned&)m_2e8);
+    Unk_140165cf0* pComplete = pElem->FUN_140165cf0("complete");
+    if (pComplete)
+        FUN_140873220(pComplete, "npc", (unsigned&)m_2ec);
+    Unk_140165cf0* pCompleteReward = pElem->FUN_140165cf0("completeReward");
+    if (pCompleteReward)
+    {
+        FUN_1408731e0(pCompleteReward, "money", m_complete.m_money);
+        FUN_1408731e0(pCompleteReward, "exp", m_complete.m_exp);
+        FUN_1408731e0(pCompleteReward, "guildFund", m_complete.m_guildFund);
+        FUN_1408731e0(pCompleteReward, "guildExp", m_complete.m_guildExp);
+        FUN_1408731e0(pCompleteReward, "guildCoin", m_complete.m_guildCoin);
+        FUN_1408731e0(pCompleteReward, "menteeCoin", m_complete.m_menteeCoin);
+        FUN_1408731e0(pCompleteReward, "missionPoint", m_complete.m_missionPoint);
+        FUN_1408731e0(pCompleteReward, "useMainFamePoint", m_complete.m_useMainFamePoint);
+        FUN_140873220(pCompleteReward, "fameLog", m_complete.m_fameLog);
+        FUN_1408731e0(pCompleteReward, "rewardExpExtra", m_complete.m_rewardExpExtra);
+        FUN_140354050(pCompleteReward, "relativeExp", &m_complete.m_relativeExp);
+        FUN_140752270(pCompleteReward, "relativeMeso", &m_complete.m_relativeMeso);
+        FUN_1408732e0(pCompleteReward, "weddingExp", m_complete.m_weddingExp);
+        FUN_1408731e0(pCompleteReward, "karma", m_complete.m_karma);
+        FUN_1408731e0(pCompleteReward, "lu", m_complete.m_lu);
+        for (Unk_140165cf0* pItem : pCompleteReward->FUN_140165cf0("v"))
+        {
+            QuestRewardItem item;
+            if (item.LoadXml(pItem))
+                m_complete.m_choiceRewards.Add(item);
+        }
+    }
+    Unk_140165cf0* pAcceptReward = pElem->FUN_140165cf0("acceptReward");
+    if (pAcceptReward)
+    {
+        for (Unk_140165cf0* pItem : pAcceptReward->FUN_140165cf0("v"))
+        {
+            QuestRewardItem item;
+            if (item.LoadXml(pItem))
+                m_rewards.push_back(item);
+        }
+    }
+    Unk_140165cf0* pProgressMap = pElem->FUN_140165cf0("progressMap");
+    if (pProgressMap)
+    {
+        CString strProgressMap = FUN_14015f710(pProgressMap, "progressMap", "");
+        XmlSplit(strProgressMap, m_fields, ",");
+    }
+    Unk_140165cf0* pGuide = pElem->FUN_140165cf0("guide");
+    if (pGuide)
+    {
+        FUN_140752330(pGuide, "guideType", &m_338.m_value);
+        FUN_1407524b0(pGuide, "guideGroup", &m_338.m_4);
+        FUN_1408733e0(pGuide, "guideIcon", m_338.m_8);
+        unsigned short nMinLevel = 0;
+        unsigned short nMaxLevel = 0;
+        FUN_1408731a0(pGuide, "guideMinLevel", nMinLevel);
+        FUN_1408731a0(pGuide, "guideMaxLevel", nMaxLevel);
+        m_338.m_levelRange.FUN_14075bc80(nMinLevel, nMaxLevel);
+    }
+    Unk_140165cf0* pEventMission = pElem->FUN_140165cf0("eventMission");
+    if (pEventMission)
+        FUN_1407523f0(pEventMission, "event", &m_350.m_value);
+    Unk_140165cf0* pMentoring = pElem->FUN_140165cf0("mentoringMission");
+    if (pMentoring)
+    {
+        FUN_1408733e0(pMentoring, "mentoringIcon", m_358.m_8);
+        FUN_1408731e0(pMentoring, "openingDay", m_358.m_0);
+        FUN_1408731e0(pMentoring, "mentoringSeason", m_358.m_4);
+    }
+    Unk_140165cf0* pDispatch = pElem->FUN_140165cf0("dispatch");
+    if (pDispatch)
+    {
+        FUN_140751f70(pDispatch, "type", &m_2f0.m_0);
+        FUN_140873220(pDispatch, "field", (unsigned&)m_2f0.m_4);
+        FUN_1408731e0(pDispatch, "portal", m_2f0.m_8);
+        FUN_1408731e0(pDispatch, "script", m_2f0.m_c);
+    }
+    if (FUN_14036d570(FUN_140166410(), 0x42) == 1)
+    {
+        Unk_140165cf0* pGotoNpc = pElem->FUN_140165cf0("gotoNpc");
+        if (pGotoNpc)
+        {
+            FUN_1408731e0(pGotoNpc, "enable", m_300.m_0);
+            FUN_140873220(pGotoNpc, "gotoField", (unsigned&)m_300.m_4);
+            FUN_1408731e0(pGotoNpc, "gotoPortal", m_300.m_8);
+        }
+    }
+    Unk_140165cf0* pGotoDungeon = pElem->FUN_140165cf0("gotoDungeon");
+    if (pGotoDungeon)
+    {
+        FUN_140751e50(pGotoDungeon, "state", &m_30c.m_0);
+        FUN_140873220(pGotoDungeon, "gotoDungeon", (unsigned&)m_30c.m_roomId);
+        FUN_140873220(pGotoDungeon, "gotoInstanceID", (unsigned&)m_30c.m_fieldId);
+    }
+    Unk_140165cf0* pRemoteAccept = pElem->FUN_140165cf0("remoteAccept");
+    if (pRemoteAccept)
+    {
+        FUN_1407520f0(pRemoteAccept, "useRemote", &m_320.m_0);
+        FUN_140873220(pRemoteAccept, "requireField", (unsigned&)m_320.m_4);
+    }
+    Unk_140165cf0* pRemoteComplete = pElem->FUN_140165cf0("remoteComplete");
+    if (pRemoteComplete)
+    {
+        FUN_1407520f0(pRemoteComplete, "useRemote", &m_32c.m_0);
+        FUN_140873220(pRemoteComplete, "requireField", (unsigned&)m_32c.m_4);
+        FUN_1408731e0(pRemoteComplete, "requireDungeonClear", m_32c.m_8);
+    }
+    Unk_140165cf0* pSummonPortal = pElem->FUN_140165cf0("summonPortal");
+    if (pSummonPortal)
+    {
+        FUN_140873220(pSummonPortal, "fieldID", (unsigned&)m_318.m_0);
+        FUN_1408731e0(pSummonPortal, "portalID", m_318.m_4);
+    }
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1407495D0, CQuestData, FUN_1407495d0, 6736, 0x22FFC8F3);

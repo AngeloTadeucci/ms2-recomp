@@ -7,6 +7,7 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cconditioncommon.h"
 #include "ms2/placeholder/dclevelrange.h"
+#include "ms2/placeholder/socketptr.h"
 
 class Unk_140165cf0;
 
@@ -41,7 +42,7 @@ public:
         virtual ~NavigationData();
         bool operator!=(const NavigationData& o) const;
         int m_kind;                                 // +0x18
-        ATL::CAtlArray<MS2Ptr<NavigationTarget> > m_targets;   // +0x20
+        ATL::CAtlArray<Unk_SocketPtr<NavigationTarget> > m_targets;   // +0x20
     };
     // Random pick of a quest group: ctor 0x140748c30, compare 0x140748c90.
     class GroupPickData : public CPtred
@@ -56,6 +57,8 @@ public:
     };
     CQuestData();
     virtual ~CQuestData();
+    bool operator!=(const CQuestData& o) const;   // 0x140749090
+    int FUN_1407495d0(Unk_140165cf0* pElem);       // XML loader (<quest> element)
     int m_id, m_type, m_20, m_level, m_28;
     unsigned char m_2c, m_2d, m_2e, m_2f, m_30, m_31, m_flag, m_33, m_34;
     unsigned char GetKind() const { return m_2c; }   // 0x14064dbd0 (COMDAT first emitted by learningquesttable.cpp)
@@ -203,9 +206,9 @@ public:
         int m_0, m_4; CString m_8;
     };
     Named m_358;
-    ATL::CAtlArray<int> m_fields;
+    ATL::CAtlArray<unsigned> m_fields;
     ATL::CAtlArray<MS2Ptr<CConditionCommonData>> m_conditions;
-    ATL::CAtlMap<int, MS2Ptr<NavigationData> > m_navigation;   // +0x3a8 (17 bins, 0.75, 0.25, 2.25, block 10)
+    ATL::CAtlMap<int, Unk_SocketPtr<NavigationData> > m_navigation;   // +0x3a8 (17 bins, 0.75, 0.25, 2.25, block 10)
 };
 MS2_CHECK_SIZE(CQuestData::QuestRewardItem, 0x28);
 MS2_CHECK_SIZE(CQuestData, 0x3f0);
