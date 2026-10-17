@@ -415,7 +415,7 @@ bool CAdventureLevelTable::LoadReward()
         m_mapReward.insert(std::make_pair(nLevel, row));
         m_vecLevels.push_back(nLevel);
     }
-    std::sort(m_vecLevels.begin(), m_vecLevels.end(), std::less<>());
+    std::sort(m_vecLevels.begin(), m_vecLevels.end(), std::less<unsigned short>());
     return true;
 }
 MS2_REPLACE_METHOD(0x1401961C0, CAdventureLevelTable, LoadReward, 901, 0xD3A2F416);
