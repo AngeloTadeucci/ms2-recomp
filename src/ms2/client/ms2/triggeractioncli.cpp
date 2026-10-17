@@ -638,7 +638,6 @@ TriggerObjectMesh::TriggerObjectMesh()
 void FUN_140965410(const void* pEntId, void* pArg);
 
 // @0x140de6d70
-// MS2-FUNCTIONAL: opaque callee
 void FUN_140de6d70(TriggerObject* pObj, void* pArg)
 {
     FUN_140965410(FUN_1408b76f0(pObj->m_spEntity.FUN_1408a9280()), pArg);
