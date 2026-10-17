@@ -7,19 +7,23 @@
 #pragma once
 
 #include <afx.h>
+#include <set>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
+
+enum Unk_DungeonGroupType;                                  // MSVC forward declaration; defined by the including unit
 
 class DungeonRoomShutdownContext : public CPtred
 {
 public:
     DungeonRoomShutdownContext();                           // 0x140343e50
-    virtual ~DungeonRoomShutdownContext();
     void FUN_140343eb0(const CStringW& strXml);             // <dungeonRoom id=..> elements into the room id set (+0x18)
     void FUN_140343fc0(const CStringW& strXml);             // <dungeonGroup type=..> elements into the group set (+0x28)
     bool FUN_1403441a0();                                   // true if either set is non-empty
-private:
-    MS2_LAYOUT_FRIEND;
-    char m_pad_18[0x20];
+    bool FUN_1403440d0(unsigned nRoomId);                   // the room id is in the set
+    bool FUN_140344140(Unk_DungeonGroupType eGroup);        // the group is NOT in the set
+
+    std::set<unsigned> m_roomIds;                           // +0x18
+    std::set<Unk_DungeonGroupType> m_groups;                // +0x28
 };
 MS2_CHECK_SIZE(DungeonRoomShutdownContext, 0x38);
