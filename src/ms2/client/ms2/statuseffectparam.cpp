@@ -290,7 +290,6 @@ struct Unk_NodeIntTreeNode
 void* FUN_1420b8410();                                              // default memory log handler factory
 
 // @0x141801ea0
-// MS2-FUNCTIONAL: allocator::construct stand-in (placement-copies the pair)
 void FUN_141801ea0(char cTag, void* pHint, void* pWhere, Unk_NodeIntPair* pSrc)
 {
     new (pWhere) std::pair<const efd::SmartPointer<NiNode>, int>(std::move(*pSrc));
@@ -370,7 +369,6 @@ int FUN_1418030a0(void* pDst, size_t nDstSize, const void* pSrc, size_t nCount)
 }
 
 // @0x1418031f0
-// MS2-FUNCTIONAL: default memory log handler creation thunk
 void FUN_1418031f0()
 {
     FUN_1420b8410();
