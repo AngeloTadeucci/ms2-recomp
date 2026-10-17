@@ -88,11 +88,18 @@ public:
 };
 MS2_CHECK_SIZE(CAllianceQuest, 0x80);
 
+// The missions below are implemented in unit_140d72a60.cpp (ctors / dtors / ??_G pinned there).
 class CDailyMission : public CQuest
 {
 public:
     CDailyMission();
     int GetQuestType() override;
+    void ShowProgress(int index) override;              // 0x140d72af0
+    void PlayAcceptSound() override;                    // 0x140d72c20
+    void PlayProgressSound() override;                  // 0x140d72c00
+    void PlayRewardSound() override;                    // 0x140d72c10
+    void Complete(CInPacket& packet) override;          // 0x140d72c70
+    void ShowExpired() override;                        // 0x140d72c30
 };
 MS2_CHECK_SIZE(CDailyMission, 0x78);
 
@@ -101,6 +108,7 @@ class CFieldMission : public CQuest
 public:
     CFieldMission();
     int GetQuestType() override;
+    void Complete(CInPacket& packet) override;          // 0x140d72df0
 };
 MS2_CHECK_SIZE(CFieldMission, 0x78);
 
@@ -109,7 +117,14 @@ class CEventMission : public CQuest
 public:
     CEventMission();
     int GetQuestType() override;
-    __int64 m_78;
+    int Init(int id, int state) override;               // 0x140d73110
+    void ShowProgress(int index) override;              // 0x140d73340
+    void PlayAcceptSound() override;                    // 0x140d73420
+    void PlayProgressSound() override;                  // 0x140d73400
+    void PlayRewardSound() override;                    // 0x140d73410
+    void Complete(CInPacket& packet) override;          // 0x140d73190
+    void ShowExpired() override;                        // 0x140d73430
+    int m_78;                                           // the data's +0x350 flag (1 = level package, 2 = stamp event)
 };
 MS2_CHECK_SIZE(CEventMission, 0x80);
 
@@ -118,6 +133,8 @@ class CMentoringMission : public CQuest
 public:
     CMentoringMission();
     int GetQuestType() override;
+    void ShowExpired() override;                        // 0x140d734d0
+    int FUN_1407447c0() override;                       // 0x140d734e0 (CQuestCommon slot 8)
 };
 MS2_CHECK_SIZE(CMentoringMission, 0x78);
 
@@ -126,5 +143,6 @@ class CWeddingMission : public CQuest
 public:
     CWeddingMission();
     int GetQuestType() override;
+    void ShowRewards(int reward) override;              // 0x140d73600
 };
 MS2_CHECK_SIZE(CWeddingMission, 0x78);
