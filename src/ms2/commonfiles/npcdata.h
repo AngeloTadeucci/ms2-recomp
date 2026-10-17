@@ -394,7 +394,7 @@ public:
 
     CLockCriticalSection m_lock;                                        // +0x00
     std::map<unsigned, MS2Ptr<CCacheData> > m_mapCache;                      // +0x30 per npc xml file
-    std::map<unsigned, bool> m_mapLoaded;                                    // +0x40
+    std::map<unsigned long, bool> m_mapLoaded;                                    // +0x40
     ATL::CAtlArray<MS2Ptr<CRegionSpawnResult> > m_aResult;              // +0x50 cached FindSpawnResult results
     ATL::CAtlMap<int, Unk_BmPtr<CNpcRegionSpawnData> > m_mapSpawn;         // +0x70 by npc id
     ATL::CRBMap<CStringW, Unk_BmBoxPtr<ATL::CAtlArray<unsigned> > > m_mapTag[2];                   // +0xb8 main / sub tag -> npc ids
