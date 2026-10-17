@@ -552,7 +552,6 @@ int CEntityVibrator::FUN_1411cd550()
 MS2_REPLACE_METHOD(0x1411CD550, CEntityVibrator, FUN_1411cd550, 14, 0xCA01277B);
 
 // @0x1411cd570
-// MS2-FUNCTIONAL: not byte-matched
 void CEntityVibrator::FUN_1411cd570(Unk_Entity* pEntity)
 {
     m_2c = FUN_141473390(FUN_14086d260());
