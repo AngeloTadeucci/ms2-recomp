@@ -65,6 +65,8 @@ public:
     MS2Ptr<class Unk_MyPCSkillSet> FUN_141768380();         // the temporary (ridee) skill set, if any
     void FUN_141768100(int nSkillId);                       // remove a temporary skill
     MS2Ptr<class CSkillRecord> FUN_141764e30(struct Unk_InventorySkillRequest& kReq);   // cast a request
+    MS2Ptr<class Unk_PCBaseComp_b18> FUN_141764e30(struct Unk_InventorySkillRequest* pReq);   // the same, the record as the casting skill (vfunc_104)
+    int FUN_1417674a0(int n);                               // the pending skill id
     float FUN_141765fe0(int nSkillId, int n);              // the cooldown left of nSkillId
     int FUN_141768bd0(MS2Ptr<class CSkillRecord> spRecord); // the record may be cast during its cooldown
     void FUN_141766cc0(MS2Ptr<class CSkillRecord> spRecord);
@@ -233,6 +235,7 @@ public:
     void FUN_14152b8d0(__int64 nItemUid);                    // summon with an inventory item
     void FUN_14152aa90(MS2Ptr<CItem> spItem, int bConfirmed); // summon the pet of an item
     void FUN_14152ba80(MS2Ptr<CItem> spItem);               // use a mount item
+    bool FUN_141526730(int bAuto, unsigned* pSlot);         // pick the quick slot to cast
     int FUN_141527b50(PCBase* pOther);                       // nothing blocks the flat line to pOther
     unsigned short FUN_141528b80(int nSkillId);             // the learned level of nSkillId (1 when not learned)
     int FUN_14152e970(int nId);                             // the free skill points of nId

@@ -136,11 +136,14 @@ public:
     bool FUN_1407e9d70();                                   // cast from an item only
     bool FUN_1407e9e20();                                   // dismounts to cast
     bool FUN_1407e9ef0();                                   // blocked while the content flag 0x36 is set
+    MS2Ptr<class Unk_InventorySkillLevel> FUN_1407e90a0(unsigned short nLevel);   // the level row
     char m_pad_18[0x34 - 0x18];
     bool m_bLoop;                                           // +0x34 the motion loops (loopstart/loopend keys)
     char m_pad_35[0x3d - 0x35];
     bool m_bNoSwim;                                         // +0x3d not while swimming
-    char m_pad_3e[0xa4 - 0x3e];
+    char m_pad_3e[0x7d - 0x3e];
+    bool m_bHeld;                                           // +0x7d cast while the key is held
+    char m_pad_7e[0xa4 - 0x7e];
     Unk_MyPCSkillSwap m_kSwap;                              // +0xa4
     char m_pad_b0[0x17c - 0xb0];
     int m_n17c;                                             // +0x17c (0: the cast time is scaled by the attack speed)
@@ -507,7 +510,8 @@ public:
     Unk_MyPCSkillLevelData* FUN_140803e10();                // the level data
 };
 unsigned short FUN_140803df0(Unk_InventorySkillLevel* pLevel); // the row's level
-class Unk_MyPCSkillTable { public: MS2Ptr<Unk_InventorySkillLevel> FUN_1407ee2f0(int nSkillId, unsigned short nLevel); };
+class Unk_MyPCSkillTable { public: MS2Ptr<Unk_InventorySkillLevel> FUN_1407ee2f0(int nSkillId, unsigned short nLevel);
+    MS2Ptr<Unk_MyPCSkillRow> FUN_1407ee1d0(int nSkillId); };
 Unk_MyPCSkillTable* FUN_1401958b0();                        // SkillDataTableCli
 // The skill request a CSkillRecord is built from (same view as pcbase.cpp / avatarpc.cpp / uimessagebox.cpp).
 struct Unk_InventorySkillRequest
@@ -1592,6 +1596,82 @@ Unk_MyPCComp1618* MyPC::FUN_141523c50()
     return m_sp1618.get();
 }
 MS2_REPLACE_METHOD(0x141523C50, MyPC, FUN_141523c50, 33, 0x3FD3C56B);
+
+// The quick slots (FUN_1409331f0): the item or the skill a slot holds.
+class Unk_MyPCQuickSlots
+{
+public:
+    __int64 FUN_14142ded0(unsigned nSlot);                  // the item uid of the slot
+    int FUN_14142dad0(unsigned nSlot);                      // the skill id of the slot
+};
+Unk_MyPCQuickSlots* FUN_1409331f0();
+
+// @0x1415219d0
+// The skill to cast now: the pending skill, else the one of the picked quick slot (its item's skill for an item);
+// held-key skills give up once the key was held longer than KeyIsDownSkill_MaxDurationTick.
+// MS2-FUNCTIONAL: the held-time compare loads the operands the other way round (cmp reg, [mem])
+MS2Ptr<Unk_PCBaseComp_b18> MyPC::vfunc_104(bool a, bool b, bool c)
+{
+    if (FUN_1416595d0() != 0)
+        return 0;
+    if (FUN_14166c930() == 0x2f)
+        return 0;
+    if (FUN_140aa6d30()->FUN_1417e2610() == 0x620000d)
+        return 0;
+    Unk_MyPCPlayerInfo* pInfo = FUN_140931900(0x4e5f);
+    if (pInfo)
+        pInfo->FUN_1419f1c80();
+    Unk_InventorySkillRequest kReq(m_kSkillSystem.FUN_1417674a0(0), 1);
+    kReq.remap = a;
+    kReq.suppressDispatch = b;
+    if (kReq.skill == 0 && !FUN_141526730(c, &kReq.unknown34))
+        return 0;
+    MS2Ptr<CItem> spItem;
+    if (kReq.unknown34 != 0)
+    {
+        __int64 nItemUid = FUN_1409331f0()->FUN_14142ded0(kReq.unknown34);
+        if (nItemUid != 0)
+            spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (spItem.get() != 0)
+        {
+            if (FUN_141662eb0(spItem.get()) == 0)
+                return 0;
+            if (spItem->FUN_140527840()->FUN_14053cd90())
+                return 0;
+            kReq.skill = spItem->FUN_140527840()->FUN_14053dc20();
+        }
+    }
+    if (kReq.skill == 0)
+        kReq.skill = FUN_1409331f0()->FUN_14142dad0(kReq.unknown34);
+    MS2Ptr<Unk_MyPCSkillRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(kReq.skill);
+    if (spRow.IsNull())
+        return 0;
+    MS2Ptr<Unk_InventorySkillLevel> spLevel = spRow->FUN_1407e90a0(FUN_141528b80(kReq.skill));
+    if (spLevel.IsNull())
+        return 0;
+    kReq.level = ::FUN_140803df0(spLevel.operator->());
+    if (spRow->m_bHeld && kReq.unknown34 != 0)
+    {
+        if (!FUN_14025e7c0()->FUN_14116d720())
+        {
+            unsigned nNow = FUN_14086d260()->FUN_141473390();
+            if (m_n15ec != kReq.unknown34)
+            {
+                m_n15f0 = nNow;
+                m_n15ec = kReq.unknown34;
+            }
+            else if (m_n15f0 != 0 && nNow > (unsigned)m_n15f0)
+            {
+                unsigned nHeld = nNow - m_n15f0;
+                if (nHeld > *static_cast<Client::Constants*>(FUN_1401d3200())->KeyIsDownSkill_MaxDurationTick.Get())
+                    return 0;
+            }
+        }
+    }
+    FUN_141526c80(kReq.skill, kReq.level);
+    return FUN_141523bc0()->FUN_141764e30(&kReq);
+}
+MS2_REPLACE_METHOD(0x1415219D0, MyPC, vfunc_104, 1509, 0xDEE50707);
 
 // @0x1415248d0
 // MS2-FUNCTIONAL: the exe keeps the zero point copy 8 bytes higher in the frame (one more hidden slot)
