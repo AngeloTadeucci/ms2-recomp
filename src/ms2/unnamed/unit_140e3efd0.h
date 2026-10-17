@@ -7,7 +7,7 @@
 #include <set>
 #include <NiPoint2.h>
 #include "ms2/placeholder/uidialog.h"
-#include "ms2/placeholder/uidialogeventlistener.h"
+#include "ms2/placeholder/uidialogeventdispatcher.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
@@ -133,7 +133,7 @@ MS2_CHECK_SIZE(AdPushEntityLimitedBundle, 0xa0);
 
 typedef ATL::CRBMap<int, MS2Ptr<AdPushEntityBase> > Unk_AdEntityMap;
 
-class UIAdPushDialog : public UIDialog, public UIDialogEventListener {
+class UIAdPushDialog : public UIDialog, public UIDialogEventDispatcher {
 public:
     UIAdPushDialog();                                           // 0x140e3efd0
     virtual ~UIAdPushDialog();                                  // 0x140e3f140
@@ -178,7 +178,6 @@ public:
     void FixPosition();                                         // 0x140e42250
 private:
     MS2_LAYOUT_FRIEND;
-    char m_pad_180[0x20];                                       // +0x180
     Unk_AdEntityMap m_entities;                                 // +0x1a0 id -> entity
     Unk_AdEntityMap m_pending;                                  // +0x1d0 entities waiting for the saved state
     TiXmlDocument m_xmlLoaded;                                 // +0x200

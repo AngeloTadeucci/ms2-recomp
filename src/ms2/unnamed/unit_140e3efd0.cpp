@@ -1134,3 +1134,31 @@ AdPushEntityBase::~AdPushEntityBase()
 AdPushEntityLimitedBundle::~AdPushEntityLimitedBundle()
 {
 }
+
+// @0x140e47420
+// MS2-FUNCTIONAL: the CRT inline memmove_s, emitted here as a COMDAT copy that nothing in this unit calls
+unsigned long long FUN_140e47420(void* pDst, unsigned long long nDstSize, void* pSrc, unsigned long long nCount)
+{
+    if (nCount == 0)
+        return 0;
+    if (pDst == 0)
+    {
+        *_errno() = 0x16;
+        _invalid_parameter_noinfo();
+        return 0x16;
+    }
+    if (pSrc == 0)
+    {
+        *_errno() = 0x16;
+        _invalid_parameter_noinfo();
+        return 0x16;
+    }
+    if (nDstSize < nCount)
+    {
+        *_errno() = 0x22;
+        _invalid_parameter_noinfo();
+        return 0x22;
+    }
+    memmove(pDst, pSrc, nCount);
+    return 0;
+}
