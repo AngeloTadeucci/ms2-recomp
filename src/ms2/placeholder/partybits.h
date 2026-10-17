@@ -10,5 +10,6 @@ struct Unk_PartyBits {
     bool FUN_1402e4ee0(int);
     bool FUN_140b912f0();
     void FUN_140837500();
+    void FUN_1402e69d0(unsigned nBit, bool bSet);
 };
 MS2_CHECK_SIZE(Unk_PartyBits, 1);

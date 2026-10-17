@@ -65,6 +65,12 @@ MS2_CHECK_SIZE(DungeonRankRewardBase, 0x40);
 
 class DungeonRoundGroup;
 
+// The room group type ("groupType", read as a number; 1/2 are the random-match groups, 3 the season rank rooms).
+enum DungeonGroupType {};
+// "timerType" (string, parsed by 0x14021ab60) and "BossRankingType" (kill/damage/killrumble/multikill/colosseum).
+enum DungeonTimerType {};
+enum DungeonBossRankingType {};
+
 // RTTI DungeonRoom, 0x208 bytes (one DungeonRoom.xml entry).
 class DungeonRoom : public CPtred
 {
@@ -90,12 +96,13 @@ public:
     bool CanBuyCouponInMeratMarket();               // 0x14031e190
     bool HasMissions();                             // 0x14031e1d0
     unsigned GetSeasonRankRewardID();               // 0x14031e220
-    unsigned GetLastFieldID();                      // 0x14031e240
-    int GetExtraRewardTicketCost(int nCount);       // 0x14031e2b0
+    unsigned GetRandomFieldID();                    // 0x14031e240
+    unsigned GetExtraRewardTicketCost(unsigned nCount); // 0x14031e2b0
     int GetCouponMaxExtraCount();                   // 0x14031e340
     void GetRewardDropBoxIds(std::vector<unsigned>& out);   // 0x14031e380
     unsigned GetDefaultRevivalLimitCount();         // 0x14031e3c0
     void GetMissions(std::vector<unsigned>& out);   // 0x14031e3e0
+    int GetRank(short nScore);                      // 0x14031e440
     bool IsSeasonRankRoom();                        // 0x14031e480
     bool IsRandomMatchable();                       // 0x14031e4d0
     bool HasRoundGroup() const;                     // 0x14031e530
@@ -106,7 +113,7 @@ public:
     DungeonRewardCoupon* GetCoupon();               // 0x14031e8a0
 
     unsigned m_dungeonRoomID;                       // +0x18
-    int m_groupType;                                // +0x1c
+    DungeonGroupType m_groupType;                   // +0x1c
     CStringW m_20;                                  // +0x20
     unsigned short m_dungeonLevel;                  // +0x28
     bool m_limitEnter;                              // +0x2a
@@ -132,7 +139,7 @@ public:
     ATL::CAtlArray<unsigned> m_fieldIDs;            // +0xc8
     int m_durationSeconds;                          // +0xe8
     bool m_isExpireTimeOut;                         // +0xec
-    int m_timerType;                                // +0xf0
+    DungeonTimerType m_timerType;                   // +0xf0
     unsigned m_minUserCount;                        // +0xf4
     unsigned m_maxUserCount;                        // +0xf8
     unsigned m_gearScore;                           // +0xfc
@@ -151,7 +158,7 @@ public:
     CString m_bossIcon;                             // +0x150
     int m_isTimeUp;                                 // +0x158
     bool m_isUseBossIcon;                           // +0x15c
-    int m_bossRankingType;                          // +0x160
+    DungeonBossRankingType m_bossRankingType;       // +0x160
     unsigned m_bossRanking;                         // +0x164
     CStringW m_openPeriodTag;                       // +0x168
     CMsTime m_openPeriodDate;                       // +0x170
@@ -296,6 +303,7 @@ public:
 
     DungeonRoomPtr GetRoom(int nDungeonId, int nIndex);         // 0x140320650
     DungeonRoomPtr GetRoom(int nRoomId);                        // 0x1403206b0
+    int GetRank(DungeonRoom* pRoom, short nScore);              // 0x140321730
 
     static void CheckInit();                // 0x140336680
     static void SetInit(bool b);            // 0x140336e80
