@@ -2644,3 +2644,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??1Unk_W6V420@@QEAA@XZ	140a00490	func
 ??1Unk_W6V2f8@@QEAA@XZ	14123ebe0	func
 ??1Unk_W6V468@@QEAA@XZ	1410b4290	func
+??0CChatEmoticonCli@@QEAA@XZ	140da1df0	func
+??1CChatEmoticonCli@@UEAA@XZ	140da2120	func

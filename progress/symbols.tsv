@@ -36152,8 +36152,8 @@ atan2f	140a4e660	func
 ?SetSubmitModifiers@NiUpdateProcess@@QEAAX_N@Z	140d9ee10	func
 ?SetTime@NiUpdateProcess@@QEAAXM@Z	140d9ee30	func
 ?SetUpdateControllers@NiUpdateProcess@@QEAAX_N@Z	140d9ee50	func
-??0CChatEmoticonCli@@QEAA@XZ	140d9ee70	func
-??1CChatEmoticonCli@@UEAA@XZ	140d9efd0	func
+??0CChatEmoticonCli@@QEAA@XZ	140da1df0	func
+??1CChatEmoticonCli@@UEAA@XZ	140da2120	func
 ?FUN_140d9f0c0@@YAXPEAX@Z	140d9f0c0	func
 ?FUN_140d9f140@@YAXPEAVCChatEmoticonCli@@@Z	140d9f140	func
 ?FUN_140d9f1c0@Unk_140931510@@QEAAXAEAVCInPacket@@@Z	140d9f1c0	func
