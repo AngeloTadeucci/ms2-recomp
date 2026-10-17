@@ -13,6 +13,13 @@
 #include "ms2/placeholder/fmodwrap.h"
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/client/ms2/effectparam.h"
+#include "ms2/commonfiles/timer.h"
+#include <efd/SmartPointer.h>
+#include <egf/Entity.h>
+#include <list>
+#include <map>
+#include <string>
+#include <vector>
 
 #include "ms2/placeholder/ctwocirclecollision.h"
 
@@ -143,7 +150,56 @@ public:
     static CSoundEventMgr* s_instance;              // 0x143ac1928
 };
 
-// The FMOD event manager singleton (m_bReady at +0x8c gates every call).
+// The sound designer's tool history: an undo/redo style list with a cursor. Instantiated for MusicData, ReverbData
+// and ParamVaule (sic: the exe's template argument spelling).
+template <class T> class TToolHistory
+{
+public:
+    TToolHistory();                                 // vfptr, empty list, cursor 0
+    virtual ~TToolHistory();
+    void Add(const T& rData);                       // drops everything after the cursor, appends, cursor = end
+    int GetPos() const;                             // cursor - 1
+    int Get(int nOffset, T* pOut);                  // moves the cursor by nOffset from the last entry, 1 = got it
+    void Clear();
+
+    std::list<T> m_list;            // +0x08
+    int m_nPos;                     // +0x18
+};
+
+// One music cue / music parameter record: the value and the priority that may overwrite it (0x100 = lowest).
+struct MusicData
+{
+    MusicData() : m_nId(0), m_nPriority(0x100) {}   // 0x141787180
+    int m_nId;
+    unsigned m_nPriority;
+};
+struct ParamVaule
+{
+    ParamVaule() : m_fValue(0.0f), m_nPriority(0x100) {}   // 0x1417871b0
+    float m_fValue;
+    unsigned m_nPriority;
+};
+struct ReverbData
+{
+    ReverbData();                                   // 0x1417871e0: priority 0x100, the properties zeroed
+    unsigned m_nPriority;                           // +0x00
+    FMOD_REVERB_PROPERTIES m_props;                 // +0x04
+};
+MS2_CHECK_SIZE(ReverbData, 0x54);
+
+// The running volume fade of an event category (value of the CSoundEventMgr fade map).
+struct Unk_SoundFade
+{
+    int m_nCategory;                // +0x00
+    int m_nMode;                    // +0x04 1 = fade in, 2 = fade out
+    float m_fVolume;                // +0x08 the volume at the start
+    Timer m_timer;                  // +0x10
+};
+MS2_CHECK_SIZE(Unk_SoundFade, 0x48);
+
+typedef efd::SmartPointer<egf::Entity> Unk_EntityPtr;
+
+// The FMOD event manager singleton (m_bReady at +0x8c gates every call). Function names are the exe's.
 class CSoundEventMgr : public TSingleton<CSoundEventMgr>
 {
 public:
@@ -154,16 +210,75 @@ public:
     MS2Ptr<CSoundEvent> FUN_14177b3d0(FMOD::EventGroup* pGroup, const char* pszName, float fPitch,
                                       FMOD_EVENT_PITCHUNITS eUnits);   // an event of the group with pitch
     MS2Ptr<CSoundEvent> FUN_14177b6a0(const char* pszName);     // the event by full name
+    void FUN_14177b900();                                       // fade the environment sounds in
+    void FUN_14177b940();                                       // fade them out, stop the environment sounds
+    void FUN_14177ba30();                                       // shut down
+    void FUN_14177bb70();                                       // per frame
+    void FUN_14177bbc0();                                       // advance the volume fades
+    void FUN_14177bda0();                                       // sound device lost
+    void FUN_14177bf20();                                       // sound device restored
+    int FUN_14177c100(int nMusicId, float fParam, unsigned nPriority, int bForce);   // play a music cue
+    int FUN_14177c420(int nParamId, float fValue, unsigned nPriority, int bForce);   // set a music parameter
+    int FUN_14177c710(int nParamId, float* pfValue);            // get a music parameter
+    bool FUN_14177c7e0(bool bPaused);                           // pause the music
+    void FUN_14177c850();                                       // reset the music system
+    void FUN_14177c8a0();                                       // reset the music state
+    void FUN_14177c980(unsigned bMute);                         // mute the music
+    float FUN_14177c9e0();                                      // the music volume
+    void FUN_14177ca30(float fVolume);                          // set the music volume
+    int FUN_14177caa0();                                        // the current music cue id
+    MS2Ptr<CSoundEvent> FUN_14177cbe0(Unk_EntityPtr spEntity, const char* pszEvent);   // the entity's environment sound
+    void FUN_14177ce30(Unk_EntityPtr spEntity, int bOn);        // switch the entity's environment sound
+    void FUN_14177d230();                                       // start the environment sounds
+    void FUN_14177d380();                                       // stop and release the environment sounds
+    void FUN_14177d450(Unk_EntityPtr spEntity);                 // remove an environment sound
+    void FUN_14177d5e0();                                       // remove all environment sounds
     FMOD::EventGroup* FUN_14177d6e0(const char* pszName, int bLoad);   // the (cached) event group
-    void FUN_14177dbe0(int nCategory, unsigned nMute);          // mute a category
+    void FUN_14177d860(const char* pszName);                    // free an event group
+    void FUN_14177d9b0(const char* pszGroup, std::vector<CString>& rNames);   // event names of a group
+    void FUN_14177da80(int nCategory, float fVolume);           // category volume
+    float FUN_14177db60(int nCategory);
+    void FUN_14177dbe0(int nCategory, unsigned bMute);          // mute a category
+    void FUN_14177dc80(unsigned bMute);                         // mute everything
+    bool FUN_14177dd50(int nCategory);
+    int FUN_14177ddd0();                                        // 1
+    void FUN_14177ddf0(int nCategory, int nMs);                 // start a fade in
+    void FUN_14177dea0(int nCategory, int nMs);                 // start a fade out
+    void FUN_14177df50(int nCategory, float fVolume);           // finish a fade
+    CStringW FUN_14177e020();                                   // the music debug text
+    void FUN_14177e1c0();                                       // draw the attenuation shapes
+    void FUN_14177e2e0(int bFlag);
 
 public:
     MS2_LAYOUT_FRIEND;
     FMOD::EventSystem* m_pEventSystem;  // +0x08
-    char m_pad_10[0x8c - 0x10];
+    void* m_p10;                        // +0x10
+    FMOD::MusicSystem* m_pMusicSystem;  // +0x18
+    float m_fMusicVolume;               // +0x20 = 1
+    float m_fNowMusicVolume;            // +0x24 = 1
+    int m_n28;                          // +0x28
+    float m_f2c;                        // +0x2c = 1
+    bool m_b30;                         // +0x30 = true
+    TToolHistory<MusicData> m_histMusic;            // +0x38
+    TToolHistory<ReverbData> m_histReverb;          // +0x58
+    std::map<int, TToolHistory<ParamVaule> > m_mapParams;   // +0x78 music parameter histories by id
+    int m_bMusicPlaying;                // +0x88
     int m_bReady;                       // +0x8c
-    char m_pad_90[0x120 - 0x90];
+    FMOD::EventCategory* m_apCategory[11];          // +0x90 effect, environment, ...
+    std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> > m_mapEnvSounds;   // +0xe8
+    std::map<std::string, FMOD::EventGroup*> m_mapGroups;          // +0xf8
+    std::map<int, Unk_SoundFade> m_mapFades;       // +0x108
+    int m_n118;                         // +0x118
 };
+MS2_CHECK_SIZE(CSoundEventMgr, 0x120);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_histMusic, 0x38);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_histReverb, 0x58);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_mapParams, 0x78);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_bReady, 0x8c);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_apCategory, 0x90);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_mapEnvSounds, 0xe8);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_mapGroups, 0xf8);
+MS2_CHECK_OFFSET(CSoundEventMgr, m_mapFades, 0x108);
 
 CSoundEventMgr* FUN_140d13c40();                                // TSingleton<CSoundEventMgr>::GetInstance
 
