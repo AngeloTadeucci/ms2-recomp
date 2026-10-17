@@ -2498,3 +2498,8 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?vfunc_1@NotifyUseSKill@@UEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	140db4670	func
 ?s_bInit@QuestDataTable@@2_NA	143ab0c78	data
 ?s_instance@?$TSingleton@VQuestDataTable@@@@2PEAV1@EA	143ab0c70	data
+?Hash@?$CStringElementTraitsI@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CDefaultCharTraits@_W@2@@ATL@@SAKPEB_W@Z	1401f85a0	func
+?CompareElements@?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@ATL@@SA_NPEB_W0@Z	14036baf0	func
+?Hash@?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@ATL@@SAKPEB_W@Z	14025ed00	func
+?CompareElementsOrdered@?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@ATL@@SAHPEB_W0@Z	14051b270	func
+?DAT_143ab02e0@@3PEAVUnk_MData@@EA	143ab02e0	data
