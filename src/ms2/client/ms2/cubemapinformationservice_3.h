@@ -225,6 +225,7 @@ public:
     void FUN_1410c5340(Unk_CMISEntityRef ref);
     void FUN_1410c6070();
     void FUN_1410c6820(int nIdx);
+    void GenerateAreaPhysX(int n);                  // 0x1410c6100
     Unk_StreamPoint FUN_1410c54a0(Unk_EntRef spEnt);
     void FUN_1410ce560();
     void FUN_1410c1910(const Unk_Int3& pt, int n);

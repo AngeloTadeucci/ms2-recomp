@@ -4672,3 +4672,139 @@ int CubeMapInformationService::FUN_1410b9e90(__int64 nOwnerId, Unk_CMISCubePtrSe
     }
     return 1;
 }
+
+// ---- w142 batch 4 ----
+#pragma push_macro("min")
+#pragma push_macro("max")
+#undef min
+#undef max
+#include <NxPhysics.h>
+#pragma pop_macro("min")
+#pragma pop_macro("max")
+struct Unk_CMISPropPtr { void* m_p; };                                  // smart pointer to the prop object (8 bytes)
+void FUN_140ae1340(Unk_CMISPropPtr* p, void* pObj);                     // ctor
+void FUN_140ae16b0(Unk_CMISPropPtr* p);                                 // dtor
+Unk_CMISPropPtr* FUN_141128150(Unk_CMISTree<258>*, const Unk_CMISEntityRef*);       // operator[]
+void FUN_141126090(Unk_CMISPropPtr* pDst, Unk_CMISPropPtr* pSrc);       // assign
+void* FUN_14225f250(void* pMem, Unk_EntRef spOwner);                    // prop object ctor
+bool FUN_141127780(Unk_CMISIter<257>*, Unk_CMISIter<257>*);
+extern Unk_StreamPoint DAT_143b01a60;
+
+// A static box actor at pos (cm, centre of the bottom face) with the given size (cm) turned around z by fAngle degrees.
+static NxActor* CMISCreateBoxActor(NxScene* pScene, const Unk_StreamPoint& pos, float sx, float sy, float sz, float fAngle, const char* pszName, int nGroup)
+{
+    NxBoxShapeDesc box;
+    box.dimensions.set(sx, sy, sz);
+    box.dimensions *= 0.01f;
+    box.dimensions *= 0.5f;
+    box.groupsMask.bits0 = 0xffffffff;
+    box.shapeFlags &= 0xffedffff;
+    NxActorDesc actorDesc;
+    actorDesc.shapes.pushBack(&box);
+    NxVec3 vPose(pos.x * 0.01f, pos.y * 0.01f, pos.z * 0.01f);
+    vPose.z += box.dimensions.z;
+    actorDesc.globalPose.t = vPose;
+    actorDesc.globalPose.M.rotZ((fAngle * 3.1415927f) / 180.0f);
+    FUN_14168a540(FUN_1409f7ca0(), 0);
+    NxActor* pActor = pScene->createActor(actorDesc);
+    if (pActor != 0) {
+        pActor->setName(pszName);
+        NxU32 nShapes = pActor->getNbShapes();
+        NxShape* const* ppShapes = pActor->getShapes();
+        for (NxU32 i = 0; i < nShapes; ++i)
+            ppShapes[i]->setGroup(nGroup);
+    }
+    return pActor;
+}
+
+// @0x1410c5680
+// MS2-FUNCTIONAL: PhysX descriptor setup written with the SDK's own members; the shape group is a guess (the exe passes none)
+void CubeMapInformationService::GeneratePhysX(Unk_EntRef spEnt, Unk_StreamPoint pt)
+{
+    Unk_CMISIter<257> itEnd, itFind;
+    if (FUN_141127780(FUN_1411580e0(&f48, &itFind, FUN_1408b76f0(FUN_1408a9280(&spEnt))), FUN_141152030(&f48, &itEnd)) != 0)
+        return;
+    NxScene* pScene = reinterpret_cast<NxScene*>(FUN_14168a1c0(FUN_1409f7ca0()));
+    if (pScene == 0)
+        return;
+    Unk_StreamPoint ptPos, ptRot;
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0xfd95ca52, &ptPos);
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0x68c7c29d, &ptRot);
+    NxActor* pActor = CMISCreateBoxActor(pScene, ptPos, pt.x, pt.y, pt.z, ptRot.z, "CubeMapInformationService::GeneratePhysX", 0);
+    if (pActor != 0) {
+        int tmp;
+        int* cat = (int*)FUN_140876480(&tmp, 0);
+        void* mem = FUN_14208a860(0x98, *cat);
+        void* pProp = mem == 0 ? 0 : FUN_14225f250(mem, spEnt);
+        Unk_CMISPropPtr sp;
+        FUN_140ae1340(&sp, pProp);
+        pActor->userData = sp.m_p;
+        *FUN_141128110(&f48, FUN_1408b76f0(FUN_1408a9280(&spEnt))) = pActor;
+        FUN_141126090(FUN_141128150(&f58, FUN_1408b76f0(FUN_1408a9280(&spEnt))), &sp);
+        FUN_140ae16b0(&sp);
+    }
+    FUN_14168a570(FUN_1409f7ca0());
+}
+
+// @0x1410c5ba0
+// MS2-FUNCTIONAL: PhysX descriptor setup written with the SDK's own members
+void CubeMapInformationService::GenerateFloorPhysX()
+{
+    FUN_1410c6070();
+    NxScene* pScene = reinterpret_cast<NxScene*>(FUN_14168a1c0(FUN_1409f7ca0()));
+    if (pScene == 0 || f218 == 0)
+        return;
+    if (f218->floors.find(f1dc) == f218->floors.end())
+        return;
+    if ((int)f218->floors.size() == f1dc)
+        return;
+    const Unk_UGCFloor& floor = f218->floors[f1dc];
+    Unk_StreamPoint pos = DAT_143b01a60;
+    pos.z = floor.startHeight + (float)floor.field4 * 150.0f;
+    NxActor* pActor = CMISCreateBoxActor(pScene, pos, 1500.0f, 1500.0f, 150.0f, 0.0f, "CubeMapInformationService::GenerateFloorPhysX", 9);
+    f40 = pActor;
+    if (pActor != 0)
+        pActor->userData = 0;
+    FUN_14168a570(FUN_1409f7ca0());
+}
+
+// @0x1410c6100
+// MS2-FUNCTIONAL: PhysX descriptor setup written with the SDK's own members
+void CubeMapInformationService::GenerateAreaPhysX(int n)
+{
+    FUN_1410c6820(n);
+    NxScene* pScene = reinterpret_cast<NxScene*>(FUN_14168a1c0(FUN_1409f7ca0()));
+    if (pScene == 0)
+        return;
+    Unk_StreamPoint ptLo = DAT_143b01a60, ptHi = DAT_143b01a60;
+    FUN_1408a15b0(p300, ptLo);
+    FUN_1408a15b0(p30c, ptHi);
+    Unk_StreamPoint size = DAT_143b01a60, pos = ptLo;
+    if (n == 0) {
+        size.x = 150.0f;
+        size.y = (ptHi.y - ptLo.y) + 300.0f;
+        size.z = (float)(f2fc + 3) * 150.0f;
+        pos.x = pos.x - 150.0f;
+        pos.y = (pos.y + size.y * 0.5f) - 225.0f;
+        pos.z = pos.z + 150.0f;
+    } else if (n == 1) {
+        size.x = (ptHi.x - ptLo.x) + 150.0f;
+        size.y = 150.0f;
+        size.z = (float)(f2fc + 3) * 150.0f;
+        pos.x = (pos.x + size.x * 0.5f) - 75.0f;
+        pos.y = pos.y - 150.0f;
+        pos.z = pos.z + 150.0f;
+    } else if (n == 2) {
+        size.x = (ptHi.x - ptLo.x) + 150.0f;
+        size.y = (ptHi.y - ptLo.y) + 150.0f;
+        size.z = 300.0f;
+        pos.x = (pos.x + size.x * 0.5f) - 75.0f;
+        pos.y = (pos.y + size.y * 0.5f) - 75.0f;
+        pos.z = pos.z + (float)(f2fc + 1) * 150.0f + 150.0f;
+    }
+    NxActor* pActor = CMISCreateBoxActor(pScene, pos, size.x, size.y, size.z, 0.0f, "CubeMapInformationService::GenerateAreaPhysX", 7);
+    f318[n] = pActor;
+    if (pActor != 0)
+        pActor->userData = 0;
+    FUN_14168a570(FUN_1409f7ca0());
+}
