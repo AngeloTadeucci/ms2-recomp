@@ -1,27 +1,3 @@
-// cfeaturemanager.h - PLACEHOLDER for CFeatureManager (RTTI .?AVCFeatureManager@@, 0x100 bytes). NOT an original header.
-// Bases: TSingleton<CFeatureManager> at +0x0, CValidData<CFeatureManager> at +0x8.
-// A TSingleton that CGameApp::InitInstance (?\ms2.cpp) creates; only the ctor is declared, the members are not
-// recovered.
+// cfeaturemanager.h - forwards to the recovered header (kept so the old include path still works).
 #pragma once
-
-#include "ms2/ms2layout.h"
-#include "ms2/commonfiles/os.h"
-#include "ms2/placeholder/cvaliddata.h"
-
-class CFeatureManager : public TSingleton<CFeatureManager>, public CValidData<CFeatureManager>
-{
-public:
-    CFeatureManager();                                      // 0x14036ca70
-    virtual ~CFeatureManager();
-    bool FUN_14036ccb0();                                    // loads the feature file; false when missing
-    int FUN_14036d8b0();                                     // the server number of the window title
-    CString FUN_14036d8e0();                                 // the server name of the window title
-    bool FUN_14036d570(int nFeature);                        // the feature is switched on
-    bool FUN_14036d650();                                    // red merat in use
-    bool FUN_14036d690(int nFeature);
-    bool FUN_14036e510();                                    // a content switch
-private:
-    MS2_LAYOUT_FRIEND;
-    char m_pad_10[0x100 - 0x10];
-};
-MS2_CHECK_SIZE(CFeatureManager, 0x100);
+#include "ms2/commonfiles/featuremanager.h"
