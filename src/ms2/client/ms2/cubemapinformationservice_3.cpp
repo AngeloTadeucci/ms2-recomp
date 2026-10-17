@@ -2769,3 +2769,81 @@ bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int n
         *FUN_141127cd0(&f88, &nCell) = spCube;
     return true;
 }
+// ---- w138 batch 6 ----
+// @0x1410c4850
+// MS2-FUNCTIONAL: Unk_Int3 temporaries and by-value notice copies differ from the exe
+void CubeMapInformationService::FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
+    unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<NoticeCubeInfo> spNotice)
+{
+    if (pInfo == 0)
+        return;
+    efd::utf8string strName;
+    int nCell = FUN_1408a03c0(pt);
+    Unk_CMISIter<265> itEnd, itFind;
+    if (FUN_141127640(FUN_141157ac0(&f2e0, &itFind, &nCell), FUN_141151d30(&f2e0, &itEnd)) == 0) {
+        if (FUN_1410b77e0(pInfo->itemId, reinterpret_cast<Unk_CMISStr*>(&strName)) != 0) {
+            FUN_1410bd080(nOwner, pt, nZ, pInfo, strName, nField50, nField54, bField4c, nUnused,
+                nFieldD8, Unk_PayloadPtr<NoticeCubeInfo>(spNotice));
+            FUN_1410d4cb0(pInfo->itemId, true);
+            if (FUN_1410cb900()) {
+                if (FUN_1410c3600(1) != 0 || FUN_1410c3600(3) != 0)
+                    FUN_1410d54f0(true);
+            }
+        }
+    } else {
+        FUN_1410bca70(nOwner, pt, nZ, nField50, nField54, nUnused, nFieldD8);
+    }
+}
+// @0x1410c4b50
+// MS2-FUNCTIONAL: MS2Ptr<Cube> temporaries and Unk_Int3 copies differ from the exe
+void CubeMapInformationService::FUN_1410c4b50(Unk_Int3 pt, bool bKeep)
+{
+    Unk_StreamPoint ptCell = DAT_143b01a60;
+    FUN_1408a15b0(pt, ptCell);
+    int nCell = FUN_1408a03c0(pt);
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_1411274c0(FUN_141157580(&fb8, &itFind, &nCell), FUN_141151af0(&fb8, &itEnd))) {
+        MS2Ptr<Cube> spCube = *FUN_141127cd0(&fb8, &nCell);
+        if (spCube.get() != 0) {
+            FUN_1410bec60(MS2Ptr<Cube>(spCube));
+            FUN_1410d4cb0(FUN_1408b4f20(spCube.operator->()), false);
+            if (FUN_1410c35c0() != 0) {
+                if (FUN_1410cb900())
+                    FUN_1410d54f0(true);
+            }
+        }
+    }
+    if (bKeep == 0)
+        FUN_1410c2610(pt);
+    else
+        FUN_1410c1910(pt, 0);
+}
+// @0x1410c4e20
+// MS2-FUNCTIONAL: MS2Ptr<Cube> temporaries and Unk_Int3 copies differ from the exe
+void CubeMapInformationService::FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, CubeItemInfo* pInfo, int nZ, unsigned char bField4c, int nUnused, int nFieldD8)
+{
+    if (pInfo == 0)
+        return;
+    Unk_StreamPoint ptCell = DAT_143b01a60;
+    FUN_1408a15b0(pt, ptCell);
+    MS2Ptr<Cube> spCube(FUN_1410b8ab0(ptCell));
+    if (spCube.get() == 0) {
+        FUN_140166440()->FUN_1401859c0(0xc, 0x13, L"Not Exist ReplaceCube");
+        return;
+    }
+    if (spCube->field48 != 0) {
+        FUN_1410bec60(MS2Ptr<Cube>(spCube));
+        FUN_1410d4cb0(FUN_1408b4f20(spCube.operator->()), false);
+        if (FUN_1410c35c0() != 0 && FUN_1410cb900())
+            FUN_1410d54f0(true);
+    }
+    FUN_1410c1910(FUN_1408a1430(ptCell), 1);
+    efd::utf8string strName;
+    if (FUN_1410b77e0(pInfo->itemId, reinterpret_cast<Unk_CMISStr*>(&strName)) != 0) {
+        Unk_PayloadPtr<NoticeCubeInfo> spNone(0);
+        FUN_1410bd080(nOwner, pt, nZ, pInfo, strName, spCube->field50, spCube->field54, bField4c, nUnused, nFieldD8, spNone);
+        FUN_1410d4cb0(pInfo->itemId, true);
+        if (FUN_1410c35c0() != 0 && FUN_1410cb900())
+            FUN_1410d54f0(true);
+    }
+}

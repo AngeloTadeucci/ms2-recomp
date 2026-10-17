@@ -280,6 +280,13 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
+        unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
+    void FUN_1410c4b50(Unk_Int3 pt, bool bKeep);
+    void FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, unsigned char bField4c, int nUnused, int nFieldD8);
+    bool FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nA, int nB, int nC, int nD);
+    void FUN_1410bec60(MS2Ptr<Cube> spCube);
+    void FUN_1410d4cb0(int nItemId, bool bFlag);
     bool FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, class CubeItemInfo* pInfo, const efd::utf8string& strName,
         int nField50, int nField54, unsigned char bField4c, __int64 nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
     egf::EntityPtr FUN_1410bc3d0(struct Unk_CMISBlock rec);
