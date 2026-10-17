@@ -3962,3 +3962,95 @@ void CubeMapInformationService::FUN_1410c9db0()
     for (FUN_14114e630(&setDone, &itList); FUN_14035ea60(&itList, FUN_1411522d0(&setDone, &itListEnd)); FUN_14035ebf0(&itList))
         FUN_1411549b0(&f1f8, FUN_1403e8d70(&itList));
 }
+
+// ---- w138 batch 20 ----
+extern Unk_Int3 DAT_143ab2388;                                                              // the none cell
+bool FUN_1411279c0(Unk_Int3* pA, const Unk_Int3* pB);                                       // operator!=
+
+// @0x1410badf0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+Cube* CubeMapInformationService::FUN_1410badf0(int nGroup, Unk_CMISPawn* pPawn)
+{
+    Unk_CMISIter<262> itEnd, itFind;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind, &nGroup), FUN_141151c70(&fd8, &itEnd)))
+        return 0;
+    Unk_Int3 cellBest = DAT_143ab2388;
+    Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+    Unk_CMISListIter it;
+    Unk_CMISListEnd itListEnd;
+    for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+        int nKey = *FUN_1403e8d70(&it);
+        Cube* pCube = FUN_1410b8a60(FUN_1408a0400(nKey));
+        if (pCube != 0 && pCube->field50 == nGroup) {
+            if (!FUN_1411279c0(&cellBest, &DAT_143ab2388)) {
+                cellBest = *(Unk_Int3*)&pCube->position;
+            } else {
+                Unk_StreamPoint ptBest;
+                FUN_1408a15b0(*(Unk_StreamPoint*)&cellBest, ptBest);
+                Unk_StreamPoint ptCube;
+                FUN_1408a15b0(*(Unk_StreamPoint*)&pCube->position, ptCube);
+                float fCube = FUN_140966f00(pPawn->vfunc_18(), ptCube);
+                float fBest = FUN_140966f00(pPawn->vfunc_18(), ptBest);
+                if (fCube < fBest)
+                    cellBest = *(Unk_Int3*)&pCube->position;
+            }
+        }
+    }
+    if (!FUN_1411279c0(&cellBest, &DAT_143ab2388))
+        return 0;
+    return FUN_1410b8a60(cellBest);
+}
+
+// ---- w138 batch 21 ----
+void FUN_141689ec0(CPhysXHelper*, egf::Entity*, int, int);
+bool FUN_141689a10(CPhysXHelper*, egf::Entity*);
+void FUN_1410dc360(egf::Entity*, unsigned, int*);                                           // SetProperty(int)
+void FUN_140ae1240(egf::Entity*, unsigned, Unk_CMISStr*);                                   // SetProperty(string)
+
+// @0x1410d0e30
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410d0e30(egf::Entity* pEntity, MS2Ptr<Cube> spCube)
+{
+    if (pEntity == 0 || spCube.IsNull()) {
+        _wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\cubemapinformationservice.cpp", 0x166a);
+        return;
+    }
+    if (spCube->field6c != 0) {
+        bool bOn = true;
+        FUN_14098c6e0(pEntity, 0x38141815, &bOn);
+        if (!(*(Unk_StreamPoint*)&spCube->offset).FUN_140552700(DAT_143b01a60))
+            FUN_1410c5570(Unk_EntRef((Unk_Entity*)pEntity));
+        else
+            GeneratePhysX(Unk_EntRef((Unk_Entity*)pEntity), *(Unk_StreamPoint*)&spCube->offset);
+    }
+    if ((const char*)spCube->textA0 == 0) {
+        Unk_CMISStr strName;
+        FUN_1409989e0(&strName, (const char*)spCube->textA0);
+        FUN_140ae1240(pEntity, 0xde5dd580, &strName);
+        FUN_1408a8900(&strName);
+    }
+    if (spCube->fieldA8 == 8 || spCube->fieldA8 == 9) {
+        if (FUN_141689a10(FUN_1409f7ca0(), pEntity)) {
+            FUN_1410dc360(pEntity, 0xada5c5d2, &spCube->fieldA8);
+            FUN_141689ec0(FUN_1409f7ca0(), pEntity, (short)spCube->fieldA8, 0);
+        }
+    }
+    int nKey = FUN_1408a03c0(spCube->position);
+    Unk_CMISIter<278> itEnd, itFind;
+    if (FUN_141127380(FUN_141157040(&f2b8, &itFind, &nKey), FUN_141151910(&f2b8, &itEnd))) {
+        Unk_CMISIter<260> itEnd2, itFind2;
+        if (FUN_141126d90(FUN_141157580(&fb8, &itFind2, &nKey), FUN_141151af0(&fb8, &itEnd2))) {
+            if (FUN_1410d2730(&spCube->position) == 0) {
+                bool bFlag = false;
+                FUN_1408a20a0(FUN_1408a9280(&spCube->entity), 0x23f9860e, &bFlag);
+                if (bFlag) {
+                    Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                    if (spInst.FUN_14098d090() != 0)
+                        FUN_1413d6e60(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity), 0);
+                }
+                bool bOff = false;
+                FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0xa0b6b179, &bOff);
+            }
+        }
+    }
+}
