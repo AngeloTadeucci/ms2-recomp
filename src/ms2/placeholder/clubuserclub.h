@@ -30,7 +30,7 @@ public:
   void FUN_14020ce50(COutputStream &);
   void FUN_14020cfc0(CInputStream &);
 
-  typedef ATL::CRBMap<__int64, MS2Ptr<NameInfo> > JoinMap;
+  typedef ATL::CRBMap<unsigned __int64, MS2Ptr<NameInfo> > JoinMap;
 private:
   JoinMap m_18;                    // +0x18 joined clubs by id (CRBMap ctor 0x140211be0, dtor 0x140212220)
 };
