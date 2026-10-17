@@ -211,6 +211,9 @@ public:
     virtual ~SkillLevelData();                              // 0x140806280
     bool FUN_140803b30(const SkillLevelData& o);            // is different
     unsigned short FUN_140803df0();                         // the level
+    SkillMotionData* FUN_140803f00(int nMotion);            // one motion (0 if out of range)
+    SkillAttackData* FUN_140803f60(int nMotion, int nAttack);   // one attack of a motion (0 if out of range)
+    int FUN_1408043f0(int nMotion, int nAttack);            // whether the attack exists
     int FUN_140804690(Unk_140165cf0* pElem);                // reads a <level>
 
     unsigned char m_unk18[0x68];
