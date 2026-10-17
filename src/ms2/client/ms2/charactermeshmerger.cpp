@@ -1334,12 +1334,6 @@ void FUN_14104b530(NiMesh* pMerged, const MeshGroups& kBuckets)
 }
 
 // Same offset and format as the invalid element placeholder (the exe compares the two fields in the inline operator==).
-inline bool Unk_IsInvalidElement(const NiDataStreamElement& kElement)
-{
-    return kElement.GetOffset() == NiDataStreamElement::ms_kInvalidElement.GetOffset() &&
-           kElement.GetFormat() == NiDataStreamElement::ms_kInvalidElement.GetFormat();
-}
-
 // Appends the element of (semantic, index) to the merged layout if all source streams agree on its format; 0x10 on a mismatch (0x14104c870).
 // @0x14104c870
 int FUN_14104c870(std::vector<Unk_StreamElementDesc>& kLayout, const efd::vector<NiDataStreamRef*>& kSources, const NiFixedString& kSemantic, unsigned int uiIndex)
@@ -1348,12 +1342,11 @@ int FUN_14104c870(std::vector<Unk_StreamElementDesc>& kLayout, const efd::vector
     for (NiDataStreamRef* pSource : kSources)
     {
         const NiDataStreamElement& kElement = pSource->FindElementDesc(kSemantic, uiIndex);
-        if (!Unk_IsInvalidElement(kElement))
-        {
-            if (iFormat != 0 && iFormat != kElement.GetFormat())
-                return 0x10;
-            iFormat = kElement.GetFormat();
-        }
+        if (kElement.IsEqual(NiDataStreamElement::ms_kInvalidElement))
+            continue;
+        if (iFormat != 0 && iFormat != kElement.GetFormat())
+            return 0x10;
+        iFormat = kElement.GetFormat();
     }
     if (iFormat != 0)
         kLayout.push_back(Unk_StreamElementDesc(kSemantic, uiIndex, (NiDataStreamElement::Format)iFormat));
@@ -1379,8 +1372,8 @@ NiDataStreamRef* FUN_14104cc20(NiMesh* pMesh)
 NiDataStreamRef* FUN_14104c9e0(const std::vector<Unk_StreamElementDesc>& kLayout, unsigned int uiVertexCount)
 {
     NiDataStreamElementSet kElements;
-    for (const Unk_StreamElementDesc& kDesc : kLayout)
-        kElements.AddElement(kDesc.m_eFormat);
+    for (std::vector<Unk_StreamElementDesc>::const_iterator it = kLayout.begin(), itEnd = kLayout.end(); it != itEnd; ++it)
+        kElements.AddElement((*it).m_eFormat);
     NiDataStream* pStream = NiDataStream::CreateDataStream(kElements, uiVertexCount, 0x13, NiDataStream::USAGE_VERTEX, false);
     NiDataStream::Region kRegion(0, uiVertexCount);
     pStream->AddRegion(kRegion);
@@ -1460,11 +1453,17 @@ void FUN_14104bbb0(NiMesh* pMerged, MergeInfo& kInfo, const MeshGroups& kBuckets
             unsigned char* pSrc = (unsigned char*)pSourceRef->GetDataStream()->Lock(5);
             int iDstOffset = 0;
             int iSrcStride = pSourceRef->GetStride();
-            for (const Unk_StreamElementDesc& kDesc : kLayout)
+            for (std::vector<Unk_StreamElementDesc>::const_iterator it = kLayout.begin(), itEnd = kLayout.end(); it != itEnd; ++it)
             {
+                const Unk_StreamElementDesc& kDesc = *it;
                 const NiDataStreamElement& kElement = pSourceRef->FindElementDesc(kDesc.m_kSemantic, kDesc.m_uiIndex);
                 size_t stSize = NiDataStreamElement::SizeOfFormat(kDesc.m_eFormat);
-                if (!Unk_IsInvalidElement(kElement))
+                if (kElement.IsEqual(NiDataStreamElement::ms_kInvalidElement))
+                {
+                    for (unsigned int v = 0; v < pMesh->GetVertexCount(); v++)
+                        memset(pDst + (v + iVertexBase) * iDstStride + iDstOffset, 0, stSize);
+                }
+                else
                 {
                     int iSrcOffset = kElement.GetOffset();
                     efd::map<unsigned char, unsigned char>& kMeshRemap = kInfo.m_kBoneRemap[pMesh];
@@ -1505,11 +1504,6 @@ void FUN_14104bbb0(NiMesh* pMerged, MergeInfo& kInfo, const MeshGroups& kBuckets
                         for (unsigned int v = 0; v < pMesh->GetVertexCount(); v++)
                             NiMemcpy(pDst + (v + iVertexBase) * iDstStride + iDstOffset, pSrc + v * iSrcStride + iSrcOffset, stSize);
                     }
-                }
-                else
-                {
-                    for (unsigned int v = 0; v < pMesh->GetVertexCount(); v++)
-                        memset(pDst + (v + iVertexBase) * iDstStride + iDstOffset, 0, stSize);
                 }
                 iDstOffset += (int)NiDataStreamElement::SizeOfFormat(kDesc.m_eFormat);
             }
@@ -1976,7 +1970,7 @@ NiDataStreamRef* FUN_141051210(NiDataStreamRef* pRef, unsigned int uiCount)
     NiDataStreamElementSet kElements;
     for (unsigned int i = 0; i < pRef->GetDataStream()->GetElementDescCount(); i++)
         kElements.Add(pRef->GetDataStream()->GetElementDescAt(i));
-    NiDataStream* pStream = NiDataStream::CreateDataStream(kElements, uiCount, pRef->GetDataStream()->GetAccessMask(), pRef->GetUsage(), false);
+    NiDataStream* pStream = NiDataStream::CreateDataStream(kElements, uiCount, pRef->GetAccessMask(), pRef->GetUsage(), false);
     NiDataStream::Region kRegion(0, uiCount);
     pStream->AddRegion(kRegion);
     NiDataStreamRef* pCopy = NiNew NiDataStreamRef(*pRef);
@@ -2162,24 +2156,32 @@ bool FUN_141052ff0(NiAVObject* pA, NiAVObject* pB)
     return false;
 }
 
-// Lexicographic order over rotation, translation and scale (the exe inlines this into the map's node insertion).
+// Orders by scale, then translation, then rotation (0x14106a3b0).
 bool Unk_TransformLess::operator()(const NiTransform& kA, const NiTransform& kB) const
 {
+    if (kA.m_fScale < kB.m_fScale)
+        return true;
+    else if (kA.m_fScale > kB.m_fScale)
+        return false;
+    for (unsigned int i = 0; i < 3; i++)
+    {
+        if (kA.m_Translate[i] < kB.m_Translate[i])
+            return true;
+        else if (kA.m_Translate[i] > kB.m_Translate[i])
+            return false;
+    }
     for (unsigned int i = 0; i < 3; i++)
     {
         for (unsigned int j = 0; j < 3; j++)
         {
-            if (kA.m_Rotate.GetEntry(i, j) != kB.m_Rotate.GetEntry(i, j))
-                return kA.m_Rotate.GetEntry(i, j) < kB.m_Rotate.GetEntry(i, j);
+            if (kA.m_Rotate.GetEntry(i, j) < kB.m_Rotate.GetEntry(i, j))
+                return true;
+            // the exe returns true here too (not false), so rotations only order on the first differing entry
+            if (kA.m_Rotate.GetEntry(i, j) > kB.m_Rotate.GetEntry(i, j))
+                return true;
         }
     }
-    if (kA.m_Translate.x != kB.m_Translate.x)
-        return kA.m_Translate.x < kB.m_Translate.x;
-    if (kA.m_Translate.y != kB.m_Translate.y)
-        return kA.m_Translate.y < kB.m_Translate.y;
-    if (kA.m_Translate.z != kB.m_Translate.z)
-        return kA.m_Translate.z < kB.m_Translate.z;
-    return kA.m_fScale < kB.m_fScale;
+    return false;
 }
 
 // Builds the merged mesh of one group: concatenated indices and vertices, one submesh per bone bucket (0x14104f460, the twin of 0x14104ae20 with the index and vertex merge expanded in place).
