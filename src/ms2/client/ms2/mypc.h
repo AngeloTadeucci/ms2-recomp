@@ -58,6 +58,9 @@ public:
     MS2Ptr<class CSkillRecord> FUN_141765570(struct Unk_InventorySkillRequest& kReq);   // build the record of a request
     void FUN_141767f80(int nSkillId);                       // add a temporary skill
     void FUN_1417683d0();                                   // refresh the skill slots
+    MS2Ptr<class Unk_MyPCSkillSet> FUN_141768380();         // the temporary (ridee) skill set, if any
+    void FUN_141768100(int nSkillId);                       // remove a temporary skill
+    MS2Ptr<class CSkillRecord> FUN_141764e30(struct Unk_InventorySkillRequest& kReq);   // cast a request
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
     unsigned char m_body[0x1e8];
 };
@@ -246,6 +249,7 @@ public:
     void FUN_1415294f0(int nObjectId, __int64 nExp);                                // the nearest talkable npc
     void FUN_141529d90();                                   // request the house design mode (packet 0x6c 4)
     void FUN_141529e90();                                   // request the blueprint mode (packet 0x6c 5)
+    void FUN_14152b2d0(__int64 nItemUid);                   // summon the pet of an inventory item
     void FUN_14152dee0(int nId);                            // packet 0x40 3
     void FUN_14152df80();                                   // packet 0x40 4 (camera reset first)
     void FUN_14152dff0(unsigned char n);                    // packet 0x40 6

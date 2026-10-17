@@ -219,7 +219,7 @@ class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_1
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
     egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
     void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
-    class Unk_MyPCDropItem* FUN_141bd1d10(int a, int b); };
+    class Unk_MyPCDropItem* FUN_141bd1d10(int a, int b); PCBase* FUN_141bd1290(int nObjectId); };
 Unk_MyPCWorld* FUN_1403ed2d0();
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
@@ -2260,6 +2260,250 @@ void MyPC::vfunc_120(MS2Ptr<RideOnAction> spAction)
     FUN_140aa6d40()->FUN_141b0ce20(0xc, 1);
 }
 MS2_REPLACE_METHOD(0x14152C460, MyPC, vfunc_120, 510, 0x966C40D5);
+
+// The scene the beauty shop runs in (the scene manager's current scene and its child scenes).
+class UISceneEntity : public UISwfEntity { public: UISceneEntity* FUN_1422e7a70(int nSceneId); };
+class UISceneGameBeautyShop : public UISceneEntity { public: void FUN_141ac8e90(); };
+class Unk_MyPCSceneMgr { public: UISceneEntity* FUN_1422b9e80(); };
+Unk_MyPCSceneMgr* FUN_1408e57f0();
+class Unk_MyPCSkillSet : public CPtred {};
+// The taxi call state payload (state 0x25; ?\statetaxicalldata.cpp, 0x20).
+class StateTaxiCallData : public StateData
+{
+public:
+    StateTaxiCallData(int nTaxiId);                         // 0x1417fcf70
+    int m_nTaxiId;                                          // +0x18
+};
+MS2_CHECK_SIZE(StateTaxiCallData, 0x20);
+// The cash call state payload (state 0x2a; ?\statecashcalldata.cpp, 0x30).
+class StateCashCallData : public StateData
+{
+public:
+    StateCashCallData(int nA, __int64 nB, int nC);          // 0x141022a30
+    int m_n18;                                              // +0x18
+    __int64 m_n20;                                          // +0x20
+    int m_n28;                                              // +0x28
+};
+MS2_CHECK_SIZE(StateCashCallData, 0x30);
+void FUN_140b845a0(__int64 nCharId, unsigned int nEmotion);  // the couple emotion request
+
+// Dismounted: drop the ridee's skill, then run the action the dismount was for.
+// MS2-FUNCTIONAL: same calls and branches; the frame is 0x10 smaller, cl adds an unreachable jmp after the
+// case dispatch and the hold range / function-item uid go through extra temps.
+// @0x14152c670
+void MyPC::vfunc_121(MS2Ptr<RideOffAction> spAction)
+{
+    MS2Ptr<Unk_PCBaseComp_b18> spCast = FUN_141676930();
+    if (FUN_1416764a0() != 0)
+    {
+        MS2Ptr<Unk_MyPCSkillSet> spSet = FUN_141523bc0()->FUN_141768380();
+        if (spSet.get() != 0)
+        {
+            int nSkillId = FUN_1416764a0()->FUN_141707750()->m_nSkillId;
+            if (nSkillId != 0)
+            {
+                FUN_141523bc0()->FUN_141768100(nSkillId);
+                FUN_141523bc0()->FUN_1417683d0();
+            }
+        }
+    }
+    PC::vfunc_121(spAction);
+    FUN_140aa6d40()->FUN_141b0ce20(0xc, 0);
+    if (spAction.get() != 0)
+    {
+        if (spAction->m_nArg != 0)
+            FUN_14152a310(spCast);
+        switch (spAction->m_nType)
+        {
+        case 1:
+        {
+            MS2Ptr<RideOffActionUseSkill> spSkill(static_cast<RideOffActionUseSkill*>(spAction.get()));
+            if (spSkill->m_n28 != 0)
+            {
+                if (DAT_143ab2a90.FUN_140a62d30(spSkill->m_n28) != 0)
+                    return;
+                Unk_InventorySkillRequest kReq(spSkill->m_n28, 1);
+                kReq.level = FUN_141528b80(spSkill->m_n28);
+                kReq.remap = spSkill->m_b2c;
+                kReq.unknown34 = spSkill->m_n30;
+                MS2Ptr<CSkillRecord> spRecord = FUN_141523bc0()->FUN_141764e30(kReq);
+                if (spRecord.get() != 0)
+                    vfunc_102(spRecord);
+            }
+        }
+            break;
+        case 0x19:
+        {
+            MS2Ptr<RideOffActionUseGlideItem> spGlide(static_cast<RideOffActionUseGlideItem*>(spAction.get()));
+            if (spGlide->m_n28 != 0)
+            {
+                MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(spGlide->m_n28);
+                if (spItem.get() != 0 && DAT_143ab2a90.FUN_140a635f0(spItem.get()) != 0)
+                    return;
+            }
+        }
+            break;
+        case 2:
+        {
+            MS2Ptr<RideOffActionInteract> spInteract(static_cast<RideOffActionInteract*>(spAction.get()));
+            if (spInteract->m_n28 != 0)
+            {
+                MS2Ptr<StateInteractData> spData(new StateInteractData());
+                spData->m_nObjectId = spInteract->m_n28;
+                spData->m_strObjectId = spInteract->m_s30;
+                vfunc_59(0x19, spData, 0x8a, 0);
+            }
+        }
+            break;
+        case 3:
+        {
+            MS2Ptr<RideOffActionTaxi> spTaxi(static_cast<RideOffActionTaxi*>(spAction.get()));
+            if (spTaxi->m_n28 != 0)
+                vfunc_59(0x25, new StateTaxiCallData(spTaxi->m_n28), 0, 0);
+        }
+            break;
+        case 4:
+        {
+            MS2Ptr<RideOffActionCashCall> spCall(static_cast<RideOffActionCashCall*>(spAction.get()));
+            if (spCall)
+                vfunc_59(0x2a, new StateCashCallData(spCall->m_n2c, spCall->m_n30, spCall->m_n28), 0, 0);
+        }
+            break;
+        case 5:
+        {
+            UISceneEntity* pScene = FUN_1408e57f0()->FUN_1422b9e80();
+            if (pScene != 0)
+            {
+                UISceneGameBeautyShop* pShop = dynamic_cast<UISceneGameBeautyShop*>(pScene->FUN_1422e7a70(0x620001f));
+                if (pShop != 0)
+                    pShop->FUN_141ac8e90();
+            }
+        }
+            break;
+        case 6:
+        {
+            MS2Ptr<RideOffActionTakeLR> spTake(static_cast<RideOffActionTakeLR*>(spAction.get()));
+            if (spTake->m_n2c != 0)
+                FUN_1415248d0(spTake->m_n28, spTake->m_n2c);
+        }
+            break;
+        case 7:
+        {
+            MS2Ptr<StateHoldData> spHold(new StateHoldData());
+            float fFind = FUN_1401d3200()->FindHoldTargetRange.Get(230.0f);
+            float fRange = fFind + 20.0f;
+            if (::FUN_14165c1b0(this, &spHold->m_nTargetId, spHold->m_strTargetName, fRange) != 0)
+            {
+                PCBase* pTarget = FUN_1403ed2d0()->FUN_141bd1290(spHold->m_nTargetId);
+                if (pTarget == 0)
+                    return;
+                if (pTarget->GetClassID() == 0x6200003 && pTarget->FUN_1416764a0() != 0)
+                {
+                    // a mounted pc: ride along with it
+                    if (FUN_1415279d0(pTarget) == 0)
+                        return;
+                    FUN_14152dee0(pTarget->FUN_14123c580());
+                }
+                else
+                    vfunc_59(0x20, spHold, 0, 0);
+            }
+        }
+            break;
+        case 8:
+        {
+            MS2Ptr<RideOffActionRecall> spRecall(static_cast<RideOffActionRecall*>(spAction.get()));
+            if (spRecall)
+                vfunc_59(0x2c, new StateRecallData(reinterpret_cast<void*>(spRecall->m_n28)), 0, 0);
+        }
+            break;
+        case 9:
+        {
+            MS2Ptr<RideOffActionSummonPetOn> spPet(static_cast<RideOffActionSummonPetOn*>(spAction.get()));
+            if (spPet)
+                FUN_14152b2d0(spPet->m_n28);
+        }
+            break;
+        case 10:
+        {
+            MS2Ptr<RideOffActionSummonPetTransfer> spPet(static_cast<RideOffActionSummonPetTransfer*>(spAction.get()));
+            if (spPet)
+                FUN_14152b8d0(spPet->m_n28);
+        }
+            break;
+        case 0xb:
+        {
+            MS2Ptr<RideOffActionHomeConvenient> spHome(static_cast<RideOffActionHomeConvenient*>(spAction.get()));
+            if (spHome)
+                vfunc_59(0x36, new StateHomeConvenientData(spHome->m_n28), 0, 0);
+        }
+            break;
+        case 0x10:
+        {
+            MS2Ptr<RideOffActionHomemade> spMade(static_cast<RideOffActionHomemade*>(spAction.get()));
+            if (spMade)
+            {
+                MS2Ptr<StateHomemadeData> spData(new StateHomemadeData(spMade->m_n34, spMade->m_s28, spMade->m_n30));
+                vfunc_59(0x37, spData, spMade->m_n38, 0);
+            }
+        }
+            break;
+        case 0x16:
+        {
+            MS2Ptr<RideOffActionNurturing> spNurture(static_cast<RideOffActionNurturing*>(spAction.get()));
+            if (spNurture)
+                vfunc_59(0x40, 0, spNurture->m_n30, 0);
+        }
+            break;
+        case 0x11:
+        {
+            MS2Ptr<RideOffActionAutoInteraction> spAuto(static_cast<RideOffActionAutoInteraction*>(spAction.get()));
+            if (spAuto)
+            {
+                MS2Ptr<StateAutoInteractionData> spData(new StateAutoInteractionData(spAuto->m_n28, spAuto->m_n2c, spAuto->m_n30));
+                vfunc_59(0x39, spData, 0, 0);
+            }
+        }
+            break;
+        case 0x12:
+        {
+            MS2Ptr<RideOffActionAutoClimb> spClimb(static_cast<RideOffActionAutoClimb*>(spAction.get()));
+            if (spClimb.get() != 0 && ::FUN_14165b500(this, 1) != 0)
+                FUN_1416788d0();
+        }
+            break;
+        case 0x13:
+        {
+            MS2Ptr<RideOffActionCoupleEmotion> spEmotion(static_cast<RideOffActionCoupleEmotion*>(spAction.get()));
+            if (spEmotion)
+                FUN_140b845a0(spEmotion->m_n30, spEmotion->m_n28);
+        }
+            break;
+        case 0x14:
+        {
+            MS2Ptr<RideOffActionReact> spReact(static_cast<RideOffActionReact*>(spAction.get()));
+            if (spReact->m_n28 != 0)
+            {
+                MS2Ptr<StateReactData> spData(new StateReactData(spReact->m_n28, spReact->m_s30, ""));
+                vfunc_59(0x19, spData, 0x8a, 0);
+            }
+        }
+            break;
+        case 0x15:
+        {
+            MS2Ptr<RideOffActionUseFunctionItem> spUse(static_cast<RideOffActionUseFunctionItem*>(spAction.get()));
+            if (spUse->m_n28 != 0)
+            {
+                MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(spUse->m_n28);
+                if (spItem == 0)
+                    return;
+                DAT_143ab2a90.FUN_140a63880(spItem.get(), spUse->m_s30);
+            }
+        }
+            break;
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14152C670, MyPC, vfunc_121, 5332, 0xA0A8FD3D);
 
 // Request to get off the ride (pAction 0: a plain ride off).
 // @0x14152c280
