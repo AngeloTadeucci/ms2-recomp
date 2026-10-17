@@ -17,6 +17,7 @@
 
 class COutputStream;
 class CInPacket;
+class CInputStream;
 class CItem;
 
 class IUgcProxy : public CPtred
@@ -236,6 +237,7 @@ public:
     int m_nCount;                                           // +0x18
     CUgcBannerReserveMap m_reserves;                        // +0x20
 };
+MS2_CHECK_SIZE(CUgcPreReserve, 0x50);
 
 // A banner post: the banner id and its reservations (vftable 0x142d9fdb0).
 class CUgcBannerPost : public CUgcBannerProxy
@@ -248,5 +250,265 @@ public:
     virtual void Write(COutputStream& stream) const;        // 0x1408908e0
     virtual void Read(CInPacket& packet);                   // 0x1408909f0
 
+    __int64 FUN_140890bd0();                                // the total price of the reservations (hourly price)
+
     CUgcBannerReserveMap m_reserves;                        // +0x20
 };
+MS2_CHECK_SIZE(CUgcBannerPost, 0x50);
+
+// The registration of a banner: who, which upload, which post (CPtred with its own vftable).
+class CUgcRegistBanner : public CPtred
+{
+public:
+    CUgcRegistBanner();                                     // 0x140890d50
+    virtual ~CUgcRegistBanner();                            // 0x140890df0
+
+    void Clear();                                           // 0x140890e80
+    void Write(COutputStream& stream) const;                // 0x140890f30
+    void Read(CInPacket& packet);                           // 0x140891020
+    int FUN_1408911f0(unsigned __int64 nTime);              // all reservations lie after `nTime`
+
+    int m_nType;                                            // +0x18
+    CUgcUserProxy m_user;                                   // +0x20
+    CUgcUploadProxy m_upload;                               // +0x60
+    CUgcBannerPost m_post;                                  // +0x98
+    CStringA m_strUrl;                                      // +0xe8
+};
+MS2_CHECK_SIZE(CUgcRegistBanner, 0xf0);
+
+// A guild mark (vftable 0x142da0050).
+class CUgcGuildMarkProxy : public IUgcProxy
+{
+public:
+    CUgcGuildMarkProxy();                                   // 0x140891980
+    virtual ~CUgcGuildMarkProxy();
+    virtual void Clear();                                   // 0x140891a40
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140891a80
+    virtual void Write(COutputStream& stream) const;        // 0x140891b00
+    virtual void Read(CInPacket& packet);                   // 0x140891b40
+
+    __int64 m_nGuildId;                                     // +0x18
+    CStringA m_strName;                                     // +0x20
+};
+MS2_CHECK_SIZE(CUgcGuildMarkProxy, 0x28);
+
+// A guild poster.
+class CUgcGuildPosterProxy : public IUgcProxy
+{
+public:
+    CUgcGuildPosterProxy();                                 // 0x140891b90
+    virtual ~CUgcGuildPosterProxy();
+    virtual void Clear();                                   // 0x140891c50
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140891c90
+    virtual void Write(COutputStream& stream) const;        // 0x140891d20
+    virtual void Read(CInPacket& packet);                   // 0x140891d70
+
+    __int64 m_nGuildId;                                     // +0x18
+    int m_nIndex;                                           // +0x20
+    CStringA m_strName;                                     // +0x28
+};
+MS2_CHECK_SIZE(CUgcGuildPosterProxy, 0x30);
+
+// The record of an empty banner: nothing to store.
+class CUgcBannerEmptyProxy : public IUgcProxy
+{
+public:
+    CUgcBannerEmptyProxy();                                 // 0x140891de0
+    virtual ~CUgcBannerEmptyProxy();
+    virtual void Clear();                                   // 0x140891e50
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140891e60
+    virtual void Write(COutputStream& stream) const;        // 0x140891e80
+    virtual void Read(CInPacket& packet);                   // 0x140891ea0
+};
+MS2_CHECK_SIZE(CUgcBannerEmptyProxy, 0x18);
+
+// The ids of the images of a rolling banner.
+class CUgcBannerRollingImageProxy : public IUgcProxy
+{
+public:
+    CUgcBannerRollingImageProxy();                          // 0x140891ec0
+    virtual ~CUgcBannerRollingImageProxy();
+    virtual void Clear();                                   // 0x140891f50
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140891f80
+    virtual void Write(COutputStream& stream) const;        // 0x140891ff0
+    virtual void Read(CInPacket& packet);                   // 0x1408920a0
+
+    std::vector<unsigned int> m_images;                     // +0x18
+};
+MS2_CHECK_SIZE(CUgcBannerRollingImageProxy, 0x30);
+
+
+// The two banner key strings of the shop (vftable 0x142da00e8); only the first one is reset.
+class CUgcShopBannerProxy : public IUgcProxy
+{
+public:
+    CUgcShopBannerProxy();                                  // 0x140892170
+    virtual ~CUgcShopBannerProxy();
+    virtual void Clear();                                   // 0x140892250
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140892280
+    virtual void Write(COutputStream& stream) const;        // 0x140892310
+    virtual void Read(CInPacket& packet);                   // 0x140892350
+
+    CStringA m_strKey;                                      // +0x18
+    CStringA m_strEntity;                                   // +0x20
+};
+MS2_CHECK_SIZE(CUgcShopBannerProxy, 0x28);
+
+// The record of one blueprint item (CPtred with its own vftable; read from a CInputStream).
+class CBlueprintItemData : public CPtred
+{
+public:
+    CBlueprintItemData();                                   // 0x1408923d0
+    virtual ~CBlueprintItemData();                          // 0x140892430
+
+    void Clear();                                           // 0x140892470
+    void CopyFrom(const CBlueprintItemData& other);         // 0x140892510
+    void Write(COutputStream& stream) const;                // 0x1408925d0
+    void Read(CInputStream& stream);                        // 0x1408926e0
+
+    __int64 m_n18;                                          // +0x18
+    int m_n20;                                              // +0x20
+    int m_n24;                                              // +0x24
+    int m_n28;                                              // +0x28
+    __int64 m_n30;                                          // +0x30
+    int m_n38;                                              // +0x38
+    __int64 m_n40;                                          // +0x40
+    __int64 m_n48;                                          // +0x48
+    CStringW m_strName;                                     // +0x50
+};
+MS2_CHECK_SIZE(CBlueprintItemData, 0x58);
+
+// A blueprint image (vftable 0x142da0150); CopyFrom does not reset first.
+class CUgcBlueprintImageProxy : public IUgcProxy
+{
+public:
+    CUgcBlueprintImageProxy();                              // 0x140892810
+    virtual ~CUgcBlueprintImageProxy();
+    virtual void Clear();                                   // 0x1408928d0
+    virtual int CopyFrom(const IUgcProxy* pOther);          // 0x140892930
+    virtual void Write(COutputStream& stream) const;        // 0x1408929c0
+    virtual void Read(CInPacket& packet);                   // 0x140892a50
+
+    __int64 m_n18;                                          // +0x18
+    __int64 m_n20;                                          // +0x20
+    int m_n28;                                              // +0x28
+    CStringW m_strName;                                     // +0x30
+};
+MS2_CHECK_SIZE(CUgcBlueprintImageProxy, 0x38);
+
+// The look of an uploaded item (a design / blueprint file) with its url.
+class CUgcItemLook : public CPtred
+{
+public:
+    CUgcItemLook();                                         // 0x140892b50
+    virtual ~CUgcItemLook();                                // 0x140892bf0
+
+    void Clear();                                           // 0x140892c70
+    void SetDefault();                                      // 0x140892d40
+    void CopyFrom(const CUgcItemLook* pOther);              // 0x140892da0
+    CStringA GetLocalPath() const;                          // 0x140892ec0
+    void Write(COutputStream& stream) const;                // 0x140893070
+    void Read(CInputStream& stream);                        // 0x140893250
+    int FUN_1408934f0() const;                              // m_n18 == 1 || m_n60 == 1
+    int FUN_140893520() const;                              // m_n60 == 2
+    bool FUN_140893540() const;
+
+    __int64 m_n18;                                          // +0x18
+    CStringA m_str20;                                       // +0x20
+    CStringW m_str28;                                       // +0x28
+    int m_n30;                                              // +0x30
+    int m_n34;                                              // +0x34
+    __int64 m_n38;                                          // +0x38
+    __int64 m_n40;                                          // +0x40
+    CStringW m_str48;                                       // +0x48
+    __int64 m_n50;                                          // +0x50
+    CStringA m_strUrl;                                      // +0x58
+    int m_n60;                                              // +0x60
+};
+MS2_CHECK_SIZE(CUgcItemLook, 0x68);
+
+// An upload: the owner and the file.
+class CUgcUpload : public CPtred
+{
+public:
+    CUgcUpload();                                           // 0x140893590
+    virtual ~CUgcUpload();                                  // 0x140893600
+
+    void Clear();                                           // 0x140893670
+    bool CopyFrom(const CUgcUpload* pOther);                // 0x1408936e0
+    void Write(COutputStream& stream) const;                // 0x140893780
+    void Read(CInPacket& packet);                           // 0x140893820
+
+    int m_nKind;                                            // +0x18
+    int m_n1c;                                              // +0x1c
+    CUgcUserProxy m_user;                                   // +0x20
+    CUgcUploadProxy m_upload;                               // +0x60
+};
+MS2_CHECK_SIZE(CUgcUpload, 0x98);
+
+// The tail record of a music note (inline ctor 0x1408993b0, dtor 0x1408998d0).
+struct Unk_UgcMusicInfo
+{
+    Unk_UgcMusicInfo() : m_n00(0), m_n08(0), m_n10(0) {}
+    int m_n00;                                              // +0x00
+    __int64 m_n08;                                          // +0x08
+    __int64 m_n10;                                          // +0x10
+    CStringW m_str18;                                       // +0x18
+};
+MS2_CHECK_SIZE(Unk_UgcMusicInfo, 0x20);
+
+// A music score item.
+class CUgcItemMusicNote : public CPtred
+{
+public:
+    CUgcItemMusicNote();                                    // 0x1408938d0
+    virtual ~CUgcItemMusicNote();                           // 0x140893970
+
+    void Clear();                                           // 0x1408939f0
+    void CopyFrom(const CUgcItemMusicNote* pOther);         // 0x140893aa0
+    void FUN_140893bb0(const void* pSource, __int64 nId);   // takes the music record of a CItem
+    void Write(COutputStream& stream) const;                // 0x140893cc0
+    void Read(CInputStream& stream);                        // 0x140893e10
+    CStringA FUN_140894060() const;                         // the title of the music book
+
+    __int64 m_n18;                                          // +0x18
+    int m_n20;                                              // +0x20
+    int m_n24;                                              // +0x24 music book id
+    CStringW m_str28;                                       // +0x28
+    CStringW m_str30;                                       // +0x30
+    CStringA m_str38;                                       // +0x38
+    Unk_UgcMusicInfo m_info;                                // +0x40
+};
+MS2_CHECK_SIZE(CUgcItemMusicNote, 0x60);
+
+// A market search condition (this unit's own; CMeratMarketSchCond is the merat market's).
+class CUgcMarketSchCond : public CPtred
+{
+public:
+    CUgcMarketSchCond();                                    // 0x140894120
+    explicit CUgcMarketSchCond(CInPacket& packet);          // 0x140894180
+    virtual ~CUgcMarketSchCond();                           // 0x1408941f0
+
+    void Clear();                                           // 0x140894250
+    void CopyFrom(const CUgcMarketSchCond* pOther);         // 0x1408942c0
+    void Write(COutputStream& stream) const;                // 0x140894360
+    void Read(CInPacket& packet);                           // 0x140894420
+    void WriteShort(COutputStream& stream) const;           // 0x1408945c0
+    void ReadShort(CInputStream& stream);                   // 0x140894670
+    int FUN_140894750() const;                              // page of m_n30 (10 per page), -1 when 0
+    int FUN_1408947a0() const;                              // first entry of that page
+    int FUN_1408947f0() const;                              // last entry of that page
+    int FUN_140894840() const;
+    CStringA FUN_1408948a0() const;                         // name of the order kind m_n20 (0..5)
+    int FUN_140894960() const;                              // m_n18
+    int FUN_140894990() const;                              // m_n18 rounded up to its hundred's last
+    int FUN_140894a10(const CUgcMarketSchCond* pOther) const;
+
+    int m_n18;                                              // +0x18
+    int m_n1c;                                              // +0x1c
+    int m_n20;                                              // +0x20
+    CStringW m_str28;                                       // +0x28
+    int m_n30;                                              // +0x30
+    int m_n34;                                              // +0x34
+};
+MS2_CHECK_SIZE(CUgcMarketSchCond, 0x38);
