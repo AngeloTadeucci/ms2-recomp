@@ -91,6 +91,8 @@ public:
     bool LoadReward();                           // 0x1401961c0
     bool LoadAbility();                          // 0x140196550
     bool LoadMission();                          // 0x1401968b0
+    void* FindUnused1(unsigned nKey, unsigned nSub);    // 0x140195dd0 (always null; the +0x10 set is never filled)
+    void* FindUnused2(unsigned nKey);           // 0x140195e00 (always null)
     const CAdventureLevelReward* GetReward(unsigned nLevel);        // 0x140195e30
     const CAdventureLevelAbility* GetAbility(unsigned nEffectId);   // 0x140195ed0
     const CAdventureLevelMission* GetMission(unsigned nMissionId);  // 0x140196090

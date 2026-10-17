@@ -298,7 +298,6 @@ bool FUN_14028f710(Unk_140165cf0*);
 CString FUN_14015f710(Unk_140165cf0*, const char*, CString strDefault);   // string attribute (default by value)
 class Unk_140166410 { public: bool FUN_14036d570(int); };
 Unk_140166410* FUN_140166410();
-void FUN_14019d470(bool);
 
 int FUN_1408731a0(Unk_140165cf0*, const char*, unsigned short*);
 int FUN_1408731e0(Unk_140165cf0*, const char*, int*);
@@ -314,6 +313,7 @@ public:
 MS2_CHECK_OFFSET(Unk_ALSkillAttr, m_nKind, 0x30);
 class Unk_ALSkillTable { public: MS2Ptr<Unk_ALSkillAttr> FUN_140aafef0(int nSkillId, unsigned short nLevel); };
 
+extern bool DAT_143aac290;    // set once the table loaded
 extern void* DAT_143aac278;   // the CAdventureLevelTable singleton
 extern void* DAT_143aac288;   // the effect manager singleton
 extern CAdventureLevelReward DAT_142ceae98;    // the exe's default rows
@@ -438,6 +438,12 @@ CAdventureLevelTable::~CAdventureLevelTable()
 {
 }
 
+// @0x14019d470
+void FUN_14019d470(bool bLoaded)
+{
+    DAT_143aac290 = bLoaded;
+}
+
 // @0x140195d30
 bool CAdventureLevelTable::LoadAll()
 {
@@ -453,6 +459,20 @@ bool CAdventureLevelTable::LoadAll()
         return false;
     FUN_14019d470(true);
     return true;
+}
+
+// @0x140195dd0
+void* CAdventureLevelTable::FindUnused1(unsigned nKey, unsigned nSub)
+{
+    void* pFound = 0;
+    return pFound;
+}
+
+// @0x140195e00
+void* CAdventureLevelTable::FindUnused2(unsigned nKey)
+{
+    void* pFound = 0;
+    return pFound;
 }
 
 // The two table loaders of the exe that load nothing.
