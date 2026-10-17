@@ -379,13 +379,18 @@ MS2_REPLACE_METHOD(0x140654790, CLogString, FUN_140654790, 370, 0x57C96FE3);
 bool CLogString::FUN_140654910() { return true; }
 MS2_REPLACE_METHOD(0x140654910, CLogString, FUN_140654910, 8, 0x71679366);
 
-// MS2-FUNCTIONAL: Equivalent financial prefix and account identifiers; temporary expression differs.
 // @0x140654920
 void CLogString::FUN_140654920(unsigned __int64 account,unsigned __int64 character,unsigned category,const CStringW& text)
 {
-    CStringW line; line.Format(L"[F][LT%02u]",category);
-    if(account==0 && character==0) line.Append(text);
-    else { line.AppendFormat(L"[ac=%I64u][ch=%I64u]",account,character); line.Append(text); }
+    CStringW line;
+    line.Format(L"[F][LT%02u]",category);
+    if (!(account==0 && character==0))
+    {
+        line.AppendFormat(L"[ac=%I64u][ch=%I64u]",account,character);
+        line.Append(text);
+    }
+    else
+        line.Append(text);
     FUN_140653d40(line);
 }
 MS2_REPLACE_METHOD(0x140654920, CLogString, FUN_140654920, 178, 0x52509381);
