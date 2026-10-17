@@ -46,14 +46,41 @@ public:
 Unk_GameFeatures* FUN_140166410();
 
 // Unit-local view of the game's TiXmlElement (0x90 bytes).
+// TinyXML attribute (only the sentinel of an element's attribute set is touched here).
+class Unk_TiXmlAttribute
+{
+public:
+    void* unknown00[7];                         // TiXmlBase, document, name, value, prev
+    Unk_TiXmlAttribute* next;                   // +0x38
+};
+MS2_CHECK_SIZE(Unk_TiXmlAttribute, 0x40);
+
+class Unk_TiXmlAttributeSet
+{
+public:
+    // @0x140552d70
+    Unk_TiXmlAttribute* First() { return (sentinel.next == &sentinel) ? 0 : sentinel.next; }
+    Unk_TiXmlAttribute sentinel;
+};
+
 class Unk_TiXmlElement
 {
 public:
     Unk_TiXmlElement(const char* pszName);      // 0x14086f2f0
     ~Unk_TiXmlElement();                        // 0x14086f450
+    // @0x140552e00
+    bool HasAttributes() { return attributeSet.First() == 0 ? false : true; }
+    // @0x140552e40
+    bool HasChildren() { return firstChild == 0 ? false : true; }
+    // @0x140552e70
+    bool HasContent() { return HasAttributes() || HasChildren(); }
 private:
-    void* m_data[0x12];
+    void* unknown00[5];                         // TiXmlBase, parent, type
+    void* firstChild;                           // +0x28
+    void* unknown30[4];                         // lastChild, value, prev, next
+    Unk_TiXmlAttributeSet attributeSet;         // +0x50
 };
+MS2_CHECK_SIZE(Unk_TiXmlElement, 0x90);
 
 // Drops one leading and one trailing comma of a joined list (an inline helper of the XML writers).
 inline void TrimCommas(CString& str)
@@ -728,4 +755,194 @@ void MsTransform::FUN_140546940(void* pElem)
         FUN_140874ad0(pElem, "rotation", rotation);
     if (scale != 1.0f)
         FUN_140873e30(pElem, "scale", scale);
+}
+
+// @0x140546a00
+ItemModelHead::ItemModelHead() : flag10(false), flag11(false), unknown14(0), scale(false), rotation(false),
+    translation(false), capAttach(false)
+{
+}
+
+// @0x140546a90
+int ItemModelHead::FUN_140546a90(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pCustomize = pElem->FUN_140165cf0("customize");
+    if (pCustomize == 0)
+        return 1;
+    FUN_1408730a0(pCustomize, "color", flag10);
+    FUN_140873220(pCustomize, "colorPalette", unknown14);
+    CString strIds = FUN_14015f710(pCustomize, "defaultColorIndex", "-1");
+    XmlSplit(strIds, ids, ",");
+    CString strDelays = FUN_14015f710(pCustomize, "colorDelay", "");
+    XmlSplit(strDelays, unknown30, ",");
+    FUN_1408730a0(pCustomize, "scale", scale);
+    FUN_1408730a0(pCustomize, "rotation", rotation);
+    FUN_1408730a0(pCustomize, "translation", translation);
+    FUN_1408730a0(pCustomize, "capAttach", capAttach);
+    flag11 = ids.size() > 1;
+    if (unknown14 == 0)
+        flag10 = false;
+    Unk_140165cf0* pCapTransform = pCustomize->FUN_140165cf0("capTransform");
+    if (pCapTransform != 0)
+    {
+        handle.AssignRaw(new MsTransform);
+        handle->FUN_1405468d0(pCapTransform);
+    }
+    return 1;
+}
+
+// The joined id/delay lists are built and trimmed but never written (as in the original).
+// @0x140546d70
+int ItemModelHead::FUN_140546d70(void* pParent)
+{
+    Unk_TiXmlElement elem("customize");
+    if (flag10)
+        FUN_140873ca0(&elem, "color", flag10 ? 1 : 0);
+    if (unknown14 != 0)
+        FUN_140873ce0(&elem, "colorPalette", unknown14);
+    if (ids.size() > 0 && ids[0] != -1)
+    {
+        CString str;
+        for (int nId : ids)
+            str.AppendFormat(",%s", nId);
+        TrimCommas(str);
+    }
+    if (unknown30.size() > 0 && unknown30[0] != 0)
+    {
+        CString str;
+        for (int nDelay : unknown30)
+            str.AppendFormat(",%s", nDelay);
+        TrimCommas(str);
+    }
+    if (scale)
+        FUN_140873ca0(&elem, "scale", 1);
+    if (rotation)
+        FUN_140873ca0(&elem, "rotation", 1);
+    if (translation)
+        FUN_140873ca0(&elem, "translation", 1);
+    if (capAttach)
+        FUN_140873ca0(&elem, "capAttach", 1);
+    if (handle.get() != 0)
+    {
+        Unk_TiXmlElement transform("transform");
+        handle->FUN_140546940(&transform);
+        if (transform.HasContent())
+            FUN_14086e000(&elem, &transform);
+    }
+    if (elem.HasContent())
+        FUN_14086e000(pParent, &elem);
+    return 1;
+}
+
+// @0x140547130
+bool ItemModelHead::FUN_140547130()
+{
+    return scale;
+}
+
+// @0x140547150
+bool ItemModelHead::FUN_140547150()
+{
+    return rotation;
+}
+
+// @0x140547170
+bool ItemModelHead::FUN_140547170()
+{
+    return translation;
+}
+
+// @0x140547190
+bool ItemModelHead::FUN_140547190()
+{
+    return flag10;
+}
+
+// @0x1405471b0
+bool ItemModelHead::FUN_1405471b0()
+{
+    return capAttach;
+}
+
+// @0x1405471d0
+bool ItemModelHead::FUN_1405471d0()
+{
+    return FUN_140547150() || FUN_140547170() || FUN_140547130();
+}
+
+// @0x140547230
+bool ItemModelHead::FUN_140547230()
+{
+    return flag11;
+}
+
+// @0x140547250
+int ItemModelHead::FUN_140547250()
+{
+    return unknown14;
+}
+
+// @0x140547270
+int ItemModelHead::FUN_140547270(int nIndex) const
+{
+    int nCount = (int)ids.size();
+    if (nCount == 0 || nCount <= nIndex)
+        return -1;
+    return ids[nIndex];
+}
+
+// @0x1405472d0
+int ItemModelHead::FUN_1405472d0(int nIndex) const
+{
+    int nCount = (int)unknown30.size();
+    if (nCount == 0 || nCount <= nIndex)
+        return 0;
+    return unknown30[nIndex];
+}
+
+// @0x140547330
+size_t ItemModelHead::FUN_140547330()
+{
+    return ids.size();
+}
+
+// @0x140547360
+MsTransform* ItemModelHead::FUN_140547360()
+{
+    return handle.get();
+}
+
+// @0x140547390
+ItemMaterial::ItemMaterial()
+{
+    unknown0 = 0;
+    attack = 0;
+}
+
+// @0x1405473c0
+int ItemMaterial::FUN_1405473c0(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pMaterial = pElem->FUN_140165cf0("material");
+    if (pMaterial != 0)
+    {
+        FUN_1408731e0(pMaterial, "ui", unknown0);
+        FUN_1408731e0(pMaterial, "attack", attack);
+    }
+    return 1;
+}
+
+// @0x140547440
+int ItemMaterial::FUN_140547440(void* pParent)
+{
+    return 1;
+}
+
+// @0x140547460
+bool ItemMaterial::FUN_140547460(const ItemMaterial* pOther)
+{
+    if (unknown0 != pOther->unknown0)
+        return true;
+    if (attack != pOther->attack)
+        return true;
+    return false;
 }

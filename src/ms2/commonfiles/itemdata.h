@@ -201,8 +201,8 @@ struct ItemModelHead                // <customize> block, 0x50 bytes at ItemMode
     bool FUN_1405471d0();           // any of three flags
     bool FUN_140547230();           // more than one default colour
     int FUN_140547250();            // +0x14
-    int FUN_140547270(int nIndex);  // the nIndex-th entry of the id list, -1 when out of range
-    int FUN_1405472d0(int nIndex);  // the nIndex-th colour delay, 0 when out of range
+    int FUN_140547270(int nIndex) const;    // the nIndex-th entry of the id list, -1 when out of range
+    int FUN_1405472d0(int nIndex) const;    // the nIndex-th colour delay, 0 when out of range
     size_t FUN_140547330();         // size of the id list
     MsTransform* FUN_140547360();   // the cap transform (may be null)
     MS2Ptr<MsTransform> handle;     // +0x00 <capTransform>
