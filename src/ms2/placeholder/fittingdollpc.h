@@ -47,7 +47,7 @@ public:
     virtual void vfunc_59(int nState, StateData* pData, int nSub, int bForce);   // 59 0x1416537d0
     virtual int vfunc_116();                                // 116 0x14165ebe0 (PCBase's is pure)
     // slots AvatarPC inherits from here (declared so the vftable resolves to the exe slots)
-    virtual void vfunc_107(void* p, float f);               // 107 0x14165f720
+    virtual void vfunc_107(MS2Ptr<CDamageRecord> spRecord, float fScale); // 107 0x14165f720
     virtual void vfunc_113(void* p);                        // 113 0x14165fec0
     virtual void vfunc_114(void*);                          // 114 0x14165c4e0
     virtual float vfunc_115(float a, float b, float c, float d, int nFlag, int* pOut);// 115 0x14165e500

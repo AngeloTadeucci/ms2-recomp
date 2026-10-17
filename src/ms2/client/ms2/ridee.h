@@ -63,7 +63,8 @@ public:
     int m_nType;                                            // +0x38 1/2: the rider is not slowed down
     char m_pad_3c[0x1c];
     float m_fScale;                                         // +0x58
-    char m_pad_5c[8];
+    int m_n5c;                                              // +0x5c nonzero: the rider is hidden while riding
+    char m_pad_60[4];
     int m_n64;                                              // +0x64 nonzero: the ridee can be left by a type 0xf ride off
     char m_pad_68[4];
     int m_nSeats;                                           // +0x6c (>1: the ridee carries passengers)
@@ -85,7 +86,8 @@ public:
     CString m_strD0;                                        // +0xd0 run loop effect
     CString m_strD8;                                        // +0xd8 run loop effect (stamina)
     CString m_strE0;                                        // +0xe0 idle loop effect
-    char m_pad_e8[0x20];
+    CString m_strE8;                                        // +0xe8 ride-off effect (RideOffAction type 0x18)
+    char m_pad_f0[0x18];
     float m_f108;                                           // +0x108 box width
     float m_f10c;                                           // +0x10c box depth
     float m_f110;                                           // +0x110 box height

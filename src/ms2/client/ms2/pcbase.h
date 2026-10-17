@@ -227,7 +227,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_b18> vfunc_104(bool a, bool b, bool c);  // 104 0x1416739c0 (base: null; 3 bools per Ridee)
     virtual void vfunc_105(efd::Point3 kPos, void* b, void* c, int d);   // 105 0x141673a10 (kPos by value per Ridee)
     virtual void vfunc_106(const efd::Point3& kMove, double dTime, int nFlags);   // 106 0x141674750 move by a delta
-    virtual void vfunc_107(void* p, float f);               // 107 0x141674020
+    virtual void vfunc_107(MS2Ptr<CDamageRecord> spRecord, float fScale); // 107 0x141674020 knock-back from a hit
     virtual int vfunc_108();                                // 108 0x141674bf0
     virtual void vfunc_109(int n);                          // 109 0x141674c00
     virtual void vfunc_110();                               // 110 0x141674c50
@@ -395,7 +395,7 @@ public:
     efd::Point3 FUN_141674b60(efd::Point3 kDir);             // 0x141674b60 local dir -> world dir
     int FUN_141674bc0();                                     // 0x141674bc0 (buffs)
     NiAVObject* FUN_141675150(const CString& strNode);       // 0x141675150 the named node (the ridee's when riding)
-    void FUN_141675240();                                    // 0x141675240 (buffs)
+    unsigned int FUN_141675240();                            // 0x141675240 movement flags of the buffs
     efd::SmartPointer<NiAVObject> FUN_1416757c0(CString strName);   // 0x1416757c0 node of +0xb88
     efd::SmartPointer<NiAVObject> FUN_1416758a0(CString strName);   // 0x1416758a0 node of +0xbb8
     efd::SmartPointer<NiAVObject> FUN_141675930();          // 0x141675930 copy of +0xbe8
@@ -547,8 +547,8 @@ public:
     Unk_PCBaseFlags m_unk_c08;          // +0xc08 hide reasons
     int m_unk_c0c;                      // +0xc0c
     efd::Point3 m_posC10;               // +0xc10 = ZERO (fall start height)
-    NiPoint3 m_posC1C;                  // +0xc1c
-    NiPoint3 m_posC28;                  // +0xc28
+    efd::Point3 m_posC1C;               // +0xc1c the move requested this frame (vfunc_68)
+    efd::Point3 m_posC28;               // +0xc28 the body position before this frame's move
     efd::SmartPointer<NiAVObject> m_spC38;  // +0xc38 (init 0x14097eba0(p,0))
     efd::SmartPointer<NiAVObject> m_spC40;  // +0xc40 (init 0x14097eba0(p,0)) attached under "Eff_UI"
     int m_unk_c48;                      // +0xc48 = 5
