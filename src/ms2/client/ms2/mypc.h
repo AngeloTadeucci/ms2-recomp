@@ -184,6 +184,7 @@ public:
     void FUN_14152a4a0(PCBase* pTarget);                    // observe pTarget
     void FUN_14152a960();                                   // stop observing
     void FUN_14152a360(PCBase* pTarget);                     // point the construction guide camera at pTarget
+    void FUN_14152a700(PCBase* pTarget);                     // fly the camera to the construction guide pTarget
     void FUN_14152a640(int nTeam);                          // observe a guild team
     void FUN_14152a2f0(int n);
     CSkillSystem* FUN_141523bc0();                          // the skill system

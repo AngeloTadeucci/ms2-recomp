@@ -49,6 +49,7 @@
 // MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetOn@@@@QEAA@XZ 0x141532a50
 // MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetTransfer@@@@QEAA@XZ 0x141532a80
 // MS2-PIN: ??B?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x141533120
+// MS2-PIN: ?FUN_141533e80@Unk_MyPCCameraCtl@@QEAA?AUUnk_StreamPoint@@XZ 0x141533e80
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -79,6 +80,8 @@
 #include "ms2/ms2format.h"
 #include "statedata.h"                       // StateSummonData
 #include "ms2/placeholder/statehomeconvenientdata.h"
+#include "camera.h"                         // Unk_CameraFlyBy
+#include "targetcameramode.h"
 #include "hook/ms2hook.h"
 
 
@@ -251,7 +254,7 @@ Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_RideeFieldObj : public CPtred {};                  // a named field object (Ridee view)
-class Unk_MyPCWorld { public: bool FUN_141bcb210(); NiPoint3 FUN_141bd37e0(); int FUN_141bdb660(int nKind); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: bool FUN_141bcb210(); NiPoint3 FUN_141bd37e0(); int FUN_141bdb660(int nKind); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); void FUN_141bbbda0(); int FUN_141bd3e00(); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
     egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
     void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
@@ -672,8 +675,15 @@ class Unk_MyPCPartyUI { public: void FUN_141b1fcf0(int nObjectId); };
 class Unk_MyPCStatusMgr { public: void FUN_141b0ce20(int nKind, int n); };
 Unk_MyPCStatusMgr* FUN_140aa6d40();
 class Unk_CameraTarget;
-class Unk_MyPCCameraCtl { public: void FUN_14183c3b0(float fZoomVelocity); void FUN_14183cc80(int n); };   // the active camera controller
-class Unk_MyPCCamera { public: int FUN_140a18070(); NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); void FUN_140af9b40(float fDistance); Unk_MyPCCameraCtl* FUN_140af2520(); };   // the camera target position
+// The active camera mode, the orbit camera in mode 2 (the construction guide reads its pose for a fly-by).
+class Unk_MyPCCameraCtl : public CTargetCameraMode
+{
+public:
+    // 0x141533e80 (inline)
+    Unk_StreamPoint FUN_141533e80() { return m_c0.m_pos; }
+    Unk_StreamPoint FUN_140af8260();   // the setting's m_18 (CCameraMode's inline; its harvested name is another copy)
+};
+class Unk_MyPCCamera { public: int FUN_140a18070(); NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); void FUN_140af9b40(float fDistance); Unk_MyPCCameraCtl* FUN_140af2520(); void FUN_140aed580(const Unk_CameraFlyBy* pFlyBy, int nKind, float fDuration); void FUN_140aed750(int nMode, int bKeep); };   // the camera target position
 Unk_MyPCCamera* FUN_1409478c0();
 // The local character's guild summary (FUN_140d295d0; the guild reading of the fields is a guess).
 struct Unk_MyPCGuildSummary
@@ -3673,6 +3683,43 @@ void MyPC::FUN_14152a360(PCBase* pTarget)
     FUN_1403ed2d0()->FUN_141bdb5a0(1);
 }
 MS2_REPLACE_METHOD(0x14152A360, MyPC, FUN_14152a360, 301, 0xE622FBE9);
+
+// Fly the camera to the construction guide object pTarget.
+// @0x14152a700
+void MyPC::FUN_14152a700(PCBase* pTarget)
+{
+    if (!pTarget)
+    {
+        MS2_ASSERT_AT(0x977, FALSE);
+        return;
+    }
+    NiPoint3 kPos = pTarget->vfunc_18();
+    float fVelocity = FUN_1401d3200()->ConstructionGuideCamVelocity.Read();
+    float fZoomVelocity = FUN_1401d3200()->ConstructionGuideCamZoomVelocity.Read();
+    FUN_1403ed2d0()->FUN_141bbbda0();
+    if (FUN_1409478c0()->FUN_140af7e30() == 2)
+    {
+        FUN_1409478c0()->FUN_140aeaf40(this, 0);
+        Unk_MyPCCameraCtl* pCtl = FUN_1409478c0()->FUN_140af2520();
+        pCtl->FUN_14183c3b0(fZoomVelocity);
+        pCtl->FUN_14183cc80(FUN_1403ed2d0()->FUN_141bd3e00());
+        Unk_CameraFlyBy kFlyBy;
+        kFlyBy.m_nKind = 1;
+        kFlyBy.m_fDuration = (vfunc_18() - kPos).Length() / fVelocity;
+        kFlyBy.m_from.m_0 = pCtl->FUN_140ad4b30();
+        kFlyBy.m_from.m_4 = pCtl->FUN_140af7ef0();
+        kFlyBy.m_from.m_8 = pCtl->FUN_140af7e90();
+        kFlyBy.m_from.m_c = pCtl->FUN_141533e80();
+        kFlyBy.m_from.m_18 = pCtl->FUN_140af8260();
+        kFlyBy.m_to = kFlyBy.m_from;
+        FUN_1409478c0()->FUN_140aed580(&kFlyBy, 1, 1.0f);
+        FUN_1409478c0()->FUN_140aed750(2, 1);
+    }
+    else
+        FUN_1409478c0()->FUN_140aeaf40(this, 1);
+    FUN_1403ed2d0()->FUN_141bdb5a0(0);
+}
+MS2_REPLACE_METHOD(0x14152A700, MyPC, FUN_14152a700, 590, 0x52A01046);
 
 // @0x14152a640
 void MyPC::FUN_14152a640(int nTeam)
