@@ -624,7 +624,6 @@ void UICashAttendDialog::FUN_140bc56a0()
 // ---- COMDATs ----
 
 // @0x140bc5f90
-// MS2-FUNCTIONAL: the original is an unrecovered template member (COMDAT ahead of FUN_140bc5fc0); a plain function with the same body (as uiattendgiftdialog's FUN_14102f840).
 void FUN_140bc5f90(ATL::CAtlArray<MS2Ptr<GameEventCashAttendCli> >& dst,const ATL::CAtlArray<MS2Ptr<GameEventCashAttendCli> >& src) { dst.Copy(src); }
 
 // @0x140bc5fc0
