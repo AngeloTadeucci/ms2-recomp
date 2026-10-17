@@ -2678,3 +2678,9 @@ inflateInit_	142723ad0	func
 ?CopyFrom@CUgcUploadProxy@@UEAAHPEBVIUgcProxy@@@Z	14088e8d0	func
 ?CopyFrom@CUgcBannerPost@@UEAAHPEBVIUgcProxy@@@Z	1408907d0	func
 ?DAT_143ab2e20@@3VUnk_UgcCubeInventory@@A	143ab2e20	data
+??0UIDialogEventDispatcher@@QEAA@XZ	141927fb0	func
+??1UIDialogEventDispatcher@@UEAA@XZ	141928000	func
+?vfunc_1@UIDialogEventDispatcher@@UEAAXH@Z	141928170	func
+?vfunc_2@UIDialogEventDispatcher@@UEAAXH@Z	141928200	func
+?vfunc_3@UIDialogEventDispatcher@@UEAAXPEAX@Z	141928290	func
+?vfunc_4@UIDialogEventDispatcher@@UEAAXPEAX@Z	141928320	func
