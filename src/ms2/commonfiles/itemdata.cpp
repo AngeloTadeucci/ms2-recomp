@@ -8,10 +8,10 @@
 // MS2-PIN: ?get@?$MS2Ptr@VItemModelData@@@@QEBAPEAVItemModelData@@XZ 0x140541280 ; unique
 // MS2-PIN: ??_GCItemData@@UEAAPEAXI@Z 0x140541480 ; unique
 // MS2-PINS-END tplpin
-// MS2-PIN: ??1?$MS2Ptr@VUnk_ModelResource@@@@QEAA@XZ 0x140540990
-// MS2-PIN: ?Release@?$MS2Ptr@VUnk_ModelResource@@@@AEAAXXZ 0x140542680
-// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_ModelResource@@@@AEAAXPEAX@Z 0x140542740
-// MS2-PIN: ?Reference@?$MS2Ptr@VUnk_ModelResource@@@@CAXPEAVUnk_ModelResource@@@Z 0x1405415c0
+// MS2-PIN: ??1?$MS2Ptr@VCharacterDecalData@@@@QEAA@XZ 0x140540990
+// MS2-PIN: ?Release@?$MS2Ptr@VCharacterDecalData@@@@AEAAXXZ 0x140542680
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCharacterDecalData@@@@AEAAXPEAX@Z 0x140542740
+// MS2-PIN: ?Reference@?$MS2Ptr@VCharacterDecalData@@@@CAXPEAVCharacterDecalData@@@Z 0x1405415c0
 // MS2-PIN: ??C?$MS2Ptr@VCItemData@@@@QEBAPEAVCItemData@@XZ 0x1405412a0
 // MS2-PIN: ??1?$vector@UModelGroup@@V?$allocator@UModelGroup@@@std@@@std@@QEAA@XZ 0x140540b60
 // MS2-PIN: ??_7CItemChangeBeautyTable@@6B?$TSingleton@VCItemChangeBeautyTable@@@@@ 0x142d58cb0

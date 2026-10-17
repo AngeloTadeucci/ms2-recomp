@@ -32,11 +32,11 @@ MS2_CHECK_SIZE(ItemPriceData, 0x18);
 struct ItemSkill                    // <skill skillID skillLevel>
 {
     ItemSkill();                    // 0x140546740
-    int FUN_140546770(Unk_140165cf0* pElem);        // XML read
-    int FUN_1405467f0(void* pParent);               // XML write
+    int FUN_140546770(Unk_140165cf0* pElem);        // XML read (the <skill> child of pElem)
+    int FUN_1405467f0(void* pParent);               // XML write (nothing)
     bool FUN_140546810(const ItemSkill* pOther);    // operator!=
-    int skillId;
-    unsigned short skillLevel;
+    unsigned skillId;               // +0x00 "skillID"
+    unsigned short skillLevel;      // +0x04 "skillLevel" (default 1)
     unsigned short unknown6;
 };
 MS2_CHECK_SIZE(ItemSkill, 0x8);
@@ -88,43 +88,54 @@ MS2_CHECK_OFFSET(ItemProperty, slotMax, 0x18);
 MS2_CHECK_OFFSET(ItemProperty, rePackingScrollID, 0x58);
 MS2_CHECK_OFFSET(ItemProperty, price, 0x80);
 
-struct ItemPeriod                   // <usePeriod ...>
+enum ItemExpirationType { ItemExpirationTypeNone = 0 };     // <life> "expirationType" (enumerators not recovered)
+
+struct ItemPeriod                   // <life ...>
 {
     ItemPeriod();                   // 0x1405460f0
     ~ItemPeriod();                  // 0x140540db0
-    int FUN_140546150(Unk_140165cf0* pElem);
-    int FUN_140546370(void* pParent);
-    bool FUN_140546620(const ItemPeriod* pOther);
-    int usePeriod;                  // +0x00
-    CMsTime expiration;             // +0x08
-    int expirationType;             // +0x18
-    int numberOfWeeksMonths;        // +0x1c
+    int FUN_140546150(Unk_140165cf0* pElem);        // XML read (the <life> child of pElem)
+    int FUN_140546370(void* pParent);               // XML write (nothing when all fields are empty)
+    bool FUN_140546620(const ItemPeriod* pOther);   // operator!=
+    int FUN_1405466d0();            // the item has a limited life
+    int usePeriod;                  // +0x00 "usePeriod"
+    CMsTime expiration;             // +0x08 "expirationPeriod" (y-m-d-h-m-s)
+    ItemExpirationType expirationType;  // +0x18 "expirationType"
+    unsigned numberOfWeeksMonths;   // +0x1c "numberOfWeeksMonths"
     CStringW termTag;               // +0x20
 };
 MS2_CHECK_SIZE(ItemPeriod, 0x28);
+
+// Enum attributes of <limit> (read with the tinyxmlhelper.h enum reader; the enumerators are not recovered).
+enum ItemTransferType { ItemTransferTypeNone = 0 };     // "transferType" / "globalTransferType"
+enum ItemEnableBreak { ItemEnableBreakNone = 0 };       // "enableBreak"
 
 struct ItemLimit                    // <limit ...>
 {
     ItemLimit();                    // 0x140545220
     ~ItemLimit();                   // 0x140540dd0
-    int FUN_1405452f0(Unk_140165cf0* pElem);
-    int FUN_140545510(void* pParent);
-    bool FUN_140545ad0(const ItemLimit* pOther);
+    int FUN_1405452f0(Unk_140165cf0* pElem);        // XML read (the <limit> child of pElem)
+    int FUN_140545510(void* pParent);               // XML write (nothing when equal to the default)
+    bool FUN_140545a80(const ItemLimit* pOther);    // operator==
+    bool FUN_140545ad0(const ItemLimit* pOther);    // operator!=
     bool FUN_140545c80(int nJob);                   // job allowed
-    bool FUN_140545da0(int nJob);
-    bool FUN_140545f30();
-    unsigned levelLimit;            // +0x00
-    int genderLimit;                // +0x04
+    bool FUN_140545da0(int nJob);                   // job recommended (true when none are)
+    bool FUN_140545e40();                           // the item has a job restriction
+    bool FUN_140545f30();                           // transfer type 0, 3, 4 or 5
+    unsigned FUN_140545f70();                       // job flags of the recommended jobs (0xfff when none)
+    unsigned FUN_140546030();                       // job flags of the job limit (0xfff when it allows all)
+    unsigned levelLimit;            // +0x00 "levelLimit" (default 1)
+    unsigned genderLimit;           // +0x04 "genderLimit" (default 2 = both)
     ATL::CAtlArray<unsigned> jobLimit;          // +0x08
     ATL::CAtlArray<unsigned> disableJobLimit;   // +0x28
     std::set<int> recommendJobs;    // +0x48
-    int transferType;               // +0x58
+    ItemTransferType transferType;  // +0x58
     int transferTypeVersion;        // +0x5c
-    int shopSell;                   // +0x60
-    int enableBreak;                // +0x64
+    bool shopSell;                  // +0x60
+    ItemEnableBreak enableBreak;    // +0x64
     bool enableRegisterMeratMarket; // +0x68
     bool exceptEnchant;             // +0x69
-    bool flag6a;                    // +0x6a
+    bool flag6a;                    // +0x6a "vip"
     bool wedding;                   // +0x6b
     int vipLevel;                   // +0x6c
 };

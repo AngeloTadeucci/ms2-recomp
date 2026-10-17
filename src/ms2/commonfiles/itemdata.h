@@ -14,10 +14,11 @@
 #include "ms2/placeholder/cvaliddata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/commonfiles/os.h"
+#include "ms2/placeholder/itemcustom.h"
+#include "ms2/placeholder/characterdecaldata.h"
 
 class Unk_140165cf0;    // game TinyXML element (declared where the loaders are)
-class Unk_ModelHandle;
-class Unk_ModelResource;
+class ItemCustom;
 
 // One <beauty> row of ItemChangeBeauty.xml (0x50 bytes; vftable has the deleting dtor only).
 class CChangeBeautyData : public CPtred
@@ -68,53 +69,86 @@ MS2_CHECK_OFFSET(CItemChangeBeautyTable, m_data, 0x60);
 
 // ---- The model block of an item row (RTTI ItemModelData, 0xe0 bytes; its constructor and accessors are in
 // commonfiles\itemdatastruct.cpp, the destructor and the destructors of its element types here).
-// Names of the element types are invented; only the members the destructors reach are typed.
-struct Unk_1401e4e10 { ~Unk_1401e4e10(); unsigned char m_raw[0x30]; };     // dtor 0x1401e4e10 (a map; layout not recovered)
+// Names of the element types are invented; member names are the XML attribute names their readers use
+// (commonfiles\itemdatastruct.cpp).
 
-struct ModelNameEntry               // 0x38 bytes: two names at +0x08 / +0x10
+struct ModelNameEntry               // <dummy> element of an <asset>, 0x38 bytes (ctor 0x1403142a0 and reader 0x140314350 elsewhere)
 {
+    ModelNameEntry();               // 0x1403142a0
     ~ModelNameEntry();              // 0x140540bc0
-    unsigned char unknown00[8];
-    CString nameA;                  // +0x08
-    CString nameB;                  // +0x10
-    unsigned char unknown18[0x20];
+    void FUN_140314350(Unk_140165cf0* pElem);       // XML read
+    int gender;                     // +0x00 "gender": 0, 1 or 2 (both lists; the ctor's default)
+    CString sequence;               // +0x08 "sequence"
+    CString targetNode;             // +0x10 "targetnode" (the part's target node when empty)
+    efd::Point3 rotation;           // +0x18 "rotation"
+    efd::Point3 translation;        // +0x24 "translation"
+    float step;                     // +0x30 "step"
+    bool worldMode;                 // +0x34 "worldmode"
+    bool worldLerp;                 // +0x35 "worldlerp"
 };
 MS2_CHECK_SIZE(ModelNameEntry, 0x38);
 
-struct ModelFloatList               // 0x28 bytes
+struct ModelFloatList               // <scale> element, 0x28 bytes
 {
+    ModelFloatList();               // 0x140544b10
     ~ModelFloatList();              // 0x140541080
-    unsigned char unknown00[0x10];
-    std::vector<float> values;      // +0x10
+    int FUN_140544b70(Unk_140165cf0* pElem);        // XML read
+    int FUN_140544c00(void* pParent);            // XML write (nothing)
+    float FUN_140544c20() const;    // a random entry of values, 1.0 when empty
+    float maxValue;                 // +0x00 "max" (default 1.0)
+    float minValue;                 // +0x04 "min"
+    int reverse;                    // +0x08 "reverse"
+    std::vector<float> values;      // +0x10 "value"
 };
 MS2_CHECK_SIZE(ModelFloatList, 0x28);
 
-struct ModelNamedColor              // 0x18 bytes, four of them in a ModelPart
+struct ModelNamedColor              // <jointangle> element, 0x18 bytes, four of them in a ModelPart
 {
+    ModelNamedColor();              // 0x140543a30
     ~ModelNamedColor();             // 0x140541060
-    CString name;
-    unsigned char unknown08[0x10];
+    CString name;                   // +0x00 "name"
+    float soft;                     // +0x08 "soft" (default 0.01)
+    float posz;                     // +0x0c "posz"
+    float zero;                     // +0x10 "zero"
+    float negz;                     // +0x14 "negz"
 };
 MS2_CHECK_SIZE(ModelNamedColor, 0x18);
 
-struct ModelPart                    // 0x158 bytes
+struct ModelPart                    // <asset> element, 0x158 bytes
 {
+    ModelPart();                    // 0x140543a90
     ~ModelPart();                   // 0x140540f60
-    int FUN_140544aa0(int nGender, int nB);
-    CString name0;                  // +0x00
-    CString name8;                  // +0x08
-    CString name10;                 // +0x10
-    CString name18;                 // +0x18
-    unsigned char unknown20[0x38];
-    Unk_1401e4e10 attach;           // +0x58
-    std::vector<efd::Point3> points;    // +0x88
-    std::vector<CString> names;     // +0xa0
-    ModelNamedColor colors[4];      // +0xb8
-    std::map<CString, CString> properties;  // +0x118
-    std::vector<ModelNameEntry> entries[2]; // +0x128
+    int FUN_140543ca0(Unk_140165cf0* pElem);        // XML read
+    int FUN_140544a80(void* pParent);            // XML write (nothing)
+    int FUN_140544aa0(int nGender, int nWeapon) const;   // the part is worn by the gender / weapon
+    CString name0;                  // +0x00 "name"
+    CString name8;                  // +0x08 "selfnode"
+    CString name10;                 // +0x10 "targetnode"
+    CString name18;                 // +0x18 "attachnode"
+    int isNif;                      // +0x20 the name ends in ".nif" (otherwise an animation urn)
+    int pony;                       // +0x24 "pony"
+    unsigned zalign;                // +0x28 "zalign"
+    int replace;                    // +0x2c "replace"
+    int earfold;                    // +0x30 "earfold"
+    int ani;                        // +0x34 "ani"
+    int emotionhide;                // +0x38 "emotionhide"
+    unsigned gender;                // +0x3c "gender" (default 2 = both)
+    float capscale;                 // +0x40 "capscale" (default 1.0)
+    float mantlescale;              // +0x44 "mantlescale" (default 1.0)
+    int ponyIndex;                  // +0x48 running index of the pony parts of a group
+    int weapon;                     // +0x4c "weapon"
+    int placeable;                  // +0x50 "placeable"
+    std::vector<MS2Ptr<ItemCustom> > customs;   // +0x58 <custom> children
+    efd::Point3 rotationMin;        // +0x70 <userrotation axis> "min"
+    efd::Point3 rotationMax;        // +0x7c <userrotation axis> "max"
+    std::vector<efd::Point3> points;    // +0x88 <userrotation axis> "default" lists
+    std::vector<CString> names;     // +0xa0 <physx action>
+    ModelNamedColor colors[4];      // +0xb8 <jointangle>
+    std::map<CString, CString> properties;  // +0x118 "capHair" values keyed "B", "C", ...
+    std::vector<ModelNameEntry> entries[2]; // +0x128 <dummy>
 };
 MS2_CHECK_SIZE(ModelPart, 0x158);
-MS2_CHECK_OFFSET(ModelPart, attach, 0x58);
+MS2_CHECK_OFFSET(ModelPart, customs, 0x58);
 MS2_CHECK_OFFSET(ModelPart, points, 0x88);
 MS2_CHECK_OFFSET(ModelPart, colors, 0xb8);
 MS2_CHECK_OFFSET(ModelPart, properties, 0x118);
@@ -124,34 +158,64 @@ struct ModelGroup                   // 0x38 bytes (also the unit's third static,
 {
     ModelGroup();                   // 0x140544ca0
     ~ModelGroup();                  // 0x140540f30
-    unsigned FUN_1405450c0();       // number of parts
-    ModelPart* FUN_140544fe0(unsigned nIndex);
-    int FUN_1405451a0();
+    void FUN_140544cf0(Unk_140165cf0* pElem);       // XML read
+    void FUN_140544f00(void* pParent);           // XML write (nothing)
+    const ModelFloatList* FUN_140544f20(size_t nIndex) const;   // the nIndex-th scale list (a static default when out of range)
+    const ModelPart* FUN_140544fe0(size_t nIndex) const;  // the nIndex-th part (a static default when out of range)
+    size_t FUN_140545090() const;       // number of scale lists
+    size_t FUN_1405450c0() const;       // number of parts
+    float FUN_1405450f0(int nIndex) const;              // a random value of the nIndex-th scale list
+    void FUN_140545130(const CString& strName);     // renames every part
+    int FUN_1405451a0() const;     // type
     std::vector<ModelPart> parts;   // +0x00
     std::vector<ModelFloatList> floats; // +0x18
-    int type;                       // +0x30
+    int type;                       // +0x30 "name"
 };
 MS2_CHECK_SIZE(ModelGroup, 0x38);
 
-class Unk_ModelHandle : public CPtred { public: virtual ~Unk_ModelHandle(); };    // pointee of ItemModelHead::handle
-class Unk_ModelResource : public CPtred { public: virtual ~Unk_ModelResource(); }; // pointee of ItemModelData::resource
+// RTTI MsTransform (0x38): the <capTransform> of an item's <customize> block (ctor and readers in
+// commonfiles\itemdatastruct.cpp; the implicit dtor 0x140552590 and ??_G 0x140552c20 are COMDATs there).
+class MsTransform : public CPtred
+{
+public:
+    MsTransform();                  // 0x140546860
+    void FUN_1405468d0(Unk_140165cf0* pElem);       // XML read
+    void FUN_140546940(void* pElem);                // XML write
+    efd::Point3 position;           // +0x18
+    efd::Point3 rotation;           // +0x24
+    float scale;                    // +0x30 (default 1.0)
+};
+MS2_CHECK_SIZE(MsTransform, 0x38);
 
-struct ItemModelHead                // 0x50 bytes at ItemModelData +0x48
+struct ItemModelHead                // <customize> block, 0x50 bytes at ItemModelData +0x48
 {
     ItemModelHead();                // 0x140546a00
     ~ItemModelHead();               // 0x140540c70
+    int FUN_140546a90(Unk_140165cf0* pElem);        // XML read
+    int FUN_140546d70(void* pParent);               // XML write
+    bool FUN_140547130();           // scale
+    bool FUN_140547150();           // rotation
+    bool FUN_140547170();           // translation
     bool FUN_140547190();           // flag at +0x10
+    bool FUN_1405471b0();           // capAttach
     bool FUN_1405471d0();           // any of three flags
+    bool FUN_140547230();           // more than one default colour
     int FUN_140547250();            // +0x14
     int FUN_140547270(int nIndex);  // the nIndex-th entry of the id list, -1 when out of range
+    int FUN_1405472d0(int nIndex);  // the nIndex-th colour delay, 0 when out of range
     size_t FUN_140547330();         // size of the id list
-    MS2Ptr<Unk_ModelHandle> handle; // +0x00
-    bool flag10;                    // +0x10
-    bool flag11;                    // +0x11
-    int unknown14;                  // +0x14
-    std::vector<int> ids;           // +0x18
-    std::vector<int> unknown30;     // +0x30
-    unsigned char unknown48[8];
+    MsTransform* FUN_140547360();   // the cap transform (may be null)
+    MS2Ptr<MsTransform> handle;     // +0x00 <capTransform>
+    bool flag10;                    // +0x10 "color"
+    bool flag11;                    // +0x11 more than one default colour index
+    unsigned unknown14;             // +0x14 "colorPalette"
+    std::vector<int> ids;           // +0x18 "defaultColorIndex"
+    std::vector<int> unknown30;     // +0x30 "colorDelay"
+    bool scale;                     // +0x48 "scale"
+    bool rotation;                  // +0x49 "rotation"
+    bool translation;               // +0x4a "translation"
+    bool capAttach;                 // +0x4b "capAttach"
+    int unknown4c;
 };
 MS2_CHECK_SIZE(ItemModelHead, 0x50);
 
@@ -160,24 +224,34 @@ class ItemModelData : public CCacheData
 public:
     ItemModelData();                // 0x14054ae00
     virtual ~ItemModelData();       // 0x140540e20
+    static unsigned FUN_14054aec0(unsigned nId);    // nId / 100000
+    void FUN_14054aee0(int n);      // m_nUnk28 = n
+    void FUN_14054af00(Unk_140165cf0* pElem);       // XML read
+    void FUN_14054b230(void* pParent);           // XML write (nothing)
+    void FUN_14054b250(const CString& strName);     // renames every part of every group
+    std::vector<CString>* FUN_14054b2c0(int nGender);   // the <cutting> names of a gender
     ModelGroup* FUN_14054b2f0(size_t nIndex);       // the nIndex-th group (a static empty one when out of range)
+    int FUN_14054b3b0();            // m_nUnk28
     size_t FUN_14054b3d0();         // number of groups
-    ItemModelHead* FUN_14054b690(); // &head
+    int FUN_14054b400();            // type of the first group, 0 when none
+    bool FUN_14054b450(int nType);  // a group has the type (type 19 stands for 4 and 5)
     bool FUN_14054b520();
-    int FUN_14054b550();
+    bool FUN_14054b550();
     int FUN_14054b580();
     int FUN_14054b5b0(int nIndex);
-    int FUN_14054b400();
-    bool FUN_14054b450(int nFlag);
     int FUN_14054b5e0(int nIndex);
-    int FUN_14054b640();
     size_t FUN_14054b610();
+    bool FUN_14054b640();
+    ItemModelHead* FUN_14054b670(); // &head
+    ItemModelHead* FUN_14054b690(); // &head
+    CharacterDecalData* FUN_14054b6b0();            // the decal block (may be null)
+    CStringW FUN_14054b6e0();       // name
     int m_nUnk28;                   // +0x28
     std::vector<ModelGroup> groups; // +0x30
     ItemModelHead head;             // +0x48
     std::vector<CString> names98;   // +0x98
     std::vector<CString> namesB0;   // +0xb0
-    MS2Ptr<Unk_ModelResource> resource;     // +0xc8
+    MS2Ptr<CharacterDecalData> resource;     // +0xc8
     CStringW name;                  // +0xd8
 };
 MS2_CHECK_SIZE(ItemModelData, 0xe0);
