@@ -303,6 +303,14 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4SAType@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@XZ 0x14018c220
 // MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalLevelData@@@@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@std@@@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018bf50
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@$00@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018c290
+// MS2-PIN: ??$construct@II@?$_Default_allocator_traits@V?$allocator@I@std@@@std@@SAXAEAV?$allocator@I@1@QEAI$$QEAI@Z 0x14017fbd0
+// MS2-PIN: ??$construct@II@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@QEAI$$QEAI@Z 0x14017fc10
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@1@AEAPEAU31@@Z 0x14017fcf0
+// MS2-PIN: ??$construct@PEA_WAEBQEA_W@?$_Default_allocator_traits@V?$allocator@_W@std@@@std@@SAXAEAV?$allocator@_W@1@QEAPEA_WAEBQEA_W@Z 0x14017fd90
+// MS2-PIN: ??$forward@AEBQEA_W@std@@YAAEBQEA_WAEBQEA_W@Z 0x140180900
+// MS2-PIN: ?_Get_data@?$_String_alloc@U?$_String_base_types@_WV?$allocator@_W@std@@@std@@@std@@QEBAAEBV?$_String_val@U?$_Simple_types@_W@std@@@2@XZ 0x14018bc90
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@$00@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalActionSkill@@@@@std@@@2@XZ 0x14018c270
+// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@2@XZ 0x14018d790
 // MS2-PINS-END w150-callsite
 // byte-identical IsSame* instances, pinned from their (exact) callers' call sites (AdditionalActionAdditional::IsDifferent
 // 0x14017005b, AdditionalLevelData::IsDifferent 0x140172265 / 0x1401720fd / 0x14017292e / 0x140172961 / 0x140172994)
@@ -1537,7 +1545,7 @@ unsigned __int64 AdditionalLevelData::GetKeyLevel(unsigned __int64 nKey)
 }
 
 // @0x140175790
-bool AdditionalLevelData::HasSA(SAType eType)
+bool AdditionalLevelData::HasSA(SAType eType) const
 {
     return m_status.m_mapSA.find(eType) != m_status.m_mapSA.end();
 }

@@ -537,7 +537,7 @@ public:
     static unsigned __int64 MakeKey(unsigned nID, unsigned short nLevel);   // 0x140175710
     static unsigned __int64 GetKeyID(unsigned __int64 nKey);                // 0x140175750
     static unsigned __int64 GetKeyLevel(unsigned __int64 nKey);             // 0x140175770
-    bool HasSA(SAType eType);                           // 0x140175790
+    bool HasSA(SAType eType) const;                     // 0x140175790 (calls the const find 0x1401900a0)
     void LoadCondition(Unk_140165cf0* pElem);           // 0x1401757f0
 
     AdditionalData* m_pParent;                          // +0x18
