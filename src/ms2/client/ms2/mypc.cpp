@@ -43,6 +43,10 @@
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
 // MS2-PIN: ??C?$MS2Ptr@VUnk_MyPCPortalLock@@@@QEBAPEAVUnk_MyPCPortalLock@@XZ 0x141533250
 // MS2-PIN: ??C?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x1415331b0
+// MS2-PIN: ??0?$MS2Ptr@VRideOffActionSummonPetOn@@@@QEAA@PEAVRideOffActionSummonPetOn@@@Z 0x141532270
+// MS2-PIN: ??0?$MS2Ptr@VRideOffActionSummonPetTransfer@@@@QEAA@PEAVRideOffActionSummonPetTransfer@@@Z 0x1415322a0
+// MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetOn@@@@QEAA@XZ 0x141532a50
+// MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetTransfer@@@@QEAA@XZ 0x141532a80
 // MS2-PIN: ??B?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x141533120
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
@@ -240,12 +244,19 @@ Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_RideeFieldObj : public CPtred {};                  // a named field object (Ridee view)
-class Unk_MyPCWorld { public: NiPoint3 FUN_141bd37e0(); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: NiPoint3 FUN_141bd37e0(); int FUN_141bdb660(int nKind); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
     egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
     void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
     class Unk_MyPCDropItem* FUN_141bd1d10(int a, int b); PCBase* FUN_141bd1290(int nObjectId); };
 Unk_MyPCWorld* FUN_1403ed2d0();
+
+// The pet table (FUN_14052d210) and the npc table row of a pet.
+class Unk_PetRow : public CPtred { public: int FUN_140728820(); };   // the npc id of the pet
+class Unk_PetRowTable { public: MS2Ptr<Unk_PetRow> FUN_1407290f0(int nPetId); };
+Unk_PetRowTable* FUN_14052d210();
+class Unk_1406cd330 : public CPtred {};
+MS2Ptr<Unk_1406cd330> FUN_1406cd330(int nNpcId);
 
 // An egf entity (property access, Ridee's view).
 class Unk_MyPCEntityModel { public: void FUN_140ae1f60(efd::utf8string& strOut); };   // model name
@@ -3381,6 +3392,73 @@ void MyPC::FUN_14152a960()
         pTeam->FUN_14133b0b0();
 }
 MS2_REPLACE_METHOD(0x14152A960, MyPC, FUN_14152a960, 290, 0x402A4FC1);
+
+// @0x14152aa90
+// Summon the pet of an item: the field must allow pets, binding the item is confirmed first (bConfirmed: the
+// box was already answered), and a mounted player gets off the ride before the summon.
+void MyPC::FUN_14152aa90(MS2Ptr<CItem> spItem, int bConfirmed)
+{
+    MS2Ptr<Unk_PetRow> spPet = FUN_14052d210()->FUN_1407290f0(spItem->FUN_140527840()->FUN_14053dc60());
+    if (spPet == 0)
+        return;
+    int nNpcId = spPet->FUN_140728820();
+    MS2Ptr<Unk_1406cd330> spNpc = FUN_1406cd330(nNpcId);
+    if (spNpc == 0)
+        return;
+    if (FUN_1403ed2d0()->FUN_141bd30a0().FUN_140885340()->m_nA8 == 0)
+    {
+        FUN_141275260(0x654, 1, 0);
+        return;
+    }
+    if (FUN_1403ed2d0()->FUN_141bdb660(7) != 0)
+    {
+        CStringW strText = FUN_140298ea0(L"s_ugcmap_fun_pvp_ffa_forbiden_summon_pet");
+        FUN_1412751f0(strText, 1, 0);
+        return;
+    }
+    if (bConfirmed == 0 && spItem->FUN_140527930()->FUN_140635100() != 0
+        && spItem->FUN_140527930()->FUN_140635120() == 0)
+    {
+        // summoning binds the pet: confirm first
+        CStringW strMsg = FUN_1405c2690(L"s_msg_transfer_bind_pet_summon", vfunc_77());
+        MS2Ptr<CMsgBoxData> spBox = FUN_140d73d20(0x11, strMsg, 0, s_strSummonBindPet);
+        if (spBox)
+        {
+            spBox->FUN_141a01600(spItem->FUN_140526a50());
+            spBox->FUN_141a01ee0(spItem, spItem->FUN_140527b10(), 1, 0, -1, -1, 1);
+            spBox->FUN_141a01700(0x477, 0x478, 0);
+            FUN_140d73c60(spBox);
+            return;
+        }
+    }
+    __int64 nSummoned = FUN_1416769f0();
+    if (nSummoned == 0)
+    {
+        if (FUN_1416764d0() != 0)
+        {
+            MS2Ptr<RideOffActionSummonPetOn> spAction(new RideOffActionSummonPetOn(0));
+            spAction->m_n28 = spItem->FUN_140526a50();
+            spAction->m_n30 = 0;
+            FUN_14152c280(spAction);
+        }
+        else
+            FUN_14152b2d0(spItem->FUN_140526a50());
+    }
+    else if (nSummoned == spItem->FUN_140526a50())
+        FUN_14152b800(nSummoned);
+    else
+    {
+        if (FUN_1416764d0() != 0)
+        {
+            MS2Ptr<RideOffActionSummonPetTransfer> spAction(new RideOffActionSummonPetTransfer(0));
+            spAction->m_n28 = spItem->FUN_140526a50();
+            FUN_14152c280(spAction);
+        }
+        else
+            FUN_14152b8d0(spItem->FUN_140526a50());
+    }
+}
+MS2_REPLACE_METHOD(0x14152AA90, MyPC, FUN_14152aa90, 2102, 0x48DF18E4);
 
 // @0x14152a360
 void MyPC::FUN_14152a360(PCBase* pTarget)
