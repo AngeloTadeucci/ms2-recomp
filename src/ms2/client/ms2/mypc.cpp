@@ -35,6 +35,10 @@
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_a68@@@@QEAAAEAV0@AEBV0@@Z 0x141532dc0
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@AEBV0@@Z 0x141532e00
 // MS2-PIN: ??4?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAAAEAV0@H@Z 0x141532e40
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@H@Z 0x141532470
+// MS2-PIN: ?AddRef@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEBAXXZ 0x141536f10
+// MS2-PIN: ??$DynamicCast@VUnk_MyPCPlotPC@@VGameObject@@@efd@@YAPEAVUnk_MyPCPlotPC@@AEAV?$SmartPointer@VGameObject@@@0@@Z 0x1415319d0
+// MS2-PIN: ??1CNode@?$CAtlList@V?$SmartPointer@VGameObject@@@efd@@V?$CElementTraits@V?$SmartPointer@VGameObject@@@efd@@@ATL@@@ATL@@QEAA@XZ 0x141532cc0
 // MS2-PIN: ??4?$MS2Ptr@VUnk_MyPCComp1618@@@@QEAAAEAV0@H@Z 0x141532ef0
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
 // MS2-PIN: ??C?$MS2Ptr@VUnk_MyPCPortalLock@@@@QEBAPEAVUnk_MyPCPortalLock@@XZ 0x141533250
@@ -117,12 +121,22 @@ class Unk_MyPCSkillRow : public CPtred
 {
 public:
     int FUN_1407e9a40();                                    // the skill id
+    int FUN_1407e9a60();                                    // the skill kind (4: the held item's skill)
+    int FUN_1407e9bd0();                                    // the skill type (0x1e: blocked by a buff state)
+    bool FUN_1407e9d30();                                   // limited uses
     bool FUN_1407e9d70();                                   // cast from an item only
-    char m_pad_18[0xa4 - 0x18];
+    bool FUN_1407e9e20();                                   // dismounts to cast
+    bool FUN_1407e9ef0();                                   // blocked while the content flag 0x36 is set
+    char m_pad_18[0x3d - 0x18];
+    bool m_bNoSwim;                                         // +0x3d not while swimming
+    char m_pad_3e[0xa4 - 0x3e];
     Unk_MyPCSkillSwap m_kSwap;                              // +0xa4
     unsigned char m_bAC;                                    // +0xac
     bool m_bNoSwap;                                         // +0xad
+    char m_pad_ae[0x1b8 - 0xae];
+    ATL::CAtlArray<unsigned int> m_aNeedBuffs;              // +0x1b8 the buffs the cast needs
 };
+MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_aNeedBuffs, 0x1b8);
 MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_kSwap, 0xa4);
 MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_bNoSwap, 0xad);
 
@@ -478,10 +492,14 @@ class CSkillRecord : public Unk_PCBaseComp_b18
 {
 public:
     __int64 FUN_1417599c0();                                // the item of an item skill
+    struct Unk_MyPCSkillMotion* FUN_141759830();            // the motion row
+    int FUN_141759960();                                    // the skill id
     MS2Ptr<Unk_InventorySkillLevel> m_spLevel;              // +0x40
     char m_pad_50[0x90 - 0x50];
     int m_n90;                                              // +0x90
-    char m_pad_94[0xac - 0x94];
+    char m_pad_94[0xa4 - 0x94];
+    int m_nA4;                                              // +0xa4
+    char m_pad_a8[0xac - 0xa8];
     bool m_bNoBindCheck;                                    // +0xac
     bool m_bAD;
     bool m_bStorageItem;                                    // +0xae the item may be in the storage
@@ -569,7 +587,8 @@ MS2_CHECK_SIZE(Unk_MyPCFurnitureUse, 0x10);
 void FUN_1401fc610(Unk_MyPCFurnitureUse& kUse, COutPacket& packet);
 Unk_MyPCPartyMgr* FUN_14109a6f0();
 int FUN_14082f1a0(int nType);
-class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); int FUN_140970020(int nBuffId, unsigned short nLevel, int nOwner, int nStacks); };
+class Unk_PCBaseBuffs { public: int FUN_1409701d0(int nKind); int FUN_140970020(int nBuffId, unsigned short nLevel, int nOwner, int nStacks);
+    int FUN_140970a00(); int FUN_140971260(unsigned int nBuffId); };
 class Unk_MyPCPetMgr { public: bool FUN_14162ab20(); int FUN_14162ae20(void* p); int FUN_14162ae90(void* p); void FUN_14162b560(CStringW strName); void FUN_14162b740(); };
 Unk_MyPCPetMgr* FUN_1409670d0();
 class Unk_MyPCTalkScript;
@@ -1815,6 +1834,138 @@ int MyPC::FUN_141525480(int nSkillId, bool bRemap)
     return vfunc_102(spRecord);
 }
 MS2_REPLACE_METHOD(0x141525480, MyPC, FUN_141525480, 250, 0xBAAB98AC);
+
+struct Unk_MyPCSkillMotion { char m_pad_00[0xb8]; float m_fB8; };   // +0xb8 the cast move distance
+bool FUN_14028d470(float a, float b);                       // a == b (within epsilon)
+unsigned int FUN_140803dc0(Unk_InventorySkillLevel* pLevel); // the row's skill id
+int FUN_14053dc90(Unk_ItemEquipData* pData);               // the skill of the item
+int FUN_14165f150(PCBase* pPC);                             // PC member: an item is held
+// PC::FUN_14165f100 returns the held item (fittingdollpc.h names it Unk_MyPCEmotion).
+class Unk_MyPCEmotion : public CItem {};
+class Unk_1401b4ec0                                         // the scoped lock (commonfiles\banktable.cpp)
+{
+public:
+    Unk_1401b4ec0(CLockCriticalSection& cs, int bLock);     // 0x1401b4ec0
+    ~Unk_1401b4ec0();                                       // 0x1401b5120
+private:
+    void* m_p;
+};
+// The item cooldowns (FUN_140302b00()->FUN_1403f3250()): item id -> end tick.
+class Unk_MyPCItemCools
+{
+public:
+    // @0x141534720
+    bool FUN_141534720(unsigned int nItemId)
+    {
+        Unk_1401b4ec0 lock(m_cs, 1);
+        return m_mapCools.find(nItemId) != m_mapCools.end();
+    }
+    char m_pad_00[0x18];
+    CLockCriticalSection m_cs;                              // +0x18
+    std::map<unsigned int, int> m_mapCools;                 // +0x48
+};
+class Unk_MyPCItemCoolOwner { public: Unk_MyPCItemCools* FUN_1403f3250(); };
+Unk_MyPCItemCoolOwner* FUN_140302b00();
+
+// The record may be cast now (the state, the held item, the buffs, the item cooldown). A skill that dismounts
+// is cast by getting off first (the ride-off action casts it).
+// @0x141525580
+// MS2-FUNCTIONAL: two argument loads go through an extra register (the level to FUN_141768fb0, the item id to
+// FUN_141534720), otherwise identical.
+bool MyPC::FUN_141525580(MS2Ptr<CSkillRecord> spRecord)
+{
+    switch (FUN_14166c930())
+    {
+    case 0x2b:
+    case 0x2f:
+        return false;
+    }
+    if (FUN_141527960() != 0)
+        return false;
+    MS2Ptr<Unk_MyPCSkillRow> spRow = spRecord->m_spRow;
+    MS2Ptr<Unk_InventorySkillLevel> spLevel = spRecord->m_spLevel;
+    efd::SmartPointer<Ridee> spRidee = FUN_1416764a0();
+    if (spRow->FUN_1407e9e20() && spRidee != 0)
+    {
+        if (spRidee->FUN_141675ed0() != 0)
+            FUN_14152c280(0);
+        else
+        {
+            if (spRecord->m_spRow->FUN_1407e9d70() && spRecord->FUN_1417599c0() != 0)
+            {
+                MS2Ptr<RideOffActionUseGlideItem> spAction(new RideOffActionUseGlideItem(0));
+                spAction->m_n28 = spRecord->FUN_1417599c0();
+                spAction->m_b30 = spRecord->m_bAD;
+                spAction->m_n34 = spRecord->m_nA4;
+                FUN_14152c280(spAction);
+            }
+            else
+            {
+                MS2Ptr<RideOffActionUseSkill> spAction(new RideOffActionUseSkill(0));
+                spAction->m_n28 = spRow->FUN_1407e9a40();
+                spAction->m_b2c = spRecord->m_bAD;
+                spAction->m_n30 = spRecord->m_nA4;
+                FUN_14152c280(spAction);
+            }
+        }
+        return false;
+    }
+    if (spRow->FUN_1407e9bd0() == 0x1e && FUN_1416749a0()->FUN_140970a00() != 0)
+        return false;
+    if (spRow->FUN_1407e9a60() == 4)
+    {
+        if (::FUN_14165f150(this) == 0)
+            return false;
+        Unk_MyPCEmotion* pItem = FUN_14165f100();
+        if (pItem == 0)
+            return false;
+        if (FUN_14053dc90(pItem->FUN_140527840()) != spRecord->FUN_141759960())
+            return false;
+    }
+    if (spRow->FUN_1407e9d30())
+    {
+        unsigned short nLevel = ::FUN_140803df0(spLevel.operator->());
+        if (m_kSkillSystem.FUN_141768fb0(FUN_140803dc0(spLevel.operator->()), nLevel) == 0)
+            return false;
+    }
+    Unk_MyPCSkillMotion* pMotion = spRecord->FUN_141759830();
+    if (pMotion != 0 && !FUN_14028d470(pMotion->m_fB8, 0.0f) && FUN_14166d220() == 0)
+        return false;
+    if (FUN_141675ed0() != 0 && spRow->m_bNoSwim)
+        return false;
+    if (FUN_14025e7b0()->m_8.FUN_1402c4c90(0x36) != 0 && spRow->FUN_1407e9ef0())
+    {
+        FUN_141275260(0x2f7, 1, 1);
+        return false;
+    }
+    unsigned __int64 nItemUid = spRecord->FUN_1417599c0();
+    if (nItemUid > 0)
+    {
+        MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+        if (spItem.get() != 0)
+        {
+            if (DAT_143ab2a90.FUN_140a661e0(spItem.get()) == 0)
+                return false;
+            int nItemId = spItem->FUN_1405276c0();
+            if (FUN_140302b00()->FUN_1403f3250()->FUN_141534720(nItemId))
+            {
+                FUN_141275260(0x2f7, 1, 1);
+                return false;
+            }
+        }
+    }
+    ATL::CAtlArray<unsigned int>& aNeedBuffs = spRow->m_aNeedBuffs;
+    if (!aNeedBuffs.IsEmpty())
+    {
+        for (unsigned int i = 0; i < aNeedBuffs.GetCount(); i++)
+        {
+            if (FUN_1416749a0()->FUN_140971260(aNeedBuffs[i]) == 0)
+                return false;
+        }
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x141525580, MyPC, FUN_141525580, 2653, 0xF67D1297);
 
 // Switch the skill to the one its level data names for the casting skill or an active buff.
 // @0x141526c80

@@ -65,6 +65,7 @@ public:
     int FUN_141768bd0(MS2Ptr<class CSkillRecord> spRecord); // the record may be cast during its cooldown
     void FUN_141766cc0(MS2Ptr<class CSkillRecord> spRecord);
     void FUN_141767990(int nSkillId, unsigned short nLevel); // start the cooldown
+    int FUN_141768fb0(unsigned int nSkillId, unsigned short nLevel);   // uses left
     void FUN_141768900(MS2Ptr<class CSkillRecord> spRecord);
     void* m_vfptr_unused_;                                  // +0x00 (vftable; slots unrecovered)
     unsigned char m_body[0x1e8];
