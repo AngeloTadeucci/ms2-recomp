@@ -259,13 +259,17 @@ MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_nOpenUi, 0x68);
 class Unk_GmMenuRef                             // = Unk_GuideMenuRef
 {
 public:
+    Unk_GmMenuRef() {}
+    // Move-only owner (exe 0x140cf8e30 steals m_8 and nulls the source; the dtor 0x140c1ccf0 releases it). Without
+    // this the implicit bitwise copy released the same entry twice.
+    Unk_GmMenuRef(Unk_GmMenuRef&& o) : m_0(o.m_0), m_8(o.m_8) { o.m_8 = 0; }   // 0x140cf8e30
     ~Unk_GmMenuRef();                           // 0x140c1ccf0
     bool FUN_140c1cd90() const;
     Unk_GmMenuEntry* FUN_140c1cda0() const;
     void* m_0;
     void* m_8;                                  // the entry (null: no such menu)
-    char m_pad_10[0x10];
 };
+MS2_CHECK_SIZE(Unk_GmMenuRef, 0x10);
 class Unk_GmNodeRef;
 class Unk_GmNodeArr                             // CAtlArray<Unk_GmNodeRef>
 {
