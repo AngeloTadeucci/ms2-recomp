@@ -2625,6 +2625,363 @@ void QuestDataTable::FUN_140750f30()
 }
 MS2_REPLACE_METHOD(0x140750F30, QuestDataTable, FUN_140750f30, 681, 0xCC1801CB);
 
+const char* FUN_14086f4b0(Unk_140165cf0* pElem, const char* pszName);
+
+// @0x1407511e0
+void QuestDataTable::FUN_1407511e0()
+{
+    m_quests.clear();
+    m_chapter.RemoveAll();
+    m_98.RemoveAll();
+    m_e0.RemoveAll();
+    m_420.clear();
+    m_390.RemoveAll();
+    m_128.RemoveAll();
+    m_1d8.RemoveAll();
+    m_1f8.RemoveAll();
+    m_240.RemoveAll();
+    m_2d0.RemoveAll();
+    m_318.RemoveAll();
+    m_378.clear();
+    for (int i = 0; i < 2; i++)
+        m_148[i].RemoveAll();
+}
+
+// @0x140751330
+int FUN_140751330(const CString& str)
+{
+    if (str.CompareNoCase("directaccept") == 0)
+        return 1;
+    else if (str.CompareNoCase("directcomplete") == 0)
+        return 2;
+    else if (str.CompareNoCase("monologueaccept") == 0)
+        return 3;
+    else if (str.CompareNoCase("monologuecomplete") == 0)
+        return 4;
+    return 0;
+}
+
+// @0x1407513c0
+int FUN_1407513c0(const CString& str)
+{
+    if (str.CompareNoCase("cinematic") == 0)
+        return 1;
+    else if (str.CompareNoCase("popup") == 0)
+        return 2;
+    else if (str.CompareNoCase("system") == 0)
+        return 3;
+    return 0;
+}
+
+// MS2-FUNCTIONAL: early-return/else-chain frame of the exe not reproduced (CompareNoCase chain).
+// @0x140751440
+int FUN_140751440(const CString& str)
+{
+    if (str.GetLength() == 0)
+    {
+        return 0;
+    }
+    else
+    {
+        if (str.CompareNoCase("global") == 0)
+            return 0;
+        else if (str.CompareNoCase("character") == 0)
+            return 1;
+        else if (str.CompareNoCase("account") == 0)
+            return 2;
+        return 0;
+    }
+}
+MS2_REPLACE(0x140751440, FUN_140751440, 119, 0xE563F2B7);
+
+// @0x1407514d0
+int FUN_1407514d0(const CString& str)
+{
+    if (str.CompareNoCase("special") == 0)
+        return 0;
+    else if (str.CompareNoCase("hidebeginablelist") == 0)
+        return 1;
+    else if (str.CompareNoCase("availablecompletionticket") == 0)
+        return 2;
+    else if (str.CompareNoCase("HideWorldMap") == 0)
+        return 3;
+    return 4;
+}
+
+// @0x140751560
+void FUN_140751560(Unk_140165cf0* pElem, ATL::CAtlArray<CString>& args)
+{
+    args.RemoveAll();
+    for (unsigned i = 0; i < 3; i++)
+    {
+        CString strName;
+        strName.Format("arg%d", i + 1);
+        const char* pszValue = FUN_14086f4b0(pElem, strName);
+        if (pszValue != 0)
+            args.SetAtGrow(i, CString(pszValue));
+    }
+}
+
+// @0x140751650
+int FUN_140751650(int nValue)
+{
+    if (nValue == 0)
+        return 1;
+    if (nValue == 2)
+        return 2;
+    if (nValue == 1)
+        return 3;
+    return 4;
+}
+
+// MS2-FUNCTIONAL: local slot order of the exe not reproduced.
+// @0x140751690
+int __cdecl FUN_140751690(const void* pA, const void* pB)
+{
+    const int* pFirst = (const int*)pA;
+    const int* pSecond = (const int*)pB;
+    int nTypeA = FUN_14074bc90(*pFirst);
+    int nTypeB = FUN_14074bc90(*pSecond);
+    int nResult;
+    if (nTypeA == nTypeB)
+    {
+        unsigned short nFirst = FUN_14074bd10(*pFirst);
+        unsigned short nSecond = FUN_14074bd10(*pSecond);
+        int nCmp;
+        if (nFirst < nSecond)
+            nCmp = -1;
+        else
+            nCmp = 1;
+        nResult = nCmp;
+    }
+    else
+    {
+        int nRankA = FUN_140751650(nTypeA);
+        int nRankB = FUN_140751650(nTypeB);
+        if (nRankA < nRankB)
+            nResult = -1;
+        else
+            nResult = 1;
+    }
+    return nResult;
+}
+MS2_REPLACE(0x140751690, FUN_140751690, 205, 0xE5D8EB85);
+
+// @0x140751770
+int __cdecl FUN_140751770(const void* pA, const void* pB)
+{
+    const int* pFirst = (const int*)pA;
+    const int* pSecond = (const int*)pB;
+    unsigned short nFirst = FUN_14074bd10(*pFirst);
+    unsigned short nSecond = FUN_14074bd10(*pSecond);
+    int nResult;
+    if (nFirst < nSecond)
+        nResult = -1;
+    else
+        nResult = 1;
+    return nResult;
+}
+
+int FUN_140219300(const CString& str);
+int FUN_140217cd0(const CString& str);
+int FUN_140217a00(const CString& str);
+int FUN_140217bd0(const CString& str);
+int FUN_140217ad0(const CString& str);
+int FUN_14021a570(const CString& str);
+int FUN_14021a1f0(const CString& str);
+
+// @0x140751e50
+int FUN_140751e50(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 231), 0));
+        return 2;
+    }
+    int nValue = 0;
+    int nResult = FUN_140873890(pElem, pszName, nValue);
+    if (nResult != 0)
+        return nResult;
+    *pOut = nValue;
+    return nResult;
+}
+
+// @0x140751ee0
+int FUN_140751ee0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 231), 0));
+        return 2;
+    }
+    int nValue = 0;
+    int nResult = FUN_140873890(pElem, pszName, nValue);
+    if (nResult != 0)
+        return nResult;
+    *pOut = nValue;
+    return nResult;
+}
+
+// @0x140751f70
+int FUN_140751f70(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140751330(str);
+    return nResult;
+}
+
+// @0x140752030
+int FUN_140752030(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140751440(str);
+    return nResult;
+}
+
+// @0x1407520f0
+int FUN_1407520f0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_1407513c0(str);
+    return nResult;
+}
+
+// @0x1407521b0
+int FUN_1407521b0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140219300(str);
+    return nResult;
+}
+
+// @0x140752270
+int FUN_140752270(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140217cd0(str);
+    return nResult;
+}
+
+// @0x140752330
+int FUN_140752330(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140217a00(str);
+    return nResult;
+}
+
+// @0x1407523f0
+int FUN_1407523f0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140217bd0(str);
+    return nResult;
+}
+
+// @0x1407524b0
+int FUN_1407524b0(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_140217ad0(str);
+    return nResult;
+}
+
+// @0x140752570
+int FUN_140752570(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_14021a570(str);
+    return nResult;
+}
+
+// @0x140752630
+int FUN_140752630(Unk_140165cf0* pElem, const char* pszName, int* pOut)
+{
+    if (0)
+    {
+        (void)((!!(0)) || (_wassert(L"FALSE", L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h", 250), 0));
+        return 2;
+    }
+    CString str;
+    int nResult = FUN_1408733e0(pElem, pszName, str);
+    if (nResult != 0)
+        return nResult;
+    *pOut = FUN_14021a1f0(str);
+    return nResult;
+}
+
 // @0x14075a3f0
 CString FUN_14016a5c0(const char* psz, int n);
 #ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's flag (symbols.tsv)
