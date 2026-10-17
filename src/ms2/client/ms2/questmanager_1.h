@@ -36,9 +36,10 @@ public:
     virtual int FUN_1407441f0(int field);
     virtual int FUN_1407443e0(int field);
     virtual int FUN_140744670(int field);
-    virtual bool FUN_1407447c0();
+    virtual int FUN_1407447c0();
     virtual __int64 FUN_1407448a0();
     virtual int FUN_140744b90(int field);
+    int FUN_140744cd0(int field);      // questdata.cpp: the quest's field exists
 };
 MS2_CHECK_SIZE(CQuestCommon, 8);
 
