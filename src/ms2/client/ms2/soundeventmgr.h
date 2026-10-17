@@ -175,7 +175,7 @@ public:
     void Clear();
 
     std::list<T> m_list;            // +0x08
-    int m_nPos;                     // +0x18
+    unsigned m_nPos;                // +0x18
 };
 
 // One music cue / music parameter record: the value and the priority that may overwrite it (0x100 = lowest).
