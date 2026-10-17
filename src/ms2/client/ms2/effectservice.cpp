@@ -1439,7 +1439,7 @@ unsigned CEffectService::FUN_1411a4a00(Unk_EffectTarget& kTarget)
         kTarget.FUN_140a53460()(nId, kTarget.m_strName, true);
     return nId;
 }
-MS2_REPLACE_METHOD(0x1411a4a00, CEffectService, FUN_1411a4a00, 1332, 0);
+MS2_REPLACE_METHOD(0x1411a4a00, CEffectService, FUN_1411a4a00, 1332, 0x9B8A2A0F);
 
 // @0x1411a4f40
 unsigned CEffectService::FUN_1411a4f40(CString strName, const NiPoint3& kPos)
@@ -2196,7 +2196,7 @@ void CEffectService::FUN_1411a8610()
             (const char*)spEffect->GetName());
     }
 }
-MS2_REPLACE_METHOD(0x1411a8610, CEffectService, FUN_1411a8610, 614, 0);
+MS2_REPLACE_METHOD(0x1411a8610, CEffectService, FUN_1411a8610, 614, 0x2F229D8F);
 
 // @0x1411a8e90
 // Stops the playing sound of every sound event effect.
@@ -2216,7 +2216,7 @@ void CEffectService::FUN_1411a8e90()
         }
     }
 }
-MS2_REPLACE_METHOD(0x1411a8e90, CEffectService, FUN_1411a8e90, 818, 0);
+MS2_REPLACE_METHOD(0x1411a8e90, CEffectService, FUN_1411a8e90, 818, 0x25B03289);
 
 // @0x1411a88c0
 int CEffectService::FUN_1411a88c0() { return m_unk_188; }
@@ -2256,7 +2256,7 @@ int CEffectService::FUN_1411a88e0(int nKind, float fDistance)
     }
     return nLevel;
 }
-MS2_REPLACE_METHOD(0x1411a88e0, CEffectService, FUN_1411a88e0, 496, 0);
+MS2_REPLACE_METHOD(0x1411a88e0, CEffectService, FUN_1411a88e0, 496, 0x52D9ED05);
 
 // @0x1411a8ae0
 CString CEffectService::FUN_1411a8ae0(int nCaster)
@@ -2282,7 +2282,7 @@ CString CEffectService::FUN_1411a8ae0(int nCaster)
         return "eCaster_Invalid";
     }
 }
-MS2_REPLACE(0x1411a8ae0, CEffectService::FUN_1411a8ae0, 406, 0);
+MS2_REPLACE(0x1411a8ae0, CEffectService::FUN_1411a8ae0, 406, 0x96A44569);
 MS2_REPLACE_METHOD(0x1411a88c0, CEffectService, FUN_1411a88c0, 17, 0x116875E2);
 
 // @0x1411a8880
@@ -2520,7 +2520,7 @@ efd::AsyncResult CEffectService::OnTick()
     }
     return efd::AsyncResult_Pending;
 }
-MS2_REPLACE_METHOD(0x1411a9e90, CEffectService, OnTick, 2029, 0);
+MS2_REPLACE_METHOD(0x1411a9e90, CEffectService, OnTick, 2029, 0x25D5022C);
 
 // @0x1411aa690
 efd::AsyncResult CEffectService::OnShutdown()
@@ -2574,7 +2574,7 @@ void CEffectService::FUN_1411aa800()
         }
     }
 }
-MS2_REPLACE_METHOD(0x1411aa800, CEffectService, FUN_1411aa800, 896, 0);
+MS2_REPLACE_METHOD(0x1411aa800, CEffectService, FUN_1411aa800, 892, 0xA1B8A085);
 
 // @0x1411aab90
 // Puts pObject 1500 units in front of the camera.
@@ -2590,7 +2590,7 @@ void CEffectService::FUN_1411aab90(NiAVObject* pObject)
     kPos += fDistance * pCamera->GetWorldDirection();
     pObject->SetTranslate(kPos);
 }
-MS2_REPLACE_METHOD(0x1411aab90, CEffectService, FUN_1411aab90, 168, 0);
+MS2_REPLACE_METHOD(0x1411aab90, CEffectService, FUN_1411aab90, 168, 0x05233260);
 
 // @0x1411aac40
 Unk_EsEffectGroup* CEffectService::FUN_1411aac40(unsigned nId)
@@ -2603,7 +2603,7 @@ Unk_EsEffectGroup* CEffectService::FUN_1411aac40(unsigned nId)
     }
     return it->second;
 }
-MS2_REPLACE_METHOD(0x1411aac40, CEffectService, FUN_1411aac40, 260, 0);
+MS2_REPLACE_METHOD(0x1411aac40, CEffectService, FUN_1411aac40, 260, 0x005316CD);
 
 // @0x1411aad50
 CString CEffectService::FUN_1411aad50()
@@ -2616,7 +2616,7 @@ CString CEffectService::FUN_1411aad50()
     }
     return strOut;
 }
-MS2_REPLACE_METHOD(0x1411aad50, CEffectService, FUN_1411aad50, 336, 0);
+MS2_REPLACE_METHOD(0x1411aad50, CEffectService, FUN_1411aad50, 336, 0x6ED9BE6C);
 
 // @0x1411aaeb0
 CString CEffectService::FUN_1411aaeb0()
@@ -2629,7 +2629,7 @@ CString CEffectService::FUN_1411aaeb0()
     }
     return strOut;
 }
-MS2_REPLACE_METHOD(0x1411aaeb0, CEffectService, FUN_1411aaeb0, 336, 0);
+MS2_REPLACE_METHOD(0x1411aaeb0, CEffectService, FUN_1411aaeb0, 336, 0xF41624C7);
 
 // @0x1411ab010
 void CEffectService::FUN_1411ab010(CString strName)
@@ -2638,7 +2638,7 @@ void CEffectService::FUN_1411ab010(CString strName)
         m_a190.RemoveAt(0, 1);
     m_a190.Add(strName);
 }
-MS2_REPLACE_METHOD(0x1411ab010, CEffectService, FUN_1411ab010, 116, 0);
+MS2_REPLACE_METHOD(0x1411ab010, CEffectService, FUN_1411ab010, 116, 0x7275652F);
 
 // @0x1411ab090
 void CEffectService::FUN_1411ab090(CString strName)
@@ -2647,7 +2647,7 @@ void CEffectService::FUN_1411ab090(CString strName)
         m_a1b0.RemoveAt(0, 1);
     m_a1b0.Add(strName);
 }
-MS2_REPLACE_METHOD(0x1411ab090, CEffectService, FUN_1411ab090, 116, 0);
+MS2_REPLACE_METHOD(0x1411ab090, CEffectService, FUN_1411ab090, 116, 0xB4C1ACF2);
 
 // @0x1411b0140
 Unk_EsEffectGroup::~Unk_EsEffectGroup()
