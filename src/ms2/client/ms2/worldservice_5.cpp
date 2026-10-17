@@ -1,6 +1,8 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). WorldService COMDAT tail, sub-unit #5 (owner ws3).
 // MS2-UNIT: ?\worldservice.cpp#5
 // MS2-RANGE: 0x141bf7060-0x141bfe180 .text$mn
+// MS2-PIN: ??8?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@UUnk_WsV9a0@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141bf7640 ; cf3: calls the empty _Compat 0x141c215b0 (vector iterator, not a tree iterator)
+// MS2-PIN: ??9?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@UUnk_WsV9a0@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141bf7950 ; cf3: calls ??8 0x141bf7640
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\worldservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "worldservice.h"
@@ -41,4 +43,10 @@ void Unk_WsAnchor()
     std::map<unsigned __int64, Unk_WsT7> m7; Unk_WsTouchTree(m7, 0);
     std::map<unsigned __int64, MS2Ptr<Unk_WsPtred> > m8; Unk_WsTouchTree(m8, 0);
     std::set<void*> m9; Unk_WsTouchTree(m9, 0);
+    // m_9a0's const_iterator ==/!= (0x141bf7640 / 0x141bf7950; == calls the empty _Compat 0x141c215b0). Without these
+    // the set<unsigned __int64> tree-iterator ??9 above paired with 0x141bf7950 by masked bytes (cf3, 2026-10-17).
+    std::vector<Unk_WsV9a0> v9a0;
+    std::vector<Unk_WsV9a0>::const_iterator a = v9a0.begin(), b = v9a0.end();
+    if (a == b || a != b)
+        ;
 }
