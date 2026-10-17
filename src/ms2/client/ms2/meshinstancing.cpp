@@ -152,7 +152,6 @@ void MeshInstancing::FUN_14147ca20(bool enabled) {
 }
 MS2_REPLACE_METHOD(0x14147ca20, MeshInstancing, FUN_14147ca20, 115, 0xCDBED009);
 // @0x14147caa0
-// MS2-FUNCTIONAL: codegen shape differs (frame/temp layout) from exe; behaviour equivalent
 void MeshInstancing::FUN_14147caa0() {
     ecr::RenderService* renderer = FUN_1413f9890();
     for (std::map<egf::EntityID, Unk_MeshInstanceEntry>::iterator it = entries.begin(); it != entries.end(); ++it) {
@@ -240,9 +239,12 @@ void MeshInstancing::FUN_14147d0c0(bool enabled) {
     }
 }
 // @0x14147d180
-// MS2-FUNCTIONAL: exe tests the SmartPointer via a bool temp; FUN_1408a9090 (symbol-table conflict) yields a plain test
 void MeshInstancing::FUN_14147d180(bool value) {
-    if (FUN_1408a9090(&source) && config.flags31) FUN_14098c6e0((egf::Entity*)source, 0x90d6d437, value);
+    if ((bool)(FUN_1408a9090(&source)))
+    {
+        if (config.flags31)
+            FUN_14098c6e0((egf::Entity*)source, 0x90d6d437, value);
+    }
 }
 // @0x14147d200
 NiNode* MeshInstancing::FUN_14147d200(egf::Entity* entity) {
