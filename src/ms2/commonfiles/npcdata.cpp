@@ -1164,3 +1164,398 @@ bool CNpcDataTable::NeedsLoad(int nNpcId)
         return false;
     return itLoaded->second != true;
 }
+
+// @0x1406cefb0
+static int Unk_ParsePropertyTag(const CStringA& strTag)
+{
+    if (strTag.IsEmpty())
+        return 0;
+    if (strTag.CompareNoCase("big_hp_bar") == 0)
+        return 1;
+    if (strTag.CompareNoCase("always_display_hp_bar") == 0)
+        return 2;
+    if (strTag.CompareNoCase("hide_hpbar_level") == 0)
+        return 3;
+    if (strTag.CompareNoCase("always_display_upper_hp_bar") == 0)
+        return 4;
+    if (strTag.CompareNoCase("damaged_hp_upper_hp_bar") == 0)
+        return 5;
+    if (strTag.CompareNoCase("ignore_pc") == 0)
+        return 6;
+    if (strTag.CompareNoCase("ai_wander_freely") == 0)
+        return 7;
+    if (strTag.CompareNoCase("dummy_npc") == 0)
+        return 8;
+    if (strTag.CompareNoCase("no_regen_hp") == 0)
+        return 9;
+    if (strTag.CompareNoCase("keep_battle") == 0)
+        return 10;
+    if (strTag.CompareNoCase("no_die") == 0)
+        return 11;
+    if (strTag.CompareNoCase("always_full_hp") == 0)
+        return 12;
+    if (strTag.CompareNoCase("event_icon") == 0)
+        return 13;
+    if (strTag.CompareNoCase("atp_formula_01") == 0)
+        return 14;
+    if (strTag.CompareNoCase("cube_shape_size") == 0)
+        return 15;
+    if (strTag.CompareNoCase("battle_on_spawn") == 0)
+        return 16;
+    if (strTag.CompareNoCase("fixed_big_monster") == 0)
+        return 17;
+    if (strTag.CompareNoCase("no_revise_stat") == 0)
+        return 18;
+    if (strTag.CompareNoCase("terrain_physx") == 0)
+        return 19;
+    if (strTag.CompareNoCase("immune_debuff") == 0)
+        return 20;
+    if (strTag.CompareNoCase("record_damage") == 0)
+        return 21;
+    if (strTag.CompareNoCase("no_send_proxy") == 0)
+        return 22;
+    if (strTag.CompareNoCase("ignore_check_target_by_additional") == 0)
+        return 23;
+    if (strTag.CompareNoCase("rarely_move_on_wander") == 0)
+        return 24;
+    if (strTag.CompareNoCase("back_to_on_battle_end") == 0)
+        return 25;
+    if (strTag.CompareNoCase("ignore_talk_distance") == 0)
+        return 26;
+    if (strTag.CompareNoCase("no_update_target_on_patrol") == 0)
+        return 27;
+    if (strTag.CompareNoCase("no_event_drop") == 0)
+        return 28;
+    if (strTag.CompareNoCase("collision_position") == 0)
+        return 29;
+    if (strTag.CompareNoCase("can_die_by_npc") == 0)
+        return 30;
+    MS2_ASSERT_AT(0x3a, 0);
+    return 0;
+}
+
+// --- CNpcData::LoadXml ------------------------------------------------------------------------------------------------
+bool FUN_1403d8350(Unk_140165cf0* pElem, const char* pszName, int& nOut);               // npc class reader
+unsigned FUN_14021c7c0(const CString& str);                                             // the id of a string key
+int FUN_14021bc30(const CStringA& strName);                                             // event tag by name
+const CString& FUN_14082efb0(int nStat);                                                // xml name of the nStat-th stat
+bool FUN_14036d570(void* pOptions, int nFeature);                                       // feature id check
+void FUN_1406a6d70(void* pLog, int a, int b, int c, const wchar_t* pszFormat, const int& nArg);
+void FUN_140177a80(void* pLog, int a, int b, const wchar_t* pszFormat, const int& nArg);
+void FUN_140177e10(const CStringA& str, ATL::CAtlArray<unsigned>& rOut, const char* pszSep);
+void FUN_140177db0(const CString& str, ATL::CAtlArray<unsigned short>& out, const char* szDelimiter);
+void FUN_1402c8940(const CString& str, std::vector<CString>& vec, const char* pszDelim);
+void FUN_140178270(const CStringA& str, std::vector<int>& rOut, const char* pszSep);
+int FUN_1401788f0(Unk_140165cf0*, const char*, ATL::CAtlArray<CStringA>&);
+int FUN_140178570(Unk_140165cf0*, const char*, ATL::CAtlArray<int>&);
+int FUN_140178770(Unk_140165cf0*, const char*, std::vector<unsigned>&);
+int FUN_1403759c0(Unk_140165cf0*, const char*, std::vector<short>&);
+int FUN_140874670(Unk_140165cf0* pElem, const char* pszName, Unk_StreamPoint& ptOut);
+CString FUN_14016a5c0(const char* psz, int n);
+void FUN_14015f050(const CString& str, ATL::CAtlArray<CString>& arr, const char* pszDelim);
+
+// The boss notify table (the pc bang style handle table): a handle lookup by (mode, npc id), then a per-node test.
+struct Unk_BossNotifyHandle { ~Unk_BossNotifyHandle(); unsigned long long m_a, m_b; };    // dtor 0x1403b87a0
+struct Unk_BossNotifyNode { char FUN_1403b8910(int n); };
+class Unk_BossNotifyMgr
+{
+public:
+    Unk_BossNotifyNode* FUN_1403b7c40(Unk_BossNotifyHandle* pOut, int nMode, int nNpcId);
+    void FUN_1403b7d30(int nNpcId, int nClass);
+};
+Unk_BossNotifyMgr* FUN_140541580();
+
+// @0x1406cfaa0
+static int FUN_1406cfaa0(Unk_140165cf0* pElem, const char* pszName, std::vector<CString>& rOut)
+{
+    CStringA str;
+    int nRet = FUN_1408733e0(pElem, pszName, str);
+    if (nRet == 0)
+        FUN_1402c8940(str, rOut, ",");
+    return nRet;
+}
+
+// @0x1406cfb20
+static int FUN_1406cfb20(Unk_140165cf0* pElem, const char* pszName, int& nOut)
+{
+    CStringA str;
+    int nRet = FUN_1408733e0(pElem, pszName, str);
+    if (nRet == 0)
+        nOut = FUN_14021c7c0(str);
+    return nRet;
+}
+
+// @0x1406cae60
+// MS2-FUNCTIONAL: 8 KB loader; the xml reads are in the exe's order, the frame/temporary layout is not matched
+bool CNpcData::LoadXml(Unk_140165cf0* pElem)
+{
+    FUN_1408733e0(pElem, "stringID", m_strStringId);
+    FUN_1408731e0(pElem, "friendly", m_nFriendly);
+    FUN_1408731e0(pElem, "npcAttackGroup", m_nAttackGroup);
+    FUN_1408731e0(pElem, "npcDefenseGroup", m_nDefenseGroup);
+    FUN_1408731e0(pElem, "kind", m_nKind);
+    FUN_140873220(pElem, "shopId", m_nShopId);
+    FUN_1408730a0(pElem, "minimap", m_bMinimap);
+    FUN_1408731e0(pElem, "defenceMaterial", m_nDefenceMaterial);
+    FUN_1408731e0(pElem, "hitImmune", m_nHitImmune);
+    FUN_1408731e0(pElem, "abnormalImmune", m_nAbnormalImmune);
+    FUN_1408731a0(pElem, "level", m_nLevel);
+    FUN_1403d8350(pElem, "class", m_nClass);
+    FUN_1408730a0(pElem, "rotationDisabled", m_bRotationDisabled);
+    FUN_1408730a0(pElem, "carePathToEnemy", m_bCarePathToEnemy);
+    FUN_1408733e0(pElem, "rankIcon", m_strRankIcon);
+    FUN_1408730a0(pElem, "talkAni", m_bTalkAni);
+    FUN_140873360(pElem, "damagedColorScale", m_fDamagedColorScale);
+    FUN_140873360(pElem, "damagedVibrateDuration", m_fDamagedVibrateDuration);
+    FUN_140873360(pElem, "damagedVibrateAmp", m_fDamagedVibrateAmp);
+    FUN_1408733e0(pElem, "portrait", m_strPortrait);
+    FUN_140873360(pElem, "checkCameraDistance", m_fCheckCameraDistance);
+    FUN_140873360(pElem, "extraCameraDistance", m_fExtraCameraDistance);
+    FUN_140873360(pElem, "bossSoundDistance", m_fBossSoundDistance);
+    FUN_140873360(pElem, "bossSoundEndDistance", m_fBossSoundEndDistance);
+    if (FUN_14036d570(FUN_140166410(), 0x2f))
+    {
+        if (FUN_140541580() == 0)
+            m_bBossNotifyDefault = 0;
+        else if (GetFriendly() < 1)
+        {
+            Unk_BossNotifyHandle handle;
+            Unk_BossNotifyNode* pNode = FUN_140541580()->FUN_1403b7c40(&handle, 2, GetId());
+            m_bBossNotifyDefault = pNode->FUN_1403b8910(0);
+            FUN_140541580()->FUN_1403b7d30(GetId(), m_nClass);
+        }
+        else
+        {
+            Unk_BossNotifyHandle handle;
+            Unk_BossNotifyNode* pNode = FUN_140541580()->FUN_1403b7c40(&handle, 1, GetId());
+            m_bBossNotifyDefault = pNode->FUN_1403b8910(0);
+        }
+    }
+    FUN_1408730a0(pElem, "bossNotify", m_bBossNotify);
+    FUN_140873220(pElem, "emotionID", m_nEmotionId);
+    FUN_1408730a0(pElem, "installNpc", m_bInstallNpc);
+    FUN_1406cfb20(pElem, "raceString", m_nRace);
+    FUN_1408732e0(pElem, "customExp", m_nCustomExp);
+    FUN_1408730a0(pElem, "lookAtMyPCWhenTalking", m_bLookAtMyPCWhenTalking);
+    FUN_1408730a0(pElem, "useTalkMotion", m_bUseTalkMotion);
+
+    std::vector<CString> propertyTags;
+    FUN_1406cfaa0(pElem, "propertyTags", propertyTags);
+    MS2_FOR_EACH(CStringA strTag, propertyTags)
+    {
+        int nTag = Unk_ParsePropertyTag(strTag);
+        if (nTag != 0)
+            m_propertyTags.set(nTag, true);
+    }
+    std::vector<CString> eventTags;
+    FUN_1406cfaa0(pElem, "eventTags", eventTags);
+    MS2_FOR_EACH(CStringA strTag, eventTags)
+    {
+        int nTag = FUN_14021bc30(strTag);
+        if (nTag != 0)
+            m_eventTags.set(nTag, true);
+    }
+
+    Unk_140165cf0* pChild = pElem->FUN_140165cf0("model");
+    if (pChild)
+    {
+        FUN_1408733e0(pChild, "kfm", m_model.m_strKfm);
+        FUN_140873360(pChild, "scale", m_model.m_fScale);
+        FUN_140873360(pChild, "anispeed", m_model.m_fAniSpeed);
+        FUN_1408731e0(pChild, "spawnAlphaAnimation", m_model.m_nSpawnAlphaAnimation);
+        FUN_140874670(pChild, "offset", m_model.m_vOffset);
+        FUN_140873360(pChild, "shadowScale", m_fShadowScale);
+        FUN_140873360(pChild, "rotationSpeed", m_fRotationSpeed);
+        FUN_140873360(pChild, "walkSpeed", m_fWalkSpeed);
+        FUN_140873360(pChild, "runSpeed", m_fRunSpeed);
+    }
+    pChild = pElem->FUN_140165cf0("stat");
+    if (pChild)
+    {
+        for (int i = 0; i < 0x23; ++i)
+        {
+            CString strName = FUN_14082efb0(i);
+            if (!strName.IsEmpty())
+                FUN_1408732e0(pChild, strName, m_stat.m_aBase[i]);
+        }
+        if (FUN_14036d570(FUN_140166410(), 0xb2))
+        {
+            FUN_140873360(pChild, "scaleStatRate_2", m_stat.m_fScaleStatRate);
+            FUN_1408732e0(pChild, "scaleBaseTap_2", m_stat.m_nScaleBaseTap);
+            FUN_1408732e0(pChild, "scaleBaseDef_2", m_stat.m_nScaleBaseDef);
+            FUN_140873360(pChild, "scaleBaseSpaRate_2", m_stat.m_fScaleBaseSpaRate);
+        }
+        else if (FUN_14036d570(FUN_140166410(), 0xb1))
+        {
+            FUN_140873360(pChild, "scaleStatRate_1", m_stat.m_fScaleStatRate);
+            FUN_1408732e0(pChild, "scaleBaseTap_1", m_stat.m_nScaleBaseTap);
+            FUN_1408732e0(pChild, "scaleBaseDef_1", m_stat.m_nScaleBaseDef);
+            FUN_140873360(pChild, "scaleBaseSpaRate_1", m_stat.m_fScaleBaseSpaRate);
+        }
+    }
+    pChild = pElem->FUN_140165cf0("distance");
+    if (pChild)
+    {
+        FUN_140873360(pChild, "avoid", m_distance.m_a);
+        FUN_140873360(pChild, "sight", m_distance.m_b);
+        FUN_140873360(pChild, "sightHeightUP", m_distance.m_c);
+        FUN_140873360(pChild, "sightHeightDown", m_distance.m_d);
+        FUN_140873360(pChild, "customLastSightRadius", m_distance.m_e);
+        FUN_140873360(pChild, "customLastSightHeightUp", m_distance.m_f);
+        FUN_140873360(pChild, "customLastSightHeightDown", m_distance.m_g);
+    }
+    pChild = pElem->FUN_140165cf0("skill");
+    if (pChild)
+    {
+        FUN_140178770(pChild, "ids", m_skill.m_aIds);
+        FUN_1403759c0(pChild, "levels", reinterpret_cast<std::vector<short>&>(m_skill.m_aLevels));
+        FUN_140178770(pChild, "probs", m_skill.m_aProbs);
+    }
+    pChild = pElem->FUN_140165cf0("additionalEffect");
+    if (pChild)
+    {
+        FUN_140177e10(FUN_14015f710(pChild, "codes", CString("")), m_effect.m_aCodes, ",");
+        FUN_140177db0(FUN_14015f710(pChild, "levels", CString("")), m_effect.m_aLevels, ",");
+        CString strGroup = FUN_14015f710(pChild, "group", CString(""));
+        std::vector<CString> groups;
+        FUN_1402c8940(strGroup, groups, ":");
+        for (size_t i = 0; i < groups.size(); ++i)
+        {
+            std::vector<int> pair;
+            FUN_140178270(groups[i], pair, ",");
+            if (pair.size() == 2)
+                m_effect.m_aGroups.push_back(std::pair<int, int>(pair[0], pair[1]));
+        }
+        FUN_140177e10(FUN_14015f710(pChild, "rewardCodes", CString("")), m_effect.m_aRewardCodes, ",");
+        FUN_140177db0(FUN_14015f710(pChild, "rewardLevels", CString("")), m_effect.m_aRewardLevels, ",");
+    }
+    pChild = pElem->FUN_140165cf0("interact");
+    if (pChild)
+    {
+        FUN_1408733e0(pChild, "interactFunction", m_interact.m_strFunction);
+        FUN_1408733e0(pChild, "interactCastingAnimation", m_interact.m_strCastingAnimation);
+        FUN_140873220(pChild, "interactCastingTime", m_interact.m_nCastingTime);
+        FUN_140873220(pChild, "interactCoolTime", m_interact.m_nCoolTime);
+        FUN_1408730a0(pChild, "interactIsShowCastingBar", m_interact.m_bShowCastingBar);
+    }
+    pChild = pElem->FUN_140165cf0("collision");
+    if (pChild)
+    {
+        FUN_1408733e0(pChild, "shape", m_collision.m_strShape);
+        FUN_140873360(pChild, "width", m_collision.m_fWidth);
+        FUN_140873360(pChild, "depth", m_collision.m_fDepth);
+        FUN_140873360(pChild, "height", m_collision.m_fHeight);
+        FUN_1408731e0(pChild, "widthOffset", m_collision.m_nWidthOffset);
+        FUN_1408731e0(pChild, "depthOffset", m_collision.m_nDepthOffset);
+        FUN_1408731e0(pChild, "heightOffset", m_collision.m_nHeightOffset);
+    }
+    pChild = pElem->FUN_140165cf0("nodeCollisions");
+    if (pChild)
+    {
+        Unk_140165cf0* nodes = pChild->FUN_140165cf0("collision");
+        for (Unk_XmlElementIterator it = begin(nodes), itEnd = end(nodes); it != itEnd; ++it)
+        {
+            Unk_140165cf0* pNode = *it;
+            MS2Ptr<NodeCollision> spNode(new NodeCollision);
+            FUN_1408733e0(pNode, "targetNode", spNode->m_strTargetNode);
+            FUN_140874670(pNode, "volume", spNode->m_vVolume);
+            FUN_140874670(pNode, "offset", spNode->m_vOffset);
+            m_aNodeCollision.Add(spNode);
+        }
+    }
+    pChild = pElem->FUN_140165cf0("nodeServerCollisions");
+    if (pChild)
+    {
+        Unk_140165cf0* nodes = pChild->FUN_140165cf0("collision");
+        for (Unk_XmlElementIterator it = begin(nodes), itEnd = end(nodes); it != itEnd; ++it)
+        {
+            Unk_140165cf0* pNode = *it;
+            MS2Ptr<NodeCollision> spNode(new NodeCollision);
+            FUN_140874670(pNode, "volume", spNode->m_vVolume);
+            FUN_140874670(pNode, "offset", spNode->m_vOffset);
+            m_aNodeServerCollision.Add(spNode);
+        }
+    }
+    pChild = pElem->FUN_140165cf0("capsule");
+    if (pChild)
+    {
+        FUN_140873360(pChild, "radius", m_capsule.m_fRadius);
+        FUN_140873360(pChild, "height", m_capsule.m_fHeight);
+        FUN_1408731e0(pChild, "ignore", m_capsule.m_nIgnore);
+        if (m_capsule.m_fRadius <= 0.0f || m_capsule.m_fHeight <= 0.0f)
+        {
+            int nId = GetId();
+            FUN_1406a6d70(FUN_140166440(), 0, 0, 0x16, L"NpcID={0}, Capsule.radius, Capsule.height는 0보다 커야합니다.", nId);
+        }
+    }
+    pChild = pElem->FUN_140165cf0("dead");
+    if (pChild)
+    {
+        FUN_140873360(pChild, "time", m_dead.m_fTime);
+        FUN_1401788f0(pChild, "defaultaction", m_dead.m_aDefaultAction);
+        FUN_1401788f0(pChild, "upaction", m_dead.m_aUpAction);
+        FUN_140873220(pChild, "revival", m_dead.m_nRevival);
+        FUN_1408731e0(pChild, "count", m_dead.m_nCount);
+        FUN_140873360(pChild, "lifeTime", m_dead.m_fLifeTime);
+        FUN_1408732a0(pChild, "extendRoomTime", m_dead.m_nExtendRoomTime);
+    }
+    pChild = pElem->FUN_140165cf0("push");
+    if (pChild)
+    {
+        FUN_140873360(pChild, "back", m_push.m_fBack);
+        FUN_140873360(pChild, "up", m_push.m_fUp);
+        FUN_140873360(pChild, "knockback", m_push.m_fKnockback);
+    }
+    pChild = pElem->FUN_140165cf0("normal");
+    if (pChild == 0)
+    {
+        m_normal.m_aActions.Add(std::make_pair(CStringA("Idle_A"), 1));
+        m_normal.m_nMoveArea = 200;
+    }
+    else
+    {
+        CString strAction = FUN_14015f710(pChild, "action", CString(""));
+        CString strProb = FUN_14015f710(pChild, "prob", CString(""));
+        ATL::CAtlArray<CString> actions;
+        ATL::CAtlArray<unsigned> probs;
+        FUN_14015f050(strAction, actions, ",");
+        FUN_140177e10(strProb, probs, ",");
+        if (probs.GetCount() < actions.GetCount())
+        {
+            int nId = GetId();
+            FUN_140177a80(FUN_140166440(), 1, 0x13, L"입력한 값의 갯수가 맞지 않습니다. NpcID {0} [normal : prob < action]", nId);
+            probs.SetCount(actions.GetCount(), -1);
+        }
+        for (unsigned i = 0; i < actions.GetCount(); ++i)
+            m_normal.m_aActions.Add(std::make_pair(CStringA(FUN_14016a5c0(actions[i], 0)), (int)probs[i]));
+        if (FUN_1408731e0(pChild, "movearea", m_normal.m_nMoveArea) != 0)
+            m_normal.m_nMoveArea = 200;
+    }
+    pChild = pElem->FUN_140165cf0("dropiteminfo");
+    if (pChild)
+    {
+        FUN_140178770(pChild, "globalDropBoxId", m_drop.m_aGlobalDropBoxId);
+        FUN_140178770(pChild, "globalDeadDropBoxId", m_drop.m_aGlobalDeadDropBoxId);
+        FUN_140178770(pChild, "individualDropBoxId", m_drop.m_aIndividualDropBoxId);
+        FUN_140178770(pChild, "globalHitDropBoxId", m_drop.m_aGlobalHitDropBoxId);
+        FUN_140178770(pChild, "individualHitDropBoxId", m_drop.m_aIndividualHitDropBoxId);
+        FUN_140873360(pChild, "dropHeight", m_drop.m_fDropHeight);
+        FUN_140873360(pChild, "dropDistanceBase", m_drop.m_fDropDistanceBase);
+        FUN_1408731e0(pChild, "dropDistanceRandom", m_drop.m_nDropDistanceRandom);
+        FUN_140873360(pChild, "fireVelocity", m_drop.m_fFireVelocity);
+    }
+    pElem->FUN_140165cf0("lookattarget");
+    pChild = pElem->FUN_140165cf0("corpse");
+    if (pChild)
+    {
+        FUN_140873360(pChild, "width", m_corpse.m_shape.m_fWidth);
+        FUN_140873360(pChild, "height", m_corpse.m_shape.m_fHeight);
+        FUN_140873360(pChild, "depth", m_corpse.m_shape.m_fDepth);
+        FUN_140873360(pChild, "added", m_corpse.m_fAdded);
+        FUN_140873360(pChild, "offsetNametag", m_corpse.m_fOffsetNametag);
+        FUN_1408731e0(pChild, "hitAble", m_corpse.m_nHitAble);
+        FUN_140178570(pChild, "rotation", m_corpse.m_aRotation);
+        FUN_1408733e0(pChild, "corpseEffect", m_corpse.m_strCorpseEffect);
+    }
+    return true;
+}
