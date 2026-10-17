@@ -208,7 +208,6 @@ size_t CConditionParam::GetIdCount()
 MS2_REPLACE_METHOD(0x14029e720, CConditionParam, GetIdCount, 64, 0xAD1ABFBA);
 
 // @0x14029e770
-// MS2-FUNCTIONAL: CAtlArray<__int64>::operator[] binds to the exe's other identical copy (symbol pairing only)
 __int64 CConditionParam::GetFirstValue()
 {
     if (m_flags.test(0) && m_ranges.GetCount() > 0)
