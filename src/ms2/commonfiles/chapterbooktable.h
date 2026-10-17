@@ -53,7 +53,7 @@ class CChapterBookTable : public TSingleton<CChapterBookTable>
 public:
     typedef MS2Ptr<CChapterBookData> DataPtr;
     typedef ATL::CAtlMap<int, DataPtr> DataMap;
-    typedef std::map<int, std::pair<int, int> > SkillMap;
+    typedef std::map<unsigned, std::pair<int, int> > SkillMap;
     typedef ATL::CAtlMap<int, int> StatMap;
 
     CChapterBookTable();                // 0x1401d8ec0
