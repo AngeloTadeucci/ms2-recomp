@@ -290,21 +290,22 @@ void FUN_14098ab60(NiAVObject* pkObject, ATL::CAtlArray<Unk_AlphaKey>& keys, con
 
 // ---- CAlphaAnimation ----
 
-// MS2-FUNCTIONAL: temporaries order differs; same calls and control flow
 // @0x14098b110
 bool CAlphaAnimation::vfunc_2()
 {
     float fNow = (float)FUN_141473280(FUN_14086d260());
-    if (fNow <= m_fEndTime)
-        return true;
-
-    if (m_idOwner != s_nullEntityId)
+    if (fNow > m_fEndTime)
     {
-        Unk_ActorSlots* pActor = FUN_141bd0fa0(FUN_1403ed2d0(), m_idOwner);
-        if (pActor)
-            pActor->vfunc_39();
+
+        if (m_idOwner != s_nullEntityId)
+        {
+            Unk_ActorSlots* pActor = FUN_141bd0fa0(FUN_1403ed2d0(), m_idOwner);
+            if (pActor)
+                pActor->vfunc_39();
+        }
+        return false;
     }
-    return false;
+    return true;
 }
 
 // @0x14098b1d0
