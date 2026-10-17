@@ -11,6 +11,7 @@
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/client/ms2/randomeffectparam.h"
 #include "ms2/ms2recover.h"
 
 static CString s_sortNames[]={"None","Buy","Like","PriceLow","PriceHigh","Create","EnumEnd"};
@@ -26,7 +27,8 @@ int FUN_14081d830(int nStat);                           // the special stat is a
 int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, int& nOut);
 int FUN_14015f500(Unk_140165cf0* pElem, const char* pszName, int* pOut);
 void FUN_14028f5d0(Unk_140165cf0* pParent, const char* pszChild, std::vector<Unk_140165cf0*>& arrOut);
-extern "C" double (__cdecl* __imp_floor)(double);   // the IAT floor (<math.h> declares it static-CRT)
+extern "C" double (__cdecl* __imp_floor)(double);
+template <class E> int XmlValueByName(Unk_140165cf0* pElem, const char* pszName, E& eOut);   // additionalactionadditional.cpp   // the IAT floor (<math.h> declares it static-CRT)
 
 // @0x1405ce250
 ItemOptionValue::ItemOptionValue()
@@ -1381,6 +1383,85 @@ void ItemOptionConstant::FUN_1405d3490(Unk_140165cf0* pElem)
     }
 }
 
+// @0x1405d37e0
+ItemOptionVariationData::ItemOptionVariationData()
+    : m_nId(0), m_nProbVer(1), m_eName((SAType)0), m_nHighStat(0)
+{
+}
+
+// @0x1405d3870
+void ItemOptionVariationData::FUN_1405d3870(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "id", m_nId);
+    FUN_140873220(pElem, "probVer", m_nProbVer);
+    XmlValueByName(pElem, "name", m_eName);
+    FUN_1408731e0(pElem, "highStat", m_nHighStat);
+    for (Unk_140165cf0* pChild : pElem->FUN_140165cf0("v"))
+    {
+        int stat = 0;
+        unsigned weight = 1;
+        FUN_1408731e0(pChild, "stat", stat);
+        FUN_140873220(pChild, "weight", weight);
+        MS2_ASSERT_AT(0x642, stat && weight);
+        m_vStats.push_back(std::make_pair(stat, weight));
+        m_picker.Register(weight, stat);
+    }
+}
+
+// @0x1405d3a20
+int ItemOptionVariationData::FUN_1405d3a20()
+{
+    return m_nId;
+}
+
+// @0x1405d3a40
+int ItemOptionVariationData::FUN_1405d3a40()
+{
+    int nStat = 0;
+    if (m_picker.Pick(nStat))
+        return nStat;
+    return 0;
+}
+
+// @0x1405d3a90
+int ItemOptionVariationData::FUN_1405d3a90(Unk_Random* pRandom)
+{
+    int nStat = 0;
+    if (m_picker.Pick(pRandom, nStat))
+        return nStat;
+    return 0;
+}
+
+// @0x1405d3ae0
+int ItemOptionVariationData::FUN_1405d3ae0()
+{
+    if (m_vStats.empty())
+        return 0;
+    return m_vStats.begin()->first;
+}
+
+// @0x1405d3b30
+int ItemOptionVariationData::FUN_1405d3b30()
+{
+    if (m_vStats.empty())
+        return 0;
+    return m_vStats.rbegin()->first;
+}
+
+// @0x1405d3b80
+int ItemOptionVariationData::FUN_1405d3b80()
+{
+    return m_nHighStat;
+}
+
+// @0x1405d3ba0
+bool ItemOptionVariationData::FUN_1405d3ba0(int nStat)
+{
+    if (m_nHighStat == 0)
+        return false;
+    return nStat >= m_nHighStat;
+}
+
 // @0x1405d3bf0
 ItemOptionRandom::ItemOptionRandom()
     : m_nCode(0), m_nProbVer(1), m_eStatGroup((ItemOptionStatGroup)0), m_nLevelGroupId(0), m_bRarePickOne(false),
@@ -1432,5 +1513,18 @@ bool ItemOptionRandom::FUN_1405d3d00(Unk_140165cf0* pElem)
             continue;
         m_vValues.push_back(spValue.get());
     }
+    return true;
+}
+
+// @0x1405eb520
+inline bool Unk_ItemOptionStatPicker::Pick(Unk_Random* pRandom, int& out) const
+{
+    if (m_total == 0)
+        return false;
+    unsigned roll = pRandom->FUN_1407684c0() % m_total + 1;
+    std::map<unsigned, Entry>::const_iterator it = m_entries.lower_bound(roll);
+    if (it == m_entries.end())
+        return false;
+    out = it->second.value;
     return true;
 }

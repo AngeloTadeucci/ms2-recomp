@@ -6,9 +6,11 @@
 #include <vector>
 #include <utility>
 #include <functional>
+#include <map>
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/ms2layout.h"
+#include "ms2/commonfiles/additionalactionadditional.h"   // SAType
 
 class CItemData;
 class CItemOption;
@@ -150,6 +152,85 @@ private:
     std::vector<MS2Ptr<ItemOptionValue> > m_vValues;    // +0x20
 };
 MS2_CHECK_SIZE(ItemOptionConstant, 0x38);
+
+unsigned FUN_140767ff0();                       // random number
+
+// Weighted stat choice of a variation row: every entry is keyed by the running weight total, so a roll in 1..total
+// finds the entry it falls on with lower_bound. The same shape as ItemDropPicker (itemdroptable.h) plus a Pick with
+// a given generator; names invented.
+class Unk_ItemOptionStatPicker
+{
+public:
+    struct Entry
+    {
+        Entry() : weight(0), index(0) {}
+        int value;
+        unsigned weight;
+        int index;                                  // insertion order
+    };
+
+    Unk_ItemOptionStatPicker() : m_total(0) {}
+    void Register(unsigned weight, int value)
+    {
+        if (weight < 1)
+            return;
+        m_total += weight;
+        Entry entry;
+        entry.value = value;
+        entry.weight = weight;
+        entry.index = (int)m_entries.size();
+        m_entries.insert(std::make_pair(m_total, entry));
+    }
+    bool Pick(Entry& out) const
+    {
+        if (m_total == 0)
+            return false;
+        unsigned roll = FUN_140767ff0() % m_total + 1;
+        std::map<unsigned, Entry>::const_iterator it = m_entries.lower_bound(roll);
+        if (it == m_entries.end())
+            return false;
+        out = it->second;
+        return true;
+    }
+    bool Pick(int& out) const
+    {
+        Entry entry;
+        if (Pick(entry) == true)
+        {
+            out = entry.value;
+            return true;
+        }
+        return false;
+    }
+    bool Pick(Unk_Random* pRandom, int& out) const;     // itemoptiondata_2.cpp
+private:
+    std::map<unsigned, Entry> m_entries;
+    unsigned m_total;
+};
+MS2_CHECK_SIZE(Unk_ItemOptionStatPicker, 0x18);
+
+// The stat variation rows (itemoptionvariation.xml): a weighted stat choice.
+class ItemOptionVariationData : public CPtred
+{
+public:
+    ItemOptionVariationData();                  // 0x1405d37e0
+    void FUN_1405d3870(Unk_140165cf0* pElem);   // xml read
+    int FUN_1405d3a20();                        // "id"
+    int FUN_1405d3a40();                        // a random stat (0 when none)
+    int FUN_1405d3a90(Unk_Random* pRandom);
+    int FUN_1405d3ae0();                        // the first stat
+    int FUN_1405d3b30();                        // the last stat
+    int FUN_1405d3b80();                        // "highStat"
+    bool FUN_1405d3ba0(int nStat);              // nStat reaches highStat
+private:
+    int m_nId;                                  // +0x18 "id"
+    int m_nProbVer;                             // +0x1c "probVer"
+    SAType m_eName;                             // +0x20 "name"
+    int m_nHighStat;                            // +0x24 "highStat"
+    std::vector<std::pair<int, unsigned> > m_vStats;    // +0x28 <v stat weight>
+    Unk_ItemOptionStatPicker m_picker;          // +0x40
+};
+MS2_CHECK_SIZE(ItemOptionVariationData, 0x58);
 
 enum ItemOptionStatGroup { };                   // "statGroup" (stored as a number; values not recovered)
 
