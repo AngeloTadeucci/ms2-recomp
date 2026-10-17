@@ -27,6 +27,7 @@ struct NpcEventDropEventContext;
 class SaleCube;
 class StampEventContext;
 class TimeRunEventContext;
+class QuestAdditionalRewardContext;
 enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 enum Unk_DungeonCooldownType {};
@@ -192,7 +193,12 @@ public:
 };  // vftable 0x142d415a0, ??_G 0x1403e9a10, dtor 0x1403e5b40
 MS2_CHECK_SIZE(CoupleDanceContext, 0xa0);
 class EnchantRateEventContext : public CPtred {
-    char m_pad_18[0x10];
+public:
+    // @0x1403e3f80
+    EnchantRateEventContext() : m_nEventId(0), m_1c(0), m_20(0) {}
+    int m_nEventId;                                 // +0x18
+    int m_1c;                                       // m_68
+    int m_20;                                       // m_70
 };  // vftable 0x142d41508, ??_G 0x1403e9a50, dtor 0x1403e5ba0
 MS2_CHECK_SIZE(EnchantRateEventContext, 0x28);
 class EventQuestContext : public CPtred {
@@ -453,8 +459,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c64a0
     virtual void vfunc_5();                     // 0x1403c6320
     virtual void vfunc_6();                     // 0x1403c6390
-private:
-    char m_pad_d0[0x10];
+    GameEventEnchantRate();
+    MS2Ptr<EnchantRateEventContext> m_pContext;
 };  // vftable 0x142d3ff28, ??_G 0x1403e9f90, dtor 0x1403e5f80
 MS2_CHECK_SIZE(GameEventEnchantRate, 0xe0);
 class GameEventEpicRestart : public GameEvent {
@@ -594,8 +600,9 @@ public:
     virtual void vfunc_2();                     // 0x1403c69c0
     virtual void vfunc_5();                     // 0x1403c6a10
     virtual void vfunc_6();                     // 0x1403c6a50
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildChampionship();
+    int m_d0;                                   // m_80 (when set)
+    int m_pad_d4;
 };  // vftable 0x142d3ffd8, ??_G 0x1403ea290, dtor 0x1403e61b0
 MS2_CHECK_SIZE(GameEventGuildChampionship, 0xd8);
 class GameEventGuildCoin : public GameEvent {
@@ -626,8 +633,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c75e0
     virtual void vfunc_5();                     // 0x1403c74b0
     virtual void vfunc_6();                     // 0x1403c7520
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildExp();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d40138, ??_G 0x1403ea350, dtor 0x1403e6210
 MS2_CHECK_SIZE(GameEventGuildExp, 0xd8);
 class GameEventGuildFund : public GameEvent {
@@ -650,8 +658,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c7300
     virtual void vfunc_5();                     // 0x1403c7240
     virtual void vfunc_6();                     // 0x1403c7280
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildPersonalSkillSale();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d400e0, ??_G 0x1403ea3d0, dtor 0x1403e6250
 MS2_CHECK_SIZE(GameEventGuildPersonalSkillSale, 0xd8);
 class GameEventGuildSkillSale : public GameEvent {
@@ -662,8 +671,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c7090
     virtual void vfunc_5();                     // 0x1403c6fd0
     virtual void vfunc_6();                     // 0x1403c7010
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildSkillSale();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d40088, ??_G 0x1403ea410, dtor 0x1403e6270
 MS2_CHECK_SIZE(GameEventGuildSkillSale, 0xd8);
 class GameEventGuildVsGameOpen : public GameEvent {
@@ -757,8 +767,11 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c5e80
     virtual void vfunc_5();                     // 0x1403c5fe0
     virtual void vfunc_6();                     // 0x1403c60e0
-private:
-    char m_pad_d0[0x48];
+    GameEventMassiveConstructionEvent();
+    explicit GameEventMassiveConstructionEvent(Unk_VftableEmitTag) {}
+    ATL::CAtlArray<unsigned> m_d0;              // construction ids (m_68)
+    int m_f0;                                   // m_70
+    ATL::CAtlArray<unsigned __int64> m_f8;      // m_78
 };  // vftable 0x142d3fed0, ??_G 0x1403ea610, dtor 0x1403e63d0
 MS2_CHECK_SIZE(GameEventMassiveConstructionEvent, 0x118);
 class GameEventMasteryReduce : public GameEvent {
@@ -969,8 +982,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c6dd0
     virtual void vfunc_5();                     // 0x1403c6c90
     virtual void vfunc_6();                     // 0x1403c6d10
-private:
-    char m_pad_d0[0x18];
+    GameEventQuestAdditionalReward();
+    unsigned m_d0;                              // m_68 (a short on the wire)
+    unsigned m_d4;                              // m_70 (a short on the wire)
+    MS2Ptr<QuestAdditionalRewardContext> m_d8;  // m_78
 };  // vftable 0x142d40030, ??_G 0x1403eaa50, dtor 0x1403e6680
 MS2_CHECK_SIZE(GameEventQuestAdditionalReward, 0xe8);
 class GameEventQuestTag : public GameEvent {
@@ -995,8 +1010,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c6810
     virtual void vfunc_5();                     // 0x1403c6760
     virtual void vfunc_6();                     // 0x1403c6790
-private:
-    char m_pad_d0[0x10];
+    GameEventRankDuel();
+    CStringW m_d0;                              // m_68
+    int m_d8;                                   // m_80 (when set)
+    int m_pad_dc;
 };  // vftable 0x142d3ff80, ??_G 0x1403eaad0, dtor 0x1403e66e0
 MS2_CHECK_SIZE(GameEventRankDuel, 0xe0);
 class GameEventReactor : public GameEvent {

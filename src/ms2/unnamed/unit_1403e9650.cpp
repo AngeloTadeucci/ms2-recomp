@@ -285,7 +285,6 @@ template void Unk_GameEventCopy<GameEventItemBuff>(void*, const GameEventItemBuf
 template void Unk_GameEventCopy<GameEventItemTradeRestriction>(void*, const GameEventItemTradeRestriction&);
 template void Unk_GameEventCopy<GameEventLevelUpPackage>(void*, const GameEventLevelUpPackage&);
 template void Unk_GameEventCopy<GameEventLongTermAttendGift>(void*, const GameEventLongTermAttendGift&);
-template void Unk_GameEventCopy<GameEventMassiveConstructionEvent>(void*, const GameEventMassiveConstructionEvent&);
 template void Unk_GameEventCopy<GameEventMasteryReduce>(void*, const GameEventMasteryReduce&);
 template void Unk_GameEventCopy<GameEventMasteryReward>(void*, const GameEventMasteryReward&);
 template void Unk_GameEventCopy<GameEventMeratMarketNotice>(void*, const GameEventMeratMarketNotice&);
@@ -375,6 +374,7 @@ void Unk_GameEventConstructTagged(void* p)
 template void Unk_GameEventConstructTagged<GameEventDungeonExtraReward>(void*);
 template void Unk_GameEventConstructTagged<GameEventSaleHousing>(void*);
 template void Unk_GameEventConstructTagged<StampEventContext>(void*);
+template void Unk_GameEventConstructTagged<GameEventMassiveConstructionEvent>(void*);
 template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);

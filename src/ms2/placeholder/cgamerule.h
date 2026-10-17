@@ -25,6 +25,8 @@ class EventTimeLimitDungeonContext;
 class SaleCube;
 class StampEventContext;
 class TimeRunEventContext;
+class EnchantRateEventContext;
+class QuestAdditionalRewardContext;
 enum Unk_SaleHousingKey : int;
 
 class CGameRule : public TSingleton<CGameRule>
@@ -96,6 +98,16 @@ public:
     void FUN_14047c8e0(MS2Ptr<StampEventContext> spContext);                      // GameEventStampEvent
     void FUN_14047c990(MS2Ptr<StampEventContext> spContext);
     void FUN_14047d650(MS2Ptr<TimeRunEventContext> spContext);              // GameEventTimeRunEvent start / end (null)
+    void FUN_14047dba0(unsigned id, int value);                                   // GameEventMassiveConstructionEvent
+    void FUN_14047dd60();
+    void FUN_14047df50(unsigned __int64 id);
+    void FUN_14047e0e0();
+    void FUN_14047e530(MS2Ptr<EnchantRateEventContext> spContext);                // GameEventEnchantRate
+    void FUN_14047e630(int eventId);
+    void FUN_14047e740(bool bOpen);                                               // GameEventRankDuel
+    void FUN_14047e830(bool bOpen);                                               // GameEventGuildChampionship
+    void FUN_14047e8e0(unsigned a, unsigned b, MS2Ptr<QuestAdditionalRewardContext> spContext);   // GameEventQuestAdditionalReward
+    void FUN_14047e980(unsigned a, unsigned b);
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

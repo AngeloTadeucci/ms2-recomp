@@ -29,6 +29,7 @@
 #include "ms2/placeholder/clientconstants.h"
 #include "ms2/placeholder/gameeventuservaluenametable.h"
 #include "ms2/client/ms2/uiservice.h"
+#include "ms2/client/ms2/guildmanager.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -77,6 +78,18 @@ CGameEventValueManager* FUN_140302b00();                                // TSing
 // The dungeon open period value (gameeventvalue.cpp): registers / removes a dungeon tag's open period.
 bool FUN_140427690(Unk_GameEventLockedValue<0x78>* pValue, CStringW strTag, __int64 beginTime, __int64 endTime);
 void FUN_140427780(Unk_GameEventLockedValue<0x78>* pValue, CStringW strTag);
+// The guild rate values (gameeventvalue.cpp): set / get the event rate.
+void FUN_1404234a0(Unk_GameEventLockedValue<0x38>* pValue, int rate);
+void FUN_1404235b0(Unk_GameEventLockedValue<0x38>* pValue, int rate);
+void FUN_1404236c0(Unk_GameEventLockedValue<0x38>* pValue, int rate);
+unsigned FUN_140423670(Unk_GameEventLockedValue<0x38>* pValue);
+CGuildManager* FUN_1403ed290();                                         // TSingleton<CGuildManager>::GetInstance
+// The feature switches (featuremanager): whether feature `nId` is on.
+class Unk_GuildFeatures {
+public:
+    bool FUN_14036d570(int nId);
+};
+Unk_GuildFeatures* FUN_140166410();
 // The common log (FUN_140166440()).
 class Unk_CommonLog
 {
@@ -2571,3 +2584,467 @@ int GameEventTimeRunEvent::FUN_1403c58e0(MS2Ptr<TimeRunEventContext> spContext)
     return 1;
 }
 MS2_REPLACE_METHOD(0x1403C58E0, GameEventTimeRunEvent, FUN_1403c58e0, 590, 0xC06EC853);
+
+// The uint64 flavour of FUN_140274fc0: every token, as unsigned __int64, into the array.
+// @0x1403d7cb0
+unsigned __int64 FUN_1403d7cb0(const CStringW& text) { return _wcstoui64(text, NULL, 10); }
+MS2_REPLACE(0x1403D7CB0, FUN_1403d7cb0, 42, 0x3B925566);
+
+// @0x1403d7f80
+void FUN_1403d7f80(CStringW& text, ATL::CAtlArray<unsigned __int64>& values, const wchar_t* delims)
+{
+    int nPos = 0;
+    CStringW strToken = text.Tokenize(delims, nPos);
+    while (!strToken.IsEmpty())
+    {
+        values.Add(FUN_1403d7cb0(strToken));
+        strToken = text.Tokenize(delims, nPos);
+    }
+}
+MS2_REPLACE(0x1403D7F80, FUN_1403d7f80, 191, 0x139C2656);
+
+// ---- GameEventMassiveConstructionEvent ------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regMassiveConstructionEvent(L"GameEventMassiveConstructionEvent", FUN_1403c5b40);
+#endif
+// @0x1403c5b40
+GameEvent* FUN_1403c5b40() { return new GameEventMassiveConstructionEvent; }
+
+// @0x1403c5ba0
+CStringW GameEventMassiveConstructionEvent::vfunc_1() { return CStringW(L"GameEventMassiveConstructionEvent"); }
+MS2_REPLACE_METHOD(0x1403C5BA0, GameEventMassiveConstructionEvent, vfunc_1, 61, 0x76A01F5C);
+
+// @0x1403c5bf0
+GameEventMassiveConstructionEvent::GameEventMassiveConstructionEvent()
+{
+    m_d0.RemoveAll();
+    m_f0 = 0;
+    m_f8.RemoveAll();
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c5cb0
+void GameEventMassiveConstructionEvent::vfunc_2()
+{
+    FUN_140274fc0(m_68, m_d0, L",");
+    m_f0 = FUN_1407181a0(&m_70);
+    FUN_1403d7f80(m_78, m_f8, L",");
+}
+MS2_REPLACE_METHOD(0x1403C5CB0, GameEventMassiveConstructionEvent, vfunc_2, 112, 0xEF12FB45);
+
+// @0x1403c5d30
+void GameEventMassiveConstructionEvent::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    unsigned nCount = (unsigned)m_d0.GetCount();
+    out->WriteInt(nCount);
+    for (size_t i = 0; i < nCount; i++)
+        out->WriteInt(m_d0[i]);
+    out->WriteInt(m_f0);
+    nCount = (unsigned)m_f8.GetCount();
+    out->WriteInt(nCount);
+    for (size_t i = 0; i < nCount; i++)
+        out->WriteInt64(m_f8[i]);
+}
+MS2_REPLACE_METHOD(0x1403C5D30, GameEventMassiveConstructionEvent, vfunc_3, 326, 0x892A9D0B);
+
+// @0x1403c5e80
+void GameEventMassiveConstructionEvent::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    unsigned nCount = MS2_GE_R(in)->ReadInt();
+    for (unsigned i = 0; i < nCount; i++)
+    {
+        unsigned id = MS2_GE_R(in)->ReadInt();
+        m_d0.Add(id);
+    }
+    m_f0 = MS2_GE_R(in)->ReadInt();
+    nCount = MS2_GE_R(in)->ReadInt();
+    for (unsigned i = 0; i < nCount; i++)
+    {
+        unsigned __int64 id = MS2_GE_R(in)->ReadInt64();
+        m_f8.Add(id);
+    }
+}
+MS2_REPLACE_METHOD(0x1403C5E80, GameEventMassiveConstructionEvent, vfunc_4, 343, 0x425DC70D);
+
+// @0x1403c5fe0
+void GameEventMassiveConstructionEvent::vfunc_5()
+{
+    for (unsigned i = 0; i < m_d0.GetCount(); i++)
+    {
+        unsigned id = m_d0[i];
+        FUN_1401c0d90()->FUN_14047dba0(id, m_f0);
+    }
+    for (unsigned i = 0; i < m_f8.GetCount(); i++)
+    {
+        unsigned __int64 id = m_f8[i];
+        FUN_1401c0d90()->FUN_14047df50(id);
+    }
+}
+MS2_REPLACE_METHOD(0x1403C5FE0, GameEventMassiveConstructionEvent, vfunc_5, 237, 0x4814B149);
+
+// @0x1403c60e0
+void GameEventMassiveConstructionEvent::vfunc_6()
+{
+    FUN_1401c0d90()->FUN_14047dd60();
+    FUN_1401c0d90()->FUN_14047e0e0();
+}
+MS2_REPLACE_METHOD(0x1403C60E0, GameEventMassiveConstructionEvent, vfunc_6, 40, 0xDC8EBBD4);
+
+// ---- GameEventEnchantRate -------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regEnchantRate(L"GameEventEnchantRate", FUN_1403c6110);
+#endif
+// @0x1403c6110
+GameEvent* FUN_1403c6110() { return new GameEventEnchantRate; }
+
+// @0x1403c6170
+CStringW GameEventEnchantRate::vfunc_1() { return CStringW(L"GameEventEnchantRate"); }
+MS2_REPLACE_METHOD(0x1403C6170, GameEventEnchantRate, vfunc_1, 61, 0x5D3710E8);
+
+// @0x1403c61c0
+GameEventEnchantRate::GameEventEnchantRate()
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c6230
+void GameEventEnchantRate::vfunc_2()
+{
+    m_pContext.AssignRaw(new EnchantRateEventContext);
+    m_pContext->m_nEventId = m_id;
+    m_pContext->m_1c = FUN_140718200(&m_68);
+    m_pContext->m_20 = FUN_140718200(&m_70);
+}
+MS2_REPLACE_METHOD(0x1403C6230, GameEventEnchantRate, vfunc_2, 226, 0x01175DDE);
+
+// @0x1403c6320
+void GameEventEnchantRate::vfunc_5() { FUN_1401c0d90()->FUN_14047e530(m_pContext); }
+MS2_REPLACE_METHOD(0x1403C6320, GameEventEnchantRate, vfunc_5, 91, 0x69FE65A3);
+
+// @0x1403c6390
+void GameEventEnchantRate::vfunc_6()
+{
+    // the original asserts on its member names (m_gameEventID is m_id)
+    (void)((!!(m_pContext->m_nEventId == m_id)) ||
+           (_wassert(L"m_pContext->m_nEventId == m_gameEventID", _CRT_WIDE(MS2_THIS_FILE), MS2_LINE(2384)), 0));
+    FUN_1401c0d90()->FUN_14047e630(m_pContext->m_nEventId);
+}
+MS2_REPLACE_METHOD(0x1403C6390, GameEventEnchantRate, vfunc_6, 119, 0x542B45BA);
+
+// @0x1403c6410
+void GameEventEnchantRate::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt(m_pContext->m_1c);
+    out->WriteInt(m_pContext->m_20);
+}
+MS2_REPLACE_METHOD(0x1403C6410, GameEventEnchantRate, vfunc_3, 130, 0x62E36E92);
+
+// @0x1403c64a0
+void GameEventEnchantRate::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_pContext.AssignRaw(new EnchantRateEventContext);
+    m_pContext->m_nEventId = m_id;
+    m_pContext->m_1c = MS2_GE_R(in)->ReadInt();
+    m_pContext->m_20 = MS2_GE_R(in)->ReadInt();
+}
+MS2_REPLACE_METHOD(0x1403C64A0, GameEventEnchantRate, vfunc_4, 280, 0x5427E70E);
+
+// ---- GameEventRankDuel ----------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regRankDuel(L"GameEventRankDuel", FUN_1403c65c0);
+#endif
+// @0x1403c65c0
+GameEvent* FUN_1403c65c0() { return new GameEventRankDuel; }
+
+// @0x1403c6620
+CStringW GameEventRankDuel::vfunc_1() { return CStringW(L"GameEventRankDuel"); }
+MS2_REPLACE_METHOD(0x1403C6620, GameEventRankDuel, vfunc_1, 61, 0xD0C386DB);
+
+// @0x1403c6670
+GameEventRankDuel::GameEventRankDuel() : m_d8(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c66f0
+void GameEventRankDuel::vfunc_2()
+{
+    m_d0 = m_68;
+    if (!m_80.IsEmpty())
+        m_d8 = FUN_1407181a0(&m_80);
+}
+MS2_REPLACE_METHOD(0x1403C66F0, GameEventRankDuel, vfunc_2, 101, 0x3F1E221E);
+
+// @0x1403c6760
+void GameEventRankDuel::vfunc_5() { FUN_1401c0d90()->FUN_14047e740(true); }
+MS2_REPLACE_METHOD(0x1403C6760, GameEventRankDuel, vfunc_5, 29, 0xCD62C311);
+
+// @0x1403c6790
+void GameEventRankDuel::vfunc_6() { FUN_1401c0d90()->FUN_14047e740(false); }
+MS2_REPLACE_METHOD(0x1403C6790, GameEventRankDuel, vfunc_6, 29, 0x2805BD5A);
+
+// @0x1403c67c0
+void GameEventRankDuel::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteStringW(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403C67C0, GameEventRankDuel, vfunc_3, 74, 0xACFA5F52);
+
+// @0x1403c6810
+void GameEventRankDuel::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadStringW();
+}
+MS2_REPLACE_METHOD(0x1403C6810, GameEventRankDuel, vfunc_4, 134, 0x1C2FF7FE);
+
+// ---- GameEventGuildChampionship -------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regGuildChampionship(L"GameEventGuildChampionship", FUN_1403c68a0);
+#endif
+// @0x1403c68a0
+GameEvent* FUN_1403c68a0() { return new GameEventGuildChampionship; }
+
+// @0x1403c6900
+CStringW GameEventGuildChampionship::vfunc_1() { return CStringW(L"GameEventGuildChampionship"); }
+MS2_REPLACE_METHOD(0x1403C6900, GameEventGuildChampionship, vfunc_1, 61, 0x275F1859);
+
+// @0x1403c6950
+GameEventGuildChampionship::GameEventGuildChampionship() : m_d0(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c69c0
+void GameEventGuildChampionship::vfunc_2()
+{
+    if (!m_80.IsEmpty())
+        m_d0 = FUN_1407181a0(&m_80);
+}
+MS2_REPLACE_METHOD(0x1403C69C0, GameEventGuildChampionship, vfunc_2, 71, 0x83221AF0);
+
+// @0x1403c6a10
+void GameEventGuildChampionship::vfunc_5()
+{
+    if (!FUN_140166410()->FUN_14036d570(0x110))
+        return;
+    FUN_1401c0d90()->FUN_14047e830(true);
+}
+MS2_REPLACE_METHOD(0x1403C6A10, GameEventGuildChampionship, vfunc_5, 56, 0x274DE2BB);
+
+// @0x1403c6a50
+void GameEventGuildChampionship::vfunc_6() { FUN_1401c0d90()->FUN_14047e830(false); }
+MS2_REPLACE_METHOD(0x1403C6A50, GameEventGuildChampionship, vfunc_6, 29, 0x2BB70B0E);
+
+// ---- GameEventQuestAdditionalReward ---------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regQuestAdditionalReward(L"GameEventQuestAdditionalReward", FUN_1403c6a80);
+#endif
+// @0x1403c6a80
+GameEvent* FUN_1403c6a80() { return new GameEventQuestAdditionalReward; }
+
+// @0x1403c6ae0
+CStringW GameEventQuestAdditionalReward::vfunc_1() { return CStringW(L"GameEventQuestAdditionalReward"); }
+MS2_REPLACE_METHOD(0x1403C6AE0, GameEventQuestAdditionalReward, vfunc_1, 61, 0xFA4D8A7E);
+
+// @0x1403c6b30
+GameEventQuestAdditionalReward::GameEventQuestAdditionalReward()
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+    m_d0 = 11;
+    m_d4 = 0;
+    m_d8.AssignRaw(new QuestAdditionalRewardContext);
+}
+
+// @0x1403c6c10
+void GameEventQuestAdditionalReward::vfunc_2()
+{
+    m_d0 = FUN_1407181a0(&m_68);
+    m_d4 = FUN_1407181a0(&m_70);
+    m_d8->Load(&m_78);
+}
+MS2_REPLACE_METHOD(0x1403C6C10, GameEventQuestAdditionalReward, vfunc_2, 117, 0xF78122DB);
+
+// @0x1403c6c90
+void GameEventQuestAdditionalReward::vfunc_5() { FUN_1401c0d90()->FUN_14047e8e0(m_d0, m_d4, m_d8); }
+MS2_REPLACE_METHOD(0x1403C6C90, GameEventQuestAdditionalReward, vfunc_5, 114, 0x99961A1D);
+
+// @0x1403c6d10
+void GameEventQuestAdditionalReward::vfunc_6() { FUN_1401c0d90()->FUN_14047e980(m_d0, m_d4); }
+MS2_REPLACE_METHOD(0x1403C6D10, GameEventQuestAdditionalReward, vfunc_6, 50, 0xF99DD3D4);
+
+// @0x1403c6d50
+void GameEventQuestAdditionalReward::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteShort((unsigned short)m_d0);
+    out->WriteShort((unsigned short)m_d4);
+    m_d8->Write(MS2_GE_OUT(out));
+}
+MS2_REPLACE_METHOD(0x1403C6D50, GameEventQuestAdditionalReward, vfunc_3, 122, 0x31131576);
+
+// @0x1403c6dd0
+void GameEventQuestAdditionalReward::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadShort();
+    m_d4 = MS2_GE_R(in)->ReadShort();
+    m_d8->Read(*reinterpret_cast<CInPacket*>(in));
+}
+MS2_REPLACE_METHOD(0x1403C6DD0, GameEventQuestAdditionalReward, vfunc_4, 162, 0x62AD7514);
+
+// ---- GameEventGuildSkillSale ----------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regGuildSkillSale(L"GameEventGuildSkillSale", FUN_1403c6e80);
+#endif
+// @0x1403c6e80
+GameEvent* FUN_1403c6e80() { return new GameEventGuildSkillSale; }
+
+// @0x1403c6ee0
+CStringW GameEventGuildSkillSale::vfunc_1() { return CStringW(L"GameEventGuildSkillSale"); }
+MS2_REPLACE_METHOD(0x1403C6EE0, GameEventGuildSkillSale, vfunc_1, 61, 0x353F259E);
+
+// @0x1403c6f30
+GameEventGuildSkillSale::GameEventGuildSkillSale() : m_d0(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c6fa0
+void GameEventGuildSkillSale::vfunc_2() { m_d0 = FUN_1407181a0(&m_68); }
+MS2_REPLACE_METHOD(0x1403C6FA0, GameEventGuildSkillSale, vfunc_2, 42, 0x02B16B0B);
+
+// @0x1403c6fd0
+void GameEventGuildSkillSale::vfunc_5() { FUN_1404234a0(FUN_140302b00()->GuildSkillSale(), m_d0); }
+MS2_REPLACE_METHOD(0x1403C6FD0, GameEventGuildSkillSale, vfunc_5, 46, 0x396ECFED);
+
+// @0x1403c7010
+void GameEventGuildSkillSale::vfunc_6() { FUN_1404234a0(FUN_140302b00()->GuildSkillSale(), 0); }
+MS2_REPLACE_METHOD(0x1403C7010, GameEventGuildSkillSale, vfunc_6, 37, 0xA05B3701);
+
+// @0x1403c7040
+void GameEventGuildSkillSale::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403C7040, GameEventGuildSkillSale, vfunc_3, 61, 0xCB9AEBE1);
+
+// @0x1403c7090
+void GameEventGuildSkillSale::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadInt();
+}
+MS2_REPLACE_METHOD(0x1403C7090, GameEventGuildSkillSale, vfunc_4, 79, 0xF3AF033C);
+
+// ---- GameEventGuildPersonalSkillSale --------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regGuildPersonalSkillSale(L"GameEventGuildPersonalSkillSale", FUN_1403c70f0);
+#endif
+// @0x1403c70f0
+GameEvent* FUN_1403c70f0() { return new GameEventGuildPersonalSkillSale; }
+
+// @0x1403c7150
+CStringW GameEventGuildPersonalSkillSale::vfunc_1() { return CStringW(L"GameEventGuildPersonalSkillSale"); }
+MS2_REPLACE_METHOD(0x1403C7150, GameEventGuildPersonalSkillSale, vfunc_1, 61, 0x4C2BD31D);
+
+// @0x1403c71a0
+GameEventGuildPersonalSkillSale::GameEventGuildPersonalSkillSale() : m_d0(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c7210
+void GameEventGuildPersonalSkillSale::vfunc_2() { m_d0 = FUN_1407181a0(&m_68); }
+MS2_REPLACE_METHOD(0x1403C7210, GameEventGuildPersonalSkillSale, vfunc_2, 42, 0xE4F2E4E1);
+
+// @0x1403c7240
+void GameEventGuildPersonalSkillSale::vfunc_5() { FUN_1404235b0(FUN_140302b00()->GuildPersonalSkillSale(), m_d0); }
+MS2_REPLACE_METHOD(0x1403C7240, GameEventGuildPersonalSkillSale, vfunc_5, 46, 0xB5FD3289);
+
+// @0x1403c7280
+void GameEventGuildPersonalSkillSale::vfunc_6() { FUN_1404235b0(FUN_140302b00()->GuildPersonalSkillSale(), 0); }
+MS2_REPLACE_METHOD(0x1403C7280, GameEventGuildPersonalSkillSale, vfunc_6, 37, 0x74E6D016);
+
+// @0x1403c72b0
+void GameEventGuildPersonalSkillSale::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403C72B0, GameEventGuildPersonalSkillSale, vfunc_3, 61, 0xA598974C);
+
+// @0x1403c7300
+void GameEventGuildPersonalSkillSale::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadInt();
+}
+MS2_REPLACE_METHOD(0x1403C7300, GameEventGuildPersonalSkillSale, vfunc_4, 79, 0x85989779);
+
+// ---- GameEventGuildExp ----------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regGuildExp(L"GameEventGuildExp", FUN_1403c7360);
+#endif
+// @0x1403c7360
+GameEvent* FUN_1403c7360() { return new GameEventGuildExp; }
+
+// @0x1403c73c0
+CStringW GameEventGuildExp::vfunc_1() { return CStringW(L"GameEventGuildExp"); }
+MS2_REPLACE_METHOD(0x1403C73C0, GameEventGuildExp, vfunc_1, 61, 0x872D1709);
+
+// @0x1403c7410
+GameEventGuildExp::GameEventGuildExp() : m_d0(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403c7480
+void GameEventGuildExp::vfunc_2() { m_d0 = FUN_1407181a0(&m_68); }
+MS2_REPLACE_METHOD(0x1403C7480, GameEventGuildExp, vfunc_2, 42, 0x65204B4F);
+
+// @0x1403c74b0
+void GameEventGuildExp::vfunc_5()
+{
+    FUN_1404236c0(FUN_140302b00()->GuildExp(), m_d0);
+    FUN_1403ed290()->FUN_1413bd640(FUN_140423670(FUN_140302b00()->GuildExp()) > 0);
+}
+MS2_REPLACE_METHOD(0x1403C74B0, GameEventGuildExp, vfunc_5, 101, 0xE18D34FE);
+
+// @0x1403c7520
+void GameEventGuildExp::vfunc_6()
+{
+    FUN_1404236c0(FUN_140302b00()->GuildExp(), 0);
+    FUN_1403ed290()->FUN_1413bd640(FUN_140423670(FUN_140302b00()->GuildExp()) > 0);
+}
+MS2_REPLACE_METHOD(0x1403C7520, GameEventGuildExp, vfunc_6, 92, 0x199CB83D);
+
+// @0x1403c7590
+void GameEventGuildExp::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403C7590, GameEventGuildExp, vfunc_3, 61, 0xD36E6E5B);
+
+// @0x1403c75e0
+void GameEventGuildExp::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadInt();
+}
+MS2_REPLACE_METHOD(0x1403C75E0, GameEventGuildExp, vfunc_4, 79, 0x4BB6E3B6);
