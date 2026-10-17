@@ -12,7 +12,8 @@ class CInPacket;
 class CAdventureLevelMissionData : public CPtred {
 public:
     CAdventureLevelMissionData();                 // 0x140195660
-    virtual ~CAdventureLevelMissionData();        // 0x140195820 (deleting dtor)
+    // implicit virtual dtor 0x140195700 (??_G 0x140195820): the exe has both an implicit copy ctor (0x141745bd0) and an
+    // implicit move ctor (0x141745b60), so no destructor is user-declared
     unsigned m_progress;                          // +0x18
     bool m_complete;                              // +0x1c
     __int64 m_20;                                 // +0x20
