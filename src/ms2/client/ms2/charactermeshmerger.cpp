@@ -24,7 +24,7 @@
 // MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVNiTransform@@V?$vector@PEAVNiMesh@@@efd@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVNiTransform@@V?$vector@PEAVNiMesh@@@efd@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVNiTransform@@V?$vector@PEAVNiMesh@@@efd@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x1410549a0 ; unique
 // MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x1410549f0 ; prop
 // MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141054a40 ; unique
-// MS2-PIN: ??$StringFormat@PEBD@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBD@Z 0x141054f40 ; unique
+// MS2-PIN: ??$Unk_SocketFormat@PEBD@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBD@Z 0x141054f40 ; unique
 // MS2-PIN: ??$_Buynode@AEAU?$pair@$$CBEE@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBEE@std@@PEAX@1@AEAU?$pair@$$CBEE@1@@Z 0x1410552f0 ; unique
 // MS2-PIN: ??$_Buynode@AEAU?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@PEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@U?$less@PEAVNiMesh@@@3@V?$allocator@U?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@std@@PEAX@1@AEAU?$pair@QEAVNiMesh@@V?$map@EEU?$less@E@std@@V?$allocator@U?$pair@$$CBEE@std@@@2@@std@@@1@@Z 0x141055380 ; prop
 // MS2-PIN: ??$_Buynode@U?$pair@PEAVNiAVObject@@UUnk_UVRect@@@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@PEAVNiAVObject@@UUnk_UVRect@@U?$less@PEAVNiAVObject@@@std@@V?$allocator@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@PEAX@1@$$QEAU?$pair@PEAVNiAVObject@@UUnk_UVRect@@@1@@Z 0x141055760 ; prop
@@ -711,7 +711,7 @@ void FUN_141049240(NiAVObject* pRoot, MeshArray& kSource, MeshArray& kMerged)
         {
             CString kLine = StringFormat("{0}:", i);
             for (unsigned int j = 0; j < kGroups[i].size(); j++)
-                kLine += StringFormat(" {0}", (const char*)kGroups[i][j]->GetName());
+                kLine += Unk_SocketFormat(" {0}", (const char*)kGroups[i][j]->GetName());
             EE_LOG_AT(1, 1, ((const char*)kLine), MS2_THIS_FILE, 0x68f);
         }
         for (unsigned int i = 0; i < kGroups.size(); i++)
