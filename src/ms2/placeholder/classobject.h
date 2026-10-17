@@ -19,7 +19,7 @@ MS2_CHECK_SIZE(ClassObject, 0x18);
 
 // The factory registry (?\classobject.cpp): class name -> CreateObject.
 typedef ClassObject* (*ClassObjectCreateFn)();
-typedef ATL::CAtlMap<CStringW, ClassObjectCreateFn, ATL::CStringElementTraits<CStringW>> ClassObjectFactoryMap;
+typedef ATL::CAtlMap<CStringW, ClassObjectCreateFn, ATL::CStringElementTraitsI<CStringW>> ClassObjectFactoryMap;
 ClassObjectFactoryMap* FUN_1401f7fe0();                     // the registry (function-local static)
 ClassObject* FUN_1401f7f50(CStringW strName);               // creates the registered class; NULL if unknown
 
