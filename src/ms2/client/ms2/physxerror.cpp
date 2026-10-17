@@ -1,0 +1,137 @@
+// Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). See ms2/placeholder/physxerror.h.
+// MS2-UNIT: ?\physxerror.cpp
+// MS2-RANGE: 0x1416889f0-0x14168917b .text$mn
+// MS2-PIN: ??_GCPhysXError@@UEAAPEAXI@Z 0x141689100
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\physxerror.cpp"
+#include "ms2/placeholder/ms2stdafx.h"
+
+#include <string>
+
+#include "ms2/placeholder/physxerror.h"
+#include "ms2/commonfiles/crashmanager.h"
+
+#include "ms2/ms2recover.h"
+#include "hook/ms2hook.h"
+
+// ---- unit-local placeholders ----
+
+CCrashManager* FUN_140a44830();                                     // the crash manager (log sink)
+void* FUN_140166440();                                              // the logger
+void FUN_1403a1310(void* pLogger, int nLevel, int nId, const wchar_t* pszFormat, const char* const& a, const char* const& b);
+void FUN_1401859c0(void* pLogger, int nLevel, int nId, const wchar_t* pszText);
+CStringW FUN_14016a730(const char* psz, int n);                     // narrow -> wide
+int FUN_140392040(char* pBuffer, size_t nSize, const char* pszFormat, ...);
+void FUN_141b6fc50(const CString& strText, const CString& strCaption, int n);   // message box
+
+// The event sink (FUN_140d8ee90).
+class Unk_PxEventSink
+{
+public:
+    void FUN_140a1f970(const CString& strEvent, const CString& strArg);
+};
+Unk_PxEventSink* FUN_140d8ee90();
+
+extern char DAT_143ae37d0[0x100];                                   // message buffer
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+// @0x1416889f0
+CPhysXError::CPhysXError()
+{
+}
+
+// @0x141688a30
+CPhysXError::~CPhysXError()
+{
+}
+
+// MS2-FUNCTIONAL: exe frame is 0x40 smaller (CString temp slot layout not reproduced); not hooked (throws/terminates)
+// @0x141688a60
+void CPhysXError::reportError(NxErrorCode code, const char* message, const char* file, int line)
+{
+    std::string strType;
+    bool bLogOnly = false;
+    switch (code)
+    {
+    case NXE_NO_ERROR:
+        strType.assign("No Error");
+        bLogOnly = true;
+        break;
+    case NXE_INVALID_PARAMETER:
+        strType.assign("Invalid Parameter");
+        break;
+    case NXE_INVALID_OPERATION:
+        strType.assign("Invalid Operation");
+        break;
+    case NXE_OUT_OF_MEMORY:
+        strType.assign("Out of Memory");
+        break;
+    case NXE_INTERNAL_ERROR:
+        strType.assign("Internal Error");
+        break;
+    case NXE_ASSERTION:
+        strType.assign("Assertion");
+        break;
+    case NXE_DB_INFO:
+        strType.assign("Debug Info");
+        bLogOnly = true;
+        break;
+    case NXE_DB_WARNING:
+        strType.assign("Debug Warning");
+        bLogOnly = true;
+        break;
+    case NXE_DB_PRINT:
+        strType.assign("Debug Print");
+        bLogOnly = true;
+    }
+    if (bLogOnly)
+    {
+        const char* pszType = strType.c_str();
+        FUN_1403a1310(FUN_140166440(), 2, 0x13, L"{0} {1}", pszType, message);
+        return;
+    }
+    if (FUN_140d8ee90() != 0)
+    {
+        CString strLog;
+        strLog.Format("%s %s", strType.c_str(), message);
+        FUN_140d8ee90()->FUN_140a1f970("physx", strLog);
+    }
+    int nError = code;
+    if (nError == 3)
+    {
+        FUN_141b6fc50(CString(message), CString("PhysX"), 0);
+        TerminateProcess(GetCurrentProcess(), 2);
+    }
+    else if (nError == 4)
+    {
+        FUN_140392040(DAT_143ae37d0, 0x100, "%s \nCheck your graphic driver.", message);
+        FUN_141b6fc50(CString(DAT_143ae37d0), CString("PhysX"), 0);
+        TerminateProcess(GetCurrentProcess(), 2);
+    }
+    FUN_140a44830()->FUN_1401ce2b0("\n--- CPhysXError Log---");
+    const char* pszType = strType.c_str();
+    FUN_140a44830()->FUN_1401ce2f0("reportError : %s, %s, %s, %d", pszType, message, file, line);
+    throw 13;
+}
+
+// @0x141688f50
+NxAssertResponse CPhysXError::reportAssertViolation(const char* message, const char* file, int line)
+{
+    FUN_140a44830()->FUN_1401ce2b0("\n--- CPhysXError Log---");
+    FUN_140a44830()->FUN_1401ce2f0("reportAssertViolation : %s, %s, Line:%d", message, file, line);
+    if (FUN_140d8ee90() != 0)
+    {
+        CString strLog;
+        strLog.Format("assert %s %s %d", message, file, line);
+        FUN_140d8ee90()->FUN_140a1f970("physx", strLog);
+    }
+    return NX_AR_CONTINUE;
+}
+MS2_REPLACE_METHOD(0x141688f50, CPhysXError, reportAssertViolation, 222, 0xE2694B8D);
+
+// @0x141689040
+void CPhysXError::print(const char* message)
+{
+    FUN_1401859c0(FUN_140166440(), 1, 0x13, FUN_14016a730(message, 0));
+}
+MS2_REPLACE_METHOD(0x141689040, CPhysXError, print, 121, 0x39255ECB);

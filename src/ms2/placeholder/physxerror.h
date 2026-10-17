@@ -10,6 +10,7 @@ class CPhysXError : public NxUserOutputStream
 {
 public:
     CPhysXError();                                                                  // 0x1416889f0
+    virtual ~CPhysXError();                                                         // 0x141688a30
     virtual void reportError(NxErrorCode code, const char* message, const char* file, int line);
     virtual NxAssertResponse reportAssertViolation(const char* message, const char* file, int line);
     virtual void print(const char* message);
