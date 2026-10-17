@@ -5,6 +5,7 @@
 #pragma once
 
 #include <afx.h>
+#include <set>
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
@@ -19,17 +20,20 @@ public:
     CString FUN_140d43310(int nItemId, int nRarity, int nAmount);
     CString FUN_140d43510(const void* pItem);   // binds an item info under a new slot name (dungeon control center reward)
     void FUN_140d43990();                       // unbinds all slots
+    CString FUN_140d43790(void* pItem);         // binds an already built item (MS2Ptr<CItem>-compatible) under a new slot name
+    void FUN_140d438f0(CString strSlot);        // unbinds one slot by name
+    friend void FUN_140d432d0(ItemSlotBinder* pBinder, int n);     // sets m_24
+    friend void FUN_140d432f0(ItemSlotBinder* pBinder, int n);     // sets m_28
 
 private:
     MS2_LAYOUT_FRIEND;
     CString m_18;                           // +0x18 owner name
-    int m_20;                               // +0x20 running slot counter
+    unsigned m_20;                             // +0x20 running slot counter
     int m_24;                               // +0x24 0x11
     int m_28;                               // +0x28 0x800
     int m_2c;
-    void* m_30;                             // +0x30 container (16 bytes)
-    void* m_38;
+    std::set<CString> m_slots;              // +0x30 names of the bound slots (16 bytes)
 };
 MS2_CHECK_SIZE(ItemSlotBinder, 0x40);
 MS2_CHECK_OFFSET(ItemSlotBinder, m_18, 0x18);
-MS2_CHECK_OFFSET(ItemSlotBinder, m_30, 0x30);
+MS2_CHECK_OFFSET(ItemSlotBinder, m_slots, 0x30);
