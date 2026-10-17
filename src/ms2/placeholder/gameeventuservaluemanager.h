@@ -16,11 +16,11 @@ class GameEventUserValueManager : public TSingleton<GameEventUserValueManager>
 public:
     GameEventUserValueManager();                            // 0x140da5390
     virtual ~GameEventUserValueManager();
-    void RegisterListener(int nEvent, Delegate<void(GameEventVariable*)> listener);     // 0x140da5430
-    void UnregisterListener(int nEvent, Delegate<void(GameEventVariable*)> listener);   // 0x140da5490
-    void Dispatch(int nEvent, GameEventVariable* pVariable);                            // 0x140da55a0
+    void RegisterListener(unsigned nEvent, Delegate<void(GameEventVariable*)> listener);     // 0x140da5430
+    void UnregisterListener(unsigned nEvent, Delegate<void(GameEventVariable*)> listener);   // 0x140da5490
+    void Dispatch(unsigned nEvent, GameEventVariable* pVariable);                            // 0x140da55a0
 private:
     MS2_LAYOUT_FRIEND;
-    std::map<int, std::vector<Delegate<void(GameEventVariable*)> > > m_listeners;       // +0x08
+    std::map<unsigned, std::vector<Delegate<void(GameEventVariable*)> > > m_listeners;       // +0x08
 };
 MS2_CHECK_SIZE(GameEventUserValueManager, 0x18);
