@@ -836,7 +836,6 @@ int FUN_141424760(MS2Ptr<CItem> spItem, unsigned* pOut, int nIndex, Unk_UgcPlaye
 }
 
 // @0x1414248a0
-// MS2-FUNCTIONAL: logic recovered from the decomp; /Od codegen (local layout / temporaries) still differs from the exe
 int FUN_1414248a0(Unk_UgcItemData* pData, __int64 nKey, int* pOut)
 {
     if (pData == 0)
@@ -845,12 +844,10 @@ int FUN_1414248a0(Unk_UgcItemData* pData, __int64 nKey, int* pOut)
     if (nItemId == 0)
         return 0;
     Unk_UgcRowPtr kRow = FUN_140281980()->FUN_140558cc0(nItemId, nKey);
-    if (!kRow.FUN_14056cf90(0))
-    {
-        *pOut = kRow.FUN_14056d570()->m_nValue;
-        return 1;
-    }
-    return 0;
+    if (kRow.FUN_14056cf90(0))
+        return 0;
+    *pOut = kRow.FUN_14056d570()->m_nValue;
+    return 1;
 }
 
 // @0x141424970 - true when the item has a colour table row for the colours of the equipped item
@@ -985,18 +982,23 @@ CString FUN_1414253b0(CString strPath, int bDiffuse)
 }
 
 // @0x141425540 - effect file of the swim tube (nGender 1 = female, nAction 0x30 = idle)
-// MS2-FUNCTIONAL: logic recovered from the decomp; /Od codegen (local layout / temporaries) still differs from the exe
 CString FUN_141425540(int nGender, int nAction)
 {
-    if (nAction == 0x30)
+    if (0x30 == nAction)
     {
-        if (nGender == 1)
+        if (1 == nGender)
             return CString("CH/Common/Eff_Tube_F_SwimIdle_A.xml");
-        return CString("CH/Common/Eff_Tube_M_SwimIdle_A.xml");
+        else
+        {
+            return CString("CH/Common/Eff_Tube_M_SwimIdle_A.xml");
+        }
     }
-    if (nGender == 1)
+    else if (1 == nGender)
         return CString("CH/Common/Eff_Tube_F_SwimRun_A.xml");
-    return CString("CH/Common/Eff_Tube_M_SwimRun_A.xml");
+    else
+    {
+        return CString("CH/Common/Eff_Tube_M_SwimRun_A.xml");
+    }
 }
 
 // @0x141425610 - preloads the four swim tube effects
@@ -1162,7 +1164,6 @@ char FUN_140184310(const CString& strText, const char* szSuffix);   // ends with
 bool FUN_14053d6f0(Unk_UgcItemData* pData);                         // the item has attach parts
 
 // @0x141427500
-// MS2-FUNCTIONAL: logic recovered from the decomp; /Od codegen (local layout / temporaries) still differs from the exe
 CItemUgcMesh::CItemUgcMesh()
 {
 }
