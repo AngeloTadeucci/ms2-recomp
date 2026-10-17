@@ -67,7 +67,7 @@ public:
     void FUN_14074ee30();                                   // scales every reward by the level rate   // the quest and every quest that requires it
 
     CLockCriticalSection m_lock;                                            // +0x10
-    std::map<int, MS2Ptr<CQuestData> > m_quests;                            // +0x40 by quest id
+    std::map<unsigned, MS2Ptr<CQuestData> > m_quests;                            // +0x40 by quest id
     ATL::CAtlMap<int, IdsPtr> m_chapter;                                    // +0x50 chapter -> quest ids
     ATL::CAtlMap<int, unsigned> m_98;                                           // +0x98 chapter -> value
     ATL::CAtlMap<int, unsigned> m_e0;                                           // +0xe0 chapter -> value

@@ -12,7 +12,6 @@
 // MS2-PIN: ?IsSameCondArray@@YA_NAEBV?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@0@Z 0x140752900
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@AEBV0@@Z 0x140747540 ; prop
-// MS2-PIN: ?IsNull@?$Unk_PayloadPtr@VUnk_EventEntry@@@@QEBA_NXZ 0x1407475e0 ; unique
 // MS2-PIN: ?get@?$Unk_PayloadPtr@VCQuest@@@@QEBAPEAVCQuest@@XZ 0x140747690 ; unique
 // MS2-PIN: ?get@?$MS2Ptr@VCQuestData@@@@QEBAPEAVCQuestData@@XZ 0x1407476a0 ; unique
 // MS2-PIN: ?AddRef@?$Unk_PayloadPtr@VCQuest@@@@AEBAXXZ 0x1407476e0 ; prop
@@ -20,45 +19,54 @@
 // MS2-PIN: memmove_s 0x1407477f0 ; unique
 // MS2-PIN: ??$?0AEAHAEAI$0A@@?$pair@HI@std@@QEAA@AEAHAEAI@Z 0x140751870 ; unique
 // MS2-PIN: ??$?0HAEAV?$MS2Ptr@VCQuestData@@@@$0A@@?$pair@HV?$MS2Ptr@VCQuestData@@@@@std@@QEAA@$$QEAHAEAV?$MS2Ptr@VCQuestData@@@@@Z 0x140751a00 ; unique
-// MS2-PIN: ??$?0HV?$MS2Ptr@VCQuestData@@@@$0A@@?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@QEAA@$$QEAU?$pair@HV?$MS2Ptr@VCQuestData@@@@@1@@Z 0x140751a50 ; unique
+// MS2-PIN: ??$?0HV?$MS2Ptr@VCQuestData@@@@$0A@@?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@QEAA@$$QEAU?$pair@HV?$MS2Ptr@VCQuestData@@@@@1@@Z 0x140751a50 ; unique
 // MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x140751af0 ; unique
 // MS2-PIN: ??$StringFormat@H_K@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBHAEB_K@Z 0x140751b40 ; unique
 // MS2-PIN: ?New@?$Unk_SocketRef@VNavigationData@CQuestData@@@@SAPEAVNavigationData@CQuestData@@PEAX@Z 0x1407529d0 ; unique
 // MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140752aa0 ; unique
 // MS2-PIN: ??$_Buynode@U?$pair@HI@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@HIU?$less@H@std@@V?$allocator@U?$pair@$$CBHI@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHI@std@@PEAX@1@$$QEAU?$pair@HI@1@@Z 0x140752b70 ; unique
 // MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@@Z 0x140753c40 ; unique
-// MS2-PIN: ??$?0U_Exact_args_t@std@@$0A@@?$tuple@$$V@std@@QEAA@U_Exact_args_t@1@@Z 0x1407559a0 ; unique
 // MS2-PIN: ??$_Ptr_copy_cat@VQuestRewardItem@CQuestData@@V12@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAVQuestRewardItem@CQuestData@@0@Z 0x140755c00 ; prop
 // MS2-PIN: ??$_Ptr_copy_cat@V?$MS2Ptr@VCQuestData@@@@V1@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$MS2Ptr@VCQuestData@@@@0@Z 0x140755c30 ; prop
 // MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x140755fa0 ; unique
+// MS2-PIN: ??$_Uninitialized_copy@PEAVQuestRewardItem@CQuestData@@PEAV12@V?$allocator@VQuestRewardItem@CQuestData@@@std@@@std@@YAPEAVQuestRewardItem@CQuestData@@QEAV12@0PEAV12@AEAV?$allocator@VQuestRewardItem@CQuestData@@@0@@Z 0x140756150 ; unique
 // MS2-PIN: ??$_Uninitialized_copy@PEAV?$MS2Ptr@VCQuestData@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCQuestData@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$MS2Ptr@VCQuestData@@@@@0@@Z 0x140756220 ; unique
 // MS2-PIN: ??$construct@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140756800 ; unique
 // MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140756ec0 ; unique
 // MS2-PIN: ??$find_if@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@UUnk_QuestIdIs@@@std@@YA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@0@V10@V10@UUnk_QuestIdIs@@@Z 0x140757020 ; prop
 // MS2-PIN: ??$find_if@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@UUnk_QuestPrevIs@@@std@@YA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@0@V10@V10@UUnk_QuestPrevIs@@@Z 0x140757260 ; prop
-// MS2-PIN: ??$forward@AEAU?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@YAAEAU?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@0@AEAU10@@Z 0x140757330 ; prop
 // MS2-PIN: ??$make_pair@AEAHAEAI@std@@YA?AU?$pair@HI@0@AEAHAEAI@Z 0x140757500 ; unique
 // MS2-PIN: ??$make_pair@HAEAV?$MS2Ptr@VCQuestData@@@@@std@@YA?AU?$pair@HV?$MS2Ptr@VCQuestData@@@@@0@$$QEAHAEAV?$MS2Ptr@VCQuestData@@@@@Z 0x140757550 ; unique
+// MS2-PIN: ??0?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@QEAA@PEAVNavigationTarget@CQuestData@@@Z 0x140757d10 ; prop
 // MS2-PIN: ??0?$MS2Ptr@VCConditionCommonData@@@@QEAA@AEBV0@@Z 0x140757d40 ; prop
-// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@1@@Z 0x140758040 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCQuestData@@@@QEAA@$$T@Z 0x140757db0 ; unique
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@QEAA@XZ 0x140757f40 ; prop
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHI@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHI@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHI@std@@@std@@@1@@Z 0x140758040 ; prop
 // MS2-PIN: ??0CPair@?$CAtlMap@HV?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@@3@@ATL@@IEAA@H@Z 0x140758450 ; unique
 // MS2-PIN: ??9?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140759150 ; prop
-// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759650 ; unique
-// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759740 ; prop
+// MS2-PIN: ??A?$map@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@@std@@QEAAAEAV?$vector@IV?$allocator@I@std@@@1@AEBH@Z 0x140759310 ; unique
+// MS2-PIN: ??A?$vector@VQuestRewardItem@CQuestData@@V?$allocator@VQuestRewardItem@CQuestData@@@std@@@std@@QEAAAEAVQuestRewardItem@CQuestData@@_K@Z 0x140759350 ; unique
+// MS2-PIN: ??A?$vector@V?$MS2Ptr@VCQuestData@@@@V?$allocator@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@QEAAAEAV?$MS2Ptr@VCQuestData@@@@_K@Z 0x140759380 ; unique
+// MS2-PIN: ?get@?$Unk_SocketPtr@VNavigationData@CQuestData@@@@QEBAPEAVNavigationData@CQuestData@@XZ 0x140759410 ; unique
+// MS2-PIN: ?get@?$MS2Ptr@VCConditionCommonData@@@@QEBAPEAVCConditionCommonData@@XZ 0x140759430 ; unique
+// MS2-PIN: ??E?$_Tree_unchecked_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759650 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759670 ; prop
 // MS2-PIN: ?Add@?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@Z 0x14075a090 ; prop
 // MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCConditionCommonData@@@@@Z 0x14075a140 ; prop
-// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCQuestData@@@@V?$CElementTraits@V?$MS2Ptr@VCQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCQuestData@@@@@Z 0x14075a1f0 ; unique
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCQuestData@@@@V?$CElementTraits@V?$MS2Ptr@VCQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCQuestData@@@@@Z 0x14075a1f0 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x14075a7a0 ; unique
+// MS2-PIN: ?GetCount@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBA_KXZ 0x14075ae90 ; unique
 // MS2-PIN: ?GetKeyAt@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x14075aef0 ; unique
 // MS2-PIN: ?GetNext@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x14075afd0 ; unique
 // MS2-PIN: ?GetNode@?$CAtlMap@HV?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14075b070 ; unique
 // MS2-PIN: ?GetNode@?$CAtlMap@HV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14075b250 ; unique
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x14075b440 ; unique
-// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAAEBV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@PEAU__POSITION@@@Z 0x14075b520 ; prop
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAAEBV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@PEAU__POSITION@@@Z 0x14075b520 ; unique
 // MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@@3@@ATL@@QEAAAEAV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@PEAU__POSITION@@@Z 0x14075b590 ; unique
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075b7a0 ; prop
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075b940 ; prop
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCQuestData@@@@V?$CElementTraits@V?$MS2Ptr@VCQuestData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075bae0 ; prop
+// MS2-PIN: ?IsEmpty@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBA_NXZ 0x14075c130 ; prop
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@SAXPEAV?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@0_K@Z 0x14075d910 ; prop
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@SAXPEAV?$MS2Ptr@VCConditionCommonData@@@@0_K@Z 0x14075d950 ; prop
 // MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCQuestData@@@@@ATL@@SAXPEAV?$MS2Ptr@VCQuestData@@@@0_K@Z 0x14075d990 ; prop
@@ -67,6 +75,10 @@
 // MS2-PIN: ?Reference@?$MS2Ptr@VCConditionCommonData@@@@CAXPEAVCConditionCommonData@@@Z 0x14075f070 ; prop
 // MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCConditionCommonData@@@@AEBAXPEAX@Z 0x14075f0f0 ; prop
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCConditionCommonData@@@@AEAAXPEAX@Z 0x140760820 ; prop
+// MS2-PIN: ?_Unchecked_begin@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VCQuestData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@2@XZ 0x140760d80 ; prop
+// MS2-PIN: ?_Unchecked_begin@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@2@XZ 0x140760dd0 ; prop
+// MS2-PIN: ?_Unchecked_end@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VCQuestData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@2@XZ 0x140760e20 ; prop
+// MS2-PIN: ?_Unchecked_end@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@2@XZ 0x140760e60 ; prop
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questdata.cpp"
 #include <algorithm>
@@ -1788,8 +1800,8 @@ void QuestDataTable::FUN_14074c320()
     FUN_140750f30();
     FUN_140750120();
 
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (!spData->GetKind())
@@ -1831,7 +1843,7 @@ MS2Ptr<CQuestData> QuestDataTable::FUN_14074c9d0(int nQuestId)
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = m_quests.find(nQuestId);
+    std::map<unsigned, MS2Ptr<CQuestData> >::iterator it = m_quests.find(nQuestId);
     if (it == m_quests.end())
         return MS2Ptr<CQuestData>(nullptr);
     return it->second;
@@ -1842,8 +1854,8 @@ void QuestDataTable::FUN_14074cad0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (nType != 11 && FUN_14074b050(spData.operator->()) != nType)
@@ -1867,8 +1879,8 @@ void QuestDataTable::FUN_14074cca0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (FUN_14074b050(spData.operator->()) != 3)
@@ -1884,8 +1896,8 @@ void QuestDataTable::FUN_14074cde0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (FUN_14074b050(spData.operator->()) != 5)
@@ -1998,13 +2010,13 @@ struct Unk_QuestPrevIs
 struct Unk_QuestLevelFree
 {
     explicit Unk_QuestLevelFree(const int& nLevel) : m_pLevel(&nLevel) {}
-    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel <= spData->m_require.m_level && spData->m_require.m_job.GetCount() == 0; }
+    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel <= (unsigned short)spData->m_require.m_level && spData->m_require.m_job.GetCount() == 0; }
     const int* m_pLevel;
 };
 struct Unk_QuestLevelAbove
 {
     explicit Unk_QuestLevelAbove(const int& nLevel) : m_pLevel(&nLevel) {}
-    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel < spData->m_require.m_level; }
+    bool operator()(MS2Ptr<CQuestData> spData) const { return *m_pLevel < (unsigned short)spData->m_require.m_level; }
     const int* m_pLevel;
 };
 
@@ -2256,8 +2268,8 @@ int QuestDataTable::FUN_14074e510(int nQuestId)
 bool QuestDataTable::FUN_14074e560(unsigned nFirst, unsigned nLast)
 {
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if ((unsigned)FUN_14074b030(spData.operator->()) >= nFirst)
@@ -2315,8 +2327,8 @@ void QuestDataTable::FUN_14074ee30()
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData == 0)
@@ -2374,11 +2386,11 @@ static void AddToIds(TMap& map, const TKey& key, unsigned nQuestId)
 void QuestDataTable::FUN_14074f160()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<unsigned, MS2Ptr<CQuestData> >::iterator it = quests.begin();
     for (; it != quests.end(); ++it)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        std::pair<const unsigned, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         unsigned nId = FUN_14074b030(spData.operator->());
         if (spData->m_33)
@@ -2534,13 +2546,13 @@ void FUN_140353fc0(void* pLog, int a, int nFlags, const wchar_t* pszFormat, cons
 void QuestDataTable::FUN_1407503f0()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         for (size_t i = 0; i < spData->m_require.m_quest.GetCount(); i++)
         {
-            std::map<int, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_quest[i]);
+            std::map<unsigned, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_quest[i]);
             if (itOther != quests.end())
             {
                 MS2Ptr<CQuestData> spOther = itOther->second;
@@ -2554,7 +2566,7 @@ void QuestDataTable::FUN_1407503f0()
         }
         for (size_t i = 0; i < spData->m_require.m_selectableQuest.GetCount(); i++)
         {
-            std::map<int, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_selectableQuest[i]);
+            std::map<unsigned, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_selectableQuest[i]);
             if (itOther != quests.end())
             {
                 MS2Ptr<CQuestData> spOther = itOther->second;
@@ -2677,14 +2689,14 @@ MS2_REPLACE_METHOD(0x140750EA0, QuestDataTable, FUN_140750ea0, 123, 0x5118FC0F);
 void QuestDataTable::FUN_140750f30()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    std::map<unsigned, MS2Ptr<CQuestData> >& quests = m_quests;
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData->m_30 != 0)
             FUN_14074eac0(FUN_14074b030(spData.operator->()), m_2d0);
     }
-    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
+    for (std::pair<const unsigned, MS2Ptr<CQuestData> >& entry : quests)
     {
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData->m_require.m_selectableQuest.GetCount() != 0)
