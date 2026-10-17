@@ -280,6 +280,10 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    bool FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, class CubeItemInfo* pInfo, const efd::utf8string& strName,
+        int nField50, int nField54, unsigned char bField4c, __int64 nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
+    egf::EntityPtr FUN_1410bc3d0(struct Unk_CMISBlock rec);
+    egf::EntityPtr FUN_1410bc7f0(Unk_StreamPoint ptPos, Unk_StreamPoint ptRot, unsigned nIdx, int nItemId);
     bool FUN_1410c3600(int v);
     void FUN_1410c3630(int v);
     int FUN_1410c3650();

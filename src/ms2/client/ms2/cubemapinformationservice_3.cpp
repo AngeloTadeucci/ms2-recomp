@@ -2635,3 +2635,137 @@ void CubeMapInformationService::FUN_1410c44b0(int nGroup, int nBlock, int bFlag)
         FUN_140166440()->FUN_1401859c0(1, 0x13, L"[ERROR] Cant' find salable group to sell");
     }
 }
+// ---- w138 batch 5 ----
+struct Unk_CMISBlock { Unk_CMISBlock(const Unk_CMISBlock&); ~Unk_CMISBlock(); void* m_a; void* m_b; };   // copy 14111e680, dtor 141123760
+struct Unk_CMISObjHandle { void* m_a; void* m_b; };
+struct Unk_CMISObjRec { char pad[0x40]; int nKind; };
+class Unk_CMISWorldMgr { public: egf::EntityPtr FUN_1411ce7c0(efd::utf8string, efd::utf8string, NiPoint3, NiPoint3, float, int, int); };
+void* FUN_1409670f0();
+int FUN_140707660(int);
+Unk_CMISIter<266>* FUN_1411519d0(Unk_CMISTree<266>*, Unk_CMISIter<266>*);
+Unk_CMISIter<266>* FUN_1411572e0(Unk_CMISTree<266>*, Unk_CMISIter<266>*, const int*);
+bool FUN_141127400(Unk_CMISIter<266>*, Unk_CMISIter<266>*);                // operator!=
+Unk_CMISBlock* FUN_141127bd0(Unk_CMISTree<266>*, const int*);                // operator[]
+void FUN_141153740(Unk_CMISTree<266>*, const int*);                          // erase
+void FUN_14111d290(Unk_CMISTree<267>*, Unk_CMISIter<267>*, const int*);      // insert
+MS2Ptr<Cube>* FUN_141128190(Unk_CMISTree<259>*, const Unk_CMISEntityRef*);
+void FUN_1412304e0(Unk_CMISMagicCube*, int, int, int);
+void FUN_140704ec0(Unk_CMISObjHandle*, unsigned);
+void* FUN_140708ea0(Unk_CMISObjHandle*);
+Unk_CMISObjRec* FUN_140708eb0(Unk_CMISObjHandle*);
+void FUN_140708b20(Unk_CMISObjHandle*);
+int FUN_14053c5e0(CItemData*);
+int FUN_1408a0190(int);
+void FUN_1408a0480(Cube*);
+// @0x1410bd080
+// MS2-FUNCTIONAL: transliteration with typed temporaries; the exe copies the cell points through stack blocks
+bool CubeMapInformationService::FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, CubeItemInfo* pInfo, const efd::utf8string& strName,
+    int nField50, int nField54, unsigned char bField4c, __int64 nUnused, int nFieldD8, Unk_PayloadPtr<NoticeCubeInfo> spNotice)
+{
+    if (pInfo == 0)
+        return false;
+    int nItemId = pInfo->itemId;
+    int nCell = FUN_1408a03c0(pt);
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_1411274c0(FUN_141157580(&f98, &itFind, &nCell), FUN_141151af0(&f98, &itEnd)))
+        return false;
+    Unk_StreamPoint ptCell = DAT_143b01a60;
+    FUN_1408a15b0(pt, ptCell);
+    Unk_StreamPoint ptRot = DAT_143b01a60;
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    CItemData* pItem = spItem.get();
+    if (pItem == 0)
+        return false;
+    int nObjCode = FUN_1408a0190(FUN_14053c5e0(pItem));
+    int nObjProp = pItem->install.animatable;
+    Unk_CMISWorldMgr* pWorld = static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0());
+    egf::EntityPtr spEnt;
+    if (FUN_1407071e0(pItem->install.objCode) == 0) {
+        if (pItem->install.preset.GetLength() == 0) {
+            spEnt = pWorld->FUN_1411ce7c0(efd::utf8string("MS2CubeProp"), strName,
+                NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, nObjProp, 0);
+            if (nObjProp != 0 && spEnt.data() != 0) {
+                bool bFlag = false;
+                if (FUN_1408a20a0(spEnt.data(), 0x23f9860e, &bFlag), bFlag == 0) {
+                    if (pItem->install.useInstancing == 0) {
+                        bool bOff = false;
+                        FUN_14098c6e0(spEnt.data(), 0x23f9860e, &bOff);
+                        bool bOff2 = false;
+                        FUN_14098c6e0(spEnt.data(), 0xd9f313f2, &bOff2);
+                    }
+                } else {
+                    bool bOn = true;
+                    FUN_14098c6e0(spEnt.data(), 0xd9f313f2, &bOn);
+                }
+            }
+        } else {
+            spEnt = pWorld->FUN_1411ce7c0(efd::utf8string((const char*)pItem->install.preset), efd::utf8string(""),
+                NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, nObjProp, 0);
+        }
+    } else {
+        int nTreeKey = FUN_1407072e0(pItem->install.objCode);
+        int nAnim = FUN_140707660(pItem->install.objCode);
+        Unk_CMISIter<266> itEnd2, itFind2;
+        bool bInTree = nTreeKey != 0 && FUN_141127400(FUN_1411572e0(&f118, &itFind2, &nCell), FUN_1411519d0(&f118, &itEnd2));
+        if (bInTree) {
+            int nKey2 = FUN_1408a03c0(pt);
+            Unk_CMISBlock rec(*FUN_141127bd0(&f118, &nKey2));
+            spEnt = FUN_1410bc3d0(Unk_CMISBlock(rec));
+            int nKey3 = FUN_1408a03c0(pt);
+            FUN_141153740(&f118, &nKey3);
+        } else if (FUN_1410c35c0() == 0 || nTreeKey == 0) {
+            efd::utf8string strModel(FUN_140707260(pItem->install.objCode) == 0 ? "MS2FunctionCubeNIF" : "MS2FunctionCubeKFM");
+            if (pItem->install.preset.GetLength() == 0)
+                spEnt = pWorld->FUN_1411ce7c0(strModel, strName,
+                    NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, nObjProp, 0);
+            else
+                spEnt = pWorld->FUN_1411ce7c0(efd::utf8string((const char*)pItem->install.preset), efd::utf8string(""),
+                    NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, nObjProp, 0);
+            if (nTreeKey != 0) {
+                Unk_CMISIter<267> itIns;
+                FUN_14111d290(&f128, &itIns, &nCell);
+            }
+        } else {
+            unsigned nIdx = f3d8;
+            f3d8 = f3d8 + 1;
+            if (nIdx > 0x3f9)
+                nIdx = 0x3fa;
+            spEnt = FUN_1410bc7f0(ptCell, ptRot, nIdx, pInfo->itemId);
+        }
+        Unk_CMISObjHandle hObj;
+        FUN_140704ec0(&hObj, pItem->install.objCode);
+        if (FUN_140708ea0(&hObj) != 0) {
+            bool bPlay = true;
+            if (FUN_1410c35c0() != 0 && (nTreeKey != 0 || nAnim != 0))
+                bPlay = false;
+            if (bPlay)
+                FUN_1412304e0(FUN_1409670b0(), nCell, nObjCode, FUN_140708eb0(&hObj)->nKind);
+            if (spEnt.data() != 0 && FUN_140708eb0(&hObj)->nKind == 0xb) {
+                bool bOff = false;
+                FUN_14098c6e0(spEnt.data(), 0xa0b6b179, &bOff);
+            }
+        }
+        FUN_140708b20(&hObj);
+    }
+    if (spEnt.data() == 0)
+        return false;
+    MS2Ptr<Cube> spCube(new Cube);
+    spCube->field18 = nOwner;
+    spCube->position = pt;
+    spCube->item->FUN_1408b3700(pInfo);
+    spCube->entity = spEnt;
+    spCube->field44 = nObjCode;
+    spCube->field50 = nField50;
+    spCube->field54 = nField54;
+    spCube->field48 = 1;
+    spCube->field4c = bField4c;
+    spCube->field70 = pItem->install.cubeProp;
+    spCube->fieldD8 = nFieldD8;
+    spCube->fieldD4 = nZ;
+    spCube->notice = spNotice;
+    FUN_1408a0480(spCube.get());
+    *FUN_141128190(&f78, FUN_1408b76f0(spCube->entity.data())) = spCube;
+    if (FUN_1407071e0(spCube->fieldB4) != 0)
+        *FUN_141127cd0(&f88, &nCell) = spCube;
+    return true;
+}
