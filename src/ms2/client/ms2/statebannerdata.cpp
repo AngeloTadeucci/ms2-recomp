@@ -107,7 +107,6 @@ void StateBanner::vfunc_2(int n)
 }
 
 // Enter: take the banner payload; with none, clear the owner's banner instead of pushing one.
-// MS2-FUNCTIONAL: pcbase.h declares vfunc_59 with 4 params; the exe passes a 5th (bool) arg here and in vfunc_6
 // @0x140b7f080
 void StateBanner::vfunc_4(StateData* pData)
 {
@@ -120,17 +119,15 @@ void StateBanner::vfunc_4(StateData* pData)
 }
 
 // Leave: drop the banner from the owner.
-// MS2-FUNCTIONAL: as vfunc_4 (vfunc_59's 5th arg)
 // @0x140b7f150
 void StateBanner::vfunc_5(int n)
 {
     State::vfunc_5(n);
     PCBase* pOwner = FUN_1417b8370();
-    if (pOwner != 0)
-    {
-        m_n10 = 0;
-        pOwner->FUN_1416700b0(0);
-    }
+    if (pOwner == 0)
+        return;
+    m_n10 = 0;
+    pOwner->FUN_1416700b0(0);
 }
 
 // @0x140b7f1b0
@@ -177,13 +174,14 @@ void StateBanner::FUN_140b7f320(int n)
     }
 }
 
-// MS2-FUNCTIONAL: MS2Ptr::operator-> reloc pairing (bytes differ)
 // @0x140b7f3b0
 int StateBanner::FUN_140b7f3b0()
 {
-    if (m_spBannerData.get() == 0)
-        return 0;
-    return m_spBannerData->m_nBanner;
+    if (m_spBannerData.get() != 0)
+    {
+        return m_spBannerData->m_nBanner;
+    }
+    return 0;
 }
 
 // @0x140b7f400
