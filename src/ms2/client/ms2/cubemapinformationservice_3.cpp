@@ -147,6 +147,7 @@ Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // e
 unsigned char FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+void FUN_1411552b0(Unk_CMISTree<270>*, const int*);                                   // erase
 void FUN_14114f0e0(Unk_CMISTree<260>*);
 void FUN_14114fa40(Unk_CMISTree<259>*);
 void FUN_1410b2760(Unk_CMISTree<277>*);
@@ -154,6 +155,7 @@ void FUN_14114f360(Unk_CMISTree<262>*);
 void FUN_14114f2c0(Unk_CMISTree<261>*);
 void FUN_1402237c0(ATL::CAtlArray<Unk_CMISElem458*>*);
 struct Unk_CMISPt2 { float x, y; };
+Unk_CubeOwnerPtr FUN_1408a0fa0(Unk_CubeOwners& owners, int nGroup, int nBlock);
 struct Unk_CMISRes16 { Unk_CMISRes16(const Unk_CMISRes16&); __int64 m_a, m_b; };
 Unk_CMISRes16 FUN_1408a15b0(Unk_StreamPoint, Unk_StreamPoint);
 Unk_CMISIter<257>* FUN_141152030(Unk_CMISTree<257>*, Unk_CMISIter<257>*);
@@ -1185,6 +1187,43 @@ bool CubeMapInformationService::FUN_1410c68e0()
 bool CubeMapInformationService::FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CMISPt2* b, float fLimX, float fLimY)
 {
     return FUN_14029d220(a->x - b->x) <= fLimX && FUN_14029d220(a->y - b->y) <= fLimY;
+}
+// @0x1410caa60
+void CubeMapInformationService::FUN_1410caa60(const int* pKey, int v)
+{
+    Unk_CMISIter<270> itEnd, itFind;
+    if (FUN_141127740(FUN_141158000(&f1a0, &itFind, pKey), FUN_141151fd0(&f1a0, &itEnd)))
+        FUN_1411552b0(&f1a0, pKey);
+    *FUN_1411280d0(&f1a0, pKey) = v;
+}
+// @0x1410c51d0
+void CubeMapInformationService::FUN_1410c51d0(int nA, int nB, CStringW strName)
+{
+    Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nA, nB);
+    if (spOwner == 0)
+        return;
+    spOwner->ownerName = strName;
+}
+// @0x1410c8030
+__int64 CubeMapInformationService::FUN_1410c8030(int nA, int nB)
+{
+    Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nA, nB);
+    if (spOwner == 0)
+        return 0;
+    return spOwner->ownerID;
+}
+// @0x1410cba80
+int CubeMapInformationService::FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos)
+{
+    Cube* pCube = FUN_1410b8a60(*pCell);
+    if (pCube == 0 || pCube->field50 != nField50 || pCube->field44 == 0) {
+        if (nDir != 1) {
+            pPos->z -= 150.0f;
+            pCell->z -= 1;
+        }
+        return 1;
+    }
+    return 0;
 }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)

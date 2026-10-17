@@ -42,7 +42,7 @@ MS2_CHECK_OFFSET(FittingDollData,position,0x2c);
 MS2_CHECK_OFFSET(FittingDollData,rotation,0x38);
 MS2_CHECK_OFFSET(FittingDollData,items,0x50);
 
-struct Unk_CMISPt2;
+struct Unk_CMISPt2; struct Unk_CMISPt3;
 class CubeMapInformationService;
 template <class T> class TSingleton;
 template <> class TSingleton<CubeMapInformationService>
@@ -196,6 +196,10 @@ public:
     void FUN_1410c4d80(const Unk_StreamPoint& pt, float fDist);
     void FUN_1410c2840(Unk_StreamPoint pt, float fDist);
     bool FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CMISPt2* b, float fLimX, float fLimY);
+    void FUN_1410caa60(const int* pKey, int v);
+    void FUN_1410c51d0(int nA, int nB, CStringW strName);
+    __int64 FUN_1410c8030(int nA, int nB);
+    int FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
