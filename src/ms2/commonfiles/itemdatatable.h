@@ -94,9 +94,9 @@ public:
     virtual ~CItemDataTable();                              // 0x140556140
 
     MS2Ptr<ItemDropEffect> GetDropEffect(int nType);                        // 0x140556380
-    MS2Ptr<ItemDropEffect> GetItemDropEffect(int nItemId, unsigned nValue); // 0x140556440
-    MS2Ptr<ItemMusicScore> GetMusicScore(int nId);                          // 0x1405565f0
-    MS2Ptr<ItemHousing> GetHousing(int nId);                                // 0x1405566e0
+    MS2Ptr<ItemDropEffect> GetItemDropEffect(unsigned nItemId, unsigned nValue); // 0x140556440
+    MS2Ptr<ItemMusicScore> GetMusicScore(unsigned nId);                       // 0x1405565f0
+    MS2Ptr<ItemHousing> GetHousing(unsigned nId);                             // 0x1405566e0
     CString GetGradeNif(ItemGradeKey eGrade);                               // 0x1405567e0
     CString GetGradePetNif(ItemGradeKey eGrade);                            // 0x1405568a0
     CString GetGradeEffect(ItemGradeKey eGrade);                            // 0x140556930
@@ -176,8 +176,8 @@ private:
     MS2_LAYOUT_FRIEND;
     CLockCriticalSection m_csModel;                                         // +0x38
     std::map<unsigned, ModelPtr> m_mapModel;                                // +0x68
-    std::map<int, MS2Ptr<ItemMusicScore> > m_mapMusicScore;                 // +0x78
-    std::map<int, MS2Ptr<ItemHousing> > m_mapHousing;                       // +0x88
+    std::map<unsigned, MS2Ptr<ItemMusicScore> > m_mapMusicScore;               // +0x78
+    std::map<unsigned, MS2Ptr<ItemHousing> > m_mapHousing;                     // +0x88
     std::set<Unk_TrophyKey> m_setTrophy;                                    // +0x98 (trophyID, trophyLevel) of housing rows
     std::set<unsigned> m_setModelFile;                                      // +0xa8 loaded model files
     CLockCriticalSection m_cs;                                              // +0xb8
@@ -190,7 +190,7 @@ private:
     ATL::CAtlMap<int, MS2Ptr<ItemDropEffect> > m_mapDropEffect;             // +0x258
     ATL::CAtlMap<int, CString> m_mapEnchant;                                // +0x2a0 by GetEnchantKey
     ATL::CAtlMap<int, CString> m_mapUnlimitedEnchant;                       // +0x2e8 by weapon
-    std::map<int, std::vector<MS2Ptr<DropNifData> > > m_mapDropNif;         // +0x330
+    std::map<unsigned, std::vector<MS2Ptr<DropNifData> > > m_mapDropNif;       // +0x330
     ATL::CAtlMap<ItemTagKey, MS2Ptr<ItemTagParam> > m_mapTag;               // +0x340
     ATL::CAtlMap<unsigned, CString> m_mapUiMaterialSound;                   // +0x388
     ATL::CAtlMap<int, Unk_BmPtr<CColorPaletteInfo> > m_mapPalette;             // +0x3d0
