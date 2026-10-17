@@ -757,6 +757,7 @@ const char* FUN_141788f10(FMOD_RESULT nResult)
 
 // Out-of-unit callees of the manager.
 std::string& FUN_1401d2950(std::string& str);                       // normalises a group path (lower case, slashes)
+CString FUN_14038f6d0(const CString& strA, const char* pszB);        // operator+
 void FUN_1403b0310(std::vector<CString>* pVec, const CString& rItem);   // push_back
 void FUN_1401859c0(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat);
 void FUN_140177a80(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const int& nArg);
@@ -1419,8 +1420,8 @@ static void FUN_14177e3d0(FMOD::EventGroup* pGroup, CString strPrefix, std::vect
         {
             CString strPath(strPrefix);
             if (!strPath.IsEmpty())
-                strPath = strPath + "/";
-            strPath = strPath + pszName;
+                strPath = FUN_14038f6d0(strPath, "/");
+            strPath = FUN_14038f6d0(strPath, pszName);
             FUN_14177e3d0(pSub, CString(strPath), rNames);
         }
         else
@@ -1449,7 +1450,7 @@ static void FUN_14177e3d0(FMOD::EventGroup* pGroup, CString strPrefix, std::vect
             MS2_ASSERT_AT(0x51b, 0);
             return;
         }
-        FUN_1403b0310(&rNames, strPrefix + "/" + pszName);
+        FUN_1403b0310(&rNames, FUN_14038f6d0(FUN_14038f6d0(strPrefix, "/"), pszName));
     }
 }
 
