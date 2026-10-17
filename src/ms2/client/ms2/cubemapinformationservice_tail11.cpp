@@ -49,6 +49,15 @@ typedef std::vector<Cube*> Unk_CMISCubePtrVec;
 // unsigned long (byte-identical code, distinct name).
 typedef std::map<unsigned long, Unk_CMISStdIntSet> Unk_CMISMapBucketUL;
 
+// 0x18-byte {int; MS2Ptr} set element with an out-of-line copy ctor (exe 0x141122990)
+struct Unk_CMISIdPtr
+{
+    int m_id;
+    MS2Ptr<Cube> m_p;
+    Unk_CMISIdPtr(const Unk_CMISIdPtr& o) : m_id(o.m_id), m_p(o.m_p) {}
+    bool operator<(const Unk_CMISIdPtr& o) const { return m_id < o.m_id; }
+};
+
 // operator[] with a temporary key: the exe's try_emplace(key_type&&) copies
 template <class M> void Unk_CMISDriveIndexRv11(M& m)
 {
@@ -115,7 +124,7 @@ void Unk_CMISDriveTail11()
     { Unk_CMISMapSaleState m; std::pair<int, int> k(0, 0); Unk_CMISDriveMapRv11(m, k); (void)m.equal_range(k); m.erase(k); m[k]; }
     { Unk_CMISMapName m; Unk_CMISDriveMapKey(m, CStringA()); }
     { Unk_CMISMapEntityVal m; Unk_CMISDriveMapKey(m, id); }
-    { Unk_CMISMapProp m; Unk_CMISDriveMapKey(m, id); }
+    { Unk_CMISMapProp m; Unk_CMISDriveMapKey(m, id); Unk_CMISDriveIndexRv11(m); }
     { Unk_CMISMapEntityCube m; Unk_CMISDriveMap(m, id); }
     { Unk_CMISMapKindCount m; Unk_CMISDriveMap(m, Unk_CMISKindA_None); }
     { Unk_CMISStdMapKindCount m; Unk_CMISDriveMap(m, Unk_CMISKindA_None); }
@@ -140,6 +149,11 @@ void Unk_CMISDriveTail11()
     { Unk_CMISStdPairSet s; s.insert(std::pair<int, int>(0, 0)); }
     { std::vector<int> v; v.push_back(nKey); { int n = nKey; v.push_back(std::move(n)); } }
     { Unk_CMISMapBucket a, b; a = b; }
+    { std::vector<int> v; int m = nKey; v.emplace_back(m); }
+    { Unk_CMISIntSet s; int n = nKey; s.emplace(n); }
+    { efd::set<Unk_CMISIdPtr> a, b; a = b; }
+    { Unk_CMISStdPairSet a, b; a = b; }
+    { efd::set<MS2Ptr<CFunctionCubeObject> > s; MS2Ptr<CFunctionCubeObject> p; Unk_CMISDriveSet(s, p); }
     { Unk_CMISPairSet a, b; a = b; }
     { Unk_CMISAutoSet a, b; a = b; }
     { Unk_CMISFuncCubeSet a, b; a = b; }
