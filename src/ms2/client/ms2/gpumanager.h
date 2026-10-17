@@ -15,25 +15,65 @@ public:
 };
 
 
-// Vendor helper interface (unrecovered base of NvidiaGPU / ATiGPU). Never instantiated here.
-class Unk_GPUBase {
+// Vendor helper interface (RTTI name GPUBass; base of NvidiaGPU / ATiGPU, ?\atigpu.cpp). The no-GPU default bodies return 0.
+class GPUBass {
 public:
-    virtual ~Unk_GPUBase();
-    virtual int vfunc_1();                              // init, 0 = failed
-    virtual void vfunc_2();                             // shutdown
-    virtual void vfunc_3(int* a, int* b);
-    virtual unsigned __int64 vfunc_4();
-    virtual void vfunc_5(unsigned __int64* a, unsigned __int64* b);
+    GPUBass();                                          // 0x1409f0f30
+    virtual ~GPUBass();                                 // 0x1409f0f50
+    virtual int vfunc_1() = 0;                          // init, 0 = failed
+    virtual void vfunc_2() = 0;                         // shutdown
+    virtual int vfunc_3(int* a, int* b);                // 0x1409f1060
+    virtual unsigned __int64 vfunc_4();                 // 0x1409f0ff0
+    virtual int vfunc_5(unsigned __int64* a, unsigned __int64* b);   // 0x1409f1020
 };
-class ATiGPU : public Unk_GPUBase {
+typedef GPUBass Unk_GPUBase;
+
+// AMD Display Library (atiadlxx.dll) records the helper keeps.
+struct Unk_ADLPMActivity { __int64 m_pad[5]; };         // 0x28 bytes
+struct Unk_ADLMemoryInfo {                              // 0x110 bytes
+    char m_pad_0[0x108];
+    unsigned __int64 m_nBandwidth;                      // +0x108
+};
+
+class ATiGPU : public GPUBass {
 public:
     ATiGPU();                                           // 0x1409f0910
-    void* m_pad[18];
+    virtual ~ATiGPU();                                  // 0x1409f0a40
+    virtual int vfunc_1() override;                     // 0x1409f0a70: loads atiadlxx.dll and starts ADL
+    virtual void vfunc_2() override;                    // 0x1409f0dd0
+    virtual int vfunc_3(int* a, int* b) override;       // 0x1409f1040
+    virtual unsigned __int64 vfunc_4() override;        // 0x1409f0e80
+    virtual int vfunc_5(unsigned __int64* a, unsigned __int64* b) override;   // 0x1409f1000
+
+    FARPROC m_pfnMainControlCreate;                     // +0x08 ADL_Main_Control_Create
+    FARPROC m_pfnMainControlDestroy;                    // +0x10
+    FARPROC m_pfnNumberOfAdaptersGet;                   // +0x18
+    FARPROC m_pfnDisplayInfoGet;                        // +0x20
+    FARPROC m_pfnTemperatureGet;                        // +0x28
+    FARPROC m_pfnFanSpeedInfoGet;                       // +0x30
+    FARPROC m_pfnMemoryInfoGet;                         // +0x38
+    FARPROC m_pfnSpeedGet;                              // +0x40
+    FARPROC m_pfnFanSpeedGet;                           // +0x48
+    FARPROC m_pfnCurrentActivityGet;                    // +0x50
+    FARPROC m_pfnAdapterInfoGet;                        // +0x58
+    FARPROC m_pfnAdapterActiveGet;                      // +0x60
+    FARPROC m_pfnColorCapsGet;                          // +0x68
+    FARPROC m_pfnColorGet;                              // +0x70
+    FARPROC m_pfnColorSet;                              // +0x78
+    HMODULE m_hModule;                                  // +0x80
+    Unk_ADLPMActivity* m_pActivity;                     // +0x88
+    Unk_ADLMemoryInfo* m_pMemoryInfo;                   // +0x90
 };
 MS2_CHECK_SIZE(ATiGPU, 0x98);
-class NvidiaGPU : public Unk_GPUBase {
+class NvidiaGPU : public GPUBass {
 public:
     NvidiaGPU();                                        // 0x14160c6d0
+    virtual ~NvidiaGPU();
+    virtual int vfunc_1() override;
+    virtual void vfunc_2() override;
+    virtual int vfunc_3(int* a, int* b) override;
+    virtual unsigned __int64 vfunc_4() override;
+    virtual int vfunc_5(unsigned __int64* a, unsigned __int64* b) override;
     void* m_pad[21];
 };
 MS2_CHECK_SIZE(NvidiaGPU, 0xb0);
@@ -58,7 +98,7 @@ public:
 
     int m_type;                                         // +0x08 1 nvidia, 2 amd/ati, 3 intel
     float m_elapsed;                                    // +0x0c
-    Unk_GPUBase* m_gpu;                                 // +0x10
+    GPUBass* m_gpu;                                 // +0x10
     CStringW m_name;                                    // +0x18
     unsigned __int64 m_20;                              // +0x20
     unsigned __int64 m_28;                              // +0x28
