@@ -7896,7 +7896,6 @@ void CSceneStateGame::FUN_141720480(CInPacket& packet)
 MS2_REPLACE_METHOD(0x141720480, CSceneStateGame, FUN_141720480, 2008, 0x7964F895);
 
 // @0x141720c60
-// MS2-FUNCTIONAL: code identical; the MS2Ptr<Unk_SSGSkillAttr> copy-ctor COMDAT pairs with the in-range copy 0x1417459d0 (called from 0x141725xxx) instead of 0x140182280
 void CSceneStateGame::FUN_141720c60(CInPacket& packet)
 {
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
@@ -9041,7 +9040,6 @@ UIAdventureLevelExpBar* FUN_14125b160(int nId);             // GetDialog<UIAdven
 void FUN_1413610f0(__int64 nGain);                          // the exp gain notice
 void FUN_141b16580(int nLevel);                             // system text 0xd22 (level up)
 // @0x14173d4d0
-// MS2-FUNCTIONAL: code bytes match; symbols-manual binds ??1CAdventureLevelMissionData to 0x140195820 (that is the ??_G
 // deleting dtor; it calls the real dtor 0x140195700, which the exe calls here)
 void CSceneStateGame::FUN_14173d4d0(CInPacket& packet)
 {
@@ -12080,7 +12078,6 @@ MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_bCaching, 0xc8);
 MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_mapCache, 0xd0);
 MS2_CHECK_OFFSET(Unk_SSGCachedEntity, m_mapKeyedCache, 0xe0);
 
-// MS2-FUNCTIONAL: code bytes match; the utf8string map's begin/end COMDATs pair with the in-range set<CString> copies
 // 0x14174b5a0/0x14174b8d0, the exe calls the folded out-of-range 0x1413f5e20/0x1413f7400.
 // @0x141749ed0
 void Unk_SSGCachedEntity::FUN_141749ed0()
