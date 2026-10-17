@@ -3485,3 +3485,89 @@ egf::EntityPtr CubeMapInformationService::FUN_1410bc3d0(Unk_CMISBlock rec)
     FUN_1410cb380(*(Unk_Int3*)&r->m_ptPos, reinterpret_cast<const Unk_CMISEntityRef&>(id));
     return egf::EntityPtr(pc->FUN_14123c410());
 }
+
+// ---- w138 batch 13 ----
+struct Unk_CMISRefList;                                                                     // list of entities found near a point
+extern Unk_StreamPoint DAT_143b01a60;                                                       // the zero point
+void FUN_14114dbb0(Unk_CMISTree<264>*, Unk_CMISIter<264>*);                                 // begin
+bool FUN_1411516a0(Unk_CMISTree<264>*);                                                     // empty
+Unk_CMISRefElem* FUN_141128560(Unk_CMISIter<264>*);                                         // operator*
+void FUN_141129a80(Unk_CMISIter<264>*);                                                     // operator++
+bool FUN_1408b70b0(egf::EntityPtr*, int);                                                   // operator==
+void* FUN_140965820(Unk_CubeOwnerPtr*);                                                     // get
+void FUN_1408a8790(Unk_CubeOwnerPtr*);                                                      // dtor
+void FUN_1408a8720(egf::EntityPtr*);                                                        // dtor
+float FUN_140966f00(Unk_StreamPoint ptA, Unk_StreamPoint ptB);                              // distance
+void FUN_14115a960(Unk_CMISRefList*, egf::EntityPtr*);                                      // push_back
+void** FUN_141123230(void* pOut, Unk_CMISPawn*);
+void** FUN_1411525d0(Unk_CMISRefList*, void** pOut);                                        // end
+void** FUN_14114e990(Unk_CMISRefList*, void** pOut);                                        // begin
+void FUN_14111d5b0(void* pFirst, void* pLast, void* pKey);
+
+// @0x1410bb610
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410bb610(unsigned nMask, Unk_CMISPawn* pPawn, float fDist, Unk_CMISRefList* pOut)
+{
+    if (pPawn != 0 && !FUN_1411516a0(&ff8)) {
+        Unk_CMISIter<264> it, itEnd;
+        FUN_14114dbb0(&ff8, &it);
+        while (FUN_1411273c0(&it, FUN_141151970(&ff8, &itEnd))) {
+            int nGroup = FUN_141128560(&it)->m_key;
+            egf::EntityPtr spEnt = FUN_1408a7ed0(&FUN_141128560(&it)->m_ref);
+            if (!FUN_1408b70b0(&spEnt, 0)) {
+                Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+                void* pOwner = FUN_140965820(&spOwner);
+                FUN_1408a8790(&spOwner);
+                for (unsigned nBit = 1; (int)nBit < 5; nBit <<= 1) {
+                    if ((nMask & nBit) == nBit && (pOwner == 0 || nBit == 1) && (pOwner != 0 || nBit != 1)) {
+                        Unk_StreamPoint ptPawn = pPawn->vfunc_18();
+                        Unk_StreamPoint ptEnt = DAT_143b01a60;
+                        FUN_1409618c0(FUN_1408a9280(&spEnt), 0xfd95ca52, &ptEnt);
+                        float fD = FUN_140966f00(ptPawn, ptEnt);
+                        if (fD < fDist)
+                            FUN_14115a960(pOut, &spEnt);
+                    }
+                }
+            }
+            FUN_1408a8720(&spEnt);
+            FUN_141129a80(&it);
+        }
+        void* aCopy[1]; void* pEnd[1]; void* pBegin[1];
+        FUN_14111d5b0(*FUN_14114e990(pOut, pBegin), *FUN_1411525d0(pOut, pEnd), *FUN_141123230(aCopy, pPawn));
+    }
+}
+
+// ---- w138 batch 14 ----
+struct Unk_CMISSlot { Unk_CMISSlot(void* pId); Unk_CMISSlot(const Unk_CMISSlot&); ~Unk_CMISSlot(); void* m_p; };   // ctor 14111e890, copy 14111e850, dtor 1409648f0
+struct Unk_CMISObjRec30 { char m_pad[0x30]; int m_n30; char m_pad34[0xc]; void* m_pKind; };
+class Unk_CMISObj498 { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual int vfunc_2(void* pCtx, void* pRec, int nCell, __int64 nOwner, void* pItem); };
+int FUN_141126a70(Unk_CMISObjHandle*);                                                                // IsNull
+void* FUN_141225470(int nKind);
+void* FUN_1408b7270(Unk_PayloadPtr<CubeItemInfo>*);
+void FUN_141226b80(Unk_CMISObj498*, CString strName);
+void FUN_141230c90(Unk_CMISMagicCube*, Unk_CMISSlot slot);
+
+// @0x1410d0000
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410d0000(void* pCtx, MS2Ptr<Cube> spCube)
+{
+    Unk_CMISObjHandle hObj;
+    FUN_140704ec0(&hObj, spCube->fieldB4);
+    if (FUN_141126a70(&hObj) == 0) {
+        Unk_CMISObjRec30* pRec = (Unk_CMISObjRec30*)FUN_140708eb0(&hObj);
+        if (pRec->m_n30 != 0) {
+            Unk_CMISSlot slot(FUN_141225470(FUN_140708eb0(&hObj)->nKind));
+            Unk_StreamPoint ptCube = *(Unk_StreamPoint*)&spCube->position;
+            Unk_CMISObj498* pObj = FUN_1409658e0(&slot);
+            void* pItem = FUN_1408b7270(&spCube->item);
+            __int64 nOwner = FUN_1410c8030(spCube->field50, spCube->field54);
+            int nCell = FUN_1408a03c0(*(Unk_Int3*)&ptCube);
+            if (pObj->vfunc_2(pCtx, &((Unk_CMISObjRec30*)FUN_140708eb0(&hObj))->m_n30, nCell, nOwner, pItem) != 0) {
+                CString strKey;
+                strKey.Format("%d_%d", spCube->field44, FUN_1408a03c0(*(Unk_Int3*)&spCube->position));
+                FUN_141226b80(FUN_1409658e0(&slot), strKey);
+                FUN_141230c90(FUN_1409670b0(), Unk_CMISSlot(slot));
+            }
+        }
+    }
+}

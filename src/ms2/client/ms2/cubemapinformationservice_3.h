@@ -280,6 +280,8 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410d0000(void* pCtx, MS2Ptr<Cube> spCube);
+    void FUN_1410bb610(unsigned nMask, struct Unk_CMISPawn* pPawn, float fDist, struct Unk_CMISRefList* pOut);
     void FUN_1410caf20(Cube* pCube, int nTime);
     void FUN_1410bbf20(int nGroup, const egf::EntityID& id);
     void FUN_1410bf470();
