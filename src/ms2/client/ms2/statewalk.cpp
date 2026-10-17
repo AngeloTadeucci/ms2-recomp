@@ -398,12 +398,14 @@ void StateWalk::vfunc_9(double fTime)
 }
 
 // @0x141800a90
-// MS2-FUNCTIONAL: branch layout differs from the exe
 int StateWalk::vfunc_15()
 {
     if (m_n48 == 0 || m_n10 == 0x19)
         return 0;
-    return 1;
+    else
+    {
+        return 1;
+    }
 }
 
 // @0x141800ac0
