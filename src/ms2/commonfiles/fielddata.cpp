@@ -478,7 +478,6 @@ void FUN_1403731e0(ATL::CAtlArray<Unk_FieldSpawnPair>& out)
         }
     }
 }
-// MS2-FUNCTIONAL: typed XML nodes and allocation temporaries differ; all attributes and cache/lock effects are preserved.
 // @0x140373340
 void FUN_140373340()
 {
@@ -623,7 +622,6 @@ MS2Ptr<CFieldData> CFieldData::FUN_140374270(CString xblock)
 
 // @0x1403743e0
 bool CFieldData::FUN_1403743e0() { return FUN_1403744a0(m_nFieldID); }
-// MS2-FUNCTIONAL: boolean comparison lowering differs; null lookup and map-type test are preserved.
 // @0x140374410
 bool CFieldData::FUN_140374410(int id)
 {
@@ -631,7 +629,6 @@ bool CFieldData::FUN_140374410(int id)
     if (field == NULL) return false;
     return field->m_nMapType == 3;
 }
-// MS2-FUNCTIONAL: boolean comparison lowering differs; null lookup and map-type test are preserved.
 // @0x1403744a0
 bool CFieldData::FUN_1403744a0(int id)
 {
