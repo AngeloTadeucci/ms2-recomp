@@ -10,30 +10,13 @@
 #include <exdisp.h>
 #include <mshtml.h>
 #include "cashunlockdialog.h"
+#include "ms2/placeholder/cashshopref.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
-struct UICashShopDialog;
-
-// A smart handle (0x20 bytes, the pointee at +8) the UI manager hands out for a dialog id.
-struct Unk_CashShopRef
-{
-    void* m_unk0;
-    UICashShopDialog* m_pDialog;
-    void* m_unk10;
-    void* m_unk18;
-    Unk_CashShopRef(UICashShopDialog* pDialog);                     // 0x140b05020
-    ~Unk_CashShopRef();                                             // 0x140b05080
-    UICashShopDialog* Get() const;                                  // 0x140b051c0
-    UICashShopDialog* GetDialog() const;                            // 0x140b051d0
-};
-MS2_CHECK_SIZE(Unk_CashShopRef, 0x20);
-
-UICashShopDialog* FUN_140b04f80(int nId);                           // the UICashShopDialog with the id
 void FUN_141035970(UICashShopDialog* pDialog, int nArg);
 void* FUN_140aadf80();                                              // the screen
 void FUN_140ad4c30(void* pScreen, RECT* pRect);                     // the screen rect
-void FUN_140b053f0(CWnd* pWnd, RECT* pRect);                        // GetWindowRect
 void FUN_14098a440(CDialogEx* pDlg, CDataExchange* pDX);
 void FUN_14098a5d0(CWnd* pWnd);
 
@@ -98,16 +81,17 @@ void CCashUnlockDialog::Navigate(CString strUrl)
 }
 
 // @0x140b0df10
-// MS2-FUNCTIONAL: the exe folds the MoveWindow arguments without the temporaries cl keeps here
 void CCashUnlockDialog::CenterOnScreen()
 {
     RECT rcScreen;
     RECT rcWindow;
     FUN_140ad4c30(FUN_140aadf80(), &rcScreen);
-    FUN_140b053f0(this, &rcWindow);
-    MoveWindow(((rcScreen.right - rcScreen.left) - (rcWindow.right - rcWindow.left)) / 2 + rcScreen.left,
-               ((rcScreen.bottom - rcScreen.top) - (rcWindow.bottom - rcWindow.top)) / 2 + rcScreen.top,
-               rcWindow.right - rcWindow.left, rcWindow.bottom - rcWindow.top, 1);
+    GetWindowRect(&rcWindow);
+    int x = ((rcScreen.right - rcScreen.left) - (rcWindow.right - rcWindow.left)) / 2 + rcScreen.left;
+    int y = ((rcScreen.bottom - rcScreen.top) - (rcWindow.bottom - rcWindow.top)) / 2 + rcScreen.top;
+    int nWidth = rcWindow.right - rcWindow.left;
+    int nHeight = rcWindow.bottom - rcWindow.top;
+    MoveWindow(x, y, nWidth, nHeight, 1);
 }
 
 // @0x140b0e000
@@ -122,13 +106,12 @@ BEGIN_MESSAGE_MAP(CCashUnlockDialog, CDialogEx)
 END_MESSAGE_MAP()
 
 // @0x140b0e080
-// MS2-FUNCTIONAL: cl reserves 0x10 more frame bytes than the exe for the same locals
 void CCashUnlockDialog::OnClose()
 {
     {
         Unk_CashShopRef ref(FUN_140b04f80(0x4ebc));
-        if (ref.Get() != 0)
-            FUN_141035970(ref.GetDialog(), 0);
+        if (ref.FUN_140b051c0() != 0)
+            FUN_141035970(ref.FUN_140b051d0(), 0);
     }
     FUN_14098a5d0(this);
 }
@@ -155,23 +138,23 @@ void CCashUnlockDialog::OnNavigateComplete2(LPDISPATCH pDisp, VARIANT* pURL)
 }
 
 // @0x140b0e190
-// MS2-FUNCTIONAL: the exe's first QueryInterface call passes a fifth argument (a different wrapper than the plain COM call)
 void CCashUnlockDialog::OnDocumentComplete(LPDISPATCH pDisp, VARIANT* pURL)
 {
+    HRESULT hr = 0;
     IWebBrowser2* pBrowser = 0;
-    pDisp->QueryInterface(IID_IWebBrowser2, (void**)&pBrowser);
+    hr = pDisp->QueryInterface(IID_IWebBrowser2, (void**)&pBrowser);
     IDispatch* pDocDisp = 0;
-    pBrowser->get_Document(&pDocDisp);
+    hr = pBrowser->get_Document(&pDocDisp);
     if (pDocDisp != 0)
     {
         VARIANT vUnused;
         VariantInit(&vUnused);
         IHTMLDocument2* pDoc = 0;
-        pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
+        hr = pDocDisp->QueryInterface(IID_IHTMLDocument2, (void**)&pDoc);
         IHTMLElement* pBody = 0;
-        pDoc->get_body(&pBody);
+        hr = pDoc->get_body(&pBody);
         IHTMLBodyElement* pBodyElement = 0;
-        pBody->QueryInterface(IID_IHTMLBodyElement, (void**)&pBodyElement);
+        hr = pBody->QueryInterface(IID_IHTMLBodyElement, (void**)&pBodyElement);
         if (pBodyElement != 0)
         {
             pBodyElement->put_scroll(SysAllocString(L"no"));

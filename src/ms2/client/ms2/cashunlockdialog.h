@@ -30,6 +30,5 @@ public:
 public:
     CString m_strUrl;                                               // +0x170
     CExplorer1 m_explorer;                                          // +0x178 DDX 0x4d5
-    char m_unk260[0x28];                                            // +0x260 not touched by the ctor
 };
 MS2_CHECK_SIZE(CCashUnlockDialog, 0x288);
