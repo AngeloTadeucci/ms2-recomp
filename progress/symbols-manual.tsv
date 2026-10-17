@@ -2724,3 +2724,5 @@ inflateInit_	142723ad0	func
 ?DAT_143afbfd0@@3VNiRTTI@@B	143afbfd0	data
 ?DAT_143afa620@@3VNiRTTI@@B	143afa620	data
 ?DAT_143aab3b0@@3VCLockCriticalSection@@A	143aab3b0	data
+?s_bInit@CQuestTable@@2_NA	143ae65dc	data
+?s_bInit@CScriptTable@@2_NA	143acce40	data
