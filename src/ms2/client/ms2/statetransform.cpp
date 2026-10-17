@@ -67,7 +67,7 @@ void StateTransform::vfunc_4(StateData* pData)
     Unk_EffectQuery query;
     query.m_strName = pszEffect;
     query.m_nObject = FUN_141bd1a10(FUN_1403ed2d0(), m_pOwner);
-    query.FUN_140a53190(m_pOwner->FUN_14123c580());
+    query.SetActor(m_pOwner->FUN_14123c580());
     m_nEffect = FUN_1411a49c0(FUN_1403ed280(), &query);
     Unk_TfString strAnim("Equip_Change_Mantle_A");
     m_pOwner->FUN_14166dd20(strAnim, 1.0f, false, false);
@@ -131,7 +131,7 @@ void StateTransformDoll::vfunc_4(StateData* pData)
     Unk_EffectQuery query;
     query.m_strName = pszEffect;
     query.m_nObject = FUN_141bd1a10(FUN_1403ed2d0(), m_pOwner);
-    query.FUN_140a53190(m_pOwner->FUN_14123c580());
+    query.SetActor(m_pOwner->FUN_14123c580());
     m_nEffect = FUN_1411a49c0(FUN_1403ed280(), &query);
     Unk_TfString strAnim("Equip_Change_Mantle_A");
     m_pOwner->FUN_14166dd20(strAnim, 1.0f, false, false);

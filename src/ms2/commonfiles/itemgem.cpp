@@ -33,7 +33,8 @@
 // MS2-PIN: ??0?$CAtlMap@W4Unk_GemSlot@@IV?$CElementTraits@W4Unk_GemSlot@@@ATL@@V?$CElementTraits@I@3@@ATL@@QEAA@IMMMI@Z 0x1405a7ec0
 // MS2-PIN: ??__Es_mapGemSlots@@YAXXZ 0x1400ba010
 // MS2-PIN: memcpy_s 0x1405abbe0
-// MS2-PIN: ??1Unk_EffectQueryOwner@@QEAA@XZ 0x1405a8560
+// MS2-PIN: ??1Unk_NoticeCallbackPtr@@QEAA@XZ 0x1405a8560
+// MS2-PIN: ??1NoticeMessage@@QEAA@XZ 0x1405a89e0
 // MS2-PIN: ??1?$MS2Ptr@VCEquipItem@@@@QEAA@XZ 0x1405a85f0
 // MS2-PIN: ?GetStartPosition@?$CAtlMap@W4Unk_GemSlot@@IV?$CElementTraits@W4Unk_GemSlot@@@ATL@@V?$CElementTraits@I@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1405a99f0
 // MS2-PIN: ?GetValueAt@?$CAtlMap@W4Unk_GemSlot@@IV?$CElementTraits@W4Unk_GemSlot@@@ATL@@V?$CElementTraits@I@3@@ATL@@QEAAAEAIPEAU__POSITION@@@Z 0x1405a9ab0
@@ -839,7 +840,7 @@ int CGemCharEffect::vfunc_6(PC* pPC, MS2Ptr<CItem> spItem)
     Unk_EffectQuery query;
     query.m_strName = spData->FUN_1405acbd0(FUN_141658e60(pPC));
     query.m_nObject = 0;
-    query.FUN_140a53190(pPC->FUN_14123c580());
+    query.SetActor(pPC->FUN_14123c580());
     int nHandle = FUN_1403ed280()->FUN_1411a49c0(&query);
     if (nHandle != 0)
         m_listEffects.AddTail(nHandle);
@@ -1149,28 +1150,6 @@ extern void* DAT_143aafd08;                                         // the gem t
 Unk_GemTable* FUN_1405a96f0()
 {
     return (Unk_GemTable*)DAT_143aafd08;
-}
-
-// The effect request record (effectquery.h declares only its first 0x10 bytes) is 0x70 bytes in the exe; the destructor
-// 0x1405a89e0 is shared (ICF) with Unk_ExpTarget / Unk_PeTarget / Unk_VibEffectReq and releases two members after the name.
-struct Unk_EffectQueryOwned { virtual ~Unk_EffectQueryOwned() {} };
-struct Unk_EffectQueryOwner { ~Unk_EffectQueryOwner() { if (m_p) delete m_p; } Unk_EffectQueryOwned* m_p; };
-struct Unk_EffectQueryTail
-{
-    char m_pad00[0x10];
-    efd::SmartPointer<NiAVObject> m_spNode;                         // +0x10
-    char m_pad18[0x28];
-    Unk_EffectQueryOwner m_owner;                                   // +0x40
-};
-MS2_CHECK_OFFSET(Unk_EffectQueryTail, m_spNode, 0x10);
-MS2_CHECK_OFFSET(Unk_EffectQueryTail, m_owner, 0x40);
-
-// @0x1405a89e0
-Unk_EffectQuery::~Unk_EffectQuery()
-{
-    Unk_EffectQueryTail* pTail = (Unk_EffectQueryTail*)this;
-    pTail->m_owner.~Unk_EffectQueryOwner();
-    pTail->m_spNode.~SmartPointer();
 }
 
 // memcpy_s 0x1405abbe0 closes the obj's COMDAT tail.

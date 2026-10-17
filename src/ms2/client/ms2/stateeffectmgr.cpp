@@ -128,7 +128,7 @@ void StateEffectMgr::GetEffects(GameObject* pObject, int nStateType, Unk_StateEf
         Unk_EffectQuery query;
         query.m_strName = it->m_strEffect;
         query.m_nObject = FUN_141bd1a10(FUN_1403ed2d0(), pObject);
-        query.FUN_140a53190(FUN_14123c580(pObject));
+        query.SetActor(FUN_14123c580(pObject));
         int nEffectId = FUN_1411a49c0(FUN_1403ed280(), &query);
         if (nEffectId != 0)
             pOut->FUN_140a3fce0(nEffectId);

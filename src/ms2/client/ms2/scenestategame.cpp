@@ -5972,7 +5972,7 @@ void CSceneStateGame::FUN_141722fb0(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x141722fb0, CSceneStateGame, FUN_141722fb0, 152, 0x8674E8E3);
 
-// MS2-FUNCTIONAL: frame 0x88 vs 0xe8 only; shared Unk_EffectQuery (effectquery.h) is declared 0x10 but the 0x140a52ef0 ctor fills 0x70 bytes
+// MS2-FUNCTIONAL: small residual code difference (the old 0x10 Unk_EffectQuery frame-size cause is fixed)
 // @0x141723050
 void CSceneStateGame::FUN_141723050(CInPacket& packet)
 {
@@ -5997,7 +5997,7 @@ void CSceneStateGame::FUN_141723050(CInPacket& packet)
                 else if (FUN_141658e60(pPC) == 0)
                     query.m_strName = FUN_1401d31f0()->m_str2d8;
                 query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
-                query.FUN_140a53190(pPC->FUN_14123c580());
+                query.SetActor(pPC->FUN_14123c580());
                 FUN_1403ed280()->FUN_1411a4a00(&query);
             }
         }
@@ -7551,7 +7551,6 @@ void CSceneStateGame::FUN_141738120(CInPacket& packet)
 MS2_REPLACE_METHOD(0x141738120, CSceneStateGame, FUN_141738120, 279, 0x1DD3407C);
 
 // @0x14171a730
-// MS2-FUNCTIONAL: frame 0x88 vs 0xe8 only; shared Unk_EffectQuery (effectquery.h) is declared 0x10 but the 0x140a52ef0 ctor fills 0x70 bytes
 void CSceneStateGame::FUN_14171a730(CInPacket& packet)
 {
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
@@ -7571,7 +7570,7 @@ void CSceneStateGame::FUN_14171a730(CInPacket& packet)
             Unk_EffectQuery query;
             query.m_strName = FUN_1401d31f0()->m_str358;
             query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
-            query.FUN_140a53190(pPC->FUN_14123c580());
+            query.SetActor(pPC->FUN_14123c580());
             FUN_1403ed280()->FUN_1411a4a00(&query);
         }
         else if (nB != 0)
@@ -7644,7 +7643,6 @@ public:
 MS2_CHECK_SIZE(NotifyChangeMyJob, 0x20);
 
 // @0x14171f8a0
-// MS2-FUNCTIONAL: code identical; frame 0x60 smaller because the shared Unk_EffectQuery placeholder is 0x10 (exe object 0x70), so stack slots shift
 void CSceneStateGame::FUN_14171f8a0(CInPacket& packet)
 {
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
@@ -7675,7 +7673,7 @@ void CSceneStateGame::FUN_14171f8a0(CInPacket& packet)
             Unk_EffectQuery query;
             query.m_strName = FUN_1401d31f0()->m_str2c8;
             query.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(pPC);
-            query.FUN_140a53190(pPC->FUN_14123c580());
+            query.SetActor(pPC->FUN_14123c580());
             FUN_1403ed280()->FUN_1411a4a00(&query);
             FUN_14080bb80(pPC->FUN_1409eee00().get());
             MyPC* pMyPC = FUN_1409613d0(pPC);
@@ -9742,7 +9740,7 @@ void FUN_141b16550(unsigned short nLevel);
 UIExpBar* FUN_14125b200(int nId);                           // GetDialog<UIExpBar> (another unit's COMDAT)
 
 // @0x14171aec0
-// MS2-FUNCTIONAL: stack layout only: the shared Unk_EffectQuery placeholder is 0x10 bytes but the exe object is 0x70 (ctor 0x140a52ef0 writes up to +0x68), so the frame is 0x60 smaller and slots shift.
+// MS2-FUNCTIONAL: small residual code difference (the old 0x10 Unk_EffectQuery frame-size cause is fixed)
 void CSceneStateGame::FUN_14171aec0(CInPacket& packet)
 {
     int nId = static_cast<CInputStream&>(packet).vfunc_o8_3();
@@ -9760,11 +9758,11 @@ void CSceneStateGame::FUN_14171aec0(CInPacket& packet)
         if (pPC->FUN_1416764a0() != 0)
         {
             efd::SmartPointer<Ridee> spRidee(pPC->FUN_1416764a0());
-            query.FUN_140a53190(spRidee->FUN_14123c580());
+            query.SetActor(spRidee->FUN_14123c580());
         }
         else
         {
-            query.FUN_140a53190(pPC->FUN_14123c580());
+            query.SetActor(pPC->FUN_14123c580());
         }
         Unk_SSGDlgInv* pInv = FUN_1405344f0(0x4e2d);
         if (pInv != 0)

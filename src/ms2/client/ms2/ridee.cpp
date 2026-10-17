@@ -567,7 +567,7 @@ void Ridee::vfunc_12()
         Unk_EffectQuery kQuery;
         kQuery.m_strName = m_spData->m_strE0;
         kQuery.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(this);
-        kQuery.FUN_140a53190(FUN_14123c580());
+        kQuery.SetActor(FUN_14123c580());
         m_nIdleFx = FUN_1403ed280()->FUN_1411a49c0(&kQuery);
     }
     FUN_14166e0a0();
@@ -757,7 +757,7 @@ void Ridee::FUN_141705b60(double fTime)
             Unk_EffectQuery kQuery;
             kQuery.m_strName = m_spData->m_strB8;
             kQuery.m_nObject = 1;
-            kQuery.FUN_140a53190(FUN_14123c580());
+            kQuery.SetActor(FUN_14123c580());
             FUN_1403ed280()->FUN_1411a4a00(&kQuery);
         }
         FUN_141676b50(1);
@@ -775,7 +775,7 @@ void Ridee::FUN_141705b60(double fTime)
             Unk_EffectQuery kQuery;
             kQuery.m_strName = m_spData->m_strD0;
             kQuery.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(this);
-            kQuery.FUN_140a53190(FUN_14123c580());
+            kQuery.SetActor(FUN_14123c580());
             m_nRunFx = FUN_1403ed280()->FUN_1411a49c0(&kQuery);
         }
         return;
@@ -792,7 +792,7 @@ void Ridee::FUN_141705b60(double fTime)
                 Unk_EffectQuery kQuery;
                 kQuery.m_strName = m_spData->m_strC0;
                 kQuery.m_nObject = 1;
-                kQuery.FUN_140a53190(FUN_14123c580());
+                kQuery.SetActor(FUN_14123c580());
                 FUN_1403ed280()->FUN_1411a4a00(&kQuery);
             }
             FUN_141676b50(1);
@@ -810,7 +810,7 @@ void Ridee::FUN_141705b60(double fTime)
                 Unk_EffectQuery kQuery;
                 kQuery.m_strName = m_spData->m_strD8;
                 kQuery.m_nObject = FUN_1403ed2d0()->FUN_141bd1a10(this);
-                kQuery.FUN_140a53190(FUN_14123c580());
+                kQuery.SetActor(FUN_14123c580());
                 m_nRunFx2 = FUN_1403ed280()->FUN_1411a49c0(&kQuery);
             }
         }

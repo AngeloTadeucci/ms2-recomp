@@ -292,7 +292,7 @@ void CGroundEffectDataManager::PlayEffects(GameObject* pObject, CString strActio
     {
         Unk_EffectQuery query;
         query.m_nObject = FUN_141bd1a10(FUN_1403ed2d0(), pObject);
-        query.FUN_140a53190(FUN_14123c580(pObject));
+        query.SetActor(FUN_14123c580(pObject));
         for (unsigned int i = 0; i < files.GetCount(); i++)
         {
             query.m_strName = files[i];
