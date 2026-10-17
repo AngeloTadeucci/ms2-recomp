@@ -2092,3 +2092,89 @@ bool CUgcMarketProduct::FUN_1408963f0(Unk_CommonOwner& owner)
         return true;
     return false;
 }
+
+// @0x140896450
+CUgcMarketSeller::CUgcMarketSeller()
+{
+    Clear();
+}
+
+// @0x1408964c0
+CUgcMarketSeller::~CUgcMarketSeller()
+{
+    Clear();
+}
+
+// @0x140896530
+void CUgcMarketSeller::Clear()
+{
+    m_n18 = 0;
+    m_n20 = 0;
+    m_strName = "";
+    m_n30 = 0;
+    static_cast<IUgcProxy&>(m_user).Clear();
+    m_n78 = 0;
+    m_n80 = 0;
+    m_n88 = 0;
+    m_n90 = 0;
+}
+
+// @0x1408965f0
+void CUgcMarketSeller::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_4(m_n18);
+    stream.vfunc_o10_4(m_n20);
+    stream.vfunc_o10_8(m_strName);
+    stream.vfunc_o10_3(m_n30);
+    m_user.Write(stream);
+    stream.vfunc_o10_3(m_n78);
+    stream.vfunc_o10_4(m_n80);
+    stream.vfunc_o10_4(m_n88);
+    stream.vfunc_o10_4(m_n90);
+}
+
+// @0x140896710
+void CUgcMarketSeller::Read(CInPacket& packet)
+{
+    m_n18 = packet.vfunc_o8_4();
+    m_n20 = packet.vfunc_o8_4();
+    m_strName = packet.vfunc_o8_8();
+    m_n30 = packet.vfunc_o8_3();
+    m_user.Read(packet);
+    m_n78 = packet.vfunc_o8_3();
+    m_n80 = packet.vfunc_o8_4();
+    m_n88 = packet.vfunc_o8_4();
+    m_n90 = packet.vfunc_o8_4();
+}
+
+// @0x140896940
+CUgcBookMark::CUgcBookMark()
+{
+    m_n18 = 0;
+    m_n20 = 0;
+    m_strName.Empty();
+    m_strUrl = "";
+}
+
+// @0x1408969f0
+CUgcBookMark::~CUgcBookMark()
+{
+}
+
+// @0x140896a50
+void CUgcBookMark::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_4(m_n18);
+    stream.vfunc_o10_4(m_n20);
+    stream.vfunc_o10_8(m_strName);
+    stream.vfunc_o10_6(m_strUrl);
+}
+
+// @0x140896af0
+void CUgcBookMark::Read(CInPacket& packet)
+{
+    m_n18 = packet.vfunc_o8_4();
+    m_n20 = packet.vfunc_o8_4();
+    m_strName = packet.vfunc_o8_8();
+    m_strUrl = packet.vfunc_o8_6();
+}

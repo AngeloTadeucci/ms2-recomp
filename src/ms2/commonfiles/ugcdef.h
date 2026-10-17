@@ -574,3 +574,43 @@ public:
     CLockCriticalSection m_lock;                            // +0x218
 };
 MS2_CHECK_SIZE(CUgcMarketProduct, 0x248);
+
+// The seller of a market product.
+class CUgcMarketSeller : public CPtred
+{
+public:
+    CUgcMarketSeller();                                     // 0x140896450
+    virtual ~CUgcMarketSeller();                            // 0x1408964c0
+
+    void Clear();                                           // 0x140896530
+    void Write(COutputStream& stream) const;                // 0x1408965f0
+    void Read(CInPacket& packet);                           // 0x140896710
+
+    __int64 m_n18;                                          // +0x18
+    __int64 m_n20;                                          // +0x20
+    CStringW m_strName;                                     // +0x28
+    int m_n30;                                              // +0x30
+    CUgcUserProxy m_user;                                   // +0x38
+    int m_n78;                                              // +0x78
+    __int64 m_n80;                                          // +0x80
+    __int64 m_n88;                                          // +0x88
+    __int64 m_n90;                                          // +0x90
+};
+MS2_CHECK_SIZE(CUgcMarketSeller, 0x98);
+
+// A bookmarked UGC item.
+class CUgcBookMark : public CPtred
+{
+public:
+    CUgcBookMark();                                         // 0x140896940
+    virtual ~CUgcBookMark();                                // 0x1408969f0
+
+    void Write(COutputStream& stream) const;                // 0x140896a50
+    void Read(CInPacket& packet);                           // 0x140896af0
+
+    __int64 m_n18;                                          // +0x18
+    __int64 m_n20;                                          // +0x20
+    CStringW m_strName;                                     // +0x28
+    CStringA m_strUrl;                                      // +0x30
+};
+MS2_CHECK_SIZE(CUgcBookMark, 0x38);
