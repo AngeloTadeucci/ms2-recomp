@@ -189,7 +189,7 @@ Unk_AdXmlNode* FUN_140345b40(Unk_AdXmlNode* pParent);                   // First
 Unk_AdXmlNode* FUN_1403f0510(Unk_AdXmlNode* pNode);                     // NextSibling
 const char* FUN_140189180(Unk_AdXmlNode* pNode);                        // Value
 void FUN_14086e580(Unk_AdXmlNode* pParent, Unk_AdXmlNode* pChild);      // RemoveChild
-Unk_AdXmlNode* FUN_140872ec0(Unk_AdXmlNode* pParent, const char* szName, int bCreate);
+Unk_AdXmlNode* FUN_140872ec0(Unk_AdXmlNode* pParent, const char* szName, bool bCreate);
 bool FUN_140870fc0(TiXmlDocument* pDoc, const char* szFile, int n);     // LoadFile
 void FUN_140870cf0(TiXmlDocument* pDst, TiXmlDocument* pSrc);           // copy
 int FUN_1408732e0(Unk_AdXmlNode* pNode, const char* szName, __int64& v);
@@ -433,7 +433,7 @@ void UIAdPushDialog::vfunc_67()
 // @0x140e406c0
 bool UIAdPushDialog::AddBundle(MS2Ptr<Unk_AdMarketItem> item, int n4c, int n50, bool bMinimized)
 {
-    if (item.IsNull() || item->m_nB8 != 3)
+    if (item == 0 || item->m_nB8 != 3)
         return false;
     if (item->m_n124 == 0)
         return false;
@@ -467,7 +467,7 @@ bool UIAdPushDialog::RemoveEntityKey(const int& nId)
 // @0x140e40a30
 bool UIAdPushDialog::RemoveBundle(MS2Ptr<AdPushEntityLimitedBundle> bundle)
 {
-    if (bundle.IsNull())
+    if (bundle == 0)
         return false;
     int nId = bundle->FUN_140e42560();
     RemoveEntityKey(nId);
@@ -518,13 +518,13 @@ bool UIAdPushDialog::Refresh(unsigned nFlags)
 // @0x140e40de0
 void UIAdPushDialog::UpdateBundles(MS2Ptr<Unk_AdMarketItem> item)
 {
-    if (!(m_30 == 0) && !m_entities.IsEmpty() && !item.IsNull())
+    if (!(m_30 == 0) && !m_entities.IsEmpty() && !(item == 0))
     {
         POSITION pos = m_entities.GetHeadPosition();
         while (pos)
         {
             MS2Ptr<AdPushEntityBase> entity = m_entities.GetValueAt(pos);
-            if (!entity.IsNull() && entity->FUN_140e42540() == 1)
+            if (!(entity == 0) && entity->FUN_140e42540() == 1)
             {
                 MS2Ptr<AdPushEntityLimitedBundle> bundle(dynamic_cast<AdPushEntityLimitedBundle*>(m_entities.GetValueAt(pos).get()));
                 if (bundle.get())
@@ -663,11 +663,11 @@ void UIAdPushDialog::OnNotifyCompleteMyPC(NotifyObject*)
 // @0x140e41720
 MS2Ptr<ASMovieClip> UIAdPushDialog::AddBadge(MS2Ptr<AScript> value)
 {
-    if (m_30 == 0 || value.IsNull())
+    if (m_30 == 0 || value == 0)
         return MS2Ptr<ASMovieClip>(0);
     Scaleform::GFx::Value v = m_30->Invoke("addLimitedBundle", value->FUN_1422bb870());
     MS2Ptr<ASMovieClip> clip(new ASMovieClip(v, 2));
-    if (clip.IsNull() || value->FUN_1422ba9a0())
+    if (clip == 0 || value->FUN_1422ba9a0())
         return MS2Ptr<ASMovieClip>(0);
     return clip;
 }
@@ -675,7 +675,7 @@ MS2Ptr<ASMovieClip> UIAdPushDialog::AddBadge(MS2Ptr<AScript> value)
 // @0x140e41940
 bool UIAdPushDialog::RemoveBadge(MS2Ptr<ASMovieClip> badge)
 {
-    if (m_30 == 0 || badge.IsNull())
+    if (m_30 == 0 || badge == 0)
         return false;
     Scaleform::GFx::Value v = m_30->Invoke("removeLimitedBundle", badge->FUN_1422bb870());
     return FUN_1409c1720(v);
@@ -693,7 +693,7 @@ bool UIAdPushDialog::RemoveEntityById(const int& nId)
 // @0x140e41b00
 bool UIAdPushDialog::LoadEntity(MS2Ptr<AdPushEntityBase> entity)
 {
-    if (entity.IsNull())
+    if (entity == 0)
         return false;
     bool bAccount = entity->vfunc_7();
     Unk_AdXmlNode* pRoot = GetSaveRoot(bAccount);
@@ -737,7 +737,7 @@ void UIAdPushDialog::FindDirtyPos(float* pX, float* pY)
     if (pObj && pObj->FUN_1422dc430() != 0)
     {
         MS2Ptr<ASMovieClip> clip(dynamic_cast<ASMovieClip*>(pObj->FUN_1422dba00().get()));
-        if (!clip.IsNull() && !(m_limitedBundle == 0))
+        if (!(clip == 0) && !(m_limitedBundle == 0))
         {
             double dX = 0.0;
             __int64 n = 0;
@@ -859,7 +859,7 @@ void AdPushEntityLimitedBundle::Reset()
 // @0x140e42740
 void AdPushEntityLimitedBundle::Update(MS2Ptr<Unk_AdMarketItem> item)
 {
-    if (item.IsNull())
+    if (item == 0)
         return;
     if (m_item->m_nSn == item->m_nSn)
     {
@@ -879,7 +879,7 @@ void AdPushEntityLimitedBundle::OnMaximize(const Scaleform::GFx::FunctionHandler
 void AdPushEntityLimitedBundle::SetBadge(MS2Ptr<ASMovieClip> badge)
 {
     m_badge = badge;
-    if (!m_badge.IsNull())
+    if (!(m_badge == 0))
     {
         m_remain = m_badge->FUN_1409b4620("m_remainTime");
         FUN_1422c3600(m_badge.get(), "clickMaximize", Delegate<void(const Scaleform::GFx::FunctionHandler::Params&)>(this, &AdPushEntityLimitedBundle::OnMaximize), 0, 0, 0, 0);
@@ -896,7 +896,7 @@ void AdPushEntityLimitedBundle::SetMinimized(bool b)
 // @0x140e42a60
 bool AdPushEntityLimitedBundle::UpdateRemainTime()
 {
-    if (m_remain.IsNull() || m_item.IsNull())
+    if (m_remain == 0 || m_item == 0)
         return false;
     if (!m_bShowRemain)
         return true;
@@ -962,7 +962,7 @@ bool AdPushEntityLimitedBundle::vfunc_1()
     }
     else
     {
-        if (m_badge.IsNull())
+        if (m_badge == 0)
         {
             MS2Ptr<AScript> script(new AScript(2));
             if (script.get())
@@ -994,36 +994,34 @@ bool AdPushEntityLimitedBundle::vfunc_1()
 void AdPushEntityLimitedBundle::vfunc_2(bool bRemove)
 {
     UIAdPushDialog* pDlg = FUN_140d61c00(eUI_4f34);
-    if (pDlg)
+    if (!pDlg)
+        return;
+    if (!bRemove)
     {
-        if (!bRemove)
-        {
-            if (m_badge.get())
-                pDlg->vfunc_8(0);
-        }
-        else
-            m_badge = 0;
-        if (m_dlg.get())
-            m_dlg->vfunc_68();
-        pDlg->LoadEntity(MS2Ptr<AdPushEntityBase>(this));
+        if (m_badge.get())
+            pDlg->vfunc_8(0);
     }
+    else
+        m_badge = 0;
+    if (m_dlg.get())
+        m_dlg->vfunc_68();
+    pDlg->LoadEntity(MS2Ptr<AdPushEntityBase>(this));
 }
 
 // @0x140e43430
 void AdPushEntityLimitedBundle::vfunc_3()
 {
     UIAdPushDialog* pDlg = FUN_140d61c00(eUI_4f34);
-    if (pDlg)
-    {
-        pDlg->LoadEntity(MS2Ptr<AdPushEntityBase>(this));
-        if (m_badge.get())
-            pDlg->RemoveBadge(MS2Ptr<ASMovieClip>(m_badge));
-        m_badge = 0;
-        if (m_dlg.get())
-            m_dlg->vfunc_68();
-        m_dlg = 0;
-        pDlg->RemoveBundle(MS2Ptr<AdPushEntityLimitedBundle>(this));
-    }
+    if (!pDlg)
+        return;
+    pDlg->LoadEntity(MS2Ptr<AdPushEntityBase>(this));
+    if (m_badge.get())
+        pDlg->RemoveBadge(MS2Ptr<ASMovieClip>(m_badge));
+    m_badge = 0;
+    if (m_dlg.get())
+        m_dlg->vfunc_68();
+    m_dlg = 0;
+    pDlg->RemoveBundle(MS2Ptr<AdPushEntityLimitedBundle>(this));
 }
 
 // @0x140e43590
@@ -1082,7 +1080,7 @@ bool AdPushEntityLimitedBundle::vfunc_7()
 // @0x140e43a00
 void AdPushEntityLimitedBundle::vfunc_8(Scaleform::GFx::Value* pValue, ASData* pData)
 {
-    if (!m_item.IsNull())
+    if (!(m_item == 0))
     {
         ASTooltip tip(4, 2);
         FUN_1409e3190(&tip, &m_item->m_info, m_bMinimized, pData);
@@ -1093,7 +1091,7 @@ void AdPushEntityLimitedBundle::vfunc_8(Scaleform::GFx::Value* pValue, ASData* p
 // @0x140e43ad0
 void AdPushEntityLimitedBundle::vfunc_9()
 {
-    if (m_bMinimized && !m_remain.IsNull() && m_badge.get())
+    if (m_bMinimized && !(m_remain == 0) && m_badge.get())
         UpdateRemainTime();
 }
 
