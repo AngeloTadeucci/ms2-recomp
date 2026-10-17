@@ -654,6 +654,15 @@
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHH@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@AEBH@Z 0x141157120 ; w151 ICF owner (name order)
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@_K@Z 0x141151200 ; w151 solve
 // MS2-PINS-END w151
+// MS2-PINS-BEGIN w203
+// MS2-PIN: ?_Xlength@?$vector@HV?$CustomAllocator@H@efd@@@std@@CAXXZ 0x14114cd10 ; w203 the efd::vector<int> _Emplace_reallocate 0x1410e3c60 calls it
+// MS2-PIN: ?_Xlength@?$vector@PEAVCube@@V?$allocator@PEAVCube@@@std@@@std@@CAXXZ 0x14114cd30 ; w203 the vector<Cube*> _Emplace_reallocate 0x1410e3ea0/0x1410e4a00 call it
+// MS2-PIN: ?_Xlength@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@CAXXZ 0x14114cd50 ; w203 name order
+// MS2-PIN: ?_Xlength@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@CAXXZ 0x14114cd70 ; w203 name order
+// MS2-PIN: ?_Xlength@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@CAXXZ 0x14114cd90 ; w203 name order
+// MS2-PIN: ?_Xlength@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@CAXXZ 0x14114cdb0 ; w203 name order
+// MS2-PIN: ?_Xlength@?$vector@W4Unk_CMISKindC@@V?$allocator@W4Unk_CMISKindC@@@std@@@std@@CAXXZ 0x14114cdd0 ; w203 name order
+// MS2-PINS-END w203
 // MS2-GUESS-LOOKALIKES
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\cubemapinformationservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -711,7 +720,9 @@ void Unk_CMISDriveTail()
     { Unk_CMISEntVec v; Unk_CMISDriveVector(v, egf::EntityPtr()); }
     { Unk_CMISElem52Vec v; Unk_CMISDriveVector(v, Unk_CMISElem52()); }
     { Unk_CMISKindVec v; Unk_CMISDriveVector(v, Unk_CMISKindC_None); }
+    { std::vector<Cube*> v; Cube* p = 0; Unk_CMISDriveVector(v, p); v.push_back(static_cast<Cube*&&>(p)); }   // cube lists filled by push_back
     { MS2Ptr<UIHouseMarkEntity> p; }
     { efd::utf8string s; (void)s.find_last_of("/", 0); }
     { std::string s; s.append("x"); }
+    { efd::string s; s.append("x"); }
 }

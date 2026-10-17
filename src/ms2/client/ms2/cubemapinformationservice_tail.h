@@ -101,8 +101,9 @@ private:
 };
 MS2_CHECK_SIZE(Unk_CMISPropPtr, 8);
 
-// 0x34-byte POD element of an efd::vector
-struct Unk_CMISElem52
+// 0x34-byte element of an efd::vector. An efd::MemObject: CustomAllocator<T>::construct's placement new (0x1411503d0)
+// calls MemObject::operator new(size_t, void*) (0x140993c70) instead of the inline global one.
+struct Unk_CMISElem52 : public efd::MemObject
 {
     int m_v[13];
 };
