@@ -1254,18 +1254,17 @@ void CItemUgcMeshContainer::FUN_141426750(CAtlArray<CString>& aNames, void* pIte
 }
 
 // @0x141426810
-// MS2-FUNCTIONAL: logic recovered from the decomp; /Od codegen (local layout / temporaries) still differs from the exe
-void CItemUgcMeshContainer::FUN_141426810(NiTexturePtr spTexture)
+void CItemUgcMeshContainer::FUN_141426810(NiTexture* pTexture)
 {
-    if (!m_meshes.IsEmpty())
+    if (m_meshes.IsEmpty())
+        return;
+    size_t nCount = m_meshes.GetCount();
+    for (size_t i = 0; i < nCount; i++)
     {
-        size_t nCount = m_meshes.GetCount();
-        for (size_t i = 0; i < nCount; i++)
-        {
-            MS2Ptr<CItemUgcMesh> spMesh = m_meshes[i];
-            if (!(spMesh == 0) && !(spMesh->m_spObject == 0))
-                FUN_1414232f0(spMesh->m_spObject, spTexture);
-        }
+        MS2Ptr<CItemUgcMesh> spMesh = m_meshes[i];
+        if (spMesh == 0 || spMesh->m_spObject == 0)
+            continue;
+        FUN_1414232f0(spMesh->m_spObject, pTexture);
     }
 }
 

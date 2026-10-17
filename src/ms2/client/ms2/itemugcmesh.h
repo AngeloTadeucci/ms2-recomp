@@ -48,7 +48,7 @@ public:
     // itemugcmesh.cpp (appended by w79): rebuild from an equip item's parts, helpers
     bool FUN_141426170(MS2Ptr<CEquipItem> spItem);          // 0x141426170
     void FUN_141426750(CAtlArray<CString>& aNames, void* pItemData);   // 0x141426750 part names of the item data
-    void FUN_141426810(NiTexturePtr spTexture);             // 0x141426810 sets the texture on every mesh
+    void FUN_141426810(NiTexture* pTexture);                // 0x141426810 sets the texture on every mesh
     MS2Ptr<CItemUgcMesh> FUN_141426af0(const CString& strName, NiAVObjectPtr spRoot);   // 0x141426af0
     NiTexturePtr FUN_141426e30();                           // 0x141426e30 decal texture of the first mesh's object
 
