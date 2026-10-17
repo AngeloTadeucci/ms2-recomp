@@ -206,6 +206,8 @@ public:
     void FUN_1410ccc00(int nGroup, int nA, int nB);
     void FUN_1410cd440();
     void FUN_1410c3670();
+    void FUN_1410c9710();
+    void FUN_1410ca170();
     void FUN_1410cc160(int nKind);
     int FUN_1410c8670(int nGroup, int* pnFlag);
     CStringW FUN_1410c7ce0(int nA, int nB);

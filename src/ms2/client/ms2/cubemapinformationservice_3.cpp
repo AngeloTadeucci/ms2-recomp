@@ -5094,3 +5094,120 @@ void CubeMapInformationService::FUN_1410c3670()
     }
     FUN_141bc8e00(FUN_1403ed2d0());
 }
+
+// ---- w142 batch 6: OnTick ----
+class Unk_CMISPcObj                                                         // the actor behind a world object (PCBase)
+{
+public:
+    virtual void vf0() = 0; virtual void vf1() = 0; virtual void vf2() = 0; virtual void vf3() = 0;
+    virtual void vf4() = 0; virtual void vf5() = 0; virtual void vf6() = 0; virtual void vf7() = 0;
+    virtual void vf8() = 0; virtual void vf9() = 0; virtual void vf10() = 0; virtual void vf11() = 0;
+    virtual void vf12() = 0; virtual void vf13() = 0; virtual void vf14() = 0; virtual void vf15() = 0;
+    virtual void vf16() = 0; virtual void vf17() = 0; virtual void vf18() = 0; virtual void vf19() = 0;
+    virtual void vf20() = 0; virtual void vf21() = 0; virtual void vf22() = 0;
+    virtual void SetState(int n) = 0;                                       // MS2: slot 23 (PCBase::vfunc_23)
+    int FUN_14166ce30();                                                    // dead (1)
+};
+class Unk_CMISSystem                                                        // game-system singleton behind DAT_143ab7908
+{
+public:
+    virtual void vf0() = 0; virtual void vf1() = 0; virtual void vf2() = 0; virtual void vf3() = 0;
+    virtual void vf4() = 0; virtual void vf5() = 0; virtual void vf6() = 0; virtual void vf7() = 0;
+    virtual void vf8() = 0; virtual void vf9() = 0; virtual void vf10() = 0; virtual void vf11() = 0;
+    virtual void vf12() = 0; virtual void vf13() = 0; virtual void vf14() = 0; virtual void vf15() = 0;
+    virtual void vf16() = 0; virtual void vf17() = 0; virtual void vf18() = 0; virtual void vf19() = 0;
+    virtual void vf20() = 0; virtual void vf21() = 0; virtual void vf22() = 0; virtual void vf23() = 0;
+    virtual void vf24() = 0; virtual void vf25() = 0; virtual void vf26() = 0; virtual void vf27() = 0;
+    virtual void vf28() = 0; virtual void vf29() = 0; virtual void vf30() = 0; virtual void vf31() = 0;
+    virtual void vf32() = 0;
+    virtual void Flush() = 0;                                               // MS2: slot 33
+};
+Unk_CMISSystem* FUN_140a6a840();
+struct Unk_CMISObjRef;                                                      // map value: intrusive pointer to a world object
+class Unk_CMISObjMap;
+Unk_CMISObjMap* FUN_141bd36b0(Unk_CMISWorld*);                              // the world objects (member in the exe)
+void* FUN_140c20a10(Unk_CMISObjMap*);                                       // GetHeadPosition
+Unk_CMISObjRef* FUN_14112e2b0(Unk_CMISObjMap*, void* pos);                  // GetValueAt
+void FUN_14112e170(Unk_CMISObjMap*, void** pPos);                           // GetNext
+Unk_CMISPcObj* FUN_140aac420(Unk_CMISObjRef*);
+void FUN_14115b540(CCubeMotionManager*);
+Unk_CMISIter<256>* FUN_14114e860(Unk_CMISTree<256>*, Unk_CMISIter<256>*);   // begin
+Unk_CMISIter<256>* FUN_1411524b0(Unk_CMISTree<256>*, Unk_CMISIter<256>*);   // end
+bool FUN_140a16b10(Unk_CMISIter<256>*, Unk_CMISIter<256>*);                 // operator!=
+Unk_CMISEntityRef* FUN_140a16d80(Unk_CMISIter<256>*);                       // operator*
+void FUN_140a17010(Unk_CMISIter<256>*);                                     // operator++
+void FUN_1411501c0(Unk_CMISTree<256>*);                                     // clear
+void FUN_1411cf540(void* pWorld, Unk_CMISEntityRef id);                     // destroy the entity of an id
+Unk_CMISIter<273>* FUN_141157660(Unk_CMISTree<273>*, Unk_CMISIter<273>*, const int*);   // find
+Unk_CMISHousePtr* FUN_141127d10(Unk_CMISTree<273>*, const int*);            // operator[]
+void FUN_141153f10(Unk_CMISTree<273>*, const int*);                         // erase
+void FUN_141906680(Unk_CMISPolyObj*);                                       // destroy the head ui
+void FUN_141906610(Unk_CMISPolyObj*, int nKey);                             // bind the cell key
+void* FUN_141906490(void* pMem, Unk_Int3 cell, CStringW strName, int nValue);   // UICubeUGCHead::UICubeUGCHead
+void* FUN_141126380(Unk_CMISHousePtr* pSlot, void* pObj);                   // assign
+class Unk_CMISMsgStrings { public: CStringW FUN_141811980(int nTable, int nIndex); };
+Unk_CMISMsgStrings* FUN_1401a9d70();
+Unk_CMISIter<260>* FUN_14111c6f0(Unk_CMISTree<260>*, Unk_CMISIter<260>* pOut, Unk_CMISIter<260> it);   // erase
+
+// @0x1410ce8a0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+efd::AsyncResult CubeMapInformationService::OnTick()
+{
+    FUN_1410c8a90();
+    FUN_1410c8e40();
+    FUN_1410c93c0();
+    FUN_1410c9710();
+    if (t250.FUN_140868c00() != 0) {
+        FUN_1410ca170();
+        t250.FUN_140868750(200);
+    }
+    FUN_14115b540(FUN_1410af790());
+    FUN_1410c9db0();
+    Unk_CMISIter<256> itEnt, itEntEnd;
+    for (FUN_14114e860(&f30, &itEnt); FUN_140a16b10(&itEnt, FUN_1411524b0(&f30, &itEntEnd)); FUN_140a17010(&itEnt))
+        FUN_1411cf540(FUN_1409670f0(), *FUN_140a16d80(&itEnt));
+    FUN_1411501c0(&f30);
+    if (FUN_1409657a0(&f208) != 0) {
+        if (FUN_140885340(&f208)->FUN_140375100() == 0 && f218 != 0 && !f218->floors.empty() && t168.FUN_140868c00() != 0) {
+            Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+            if (pRoster != 0) {
+                int nMyFloor = FUN_1410c88b0(reinterpret_cast<PCBase*>(pRoster));
+                Unk_CMISObjMap* pObjects = FUN_141bd36b0(FUN_1403ed2d0());
+                for (void* pos = FUN_140c20a10(pObjects); pos != 0; FUN_14112e170(pObjects, &pos)) {
+                    Unk_CMISPcObj* pPc = FUN_140aac420(FUN_14112e2b0(pObjects, pos));
+                    if (pPc != 0 && pPc->FUN_14166ce30() == 0) {
+                        int nFloor = FUN_1410c88b0(reinterpret_cast<PCBase*>(pPc));
+                        pPc->SetState(nMyFloor < nFloor ? 0 : 1);
+                    }
+                }
+            }
+            t168.FUN_140868750(1000);
+        }
+    }
+    if (t3e0.FUN_140868c00() != 0) {
+        FUN_140a6a840()->Flush();
+        t3e0.FUN_1408687f0();
+    }
+    if (FUN_1410b7d50() && f88.count != 0) {
+        Unk_CMISIter<260> itCube, itCubeEnd;
+        FUN_14114dd70(&f88, &itCube);
+        if (FUN_1411274c0(&itCube, FUN_141151af0(&f88, &itCubeEnd))) {
+            int nKey = FUN_1411285e0(&itCube)->first;
+            Unk_CMISIter<273> itHead, itHeadEnd;
+            if (FUN_141127500(FUN_141157660(&f228, &itHead, &nKey), FUN_141151b50(&f228, &itHeadEnd))) {
+                FUN_141906680(FUN_1411284c0(FUN_141127d10(&f228, &nKey)));
+                FUN_141153f10(&f228, &nKey);
+            }
+            MS2Ptr<Cube> spCube(FUN_1411285e0(&itCube)->second);
+            void* pMem = ::operator new(0x90);
+            void* pHead = 0;
+            if (pMem != 0)
+                pHead = FUN_141906490(pMem, FUN_1408a0400(nKey), FUN_1401a9d70()->FUN_141811980(1, FUN_1408b4f20(spCube.operator->())), spCube->fieldB4);
+            FUN_141126380(FUN_141127d10(&f228, &nKey), pHead);
+            FUN_141906610(FUN_1411284c0(FUN_141127d10(&f228, &nKey)), nKey);
+            Unk_CMISIter<260> itNext;
+            FUN_14111c6f0(&f88, &itNext, itCube);
+        }
+    }
+    return efd::AsyncResult_Complete;
+}
