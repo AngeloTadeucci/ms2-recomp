@@ -200,6 +200,8 @@ public:
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
+    void FUN_1410c7a50(int nA, int nB, int nState, __int64 nValue);
+    int FUN_1410c6980(class Cube* pCube, int nKind, class Unk_CMISItemRef& rItem, __int64 nOwner, int nMode);
     int FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos);
     void FUN_1410ce3f0(Unk_CubeOwnerPtr spOwner);
     void FUN_1410ce4b0(Unk_CubeOwnerPtr spOwner);
@@ -212,6 +214,7 @@ public:
     void FUN_1410c1910(const Unk_Int3& pt, int n);
     bool FUN_1410c2610(Unk_Int3 pt);
     void FUN_1410c2a90(int nGroup);
+    void FUN_1410c3fc0(PCBase* pActor, float* pOutLo, float* pOutHi);
     bool FUN_1410d2da0(int nKey, Unk_Int3 pt);
     int FUN_1410d23f0(int nGroup, int nBlock);
     bool FUN_1410d2130(Cube* pCube, int nDir, float fSize, float* pOutXY, Unk_StreamPoint* pOutPt);

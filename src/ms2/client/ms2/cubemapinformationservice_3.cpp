@@ -1848,6 +1848,7 @@ void FUN_1408a0890(int, int, int*);
 struct Unk_CMISHouseRef                                                                     // MS2Ptr<house record>
 {
     Unk_CMISHouseRef(void* p);                                                              // 0x14111ea00
+    Unk_CMISHouseRef(void** pSlot);                                                         // 0x14111e9c0 (copy of a map slot)
     ~Unk_CMISHouseRef();                                                                    // 0x141123820
     void* m_p;
     void* FUN_141128410();                                                                  // operator bool
@@ -2206,4 +2207,89 @@ int CubeMapInformationService::FUN_1410d2590(Unk_Int3 pt, int nGroup, int nBlock
         return 0;
     else
         return 1;
+}
+// @0x1410c3fc0
+// MS2-FUNCTIONAL: std::map floors vs the exe's inlined tree helpers; stack frame differs
+void CubeMapInformationService::FUN_1410c3fc0(PCBase* pActor, float* pOutLo, float* pOutHi)
+{
+    if (f218 == 0) {
+        *pOutLo = 0.0f;
+        *pOutHi = 0.0f;
+        return;
+    }
+    Unk_StreamPoint ptFront;
+    FUN_1410b7ad0(pActor, 0, &ptFront, 0);
+    Unk_StreamPoint ptCell;
+    FUN_1410b7a20(ptFront, &ptCell);
+    int nFound = 0;
+    for (unsigned __int64 nFloor = 1; nFloor <= (unsigned __int64)(__int64)f1dc; ++nFloor) {
+        int nKey = (int)nFloor;
+        std::map<int, Unk_UGCFloor>::iterator itEnd = f218->floors.end();
+        if (f218->floors.find(nKey) != itEnd) {
+            if (f218->floors[nKey].startHeight <= ptCell.z)
+                nFound = (int)nFloor;
+        }
+    }
+    if (nFound != 0) {
+        Unk_UGCFloor& floor = f218->floors[nFound];
+        *pOutLo = floor.startHeight;
+        *pOutHi = floor.startHeight + (float)floor.field4 * 150.0f;
+    }
+}
+// ---- w138 batch 4 ----
+struct Unk_CMISItemData { char pad[0x1c4]; int field1c4; };
+class Unk_CMISItemRef
+{
+public:
+    void FUN_1401b50d0();                               // release
+    Unk_CMISItemData* FUN_1401b52a0();
+    __int64 FUN_140203c60();
+};
+bool FUN_140930c90(__int64 nOwner);
+bool FUN_140930d20(__int64 nOwner);
+extern int DAT_143ae0fb4;
+// @0x1410c6980
+
+int CubeMapInformationService::FUN_1410c6980(Cube* pCube, int nKind, Unk_CMISItemRef& rItem, __int64 nOwner, int nMode)
+{
+    if (DAT_143ae0fb4 == 0) {
+        if (!FUN_1408a07b0(FUN_1403ed2d0()->FUN_141bd3060(), DAT_1439f4a7c, DAT_143ab2820)) {
+            if (nMode == 3) {
+                if (rItem.FUN_140203c60() != 0 && rItem.FUN_1401b52a0()->field1c4 != 0) {
+                    rItem.FUN_1401b50d0();
+                    return 0;
+                }
+                __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
+                if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur)) {
+                    rItem.FUN_1401b50d0();
+                    return 0;
+                }
+            } else if (nMode == 4) {
+                __int64 nCur = FUN_1410c8030(pCube->field50, pCube->field54);
+                if (nCur != nOwner && !FUN_140930c90(nCur) && !FUN_140930d20(nCur)) {
+                    rItem.FUN_1401b50d0();
+                    return 0;
+                }
+            }
+        }
+    }
+    rItem.FUN_1401b50d0();
+    return 1;
+}
+struct Unk_CMISSaleState { Unk_CMISSaleState(); char m_pad[0x28]; };                        // ctor 0x141123290
+void FUN_141126340(void** pSlot, Unk_CMISHouseRef& rRef);                                   // assign into a map slot
+// @0x1410c7a50
+// MS2-FUNCTIONAL: exe keeps the iterators and make_pair results in unwind-state temporaries
+void CubeMapInformationService::FUN_1410c7a50(int nA, int nB, int nState, __int64 nValue)
+{
+    Unk_CMISIter<263> itEnd;
+    Unk_CMISIter<263> itFind;
+    if (FUN_141126fd0(FUN_141157f20(&fe8, &itFind, FUN_14111d460(nA, nB)), FUN_141151f70(&fe8, &itEnd)) != 0) {
+        Unk_CMISHouseRef spNew(new Unk_CMISSaleState());
+        FUN_141126340(FUN_141128090(&fe8, FUN_14111d460(nA, nB)), spNew);
+    }
+    Unk_CMISHouseRef spHouse(FUN_141128090(&fe8, FUN_14111d460(nA, nB)));
+    spHouse.FUN_1411284b0()->m_state = nState;
+    spHouse.FUN_1411284b0()->m_value = nValue;
+    FUN_1410bbcd0(nA, nB);
 }
