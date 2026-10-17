@@ -1,5 +1,5 @@
 // morphinganimation.h - CMorphingAnimation (RTTI .?AVCMorphingAnimation@@) and the data it plays, CMorphingAnimationData
-// (RTTI .?AVCMorphingAnimationData@@, 0x68 bytes; its unit 0x141851ba0-0x141851fd0 is not recovered yet). A morph
+// (RTTI .?AVCMorphingAnimationData@@, 0x68 bytes; unit 0x141851ba0-0x141851fd0 in client\ms2\morphinganimationdata.cpp). A morph
 // animation steps a table of frame durations over time and, per frame, pushes one weight into the NiInterpController
 // found on a named node of the owner's model. Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13); the unit is
 // `?\morphinganimation.cpp` (0x141487a20-0x141487ed0, dir client\ms2). Member names are invented from their use.
@@ -10,15 +10,18 @@
 #include <atlcoll.h>
 #include <atlstr.h>
 
+class Unk_140165cf0;                                    // game TinyXML element
+
 // 0x68 bytes, vftable 0x142f84808 (only the deleting dtor), ctor 0x141851ba0, dtor 0x141851f00.
 class CMorphingAnimationData : public CPtred
 {
 public:
     CMorphingAnimationData();                           // 0x141851ba0
-    virtual ~CMorphingAnimationData();                  // 0x141851f00, ??_G 0x141851f50
+    virtual ~CMorphingAnimationData() = default;        // 0x141851f00, ??_G 0x141851f50
 
     // Index of the frame that time nTime (ms) falls in: walks m_frameTimes, wrapping into the loop from m_nLoopStart.
-    int FUN_141851c20(int nTime);                       // 0x141851c20 (ctor-side unit, not recovered)
+    int FUN_141851c20(int nTime);                       // 0x141851c20
+    void FUN_141851db0(Unk_140165cf0* pElem);           // 0x141851db0 reads <target>/<weight> elements
 
     CString m_strNodeName;                              // +0x18 name of the model node that carries the morph controller
     ATL::CAtlArray<int> m_frameTimes;                   // +0x20 duration of every frame
