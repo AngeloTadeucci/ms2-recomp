@@ -4,6 +4,7 @@
 // result text). Class names are the RTTI names; the unit name is a guess (queue row ?\ugcviewerequip.cpp).
 // MS2-UNIT: ?\ugcviewerequip.cpp
 // MS2-RANGE: 0x14189eae0-0x1418a7310 .text$mn
+#define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ugcviewerequip.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 
@@ -35,14 +36,13 @@
 #include "ms2/unnamed/unit_1401b6d10.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/coutpacket.h"
+#include "ms2/client/ms2/interactobject.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
 // ---- out-of-unit types and callees (bound to the exe by their FUN_<va> names) ----
 
-class CInteractObject;
-class CInteractGuildPosterObject;
 class UIItemBlueprintCreateDialog;
 class Unk_VwWearer;
 
@@ -81,7 +81,9 @@ void* FUN_1403ed290();                                      // the guild manager
 __int64 FUN_1404ccbd0(void* pGuild);                        // the guild id
 void* FUN_1403ed2b0();                                      // the UI service
 void* FUN_1409eed90();                                      // the singleton of the own character
-void* FUN_140d295d0(void* pSingleton);                      // the guild summary of the own character
+struct Unk_VwSummary { char m_pad[0x20]; int m_nState; };   // the own character's summary (+0x20: 2 = wedding done)
+Unk_VwSummary* FUN_140d295d0(void* pSingleton);
+
 
 // The upload manager; the CUgcManager singleton.
 CUgcManager* FUN_14052d220();
@@ -586,4 +588,335 @@ void CUgcViewerBanner::FUN_1418a1000()
         return;
     NiTexturePtr spTexture = Unk_VwImage(this);
     FUN_14052d220()->FUN_141888770(spEntity, spTexture);
+}
+
+// ---- CUgcViewerProfile --------------------------------------------------------------------------------------------
+
+// @0x1418a10e0
+CUgcViewerProfile::CUgcViewerProfile()
+{
+    m_bRefreshed = 0;
+    m_user.Clear();
+}
+
+// @0x1418a1160
+CUgcViewerProfile::~CUgcViewerProfile()
+{
+}
+
+// @0x1418a11a0
+int CUgcViewerProfile::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    if (FUN_1403ed2d0()->FUN_141bd0cc0() == 0)
+        return 0;
+    CStringW strPath = spFile->GetPath();
+    if (_waccess(strPath, 0) != 0)
+        return 0;
+    CStringW strThumb = spFile->GetThumbnailPath();
+    if (strThumb.GetLength() == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    void* pDialog = FUN_140938c30(0x2711);
+    if (pDialog == 0)
+        return 0;
+    FUN_14132faf0(pDialog, strThumb);
+    return 1;
+}
+
+// @0x1418a1430
+void CUgcViewerProfile::vfunc_4()
+{
+    void* pDialog = FUN_140938c30(0x2711);
+    if (pDialog != 0)
+        FUN_14132fa90(pDialog);
+}
+
+// @0x1418a1470
+void CUgcViewerProfile::vfunc_5()
+{
+    m_bRefreshed = 1;
+}
+
+// @0x1418a1490
+CString CUgcViewerProfile::vfunc_11()
+{
+    CString str;
+    str = Unk_SocketFormat("[viewer={0}] [objectId={1}]", "UgcViewerProfile", m_user.m_strObjectName);
+    return str;
+}
+
+// @0x1418a1540
+int CUgcViewerProfile::vfunc_13(MS2Ptr<IUgcProxy> spProxy)
+{
+    if (spProxy == 0)
+        return 0;
+    IUgcProxy* pProxy = spProxy.get();
+    if (pProxy == 0)
+        return 0;
+    pProxy->CopyFrom(&m_user);
+    return 1;
+}
+
+// @0x1418a1600
+int CUgcViewerProfile::vfunc_9()
+{
+    return 0x6b;
+}
+
+// ---- CUgcViewerWeddingProfile -------------------------------------------------------------------------------------
+
+// @0x1418a1620
+CUgcViewerWeddingProfile::CUgcViewerWeddingProfile()
+{
+    m_bRefreshed = 0;
+    m_user.Clear();
+}
+
+// @0x1418a1670
+CUgcViewerWeddingProfile::~CUgcViewerWeddingProfile()
+{
+}
+
+// @0x1418a16b0
+int CUgcViewerWeddingProfile::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    if (FUN_1403ed2d0()->FUN_141bd0cc0() == 0)
+        return 0;
+    if (FUN_140d295d0(FUN_1409eed90())->m_nState != 2)
+        return 0;
+    CStringW strPath = spFile->GetPath();
+    if (_waccess(strPath, 0) != 0)
+        return 0;
+    CStringW strThumb = spFile->GetThumbnailPath();
+    if (strThumb.GetLength() == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    void* pDialog = FUN_1418764c0(0x4f8c);
+    if (pDialog == 0)
+        return 0;
+    FUN_140fc7e80(pDialog, strThumb);
+    return 1;
+}
+
+// @0x1418a1970
+void CUgcViewerWeddingProfile::vfunc_4()
+{
+    void* pDialog = FUN_1418764c0(0x4f8c);
+    if (pDialog != 0)
+        FUN_140fc7f30(pDialog);
+}
+
+// @0x1418a19b0
+void CUgcViewerWeddingProfile::vfunc_5()
+{
+    m_bRefreshed = 1;
+}
+
+// @0x1418a19d0
+CString CUgcViewerWeddingProfile::vfunc_11()
+{
+    CString str;
+    str = FUN_1411c0aa0("[viewer=UgcViewerWeddingProfile]");
+    return str;
+}
+
+// @0x1418a1a70
+int CUgcViewerWeddingProfile::vfunc_13(MS2Ptr<IUgcProxy> spProxy)
+{
+    if (spProxy == 0)
+        return 0;
+    IUgcProxy* pProxy = spProxy.get();
+    if (pProxy == 0)
+        return 0;
+    pProxy->CopyFrom(&m_user);
+    return 1;
+}
+
+// @0x1418a1b30
+int CUgcViewerWeddingProfile::vfunc_9()
+{
+    return 0xaa;
+}
+
+// ---- CUgcViewerGuildMark ------------------------------------------------------------------------------------------
+
+// @0x1418a1b50
+CUgcViewerGuildMark::CUgcViewerGuildMark()
+{
+    m_bRefreshed = 0;
+    m_mark.Clear();
+}
+
+// @0x1418a1bd0
+CUgcViewerGuildMark::~CUgcViewerGuildMark()
+{
+}
+
+// @0x1418a1c10
+int CUgcViewerGuildMark::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    if (FUN_1403ed2d0()->FUN_141bd0cc0() == 0)
+        return 0;
+    if (FUN_1404ccbd0((char*)FUN_1403ed290() + 8) == 0)
+        return 0;
+    CStringW strPath = spFile->GetPath();
+    if (_waccess(strPath, 0) != 0)
+        return 0;
+    CStringW strThumb = spFile->GetThumbnailPath();
+    if (strThumb.GetLength() == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    void* pDialog = FUN_14136f480(0x4e4f);
+    if (pDialog == 0)
+        return 0;
+    FUN_141976980(pDialog, strThumb);
+    return 1;
+}
+
+// @0x1418a1ee0
+void CUgcViewerGuildMark::vfunc_4()
+{
+    void* pDialog = FUN_14136f480(0x4e4f);
+    if (pDialog != 0)
+        FUN_1419769d0(pDialog);
+}
+
+// @0x1418a1f20
+void CUgcViewerGuildMark::vfunc_5()
+{
+    m_bRefreshed = 1;
+}
+
+// @0x1418a1f40
+CString CUgcViewerGuildMark::vfunc_11()
+{
+    CString str;
+    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "UgcViewerGuildMark", m_mark.m_nGuildId, m_mark.m_strName);
+    return str;
+}
+
+// @0x1418a2000
+void CUgcViewerGuildMark::vfunc_6(COutPacket& packet)
+{
+    m_mark.Write(packet);
+}
+
+// @0x1418a2040
+int CUgcViewerGuildMark::vfunc_13(MS2Ptr<IUgcProxy> spProxy)
+{
+    if (spProxy == 0)
+        return 0;
+    IUgcProxy* pProxy = spProxy.get();
+    if (pProxy == 0)
+        return 0;
+    pProxy->CopyFrom(&m_mark);
+    return 1;
+}
+
+// @0x1418a2100
+int CUgcViewerGuildMark::vfunc_9()
+{
+    return 0x6b;
+}
+
+// ---- CUgcViewerGuildPoster ----------------------------------------------------------------------------------------
+
+// @0x1418a2120
+CUgcViewerGuildPoster::CUgcViewerGuildPoster()
+{
+    m_bRefreshed = 0;
+    m_poster.Clear();
+}
+
+// @0x1418a21a0
+CUgcViewerGuildPoster::~CUgcViewerGuildPoster()
+{
+}
+
+// @0x1418a21e0
+int CUgcViewerGuildPoster::vfunc_3(MS2Ptr<CUploadFile> spFile)
+{
+    if (spFile == 0)
+        return 0;
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return 0;
+    if (FUN_1403ed2d0()->FUN_141bd0cc0() == 0)
+        return 0;
+    if (FUN_1404ccbd0((char*)FUN_1403ed290() + 8) == 0)
+        return 0;
+    CStringW strPath = spFile->GetPath();
+    if (_waccess(strPath, 0) != 0)
+        return 0;
+    CStringW strThumb = spFile->GetThumbnailPath();
+    if (strThumb.GetLength() == 0)
+        return 0;
+    spCtrl->m_spFile = spFile;
+    MS2Ptr<CInteractObject> spObject = FUN_1403ed2d0()->FUN_141bc66b0(m_poster.m_strName);
+    CInteractGuildPosterObject* pPoster = dynamic_cast<CInteractGuildPosterObject*>(spObject.get());
+    if (pPoster != 0)
+        FUN_141403180(pPoster, strThumb);
+    return 1;
+}
+
+// @0x1418a2520
+void CUgcViewerGuildPoster::vfunc_4()
+{
+    MS2Ptr<CInteractObject> spObject = FUN_1403ed2d0()->FUN_141bc66b0(m_poster.m_strName);
+    CInteractGuildPosterObject* pPoster = dynamic_cast<CInteractGuildPosterObject*>(spObject.get());
+    if (pPoster != 0)
+        FUN_141402eb0(pPoster, 1);
+}
+
+// @0x1418a25d0
+void CUgcViewerGuildPoster::vfunc_5()
+{
+    m_bRefreshed = 1;
+}
+
+// @0x1418a25f0
+CString CUgcViewerGuildPoster::vfunc_11()
+{
+    CString str;
+    str = Unk_SocketFormat("[viewer={0}] [guild={1}] [objectId={2}]", "CUgcViewerGuildPoster", m_poster.m_nGuildId, m_poster.m_strName);
+    return str;
+}
+
+// @0x1418a26b0
+void CUgcViewerGuildPoster::vfunc_6(COutPacket& packet)
+{
+    m_poster.Write(packet);
+}
+
+// @0x1418a26f0
+int CUgcViewerGuildPoster::vfunc_13(MS2Ptr<IUgcProxy> spProxy)
+{
+    if (spProxy == 0)
+        return 0;
+    IUgcProxy* pProxy = spProxy.get();
+    if (pProxy == 0)
+        return 0;
+    pProxy->CopyFrom(&m_poster);
+    return 1;
+}
+
+// @0x1418a27b0
+int CUgcViewerGuildPoster::vfunc_9()
+{
+    return 0x6b;
 }
