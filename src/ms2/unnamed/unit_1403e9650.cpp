@@ -260,7 +260,6 @@ template void Unk_GameEventCopy<GameEventDungeonRoomShutdown>(void*, const GameE
 template void Unk_GameEventCopy<GameEventEnchantRate>(void*, const GameEventEnchantRate&);
 template void Unk_GameEventCopy<GameEventEpicRestart>(void*, const GameEventEpicRestart&);
 template void Unk_GameEventCopy<GameEventEventFieldPopup>(void*, const GameEventEventFieldPopup&);
-template void Unk_GameEventCopy<GameEventExchangeScrollSale>(void*, const GameEventExchangeScrollSale&);
 template void Unk_GameEventCopy<GameEventFestival>(void*, const GameEventFestival&);
 template void Unk_GameEventCopy<GameEventFieldEffect>(void*, const GameEventFieldEffect&);
 template void Unk_GameEventCopy<GameEventFieldShutdown>(void*, const GameEventFieldShutdown&);
@@ -279,7 +278,6 @@ template void Unk_GameEventCopy<GameEventGuildSkillSale>(void*, const GameEventG
 template void Unk_GameEventCopy<GameEventGuildVsGameOpen>(void*, const GameEventGuildVsGameOpen&);
 template void Unk_GameEventCopy<GameEventItemBox>(void*, const GameEventItemBox&);
 template void Unk_GameEventCopy<GameEventItemBuff>(void*, const GameEventItemBuff&);
-template void Unk_GameEventCopy<GameEventItemTradeRestriction>(void*, const GameEventItemTradeRestriction&);
 template void Unk_GameEventCopy<GameEventLevelUpPackage>(void*, const GameEventLevelUpPackage&);
 template void Unk_GameEventCopy<GameEventLongTermAttendGift>(void*, const GameEventLongTermAttendGift&);
 template void Unk_GameEventCopy<GameEventMasteryReduce>(void*, const GameEventMasteryReduce&);
@@ -357,6 +355,8 @@ void Unk_GameEventConstruct(void* p)
 {
     new (p) T;
 }
+template void Unk_GameEventConstruct<GameEventExchangeScrollSale>(void*);
+template void Unk_GameEventConstruct<GameEventItemTradeRestriction>(void*);
 // These have the gameevent.cpp ctor only; their header-only tag ctors emit the vftable.
 template <class T>
 void Unk_GameEventConstructTagged(void* p)
@@ -411,7 +411,6 @@ template void Unk_GameEventDestroyElem<Unk_GameEventStrPair>(Unk_GameEventStrPai
 // BlueMarbleEventContext holds two trees over one MS2Ptr value (AddRef 0x1403f3830, dtor 0x1403e4e20): +0x38 (key
 // type unknown, int assumed) and the "reward"/"distance" map at +0xa8 (unsigned compare).  The value is assumed to be
 // BonusGameBlueMarbleSlot (unconfirmed).
-enum Unk_ItemTradeRestrictionType : int {};  // GameEventItemTradeRestriction::vfunc_5 adds the literals 4 / 5
 struct Unk_GameEventTokenId { int m_0; };  // 1403d7eb0 tokenizes a string into these (copied as a class)
 MS2_CHECK_SIZE(Unk_GameEventTokenId, 4);
 

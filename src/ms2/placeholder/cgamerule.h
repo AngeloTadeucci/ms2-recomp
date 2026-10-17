@@ -31,6 +31,7 @@ class SnowmanContext;
 class RpsContext;
 class ReactorContext;
 class TreeWateringContext;
+class LongTermAttendGiftContext;
 class QuestAdditionalRewardContext;
 enum Unk_SaleHousingKey : int;
 
@@ -136,6 +137,12 @@ public:
     void FUN_14047d2b0(MS2Ptr<TreeWateringContext> spContext);                   // GameEventTreeWatering
     void FUN_140476930(int nEventId, int nRate);                                 // adventure level bonus exp rate
     void FUN_1404769a0(int nEventId);                                            // ... removed
+    void FUN_14047f7a0(int nEventId, int nRate);                                 // pet crystal sale rate
+    void FUN_14047f810(int nEventId);                                            // ... removed
+    void FUN_14047f8f0(int nEventId, int nRate);                                 // lapenshard upgrade (RGB) sale rate
+    void FUN_14047f960(int nEventId);                                            // ... removed
+    void FUN_14047cd30(MS2Ptr<LongTermAttendGiftContext> spContext);             // GameEventLongTermAttendGift start
+    void FUN_14047cdd0(MS2Ptr<LongTermAttendGiftContext> spContext);             // ... end
     void FUN_14047e230(unsigned __int64 nId);                                    // ignore the construction lock of one id
     void FUN_14047e300();                                                        // ... clear them
 private:
