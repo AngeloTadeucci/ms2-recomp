@@ -247,7 +247,7 @@ public:
     Unk_CubeOwnerMap* FUN_1410c78b0(int nGroup);
     bool FUN_1410c3cd0(int nKey);
     void FUN_1410c2ce0(egf::Entity* pEntity);
-    void FUN_1410be0c0(Unk_Int3 pt, int nGroup, int nFloor, struct Unk_CMISCell56* pVal);
+    bool FUN_1410be0c0(Unk_Int3 pt, int nGroup, int nFloor, struct Unk_CMISCell56* pVal);
     int FUN_1410ce310();
     int FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut);
     CStringW FUN_1410c7f60(int nA, int nB);
@@ -316,6 +316,9 @@ public:
     int FUN_1410c3650();
 
     void FUN_1410cab10(Cube* pCube);
+    int FUN_1410ba5f0(Unk_Int3 pt, Unk_StreamPoint ptRef);
+    void FUN_1410be6e0(MS2Ptr<Cube> spCube);
+    int FUN_1410b9e90(__int64 nOwnerId, struct Unk_CMISCubePtrSet* pOut);
     MS2Ptr<Cube> FUN_1410c1330(Unk_StreamPoint ptWorld, __int64 nUnused, class CubeItemInfo* pInfo, int nKind, egf::EntityPtr spEnt, bool bUnused, int nField50);
 
     // w138
