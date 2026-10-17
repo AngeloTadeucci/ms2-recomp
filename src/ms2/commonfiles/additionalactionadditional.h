@@ -47,7 +47,7 @@ class AdditionalActionAdditional : public CPtred
 {
 public:
     AdditionalActionAdditional();                       // 0x14016fda0
-    virtual ~AdditionalActionAdditional() {}            // ??_G 0x140185340, dtor 0x140183c80
+    virtual ~AdditionalActionAdditional() = default;          // ??_G 0x140185340, dtor 0x140183c80
 
     bool IsDifferent(const AdditionalActionAdditional& o);      // 0x140170010
     int Load(Unk_140165cf0* pElem);                     // 0x140170160
@@ -125,7 +125,7 @@ class AdditionalData : public CPtred
 {
 public:
     AdditionalData();                                   // 0x140170b90
-    virtual ~AdditionalData() {}                        // ??_G 0x1401853c0, dtor 0x140183d40
+    virtual ~AdditionalData() = default;                      // ??_G 0x1401853c0, dtor 0x140183d40
     virtual void ReadLevel(Unk_140165cf0* pElem);       // slot 1, 0x140171050: one <level>
 
     unsigned GetID();                                   // 0x140170c20
@@ -290,8 +290,8 @@ public:
         }
 
         std::map<unsigned, CString> m_mapStart;         // +0x00
-        std::map<int, CString> m_mapKeep;          // +0x10
-        std::map<int, CString> m_mapEnd;           // +0x20
+        std::map<unsigned, CString, std::greater<unsigned> > m_mapKeep;   // +0x10 (descending: 0x140185050)
+        std::map<unsigned, CString, std::greater<unsigned> > m_mapEnd;    // +0x20
     };
 
     // <Motion>, 0xc8 bytes.
@@ -509,7 +509,7 @@ public:
     };
 
     AdditionalLevelData(AdditionalData* pParent);       // 0x140171110
-    virtual ~AdditionalLevelData() {}                   // ??_G 0x140185400, dtor 0x140183f60
+    virtual ~AdditionalLevelData() = default;                 // ??_G 0x140185400, dtor 0x140183f60
     virtual bool Load(Unk_140165cf0* pElem);            // slot 1, 0x140172a30
 
     AdditionalData* GetParent();                        // 0x140171800

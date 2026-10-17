@@ -312,6 +312,11 @@
 // MS2-PIN: ??$IsSameArray@W4Unk_RequireState@@@@YA_NAEBV?$CAtlArray@W4Unk_RequireState@@V?$CElementTraits@W4Unk_RequireState@@@ATL@@@ATL@@0@Z 0x1401796e0
 // MS2-PIN: ??$IsSameArray@W4Unk_RequireSubState@@@@YA_NAEBV?$CAtlArray@W4Unk_RequireSubState@@V?$CElementTraits@W4Unk_RequireSubState@@@ATL@@@ATL@@0@Z 0x140179790
 // MS2-PIN: ??$IsSameArray@W4Unk_SkillMasteryType@@@@YA_NAEBV?$CAtlArray@W4Unk_SkillMasteryType@@V?$CElementTraits@W4Unk_SkillMasteryType@@@ATL@@@ATL@@0@Z 0x140179840
+// CAtlMap<unsigned, float> (m_mapModifySkillCooldown, +0x530): ~AdditionalLevelData calls its dtor 0x1401835e0, whose
+// RemoveAll 0x140188720 uses the <unsigned, float> DisableAutoRehash/FreeNode; the <unsigned, pair<float, float>> map
+// (+0x4e8) owns 0x140183610 / 0x140188830
+// MS2-PIN: ??1?$CAtlMap@IMV?$CElementTraits@I@ATL@@V?$CElementTraits@M@2@@ATL@@QEAA@XZ 0x1401835e0
+// MS2-PIN: ?RemoveAll@?$CAtlMap@IMV?$CElementTraits@I@ATL@@V?$CElementTraits@M@2@@ATL@@QEAAXXZ 0x140188720
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\additionalactionadditional.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <sstream>
@@ -765,7 +770,7 @@ template <class T, class K, class F> MS2Ptr<T> FindSorted(const std::vector<MS2P
             nCount = nStep;
     }
     if (first == v.end())
-        return MS2Ptr<T>(0);
+        return MS2Ptr<T>(nullptr);
     return *first;
 }
 
@@ -1657,17 +1662,17 @@ inline bool AdditionalLevelData::OverlapKeepEffectProperty::IsDifferent(const Ov
         if (it->second.Compare(itOther->second) != 0)
             return true;
     }
-    for (std::map<int, CString>::iterator it = m_mapKeep.begin(); it != m_mapKeep.end(); ++it)
+    for (std::map<unsigned, CString, std::greater<unsigned> >::iterator it = m_mapKeep.begin(); it != m_mapKeep.end(); ++it)
     {
-        std::map<int, CString>::const_iterator itOther = o.m_mapKeep.find(it->first);
+        std::map<unsigned, CString, std::greater<unsigned> >::const_iterator itOther = o.m_mapKeep.find(it->first);
         if (itOther == o.m_mapKeep.end())
             return true;
         if (it->second.Compare(itOther->second) != 0)
             return true;
     }
-    for (std::map<int, CString>::iterator it = m_mapEnd.begin(); it != m_mapEnd.end(); ++it)
+    for (std::map<unsigned, CString, std::greater<unsigned> >::iterator it = m_mapEnd.begin(); it != m_mapEnd.end(); ++it)
     {
-        std::map<int, CString>::const_iterator itOther = o.m_mapEnd.find(it->first);
+        std::map<unsigned, CString, std::greater<unsigned> >::const_iterator itOther = o.m_mapEnd.find(it->first);
         if (itOther == o.m_mapEnd.end())
             return true;
         if (it->second.Compare(itOther->second) != 0)
