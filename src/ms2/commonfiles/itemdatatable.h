@@ -114,7 +114,7 @@ public:
     ItemTagKey GetTagByName(const CString& strName);                        // 0x140557640
     CString GetTagName(ItemTagKey eTag);                                    // 0x140557730
     ModelPtr GetModel(unsigned nPreset);                                    // 0x1405577f0
-    void FUN_140557910();                                                   // 0x140557910 (empty)
+    void FUN_140557910(int);                                                // 0x140557910 (empty)
     void GetHousingByCategory(int nCategory, ATL::CAtlArray<MS2Ptr<ItemHousing> >& out);  // 0x140557920
     bool FindItems(unsigned short nLevel, int nGender, int nJob, int nType, ATL::CAtlArray<ItemDataPtr>& out);    // 0x140557a30
     ItemDataPtr GetItemData(int nItemId);                                   // 0x140557f70

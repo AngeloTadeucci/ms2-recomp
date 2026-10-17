@@ -168,7 +168,7 @@ unsigned FUN_14028c0d0(const char* psz);                                // a col
 Unk_ConstColor FUN_140718770(const CString& str);                       // a hex colour
 int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);
 void FUN_14028faa0(Unk_140165cf0* pParent, const char* pszName, const char* pszAttr, std::vector<Unk_140165cf0*>& out);
-void FUN_1403992a0(CString strExt, CString strDir, std::vector<CString>& out, CString strFilter, int nFlags);   // file search
+void FUN_1403992a0(CString pattern, CString directory, std::vector<CString>& output, CString exclude, bool localOnly);  // filesystem.cpp
 unsigned FUN_14053c690(unsigned nItemId);                               // the itemData file of an item id
 
 // The client string tables (singleton at 0x143aac298): FUN_141811980(table, id) is the string of id in table.
@@ -277,9 +277,9 @@ MS2Ptr<ItemDropEffect> CItemDataTable::GetDropEffect(int nType)
 {
     CheckInit();
     MS2Ptr<ItemDropEffect> spEffect(0);
-    if (!m_mapDropEffect.Lookup(nType, spEffect))
-        return MS2Ptr<ItemDropEffect>(0);
-    return spEffect;
+    if (m_mapDropEffect.Lookup(nType, spEffect))
+        return spEffect;
+    return MS2Ptr<ItemDropEffect>(0);
 }
 
 // @0x140556440
@@ -305,9 +305,9 @@ MS2Ptr<ItemMusicScore> CItemDataTable::GetMusicScore(unsigned nId)
 {
     Unk_CriticalSectionLock lock(m_cs, 1);
     std::map<unsigned, MS2Ptr<ItemMusicScore> >::iterator it = m_mapMusicScore.find(nId);
-    if (it == m_mapMusicScore.end())
-        return MS2Ptr<ItemMusicScore>(0);
-    return it->second;
+    if (it != m_mapMusicScore.end())
+        return it->second;
+    return MS2Ptr<ItemMusicScore>(0);
 }
 
 // @0x1405566e0
@@ -315,18 +315,18 @@ MS2Ptr<ItemHousing> CItemDataTable::GetHousing(unsigned nId)
 {
     Unk_CriticalSectionLock lock(m_cs, 1);
     std::map<unsigned, MS2Ptr<ItemHousing> >::iterator it = m_mapHousing.find(nId);
-    if (it == m_mapHousing.end())
-        return MS2Ptr<ItemHousing>(0);
-    return it->second;
+    if (it != m_mapHousing.end())
+        return it->second;
+    return MS2Ptr<ItemHousing>(0);
 }
 
 // @0x1405567e0
 CString CItemDataTable::GetGradeNif(ItemGradeKey eGrade)
 {
     CString str;
-    if (!m_mapGradeNif.Lookup(eGrade, str))
-        return CString("");
-    return str;
+    if (m_mapGradeNif.Lookup(eGrade, str))
+        return str;
+    return CString("");
 }
 
 // @0x1405568a0
@@ -341,18 +341,18 @@ CString CItemDataTable::GetGradePetNif(ItemGradeKey eGrade)
 CString CItemDataTable::GetGradeEffect(ItemGradeKey eGrade)
 {
     CString str;
-    if (!m_mapGradeEffect.Lookup(eGrade, str))
-        return CString("");
-    return str;
+    if (m_mapGradeEffect.Lookup(eGrade, str))
+        return str;
+    return CString("");
 }
 
 // @0x1405569f0
 unsigned CItemDataTable::GetTextColor(ItemGradeKey eGrade)
 {
     unsigned nColor;
-    if (!m_mapTextColor.Lookup(eGrade, nColor))
-        nColor = 0xffffff;
-    return nColor;
+    if (m_mapTextColor.Lookup(eGrade, nColor))
+        return nColor;
+    return 0xffffff;
 }
 
 // @0x140556a40
@@ -365,24 +365,22 @@ CStringW CItemDataTable::GetTextColorString(ItemGradeKey eGrade)
 int CItemDataTable::GetWeaponSpeed(int nWeapon)
 {
     int nSpeed;
-    if (!m_mapWeaponSpeed.Lookup(nWeapon, nSpeed))
-        nSpeed = 0;
-    return nSpeed;
+    if (m_mapWeaponSpeed.Lookup(nWeapon, nSpeed))
+        return nSpeed;
+    return 0;
 }
 
 // @0x140556af0
 float CItemDataTable::GetRevisionRatio(int nWeapon, int nIndex)
 {
-    float fRatio;
     if (nIndex == 0)
-    {
-        fRatio = 1.0f;
-    }
-    else if (!m_mapRevisionRatio.Lookup(GetWeaponSpeed(nWeapon) * 10 + nIndex, fRatio))
-    {
-        fRatio = 1.0f;
-    }
-    return fRatio;
+        return 1.0f;
+    int nSpeed = GetWeaponSpeed(nWeapon);
+    int nKey = nSpeed * 10 + nIndex;
+    float fRatio;
+    if (m_mapRevisionRatio.Lookup(nKey, fRatio))
+        return fRatio;
+    return 1.0f;
 }
 
 // @0x140556b70
@@ -520,9 +518,9 @@ CString CItemDataTable::GetEnchantNif(int nWeapon, int nEnchant, int nUnlimited,
 int CItemDataTable::GetTagItemId(ItemTagKey eTag)
 {
     MS2Ptr<ItemTagParam> spTag(0);
-    if (!m_mapTag.Lookup(eTag, spTag))
-        return 0;
-    return spTag->m_nItemId;
+    if (m_mapTag.Lookup(eTag, spTag))
+        return spTag->m_nItemId;
+    return 0;
 }
 
 // @0x140557640
@@ -560,7 +558,7 @@ CItemDataTable::ModelPtr CItemDataTable::GetModel(unsigned nPreset)
 }
 
 // @0x140557910
-void CItemDataTable::FUN_140557910()
+void CItemDataTable::FUN_140557910(int)
 {
 }
 
@@ -571,8 +569,9 @@ void CItemDataTable::GetHousingByCategory(int nCategory, ATL::CAtlArray<MS2Ptr<I
     for (std::map<unsigned, MS2Ptr<ItemHousing> >::iterator it = m_mapHousing.begin(); it != m_mapHousing.end(); it++)
     {
         MS2Ptr<ItemHousing> spHousing = it->second;
-        if (spHousing->categoryIndex == nCategory)
-            out.Add(spHousing);
+        if (spHousing->categoryIndex != nCategory)
+            continue;
+        out.Add(spHousing);
     }
 }
 
@@ -648,12 +647,10 @@ CItemDataTable::ItemDataPtr CItemDataTable::GetItemData(int nItemId)
     if (nItemId == 0)
         return ItemDataPtr(0);
     ItemDataPtr spItem = FindItemData(nItemId);
-    if (spItem.get() == 0)
-    {
-        LoadItemDataFile(FUN_14053c690(nItemId));
-        return FindItemData(nItemId);
-    }
-    return spItem;
+    if (spItem.get() != 0)
+        return spItem;
+    LoadItemDataFile(FUN_14053c690(nItemId));
+    return FindItemData(nItemId);
 }
 
 // @0x140558060
@@ -722,9 +719,9 @@ CString CItemDataTable::GetUiMaterialSound(unsigned nMaterial)
     if (nMaterial == 0)
         return s_strDefault;
     CString strSound;
-    if (!m_mapUiMaterialSound.Lookup(nMaterial, strSound))
-        return s_strDefault;
-    return strSound;
+    if (m_mapUiMaterialSound.Lookup(nMaterial, strSound))
+        return strSound;
+    return s_strDefault;
 }
 
 // @0x1405587f0
@@ -764,9 +761,9 @@ Unk_BmBoxPtr<CColorPaletteInfo::ColorArray> CItemDataTable::GetPaletteColors(int
 {
     CheckInit();
     Unk_BmPtr<CColorPaletteInfo> spInfo;
-    if (!m_mapPalette.Lookup(nPalette, spInfo))
-        return Unk_BmBoxPtr<CColorPaletteInfo::ColorArray>(0);
-    return spInfo->GetColors();
+    if (m_mapPalette.Lookup(nPalette, spInfo))
+        return spInfo->GetColors();
+    return Unk_BmBoxPtr<CColorPaletteInfo::ColorArray>(0);
 }
 
 // @0x140558b90
@@ -1169,7 +1166,7 @@ void CItemDataTable::LoadHousing()
         FUN_140873220(pNode, "id", nId);
         MS2Ptr<ItemHousing> spHousing(new ItemHousing);
         spHousing->FUN_140548fe0(pNode, nId);
-        if (spHousing->trophyID != 0)
+        if (spHousing->trophyID > 0)
         {
             Unk_TrophyKey trophy(spHousing->trophyID, spHousing->trophyLevel);
             if (m_setTrophy.find(trophy) == m_setTrophy.end())
@@ -1442,11 +1439,13 @@ CItemDataTable::ItemDataPtr CItemDataTable::FindItemData(int nItemId)
 {
     Unk_CriticalSectionLock lock(m_cs, 1);
     std::unordered_map<int, ItemDataPtr>::iterator it = m_mapItem.find(nItemId);
-    if (it == m_mapItem.end())
-        return ItemDataPtr(0);
-    if (it->second->FUN_14053ef80())
-        it->second->FUN_14053eb20();
-    return it->second;
+    if (it != m_mapItem.end())
+    {
+        if (it->second->FUN_14053ef80())
+            it->second->FUN_14053eb20();
+        return it->second;
+    }
+    return ItemDataPtr(0);
 }
 
 // @0x14055f440
@@ -1543,7 +1542,7 @@ int CItemDataTable::GetEnchantKey(int nWeapon, int nLevel)
 // @0x14055fd10
 static void FindFiles(CString strExt, CString strDir, std::vector<CString>& out)
 {
-    FUN_1403992a0(strExt, strDir, out, "", 0);
+    FUN_1403992a0(strExt, strDir, out, "", false);
 }
 
 // @0x14055fe00
