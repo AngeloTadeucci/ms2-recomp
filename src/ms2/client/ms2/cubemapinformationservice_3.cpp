@@ -273,7 +273,7 @@ struct Unk_CMISHouseInfo : public CPtred                                    // a
 };
 struct Unk_CMISHousePtr { void* m_p; };                                     // MS2Ptr<house info>
 struct Unk_CMISHouseNode { int first; Unk_CMISHousePtr second; };
-class Unk_CMISHouseMark { public: void FUN_14198cb00(const Unk_CMISHouseInfo& info); void FUN_14198cf50(); };
+class Unk_CMISHouseMark { public: virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3(); void FUN_14198cb00(const Unk_CMISHouseInfo& info); void FUN_14198cf50(); };
 Unk_CMISHouseMark* FUN_1410dc020();
 bool FUN_1411516e0(Unk_CMISTree<274>*);                                     // empty
 void FUN_14114dc90(Unk_CMISTree<274>*, Unk_CMISIter<274>*);                 // begin
@@ -5817,4 +5817,193 @@ int CubeMapInformationService::FUN_1410d3450(CString strName)
     FUN_141125c10(&listAuto);
     FUN_14086f450(&elemMap);
     return 1;
+}
+
+// ---- w142 batch 12 ----
+extern Unk_CMISEntityRef DAT_143acf820;                                                     // the null entity ref
+struct Unk_CMISMarkList { char m_b[0x18]; };                                                // list of the mark entities of a mark record (at +0x38 of the record)
+Unk_CMISEntSetIter* FUN_14114e930(Unk_CMISMarkList*, Unk_CMISEntSetIter*);                  // begin
+Unk_CMISEntSetIter* FUN_141152570(Unk_CMISMarkList*, Unk_CMISEntSetIter*);                  // end
+const Unk_CMISEntityRef* FUN_141128e50(Unk_CMISEntSetIter*);                                // operator*
+void FUN_14112ab20(Unk_CMISEntSetIter*);                                                    // operator++
+void FUN_14114ec80(Unk_CMISTree<275>*);                                                     // clear
+void FUN_14114f4a0(Unk_CMISTree<265>*);                                                     // clear
+void FUN_14114f540(Unk_CMISTree<272>*);                                                     // clear
+void FUN_14114f860(Unk_CMISTree<270>*);                                                     // clear
+void FUN_14114f400(Unk_CMISTree<271>*);                                                     // clear
+void FUN_14114f5e0(Unk_CMISTree<276>*);                                                     // clear
+void FUN_14114edc0(Unk_CMISTree<278>*);                                                     // clear
+void FUN_14114f7c0(Unk_CMISTree<263>*);                                                     // clear
+void FUN_14114f900(Unk_CMISTree<257>*);                                                     // clear
+void FUN_14114f9a0(Unk_CMISTree<258>*);                                                     // clear
+void FUN_14114ee60(Unk_CMISTree<264>*);                                                     // clear
+void FUN_14114fe00(Unk_CMISTree<269>*);                                                     // clear
+void FUN_14114ef00(Unk_CMISTree<266>*);                                                     // clear
+void FUN_14114fea0(Unk_CMISTree<267>*);                                                     // clear
+void FUN_14114ebe0(Unk_CMISTree<285>*);                                                     // clear
+void FUN_14114f040(Unk_CMISTree<279>*);                                                     // clear
+void FUN_14114f180(Unk_CMISTree<273>*);                                                     // clear
+void FUN_14114efa0(Unk_CMISTree<274>*);                                                     // clear
+void FUN_141150120(Unk_CMISTree<284>*);                                                     // clear
+void FUN_1403416e0(Unk_CMISTree<286>*);                                                     // clear
+void FUN_14114f220(Unk_CMISTree<283>*);                                                     // clear
+void FUN_1408ac410(Unk_CubeOwners*);                                                        // clear
+void FUN_140b68e90(Unk_CMISFlags3*);                                                        // reset
+void FUN_14112f280(ATL::CAtlArray<Unk_CMISElem388*>*);                                      // RemoveAll
+void FUN_14112f260(ATL::CAtlArray<Unk_CMISElem3a8*>*);                                      // RemoveAll
+struct Unk_CMISActorEntry { Unk_CMISEntityRef m_key; void* m_pActor; };                     // node value of f48
+Unk_CMISIter<257>* FUN_14114e320(Unk_CMISTree<257>*, Unk_CMISIter<257>*);                   // begin
+Unk_CMISActorEntry* FUN_141128740(Unk_CMISIter<257>*);                                      // operator*
+void FUN_141129c70(Unk_CMISIter<257>*);                                                     // operator++
+struct Unk_CMISEffEntry { int m_key; int m_nEffect; };                                      // node value of f338
+Unk_CMISIter<285>* FUN_14114d9f0(Unk_CMISTree<285>*, Unk_CMISIter<285>*);                   // begin
+Unk_CMISEffEntry* FUN_14063ed80(Unk_CMISIter<285>*);                                        // operator*
+void FUN_141129a00(Unk_CMISIter<285>*);                                                     // operator++
+struct Unk_CMISSetEffNode { int m_key; int m_pad; MS2Ptr<Unk_CMISSetEffect> m_second; };    // node value of f348
+Unk_CMISIter<279>* FUN_14114dd00(Unk_CMISTree<279>*, Unk_CMISIter<279>*);                   // begin
+Unk_CMISSetEffNode* FUN_1411285c0(Unk_CMISIter<279>*);                                      // operator*
+void FUN_141129ae0(Unk_CMISIter<279>*);                                                     // operator++
+// @0x1410d0310
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410d0310()
+{
+    Unk_CMISIter<265> itDefer;
+    for (FUN_14114e010(&f2c8, &itDefer); ; FUN_141129bd0(&itDefer)) {
+        Unk_CMISIter<265> itDeferEnd;
+        if (!FUN_141127640(&itDefer, FUN_141151d30(&f2c8, &itDeferEnd)))
+            break;
+        FUN_1410c5340(Unk_CMISEntityRef(FUN_1411286a0(&itDefer)->m_ref));
+    }
+    FUN_14114f4a0(&f2c8);
+    Unk_CMISIter<275> itMark;
+    for (FUN_14114da60(&f288, &itMark); ; FUN_141129a20(&itMark)) {
+        Unk_CMISIter<275> itMarkEnd;
+        if (!FUN_141127300(&itMark, FUN_141151850(&f288, &itMarkEnd)))
+            break;
+        Unk_CMISMarkList* pMarks = reinterpret_cast<Unk_CMISMarkList*>(FUN_141128500(&itMark)->m_rec.m_b + 0x38);
+        Unk_CMISEntSetIter itTmp, itEnt, itEntEnd;
+        itEntEnd = *FUN_141152570(pMarks, &itTmp);
+        itEnt = *FUN_14114e930(pMarks, &itTmp);
+        while (FUN_141127980(&itEnt, &itEntEnd)) {
+            egf::EntityPtr spEnt = FUN_1408a7ed0(FUN_141128e50(&itEnt));
+            static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf570(FUN_1408a9090(&spEnt));
+            FUN_1408a8720(&spEnt);
+            FUN_14112ab20(&itEnt);
+        }
+    }
+    FUN_14114ec80(&f288);
+    FUN_140899bd0(&f2d8, DAT_143acf820);
+    FUN_14114f540(&f1f8);
+    FUN_14114f860(&f1a0);
+    f1e0 = 1;
+    f1b0 = 0;
+    f1b4 = 0;
+    f1b8 = 0;
+    f1c0 = 0;
+    s1c8 = L"";
+    s1d0 = L"";
+    f1d8 = 0;
+    f1dc = 0;
+    f208 = Unk_PayloadPtr<Unk_CMISObj208>(0);
+    f218 = Unk_UGCMapPtr(0);
+    f2f0 = 0;
+    f2f4 = 0;
+    f478 = 0;
+    f2f8 = 0;
+    f2fc = 0;
+    p300 = Unk_CubePoint();
+    p30c = Unk_CubePoint();
+    FUN_140b68e90(&f418);
+    f330 = 0;
+    f3d8 = 0x12;
+    f3dc = false;
+    t3e0.FUN_1408687f0();
+    for (int i = 0; i < 9; i++)
+        *FUN_1411282d0(&f368, &i) = 0;
+    for (int i = 0; i < 9; i++)
+        *FUN_141128250(&f378, &i) = 0;
+    FUN_14112f280(&a388);
+    FUN_14112f260(&a3a8);
+    FUN_14114fae0(&f3c8);
+    FUN_14114f400(&f1e8);
+    FUN_14114f5e0(&f298);
+    FUN_14114edc0(&f2b8);
+    FUN_14114f7c0(&fe8);
+    FUN_1410c6070();
+    for (int i = 0; i < 3; i++)
+        FUN_1410c6820(i);
+    Unk_CMISIter<257> itActor;
+    for (FUN_14114e320(&f48, &itActor); ; FUN_141129c70(&itActor)) {
+        Unk_CMISIter<257> itActorEnd;
+        if (!FUN_141127780(&itActor, FUN_141152030(&f48, &itActorEnd)))
+            break;
+        void* pActor = FUN_141128740(&itActor)->m_pActor;
+        if (pActor != 0) {
+            Unk_CMISPhysScene* pScene = FUN_14168a1c0(FUN_1409f7ca0());
+            if (pScene != 0) {
+                FUN_14168a540(FUN_1409f7ca0(), 0);
+                pScene->RemoveActor(pActor);
+                FUN_141bc8e00(FUN_1403ed2d0());
+                FUN_14168a570(FUN_1409f7ca0());
+            }
+        }
+    }
+    FUN_14114f900(&f48);
+    FUN_14114f9a0(&f58);
+    FUN_14112ded0();
+    FUN_14112dd30();
+    FUN_14114fa40(&f78);
+    FUN_14114f0e0(&f88);
+    FUN_14114f0e0(&f98);
+    FUN_14114fa40(&fa8);
+    FUN_14114f0e0(&fb8);
+    FUN_1410b2760(&f2a8);
+    FUN_1402237c0(&a458);
+    FUN_14114f360(&fd8);
+    FUN_14114f2c0(&fc8);
+    FUN_14114ee60(&ff8);
+    FUN_1408ac410(reinterpret_cast<Unk_CubeOwners*>(&f138));
+    FUN_14114fe00(&f148);
+    FUN_14114f4a0(&f108);
+    FUN_14114ef00(&f118);
+    FUN_14114fea0(&f128);
+    FUN_14114f4a0(&f2e0);
+    Unk_CMISIter<285> itEff;
+    for (FUN_14114d9f0(&f338, &itEff); ; FUN_141129a00(&itEff)) {
+        Unk_CMISIter<285> itEffEnd;
+        if (!FUN_14063ec30(&itEff, FUN_1411517f0(&f338, &itEffEnd)))
+            break;
+        int nEffect = FUN_14063ed80(&itEff)->m_nEffect;
+        if (nEffect != 0)
+            FUN_1403ed280()->FUN_1411a6060(nEffect);
+    }
+    FUN_14114ebe0(&f338);
+    Unk_CMISIter<279> itSet;
+    for (FUN_14114dd00(&f348, &itSet); ; FUN_141129ae0(&itSet)) {
+        Unk_CMISIter<279> itSetEnd;
+        if (!FUN_141127480(&itSet, FUN_141151a90(&f348, &itSetEnd)))
+            break;
+        MS2Ptr<Unk_CMISSetEffect> spEff(FUN_1411285c0(&itSet)->m_second);
+        if (spEff->m_nEffect != 0)
+            FUN_1403ed280()->FUN_1411a6060(spEff->m_nEffect);
+    }
+    FUN_14114f040(&f348);
+    FUN_14114f860(&f358);
+    Unk_CMISIter<273> itHead;
+    for (FUN_14114dde0(&f228, &itHead); ; FUN_141129b70(&itHead)) {
+        Unk_CMISIter<273> itHeadEnd;
+        if (!FUN_141127500(&itHead, FUN_141151b50(&f228, &itHeadEnd)))
+            break;
+        FUN_141906680(FUN_1411284c0(&FUN_141128600(&itHead)->second));
+    }
+    FUN_14114f180(&f228);
+    if (Unk_CMISHouseMark* pHouse = FUN_1410dc020())
+        pHouse->vfunc_3();    // MS2: slot 3
+    FUN_14114efa0(&f238);
+    f480 = Unk_PayloadPtr<Unk_CMISObj480>(0);
+    FUN_141150120(&f498);
+    f420 = 0;
+    f428 = 0;
+    FUN_1403416e0(&f430);
+    FUN_14114f220(&f440);
 }
