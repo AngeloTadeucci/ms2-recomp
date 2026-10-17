@@ -2683,3 +2683,15 @@ inflateInit_	142723ad0	func
 ?vfunc_2@UIDialogEventDispatcher@@UEAAXH@Z	141928200	func
 ?vfunc_3@UIDialogEventDispatcher@@UEAAXPEAX@Z	141928290	func
 ?vfunc_4@UIDialogEventDispatcher@@UEAAXPEAX@Z	141928320	func
+??0CUgcCompress@@QEAA@XZ	1418694d0	func
+??1CUgcCompress@@QEAA@XZ	1418695a0	func
+?Compress@CUgcCompress@@QEAAHAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEAX@Z	141869620	func
+?GetZipFile@CUgcCompress@@QEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	141869c60	func
+?ChangeFormat@@YA?AUUnk_UgcFileResult@@HV?$MS2Ptr@VCUploadFile@@@@H_N@Z	14186b9c0	func
+?Clear@CUgcItemPC@@UEAAXXZ	14088f330	func
+?Clear@CUgcItemIconPC@@UEAAXXZ	14088f9c0	func
+?Write@CUgcItemProxy@@UEBAXAEAVCOutputStream@@@Z	14088ee30	func
+?Clear@CUgcGuildMarkProxy@@UEAAXXZ	140891a40	func
+?Write@CUgcGuildMarkProxy@@UEBAXAEAVCOutputStream@@@Z	140891b00	func
+?Clear@CUgcGuildPosterProxy@@UEAAXXZ	140891c50	func
+?Write@CUgcGuildPosterProxy@@UEBAXAEAVCOutputStream@@@Z	140891d20	func
