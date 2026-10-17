@@ -191,3 +191,25 @@ public:
     bool m_isBeginner;                                      // +0x38 "isBeginner"
 };  // vftable 0x142d441b0
 MS2_CHECK_SIZE(DungeonBuffEventCtx, 0x40);
+
+// The NPC shop give-point event settings (GameEventNpcShopGivePoint::vfunc_5 loads them with Create).
+class CNpcShopProductBase;
+class CNpcShopGivePointContextBase : public CPtred {
+public:
+    CNpcShopGivePointContextBase() : m_type(0), m_giveItemId(0) {}      // 0x14040fcf0
+    int GetType() { return m_type; }                                    // 0x140413360
+    static MS2Ptr<CNpcShopGivePointContextBase> Create(int type, const CStringW& strPath);    // 0x140402150
+    static __int64 GetGivePoint(MS2Ptr<CNpcShopGivePointContextBase> spContext,
+                                MS2Ptr<CNpcShopProductBase> spProduct);                     // 0x140402390
+    int m_type;                     // +0x18 1: CNpcShopGivePointContextCNSpring
+    unsigned m_giveItemId;          // +0x1c "giveItemID"
+};  // vftable 0x142d441c0
+MS2_CHECK_SIZE(CNpcShopGivePointContextBase, 0x20);
+class CNpcShopGivePointContextCNSpring : public CNpcShopGivePointContextBase {
+public:
+    CNpcShopGivePointContextCNSpring() : m_normalPercent(0), m_specialPercent(0) {}   // 0x14040fd40
+    __int64 GetGivePoint(__int64 price, int currencyType, int label);  // 0x1404020b0
+    unsigned m_normalPercent;       // +0x20 "normalPercent", in 1/10000
+    unsigned m_specialPercent;      // +0x24 "specialPercent"
+};  // vftable 0x142d441d0
+MS2_CHECK_SIZE(CNpcShopGivePointContextCNSpring, 0x28);

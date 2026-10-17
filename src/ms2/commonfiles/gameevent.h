@@ -10,6 +10,7 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/commonfiles/itemgift.h"
 #include "ms2/commonfiles/timeutil.h"
+#include "ms2/placeholder/mstime.h"
 class Unk_140165cf0;
 class CInPacket;
 class CInputStream;
@@ -1332,11 +1333,24 @@ struct PreminmMarketSaleEventContext : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d41620, ??_G 0x1403eb5d0, dtor 0x1403e6e50
 MS2_CHECK_SIZE(PreminmMarketSaleEventContext, 0x38);
+struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors below
+// Members recovered by gameeventcontext.cpp (stream Write 0x140402560 / Read 0x140402640); the ctor is in
+// gameevent.cpp.
 class ReactorContext : public CPtred {
-    char m_pad_18[0x38];
+public:
+    explicit ReactorContext(int eventId);
+    // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
+    explicit ReactorContext(Unk_VftableEmitTag) {}
+    void Write(COutputStream& out);                 // 0x140402560
+    void Read(CInPacket& packet);                   // 0x140402640
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    __int64 m_endTime;                              // +0x20
+    int m_28;
+    int m_pad_2c;
+    ATL::CAtlArray<unsigned> m_30;                  // +0x30
 };  // vftable 0x142d415b0, ??_G 0x1403eb650, dtor 0x1403e6ea0
 MS2_CHECK_SIZE(ReactorContext, 0x50);
-struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors below
 // The rock-paper-scissors texts (gameeventcontext.cpp Load 0x1404000c0); value-initialized by the client
 // (`new RpsGameData()`, implicit ctor 0x140ce9290).
 class RpsGameData : public CPtred {
@@ -1449,19 +1463,60 @@ public:
     CStringW m_strTitle;                            // +0xa0
 };  // vftable 0x142d414f8, ??_G 0x1403eb910, dtor 0x1403e70f0
 MS2_CHECK_SIZE(StampEventContext, 0xa8);
+// The TreeWateringContext tables (gameeventcontext.cpp Write 0x140402770 / Read 0x140402d20); the ctors
+// (0x1403e4990 / 0x1403e49f0 / 0x1403e4a30) are in gameevent.cpp.
+class TreeWatering_EmotionDay : public CPtred {
+public:
+    TreeWatering_EmotionDay();
+    CMsTime m_beginTime;            // +0x18
+    CMsTime m_endTime;              // +0x28
+};  // vftable 0x142d415d0, ??_G 0x1403eb990, dtor 0x1403e71f0
+MS2_CHECK_SIZE(TreeWatering_EmotionDay, 0x38);
+class TreeWatering_TreeResource : public CPtred {
+public:
+    TreeWatering_TreeResource();
+    int m_id;                       // +0x18 key in TreeWateringContext::m_resources
+    int m_pad_1c;
+    CString m_20;                   // +0x20
+};  // vftable 0x142d415e0, ??_G 0x1403eb9d0, dtor 0x1403e7210
+MS2_CHECK_SIZE(TreeWatering_TreeResource, 0x28);
+class TreeWatering_TreeStep : public CPtred {
+public:
+    TreeWatering_TreeStep();
+    int m_step;                     // +0x18 key in TreeWateringContext::m_steps
+    int m_pad_1c;
+    CMsTime m_beginTime;            // +0x20
+    CMsTime m_endTime;              // +0x30
+};  // vftable 0x142d415c0, ??_G 0x1403eba10, dtor 0x1403e7240
+MS2_CHECK_SIZE(TreeWatering_TreeStep, 0x40);
 // Members proven by the dtor 0x1403e7150 (CString dtors at +0x118/+0x110/+0x108/+0xf8, then the CAtlMap/CAtlArray
-// members at +0xa8, +0x68, +0x20) and by TreeWateringAction::vfunc_1/2/6 (0x1409602c0 / 0x1409606a0 / 0x140960a10).
-class CMsTime;
+// members at +0xa8, +0x68, +0x20), by TreeWateringAction::vfunc_1/2/6 (0x1409602c0 / 0x1409606a0 / 0x140960a10) and
+// by gameeventcontext.cpp (stream Write 0x140402770 / Read 0x140402d20). The ctor is in gameevent.cpp.
 class TreeWateringContext : public CPtred {
 public:
+    explicit TreeWateringContext(int eventId);
+    // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
+    explicit TreeWateringContext(Unk_VftableEmitTag) {}
+    void Write(COutputStream& out);                 // 0x140402770
+    void Read(CInPacket& packet);                   // 0x140402d20
+    MS2Ptr<TreeWatering_TreeStep> GetStep(const CMsTime& time);     // 0x140403710 the step whose span holds the time
+    MS2Ptr<TreeWatering_TreeResource> GetResource(int id);          // 0x140403810
+    bool FUN_1404038c0(const CMsTime& now);     // 0x1404038c0 some emotion day (array at +0x68) covers the time
     int m_nEventId;                 // +0x18 key of the attend table rows
     int m_pad_1c;
-    bool FUN_1404038c0(const CMsTime& now);     // 0x1404038c0 some emotion day (array at +0x68) covers the time
-    char m_pad_20[0x88 - 0x20];     // +0x20 CAtlMap, +0x68 CAtlArray (unrecovered)
+    ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> > m_steps;              // +0x20
+    ATL::CAtlArray<MS2Ptr<TreeWatering_EmotionDay> > m_emotionDays;         // +0x68
     int m_nDailyLimit;              // +0x88 waterings a day (attend row 0x777)
-    char m_pad_8c[0x98 - 0x8c];
+    int m_8c;
+    int m_90;                       // +0x90 (a byte on the wire)
+    int m_94;
     int m_nBonusLimit;              // +0x98 bonus waterings a day (attend row 0x778)
-    char m_pad_9c[0xf8 - 0x9c];     // +0xa8 CAtlMap (unrecovered)
+    int m_9c;
+    int m_a0;                       // +0xa0 (a byte on the wire)
+    int m_a4;
+    ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> > m_resources;      // +0xa8
+    int m_f0;
+    int m_pad_f4;
     CString m_strTreeName;          // +0xf8 the tree's world entity name
     int m_nWaterItemId;             // +0x100 item id looked up in the inventory
     int m_pad_104;
@@ -1473,23 +1528,12 @@ MS2_CHECK_SIZE(TreeWateringContext, 0x120);
 MS2_CHECK_OFFSET(TreeWateringContext, m_nEventId, 0x18);
 MS2_CHECK_OFFSET(TreeWateringContext, m_nDailyLimit, 0x88);
 MS2_CHECK_OFFSET(TreeWateringContext, m_nBonusLimit, 0x98);
+MS2_CHECK_OFFSET(TreeWateringContext, m_resources, 0xa8);
 MS2_CHECK_OFFSET(TreeWateringContext, m_strTreeName, 0xf8);
 MS2_CHECK_OFFSET(TreeWateringContext, m_nWaterItemId, 0x100);
 MS2_CHECK_OFFSET(TreeWateringContext, m_strStateWater, 0x108);
 MS2_CHECK_OFFSET(TreeWateringContext, m_strStateBonus, 0x110);
 MS2_CHECK_OFFSET(TreeWateringContext, m_str118, 0x118);
-class TreeWatering_EmotionDay : public CPtred {
-    char m_pad_18[0x20];
-};  // vftable 0x142d415d0, ??_G 0x1403eb990, dtor 0x1403e71f0
-MS2_CHECK_SIZE(TreeWatering_EmotionDay, 0x38);
-class TreeWatering_TreeResource : public CPtred {
-    char m_pad_18[0x10];
-};  // vftable 0x142d415e0, ??_G 0x1403eb9d0, dtor 0x1403e7210
-MS2_CHECK_SIZE(TreeWatering_TreeResource, 0x28);
-class TreeWatering_TreeStep : public CPtred {
-    char m_pad_18[0x28];
-};  // vftable 0x142d415c0, ??_G 0x1403eba10, dtor 0x1403e7240
-MS2_CHECK_SIZE(TreeWatering_TreeStep, 0x40);
 // TimeRunEventContext: outer class recovered by gameeventcontext.cpp (ctor 0x1403fe170, Write / Read); the nested
 // QuestContext ctor 0x1403e42a0 is in gameevent.cpp.
 class TimeRunEventContext : public CPtred {

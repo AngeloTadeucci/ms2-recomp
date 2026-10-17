@@ -334,14 +334,12 @@ template void Unk_GameEventCopy<NpcEventDropEventContext>(void*, const NpcEventD
 template void Unk_GameEventCopy<OntimeEventContext>(void*, const OntimeEventContext&);
 template void Unk_GameEventCopy<PreminmMarketSaleEventContext>(void*, const PreminmMarketSaleEventContext&);
 template void Unk_GameEventCopy<TimeRunEventContext::QuestContext>(void*, const TimeRunEventContext::QuestContext&);
-template void Unk_GameEventCopy<ReactorContext>(void*, const ReactorContext&);
 template void Unk_GameEventCopy<LongTermAttendGiftContext::Reward>(void*, const LongTermAttendGiftContext::Reward&);
 template void Unk_GameEventCopy<StampEventContext::Reward>(void*, const StampEventContext::Reward&);
 template void Unk_GameEventCopy<SAHotTimeEventContext>(void*, const SAHotTimeEventContext&);
 template void Unk_GameEventCopy<SaleCube>(void*, const SaleCube&);
 template void Unk_GameEventCopy<SkillUpgradeSaleEventContext>(void*, const SkillUpgradeSaleEventContext&);
 template void Unk_GameEventCopy<StampEventContext::Stamp>(void*, const StampEventContext::Stamp&);
-template void Unk_GameEventCopy<TreeWateringContext>(void*, const TreeWateringContext&);
 template void Unk_GameEventCopy<TreeWatering_EmotionDay>(void*, const TreeWatering_EmotionDay&);
 template void Unk_GameEventCopy<TreeWatering_TreeResource>(void*, const TreeWatering_TreeResource&);
 template void Unk_GameEventCopy<TreeWatering_TreeStep>(void*, const TreeWatering_TreeStep&);
@@ -362,8 +360,10 @@ void Unk_GameEventConstructTagged(void* p)
 {
     new (p) T(Unk_VftableEmitTag());
 }
+template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);
+template void Unk_GameEventConstructTagged<TreeWateringContext>(void*);
 
 enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 

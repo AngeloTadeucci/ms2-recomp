@@ -12,6 +12,7 @@
 #include <afx.h>
 #include <atlcoll.h>
 #include <new>
+#include <math.h>
 #include <map>
 #include <set>
 #include <vector>
@@ -21,6 +22,7 @@
 #include "ms2/commonfiles/stream.h"
 #include "ms2/commonfiles/filesystem.h"
 #include "ms2/placeholder/tixmldocument.h"
+#include "ms2/placeholder/cnpcshopproductbase.h"
 #include "gameeventcontext.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -1203,6 +1205,201 @@ void CoupleDanceContext::Read(CInPacket& packet)
 const CoupleDanceContext::Step& CoupleDanceContext::GetStep(int index) const
 {
     return m_steps[index];
+}
+
+// @0x1404020b0
+// MS2-FUNCTIONAL: ceil is the CRT import call in the exe, a direct call here (as in uinametag.cpp)
+__int64 CNpcShopGivePointContextCNSpring::GetGivePoint(__int64 price, int currencyType, int label)
+{
+    if (price == 0)
+        return 0;
+    if (currencyType != 4 && currencyType != 9)
+        return 0;
+    unsigned percent = m_normalPercent;
+    if (label == 3)
+        percent = m_specialPercent;
+    double point = price * percent / 10000.0;
+    return (__int64)ceil(point);
+}
+
+// @0x140402150
+MS2Ptr<CNpcShopGivePointContextBase> CNpcShopGivePointContextBase::Create(int type, const CStringW& strPath)
+{
+    if (type == 1) {
+        MS2Ptr<CNpcShopGivePointContextCNSpring> spContext(new CNpcShopGivePointContextCNSpring);
+        if (spContext) {
+            TiXmlDocument doc;
+            if (FUN_140166420()->FUN_140397ab0(&doc, strPath) == 0)
+                return 0;
+            Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+            if (pRoot == NULL)
+                return 0;
+            spContext->m_type = type;
+            FUN_140873220(pRoot, "giveItemID", spContext->m_giveItemId);
+            FUN_140873220(pRoot, "normalPercent", spContext->m_normalPercent);
+            FUN_140873220(pRoot, "specialPercent", spContext->m_specialPercent);
+        }
+        return spContext.get();
+    }
+    return 0;
+}
+
+// @0x140402390
+__int64 CNpcShopGivePointContextBase::GetGivePoint(MS2Ptr<CNpcShopGivePointContextBase> spContext,
+                                                   MS2Ptr<CNpcShopProductBase> spProduct)
+{
+    if (spContext == NULL || spProduct == NULL)
+        return 0;
+    if (spContext->GetType() == 1) {
+        MS2Ptr<CNpcShopGivePointContextCNSpring> spSpring(
+            dynamic_cast<CNpcShopGivePointContextCNSpring*>(spContext.get()));
+        if (spSpring)
+            return spSpring->GetGivePoint(spProduct->FUN_140db8180(), spProduct->m_currencyType, spProduct->m_label);
+    }
+    return 0;
+}
+
+// @0x140402560
+void ReactorContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_eventId);
+    out.vfunc_o10_3(m_28);
+    out.vfunc_o10_4(m_endTime);
+    int count = (int)m_30.GetCount();
+    out.vfunc_o10_3(count);
+    for (int i = 0; i < count; i++)
+        out.vfunc_o10_3(m_30[i]);
+}
+
+// @0x140402640
+void ReactorContext::Read(CInPacket& packet)
+{
+    m_eventId = packet.vfunc_o8_3();
+    m_28 = packet.vfunc_o8_3();
+    m_endTime = packet.vfunc_o8_4();
+    m_30.RemoveAll();
+    int count = packet.vfunc_o8_3();
+    for (int i = 0; i < count; i++) {
+        unsigned value = packet.vfunc_o8_3();
+        m_30.Add(value);
+    }
+}
+
+// @0x140402770
+void TreeWateringContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_nEventId);
+    int stepCount = (int)m_steps.GetCount();
+    out.vfunc_o10_3(stepCount);
+    for (POSITION pos = m_steps.GetStartPosition(); pos != NULL; m_steps.GetNext(pos)) {
+        TreeWatering_TreeStep* pStep = m_steps.GetValueAt(pos);
+        out.vfunc_o10_3(pStep->m_step);
+        out.vfunc_o10_4(pStep->m_beginTime.Get());
+        out.vfunc_o10_4(pStep->m_endTime.Get());
+    }
+    int dayCount = (int)m_emotionDays.GetCount();
+    out.vfunc_o10_3(dayCount);
+    for (int i = 0; i < dayCount; i++) {
+        MS2Ptr<TreeWatering_EmotionDay> spDay = m_emotionDays[i];
+        out.vfunc_o10_4(spDay->m_beginTime.Get());
+        out.vfunc_o10_4(spDay->m_endTime.Get());
+    }
+    out.vfunc_o10_3(m_nDailyLimit);
+    out.vfunc_o10_3(m_8c);
+    out.vfunc_o10_1((unsigned char)m_90);
+    out.vfunc_o10_3(m_94);
+    out.vfunc_o10_3(m_nBonusLimit);
+    out.vfunc_o10_3(m_9c);
+    out.vfunc_o10_1((unsigned char)m_a0);
+    out.vfunc_o10_3(m_a4);
+    int resourceCount = (int)m_resources.GetCount();
+    out.vfunc_o10_3(resourceCount);
+    for (POSITION pos = m_resources.GetStartPosition(); pos != NULL; m_resources.GetNext(pos)) {
+        TreeWatering_TreeResource* pResource = m_resources.GetValueAt(pos);
+        out.vfunc_o10_3(pResource->m_id);
+        out.vfunc_o10_7(pResource->m_20);
+    }
+    out.vfunc_o10_3(m_f0);
+    out.vfunc_o10_7(m_strTreeName);
+    out.vfunc_o10_3(m_nWaterItemId);
+    out.vfunc_o10_7(m_strStateWater);
+    out.vfunc_o10_7(m_strStateBonus);
+    out.vfunc_o10_7(m_str118);
+}
+
+// @0x140402d20
+void TreeWateringContext::Read(CInPacket& packet)
+{
+    m_nEventId = packet.vfunc_o8_3();
+    m_steps.RemoveAll();
+    int stepCount = packet.vfunc_o8_3();
+    for (int i = 0; i < stepCount; i++) {
+        MS2Ptr<TreeWatering_TreeStep> spStep(new TreeWatering_TreeStep);
+        spStep->m_step = packet.vfunc_o8_3();
+        spStep->m_beginTime = packet.vfunc_o8_4();
+        spStep->m_endTime = packet.vfunc_o8_4();
+        m_steps.SetAt(spStep->m_step, spStep);
+    }
+    m_emotionDays.RemoveAll();
+    int dayCount = packet.vfunc_o8_3();
+    for (int i = 0; i < dayCount; i++) {
+        MS2Ptr<TreeWatering_EmotionDay> spDay(new TreeWatering_EmotionDay);
+        spDay->m_beginTime = packet.vfunc_o8_4();
+        spDay->m_endTime = packet.vfunc_o8_4();
+        m_emotionDays.Add(spDay);
+    }
+    m_nDailyLimit = packet.vfunc_o8_3();
+    m_8c = packet.vfunc_o8_3();
+    m_90 = packet.vfunc_o8_1();
+    m_94 = packet.vfunc_o8_3();
+    m_nBonusLimit = packet.vfunc_o8_3();
+    m_9c = packet.vfunc_o8_3();
+    m_a0 = packet.vfunc_o8_1();
+    m_a4 = packet.vfunc_o8_3();
+    m_resources.RemoveAll();
+    int resourceCount = packet.vfunc_o8_3();
+    for (int i = 0; i < resourceCount; i++) {
+        MS2Ptr<TreeWatering_TreeResource> spResource(new TreeWatering_TreeResource);
+        spResource->m_id = packet.vfunc_o8_3();
+        spResource->m_20 = packet.vfunc_o8_7();
+        m_resources.SetAt(spResource->m_id, spResource);
+    }
+    m_f0 = packet.vfunc_o8_3();
+    m_strTreeName = packet.vfunc_o8_7();
+    m_nWaterItemId = packet.vfunc_o8_3();
+    m_strStateWater = packet.vfunc_o8_7();
+    m_strStateBonus = packet.vfunc_o8_7();
+    m_str118 = packet.vfunc_o8_7();
+}
+
+// @0x140403710
+MS2Ptr<TreeWatering_TreeStep> TreeWateringContext::GetStep(const CMsTime& time)
+{
+    for (POSITION pos = m_steps.GetStartPosition(); pos != NULL; m_steps.GetNext(pos)) {
+        TreeWatering_TreeStep* pStep = m_steps.GetValueAt(pos);
+        if (time > pStep->m_beginTime && time < pStep->m_endTime)
+            return pStep;
+    }
+    return 0;
+}
+
+// @0x140403810
+MS2Ptr<TreeWatering_TreeResource> TreeWateringContext::GetResource(int id)
+{
+    MS2Ptr<TreeWatering_TreeResource> spResource = 0;
+    if (m_resources.Lookup(id, spResource))
+        return spResource;
+    return 0;
+}
+
+// @0x1404038c0
+bool TreeWateringContext::FUN_1404038c0(const CMsTime& now)
+{
+    for (size_t i = 0; i < m_emotionDays.GetCount(); i++) {
+        if (m_emotionDays[i]->m_beginTime < now && now < m_emotionDays[i]->m_endTime)
+            return true;
+    }
+    return false;
 }
 
 // ==== 0x140402080 .. 0x140407a20 continue above this line ====
