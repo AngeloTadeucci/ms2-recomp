@@ -2743,3 +2743,7 @@ inflateInit_	142723ad0	func
 ?PTR_DAT_1439f4da0@@3PEBDEB	1439f4da0	data
 ?PTR_DAT_1439f4da8@@3PEBDEB	1439f4da8	data
 ?PTR_s_Eff_center_1439f4db0@@3PEBDEB	1439f4db0	data
+?s_instance@?$TSingleton@VLoginBgBgmTable@@@@2PEAVLoginBgBgmTable@@EA	143ab8308	data
+?s_bInit@LoginBgBgmTable@@2_NA	143ab8310	data
+?s_instance@?$TSingleton@VCVIPTable@@@@2PEAVCVIPTable@@EA	143ab2628	data
+?s_bInit@CVIPTable@@2_NA	143ab2630	data
