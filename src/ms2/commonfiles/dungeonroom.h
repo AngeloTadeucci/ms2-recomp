@@ -384,9 +384,9 @@ public:
     std::map<unsigned, DungeonRoomPtr> m_rooms;                         // +0x10 by room id
     std::vector<DungeonRoomPtr> m_roomList;                             // +0x20 load order
     std::map<DungeonGroupType, DungeonRoomSet> m_roomsByGroup;          // +0x38 by group type
-    std::map<int, MS2Ptr<DungeonRewardCoupon> > m_coupons;              // +0x48
-    std::map<int, MS2Ptr<DungeonRankRewardBase> > m_rankRewards;        // +0x58
-    std::map<int, MS2Ptr<DungeonRoundGroup> > m_roundGroups;            // +0x68
+    std::map<unsigned, MS2Ptr<DungeonRewardCoupon> > m_coupons;              // +0x48
+    std::map<unsigned, MS2Ptr<DungeonRankRewardBase> > m_rankRewards;        // +0x58
+    std::map<unsigned, MS2Ptr<DungeonRoundGroup> > m_roundGroups;            // +0x68
     std::vector<MS2Ptr<DungeonSeason> > m_seasons;                      // +0x78
     std::map<unsigned, DungeonRankRequire> m_rankRequires;              // +0x90 by rank table id
     std::vector<MS2Ptr<DungeonUnitedWeeklyReward> > m_unitedWeeklyRewards;  // +0xa0
