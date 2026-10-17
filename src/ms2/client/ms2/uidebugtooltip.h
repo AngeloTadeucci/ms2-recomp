@@ -29,6 +29,7 @@ public:
     void FUN_14191ab10(CStringW strText);                           // m_88 = text; m_7c = 1
     void FUN_14191ab70(CStringW strAdditional);                     // m_90 = text; m_7c = 1
     void FUN_14191abd0();                                           // toggle the "additional" text
+    void SetFollowsAnchor(int bFollow) { m_68 = bFollow; }          // inline (portal.cpp writes +0x68 directly)
     void FUN_14191b140();                                           // project m_6c to the screen and move the movie
 
 private:
