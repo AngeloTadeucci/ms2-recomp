@@ -1,5 +1,5 @@
 // skilldata.h - PLACEHOLDER for SkillData (RTTI .?AVSkillData@@, one skill of the skill table) and SkillLevelData
-// (RTTI .?AVSkillLevelData@@, one level of it). NOT an original header; only the members that commonfiles\jobtable.cpp
+// (RTTI .?AVSkillLevelData@@, one level of it). NOT an original header; only the members that commonfiles\jobtable.cpp / ?\jobsystem.cpp
 // calls are declared (names invented). Both are held by MS2Ptr<T> with the CPtred base at offset 0 (the per-T
 // ReleaseImpl 0x140641a30 passes the pointer unadjusted).
 #pragma once

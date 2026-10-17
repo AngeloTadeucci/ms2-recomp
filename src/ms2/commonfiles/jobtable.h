@@ -90,8 +90,8 @@ public:
     bool HasSkill(unsigned nSkillId);                   // 0x140643fd0
     bool HasSubSkill(unsigned nSkillId);                // 0x140644050
     unsigned GetSubSkillParent(unsigned nSkillId);      // 0x1406440d0 the skill a sub skill belongs to
-    JobSkillDataPtr FindSkill(unsigned nSkillId);       // 0x140644150
-    JobSkillDataPtr FindSubSkill(unsigned nSkillId);    // 0x140644210
+    JobSkillDataPtr FindSkill(unsigned nSkillId) const;    // 0x140644150
+    JobSkillDataPtr FindSubSkill(unsigned nSkillId) const;    // 0x140644210
     JobSkillDataPtr GetSkillData(unsigned nSkillId);    // 0x1406442d0 skill or sub skill
     void GetSkills(std::vector<JobSkillDataPtr>& vOut);    // 0x140644380
     static unsigned short GetSkillMaxLevel(unsigned nSkillId);    // 0x140644430
