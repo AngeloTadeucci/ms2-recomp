@@ -2,6 +2,7 @@
 // MS2-UNIT: unit_14169afb0
 // MS2-RANGE: 0x1400fc110-0x1400fc2a0 .text$di
 // MS2-RANGE: 0x14169afb0-0x14169d920 .text$mn
+// MS2-FUNCTIONAL: b650 (utf8string / SmartPointer COMDAT pins), b890 and ba90 (MS2Ptr<UIDebugTooltip> / texture glue shape), bd40 (countdown formatting), c3b0 (switch layout), c5f0 (static-init order)
 // MS2-RANGE: 0x142cb4480-0x142cb45d0 .text$yd
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\portal.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -143,30 +144,31 @@ Unk_PortalBox::~Unk_PortalBox()
 }
 
 // @0x14169b080
-bool Unk_PortalBox::FUN_14169b080(egf::Entity* pEntity)
+int Unk_PortalBox::FUN_14169b080(egf::Entity* pEntity)
 {
     Unk_StreamPoint ptPos;
     Unk_StreamPoint ptRot;
     Unk_StreamPoint ptSize;
     Unk_StreamPoint ptCenter;
     if (FUN_1409618c0(pEntity, 0xfb190620, &ptSize) != 0)
-        return false;
+        return 0;
     if (FUN_1409618c0(pEntity, 0x1e1de032, &ptCenter) != 0)
-        return false;
+        return 0;
     if (FUN_1409618c0(pEntity, 0xfd95ca52, &ptPos) != 0)
-        return false;
+        return 0;
     if (FUN_1409618c0(pEntity, 0x68c7c29d, &ptRot) != 0)
-        return false;
+        return 0;
     Unk_StreamPoint ptHalf = ptSize.FUN_14097fc90(0.5f);
     FUN_140add1a0(&m_bounds, -ptHalf.x, -ptHalf.y, -ptHalf.z, ptHalf.x, ptHalf.y, ptHalf.z);
     m_pose.m_pos.x = ptPos.x;
     m_pose.m_pos.y = ptPos.y;
     m_pose.m_pos.z = ptPos.z;
     FUN_140adca00(&m_pose.m_rot);
-    FUN_140add040(&m_pose.m_rot, (float)((ptRot.z * 3.1415927) / 180.0));
+    FUN_140add040(&m_pose.m_rot, (ptRot.z * 3.1415927f) / 180.0f);
     FUN_140adc690(&m_obb, &m_bounds, &m_pose);
-    FUN_140adbf00(&m_obb, Unk_CtbVec3(ptCenter.x, ptCenter.y, ptCenter.z));
-    return true;
+    Unk_CtbVec3 vCenter(ptCenter.x, ptCenter.y, ptCenter.z);
+    FUN_140adbf00(&m_obb, vCenter);
+    return 1;
 }
 
 // @0x14169b2e0
@@ -427,15 +429,14 @@ CStringW CPortal::FUN_14169cae0()
 {
     if (m_nType == 0x11)
         return FUN_1401a9d70()->FUN_141811980(0x14, m_nId);
-    int nName = FUN_14169d280();
-    if (nName == 0)
-    {
-        CStringW strName = FUN_1414a5760()->FUN_140730b80(FUN_141bd3060(FUN_1403ed2d0()), m_nId);
-        if (strName.IsEmpty())
-            return CStringW(L"");
+    unsigned nName = FUN_14169d280();
+    if (nName > 0)
+        return FUN_1401a9d70()->FUN_141811980(3, nName);
+    unsigned nMapId = FUN_141bd3060(FUN_1403ed2d0());
+    CStringW strName = FUN_1414a5760()->FUN_140730b80(nMapId, m_nId);
+    if (!strName.IsEmpty())
         return strName;
-    }
-    return FUN_1401a9d70()->FUN_141811980(3, nName);
+    return CStringW(L"");
 }
 
 // @0x14169cc40
@@ -452,7 +453,7 @@ void CPortal::FUN_14169cc70(const Unk_StreamPoint& pos, const Unk_StreamPoint& r
         return;
     FUN_140a38a50((egf::Entity*)spEntity, 0xfd95ca52, pos);
     FUN_140a38a50((egf::Entity*)spEntity, 0x68c7c29d, rot);
-    m_box.FUN_14169b080((egf::Entity*)spEntity);
+    m_box.FUN_14169b080(spEntity.operator->());
 }
 
 // @0x14169cd50

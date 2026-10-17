@@ -24,7 +24,7 @@ struct Unk_PortalBox
 {
     Unk_PortalBox();                                                    // 0x14169afb0
     ~Unk_PortalBox();                                                   // 0x14169b020
-    bool FUN_14169b080(egf::Entity* pEntity);                           // read size / position / rotation from the entity
+    int FUN_14169b080(egf::Entity* pEntity);                           // read size / position / rotation from the entity
     int FUN_14169b2e0(const Unk_StreamPoint* pPoint);                  // is the point inside the box
 
     Unk_CtbBounds3 m_bounds;                                            // +0x00 local box
