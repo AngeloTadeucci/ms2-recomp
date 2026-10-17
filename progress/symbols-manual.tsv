@@ -2486,3 +2486,6 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?DAT_143ab2388@@3UUnk_Int3@@A	143ab2388	data
 ?DAT_143afa4d8@@3VNiRTTI@@A	143afa4d8	data
 ?DAT_143aac290@@3_NA	143aac290	data
+??0Unk_CMISXformVec@@QEAA@XZ	141122df0	func
+??1Unk_CMISXformVec@@QEAA@XZ	141125da0	func
+?DAT_143acf820@@3UUnk_CMISEntityRef@@A	143acf820	data
