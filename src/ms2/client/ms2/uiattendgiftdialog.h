@@ -109,6 +109,8 @@ public:
     void FUN_141031260();
     void FUN_1410312d0();
     void FUN_141031320(const CStringW&,const CStringW&);
+    // @0x14187c6a0 (inlined into client\ms2\ugcmanager.cpp#2: the downloaded banner image)
+    void SetImage(CString strPath) { m_image = strPath; }
 private:
     MS2_LAYOUT_FRIEND;
     int m_refs;

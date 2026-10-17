@@ -683,6 +683,11 @@ def load_symbols(path=SYMBOLS_TSV):
 def harvestable(name, va):
     if name.startswith(NO_HARVEST_PREFIXES) or name in ("memset", "memcpy", "memmove", "memcmp", "strlen", "atexit"):
         return False
+    # guiddef.h's operator==/!= get C linkage when an SDK header includes it inside extern "C": cl names them "==" /
+    # "!=", which /alternatename:<name>=<target> (tools/ms2symobj.py) cannot express. The inline COMDAT is defined by
+    # every user anyway.
+    if "=" in name:
+        return False
     return not any(a <= va < b for a, b in RUNTIME_RANGES)
 
 

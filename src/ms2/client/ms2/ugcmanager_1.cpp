@@ -1210,7 +1210,7 @@ unsigned int CUgcDownloadLoad::vfunc_1(void* pParam, Unk_140659080& start)
             if (!FUN_141027420(strName))
                 strName = FUN_141027200(strName);
             if (FUN_1414a57f0())
-                FUN_1414a57f0()->FUN_1418760a0(strName, 0);
+                FUN_1414a57f0()->Finish(strName, 0);
         }
         for (POSITION pos = failed.GetHeadPosition(); pos != NULL; failed.GetNext(pos))
         {
@@ -1218,7 +1218,7 @@ unsigned int CUgcDownloadLoad::vfunc_1(void* pParam, Unk_140659080& start)
             if (!FUN_141027420(strName))
                 strName = FUN_141027200(strName);
             if (FUN_1414a57f0())
-                FUN_1414a57f0()->FUN_1418760a0(strName, 0x20);
+                FUN_1414a57f0()->Finish(strName, 0x20);
         }
         batch.RemoveAll();
         loaded.RemoveAll();

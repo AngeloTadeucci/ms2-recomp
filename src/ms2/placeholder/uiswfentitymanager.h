@@ -22,7 +22,8 @@ public:
     void FUN_1422d4780(UISwfEntity* p, int n);
     void FUN_1422d4840(UISwfEntity* p, int n);
     void FUN_1422d48f0(UISwfEntity* p, int nLayer);                                             // bring to the top (uimessagebox.cpp)
-    void FUN_1422d4b70(bool bShow);                                                             // show/hide all movies (scenestategame.cpp)
+    void FUN_1422d4b70(bool bShow);
+    MS2Ptr<UISwfEntity> FUN_1422d41b0(const CString& strName);                                 // a movie by name (ugcmanager.cpp#2)                                                             // show/hide all movies (scenestategame.cpp)
 };
 
 UISwfEntityManager* FUN_140b632f0();    // the instance (a global pointer at 0x143abb058)
