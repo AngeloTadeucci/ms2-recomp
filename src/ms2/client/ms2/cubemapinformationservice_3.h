@@ -316,6 +316,7 @@ public:
     int FUN_1410c3650();
 
     void FUN_1410cab10(Cube* pCube);
+    MS2Ptr<Cube> FUN_1410c1330(Unk_StreamPoint ptWorld, __int64 nUnused, class CubeItemInfo* pInfo, int nKind, egf::EntityPtr spEnt, bool bUnused, int nField50);
 
     // w138
     int FUN_1410b77e0(int nItemId, struct Unk_CMISStr* pOut);

@@ -1726,7 +1726,18 @@ void CubeMapInformationService::FUN_1410c5570(Unk_EntRef spEnt)
     GeneratePhysX(spEnt, pt);
 }
 // ---- w138 batch 3 ----
-struct Unk_CMISCell56 { Unk_CMISCell56(const Unk_CMISCell56&); ~Unk_CMISCell56(); char m_pad[56]; };   // the 56-byte value of the cell tree (copy 0x141123050, dtor 0x141125ec0)
+struct Unk_CMISCell56;
+void FUN_1411230b0(Unk_CMISCell56* p);                                                      // default ctor
+struct Unk_CMISCell56                                                                       // the 56-byte value of the cell tree (copy 0x141123050, dtor 0x141125ec0)
+{
+    Unk_CMISCell56() { FUN_1411230b0(this); }
+    Unk_CMISCell56(const Unk_CMISCell56&);
+    ~Unk_CMISCell56();
+    void* m_pName; void* m_pB; void* m_pC; void* m_pD;                                      // +0 (32 bytes of tree/string state)
+    Unk_StreamPoint m_pos;                                                                  // +0x20
+    Unk_StreamPoint m_rot;                                                                  // +0x2c
+};
+MS2_CHECK_SIZE(Unk_CMISCell56, 56);
 Unk_CMISCell56* FUN_141127b10(Unk_CMISTree<278>*, const int*);                              // operator[]
 // @0x1410c2610
 // MS2-FUNCTIONAL: exe keeps a constructed-flag around the 56-byte value copy (extra state)
@@ -4296,5 +4307,112 @@ void CubeMapInformationService::FUN_1410cab10(Cube* pCube)
         pRoot->UpdateEffects();
         pRoot->Update(0.0f, true);
         FUN_14098cf00(&iter);
+    }
+}
+
+// ---- w142 batch 2: cf160 / c1330 ----
+class ObjectWeaponInfo { public: void* m_unk[11]; };                                        // 0x58 bytes, ctor 0x1408b45b0
+MS2_CHECK_SIZE(ObjectWeaponInfo, 0x58);
+ObjectWeaponInfo* FUN_1408b45b0(ObjectWeaponInfo* pMem);
+void FUN_1408a1640(Cube* pCube);
+void FUN_1410b2510(Unk_CMISTree<277>* pTree, int x, int y, int z);                          // insert a cell
+void FUN_1401854f0(ATL::CAtlArray<Unk_CMISElem458*>* pArr, int nKey);                       // append
+void FUN_141126970(Unk_CMISCell56* pDst, Unk_CMISCell56* pSrc);                             // operator=
+Unk_CMISCell56* FUN_141127b50(Unk_CMISTree<278>*, const int*);                              // operator[]
+void* FUN_14112e120(egf::Entity* pEntity);
+void FUN_1409a10d0(Unk_CMISCell56* pCell, void* pName);
+Unk_StreamPoint FUN_1413fa320(egf::Entity* pEntity);                                        // the position of an entity
+void FUN_1402bd040(Unk_StreamPoint* p);
+int FUN_140ae11a0(egf::Entity*, unsigned, int*);                                            // GetProperty(int), 0 = found
+
+// @0x1410c1330
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+MS2Ptr<Cube> CubeMapInformationService::FUN_1410c1330(Unk_StreamPoint ptWorld, __int64 nUnused, CubeItemInfo* pInfo, int nKind,
+    egf::EntityPtr spEnt, bool bUnused, int nField50)
+{
+    Unk_Int3 cell = FUN_1408a1430(ptWorld);
+    int nKey = FUN_1408a03c0(cell);
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_1411274c0(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd)) != 0)
+        return MS2Ptr<Cube>((Cube*)0);
+    MS2Ptr<Cube> spCube(new Cube);
+    spCube->position = cell;
+    spCube->item->FUN_1408b3700(pInfo);
+    spCube->entity = spEnt;
+    spCube->field44 = nKind;
+    spCube->field50 = nField50;
+    FUN_1408a1640(spCube.get());
+    bool bFlag = false;
+    if (FUN_1408a9090(&spEnt) != 0) {
+        FUN_1408a20a0(FUN_1408a9280(&spEnt), 0x9ea356ad, &bFlag);
+        if (bFlag) {
+            ObjectWeaponInfo* pWeapon = FUN_1408b45b0((ObjectWeaponInfo*)::operator new(0x58));
+            spCube->weapon = pWeapon;
+            FUN_1401854f0(&a458, nKey);
+        }
+    }
+    *FUN_141127cd0(&f98, &nKey) = spCube;
+    *FUN_141128190(&fa8, FUN_1408b76f0(FUN_1408a9280(&spCube->entity))) = spCube;
+    if (spCube->field48 != 0)
+        *FUN_141127cd0(&fb8, &nKey) = spCube;
+    if (spCube->field70 != 0 && spCube->field6c != 0)
+        FUN_1410b2510(&f2a8, cell.x, cell.y, cell.z);
+    Unk_CMISIter<262> itEnd2, itFind2;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind2, &spCube->field50), FUN_141151c70(&fd8, &itEnd2)) != 0) {
+        Unk_CMISIntList empty;
+        FUN_141126700(FUN_141127e10(&fd8, &spCube->field50), &empty);
+    }
+    Unk_CMISIter<267> itIns;
+    FUN_14111d290(reinterpret_cast<Unk_CMISTree<267>*>(FUN_141127e10(&fd8, &spCube->field50)), &itIns, &nKey);
+    Unk_CMISCell56 val;
+    FUN_1409a10d0(&val, FUN_14112e120(FUN_1408a9280(&spEnt)));
+    val.m_pos = FUN_1413fa320(FUN_1408a9090(&spEnt));
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0x68c7c29d, &val.m_rot);
+    FUN_141126970(FUN_141127b50(&f2b8, &nKey), &val);
+    return spCube;
+}
+
+// @0x1410cf160
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cf160(egf::Entity* pEntity)
+{
+    if (FUN_1408a9bd0(pEntity)->FUN_14211e240(0xf01a7608)) {
+        int nGroup = 0;
+        FUN_1408a2020(pEntity, 0x85ef19e7, &nGroup);
+        Unk_CMISEntityRef idCopy(*FUN_1408b76f0(pEntity));
+        FUN_1410bbf20(nGroup, reinterpret_cast<const egf::EntityID&>(idCopy));
+    } else if (FUN_1408a9bd0(pEntity)->FUN_14211e240(0xd8dea70d)) {
+        Unk_StreamPoint pt;
+        FUN_1402bd040(&pt);
+        FUN_1409618c0(pEntity, 0xfd95ca52, &pt);
+        int nField50 = 0;
+        FUN_1408a2020(pEntity, 0x85ef19e7, &nField50);
+        Unk_CMISStr strKind;
+        FUN_1409989e0(&strKind, "None");
+        FUN_1408a2060(pEntity, 0x15014205, &strKind);
+        int nKind = FUN_1408a01e0(CString(FUN_1408ac310(&strKind)));
+        bool bAnimatable = false;
+        FUN_1408a20a0(pEntity, 0x38141815, &bAnimatable);
+        if (bAnimatable)
+            FUN_1410c5570(Unk_EntRef((Unk_Entity*)pEntity));
+        MS2Ptr<Cube> spCube = FUN_1410c1330(pt, 0, 0, nKind, egf::EntityPtr(pEntity), false, nField50);
+        if (spCube.get() != 0)
+            spCube->field70 = 1;
+        FUN_1408a8900(&strKind);
+    } else if (FUN_1408a9bd0(pEntity)->FUN_14211e240(0xc9cd2193)) {
+        bool bAnimatable = false;
+        FUN_1408a20a0(pEntity, 0x38141815, &bAnimatable);
+        if (bAnimatable)
+            FUN_1410c5570(Unk_EntRef((Unk_Entity*)pEntity));
+    }
+    if (FUN_1408a9bd0(pEntity)->FUN_14211e240(0xe34a6afd)) {
+        int nValue = 0;
+        if (FUN_140ae11a0(pEntity, 0x1a1899fc, &nValue) == 0 && nValue != 0) {
+            Unk_StreamPoint pt;
+            FUN_1402bd040(&pt);
+            FUN_1409618c0(pEntity, 0xfd95ca52, &pt);
+            int nKey = FUN_1408a13d0(pt);
+            FUN_140899bd0(FUN_141127ed0(&f2e0, &nKey), *FUN_1408b76f0(pEntity));
+        }
     }
 }
