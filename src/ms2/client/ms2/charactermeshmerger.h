@@ -30,6 +30,8 @@ public:
     public:
         TexNode(unsigned int uiLeft, unsigned int uiTop, unsigned int uiRight, unsigned int uiBottom);   // 0x14104cc90
 
+        TexNode* Insert(NiTexture* pTexture);                // 0x14104cdc0, first free leaf that fits the texture, or NULL
+
         efd::SmartPointer<TexNode> m_spChild[2];            // +0x10
         NiRect<unsigned int> m_kRect;                       // +0x20 left, right, top, bottom
         efd::SmartPointer<NiTexture> m_spTexture;           // +0x30
