@@ -180,7 +180,7 @@ public:
     BOOL Copy(MS2Ptr<CDBPremiumProduct> spProduct);         // 0x1406a05d0
     BOOL Copy(MS2Ptr<CMeratMarketPremiumProduct> spProduct, int nBuyCount, int nLimitCount, int nHomeCount);
     void SetCounts(int nBuyCount, int nLimitCount, int nHomeCount);    // 0x1406a0970
-    bool HasLimit();                                        // 0x1406a09c0
+    BOOL HasLimit();                                        // 0x1406a09c0
     bool IsBuyLimitReached();                               // 0x1406a0a60
     bool IsLimitSoldOut();                                  // 0x1406a0ad0
     bool IsHomeSoldOut();                                   // 0x1406a0b50
@@ -205,7 +205,7 @@ public:
     __int64 GetSalePriceOf(int nSubId);                     // 0x1406a1b30
     __int64 GetPriceOf(int nSubId);                         // 0x1406a1be0
     bool FUN_1406a1c70(int nSubId);
-    bool HasSubProducts();                                  // 0x1406a1d60
+    BOOL HasSubProducts();                                  // 0x1406a1d60
     __int64 GetPointOf(int nSubId);                         // 0x1406a1da0
     CStringA GetCategory();                                 // 0x1406a1e50
     int FUN_1406a1ee0();

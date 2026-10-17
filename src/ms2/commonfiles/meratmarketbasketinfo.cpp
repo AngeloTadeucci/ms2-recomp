@@ -671,7 +671,8 @@ CStringW CDBPremiumProduct::GetSellDayText()
 {
     if (m_nType == 7 || m_nType == 8)
     {
-        if (!(m_randomSaleDay == CMsTime(0)))
+        CMsTime zero(0);
+        if (!(m_randomSaleDay == zero))
         {
             const CStringW& strFormat = FUN_14028b8e0(CStringW(L"s_meratmarket_tooltip_sell_day"));
             int nDay = m_randomSaleDay.GetDay();
@@ -762,7 +763,7 @@ void CMeratMarketPremiumProduct::SetCounts(int nBuyCount, int nLimitCount, int n
 }
 
 // @0x1406a09c0
-bool CMeratMarketPremiumProduct::HasLimit()
+BOOL CMeratMarketPremiumProduct::HasLimit()
 {
     switch (m_nType)
     {
@@ -774,7 +775,7 @@ bool CMeratMarketPremiumProduct::HasLimit()
     case 6:
         return m_nLimitCount != 0 || m_nBuyLimit != 0;
     }
-    return false;
+    return FALSE;
 }
 
 // @0x1406a0a60
@@ -782,9 +783,9 @@ bool CMeratMarketPremiumProduct::IsBuyLimitReached()
 {
     if (!HasLimit())
         return false;
-    if (m_nBuyLimit == 0)
-        return false;
-    return m_nBuyLimitMax <= m_nBuyCount;
+    if (m_nBuyLimit)
+        return m_nBuyCount >= m_nBuyLimitMax;
+    return false;
 }
 
 // @0x1406a0ad0
@@ -796,7 +797,7 @@ bool CMeratMarketPremiumProduct::IsLimitSoldOut()
     {
         if (m_nLimitCount == 0)
             return false;
-        return m_nLimitCount <= m_nSoldCount;
+        return m_nSoldCount >= m_nLimitCount;
     }
     return false;
 }
@@ -810,7 +811,7 @@ bool CMeratMarketPremiumProduct::IsHomeSoldOut()
     {
         if (m_nLimitCount == 0)
             return false;
-        return m_nLimitCount <= m_nHomeSoldCount;
+        return m_nHomeSoldCount >= m_nLimitCount;
     }
     return false;
 }
@@ -840,34 +841,52 @@ bool CMeratMarketPremiumProduct::IsSoldOut()
 // @0x1406a0d20
 bool CMeratMarketPremiumProduct::IsNotSelling(__int64 nOffset)
 {
-    return !IsSelling(nOffset);
+    if (!IsSelling(nOffset))
+        return true;
+    return false;
 }
 
 // @0x1406a0d60
 bool CMeratMarketPremiumProduct::IsNotEventPeriod(__int64 nOffset)
 {
-    return !IsEventPeriod(nOffset);
+    if (!IsEventPeriod(nOffset))
+        return true;
+    return false;
 }
 
 // @0x1406a0da0
 bool CMeratMarketPremiumProduct::IsSelling(__int64 nOffset)
 {
-    if (m_startDate == CMsTime(0) && m_endDate == CMsTime(0))
-        return true;
+    CMsTime zeroStart(0);
+    if (m_startDate == zeroStart)
+    {
+        CMsTime zeroEnd(0);
+        if (m_endDate == zeroEnd)
+            return true;
+    }
     CMsTime now(GetServerTime());
-    return now >= CMsTime(m_startDate.Get() - nOffset) && now <= m_endDate;
+    CMsTime start(m_startDate.Get() - nOffset);
+    return now >= start && now <= m_endDate;
 }
 
 // @0x1406a0ea0
 bool CMeratMarketPremiumProduct::IsEventPeriod(__int64 nOffset)
 {
-    if (m_eventStart == CMsTime(0) && m_eventEnd == CMsTime(0))
-        return false;
+    CMsTime zeroStart(0);
+    if (m_eventStart == zeroStart)
+    {
+        CMsTime zeroEnd(0);
+        if (m_eventEnd == zeroEnd)
+            return false;
+    }
     CMsTime now(GetServerTime());
-    bool bInPeriod = now >= CMsTime(m_eventStart.Get() - nOffset) && now <= m_eventEnd;
-    if (bInPeriod)
-        return !IsSelling(nOffset);
-    return false;
+    CMsTime start(m_eventStart.Get() - nOffset);
+    bool bInPeriod = now >= start && now <= m_eventEnd;
+    if (!bInPeriod)
+        return false;
+    if (IsSelling(nOffset))
+        return false;
+    return true;
 }
 
 // @0x1406a0fe0
@@ -952,7 +971,8 @@ BOOL CMeratMarketPremiumProduct::LoadXml(Unk_140165cf0* pElem)
     else
     {
         CMsTime t;
-        if (FUN_14028e280(t, CStringA("%04d-%02d-%02d-%02d-%02d-%02d"), strStart))
+        CStringA strFormat("%04d-%02d-%02d-%02d-%02d-%02d");
+        if (FUN_14028e280(t, strFormat, strStart))
             m_startDate = t;
     }
     CStringA strEnd;
@@ -964,7 +984,8 @@ BOOL CMeratMarketPremiumProduct::LoadXml(Unk_140165cf0* pElem)
     else
     {
         CMsTime t;
-        if (FUN_14028e280(t, CStringA("%04d-%02d-%02d-%02d-%02d-%02d"), strEnd))
+        CStringA strFormat("%04d-%02d-%02d-%02d-%02d-%02d");
+        if (FUN_14028e280(t, strFormat, strEnd))
             m_endDate = t;
     }
     FUN_1408731e0(pElem, "chartOrder", m_nChartOrder);
@@ -995,7 +1016,7 @@ int CMeratMarketPremiumProduct::GetCurrency()
 // @0x1406a1670
 int CMeratMarketPremiumProduct::GetDisplayId()
 {
-    int nId;
+    int nId = 0;
     switch (m_nType)
     {
     case 1:
@@ -1006,8 +1027,6 @@ int CMeratMarketPremiumProduct::GetDisplayId()
     case 4:
         nId = m_n2c;
         break;
-    default:
-        return 0;
     }
     return nId;
 }
@@ -1106,20 +1125,14 @@ CMsTime CMeratMarketPremiumProduct::GetEndDate(int nSubId)
 // @0x1406a1b30
 __int64 CMeratMarketPremiumProduct::GetSalePriceOf(int nSubId)
 {
-    __int64 n;
     if (nSubId == 0)
+        return GetSalePrice(this);
+    __int64 n = 0;
+    if (m_nType == 1)
     {
-        n = GetSalePrice(this);
-    }
-    else
-    {
-        n = 0;
-        if (m_nType == 1)
-        {
-            MS2Ptr<CDBPremiumProduct> spSub = GetSubProduct(nSubId);
-            if (spSub.get())
-                n = spSub->GetSalePrice(this);
-        }
+        MS2Ptr<CDBPremiumProduct> spSub = GetSubProduct(nSubId);
+        if (spSub.get())
+            n = spSub->GetSalePrice(this);
     }
     return n;
 }
@@ -1150,7 +1163,9 @@ bool CMeratMarketPremiumProduct::FUN_1406a1c70(int nSubId)
             return false;
         if (m_nBuyLimit != 0)
             return false;
-        return m_nType == 1;
+        if (m_nType != 1)
+            return false;
+        return true;
     }
     bool b = false;
     if (m_nType == 1)
@@ -1163,28 +1178,24 @@ bool CMeratMarketPremiumProduct::FUN_1406a1c70(int nSubId)
 }
 
 // @0x1406a1d60
-bool CMeratMarketPremiumProduct::HasSubProducts()
+BOOL CMeratMarketPremiumProduct::HasSubProducts()
 {
-    return !m_mapSub.IsEmpty();
+    if (m_mapSub.IsEmpty())
+        return FALSE;
+    return TRUE;
 }
 
 // @0x1406a1da0
 __int64 CMeratMarketPremiumProduct::GetPointOf(int nSubId)
 {
-    __int64 n;
     if (nSubId == 0)
+        return GetPoint();
+    __int64 n = 0;
+    if (m_nType == 1)
     {
-        n = GetPoint();
-    }
-    else
-    {
-        n = 0;
-        if (m_nType == 1)
-        {
-            MS2Ptr<CDBPremiumProduct> spSub = GetSubProduct(nSubId);
-            if (spSub.get())
-                n = spSub->GetPoint();
-        }
+        MS2Ptr<CDBPremiumProduct> spSub = GetSubProduct(nSubId);
+        if (spSub.get())
+            n = spSub->GetPoint();
     }
     return n;
 }
@@ -1218,9 +1229,9 @@ bool CMeratMarketPremiumProduct::FUN_1406a1f50()
 // @0x1406a1f70
 void CMeratMarketPremiumProduct::WriteSubProducts(COutputStream& stream)
 {
-    stream.vfunc_o10_1((unsigned char)m_mapSub.GetCount());
-    POSITION pos = m_mapSub.GetHeadPosition();
-    while (pos)
+    int nCount = (int)m_mapSub.GetCount();
+    stream.vfunc_o10_1((unsigned char)nCount);
+    for (POSITION pos = m_mapSub.GetHeadPosition(); pos; m_mapSub.GetNext(pos))
     {
         MS2Ptr<CDBPremiumProduct> spSub = m_mapSub.GetValueAt(pos);
         if (spSub == 0)
@@ -1232,17 +1243,17 @@ void CMeratMarketPremiumProduct::WriteSubProducts(COutputStream& stream)
             stream.vfunc_o10_1(1);
             spSub->Write(stream);
         }
-        m_mapSub.GetNext(pos);
     }
 }
 
 // @0x1406a2090
 void CMeratMarketPremiumProduct::ReadSubProducts(CInPacket& packet)
 {
-    unsigned char nCount = packet.vfunc_o8_1();
+    int nCount = packet.vfunc_o8_1();
     for (int i = 0; i < nCount; i++)
     {
-        if (packet.vfunc_o8_1() == 1)
+        int nExists = packet.vfunc_o8_1();
+        if (nExists == 1)
         {
             MS2Ptr<CDBPremiumProduct> spSub(new CDBPremiumProduct);
             spSub->Read(packet);
@@ -1254,9 +1265,9 @@ void CMeratMarketPremiumProduct::ReadSubProducts(CInPacket& packet)
 // @0x1406a21f0
 void CMeratMarketPremiumProduct::WriteLimitProducts(COutputStream& stream)
 {
-    stream.vfunc_o10_1((unsigned char)m_mapLimit.GetCount());
-    POSITION pos = m_mapLimit.GetHeadPosition();
-    while (pos)
+    int nCount = (int)m_mapLimit.GetCount();
+    stream.vfunc_o10_1((unsigned char)nCount);
+    for (POSITION pos = m_mapLimit.GetHeadPosition(); pos; m_mapLimit.GetNext(pos))
     {
         MS2Ptr<CDBPremiumProduct> spSub = m_mapLimit.GetValueAt(pos);
         if (spSub == 0)
@@ -1268,17 +1279,17 @@ void CMeratMarketPremiumProduct::WriteLimitProducts(COutputStream& stream)
             stream.vfunc_o10_1(1);
             spSub->Write(stream);
         }
-        m_mapLimit.GetNext(pos);
     }
 }
 
 // @0x1406a2310
 void CMeratMarketPremiumProduct::ReadLimitProducts(CInPacket& packet)
 {
-    unsigned char nCount = packet.vfunc_o8_1();
+    int nCount = packet.vfunc_o8_1();
     for (int i = 0; i < nCount; i++)
     {
-        if (packet.vfunc_o8_1() == 1)
+        int nExists = packet.vfunc_o8_1();
+        if (nExists == 1)
         {
             MS2Ptr<CDBPremiumProduct> spSub(new CDBPremiumProduct);
             spSub->Read(packet);
