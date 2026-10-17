@@ -337,8 +337,6 @@ template void Unk_GameEventCopy<TimeRunEventContext::QuestContext>(void*, const 
 template void Unk_GameEventCopy<ReactorContext>(void*, const ReactorContext&);
 template void Unk_GameEventCopy<LongTermAttendGiftContext::Reward>(void*, const LongTermAttendGiftContext::Reward&);
 template void Unk_GameEventCopy<StampEventContext::Reward>(void*, const StampEventContext::Reward&);
-template void Unk_GameEventCopy<RpsContext::RewardData>(void*, const RpsContext::RewardData&);
-template void Unk_GameEventCopy<RpsContext>(void*, const RpsContext&);
 template void Unk_GameEventCopy<SAHotTimeEventContext>(void*, const SAHotTimeEventContext&);
 template void Unk_GameEventCopy<SaleCube>(void*, const SaleCube&);
 template void Unk_GameEventCopy<SkillUpgradeSaleEventContext>(void*, const SkillUpgradeSaleEventContext&);
@@ -355,13 +353,17 @@ void Unk_GameEventConstruct(void* p)
     new (p) T;
 }
 template void Unk_GameEventConstruct<GalleryContext>(void*);
+template void Unk_GameEventConstruct<RpsContext>(void*);
 template void Unk_GameEventConstruct<SnowmanContext>(void*);
 template void Unk_GameEventConstruct<StampEventContext>(void*);
-// SnowmanContext::Snowman has the gameevent.cpp ctor only; its header-only tag ctor emits the vftable.
-void Unk_GameEventConstructSnowman(void* p)
+// These have the gameevent.cpp ctor only; their header-only tag ctors emit the vftable.
+template <class T>
+void Unk_GameEventConstructTagged(void* p)
 {
-    new (p) SnowmanContext::Snowman(Unk_VftableEmitTag());
+    new (p) T(Unk_VftableEmitTag());
 }
+template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
+template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);
 
 enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 

@@ -5,6 +5,7 @@
 #pragma once
 #include <afx.h>
 #include <atlcoll.h>
+#include <vector>
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/commonfiles/itemgift.h"
@@ -88,8 +89,31 @@ class BurningLevelupContext : public CPtred {
     char m_pad_18[0xa0];
 };  // vftable 0x142d41600, ??_G 0x1403e9850, dtor 0x1403e58e0
 MS2_CHECK_SIZE(BurningLevelupContext, 0xb8);
+// Members recovered by gameeventcontext.cpp (LoadReward 0x140400c00 / LoadDance 0x140401070, stream Write
+// 0x1404015c0 / Read 0x140401a80).
 class CoupleDanceContext : public CPtred {
-    char m_pad_18[0x88];
+public:
+    struct Step {
+        CStringW m_action;                          // +0x00 <action anim>
+        CStringW m_message;                         // +0x08 <message value>
+    };
+    bool LoadReward(Unk_140165cf0* pElem);          // 0x140400c00
+    bool LoadDance(Unk_140165cf0* pElem);           // 0x140401070
+    void Write(COutputStream& out);                 // 0x1404015c0
+    void Read(CInPacket& packet);                   // 0x140401a80
+    const Step& GetStep(int index) const;           // 0x140402080
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    __int64 m_beginTime;                            // +0x20
+    __int64 m_endTime;                              // +0x28
+    unsigned m_goodEndCount;                        // +0x30 goodEndBonus count (a short on the wire)
+    unsigned m_maxRound;                            // +0x34 play maxRound (a byte on the wire)
+    std::vector<std::vector<ItemEntity> > m_dailyItems;  // +0x38 daily items, by order
+    std::vector<ItemEntity> m_goodEndItems;         // +0x50
+    std::vector<Step> m_steps;                      // +0x68 one per CoupleDanceStepName
+    std::vector<CStringW> m_dances;                 // +0x80 dances anim
+    unsigned m_fieldId;                             // +0x98 start fieldID
+    int m_pad_9c;
 };  // vftable 0x142d415a0, ??_G 0x1403e9a10, dtor 0x1403e5b40
 MS2_CHECK_SIZE(CoupleDanceContext, 0xa0);
 class EnchantRateEventContext : public CPtred {
@@ -1312,13 +1336,43 @@ class ReactorContext : public CPtred {
     char m_pad_18[0x38];
 };  // vftable 0x142d415b0, ??_G 0x1403eb650, dtor 0x1403e6ea0
 MS2_CHECK_SIZE(ReactorContext, 0x50);
+struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors below
+// The rock-paper-scissors texts (gameeventcontext.cpp Load 0x1404000c0); value-initialized by the client
+// (`new RpsGameData()`, implicit ctor 0x140ce9290).
+class RpsGameData : public CPtred {
+public:
+    struct Result {
+        ATL::CAtlArray<CStringW> m_actions;         // +0x00 <actions><v value>
+        ATL::CAtlArray<CStringW> m_messages;        // +0x20 <messages><v value>
+    };
+    bool Load(Unk_140165cf0* pElem);                // 0x1404000c0
+    CStringW m_actionNames[3];                      // +0x18 play/actions rock, paper, scissors
+    ATL::CAtlArray<CStringW> m_messages;            // +0x30 play/messages
+    Result m_results[3];                            // +0x50 result/draw, win, lose
+};
+MS2_CHECK_SIZE(RpsGameData, 0x110);
+// Members recovered by gameeventcontext.cpp (stream Write 0x1404006c0 / Read 0x1404008c0); the RewardData ctor is
+// in gameevent.cpp.
 class RpsContext : public CPtred {
 public:
     struct RewardData : public CPtred {
-        char m_pad_18[0x28];
+        RewardData();
+        // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
+        explicit RewardData(Unk_VftableEmitTag) {}
+        int m_count;                                // +0x18
+        int m_pad_1c;
+        ATL::CAtlArray<ItemEntity> m_items;         // +0x20
     };  // vftable 0x142d41580, ??_G 0x1403eb710, dtor 0x1403e6f50
-private:
-    char m_pad_18[0x50];
+    void Write(COutputStream& out);                 // 0x1404006c0
+    void Read(CInPacket& packet);                   // 0x1404008c0
+    CStringW m_strTitle;                            // +0x18
+    int m_20;
+    int m_pad_24;
+    ATL::CAtlArray<MS2Ptr<RewardData> > m_rewards;  // +0x28
+    int m_48;
+    int m_pad_4c;
+    __int64 m_endTime;                              // +0x50
+    MS2Ptr<RpsGameData> m_spGameData;               // +0x58
 };  // vftable 0x142d41590, ??_G 0x1403eb750, dtor 0x1403e6f80
 MS2_CHECK_SIZE(RpsContext, 0x68);
 struct SAHotTimeEventContext : public CPtred {
@@ -1335,7 +1389,6 @@ struct SkillUpgradeSaleEventContext : public CPtred {
 MS2_CHECK_SIZE(SkillUpgradeSaleEventContext, 0x28);
 // Members recovered by gameeventcontext.cpp (stream Write 0x1403ff8f0 / Read 0x1403ffc00); the Snowman ctor
 // 0x1403e4650 is in gameevent.cpp.
-struct Unk_VftableEmitTag {};   // not exe code: selects the inline ctors below
 class SnowmanContext : public CPtred {
 public:
     struct Snowman : public CPtred {

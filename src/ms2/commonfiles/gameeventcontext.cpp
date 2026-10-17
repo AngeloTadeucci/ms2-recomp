@@ -12,6 +12,8 @@
 #include <afx.h>
 #include <atlcoll.h>
 #include <new>
+#include <map>
+#include <set>
 #include <vector>
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/xmlattr.h"
@@ -53,8 +55,13 @@ CInputStream& FUN_14070f440(CInputStream& in, long& value);
 CInputStream& FUN_14070f480(CInputStream& in, int& value);
 CInputStream& FUN_14070f480(CInputStream& in, unsigned& value);
 CInputStream& FUN_14070f540(CInputStream& in, float& value);
-int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);
-Unk_140165cf0* FUN_140345b40(TiXmlDocument* pDoc);   // the document's first child element   // tinyxmlhelper int attribute, long overload
+int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);   // tinyxmlhelper int attribute, long overload
+Unk_140165cf0* FUN_140345b40(TiXmlDocument* pDoc);   // the document's first child element
+Unk_140165cf0* FUN_140345b40(Unk_140165cf0* pNode);  // first child element
+Unk_140165cf0* FUN_1403f0510(Unk_140165cf0* pNode);  // next sibling element
+CString FUN_140223380(int result);                    // rps result node name: draw / win / lose
+void FUN_14015f0b0(CString& str, ATL::CAtlArray<CString>& rOut, const char* pszSep);  // split into strings
+CString CoupleDanceStepName(int step);
 // Enum name parsers (commonenum.cpp).
 Unk_BlueMarbleSlotType FUN_140218100(const CStringA& name);
 Unk_DungeonCooldownType FUN_1402199e0(const CStringA& name);
@@ -872,4 +879,356 @@ MS2Ptr<SnowmanContext::Snowman> SnowmanContext::GetSnowman(int index)
         return 0;
     }
     return m_snowmen[index];
+}
+
+// @0x1404000c0
+bool RpsGameData::Load(Unk_140165cf0* pElem)
+{
+    if (pElem == NULL) {
+        MS2_ASSERT_AT(0x2d8, 0);
+        return false;
+    }
+    Unk_140165cf0* pRoot = FUN_140345b40(pElem);
+    if (pRoot == NULL) {
+        MS2_ASSERT_AT(0x2df, 0);
+        return false;
+    }
+    Unk_140165cf0* pPlay = pRoot->FUN_140165cf0("play");
+    if (pPlay == NULL) {
+        MS2_ASSERT_AT(0x2e7, 0);
+        return false;
+    }
+    Unk_140165cf0* pActions = pPlay->FUN_140165cf0("actions");
+    if (pActions == NULL) {
+        MS2_ASSERT_AT(0x2ee, 0);
+        return false;
+    }
+    FUN_140873420(pActions, "rock", m_actionNames[0]);
+    FUN_140873420(pActions, "paper", m_actionNames[1]);
+    FUN_140873420(pActions, "scissors", m_actionNames[2]);
+    Unk_140165cf0* pMessages = pPlay->FUN_140165cf0("messages");
+    if (pMessages == NULL) {
+        MS2_ASSERT_AT(0x2f9, 0);
+        return false;
+    }
+    for (Unk_140165cf0* pNode = FUN_140345b40(pMessages); pNode != NULL; pNode = FUN_1403f0510(pNode)) {
+        CStringW strValue;
+        FUN_140873420(pNode, "value", strValue);
+        m_messages.Add(strValue);
+    }
+    Unk_140165cf0* pResults = pRoot->FUN_140165cf0("result");
+    if (pResults == NULL) {
+        MS2_ASSERT_AT(0x309, 0);
+        return false;
+    }
+    for (int i = 0; i < 3; i++) {
+        CString strName = FUN_140223380(i);
+        Unk_140165cf0* pResult = pResults->FUN_140165cf0(strName);
+        if (pResult == NULL) {
+            MS2_ASSERT_AT(0x313, 0);
+            continue;
+        }
+        Result& result = m_results[i];
+        Unk_140165cf0* pResultActions = pResult->FUN_140165cf0("actions");
+        if (pResultActions == NULL) {
+            MS2_ASSERT_AT(0x31c, 0);
+            return false;
+        }
+        for (Unk_140165cf0* pNode = FUN_140345b40(pResultActions); pNode != NULL; pNode = FUN_1403f0510(pNode)) {
+            CStringW strValue;
+            FUN_140873420(pNode, "value", strValue);
+            result.m_actions.Add(strValue);
+        }
+        Unk_140165cf0* pResultMessages = pResult->FUN_140165cf0("messages");
+        if (pResultMessages == NULL) {
+            MS2_ASSERT_AT(0x32a, 0);
+            return false;
+        }
+        for (Unk_140165cf0* pNode = FUN_140345b40(pResultMessages); pNode != NULL; pNode = FUN_1403f0510(pNode)) {
+            CStringW strValue;
+            FUN_140873420(pNode, "value", strValue);
+            result.m_messages.Add(strValue);
+        }
+    }
+    return true;
+}
+
+// @0x1404005e0
+// Sort callback over CAtlArray<MS2Ptr<RpsContext::RewardData> > (not called from the client).
+int CompareRpsReward(const void* pLeft, const void* pRight)
+{
+    if (pLeft == NULL || pRight == NULL) {
+        MS2_ASSERT_AT(0x376, 0);
+        return 0;
+    }
+    MS2Ptr<RpsContext::RewardData> spLeft = *static_cast<const MS2Ptr<RpsContext::RewardData>*>(pLeft);
+    MS2Ptr<RpsContext::RewardData> spRight = *static_cast<const MS2Ptr<RpsContext::RewardData>*>(pRight);
+    return spLeft->m_count < spRight->m_count ? -1 : 1;
+}
+
+// @0x1404006c0
+void RpsContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_8(m_strTitle);
+    int count = (int)m_rewards.GetCount();
+    out.vfunc_o10_3(count);
+    for (int i = 0; i < count; i++) {
+        MS2Ptr<RewardData> spReward = m_rewards[i];
+        if (spReward == NULL) {
+            MS2_ASSERT_AT(0x345, 0);
+            return;
+        }
+        out.vfunc_o10_3(spReward->m_count);
+        int itemCount = (int)spReward->m_items.GetCount();
+        out.vfunc_o10_3(itemCount);
+        for (int j = 0; j < itemCount; j++)
+            spReward->m_items[j].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_3(m_20);
+    out.vfunc_o10_3(m_48);
+    out.vfunc_o10_4(m_endTime);
+}
+
+// @0x1404008c0
+void RpsContext::Read(CInPacket& packet)
+{
+    m_strTitle = packet.vfunc_o8_8();
+    int count = packet.vfunc_o8_3();
+    m_rewards.RemoveAll();
+    for (int i = 0; i < count; i++) {
+        MS2Ptr<RewardData> spReward(new RewardData);
+        spReward->m_count = packet.vfunc_o8_3();
+        int itemCount = packet.vfunc_o8_3();
+        spReward->m_items.SetCount(itemCount);
+        for (int j = 0; j < itemCount; j++)
+            spReward->m_items[j].FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_rewards.Add(spReward);
+    }
+    m_20 = packet.vfunc_o8_3();
+    m_48 = packet.vfunc_o8_3();
+    m_endTime = packet.vfunc_o8_4();
+}
+
+// @0x140400c00
+bool CoupleDanceContext::LoadReward(Unk_140165cf0* pElem)
+{
+    if (pElem == NULL) {
+        MS2_ASSERT_AT(0x38a, 0);
+        return false;
+    }
+    std::map<int, std::vector<ItemEntity> > dailyItems;
+    std::set<int> orders;
+    m_dailyItems.clear();
+    for (Unk_140165cf0* pDaily = pElem->FUN_140165cf0("daily"); pDaily != NULL; pDaily = pDaily->FUN_140168650("daily")) {
+        int order = 0;
+        FUN_1408731e0(pDaily, "order", order);
+        Unk_140165cf0* pItems = pDaily->FUN_140165cf0("items");
+        if (pItems == NULL) {
+            MS2_ASSERT_AT(0x39a, 0);
+            return false;
+        }
+        std::vector<ItemEntity> items;
+        for (Unk_140165cf0* pItem = pItems->FUN_140165cf0("v"); pItem != NULL; pItem = pItem->FUN_140168650("v")) {
+            ItemEntity item;
+            item.vfunc_2(pItem);
+            items.push_back(item);
+        }
+        dailyItems.insert(std::make_pair(order, items));
+        orders.insert(order);
+    }
+    for (std::set<int>::iterator it = orders.begin(); it != orders.end(); ++it)
+        m_dailyItems.push_back(dailyItems[*it]);
+    m_goodEndItems.clear();
+    Unk_140165cf0* pGoodEnd = pElem->FUN_140165cf0("goodEndBonus");
+    if (pGoodEnd == NULL) {
+        MS2_ASSERT_AT(0x3b4, 0);
+        return false;
+    }
+    FUN_140873220(pGoodEnd, "count", m_goodEndCount);
+    Unk_140165cf0* pItems = pGoodEnd->FUN_140165cf0("items");
+    if (pItems == NULL) {
+        MS2_ASSERT_AT(0x3bc, 0);
+        return false;
+    }
+    for (Unk_140165cf0* pItem = pItems->FUN_140165cf0("v"); pItem != NULL; pItem = pItem->FUN_140168650("v")) {
+        ItemEntity item;
+        item.vfunc_2(pItem);
+        m_goodEndItems.push_back(item);
+    }
+    return true;
+}
+
+// @0x140401070
+bool CoupleDanceContext::LoadDance(Unk_140165cf0* pElem)
+{
+    if (pElem == NULL) {
+        MS2_ASSERT_AT(0x3e6, 0);
+        return false;
+    }
+    Unk_140165cf0* pDances = pElem->FUN_140165cf0("dances");
+    if (pDances == NULL) {
+        MS2_ASSERT_AT(0x3ed, 0);
+        return false;
+    }
+    for (Unk_140165cf0* pDance = FUN_140345b40(pDances); pDance != NULL; pDance = FUN_1403f0510(pDance)) {
+        CStringW strAnim;
+        FUN_140873420(pDance, "anim", strAnim);
+        m_dances.push_back(strAnim);
+    }
+    Unk_140165cf0* pPlay = pElem->FUN_140165cf0("play");
+    if (pPlay == NULL) {
+        MS2_ASSERT_AT(0x3fa, 0);
+        return false;
+    }
+    FUN_140873220(pPlay, "maxRound", m_maxRound);
+    Unk_140165cf0* pStart = pElem->FUN_140165cf0("start");
+    if (pStart == NULL) {
+        MS2_ASSERT_AT(0x403, 0);
+        return false;
+    }
+    FUN_140873220(pStart, "fieldID", m_fieldId);
+    m_steps.clear();
+    m_steps.resize(8);
+    for (size_t i = 0; i < 8; i++) {
+        CString strPath = CoupleDanceStepName((int)i);
+        if (strPath.CompareNoCase("none") == 0) {
+            MS2_ASSERT_AT(0x411, 0);
+            continue;
+        }
+        ATL::CAtlArray<CString> names;
+        FUN_14015f0b0(strPath, names, ".");
+        Unk_140165cf0* pNode = NULL;
+        for (size_t j = 0; j < names.GetCount(); j++) {
+            if (pNode == NULL) {
+                pNode = pElem->FUN_140165cf0(names[j]);
+                continue;
+            }
+            pNode = pNode->FUN_140165cf0(names[j]);
+        }
+        if (pNode == NULL) {
+            MS2_ASSERT_AT(0x425, 0);
+            return false;
+        }
+        Step& step = m_steps[i];
+        Unk_140165cf0* pAction = pNode->FUN_140165cf0("action");
+        if (pAction != NULL) {
+            CStringW strAnim;
+            FUN_140873420(pAction, "anim", strAnim);
+            step.m_action = strAnim;
+        }
+        Unk_140165cf0* pMessage = pNode->FUN_140165cf0("message");
+        if (pMessage != NULL) {
+            CStringW strValue;
+            FUN_140873420(pMessage, "value", strValue);
+            step.m_message = strValue;
+        }
+        if (step.m_action.IsEmpty() && step.m_message.IsEmpty()) {
+            MS2_ASSERT_AT(0x43d, 0);
+            return false;
+        }
+    }
+    return true;
+}
+
+// @0x1404015c0
+void CoupleDanceContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_eventId);
+    out.vfunc_o10_4(m_beginTime);
+    out.vfunc_o10_4(m_endTime);
+    out.vfunc_o10_3((int)m_dailyItems.size());
+    for (std::vector<std::vector<ItemEntity> >::const_iterator it = m_dailyItems.begin(); it != m_dailyItems.end(); ++it) {
+        out.vfunc_o10_3((int)(*it).size());
+        for (std::vector<ItemEntity>::const_iterator jt = (*it).begin(); jt != (*it).end(); ++jt)
+            const_cast<ItemEntity&>(*jt).FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_2((short)m_goodEndCount);
+    out.vfunc_o10_3((int)m_goodEndItems.size());
+    for (std::vector<ItemEntity>::const_iterator it = m_goodEndItems.begin(); it != m_goodEndItems.end(); ++it)
+        const_cast<ItemEntity&>(*it).FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    out.vfunc_o10_1((unsigned char)m_maxRound);
+    out.vfunc_o10_3((int)m_dances.size());
+    for (std::vector<CStringW>::const_iterator it = m_dances.begin(); it != m_dances.end(); ++it)
+        out.vfunc_o10_8(*it);
+    out.vfunc_o10_3((int)m_steps.size());
+    for (std::vector<Step>::const_iterator it = m_steps.begin(); it != m_steps.end(); ++it) {
+        const Step& step = *it;
+        out.vfunc_o10_8(step.m_action);
+        out.vfunc_o10_8(step.m_message);
+    }
+    out.vfunc_o10_3(m_fieldId);
+}
+
+// @0x140401a80
+void CoupleDanceContext::Read(CInPacket& packet)
+{
+    m_eventId = packet.vfunc_o8_3();
+    m_beginTime = packet.vfunc_o8_4();
+    m_endTime = packet.vfunc_o8_4();
+    m_dailyItems.clear();
+    size_t dayCount = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < dayCount; i++) {
+        std::vector<ItemEntity> items;
+        size_t itemCount = (unsigned)packet.vfunc_o8_3();
+        for (size_t j = 0; j < itemCount; j++) {
+            ItemEntity item;
+            item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+            items.push_back(item);
+        }
+        m_dailyItems.push_back(items);
+    }
+    m_goodEndCount = (unsigned short)packet.vfunc_o8_2();
+    size_t goodEndCount = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < goodEndCount; i++) {
+        ItemEntity item;
+        item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_goodEndItems.push_back(item);
+    }
+    m_maxRound = packet.vfunc_o8_1();
+    size_t danceCount = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < danceCount; i++)
+        m_dances.push_back(packet.vfunc_o8_8());
+    m_steps.clear();
+    size_t stepCount = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < stepCount; i++) {
+        Step step;
+        step.m_action = packet.vfunc_o8_8();
+        step.m_message = packet.vfunc_o8_8();
+        m_steps.push_back(step);
+    }
+    m_fieldId = packet.vfunc_o8_3();
+}
+
+// @0x140402080
+const CoupleDanceContext::Step& CoupleDanceContext::GetStep(int index) const
+{
+    return m_steps[index];
+}
+
+// ==== 0x140402080 .. 0x140407a20 continue above this line ====
+
+// @0x140407a20
+// The CoupleDanceContext::Step node path (dot separated, from the dance root) of each dance step.
+CString CoupleDanceStepName(int step)
+{
+    switch (step) {
+    case 0:
+        return "start";
+    case 1:
+        return "play.ready";
+    case 2:
+        return "play.select";
+    case 3:
+        return "play.waitResult";
+    case 4:
+        return "play.result.success";
+    case 5:
+        return "play.result.fail";
+    case 6:
+        return "end.normal";
+    case 7:
+        return "end.good";
+    default:
+        return "none";
+    }
 }
