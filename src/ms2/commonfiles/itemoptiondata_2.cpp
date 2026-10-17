@@ -1768,7 +1768,9 @@ void ItemOptionRandom::FUN_1405d48d0(MS2Ptr<CItemOption> spOption, int nRank, Un
 {
     MS2Ptr<ItemOptionRandomContext> spContext(
         new ItemOptionRandomContext(spOption, nRank, MS2Ptr<ItemOptionRandom>(this)));
-    BOOL bFixedCount = nCount != 0;
+    BOOL bFixedCount = FALSE;
+    if (nCount != 0)
+        bFixedCount = TRUE;
     int nIndex = 0;
     std::vector<ItemOptionValueRandom*> vValues;
     if (FUN_1405d7bf0(vValues, nCount, pRandom, bFixedCount, spContext, vLocked, pLogs))
@@ -1811,16 +1813,18 @@ bool ItemOptionRandom::FUN_1405d4bb0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random*
             if (pValue == NULL)
                 continue;
             bool bLocked = false;
-            if (nLocked != 0)
+            if (nLocked > 0)
             {
                 if (pValue->FUN_1405d2790() == 0)
                 {
                     int nStat = pValue->FUN_1405d2750();
                     BOOL bSpecial = pValue->FUN_1405d2790();
-                    bLocked = std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
-                                        std::pair<int, int>(bSpecial, nStat)) != spTarget->m_vLocked.end();
-                    if (bLocked)
+                    if (std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
+                                  std::pair<int, int>(bSpecial, nStat)) != spTarget->m_vLocked.end())
+                    {
+                        bLocked = true;
                         nLocked--;
+                    }
                 }
                 else
                 {
@@ -1898,59 +1902,62 @@ bool ItemOptionRandom::FUN_1405d55e0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random*
         for (int i = 0; i < nSize; i++)
         {
             ItemOptionValueRandom* pValue = vValues.at(i);
-            if (pValue == NULL)
-                continue;
-            bool bLocked = false;
-            if (nLeft > 0)
+            if (pValue != NULL)
             {
-                if (pValue->FUN_1405d2790() == 0)
+                bool bLocked = false;
+                if (nLeft > 0)
                 {
-                    int nStat = pValue->FUN_1405d2750();
-                    BOOL bSpecial = pValue->FUN_1405d2790();
-                    bLocked = std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
-                                        std::pair<int, int>(bSpecial, nStat)) != spTarget->m_vLocked.end();
-                    if (bLocked)
-                        nLeft--;
-                }
-                else
-                {
-                    int nSpecial = pValue->FUN_1405d2770();
-                    BOOL bSpecial = pValue->FUN_1405d2790();
-                    if (std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
-                                  std::pair<int, int>(bSpecial, nSpecial)) != spTarget->m_vLocked.end())
+                    if (pValue->FUN_1405d2790() == 0)
                     {
-                        bLocked = true;
-                        nLeft--;
+                        int nStat = pValue->FUN_1405d2750();
+                        BOOL bSpecial = pValue->FUN_1405d2790();
+                        if (std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
+                                      std::pair<int, int>(bSpecial, nStat)) != spTarget->m_vLocked.end())
+                        {
+                            bLocked = true;
+                            nLeft--;
+                        }
+                    }
+                    else
+                    {
+                        int nSpecial = pValue->FUN_1405d2770();
+                        BOOL bSpecial = pValue->FUN_1405d2790();
+                        if (std::find(spTarget->m_vLocked.begin(), spTarget->m_vLocked.end(),
+                                      std::pair<int, int>(bSpecial, nSpecial)) != spTarget->m_vLocked.end())
+                        {
+                            bLocked = true;
+                            nLeft--;
+                        }
                     }
                 }
-            }
-            if (bLocked)
-            {
-                if (pValue->FUN_1405d2790() == 0)
+                if (bLocked)
                 {
-                    int nStat = pValue->FUN_1405d2750();
-                    Unk_EnchantPtr<BaseOption> spBase = spSource->FUN_1405cb760(2, nStat);
-                    if (spBase == 0)
-                        continue;
-                    spResult->FUN_1405cb200(2, nStat, spBase);
+                    if (pValue->FUN_1405d2790() == 0)
+                    {
+                        int nStat = pValue->FUN_1405d2750();
+                        Unk_EnchantPtr<BaseOption> spBase = spSource->FUN_1405cb760(2, nStat);
+                        if (spBase == 0)
+                            continue;
+                        spResult->FUN_1405cb200(2, nStat, spBase);
+                    }
+                    else
+                    {
+                        unsigned nSpecial = pValue->FUN_1405d2770();
+                        Unk_EnchantPtr<BaseOption> spBase = spSource->FUN_1405cb800(2, nSpecial);
+                        if (spBase == 0)
+                            continue;
+                        spResult->FUN_1405cb2a0(2, nSpecial, spBase);
+                    }
+                    nCount--;
                 }
                 else
                 {
-                    unsigned nSpecial = pValue->FUN_1405d2770();
-                    Unk_EnchantPtr<BaseOption> spBase = spSource->FUN_1405cb800(2, nSpecial);
-                    if (spBase == 0)
-                        continue;
-                    spResult->FUN_1405cb2a0(2, nSpecial, spBase);
+                    spContext->FUN_1405daad0(MS2Ptr<ItemOptionValueRandom>(pValue), &nCount, &spTarget->m_vLogs);
+                    nRolled++;
                 }
-                nCount--;
+                if (nCount <= 0)
+                    break;
             }
-            else
-            {
-                spContext->FUN_1405daad0(MS2Ptr<ItemOptionValueRandom>(pValue), &nCount, &spTarget->m_vLogs);
-                nRolled++;
-            }
-            if (nCount <= 0)
-                break;
         }
     }
     return true;
@@ -1996,7 +2003,7 @@ bool ItemOptionRandom::FUN_1405d6020(MS2Ptr<CItemOption> spOption, int nRank, Un
 
 // @0x1405d6560
 // The roll statistics of nTrials parallel rolls: one "Option name:count" line per row (also logged).
-void ItemOptionRandom::FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, int nTrials,
+void ItemOptionRandom::FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, unsigned nTrials,
                                      const std::vector<std::pair<int, int> >& vLocked, std::vector<CStringW>* pOut)
 {
     CLockCriticalSection lock;

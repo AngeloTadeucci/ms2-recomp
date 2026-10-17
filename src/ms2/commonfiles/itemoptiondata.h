@@ -279,7 +279,7 @@ public:
     bool FUN_1405d55e0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
     int FUN_1405d5fe0(int nRank);               // the pick count of a rank
     bool FUN_1405d6020(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);   // adds one random option
-    void FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, int nTrials,
+    void FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, unsigned nTrials,
                        const std::vector<std::pair<int, int> >& vLocked, std::vector<CStringW>* pOut);
     void FUN_1405d68f0(unsigned nItemId, int nRank, unsigned& nPick, std::vector<CStringW>* pOut);
     bool FUN_1405d74d0(int nStat);              // a row of the stat
