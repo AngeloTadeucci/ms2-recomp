@@ -1548,18 +1548,22 @@ void* Unk_BuffPtrArrow(void** pThis)
 }
 
 // @0x140212e20
-// MS2-FUNCTIONAL: CompareElementsOrdered<unsigned __int64>
 int Unk_CompareUInt64(const unsigned __int64* a, const unsigned __int64* b)
 {
     if (*a < *b)
         return -1;
-    if (*a == *b)
-        return 0;
-    return 1;
+    else
+    {
+        if (*a == *b)
+            return 0;
+        else
+        {
+            return 1;
+        }
+    }
 }
 
 // @0x140213520
-// MS2-FUNCTIONAL: CRBTree post-increment of a position
 void* Unk_TreePostInc(void* pTree, void** pPos)
 {
     void* pOld = *pPos;
