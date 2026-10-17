@@ -93,6 +93,176 @@
 // MS2-PIN: ?push_back@?$vector@_KV?$allocator@_K@std@@@std@@QEAAX$$QEA_K@Z 0x14041ae30 ; unique
 // MS2-PIN: ?size@?$vector@_KV?$allocator@_K@std@@@std@@QEBA_KXZ 0x14041afe0 ; local
 // MS2-PINS-END tplpin
+// MS2-PINS-BEGIN w203
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x1403f4e20 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@XZ 0x1403f4ee0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@XZ 0x1403f4fa0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x1403f5060 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@XZ 0x1403f5220 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@XZ 0x1403f5300 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1403f55d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1403f5600 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAXXZ 0x1403f5630 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@0@Z 0x1403f5770 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x1403f57f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@HPEAX@2@@Z 0x1403f5890 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1403f58e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEAAXU_Not_a_node_tag@2@@Z 0x1403f5930 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@IEAAXU_Not_a_node_tag@2@@Z 0x1403f5940 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Erase@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@@Z 0x1403f59f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@XZ 0x1403f6da0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@XZ 0x1403f6dd0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@2@XZ 0x1403f6e00 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@2@XZ 0x1403f6e30 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@2@XZ 0x1403f6e60 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@2@XZ 0x1403f6f10 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@XZ 0x1403f71c0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@XZ 0x1403f71f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@2@XZ 0x1403f7250 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@2@XZ 0x1403f7280 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@2@XZ 0x1403f72b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@2@XZ 0x1403f72e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@2@XZ 0x1403f7350 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@2@XZ 0x1403f7370 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@H@2@XZ 0x1403f73b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAAEAU?$less@U?$pair@IH@std@@@2@XZ 0x1403f73f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAAAEAU?$less@W4Unk_UGCUploadType@@@2@XZ 0x1403f7410 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Key@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEBAAEBHPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x1403f7480 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Key@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEBAAEBU?$pair@IH@2@PEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@@Z 0x1403f74b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Key@?$_Tree@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@IEBAAEBW4Unk_UGCUploadType@@PEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@@Z 0x1403f74e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEBAAEBHAEBU?$pair@$$CBHH@2@@Z 0x1403f7510 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEBAAEBU?$pair@IH@2@AEBU32@@Z 0x1403f7530 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@IEBAAEBW4Unk_UGCUploadType@@AEBW43@@Z 0x1403f7550 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x1403f7590 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@XZ 0x1403f75a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@XZ 0x1403f75b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@@Z 0x1403f76a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@QEAAXPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@@Z 0x1403f7780 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@XZ 0x1403f7a00 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@XZ 0x1403f7b00 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@XZ 0x1403f7bc0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Orphan_range@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@AEBAXPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@0@Z 0x1403f7ca0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Reallocate_exactly@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@AEAAX_K@Z 0x1403f7cb0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?Release@?$MS2Ptr@VDungeonRoomShutdownContext@@@@AEAAXXZ 0x1403f7d90 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VDungeonRoomShutdownContext@@@@AEAAXPEAX@Z 0x1403f8940 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@UMesoRevivalEventContext@@@@AEAAXXZ 0x1403f7e10 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UMesoRevivalEventContext@@@@AEAAXPEAX@Z 0x1403f89e0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@UNpcEventDropEventContext@@@@AEAAXXZ 0x1403f7e50 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UNpcEventDropEventContext@@@@AEAAXPEAX@Z 0x1403f8a30 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@UOntimeEventContext@@@@AEAAXXZ 0x1403f7e90 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UOntimeEventContext@@@@AEAAXPEAX@Z 0x1403f8a80 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@UPreminmMarketSaleEventContext@@@@AEAAXXZ 0x1403f7ed0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UPreminmMarketSaleEventContext@@@@AEAAXPEAX@Z 0x1403f8ad0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VRestrictionData@CGameEventValueItemTradeRestriction@@@@AEAAXXZ 0x1403f7f50 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VRestrictionData@CGameEventValueItemTradeRestriction@@@@AEAAXPEAX@Z 0x1403f8b70 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@USAHotTimeEventContext@@@@AEAAXXZ 0x1403f8050 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@USAHotTimeEventContext@@@@AEAAXPEAX@Z 0x1403f8cb0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@USkillUpgradeSaleEventContext@@@@AEAAXXZ 0x1403f8090 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@USkillUpgradeSaleEventContext@@@@AEAAXPEAX@Z 0x1403f8d00 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VArcadeOpenContext@@@@AEAAXXZ 0x1403f8150 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VArcadeOpenContext@@@@AEAAXPEAX@Z 0x1403f8df0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VBingoContext@@@@AEAAXXZ 0x1403f8190 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VBingoContext@@@@AEAAXPEAX@Z 0x1403f8e40 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VBlueMarbleEventContext@@@@AEAAXXZ 0x1403f81d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VBlueMarbleEventContext@@@@AEAAXPEAX@Z 0x1403f8e90 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VBurningLevelupContext@@@@AEAAXXZ 0x1403f8210 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VBurningLevelupContext@@@@AEAAXPEAX@Z 0x1403f8ee0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VCollectItemGroupContext@@@@AEAAXXZ 0x1403f8290 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCollectItemGroupContext@@@@AEAAXPEAX@Z 0x1403f8f80 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VCoupleDanceContext@@@@AEAAXXZ 0x1403f82d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCoupleDanceContext@@@@AEAAXPEAX@Z 0x1403f8fd0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VDungeonBonusRewardCtx@@@@AEAAXXZ 0x1403f8310 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VDungeonBonusRewardCtx@@@@AEAAXPEAX@Z 0x1403f9020 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@AEAAXXZ 0x1403f8350 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@AEAAXPEAX@Z 0x1403f9070 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VEnchantRateEventContext@@@@AEAAXXZ 0x1403f8390 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VEnchantRateEventContext@@@@AEAAXPEAX@Z 0x1403f90c0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VEventQuestContext@@@@AEAAXXZ 0x1403f83d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VEventQuestContext@@@@AEAAXPEAX@Z 0x1403f9110 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VEventTimeLimitDungeonContext@@@@AEAAXXZ 0x1403f8410 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VEventTimeLimitDungeonContext@@@@AEAAXPEAX@Z 0x1403f9160 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VFestivalContext@@@@AEAAXXZ 0x1403f8450 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VFestivalContext@@@@AEAAXPEAX@Z 0x1403f91b0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VFieldEffectContext@@@@AEAAXXZ 0x1403f8490 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VFieldEffectContext@@@@AEAAXPEAX@Z 0x1403f9200 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VGalleryContext@@@@AEAAXXZ 0x1403f84d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VGalleryContext@@@@AEAAXPEAX@Z 0x1403f9250 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VItemBoxEventContext@@@@AEAAXXZ 0x1403f8510 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VItemBoxEventContext@@@@AEAAXPEAX@Z 0x1403f92a0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VLongTermAttendGiftContext@@@@AEAAXXZ 0x1403f8550 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VLongTermAttendGiftContext@@@@AEAAXPEAX@Z 0x1403f92f0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VQuestAdditionalRewardContext@@@@AEAAXXZ 0x1403f8590 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VQuestAdditionalRewardContext@@@@AEAAXPEAX@Z 0x1403f9340 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VReactorContext@@@@AEAAXXZ 0x1403f85d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VReactorContext@@@@AEAAXPEAX@Z 0x1403f9390 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VRpsContext@@@@AEAAXXZ 0x1403f8610 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VRpsContext@@@@AEAAXPEAX@Z 0x1403f93e0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VSaleCube@@@@AEAAXXZ 0x1403f8690 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VSaleCube@@@@AEAAXPEAX@Z 0x1403f9480 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VSnowmanContext@@@@AEAAXXZ 0x1403f86d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VSnowmanContext@@@@AEAAXPEAX@Z 0x1403f94d0 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VStampEventContext@@@@AEAAXXZ 0x1403f8710 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VStampEventContext@@@@AEAAXPEAX@Z 0x1403f9520 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VTimeRunEventContext@@@@AEAAXXZ 0x1403f8750 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VTimeRunEventContext@@@@AEAAXPEAX@Z 0x1403f9570 ; w203: Release's callee
+// MS2-PIN: ?Release@?$MS2Ptr@VTreeWateringContext@@@@AEAAXXZ 0x1403f8790 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VTreeWateringContext@@@@AEAAXPEAX@Z 0x1403f95c0 ; w203: Release's callee
+// MS2-PIN: ?_Release@?$_Uninitialized_backout_al@PEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAAPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@XZ 0x1403f88d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@XZ 0x1403f9770 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@XZ 0x1403f9790 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@XZ 0x1403f97d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@XZ 0x1403f97f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@@Z 0x1403f98f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@QEAAXPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@@Z 0x1403f99d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Tidy@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@AEAAXXZ 0x1403f9d50 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Umove_if_noexcept1@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@00U?$integral_constant@_N$0A@@2@@Z 0x1403f9f30 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Unchecked_begin@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@2@XZ 0x1403f9fd0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Unchecked_end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@2@XZ 0x1403fa020 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Unwrapped@?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@QEBA?AV?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@U_Iterator_base0@2@@2@XZ 0x1403fa060 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?_Xlength@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@CAXXZ 0x1403fa0a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x1403fa0c0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@_K@Z 0x1403fa0f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@_K@Z 0x1403fa120 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x1403fa180 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@2@XZ 0x1403fa1f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@W4Unk_UGCUploadType@@@std@@@std@@@2@XZ 0x1403fa260 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@2@XZ 0x1403fa2d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?capacity@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEBA_KXZ 0x1403fa3b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1403fa4e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?clear@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAAXXZ 0x1403fa620 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x1403fa6a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@IH@std@@PEAX@2@_K@Z 0x1403fa6d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@2@QEAU?$_Tree_node@W4Unk_UGCUploadType@@PEAX@2@_K@Z 0x1403fa700 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?deallocate@?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@QEAAXQEAV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@_K@Z 0x1403fa820 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x1403fa880 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@2@XZ 0x1403fa8e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?end@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@@2@XZ 0x1403fa9a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?equal_range@?$_Tree@V?$_Tmap_traits@KHU?$less@K@std@@V?$allocator@U?$pair@$$CBKH@std@@@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@@std@@V12@@2@AEBK@Z 0x1403faa00 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@KHU?$less@K@std@@V?$allocator@U?$pair@$$CBKH@std@@@2@$0A@@std@@@std@@QEAA_KAEBK@Z 0x1403fabe0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?key_comp@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AU?$less@I@2@XZ 0x1403faf90 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@AEBH@Z 0x1403fafc0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@@Z 0x1403fb020 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@2@@Z 0x1403fb040 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@W4Unk_UGCUploadType@@PEAX@std@@@2@@Z 0x1403fb050 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@SA_KAEBV?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@2@@Z 0x1403fb060 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x1403fb070 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x1403fb0b0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tset_traits@W4Unk_UGCUploadType@@U?$less@W4Unk_UGCUploadType@@@std@@V?$allocator@W4Unk_UGCUploadType@@@3@$0A@@std@@@std@@QEBA_KXZ 0x1403fb0d0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?max_size@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEBA_KXZ 0x1403fb0f0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?push_back@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@Z 0x1403fb190 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?reserve@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEAAX_K@Z 0x1403fb1c0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x1403fb220 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?size@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x1403fb280 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@V?$allocator@V?$MS2Ptr@VEventTimeLimitDungeonContext@@@@@std@@@std@@QEBA_KXZ 0x1403fb2a0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??$?0AEAHAEAV?$vector@UItemEntity@@V?$allocator@UItemEntity@@@std@@@std@@$0A@@?$pair@HV?$vector@UItemEntity@@V?$allocator@UItemEntity@@@std@@@std@@@std@@QEAA@AEAHAEAV?$vector@UItemEntity@@V?$allocator@UItemEntity@@@std@@@1@@Z 0x140407ca0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??$construct@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEAV12@@?$_Default_allocator_traits@V?$allocator@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@std@@@std@@SAXAEAV?$allocator@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@1@QEAV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEAV34@@Z 0x14040e090 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??$construct@_K_K@?$_Default_allocator_traits@V?$allocator@_K@std@@@std@@SAXAEAV?$allocator@_K@1@QEA_K$$QEA_K@Z 0x14040e310 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??$emplace_back@_K@?$vector@_KV?$allocator@_K@std@@@std@@QEAAX$$QEA_K@Z 0x14040e6e0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??1CNpcShopGivePointContextBase@@UEAA@XZ 0x140410600 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@2@XZ 0x140419ce0 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@2@XZ 0x14041a420 ; w203: gameevent.obj caller relocs
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140411560 ; w203: the postfix ++ 0x140411510 calls it
+// MS2-PINS-END w203
 // MS2-PIN: ??1GameEventAttendGift@@UEAA@XZ 0x1403fc070
 // MS2-PIN: ??1GameEventCashAttend@@UEAA@XZ 0x1403fc0d0
 // MS2-PIN: ??_GGameEventAttendGift@@UEAAPEAXI@Z 0x1403fc190
@@ -1363,7 +1533,7 @@ MS2_REPLACE_METHOD(0x140401a80, CoupleDanceContext, Read, 1517, 0xCC3E3829);
 // @0x140402080
 const CoupleDanceContext::Step& CoupleDanceContext::GetStep(int index) const
 {
-    return m_steps[index];
+    return m_steps.at(index);
 }
 MS2_REPLACE_METHOD(0x140402080, CoupleDanceContext, GetStep, 40, 0xEE1EF5A5);
 
@@ -2428,3 +2598,126 @@ CString CoupleDanceStepName(int step)
     }
 }
 MS2_REPLACE(0x140407a20, CoupleDanceStepName, 406, 0x124427D1);
+
+// ==== COMDAT tail drivers (w203) ====
+// The exe lays this obj's COMDAT tail with the MS2Ptr<T>::Release/ReleaseImpl copies of every event context type and the
+// std::map<int,int> / set<pair<unsigned,int>> / set<Unk_UGCUploadType> / vector<MS2Ptr<EventTimeLimitDungeonContext>>
+// glue that gameevent.cpp's own COMDATs (0x1403d86c0.., ~MS2Ptr<T> 0x1403e4df0..) call. The original TU construct
+// that instantiated them first is unknown; these never-called drivers instantiate the same members (tplpin pairs them).
+#include "ms2/placeholder/dungeonroomshutdowncontext.h"
+enum Unk_UGCUploadType
+{
+};
+class CGameEventValueItemTradeRestriction {
+public:
+    class RestrictionData : public CPtred {
+    public:
+        char m_pad_18[0x1b0];
+    };
+};
+template <class T> static void Unk_GECDriveRelease(MS2Ptr<T>* p) { p->~MS2Ptr(); }
+template <class C> static void Unk_GECDriveTree(C& c, const typename C::value_type& v, const typename C::key_type& k)
+{
+    C copy(c);
+    c.insert(v);
+    c.lower_bound(k);
+    c.erase(c.begin());
+    c.erase(k);
+    for (typename C::iterator it = c.begin(); it != c.end(); ++it) {}
+    if (c.size() == 0)
+        c.clear();
+}
+void Unk_GECDriveTail(std::map<int, int>& m, std::set<std::pair<unsigned, int> >& sp, std::set<Unk_UGCUploadType>& su,
+                      std::set<int>& si, std::set<unsigned>& sn, std::map<unsigned long, int>& mk,
+                      std::vector<MS2Ptr<EventTimeLimitDungeonContext> >& vt, std::vector<unsigned __int64>& vq,
+                      const std::vector<CoupleDanceContext::Step>& steps, std::vector<ItemEntity>& items)
+{
+    Unk_GECDriveTree(m, std::make_pair(1, 1), 1);
+    m[1] = 2;
+    { std::map<int, int> other; other = m; }
+    Unk_GECDriveTree(sp, std::make_pair(1u, 1), std::make_pair(1u, 1));
+    Unk_GECDriveTree(su, (Unk_UGCUploadType)0, (Unk_UGCUploadType)0);
+    Unk_GECDriveTree(si, 0, 0);
+    Unk_GECDriveTree(sn, 0u, 0u);
+    for (std::set<unsigned>::const_iterator it = sn.begin(); it != sn.end(); ++it) {}
+    for (std::set<unsigned>::_Unchecked_iterator it = sn._Unchecked_begin(), itEnd = sn._Unchecked_end(); it != itEnd; ++it) {}
+    sn.key_comp();
+    si.emplace(0);
+    std::_Get_unwrapped(static_cast<const std::set<int>&>(si).begin());
+    mk.equal_range(0);
+    mk.erase(0);
+    vt.reserve(vt.size() + 1);
+    vt.push_back(MS2Ptr<EventTimeLimitDungeonContext>());
+    vt.push_back(vt[0]);
+    { std::vector<MS2Ptr<EventTimeLimitDungeonContext> > tmp(vt); }
+    for (std::vector<MS2Ptr<EventTimeLimitDungeonContext> >::iterator it = vt.begin(); it != vt.end(); ++it) {}
+    if (vt.capacity() == 0)
+        vt.clear();
+    vq.emplace_back(0ull);
+    steps[0];
+    int n = 0;
+    std::pair<int, std::vector<ItemEntity> > pr(n, items);
+}
+// The header-inline getter uicashattenddialog.cpp calls (its exe copy is in this tail).
+int Unk_GECDriveCashAttend(GameEventCashAttend* p) { return p->FUN_1403fbdc0(); }
+// CoupleDanceContext's member vectors (its dtor 0x1403e5b40 calls their _Tidy copies here).
+void Unk_GECDriveCoupleDance(CoupleDanceContext* p)
+{
+    p->m_dailyItems.~vector();
+    p->m_goodEndItems.~vector();
+    p->m_steps.~vector();
+    p->m_dances.~vector();
+}
+// The range holds two of the CRT's static-inline memmove_s copies (two original TUs' tails).
+// @0x1403fb2e0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(2);
+// @0x1403fc520
+MS2_EMIT_CRT_MEMMOVE_S_COPY(3);
+
+// @0x1403f58e0
+// std::set<unsigned>::_Destroy_if_node(_Nodeptr) written out (emplace path, called from gameevent.cpp's
+// tail 0x1403da280/0x1403de2f0): instantiating it binds _Tree_node<unsigned>::_Freenode0, whose progress/symbols.tsv row
+// 0x1407aa170 (unit_1407a4f20) is a 0x30-byte-node copy (cmptree DIFFER 14018f400/1407acc60); the exe calls 0x14017b7a0.
+void FUN_14017b7a0(std::allocator<std::_Tree_node<unsigned, void*> >& al, std::_Tree_node<unsigned, void*>* p);
+void Unk_SetUintDestroyIfNode(std::set<unsigned>& s, std::_Tree_node<unsigned, void*>* p)
+{
+    std::allocator<std::_Tree_node<unsigned, void*> >& al = s._Getal();
+    std::_Default_allocator_traits<std::allocator<std::_Tree_node<unsigned, void*> > >::destroy(al, std::addressof(p->_Myval));
+    FUN_14017b7a0(al, p);
+}
+void Unk_GECDriveReleases(void** pp)
+{
+    Unk_GECDriveRelease((MS2Ptr<DungeonRoomShutdownContext>*)pp[0]);
+    Unk_GECDriveRelease((MS2Ptr<MesoRevivalEventContext>*)pp[1]);
+    Unk_GECDriveRelease((MS2Ptr<NpcEventDropEventContext>*)pp[2]);
+    Unk_GECDriveRelease((MS2Ptr<OntimeEventContext>*)pp[3]);
+    Unk_GECDriveRelease((MS2Ptr<PreminmMarketSaleEventContext>*)pp[4]);
+    Unk_GECDriveRelease((MS2Ptr<CGameEventValueItemTradeRestriction::RestrictionData>*)pp[5]);
+    Unk_GECDriveRelease((MS2Ptr<SAHotTimeEventContext>*)pp[6]);
+    Unk_GECDriveRelease((MS2Ptr<SkillUpgradeSaleEventContext>*)pp[7]);
+    Unk_GECDriveRelease((MS2Ptr<ArcadeOpenContext>*)pp[8]);
+    Unk_GECDriveRelease((MS2Ptr<BingoContext>*)pp[9]);
+    Unk_GECDriveRelease((MS2Ptr<BlueMarbleEventContext>*)pp[10]);
+    Unk_GECDriveRelease((MS2Ptr<BurningLevelupContext>*)pp[11]);
+    Unk_GECDriveRelease((MS2Ptr<CollectItemGroupContext>*)pp[12]);
+    Unk_GECDriveRelease((MS2Ptr<CoupleDanceContext>*)pp[13]);
+    Unk_GECDriveRelease((MS2Ptr<DungeonBonusRewardCtx>*)pp[14]);
+    Unk_GECDriveRelease((MS2Ptr<DungeonExtraRewardCountCtx>*)pp[15]);
+    Unk_GECDriveRelease((MS2Ptr<EnchantRateEventContext>*)pp[16]);
+    Unk_GECDriveRelease((MS2Ptr<EventQuestContext>*)pp[17]);
+    Unk_GECDriveRelease((MS2Ptr<EventTimeLimitDungeonContext>*)pp[18]);
+    Unk_GECDriveRelease((MS2Ptr<FestivalContext>*)pp[19]);
+    Unk_GECDriveRelease((MS2Ptr<FieldEffectContext>*)pp[20]);
+    Unk_GECDriveRelease((MS2Ptr<GalleryContext>*)pp[21]);
+    Unk_GECDriveRelease((MS2Ptr<ItemBoxEventContext>*)pp[22]);
+    Unk_GECDriveRelease((MS2Ptr<LongTermAttendGiftContext>*)pp[23]);
+    Unk_GECDriveRelease((MS2Ptr<QuestAdditionalRewardContext>*)pp[24]);
+    Unk_GECDriveRelease((MS2Ptr<ReactorContext>*)pp[25]);
+    Unk_GECDriveRelease((MS2Ptr<RpsContext>*)pp[26]);
+    Unk_GECDriveRelease((MS2Ptr<RpsGameData>*)pp[27]);
+    Unk_GECDriveRelease((MS2Ptr<SaleCube>*)pp[28]);
+    Unk_GECDriveRelease((MS2Ptr<SnowmanContext>*)pp[29]);
+    Unk_GECDriveRelease((MS2Ptr<StampEventContext>*)pp[30]);
+    Unk_GECDriveRelease((MS2Ptr<TimeRunEventContext>*)pp[31]);
+    Unk_GECDriveRelease((MS2Ptr<TreeWateringContext>*)pp[32]);
+}
