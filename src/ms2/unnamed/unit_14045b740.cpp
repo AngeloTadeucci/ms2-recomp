@@ -210,7 +210,7 @@
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@U?$pair@HK@std@@HU?$less@U?$pair@HK@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HK@std@@H@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x140467390 ; prop
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@_KIU?$less@_K@std@@V?$allocator@U?$pair@$$CB_KI@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x140467450 ; prop
 // MS2-PIN: ?_Unchecked_end@?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@QEBA?AV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@U_Iterator_base0@2@@2@XZ 0x1404675b0 ; unique
-// MS2-PIN: ?allocate@?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@QEAAPEAV?$MS2Ptr@VCollectItemGroupContext@@@@_K@Z 0x140467780 ; prop
+// MS2-PIN: ?allocate@?$allocator@U?$_List_node@V?$MS2Ptr@VBurningLevelupContext@@@@PEAX@std@@@std@@QEAAPEAU?$_List_node@V?$MS2Ptr@VBurningLevelupContext@@@@PEAX@2@_K@Z 0x140467780
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VArcadeOpenContext@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VArcadeOpenContext@@@@@std@@PEAX@2@_K@Z 0x1404677e0 ; unique
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBKK@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBKK@std@@PEAX@2@_K@Z 0x140467810 ; unique
 // MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VBurningLevelupContext@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBKV?$MS2Ptr@VBurningLevelupContext@@@@@std@@PEAX@2@_K@Z 0x140467840 ; unique
@@ -318,6 +318,19 @@
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@W4Unk_DungeonGroupType@@U?$pair@HH@std@@U?$less@W4Unk_DungeonGroupType@@@3@V?$allocator@U?$pair@$$CBW4Unk_DungeonGroupType@@U?$pair@HH@std@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14046c690 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@_KIU?$less@_K@std@@V?$allocator@U?$pair@$$CB_KI@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x14046c6b0 ; prop
 // MS2-PINS-END tplpin
+// The release helpers of the context pointers (called by Release(), which pairs by name).
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VArcadeOpenContext@@@@AEAAXPEAX@Z 0x140465e80
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VBurningLevelupContext@@@@AEAAXPEAX@Z 0x140465f20
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCollectItemGroupContext@@@@AEAAXPEAX@Z 0x140465f70
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VEventShopNpcContext@@@@AEAAXPEAX@Z 0x140465fc0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VItemBoxEventContext@@@@AEAAXPEAX@Z 0x140466010
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VLimitedQuantityContext@@@@AEAAXPEAX@Z 0x140466060
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UNpcEventDropEventContext@@@@AEAAXPEAX@Z 0x1404660b0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VQuestAdditionalRewardContext@@@@AEAAXPEAX@Z 0x140466100
+// MS2-PIN: ?ReleaseImpl@?$Unk_FieldPtr@V?$CAtlList@IV?$CElementTraits@I@ATL@@@ATL@@@@AEAAXPEAX@Z 0x140465ed0
+// The vector reallocation the GetAll outputs grow through.
+// MS2-PIN: ?_Change_array@?$vector@V?$MS2Ptr@VBurningLevelupContext@@@@V?$allocator@V?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@AEAAXQEAV?$MS2Ptr@VBurningLevelupContext@@@@_K1@Z 0x14045d010
+// MS2-PIN: ?_Reallocate_exactly@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@AEAAX_K@Z 0x140465b80
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameeventvalue.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>
