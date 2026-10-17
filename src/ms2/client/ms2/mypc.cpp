@@ -83,6 +83,8 @@
 #include "statedata.h"                       // StateSummonData
 #include "ms2/placeholder/statehomeconvenientdata.h"
 #include "camera.h"                         // Unk_CameraFlyBy
+#include "ms2/commonfiles/ugccubecategorytable.h"
+#include <set>
 #include "targetcameramode.h"
 #include "hook/ms2hook.h"
 
@@ -4383,6 +4385,105 @@ MS2_REPLACE_METHOD(0x141530720, MyPC, FUN_141530720, 420, 0x15DAA1F8);
 
 
 // Leave the cube build mode (packet 0x36 with mode 0).
+// The cube's ingredient row (the housing/achievement locks of a cube item).
+class Unk_IngItem : public CPtred
+{
+public:
+    char m_pad18[0x3c - 0x18];
+    int m_nCategory;                // +0x3c the interior category
+    int m_nTier;                    // +0x40 (3: never locked)
+    int m_nAchieveId;               // +0x44
+    int m_nAchieveGrade;            // +0x48
+    unsigned short m_nHousingLevel; // +0x4c
+};
+class Unk_IngTable { public: MS2Ptr<Unk_IngItem> FUN_1405566e0(int nItemId); };
+Unk_IngTable* FUN_140281980();
+bool FUN_140930c50();                                       // in a house (the house owner's data applies)
+extern __int64 DAT_143ab2938;                               // the house owner's character id
+extern unsigned short DAT_143ab291c;                        // the local housing level
+extern unsigned short DAT_143ab2940;                        // the house owner's housing level
+class Unk_MyPCCubeCategories { public: UGCCubeCategoryTable::InteriorPtr FUN_1408865b0(int nCategory); };   // UGCCubeCategoryTable::GetInterior
+Unk_MyPCCubeCategories* FUN_1409eed80();
+UGCCubeCategoryTable::Interior* FUN_1409ee220(const UGCCubeCategoryTable::InteriorPtr& sp);   // get (another obj's copy)
+class Unk_MyPCAchieves { public: int FUN_140936640(int nAchieveId, int nGrade); };   // the achievement is done
+Unk_MyPCAchieves* FUN_1406c7600();
+// A (achievement id, grade) pair of the house owner's achievement set 0x143ab32d8 (ctor 0x1409ed810).
+struct Unk_SSGHouseKey
+{
+    Unk_SSGHouseKey();   // 0x1409ed810, out of range
+    unsigned int m_nA;
+    unsigned int m_nB;
+};
+inline bool operator<(const Unk_SSGHouseKey& a, const Unk_SSGHouseKey& b)
+{
+    if (a.m_nA != b.m_nA)
+        return a.m_nA < b.m_nA;
+    return a.m_nB < b.m_nB;
+}
+// The set's members live in another unit (end 0x140582470, find 0x140583270).
+typedef std::_Tree<std::_Tset_traits<Unk_SSGHouseKey, std::less<Unk_SSGHouseKey>, std::allocator<Unk_SSGHouseKey>, false> > Unk_SSGHouseTree;
+template <> Unk_SSGHouseTree::iterator Unk_SSGHouseTree::find(const Unk_SSGHouseKey& kKey);
+template <> Unk_SSGHouseTree::iterator Unk_SSGHouseTree::end() noexcept;
+extern std::set<Unk_SSGHouseKey> DAT_143ab32d8;
+
+// The cube item nItemId is locked: no item data, or the housing level / interior / achievement it needs is missing
+// (the house owner's in a house).
+// @0x1415302e0
+bool MyPC::FUN_1415302e0(int nItemId)
+{
+    MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+    if (spData == 0)
+        return true;
+    MS2Ptr<Unk_IngItem> spIng = FUN_140281980()->FUN_1405566e0(nItemId);
+    if (spIng == 0)
+        return false;
+    if (spIng->m_nTier == 3)
+        return false;
+    if (m_b15d4)
+        return false;
+    if (FUN_140930c50() && FUN_1401c0d90()->FUN_14047e150(DAT_143ab2938))
+        return false;
+    unsigned nAchieveId = spIng->m_nAchieveId;
+    unsigned nAchieveGrade = spIng->m_nAchieveGrade;
+    unsigned short nLevel = spIng->m_nHousingLevel;
+    if (FUN_140166410()->FUN_14036d570(0xdb))
+    {
+        if (FUN_140930c50())
+        {
+            if (nLevel > DAT_143ab2940)
+                return true;
+        }
+        else if (nLevel > DAT_143ab291c)
+            return true;
+        UGCCubeCategoryTable::InteriorPtr spInterior = FUN_1409eed80()->FUN_1408865b0(spIng->m_nCategory);
+        if (FUN_1409ee220(spInterior) != 0)
+        {
+            if (FUN_140930c50())
+            {
+                if (nLevel > DAT_143ab2940)
+                    return true;
+            }
+            else if (spInterior->m_nRequireLevel > DAT_143ab291c)
+                return true;
+        }
+    }
+    if (nAchieveId > 0)
+    {
+        if (FUN_140930c50())
+        {
+            Unk_SSGHouseKey kKey;
+            kKey.m_nA = nAchieveId;
+            kKey.m_nB = nAchieveGrade;
+            if (DAT_143ab32d8.find(kKey) != DAT_143ab32d8.end())
+                return true;
+        }
+        else if (FUN_1406c7600()->FUN_140936640(nAchieveId, nAchieveGrade) == 0)
+            return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x1415302E0, MyPC, FUN_1415302e0, 1040, 0x6BAA0AD5);
+
 // @0x141530200
 void MyPC::FUN_141530200()
 {
