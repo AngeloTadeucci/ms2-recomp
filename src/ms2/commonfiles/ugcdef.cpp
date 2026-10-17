@@ -2,19 +2,24 @@
 // marks / posters, blueprint images, market listings, bookmarks) and the MS2Ptr / container glue over them.
 // MS2-UNIT: commonfiles\ugcdef.cpp
 // MS2-RANGE: 0x14088e340-0x14089e270 .text$mn
+// MS2-RANGE: 0x1400bd940-0x1400bdb40 .text$di
 // MS2-PIN: ??1IUgcProxy@@UEAA@XZ 0x1408999a0
+// MS2-PIN: ??0Unk_UgcLock@@QEAA@AEAVCLockCriticalSection@@H@Z 0x140203610
+// MS2-PIN: ??1Unk_UgcLock@@QEAA@XZ 0x1401b5120
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\ugcdef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ugcdef.h"
 #include "stream.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/citem.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "constraints.h"
 #include "ms2/placeholder/exception.h"
 #include "ms2/unnamed/unit_1401b6d10.h"
+#include "commonstruct.h"
 
 // The UGC info behind CItem::FUN_1405278d0 as this unit reads it (name at +0x40, rarity at +0x48).
 struct Unk_UgcItemInfoView
@@ -55,6 +60,19 @@ CString FUN_1410280d0(int nKind, CString strName);                         // th
 class Unk_MusicBookInfo : public CPtred { public: char m_pad18[0x10]; CString m_str28; };
 class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsigned); };
 Unk_MusicBookTable* FUN_14052d1d0();
+
+// The names of the market order kinds (CUgcMarketSchCond::m_n20 indexes them).
+static CStringA s_orderNames[7] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+
+// The scoped lock of a CLockCriticalSection (ctor 0x140203610, dtor 0x1401b5120).
+struct Unk_UgcLock { Unk_UgcLock(CLockCriticalSection& cs, int n); ~Unk_UgcLock(); void* p; };
+MS2_CHECK_SIZE(Unk_UgcLock, 8);
+
+// Market lookups of the item and merat market units.
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+int FUN_1406a5390(int nItemId);
+bool FUN_1406a5800();
+bool FUN_140164830(const CStringW& a, const CStringW& b);
 
 // The music record of a CItem as CUgcItemMusicNote::FUN_140893bb0 reads it.
 struct Unk_MusicSrcView
@@ -1730,4 +1748,343 @@ int CUgcMarketSchCond::FUN_140894840() const
     else
         n = ((m_n30 - 1) / 0x32 + 1) * 600;
     return n;
+}
+
+// @0x1408948a0
+CStringA CUgcMarketSchCond::FUN_1408948a0() const
+{
+    if (m_n20 < 0 || m_n20 >= 6)
+        return CStringA("");
+    CStringA strName(s_orderNames[m_n20]);
+    return strName;
+}
+
+// @0x140894960
+int CUgcMarketSchCond::FUN_140894960() const
+{
+    int nValue = 0;
+    nValue = m_n18;
+    return nValue;
+}
+
+// @0x140894990
+int CUgcMarketSchCond::FUN_140894990() const
+{
+    int nResult = 0;
+    switch (m_n18)
+    {
+    case 100:
+        nResult = 199;
+        break;
+    case 200:
+        nResult = 299;
+        break;
+    case 300:
+        nResult = 399;
+        break;
+    case 400:
+        nResult = 499;
+        break;
+    default:
+        nResult = m_n18;
+        break;
+    }
+    return nResult;
+}
+
+// MS2-FUNCTIONAL: compare operand load order differs
+// @0x140894a10
+int CUgcMarketSchCond::FUN_140894a10(const CUgcMarketSchCond* pOther) const
+{
+    if (pOther == 0)
+        return 0;
+    if (pOther->m_n18 != m_n18)
+        return 0;
+    if (pOther->m_n1c != m_n1c)
+        return 0;
+    if (pOther->m_n20 != m_n20)
+        return 0;
+    if (FUN_140164830(pOther->m_str28, m_str28))
+        return 0;
+    int nFirst = pOther->FUN_140894840();
+    if (nFirst > pOther->FUN_140894840())
+        return 0;
+    return 1;
+}
+
+// @0x140894ad0
+CUgcMarketProduct::CUgcMarketProduct()
+{
+    Clear();
+}
+
+// @0x140894bc0
+CUgcMarketProduct::~CUgcMarketProduct()
+{
+    Clear();
+}
+
+// @0x140894cb0
+void CUgcMarketProduct::Clear()
+{
+    m_n18 = 0;
+    m_n20 = 0;
+    m_n28 = 0;
+    m_n2c = 0;
+    m_n30 = 0;
+    m_n34 = 3;
+    m_n38 = 0;
+    m_n50 = 0;
+    m_n3c = 0;
+    m_n40 = 0;
+    m_n44 = 0;
+    m_n48 = 0;
+    m_n58 = 0;
+    m_n60 = 0;
+    m_n68 = 0;
+    m_n70 = 0;
+    m_n80 = 0;
+    m_n88 = 0;
+    m_n78 = 0;
+    static_cast<IUgcProxy&>(m_user).Clear();
+    m_str200 = "";
+    m_str208 = "";
+    m_str210 = "";
+    m_look.Clear();
+    m_music.Clear();
+    m_blueprint.Clear();
+    m_n1f0 = 0;
+    m_n1f4 = 0;
+    m_n1f8 = 1;
+}
+
+// @0x140894ea0
+void CUgcMarketProduct::CopyFrom(const CUgcMarketProduct* pOther)
+{
+    if (pOther == 0)
+        return;
+    m_n18 = pOther->m_n18;
+    m_n20 = pOther->m_n20;
+    m_n28 = pOther->m_n28;
+    m_n2c = pOther->m_n2c;
+    m_n30 = pOther->m_n30;
+    m_n34 = pOther->m_n34;
+    m_n38 = pOther->m_n38;
+    m_n50 = pOther->m_n50;
+    m_n3c = pOther->m_n3c;
+    m_n40 = pOther->m_n40;
+    m_n44 = pOther->m_n44;
+    m_n48 = pOther->m_n48;
+    m_n58 = pOther->m_n58;
+    m_n60 = pOther->m_n60;
+    m_n68 = pOther->m_n68;
+    m_n70 = pOther->m_n70;
+    m_n80 = pOther->m_n80;
+    m_n88 = pOther->m_n88;
+    m_n78 = pOther->m_n78;
+    static_cast<IUgcProxy&>(m_user).CopyFrom(&pOther->m_user);
+    SetStr200(CStringW(pOther->m_str200));
+    SetStr208(CStringW(pOther->m_str208));
+    SetStr210(CStringW(pOther->m_str210));
+    m_look.CopyFrom(&pOther->m_look);
+    m_music.CopyFrom(&pOther->m_music);
+    m_blueprint.CopyFrom(pOther->m_blueprint);
+    m_n1f4 = pOther->m_n1f4;
+    m_n1f8 = pOther->m_n1f8;
+}
+
+// @0x140895230
+void CUgcMarketProduct::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_3(m_n18);
+    stream.vfunc_o10_4(m_n20);
+    stream.vfunc_o10_1((unsigned char)m_n28);
+    stream.vfunc_o10_3(m_n2c);
+    stream.vfunc_o10_3(m_n30);
+    stream.vfunc_o10_1((unsigned char)m_n34);
+    stream.vfunc_o10_3(m_n38);
+    stream.vfunc_o10_4(m_n50);
+    stream.vfunc_o10_3(m_n3c);
+    stream.vfunc_o10_3(m_n40);
+    stream.vfunc_o10_3(m_n44);
+    stream.vfunc_o10_3(m_n48);
+    stream.vfunc_o10_4(m_n58);
+    stream.vfunc_o10_4(m_n60);
+    stream.vfunc_o10_4(m_n68);
+    stream.vfunc_o10_3(m_n70);
+    stream.vfunc_o10_4(m_n80);
+    stream.vfunc_o10_4(m_n88);
+    stream.vfunc_o10_4(m_n78);
+    m_user.Write(stream);
+    stream.vfunc_o10_8(const_cast<CUgcMarketProduct*>(this)->GetStr200());
+    stream.vfunc_o10_8(const_cast<CUgcMarketProduct*>(this)->GetStr208());
+    stream.vfunc_o10_8(const_cast<CUgcMarketProduct*>(this)->GetStr210());
+    m_look.Write(stream);
+    m_music.Write(stream);
+    m_blueprint.Write(stream);
+    stream.vfunc_o10_1((unsigned char)m_n1f4);
+}
+
+// @0x140895670
+void CUgcMarketProduct::Read(CInPacket& packet)
+{
+    m_n18 = packet.vfunc_o8_3();
+    m_n20 = packet.vfunc_o8_4();
+    m_n28 = packet.vfunc_o8_1();
+    m_n2c = packet.vfunc_o8_3();
+    m_n30 = packet.vfunc_o8_3();
+    m_n34 = packet.vfunc_o8_1();
+    m_n38 = packet.vfunc_o8_3();
+    m_n50 = packet.vfunc_o8_4();
+    m_n3c = packet.vfunc_o8_3();
+    m_n40 = packet.vfunc_o8_3();
+    m_n44 = packet.vfunc_o8_3();
+    m_n48 = packet.vfunc_o8_3();
+    m_n58 = packet.vfunc_o8_4();
+    m_n60 = packet.vfunc_o8_4();
+    m_n68 = packet.vfunc_o8_4();
+    m_n70 = packet.vfunc_o8_3();
+    m_n80 = packet.vfunc_o8_4();
+    m_n88 = packet.vfunc_o8_4();
+    m_n78 = packet.vfunc_o8_4();
+    m_user.Read(packet);
+    CStringW strValue;
+    strValue = packet.vfunc_o8_8();
+    SetStr200(CStringW(strValue));
+    strValue = packet.vfunc_o8_8();
+    SetStr208(CStringW(strValue));
+    strValue = packet.vfunc_o8_8();
+    SetStr210(CStringW(strValue));
+    m_look.Read(packet);
+    m_music.Read(packet);
+    m_blueprint.Read(packet);
+    m_n1f4 = packet.vfunc_o8_1();
+    m_n1f8 = FUN_1406a5390(m_n2c);
+}
+
+// @0x140895dd0
+CStringW CUgcMarketProduct::GetStr200()
+{
+    Unk_UgcLock lock(m_lock, 1);
+    return CStringW(m_str200);
+}
+
+// @0x140895e50
+void CUgcMarketProduct::SetStr200(CStringW str)
+{
+    Unk_UgcLock lock(m_lock, 1);
+    m_str200 = str;
+}
+
+// @0x140895ed0
+CStringW CUgcMarketProduct::GetStr200Head()
+{
+    CStringW str = GetStr200();
+    int nPos = str.ReverseFind(L',');
+    if (nPos != -1)
+    {
+        int nLen = str.GetLength();
+        int nCount;
+        if (nLen - nPos < 0)
+            nCount = 0;
+        else
+            nCount = nLen - nPos;
+        str.Delete(nPos, nCount);
+    }
+    return CStringW(str);
+}
+
+// @0x140895fa0
+CStringW CUgcMarketProduct::GetStr208()
+{
+    Unk_UgcLock lock(m_lock, 1);
+    return CStringW(m_str208);
+}
+
+// @0x140896020
+void CUgcMarketProduct::SetStr208(CStringW str)
+{
+    Unk_UgcLock lock(m_lock, 1);
+    m_str208 = str;
+}
+
+// @0x1408960a0
+CStringW CUgcMarketProduct::GetStr210()
+{
+    Unk_UgcLock lock(m_lock, 1);
+    return CStringW(m_str210);
+}
+
+// @0x140896120
+void CUgcMarketProduct::SetStr210(CStringW str)
+{
+    Unk_UgcLock lock(m_lock, 1);
+    m_str210 = str;
+}
+
+// @0x1408961a0
+int CUgcMarketProduct::FUN_1408961a0() const
+{
+    if (m_n88 > 0 && m_n88 > FUN_140869440())
+        return 1;
+    return 0;
+}
+
+// @0x1408961e0
+int CUgcMarketProduct::FUN_1408961e0() const
+{
+    __int64 nNow = FUN_140869440();
+    if (nNow < m_n58 || nNow > m_n68)
+        return 0;
+    return 1;
+}
+
+// @0x140896230
+bool CUgcMarketProduct::FUN_140896230(Unk_CommonOwner& owner)
+{
+    if (owner.id == 0)
+        return false;
+    if (FUN_140896310() != 0)
+    {
+        if (owner.Matches(m_music.m_info.m_n00, m_music.m_info.m_n08))
+            return true;
+    }
+    else if (FUN_140896350() != 0)
+    {
+        if (owner.Matches(m_blueprint.m_n38, m_blueprint.m_n40))
+            return true;
+    }
+    else
+    {
+        if (owner.Matches(m_look.m_n34, m_look.m_n38))
+            return true;
+    }
+    return false;
+}
+
+// @0x140896310
+int CUgcMarketProduct::FUN_140896310() const
+{
+    int nLast = 499;
+    if (m_n30 >= 400 && m_n30 <= nLast)
+        return 1;
+    return 0;
+}
+
+// @0x140896350
+int CUgcMarketProduct::FUN_140896350() const
+{
+    MS2Ptr<CItemData> spData = FUN_14053f870(m_n2c);
+    if ((bool)spData.get() && spData->FUN_14053d900())
+        return 1;
+    return 0;
+}
+
+// MS2-FUNCTIONAL: the result goes through an int local in the exe
+// @0x1408963f0
+bool CUgcMarketProduct::FUN_1408963f0(Unk_CommonOwner& owner)
+{
+    if (!FUN_140896230(owner) && FUN_1406a5800())
+        return true;
+    return false;
 }

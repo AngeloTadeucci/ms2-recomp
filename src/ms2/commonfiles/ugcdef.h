@@ -14,11 +14,13 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cmeratmarketschcond.h"
+#include "ms2/placeholder/clockcriticalsection.h"
 
 class COutputStream;
 class CInPacket;
 class CInputStream;
 class CItem;
+class Unk_CommonOwner;
 
 class IUgcProxy : public CPtred
 {
@@ -98,6 +100,7 @@ MS2_CHECK_SIZE(CUgcItemProxy, 0x48);
 class CUgcItemPC : public CUgcItemProxy
 {
 public:
+    CUgcItemPC();                                           // 0x14088f1c0
     CUgcItemPC(CItem* pItem, int nObjectId);                // 0x14088f210
     virtual ~CUgcItemPC();
     virtual void Clear();                                   // 0x14088f330
@@ -512,3 +515,62 @@ public:
     int m_n34;                                              // +0x34
 };
 MS2_CHECK_SIZE(CUgcMarketSchCond, 0x38);
+
+// A listing of the ugc market: the item, its price and sale window, and the creator / look / music / blueprint records
+// that describe the content. The three strings are guarded by m_lock.
+class CUgcMarketProduct : public CPtred
+{
+public:
+    CUgcMarketProduct();                                    // 0x140894ad0
+    virtual ~CUgcMarketProduct();                           // 0x140894bc0
+
+    void Clear();                                           // 0x140894cb0
+    void CopyFrom(const CUgcMarketProduct* pOther);         // 0x140894ea0
+    void Write(COutputStream& stream) const;                // 0x140895230
+    void Read(CInPacket& packet);                           // 0x140895670
+    CStringW GetStr200();                                   // 0x140895dd0
+    void SetStr200(CStringW str);                           // 0x140895e50
+    CStringW GetStr200Head();                               // 0x140895ed0 without the part from the last ','
+    CStringW GetStr208();                                   // 0x140895fa0
+    void SetStr208(CStringW str);                           // 0x140896020
+    CStringW GetStr210();                                   // 0x1408960a0
+    void SetStr210(CStringW str);                           // 0x140896120
+    int FUN_1408961a0() const;                              // m_n88 is set and still in the future
+    int FUN_1408961e0() const;                              // now is inside [m_n58, m_n68]
+    bool FUN_140896230(Unk_CommonOwner& owner);             // the content record of this kind belongs to `owner`
+    int FUN_140896310() const;                              // m_n30 is a 4xx kind
+    int FUN_140896350() const;                              // the item m_n2c is a CItemData::FUN_14053d900 one
+    bool FUN_1408963f0(Unk_CommonOwner& owner);
+
+    int m_n18;                                              // +0x18
+    __int64 m_n20;                                          // +0x20
+    int m_n28;                                              // +0x28
+    int m_n2c;                                              // +0x2c item id
+    int m_n30;                                              // +0x30 content kind
+    int m_n34;                                              // +0x34
+    int m_n38;                                              // +0x38
+    int m_n3c;                                              // +0x3c
+    int m_n40;                                              // +0x40
+    int m_n44;                                              // +0x44
+    int m_n48;                                              // +0x48
+    __int64 m_n50;                                          // +0x50
+    __int64 m_n58;                                          // +0x58 sale start
+    __int64 m_n60;                                          // +0x60
+    __int64 m_n68;                                          // +0x68 sale end
+    int m_n70;                                              // +0x70
+    __int64 m_n78;                                          // +0x78
+    __int64 m_n80;                                          // +0x80
+    __int64 m_n88;                                          // +0x88
+    CUgcUserProxy m_user;                                   // +0x90
+    CUgcItemLook m_look;                                    // +0xd0
+    CUgcItemMusicNote m_music;                              // +0x138
+    CBlueprintItemData m_blueprint;                         // +0x198
+    int m_n1f0;                                             // +0x1f0
+    int m_n1f4;                                             // +0x1f4
+    int m_n1f8;                                             // +0x1f8
+    CStringW m_str200;                                      // +0x200
+    CStringW m_str208;                                      // +0x208
+    CStringW m_str210;                                      // +0x210
+    CLockCriticalSection m_lock;                            // +0x218
+};
+MS2_CHECK_SIZE(CUgcMarketProduct, 0x248);
