@@ -454,8 +454,9 @@ public:
 };
 MS2_CHECK_SIZE(MyRankPercent, 0x30);
 
-// The boards answered as a rank -> row map plus a name -> row map (searchable).
-#define MS2_GAMERANKING_LIST(Name)                                                          \
+// The boards answered as a rank -> row map plus a name -> row map (searchable; all but GuildTrophy key the names
+// with CStringElementTraits).
+#define MS2_GAMERANKING_LIST(Name, NameTraits)                                                        \
     class Name : public IResponse                                                           \
     {                                                                                       \
     public:                                                                                 \
@@ -465,7 +466,7 @@ MS2_CHECK_SIZE(MyRankPercent, 0x30);
         MS2Ptr<Page> GetPage(int nPage) override;                                           \
         void Merge(CStringW strName, IResponse* pOther) override;                           \
         ATL::CRBMap<int, MS2Ptr<GameRankingItem::Name> > m_ranks;          /* +0x28 */      \
-        ATL::CRBMap<CStringW, MS2Ptr<GameRankingItem::Name> > m_names;     /* +0x58 */      \
+        ATL::CRBMap<CStringW, MS2Ptr<GameRankingItem::Name>, NameTraits> m_names;  /* +0x58 */  \
     };                                                                                      \
     MS2_CHECK_SIZE(Name, 0x88)
 
@@ -481,22 +482,22 @@ MS2_CHECK_SIZE(MyRankPercent, 0x30);
     };                                                                                      \
     MS2_CHECK_SIZE(Name, 0x58)
 
-MS2_GAMERANKING_LIST(GuildTrophy);
-MS2_GAMERANKING_LIST(UserTrophy);
-MS2_GAMERANKING_LIST(DarkStream);
-MS2_GAMERANKING_LIST(UserPvp);
-MS2_GAMERANKING_LIST(GuildPvp);
-MS2_GAMERANKING_LIST(UgcMapCommendation);
-MS2_GAMERANKING_LIST(BossKillCount);
+MS2_GAMERANKING_LIST(GuildTrophy, ATL::CElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(UserTrophy, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(DarkStream, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(UserPvp, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(GuildPvp, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(UgcMapCommendation, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(BossKillCount, ATL::CStringElementTraits<CStringW>);
 MS2_GAMERANKING_RECORD(BossKillRecord);
-MS2_GAMERANKING_LIST(Arcade);
-MS2_GAMERANKING_LIST(BossDamageCount);
+MS2_GAMERANKING_LIST(Arcade, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(BossDamageCount, ATL::CStringElementTraits<CStringW>);
 MS2_GAMERANKING_RECORD(BossDamageDate);
 MS2_GAMERANKING_RECORD(BossDamageAmount);
-MS2_GAMERANKING_LIST(BossRumbleCount);
+MS2_GAMERANKING_LIST(BossRumbleCount, ATL::CStringElementTraits<CStringW>);
 MS2_GAMERANKING_RECORD(BossRumbleRecord);
-MS2_GAMERANKING_LIST(WorldChampion);
-MS2_GAMERANKING_LIST(BossColosseum);
+MS2_GAMERANKING_LIST(WorldChampion, ATL::CStringElementTraits<CStringW>);
+MS2_GAMERANKING_LIST(BossColosseum, ATL::CStringElementTraits<CStringW>);
 
 #undef MS2_GAMERANKING_LIST
 #undef MS2_GAMERANKING_RECORD

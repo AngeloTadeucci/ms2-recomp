@@ -1621,10 +1621,9 @@ GameRanking::MyRank::MyRank(unsigned int nType)
 // @0x140b37290
 int GameRanking::MyRank::Read(CByteBuffer& s)
 {
-    int bRead = IResponse::Read(s);
-    if (bRead == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         m_rank = s.vfunc_o8_3();
     }
     catch (...) {
@@ -1644,10 +1643,9 @@ GameRanking::MyRankPercent::MyRankPercent(unsigned int nType)
 // @0x140b37370
 int GameRanking::MyRankPercent::Read(CByteBuffer& s)
 {
-    int bRead = IResponse::Read(s);
-    if (bRead == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         m_kind = s.vfunc_o8_3();
         m_rank = s.vfunc_o8_3();
     }
@@ -1668,9 +1666,9 @@ GameRanking::GuildTrophy::GuildTrophy(unsigned int nType)
 // @0x140b374a0
 int GameRanking::GuildTrophy::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::GuildTrophy> spItem(new GameRankingItem::GuildTrophy);
@@ -1740,9 +1738,9 @@ GameRanking::UserTrophy::UserTrophy(unsigned int nType)
 // @0x140b37bb0
 int GameRanking::UserTrophy::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::UserTrophy> spItem(new GameRankingItem::UserTrophy);
@@ -1812,9 +1810,9 @@ GameRanking::DarkStream::DarkStream(unsigned int nType)
 // @0x140b38310
 int GameRanking::DarkStream::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::DarkStream> spItem(new GameRankingItem::DarkStream);
@@ -1884,9 +1882,9 @@ GameRanking::UserPvp::UserPvp(unsigned int nType)
 // @0x140b38a70
 int GameRanking::UserPvp::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::UserPvp> spItem(new GameRankingItem::UserPvp);
@@ -1956,9 +1954,9 @@ GameRanking::GuildPvp::GuildPvp(unsigned int nType)
 // @0x140b391d0
 int GameRanking::GuildPvp::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::GuildPvp> spItem(new GameRankingItem::GuildPvp);
@@ -2028,9 +2026,9 @@ GameRanking::UgcMapCommendation::UgcMapCommendation(unsigned int nType)
 // @0x140b39930
 int GameRanking::UgcMapCommendation::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::UgcMapCommendation> spItem(new GameRankingItem::UgcMapCommendation);
@@ -2100,9 +2098,9 @@ GameRanking::BossKillCount::BossKillCount(unsigned int nType)
 // @0x140b3a090
 int GameRanking::BossKillCount::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossKillCount> spItem(new GameRankingItem::BossKillCount);
@@ -2172,9 +2170,9 @@ GameRanking::BossKillRecord::BossKillRecord(unsigned int nType)
 // @0x140b3a7d0
 int GameRanking::BossKillRecord::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossKillRecord> spItem(new GameRankingItem::BossKillRecord);
@@ -2211,9 +2209,9 @@ GameRanking::Arcade::Arcade(unsigned int nType)
 // @0x140b3ab90
 int GameRanking::Arcade::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::Arcade> spItem(new GameRankingItem::Arcade);
@@ -2283,9 +2281,9 @@ GameRanking::BossDamageCount::BossDamageCount(unsigned int nType)
 // @0x140b3b2f0
 int GameRanking::BossDamageCount::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossDamageCount> spItem(new GameRankingItem::BossDamageCount);
@@ -2355,9 +2353,9 @@ GameRanking::BossDamageDate::BossDamageDate(unsigned int nType)
 // @0x140b3ba30
 int GameRanking::BossDamageDate::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossDamageDate> spItem(new GameRankingItem::BossDamageDate);
@@ -2394,9 +2392,9 @@ GameRanking::BossDamageAmount::BossDamageAmount(unsigned int nType)
 // @0x140b3bdd0
 int GameRanking::BossDamageAmount::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossDamageAmount> spItem(new GameRankingItem::BossDamageAmount);
@@ -2433,9 +2431,9 @@ GameRanking::BossRumbleCount::BossRumbleCount(unsigned int nType)
 // @0x140b3c190
 int GameRanking::BossRumbleCount::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossRumbleCount> spItem(new GameRankingItem::BossRumbleCount);
@@ -2505,9 +2503,9 @@ GameRanking::BossRumbleRecord::BossRumbleRecord(unsigned int nType)
 // @0x140b3c8d0
 int GameRanking::BossRumbleRecord::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossRumbleRecord> spItem(new GameRankingItem::BossRumbleRecord);
@@ -2544,9 +2542,9 @@ GameRanking::WorldChampion::WorldChampion(unsigned int nType)
 // @0x140b3cc90
 int GameRanking::WorldChampion::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::WorldChampion> spItem(new GameRankingItem::WorldChampion);
@@ -2616,9 +2614,9 @@ GameRanking::BossColosseum::BossColosseum(unsigned int nType)
 // @0x140b3d3f0
 int GameRanking::BossColosseum::Read(CByteBuffer& s)
 {
-    if (IResponse::Read(s) == 0)
-        return 0;
     try {
+        if (IResponse::Read(s) == 0)
+            return 0;
         int nCount = s.vfunc_o8_3();
         for (int i = 0; i < nCount; i++) {
             MS2Ptr<GameRankingItem::BossColosseum> spItem(new GameRankingItem::BossColosseum);
