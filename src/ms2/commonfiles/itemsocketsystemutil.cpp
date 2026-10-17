@@ -633,14 +633,6 @@ CStringW FUN_1406285d0(unsigned nMask)
 // ---- the socket-system packet codecs (0x140628840-0x14062a230) ---------------------------------------------------
 // Record layouts are read from the codecs; names invented. Writers take a COutputStream, readers a CInPacket (the
 // exe passes its CInputStream subobject at +8).
-class TSocketGemStoneInfo : public CPtred
-{
-public:
-    TSocketGemStoneInfo();                  // 0x14061f790 (itemsocket.cpp)
-    int m_nGemId;                           // +0x18
-    char m_pad1c[0x2c];
-};
-MS2_CHECK_SIZE(TSocketGemStoneInfo, 0x48);
 // The exe calls the itemsocket copy (0x140623630); a local COMDAT would take the CEnchantOption dtor slot here.
 template <> MS2Ptr<TSocketGemStoneInfo>::~MS2Ptr();
 
@@ -1312,11 +1304,6 @@ bool FUN_14062abb0(MS2Ptr<CItem> spItem, const CMsgBoxData& box)
 MS2_REPLACE(0x14062ABB0, FUN_14062abb0, 443, 0xB6C836FB);
 
 class Unk_ItemEnchantData : public CItemStatus {};
-class Unk_SocketSlot : public CPtred
-{
-public:
-    int FUN_140623e20();
-};
 CStringW FUN_14028b8e0(const CStringW& str);
 class Unk_OptionFactory
 {
@@ -1394,12 +1381,12 @@ MS2_REPLACE(0x14062AE60, FUN_14062ae60, 74, 0x2E79F9D4);
 // The tooltip row text of a socket: locked or unlocked gemstone row.
 // @0x14062b310
 // MS2-FUNCTIONAL: not byte-identical yet (temp/frame layout differs from the exe)
-CStringW FUN_14062b310(MS2Ptr<CItemSocket> spSocket)
+CStringW FUN_14062b310(MS2Ptr<TSocketGemStoneInfo> spSocket)
 {
     CStringW str;
     if (spSocket.get() != 0 && spSocket->FUN_14061fbb0())
     {
-        MS2Ptr<Unk_SocketSlot> spSlot = spSocket->FUN_140620280();
+        MS2Ptr<TSocketGemStoneLock> spSlot = spSocket->FUN_140620280();
         if (spSlot.get() == 0 || spSlot->FUN_140623e20() != 1)
             str = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_unlock_gemstone"));
         else
