@@ -10,6 +10,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <vector>
 #include "ms2/ms2layout.h"
 #include "ms2/commonfiles/os.h"
 #include "ms2/commonfiles/fieldmetatable.h"
@@ -134,7 +135,7 @@ public:
     SystemPtr FUN_141792ee0(const CString& strName, const CString& strArg);       // system sound property
     VoicePtr FUN_141793110(const CString& strName);                               // trigger voice property
     void FUN_141793210(Unk_VoiceGroupMap& rOut);                // every trigger voice -> its sound names
-    bool FUN_141793340(int nObjectId, Unk_SoundPitch* pOut);    // the pitch of an object's voice
+    int FUN_141793340(int nObjectId, Unk_SoundPitch* pOut);    // the pitch of an object's voice
     void Reload();                                              // 0x1417933d0 (clear and Load)
     void FUN_141793450();                                       // reload when a table file changed
 
@@ -150,7 +151,7 @@ private:
     int LoadTriggerVoice(const char* pszPath);                 // 0x141792b60
 
     MS2_LAYOUT_FRIEND;
-    std::map<Unk_HitSoundKey, ATL::CAtlArray<int> > m_hitSounds;    // +0x10
+    std::map<Unk_HitSoundKey, std::vector<int> > m_hitSounds;    // +0x10
     Unk_SystemSoundMap m_systemSounds;                          // +0x20
     Unk_TriggerVoiceMap m_triggerVoices;                        // +0x68
     std::map<int, Unk_SoundPitch> m_pitches;                    // +0xb0
