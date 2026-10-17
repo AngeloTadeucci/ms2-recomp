@@ -52,6 +52,27 @@
 // MS2-PIN: ?FUN_141533e80@Unk_MyPCCameraCtl@@QEAA?AUUnk_StreamPoint@@XZ 0x141533e80
 // MS2-PIN: ?GetNode@?$CAtlMap@W4Unk_MyPCLapenSlot@@KV?$CElementTraits@W4Unk_MyPCLapenSlot@@@ATL@@V?$CElementTraits@K@3@@ATL@@AEBAPEAVCNode@12@AEBW4Unk_MyPCLapenSlot@@AEAI1AEAPEAV312@@Z 0x141534120
 // MS2-PIN: ?FUN_141534300@CObjectShadow@@QEAA_NXZ 0x141534300
+// MS2-PIN: ??0?$MS2Ptr@VRideOffActionAutoClimb@@@@QEAA@PEAVRideOffActionAutoClimb@@@Z 0x1415321e0
+// MS2-PIN: ?AddRef@?$MS2Ptr@VRideOffActionAutoClimb@@@@AEBAXXZ 0x141536d00
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VRideOffActionAutoClimb@@@@AEBAXPEAX@Z 0x141537120
+// MS2-PIN: ?Reference@?$MS2Ptr@VRideOffActionAutoClimb@@@@CAXPEAVRideOffActionAutoClimb@@@Z 0x141536fa0
+// MS2-PIN: ??1?$MS2Ptr@VRideOffActionAutoClimb@@@@QEAA@XZ 0x1415329c0
+// MS2-PIN: ?Release@?$MS2Ptr@VRideOffActionAutoClimb@@@@AEAAXXZ 0x141537610
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VRideOffActionAutoClimb@@@@AEAAXPEAX@Z 0x141537910
+// MS2-PIN: ??0?$MS2Ptr@VRideOffActionCoupleEmotion@@@@QEAA@PEAVRideOffActionCoupleEmotion@@@Z 0x141532210
+// MS2-PIN: ?AddRef@?$MS2Ptr@VRideOffActionCoupleEmotion@@@@AEBAXXZ 0x141536d30
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VRideOffActionCoupleEmotion@@@@AEBAXPEAX@Z 0x141537150
+// MS2-PIN: ?Reference@?$MS2Ptr@VRideOffActionCoupleEmotion@@@@CAXPEAVRideOffActionCoupleEmotion@@@Z 0x141536fc0
+// MS2-PIN: ??1?$MS2Ptr@VRideOffActionCoupleEmotion@@@@QEAA@XZ 0x1415329f0
+// MS2-PIN: ?Release@?$MS2Ptr@VRideOffActionCoupleEmotion@@@@AEAAXXZ 0x141537650
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VRideOffActionCoupleEmotion@@@@AEAAXPEAX@Z 0x141537960
+// MS2-PIN: ??0?$MS2Ptr@VStateAutoInteractionData@@@@QEAA@PEAVStateAutoInteractionData@@@Z 0x141532490
+// MS2-PIN: ?AddRef@?$MS2Ptr@VStateAutoInteractionData@@@@AEBAXXZ 0x141536f40
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VStateAutoInteractionData@@@@AEBAXPEAX@Z 0x141537360
+// MS2-PIN: ?Reference@?$MS2Ptr@VStateAutoInteractionData@@@@CAXPEAVStateAutoInteractionData@@@Z 0x141537100
+// MS2-PIN: ??1?$MS2Ptr@VStateAutoInteractionData@@@@QEAA@XZ 0x141532bd0
+// MS2-PIN: ?Release@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXXZ 0x1415378d0
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXPEAX@Z 0x141537c80
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
