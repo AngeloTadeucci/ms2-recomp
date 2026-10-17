@@ -14,6 +14,7 @@ class ASObj : public AScript
 public:
     ASObj(int nType);
     ASObj(const Scaleform::GFx::Value& v, int nMovieId);                 // 0x1422ba780 (ASTooltip(Value))
+    ASObj(Scaleform::GFx::Value& v, int nMovieId);                       // 0x1422ba7f0 (same body; the merat market products)
     virtual ~ASObj();
     void FUN_1407cbbe0(const char* szName, bool b);                      // set a bool member
     void FUN_1407cba60(const char* szName, CString str);                 // set a string member

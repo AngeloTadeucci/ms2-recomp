@@ -83,6 +83,7 @@ public:
     AScript(int nMovieId);                                                                   // 0x1422ba6e0 creates a fresh AS object (asequipicon.cpp)
     AScript(Scaleform::GFx::Value& v, int nMovieId);                                         // 0x1422ba7f0 same body as the const& form (asequipicon.cpp)
     Scaleform::GFx::Value FUN_1422baa20(const char* szMember);                               // child member by name
+    void FUN_1422baad0(const char* szMember, CStringW& strOut);                             // read a string member (merat market products)
     bool FUN_1422ba9a0();                                                                    // value is undefined
     Scaleform::GFx::Value& FUN_1422bb870();                                                  // m_value
     Scaleform::GFx::Value Invoke(const char* szMethod);                                     // 0x1422bb330

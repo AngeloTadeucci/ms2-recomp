@@ -8,7 +8,137 @@
 // MS2-RANGE: 0x1400c06c0-0x1400c13a0 .text$di
 // MS2-RANGE: 0x142c9daa0-0x142c9e1c0 .text$yd
 // MS2-PIN: ??_7ASObj@@6B@ 0x142db7e28
+// MS2-GUESS-LOOKALIKES: MS2Ptr<Unk_MeratFilter> / MS2Ptr<Unk_SlotSkillLevel> operator= fold to one exe copy
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??__Es_strSortTypeNamesA@@YAXXZ 0x1400c06c0 ; probe
+// MS2-PIN: ??__Es_strDisable@@YAXXZ 0x1400c0780 ; probe
+// MS2-PIN: ??__Es_strDisableDrag@@YAXXZ 0x1400c07b0 ; probe
+// MS2-PIN: ??__Es_strSortTypeNamesB@@YAXXZ 0x1400c08b0 ; probe
+// MS2-PIN: ??__Es_strDropShadowDisable@@YAXXZ 0x1400c0970 ; probe
+// MS2-PIN: ??__Es_strGrayColor@@YAXXZ 0x1400c09a0 ; probe
+// MS2-PIN: ??__Es_unk1402a9d70B@@YAXXZ 0x1400c09d0 ; prop
+// MS2-PIN: ??__Es_strIconPath@@YAXXZ 0x1400c0a50 ; probe
+// MS2-PIN: ??__Es_strIndex@@YAXXZ 0x1400c0a80 ; probe
+// MS2-PIN: ??__Es_strItemBothEquip@@YAXXZ 0x1400c0ab0 ; probe
+// MS2-PIN: ??__Es_strItemCash@@YAXXZ 0x1400c0ae0 ; probe
+// MS2-PIN: ??__Es_strItemCategory@@YAXXZ 0x1400c0b10 ; probe
+// MS2-PIN: ??__Es_strItemColor@@YAXXZ 0x1400c0b40 ; probe
+// MS2-PIN: ??__Es_strItemConditionLock@@YAXXZ 0x1400c0b70 ; probe
+// MS2-PIN: ??__Es_strItemCount@@YAXXZ 0x1400c0ba0 ; probe
+// MS2-PIN: ??__Es_strItemEquip2@@YAXXZ 0x1400c0bd0 ; probe
+// MS2-PIN: ??__Es_strItemEquip@@YAXXZ 0x1400c0c00 ; probe
+// MS2-PIN: ??__Es_strItemEvent@@YAXXZ 0x1400c0c30 ; probe
+// MS2-PIN: ??__Es_strItemGUID@@YAXXZ 0x1400c0c60 ; probe
+// MS2-PIN: ??__Es_strItemGrade@@YAXXZ 0x1400c0c90 ; probe
+// MS2-PIN: ??__Es_strItemID@@YAXXZ 0x1400c0cc0 ; probe
+// MS2-PIN: ??__Es_strItemIconLock@@YAXXZ 0x1400c0cf0 ; probe
+// MS2-PIN: ??__Es_strItemIconUnLock@@YAXXZ 0x1400c0d20 ; probe
+// MS2-PIN: ??__Es_strItemLock@@YAXXZ 0x1400c0d50 ; probe
+// MS2-PIN: ??__Es_strItemName@@YAXXZ 0x1400c0d80 ; probe
+// MS2-PIN: ??__Es_strItemNew@@YAXXZ 0x1400c0db0 ; probe
+// MS2-PIN: ??__Es_strItemPcBang@@YAXXZ 0x1400c0de0 ; probe
+// MS2-PIN: ??__Es_strItemPet@@YAXXZ 0x1400c0e10 ; probe
+// MS2-PIN: ??__Es_strItemPetRank@@YAXXZ 0x1400c0e40 ; probe
+// MS2-PIN: ??__Es_strItemPetSkin@@YAXXZ 0x1400c0e70 ; probe
+// MS2-PIN: ??__Es_strItemPiece@@YAXXZ 0x1400c0ea0 ; probe
+// MS2-PIN: ??__Es_strItemResultTag@@YAXXZ 0x1400c0ed0 ; probe
+// MS2-PIN: ??__Es_strItemSeal@@YAXXZ 0x1400c0f00 ; probe
+// MS2-PIN: ??__Es_strItemSkin@@YAXXZ 0x1400c0f30 ; probe
+// MS2-PIN: ??__Es_strItemSummon@@YAXXZ 0x1400c0f60 ; probe
+// MS2-PIN: ??__Es_strItemVIP@@YAXXZ 0x1400c0f90 ; probe
+// MS2-PIN: ??__Es_strItemWedding@@YAXXZ 0x1400c0fc0 ; probe
+// MS2-PIN: ??__Es_strJobCode@@YAXXZ 0x1400c0ff0 ; probe
+// MS2-PIN: ??__Es_strLearn@@YAXXZ 0x1400c1020 ; probe
+// MS2-PIN: ??__Es_strSkillA@@YAXXZ 0x1400c1050 ; probe
+// MS2-PIN: ??__Es_strSkillB@@YAXXZ 0x1400c1080 ; probe
+// MS2-PIN: ??__Es_strSkillD@@YAXXZ 0x1400c10b0 ; probe
+// MS2-PIN: ??__Es_strSkillmaster@@YAXXZ 0x1400c10e0 ; probe
+// MS2-PIN: ??__Es_strSkilltype@@YAXXZ 0x1400c1110 ; probe
+// MS2-PIN: ??__Es_strSlotHint@@YAXXZ 0x1400c1140 ; probe
+// MS2-PIN: ??__Es_strSortValue@@YAXXZ 0x1400c1170 ; probe
+// MS2-PIN: ??__Es_strStunA@@YAXXZ 0x1400c11a0 ; probe
+// MS2-PIN: ??__Es_strStunB@@YAXXZ 0x1400c11d0 ; probe
+// MS2-PIN: ??__Es_strStunD@@YAXXZ 0x1400c1200 ; probe
+// MS2-PIN: ??__Es_strSortTypeNamesD@@YAXXZ 0x1400c1230 ; probe
+// MS2-PIN: ??__Es_strTabIndex@@YAXXZ 0x1400c12f0 ; probe
+// MS2-PIN: ??__Es_strUgctag@@YAXXZ 0x1400c1320 ; probe
+// MS2-PIN: ??__Es_unk1402a9d70D@@YAXXZ 0x1400c1350 ; prop
+// MS2-PIN: ??$?8PEAVASAdditionalEffectSlot@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x1409bb2d0 ; prop
+// MS2-PIN: ??$?8PEAVASItemSlot@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x1409bb320 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBV01@@Z 0x1409bb630 ; unique
+// MS2-PIN: ??_GASAdditionalEffectSlot@@UEAAPEAXI@Z 0x1409bb8e0 ; unique
+// MS2-PIN: ??_GASItemSlot@@UEAAPEAXI@Z 0x1409bb920 ; unique
+// MS2-PIN: ??_GAScript@@UEAAPEAXI@Z 0x1409bb9a0 ; prop
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1409bb9f0 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1409bba50 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x1409bbab0 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x1409bbae0 ; unique
+// MS2-PIN: ??$Call@VASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@?$DelegateImpl@U?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@CAXAEAU?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@AEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x1409bbb10 ; prop
+// MS2-PIN: ??$Call@VASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@?$DelegateImpl@U?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@CAXAEAU?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@AEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x1409bbb40 ; prop
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVASAdditionalEffectSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1409bbb70 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVASItemSlot@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1409bbbd0 ; unique
+// MS2-PIN: ??$StringFormat@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V12@HV12@V12@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBV01@1AEBH11@Z 0x1409c0920 ; unique
+// MS2-PIN: ??1ASMeratMarketHomeProduct@@UEAA@XZ 0x1409c1370 ; prop
+// MS2-PIN: ??1ASMeratMarketProduct@@UEAA@XZ 0x1409c1390 ; prop
+// MS2-PIN: ?IsNull@?$MS2Ptr@VUnk_MeratEquipEntry@@@@QEBA_NXZ 0x1409c14d0 ; unique
+// MS2-PIN: ??C?$MS2Ptr@VUnk_MeratEquipEntry@@@@QEBAPEAVUnk_MeratEquipEntry@@XZ 0x1409c1530 ; unique
+// MS2-PIN: ??_GASMeratMarketHomeProduct@@UEAAPEAXI@Z 0x1409c1540 ; prop
+// MS2-PIN: ??_GASMeratMarketLimitedProduct@@UEAAPEAXI@Z 0x1409c1580 ; prop
+// MS2-PIN: ??_GASMeratMarketProduct@@UEAAPEAXI@Z 0x1409c15c0 ; prop
+// MS2-PIN: ??_GASMeratMarketProductBase@@UEAAPEAXI@Z 0x1409c1600 ; prop
+// MS2-PIN: ??_GASScrollPanel@@UEAAPEAXI@Z 0x1409c1be0 ; unique
+// MS2-PIN: ?FUN_1409c4b00@Unk_SlotInventoryDialog@@QEAAHXZ 0x1409c4b00 ; unique
+// MS2-PIN: ??__Fs_strSortTypeNamesA@@YAXXZ 0x142c9daa0 ; probe
+// MS2-PIN: ??__Fs_strDisable@@YAXXZ 0x142c9dad0 ; probe
+// MS2-PIN: ??__Fs_strDisableDrag@@YAXXZ 0x142c9daf0 ; probe
+// MS2-PIN: ??__Fs_strSortTypeNamesB@@YAXXZ 0x142c9db40 ; probe
+// MS2-PIN: ??__Fs_strDropShadowDisable@@YAXXZ 0x142c9db70 ; probe
+// MS2-PIN: ??__Fs_strGrayColor@@YAXXZ 0x142c9db90 ; probe
+// MS2-PIN: ??__Fs_strIconPath@@YAXXZ 0x142c9dbf0 ; probe
+// MS2-PIN: ??__Fs_strIndex@@YAXXZ 0x142c9dc10 ; probe
+// MS2-PIN: ??__Fs_strItemBothEquip@@YAXXZ 0x142c9dc30 ; probe
+// MS2-PIN: ??__Fs_strItemCash@@YAXXZ 0x142c9dc50 ; probe
+// MS2-PIN: ??__Fs_strItemCategory@@YAXXZ 0x142c9dc70 ; probe
+// MS2-PIN: ??__Fs_strItemColor@@YAXXZ 0x142c9dc90 ; probe
+// MS2-PIN: ??__Fs_strItemConditionLock@@YAXXZ 0x142c9dcb0 ; probe
+// MS2-PIN: ??__Fs_strItemCount@@YAXXZ 0x142c9dcd0 ; probe
+// MS2-PIN: ??__Fs_strItemEquip2@@YAXXZ 0x142c9dcf0 ; probe
+// MS2-PIN: ??__Fs_strItemEquip@@YAXXZ 0x142c9dd10 ; probe
+// MS2-PIN: ??__Fs_strItemEvent@@YAXXZ 0x142c9dd30 ; probe
+// MS2-PIN: ??__Fs_strItemGUID@@YAXXZ 0x142c9dd50 ; probe
+// MS2-PIN: ??__Fs_strItemGrade@@YAXXZ 0x142c9dd70 ; probe
+// MS2-PIN: ??__Fs_strItemID@@YAXXZ 0x142c9dd90 ; probe
+// MS2-PIN: ??__Fs_strItemIconLock@@YAXXZ 0x142c9ddb0 ; probe
+// MS2-PIN: ??__Fs_strItemIconUnLock@@YAXXZ 0x142c9ddd0 ; probe
+// MS2-PIN: ??__Fs_strItemLock@@YAXXZ 0x142c9ddf0 ; probe
+// MS2-PIN: ??__Fs_strItemName@@YAXXZ 0x142c9de10 ; probe
+// MS2-PIN: ??__Fs_strItemNew@@YAXXZ 0x142c9de30 ; probe
+// MS2-PIN: ??__Fs_strItemPcBang@@YAXXZ 0x142c9de50 ; probe
+// MS2-PIN: ??__Fs_strItemPet@@YAXXZ 0x142c9de70 ; probe
+// MS2-PIN: ??__Fs_strItemPetRank@@YAXXZ 0x142c9de90 ; probe
+// MS2-PIN: ??__Fs_strItemPetSkin@@YAXXZ 0x142c9deb0 ; probe
+// MS2-PIN: ??__Fs_strItemPiece@@YAXXZ 0x142c9ded0 ; probe
+// MS2-PIN: ??__Fs_strItemResultTag@@YAXXZ 0x142c9def0 ; probe
+// MS2-PIN: ??__Fs_strItemSeal@@YAXXZ 0x142c9df10 ; probe
+// MS2-PIN: ??__Fs_strItemSkin@@YAXXZ 0x142c9df30 ; probe
+// MS2-PIN: ??__Fs_strItemSummon@@YAXXZ 0x142c9df50 ; probe
+// MS2-PIN: ??__Fs_strItemVIP@@YAXXZ 0x142c9df70 ; probe
+// MS2-PIN: ??__Fs_strItemWedding@@YAXXZ 0x142c9df90 ; probe
+// MS2-PIN: ??__Fs_strJobCode@@YAXXZ 0x142c9dfb0 ; probe
+// MS2-PIN: ??__Fs_strLearn@@YAXXZ 0x142c9dfd0 ; probe
+// MS2-PIN: ??__Fs_strSkillA@@YAXXZ 0x142c9dff0 ; probe
+// MS2-PIN: ??__Fs_strSkillB@@YAXXZ 0x142c9e010 ; probe
+// MS2-PIN: ??__Fs_strSkillD@@YAXXZ 0x142c9e030 ; probe
+// MS2-PIN: ??__Fs_strSkillmaster@@YAXXZ 0x142c9e050 ; probe
+// MS2-PIN: ??__Fs_strSkilltype@@YAXXZ 0x142c9e070 ; probe
+// MS2-PIN: ??__Fs_strSlotHint@@YAXXZ 0x142c9e090 ; probe
+// MS2-PIN: ??__Fs_strSortValue@@YAXXZ 0x142c9e0b0 ; probe
+// MS2-PIN: ??__Fs_strStunA@@YAXXZ 0x142c9e0d0 ; probe
+// MS2-PIN: ??__Fs_strStunB@@YAXXZ 0x142c9e0f0 ; probe
+// MS2-PIN: ??__Fs_strStunD@@YAXXZ 0x142c9e110 ; probe
+// MS2-PIN: ??__Fs_strSortTypeNamesD@@YAXXZ 0x142c9e130 ; probe
+// MS2-PIN: ??__Fs_strTabIndex@@YAXXZ 0x142c9e160 ; probe
+// MS2-PIN: ??__Fs_strUgctag@@YAXXZ 0x142c9e180 ; probe
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\asitemslot.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -22,6 +152,9 @@
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/asmeratmarketproduct.h"
+#include "ms2/placeholder/cubeiteminfo.h"
+#include "ms2/placeholder/mstime.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/client/ms2/uidialog.h"
 #include "ms2/ms2format.h"
@@ -205,6 +338,12 @@ Scaleform::GFx::Value AScript::Invoke(const char* szMethod, ASSlot a1)
     args.FUN_1409b2800(1);
     FUN_1422bcc70(args.FUN_1409b1f70(0), a1.FUN_1422bb890());
     return FUN_1422bb8f0(szMethod, args);
+}
+
+// @0x1409bb7b0 (the implicit copy of an AS object, first emitted here)
+AScript::AScript(const AScript& o)
+    : CPtred(o), m_nMovieId(o.m_nMovieId), m_value(o.m_value)
+{
 }
 
 // @0x1409ba1d0
@@ -548,6 +687,8 @@ public:
     bool FUN_14059eec0(int nItemId);
     int FUN_14059ebb0(int nItemId);
     bool FUN_14059ef70(int nSeason);
+    int FUN_14059e6a0(int nCoinShopId);                         // the coin shop is open (merat home products)
+    int FUN_14059ed00(int nSeasonId);                           // the season of an item season id
 };
 Unk_SlotSeasonTable* FUN_14052d230();
 class Unk_SlotLapenTable
@@ -1401,4 +1542,1183 @@ Unk_SlotBreakManager* FUN_1409c4b20()
 Unk_SlotLapenTable* FUN_1409c4b30()
 {
     return DAT_143aafd98;
+}
+
+// ---- the merat market products (the ASItemSlot TU, 0x1409bbc30-0x1409c1ad0) ----
+
+bool FUN_1409b0390(Scaleform::GFx::Value* pValue);              // Value::IsUndefined (an SDK inline instance of another TU)
+bool FUN_1409b0350(Scaleform::GFx::Value* pValue);              // Value::IsNull (same)
+extern unsigned int DAT_143ab2914;                              // the GM level of the account
+
+// The product id: a premium (coin shop) product number or a UGC listing id.
+// It has a constructor (not called here): without one a 16-byte pointer-free local would be a /GS buffer.
+struct Unk_MeratOid
+{
+    Unk_MeratOid();
+    void FUN_140207730();                                       // clear
+    void FUN_1409c1640(CStringW strOid);                        // parse "P<n>" / "U<n>"
+    CStringW FUN_1409b0470() const;                             // the AS form, "P<n>" / "U<n>" (asbilldata.cpp)
+    int m_nPremiumId;                                           // +0x00
+    __int64 m_nUgcId;                                           // +0x08
+};
+MS2_CHECK_SIZE(Unk_MeratOid, 0x10);
+
+// The premium part of a market record (the coin shop product, 0x238 bytes at record +0x30).
+class Unk_MeratPremium
+{
+public:
+    unsigned int FUN_1406a1650();                               // the currencies it is sold for (1, 2)
+    __int64 FUN_1406a1be0(int nIndex);                          // price
+    __int64 FUN_1406a1b30(int nIndex);                          // sale price
+    int FUN_14069fee0();                                        // PC bang only
+    bool FUN_1406a0a60();                                       // sold out
+    bool FUN_140ebfb90(int n);                                  // the required achievement is done
+    CStringW FUN_140ec05f0();                                   // the star point text
+    int FUN_1406a17f0(int nIndex);                              // item count
+    CStringW FUN_1406a00e0();                                   // name
+    CStringW FUN_140ec01e0(const CStringW& strKey);             // the buy limit text
+    bool FUN_1406a0090();                                       // not a random sale
+    CStringW FUN_1406a02c0();                                   // the random sale expiry date
+    __int64 FUN_1406a0270();                                    // the random sale payback
+    bool FUN_1406a0d20(int n);                                  // expired
+    bool FUN_1406a0d60(int n);
+    bool FUN_1406a0ea0(int n);                                  // preview only
+    int FUN_1406a1ee0();                                        // the extra button kind
+    bool FUN_1406a1f50();                                       // has a sale period
+    CMsTime FUN_1406a19a0(int n);                               // sale start
+    CMsTime FUN_1406a1a70(int n);                               // sale end
+
+private:
+    char m_pad_00[0x18];
+public:
+    int m_nSn;                                                  // +0x18
+private:
+    char m_pad_1c[0x0c];
+public:
+    int m_nType;                                                // +0x28 3 limited, 6 home timed, 7 random payback, 8 random coupon
+private:
+    char m_pad_2c[0x10];
+public:
+    int m_nSaleTag;                                             // +0x3c (2 special, 4 sale)
+private:
+    char m_pad_40[0x20];
+public:
+    CMsTime m_tStart;                                           // +0x60
+    CMsTime m_tEnd;                                             // +0x70
+private:
+    char m_pad_80[0x08];
+public:
+    int m_nBuyLimitKind;                                        // +0x88
+    int m_nBuyLimitArg;                                         // +0x8c
+    int m_nBuyLimitCount;                                       // +0x90
+    short m_nBuyLimit94;                                        // +0x94
+    short m_nBuyLimit96;                                        // +0x96
+private:
+    int m_pad_98;
+public:
+    int m_nBg;                                                  // +0x9c
+private:
+    char m_pad_a0[0x08];
+public:
+    int m_nCoinShopId;                                          // +0xa8
+    int m_nItemGrade;                                           // +0xac
+private:
+    char m_pad_b0[0x10];
+public:
+    int m_nLimitCount;                                          // +0xc0
+private:
+    char m_pad_c4[0x34];
+public:
+    int m_nAchieveId;                                           // +0xf8
+    int m_nAchieveGrade;                                        // +0xfc
+private:
+    char m_pad_100[0x6c];
+public:
+    int m_nFirstSale;                                           // +0x16c
+private:
+    char m_pad_170[0x08];
+public:
+    CMsTime m_tSaleStart;                                       // +0x178
+    CMsTime m_tSaleEnd;                                         // +0x188
+    CMsTime m_tNextSale;                                        // +0x198
+private:
+    int m_pad_1a8;
+public:
+    unsigned int m_nRandomSaleId;                               // +0x1ac
+    unsigned int m_nCouponRate;                                 // +0x1b0
+private:
+    char m_pad_1b4[0x18];
+public:
+    int m_nSoldCount;                                           // +0x1cc
+    int m_nSoldCountHome;                                       // +0x1d0
+private:
+    char m_pad_1d4[0x64];
+};
+MS2_CHECK_SIZE(Unk_MeratPremium, 0x238);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nType, 0x28);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_tStart, 0x60);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nBuyLimitKind, 0x88);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nBg, 0x9c);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nLimitCount, 0xc0);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nAchieveId, 0xf8);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nFirstSale, 0x16c);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_tSaleStart, 0x178);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nRandomSaleId, 0x1ac);
+MS2_CHECK_OFFSET(Unk_MeratPremium, m_nSoldCount, 0x1cc);
+
+// The blueprint look of a UGC listing (FUN_140894060 gives its icon).
+class Unk_MeratUgcTemplate
+{
+public:
+    CString FUN_140894060();
+private:
+    char m_pad_00[0xc0];
+};
+
+// The UGC part of a market record (a player's listing, at record +0x268).
+class Unk_MeratUgc
+{
+public:
+    int FUN_140896310();                                        // 0 a plain UGC item, else a blueprint
+    CStringW FUN_1408960a0();                                   // the seller name
+    int FUN_1408961a0();                                        // 1 sold
+
+private:
+    char m_pad_00[0x20];
+public:
+    unsigned __int64 m_nAccountId;                              // +0x20
+    int m_nSaleState;                                           // +0x28
+    int m_nItemId;                                              // +0x2c
+private:
+    int m_pad_30;
+public:
+    int m_nGender;                                              // +0x34
+private:
+    int m_pad_38;
+public:
+    int m_nSaleCount;                                           // +0x3c
+private:
+    int m_pad_40;
+public:
+    int m_nSaleCountTotal;                                      // +0x44
+private:
+    char m_pad_48[0x08];
+public:
+    __int64 m_nPrice;                                           // +0x50
+private:
+    char m_pad_58[0x10];
+public:
+    __int64 m_nPeriod;                                          // +0x68
+    int m_nResale;                                              // +0x70 (3 free resale)
+private:
+    int m_pad_74;
+public:
+    __int64 m_nCreateTime;                                      // +0x78
+private:
+    char m_pad_80[0x38];
+public:
+    unsigned __int64 m_nSellerCharId;                           // +0xb8
+private:
+    char m_pad_c0[0x10];
+public:
+    CUgcItemLook m_look;                                        // +0xd0
+    Unk_MeratUgcTemplate m_template;                            // +0x138
+    int m_nItemGrade;                                           // +0x1f8
+};
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_nAccountId, 0x20);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_nPrice, 0x50);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_nCreateTime, 0x78);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_nSellerCharId, 0xb8);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_look, 0xd0);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_template, 0x138);
+MS2_CHECK_OFFSET(Unk_MeratUgc, m_nItemGrade, 0x1f8);
+
+// A market record (uiavatarbase.cpp has a partial local copy of this type).
+class Unk_MeratEquipEntry : public CPtred
+{
+public:
+    int FUN_1406a4640();                                        // item id
+    int FUN_1406a46a0();                                        // currency
+    int FUN_1406a46e0();                                        // home product kind
+    CStringW FUN_1406a4770();                                   // the UGC item name
+    int FUN_1406ab1a0();                                        // m_nState == 0 (premium)
+    int FUN_1406ab1d0();                                        // m_nState == 1 (UGC)
+    // @0x1409c1760
+    int FUN_1409c1760() { return m_nState; }
+
+    Unk_MeratOid m_oid;                                         // +0x18
+    int m_nState;                                               // +0x28
+    Unk_MeratPremium m_premium;                                 // +0x30
+    Unk_MeratUgc m_ugc;                                         // +0x268
+};
+MS2_CHECK_OFFSET(Unk_MeratEquipEntry, m_oid, 0x18);
+MS2_CHECK_OFFSET(Unk_MeratEquipEntry, m_premium, 0x30);
+MS2_CHECK_OFFSET(Unk_MeratEquipEntry, m_ugc, 0x268);
+
+class Unk_MeratBanner : public CPtred
+{
+public:
+    CString m_strBg;                                            // +0x18
+};
+MS2_CHECK_OFFSET(Unk_MeratBanner, m_strBg, 0x18);
+
+class Unk_MeratFilter : public CPtred
+{
+public:
+    bool FUN_140ebb780(int nJob, int nLevel, MS2Ptr<CItemData> spData);   // passes the filter
+};
+
+// The report-blind manager (blinded accounts) and the extra button helper.
+class Unk_MeratBlindManager
+{
+public:
+    bool FUN_140a259b0(int nKind, __int64 nAccountId);
+};
+extern Unk_MeratBlindManager* DAT_143ab4148;
+class Unk_MeratButtonHelper
+{
+public:
+    void FUN_140a8b240(CStringW& strText, bool* pbShow);
+};
+extern Unk_MeratButtonHelper* DAT_143ab4150;
+
+unsigned int FUN_141658e60(void* pPc);                          // job
+int FUN_141654700(void* pPc);                                   // level
+int FUN_14069c3e0(int nCurrency);                               // the money type of a currency
+int FUN_140222b90(int nGender);
+CStringW FUN_141b71990(unsigned nValue);
+CStringW FUN_14093bad0(int nId, int nGrade, CStringW strFormat);
+CStringW FUN_1409404f0(__int64 n);
+CStringW FUN_1418fef90(int nCurrency, __int64 nAmount);
+CStringW FUN_1418fec90(int nCurrency, __int64 nAmount, int nArg);
+CStringW FUN_1418fec00(int nCurrency, __int64 nAmount, int nArg);
+CStringW FUN_14062b4f0(CStringW strKey, const int& nArg);
+CStringW FUN_140938ae0(CStringW strKey, const unsigned int& nArg);
+CStringW FUN_1405c2690(CStringW strKey, const CStringW& strArg);
+CStringW FUN_1409e3050(const CStringW& strKey, int n1, int n2);
+CString FUN_1402bad60(const char* szFormat, const int* pn);
+CStringW FUN_14028b8e0(const CStringW& str);
+CStringW FUN_140763e10(int value);
+CStringW FUN_1408116a0(int nId, const int& nArg);
+CString FUN_1407194b0(__int64 v);
+CString FUN_140719530(unsigned __int64 v);
+bool FUN_1403b3c40(const CStringW& str, const wchar_t* sz);
+void FUN_141b70f90(const CMsTime& kTime, const CStringW& kFormat, CStringW& kOut);
+
+// @0x1409c1730 TSingleton<report blind manager>::GetInstance
+Unk_MeratBlindManager* FUN_1409c1730()
+{
+    return DAT_143ab4148;
+}
+
+// @0x1409c1740 TSingleton<extra button helper>::GetInstance
+Unk_MeratButtonHelper* FUN_1409c1740()
+{
+    return DAT_143ab4150;
+}
+
+// @0x1409bbc30
+MS2Ptr<ASMeratMarketProductBase> ASMeratMarketProductBase::FUN_1409bbc30(Scaleform::GFx::Value& v, const int& nMovieId)
+{
+    if (FUN_1409b0390(&v) || FUN_1409b0350(&v))
+        return MS2Ptr<ASMeratMarketProductBase>(0);
+    int nType = 0;
+    Scaleform::GFx::Value vType;
+    v.GetMember("asProductType", &vType);
+    if (!FUN_1409b0390(&vType) && !FUN_1409b0350(&vType))
+        nType = vType.GetInt();
+    MS2Ptr<ASMeratMarketProductBase> sp(0);
+    if (nType == 2)
+    {
+        if (FUN_140166410()->FUN_14036d570(0x108))
+            sp.AssignRaw(new ASMeratMarketHomeProduct(v, nMovieId));
+        else
+            sp.AssignRaw(new ASMeratMarketProduct(v, nMovieId));
+    }
+    else if (nType == 1)
+        sp.AssignRaw(new ASMeratMarketLimitedProduct(v, nMovieId));
+    else
+        sp.AssignRaw(new ASMeratMarketProduct(v, nMovieId));
+    return sp;
+}
+
+// @0x1409bbf30
+MS2Ptr<ASMeratMarketProductBase> ASMeratMarketProductBase::FUN_1409bbf30(const int& nType, const int& nMovieId)
+{
+    MS2Ptr<ASMeratMarketProductBase> sp(0);
+    if (nType == 2)
+    {
+        if (FUN_140166410()->FUN_14036d570(0x108))
+            sp.AssignRaw(new ASMeratMarketHomeProduct(nMovieId));
+        else
+            sp.AssignRaw(new ASMeratMarketProduct(nMovieId));
+    }
+    else if (nType == 1)
+        sp.AssignRaw(new ASMeratMarketLimitedProduct(nMovieId));
+    else
+        sp.AssignRaw(new ASMeratMarketProduct(nMovieId));
+    return sp;
+}
+
+// @0x1409bc150
+ASMeratMarketProductBase::ASMeratMarketProductBase(int nMovieId)
+    : ASObj(nMovieId), m_nIndex(0), m_nProductType(0)
+{
+}
+
+// @0x1409bc1c0
+ASMeratMarketProductBase::ASMeratMarketProductBase(const Scaleform::GFx::Value& v, int nMovieId)
+    : ASObj(v, nMovieId), m_nIndex(0), m_nProductType(0)
+{
+}
+
+// @0x1409bc240
+ASMeratMarketProductBase::ASMeratMarketProductBase(Scaleform::GFx::Value& v, int nMovieId)
+    : ASObj(v, nMovieId), m_nIndex(0), m_nProductType(0)
+{
+}
+
+// @0x1409bc2c0
+bool ASMeratMarketProductBase::vfunc_1(MS2Ptr<Unk_MeratEquipEntry> spEntry, const Unk_MeratViewOpt* pOpt)
+{
+    FUN_1409c0f00("asProductType", m_nProductType);
+    return true;
+}
+
+// @0x1409bc320
+bool ASMeratMarketProductBase::vfunc_2(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    return true;
+}
+
+// @0x1409bc350
+bool ASMeratMarketProductBase::vfunc_3(MS2Ptr<Unk_MeratEquipEntry> spEntry, const CString& strBg)
+{
+    if (spEntry == 0)
+        return false;
+    Unk_MeratOid oid = spEntry->m_oid;
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+    FUN_1409bc4a0(strBg);
+    return true;
+}
+
+// @0x1409bc430
+bool ASMeratMarketProductBase::vfunc_4()
+{
+    return false;
+}
+
+// @0x1409bc440
+bool ASMeratMarketProductBase::vfunc_5()
+{
+    return false;
+}
+
+// @0x1409bc450
+void ASMeratMarketProductBase::vfunc_6(bool bSoldOut)
+{
+    FUN_1407cbbe0("soldOut", bSoldOut);
+}
+
+// @0x1409bc480
+void ASMeratMarketProductBase::FUN_1409bc480(int nIndex)
+{
+    m_nIndex = nIndex;
+}
+
+// @0x1409bc4a0
+void ASMeratMarketProductBase::FUN_1409bc4a0(const CString& strBg)
+{
+    FUN_1407cba60("bgPath", strBg);
+}
+
+// @0x1409bc4f0
+void ASMeratMarketProductBase::FUN_1409bc4f0(MS2Ptr<Unk_MeratBanner> spBanner)
+{
+    m_spBanner = spBanner;
+}
+
+// @0x1409bc540
+void ASMeratMarketProductBase::FUN_1409bc540(const int& nIndex)
+{
+    FUN_1409c0d20("index", nIndex);
+}
+
+// @0x1409bc580
+void ASMeratMarketProductBase::FUN_1409bc580(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    if (spEntry == 0)
+        return;
+    Unk_MeratOid oid = spEntry->m_oid;
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+}
+
+// @0x1409bc630
+void ASMeratMarketProductBase::FUN_1409bc630(const Unk_MeratOid& oid)
+{
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+}
+
+// @0x1409bc680
+int ASMeratMarketProductBase::FUN_1409bc680()
+{
+    return m_nIndex;
+}
+
+// @0x1409bc6a0
+void ASMeratMarketProductBase::FUN_1409bc6a0(Unk_MeratOid* pOid)
+{
+    CStringW strOid;
+    FUN_1422baad0("productOID", strOid);
+    pOid->FUN_1409c1640(strOid);
+}
+
+// @0x1409bc720
+unsigned int ASMeratMarketProductBase::FUN_1409bc720()
+{
+    return FUN_1422baa20("index").GetUInt();
+}
+
+// @0x1409bc780
+int ASMeratMarketProductBase::FUN_1409bc780()
+{
+    return m_nProductType;
+}
+
+// @0x1409bc7a0
+ASMeratMarketProduct::ASMeratMarketProduct(int nMovieId)
+    : ASMeratMarketProductBase(nMovieId)
+{
+    m_nProductType = 0;
+}
+
+// @0x1409bc7f0
+ASMeratMarketProduct::ASMeratMarketProduct(const Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketProductBase(v, nMovieId)
+{
+    m_nProductType = 0;
+}
+
+// @0x1409bc850
+ASMeratMarketProduct::ASMeratMarketProduct(Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketProductBase(v, nMovieId)
+{
+    m_nProductType = 0;
+}
+
+// @0x1409bc8b0
+// MS2-FUNCTIONAL: 4 KB product row fill; the frame layout of its many temporaries was not matched.
+bool ASMeratMarketProduct::vfunc_1(MS2Ptr<Unk_MeratEquipEntry> spEntry, const Unk_MeratViewOpt* pOpt)
+{
+    if (spEntry.IsNull())
+        return false;
+    void* pPc = FUN_141bd0cc0(FUN_1403ed2d0());
+    if (pPc == NULL)
+        return false;
+    if (!ASMeratMarketProductBase::vfunc_1(spEntry, pOpt))
+        return false;
+
+    int nState = spEntry->FUN_1409c1760();
+    Unk_MeratOid oid = spEntry->m_oid;
+    MS2Ptr<Unk_MeratFilter> spFilter(0);
+    if (pOpt != NULL)
+        spFilter = pOpt->m_spFilter;
+    unsigned int nJob = FUN_141658e60(pPc);
+    int nLevel = FUN_141654700(pPc);
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+    int nItemId = spEntry->FUN_1406a4640();
+    FUN_1407cbb20("itemID", FUN_141b71990(nItemId));
+    int bPremium = spEntry->FUN_1406ab1a0();
+    FUN_1407cbbe0("isPremium", bPremium != 0);
+    if (nState == 0)
+    {
+        Unk_MeratPremium& premium = spEntry->m_premium;
+        FUN_1407cb9c0("sn", premium.m_nSn);
+        FUN_1407cb9c0("itemGrade", premium.m_nItemGrade);
+        {
+            MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+            if (spData)
+            {
+                CStringW strFunction = spData->function.name;
+                FUN_1407cba60("iconPath", spData->FUN_14053fdd0());
+                FUN_1407cbb20("itemName", FUN_1401a9d70()->FUN_141811980(1, nItemId));
+                if (spFilter.get() != NULL)
+                    FUN_1407cbbe0("disable", !spFilter->FUN_140ebb780(nJob, nLevel, spData));
+                FUN_1407cbbe0("showRecipe", spData->FUN_14053cde0());
+                FUN_1407cbbe0("showPreview", FUN_1403b3c40(strFunction, L"UGCMapPackage"));
+                if (spData->property.slotMax > 1)
+                {
+                    int nCount = premium.FUN_1406a17f0(0);
+                    FUN_1407cb9c0("itemCount", nCount);
+                }
+            }
+        }
+        int nSaleTag = premium.m_nSaleTag;
+        FUN_1407cb9c0("saleTag", nSaleTag);
+        FUN_1407cbbe0("specialBg", nSaleTag == 2);
+        FUN_1407cb9c0("isBlind", 0);
+        FUN_1409c0e60("seller", L"");
+        FUN_1409c0dc0("sellerCharSN", "");
+        FUN_1407cb9c0("ugctag", 0);
+        FUN_1407cbbe0("soldOut", premium.FUN_1406a0a60());
+        if (!premium.FUN_140ebfb90(0))
+        {
+            CStringW strFormat = FUN_14028de60(0x308);
+            FUN_1407cbb20("requireAchieve", FUN_14093bad0(premium.m_nAchieveId, premium.m_nAchieveGrade, strFormat));
+        }
+        FUN_1407cbbe0("isPcBang", premium.FUN_14069fee0() > 0);
+        CStringW strStar = premium.FUN_140ec05f0();
+        if (!strStar.IsEmpty())
+            FUN_1407cbb20("starPoint", strStar);
+    }
+    else if (nState == 1)
+    {
+        Unk_MeratUgc& ugc = spEntry->m_ugc;
+        FUN_1407cba60("createtime", FUN_1407194b0(ugc.m_nCreateTime));
+        FUN_1409adc90("itemGrade", ugc.m_nItemGrade);
+        int nGender = FUN_140222b90(ugc.m_nGender);
+        FUN_1407cb9c0("gender", nGender);
+        FUN_1407cba60("sn", FUN_140719530(ugc.m_nAccountId));
+        int nUgcItemId = ugc.m_nItemId;
+        {
+            MS2Ptr<CItemData> spData = FUN_14053f870(nUgcItemId);
+            if (spData)
+            {
+                FUN_1407cb9c0("ugctag", 1);
+                if (spFilter.get() != NULL)
+                    FUN_1407cbbe0("disable", !spFilter->FUN_140ebb780(nJob, nLevel, spData));
+            }
+        }
+        FUN_1407cbb20("itemName", spEntry->FUN_1406a4770());
+        CString strIcon;
+        if (ugc.FUN_140896310() == 0)
+            strIcon = ugc.m_look.FUN_140892ec0();
+        else
+            strIcon = ugc.m_template.FUN_140894060();
+        FUN_1407cba60("iconPath", strIcon);
+        int nSaleState = ugc.m_nSaleState;
+        int nResale = ugc.m_nResale;
+        FUN_1409c10e0("saleState", nSaleState);
+        CStringW strResale(L"$s_meratmarketreg_tooltip_btn_free_resale");
+        if (nResale == 3)
+            FUN_1407cbb20("resaleTooltip", strResale);
+        CStringW strSeller = ugc.FUN_1408960a0();
+        FUN_1407cbb20("seller", strSeller);
+        FUN_1407cba60("sellerCharSN", FUN_140719530(ugc.m_nSellerCharId));
+        FUN_1407cbbe0("soldOut", ugc.FUN_1408961a0() == 1);
+        bool bDebug = false;
+        if (pOpt != NULL)
+            bDebug = pOpt->m_bDebug;
+        if (!bDebug)
+            FUN_1407cb9c0("saleCountTotal", ugc.m_nSaleCountTotal);
+        else
+        {
+            CStringW strSellCount = FUN_1408116a0(0xa27, ugc.m_nSaleCountTotal);
+            FUN_1407cbb20("sellCount", strSellCount);
+            CMsTime tPeriod(ugc.m_nPeriod);
+            CStringW strPeriod;
+            CMsTime tZero(0);
+            if (tPeriod == tZero)
+                strPeriod = L"-";
+            else
+                FUN_141b70f90(tPeriod, FUN_14028de60(0x9dd), strPeriod);
+            FUN_1407cbb20("period", strPeriod);
+        }
+        FUN_1407cb9c0("saleCount", ugc.m_nSaleCount);
+        if (FUN_1409c1730()->FUN_140a259b0(3, spEntry->m_ugc.m_nAccountId))
+            FUN_1407cbbe0("isBlind", true);
+        if (bDebug)
+        {
+            BOOL bGm = DAT_143ab2914 >= 50;
+            if (bGm)
+                FUN_1407cbbe0("debug", true);
+            else
+                FUN_1407cbbe0("debug", false);
+        }
+    }
+    FUN_1409bd940(spEntry);
+    return true;
+}
+
+// @0x1409bd8e0
+bool ASMeratMarketProduct::vfunc_4()
+{
+    return FUN_1422baa20("soldOut").GetBool();
+}
+
+// @0x1409bd940
+// MS2-FUNCTIONAL: the conditional price string temporaries were not matched.
+void ASMeratMarketProduct::FUN_1409bd940(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    if (spEntry == 0)
+        return;
+    int nCurrency = spEntry->FUN_1406a46a0();
+    __int64 nPrice = 0;
+    __int64 nSalePrice = 0;
+    bool bSale = false;
+    if (spEntry->FUN_1406ab1a0() != 0)
+    {
+        Unk_MeratPremium& premium = spEntry->m_premium;
+        nPrice = premium.FUN_1406a1be0(m_nIndex);
+        nSalePrice = premium.FUN_1406a1b30(m_nIndex);
+        bSale = nSalePrice < nPrice;
+        if (premium.m_nSaleTag == 4 && nPrice > 0 && bSale)
+        {
+            int nRate = (int)((nPrice - nSalePrice) * 100 / nPrice);
+            if (nRate > 0)
+            {
+                CStringW strText = FUN_14062b4f0(CStringW(L"s_common_saletag_sale"), nRate);
+                FUN_1407cbb20("saleTagText", strText);
+            }
+        }
+    }
+    else if (spEntry->FUN_1406ab1d0() != 0)
+    {
+        Unk_MeratUgc& ugc = spEntry->m_ugc;
+        nPrice = ugc.m_nPrice;
+        bSale = false;
+        nSalePrice = nPrice;
+    }
+    int nType = FUN_14069c3e0(nCurrency);
+    CStringW strPrice = !bSale ? CStringW(L"") : FUN_1409404f0(nPrice);
+    CStringW strSalePrice = FUN_1418fec00(nType, nSalePrice, 0);
+    FUN_1407cbb20("price", strPrice);
+    FUN_1407cbb20("salePrice", strSalePrice);
+}
+
+// @0x1409bdd60
+ASMeratMarketLimitedProduct::ASMeratMarketLimitedProduct(int nMovieId)
+    : ASMeratMarketProductBase(nMovieId)
+{
+    m_nProductType = 1;
+}
+
+// @0x1409bddb0
+ASMeratMarketLimitedProduct::ASMeratMarketLimitedProduct(const Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketProductBase(v, nMovieId)
+{
+    m_nProductType = 1;
+}
+
+// @0x1409bde10
+ASMeratMarketLimitedProduct::ASMeratMarketLimitedProduct(Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketProductBase(v, nMovieId)
+{
+    m_nProductType = 1;
+}
+
+// @0x1409bde70
+ASMeratMarketLimitedProduct::~ASMeratMarketLimitedProduct()
+{
+}
+
+// @0x1409bdea0
+bool ASMeratMarketLimitedProduct::vfunc_1(MS2Ptr<Unk_MeratEquipEntry> spEntry, const Unk_MeratViewOpt* pOpt)
+{
+    if (spEntry == 0 || spEntry->FUN_1406ab1a0() == 0)
+        return false;
+    if (!ASMeratMarketProductBase::vfunc_1(spEntry, pOpt))
+        return false;
+    Unk_MeratOid oid = spEntry->m_oid;
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+    FUN_1409c0fa0("productUIType", 4);
+    if (m_spBanner.get() == NULL)
+    {
+        FUN_1409c0dc0("type", "normal");
+        int nBg = spEntry->m_premium.m_nBg;
+        if (nBg < 1)
+            FUN_1409bc4a0(CString(""));
+        else
+            FUN_1409bc4a0(FUN_1402bad60("bg{0}", &nBg));
+    }
+    else
+    {
+        FUN_1409c0dc0("type", "banner");
+        FUN_1409bc4a0(m_spBanner->m_strBg);
+    }
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    vfunc_7(spEntry);
+    FUN_1409be940(premium);
+    FUN_1409bf780(premium);
+    vfunc_8(premium);
+    bool bPcBang = premium.FUN_14069fee0() > 0;
+    FUN_1407cbbe0("isPcBang", bPcBang);
+    return true;
+}
+
+// @0x1409be1f0
+bool ASMeratMarketLimitedProduct::vfunc_2(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    if (spEntry == 0)
+        return false;
+    Unk_MeratOid oid = spEntry->m_oid;
+    FUN_1407cbb20("productOID", oid.FUN_1409b0470());
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    FUN_1409be940(premium);
+    FUN_1409bf780(premium);
+    vfunc_8(premium);
+    vfunc_7(spEntry);
+    bool bPcBang = premium.FUN_14069fee0() > 0;
+    FUN_1407cbbe0("isPcBang", bPcBang);
+    return true;
+}
+
+// @0x1409be390
+bool ASMeratMarketLimitedProduct::vfunc_4()
+{
+    return FUN_1422baa20("soldOut").GetBool() || FUN_1422baa20("soldOutBuyLimit").GetBool();
+}
+
+// @0x1409be4a0
+bool ASMeratMarketLimitedProduct::vfunc_5()
+{
+    return FUN_1422baa20("expired").GetBool();
+}
+
+// @0x1409be500
+// MS2-FUNCTIONAL: the description string temporaries were not matched.
+void ASMeratMarketLimitedProduct::vfunc_7(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    FUN_1407cbb20("itemName", premium.FUN_1406a00e0());
+    CStringW strDesc = FUN_14028b8e0(CStringW(L"s_meratmarket_limited_desc"));
+    CStringW strStart;
+    CStringW strEnd;
+    const CStringW& strDateFormat = FUN_14028b8e0(CStringW(L"s_meratmarket_limited_date"));
+    CMsTime tStart(premium.m_tStart);
+    CMsTime tEnd(premium.m_tEnd);
+    FUN_141b70f90(tStart, strDateFormat, strStart);
+    FUN_141b70f90(tEnd, strDateFormat, strEnd);
+    CStringW strUnused;
+    CStringW strBuyLimit;
+    if (premium.m_nBuyLimitKind != 0)
+    {
+        CStringW strFormat = FUN_1409e3050(CStringW(L"s_meratmarket_limited_buylimit"), premium.m_nBuyLimitKind, premium.m_nBuyLimitCount);
+        strBuyLimit = FUN_14062b4f0(strFormat, premium.m_nBuyLimitArg);
+    }
+    CStringW strBuyLimit2;
+    if (premium.m_nBuyLimit94 != 0 || premium.m_nBuyLimit96 != 0)
+        strBuyLimit2 = premium.FUN_140ec01e0(CStringW(L"s_meratmarket_limited_buylimit_"));
+    FUN_1407cbb20("desc", StringFormat((const wchar_t*)strDesc, strStart, strEnd, premium.m_nLimitCount, strBuyLimit, strBuyLimit2));
+}
+
+// @0x1409be940
+void ASMeratMarketLimitedProduct::FUN_1409be940(Unk_MeratPremium& premium)
+{
+    switch (premium.m_nType)
+    {
+    case 7:
+        FUN_1409bef00(premium);
+        break;
+    case 8:
+        FUN_1409bf300(premium);
+        break;
+    default:
+        FUN_1409be9b0(premium);
+        break;
+    }
+}
+
+// @0x1409be9b0
+// MS2-FUNCTIONAL: the conditional price string temporaries were not matched.
+void ASMeratMarketLimitedProduct::FUN_1409be9b0(Unk_MeratPremium& premium)
+{
+    bool bFree = false;
+    unsigned int nFlags = premium.FUN_1406a1650();
+    if (nFlags & 1)
+    {
+        __int64 nPrice = premium.FUN_1406a1be0(0);
+        __int64 nSalePrice = premium.FUN_1406a1b30(0);
+        int nType = FUN_14069c3e0(1);
+        CStringW strPrice = nSalePrice < nPrice ? FUN_1409404f0(nPrice) : CStringW(L"");
+        CStringW strSalePrice = FUN_1418fef90(nType, nSalePrice);
+        FUN_1407cbb20("price", strPrice);
+        FUN_1407cbb20("salePrice", strSalePrice);
+        FUN_1409c1040("priceType", 1);
+        bFree = nPrice == 0 && nSalePrice == 0;
+        FUN_1407cbbe0("showFreeText", bFree);
+    }
+    if (!bFree && (nFlags & 2))
+    {
+        __int64 nPrice = premium.FUN_1406a1be0(0);
+        __int64 nSalePrice = premium.FUN_1406a1b30(0);
+        int nType = FUN_14069c3e0(2);
+        CStringW strPrice = nSalePrice < nPrice ? FUN_1409404f0(nPrice) : CStringW(L"");
+        CStringW strSalePrice = FUN_1418fef90(nType, nSalePrice);
+        FUN_1407cbb20("price2", strPrice);
+        FUN_1407cbb20("salePrice2", strSalePrice);
+        FUN_1409c1040("priceType2", 2);
+    }
+}
+
+// @0x1409bef00
+// MS2-FUNCTIONAL: string temporaries not matched.
+void ASMeratMarketLimitedProduct::FUN_1409bef00(Unk_MeratPremium& premium)
+{
+    unsigned int nFlags = premium.FUN_1406a1650();
+    if (!premium.FUN_1406a0090())
+    {
+        FUN_1409c0d20("randomSaleID", premium.m_nRandomSaleId);
+        FUN_1407cbb20("randomExpiredDate", premium.FUN_1406a02c0());
+        if (nFlags & 1)
+        {
+            int nType = FUN_14069c3e0(1);
+            CStringW strSalePrice = FUN_1418fef90(nType, premium.FUN_1406a1b30(0));
+            CStringW strPayback = FUN_1418fec90(nType, premium.FUN_1406a0270(), 0);
+            FUN_1409c0e60("price", L"");
+            FUN_1407cbb20("salePrice", strSalePrice);
+            FUN_1407cbb20("randomPaybackPrice", FUN_1405c2690(CStringW(L"s_meratmarket_random_payback"), strPayback));
+            FUN_1409c1040("priceType", 1);
+        }
+        if (nFlags & 2)
+        {
+            int nType = FUN_14069c3e0(2);
+            CStringW strSalePrice = FUN_1418fef90(nType, premium.FUN_1406a1b30(0));
+            CStringW strPayback = FUN_1418fec90(nType, premium.FUN_1406a0270(), 0);
+            FUN_1409c0e60("price2", L"");
+            FUN_1407cbb20("salePrice2", strSalePrice);
+            FUN_1407cbb20("randomPaybackPrice2", FUN_1405c2690(CStringW(L"s_meratmarket_random_payback"), strPayback));
+            FUN_1409c1040("priceType2", 2);
+        }
+    }
+    else
+        FUN_1409be9b0(premium);
+}
+
+// @0x1409bf300
+// MS2-FUNCTIONAL: string temporaries not matched.
+void ASMeratMarketLimitedProduct::FUN_1409bf300(Unk_MeratPremium& premium)
+{
+    unsigned int nFlags = premium.FUN_1406a1650();
+    if (!premium.FUN_1406a0090())
+    {
+        FUN_1409c0d20("randomSaleID", premium.m_nRandomSaleId);
+        FUN_1407cbb20("randomExpiredDate", premium.FUN_1406a02c0());
+        if (nFlags & 1)
+        {
+            int nType = FUN_14069c3e0(1);
+            CStringW strPrice = FUN_1409404f0(premium.FUN_1406a1be0(0));
+            CStringW strSalePrice = FUN_1418fef90(nType, premium.FUN_1406a1b30(0));
+            FUN_1407cbb20("price", strPrice);
+            FUN_1407cbb20("salePrice", strSalePrice);
+            FUN_1407cbb20("randomCouponRate", FUN_140938ae0(CStringW(L"s_meratmarket_random_sale"), premium.m_nCouponRate));
+            FUN_1409c1040("priceType", 1);
+        }
+        if (nFlags & 2)
+        {
+            int nType = FUN_14069c3e0(2);
+            CStringW strPrice = FUN_1409404f0(premium.FUN_1406a1be0(0));
+            CStringW strSalePrice = FUN_1418fef90(nType, premium.FUN_1406a1b30(0));
+            FUN_1407cbb20("price2", strPrice);
+            FUN_1407cbb20("salePrice2", strSalePrice);
+            FUN_1407cbb20("randomCouponRate2", FUN_140938ae0(CStringW(L"s_meratmarket_random_sale"), premium.m_nCouponRate));
+            FUN_1409c1040("priceType2", 2);
+        }
+    }
+    else
+        FUN_1409be9b0(premium);
+}
+
+// @0x1409bf780
+// MS2-FUNCTIONAL: string temporaries not matched.
+void ASMeratMarketLimitedProduct::FUN_1409bf780(Unk_MeratPremium& premium)
+{
+    CStringW strRemain;
+    bool bSoldOut = false;
+    if (premium.m_nType == 3)
+    {
+        if (premium.m_nLimitCount > 0)
+        {
+            int nRemain = premium.m_nLimitCount - premium.m_nSoldCount < 0 ? 0 : premium.m_nLimitCount - premium.m_nSoldCount;
+            // The text goes to a local of its own and is dropped: limited products never show "remain".
+            CStringW strText;
+            if (nRemain != 0)
+                strText = FUN_1405c2690(CStringW(L"s_meratmarket_limited_remain"), FUN_140763e10(nRemain));
+            else
+                strText = FUN_14028b8e0(CStringW(L"s_meratmarket_limited_soldout"));
+            bSoldOut = nRemain == 0;
+        }
+    }
+    else if (premium.m_nType == 6 && premium.m_nLimitCount > 0)
+    {
+        int nRemain = premium.m_nLimitCount - premium.m_nSoldCountHome < 0 ? 0 : premium.m_nLimitCount - premium.m_nSoldCountHome;
+        if (nRemain == 0)
+        {
+            bSoldOut = true;
+            strRemain = FUN_14028b8e0(CStringW(L"s_meratmarket_limited_soldout"));
+        }
+        else
+            strRemain = FUN_1405c2690(CStringW(L"s_meratmarket_limited_remain"), FUN_140763e10(nRemain));
+    }
+    if (!strRemain.IsEmpty())
+        FUN_1407cbb20("remain", strRemain);
+    bool bSold = premium.FUN_1406a0a60();
+    if (premium.m_nType == 0 || premium.m_nType == 1 || premium.m_nType == 2)
+        FUN_1407cbbe0("soldOut", bSold);
+    else
+    {
+        FUN_1407cbbe0("soldOut", bSoldOut);
+        FUN_1407cbbe0("soldOutBuyLimit", bSold);
+    }
+}
+
+// @0x1409bfc20
+void ASMeratMarketLimitedProduct::vfunc_8(Unk_MeratPremium& premium)
+{
+    bool bExpired = premium.FUN_1406a0d20(0);
+    FUN_1407cbbe0("expired", bExpired);
+}
+
+// @0x1409bfc60
+ASMeratMarketHomeProduct::ASMeratMarketHomeProduct(int nMovieId)
+    : ASMeratMarketLimitedProduct(nMovieId)
+{
+    m_nProductType = 2;
+}
+
+// @0x1409bfcb0
+ASMeratMarketHomeProduct::ASMeratMarketHomeProduct(const Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketLimitedProduct(v, nMovieId)
+{
+    m_nProductType = 2;
+}
+
+// @0x1409bfd10
+ASMeratMarketHomeProduct::ASMeratMarketHomeProduct(Scaleform::GFx::Value& v, int nMovieId)
+    : ASMeratMarketLimitedProduct(v, nMovieId)
+{
+    m_nProductType = 2;
+}
+
+// @0x1409bfd70
+// MS2-FUNCTIONAL: the per-return locals of the extra button branch were not matched.
+bool ASMeratMarketHomeProduct::vfunc_1(MS2Ptr<Unk_MeratEquipEntry> spEntry, const Unk_MeratViewOpt* pOpt)
+{
+    if (spEntry == 0 || spEntry->FUN_1406ab1a0() == 0)
+        return false;
+    if (!ASMeratMarketLimitedProduct::vfunc_1(spEntry, pOpt))
+        return false;
+    int nUIType = 0;
+    switch (spEntry->FUN_1406a46e0())
+    {
+    case 6:
+        nUIType = 1;
+        break;
+    case 7:
+        nUIType = 2;
+        break;
+    case 8:
+        nUIType = 3;
+        break;
+    }
+    FUN_1407cb9c0("productUIType", nUIType);
+    FUN_1409c05d0(spEntry, pOpt);
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    bool bPreview = premium.FUN_1406a0ea0(0);
+    FUN_1407cbbe0("isPreview", bPreview);
+    if (!bPreview)
+    {
+        if (premium.FUN_1406a1ee0() != 0)
+        {
+            CStringW strText;
+            bool bShow = false;
+            switch (premium.FUN_1406a1ee0())
+            {
+            case 1:
+                FUN_1409c1740()->FUN_140a8b240(strText, &bShow);
+                break;
+            case 2:
+                strText = L"$s_meratmarket_text_changeable_extra_button_label";
+                bShow = true;
+                break;
+            }
+            FUN_1407cbb20("extraButtonText", strText);
+            FUN_1407cbbe0("showExtraButton", bShow);
+            return true;
+        }
+        int nCoinShopId = spEntry->m_premium.m_nCoinShopId;
+        if (FUN_14052d230()->FUN_14059e6a0(nCoinShopId) == 0)
+            return true;
+        FUN_1409c0e60("extraButtonText", L"$s_itemgacha_dialog_coinshop_open");
+        FUN_1407cbbe0("showExtraButton", true);
+    }
+    return true;
+}
+
+// @0x1409c00e0
+bool ASMeratMarketHomeProduct::vfunc_4()
+{
+    return FUN_1422baa20("soldOutBuyLimit").GetBool();
+}
+
+// @0x1409c0140
+void ASMeratMarketHomeProduct::vfunc_6(bool bSoldOut)
+{
+    FUN_1407cbbe0("soldOutBuyLimit", bSoldOut);
+}
+
+// @0x1409c0170
+// MS2-FUNCTIONAL: the description string temporaries were not matched.
+void ASMeratMarketHomeProduct::vfunc_7(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    CStringW strDesc;
+    if (premium.m_nType == 6)
+        strDesc = "";
+    else if (premium.FUN_1406a1f50() && !premium.FUN_1406a0ea0(0) && !premium.FUN_1406a19a0(0).IsNull() &&
+             !premium.FUN_1406a1a70(0).IsNull())
+    {
+        CStringW strFormat = FUN_14028b8e0(CStringW(L"s_meratmarket_home_desc_period"));
+        CStringW strStart;
+        CStringW strEnd;
+        const CStringW& strDateFormat = FUN_14028b8e0(CStringW(L"s_meratmarket_limited_date"));
+        CMsTime tStart = premium.FUN_1406a19a0(0);
+        CMsTime tEnd = premium.FUN_1406a1a70(0);
+        FUN_141b70f90(tStart, strDateFormat, strStart);
+        FUN_141b70f90(tEnd, strDateFormat, strEnd);
+        strDesc = StringFormat((const wchar_t*)strFormat, strStart, strEnd);
+    }
+    if (!strDesc.IsEmpty())
+        FUN_1407cbb20("desc", strDesc);
+}
+
+// @0x1409c0430
+void ASMeratMarketHomeProduct::vfunc_8(Unk_MeratPremium& premium)
+{
+    if (premium.m_nType == 6)
+    {
+        CMsTime tNow(FUN_140869440());
+        if (tNow < premium.m_tSaleStart)
+        {
+            FUN_1409c1180("startNextSaleRemainTime", premium.m_tSaleStart.Get() - tNow.Get());
+            if (premium.m_nFirstSale == 1)
+                FUN_1407cbbe0("firstSaleTimeBefore", true);
+        }
+        else
+        {
+            FUN_1409c1180("endSaleRemainTime", premium.m_tSaleEnd.Get() - tNow.Get());
+            FUN_1409c1180("startNextSaleRemainTime", premium.m_tNextSale.Get() - tNow.Get());
+        }
+    }
+    else
+    {
+        bool bExpired = premium.FUN_1406a0d20(0) && premium.FUN_1406a0d60(0);
+        FUN_1407cbbe0("expired", bExpired);
+    }
+}
+
+// @0x1409c05d0
+// MS2-FUNCTIONAL: the item locals were not matched.
+void ASMeratMarketHomeProduct::FUN_1409c05d0(MS2Ptr<Unk_MeratEquipEntry> spEntry, const Unk_MeratViewOpt* pOpt)
+{
+    if (spEntry == 0)
+        return;
+    Unk_MeratPremium& premium = spEntry->m_premium;
+    void* pPc = FUN_141bd0cc0(FUN_1403ed2d0());
+    FUN_1407cb9c0("sn", premium.m_nSn);
+    FUN_1407cb9c0("itemGrade", premium.m_nItemGrade);
+    MS2Ptr<Unk_MeratFilter> spFilter(0);
+    if (pOpt != NULL)
+        spFilter = pOpt->m_spFilter;
+    unsigned int nJob = FUN_141658e60(pPc);
+    int nLevel = FUN_141654700(pPc);
+    int nItemId = spEntry->FUN_1406a4640();
+    MS2Ptr<CItemData> spData = FUN_14053f870(nItemId);
+    if (spData)
+    {
+        CStringW strFunction = spData->function.name;
+        FUN_1407cba60("iconPath", spData->FUN_14053fdd0());
+        if (spFilter.get() != NULL)
+            FUN_1407cbbe0("disable", !spFilter->FUN_140ebb780(nJob, nLevel, spData));
+        if (spData->property.slotMax > 1)
+        {
+            int nCount = premium.FUN_1406a17f0(0);
+            FUN_1407cb9c0("itemCount", nCount);
+        }
+        if (spData->FUN_14053da20())
+        {
+            int nSeasonId = spData->FUN_14053dec0();
+            int nSeason = FUN_14052d230()->FUN_14059ed00(nSeasonId);
+            FUN_1409c0d20("itemSeason", nSeason);
+        }
+    }
+    FUN_1407cbbe0("ugctag", false);
+}
+
+// @0x1409c0d20
+void ASObj::FUN_1409c0d20(const char* szName, unsigned int n)
+{
+    ASData data;
+    data.FUN_1422b8030(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c0dc0
+void ASObj::FUN_1409c0dc0(const char* szName, const char* szValue)
+{
+    ASData data;
+    data.FUN_1422b82b0(szValue);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c0e60
+void ASObj::FUN_1409c0e60(const char* szName, const wchar_t* szValue)
+{
+    ASData data;
+    data.FUN_1422b8310(szValue);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c0f00
+void ASMeratMarketProductBase::FUN_1409c0f00(const char* szName, int n)
+{
+    ASData data;
+    data.FUN_1422b7f70(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c0fa0
+void ASMeratMarketProductBase::FUN_1409c0fa0(const char* szName, int n)
+{
+    ASData data;
+    data.FUN_1422b7f70(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c1040
+void ASMeratMarketProductBase::FUN_1409c1040(const char* szName, int n)
+{
+    ASData data;
+    data.FUN_1422b7f70(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c10e0
+void ASMeratMarketProductBase::FUN_1409c10e0(const char* szName, int n)
+{
+    ASData data;
+    data.FUN_1422b7f70(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c1180
+void ASObj::FUN_1409c1180(const char* szName, __int64 n)
+{
+    ASData data;
+    data.FUN_1422b81c0(n);
+    FUN_1407cd930(&m_value, szName, data.FUN_1422b9260());
+}
+
+// @0x1409c1640
+void Unk_MeratOid::FUN_1409c1640(CStringW strOid)
+{
+    FUN_140207730();
+    if (strOid.GetLength() <= 2)
+        return;
+    wchar_t chKind = strOid[0];
+    CStringW strNumber = strOid.Mid(2);
+    if (chKind == L'P')
+        m_nPremiumId = _wtoi(strNumber);
+    else if (chKind == L'U')
+        m_nUgcId = _wtoi64(strNumber);
 }
