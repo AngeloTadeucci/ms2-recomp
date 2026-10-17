@@ -280,6 +280,9 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410bf470();
+    void FUN_1410ce600(int nItemId, Unk_Int3 pt, int nZ);
+    Unk_CMISEntityRef FUN_1410cb1b0();
     void FUN_1410bf610(struct Unk_CMISCubeList* pPlaced, struct Unk_CMISSetRef rSet, struct Unk_CMISCubeList* pOthers);
     void FUN_1410c4850(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, int nField50, int nField54,
         unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
