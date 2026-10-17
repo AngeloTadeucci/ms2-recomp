@@ -16,7 +16,11 @@ public:
     void FUN_140d738e0() override;                      // 0x14180fbb0
     int FUN_140d738c0() override;                       // 0x14180fbe0
     int FUN_140d738d0() override;                       // 0x14180fc30
+    int GetQuestType() override;                        // 0x141810970
+    void DecodeStart(CInPacket& packet) override;       // 0x14180f0d0
     void DecodeProgress(CInPacket& packet) override;    // 0x14180f290
+    void Complete(CInPacket& packet) override;          // 0x14180f2c0
+    int FUN_14180fc80();                                // the quest can be dispatched/started here
     int m_78, m_7c;
 };
 MS2_CHECK_SIZE(CStoryQuest, 0x80);
@@ -25,43 +29,48 @@ class CEpicQuest : public CStoryQuest
 {
 public:
     CEpicQuest();
+    virtual ~CEpicQuest();
     int GetQuestType() override;
 };
 MS2_CHECK_SIZE(CEpicQuest, 0x80);
 
-class CWorldQuest : public CQuest
+class CWorldQuest : public CStoryQuest
 {
 public:
     CWorldQuest();
+    virtual ~CWorldQuest();
     int GetQuestType() override;
-    __int64 m_78;
 };
 MS2_CHECK_SIZE(CWorldQuest, 0x80);
 
-class CEventQuest : public CQuest
+class CEventQuest : public CStoryQuest
 {
 public:
     CEventQuest();
+    virtual ~CEventQuest();
     int GetQuestType() override;
-    __int64 m_78;
 };
 MS2_CHECK_SIZE(CEventQuest, 0x80);
 
-class CGuildQuest : public CQuest
+class CGuildQuest : public CStoryQuest
 {
 public:
     CGuildQuest();
+    virtual ~CGuildQuest();
     int GetQuestType() override;
-    __int64 m_78;
 };
 MS2_CHECK_SIZE(CGuildQuest, 0x80);
 
-class CFieldQuest : public CQuest
+class CFieldQuest : public CStoryQuest
 {
 public:
     CFieldQuest();
+    virtual ~CFieldQuest();
     int GetQuestType() override;
-    __int64 m_78;
+    int GetTrackingState() override;                    // 0x141810070
+    unsigned char GetFlag() override;                   // 0x1418100c0
+    void Complete(CInPacket& packet) override;          // 0x141810140
+    int FUN_140d738d0() override;                       // 0x1418101a0
 };
 MS2_CHECK_SIZE(CFieldQuest, 0x80);
 

@@ -13,6 +13,7 @@ class CStringTable : public TSingleton<CStringTable>, public CValidData<CStringT
 public:
     CStringTable();                                         // 0x141810bf0
     virtual ~CStringTable();
+    CStringW FUN_141811980(int nTable, int nId);            // the string of a table row
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_10[0x2a0 - 0x10];

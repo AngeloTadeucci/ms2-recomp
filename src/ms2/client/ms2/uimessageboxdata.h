@@ -213,6 +213,7 @@ public:
 
     // Accessors uimessagebox.cpp calls (0x141a01570-0x141a03470 and outside COMDATs).
     void FUN_141a01570(const CStringW& strMsg);                     // set the message text
+    void FUN_141a015d0(const CStringW& str);                        // quest dispatch box: the sender name argument
     void FUN_141a02810(CStringW strTag);                            // the clicked tag (OnClick)
     const CString& FUN_141a02be0() const;                           // the sound event name
     __int64 FUN_141a02c00() const;                                  // the item uid
