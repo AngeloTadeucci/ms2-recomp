@@ -3,25 +3,108 @@
 // MS2-RANGE: 0x140f6c680-0x140f7d060 .text$mn
 // MS2-RANGE: 0x1400e04c0-0x1400e09d0 .text$di
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??__Es_strSortTypeNames1@@YAXXZ 0x1400e04c0 ; probe
+// MS2-PIN: ??__Es_strManageSound@@YAXXZ 0x1400e0580 ; probe
+// MS2-PIN: ??__Es_strSkill1@@YAXXZ 0x1400e05b0 ; probe
+// MS2-PIN: ??__Es_condition1@@YAXXZ 0x1400e05e0 ; probe
+// MS2-PIN: ??__Es_strSortTypeNames2@@YAXXZ 0x1400e0660 ; probe
+// MS2-PIN: ??__Es_strSkill2@@YAXXZ 0x1400e0720 ; probe
+// MS2-PIN: ??__Es_strSkill3@@YAXXZ 0x1400e0750 ; probe
+// MS2-PIN: ??__Es_condition2@@YAXXZ 0x1400e0780 ; probe
+// MS2-PIN: ??__Es_strStun1@@YAXXZ 0x1400e07d0 ; probe
+// MS2-PIN: ??__Es_strSortTypeNames3@@YAXXZ 0x1400e0800 ; probe
+// MS2-PIN: ??__Es_strStun2@@YAXXZ 0x1400e08c0 ; probe
+// MS2-PIN: ??__Es_strStun3@@YAXXZ 0x1400e08f0 ; probe
+// MS2-PIN: ??__Es_condition3@@YAXXZ 0x1400e0920 ; probe
+// MS2-PIN: ??__Es_strUpgradeButtonSound@@YAXXZ 0x1400e0970 ; probe
+// MS2-PIN: ??__Es_strUpgradeSound@@YAXXZ 0x1400e09a0 ; probe
+// MS2-PIN: ??$FUN_14028dfa0@IW4Unk_SocketPageResult@@@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V01@AEBIAEBW4Unk_SocketPageResult@@@Z 0x140f6e850 ; unique
 // MS2-PIN: ?get@?$MS2Ptr@VSaleParam@ItemSocketSystemPageBase@@@@QEBAPEAVSaleParam@ItemSocketSystemPageBase@@XZ 0x140f6ed00 ; unique
-// MS2-PIN: ??_G?$MS2Ptr@VCItem@@@@QEAAPEAXI@Z 0x140f739c0 ; unique
-// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCItem@@@@@Z 0x140f73a40 ; unique
-// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140f73b70 ; unique
-// MS2-PIN: ?GetAt@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140f73bd0 ; unique
-// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x140f73c20 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VCreateParam@ItemSlotBag@@@@QEAA@AEBV0@@Z 0x140f7af30 ; prop
-// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@PEAVCItem@@@Z 0x140f7af70 ; prop
-// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@$$QEAV0@@Z 0x140f7afa0 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@H@Z 0x140f7b010 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VASMovieClip@@@@QEAA@XZ 0x140f7b060 ; unique
-// MS2-PIN: ??1SaleParam@ItemSocketSystemPageBase@@UEAA@XZ 0x140f7b480 ; prop
-// MS2-PIN: ??4?$MS2Ptr@VCItem@@@@QEAAAEAV0@AEBV0@@Z 0x140f7b5e0 ; unique
-// MS2-PIN: ??_GSaleParam@ItemSocketSystemPageBase@@UEAAPEAXI@Z 0x140f7b810 ; prop
-// MS2-PIN: ?IsEmpty@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEBA_NXZ 0x140f7bd40 ; unique
-// MS2-PIN: ?AddRef@?$MS2Ptr@VTSocketGemStoneBind@@@@AEBAXXZ 0x140f7c920 ; prop
-// MS2-PIN: ?Reference@?$MS2Ptr@VTSocketGemStoneInfo@@@@CAXPEAVTSocketGemStoneInfo@@@Z 0x140f7c950 ; prop
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCreateParam@ItemSlotBag@@@@AEBAXPEAX@Z 0x140f7c970 ; prop
+// MS2-PIN: ?GetAt@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEBAAEBV?$MS2Ptr@VCItem@@@@_K@Z 0x140f6ed60 ; unique
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneManage@@P80@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@Z 0x140f72f60 ; order
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneManage@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140f73030 ; order
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneManage@@P80@EAA_NHAEBVCMsgBoxData@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140f73100 ; order
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneManage@@P80@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@0@0@Z 0x140f731d0 ; prop
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneManage@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x140f73240 ; prop
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneManage@@P80@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@0@Z 0x140f732b0 ; prop
+// MS2-PIN: ??$forward@AEBQ8ItemSocketSystemPageGemStoneManage@@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YAAEBQ8ItemSocketSystemPageGemStoneManage@@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@ZAEBQ81@EAAX01@Z@Z 0x140f73500 ; order
+// MS2-PIN: ??$forward@AEBQ8ItemSocketSystemPageGemStoneManage@@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YAAEBQ8ItemSocketSystemPageGemStoneManage@@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@ZAEBQ81@EAAX0@Z@Z 0x140f73510 ; order
+// MS2-PIN: ??$forward@AEBQ8ItemSocketSystemPageGemStoneManage@@EAA_NHAEBVCMsgBoxData@@@Z@std@@YAAEBQ8ItemSocketSystemPageGemStoneManage@@EAA_NHAEBVCMsgBoxData@@@ZAEBQ81@EAA_NH0@Z@Z 0x140f73520 ; order
+// MS2-PIN: ??$forward@AEBQEAVItemSocketSystemPageGemStoneManage@@@std@@YAAEBQEAVItemSocketSystemPageGemStoneManage@@AEBQEAV1@@Z 0x140f73530 ; prop
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@Z 0x140f73540 ; order
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140f73590 ; order
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneManage@@AEBQ82@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140f735e0 ; order
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@QEAA@AEBV01@@Z 0x140f73670 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@Z 0x140f736c0 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBV01@@Z 0x140f73710 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@Z 0x140f73760 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBV01@@Z 0x140f737b0 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@Z 0x140f73800 ; prop
+// MS2-PIN: ??1?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAA@XZ 0x140f738b0 ; order
+// MS2-PIN: ??1?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA@XZ 0x140f738d0 ; prop
+// MS2-PIN: ??_EItemSocketSystemPageGemStoneManage@@WDA@EAAPEAXI@Z 0x140f738e8 ; unique
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEAAPEAXI@Z 0x140f73900 ; prop
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAPEAXI@Z 0x140f73940 ; order
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAAPEAXI@Z 0x140f73980 ; prop
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f74020 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f74080 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f740e0 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z 0x140f74140 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140f74180 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x140f741b0 ; unique
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@AEAVItemInfoSlot@@AEAVASSlot@@@Z 0x140f741f0 ; prop
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@AEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140f74230 ; prop
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@CA_NAEAU?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@HAEBVCMsgBoxData@@@Z 0x140f74270 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f742b0 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f74310 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneManage@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f74370 ; unique
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@Z 0x140f7a530 ; order
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@Z 0x140f7a600 ; order
+// MS2-PIN: ??$?0PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z$0A@@?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@QEAA@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140f7a6d0 ; order
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@0@0@Z 0x140f7a870 ; prop
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@0@0@Z 0x140f7a8e0 ; prop
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@0@Z 0x140f7a950 ; prop
+// MS2-PIN: ??$?8PEAVItemSocketSystemPageGemStoneUpgrade@@P80@EAAXPEAVNotifyObject@@@Z@std@@YA_NAEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@0@0@Z 0x140f7a9c0 ; prop
+// MS2-PIN: ??$forward@AEBQ8ItemSocketSystemPageGemStoneUpgrade@@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YAAEBQ8ItemSocketSystemPageGemStoneUpgrade@@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@ZAEBQ81@EAAX01@Z@Z 0x140f7aa30 ; order
+// MS2-PIN: ??$forward@AEBQ8ItemSocketSystemPageGemStoneUpgrade@@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@YAAEBQ8ItemSocketSystemPageGemStoneUpgrade@@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@ZAEBQ81@EAAX01@Z@Z 0x140f7aa40 ; order
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@Z 0x140f7aa80 ; order
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@Z 0x140f7aad0 ; order
+// MS2-PIN: ??$make_pair@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@YA?AU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@0@AEBQEAVItemSocketSystemPageGemStoneUpgrade@@AEBQ82@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@Z 0x140f7ab20 ; order
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@QEAA@AEBV01@@Z 0x140f7acb0 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@Z 0x140f7ad00 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@QEAA@AEBV01@@Z 0x140f7ad50 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@Z 0x140f7ada0 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBV01@@Z 0x140f7adf0 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@QEAA@AEBU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@Z 0x140f7ae40 ; prop
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x140f7ae90 ; prop
+// MS2-PIN: ??1?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAA@XZ 0x140f7b3d0 ; prop
+// MS2-PIN: ?get@?$MS2Ptr@VTGemStoneInEquip@@@@QEBAPEAVTGemStoneInEquip@@XZ 0x140f7b660 ; unique
+// MS2-PIN: ??C?$MS2Ptr@VTGemStoneInEquip@@@@QEBAPEAVTGemStoneInEquip@@XZ 0x140f7b670 ; unique
+// MS2-PIN: ??_EItemSocketSystemPageGemStoneUpgrade@@WDA@EAAPEAXI@Z 0x140f7b680 ; unique
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEAAPEAXI@Z 0x140f7b690 ; prop
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@UEAAPEAXI@Z 0x140f7b6d0 ; prop
+// MS2-PIN: ??_G?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAPEAXI@Z 0x140f7b750 ; prop
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f7ca60 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f7cac0 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f7cb20 ; unique
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x140f7cb80 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z 0x140f7cbe0 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@UEAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z 0x140f7cc20 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140f7cc60 ; unique
+// MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x140f7cc90 ; unique
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@AEAVItemInfoSlot@@AEAVASSlot@@@Z 0x140f7ccc0 ; prop
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@AEAVItemInfoSlot@@AEAVASTooltip@@@Z 0x140f7cd00 ; prop
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@AEBUParams@FunctionHandler@GFx@Scaleform@@@Z 0x140f7cd40 ; prop
+// MS2-PIN: ??$Call@VItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@CAXAEAU?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@PEAVNotifyObject@@@Z 0x140f7cd80 ; prop
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASSlot@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASSlot@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f7cdc0 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@std@@@?$Delegate@$$A6AXAEAVItemInfoSlot@@AEAVASTooltip@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f7ce20 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@std@@@?$Delegate@$$A6AXAEBUParams@FunctionHandler@GFx@Scaleform@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f7ce80 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVItemSocketSystemPageGemStoneUpgrade@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x140f7cee0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1TGemStoneInEquip@@UEAA@XZ 0x140f7b4e0
+// MS2-PIN: ?RemoveKey@?$CAtlMap@HV?$MS2Ptr@VCItem@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@3@@ATL@@QEAA_NH@Z 0x140f73e20
+// MS2-PIN: ??0?$MS2Ptr@VSaleParam@ItemSocketSystemPageBase@@@@QEAA@AEBV0@@Z 0x140f7af30
+// MS2-PIN: ??0?$MS2Ptr@VSaleParam@ItemSocketSystemPageBase@@@@QEAA@PEAVSaleParam@ItemSocketSystemPageBase@@@Z 0x140f7af70
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\itemsocketsystempagebase.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/client/ms2/itemsocketsystempagebase.h"
@@ -51,6 +134,7 @@
 #include "ms2/placeholder/notifygameeventchanged.h"
 #include "ms2/placeholder/astooltip.h"
 #include "ms2/placeholder/astextfield.h"
+#include "hook/ms2hook.h"
 
 // The header statics of the three original TUs of this range (itemsocketsystempagebase.cpp, the gemstone manage page,
 // the gemstone upgrade page): each TU has the sort-type table, two labels and the condition object, then its own
@@ -163,6 +247,9 @@ CStringW FUN_14062b4f0(CStringW, const int*);
 CStringW FUN_1409e8970(CStringW, const int&, const int&);
 CStringW FUN_1405c2690(CStringW, const CStringW&);
 CStringW FUN_1409404f0(__int64);
+#ifdef __clang__
+CStringW FUN_1401d0160(const wchar_t*, const CStringW&);     // ATL::operator+(const wchar_t*, const CStringW&)
+#endif
 MS2Ptr<CMsgBoxData> FUN_140d73d20(int, CStringW, int, CStringW);
 void FUN_140d73c60(MS2Ptr<CMsgBoxData>);
 CStringW FUN_140719730(bool);
@@ -275,6 +362,27 @@ void FUN_140629d60(CCItemSocketSystemPacket::SelectItemResult&, CInPacket&);
 void FUN_140629a30(CCItemSocketSystemPacket::GemStoneUpgradeResult&, CInPacket&);
 
 
+// The slot callback delegate's out-of-line members (delegate.h declares them only; the exe copies are COMDATs of
+// other units).
+template <> inline Delegate<void(ItemInfoSlot&, ASSlot&)>::~Delegate()
+{
+    if (m_pImpl != 0)
+        delete m_pImpl;
+}
+
+template <> inline Delegate<void(ItemInfoSlot&, ASSlot&)>& Delegate<void(ItemInfoSlot&, ASSlot&)>::operator=(const Delegate& o)
+{
+    if (this != &o) {
+        if (m_pImpl != 0)
+            delete m_pImpl;
+        if (o.m_pImpl == 0)
+            m_pImpl = 0;
+        else
+            m_pImpl = o.m_pImpl->vfunc_1();
+    }
+    return *this;
+}
+
 // @0x140f6c680
 ItemSocketSystemPageBase::ItemSocketSystemPageBase() : m_restoreInventory(false) {}
 
@@ -287,6 +395,7 @@ void ItemSocketSystemPageBase::vfunc_1()
     if (m_root.get() != 0)
         m_root->vfunc_3(0);
 }
+MS2_REPLACE_METHOD(0x140F6C720, ItemSocketSystemPageBase, vfunc_1, 76, 0x58421210);
 
 // @0x140f6c780
 void ItemSocketSystemPageBase::vfunc_2()
@@ -302,6 +411,7 @@ void ItemSocketSystemPageBase::vfunc_2()
     }
     m_restoreInventory = false;
 }
+MS2_REPLACE_METHOD(0x140F6C780, ItemSocketSystemPageBase, vfunc_2, 132, 0x78E9C640);
 
 // @0x140f6c810
 void ItemSocketSystemPageBase::vfunc_4(MS2Ptr<AScript> root)
@@ -311,6 +421,7 @@ void ItemSocketSystemPageBase::vfunc_4(MS2Ptr<AScript> root)
     if (m_root.get() != 0)
         m_root->vfunc_3(1);
 }
+MS2_REPLACE_METHOD(0x140F6C810, ItemSocketSystemPageBase, vfunc_4, 168, 0x44925C2B);
 
 // @0x140f6c8c0
 void ItemSocketSystemPageBase::vfunc_6() {}
@@ -321,12 +432,13 @@ void ItemSocketSystemPageBase::vfunc_7(MS2Ptr<AScript> root)
     if (m_root.get() != 0)
         FUN_140f6d620(1);
 }
+MS2_REPLACE_METHOD(0x140F6C8D0, ItemSocketSystemPageBase, vfunc_7, 76, 0xBED2B8DC);
 
 // @0x140f6c930
 // MS2-FUNCTIONAL: equivalent packet decoding and localized errors; formatter and temporary layout differ.
 void ItemSocketSystemPageBase::vfunc_8(CInPacket* packet)
 {
-    unsigned operation = packet->vfunc_o8_1();
+    int operation = packet->vfunc_o8_1();
     Unk_SocketPageResult result = static_cast<Unk_SocketPageResult>(packet->vfunc_o8_3());
     int code = static_cast<int>(result);
     if (code < 5 || code > 12) {
@@ -473,12 +585,14 @@ void ItemSocketSystemPageBase::FUN_140f6d590(const CString& name, MS2Ptr<CItem> 
     FUN_141415600(name);
     FUN_141415450(name, item, 0, icon, flags);
 }
+MS2_REPLACE_METHOD(0x140F6D590, ItemSocketSystemPageBase, FUN_140f6d590, 132, 0xA8E7D8A5);
 
 // @0x140f6d620
 void ItemSocketSystemPageBase::FUN_140f6d620(int enabled)
 {
     FUN_1412761e0(MS2Ptr<AScript>(m_root), enabled);
 }
+MS2_REPLACE_METHOD(0x140F6D620, ItemSocketSystemPageBase, FUN_140f6d620, 69, 0x2AEDD3B6);
 
 // @0x140f6d670
 int ItemSocketSystemPageBase::FUN_140f6d670()
@@ -487,6 +601,7 @@ int ItemSocketSystemPageBase::FUN_140f6d670()
         return 7;
     return 6;
 }
+MS2_REPLACE_METHOD(0x140F6D670, ItemSocketSystemPageBase, FUN_140f6d670, 51, 0x9B421BE7);
 
 // @0x140f6d6b0
 // MS2-FUNCTIONAL: equivalent UID search; return and cleanup layout differ.
@@ -526,6 +641,7 @@ void ItemSocketSystemPageBase::FUN_140f6d8f0(CAtlArray<MS2Ptr<CItem>>& items, in
     items.SetAt(second, firstItem);
     items.SetAt(first, secondItem);
 }
+MS2_REPLACE_METHOD(0x140F6D8F0, ItemSocketSystemPageBase, FUN_140f6d8f0, 170, 0x9CBA533A);
 
 // @0x140f6d9a0
 // MS2-FUNCTIONAL: typed list erase and bag refresh preserve calls and branches.
@@ -705,12 +821,14 @@ void ItemSocketSystemPageBase::FUN_140f6e700(__int64 uid)
 
 // @0x140f6e780
 void ItemSocketSystemPageBase::FUN_140f6e780() { m_restoreInventory = true; }
+MS2_REPLACE_METHOD(0x140F6E780, ItemSocketSystemPageBase, FUN_140f6e780, 15, 0xE4A426E5);
 
 // @0x140f6e830
 ItemInfoSlot* FUN_140f6e830(const CString& name)
 {
     return FUN_140c69ab0(FUN_1422c8e90(name));
 }
+MS2_REPLACE(0x140F6E830, FUN_140f6e830, 32, 0xCC520D13);
 
 // The enum customization of the formatter for the result code (the exe copy keeps a stack cookie and scratch locals).
 // @0x140f6eb80
@@ -745,6 +863,7 @@ void ItemSocketSystemPageGemStoneManage::vfunc_1()
     ItemSocketSystemPageBase::vfunc_1();
     FUN_140f70620();
 }
+MS2_REPLACE_METHOD(0x140F6F2F0, ItemSocketSystemPageGemStoneManage, vfunc_1, 34, 0x75F0EDD4);
 
 // @0x140f6f320
 // MS2-FUNCTIONAL: real controls and callback delegates; temporary and cleanup layout differ.
@@ -922,6 +1041,7 @@ void ItemSocketSystemPageGemStoneManage::FUN_140f70620()
     m_selectedType = 0;
     FUN_1419caeb0(FUN_140a6a840(), this);
 }
+MS2_REPLACE_METHOD(0x140F70620, ItemSocketSystemPageGemStoneManage, FUN_140f70620, 316, 0x163B1C62);
 
 // @0x140f70770
 // MS2-FUNCTIONAL: typed inventory and equipped-item enumeration; smart-pointer temporaries differ.
@@ -1088,7 +1208,12 @@ void ItemSocketSystemPageGemStoneManage::FUN_140f71530(int slot)
                 CStringW name = FUN_1401a9d70()->FUN_141811980(1, itemId);
                 CStringW msg = FUN_1409e8970(CStringW(L"s_itemsocketsystem_msg_ask_gemstone_put_off"), shown, costCount);
                 if (fee != 0)
+#ifdef __clang__
+                    // clang otherwise emits an unavailable CopyChars DLL import; bind the exe's operator+.
+                    msg += FUN_1401d0160(L"\n", FUN_1405c2690(CStringW(L"s_itemenchant_fee"), FUN_1409404f0(fee)));
+#else
                     msg += L"\n" + FUN_1405c2690(CStringW(L"s_itemenchant_fee"), FUN_1409404f0(fee));
+#endif
                 box = FUN_140d73d20(0x1a, msg, 0, CStringW(L""));
                 if (box == 0)
                     return;
@@ -1293,12 +1418,14 @@ void FUN_140f73320(CMsgBoxData* box, bool value)
 {
     FUN_140165320(&box->m_args, FUN_140719730(value));
 }
+MS2_REPLACE(0x140F73320, FUN_140f73320, 93, 0x0E528F8D);
 
 // @0x140f73380
 Unk_GemStoneSlot* FUN_140f73380(const CString& name)
 {
     return FUN_140cfe620(FUN_1422c8e90(name));
 }
+MS2_REPLACE(0x140F73380, FUN_140f73380, 32, 0xF09409FE);
 
 // @0x140f733a0
 MS2Ptr<CGemStoneItem> ItemSocketSystemPageGemStoneManage::FUN_140f733a0(CAtlArray<MS2Ptr<CGemStoneItem>>& items, unsigned index)
@@ -1326,6 +1453,28 @@ int FUN_140f73c10() { return 0x4f75; }
 
 // @0x140f743d0
 MS2_EMIT_CRT_MEMMOVE_S_COPY(2);
+
+// The tooltip callback delegate's out-of-line members (delegate.h declares them only).
+// @0x140f7b310
+template <> inline Delegate<void(ItemInfoSlot&, ASTooltip&)>::~Delegate()
+{
+    if (m_pImpl != 0)
+        delete m_pImpl;
+}
+
+// @0x140f7b520
+template <> inline Delegate<void(ItemInfoSlot&, ASTooltip&)>& Delegate<void(ItemInfoSlot&, ASTooltip&)>::operator=(const Delegate& o)
+{
+    if (this != &o) {
+        if (m_pImpl != 0)
+            delete m_pImpl;
+        if (o.m_pImpl == 0)
+            m_pImpl = 0;
+        else
+            m_pImpl = o.m_pImpl->vfunc_1();
+    }
+    return *this;
+}
 
 // @0x140f744f0
 TGemStoneInEquip::TGemStoneInEquip(MS2Ptr<CItem> gem, MS2Ptr<CItem> equipment, int slot)
@@ -1935,7 +2084,6 @@ void ItemSocketSystemPageGemStoneUpgrade::FUN_140f78f30(CInPacket*)
 }
 
 // @0x140f79210
-// MS2-FUNCTIONAL: page reset; the notify delegate temporary differs.
 void ItemSocketSystemPageGemStoneUpgrade::FUN_140f79210()
 {
     FUN_14141f970(m_gemsName);
@@ -1963,6 +2111,7 @@ void ItemSocketSystemPageGemStoneUpgrade::FUN_140f79430()
     m_ingredients.RemoveAll();
     m_next = 0;
 }
+MS2_REPLACE_METHOD(0x140F79430, ItemSocketSystemPageGemStoneUpgrade, FUN_140f79430, 86, 0xC033A0DB);
 
 // @0x140f79490
 void ItemSocketSystemPageGemStoneUpgrade::FUN_140f79490()
@@ -1973,6 +2122,7 @@ void ItemSocketSystemPageGemStoneUpgrade::FUN_140f79490()
     if (found == 0)
         m_selectedUid = 0;
 }
+MS2_REPLACE_METHOD(0x140F79490, ItemSocketSystemPageGemStoneUpgrade, FUN_140f79490, 163, 0x0802022A);
 
 // @0x140f79540
 void ItemSocketSystemPageGemStoneUpgrade::FUN_140f79540()
@@ -2133,6 +2283,7 @@ MS2Ptr<CItem> ItemSocketSystemPageGemStoneUpgrade::FUN_140f7a190(__int64 uid, in
 {
     return FUN_140f6d6b0(uid, m_gems, index);
 }
+MS2_REPLACE_METHOD(0x140F7A190, ItemSocketSystemPageGemStoneUpgrade, FUN_140f7a190, 95, 0xF595C34E);
 
 // @0x140f7a200
 // MS2-FUNCTIONAL: gemstone replacement in the list and the socket record map.
@@ -2179,3 +2330,4 @@ ItemSocketSystemPageBase::SaleParam::SaleParam() : enabled(0), value1c(0), rate(
 
 // @0x140f7bd70
 bool CCItemSocketSystemPacket::GemStoneInEquip::vfunc_0() { return m_nUid > 0 && m_nSlot >= 0; }
+MS2_REPLACE_METHOD(0x140F7BD70, CCItemSocketSystemPacket::GemStoneInEquip, vfunc_0, 57, 0x9021F1E2);
