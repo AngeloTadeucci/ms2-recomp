@@ -2813,3 +2813,5 @@ inflateInit_	142723ad0	func
 ??1Unk_RemakeOptionList68@@QEAA@XZ	14027e4b0	func
 ??4Unk_RemakeOptionList68@@QEAAAEAU0@AEBU0@@Z	14027ebb0	func
 ?clear@Unk_RemakeOptionList68@@QEAAXXZ	14028a690	func
+??0UpdateAffectsFunctor@@QEAA@XZ	1409a79c0	func
+??1UpdateAffectsFunctor@@QEAA@XZ	1409a7d30	func
