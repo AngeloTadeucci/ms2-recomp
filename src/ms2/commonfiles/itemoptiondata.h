@@ -7,6 +7,7 @@
 #include <utility>
 #include <functional>
 #include <map>
+#include <atlcoll.h>
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/ms2layout.h"
@@ -17,7 +18,11 @@ class CItemOption;
 class Unk_140165cf0;                // game TinyXML element
 class Unk_Random;                   // randomeffectparam.h
 class ItemOptionRandom;
-class Unk_1405e74c0;                // the generation target held by a random context (MS2Ptr at +0x30; not recovered)
+class ItemOptionValueRandom;
+class Unk_ItemOptionPreset;
+class Unk_1405e74c0;                // the reroll request a random context works on (below)
+namespace Probability { class LogContext; }     // probability.cpp: one logged roll
+typedef std::vector<MS2Ptr<Probability::LogContext> > Unk_ProbabilityLog;
 
 // A fixed or lua-computed stat value of an option row (<option name value> in itemoptionconstant.xml).
 class ItemOptionValue : public CPtred
@@ -105,7 +110,14 @@ public:
     int FUN_1405d9bb0(int nStatId);
     ItemOptionStatGroup FUN_1405d9e00();        // the random row's statGroup
     int FUN_1405d9e30();                        // m_n50
+    void FUN_1405d9be0(MS2Ptr<Unk_1405e74c0> spTarget);    // sets the reroll request
+    BOOL FUN_1405d9c30(CString strName);        // the option already holds a stat of the name's exclusive group
+    BOOL FUN_1405d9d10(CString strName);        // the same for the reroll result
     MS2Ptr<CItemOption> FUN_1405d9e50();        // the option
+    int FUN_1405d9ea0(MS2Ptr<ItemOptionValueRandom> spValue, Unk_Random* pRandom, int* pCount, Unk_ProbabilityLog* pLogs);
+    int FUN_1405da4b0(MS2Ptr<ItemOptionValueRandom> spValue, int* pCount, int nIndex, Unk_ProbabilityLog* pLogs);
+    int FUN_1405daad0(MS2Ptr<ItemOptionValueRandom> spValue, int* pCount, Unk_ProbabilityLog* pLogs);
+    BOOL FUN_1405db0b0(MS2Ptr<CItemOption> spOption, CString strName);
     int m_nType;                                // +0x18 which table value FUN_1405d2800 reads (1, 2 or other)
     MS2Ptr<CItemOption> m_spOption;             // +0x20
     MS2Ptr<Unk_1405e74c0> m_spTarget;           // +0x30
@@ -160,22 +172,23 @@ MS2_CHECK_SIZE(ItemOptionConstant, 0x38);
 
 unsigned FUN_140767ff0();                       // random number
 
-// Weighted stat choice of a variation row: every entry is keyed by the running weight total, so a roll in 1..total
-// finds the entry it falls on with lower_bound. The same shape as ItemDropPicker (itemdroptable.h) plus a Pick with
-// a given generator; names invented.
-class Unk_ItemOptionStatPicker
+// Weighted choice: every entry is keyed by the running weight total, so a roll in 1..total finds the entry it falls
+// on with lower_bound. The same shape as ItemDropPicker (itemdroptable.h) plus picks with a given generator; names
+// invented. T = int for the stat variation rows, ItemOptionValueRandom* for the random option rows.
+template <class T>
+class Unk_ItemOptionPicker
 {
 public:
     struct Entry
     {
         Entry() : weight(0), index(0) {}
-        int value;
+        T value;
         unsigned weight;
         int index;                                  // insertion order
     };
 
-    Unk_ItemOptionStatPicker() : m_total(0) {}
-    void Register(unsigned weight, int value)
+    Unk_ItemOptionPicker() : m_total(0) {}
+    void Register(unsigned weight, T value)
     {
         if (weight < 1)
             return;
@@ -191,13 +204,13 @@ public:
         if (m_total == 0)
             return false;
         unsigned roll = FUN_140767ff0() % m_total + 1;
-        std::map<unsigned, Entry>::const_iterator it = m_entries.lower_bound(roll);
+        typename std::map<unsigned, Entry>::const_iterator it = m_entries.lower_bound(roll);
         if (it == m_entries.end())
             return false;
         out = it->second;
         return true;
     }
-    bool Pick(int& out) const
+    bool Pick(T& out) const
     {
         Entry entry;
         if (Pick(entry) == true)
@@ -207,12 +220,17 @@ public:
         }
         return false;
     }
-    bool Pick(Unk_Random* pRandom, int& out) const;     // itemoptiondata_2.cpp
-private:
+    bool Pick(Unk_Random* pRandom, T& out) const;       // itemoptiondata_2.cpp
+    bool IsValid() const { return m_total != 0; }
+    // n distinct entries: each pick removes its entry and rebuilds the running totals of the rest.
+    bool PickN(std::vector<T>& out, unsigned n, Unk_Random* pRandom) const;    // itemoptiondata_2.cpp
+
     std::map<unsigned, Entry> m_entries;
     unsigned m_total;
 };
+typedef Unk_ItemOptionPicker<int> Unk_ItemOptionStatPicker;
 MS2_CHECK_SIZE(Unk_ItemOptionStatPicker, 0x18);
+typedef Unk_ItemOptionPicker<ItemOptionValueRandom*> Unk_ItemOptionValuePicker;
 
 // The stat variation rows (itemoptionvariation.xml): a weighted stat choice.
 class ItemOptionVariationData : public CPtred
@@ -247,6 +265,33 @@ public:
     int FUN_1405d3cc0();                        // "probVer"
     int FUN_1405d3ce0();                        // "levelGroupID"
     bool FUN_1405d3d00(Unk_140165cf0* pElem);   // xml read
+    // Rolls the random options onto an option.
+    void FUN_1405d3f70(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);
+    bool FUN_1405d4270(MS2Ptr<Unk_ItemOptionPreset> spPreset, MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);
+    void FUN_1405d48d0(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom,
+                       const std::vector<std::pair<int, int> >& vLocked, int nCount, Unk_ProbabilityLog* pLogs);
+    bool FUN_1405d4bb0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);    // rerolls until the result differs
+    bool FUN_1405d55e0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
+    int FUN_1405d5fe0(int nRank);               // the pick count of a rank
+    bool FUN_1405d6020(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);   // adds one random option
+    void FUN_1405d6560(MS2Ptr<CItemOption> spOption, int nRank, int nTrials,
+                       const std::vector<std::pair<int, int> >& vLocked, std::vector<CStringW>* pOut);
+    void FUN_1405d68f0(unsigned nItemId, int nRank, unsigned& nPick, std::vector<CStringW>* pOut);
+    bool FUN_1405d74d0(int nStat);              // a row of the stat
+    bool FUN_1405d7550(unsigned nSpecial);
+    void FUN_1405d75d0(std::function<void(ItemOptionValueRandom*)> fnVisit);
+    int FUN_1405d7680(int nStat);               // the statID of a stat's row (0 when none)
+    int FUN_1405d7710(unsigned nSpecial);
+    MS2Ptr<ItemOptionValueRandom> FUN_1405d77a0(int nStat);
+    MS2Ptr<ItemOptionValueRandom> FUN_1405d7870(unsigned nSpecial);
+    int FUN_1405d7940(std::vector<ItemOptionValueRandom*>& vOut, CItemOption* pSource);   // the rows the source holds
+    bool FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, int& nCount, Unk_Random* pRandom, BOOL bFixedCount,
+                       MS2Ptr<ItemOptionRandomContext> spContext, const std::vector<std::pair<int, int> >& vLocked,
+                       Unk_ProbabilityLog* pLogs);
+    void FUN_1405d8880(MS2Ptr<Unk_ItemOptionPreset> spPreset, std::vector<ItemOptionValueRandom*>& vOut,
+                       MS2Ptr<ItemOptionRandomContext> spContext);
+    MS2Ptr<ItemOptionValueRandom> FUN_1405d8f30(MS2Ptr<ItemOptionRandomContext> spContext, Unk_Random* pRandom);
+    double FUN_1405d9660(std::vector<unsigned>& vWeights, size_t nPick, size_t nIndex);  // P(entry nIndex in nPick picks)
 private:
     int m_nCode;                                // +0x18 "code"
     int m_nProbVer;                             // +0x1c "probVer"
@@ -257,3 +302,33 @@ private:
     std::vector<MS2Ptr<ItemOptionValueRandom> > m_vValues;  // +0x30
 };
 MS2_CHECK_SIZE(ItemOptionRandom, 0x48);
+
+// A reroll request (server side; a CPtred box): the option to reroll, the stats kept and the probability log.
+class Unk_1405e74c0 : public CPtred
+{
+public:
+    unsigned m_nItemId;                         // +0x18
+    int m_nRank;                                // +0x1c
+    int m_n20;
+    int m_n24;
+    MS2Ptr<CItemOption> m_spSource;             // +0x28
+    MS2Ptr<CItemOption> m_spResult;             // +0x38
+    int m_nMode;                                // +0x48 0: keep the source's stats, 1: roll
+    int m_nRoll;                                // +0x4c 0: the result is a copy of the source
+    std::vector<std::pair<int, int> > m_vLocked;    // +0x50 (special, stat) pairs kept from the source
+    Unk_ProbabilityLog m_vLogs;                 // +0x68
+};
+MS2_CHECK_OFFSET(Unk_1405e74c0, m_spSource, 0x28);
+MS2_CHECK_OFFSET(Unk_1405e74c0, m_nMode, 0x48);
+MS2_CHECK_OFFSET(Unk_1405e74c0, m_vLogs, 0x68);
+
+// An option preset (server side): the stats a generated option should prefer, by xml name.
+class Unk_ItemOptionPreset : public CPtred
+{
+public:
+    unsigned m_nItemId;                         // +0x18
+    int m_nRank;                                // +0x1c
+    int m_nType;                                // +0x20 the random context's type
+    ATL::CAtlArray<CString> m_names;            // +0x28
+};
+MS2_CHECK_OFFSET(Unk_ItemOptionPreset, m_names, 0x28);

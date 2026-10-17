@@ -58,7 +58,9 @@ public:
     void FUN_140266d60(Unk_EnchantRead&);
     void FUN_140266da0(const BaseOption* pSource);   // copy
     bool FUN_140266ee0(const BaseOption* pOther) const;   // the same option (itemoptiondata.cpp)
-private: void* p0; void* p8; void* p10; void* p18;
+private: void* p0; void* p8; void* p10; int m_nValue;
+public:
+    int m_nIndex;                           // +0x1c the roll order (ItemOptionRandomContext::FUN_1405da4b0)
 };
 MS2_CHECK_SIZE(BaseOption, 0x20);
 struct Unk_EnchantHistory {
