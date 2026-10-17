@@ -102,7 +102,7 @@ MS2_CHECK_OFFSET(ReactorData, m_states, 0x78);
 MS2_CHECK_OFFSET(ReactorData, m_rewards, 0x98);
 
 // RTTI CReactorDataTable: TSingleton at +0, CValidData at +8. Its ctor/dtor are outside this unit's range.
-class CReactorDataTable : public TSingleton<CReactorDataTable>, public CValidData<CReactorDataTable>
+class CReactorDataTable : public TSingleton<CReactorDataTable>, public CValidData<ReactorData>
 {
 public:
     typedef MS2Ptr<ReactorData> DataPtr;

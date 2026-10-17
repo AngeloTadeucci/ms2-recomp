@@ -42,7 +42,7 @@
 // MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIServerEventDispatcher@@@@SAPEAVUIServerEventDispatcher@@XZ 0x14149f710
 // MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIStatusEventDispatcher@@@@SAPEAVUIStatusEventDispatcher@@XZ 0x14149f790
 // The secondary-base vftables (no RTTI pairing for these multiple-inheritance subobjects), read from the ctors;
-// CValidData<CReactorDataTable> shares the exe's CValidData<ReactorData> table (see reactordata.h).
+// CReactorDataTable derives from CValidData<ReactorData> (see reactordata.h).
 // MS2-PIN: ??_7MS2@@6BISystemService@efd@@@ 0x142f1e0a0
 // MS2-PIN: ??_7MS2@@6B?$TSingleton@VMS2@@@@@ 0x142f1e128
 // MS2-PIN: ??_7MS2PickService@@6BPickService@ecr@@@ 0x142f1e398
@@ -57,7 +57,7 @@
 // MS2-PIN: ??_7?$CValidData@VReactorData@@@@6B@ 0x142f1e5b8
 // MS2-PIN: ??_7?$CValidData@VCReactorDataTable@@@@6B@ 0x142f1e5b8
 // MS2-PIN: ??_7CReactorDataTable@@6B?$TSingleton@VCReactorDataTable@@@@@ 0x142f1e5c8
-// MS2-PIN: ??_7CReactorDataTable@@6B?$CValidData@VCReactorDataTable@@@@@ 0x142f1e5d8
+// MS2-PIN: ??_7CReactorDataTable@@6B?$CValidData@VReactorData@@@@@ 0x142f1e5d8
 // MS2-PIN: ??_7CrashManagerCli@@6B?$TSingleton@VCrashManagerCli@@@@@ 0x142f1e608
 // MS2-GUESS-LOOKALIKES: the vector deleting dtor of 8-byte SmartPointer elements (0x141498210) has no caller to tell
 // its element type; NiAVObject is assumed.
@@ -1593,8 +1593,7 @@ inline void Unk_GameLog(CLogString* pLog, unsigned __int64 a, unsigned __int64 b
 // The exe's CReactorDataTable base is CValidData<ReactorData>; its COMDATs (ctor 0x141494730, dtor 0x141496530,
 // deleting dtor 0x141498360) are emitted here explicitly.
 template class CValidData<ReactorData>;
-// MS2-FUNCTIONAL: the exe's second base is CValidData<ReactorData> (0x1414947d0-like COMDATs elsewhere), reactordata.h
-// declares CValidData<CReactorDataTable>, so the base ctor/dtor calls bind to the other instantiation.
+// MS2-FUNCTIONAL: the base ctor/dtor calls bind to the explicit CValidData<ReactorData> instantiation above.
 // @0x141495fa0
 CReactorDataTable::CReactorDataTable()
 {
