@@ -8,6 +8,7 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/classobject.h"
+#include "ms2/placeholder/nipoint3.h"
 
 class Unk_140165cf0;
 
@@ -125,3 +126,40 @@ public:
     virtual int vfunc_3();                                  // 3 0x1413a6d50
 };
 MS2_CHECK_SIZE(CGuideConditionPortalEnable, 0x28);
+
+// 0x38. Passes once the local player has walked m_n20 units (the summed distance between successive checks).
+class CGuideConditionMovement : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a76f0
+    CGuideConditionMovement();                              // 0x1413a77a0
+    virtual CStringW vfunc_1();                             // 1 0x1413a7750
+    virtual int vfunc_3();                                  // 3 0x1413a7820
+    virtual void vfunc_4();                                 // 4 0x1413a7950
+
+    Unk_StreamPoint m_vLastPos;                             // +0x28 the player position at the previous check
+    float m_fMoved;                                         // +0x34 the distance walked so far
+};
+MS2_CHECK_SIZE(CGuideConditionMovement, 0x38);
+
+// 0x28. Passes while the inventory dialog shows the tab m_n20.
+class CGuideConditionInventoryTab : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a79a0
+    CGuideConditionInventoryTab();
+    virtual CStringW vfunc_1();                             // 1 0x1413a7a00
+    virtual int vfunc_3();                                  // 3 0x1413a7a50
+};
+MS2_CHECK_SIZE(CGuideConditionInventoryTab, 0x28);
+
+// 0x28. Passes while the game scene (id 0x620001d) is the current one.
+class CGuideConditionGameScene : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a7ad0
+    CGuideConditionGameScene();
+    virtual CStringW vfunc_1();                             // 1 0x1413a7b30
+    virtual int vfunc_3();                                  // 3 0x1413a7b80
+};
+MS2_CHECK_SIZE(CGuideConditionGameScene, 0x28);
