@@ -2767,3 +2767,11 @@ inflateInit_	142723ad0	func
 ??1Unk_StateHandle@@QEAA@XZ	1401b50d0	func
 ?DAT_143ab1b14@@3_NA	143ab1b14	data
 ??0Unk_LandRay@@QEAA@XZ	140ad4440	func
+?DAT_143ae53c0@@3_NA	143ae53c0	data
+?DAT_143b01a60@@3VNiPoint3@@A	143b01a60	data
+?DAT_143afbfb8@@3VNiRTTI@@B	143afbfb8	data
+??0Unk_PplRef@@QEAA@AEBU0@@Z	14027cc70	func
+??1Unk_PplRef@@QEAA@XZ	14027e090	func
+??0Unk_UlgBucket@@QEAA@PEAX@Z	14027ca80	func
+??0Unk_UlgBucket@@QEAA@AEBU0@@Z	14027ca40	func
+??1Unk_UlgBucket@@QEAA@XZ	14027dfa0	func
