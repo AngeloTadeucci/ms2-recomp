@@ -239,12 +239,30 @@ public:
 Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
-class Unk_MyPCWorld { public: int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_RideeFieldObj : public CPtred {};                  // a named field object (Ridee view)
+class Unk_MyPCWorld { public: NiPoint3 FUN_141bd37e0(); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
     egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
     void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
     class Unk_MyPCDropItem* FUN_141bd1d10(int a, int b); PCBase* FUN_141bd1290(int nObjectId); };
 Unk_MyPCWorld* FUN_1403ed2d0();
+
+// An egf entity (property access, Ridee's view).
+class Unk_MyPCEntityModel { public: void FUN_140ae1f60(efd::utf8string& strOut); };   // model name
+class Unk_MyPCEntity
+{
+public:
+    void FUN_1409618c0(unsigned int uiPropId, efd::Point3& out);    // point property
+    void FUN_1408a20a0(unsigned int uiPropId, bool* pOut);          // bool property
+    void FUN_140ae1160(unsigned int uiPropId, unsigned short* pOut);           // int property
+    Unk_MyPCEntityModel* FUN_140ae1be0();
+    egf::FlatModel* FUN_1408a9bd0();
+};
+class Unk_MyPCEntityMgr { public: Unk_MyPCEntity* FUN_1411cf440(const egf::EntityID& kId); };
+Unk_MyPCEntityMgr* FUN_1409670f0();
+MS2Ptr<Unk_StateArg22> FUN_140835450(int nState);                   // new state record
+int FUN_1408a13d0(efd::Point3 kPos);
+void FUN_1401d3700(CString& str);
 
 // A portal password lock: the portal cannot be retried until m_nUntil (server time).
 class Unk_MyPCPortalLock : public CPtred
@@ -558,6 +576,7 @@ class Unk_MyPCCollision
 public:
     int FUN_14168a310(const efd::Point3& kFrom, efd::Point3& kHit, int nMask, float fLen, void* pIgnore, int bAll);
     int FUN_14168a230(efd::Point3 kFrom, efd::Point3& kTo, efd::Point3 kDir, float fLen, int nMask); // 0 = no blocker
+    int FUN_14168a9b0(Unk_MyPCEntity* pEntity, NiPoint3 kPos);      // the entity can be stood on from kPos
 };
 Unk_MyPCCollision* FUN_1409f7ca0();
 NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // the entity's scene node
@@ -635,7 +654,7 @@ class Unk_MyPCStatusMgr { public: void FUN_141b0ce20(int nKind, int n); };
 Unk_MyPCStatusMgr* FUN_140aa6d40();
 class Unk_CameraTarget;
 class Unk_MyPCCameraCtl { public: void FUN_14183c3b0(float fZoomVelocity); void FUN_14183cc80(int n); };   // the active camera controller
-class Unk_MyPCCamera { public: NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); void FUN_140af9b40(float fDistance); Unk_MyPCCameraCtl* FUN_140af2520(); };   // the camera target position
+class Unk_MyPCCamera { public: int FUN_140a18070(); NiPoint3 FUN_140af8290(); void FUN_140aeaf40(PCBase* pTarget, int bReset); void FUN_140af0cc0(float fYaw); int FUN_140af7e30(); Unk_CameraTarget* FUN_140a38d60(); void FUN_140af9b40(float fDistance); Unk_MyPCCameraCtl* FUN_140af2520(); };   // the camera target position
 Unk_MyPCCamera* FUN_1409478c0();
 // The local character's guild summary (FUN_140d295d0; the guild reading of the fields is a guess).
 struct Unk_MyPCGuildSummary
@@ -2008,6 +2027,108 @@ int MyPC::FUN_1415286a0()
 MS2_REPLACE_METHOD(0x1415286a0, MyPC, FUN_1415286a0, 699, 0x17BD299B);
 
 // Whether the skill (switched by the active buffs) may be cast now.
+// @0x1415337c0
+// The interval has passed since the tick.
+bool FUN_1415337c0(unsigned nFrom, unsigned nNow, int nInterval)
+{
+    return (int)(nNow - nFrom) >= nInterval;
+}
+MS2_REPLACE(0x1415337C0, FUN_1415337c0, 60, 0x1D92A140);
+
+// @0x141524a80
+// Queue a movement record for the server when the state, velocity, facing or state data changed (or a second
+// passed); bForce sends one regardless. Twin of Ridee::FUN_141706650.
+void MyPC::FUN_141524a80(bool bForce)
+{
+    if (!FUN_14166c930())
+        return;
+    if (FUN_1409478c0()->FUN_140a18070() != 0)
+        m_posBF4 = FUN_1409478c0()->FUN_140af8290();
+    m_kStateCtl.FUN_1417b76b0(FUN_14086d260()->FUN_141473230());
+    if (m_kStateCtl.FUN_1417b7490())
+        (&m_kStateCtl)->vfunc_0();
+    if (!m_b15d6)
+    {
+        if (vfunc_18().z < FUN_1403ed2d0()->FUN_141bd37e0().z)
+        {
+            m_b15d6 = 1;
+            bForce = true;
+        }
+    }
+
+    bool bSend = false;
+    unsigned nTick = FUN_14086d260()->FUN_141473390();
+    MS2Ptr<Unk_StateArg22> spCur = m_kStateCtl.FUN_1417b7620();
+    if (bForce || m_b15d5 || spCur == 0 || spCur->m_nState != FUN_14166c930() || spCur->m_vel3c != m_pos98
+        || FUN_1415337c0(spCur->m_nAC, nTick, 1000) || spCur->m_f58 != m_f934 || FUN_14166ccb0()->vfunc_22(spCur))
+        bSend = true;
+    if (!bSend)
+        return;
+
+    m_b15d5 = 0;
+    int bFlushAfter = 0;
+    if (spCur.get())
+    {
+        if (spCur->m_nState == 2 && m_spStateMgr->FUN_1417db270() != 2)
+            bFlushAfter = 1;
+        else
+            (&m_kStateCtl)->vfunc_0();
+    }
+
+    MS2Ptr<Unk_StateArg22> spNew = FUN_140835450(FUN_14166c930());
+    spNew->m_nSub = FUN_14166cc80();
+    spNew->m_vel3c = m_pos98;
+    spNew->m_pos20 = vfunc_18();
+    spNew->m_dir2c = vfunc_20();
+    spNew->m_f58 = FUN_14166da40();
+    spNew->m_pos48 = m_posBF4;
+    spNew->m_n54 = FUN_1409478c0()->FUN_140af7e30();
+    spNew->m_nAC = nTick;
+    if (State* pState = FUN_14166ccb0())
+        pState->vfunc_26((Unk_StateDataArg*)spNew.get());
+
+    if (m_unk_ae0 != s_dat_143ae1058)
+    {
+        if (Unk_MyPCEntity* pEntity = FUN_1409670f0()->FUN_1411cf440(m_unk_ae0))
+        {
+            efd::utf8string strModel;
+            pEntity->FUN_140ae1be0()->FUN_140ae1f60(strModel);
+            CString strName(strModel.c_str());
+            FUN_1401d3700(strName);
+            Unk_RideeFieldObj* pObj = FUN_1403ed2d0()->FUN_141bc4e70(strName).get();
+            if (pObj != 0)
+            {
+                efd::Point3 kObjPos;
+                pEntity->FUN_1409618c0(0xfd95ca52, kObjPos);
+                spNew->m_str88 = strName;
+                spNew->m_pos78 = vfunc_18() - kObjPos;
+            }
+            if (pEntity->FUN_1408a9bd0()->ContainsModel(0xd8dea70d))
+            {
+                bool bRideable = false;
+                unsigned short nKind = 0;
+                pEntity->FUN_1408a20a0(0xecfdd742, &bRideable);
+                pEntity->FUN_140ae1160(0xada5c5d2, &nKind);
+                if (bRideable && (nKind == 9 || nKind == 8))
+                {
+                    efd::Point3 kPropPos;
+                    pEntity->FUN_1409618c0(0xfd95ca52, kPropPos);
+                    Unk_MyPCSvcPtr spSvc(FUN_1401cd040(&DAT_143b059e8));
+                    if (spSvc.FUN_1401cd1a0()->FUN_1410b8ab0(kPropPos) && vfunc_99(0) == 0)
+                    {
+                        if (FUN_1409f7ca0()->FUN_14168a9b0(pEntity, vfunc_18()))
+                            spNew->m_nA0 = FUN_1408a13d0(kPropPos);
+                    }
+                }
+            }
+        }
+    }
+    m_kStateCtl.FUN_1417b7670(spNew.get());
+    if (bFlushAfter)
+        (&m_kStateCtl)->vfunc_0();
+}
+MS2_REPLACE_METHOD(0x141524A80, MyPC, FUN_141524a80, 2543, 0x2C1C320A);
+
 // @0x141525480
 int MyPC::FUN_141525480(int nSkillId, bool bRemap)
 {

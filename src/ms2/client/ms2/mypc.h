@@ -26,6 +26,7 @@ class Unk_MyPCComp1618;     // MS2Ptr at +0x1618 (null ctor 0x1415324e0, dtor 0x
 
 // The member at +0x12e8: a StateLocalController whose records live on the base (state.cpp declares them on the
 // PcGuide subclass). Ctor 0x1417b73c0, implicit dtor 0x1410a6dc0 (COMDAT in cubecraft_1).
+class Unk_StateArg22;
 class Unk_MyPCStateCtl : public StateLocalController
 {
 public:
@@ -34,6 +35,9 @@ public:
     void FUN_1417b7430(PCBase* pOwner);                     // init with the owner
     void FUN_1417b7450();                                   // drop the current and queued records
     void FUN_1417b76b0(float fTime);                        // advance with the game time
+    int FUN_1417b7490();                                    // a record is due
+    MS2Ptr<Unk_StateArg22> FUN_1417b7620();                 // copy of the current record
+    void FUN_1417b7670(Unk_StateArg22* pRec);               // set the current record
     unsigned char m_body[0x48];                             // +0x08 records list, current record, owner
 };
 
