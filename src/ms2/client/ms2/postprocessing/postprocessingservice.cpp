@@ -1819,7 +1819,6 @@ efd::AsyncResult PostProcessingService::OnTick()
 }
 
 // @0x1416a6100
-// MS2-FUNCTIONAL: the exe copies the step map's begin()/end() temporaries into separate locals; behaviour equivalent
 efd::AsyncResult PostProcessingService::OnShutdown()
 {
     efd::MessageService* pkMessageService = m_pServiceManager->GetSystemServiceAs<efd::MessageService>();
@@ -2632,7 +2631,6 @@ extern NiFixedString DAT_143ae5260;     // motion-blur velocity material name
 // @0x1416a8140
 // The motion-blur velocity click: renders the main view with the velocity material into the ping-pong frame targets
 // built over the motion-blur history textures (3/4).
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8140()
 {
     NiRenderer* pkRenderer = NiRenderer::GetRenderer();
@@ -2681,7 +2679,6 @@ MS2_REPLACE_METHOD(0x1416a8140, PostProcessingService, FUN_1416a8140, 1198, 0x9D
 
 // @0x1416a97b0
 // The shimmer source click: renders a mirrored copy of the main view into m_spTarget178.
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a97b0()
 {
     if (efd::SmartPointer<NiViewRenderClick> spClick = NiNew NiViewRenderClick)
@@ -2703,7 +2700,6 @@ MS2_REPLACE_METHOD(0x1416a97b0, PostProcessingService, FUN_1416a97b0, 729, 0xCC1
 extern NiColorA DAT_143a09680;          // efd::ColorA::BLACK (0,0,0,1)
 
 // @0x1416a9a90
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // The overdraw accumulation click: renders the main view with the overdraw processor into texture 9.
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9a90()
 {
@@ -2731,7 +2727,6 @@ efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9a90()
 MS2_REPLACE_METHOD(0x1416a9a90, PostProcessingService, FUN_1416a9a90, 896, 0x26CEBED6);
 
 // @0x1416a9e20
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // The outline click: renders the outlined objects with MS2OutlinePreProcessor into texture 10.
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9e20()
 {
@@ -2757,7 +2752,6 @@ efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a9e20()
 MS2_REPLACE_METHOD(0x1416a9e20, PostProcessingService, FUN_1416a9e20, 878, 0xCA30F9C3);
 
 // @0x1416a8e50
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // The shimmer click: renders the shimmering objects with MS2ShimmerSortProcessor into texture 6 (m_spTarget170).
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8e50()
 {
@@ -2793,7 +2787,6 @@ extern NiFixedString DAT_143ae51f0;     // glow material name
 int FUN_1414cffc0(NiRenderObject* pkObject);    // glow material-swap predicate
 
 // @0x1416a92e0
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // The glow click: renders the glowing objects with the glow material into texture 8.
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a92e0()
 {
@@ -2836,7 +2829,6 @@ int FUN_1414cfef0(NiRenderObject* pkObject);
 int FUN_1414d00b0(NiRenderObject* pkObject);
 
 // @0x1416a8600
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // The depth click: renders the scene depth with three predicate-selected depth materials into texture 1.
 efd::SmartPointer<NiViewRenderClick> PostProcessingService::FUN_1416a8600()
 {
@@ -2987,7 +2979,6 @@ MS2_REPLACE_METHOD(0x1416abd20, PostProcessingService, FUN_1416abd20, 820, 0x723
 // Builds one screen-filling post-process pass: a full-screen quad textured with
 // pkSource (plus up to three shader maps), drawn with pcMaterial into pkTarget,
 // and appends the click to pkStep. Callers reach it through FUN_1416b4990.
-// MS2-FUNCTIONAL: byte-identical; AppendRenderView resolves to the 0x14127cce0 twin, the exe calls this TU's copy 0x1416b06b0
 // @0x1416b4990
 efd::SmartPointer<NiViewRenderClick> setupRenderClick(NiDefaultClickRenderStep* pkStep, const char* pcName,
     NiRenderClick::Callback pfnCallback, void* pvCallbackData, NiTexture* pkSource,
