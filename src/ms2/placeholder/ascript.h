@@ -116,6 +116,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, const char* a1, CStringW a2);  // 0x141a00580 (inline COMDAT, defined in uimessagebox.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, __int64 a2, int a3); // 0x140e98700 (UITamingBar, w4s10)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, int a3, int a4); // 0x140e64f60 (couple dance HUD COMDAT)
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, int a3, int a4, int a5, CString a6, size_t a7);   // 0x140f35180 (inline COMDAT, defined in uidarkstreamresultdialog.cpp; a6 by value: the callee destroys it)
 
     // Binds the AS child `strName` to `out` and returns a copy of it (0x140bbe640 for T = Unk_ASExitButton).
     template <class T> MS2Ptr<T> FUN_140bbe640(const CString& strName, MS2Ptr<T>& out);
