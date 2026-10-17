@@ -113,6 +113,7 @@ public:
     Unk_CMISRoster* FUN_141bd0cc0();                            // the party/roster manager
     int FUN_141bd3060();                                        // the current map id
     int FUN_141bcfd10();                                        // the world state (4 = in field, 6 = loading)
+    int FUN_141bcfbd0();                                        // in a field with a home (state 4 and a map)
     Unk_PayloadPtr<Unk_CMISObj208> FUN_141bd30a0();             // the current field data
     void FUN_141bc58d0(struct Unk_CMISNpcList* pOut);           // fills the list of npcs
 };
@@ -5210,4 +5211,82 @@ efd::AsyncResult CubeMapInformationService::OnTick()
         }
     }
     return efd::AsyncResult_Complete;
+}
+
+// ---- w142 batch 7 ----
+struct Unk_CMISEntSetIter { void* m_p; };
+Unk_CMISEntSetIter* FUN_14114e9f0(Unk_CMISEntSet*, Unk_CMISEntSetIter*);    // begin
+Unk_CMISEntSetIter* FUN_141152630(Unk_CMISEntSet*, Unk_CMISEntSetIter*);    // end
+bool FUN_141127980(Unk_CMISEntSetIter*, Unk_CMISEntSetIter*);               // operator!=
+const Unk_CMISEntityRef* FUN_141128e60(Unk_CMISEntSetIter*);                // operator*
+void FUN_14112ab40(Unk_CMISEntSetIter*);                                    // operator++
+bool FUN_140de8e30(const Unk_CMISStr& str, const char* psz);            // == psz
+float* FUN_1408b0470(void* pFloors, const int* pKey);                       // the start height of a floor (operator[])
+void FUN_14115b430(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId);                                 // stop the motions of an entity
+void FUN_14115b370(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId, float fFrom, float fTo, unsigned nMs, bool bFlag);   // fade
+// @0x1410c9710
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410c9710()
+{
+    if (FUN_1403ed2d0()->FUN_141bcfbd0() == 0 || FUN_141151760(&f78) == false || f218 == 0 || FUN_1409657a0(&f208) == 0)
+        return;
+    if (FUN_140885340(&f208)->FUN_140375100() != 0)
+        return;
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster == 0)
+        return;
+    int nFloor = FUN_1410c88b0(reinterpret_cast<PCBase*>(pRoster));
+    if (nFloor == 0 || f1e0 == nFloor)
+        return;
+    if (f1e0 != 0 && nFloor < f1e0) {
+        Unk_CMISEntSet* pSet = FUN_141127e50(&f1e8, &f1e0);
+        Unk_CMISEntSetIter it, itEnd;
+        for (FUN_14114e9f0(pSet, &it), FUN_141152630(pSet, &itEnd); FUN_141127980(&it, &itEnd); FUN_14112ab40(&it)) {
+            Unk_CMISEntityRef id(*FUN_141128e60(&it));
+            egf::Entity* pEnt = static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(reinterpret_cast<const egf::EntityID&>(id));
+            if (pEnt == 0)
+                continue;
+            Unk_CMISStr strKind;
+            FUN_1409989e0(&strKind, "None");
+            FUN_1408a2060(pEnt, 0x15014205, &strKind);
+            Unk_StreamPoint ptEnt = DAT_143b01a60;
+            FUN_1409618c0(pEnt, 0xfd95ca52, &ptEnt);
+            float fStart = *FUN_1408b0470(&f218->floors, &f1e0);
+            if (!FUN_140de8e30(strKind, "Stair") || ptEnt.z != fStart) {
+                FUN_14115b430(FUN_1410af790(), FUN_1408b76f0(pEnt));
+                FUN_14115b370(FUN_1410af790(), FUN_1408b76f0(pEnt), 1.0f, 0.0f, 200, false);
+            } else {
+                bool bOff = false;
+                FUN_14098c6e0(pEnt, 0xa0b6b179, &bOff);
+            }
+            FUN_1408a8900(&strKind);
+        }
+    }
+    if (f1e0 < nFloor) {
+        Unk_CMISEntSet* pSet = FUN_141127e50(&f1e8, &nFloor);
+        Unk_CMISEntSetIter it, itEnd;
+        for (FUN_14114e9f0(pSet, &it), FUN_141152630(pSet, &itEnd); FUN_141127980(&it, &itEnd); FUN_14112ab40(&it)) {
+            Unk_CMISEntityRef id(*FUN_141128e60(&it));
+            egf::Entity* pEnt = static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(reinterpret_cast<const egf::EntityID&>(id));
+            if (pEnt == 0)
+                continue;
+            Unk_CMISStr strKind;
+            FUN_1409989e0(&strKind, "None");
+            FUN_1408a2060(pEnt, 0x15014205, &strKind);
+            Unk_StreamPoint ptEnt = DAT_143b01a60;
+            FUN_1409618c0(pEnt, 0xfd95ca52, &ptEnt);
+            float fStart = *FUN_1408b0470(&f218->floors, &nFloor);
+            if (!FUN_140de8e30(strKind, "Stair") || ptEnt.z != fStart) {
+                bool bOn = true;
+                FUN_14098c6e0(pEnt, 0xa0b6b179, &bOn);
+                FUN_14115b430(FUN_1410af790(), FUN_1408b76f0(pEnt));
+                FUN_14115b370(FUN_1410af790(), FUN_1408b76f0(pEnt), 0.0f, 1.0f, 200, true);
+            } else {
+                bool bOn = true;
+                FUN_14098c6e0(pEnt, 0xa0b6b179, &bOn);
+            }
+            FUN_1408a8900(&strKind);
+        }
+    }
+    f1e0 = nFloor;
 }
