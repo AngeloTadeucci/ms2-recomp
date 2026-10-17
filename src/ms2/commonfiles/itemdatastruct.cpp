@@ -2,7 +2,7 @@
 // skill, property, install, effect, function, ...) and the item model block (itemdata.h: ModelPart, ModelGroup,
 // ItemModelHead, ItemModelData): constructors, XML readers/writers and comparisons.
 // MS2-UNIT: commonfiles\itemdatastruct.cpp
-// MS2-RANGE: 0x140543a30-0x140555a70 .text$mn
+// MS2-RANGE: 0x1405434a0-0x140555a70 .text$mn
 // MS2-RANGE: 0x1400b9950-0x1400b9a40 .text$di
 // MS2-RANGE: 0x142c9ad60-0x142c9ae90 .text$yd
 // MS2-PINS-BEGIN tplpin
@@ -17,7 +17,8 @@
 // MS2-PINS-END tplpin
 // MS2-PIN: ?GetInt@CXmlData@@QEAAHAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEBH@Z 0x14054c530
 // MS2-PIN: ??0ModelPart@@QEAA@$$QEAU0@@Z 0x140551c40
-// MS2-PIN: ??0ModelNamedColor@@QEAA@AEBU0@@Z 0x140552180
+// MS2-PIN: ??0ModelNamedColor@@QEAA@$$QEAU0@@Z 0x140552180
+// MS2-PIN: ??0ModelNamedColor@@QEAA@AEBU0@@Z 0x140552200
 // MS2-PIN: ??$?8V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@YA_NAEBV?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@0@0@Z 0x14054bf00
 // MS2-PIN: ??$IsSameArray@H@@YA_NAEBV?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@0@Z 0x14054c990
 // MS2-PIN: ?push_back@?$vector@_JV?$allocator@_J@std@@@std@@QEAAX$$QEA_J@Z 0x1405556e0
@@ -26,6 +27,9 @@
 // MS2-PIN: ??$_Emplace_reallocate@_J@?$vector@_JV?$allocator@_J@std@@@std@@QEAAPEA_JQEA_J$$QEA_J@Z 0x14054df10
 // MS2-PIN: ??$construct@_J_J@?$_Default_allocator_traits@V?$allocator@_J@std@@@std@@SAXAEAV?$allocator@_J@1@QEA_J$$QEA_J@Z 0x1405503a0
 // MS2-PIN: ?_Umove@?$vector@_JV?$allocator@_J@std@@@std@@AEAAPEA_JPEA_J00@Z 0x140554d30
+// MS2-PIN: ??1DropNifData@@UEAA@XZ 0x140552480
+// MS2-PIN: ??1ItemColorEx@@UEAA@XZ 0x1405524a0
+// MS2-PIN: ??1ItemDropEffect@@UEAA@XZ 0x1405524c0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemdatastruct.cpp"
 // The _stricmp calls of this unit go through the IAT, so not ms2/placeholder/ms2stdafx.h (its plain redeclaration).
 #include <afx.h>
@@ -60,6 +64,7 @@ void FUN_1408740a0(void* pElem, const char* pszName, const CStringW& strValue); 
 void FUN_140873e30(void* pElem, const char* pszName, float fValue);         // SetAttribute(name, float)
 void FUN_140874ad0(void* pElem, const char* pszName, const efd::Point3& kValue);    // SetAttribute(name, "x, y, z")
 void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);   // Point3 attribute
+int FUN_140874670(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut);    // Point3 attribute (drop effect)
 __int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
 CString FUN_1401d4330(const wchar_t* pszWide, int nCodePage);              // wide to ansi
 CString FUN_140188f50(const char* psz, int nCodePage);                     // string from an attribute value
@@ -184,6 +189,70 @@ inline void TrimCommas(CString& str)
 static CString s_sortNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 static UICommon::CMyPCKeyInputController s_keyInput;                // 0x143aaf5a0
 #endif
+
+// @0x1405434a0
+DropNifData::DropNifData()
+    : m_nTypeId(0), m_nUnk1c(0)
+{
+}
+
+// @0x1405434f0
+void DropNifData::FUN_1405434f0(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "typeID", reinterpret_cast<unsigned&>(m_nTypeId));
+    FUN_140873220(pElem, "min", m_nUnk1c);
+}
+
+// @0x140543550
+bool DropNifData::FUN_140543550(unsigned n)
+{
+    return m_nUnk1c <= n;
+}
+
+// @0x140543590
+int DropNifData::FUN_140543590()
+{
+    return m_nTypeId;
+}
+
+// @0x1405435b0
+ItemDropEffect::ItemDropEffect()
+    : typeID(0), unknown1c(50.0f), scale(1.0f), getAniSpeed(0), dropAniSpeed(0), beAniSpeed(0), shadowBias(0),
+      shadowScale(0), bounceHeight(30.0f), bouncePeriod(1.0f), getAni(0, 0, 0), dropAni(0, 0, 0), beAni(0, 0, 0),
+      beEffect(""), assetName(""), dropSoundID(), getSoundID()
+{
+}
+
+// @0x140543730
+void ItemDropEffect::FUN_140543730(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "typeID", reinterpret_cast<unsigned&>(typeID));
+    FUN_140873360(pElem, "scale", scale);
+    FUN_140873360(pElem, "bias", unknown1c);
+    FUN_140873360(pElem, "shadowscale", shadowScale);
+    FUN_140873360(pElem, "shadowbias", shadowBias);
+    FUN_140874670(pElem, "dropani", dropAni);
+    FUN_140873360(pElem, "dropanispeed", dropAniSpeed);
+    FUN_140874670(pElem, "beani", beAni);
+    FUN_140873360(pElem, "beanispeed", beAniSpeed);
+    FUN_140874670(pElem, "getani", getAni);
+    FUN_140873360(pElem, "getanispeed", getAniSpeed);
+    FUN_140873360(pElem, "bounceheight", bounceHeight);
+    FUN_140873360(pElem, "bounceperiod", bouncePeriod);
+    FUN_1408733e0(pElem, "beeffect", beEffect);
+    FUN_1408733e0(pElem, "dropSoundID", dropSoundID);
+    FUN_1408733e0(pElem, "getSoundID", getSoundID);
+    FUN_1408733e0(pElem, "assetName", assetName);
+}
+
+// @0x140543940
+ItemColorEx::ItemColorEx(const int& nId)
+    : m_nId(nId), m_nColor(-1), m_bFlag(false), m_n24(0), m_n28(0), m_n2c(0), m_n30(0), m_n34(0), m_n38(0)
+{
+    m_aValues[0] = 0;
+    m_aValues[1] = 0;
+    m_aValues[2] = 0;
+}
 
 // @0x140543a30
 ModelNamedColor::ModelNamedColor()

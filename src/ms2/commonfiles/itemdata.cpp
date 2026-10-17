@@ -1,6 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). CItemData (the item table row) and CItemChangeBeautyTable.
 // MS2-UNIT: commonfiles\itemdata.cpp
-// MS2-RANGE: 0x140539370-0x140543a30 .text$mn
+// MS2-RANGE: 0x140539370-0x1405434a0 .text$mn
 // MS2-RANGE: 0x1400b97a0-0x1400b9950 .text$di
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??8?$MS2Ptr@VCItemData@@@@QEBA_NPEAVCItemData@@@Z 0x14053a250 ; unique
@@ -50,7 +50,6 @@ void FUN_1408731e0(Unk_140165cf0*, const char*, int&);
 void FUN_1408730a0(Unk_140165cf0*, const char*, bool&);
 int FUN_1408733e0(Unk_140165cf0*, const char*, CString&);
 int FUN_140873360(Unk_140165cf0*, const char*, float&);
-int FUN_140874670(Unk_140165cf0*, const char*, efd::Point3&);
 int FUN_140873890(Unk_140165cf0*, const char*, int&);
 int FUN_14015f500(void*, const char*, int*);
 void FUN_140873ca0(void*, const char*, int);
@@ -2226,10 +2225,7 @@ ItemProperty::~ItemProperty()
 
 // ModelPart::~ModelPart (COMDAT 0x140540f60) is implicit.
 
-// @0x140541060
-ModelNamedColor::~ModelNamedColor()
-{
-}
+// ModelNamedColor::~ModelNamedColor (COMDAT 0x140541060) is implicit.
 
 // ModelFloatList::~ModelFloatList (COMDAT 0x140541080) is implicit.
 
@@ -2243,68 +2239,3 @@ Unk_PcBangTable* FUN_140541580()
 {
     return g_pPcBangTable;
 }
-
-// @0x1405434a0
-DropNifData::DropNifData()
-    : m_nTypeId(0), m_nUnk1c(0)
-{
-}
-
-// @0x1405434f0
-void DropNifData::FUN_1405434f0(Unk_140165cf0* pElem)
-{
-    FUN_140873220(pElem, "typeID", m_nTypeId);
-    FUN_140873220(pElem, "min", reinterpret_cast<int&>(m_nUnk1c));
-}
-
-// @0x140543550
-bool DropNifData::FUN_140543550(unsigned n)
-{
-    return m_nUnk1c <= n;
-}
-
-// @0x140543590
-int DropNifData::FUN_140543590()
-{
-    return m_nTypeId;
-}
-
-// @0x1405435b0
-ItemDropEffect::ItemDropEffect()
-    : typeID(0), unknown1c(50.0f), scale(1.0f), getAniSpeed(0), dropAniSpeed(0), beAniSpeed(0), shadowBias(0),
-      shadowScale(0), bounceHeight(30.0f), bouncePeriod(1.0f), getAni(0, 0, 0), dropAni(0, 0, 0), beAni(0, 0, 0),
-      beEffect(""), assetName(""), dropSoundID(), getSoundID()
-{
-}
-
-// @0x140543730
-void ItemDropEffect::FUN_140543730(Unk_140165cf0* pElem)
-{
-    FUN_140873220(pElem, "typeID", typeID);
-    FUN_140873360(pElem, "scale", scale);
-    FUN_140873360(pElem, "bias", unknown1c);
-    FUN_140873360(pElem, "shadowscale", shadowScale);
-    FUN_140873360(pElem, "shadowbias", shadowBias);
-    FUN_140874670(pElem, "dropani", dropAni);
-    FUN_140873360(pElem, "dropanispeed", dropAniSpeed);
-    FUN_140874670(pElem, "beani", beAni);
-    FUN_140873360(pElem, "beanispeed", beAniSpeed);
-    FUN_140874670(pElem, "getani", getAni);
-    FUN_140873360(pElem, "getanispeed", getAniSpeed);
-    FUN_140873360(pElem, "bounceheight", bounceHeight);
-    FUN_140873360(pElem, "bounceperiod", bouncePeriod);
-    FUN_1408733e0(pElem, "beeffect", beEffect);
-    FUN_1408733e0(pElem, "dropSoundID", dropSoundID);
-    FUN_1408733e0(pElem, "getSoundID", getSoundID);
-    FUN_1408733e0(pElem, "assetName", assetName);
-}
-
-// @0x140543940
-ItemColorEx::ItemColorEx(const int& nId)
-    : m_nId(nId), m_nColor(-1), m_bFlag(false), m_n24(0), m_n28(0), m_n2c(0), m_n30(0), m_n34(0), m_n38(0)
-{
-    m_aValues[0] = 0;
-    m_aValues[1] = 0;
-    m_aValues[2] = 0;
-}
-

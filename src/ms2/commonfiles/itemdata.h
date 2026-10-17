@@ -106,7 +106,7 @@ MS2_CHECK_SIZE(ModelFloatList, 0x28);
 struct ModelNamedColor              // <jointangle> element, 0x18 bytes, four of them in a ModelPart
 {
     ModelNamedColor();              // 0x140543a30
-    ~ModelNamedColor();             // 0x140541060
+    // implicit dtor (COMDAT 0x140541060 in itemdata.cpp) and moves: no user-declared dtor
     CString name;                   // +0x00 "name"
     float soft;                     // +0x08 "soft" (default 0.01)
     float posz;                     // +0x0c "posz"
@@ -265,7 +265,7 @@ class DropNifData : public CPtred   // 0x20 bytes
 {
 public:
     DropNifData();                  // 0x1405434a0
-    virtual ~DropNifData();         // 0x140552480
+    virtual ~DropNifData() = default;   // COMDAT 0x140552480 (no vptr store)
     void FUN_1405434f0(Unk_140165cf0* pElem);   // XML read
     bool FUN_140543550(unsigned n); // m_nUnk1c <= n
     int FUN_140543590();            // type id
@@ -278,7 +278,7 @@ class ItemDropEffect : public CPtred    // 0x88 bytes
 {
 public:
     ItemDropEffect();               // 0x1405435b0
-    virtual ~ItemDropEffect();      // 0x1405524c0
+    virtual ~ItemDropEffect() = default;    // COMDAT 0x1405524c0 (no vptr store)
     void FUN_140543730(Unk_140165cf0* pElem);   // XML read
     int typeID;                     // +0x18
     float unknown1c;                // +0x1c (default 50.0)
@@ -305,7 +305,7 @@ class ItemColorEx : public CPtred   // 0x48 bytes
 {
 public:
     ItemColorEx(const int& nId);    // 0x140543940
-    virtual ~ItemColorEx();         // 0x1405524a0
+    virtual ~ItemColorEx() = default;   // COMDAT 0x1405524a0 (no vptr store)
     int m_nId;                      // +0x18
     int m_nColor;                   // +0x1c (default -1)
     bool m_bFlag;                   // +0x20
