@@ -167,6 +167,8 @@ template <class T> class TToolHistory
 public:
     TToolHistory();                                 // vfptr, empty list, cursor 0
     virtual ~TToolHistory();
+    virtual int vfunc_1(void*) { return 0; }
+    virtual int vfunc_2(void*) { return 0; }
     void Add(const T& rData);                       // drops everything after the cursor, appends, cursor = end
     int GetPos() const;                             // cursor - 1
     int Get(int nOffset, T* pOut);                  // moves the cursor by nOffset from the last entry, 1 = got it
