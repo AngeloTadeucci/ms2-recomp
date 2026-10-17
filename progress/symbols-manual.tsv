@@ -2753,3 +2753,9 @@ inflateInit_	142723ad0	func
 ?s_instance@?$TSingleton@VCMachineIDManager@@@@2PEAVCMachineIDManager@@EA	143ab8aa8	data
 ?s_bInit@CItemOptionTable@@2_NA	143aafe98	data
 ?s_instance@?$TSingleton@VCItemOptionTable@@@@2PEAVCItemOptionTable@@EA	143aab4f8	data
+??0Unk_AdBannerArray@@QEAA@XZ	14016e180	func
+??1Unk_AdBannerArray@@QEAA@XZ	14016e3c0	func
+??0CAdBannerManager@@QEAA@XZ	14016dd50	func
+??1CAdBannerManager@@QEAA@XZ	14016df30	func
+??0Unk_AdBannerPtr@@QEAA@AEBU0@@Z	14016e2b0	func
+??1Unk_AdBannerPtr@@QEAA@XZ	14016e430	func
