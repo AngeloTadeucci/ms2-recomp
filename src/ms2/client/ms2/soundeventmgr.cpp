@@ -143,6 +143,12 @@
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fc80 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fca0 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ?vfunc_1@?$TToolHistory@UMusicData@@@@UEAAHPEAX@Z 0x141789880
+// MS2-PIN: ?vfunc_2@?$TToolHistory@UMusicData@@@@UEAAHPEAX@Z 0x141789540
+// MS2-PIN: ?vfunc_1@?$TToolHistory@UReverbData@@@@UEAAHPEAX@Z 0x1417898a0
+// MS2-PIN: ?vfunc_2@?$TToolHistory@UReverbData@@@@UEAAHPEAX@Z 0x141789560
+// MS2-PIN: ?vfunc_1@?$TToolHistory@UParamVaule@@@@UEAAHPEAX@Z 0x141789890
+// MS2-PIN: ?vfunc_2@?$TToolHistory@UParamVaule@@@@UEAAHPEAX@Z 0x141789550
 // MS2-PIN: ??_7?$TToolHistory@UMusicData@@@@6B@ 0x142f679f0
 // MS2-PIN: ??_7?$TToolHistory@UReverbData@@@@6B@ 0x142f67a10
 // MS2-PIN: ??_7?$TToolHistory@UParamVaule@@@@6B@ 0x142f67a40
