@@ -19,6 +19,11 @@ public:
     ~Unk_MentorPtr() { Release(); }
     Unk_MentorPtr& operator=(T* value) { Unk_MentorPtr temp(value); T* old=p; p=temp.p; temp.p=old; return *this; }
     T* operator->() const { return p; }
+    // agents: copy/move/get used by guess\menteesearch.cpp (0x140b6f880 copy, 0x140b6f850 move, 0x140b6fce0 assign, 0x140b6fe60 get)
+    Unk_MentorPtr(const Unk_MentorPtr& o) : p(o.p) { AddRef(); }
+    Unk_MentorPtr(Unk_MentorPtr&& o) : p(o.p) { o.p = 0; }
+    Unk_MentorPtr& operator=(const Unk_MentorPtr& o) { o.AddRef(); Release(); p = o.p; return *this; }
+    T* get() const { return p; }
 private:
     void AddRef() const { if(p) AddRefImpl(0); }
     static void AddRefObject(T* value) { reinterpret_cast<Unk_MentorRef*>(value)->FUN_14015b020(); }
