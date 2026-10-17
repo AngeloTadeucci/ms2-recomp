@@ -1878,3 +1878,188 @@ int ItemMusicScore::FUN_14054ade0()
 {
     return masteryValueMax;
 }
+
+// ---- ItemModelData ------------------------------------------------------------------------------------------------------
+// @0x14054ae00
+ItemModelData::ItemModelData()
+    : m_nUnk28(0)
+{
+}
+
+// @0x14054aec0
+unsigned ItemModelData::FUN_14054aec0(unsigned nId)
+{
+    return nId / 100000;
+}
+
+// @0x14054aee0
+void ItemModelData::FUN_14054aee0(int n)
+{
+    m_nUnk28 = n;
+}
+
+// @0x14054af00
+void ItemModelData::FUN_14054af00(Unk_140165cf0* pElem)
+{
+    FUN_140873420(pElem, "desc", name);
+    Unk_140165cf0* pSlots = pElem->FUN_140165cf0("slots");
+    if (pSlots != 0)
+    {
+        for (Unk_140165cf0* pSlot = pSlots->FUN_140165cf0("slot"); pSlot != 0; pSlot = pSlot->FUN_140168650("slot"))
+        {
+            groups.push_back(ModelGroup());
+            ModelGroup& group = groups[groups.size() - 1];
+            group.FUN_140544cf0(pSlot);
+            if (group.FUN_1405451a0() == 3)
+            {
+                resource.AssignRaw(new CharacterDecalData);
+                resource->FUN_1401e4090(pSlot);
+            }
+        }
+    }
+    head.FUN_140546a90(pElem);
+    Unk_140165cf0* pCutting = pElem->FUN_140165cf0("cutting");
+    if (pCutting != 0)
+    {
+        for (Unk_140165cf0* pMesh = pCutting->FUN_140165cf0("mesh"); pMesh != 0; pMesh = pMesh->FUN_140168650("mesh"))
+        {
+            CString strName = FUN_14015f710(pMesh, "name", "");
+            if (strName.IsEmpty())
+                continue;
+            int nGender = 2;
+            FUN_1408731e0(pMesh, "gender", nGender);
+            if (nGender == 0 || nGender == 2)
+                names98.push_back(strName);
+            if (nGender == 1 || nGender == 2)
+                namesB0.push_back(strName);
+        }
+    }
+}
+
+// @0x14054b230
+void ItemModelData::FUN_14054b230(void* pParent)
+{
+}
+
+// @0x14054b250
+void ItemModelData::FUN_14054b250(const CString& strName)
+{
+    for (size_t i = 0; i < groups.size(); ++i)
+        groups[i].FUN_140545130(strName);
+}
+
+// @0x14054b2c0
+std::vector<CString>* ItemModelData::FUN_14054b2c0(int nGender)
+{
+    if (nGender == 0)
+        return &names98;
+    return &namesB0;
+}
+
+// @0x14054b2f0
+const ModelGroup* ItemModelData::FUN_14054b2f0(size_t nIndex) const
+{
+    static ModelGroup s_empty;
+    if (nIndex < groups.size())
+        return &groups[nIndex];
+    return &s_empty;
+}
+
+// @0x14054b3b0
+int ItemModelData::FUN_14054b3b0()
+{
+    return m_nUnk28;
+}
+
+// @0x14054b3d0
+size_t ItemModelData::FUN_14054b3d0()
+{
+    return groups.size();
+}
+
+// @0x14054b400
+int ItemModelData::FUN_14054b400() const
+{
+    if (groups.empty())
+        return 0;
+    return groups[0].FUN_1405451a0();
+}
+
+// @0x14054b450
+bool ItemModelData::FUN_14054b450(int nType) const
+{
+    for (size_t i = 0; i < groups.size(); ++i)
+    {
+        if (groups[i].FUN_1405451a0() == 19)
+            return nType == 5 || nType == 4;
+        else if (groups[i].FUN_1405451a0() == nType)
+            return true;
+    }
+    return false;
+}
+
+// @0x14054b520
+bool ItemModelData::FUN_14054b520()
+{
+    return head.FUN_140547190();
+}
+
+// @0x14054b550
+bool ItemModelData::FUN_14054b550()
+{
+    return head.FUN_1405471d0();
+}
+
+// @0x14054b580
+int ItemModelData::FUN_14054b580()
+{
+    return head.FUN_140547250();
+}
+
+// @0x14054b5b0
+int ItemModelData::FUN_14054b5b0(int nIndex)
+{
+    return head.FUN_140547270(nIndex);
+}
+
+// @0x14054b5e0
+int ItemModelData::FUN_14054b5e0(int nIndex)
+{
+    return head.FUN_1405472d0(nIndex);
+}
+
+// @0x14054b610
+size_t ItemModelData::FUN_14054b610()
+{
+    return head.FUN_140547330();
+}
+
+// @0x14054b640
+bool ItemModelData::FUN_14054b640()
+{
+    return head.FUN_140547230();
+}
+
+// @0x14054b670
+ItemModelHead* ItemModelData::FUN_14054b670()
+{
+    return &head;
+}
+
+// @0x14054b690
+ItemModelHead* ItemModelData::FUN_14054b690()
+{
+    return &head;
+}
+
+// @0x14054b6b0
+CharacterDecalData* ItemModelData::FUN_14054b6b0()
+{
+    return resource.get();
+}
+
+// @0x14054b6e0
+CStringW ItemModelData::FUN_14054b6e0()
+{
+    return name;
+}

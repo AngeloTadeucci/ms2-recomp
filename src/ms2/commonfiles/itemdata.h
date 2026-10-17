@@ -230,11 +230,11 @@ public:
     void FUN_14054b230(void* pParent);           // XML write (nothing)
     void FUN_14054b250(const CString& strName);     // renames every part of every group
     std::vector<CString>* FUN_14054b2c0(int nGender);   // the <cutting> names of a gender
-    ModelGroup* FUN_14054b2f0(size_t nIndex);       // the nIndex-th group (a static empty one when out of range)
+    const ModelGroup* FUN_14054b2f0(size_t nIndex) const;       // the nIndex-th group (a static empty one when out of range)
     int FUN_14054b3b0();            // m_nUnk28
     size_t FUN_14054b3d0();         // number of groups
-    int FUN_14054b400();            // type of the first group, 0 when none
-    bool FUN_14054b450(int nType);  // a group has the type (type 19 stands for 4 and 5)
+    int FUN_14054b400() const;      // type of the first group, 0 when none
+    bool FUN_14054b450(int nType) const;    // a group has the type (type 19 stands for 4 and 5)
     bool FUN_14054b520();
     bool FUN_14054b550();
     int FUN_14054b580();

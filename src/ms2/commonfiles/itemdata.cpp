@@ -617,7 +617,7 @@ bool CItemData::FUN_14053c9e0(int nGender, int nB)
     {
         for (unsigned i = 0; i < FUN_14053eba0()->FUN_14054b3d0(); ++i)
         {
-            ModelGroup* pGroup = FUN_14053eba0()->FUN_14054b2f0(i);
+            const ModelGroup* pGroup = FUN_14053eba0()->FUN_14054b2f0(i);
             for (unsigned j = 0; j < pGroup->FUN_1405450c0(); ++j)
             {
                 if (pGroup->FUN_140544fe0(j)->FUN_140544aa0(nGender, nB) != 0)
