@@ -169,7 +169,7 @@
 // MS2-PIN: ??_GCNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeResource@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeResource@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9890
 // MS2-PIN: ??_GCNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeStep@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeStep@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e98d0
 // MS2-PIN: ??_GCNode@?$CAtlMap@IV?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9910
-// MS2-PIN: ??_GCNode@?$CAtlMap@IV?$MS2Ptr@VUnk_DungeonCtx_1403e5240@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VUnk_DungeonCtx_1403e5240@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9950
+// MS2-PIN: ??_GCNode@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEAAPEAXI@Z 0x1403e9950
 // MS2-PIN: ?SetAt@?$CRBMap@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403f2ad0
 // MS2-PIN: ?Find@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x1403ec830
 // MS2-PIN: ?InsertImpl@?$CRBTree@IV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VBonusGameBlueMarbleSlot@@@@@Z 0x1403eefd0
@@ -200,6 +200,10 @@
 // MS2-PIN: ?RemoveAll@?$CAtlArray@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@2@@ATL@@QEAAXXZ 0x1403f19c0
 // MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeResource@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeResource@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1403ed4a0
 // MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VTreeWatering_TreeStep@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VTreeWatering_TreeStep@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1403ed590
+// MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@W4Unk_SaleHousingKey@@@ATL@@SAHAEBW4Unk_SaleHousingKey@@0@Z 0x1403ec530
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1403eda10
+// MS2-PIN: ?GetInstance@?$TSingleton@VCShopEventManager@@@@SAPEAVCShopEventManager@@XZ 0x1403ed2a0
+// MS2-PIN: ?GetInstance@?$TSingleton@VGameEventUserValueNameTable@@@@SAPEAVGameEventUserValueNameTable@@XZ 0x1403ed2c0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\gameevent.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <afx.h>
@@ -211,6 +215,17 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/commonfiles/gameevent.h"
 #include "ms2/commonfiles/itemgift.h"
+#include "ms2/commonfiles/gameeventcontext.h"
+#include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/cgameeventvaluemanager.h"
+#include "ms2/placeholder/cgamerule.h"
+#include "ms2/placeholder/cshopeventmanager.h"
+#include "ms2/placeholder/cshutdownevent.h"
+#include "ms2/placeholder/gameeventuservaluenametable.h"
+#include "ms2/client/ms2/effectservice.h"
+#include "ms2/client/ms2/guildmanager.h"
+#include "ms2/client/ms2/uiservice.h"
+#include "ms2/client/ms2/worldservice.h"
 #include "ms2/ms2recover.h"
 
 // The vftables (and with them the ??_G deleting dtors) of these classes are emitted by gameevent.cpp's out-of-line
@@ -385,7 +400,7 @@ template void Unk_GameEventDestroyElem<std::vector<ItemEntity> >(std::vector<Ite
 template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >*);
 template void Unk_GameEventDestroyElem<CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >>(CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >*);
 template void Unk_GameEventDestroyElem<CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >>(CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >*);
-template void Unk_GameEventDestroyElem<CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >>(CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >*);
+template void Unk_GameEventDestroyElem<CAtlMap<unsigned int, MS2Ptr<DungeonExtraRewardCountCtx> >>(CAtlMap<unsigned int, MS2Ptr<DungeonExtraRewardCountCtx> >*);
 template void Unk_GameEventDestroyElem<CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> > >(CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> >*);
 template void Unk_GameEventDestroyElem<Unk_GameEventStrPair>(Unk_GameEventStrPair*);
 
@@ -415,13 +430,15 @@ template class ATL::CAtlArray<unsigned __int64>;
 template class ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeResource> >;
 template class ATL::CAtlMap<int, MS2Ptr<TreeWatering_TreeStep> >;
 template class ATL::CAtlMap<unsigned int, MS2Ptr<TimeRunEventContext::QuestContext> >;
-template class ATL::CAtlMap<unsigned int, MS2Ptr<Unk_DungeonCtx_1403e5240> >;
+template class ATL::CAtlMap<unsigned int, MS2Ptr<DungeonExtraRewardCountCtx> >;
 template class ATL::CRBTree<unsigned int, MS2Ptr<BonusGameBlueMarbleSlot> >;
 template class ATL::CRBMap<unsigned int, MS2Ptr<BonusGameBlueMarbleSlot> >;
 template class ATL::CRBTree<int, MS2Ptr<BonusGameBlueMarbleSlot> >;
 template class ATL::CRBMap<int, MS2Ptr<BonusGameBlueMarbleSlot> >;
 template class ATL::CRBTree<Unk_SaleHousingKey, MS2Ptr<SaleCube> >;
 template class ATL::CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> >;
+// CStringW -> CStringW (Lookup called by 0x1403d8110 and gameeventvalue's 0x14042cad0).
+template class ATL::CAtlMap<CStringW, CStringW, CStringElementTraits<CStringW> >;
 
 // The pair's own ??_G (sized delete 0x10 around its out-of-line dtor) comes from a scalar delete.
 template <class T>
@@ -430,3 +447,61 @@ void Unk_GameEventDelete(T* p)
     delete p;
 }
 template void Unk_GameEventDelete<Unk_GameEventStrPair>(Unk_GameEventStrPair*);
+
+// The header-inline members gameevent.cpp's own bodies call: the singleton accessors, the CGameEventValueManager
+// value getters, the shutdown key counts, the int range, the Ontime context reset and the TinyXML sibling walk. Those
+// bodies are not written yet, so this emits the COMDATs. Not exe code.
+template <class T>
+void Unk_GameEventInlineUse(T* pMgr, CShutdownEventKeyCountMapUInt* pCounts, Unk_GameEventIntRange* pRange,
+                            OntimeEventContext* pOntime, Unk_140165cf0* pElem, CGameRule* pRule)
+{
+    TSingleton<CEffectService>::GetInstance();
+    TSingleton<CGuildManager>::GetInstance();
+    TSingleton<CShopEventManager>::GetInstance();
+    TSingleton<CUIService>::GetInstance();
+    TSingleton<GameEventUserValueNameTable>::GetInstance();
+    TSingleton<WorldService>::GetInstance();
+    pMgr->FindDungeonHelperBonus();
+    pMgr->GetArcadeOpen();
+    pMgr->GetBattlePetSpawn();
+    pMgr->GetBingoEvent();
+    pMgr->GetBurningLevelup();
+    pMgr->GetCollectItemGroup();
+    pMgr->GetCoupleDance();
+    pMgr->GetDungeonOpenPeriod();
+    pMgr->GetExchangeScrollSale();
+    pMgr->GetFestival();
+    pMgr->GetFieldEffect();
+    pMgr->GetItemTradeRestriction();
+    pMgr->GetNpcShopGivePoint();
+    pMgr->GetNpcShopResetPriceSale();
+    pMgr->GetNpcShopTalk();
+    pMgr->GetPublicTest();
+    pMgr->GetStarShop();
+    pMgr->GuildCoin();
+    pMgr->GuildExp();
+    pMgr->GuildFund();
+    pMgr->GuildPersonalSkillSale();
+    pMgr->GuildSkillSale();
+    pMgr->ItemBox();
+    pMgr->MasteryReduce();
+    pMgr->MasteryReward();
+    pMgr->MeratMarketOpenTab();
+    pMgr->SaleItemsRestricted();
+    pMgr->ShutdownBillboard();
+    pMgr->ShutdownFunctionItem();
+    pMgr->ShutdownInteractObjectId();
+    pMgr->ShutdownSkillItem();
+    pMgr->ShutdownUGCBanner();
+    pMgr->ShutdownUGCUpload();
+    pCounts->SetShutdown(0);
+    pCounts->ResetShutdown(0);
+    pRange->Init(0, 0);
+    pRange->IsInRange(0);
+    pOntime->Clear();
+    pElem->NextSiblingElement();
+    pRule->SetTransferItemBound(true);
+}
+template void Unk_GameEventInlineUse<CGameEventValueManager>(CGameEventValueManager*, CShutdownEventKeyCountMapUInt*,
+                                                             Unk_GameEventIntRange*, OntimeEventContext*, Unk_140165cf0*,
+                                                             CGameRule*);

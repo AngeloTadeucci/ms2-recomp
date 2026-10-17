@@ -1358,9 +1358,30 @@ struct NpcEventDropEventContext : public CPtred {
 };  // vftable 0x142d414b8, ??_G 0x1403eb550, dtor 0x1403e6df0
 MS2_CHECK_SIZE(NpcEventDropEventContext, 0x60);
 struct OntimeEventContext : public CPtred {
-    char m_pad_18[0x48];
+    // One of the two 7-value comma lists GameEventOntime::vfunc_2 (0x1403bd6c0) reads. Field meanings unknown.
+    struct Condition {
+        Condition();                                // 0x1403e40d0: Clear()
+        // @0x1403ec470
+        void Clear() { m_0 = 0; m_4 = 0; m_8 = 0; m_c = 0; m_10 = false; m_14 = 0; m_18 = 0; }
+        int m_0;
+        int m_4;
+        int m_8;
+        int m_c;
+        bool m_10;
+        int m_14;
+        int m_18;
+    };
+    OntimeEventContext();                           // 0x1403e41d0: Clear()
+    // @0x1403ec4d0
+    void Clear() { m_18 = 0; m_1c = false; m_20 = 0; m_24.Clear(); m_40.Clear(); }
+    int m_18;
+    bool m_1c;
+    int m_20;
+    Condition m_24;
+    Condition m_40;
 };  // vftable 0x142d41498, ??_G 0x1403eb590, dtor 0x1403e6e30
 MS2_CHECK_SIZE(OntimeEventContext, 0x60);
+MS2_CHECK_OFFSET(OntimeEventContext, m_40, 0x40);
 struct PreminmMarketSaleEventContext : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d41620, ??_G 0x1403eb5d0, dtor 0x1403e6e50
@@ -1654,13 +1675,28 @@ public:
     int m_arg2;                                     // +0x20 "arg2"
 };
 MS2_CHECK_SIZE(BonusGameBlueMarbleSlot, 0x28);
-// The CAtlMap value of the CNode ??_G 0x1403e9950 (MS2Ptr<T> dtor 0x1403e5240, sorted between
-// MS2Ptr<DungeonBonusRewardCtx> and MS2Ptr<EnchantRateEventContext>; one of the Dungeon*Ctx classes). Name unknown.
-class Unk_DungeonCtx_1403e5240 : public CPtred {
-};
 // Two CStrings (dtor 0x1403e6da0); a std:: container element of gameevent.cpp. Name unknown.
 struct Unk_GameEventStrPair {
     CStringW m_0;
     CStringW m_8;
 };
 MS2_CHECK_SIZE(Unk_GameEventStrPair, 0x10);
+// An inclusive int range (name invented): read from an "a,b" pair by 0x1403d8240; GameEventBlackMarketFeeDiscount
+// checks against a static (0, 10000) one.
+struct Unk_GameEventIntRange {
+    Unk_GameEventIntRange(int nMin, int nMax);      // 0x1403e19f0
+    // @0x1403eeaf0
+    void Init(int nMin, int nMax) { m_min = nMin; m_max = nMax; }
+    // @0x1403ef200
+    bool IsInRange(int n)
+    {
+        if (m_min > n)
+            return false;
+        if (m_max < n)
+            return false;
+        return true;
+    }
+    int m_min;
+    int m_max;
+};
+MS2_CHECK_SIZE(Unk_GameEventIntRange, 8);

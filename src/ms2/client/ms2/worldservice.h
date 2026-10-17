@@ -67,6 +67,7 @@ template <> class TSingleton<WorldService>
 public:
     TSingleton();                                       // 0x141bf1a00 (inline, below)
     virtual ~TSingleton() { s_instance = 0; }           // 0x141bf56f0
+    static WorldService* GetInstance() { return s_instance; }   // 0x1403ed2d0 (COMDAT of gameevent.cpp)
     static WorldService* s_instance;                    // 0x143aaee10
 };
 

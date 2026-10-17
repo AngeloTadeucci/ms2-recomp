@@ -20,6 +20,9 @@ class Unk_140165cf0
 public:
     Unk_140165cf0* FUN_140165cf0(const char* pszName);     // FirstChildElement
     Unk_140165cf0* FUN_140168650(const char* pszName);     // NextSiblingElement
+    const Unk_140165cf0* NextSiblingElement() const;       // 0x14086e770 (TiXmlNode, any name)
+    // @0x1403f0510 (TinyXML's non-const wrapper)
+    Unk_140165cf0* NextSiblingElement() { return const_cast<Unk_140165cf0*>((const_cast<const Unk_140165cf0*>(this))->NextSiblingElement()); }
     // @0x140189180
     const char* Value() const { return m_value.c_str(); }
 private:

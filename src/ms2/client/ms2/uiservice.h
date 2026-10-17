@@ -95,6 +95,7 @@ template <> class TSingleton<CUIService>
 public:
     TSingleton();                                   // inline
     virtual ~TSingleton() { s_instance = 0; }       // 0x141aef230
+    static CUIService* GetInstance() { return s_instance; }         // 0x1403ed2b0 (COMDAT of gameevent.cpp)
     static CUIService* s_instance;
 };
 
