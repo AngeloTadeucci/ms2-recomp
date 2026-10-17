@@ -3189,6 +3189,11 @@ void MyPC::FUN_14152b800(__int64 nItemUid)
 MS2_REPLACE_METHOD(0x14152b800, MyPC, FUN_14152b800, 192, 0x59BEFECE);
 
 int FUN_14072f970(int nState);                              // a summon may start from the state
+int FUN_141658f30(PCBase* pPC);                             // the item's level condition holds
+int FUN_141662de0(PCBase* pPC);                             // vip
+int FUN_14072f890(int nState);                              // a pet summon may start from the state
+CStringW FUN_14072f9a0(int nState);                         // the string key of why it may not
+CStringW FUN_140938ae0(CStringW strKey, const int& nArg);   // localized, formatted
 
 // Summon with an inventory item (state 0x26), if the state and the field allow it.
 // @0x14152b8d0
@@ -3211,6 +3216,56 @@ void MyPC::FUN_14152b8d0(__int64 nItemUid)
     vfunc_59(0x26, new StateSummonData(reinterpret_cast<void*>(spItem->FUN_140526a50()), 1), 0, 0);
 }
 MS2_REPLACE_METHOD(0x14152b8d0, MyPC, FUN_14152b8d0, 424, 0xB2896AD2);
+
+// Summon the pet of an inventory item (state 0x26), or the notice of the failed condition.
+// @0x14152b2d0
+void MyPC::FUN_14152b2d0(__int64 nItemUid)
+{
+    MS2Ptr<CItem> spItem = DAT_143ab2a90.FUN_140a5d680(nItemUid);
+    if (spItem == 0)
+        return;
+    if (spItem->FUN_140525ca0() != 0 && ::FUN_141658f30(this) == 0)
+    {
+        FUN_141275260(0xe2, 1, 0);
+        return;
+    }
+    if (spItem->FUN_140525db0() != 0 && ::FUN_141662de0(this) == 0)
+    {
+        FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_vip"), 1, 0);
+        return;
+    }
+    if (spItem->FUN_140525e00() != 0 && !vfunc_146())
+    {
+        FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_wedding"), 1, 0);
+        return;
+    }
+    if (FUN_141675ed0() != 0)
+    {
+        FUN_141275260(0x654, 1, 0);
+        return;
+    }
+    if (spItem->FUN_140527710() > (unsigned short)vfunc_78())
+    {
+        FUN_1412751f0(FUN_140938ae0(CStringW(L"s_pet_error_summon_level_limit"), spItem->FUN_140527710()), 1, 0);
+        return;
+    }
+    if (FUN_1403ed2d0()->FUN_141bd30a0().FUN_140885340()->m_nA8 == 0)
+    {
+        FUN_141275260(0x654, 1, 0);
+        return;
+    }
+    if (FUN_14072f890(FUN_14166c930()) == 0)
+    {
+        CStringW strKey = FUN_14072f9a0(FUN_14166c930());
+        if (strKey.GetLength() < 1)
+            FUN_141275260(0x654, 1, 0);
+        else
+            FUN_1412751f0(FUN_14028b8e0(strKey), 1, 0);
+        return;
+    }
+    vfunc_59(0x26, new StateSummonData(reinterpret_cast<void*>(spItem->FUN_140526a50()), 0), 0, 0);
+}
+MS2_REPLACE_METHOD(0x14152B2D0, MyPC, FUN_14152b2d0, 1311, 0x9ABACFC8);
 
 // MS2Ptr<Unk_RideeData> (Unk_RideeData is not CPtred-derived here): dtor 0x140788ed0, operator-> 0x1407895d0.
 template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();
@@ -4426,8 +4481,6 @@ struct Unk_MyPCRideAlongReq
     int m_nRideeId;
     __int64 m_nItemUid;
 };
-int FUN_141658f30(PCBase* pPC);                             // the item's level condition holds
-int FUN_141662de0(PCBase* pPC);                             // vip
 bool FUN_1406343b0(MS2Ptr<CItem> spItem, const __int64* pCharacterId);
 
 // @0x14152ba80
