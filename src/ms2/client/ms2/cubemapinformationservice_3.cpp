@@ -6213,3 +6213,64 @@ void CubeMapInformationService::FUN_1410cf5c0(egf::Entity* pEntity)
         }
     }
 }
+
+// ---- w142 batch 15 ----
+bool* FUN_141127f50(Unk_CMISTree<276>*, const int*);                                        // operator[]
+// @0x1410cd440
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cd440()
+{
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    FUN_14114f5e0(&f298);
+    Unk_CMISIter<262> itGroup, itGroupEnd;
+    for (FUN_14114df30(&fd8, &itGroup); FUN_1411275c0(&itGroup, FUN_141151c70(&fd8, &itGroupEnd)); FUN_141129bb0(&itGroup)) {
+        int nGroup = *FUN_141128660(&itGroup);
+        if (nGroup == 0)
+            continue;
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+        if (FUN_1408a8dd0(&spOwner, 0))
+            continue;
+        int nFlag = 0;
+        if (FUN_1408a0890(FUN_1403ed2d0()->FUN_141bd3060(), nGroup, &nFlag) == 0)
+            continue;
+        if (nFlag != 0)
+            continue;
+        if (spOwner->ownerID != FUN_141656ad0(pRoster) && !FUN_140930c90(spOwner->ownerID) && !FUN_140930d20(spOwner->ownerID))
+            continue;
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+        Unk_CMISListIter it;
+        Unk_CMISListEnd itListEnd;
+        for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+            Unk_Int3 cell = FUN_1408a0400(*FUN_1403e8d70(&it));
+            Cube* pCube = FUN_1410b8980(cell);
+            if (pCube == 0)
+                continue;
+            if (FUN_140375130(FUN_140885340(&f208)) && !(p300.x <= cell.x && p300.y <= cell.y && p300.z <= cell.z))
+                continue;
+            Unk_Int3 base = pCube->position;
+            if (pCube->field44 != 1)
+                base.z = base.z - 1;
+            int nHeight = 0;
+            if (!FUN_140375130(FUN_140885340(&f208))) {
+                if (f218 != 0) {
+                    std::map<int, Unk_UGCGroup>::iterator itFound = f218->groups.find(nGroup);
+                    if (itFound != f218->groups.end())
+                        nHeight = itFound->second.heightLimit;
+                }
+            } else {
+                nHeight = f2fc;
+            }
+            static const int s_aOffsets[9][2] = { {0, 0}, {-1, 0}, {1, 0}, {0, -1}, {0, 1}, {1, 1}, {-1, 1}, {1, -1}, {-1, -1} };
+            for (int dz = -1; dz < nHeight + 2; dz++) {
+                for (int i = 0; i < 9; i++) {
+                    Unk_Int3 pt = base;
+                    pt.z = pt.z + dz;
+                    pt.x = pt.x + s_aOffsets[i][0];
+                    pt.y = pt.y + s_aOffsets[i][1];
+                    int nKey = FUN_1408a03c0(pt);
+                    *FUN_141127f50(&f298, &nKey) = true;
+                }
+            }
+        }
+    }
+}
