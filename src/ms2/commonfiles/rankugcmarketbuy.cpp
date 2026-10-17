@@ -194,6 +194,10 @@ void CRankingArenaDataTable::CheckInit()
     }
 }
 
+// the UCRT memmove_s this TU's CString code inlines
+// @0x1407693a0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
+
 // ---- CRankViewer ----
 
 // @0x1407694c0
