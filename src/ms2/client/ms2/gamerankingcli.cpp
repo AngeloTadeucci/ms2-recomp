@@ -1,6 +1,13 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). See gamerankingcli.h.
 // MS2-UNIT: ?\gamerankingcli.cpp
 // MS2-RANGE: 0x140b287b0-0x140b498e0 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PINS-END tplpin
+// MS2-PIN: ??8Key@CGameRankingParam@@QEBA_NAEBU01@@Z 0x140b2e100
+// MS2-PIN: ??4?$MS2Ptr@VUgcMapCommendation@GameRankingItem@@@@QEAAAEAV0@AEBV0@@Z 0x140b447f0
+// MS2-PIN: ??4?$MS2Ptr@VUserPvp@GameRankingItem@@@@QEAAAEAV0@AEBV0@@Z 0x140b44830
+// MS2-PIN: ??4?$MS2Ptr@VUserTrophy@GameRankingItem@@@@QEAAAEAV0@AEBV0@@Z 0x140b44870
+// MS2-PIN: ??4?$MS2Ptr@VWorldChampion@GameRankingItem@@@@QEAAAEAV0@AEBV0@@Z 0x140b448b0
 //
 // Two original objs: gamerankingcli.cpp (CGameRankingData, CGameRankingCli; COMDATs up to its memmove_s at
 // 0x140b31ad0) and the ranking item / answer obj from 0x140b31bf0 (GameRankingItem::*, GameRanking::*,
@@ -77,6 +84,7 @@ __int64 FUN_140b3f610(CByteBuffer& s);
 
 // ---- CGameRankingData ----
 
+// MS2-FUNCTIONAL: the exe builds the by-value CString("") argument address before strUrl; frame/temp order differs
 // @0x140b287b0
 void CGameRankingData::Convert(int nType, MS2Ptr<GameRankingItem::IRankItem> spItem)
 {
@@ -270,6 +278,7 @@ void CGameRankingData::Convert(int nType, MS2Ptr<GameRankingItem::IRankItem> spI
         }
     }
 }
+MS2_REPLACE_METHOD(0x140b287b0, CGameRankingData, Convert, 7849, 0xB14681DC);
 
 // @0x140b2a660
 CStringW CGameRankingData::FormatTime(__int64 nTime)
@@ -279,6 +288,7 @@ CStringW CGameRankingData::FormatTime(__int64 nTime)
     strTime = FUN_14083bdc0(t, true, CStringW(L"/"), CStringW(L":"));
     return strTime;
 }
+MS2_REPLACE_METHOD(0x140b2a660, CGameRankingData, FormatTime, 293, 0xF8E7B919);
 
 // ---- CGameRankingCli ----
 
@@ -309,6 +319,7 @@ void CGameRankingCli::Update()
     DeliverPersonal();
     DeliverSearch();
 }
+MS2_REPLACE_METHOD(0x140b2a9b0, CGameRankingCli, Update, 71, 0x466CB188);
 
 // @0x140b2aa00
 void CGameRankingCli::SetPending(MS2Ptr<GameRanking::IResponse> spResponse)
@@ -317,6 +328,7 @@ void CGameRankingCli::SetPending(MS2Ptr<GameRanking::IResponse> spResponse)
     else
         m_pending = spResponse;
 }
+MS2_REPLACE_METHOD(0x140b2aa00, CGameRankingCli, SetPending, 111, 0x5CB2C711);
 
 // @0x140b2aa80
 void CGameRankingCli::SetPersonalPending(MS2Ptr<GameRanking::IResponse> spResponse)
@@ -325,6 +337,7 @@ void CGameRankingCli::SetPersonalPending(MS2Ptr<GameRanking::IResponse> spRespon
     else
         m_pendingPersonal = spResponse;
 }
+MS2_REPLACE_METHOD(0x140b2aa80, CGameRankingCli, SetPersonalPending, 113, 0xD5C6AF6C);
 
 // @0x140b2ab00
 void CGameRankingCli::ClearPersonal()
@@ -333,6 +346,7 @@ void CGameRankingCli::ClearPersonal()
     else
         m_personal.RemoveAll();
 }
+MS2_REPLACE_METHOD(0x140b2ab00, CGameRankingCli, ClearPersonal, 92, 0xD92C87C2);
 
 // @0x140b2ab70
 void CGameRankingCli::OnPacket(CByteBuffer& packet)
@@ -345,6 +359,7 @@ void CGameRankingCli::OnPacket(CByteBuffer& packet)
         DAT_1439f4d98 = packet.vfunc_o8_3();
     }
 }
+MS2_REPLACE_METHOD(0x140b2ab70, CGameRankingCli, OnPacket, 177, 0x548BC5EE);
 
 // @0x140b2ac30
 MS2Ptr<GameRanking::IResponse> CGameRankingCli::QueryPrevious(const Key& key, int bCheckValid)
@@ -370,6 +385,7 @@ MS2Ptr<GameRanking::IResponse> CGameRankingCli::QueryPrevious(const Key& key, in
     }
     return spResponse;
 }
+MS2_REPLACE_METHOD(0x140b2ac30, CGameRankingCli, QueryPrevious, 396, 0xC7C67A6E);
 
 // @0x140b2add0
 MS2Ptr<GameRanking::Page> CGameRankingCli::Query(const Key& key, int nPage, int bCheckValid)
@@ -386,6 +402,7 @@ MS2Ptr<GameRanking::Page> CGameRankingCli::Query(const Key& key, int nPage, int 
     }
     return spPage;
 }
+MS2_REPLACE_METHOD(0x140b2add0, CGameRankingCli, Query, 438, 0x02FB1AB0);
 
 // @0x140b2af90
 MS2Ptr<GameRanking::Page> CGameRankingCli::Search(const Key& key, CStringW strName, int bCheckValid)
@@ -404,6 +421,7 @@ MS2Ptr<GameRanking::Page> CGameRankingCli::Search(const Key& key, CStringW strNa
     }
     return spPage;
 }
+MS2_REPLACE_METHOD(0x140b2af90, CGameRankingCli, Search, 572, 0xD351A227);
 
 // @0x140b2b1e0
 TPtrValue<CGameRankingData> CGameRankingCli::GetData(const Key& key, int nRank, int bCheckValid)
@@ -425,12 +443,13 @@ TPtrValue<CGameRankingData> CGameRankingCli::GetData(const Key& key, int nRank, 
     spData->Convert(key.m_type, spItem);
     return spData;
 }
+MS2_REPLACE_METHOD(0x140b2b1e0, CGameRankingCli, GetData, 600, 0x2C4A9534);
 
 // @0x140b2b440
 int CGameRankingCli::Read(const Key& key, int nPage, ATL::CAtlArray<TPtrValue<CGameRankingData> >& rows,
                           CStringW strName, int bCheckValid)
 {
-    ATL::CAtlArray<void*> arrUnused;
+    ATL::CAtlArray<MS2Ptr<GameRankingItem::IRankItem> > arrUnused;
     MS2Ptr<GameRanking::Page> spPage(0);
     if (strName.GetLength() == 0) {
         spPage = Query(key, nPage, bCheckValid);
@@ -458,6 +477,7 @@ int CGameRankingCli::Read(const Key& key, int nPage, ATL::CAtlArray<TPtrValue<CG
     }
     return 1;
 }
+MS2_REPLACE_METHOD(0x140b2b440, CGameRankingCli, Read, 1054, 0xC111026D);
 
 // @0x140b2b870
 void CGameRankingCli::BuildKey(Key& key, int nBoard, int nSub, int nMode, int nDate)
@@ -570,6 +590,7 @@ void CGameRankingCli::BuildKey(Key& key, int nBoard, int nSub, int nMode, int nD
         }
     }
 }
+MS2_REPLACE_METHOD(0x140b2b870, CGameRankingCli, BuildKey, 884, 0xF36DD656);
 
 // The key of the own rank on a board.
 // @0x140b2bbf0
@@ -679,6 +700,7 @@ void CGameRankingCli::BuildMyRankKey(Key& key, int nBoard, int nSub, int nMode, 
         }
     }
 }
+MS2_REPLACE_METHOD(0x140b2bbf0, CGameRankingCli, BuildMyRankKey, 822, 0xFEE617A6);
 
 // @0x140b2bf30
 void CGameRankingCli::Request(const CGameRankingParam* pParam)
@@ -691,6 +713,7 @@ void CGameRankingCli::Request(const CGameRankingParam* pParam)
     if (spParam.get() != 0)
         AfxBeginThread(RequestWeb, spParam.get(), 0, 0, 0, 0);
 }
+MS2_REPLACE_METHOD(0x140b2bf30, CGameRankingCli, Request, 179, 0xBF4AE991);
 
 // @0x140b2bff0
 void CGameRankingCli::ReceiveWeb(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<CGameRankingWebResult> spResult)
@@ -718,6 +741,7 @@ void CGameRankingCli::ReceiveWeb(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<CGame
         }
     }
 }
+MS2_REPLACE_METHOD(0x140b2bff0, CGameRankingCli, ReceiveWeb, 830, 0xF8A0CE45);
 
 // @0x140b2c340
 void CGameRankingCli::ReceiveSearch(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<GameRanking::IResponse> spResponse)
@@ -738,6 +762,7 @@ void CGameRankingCli::ReceiveSearch(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<Ga
             m_searchPage = spResponse->GetPage(1);
     }
 }
+MS2_REPLACE_METHOD(0x140b2c340, CGameRankingCli, ReceiveSearch, 731, 0x444995E5);
 
 // @0x140b2c630
 void CGameRankingCli::SetResponse(const Key& key, MS2Ptr<GameRanking::IResponse> spResponse)
@@ -751,6 +776,7 @@ void CGameRankingCli::SetResponse(const Key& key, MS2Ptr<GameRanking::IResponse>
             m_responses.SetAt(key, spResponse);
     }
 }
+MS2_REPLACE_METHOD(0x140b2c630, CGameRankingCli, SetResponse, 177, 0x1A42FE44);
 
 // @0x140b2c6f0
 __int64 CGameRankingCli::OwnerId(int nBoard)
@@ -768,6 +794,7 @@ __int64 CGameRankingCli::OwnerId(int nBoard)
         nId = DAT_143ab2820;
     return nId;
 }
+MS2_REPLACE_METHOD(0x140b2c6f0, CGameRankingCli, OwnerId, 218, 0x9A7387E3);
 
 // @0x140b2c7d0
 void CGameRankingCli::Clear()
@@ -776,6 +803,7 @@ void CGameRankingCli::Clear()
     m_responses.RemoveAll();
     m_personal.RemoveAll();
 }
+MS2_REPLACE_METHOD(0x140b2c7d0, CGameRankingCli, Clear, 69, 0x9D5A4764);
 
 // @0x140b2c820
 MS2Ptr<CGameRankingParam> CGameRankingCli::AddParam(const CGameRankingParam* pParam)
@@ -792,6 +820,7 @@ MS2Ptr<CGameRankingParam> CGameRankingCli::AddParam(const CGameRankingParam* pPa
     }
     return spParam;
 }
+MS2_REPLACE_METHOD(0x140b2c820, CGameRankingCli, AddParam, 418, 0x2D53F44A);
 
 // @0x140b2c9d0
 void CGameRankingCli::RemoveParam(const Key& key)
@@ -800,6 +829,7 @@ void CGameRankingCli::RemoveParam(const Key& key)
     else
         m_params.RemoveKey(key);
 }
+MS2_REPLACE_METHOD(0x140b2c9d0, CGameRankingCli, RemoveParam, 100, 0xB2407F34);
 
 // The ranking dialog, when it is open.
 // @0x140b2d030
@@ -835,6 +865,7 @@ void CGameRankingCli::DeliverRows()
         }
     }
 }
+MS2_REPLACE_METHOD(0x140b2ca40, CGameRankingCli, DeliverRows, 457, 0xFBB6DF5B);
 
 // @0x140b2cc10
 void CGameRankingCli::DeliverSearch()
@@ -851,6 +882,7 @@ void CGameRankingCli::DeliverSearch()
     if (pDialog != 0 && pDialog->vfunc_55() == 0)
         pDialog->FUN_140e34eb0(spPage);
 }
+MS2_REPLACE_METHOD(0x140b2cc10, CGameRankingCli, DeliverSearch, 299, 0xA7DC09DF);
 
 // @0x140b2cd50
 void CGameRankingCli::DeliverPersonal()
@@ -867,6 +899,7 @@ void CGameRankingCli::DeliverPersonal()
     if (pDialog != 0 && pDialog->vfunc_55() == 0)
         pDialog->FUN_140e31910(0);
 }
+MS2_REPLACE_METHOD(0x140b2cd50, CGameRankingCli, DeliverPersonal, 251, 0xD6D41476);
 
 // @0x140b2ce60
 unsigned int __cdecl CGameRankingCli::RequestWeb(void* pParam)
@@ -1632,6 +1665,7 @@ GameRanking::MyRank::MyRank(unsigned int nType)
     m_rank = 0;
 }
 
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (an unused slot); the code is identical
 // @0x140b37290
 int GameRanking::MyRank::Read(CByteBuffer& s)
 {
@@ -2174,6 +2208,7 @@ GameRanking::BossKillRecord::BossKillRecord(unsigned int nType)
 {
 }
 
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (an unused slot); the code is identical
 // @0x140b3a7d0
 int GameRanking::BossKillRecord::Read(CByteBuffer& s)
 {
@@ -2355,6 +2390,7 @@ GameRanking::BossDamageDate::BossDamageDate(unsigned int nType)
 {
 }
 
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (an unused slot); the code is identical
 // @0x140b3ba30
 int GameRanking::BossDamageDate::Read(CByteBuffer& s)
 {
@@ -2394,6 +2430,7 @@ GameRanking::BossDamageAmount::BossDamageAmount(unsigned int nType)
 {
 }
 
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (an unused slot); the code is identical
 // @0x140b3bdd0
 int GameRanking::BossDamageAmount::Read(CByteBuffer& s)
 {
@@ -2504,6 +2541,7 @@ GameRanking::BossRumbleRecord::BossRumbleRecord(unsigned int nType)
 {
 }
 
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (an unused slot); the code is identical
 // @0x140b3c8d0
 int GameRanking::BossRumbleRecord::Read(CByteBuffer& s)
 {
@@ -2706,6 +2744,7 @@ void GameRanking::Page::Add(int nRank, GameRankingItem::IRankItem* pItem)
     MS2Ptr<GameRankingItem::IRankItem> spItem(pItem);
     m_items.SetAt(nRank, spItem);
 }
+MS2_REPLACE_METHOD(0x140b3dbd0, GameRanking::Page, Add, 95, 0x0EBDB178);
 
 // @0x140b3dc40
 MS2Ptr<GameRankingItem::IRankItem> GameRanking::Page::GetItem(int nRank)
@@ -2714,6 +2753,7 @@ MS2Ptr<GameRankingItem::IRankItem> GameRanking::Page::GetItem(int nRank)
     m_items.Lookup(nRank, spItem);
     return spItem;
 }
+MS2_REPLACE_METHOD(0x140b3dc40, GameRanking::Page, GetItem, 121, 0x57A94644);
 
 // @0x140b3dcc0
 MS2Ptr<GameRankingItem::IRankItem> GameRanking::Page::GetFirstItem()
@@ -2724,6 +2764,7 @@ MS2Ptr<GameRankingItem::IRankItem> GameRanking::Page::GetFirstItem()
         spItem = m_items.GetValueAt(pos);
     return spItem;
 }
+MS2_REPLACE_METHOD(0x140b3dcc0, GameRanking::Page, GetFirstItem, 155, 0x262B168D);
 
 // ---- CGameRankingParam / CGameRankingWebResult ----
 

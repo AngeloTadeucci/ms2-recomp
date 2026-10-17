@@ -352,14 +352,20 @@ public:
         void Clear();                                       // 0x140b357b0
         int GetCategory() const;                            // 0x140b357e0 (the board group of the type)
         Key& operator=(const Key& o);                       // 0x140b35820
-        bool operator==(const Key& o) const { return m_type == o.m_type && m_sub == o.m_sub && m_date == o.m_date; }
+        bool operator==(const Key& o) const
+        {
+            if (m_type == o.m_type && m_sub == o.m_sub && m_date == o.m_date)
+                return true;
+            return false;
+        }
         bool operator<(const Key& o) const
         {
             if (m_type != o.m_type)
                 return m_type < o.m_type;
-            if (m_sub != o.m_sub)
+            else if (m_sub != o.m_sub)
                 return m_sub < o.m_sub;
-            return m_date < o.m_date;
+            else
+                return m_date < o.m_date;
         }
         int m_type;                                         // +0x00
         int m_sub;                                          // +0x04
