@@ -228,7 +228,6 @@ bool EntityWorldManager::FUN_1411ce6d0(Unk_WorldEntityMap::iterator& it, egf::En
     else { entity = it->second; ++it; }
     return found;
 }
-// MS2-FUNCTIONAL: typed engine entity construction preserves property order and ownership.
 // @0x1411ce760
 egf::EntityID EntityWorldManager::FUN_1411ce760(const efd::utf8string& name, efd::AssetID& asset, bool addToWorld) {
     return static_cast<MS2EntityManagerService*>(entities.data())->FUN_1414b4b00(name, asset, addToWorld);
@@ -263,7 +262,6 @@ egf::EntityPtr EntityWorldManager::FUN_1411ce7c0(efd::utf8string modelName, efd:
     worlds[currentMap].allEntities[id] = entity.data();
     return entity;
 }
-// MS2-FUNCTIONAL: engine types preserve model-load acceptance of results zero and one.
 // @0x1411cec80
 egf::EntityPtr EntityWorldManager::FUN_1411cec80(const efd::utf8string& modelName, egf::EntityID id, bool master) {
     if (models->FindModel(modelName) == nullptr) {
@@ -275,7 +273,6 @@ egf::EntityPtr EntityWorldManager::FUN_1411cec80(const efd::utf8string& modelNam
     }
     return models->FactoryEntity(modelName, id, master);
 }
-// MS2-FUNCTIONAL: model-ID overload retains name lookup with mixins enabled on a cache miss.
 // @0x1411cedd0
 egf::EntityPtr EntityWorldManager::FUN_1411cedd0(egf::FlatModelID modelID, egf::EntityID id, bool master) {
     if (models->FindModel(modelID) == nullptr) {
@@ -287,7 +284,6 @@ egf::EntityPtr EntityWorldManager::FUN_1411cedd0(egf::FlatModelID modelID, egf::
     }
     return models->FactoryEntity(modelID, id, master);
 }
-// MS2-FUNCTIONAL: preserves engine creation arguments and records the looked-up pointer even when null.
 // @0x1411cef50
 egf::EntityID EntityWorldManager::FUN_1411cef50(const efd::utf8string& name, const efd::Category& category,
     efd::ParameterList* creationArgs, efd::ParameterList* initialProps, egf::EntityID requested, bool master) {
@@ -416,7 +412,6 @@ void EntityWorldManager::FUN_1411cfd40(const egf::EntityChangeMessage* message, 
         worlds[currentMap].allEntities[id] = entity.data();
     }
 }
-// MS2-FUNCTIONAL: erases the all-entity entry first, then created or loaded entries with early returns.
 // @0x1411cffa0
 void EntityWorldManager::FUN_1411cffa0(const egf::EntityChangeMessage* message, efd::Category) {
     egf::Entity* entity = message->GetEntity();
@@ -460,7 +455,6 @@ efd::SyncResult EntityWorldManager::OnPreInit(efd::IDependencyRegistrar* registr
     registrar->AddDependency<ecr::SceneGraphService>(1);
     return efd::SyncResult_Success;
 }
-// MS2-FUNCTIONAL: typed service acquisition, subscriptions and callbacks retain the original order.
 // Not hooked: constructs the zero-argument callback with DLL-local RTTI.
 // @0x1411d0480
 efd::AsyncResult EntityWorldManager::OnInit() {
