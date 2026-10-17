@@ -16,6 +16,7 @@
 #include <NiMorphMeshModifier.h>
 #include <NiCommonSemantics.h>
 #include <efd/LoggerMacros.h>
+#include "ms2/commonfiles/logstring.h"
 
 // Scene walker of the cube code (ctor 0x14098cb80); children are queued by AddChildren and Next returns the next object.
 class Unk_CubeSceneIterator {
@@ -41,6 +42,18 @@ int FUN_140ef4dd0(Unk_MaterialEntry* pEntry);
 const NiMaterial* FUN_140a17cd0(NiMesh* pMesh);         // active material
 int FUN_141049fa0(NiMesh* pMesh, const MeshGroups& kGroups);
 
+CLogString* FUN_140166440();
+
+// Four-argument wide log (template instance 0x141054b90).
+template<class T, class U, class V, class W> inline void Unk_MeshLog(CLogString* log, int level, int category, const wchar_t* format,
+                                                                   const T& first, const U& second, const V& third, const W& fourth) {
+    const fmt::internal::ArgArray<4>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(first),
+                                                 fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(second),
+                                                 fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(third),
+                                                 fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t>>(fourth)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second, third, fourth), args));
+}
+
 typedef ATL::CAtlArray<efd::SmartPointer<NiMesh> > MeshArray;
 
 // Skinning merge state of one group (ctor 0x141067020, dtor 0x1410682d0; 0x50 bytes).
@@ -61,6 +74,7 @@ NiMesh* FUN_14104ae20(const MeshGroups& kBuckets, MergeInfo& kInfo, NiAVObject* 
 void FUN_14104e800(const MeshList& kGroup, MeshGroups& kBuckets, MergeInfo& kInfo);
 NiMesh* FUN_14104f460(const MeshGroups& kBuckets, MergeInfo& kInfo, NiAVObject* pRoot);
 void FUN_141049d50(NiAVObject* pRoot, MeshGroups& kGroups);
+int FUN_141051ee0(std::set<NiAVObject*>& kBones, NiAVObject** ppBones, unsigned int uiCount);
 void FUN_14104d450(NiAVObject* pRoot, MeshGroups& kGroups);
 
 // @0x141049240
@@ -249,4 +263,234 @@ void FUN_14104a080(const MeshGroups& kGroups, int* pVertices, int* pIndices)
             *pIndices += pMesh->GetCount(0, NiCommonSemantics::INDEX(), 0);
         }
     }
+}
+// @0x14104a1c0
+void FUN_14104a1c0(const MeshList& kGroup, MeshGroups& kBuckets, MergeInfo& kInfo)
+{
+    ATL::CAtlArray<NiAVObject*> kBones;
+    ATL::CAtlArray<NiTransform*> kTransforms;
+    ATL::CAtlArray<NiBound*> kBounds;
+    NiSkinningMeshModifier* pFirstSkin = 0;
+    kBuckets.push_back(MeshList());
+    std::vector<std::set<NiAVObject*> > kBucketBones;
+    kBucketBones.push_back(std::set<NiAVObject*>());
+    std::vector<std::set<unsigned char> > kBucketIndices;
+    kBucketIndices.push_back(std::set<unsigned char>());
+    NiSyncArgs kArgs;
+    kArgs.m_uiSubmitPoint = 0x8000;
+    kArgs.m_uiCompletePoint = 0x8000;
+    for (unsigned int i = 0; i < kGroup.size(); i++)
+    {
+        NiMesh* pMesh = kGroup[i];
+        NiSkinningMeshModifier* pSkin = (NiSkinningMeshModifier*)pMesh->GetModifierByType(&NiSkinningMeshModifier::ms_RTTI);
+        NiAVObject** ppBones = pSkin->GetBones();
+        NiTransform* pTransforms = pSkin->GetSkinToBoneTransforms();
+        NiBound* pBounds = pSkin->GetBoneBounds();
+        unsigned int uiBoneCount = pSkin->GetBoneCount();
+        pMesh->CompleteModifiers(&kArgs);
+        if (pFirstSkin == 0)
+            pFirstSkin = pSkin;
+        unsigned int uiBucket = 0;
+        while (uiBucket < kBucketBones.size())
+        {
+            if (FUN_141051ee0(kBucketBones[uiBucket], ppBones, uiBoneCount) < 0x3d)
+                break;
+            uiBucket++;
+        }
+        if (uiBucket == kBucketBones.size())
+        {
+            kBuckets.push_back(MeshList());
+            kBucketBones.push_back(std::set<NiAVObject*>());
+            kBucketIndices.push_back(std::set<unsigned char>());
+        }
+        kInfo.m_kBoneRemap.insert(std::make_pair(pMesh, std::map<unsigned char, unsigned char>()));
+        std::map<unsigned char, unsigned char>& kRemap = kInfo.m_kBoneRemap[pMesh];
+        for (unsigned char ucBone = 0; ucBone < uiBoneCount; ucBone++)
+        {
+            NiAVObject* pBone = ppBones[ucBone];
+            unsigned char ucFound = 0;
+            while (ucFound < kBones.GetCount())
+            {
+                if (pBone == kBones[ucFound])
+                {
+                    if (!(pTransforms[ucBone].m_Translate == kTransforms[ucFound]->m_Translate))
+                    {
+                        NiPoint3 kDiff = pTransforms[ucBone].m_Translate - kTransforms[ucFound]->m_Translate;
+                        Unk_MeshLog(FUN_140166440(), 2, 0x13, L"[MeshOptimizer] Bone {0}의 SkinToBoneTransform이 앞에 설정된 것과 다릅니다 Diff :({1},{2},{3})",
+                                    (const char*)pBone->GetName(), kDiff.x, kDiff.y, kDiff.z);
+                        kRemap[ucBone] = ucFound;
+                    }
+                    else
+                    {
+                        kRemap[ucBone] = ucFound;
+                    }
+                    break;
+                }
+                ucFound++;
+            }
+            if (ucFound == kBones.GetCount())
+            {
+                kBones.Add(pBone);
+                NiTransform* pTransform = &pTransforms[ucBone];
+                kTransforms.Add(pTransform);
+                NiBound* pBound = &pBounds[ucBone];
+                kBounds.Add(pBound);
+                kRemap[ucBone] = ucFound;
+            }
+            kBucketBones[uiBucket].insert(pBone);
+            kBucketIndices[uiBucket].insert(ucFound);
+        }
+        kBuckets[uiBucket].push_back(pMesh);
+    }
+    unsigned int uiMergedCount = kBones.GetCount();
+    NiSkinningMeshModifier* pMerged = NiNew NiSkinningMeshModifier(uiMergedCount);
+    pMerged->EnableDynamicBounds();
+    NiAVObject** ppMergedBones = pMerged->GetBones();
+    NiTransform* pMergedTransforms = pMerged->GetSkinToBoneTransforms();
+    NiBound* pMergedBounds = pMerged->GetBoneBounds();
+    pMerged->SetRootBoneParent(pFirstSkin->GetRootBoneParent());
+    pMerged->SetRootBoneParentToSkinTransform(pFirstSkin->GetRootBoneParentToSkinTransform());
+    for (unsigned int i = 0; i < uiMergedCount; i++)
+    {
+        ppMergedBones[i] = kBones[i];
+        pMergedTransforms[i] = *kTransforms[i];
+        pMergedBounds[i] = *kBounds[i];
+    }
+    kInfo.m_spSkin = pMerged;
+    for (unsigned int i = 0; i < kBucketIndices.size(); i++)
+    {
+        kInfo.m_kBoneLists.push_back(std::vector<unsigned char>(kBucketIndices[i].size()));
+        std::copy(kBucketIndices[i].begin(), kBucketIndices[i].end(), kInfo.m_kBoneLists[i].begin());
+    }
+    for (unsigned int i = 0; i < kBucketIndices.size(); i++)
+    {
+        kInfo.m_kBucketRemap.push_back(std::map<unsigned char, unsigned char>());
+        std::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
+        std::map<unsigned char, unsigned char>& kBucketRemap = kInfo.m_kBucketRemap[i];
+        for (unsigned char uc = 0; uc < kList.size(); uc++)
+            kBucketRemap.insert(std::make_pair(kList[uc], uc));
+    }
+}
+
+// @0x14104e800
+void FUN_14104e800(const MeshList& kGroup, MeshGroups& kBuckets, MergeInfo& kInfo)
+{
+    ATL::CAtlArray<NiAVObject*> kBones;
+    ATL::CAtlArray<NiTransform*> kTransforms;
+    ATL::CAtlArray<NiBound*> kBounds;
+    NiSkinningMeshModifier* pFirstSkin = 0;
+    kBuckets.push_back(MeshList());
+    std::vector<std::set<NiAVObject*> > kBucketBones;
+    kBucketBones.push_back(std::set<NiAVObject*>());
+    std::vector<std::set<unsigned char> > kBucketIndices;
+    kBucketIndices.push_back(std::set<unsigned char>());
+    NiSyncArgs kArgs;
+    kArgs.m_uiSubmitPoint = 0x8000;
+    kArgs.m_uiCompletePoint = 0x8000;
+    for (unsigned int i = 0; i < kGroup.size(); i++)
+    {
+        NiMesh* pMesh = kGroup[i];
+        NiSkinningMeshModifier* pSkin = (NiSkinningMeshModifier*)pMesh->GetModifierByType(&NiSkinningMeshModifier::ms_RTTI);
+        NiAVObject** ppBones = pSkin->GetBones();
+        NiTransform* pTransforms = pSkin->GetSkinToBoneTransforms();
+        NiBound* pBounds = pSkin->GetBoneBounds();
+        unsigned int uiBoneCount = pSkin->GetBoneCount();
+        pMesh->CompleteModifiers(&kArgs);
+        if (pFirstSkin == 0)
+            pFirstSkin = pSkin;
+        unsigned int uiBucket = 0;
+        while (uiBucket < kBucketBones.size())
+        {
+            if (FUN_141051ee0(kBucketBones[uiBucket], ppBones, uiBoneCount) < 0x3d)
+                break;
+            uiBucket++;
+        }
+        if (uiBucket == kBucketBones.size())
+        {
+            kBuckets.push_back(MeshList());
+            kBucketBones.push_back(std::set<NiAVObject*>());
+            kBucketIndices.push_back(std::set<unsigned char>());
+        }
+        kInfo.m_kBoneRemap.insert(std::make_pair(pMesh, std::map<unsigned char, unsigned char>()));
+        std::map<unsigned char, unsigned char>& kRemap = kInfo.m_kBoneRemap[pMesh];
+        for (unsigned char ucBone = 0; ucBone < uiBoneCount; ucBone++)
+        {
+            NiAVObject* pBone = ppBones[ucBone];
+            unsigned char ucFound = 0;
+            while (ucFound < kBones.GetCount())
+            {
+                if (pBone == kBones[ucFound])
+                {
+                    if (!(pTransforms[ucBone].m_Translate == kTransforms[ucFound]->m_Translate))
+                    {
+                        NiPoint3 kDiff = pTransforms[ucBone].m_Translate - kTransforms[ucFound]->m_Translate;
+                        Unk_MeshLog(FUN_140166440(), 2, 0x13, L"[MeshOptimizer] Bone {0}의 SkinToBoneTransform이 앞에 설정된 것과 다릅니다 Diff :({1},{2},{3})",
+                                    (const char*)pBone->GetName(), kDiff.x, kDiff.y, kDiff.z);
+                        kRemap[ucBone] = ucFound;
+                    }
+                    else
+                    {
+                        kRemap[ucBone] = ucFound;
+                    }
+                    break;
+                }
+                ucFound++;
+            }
+            if (ucFound == kBones.GetCount())
+            {
+                kBones.Add(pBone);
+                NiTransform* pTransform = &pTransforms[ucBone];
+                kTransforms.Add(pTransform);
+                NiBound* pBound = &pBounds[ucBone];
+                kBounds.Add(pBound);
+                kRemap[ucBone] = ucFound;
+            }
+            kBucketBones[uiBucket].insert(pBone);
+            kBucketIndices[uiBucket].insert(ucFound);
+        }
+        kBuckets[uiBucket].push_back(pMesh);
+    }
+    unsigned int uiMergedCount = kBones.GetCount();
+    NiSkinningMeshModifier* pMerged = NiNew NiSkinningMeshModifier(uiMergedCount);
+    pMerged->EnableDynamicBounds();
+    NiAVObject** ppMergedBones = pMerged->GetBones();
+    NiTransform* pMergedTransforms = pMerged->GetSkinToBoneTransforms();
+    NiBound* pMergedBounds = pMerged->GetBoneBounds();
+    pMerged->SetRootBoneParent(pFirstSkin->GetRootBoneParent());
+    pMerged->SetRootBoneParentToSkinTransform(pFirstSkin->GetRootBoneParentToSkinTransform());
+    for (unsigned int i = 0; i < uiMergedCount; i++)
+    {
+        ppMergedBones[i] = kBones[i];
+        pMergedTransforms[i] = *kTransforms[i];
+        pMergedBounds[i] = *kBounds[i];
+    }
+    kInfo.m_spSkin = pMerged;
+    for (unsigned int i = 0; i < kBucketIndices.size(); i++)
+    {
+        kInfo.m_kBoneLists.push_back(std::vector<unsigned char>(kBucketIndices[i].size()));
+        std::copy(kBucketIndices[i].begin(), kBucketIndices[i].end(), kInfo.m_kBoneLists[i].begin());
+    }
+    for (unsigned int i = 0; i < kBucketIndices.size(); i++)
+    {
+        kInfo.m_kBucketRemap.push_back(std::map<unsigned char, unsigned char>());
+        std::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
+        std::map<unsigned char, unsigned char>& kBucketRemap = kInfo.m_kBucketRemap[i];
+        for (unsigned char uc = 0; uc < kList.size(); uc++)
+            kBucketRemap.insert(std::make_pair(kList[uc], uc));
+    }
+}
+
+
+// Size the bone set would have after adding the bones (0x141051ee0).
+// @0x141051ee0
+int FUN_141051ee0(std::set<NiAVObject*>& kBones, NiAVObject** ppBones, unsigned int uiCount)
+{
+    int iSize = (int)kBones.size();
+    for (unsigned char uc = 0; uc < uiCount; uc++)
+    {
+        NiAVObject* pBone = ppBones[uc];
+        if (kBones.find(pBone) == kBones.end())
+            iSize++;
+    }
+    return iSize;
 }
