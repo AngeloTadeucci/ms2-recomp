@@ -100,7 +100,7 @@ const char* CubeMapInformationService::GetDisplayName() const { return "CubeMapI
 // ---- callees outside the unit ----
 struct Unk_CMISPartyPtr { void* m_p; };                                                     // MS2Ptr<party info>
 struct Unk_CMISParty { char m_pad[0x20]; int m_map; int m_key; };
-class Unk_CMISRoster { public: int FUN_141527920(__int64 nId); int FUN_141527e00(); void* FUN_141523c50(); };
+class Unk_CMISRoster { public: int FUN_141527920(__int64 nId); int FUN_141527e00(); void* FUN_141523c50(); void* FUN_141530290(); };
 class Unk_CMISWorld
 {
 public:
@@ -2028,4 +2028,182 @@ void CubeMapInformationService::FUN_1410d5350()
             }
         }
     }
+}
+// ---- w138 batch 5 ----
+struct Unk_CMISDesignInfo { __int64 m_q0, m_q1, m_q2; int m_id; int m_pad; CStringA m_name; __int64 m_value; };   // UGCMapDesignInfo (0x30)
+struct Unk_CMISDesignPtr                                                                     // MS2Ptr<UGCMapDesignInfo>
+{
+    Unk_CMISDesignPtr(const Unk_CMISHandle388& src);                                     // 140fac5b0
+    Unk_CMISDesignPtr(Unk_CMISDesignInfo* p);                                               // 14111eaa0
+    ~Unk_CMISDesignPtr();                                                                   // 140fac640
+    void* m_a; Unk_CMISDesignInfo* m_p;
+    void* FUN_141128430();                                                                  // operator bool
+    Unk_CMISDesignInfo* FUN_140fac700();                                                   // operator->
+};
+Unk_CMISDesignInfo* FUN_140898780(void* pMem);                                              // UGCMapDesignInfo::UGCMapDesignInfo
+void FUN_14112da60(ATL::CAtlArray<Unk_CMISElem388*>*, const Unk_CMISDesignPtr*);          // Add
+// @0x1410d4450
+// MS2-FUNCTIONAL: exe keeps one more EH state around the new-expression result; same calls
+void CubeMapInformationService::FUN_1410d4450(__int64 nId, int nIdx, CStringA strName, __int64 nValue)
+{
+    if (FUN_1410c3180() != nId)
+        return;
+    for (unsigned __int64 i = 0; i < FUN_140fac7a0(reinterpret_cast<ATL::CAtlArray<Unk_CMISHandle388>*>(&a388)); i++) {
+        Unk_CMISDesignPtr spInfo(*FUN_14112e020(reinterpret_cast<ATL::CAtlArray<Unk_CMISHandle388>*>(&a388), i));
+        if (spInfo.FUN_141128430() != 0 && spInfo.FUN_140fac700()->m_id == nIdx) {
+            spInfo.FUN_140fac700()->m_name = strName;
+            spInfo.FUN_140fac700()->m_value = nValue;
+            return;
+        }
+    }
+    void* pMem = ::operator new(0x30);
+    Unk_CMISDesignInfo* pNew = 0;
+    if (pMem != 0)
+        pNew = FUN_140898780(pMem);
+    Unk_CMISDesignPtr spNew(pNew);
+    spNew.FUN_140fac700()->m_id = nIdx;
+    spNew.FUN_140fac700()->m_name = strName;
+    spNew.FUN_140fac700()->m_value = nValue;
+    FUN_14112da60(&a388, &spNew);
+}
+struct Unk_CMISBlueprintInfo { __int64 m_q0, m_q1, m_q2; int m_id; int m_pad; CStringA m_name; __int64 m_value; };   // UGCMapBlueprintInfo (0x30)
+struct Unk_CMISBlueprintPtr                                                                     // MS2Ptr<UGCMapBlueprintInfo>
+{
+    Unk_CMISBlueprintPtr(const Unk_CMISHandle3a8& src);                                     // 140fac570
+    Unk_CMISBlueprintPtr(Unk_CMISBlueprintInfo* p);                                               // 14111ea50
+    ~Unk_CMISBlueprintPtr();                                                                   // 140fac610
+    void* m_a; Unk_CMISBlueprintInfo* m_p;
+    void* FUN_141128420();                                                                  // operator bool
+    Unk_CMISBlueprintInfo* FUN_140fac6f0();                                                   // operator->
+};
+Unk_CMISBlueprintInfo* FUN_1408987f0(void* pMem);                                              // UGCMapBlueprintInfo::UGCMapBlueprintInfo
+void FUN_14112d9b0(ATL::CAtlArray<Unk_CMISElem3a8*>*, const Unk_CMISBlueprintPtr*);          // Add
+// @0x1410d4710
+// MS2-FUNCTIONAL: exe keeps one more EH state around the new-expression result; same calls
+void CubeMapInformationService::FUN_1410d4710(__int64 nId, int nIdx, CStringA strName, __int64 nValue)
+{
+    if (FUN_1410c3180() != nId)
+        return;
+    for (unsigned __int64 i = 0; i < FUN_140fac790(reinterpret_cast<ATL::CAtlArray<Unk_CMISHandle3a8>*>(&a3a8)); i++) {
+        Unk_CMISBlueprintPtr spInfo(*FUN_14112dfe0(reinterpret_cast<ATL::CAtlArray<Unk_CMISHandle3a8>*>(&a3a8), i));
+        if (spInfo.FUN_141128420() != 0 && spInfo.FUN_140fac6f0()->m_id == nIdx) {
+            spInfo.FUN_140fac6f0()->m_name = strName;
+            spInfo.FUN_140fac6f0()->m_value = nValue;
+            return;
+        }
+    }
+    void* pMem = ::operator new(0x30);
+    Unk_CMISBlueprintInfo* pNew = 0;
+    if (pMem != 0)
+        pNew = FUN_1408987f0(pMem);
+    Unk_CMISBlueprintPtr spNew(pNew);
+    spNew.FUN_140fac6f0()->m_id = nIdx;
+    spNew.FUN_140fac6f0()->m_name = strName;
+    spNew.FUN_140fac6f0()->m_value = nValue;
+    FUN_14112d9b0(&a3a8, &spNew);
+}
+// ---- w138 batch 6 ----
+bool FUN_1411272b0(const Unk_Int3*, const Unk_Int3*);
+Unk_CMISRes16 FUN_1408a15b0(Unk_Int3, const Unk_StreamPoint&);                              // the world point of a cell (writes the xy centre)                                        // operator==
+// @0x1410d2da0
+// MS2-FUNCTIONAL: branch/return layout of the result differs from the exe; same calls and compares
+bool CubeMapInformationService::FUN_1410d2da0(int nKey, Unk_Int3 pt)
+{
+    Unk_CMISIter<262> itEnd, itFind;
+    if (FUN_141126e90(FUN_141157900(&fd8, &itFind, &nKey), FUN_141151c70(&fd8, &itEnd)) == 0) {
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nKey);
+        Unk_CMISListIter it;
+        Unk_CMISListEnd itListEnd;
+        for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+            Unk_Int3 cell = FUN_1408a0400(*FUN_1403e8d70(&it));
+            cell.z = cell.z + 1;
+            if (FUN_1411272b0(&cell, &pt))
+                return true;
+        }
+    }
+    return false;
+}
+// @0x1410d23f0
+// MS2-FUNCTIONAL: branch/return layout of the result differs from the exe; same calls and compares
+int CubeMapInformationService::FUN_1410d23f0(int nGroup, int nBlock)
+{
+    int nHeight = 0;
+    Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, nBlock);
+    bool bNoOwner = spOwner == 0;
+    spOwner = 0;
+    if (!bNoOwner) {
+        if (FUN_140885340(&f208)->FUN_140375130() == 0) {
+            if (f218 != 0) {
+                std::map<int, Unk_UGCGroup>::iterator itEnd = f218->groups.end();
+                if (f218->groups.find(nGroup) != itEnd)
+                    nHeight = f218->groups[nGroup].heightLimit;
+            }
+        } else {
+            nHeight = f2fc;
+        }
+    }
+    return nHeight;
+}
+// @0x1410d2130
+// MS2-FUNCTIONAL: branch/return layout of the result differs from the exe; same calls and compares
+bool CubeMapInformationService::FUN_1410d2130(Cube* pCube, int nDir, float fSize, float* pOutXY, Unk_StreamPoint* pOutPt)
+{
+    Unk_StreamPoint ptCenter;
+    FUN_1408a15b0(pCube->position, ptCenter);
+    float fHalf = 75.0f + fSize * 0.5f;
+    *pOutPt = DAT_143b01a60;
+    if (nDir == 1) {
+        pOutPt->z = 225.0f;
+        pOutXY[0] = ptCenter.x - fHalf;
+        pOutXY[1] = ptCenter.y + fHalf;
+        return true;
+    } else if (nDir == 3) {
+        pOutPt->z = 135.0f;
+        pOutXY[0] = ptCenter.x + fHalf;
+        pOutXY[1] = ptCenter.y + fHalf;
+        return true;
+    } else if (nDir == 5) {
+        pOutPt->z = 45.0f;
+        pOutXY[0] = ptCenter.x + fHalf;
+        pOutXY[1] = ptCenter.y - fHalf;
+        return true;
+    } else if (nDir == 7) {
+        pOutPt->z = 315.0f;
+        pOutXY[0] = ptCenter.x - fHalf;
+        pOutXY[1] = ptCenter.y - fHalf;
+        return true;
+    }
+    return false;
+}
+int FUN_1410a8a90(void*);
+// @0x1410d2590
+// MS2-FUNCTIONAL: branch/return layout of the result differs from the exe; same calls and compares
+int CubeMapInformationService::FUN_1410d2590(Unk_Int3 pt, int nGroup, int nBlock)
+{
+    Unk_Int3 cell = pt;
+    cell.z = cell.z - 1;
+    int nHeight = FUN_1410d23f0(nGroup, nBlock);
+    if (nHeight == 0)
+        return 1;
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster == 0)
+        return 0;
+    if (pRoster->FUN_141530290() == 0)
+        return 0;
+    Cube* pCube = 0;
+    if (FUN_1410a8a90(pRoster->FUN_141530290()) != 2)
+        pCube = FUN_1410b8790(cell);
+    else
+        pCube = FUN_1410b8980(cell);
+    if (pCube == 0)
+        return 0;
+    cell = pCube->position;
+    if (pCube->field44 != 1)
+        cell.z = cell.z - 1;
+    if (cell.z > pt.z)
+        return 0;
+    else if (cell.z + nHeight < pt.z)
+        return 0;
+    else
+        return 1;
 }

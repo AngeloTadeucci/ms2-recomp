@@ -212,6 +212,12 @@ public:
     void FUN_1410c1910(const Unk_Int3& pt, int n);
     bool FUN_1410c2610(Unk_Int3 pt);
     void FUN_1410c2a90(int nGroup);
+    bool FUN_1410d2da0(int nKey, Unk_Int3 pt);
+    int FUN_1410d23f0(int nGroup, int nBlock);
+    bool FUN_1410d2130(Cube* pCube, int nDir, float fSize, float* pOutXY, Unk_StreamPoint* pOutPt);
+    int FUN_1410d2590(Unk_Int3 pt, int nGroup, int nBlock);
+    void FUN_1410d4450(__int64 nId, int nIdx, CStringA strName, __int64 nValue);
+    void FUN_1410d4710(__int64 nId, int nIdx, CStringA strName, __int64 nValue);
     unsigned __int64 FUN_1410d4fa0();
     unsigned __int64 FUN_1410d50c0();
     void FUN_1410d5190(unsigned __int64* pCubes, unsigned __int64* pOthers);
