@@ -2708,3 +2708,4 @@ inflateInit_	142723ad0	func
 ?FUN_1413a55a0@CGuideCondition@@QEAAHH@Z	1413a55a0	func
 ?FUN_1413a5600@CGuideCondition@@QEAAH_N@Z	1413a5600	func
 ?FUN_1413a5820@CGuideCondition@@QEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	1413a5820	func
+?ms_RTTI@NiStringExtraData@@2VNiRTTI@@B	143afb000	data
