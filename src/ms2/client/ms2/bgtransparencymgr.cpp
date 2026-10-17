@@ -194,7 +194,6 @@ inline Unk_StreamPoint CameraMgr::FUN_140a17e10()
 inline int CameraMgr::FUN_140a18070() { return m_1b0; }
 
 // @0x140a0cd30
-// MS2-FUNCTIONAL: first-pass source; instruction order / temporaries differ from the exe, behaviour follows the decompile
 BGTransparencyMgr::BGTransparencyMgr()
 {
     m_nFlags = 1;
