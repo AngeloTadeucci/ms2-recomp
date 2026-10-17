@@ -73,6 +73,7 @@
 // MS2-PIN: ??1?$MS2Ptr@VStateAutoInteractionData@@@@QEAA@XZ 0x141532bd0
 // MS2-PIN: ?Release@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXXZ 0x1415378d0
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXPEAX@Z 0x141537c80
+// MS2-PIN: ??0CNode@?$CAtlList@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@ATL@@@ATL@@QEAA@AEBV?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@Z 0x141532690
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
