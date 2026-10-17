@@ -59,6 +59,7 @@
 #include "ms2/placeholder/uidialog.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/citemdata.h"
+#include "ms2/commonfiles/itemdata.h"
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/client/ms2/inventory.h"
 #include "ms2/client/ms2/networkservice.h"
@@ -339,6 +340,7 @@ public:
     void FUN_141adc530(int nId);                            // close
     void FUN_141adc190();
     int FUN_141adc890(int nId);                             // the UI is open
+    int FUN_141adcb40();                                    // the off-hand is the compare target
 };
 Unk_MyPCUIMgr* FUN_1403ed2b0();
 int FUN_1418fd280();                                        // the home convenience is available
@@ -1348,6 +1350,101 @@ void MyPC::FUN_141523c80()
         spSvc.FUN_1401cd1a0()->FUN_1410cab10(pCube);
 }
 MS2_REPLACE_METHOD(0x141523C80, MyPC, FUN_141523c80, 463, 0x8A794E2E);
+
+class Unk_ItemEquipData : public CItemData {};              // CItem::FUN_140527840's record (item.cpp)
+bool FUN_140b02900(const MS2Ptr<CEquipItem>& sp);           // IsNull
+
+// The stat change of equipping pItem: the items it replaces (the weapon slots by kind, the slot of the item
+// otherwise) against pItem itself. The parry stat 0x1c takes the mean of 0x1b and 0x1c.
+// @0x141523e60
+void MyPC::FUN_141523e60(CItem* pItem, int* pStatDiff, int* pSpecialDiff, int* pScoreDiff)
+{
+    if (pItem == 0)
+        return;
+    int nKind = pItem->FUN_1405258b0() != 0;
+    MS2Ptr<CEquipItem> spWorn = m_kEquipDE0.FUN_1411e1580(pItem->FUN_140526a50());
+    if (spWorn.get() != 0)
+        return;
+    ATL::CAtlArray<MS2Ptr<CItem> > aOld;
+    ATL::CAtlArray<MS2Ptr<CItem> > aNew;
+    if (pItem->FUN_140527840()->FUN_14053d2f0())
+    {
+        if (pItem->FUN_140527840()->FUN_14053d510())
+        {
+            MS2Ptr<CEquipItem> spLeft = m_kEquipDE0.FUN_1411e1780(4, nKind);
+            MS2Ptr<CEquipItem> spRight = m_kEquipDE0.FUN_1411e1780(5, nKind);
+            if (FUN_1403ed2b0()->FUN_141adcb40() != 0)
+            {
+                if (spLeft.get() != 0)
+                    aOld.Add(spLeft->FUN_1411dc7a0());
+            }
+            else
+            {
+                if (spRight.get() != 0)
+                    aOld.Add(spRight->FUN_1411dc7a0());
+            }
+        }
+        else if (pItem->FUN_140527840()->FUN_14053d460())
+        {
+            MS2Ptr<CEquipItem> spLeft = m_kEquipDE0.FUN_1411e1780(4, nKind);
+            MS2Ptr<CEquipItem> spRight = m_kEquipDE0.FUN_1411e1780(5, nKind);
+            if (spLeft.get() != 0)
+                aOld.Add(spLeft->FUN_1411dc7a0());
+            if (spRight.get() != 0)
+            {
+                if (FUN_140b02900(spLeft) || spLeft.get() != spRight.get())
+                    aOld.Add(spRight->FUN_1411dc7a0());
+            }
+        }
+        else if (pItem->FUN_140527840()->FUN_14053d340())
+        {
+            MS2Ptr<CEquipItem> spLeft = m_kEquipDE0.FUN_1411e1780(4, nKind);
+            MS2Ptr<CEquipItem> spRight = m_kEquipDE0.FUN_1411e1780(5, nKind);
+            if (pItem->FUN_140527840()->FUN_14053eba0()->FUN_14054b450(4) && spLeft.get() != 0)
+                aOld.Add(spLeft->FUN_1411dc7a0());
+            if (pItem->FUN_140527840()->FUN_14053eba0()->FUN_14054b450(5) && spRight.get() != 0)
+                aOld.Add(spRight->FUN_1411dc7a0());
+        }
+    }
+    else if (pItem->FUN_140527840()->FUN_14053d2b0())
+    {
+        MS2Ptr<CEquipItem> spFirst = m_kEquipDE0.FUN_1411e1780(8, nKind);
+        MS2Ptr<CEquipItem> spSecond = m_kEquipDE0.FUN_1411e1780(9, nKind);
+        if (spFirst.get() != 0)
+            aOld.Add(spFirst->FUN_1411dc7a0());
+        if (spSecond.get() != 0)
+        {
+            if (FUN_140b02900(spFirst) || spFirst.get() != spSecond.get())
+                aOld.Add(spSecond->FUN_1411dc7a0());
+        }
+    }
+    else
+    {
+        MS2Ptr<CEquipItem> spSlot = m_kEquipDE0.FUN_1411e1780(pItem->FUN_140527a20(), nKind);
+        if (spSlot.get() != 0)
+            aOld.Add(spSlot->FUN_1411dc7a0());
+    }
+    {
+        MS2Ptr<CItem> spItem(pItem);
+        aNew.Add(spItem);
+    }
+    int aOldStats[0x23] = {};
+    int aOldSpecials[0xcf] = {};
+    int nOldScore = 0;
+    int nNewScore = 0;
+    int aNewStats[0x23] = {};
+    int aNewSpecials[0xcf] = {};
+    FUN_141531470(aOld, aOldStats, aOldSpecials, &nOldScore);
+    FUN_141531470(aNew, aNewStats, aNewSpecials, &nNewScore);
+    for (unsigned int i = 0; i < 0x23; i++)
+        pStatDiff[i] = aNewStats[i] - aOldStats[i];
+    for (unsigned int i = 1; i < 0xcf; i++)
+        pSpecialDiff[i] = aNewSpecials[i] - aOldSpecials[i];
+    pStatDiff[0x1c] = (int)((pStatDiff[0x1c] + pStatDiff[0x1b]) * 0.5f);
+    pStatDiff[0x1b] = 0;
+    *pScoreDiff = nNewScore - nOldScore;
+}
+MS2_REPLACE_METHOD(0x141523E60, MyPC, FUN_141523e60, 2576, 0xA6B50CC8);
 
 // @0x141523ba0
 void MyPC::FUN_141523ba0()
