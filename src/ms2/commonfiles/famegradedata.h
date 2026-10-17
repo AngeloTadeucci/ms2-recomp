@@ -10,14 +10,11 @@
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cvaliddata.h"
 #include "ms2/commonfiles/os.h"
+#include "ms2/placeholder/famealliance.h"
 
 class Unk_140165cf0;    // xml element (declared where the loaders are)
 class Unk_FameLogFilter;    // container of already received log ids (looked up by FUN_140204740)
 
-// The alliance (faction) and season ids. Enums rather than ints: the exe's ATL containers take them by reference
-// (a primitive int key would be passed by value), so the key traits are the default ones.
-enum Unk_FameAlliance { Unk_FameAlliance_None };    // 1..9 are alliances, 10 ends the table
-enum Unk_FameSeason { Unk_FameSeason_None };
 
 // One <fame> row of fame.xml (a grade of one alliance), 0x30 bytes.
 class CFameGradeData : public CPtred

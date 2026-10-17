@@ -46,7 +46,7 @@ CMsTime FUN_140866720(Unk_EventEntry* pEntry);                       // the even
 CMsTime FUN_1408666e0(Unk_EventEntry* pEntry);                       // the event's end
 bool FUN_140866820(Unk_EventEntry* pEntry, const CMsTime& time);
 bool FUN_140866760(Unk_EventEntry* pEntry);
-class Unk_GEManagerA { public: Unk_PayloadPtr<Unk_EventEntry> FUN_140479410(CStringW* pTag); };
+class Unk_GEManagerA { public: Unk_PayloadPtr<Unk_EventEntry> FUN_140479410(CStringW* pTag); bool FUN_1404793a0(const CStringW* pTag); };
 Unk_GEManagerA* FUN_1401c0d90();
 
 // One <questCondition> pair of the quest manager query (0x1407470f0): the quests whose state is checked.
@@ -676,7 +676,7 @@ CQuestData::Require::Require()
     : m_level(0), m_maxLevel(0), m_achievement(0), m_achievementGrade(0), m_unreqAchievement(0),
       m_unreqAchievementGrade(0), m_groupId(0), m_gearScore(0), m_guildLevel(-1), m_guildNpcLevel(0),
       m_dungeon(0), m_unrequireDungeon(0), m_enterDungeon(0), m_dungeonBeginner(),
-      m_mentor(0), m_mentee(0), m_vip(0), m_alliance(0), m_fameGrade(0), m_masteryType(0), m_masteryGrade(0)
+      m_mentor(0), m_mentee(0), m_vip(0), m_alliance(Unk_FameAlliance_None), m_fameGrade(0), m_masteryType(0), m_masteryGrade(0)
 {
 }
 
@@ -978,7 +978,7 @@ bool CQuestData::GroupPickData::operator!=(const GroupPickData& o) const
 // @0x140748cf0
 CQuestData::CQuestData()
     : m_id(0), m_type(0), m_20(0), m_level(0), m_28(0), m_2c(0), m_2d(0), m_2e(0), m_2f(0), m_30(0), m_31(0),
-      m_flag(0), m_33(0), m_34(0), m_durationMinutes(0), m_resetType(0), m_schedule(), m_48(-1), m_4c(0), m_50(5),
+      m_flag(0), m_33(0), m_34(0), m_durationMinutes(0), m_resetType(0), m_schedule(), m_48(-1), m_4c(Unk_FameAlliance_None), m_50(5),
       m_54(), m_require(), m_complete(), m_rewards(), m_2d0(), m_2e8(0), m_2ec(0), m_2f0(), m_300(), m_30c(),
       m_318(), m_320(), m_32c(), m_338(), m_350(), m_358(), m_fields(), m_conditions(),
       m_navigation(17, 0.75f, 0.25f, 2.25f, 10)
@@ -1075,7 +1075,7 @@ bool CQuestData::operator!=(const CQuestData& o) const
 
 // The attribute readers used by the quest loader (the enum parsers are defined further down in this unit).
 int FUN_14035ba10(Unk_140165cf0* pElem, const char* pszName, int* pOut);
-int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+int FUN_14035bc20(Unk_140165cf0* pElem, const char* pszName, Unk_FameAlliance* pOut);
 int FUN_14051fd20(Unk_140165cf0* pElem, const char* pszName, int* pOut);
 int FUN_140354050(Unk_140165cf0* pElem, const char* pszName, int* pOut);
 int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);
@@ -1345,3 +1345,286 @@ int CQuestData::FUN_1407495d0(Unk_140165cf0* pElem)
     return 1;
 }
 MS2_REPLACE_METHOD(0x1407495D0, CQuestData, FUN_1407495d0, 6736, 0x22FFC8F3);
+
+// Quest-data accessors on top of the table (0x14074b030 ...).
+int ConditionKindOfType(int nType);                         // 0x14029f2b0
+class Unk_1401b4ec0
+{
+public:
+    Unk_1401b4ec0(CLockCriticalSection& lock, int bLock);   // 0x1401b4ec0
+    ~Unk_1401b4ec0();                                       // 0x1401b5120
+private:
+    void* m_p;
+};
+MS2_CHECK_SIZE(Unk_1401b4ec0, 8);
+
+// @0x14074b030
+int FUN_14074b030(CQuestData* pData)
+{
+    return pData->m_id;
+}
+
+// @0x14074b050
+int FUN_14074b050(CQuestData* pData)
+{
+    return pData->m_type;
+}
+
+// @0x14074b070
+int FUN_14074b070(CQuestData* pData)
+{
+    return pData->m_20;
+}
+
+// @0x14074b090
+bool FUN_14074b090(CQuestData* pData)
+{
+    if (pData->m_durationMinutes != 0)
+        return true;
+    if (pData->m_schedule.GetLength() != 0)
+        return true;
+    if (pData->m_resetType != 0)
+        return true;
+    return false;
+}
+
+// @0x14074b0e0
+int FUN_14074b0e0(CQuestData* pData, int nValue, int nKind)
+{
+    for (size_t i = 0; i < pData->m_conditions.GetCount(); i++)
+    {
+        if (ConditionKindOfType(pData->m_conditions[i]->m_nType) != nKind)
+            continue;
+        if (!pData->m_conditions[i]->m_code.Matches(nValue))
+            continue;
+        return 1;
+    }
+    return 0;
+}
+
+// @0x14074b1c0
+int FUN_14074b1c0(CQuestData* pData, int nBit)
+{
+    return pData->m_54.test(nBit) != false;
+}
+
+// @0x14074b210
+int FUN_14074b210(CQuestData* pData)
+{
+    if (pData->m_schedule.GetLength() != 0)
+    {
+        if (!FUN_1401c0d90()->FUN_1404793a0(&pData->m_schedule))
+            return 0;
+    }
+    return 1;
+}
+
+// @0x14074b270
+int FUN_14074b270(CQuestData* pData)
+{
+    if (pData->m_320.m_0 != 0)
+        return 1;
+    if (pData->m_33 != 0)
+        return 1;
+    if (FUN_14074b050(pData) == 9)
+        return 1;
+    return 0;
+}
+
+// @0x14074b2d0
+int FUN_14074b2d0(CQuestData* pData)
+{
+    if (pData->m_32c.m_0 != 0)
+        return 1;
+    if (FUN_14074b050(pData) == 8)
+        return 1;
+    if (FUN_14074b050(pData) == 9)
+        return 1;
+    return 0;
+}
+
+// @0x14074b330
+int FUN_14074b330(CQuestData* pData)
+{
+    if (pData->m_fields.GetCount() == 0)
+        return 0;
+    return pData->m_fields[0];
+}
+
+// @0x14074b380
+Unk_SocketPtr<CQuestData::NavigationData> CQuestData::FUN_14074b380(int nKey)
+{
+    Unk_SocketPtr<NavigationData> spNavi(0);
+    m_navigation.Lookup(nKey, spNavi);
+    return spNavi;
+}
+
+// @0x14074b410
+int FUN_14074b410(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return 0;
+    switch (FUN_14074b050(data.operator->()))
+    {
+    case 3:
+    case 4:
+    case 5:
+    case 7:
+    case 10:
+        return 0;
+    case 0:
+    case 1:
+    case 2:
+    case 6:
+    case 8:
+    case 9:
+        return 1;
+    }
+    return 0;
+}
+
+// @0x14074b510
+bool FUN_14074b510(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return false;
+    return FUN_14074b050(data.operator->()) == 3;
+}
+
+// @0x14074b5b0
+bool FUN_14074b5b0(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return false;
+    return FUN_14074b050(data.operator->()) == 4;
+}
+
+// @0x14074b650
+bool FUN_14074b650(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return false;
+    return FUN_14074b050(data.operator->()) == 8;
+}
+
+// @0x14074b6f0
+bool FUN_14074b6f0(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return false;
+    return FUN_14074b050(data.operator->()) == 9;
+}
+
+// @0x14074b790
+int FUN_14074b790(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return 0;
+    if (FUN_14074b050(data.operator->()) == 8)
+        return 1;
+    return data->m_31;
+}
+
+// @0x14074b840
+int FUN_14074b840(int nQuestId)
+{
+    if (!FUN_14036d570(FUN_140166410(), 0x6e))
+        return 0;
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return 0;
+    if (data->m_conditions.GetCount() != 0)
+        return 0;
+    if (data->m_2e8 == data->m_2ec)
+        return 1;
+    return 0;
+}
+
+// @0x14074b950
+int FUN_14074b950(int nQuestId)
+{
+    int nResult;
+    if (!FUN_14036d570(FUN_140166410(), 0x6e))
+    {
+        nResult = 0;
+    }
+    else
+    {
+        MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+        if (data.IsNull())
+        {
+            nResult = 0;
+        }
+        else if (data->m_require.m_followingQuests.GetCount() == 1)
+        {
+            int nNext = data->m_require.m_followingQuests[0];
+            MS2Ptr<CQuestData> next = FUN_14074bc40(nNext);
+            if (next.IsNull())
+            {
+                nResult = 0;
+            }
+            else if (next->m_2e8 == data->m_2ec)
+            {
+                nResult = 1;
+            }
+            else
+            {
+                nResult = 0;
+            }
+        }
+        else
+        {
+            nResult = 0;
+        }
+    }
+    return nResult;
+}
+
+// @0x14074bae0
+int FUN_14074bae0(unsigned nQuestA, unsigned nQuestB)
+{
+    if (FUN_14036d570(FUN_140166410(), 0x6e))
+    {
+        MS2Ptr<CQuestData> a = FUN_14074bc40(nQuestA);
+        MS2Ptr<CQuestData> b = FUN_14074bc40(nQuestB);
+        if (!a.IsNull() && !b.IsNull())
+        {
+            if (FUN_140408410(&b->m_require.m_quest, &nQuestA) == -1)
+                return 0;
+            if (b->m_2e8 == a->m_2ec)
+                return 1;
+            return 0;
+        }
+    }
+    return 0;
+}
+
+// @0x14074bc40
+MS2Ptr<CQuestData> FUN_14074bc40(int nQuestId)
+{
+    return QuestDataTable::GetInstance()->FUN_14074c9d0(nQuestId);
+}
+
+// @0x14074bc90
+int FUN_14074bc90(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return 11;
+    return data->m_type;
+}
+
+// @0x14074bd10
+unsigned short FUN_14074bd10(int nQuestId)
+{
+    MS2Ptr<CQuestData> data = FUN_14074bc40(nQuestId);
+    if (data.IsNull())
+        return 0;
+    return (unsigned short)data->m_level;
+}

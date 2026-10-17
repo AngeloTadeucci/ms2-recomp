@@ -3,6 +3,7 @@
 #pragma once
 #include <vector>
 #include <bitset>
+#include "ms2/placeholder/famealliance.h"
 #include <atlcoll.h>
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cconditioncommon.h"
@@ -58,6 +59,7 @@ public:
     CQuestData();
     virtual ~CQuestData();
     bool operator!=(const CQuestData& o) const;   // 0x140749090
+    Unk_SocketPtr<NavigationData> FUN_14074b380(int nKey);   // the <navi> entry of a state (null when missing)
     int FUN_1407495d0(Unk_140165cf0* pElem);       // XML loader (<quest> element)
     int m_id, m_type, m_20, m_level, m_28;
     unsigned char m_2c, m_2d, m_2e, m_2f, m_30, m_31, m_flag, m_33, m_34;
@@ -89,7 +91,7 @@ public:
         int m_mentor;                       // +0x50 (+0xa8)
         int m_mentee;                       // +0x54
         int m_vip;                          // +0x58
-        int m_alliance;                     // +0x5c reader 0x14035bc20
+        Unk_FameAlliance m_alliance;        // +0x5c reader 0x14035bc20
         int m_fameGrade;                    // +0x60
         int m_masteryType;                  // +0x64 enum, reader 0x14051fd20
         int m_masteryGrade;                 // +0x68
@@ -132,7 +134,9 @@ public:
         int m_rewardExpExtra;               // +0x48
         ATL::CAtlArray<QuestRewardItem> m_choiceRewards;   // +0x50 (+0x298)
     };
-    int m_48, m_4c, m_50;
+    int m_48;
+    Unk_FameAlliance m_4c;
+    int m_50;
     std::bitset<4> m_54;                // ctor 0x1402a5610
     Require m_require;
     CompleteReward m_complete;
