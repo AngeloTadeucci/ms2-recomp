@@ -210,6 +210,11 @@ public:
     Unk_StreamPoint FUN_1410c54a0(Unk_EntRef spEnt);
     void FUN_1410ce560();
     void FUN_1410c1910(const Unk_Int3& pt, int n);
+    bool FUN_1410c2610(Unk_Int3 pt);
+    void FUN_1410c2a90(int nGroup);
+    bool FUN_1410c3cd0(int nKey);
+    void FUN_1410c2ce0(egf::Entity* pEntity);
+    void FUN_1410be0c0(Unk_Int3 pt, int nGroup, int nFloor, struct Unk_CMISCell56* pVal);
     int FUN_1410ce310();
     int FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut);
     CStringW FUN_1410c7f60(int nA, int nB);
