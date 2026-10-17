@@ -2334,7 +2334,6 @@ bool CMagic::FUN_141464490()
 MS2_REPLACE_METHOD(0x141464490, CMagic, FUN_141464490, 47, 0xD8127AEF);
 
 // @0x1414644d0
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 void CMagic::FUN_1414644d0(int bShow)
 {
     FUN_140a0b300(FUN_1409475f0(&m_spScene), bShow == 0);
@@ -2342,7 +2341,6 @@ void CMagic::FUN_1414644d0(int bShow)
 MS2_REPLACE_METHOD(0x1414644D0, CMagic, FUN_1414644d0, 69, 0x367BA853);
 
 // @0x141464520
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 Unk_StreamPoint CMagic::FUN_141464520()
 {
     Unk_StreamPoint kColumn;
@@ -2352,7 +2350,6 @@ Unk_StreamPoint CMagic::FUN_141464520()
 MS2_REPLACE_METHOD(0x141464520, CMagic, FUN_141464520, 84, 0x57A64776);
 
 // @0x141464580
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 Unk_StreamPoint CMagic::FUN_141464580()
 {
     Unk_StreamPoint kColumn;
@@ -2362,7 +2359,6 @@ Unk_StreamPoint CMagic::FUN_141464580()
 MS2_REPLACE_METHOD(0x141464580, CMagic, FUN_141464580, 87, 0xCDD09EF7);
 
 // @0x1414645e0
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 Unk_StreamPoint CMagic::FUN_1414645e0()
 {
     Unk_StreamPoint kColumn;
@@ -2399,7 +2395,6 @@ int CMagic::FUN_141464670()
 MS2_REPLACE_METHOD(0x141464670, CMagic, FUN_141464670, 274, 0x2F8B3639);
 
 // @0x141467440
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 unsigned CMagic::FUN_141467440()
 {
     return (unsigned)FUN_14086d260()->FUN_1414732f0(m_spSkill->m_nTimeMode);
@@ -2606,7 +2601,6 @@ void CMagicModel::FUN_141467ed0()
 MS2_REPLACE_METHOD(0x141467ED0, CMagicModel, FUN_141467ed0, 127, 0xF7EBF49E);
 
 // @0x141467dd0
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 int CMagicModel::FUN_141467dd0(unsigned long long nTag)
 {
     if (m_spA->m_nTagId == nTag) {
@@ -2955,7 +2949,6 @@ void CMagicService::FUN_14146bc80(Unk_MagicTag* pTag)
     pCaster->vf35_End(pTag);
 }
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14146c4b0
 void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long nCast)
 {
@@ -2972,7 +2965,6 @@ void CMagicService::FUN_14146c4b0(unsigned long long nCaster, unsigned long long
 }
 MS2_REPLACE_METHOD(0x14146C4B0, CMagicService, FUN_14146c4b0, 276, 0xFA5B4338);
 
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x14146c5d0
 Unk_SocketPtr<CMagicModel> CMagicService::FUN_14146c5d0(unsigned long long nCaster, unsigned long long nCast)
 {
@@ -3019,7 +3011,6 @@ void CMagicService::FUN_14146c6c0(unsigned long long nCaster, int bForce, int bD
 }
 MS2_REPLACE_METHOD(0x14146C6C0, CMagicService, FUN_14146c6c0, 576, 0x05408639);
 
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x14146c910
 Unk_MagicModelMapPtr CMagicService::FUN_14146c910(unsigned long long nCaster)
 {
@@ -3086,7 +3077,6 @@ int CMagicService::FUN_14146cbd0(Unk_SocketPtr<CMagicModel> spModel)
 }
 MS2_REPLACE_METHOD(0x14146CBD0, CMagicService, FUN_14146cbd0, 299, 0x97C3FCB9);
 
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x14146cd10
 void CMagicService::FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel)
 {
@@ -3100,7 +3090,6 @@ void CMagicService::FUN_14146cd10(Unk_SocketPtr<CMagicModel> spModel)
 }
 MS2_REPLACE_METHOD(0x14146CD10, CMagicService, FUN_14146cd10, 275, 0x039C5BFC);
 
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 // @0x14146ce30
 Unk_SocketPtr<Unk_MagicTag> CMagicService::FUN_14146ce30(unsigned long long nCast)
 {
@@ -3131,7 +3120,6 @@ efd::AsyncResult CMagicService::OnInit()
 }
 MS2_REPLACE_METHOD(0x14146CF00, CMagicService, OnInit, 11, 0x620C90F9);
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14146cf20
 efd::AsyncResult CMagicService::OnTick()
 {
