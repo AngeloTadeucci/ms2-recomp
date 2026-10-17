@@ -2750,3 +2750,4 @@ inflateInit_	142723ad0	func
 ?Lookup@?$CAtlMap@W4Unk_ItemDefaultKind@@HV?$CElementTraits@W4Unk_ItemDefaultKind@@@ATL@@V?$CElementTraits@H@3@@ATL@@QEBA_NAEBW4Unk_ItemDefaultKind@@AEAH@Z	140537c50	func
 ?ms_aMaps@CItemDefaultData@@2PAV?$CAtlMap@W4Unk_ItemDefaultKind@@HV?$CElementTraits@W4Unk_ItemDefaultKind@@@ATL@@V?$CElementTraits@H@3@@ATL@@A	143aafa40	data
 ?FUN_140587a50@CItemDefaultData@@SAXXZ	140587a50	func
+?s_instance@?$TSingleton@VCMachineIDManager@@@@2PEAVCMachineIDManager@@EA	143ab8aa8	data
