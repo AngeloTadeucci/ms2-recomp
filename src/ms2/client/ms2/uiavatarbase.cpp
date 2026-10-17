@@ -13,8 +13,8 @@
 // MS2-PIN: ?CallDestructors@?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@CAXPEAU?$pair@I_K@std@@_K@Z 0x1418c1af0 ; unique
 // MS2-PIN: ??A?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItemData@@@@_K@Z 0x1418c1b70 ; order
 // MS2-PINS-END tplpin
-// MS2-PIN: ??0?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ 0x1418c0f60
-// MS2-PIN: ??1?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ 0x1418c1300
+// MS2-PIN: ??0?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@QEAA@XZ 0x1418c0f60
+// MS2-PIN: ??1?$CAtlArray@U?$pair@I_K@std@@V?$CElementTraits@U?$pair@I_K@std@@@ATL@@@ATL@@QEAA@XZ 0x1418c1300
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCustomize@@@@QEAAAEAV1@PEAVCustomize@@@Z 0x1418c1440
 // MS2-PIN: ??C?$MS2Ptr@VCAvatarPackageEquip@@@@QEBAPEAVCAvatarPackageEquip@@XZ 0x1418c15a0
 // MS2-PIN: ??A?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItem@@@@_K@Z 0x1418c1b30
