@@ -389,7 +389,6 @@ MS2_REPLACE_METHOD(0x141267410, CGameSocket, FUN_141267410, 439, 0x2094E6E2);
 // @0x1412675d0
 int CGameSocket::FUN_1412675d0() { return m_disconnect; }
 MS2_REPLACE_METHOD(0x1412675d0, CGameSocket, FUN_1412675d0, 17, 0xC417BCBA);
-// MS2-FUNCTIONAL: equivalent control flow; local temporaries and cleanup code differ.
 // @0x1412675f0
 int CGameSocket::FUN_1412675f0() { return m_state==1 ? 1 : 0; }
 MS2_REPLACE_METHOD(0x1412675f0, CGameSocket, FUN_1412675f0, 47, 0xE1EE42FC);
@@ -602,7 +601,6 @@ inline int CSimpleSocket::vfunc_4(const char* data,int size)
     while(remaining) { int n=send((SOCKET)*this,cursor,remaining,0); if(n==SOCKET_ERROR) { int error=WSAGetLastError(); if(error==WSAEWOULDBLOCK) { Sleep(10); continue; } if(error==WSAENOTCONN) return size-remaining; throw Exception(error); } if(!n) return size-remaining; cursor+=n; remaining-=n; }
     return size;
 }
-// MS2-FUNCTIONAL: equivalent control flow; local temporaries and cleanup code differ.
 // @0x14126ce80
 inline void Unk_SocketAddress::FUN_14126ce80(int port,unsigned long address) { FUN_14126ced0(htons(port),htonl(address)); }
 // MS2-FUNCTIONAL: equivalent control flow; local temporaries and cleanup code differ.
