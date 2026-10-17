@@ -12,7 +12,6 @@
 // MS2-RANGE: 0x141148d70-0x141159a60 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ?_Orphan_range@?$vector@HV?$CustomAllocator@H@efd@@@std@@AEBAXPEAH0@Z 0x1411492b0 ; probe
-// MS2-PIN: ?_Orphan_range@?$vector@HV?$allocator@H@std@@@std@@AEBAXPEAH0@Z 0x1411492c0 ; probe
 // MS2-PIN: ?_Orphan_range@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEBAXPEAV?$SmartPointer@VEntity@egf@@@efd@@0@Z 0x1411492d0 ; probe
 // MS2-PIN: ?_Orphan_range@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEBAXPEAV?$SmartPointer@VEntity@egf@@@efd@@0@Z 0x1411492e0 ; probe
 // MS2-PIN: ?_Orphan_range@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEBAXPEAVEntityID@egf@@0@Z 0x1411492f0 ; probe
@@ -64,7 +63,6 @@
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$set@HU?$less@H@std@@@efd@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$set@HU?$less@H@std@@@efd@@@std@@PEAX@2@@Z 0x14114a6f0 ; probe
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@@std@@PEAX@2@@Z 0x14114a7d0 ; probe
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@@Z 0x14114aa70 ; probe
-// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x14114ab50 ; probe
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@2@@Z 0x14114ac30 ; probe
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@2@@Z 0x14114ad10 ; probe
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@2@@Z 0x14114adf0 ; probe
@@ -93,26 +91,21 @@
 // MS2-PIN: ?_Tidy@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAXXZ 0x14114c470 ; prop
 // MS2-PIN: ?_Tidy@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@AEAAXXZ 0x14114c540 ; prop
 // MS2-PIN: ?_Umove@?$vector@HV?$CustomAllocator@H@efd@@@std@@AEAAPEAHPEAH00@Z 0x14114c6e0 ; probe
-// MS2-PIN: ?_Umove@?$vector@HV?$allocator@H@std@@@std@@AEAAPEAHPEAH00@Z 0x14114c720 ; probe
 // MS2-PIN: ?_Umove@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAPEAV?$SmartPointer@VEntity@egf@@@efd@@PEAV34@00@Z 0x14114c760 ; probe
 // MS2-PIN: ?_Umove@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEAAPEAV?$SmartPointer@VEntity@egf@@@efd@@PEAV34@00@Z 0x14114c7a0 ; probe
 // MS2-PIN: ?_Umove@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEAAPEAVEntityID@egf@@PEAV34@00@Z 0x14114c7e0 ; probe
 // MS2-PIN: ?_Umove@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@AEAAPEAUUnk_CMISElem52@@PEAU3@00@Z 0x14114c820 ; probe
 // MS2-PIN: ?_Umove_if_noexcept1@?$vector@HV?$CustomAllocator@H@efd@@@std@@AEAAXPEAH00U?$integral_constant@_N$00@2@@Z 0x14114c8a0 ; probe
-// MS2-PIN: ?_Umove_if_noexcept1@?$vector@HV?$allocator@H@std@@@std@@AEAAXPEAH00U?$integral_constant@_N$00@2@@Z 0x14114c8e0 ; probe
 // MS2-PIN: ?_Umove_if_noexcept1@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAXPEAV?$SmartPointer@VEntity@egf@@@efd@@00U?$integral_constant@_N$0A@@2@@Z 0x14114c920 ; probe
 // MS2-PIN: ?_Umove_if_noexcept1@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEAAXPEAV?$SmartPointer@VEntity@egf@@@efd@@00U?$integral_constant@_N$0A@@2@@Z 0x14114c960 ; probe
 // MS2-PIN: ?_Umove_if_noexcept1@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEAAXPEAVEntityID@egf@@00U?$integral_constant@_N$0A@@2@@Z 0x14114c9a0 ; probe
 // MS2-PIN: ?_Umove_if_noexcept1@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@AEAAXPEAUUnk_CMISElem52@@00U?$integral_constant@_N$00@2@@Z 0x14114c9e0 ; probe
 // MS2-PIN: ?_Umove_if_noexcept@?$vector@HV?$CustomAllocator@H@efd@@@std@@AEAAXPEAH00@Z 0x14114ca60 ; probe
-// MS2-PIN: ?_Umove_if_noexcept@?$vector@HV?$allocator@H@std@@@std@@AEAAXPEAH00@Z 0x14114cac0 ; probe
 // MS2-PIN: ?_Umove_if_noexcept@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAXPEAV?$SmartPointer@VEntity@egf@@@efd@@00@Z 0x14114cb20 ; probe
 // MS2-PIN: ?_Umove_if_noexcept@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEAAXPEAV?$SmartPointer@VEntity@egf@@@efd@@00@Z 0x14114cb80 ; probe
 // MS2-PIN: ?_Umove_if_noexcept@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEAAXPEAVEntityID@egf@@00@Z 0x14114cbe0 ; probe
 // MS2-PIN: ?_Umove_if_noexcept@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@AEAAXPEAUUnk_CMISElem52@@00@Z 0x14114cc40 ; probe
-// MS2-PIN: ?_Xlen@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@SAXXZ 0x14114cd30 ; order
 // MS2-PIN: ?_Xlength@?$vector@HV?$CustomAllocator@H@efd@@@std@@CAXXZ 0x14114cd50 ; order
-// MS2-PIN: ?_Xlength@?$vector@HV?$allocator@H@std@@@std@@CAXXZ 0x14114cd70 ; order
 // MS2-PIN: ?_Xlength@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@CAXXZ 0x14114cd90 ; order
 // MS2-PIN: ?_Xlength@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@CAXXZ 0x14114cdb0 ; order
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@PEAX@std@@_KPEBX@Z 0x14114cf80 ; probe
@@ -129,22 +122,11 @@
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@_KPEBX@Z 0x14114d390 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@_J@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@_J@std@@PEAX@std@@_KPEBX@Z 0x14114d3e0 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$MS2Ptr@VCube@@@@@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$MS2Ptr@VCube@@@@@std@@PEAX@std@@_KPEBX@Z 0x14114d430 ; probe
-// MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@_KPEBX@Z 0x14114d480 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@HH@std@@PEAX@std@@_KPEBX@Z 0x14114d4d0 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@VEntityID@egf@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@VEntityID@egf@@PEAX@std@@_KPEBX@Z 0x14114d520 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@std@@_KPEBX@Z 0x14114d610 ; probe
 // MS2-PIN: ?allocate@?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@QEAAPEAV?$SmartPointer@VEntity@egf@@@2@_KPEBX@Z 0x14114d6b0 ; order
 // MS2-PIN: ?allocate@?$CustomAllocator@VEntityID@egf@@@efd@@QEAAPEAVEntityID@egf@@_KPEBX@Z 0x14114d700 ; order
-// MS2-PIN: ?allocate@?$allocator@D@std@@QEAAPEAD_K@Z 0x14114d7a0 ; order
-// MS2-PIN: ?allocate@?$allocator@H@std@@QEAAPEAH_K@Z 0x14114d7d0 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@HPEAX@std@@@std@@QEAAPEAU?$_Tree_node@HPEAX@2@_K@Z 0x14114d800 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@2@_K@Z 0x14114d860 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@2@_K@Z 0x14114d890 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$map@IV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@U?$less@I@2@V?$allocator@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@2@@std@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$map@IV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@U?$less@I@2@V?$allocator@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@2@@std@@@std@@PEAX@2@_K@Z 0x14114d8c0 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@2@_K@Z 0x14114d8f0 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@HH@std@@PEAX@2@_K@Z 0x14114d920 ; order
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@V?$MS2Ptr@VCFunctionCubeObject@@@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@V?$MS2Ptr@VCFunctionCubeObject@@@@PEAX@2@_K@Z 0x14114d950 ; order
-// MS2-PIN: ?allocate@?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@QEAAPEAV?$SmartPointer@VEntity@egf@@@efd@@_K@Z 0x14114d980 ; order
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HIU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHI@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHI@std@@@std@@@std@@@2@XZ 0x14114d9f0 ; order
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HUUnk_Int3@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_Int3@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHUUnk_Int3@@@std@@@std@@@std@@@2@XZ 0x14114dad0 ; order
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HV?$vector@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$vector@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$SmartPointer@VEntity@egf@@@efd@@@efd@@@std@@@std@@@std@@@2@XZ 0x14114dfa0 ; order
@@ -174,7 +156,6 @@
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHV?$set@HU?$less@H@std@@@efd@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$set@HU?$less@H@std@@@efd@@@std@@PEAX@std@@_K@Z 0x141150750 ; order
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHVEntityID@egf@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHVEntityID@egf@@@std@@PEAX@std@@_K@Z 0x1411507f0 ; order
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@std@@_K@Z 0x141150890 ; order
-// MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@_K@Z 0x1411508e0 ; order
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@std@@_K@Z 0x141150930 ; probe
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@_K@Z 0x141150980 ; probe
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@_K@Z 0x1411509d0 ; probe
@@ -206,7 +187,6 @@
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHVEntityID@egf@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHVEntityID@egf@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBHVEntityID@egf@@@std@@PEAX@2@_K@Z 0x141151170 ; order
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHUUnk_CMISCubeTimer@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHUUnk_CMISCubeTimer@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBHUUnk_CMISCubeTimer@@@std@@PEAX@2@_K@Z 0x1411511a0 ; prop
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@2@_K@Z 0x1411511d0 ; order
-// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x141151200 ; order
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VSaleStateData@@@@@std@@PEAX@2@_K@Z 0x141151230 ; probe
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@2@_K@Z 0x141151260 ; probe
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@2@_K@Z 0x141151290 ; probe
@@ -215,7 +195,6 @@
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@HH@std@@PEAX@2@_K@Z 0x141151380 ; probe
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@VEntityID@egf@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@VEntityID@egf@@PEAX@std@@@efd@@PEAU?$_Tree_node@VEntityID@egf@@PEAX@2@_K@Z 0x1411513e0 ; probe
 // MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@std@@@efd@@PEAU?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@2@_K@Z 0x141151410 ; order
-// MS2-PIN: ?move@?$char_traits@D@std@@SAPEADQEADQEBD_K@Z 0x141151440 ; order
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_Int3@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBHUUnk_Int3@@@std@@PEAX@2@_K@Z 0x1411514a0 ; order
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@PEAX@2@_K@Z 0x1411514d0 ; order
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@2@_K@Z 0x141151500 ; order
@@ -462,13 +441,11 @@
 // MS2-PIN: ?end@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@VEntityID@egf@@@std@@@std@@@2@XZ 0x141152570 ; w151 family
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@@std@@QEBAAEBQEAVEntityID@egf@@XZ 0x141149110 ; w151 family
 // MS2-PIN: ?capacity@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@QEBA_KXZ 0x14114ead0 ; w151 family
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEAAAEAPEAHXZ 0x141148eb0 ; w151 family
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@@std@@QEAAXXZ 0x141149230 ; w151 family
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@HV?$CustomAllocator@H@efd@@@std@@@std@@QEAAXXZ 0x1411491f0 ; w151 family
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@std@@QEAAXXZ 0x141149210 ; w151 family
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@@std@@QEAAXXZ 0x141149250 ; w151 family
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@@std@@QEAAXXZ 0x141149270 ; w151 family
-// MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEAAXXZ 0x141149290 ; w151 family
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@HV?$SmartPointer@VEntity@egf@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x14114b6d0 ; w151 family
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HV?$SmartPointer@VEntity@egf@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@std@@@2@XZ 0x14114dbb0 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HV?$SmartPointer@VEntity@egf@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@std@@@2@XZ 0x141151970 ; w151 family
@@ -501,8 +478,6 @@
 // MS2-PIN: ?begin@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@VEntityID@egf@@@std@@@std@@@2@XZ 0x14114e930 ; w151 family
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@@std@@QEBAAEBQEAV?$SmartPointer@VEntity@egf@@@efd@@XZ 0x141149150 ; w151 family
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@@std@@QEBAAEBQEAUUnk_CMISElem52@@XZ 0x141149190 ; w151 family
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEAAAEAPEAHXZ 0x1411491b0 ; w151 family
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEBAAEBQEAHXZ 0x1411491d0 ; w151 family
 // MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@HV?$CustomAllocator@H@efd@@@std@@@std@@QEAAAEAPEAHXZ 0x141148d70 ; w151 family
 // MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@HV?$CustomAllocator@H@efd@@@std@@@std@@QEAAAEAPEAHXZ 0x141148ef0 ; w151 family
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@HV?$CustomAllocator@H@efd@@@std@@@std@@QEAAAEAPEAHXZ 0x141149070 ; w151 family
@@ -524,9 +499,6 @@
 // MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@@std@@QEAAAEAPEAUUnk_CMISElem52@@XZ 0x141149170 ; w151 family
 // MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@@std@@QEBAAEBQEAUUnk_CMISElem52@@XZ 0x141148e90 ; w151 family
 // MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@@std@@QEBAAEBQEAUUnk_CMISElem52@@XZ 0x141149010 ; w151 family
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEAAAEAPEAHXZ 0x141149030 ; w151 family
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEBAAEBQEAHXZ 0x141148ed0 ; w151 family
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@HV?$allocator@H@std@@@std@@@std@@QEBAAEBQEAHXZ 0x141149050 ; w151 family
 // MS2-PIN: ?Release@?$MS2Ptr@VSaleStateData@@@@AEAAXXZ 0x141149420 ; w151 family
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VSalesInfo@@@@AEAAXPEAX@Z 0x141149710 ; w151 family
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@@std@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHV?$map@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@@std@@@std@@PEAX@2@XZ 0x1411498f0 ; w151 family
@@ -547,9 +519,7 @@
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$allocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x14114bf10 ; w151 family
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindB@@HU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@@efd@@$0A@@std@@@std@@IEAAXXZ 0x14114bf70 ; w151 family
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindB@@EU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@@efd@@$0A@@std@@@std@@IEAAXXZ 0x14114bfd0 ; w151 family
-// MS2-PIN: ?_Tidy@?$vector@HV?$allocator@H@std@@@std@@AEAAXXZ 0x14114c610 ; w151 family
 // MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x14114cd00 ; w151 family
-// MS2-PIN: ?_Xlen@?$basic_string@DU?$char_traits@D@std@@V?$CustomAllocator@D@efd@@@std@@SAXXZ 0x14114cd10 ; w151 family
 // MS2-PIN: ?_Xlength@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@CAXXZ 0x14114cdd0 ; w151 family
 // MS2-PIN: ?allocate@?$CustomAllocator@H@efd@@QEAAPEAH_KPEBX@Z 0x14114cdf0 ; w151 family
 // MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@HPEAX@std@@@efd@@QEAAPEAU?$_Tree_node@HPEAX@std@@_KPEBX@Z 0x14114ce40 ; w151 family
@@ -573,7 +543,6 @@
 // MS2-PIN: ?capacity@?$vector@HV?$CustomAllocator@H@efd@@@std@@QEBA_KXZ 0x14114ea50 ; w151 family
 // MS2-PIN: ?capacity@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@QEBA_KXZ 0x14114ea90 ; w151 family
 // MS2-PIN: ?capacity@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@QEBA_KXZ 0x14114eb50 ; w151 family
-// MS2-PIN: ?capacity@?$vector@HV?$allocator@H@std@@@std@@QEBA_KXZ 0x14114eba0 ; w151 family
 // MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@HUUnk_CMISCell@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHUUnk_CMISCell@@@std@@@efd@@$0A@@std@@@std@@QEAAXXZ 0x14114edc0 ; w151 family
 // MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@HV?$SmartPointer@VEntity@egf@@@efd@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHV?$SmartPointer@VEntity@egf@@@efd@@@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x14114ee60 ; w151 family
 // MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VSalesInfo@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x14114efa0 ; w151 family
@@ -601,12 +570,10 @@
 // MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CB_KV?$MS2Ptr@VUnk_CMISUidRecord@@@@@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_KV?$MS2Ptr@VUnk_CMISUidRecord@@@@@std@@PEAX@std@@_K@Z 0x141150bb0 ; w151 family
 // MS2-PIN: ?deallocate@?$CustomAllocator@UUnk_CMISElem52@@@efd@@QEAAXPEAUUnk_CMISElem52@@_K@Z 0x141150d90 ; w151 family
 // MS2-PIN: ?deallocate@?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@QEAAXQEAV?$SmartPointer@VEntity@egf@@@efd@@_K@Z 0x141151470 ; w151 family
-// MS2-PIN: ?deallocate@?$allocator@H@std@@QEAAXQEAH_K@Z 0x141151620 ; w151 family
 // MS2-PIN: ??$destroy@H@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@HPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@HPEAX@std@@@1@QEAH@Z 0x141151650 ; w151 family
 // MS2-PIN: ??$destroy@PEAD@?$_Default_allocator_traits@V?$allocator@D@std@@@std@@SAXAEAV?$allocator@D@1@QEAPEAD@Z 0x141151690 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VSalesInfo@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@@std@@@std@@@2@XZ 0x141151a30 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HV?$map@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@@std@@U?$less@H@2@V?$CustomAllocator@U?$pair@$$CBHV?$map@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@@std@@@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@@std@@@std@@@std@@@std@@@2@XZ 0x141151c10 ; w151 family
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@XZ 0x141151eb0 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@VEntityID@egf@@VUnk_CMISPropPtr@@U?$less@VEntityID@egf@@@std@@V?$CustomAllocator@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@@std@@@std@@@2@XZ 0x141152090 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@@2@XZ 0x141152150 ; w151 family
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$allocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@@2@XZ 0x1411521b0 ; w151 family
@@ -644,15 +611,11 @@
 // MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@U?$less@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@V?$CustomAllocator@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@@std@@@2@V32@0@Z 0x1411568c0 ; w151 family
 // MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@V?$MS2Ptr@VCFunctionCubeObject@@@@U?$less@V?$MS2Ptr@VCFunctionCubeObject@@@@@std@@V?$allocator@V?$MS2Ptr@VCFunctionCubeObject@@@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VCFunctionCubeObject@@@@@std@@@std@@@2@V32@0@Z 0x141156a60 ; w151 family
 // MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@VEntityID@egf@@U?$less@VEntityID@egf@@@std@@V?$CustomAllocator@VEntityID@egf@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@VEntityID@egf@@@std@@@std@@@2@V32@0@Z 0x141156c00 ; w151 family
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VCube@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@@std@@@std@@@2@AEBH@Z 0x141157120 ; w151 family
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HV?$MS2Ptr@VSalesInfo@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@@std@@@std@@@2@AEBH@Z 0x1411573c0 ; w151 family
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@AEBI@Z 0x141157d60 ; w151 family
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@@2@AEBW4Unk_CMISKindA@@@Z 0x1411582a0 ; w151 family
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$allocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@@2@AEBW4Unk_CMISKindA@@@Z 0x141158380 ; w151 family
-// MS2-PIN: ?find@?$map@IIU?$less@I@std@@@efd@@QEBA_NAEBIAEAI@Z 0x141158a80 ; w151 family
 // MS2-PIN: ?find_last_of@utf8string@efd@@QEBA_KPEBD_K@Z 0x141158af0 ; w151 family
 // MS2-PIN: ?key_comp@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$CustomAllocator@H@efd@@$0A@@std@@@std@@QEBA?AU?$less@H@2@XZ 0x141158b80 ; w151 family
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBII@std@@@efd@@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@AEBI@Z 0x141159270 ; w151 family
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$allocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@@2@AEBW4Unk_CMISKindA@@@Z 0x141159570 ; w151 family
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$CustomAllocator@H@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@2@AEBH@Z 0x141159690 ; w151 family
 // MS2-PIN: ?max_size@?$CustomAllocator@H@efd@@QEBA_KXZ 0x141159870 ; w151 family
@@ -664,6 +627,32 @@
 // MS2-PIN: ?max_size@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBHUUnk_CMISCubeTimer@@@std@@PEAX@std@@@efd@@QEBA_KXZ 0x141159940 ; w151 family
 // MS2-PIN: ?max_size@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CB_KV?$MS2Ptr@VUnk_CMISUidRecord@@@@@std@@PEAX@std@@@efd@@QEBA_KXZ 0x1411599f0 ; w151 family
 // MS2-PIN: ?max_size@?$CustomAllocator@UUnk_CMISElem52@@@efd@@QEBA_KXZ 0x141159a50 ; w151 family
+// MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@_KPEBX@Z 0x14114d480 ; w151 solve
+// MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@_KPEBX@Z 0x14114d5c0 ; w151 solve
+// MS2-PIN: ?allocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@@efd@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@_KPEBX@Z 0x14114d660 ; w151 solve
+// MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@_K@Z 0x141150ac0 ; w151 solve
+// MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@_K@Z 0x141150b10 ; w151 solve
+// MS2-PIN: ?deallocate@?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@@efd@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@_K@Z 0x141150ca0 ; w151 solve
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@2@_K@Z 0x141150e40 ; w151 solve
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@2@_K@Z 0x141151530 ; w151 solve
+// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@2@_K@Z 0x141151320 ; w151 solve
+// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@2@_K@Z 0x141151350 ; w151 solve
+// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@2@_K@Z 0x141151440 ; w151 solve
+// MS2-PIN: ?empty@?$_Tree@V?$_Tmap_traits@HIU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHI@std@@@efd@@$0A@@std@@@std@@QEBA_NXZ 0x1411516a0 ; w151 solve
+// MS2-PIN: ?empty@?$_Tree@V?$_Tmap_traits@HUUnk_CMISCell@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHUUnk_CMISCell@@@std@@@efd@@$0A@@std@@@std@@QEBA_NXZ 0x141151720 ; w151 solve
+// MS2-PIN: ?_Xlength@?$vector@W4Unk_CMISKindC@@V?$allocator@W4Unk_CMISKindC@@@std@@@std@@CAXXZ 0x14114cd10 ; w151 solve
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHUUnk_Int3@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_Int3@@@std@@PEAX@2@_K@Z 0x14114d7d0 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VCube@@@@@std@@PEAX@2@_K@Z 0x14114d800 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VSalesInfo@@@@@std@@PEAX@2@_K@Z 0x14114d830 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$MS2Ptr@VUICubeUGCHead@@@@@std@@PEAX@2@_K@Z 0x14114d860 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@2@_K@Z 0x14114d890 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@2@_K@Z 0x14114d8c0 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@HH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@HH@std@@PEAX@2@_K@Z 0x14114d8f0 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@V?$MS2Ptr@VCFunctionCubeObject@@@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@V?$MS2Ptr@VCFunctionCubeObject@@@@PEAX@2@_K@Z 0x14114d920 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@QEAAPEAV?$SmartPointer@VEntity@egf@@@efd@@_K@Z 0x14114d950 ; w151 name order
+// MS2-PIN: ?allocate@?$allocator@W4Unk_CMISKindC@@@std@@QEAAPEAW4Unk_CMISKindC@@_K@Z 0x14114d980 ; w151 name order
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHH@std@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@AEBH@Z 0x141157120 ; w151 ICF owner (name order)
+// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@_K@Z 0x141151200 ; w151 solve
 // MS2-PINS-END w151
 // MS2-GUESS-LOOKALIKES
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\cubemapinformationservice.cpp"
@@ -728,6 +717,7 @@ public:
 // ---- unit-local value types (names invented) -------------------------------------------------------------------------
 enum Unk_CMISKindA { Unk_CMISKindA_None };             // key of the 0x14112cb40 comparator family
 enum Unk_CMISKindB { Unk_CMISKindB_None };             // key of the 0x14112cb80 comparator family
+enum Unk_CMISKindC { Unk_CMISKindC_None };             // element of the std::vector whose allocate sorts after SmartPointer's (exe 0x14114d980)
 
 // mark record of a cube group: poll timer and the mark entities (node value of f288)
 struct Unk_CMISMarkRec
@@ -797,7 +787,7 @@ typedef efd::map<int, egf::EntityID> Unk_CMISMapEntityId;                       
 typedef efd::map<int, Unk_CMISCubeTimer> Unk_CMISMapCubeTimer;                             // f1f8
 typedef efd::map<int, Unk_CMISKindA> Unk_CMISMapKind;                                      // f298
 typedef efd::map<unsigned int, int> Unk_CMISMapUIntInt;
-typedef efd::map<unsigned int, unsigned int> Unk_CMISMapUIntUInt;
+typedef efd::map<unsigned long, unsigned long> Unk_CMISMapDword;   // exe find/lower_bound call the pair<const DWORD,DWORD> iterator
 typedef efd::map<unsigned __int64, MS2Ptr<Unk_CMISUidRecord> > Unk_CMISMapUid;
 typedef efd::map<std::pair<int, int>, MS2Ptr<SaleStateData> > Unk_CMISMapSaleState;       // fe8
 typedef efd::map<CStringA, int> Unk_CMISMapName;                                           // f1a0 f358
@@ -817,7 +807,7 @@ typedef efd::vector<int> Unk_CMISIntVec;
 typedef std::vector<egf::EntityPtr> Unk_CMISStdEntVec;
 typedef efd::vector<egf::EntityID> Unk_CMISEntityIdVec;
 typedef efd::vector<Unk_CMISElem52> Unk_CMISElem52Vec;
-typedef std::vector<int> Unk_CMISStdIntVec;
+typedef std::vector<Unk_CMISKindC> Unk_CMISKindVec;
 
 // ---- drivers: the container operations the CU's code instantiates -----------------------------------------------------
 template <class M> void Unk_CMISDriveMap(M& m, const typename M::key_type& k)
@@ -890,7 +880,7 @@ void Unk_CMISDriveTail()
     { Unk_CMISMapCubeTimer m; Unk_CMISDriveMapKey(m, nKey); }
     { Unk_CMISMapKind m; Unk_CMISDriveMap(m, nKey); }
     { Unk_CMISMapUIntInt m; Unk_CMISDriveMap(m, uKey); }
-    { Unk_CMISMapUIntUInt m; unsigned int uVal; (void)m.find(uKey, uVal); (void)m.end(); (void)m.lower_bound(uKey); }
+    { Unk_CMISMapDword m; unsigned long dwKey = uKey, dwVal; (void)m.find(dwKey, dwVal); (void)m.end(); (void)m.lower_bound(dwKey); }
     { Unk_CMISMapUid m; Unk_CMISDriveMapKey(m, ullKey); }
     { Unk_CMISMapBucket m; Unk_CMISDriveMap(m, uKey); }
     { Unk_CMISMapSaleState m; Unk_CMISDriveMapKey(m, std::pair<int, int>(0, 0)); }
@@ -915,7 +905,7 @@ void Unk_CMISDriveTail()
     { Unk_CMISEntityIdVec v; Unk_CMISDriveVector(v, id); }
     { Unk_CMISEntVec v; Unk_CMISDriveVector(v, egf::EntityPtr()); }
     { Unk_CMISElem52Vec v; Unk_CMISDriveVector(v, Unk_CMISElem52()); }
-    { Unk_CMISStdIntVec v; Unk_CMISDriveVector(v, nKey); }
+    { Unk_CMISKindVec v; Unk_CMISDriveVector(v, Unk_CMISKindC_None); }
     { MS2Ptr<UIHouseMarkEntity> p; }
     { efd::utf8string s; (void)s.find_last_of("/", 0); }
     { std::string s; s.append("x"); }
