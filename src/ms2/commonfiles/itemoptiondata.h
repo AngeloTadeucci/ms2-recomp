@@ -114,9 +114,9 @@ public:
     BOOL FUN_1405d9c30(CString strName);        // the option already holds a stat of the name's exclusive group
     BOOL FUN_1405d9d10(CString strName);        // the same for the reroll result
     MS2Ptr<CItemOption> FUN_1405d9e50();        // the option
-    int FUN_1405d9ea0(MS2Ptr<ItemOptionValueRandom> spValue, Unk_Random* pRandom, int* pCount, Unk_ProbabilityLog* pLogs);
-    int FUN_1405da4b0(MS2Ptr<ItemOptionValueRandom> spValue, int* pCount, int nIndex, Unk_ProbabilityLog* pLogs);
-    int FUN_1405daad0(MS2Ptr<ItemOptionValueRandom> spValue, int* pCount, Unk_ProbabilityLog* pLogs);
+    int FUN_1405d9ea0(MS2Ptr<ItemOptionValueRandom> spValue, Unk_Random* pRandom, unsigned* pCount, Unk_ProbabilityLog* pLogs);
+    int FUN_1405da4b0(MS2Ptr<ItemOptionValueRandom> spValue, unsigned* pCount, int nIndex, Unk_ProbabilityLog* pLogs);
+    int FUN_1405daad0(MS2Ptr<ItemOptionValueRandom> spValue, unsigned* pCount, Unk_ProbabilityLog* pLogs);
     BOOL FUN_1405db0b0(MS2Ptr<CItemOption> spOption, CString strName);
     int m_nType;                                // +0x18 which table value FUN_1405d2800 reads (1, 2 or other)
     MS2Ptr<CItemOption> m_spOption;             // +0x20
@@ -221,7 +221,12 @@ public:
         return false;
     }
     bool Pick(Unk_Random* pRandom, T& out) const;       // itemoptiondata_2.cpp
-    bool IsValid() const { return m_total != 0; }
+    bool IsValid() const
+    {
+        if (m_total == 0)
+            return false;
+        return true;
+    }
     // n distinct entries: each pick removes its entry and rebuilds the running totals of the rest.
     bool PickN(std::vector<T>& out, unsigned n, Unk_Random* pRandom) const;    // itemoptiondata_2.cpp
 
@@ -242,7 +247,7 @@ public:
     int FUN_1405d3a40();                        // a random stat (0 when none)
     int FUN_1405d3a90(Unk_Random* pRandom);
     int FUN_1405d3ae0();                        // the first stat
-    int FUN_1405d3b30();                        // the last stat
+    int FUN_1405d3b30() const;                   // the last stat
     int FUN_1405d3b80();                        // "highStat"
     bool FUN_1405d3ba0(int nStat);              // nStat reaches highStat
 private:
@@ -269,7 +274,7 @@ public:
     void FUN_1405d3f70(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);
     bool FUN_1405d4270(MS2Ptr<Unk_ItemOptionPreset> spPreset, MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom);
     void FUN_1405d48d0(MS2Ptr<CItemOption> spOption, int nRank, Unk_Random* pRandom,
-                       const std::vector<std::pair<int, int> >& vLocked, int nCount, Unk_ProbabilityLog* pLogs);
+                       const std::vector<std::pair<int, int> >& vLocked, unsigned nCount, Unk_ProbabilityLog* pLogs);
     bool FUN_1405d4bb0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);    // rerolls until the result differs
     bool FUN_1405d55e0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
     int FUN_1405d5fe0(int nRank);               // the pick count of a rank
@@ -285,7 +290,7 @@ public:
     MS2Ptr<ItemOptionValueRandom> FUN_1405d77a0(int nStat);
     MS2Ptr<ItemOptionValueRandom> FUN_1405d7870(unsigned nSpecial);
     int FUN_1405d7940(std::vector<ItemOptionValueRandom*>& vOut, CItemOption* pSource);   // the rows the source holds
-    bool FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, int& nCount, Unk_Random* pRandom, BOOL bFixedCount,
+    bool FUN_1405d7bf0(std::vector<ItemOptionValueRandom*>& vOut, unsigned& nCount, Unk_Random* pRandom, BOOL bFixedCount,
                        MS2Ptr<ItemOptionRandomContext> spContext, const std::vector<std::pair<int, int> >& vLocked,
                        Unk_ProbabilityLog* pLogs);
     void FUN_1405d8880(MS2Ptr<Unk_ItemOptionPreset> spPreset, std::vector<ItemOptionValueRandom*>& vOut,
