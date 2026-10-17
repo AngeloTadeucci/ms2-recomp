@@ -664,7 +664,6 @@ Unk_BitRef::operator bool() const
 void FUN_14154f580(void* pIter);
 
 // @0x14154f540
-// MS2-FUNCTIONAL: stand-in for _Tree_const_iterator<pair<NiAVObject* const, NiString>>::operator++
 void* Unk_PathMapConstIterInc(void* pIter)
 {
     FUN_14154f580(pIter);
@@ -672,14 +671,12 @@ void* Unk_PathMapConstIterInc(void* pIter)
 }
 
 // @0x14154f560
-// MS2-FUNCTIONAL: stand-in for _Tree_iterator<pair<NiAVObject* const, NiString>>::operator++
 void* Unk_PathMapIterInc(void* pIter)
 {
     Unk_PathMapConstIterInc(pIter);
     return pIter;
 }
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1415494d0
 CNifEffect::CNifEffect()
     : m_bSplit(false), m_spTarget(0), m_spModel(0), m_spSplit(0), m_spRoot(0), m_fFadeStart(FLT_MAX),
@@ -963,14 +960,13 @@ void CNifEffect::vfunc_6(float fFadeTime)
 }
 MS2_REPLACE_METHOD(0x14154AF40, CNifEffect, vfunc_6, 311, 0xC6881624);
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154b080
 void CNifEffect::vfunc_7()
 {
     FUN_141773cc0(FUN_1409a5160(FUN_1409a8b00()), FUN_1409475d0(&m_spRoot));
     FUN_140a0b2a0(FUN_1409475d0(&m_spRoot));
     FUN_140a0b2a0(FUN_1409475d0(&m_spSplit));
-    if (m_spEffectObject)
+    if (m_spEffectObject != 0)
     {
         FUN_141bbb7f0(FUN_1403ed2d0(), m_spEffectObject.operator->(), 0);
         m_spEffectObject = 0;
@@ -1058,7 +1054,6 @@ bool CNifEffect::FUN_14154b4a0(NiObjectNET* pkNode)
     return bAny;
 }
 
-// MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x14154b5e0
 bool CNifEffect::FUN_14154b5e0()
 {
@@ -1547,7 +1542,6 @@ void CNiStreamLoadThread::Stop()
 }
 MS2_REPLACE_METHOD(0x141550F20, CNiStreamLoadThread, Stop, 103, 0xD1E7D55A);
 
-// MS2-FUNCTIONAL: lock scope and list/map call order differ from the exe
 // @0x141550f90
 void CNiStreamLoadThread::Enqueue(CString strPath)
 {
