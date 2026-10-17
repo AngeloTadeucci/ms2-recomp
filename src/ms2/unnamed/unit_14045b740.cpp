@@ -332,6 +332,7 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/commonfiles/gameevent.h"
 #include "ms2/commonfiles/gameeventcontext.h"
+#include "ms2/commonfiles/fieldmetatable.h"
 #include "ms2/ms2recover.h"
 
 // ---- the event value containers (key -> context) -------------------------------------------------------------------
@@ -358,5 +359,45 @@ template class std::map<unsigned long, std::map<unsigned __int64, unsigned> >;
 // The +0xc0 value of CGameEventValueManager: dungeon group type (1..14) -> two ints.
 template class std::map<Unk_DungeonGroupType, std::pair<int, int> >;
 // The GetAll outputs of the BurningLevelup / CollectItemGroup values.
+template class std::list<MS2Ptr<BurningLevelupContext> >;
 template class std::vector<MS2Ptr<BurningLevelupContext> >;
 template class std::vector<MS2Ptr<CollectItemGroupContext> >;
+// An id set (insert / erase only).
+template class std::set<__int64>;
+
+// The context pointers the value classes keep in their CAtlMaps (their release COMDATs sort into this part).
+template void MS2Ptr<NpcEventDropEventContext>::Release();
+template void MS2Ptr<QuestAdditionalRewardContext>::Release();
+template void Unk_FieldPtr<Unk_FieldIdList>::Release();
+
+// The lookups the value methods do on their containers. empty() / find() / erase(key) belong to the _Tree base, which
+// the explicit instantiations above leave out.
+template <class C>
+void Unk_GameEventValueLookup(C& values, const typename C::key_type& key)
+{
+    if (!values.empty() && values.find(key) != values.end())
+        values.erase(key);
+}
+template void Unk_GameEventValueLookup(std::map<int, MS2Ptr<ArcadeOpenContext> >&, const int&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, unsigned long>&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, MS2Ptr<BurningLevelupContext> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, MS2Ptr<CollectItemGroupContext> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, MS2Ptr<EventShopNpcContext> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, MS2Ptr<ItemBoxEventContext> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, MS2Ptr<LimitedQuantityContext> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, std::list<MS2Ptr<EventShopNpcContext> > >&,
+                                       const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, std::map<std::pair<int, unsigned long>, int> >&,
+                                       const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<unsigned long, std::map<unsigned __int64, unsigned> >&, const unsigned long&);
+template void Unk_GameEventValueLookup(std::map<std::pair<int, unsigned long>, int>&, const std::pair<int, unsigned long>&);
+template void Unk_GameEventValueLookup(std::map<Unk_DungeonGroupType, std::pair<int, int> >&, const Unk_DungeonGroupType&);
+template void Unk_GameEventValueLookup(std::map<unsigned __int64, unsigned>&, const unsigned __int64&);
+template void Unk_GameEventValueLookup(std::set<__int64>&, const __int64&);
+
+// The id set's insert and erase(where).
+void Unk_GameEventValueIdSetAdd(std::set<__int64>& ids, __int64 id)
+{
+    ids.insert(id);
+    ids.erase(ids.begin());
+}
