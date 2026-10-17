@@ -150,21 +150,11 @@
 #include "postprocessing/postshimmerrenderstep.h"
 #include "beameffectparam.h"
 #include "afterimageeffectparam.h"
+#include "soundeventmgr.h"
 
 #include "ms2/placeholder/header_statics_a.h"
 
 // Params whose units are not recovered yet: only the constructor and the size are known here.
-class CSoundEventEffectParam : public CEffectParam      // ?\soundeventeffectparam.cpp, vftable 0x142f64130
-{
-public:
-    CSoundEventEffectParam();                           // 0x141775810
-    char m_unk_48[8];
-    float m_fViewDistance;                              // +0x50 skip distance for kinds 5/6 (0 = use the table)
-    char m_unk_54[0x110 - 0x54];
-};
-MS2_CHECK_SIZE(CSoundEventEffectParam, 0x110);
-MS2_CHECK_OFFSET(CSoundEventEffectParam, m_fViewDistance, 0x50);
-
 class CSoundMusicEffectParam : public CEffectParam      // ?\soundmusiceffectparam.cpp, vftable 0x142f67b50
 {
 public:
@@ -1075,28 +1065,6 @@ void FUN_140a8f4a0(PendingEffect* pPending, std::vector<CEffectPtr>& vOut);    /
 unsigned FUN_140a8f5a0(PendingEffect* pPending);                // the effect id
 Unk_EffectTarget& FUN_140a8f5c0(PendingEffect* pPending);       // the request target (+0x30)
 NiCamera* FUN_1413f9950();                                      // the main camera
-// The playing sound of a sound event effect (?\soundeventeffect.cpp).
-class Unk_EsSoundChannel
-{
-public:
-    virtual void vfunc_0();
-    virtual void vfunc_1();                                     // stop
-};
-class Unk_EsSoundInst : public CPtred
-{
-public:
-    int FUN_14177ab80();                                        // still playing
-    // @0x1411b1ba0
-    Unk_EsSoundChannel* FUN_1411b1ba0() { return m_pChannel; }
-    Unk_EsSoundChannel* m_pChannel;                             // +0x18
-};
-MS2_CHECK_OFFSET(Unk_EsSoundInst, m_pChannel, 0x18);
-// The runtime sound event effect (CEffect::vfunc_12 == 2).
-class CSoundEventEffect : public CEffect
-{
-public:
-    MS2Ptr<Unk_EsSoundInst> FUN_141777720();                    // the playing sound
-};
 void FUN_140ab1290(void* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const unsigned& nArg0, const CString& strArg1);
 CString FUN_140298360(const char* psz, const CString& str);     // ATL operator+(const char*, const CString&)
 CString FUN_14038f6d0(const CString& str, const char* psz);     // ATL operator+(const CString&, const char*)
@@ -1116,8 +1084,6 @@ struct Unk_EsPoint3
     Unk_EsPoint3& operator=(Unk_EsPoint3&& o);                  // 0x14097faa0
 };
 MS2_CHECK_SIZE(Unk_EsPoint3, 0xc);
-MS2Ptr<CSoundEventEffectParam> FUN_141775980(CString strName, CString strCategory, float fVolume, CString strExtra);
-void FUN_1401d3700(CString& str);                               // normalises a sound path
 int FUN_140976780(GameObject* pObject);                         // the owner id of an actor
 // One voice row of the sound property table (0x20 bytes, implicit ctor 0x1411af960 / dtor 0x1411b01c0).
 struct Unk_EsVoice
@@ -1159,13 +1125,6 @@ public:
 };
 extern int DAT_143ae2b30;                                       // 1: the scene is split over several effect roots
 efd::MessageService* FUN_1413f9830();
-// The sound system (FUN_140d13c40): preloads an FMOD event group.
-class Unk_EsSoundSystem
-{
-public:
-    FMOD::EventGroup* FUN_14177d6e0(const char* pszGroup, int bLoad);
-};
-Unk_EsSoundSystem* FUN_140d13c40();
 // The field sound callback (strName, strArg) -> sound id.
 typedef TFunctor<unsigned int, ParamList<const CString&, ParamList<const CString&, EmptyParam> > > Unk_EsSoundFunctor;
 // The owner of the field sound callback (FUN_14025e7a0).
