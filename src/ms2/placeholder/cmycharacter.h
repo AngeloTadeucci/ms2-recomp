@@ -47,7 +47,7 @@ public:
     MS2Ptr<RoomStageDungeonCli> m_spStage;                          // +0x10
     __int64 m_nExpire;                                              // +0x20
     ATL::CAtlMap<int, __int64> m_times;                             // +0x28
-    std::map<int, unsigned> m_states;                               // +0x70
+    std::map<unsigned long, unsigned> m_states;                               // +0x70
     MS2Ptr<CChatEmoticonCli> m_spChatEmoticon;                      // +0x80
     Unk_UserProxyBits m_titles;                                     // +0x90
 };
