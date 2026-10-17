@@ -255,7 +255,7 @@ void* FUN_1408e57f0();
 int FUN_1422b9e00(void* p);
 bool FUN_14036d570(void* pFeatures, int nFeature);
 void* FUN_140166410();
-int FUN_140408410(ATL::CAtlArray<int>* pArr, const unsigned* pValue);      // index or -1
+int FUN_140408410(ATL::CAtlArray<unsigned>* pArr, const unsigned* pValue);      // index or -1
 int FUN_1402178b0(int n);
 void* FUN_1409670d0();
 bool FUN_14162ac00(void* pParty, int nDungeonId);
