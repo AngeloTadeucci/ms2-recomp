@@ -933,11 +933,11 @@ void SnowmanContext::Write(COutputStream& out)
         out.vfunc_o10_3(spSnowman->m_18);
         out.vfunc_o10_3(spSnowman->m_1c);
         out.vfunc_o10_3(spSnowman->m_20);
-        ATL::CAtlArray<ItemEntity>& items = spSnowman->m_items;
+        const ATL::CAtlArray<ItemEntity>& items = spSnowman->m_items;
         out.vfunc_o10_2(items.GetCount());
         for (size_t j = 0; j < items.GetCount(); j++)
             items[j].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
-        ATL::CAtlArray<ItemEntity>& bonusItems = spSnowman->m_bonusItems;
+        const ATL::CAtlArray<ItemEntity>& bonusItems = spSnowman->m_bonusItems;
         out.vfunc_o10_2(bonusItems.GetCount());
         for (size_t j = 0; j < bonusItems.GetCount(); j++)
             bonusItems[j].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));

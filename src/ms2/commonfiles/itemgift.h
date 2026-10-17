@@ -27,6 +27,7 @@ struct ItemEntity : CPtred, ItemAble {
     virtual unsigned int vfunc_o18_2();
     virtual bool vfunc_o18_3();
     void FUN_14026b030(Unk_GiftOutput&);
+    void FUN_14026b030(Unk_GiftOutput&) const;   // same function, called through a const ItemEntity& (SnowmanContext::Write)
     void FUN_14026b100(Unk_GiftInput&);
     bool FUN_14026aff0(); bool FUN_14026b010(); void FUN_14026b1c0(int rank);   // rx2a: byte getters/setter
     unsigned int m_itemId;
