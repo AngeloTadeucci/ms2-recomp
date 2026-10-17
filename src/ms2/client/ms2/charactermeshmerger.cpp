@@ -517,6 +517,13 @@
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@E@efd@@V?$CustomAllocator@V?$vector@E@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@E@efd@@@efd@@XZ 0x141073220 ; prop
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@efd@@XZ 0x141073260 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??0?$vector@PEAVNiMesh@@V?$CustomAllocator@PEAVNiMesh@@@efd@@@std@@QEAA@AEBV01@@Z 0x141066b10 ; w200 hand
+// MS2-PIN: ??1?$_Uninitialized_backout_al@PEAV?$set@EU?$less@E@std@@@efd@@V?$CustomAllocator@V?$set@EU?$less@E@std@@@efd@@@2@@std@@QEAA@XZ 0x141067b10 ; w200 hand
+// MS2-PIN: ??$_Emplace_back@V?$vector@PEAVNiMesh@@@efd@@@?$_Uninitialized_backout_al@PEAV?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@QEAAX$$QEAV?$vector@PEAVNiMesh@@@efd@@@Z 0x141058090 ; w200 hand
+// MS2-PIN: ??$_Try_emplace@AEBQEAVNiAVObject@@$$V@?$map@PEAVNiAVObject@@UUnk_UVRect@@U?$less@PEAVNiAVObject@@@std@@V?$CustomAllocator@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@efd@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@QEAVNiAVObject@@UUnk_UVRect@@@std@@@std@@@std@@@std@@_N@1@AEBQEAVNiAVObject@@@Z 0x141060bd0 ; w200 hand
+// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@VNiTransform@@V?$vector@PEAVNiMesh@@@efd@@UUnk_TransformLess@@V?$CustomAllocator@U?$pair@$$CBVNiTransform@@V?$vector@PEAVNiMesh@@@efd@@@std@@@3@$0A@@std@@@std@@QEBAAEBV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVNiTransform@@V?$vector@PEAVNiMesh@@@efd@@@std@@PEAX@std@@@efd@@XZ 0x141072f30 ; w200 hand
+// MS2-PIN: ??0MergeInfo@@QEAA@XZ 0x141067020 ; w200 hand
+// MS2-PIN: ??1Unk_AtlasResult@@QEAA@XZ 0x141068240 ; w200 hand
 // MS2-PIN: ?CreateInstance@CCustomizedTextureManager@@SAPEAV1@XZ 0x14106b3d0 ; w200 hand
 // MS2-PIN: ?GetMaterial@NiPropertyState@@QEBAPEAVNiMaterialProperty@@XZ 0x14106bd60 ; w200 hand
 // MS2-PIN: ?IsEqualFast@NiMaterialProperty@@QEBA_NAEBV1@@Z 0x14106c850 ; w200 hand
@@ -645,6 +652,7 @@ struct Unk_AtlasResult
 {
     Unk_AtlasResult() {}
     ~Unk_AtlasResult() {}
+    void Clear() { m_spTexturing = 0; m_kPlacement.clear(); }    // 0x14106b3a0
 
     efd::SmartPointer<NiTexturingProperty> m_spTexturing;                           // +0
     efd::map<NiAVObject*, Unk_UVRect> m_kPlacement;                                 // +8
@@ -725,6 +733,21 @@ void FUN_141050880(unsigned int uiAtlasSize, unsigned int uiWidth, unsigned int 
 void FUN_141050920(Unk_AtlasResult* pResult, NiPixelData* pAlbedo, NiPixelData* pShader);
 bool FUN_141052ff0(NiAVObject* pA, NiAVObject* pB);
 CString FUN_1410521a0(NiAVObject* pMesh);
+void FUN_1401d3700(CString& str);   // commonfiles/cachedata.cpp: in-place MakeLower
+
+// Lower-case copy of a string (0x14106d0b0).
+inline CString Unk_LowerCopy(const CString& str)
+{
+    CString strLower(str);
+    FUN_1401d3700(strLower);
+    return strLower;
+}
+
+// 0x14106d070
+inline CString Unk_Lower(const CString& str)
+{
+    return Unk_LowerCopy(str);
+}
 efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh);
 void FUN_141051f90(NiAVObject* pMesh, NiPixelData* pShaderMap, const NiRect<unsigned int>& kRect);
 NiTexturingProperty* FUN_141050fd0(NiPixelData* pAlbedo, NiPixelData* pShader);
@@ -837,7 +860,7 @@ void FUN_141049b10(NiAVObject* pRoot, CAtlArray<CString>& kNames, MeshArray& kMe
     kNames.RemoveAll();
     for (unsigned int i = 0; i < kSource.GetCount(); i++)
     {
-        efd::SmartPointer<NiMesh>& spMesh = kSource[i];
+        efd::SmartPointer<NiMesh>& spMesh = kSource.GetAt(i);
         kNames.Add(CString((const char*)spMesh->GetName()));
         if (i == 0)
         {
@@ -1780,7 +1803,7 @@ void FUN_14104d450(NiAVObject* pRoot, MeshGroups& kGroups)
         if (bHasVertexColor)
             continue;
 
-        const efd::FixedString& kName = pMesh->GetName();
+        const NiFixedString& kName = pMesh->GetName();
         if (kName.Contains("FA") && kName != "FA_EA")
             continue;
 
@@ -1845,7 +1868,7 @@ void FUN_14104ddc0(efd::vector<NiAVObject*>& kMeshes, MeshGroupVector& kOutGroup
                 kOutGroups.push_back(kGroup);
                 kOutResults.push_back(kResult);
                 kGroup.clear();
-                kResult = Unk_AtlasResult();
+                kResult.Clear();
                 spRoot = NiNew CCharacterMeshMerger::TexNode(0, 0, uiAtlasSize, uiAtlasSize);
                 spAlbedo = NiNew NiPixelData(uiAtlasSize, uiAtlasSize, DAT_1439fb040, 1, 1);
                 spShader = NiNew NiPixelData(uiAtlasSize, uiAtlasSize, DAT_1439fb040, 1, 1);
@@ -2105,7 +2128,7 @@ CString FUN_1410521a0(NiAVObject* pMesh)
             NiFixedString kBaseFile = pBase == 0 ? NiFixedString("") : pBase->GetFilename();
             CString strBase;
             strBase.Format("%s;", (const char*)kBaseFile);
-            strKey += strBase;
+            strKey += Unk_Lower(strBase);
             NiSourceTexture* pDecal = pTexturing->GetShaderMap(0) == 0 ? 0 : NiDynamicCast(NiSourceTexture, pTexturing->GetShaderMap(0)->GetTexture());
             if (pDecal != 0)
             {
@@ -2116,7 +2139,7 @@ CString FUN_1410521a0(NiAVObject* pMesh)
                 astrColors[2] = FUN_140db9aa0(NiDynamicCast(NiColorExtraData, pMesh->GetExtraData(DAT_143ae50d8))->GetValue());
                 CString strDecal;
                 strDecal.Format("%s;%s;%s;%s", (const char*)kDecalFile, (const char*)astrColors[0], (const char*)astrColors[1], (const char*)astrColors[2]);
-                strKey += strDecal;
+                strKey += Unk_Lower(strDecal);
             }
         }
     }
