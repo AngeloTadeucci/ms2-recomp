@@ -147,6 +147,7 @@ bool Unk_NpcModel::operator!=(const Unk_NpcModel& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C8BA0, Unk_NpcModel, operator!=, 159, 0xC1CD1821);
 
 // Container comparisons (true = same).
 template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlArray<T>& b)
@@ -207,30 +208,35 @@ bool Unk_NpcStat::operator!=(const Unk_NpcStat& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C8CC0, Unk_NpcStat, operator!=, 200, 0x2D2B2069);
 
 // @0x1406c8d90
 float Unk_NpcStat::GetScaleStatRate() const
 {
     return m_fScaleStatRate;
 }
+MS2_REPLACE_METHOD(0x1406C8D90, Unk_NpcStat, GetScaleStatRate, 19, 0x85525161);
 
 // @0x1406c8db0
 __int64 Unk_NpcStat::GetScaleBaseTap() const
 {
     return m_nScaleBaseTap;
 }
+MS2_REPLACE_METHOD(0x1406C8DB0, Unk_NpcStat, GetScaleBaseTap, 18, 0xCF8A5890);
 
 // @0x1406c8dd0
 __int64 Unk_NpcStat::GetScaleBaseDef() const
 {
     return m_nScaleBaseDef;
 }
+MS2_REPLACE_METHOD(0x1406C8DD0, Unk_NpcStat, GetScaleBaseDef, 18, 0x9A51AD78);
 
 // @0x1406c8df0
 float Unk_NpcStat::GetScaleBaseSpaRate() const
 {
     return m_fScaleBaseSpaRate;
 }
+MS2_REPLACE_METHOD(0x1406C8DF0, Unk_NpcStat, GetScaleBaseSpaRate, 19, 0x0F765159);
 
 // @0x1406c8e10
 Unk_NpcSkill::Unk_NpcSkill()
@@ -248,12 +254,14 @@ bool Unk_NpcSkill::operator!=(const Unk_NpcSkill& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C8E60, Unk_NpcSkill, operator!=, 124, 0xCA3B4011);
 
 // @0x1406c8ef0
 bool Unk_NpcSkill::IsEmpty() const
 {
     return m_aIds.empty();
 }
+MS2_REPLACE_METHOD(0x1406C8EF0, Unk_NpcSkill, IsEmpty, 27, 0x2A07118A);
 
 // @0x1406c8f20
 std::pair<unsigned, unsigned short> Unk_NpcSkill::GetSkill(size_t nIndex) const
@@ -265,12 +273,14 @@ std::pair<unsigned, unsigned short> Unk_NpcSkill::GetSkill(size_t nIndex) const
         nLevel = m_aLevels[nIndex];
     return std::pair<unsigned, unsigned short>(m_aIds[nIndex], nLevel);
 }
+MS2_REPLACE_METHOD(0x1406C8F20, Unk_NpcSkill, GetSkill, 166, 0x4AF7E218);
 
 // @0x1406c8fd0
 size_t Unk_NpcSkill::GetCount() const
 {
     return m_aIds.size();
 }
+MS2_REPLACE_METHOD(0x1406C8FD0, Unk_NpcSkill, GetCount, 27, 0x78AA60A3);
 
 // @0x1406c9000
 Unk_NpcShape::Unk_NpcShape()
@@ -282,6 +292,7 @@ Unk_NpcShape::Unk_NpcShape()
 void Unk_NpcShape::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C9080, Unk_NpcShape, WriteXml, 11, 0x02239C70);
 
 // @0x1406c90a0
 bool Unk_NpcShape::operator!=(const Unk_NpcShape& o) const
@@ -302,6 +313,7 @@ bool Unk_NpcShape::operator!=(const Unk_NpcShape& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C90A0, Unk_NpcShape, operator!=, 194, 0xE683F9A6);
 
 // @0x1406c9170
 CNpcData::NodeCollision::NodeCollision() : m_vVolume(0.0f, 0.0f, 0.0f), m_vOffset(0.0f, 0.0f, 0.0f)
@@ -312,6 +324,7 @@ CNpcData::NodeCollision::NodeCollision() : m_vVolume(0.0f, 0.0f, 0.0f), m_vOffse
 void CNpcData::NodeCollision::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C9200, CNpcData::NodeCollision, WriteXml, 11, 0x02239C70);
 
 // @0x1406c9220
 bool CNpcData::NodeCollision::operator!=(const NodeCollision& o) const
@@ -324,6 +337,7 @@ bool CNpcData::NodeCollision::operator!=(const NodeCollision& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C9220, CNpcData::NodeCollision, operator!=, 132, 0xC32A42A1);
 
 // @0x1406c92b0
 Unk_NpcCapsule::Unk_NpcCapsule() : m_fRadius(0), m_fHeight(0), m_nIgnore(0)
@@ -334,6 +348,7 @@ Unk_NpcCapsule::Unk_NpcCapsule() : m_fRadius(0), m_fHeight(0), m_nIgnore(0)
 void Unk_NpcCapsule::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C92F0, Unk_NpcCapsule, WriteXml, 11, 0x02239C70);
 
 // @0x1406c9310
 bool Unk_NpcCapsule::operator!=(const Unk_NpcCapsule& o) const
@@ -346,6 +361,7 @@ bool Unk_NpcCapsule::operator!=(const Unk_NpcCapsule& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C9310, Unk_NpcCapsule, operator!=, 83, 0x95407360);
 
 // @0x1406c9370
 Unk_NpcPush::Unk_NpcPush() : m_fBack(0), m_fUp(0), m_fKnockback(0)
@@ -356,6 +372,7 @@ Unk_NpcPush::Unk_NpcPush() : m_fBack(0), m_fUp(0), m_fKnockback(0)
 void Unk_NpcPush::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C93B0, Unk_NpcPush, WriteXml, 11, 0x02239C70);
 
 // @0x1406c93d0
 bool Unk_NpcPush::operator!=(const Unk_NpcPush& o) const
@@ -368,6 +385,7 @@ bool Unk_NpcPush::operator!=(const Unk_NpcPush& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C93D0, Unk_NpcPush, operator!=, 86, 0x1A6E711F);
 
 // @0x1406c9430
 Unk_NpcDead::Unk_NpcDead() : m_fTime(0), m_nRevival(0), m_nCount(0), m_fLifeTime(0), m_nExtendRoomTime(0)
@@ -378,6 +396,7 @@ Unk_NpcDead::Unk_NpcDead() : m_fTime(0), m_nRevival(0), m_nCount(0), m_fLifeTime
 void Unk_NpcDead::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C94B0, Unk_NpcDead, WriteXml, 11, 0x02239C70);
 
 // @0x1406c94d0
 bool Unk_NpcDead::operator!=(const Unk_NpcDead& o) const
@@ -398,6 +417,7 @@ bool Unk_NpcDead::operator!=(const Unk_NpcDead& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C94D0, Unk_NpcDead, operator!=, 215, 0xE88C2CDA);
 
 // @0x1406c95b0
 CStringA Unk_NpcDead::GetRandomDefaultAction() const
@@ -406,6 +426,7 @@ CStringA Unk_NpcDead::GetRandomDefaultAction() const
         return CStringA("Dead_A");
     return m_aDefaultAction[rand() % m_aDefaultAction.GetCount()];
 }
+MS2_REPLACE_METHOD(0x1406C95B0, Unk_NpcDead, GetRandomDefaultAction, 187, 0x535C337B);
 
 // @0x1406c9680
 CStringA Unk_NpcDead::GetRandomUpAction() const
@@ -414,6 +435,7 @@ CStringA Unk_NpcDead::GetRandomUpAction() const
         return CStringA("");
     return m_aUpAction[rand() % m_aUpAction.GetCount()];
 }
+MS2_REPLACE_METHOD(0x1406C9680, Unk_NpcDead, GetRandomUpAction, 187, 0x4813A881);
 
 // @0x1406c9750
 Unk_NpcNormal::Unk_NpcNormal() : m_nMoveArea(0)
@@ -424,6 +446,7 @@ Unk_NpcNormal::Unk_NpcNormal() : m_nMoveArea(0)
 void Unk_NpcNormal::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C9790, Unk_NpcNormal, WriteXml, 11, 0x02239C70);
 
 // @0x1406c97b0
 bool Unk_NpcNormal::operator!=(const Unk_NpcNormal& o) const
@@ -434,6 +457,7 @@ bool Unk_NpcNormal::operator!=(const Unk_NpcNormal& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C97B0, Unk_NpcNormal, operator!=, 72, 0xA260A079);
 
 // @0x1406c9800
 Unk_NpcDrop::Unk_NpcDrop() : m_fDropHeight(0), m_fDropDistanceBase(50.0f), m_nDropDistanceRandom(100), m_fFireVelocity(100.0f)
@@ -444,6 +468,7 @@ Unk_NpcDrop::Unk_NpcDrop() : m_fDropHeight(0), m_fDropDistanceBase(50.0f), m_nDr
 void Unk_NpcDrop::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C98B0, Unk_NpcDrop, WriteXml, 11, 0x02239C70);
 
 // @0x1406c98d0
 bool Unk_NpcDrop::operator!=(const Unk_NpcDrop& o) const
@@ -468,6 +493,7 @@ bool Unk_NpcDrop::operator!=(const Unk_NpcDrop& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C98D0, Unk_NpcDrop, operator!=, 316, 0x6D427D59);
 
 // @0x1406c9a20
 void Unk_NpcDrop::GetGlobalDropBoxIds(std::set<unsigned>& setIds) const
@@ -476,6 +502,7 @@ void Unk_NpcDrop::GetGlobalDropBoxIds(std::set<unsigned>& setIds) const
     std::copy(m_aGlobalDeadDropBoxId.begin(), m_aGlobalDeadDropBoxId.end(), std::inserter(setIds, setIds.end()));
     std::copy(m_aGlobalHitDropBoxId.begin(), m_aGlobalHitDropBoxId.end(), std::inserter(setIds, setIds.end()));
 }
+MS2_REPLACE_METHOD(0x1406C9A20, Unk_NpcDrop, GetGlobalDropBoxIds, 470, 0x368A125F);
 
 // @0x1406c9c00
 void Unk_NpcDrop::GetIndividualDropBoxIds(std::set<unsigned>& setIds) const
@@ -483,6 +510,7 @@ void Unk_NpcDrop::GetIndividualDropBoxIds(std::set<unsigned>& setIds) const
     std::copy(m_aIndividualDropBoxId.begin(), m_aIndividualDropBoxId.end(), std::inserter(setIds, setIds.end()));
     std::copy(m_aIndividualHitDropBoxId.begin(), m_aIndividualHitDropBoxId.end(), std::inserter(setIds, setIds.end()));
 }
+MS2_REPLACE_METHOD(0x1406C9C00, Unk_NpcDrop, GetIndividualDropBoxIds, 311, 0xC5CD9288);
 
 // @0x1406c9d40
 Unk_NpcCorpse::Unk_NpcCorpse() : m_nHitAble(0), m_fOffsetNametag(0), m_fAdded(0)
@@ -493,6 +521,7 @@ Unk_NpcCorpse::Unk_NpcCorpse() : m_nHitAble(0), m_fOffsetNametag(0), m_fAdded(0)
 void Unk_NpcCorpse::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C9DC0, Unk_NpcCorpse, WriteXml, 11, 0x02239C70);
 
 // @0x1406c9de0
 bool Unk_NpcCorpse::operator!=(const Unk_NpcCorpse& o) const
@@ -511,6 +540,7 @@ bool Unk_NpcCorpse::operator!=(const Unk_NpcCorpse& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C9DE0, Unk_NpcCorpse, operator!=, 205, 0xD6CD118D);
 
 // @0x1406d4dc0
 Unk_NpcEffect::Unk_NpcEffect()
@@ -521,6 +551,7 @@ Unk_NpcEffect::Unk_NpcEffect()
 void Unk_NpcEffect::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406C9EC0, Unk_NpcEffect, WriteXml, 11, 0x02239C70);
 
 // @0x1406c9ee0
 bool Unk_NpcEffect::operator!=(const Unk_NpcEffect& o) const
@@ -537,6 +568,7 @@ bool Unk_NpcEffect::operator!=(const Unk_NpcEffect& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406C9EE0, Unk_NpcEffect, operator!=, 201, 0x5587FF37);
 
 // @0x1406c9fb0
 Unk_NpcInteract::Unk_NpcInteract() : m_nCastingTime(0), m_nCoolTime(0), m_bShowCastingBar(true)
@@ -547,6 +579,7 @@ Unk_NpcInteract::Unk_NpcInteract() : m_nCastingTime(0), m_nCoolTime(0), m_bShowC
 void Unk_NpcInteract::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406CA010, Unk_NpcInteract, WriteXml, 11, 0x02239C70);
 
 // @0x1406ca030
 bool Unk_NpcInteract::operator!=(const Unk_NpcInteract& o) const
@@ -563,6 +596,7 @@ bool Unk_NpcInteract::operator!=(const Unk_NpcInteract& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406CA030, Unk_NpcInteract, operator!=, 163, 0x1ACA6C39);
 
 // @0x1406ca0e0
 Unk_NpcLookAt::Unk_NpcLookAt() : m_n0(0), m_n1(0), m_b0(false), m_b1(false)
@@ -573,6 +607,7 @@ Unk_NpcLookAt::Unk_NpcLookAt() : m_n0(0), m_n1(0), m_b0(false), m_b1(false)
 void Unk_NpcLookAt::WriteXml(Unk_140165cf0*) const
 {
 }
+MS2_REPLACE_METHOD(0x1406CA120, Unk_NpcLookAt, WriteXml, 11, 0x02239C70);
 
 // @0x1406ca140
 bool Unk_NpcLookAt::operator!=(const Unk_NpcLookAt& o) const
@@ -587,6 +622,7 @@ bool Unk_NpcLookAt::operator!=(const Unk_NpcLookAt& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406CA140, Unk_NpcLookAt, operator!=, 107, 0xE0F5C242);
 
 // @0x1406ca1c0
 CNpcData::CNpcData()
@@ -710,6 +746,7 @@ bool CNpcData::operator!=(const CNpcData& o) const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406CA6B0, CNpcData, operator!=, 1820, 0xEB2C3925);
 
 // @0x1406cade0
 bool CNpcData::Load(Unk_140165cf0* pRoot)
@@ -722,36 +759,42 @@ bool CNpcData::Load(Unk_140165cf0* pRoot)
         return false;
     return LoadXml(pElem);
 }
+MS2_REPLACE_METHOD(0x1406CADE0, CNpcData, Load, 111, 0x3008DAC9);
 
 // @0x1406cce20
 int CNpcData::GetId() const
 {
     return m_nId;
 }
+MS2_REPLACE_METHOD(0x1406CCE20, CNpcData, GetId, 14, 0x72E52537);
 
 // @0x1406cce40
 CStringA CNpcData::GetStringId() const
 {
     return m_strStringId;
 }
+MS2_REPLACE_METHOD(0x1406CCE40, CNpcData, GetStringId, 66, 0x931AA26A);
 
 // @0x1406cce90
 bool CNpcData::IsStationary() const
 {
     return (FUN_14028d470(m_fRunSpeed, 0) && FUN_14028d470(m_fWalkSpeed, 0)) ? 1 : 0;
 }
+MS2_REPLACE_METHOD(0x1406CCE90, CNpcData, IsStationary, 93, 0x31FC3BCA);
 
 // @0x1406ccf00
 bool CNpcData::IsMinimap() const
 {
     return m_bMinimap;
 }
+MS2_REPLACE_METHOD(0x1406CCF00, CNpcData, IsMinimap, 15, 0x43A40A0D);
 
 // @0x1406ccf20
 int CNpcData::GetCorpseHitAble() const
 {
     return m_corpse.m_nHitAble;
 }
+MS2_REPLACE_METHOD(0x1406CCF20, CNpcData, GetCorpseHitAble, 17, 0x9CF347CF);
 
 // @0x1406ccf40
 bool CNpcData::IsBoss() const
@@ -760,6 +803,7 @@ bool CNpcData::IsBoss() const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406CCF40, CNpcData, IsBoss, 45, 0x872717FB);
 
 // @0x1406ccf80
 bool CNpcData::IsShopKind() const
@@ -768,54 +812,63 @@ bool CNpcData::IsShopKind() const
         return true;
     return false;
 }
+MS2_REPLACE_METHOD(0x1406CCF80, CNpcData, IsShopKind, 45, 0x39A5BA10);
 
 // @0x1406ccfc0
 int CNpcData::GetFriendly() const
 {
     return m_nFriendly;
 }
+MS2_REPLACE_METHOD(0x1406CCFC0, CNpcData, GetFriendly, 14, 0x8AEE455B);
 
 // @0x1406ccfe0
 int CNpcData::GetAttackGroup() const
 {
     return m_nAttackGroup;
 }
+MS2_REPLACE_METHOD(0x1406CCFE0, CNpcData, GetAttackGroup, 14, 0x9A8B24F3);
 
 // @0x1406cd000
 int CNpcData::GetDefenseGroup() const
 {
     return m_nDefenseGroup;
 }
+MS2_REPLACE_METHOD(0x1406CD000, CNpcData, GetDefenseGroup, 14, 0xB2976B17);
 
 // @0x1406cd020
 int CNpcData::GetKind() const
 {
     return m_nKind;
 }
+MS2_REPLACE_METHOD(0x1406CD020, CNpcData, GetKind, 14, 0x6A78E4AB);
 
 // @0x1406cd040
 int CNpcData::GetClass() const
 {
     return m_nClass;
 }
+MS2_REPLACE_METHOD(0x1406CD040, CNpcData, GetClass, 14, 0xCA01277B);
 
 // @0x1406cd060
 unsigned short CNpcData::GetLevel() const
 {
     return m_nLevel;
 }
+MS2_REPLACE_METHOD(0x1406CD060, CNpcData, GetLevel, 15, 0xAA111D44);
 
 // @0x1406cd080
 CStringA CNpcData::GetEmptyString(int) const
 {
     return CStringA("");
 }
+MS2_REPLACE_METHOD(0x1406CD080, CNpcData, GetEmptyString, 66, 0x980CABC8);
 
 // @0x1406cd0d0
 unsigned CNpcData::GetShopId() const
 {
     return m_nShopId;
 }
+MS2_REPLACE_METHOD(0x1406CD0D0, CNpcData, GetShopId, 14, 0xCAA08B3B);
 
 // @0x1406cd0f0
 int CNpcData::GetNpcType() const
@@ -826,6 +879,7 @@ int CNpcData::GetNpcType() const
         return 4;
     return m_nKind;
 }
+MS2_REPLACE_METHOD(0x1406CD0F0, CNpcData, GetNpcType, 75, 0xB3C18CA0);
 
 // @0x1406cd150
 int CNpcData::GetNpcTypeGroup() const
@@ -851,6 +905,7 @@ int CNpcData::GetNpcTypeGroup() const
         return 3;
     }
 }
+MS2_REPLACE_METHOD(0x1406CD150, CNpcData, GetNpcTypeGroup, 161, 0x8908A403);
 
 // @0x1406cd200
 bool CNpcData::HasPropertyTag(int nTag) const
@@ -859,12 +914,14 @@ bool CNpcData::HasPropertyTag(int nTag) const
         return false;
     return m_propertyTags.test(nTag);
 }
+MS2_REPLACE_METHOD(0x1406CD200, CNpcData, HasPropertyTag, 51, 0x9A077415);
 
 // @0x1406cd240
 bool CNpcData::IsRace(int nRace) const
 {
     return m_nRace == nRace;
 }
+MS2_REPLACE_METHOD(0x1406CD240, CNpcData, IsRace, 52, 0x52B27C1F);
 
 // @0x1406cd280
 bool CNpcData::HasEventTag(int nTag) const
@@ -873,18 +930,21 @@ bool CNpcData::HasEventTag(int nTag) const
         return false;
     return m_eventTags.test(nTag);
 }
+MS2_REPLACE_METHOD(0x1406CD280, CNpcData, HasEventTag, 51, 0xDF75FC8C);
 
 // @0x1406cd2c0
 bool CNpcData::HasSkill() const
 {
     return m_skill.m_aIds.size() > 0;
 }
+MS2_REPLACE_METHOD(0x1406CD2C0, CNpcData, HasSkill, 61, 0x6BCE268B);
 
 // @0x1406cd310
 int CNpcData::GetRace() const
 {
     return m_nRace;
 }
+MS2_REPLACE_METHOD(0x1406CD310, CNpcData, GetRace, 14, 0x828204CF);
 
 // --- Table/NpcRegionSpawnData.xml and the NpcData xml cache ---------------------------------------------------------
 
@@ -930,6 +990,7 @@ CNpcRegionSpawnData::CNpcRegionSpawnData()
 }
 
 // MS2-PIN: ??0CRegionSpawnProb@@QEAA@XZ 0x1406d4fe0
+// MS2-FUNCTIONAL: the exe stores m_pSpawn with a different Unk_BmPtr assignment sequence
 CRegionSpawnProb::CRegionSpawnProb()
 {
     m_pSpawn = 0;
@@ -952,6 +1013,7 @@ CRegionSpawnResult::~CRegionSpawnResult()
 }
 
 // @0x1406c8730
+// MS2-FUNCTIONAL: the exe frame is 0x10 larger (one more MS2Ptr temp on the return paths)
 MS2Ptr<CRegionSpawnProb> CRegionSpawnResult::Pick() const
 {
     if (m_aProb.IsEmpty())
@@ -970,11 +1032,13 @@ MS2Ptr<CRegionSpawnProb> CRegionSpawnResult::Pick() const
 }
 
 // @0x1406cd330
+// MS2-FUNCTIONAL: the exe moves the lookup result through a second MS2Ptr temp (frame 0x10 larger)
+Unk_NpcTableCli* FUN_1406d6e90();
 MS2Ptr<CNpcData> FUN_1406cd330(int nNpcId)
 {
     if (nNpcId == 0)
         return MS2Ptr<CNpcData>(0);
-    MS2Ptr<CNpcData> pData = s_pNpcTable->FUN_140a7cab0(nNpcId);
+    MS2Ptr<CNpcData> pData = FUN_1406d6e90()->FUN_140a7cab0(nNpcId);
     return pData;
 }
 
@@ -983,8 +1047,10 @@ Unk_NpcTableCli* FUN_1406d6e90()
 {
     return s_pNpcTable;
 }
+MS2_REPLACE(0x1406D6E90, FUN_1406d6e90, 8, 0x5738B5AB);
 
 // @0x1406cd420
+// MS2-FUNCTIONAL: string dictionary lookups: the exe keeps the CStringW temps in a different frame order
 CStringW FUN_1406cd420(int nNpcType)
 {
     if (nNpcType == 2)
@@ -1005,6 +1071,7 @@ CStringW FUN_1406cd420(int nNpcType)
 }
 
 // @0x1406cd750
+// MS2-FUNCTIONAL: the map<unsigned,bool> ctor binds to the other unit's ICF copy (symbol table disagreement)
 CNpcDataTable::CNpcDataTable()
 {
     LoadNpcCache();
@@ -1012,6 +1079,7 @@ CNpcDataTable::CNpcDataTable()
 }
 
 // @0x1406cd840
+// MS2-FUNCTIONAL: frame/temp order of the MS2Ptr and CString temps differs; callee ICF copies resolve to other VAs
 MS2Ptr<CRegionSpawnResult> CNpcDataTable::FindSpawnResult(CStringW strTags, int nMinDifficulty, int nMaxDifficulty)
 {
     {
@@ -1112,8 +1180,10 @@ Unk_BmPtr<CNpcRegionSpawnData> CNpcDataTable::GetRegionSpawnData(int nNpcId)
     m_mapSpawn.Lookup(nNpcId, pData);
     return pData;
 }
+MS2_REPLACE_METHOD(0x1406CE1D0, CNpcDataTable, GetRegionSpawnData, 157, 0x462B29AE);
 
 // @0x1406ce280
+// MS2-FUNCTIONAL: MS2Ptr temp placement; the ICF copies of the CRBMap/Unk_BmBoxPtr glue resolve to other VAs
 void CNpcDataTable::IndexRegionSpawn(Unk_BmPtr<CNpcRegionSpawnData> pData)
 {
     if (!(pData == 0))
@@ -1137,6 +1207,7 @@ void CNpcDataTable::IndexRegionSpawn(Unk_BmPtr<CNpcRegionSpawnData> pData)
 }
 
 // @0x1406ce4a0
+// MS2-FUNCTIONAL: frame order of the CCacheData temps; map ICF copies resolve to other VAs
 void CNpcDataTable::LoadNpcCache()
 {
     std::vector<CString> aFiles;
@@ -1152,6 +1223,7 @@ void CNpcDataTable::LoadNpcCache()
 }
 
 // @0x1406ce6d0
+// MS2-FUNCTIONAL: frame order of the xml string temps; ICF copies of the Unk_BmPtr glue resolve to other VAs
 void CNpcDataTable::LoadRegionSpawn()
 {
     CString strPath = FUN_14071a5b0(CString("Table"), CString("NpcRegionSpawnData.xml"));
@@ -1207,8 +1279,10 @@ int CNpcDataTable::GetIdFromPath(const CStringA& strPath)
     _splitpath(strPath, 0, 0, szName, 0);
     return atoi(szName);
 }
+MS2_REPLACE_METHOD(0x1406CED30, CNpcDataTable, GetIdFromPath, 112, 0x47CCD196);
 
 // @0x1406cedb0
+// MS2-FUNCTIONAL: frame/temp order of the lock and MS2Ptr; map<unsigned,...> find ICF copies resolve to other VAs
 bool CNpcDataTable::NeedsLoad(int nNpcId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
@@ -1294,6 +1368,7 @@ static int Unk_ParsePropertyTag(const CStringA& strTag)
     MS2_ASSERT_AT(0x3a, 0);
     return 0;
 }
+MS2_REPLACE(0x1406CEFB0, Unk_ParsePropertyTag, 1023, 0x6D7FA8CF);
 
 // --- CNpcData::LoadXml ------------------------------------------------------------------------------------------------
 bool FUN_1403d8350(Unk_140165cf0* pElem, const char* pszName, int& nOut);               // npc class reader
@@ -1335,8 +1410,10 @@ static int FUN_1406cfaa0(Unk_140165cf0* pElem, const char* pszName, std::vector<
         FUN_1402c8940(str, rOut, ",");
     return nRet;
 }
+MS2_REPLACE(0x1406CFAA0, FUN_1406cfaa0, 121, 0x2DA8BB28);
 
 // @0x1406cfb20
+// MS2-FUNCTIONAL: the exe inlines the CStringA default ctor (stringmgr assert) and duplicates the dtor on both paths
 static int FUN_1406cfb20(Unk_140165cf0* pElem, const char* pszName, int& nOut)
 {
     CStringA str;
