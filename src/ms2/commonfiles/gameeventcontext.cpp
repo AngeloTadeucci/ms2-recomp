@@ -23,6 +23,7 @@
 #include "ms2/commonfiles/filesystem.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/cnpcshopproductbase.h"
+#include "ms2/ms2format.h"
 #include "gameeventcontext.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -57,6 +58,9 @@ CInputStream& FUN_14070f440(CInputStream& in, long& value);
 CInputStream& FUN_14070f480(CInputStream& in, int& value);
 CInputStream& FUN_14070f480(CInputStream& in, unsigned& value);
 CInputStream& FUN_14070f540(CInputStream& in, float& value);
+COutputStream& FUN_1403d7730(COutputStream& out, const ATL::CAtlArray<unsigned>& arr);   // count + values (gameevent.cpp)
+CInputStream& FUN_1403d7440(CInputStream& in, ATL::CAtlArray<unsigned>& arr);          // count + values (gameevent.cpp)
+__int64 FUN_140869440();                                                               // server time
 int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);   // tinyxmlhelper int attribute, long overload
 Unk_140165cf0* FUN_140345b40(TiXmlDocument* pDoc);   // the document's first child element
 Unk_140165cf0* FUN_140345b40(Unk_140165cf0* pNode);  // first child element
@@ -1400,6 +1404,305 @@ bool TreeWateringContext::FUN_1404038c0(const CMsTime& now)
             return true;
     }
     return false;
+}
+
+// @0x140403980
+void Unk_FieldObjectDropContext::Write(COutputStream& out)
+{
+    FUN_1403d7730(out, m_fieldIds);
+    FUN_1403d7730(out, m_objectIds);
+    FUN_1403d7730(out, m_itemIds);
+    FUN_14070f9a0(out, m_percent);
+}
+
+// @0x1404039f0
+void Unk_FieldObjectDropContext::Read(CInPacket& packet)
+{
+    FUN_1403d7440(packet, m_fieldIds);
+    FUN_1403d7440(packet, m_objectIds);
+    FUN_1403d7440(packet, m_itemIds);
+    FUN_14070f480(packet, m_percent);
+}
+
+// @0x140403a80
+CStringW Unk_FieldObjectDropContext::ToString()
+{
+    CStringW str = StringFormat(L"fieldId={0} objectId={1} itemId={2} percent={3}", m_fieldIds.GetCount(),
+                                m_objectIds.GetCount(), m_itemIds.GetCount(), m_percent);
+    return str;
+}
+
+// @0x140403b50
+bool Unk_FieldObjectDropContext::IsValid()
+{
+    if (m_fieldIds.IsEmpty())
+        return false;
+    if (m_objectIds.IsEmpty())
+        return false;
+    if (m_itemIds.IsEmpty())
+        return false;
+    if (m_percent == 0)
+        return false;
+    return true;
+}
+
+// @0x140403bd0
+void Unk_FieldObjectDropListContext::Write(COutputStream& out)
+{
+    FUN_1403d7730(out, m_fieldIds);
+    FUN_1403d7730(out, m_objectIds);
+    FUN_1403d7730(out, m_itemIds);
+    FUN_1403d7730(out, m_percents);
+}
+
+// @0x140403c50
+void Unk_FieldObjectDropListContext::Read(CInPacket& packet)
+{
+    FUN_1403d7440(packet, m_fieldIds);
+    FUN_1403d7440(packet, m_objectIds);
+    FUN_1403d7440(packet, m_itemIds);
+    FUN_1403d7440(packet, m_percents);
+}
+
+// @0x140403ce0
+CStringW Unk_FieldObjectDropListContext::ToString()
+{
+    CStringW str = StringFormat(L"fieldId={0} objectId={1} itemId={2} percent={3}", m_fieldIds.GetCount(),
+                                m_objectIds.GetCount(), m_itemIds.GetCount(), m_percents.GetCount());
+    return str;
+}
+
+// @0x140403dd0
+bool Unk_FieldObjectDropListContext::IsValid()
+{
+    if (m_fieldIds.IsEmpty())
+        return false;
+    if (m_objectIds.IsEmpty())
+        return false;
+    if (m_itemIds.IsEmpty())
+        return false;
+    if (m_percents.IsEmpty())
+        return false;
+    if (m_itemIds.GetCount() != m_percents.GetCount())
+        return false;
+    return true;
+}
+
+// @0x140403e90
+void Unk_DayItemContext::Write(COutputStream& out)
+{
+}
+
+// @0x140403eb0
+void Unk_DayItemContext::Read(CInPacket& packet)
+{
+}
+
+// @0x140403ed0
+void Unk_DayItemContext::Period::Write(COutputStream& out)
+{
+}
+
+// @0x140403ef0
+void Unk_DayItemContext::Period::Read(CInPacket& packet)
+{
+}
+
+// @0x140403f10
+CStringW Unk_DayItemContext::ToString()
+{
+    CStringW str = StringFormat(L"itemId={0} weekends={1} weekdays={2} customized={3}", m_itemIds.GetCount(),
+                                m_weekends, m_weekdays, m_customized);
+    return str;
+}
+
+// @0x140403fc0
+void Unk_DayItemContext::GetItemIds(ATL::CAtlArray<unsigned>& rOut)
+{
+}
+
+// @0x140403fe0
+void Unk_DayItemContext::GetActivePeriodIds(ATL::CAtlArray<unsigned>& rOut)
+{
+    for (unsigned i = 0; i < m_periods.GetCount(); i++) {
+        Period* pPeriod = m_periods[i];
+        if (!pPeriod->IsActive())
+            continue;
+        rOut.Add(pPeriod->m_id);
+    }
+}
+
+// @0x140404080
+bool Unk_DayItemContext::IsValid()
+{
+    if (m_itemIds.IsEmpty())
+        return false;
+    if (m_weekdays == 0 && m_weekends == 0 && m_customized == 0)
+        return false;
+    return true;
+}
+
+// @0x1404040e0
+bool Unk_DayItemContext::IsActive()
+{
+    if (!IsValid())
+        return false;
+    bool bActive = false;
+    for (unsigned i = 0; i < m_periods.GetCount(); i++) {
+        Period* pPeriod = m_periods[i];
+        if (pPeriod->IsActive()) {
+            bActive = true;
+            break;
+        }
+    }
+    return bActive;
+}
+
+// The index of a value in an array, -1 when absent (instantiated here first; name invented).
+template <class T>
+int Unk_ArrayFind(const ATL::CAtlArray<T>& arr, const T& value)
+{
+    for (int i = 0; i < (int)arr.GetCount(); i++) {
+        if (arr[i] == value)
+            return i;
+    }
+    return -1;
+}
+
+// @0x140404190
+bool Unk_DayItemContext::IsTodayEnabled()
+{
+    if (!IsValid())
+        return false;
+    CMsTime now(FUN_140869440());
+    int dayOfWeek = now.GetDayOfWeek();
+    bool bWeekend = dayOfWeek == 1 || dayOfWeek == 7;
+    if ((m_weekends != 0 && bWeekend) || (m_weekdays != 0 && !bWeekend) ||
+        (m_customized != 0 && Unk_ArrayFind(m_customizedDays, dayOfWeek) != -1))
+        return true;
+    return false;
+}
+
+// @0x140404260
+void Unk_DayItemContext::Update()
+{
+}
+
+// @0x140404270
+void Unk_DayItemContext::Period::Update()
+{
+    CMsTime now(FUN_140869440());
+    if (m_state == 2 && now > m_endTime)
+        m_state = 4;
+}
+
+// @0x1404042d0
+bool Unk_DayItemContext::Period::IsActive()
+{
+    CMsTime now(FUN_140869440());
+    if (m_state != 2)
+        return false;
+    if (now < m_beginTime)
+        return false;
+    if (now > m_endTime)
+        return false;
+    return true;
+}
+
+// @0x140404370
+void Unk_DayItemContext::Period::Clear()
+{
+}
+
+// @0x140404380
+void Unk_DayItemContext::GetPeriods(ATL::CAtlArray<MS2Ptr<Period>>& rOut)
+{
+    rOut.Append(m_periods);
+}
+
+// @0x1404043b0
+Unk_DayItemContext::Period* Unk_DayItemContext::FindPeriod(int id)
+{
+    for (unsigned i = 0; i < m_periods.GetCount(); i++) {
+        Period* pPeriod = m_periods[i];
+        if (pPeriod->m_id == id)
+            return pPeriod;
+    }
+    return 0;
+}
+
+// @0x140404440
+void BurningLevelupContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_eventId);
+    out.vfunc_o10_4(m_endTime);
+    out.vfunc_o10_3(m_beginLevel);
+    out.vfunc_o10_3(m_endLevel);
+    out.vfunc_o10_3(m_burningBonus);
+    out.vfunc_o10_3(m_additionalEffectId);
+    out.vfunc_o10_8(m_setCharacterPopupStringKey);
+    out.vfunc_o10_8(m_setCharacterPopupBottomStringKey);
+    out.vfunc_o10_8(m_descPopupStringKey);
+    out.vfunc_o10_8(m_rewardUiTitleStringKey);
+    out.vfunc_o10_2(m_equipNametagSymbolId);
+    out.vfunc_o10_2((short)m_28.size());
+    for (std::set<int>::const_iterator it = m_28.begin(); it != m_28.end(); ++it)
+        out.vfunc_o10_3(*it);
+    out.vfunc_o10_3((int)m_rewardItems.size());
+    for (std::vector<ItemEntity>::iterator it = m_rewardItems.begin(); it != m_rewardItems.end(); ++it) {
+        ItemEntity& item = *it;
+        item.FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_0(m_spJumpingItem.get() != 0);
+    if (m_spJumpingItem.get() != 0) {
+        m_spJumpingItem->FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+        out.vfunc_o10_3(m_8c);
+        out.vfunc_o10_3(m_tutorialEndFieldId);
+        out.vfunc_o10_8(m_jumpingItemDescPopupStringKey);
+        out.vfunc_o10_8(m_jumpingItemNotifyStringKey);
+        out.vfunc_o10_8(m_jumpingCompleteStringKey);
+    }
+}
+
+// @0x140404920
+void BurningLevelupContext::Read(CInPacket& packet)
+{
+    m_eventId = packet.vfunc_o8_3();
+    m_endTime = packet.vfunc_o8_4();
+    m_beginLevel = (unsigned short)packet.vfunc_o8_3();
+    m_endLevel = (unsigned short)packet.vfunc_o8_3();
+    m_burningBonus = packet.vfunc_o8_3();
+    m_additionalEffectId = packet.vfunc_o8_3();
+    m_setCharacterPopupStringKey = packet.vfunc_o8_8();
+    m_setCharacterPopupBottomStringKey = packet.vfunc_o8_8();
+    m_descPopupStringKey = packet.vfunc_o8_8();
+    m_rewardUiTitleStringKey = packet.vfunc_o8_8();
+    m_equipNametagSymbolId = packet.vfunc_o8_2();
+    m_28.clear();
+    size_t count = (unsigned short)packet.vfunc_o8_2();
+    for (size_t i = 0; i < count; i++) {
+        int value = packet.vfunc_o8_3();
+        m_28.insert(value);
+    }
+    m_rewardItems.clear();
+    size_t itemCount = (unsigned)packet.vfunc_o8_3();
+    for (size_t i = 0; i < itemCount; i++) {
+        ItemEntity item;
+        item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_rewardItems.push_back(item);
+    }
+    m_spJumpingItem = 0;
+    m_tutorialEndFieldId = 0;
+    m_8c = 0;
+    if (packet.vfunc_o8_0()) {
+        m_spJumpingItem.AssignRaw(new ItemEntity);
+        m_spJumpingItem->FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_8c = (unsigned short)packet.vfunc_o8_3();
+        m_tutorialEndFieldId = packet.vfunc_o8_3();
+        m_jumpingItemDescPopupStringKey = packet.vfunc_o8_8();
+        m_jumpingItemNotifyStringKey = packet.vfunc_o8_8();
+        m_jumpingCompleteStringKey = packet.vfunc_o8_8();
+    }
 }
 
 // ==== 0x140402080 .. 0x140407a20 continue above this line ====

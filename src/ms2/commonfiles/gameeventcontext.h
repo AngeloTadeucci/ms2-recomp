@@ -213,3 +213,66 @@ public:
     unsigned m_specialPercent;      // +0x24 "specialPercent"
 };  // vftable 0x142d441d0
 MS2_CHECK_SIZE(CNpcShopGivePointContextCNSpring, 0x28);
+
+// Three event setting types the client never constructs (no vftable, RTTI or caller of the methods; the period array
+// one is only read by the dead 0x140427c30 in gameeventvalue). Names invented from the ToString formats.
+class Unk_FieldObjectDropContext : public CPtred {
+public:
+    void Write(COutputStream& out);                 // 0x140403980
+    void Read(CInPacket& packet);                   // 0x1404039f0
+    CStringW ToString();                            // 0x140403a80
+    bool IsValid();                                 // 0x140403b50
+    ATL::CAtlArray<unsigned> m_fieldIds;            // +0x18
+    ATL::CAtlArray<unsigned> m_objectIds;           // +0x38
+    ATL::CAtlArray<unsigned> m_itemIds;             // +0x58
+    int m_percent;                                  // +0x78
+};
+class Unk_FieldObjectDropListContext : public CPtred {
+public:
+    void Write(COutputStream& out);                 // 0x140403bd0
+    void Read(CInPacket& packet);                   // 0x140403c50
+    CStringW ToString();                            // 0x140403ce0
+    bool IsValid();                                 // 0x140403dd0: one percent per item
+    ATL::CAtlArray<unsigned> m_fieldIds;            // +0x18
+    ATL::CAtlArray<unsigned> m_objectIds;           // +0x38
+    ATL::CAtlArray<unsigned> m_itemIds;             // +0x58
+    ATL::CAtlArray<unsigned> m_percents;            // +0x78
+};
+class Unk_DayItemContext : public CPtred {
+public:
+    class Period : public CPtred {
+    public:
+        void Write(COutputStream& out);             // 0x140403ed0 (empty)
+        void Read(CInPacket& packet);               // 0x140403ef0 (empty)
+        void Update();                              // 0x140404270: running (2) -> over (4) after the end time
+        bool IsActive();                            // 0x1404042d0
+        void Clear();                               // 0x140404370 (empty)
+        int m_id;                                   // +0x18
+        int m_pad_1c;
+        CMsTime m_beginTime;                        // +0x20
+        CMsTime m_endTime;                          // +0x30
+        int m_state;                                // +0x40
+    };
+    void Write(COutputStream& out);                 // 0x140403e90 (empty)
+    void Read(CInPacket& packet);                   // 0x140403eb0 (empty)
+    CStringW ToString();                            // 0x140403f10
+    void GetItemIds(ATL::CAtlArray<unsigned>& rOut);            // 0x140403fc0 (empty)
+    void GetActivePeriodIds(ATL::CAtlArray<unsigned>& rOut);    // 0x140403fe0
+    bool IsValid();                                 // 0x140404080
+    bool IsActive();                                // 0x1404040e0
+    bool IsTodayEnabled();                          // 0x140404190
+    void Update();                                  // 0x140404260 (empty)
+    void GetPeriods(ATL::CAtlArray<MS2Ptr<Period>>& rOut);      // 0x140404380
+    Period* FindPeriod(int id);                     // 0x1404043b0
+    ATL::CAtlArray<unsigned> m_itemIds;             // +0x18
+    int m_38;
+    int m_weekends;                                 // +0x3c
+    int m_weekdays;                                 // +0x40
+    int m_customized;                               // +0x44
+    ATL::CAtlArray<int> m_customizedDays;           // +0x48 CTime days of the week
+    ATL::CAtlArray<MS2Ptr<Period>> m_periods;       // +0x68
+};
+MS2_CHECK_SIZE(Unk_FieldObjectDropContext, 0x80);
+MS2_CHECK_SIZE(Unk_FieldObjectDropListContext, 0x98);
+MS2_CHECK_SIZE(Unk_DayItemContext::Period, 0x48);
+MS2_CHECK_SIZE(Unk_DayItemContext, 0x88);

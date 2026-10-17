@@ -6,6 +6,7 @@
 #include <afx.h>
 #include <atlcoll.h>
 #include <vector>
+#include <set>
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/commonfiles/itemgift.h"
@@ -86,8 +87,36 @@ MS2_CHECK_OFFSET(GameEvent, m_78, 0x78);
 // (COMDATs 0x1403e4a90..0x1403e8230, unit ?\gameeventadventurelevelbonusexprate.cpp); the ctors are out of line in
 // gameevent.cpp. Members are NOT recovered yet: opaque padding (the exe dtors destroy MS2Ptr<*Context>, CAtlArray<>,
 // std::set<> and ItemEntity members at the padded offsets; see work/w116/dtors.txt for the per-class callee lists).
+// Members recovered by gameeventcontext.cpp (stream Write 0x140404440 / Read 0x140404920; names from the
+// GameEventBurningLevelup::vfunc_2 XML loader 0x1403d1ad0).
 class BurningLevelupContext : public CPtred {
-    char m_pad_18[0xa0];
+public:
+    BurningLevelupContext();                        // 0x1403e39b0 (gameevent.cpp)
+    void Write(COutputStream& out);                 // 0x140404440
+    void Read(CInPacket& packet);                   // 0x140404920
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    __int64 m_endTime;                              // +0x20
+    std::set<int> m_28;                             // +0x28 the comma list of the event's m_78
+    unsigned short m_beginLevel;                           // +0x38 "beginLevel"
+    unsigned short m_endLevel;                           // +0x3a "endLevel"
+    int m_burningBonus;                             // +0x3c "burningBonus"
+    int m_additionalEffectId;                       // +0x40 "additionalEffectId"
+    int m_pad_44;
+    CStringW m_setCharacterPopupStringKey;          // +0x48 "setCharacterPopupStringKey"
+    CStringW m_setCharacterPopupBottomStringKey;    // +0x50 "setCharacterPopupBottomStringKey"
+    CStringW m_descPopupStringKey;                  // +0x58 "descPopupStringKey"
+    CStringW m_rewardUiTitleStringKey;              // +0x60 "rewardUiTitleStringKey"
+    short m_equipNametagSymbolId;                   // +0x68 "equipNametagSymbolID"
+    short m_pad_6a[3];
+    std::vector<ItemEntity> m_rewardItems;          // +0x70 the items of the m_70 xml
+    int m_tutorialEndFieldId;                       // +0x88 jumpingOption "tutorialEndFieldId"
+    unsigned short m_8c;                            // +0x8c set from the jumping item
+    short m_pad_8e;
+    MS2Ptr<ItemEntity> m_spJumpingItem;             // +0x90 the jumpingOption item (a LevelPotion)
+    CStringW m_jumpingItemDescPopupStringKey;       // +0xa0 "jumpingItemDescPopupStringKey"
+    CStringW m_jumpingItemNotifyStringKey;          // +0xa8 "jumpingItemNotifyStringKey"
+    CStringW m_jumpingCompleteStringKey;            // +0xb0 "jumpingCompleteStringKey"
 };  // vftable 0x142d41600, ??_G 0x1403e9850, dtor 0x1403e58e0
 MS2_CHECK_SIZE(BurningLevelupContext, 0xb8);
 // Members recovered by gameeventcontext.cpp (LoadReward 0x140400c00 / LoadDance 0x140401070, stream Write
