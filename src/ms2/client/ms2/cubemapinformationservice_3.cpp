@@ -1873,7 +1873,7 @@ bool CubeMapInformationService::FUN_1410c3cd0(int nKey)
     return true;
 }
 struct Unk_CMISHouseRec { __int64 m_q0, m_q1, m_q2; int m_state, m_pad; __int64 m_value; };   // the house record (state at 0x18, value at 0x20)
-void FUN_1408a0890(int, int, int*);
+int FUN_1408a0890(int, int, int*);
 struct Unk_CMISHouseRef                                                                     // MS2Ptr<house record>
 {
     Unk_CMISHouseRef(void* p);                                                              // 0x14111ea00
@@ -6006,4 +6006,112 @@ void CubeMapInformationService::FUN_1410d0310()
     f428 = 0;
     FUN_1403416e0(&f430);
     FUN_14114f220(&f440);
+}
+
+// ---- w142 batch 13 ----
+struct Unk_CMISXformVec                                                                     // vector<NiTransform> (0x18 bytes)
+{
+    Unk_CMISXformVec();                                                                     // 0x141122df0
+    ~Unk_CMISXformVec();                                                                    // 0x141125da0
+    unsigned __int64 FUN_14115af10();                                                       // size
+    NiTransform* FUN_141128390(unsigned __int64 nIndex);                                    // operator[]
+    void* m_a; void* m_b; void* m_c;
+};
+bool FUN_140965550(const Unk_CMISEntityRef*, const Unk_CMISEntityRef*);                     // operator!=
+void FUN_1413d5220(HardwareInstancingService*, Unk_CMISEntityRef);                          // drop the effect entity
+Unk_CMISEntityRef* FUN_1413d49f0(HardwareInstancingService*, Unk_CMISEntityRef* pOut, Unk_CMISStr* pName, efd::AssetID* pAsset,
+    bool bInstanced, NiTransform* pXforms, int nCount, int nCapacity);                      // create an instanced effect entity
+void FUN_140de0cb0(efd::AssetID* pAsset, Unk_CMISStr* pUrn);                                // set the urn
+void FUN_14111d240(Unk_CMISIntList*, Unk_CMISInsRes*, const int*);                          // insert
+unsigned* FUN_14038e780(void* pTmp);                                                        // the default alloc alignment
+void* FUN_14206ac20(unsigned __int64 nSize, unsigned nAlign);                               // aligned alloc
+// @0x1410cc160
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cc160(int nKind)
+{
+    if (nKind == 0) {
+        if (FUN_140965550(&f2d8, &DAT_143acf820)) {
+            Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+            FUN_1413d5220(spInst.FUN_14098d0e0(), Unk_CMISEntityRef(f2d8));
+            FUN_140899bd0(&f2d8, DAT_143acf820);
+        }
+        return;
+    }
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    Unk_CMISXformVec vecXform;
+    Unk_CMISIter<262> itGroup, itGroupEnd;
+    for (FUN_14114df30(&fd8, &itGroup); FUN_1411275c0(&itGroup, FUN_141151c70(&fd8, &itGroupEnd)); FUN_141129bb0(&itGroup)) {
+        int nGroup = *FUN_141128660(&itGroup);
+        if (nGroup == 0)
+            continue;
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+        if (FUN_1408a8dd0(&spOwner, 0))
+            continue;
+        int nFlag = 0;
+        if (FUN_1408a0890(FUN_1403ed2d0()->FUN_141bd3060(), nGroup, &nFlag) == 0)
+            continue;
+        if (nFlag != 0)
+            continue;
+        if (spOwner->ownerID != FUN_141656ad0(pRoster) && !FUN_140930c90(spOwner->ownerID) && !FUN_140930d20(spOwner->ownerID))
+            continue;
+        FUN_1410ccc00(nGroup, 0, 0);
+        Unk_CMISIntList setSeen;
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+        Unk_CMISListIter it;
+        Unk_CMISListEnd itListEnd;
+        for (FUN_14114e630(pList, &it); FUN_14035ea60(&it, FUN_1411522d0(pList, &itListEnd)); FUN_14035ebf0(&it)) {
+            Unk_Int3 cell = FUN_1408a0400(*FUN_1403e8d70(&it));
+            Cube* pCube = FUN_1410b8980(cell);
+            if (pCube == 0)
+                continue;
+            if (FUN_140375130(FUN_140885340(&f208)) && !(p300.x <= cell.x && p300.y <= cell.y && p300.z <= cell.z))
+                continue;
+            int nCellKey = FUN_1408a03c0(pCube->position);
+            Unk_CMISListIter itFind;
+            Unk_CMISListEnd itSeenEnd;
+            if (FUN_14035ea60(FUN_141158620(&setSeen, &itFind, &nCellKey), FUN_1411522d0(&setSeen, &itSeenEnd)))
+                continue;
+            int nCellKey2 = FUN_1408a03c0(pCube->position);
+            Unk_CMISInsRes resIns;
+            FUN_14111d240(&setSeen, &resIns, &nCellKey2);
+            Unk_StreamPoint ptGuide;
+            FUN_1402bd040(&ptGuide);
+            FUN_1408a15b0(pCube->position, ptGuide);
+            Unk_CMISPt3 ptWalk(ptGuide);
+            Unk_Int3 cellX = pCube->position;
+            cellX.x = cellX.x + 1;
+            if (FUN_1410cba80(pCube->field44, nGroup, &cellX, &ptWalk) != 0)
+                FUN_1410cbb40(&vecXform, 0, nGroup, Unk_StreamPoint(ptWalk.x, ptWalk.y, ptWalk.z), cellX, true, 0);
+            ptWalk = Unk_CMISPt3(ptGuide);
+            Unk_Int3 cellY = pCube->position;
+            cellY.y = cellY.y + 1;
+            if (FUN_1410cba80(pCube->field44, nGroup, &cellY, &ptWalk) != 0)
+                FUN_1410cbb40(&vecXform, 0, nGroup, Unk_StreamPoint(ptWalk.x, ptWalk.y, ptWalk.z), cellY, false, 0);
+            Unk_StreamPoint ptRot(90.0f, 0.0f, 0.0f);
+            if (pCube->field44 != 2)
+                ptGuide.z = ptGuide.z + 150.0f;
+            NiTransform xform;
+            xform.MakeIdentity();
+            xform.m_Translate = NiPoint3(ptGuide.x, ptGuide.y, ptGuide.z);
+            xform.m_Rotate.FromEulerAnglesXYZ((-ptRot.x * 3.1415927f) / 180.0f, (-ptRot.y * 3.1415927f) / 180.0f, (-ptRot.z * 3.1415927f) / 180.0f);
+            FUN_14115a9c0(&vecXform, &xform);
+        }
+    }
+    efd::AssetID asset;
+    Unk_CMISStr strUrn;
+    FUN_1409989e0(&strUrn, "urn:gamebryo-scenegraph:Eff_Build_GuideLine_01");
+    FUN_140de0cb0(&asset, &strUrn);
+    FUN_1408a8900(&strUrn);
+    char tmpAlign[8];
+    unsigned nAlign = *FUN_14038e780(tmpAlign);
+    NiTransform* pXforms = static_cast<NiTransform*>(FUN_14206ac20(vecXform.FUN_14115af10() * sizeof(NiTransform), nAlign));
+    for (unsigned __int64 i = 0; i < vecXform.FUN_14115af10(); i++)
+        new (pXforms + i) NiTransform(*vecXform.FUN_141128390(i));
+    Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+    Unk_CMISStr strProp;
+    FUN_1409989e0(&strProp, "MS2PhysXProp");
+    Unk_CMISEntityRef idNew(DAT_143acf820);
+    FUN_1413d49f0(spInst.FUN_14098d0e0(), &idNew, &strProp, &asset, false, pXforms, (int)vecXform.FUN_14115af10(), (int)vecXform.FUN_14115af10());
+    FUN_140899bd0(&f2d8, idNew);
+    FUN_1408a8900(&strProp);
 }
