@@ -90,8 +90,7 @@ MS2_CHECK_OFFSET(TriggerVoiceProperty, m_jobSounds, 0x40);
 // One <eventSound>: the voice an event plays (copied out to the caller).
 struct Unk_EventVoice
 {
-    Unk_EventVoice();                                           // 0x1411af960
-    ~Unk_EventVoice();                                          // 0x1411b01c0
+    // implicit ctor 0x1411af960 and dtor 0x1411b01c0 (instantiated in effectservice.cpp's range)
     Unk_EventVoice& operator=(const Unk_EventVoice& o);         // 0x1417a0900
 
     unsigned m_bOnlyCasterMyPC;                                 // +0x00 "onlyCasterMyPC"
