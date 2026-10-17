@@ -1359,11 +1359,13 @@ MS2_REPLACE_METHOD(0x1403a0320, CFileSystem, FUN_1403a0320, 966, 0xB14478D0);
 
 // @0x1403a9410
 Unk_FileIgnoreList* FUN_1403a9410() { return DAT_143aaecb0; }
-// MS2-FUNCTIONAL: Typed string comparison preserves the length guard and prefix comparison.
 // @0x1403ab490
 bool CFileSystem::FUN_1403ab490(const std::string& path, const std::string& prefix) {
-    if (path.length() < prefix.length()) return false;
-    return path.compare(0, prefix.length(), prefix, 0, prefix.length()) == 0;
+    if (path.length() >= prefix.length())
+    {
+        return path.compare(0, prefix.length(), prefix, 0, prefix.length()) == 0;
+    }
+    return false;
 }
 
 // @0x1403a93e0
