@@ -1,12 +1,12 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). Common::Constants (constants.xml values, 0xae68 bytes) and
 // Client::Constants (colours/UI values, 0xea98 bytes) with their self-registering Object / Value<T> / Values<T> members.
 // MS2-UNIT: unit_1402ab440
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x1402ab440-0x1402c3760 .text$mn
 // MS2-RANGE: 0x1400b59f0-0x1400b5a20 .text$di
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ?Read@?$Value@M@Constants@Common@@QEAAMXZ 0x1402bac70 ; unique: single byte-identical candidate
 // MS2-PIN: ??$Unk_SocketFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00 ; unique: caller ?Test@Constants@Common@@SA_NXZ
-// MS2-PIN: ??$Unk_SocketFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0 ; prop: symbol ?StringFormat@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT...
 // MS2-PIN: ??$_Pocca@V?$allocator@I@std@@@std@@YAXAEAV?$allocator@I@0@AEBV10@U?$integral_constant@_N$0A@@0@@Z 0x1402bc150 ; unique: single byte-identical candidate
 // MS2-PIN: ??0?$CAtlArray@UUnk_ConstFile@@V?$CElementTraits@UUnk_ConstFile@@@ATL@@@ATL@@QEAA@XZ 0x1402bc4b0 ; unique: caller ?LoadFiles@Constants@Common@@QEAA_NXZ
 // MS2-PIN: ??0?$CAtlArray@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@@ATL@@QEAA@XZ 0x1402bc4f0 ; order: name order
@@ -52,8 +52,6 @@
 // MS2-PIN: ?NewNode@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V32@@ATL@@AEAAPEAVCNode@12@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@0@Z 0x1402c2100 ; unique: caller ?InsertImpl@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraits...
 // MS2-PIN: ?RBInsert@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V32@@ATL@@IEAAPEAVCNode@12@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@0@Z 0x1402c2430 ; unique: caller ?SetAt@?$CRBMap@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@...
 // MS2-PIN: ?SetCount@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c2b80 ; unique: caller ?RemoveAll@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEAAXXZ
-// MS2-PIN: ?SetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c2d10 ; unique: caller ?RemoveAll@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_Con...
-// MS2-PIN: ?SetCount@?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c3030 ; prop: caller ?RemoveAll@?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAAXXZ
 // MS2-PIN: ?SetNil@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V32@@ATL@@AEAAXPEAPEAVCNode@12@@Z 0x1402c34e0 ; unique: single byte-identical candidate
 // MS2-PIN: ?_Buy@?$vector@IV?$allocator@I@std@@@std@@AEAA_N_K@Z 0x1402c3550 ; unique: caller ??$_Assign_range@PEAI@?$vector@IV?$allocator@I@std@@@std@@AEAAXPEA...
 // MS2-PIN: ?_Copy_alloc@?$_Vector_alloc@U?$_Vec_base_types@IV?$allocator@I@std@@@std@@@std@@QEAAXAEBV?$allocator@I@2@@Z 0x1402c3640 ; unique: single byte-identical candidate
@@ -139,12 +137,11 @@
 // MS2-PIN: ??$Unk_SocketFormat@PEBD_N_NI@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBQEBDAEB_N2AEBI@Z 0x1402bae00
 // MS2-PIN: ??0?$Values@UUnk_ConstColor@@@Constants@Common@@QEAA@XZ 0x1402bcd90
 // MS2-PIN: ?Define@?$Value@M@Constants@Common@@QEAAPEAMPEBDAEBM@Z 0x1402bfe90
-// MS2-PIN: ?SetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c2d10
+// MS2-PIN: ?SetCount@?$CAtlArray@UUnk_ConstColor@@V?$CElementTraits@UUnk_ConstColor@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1402c3030
 // MS2-PIN: ?CopyElements@?$CElementTraitsBase@H@ATL@@SAXPEAHPEBH_K@Z 0x1402bf6c0
 // MS2-PIN: ?vfunc_1@?$Values@_J@Constants@Common@@UEAAXXZ 0x1402c3730
 // MS2-PIN: ??1?$CAtlArray@_JV?$CElementTraits@_J@ATL@@@ATL@@QEAA@XZ 0x1402bd150
 // MS2-PIN: ?vfunc_1@?$Values@UUnk_ConstColor@@@Constants@Common@@UEAAXXZ 0x1402c36d0
-// MS2-PIN: ??$Unk_SocketFormat@H@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBH@Z 0x1402bb1c0
 // MS2-PIN: ??$_Assign_range@PEAI@?$vector@IV?$allocator@I@std@@@std@@AEAAXPEAI0Uforward_iterator_tag@1@@Z 0x1402bbdc0
 // MS2-PIN: ??$_Pocca@V?$allocator@I@std@@@std@@YAXAEAV?$allocator@I@0@AEBV10@U?$integral_constant@_N$0A@@0@@Z 0x1402bc150
 // MS2-PIN: ??$_Ucopy@PEAI@?$vector@IV?$allocator@I@std@@@std@@AEAAPEAIPEAI00@Z 0x1402bc180
@@ -1248,7 +1245,7 @@ void Common::Constants::vfunc_0()
     PvpOnePunchRewardItem.Define("PvpOnePunchRewardItem", 0);
     for (int i = 0; i < 10; i++)
     {
-        CString key = Unk_SocketFormat("PvpOnePunchReward{0}Count", i + 1);
+        CString key = StringFormat("PvpOnePunchReward{0}Count", i + 1);
         PvpOnePunchRewardCount[i].Define(key, 0);
     }
     PvpOnePunchScoreNpcKill.Define("PvpOnePunchScoreNpcKill", -7);
@@ -1605,4 +1602,15 @@ void Client::Constants::vfunc_0()
     TencentPricavyGuideWebPage.Define("TencentPricavyGuideWebPage", "");
     TencentThirdPartyInformationSharingListWebPage.Define("TencentThirdPartyInformationSharingListWebPage", "");
 }
+
+
+// ---- 4-byte element array instantiations that exist in the exe without a recovered caller of their own -----------
+template size_t ATL::CAtlArray<int, ATL::CElementTraits<int> >::Append(const ATL::CAtlArray<int, ATL::CElementTraits<int> >&);
+
+// @0x1402bf9a0
+CString Unk_SocketFormat(const char* format, const fmt::ArgList& args)
+{
+    return StringFormat(format, args);
+}
+template size_t ATL::CAtlArray<unsigned long, ATL::CElementTraits<unsigned long> >::Append(const ATL::CAtlArray<unsigned long, ATL::CElementTraits<unsigned long> >&);
 

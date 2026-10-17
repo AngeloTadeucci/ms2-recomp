@@ -16,7 +16,7 @@
 namespace Client { class Constants; }
 struct MS2Tick { unsigned value; MS2Tick(); MS2Tick(unsigned v); };
 struct Unk_ConstColor { unsigned argb; Unk_ConstColor(); Unk_ConstColor(unsigned v); };
-struct MS2Colors : ATL::CAtlArray<Unk_ConstColor> { MS2Colors(); ~MS2Colors(); MS2Colors& operator=(const MS2Colors& o); };
+struct MS2Colors : ATL::CAtlArray<unsigned long> { MS2Colors(); ~MS2Colors(); MS2Colors& operator=(const MS2Colors& o); };
 // 16-byte intrusive reference to a CCacheData (base at +0 unrecovered; pointee at +8). The element type of Constants::cacheRefs.
 struct Unk_ConstCacheRef {
     void* m_base;                                   // +0
