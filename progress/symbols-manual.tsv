@@ -2489,3 +2489,6 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??0Unk_CMISXformVec@@QEAA@XZ	141122df0	func
 ??1Unk_CMISXformVec@@QEAA@XZ	141125da0	func
 ?DAT_143acf820@@3UUnk_CMISEntityRef@@A	143acf820	data
+??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	1413db5e0	func
+?equal_range@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@2@AEBI@Z	1413f7760	func
+?count@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBA_KAEBI@Z	1413f6b30	func
