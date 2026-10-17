@@ -31,6 +31,7 @@ class QuestAdditionalRewardContext;
 class ItemBoxEventContext;
 class SnowmanContext;
 class RpsContext;
+class ReactorContext;
 enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 enum Unk_DungeonCooldownType {};
@@ -389,8 +390,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403d03a0
     virtual void vfunc_5();                     // 0x1403d0340
     virtual void vfunc_6();                     // 0x1403d0350
-private:
-    char m_pad_d0[0x30];
+    GameEventCustomTriggerString();             // 0x1403d0140
+    explicit GameEventCustomTriggerString(Unk_VftableEmitTag) {}
+    ATL::CRBMap<CStringW, CStringW> m_d0;       // trigger string id -> name (the m_68 xml)
 };  // vftable 0x142d40d40, ??_G 0x1403e9dd0, dtor 0x1403e5e40
 MS2_CHECK_SIZE(GameEventCustomTriggerString, 0x100);
 class GameEventDeleteUrlCache : public GameEvent {
@@ -882,8 +884,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cf730
     virtual void vfunc_5();                     // 0x1403cf5b0
     virtual void vfunc_6();                     // 0x1403cf660
-private:
-    char m_pad_d0[0x10];
+    GameEventNpcShopGivePoint();                // 0x1403cf4b0
+    int m_d0;
+    int m_d4;                                   // the context type (CNpcShopGivePointContextBase::Create)
+    CStringW m_d8;                              // the context xml (m_78)
 };  // vftable 0x142d40c38, ??_G 0x1403ea7d0, dtor 0x1403e6510
 MS2_CHECK_SIZE(GameEventNpcShopGivePoint, 0xe0);
 class GameEventNpcShopResetPriceSale : public GameEvent {
@@ -894,8 +898,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cfa00
     virtual void vfunc_5();                     // 0x1403cfa90
     virtual void vfunc_6();                     // 0x1403cfad0
-private:
-    char m_pad_d0[0x8];
+    GameEventNpcShopResetPriceSale();           // 0x1403cf8d0
+    int m_d0;
+    int m_d4;
 };  // vftable 0x142d40c90, ??_G 0x1403ea810, dtor 0x1403e6540
 MS2_CHECK_SIZE(GameEventNpcShopResetPriceSale, 0xd8);
 class GameEventNpcShopTalk : public GameEvent {
@@ -906,8 +911,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cf370
     virtual void vfunc_5();                     // 0x1403cf290
     virtual void vfunc_6();                     // 0x1403cf2d0
-private:
-    char m_pad_d0[0x8];
+    GameEventNpcShopTalk();                     // 0x1403cf1e0
+    int m_d0;
+    int m_d4;
 };  // vftable 0x142d40be0, ??_G 0x1403ea850, dtor 0x1403e6560
 MS2_CHECK_SIZE(GameEventNpcShopTalk, 0xd8);
 class GameEventOntime : public GameEvent {
@@ -1056,8 +1062,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cff10
     virtual void vfunc_5();                     // 0x1403cfdd0
     virtual void vfunc_6();                     // 0x1403cfe40
-private:
-    char m_pad_d0[0x10];
+    GameEventReactor();                         // 0x1403cfbc0
+    bool ReadReactorData(MS2Ptr<ReactorContext> pContext);  // 0x1403cffc0
+    MS2Ptr<ReactorContext> m_d0;
 };  // vftable 0x142d40ce8, ??_G 0x1403eab10, dtor 0x1403e6710
 MS2_CHECK_SIZE(GameEventReactor, 0xe0);
 class GameEventRps : public GameEvent {
@@ -1575,7 +1582,7 @@ MS2_CHECK_SIZE(PreminmMarketSaleEventContext, 0x38);
 // gameevent.cpp.
 class ReactorContext : public CPtred {
 public:
-    explicit ReactorContext(int eventId);
+    explicit ReactorContext(int eventId) : m_eventId(eventId), m_endTime(0), m_28(0) {}  // 0x1403e42f0
     // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
     explicit ReactorContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x140402560
