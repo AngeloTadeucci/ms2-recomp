@@ -44,6 +44,7 @@ public:
         class DescValue : public CPtred
         {
         public:
+            DescValue();                                    // 0x141816a60
             int m_bPending;                                 // +0x18 the text still has to be checked for "$"
             CStringW m_strText;                             // +0x20
         };

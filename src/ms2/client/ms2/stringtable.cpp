@@ -1,8 +1,47 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The story quest kinds' overrides and CStringTable (the
 // string.xml tables, the lookups every UI uses), plus the ATL glue of its caches.
 // MS2-UNIT: client\ms2\stringtable.cpp
+// MS2-GUESS-LOOKALIKES
+// MS2-PIN: ??_7CStringTable@@6B?$TSingleton@VCStringTable@@@@@ 0x142f80490
+// MS2-PIN: ??_7CStringTable@@6B?$CValidData@VCStringTable@@@@@ 0x142f804a0
+// MS2-PIN: ??_7CGFxLanguage@@6B?$TSingleton@VCGFxLanguage@@@@@ 0x142f804c0
 // MS2-RANGE: 0x14180f030-0x14181cf50 .text$mn
 // MS2-RANGE: 0x14010cf80-0x14010d120 .text$di
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBV01@@Z 0x1418106b0 ; unique
+// MS2-PIN: ??_GCEpicQuest@@UEAAPEAXI@Z 0x1418107b0 ; prop
+// MS2-PIN: ??_GCEventQuest@@UEAAPEAXI@Z 0x1418107f0 ; prop
+// MS2-PIN: ??_GCFieldQuest@@UEAAPEAXI@Z 0x141810830 ; prop
+// MS2-PIN: ??_GCGuildQuest@@UEAAPEAXI@Z 0x141810870 ; prop
+// MS2-PIN: ??_GCStoryQuest@@UEAAPEAXI@Z 0x1418108b0 ; prop
+// MS2-PIN: ??_GCWorldQuest@@UEAAPEAXI@Z 0x1418108f0 ; prop
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x141810990 ; unique
+// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x1418109f0 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x141810a70 ; unique
+// MS2-PIN: memmove_s 0x141810ad0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCDesc@CStringTable@@@@QEAA@$$QEAV0@@Z 0x141816440 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCLevelDesc@CStringTable@@@@QEAA@PEAVCLevelDesc@CStringTable@@@Z 0x141816500 ; prop
+// MS2-PIN: ??0CDesc@CStringTable@@QEAA@XZ 0x141816660 ; prop
+// MS2-PIN: ??0CLevelDesc@CStringTable@@QEAA@XZ 0x1418166b0 ; prop
+// MS2-PIN: ??0CPair@?$CAtlMap@HV?$MS2Ptr@VCStringCache@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCStringCache@CStringTable@@@@@3@@ATL@@IEAA@H@Z 0x1418168e0 ; unique
+// MS2-PIN: ??1CNode@?$CRBTree@GV?$MS2Ptr@VCDesc@CStringTable@@@@V?$CElementTraits@G@ATL@@V?$CElementTraits@V?$MS2Ptr@VCDesc@CStringTable@@@@@3@@ATL@@QEAA@XZ 0x141816e50 ; prop
+// MS2-PIN: ??1CNode@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VDescValue@CDesc@CStringTable@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VDescValue@CDesc@CStringTable@@@@@2@@ATL@@QEAA@XZ 0x141816e70 ; prop
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCLevelDesc@CStringTable@@@@QEAAAEAV1@PEAVCLevelDesc@CStringTable@@@Z 0x1418170b0 ; prop
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCStringCache@CStringTable@@@@QEAAAEAV1@PEAVCStringCache@CStringTable@@@Z 0x141817160 ; prop
+// MS2-PIN: ??C?$MS2Ptr@VCLevelDesc@CStringTable@@@@QEBAPEAVCLevelDesc@CStringTable@@XZ 0x141817270 ; unique
+// MS2-PIN: ??_ECGFxLanguage@@W7EAAPEAXI@Z 0x141817290 ; unique
+// MS2-PIN: ??_ECStringTable@@W7EAAPEAXI@Z 0x14181729c ; prop
+// MS2-PIN: ??_GCNode@?$CRBTree@GV?$MS2Ptr@VCDesc@CStringTable@@@@V?$CElementTraits@G@ATL@@V?$CElementTraits@V?$MS2Ptr@VCDesc@CStringTable@@@@@3@@ATL@@QEAAPEAXI@Z 0x1418174f0 ; unique
+// MS2-PIN: ??_GCNode@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$MS2Ptr@VDescValue@CDesc@CStringTable@@@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@V?$MS2Ptr@VDescValue@CDesc@CStringTable@@@@@2@@ATL@@QEAAPEAXI@Z 0x141817530 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VCDesc@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCDesc@CStringTable@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x141818610 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VCLevelDesc@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCLevelDesc@CStringTable@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x141818700 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VCStringCache@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCStringCache@CStringTable@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1418187f0 ; unique
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$MS2Ptr@VCStringCache@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCStringCache@CStringTable@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x1418188e0 ; unique
+// MS2-PIN: ?IsEmpty@?$CAtlMap@HV?$MS2Ptr@VCStringCache@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCStringCache@CStringTable@@@@@3@@ATL@@QEBA_NXZ 0x1418191c0 ; prop
+// MS2-PIN: ?Lookup@?$CAtlMap@HV?$MS2Ptr@VCDesc@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCDesc@CStringTable@@@@@3@@ATL@@QEBA_NHAEAV?$MS2Ptr@VCDesc@CStringTable@@@@@Z 0x141819600 ; unique
+// MS2-PIN: ?Lookup@?$CAtlMap@HV?$MS2Ptr@VCLevelDesc@CStringTable@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCLevelDesc@CStringTable@@@@@3@@ATL@@QEBA_NHAEAV?$MS2Ptr@VCLevelDesc@CStringTable@@@@@Z 0x141819670 ; prop
+// MS2-PIN: ?RemoveAll@?$CRBTree@GV?$MS2Ptr@VCDesc@CStringTable@@@@V?$CElementTraits@G@ATL@@V?$CElementTraits@V?$MS2Ptr@VCDesc@CStringTable@@@@@3@@ATL@@QEAAXXZ 0x14181b7f0 ; unique
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\stringtable.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/placeholder/cstringtable.h"
@@ -442,7 +481,7 @@ int FUN_1408731e0(Unk_140165cf0*, const char*, int&);
 int FUN_1408733e0(Unk_140165cf0*, const char*, CString&);
 int FUN_140873420(Unk_140165cf0*, const char*, CStringW&);
 bool FUN_14028f710(Unk_140165cf0*);                                 // the element is usable
-void FUN_14028fd90(Unk_140165cf0*, const char*, const char*, const char*, ATL::CAtlArray<Unk_140165cf0*>&);
+void FUN_14028fd90(Unk_140165cf0*, const char*, const char*, const char*, ATL::CAtlArray<void*>&);
 bool FUN_140184310(const CString& str, const char* psz);            // str equals psz
 unsigned char FUN_1401d1320(CCacheData*);
 void FUN_14025a680(const CStringW& str, ATL::CAtlArray<CStringW>& rOut, const wchar_t* pszSep);
@@ -529,6 +568,12 @@ int CStringTable::CStringCache::FUN_141819280()
 }
 
 // The text of a tag; the first read of a text that carries a "$" marker runs it through the text filter.
+// @0x141816a60
+CStringTable::CDesc::DescValue::DescValue()
+    : m_bPending(0)
+{
+}
+
 // @0x141813a30
 CStringW CStringTable::CDesc::FUN_141813a30(const CString& strTag)
 {
@@ -970,7 +1015,7 @@ CStringW CStringTable::FUN_141813790(CStringW strFormat, CStringW strArgs)
         }
         aArgs.Add(FUN_1401cfcf0(strText));
     }
-    return FUN_1401d02a0(strFormat, FUN_140163e50(nTypes, aArgs.GetData()));
+    return FUN_1401d02a0(strFormat, FUN_140163e50(nTypes, &aArgs[0]));
 }
 
 // @0x141813970
@@ -1165,11 +1210,11 @@ int CStringTable::FUN_141814cf0(LevelDescMap& rMap, CachePtr spCache)
             FUN_14015eb90(FUN_140166440(), 1, 0x13, MS2_XML_FORMAT_ERROR, *spFile->FUN_1401d1140());
             continue;
         }
-        ATL::CAtlArray<Unk_140165cf0*> aNodes;
+        ATL::CAtlArray<void*> aNodes;
         FUN_14028fd90(pRoot, "key", "id", "level", aNodes);
         for (size_t i = 0; i < aNodes.GetCount(); i++)
         {
-            Unk_140165cf0* pNode = aNodes[i];
+            Unk_140165cf0* pNode = static_cast<Unk_140165cf0*>(aNodes[i]);
             if (pNode == 0)
                 continue;
             int nId = 0;
@@ -1205,16 +1250,18 @@ CStringW CStringTable::FUN_141815160(LevelDescMap& rMap, int* pnId, unsigned sho
     return spDesc->FUN_141813a30(strTag);
 }
 
+// MS2-FUNCTIONAL: the exe lays the break's return block after the loop; any source form we tried puts it inline
 // @0x141815330
 CStringW CStringTable::FUN_141815330(LevelDescPtr& spLevels, unsigned short* pnLevel, CString strTag)
 {
     CStringW strText(L"");
     for (POSITION pos = spLevels->m_levels.GetHeadPosition(); pos; spLevels->m_levels.GetNext(pos))
     {
-        DescPtr spDesc = spLevels->m_levels.GetValueAt(pos);
-        if (*pnLevel < spLevels->m_levels.GetKeyAt(pos))
-            break;
-        strText = spDesc->FUN_141813a30(strTag);
+        const DescPtr& rDesc = spLevels->m_levels.GetValueAt(pos);
+        const unsigned short& rLevel = spLevels->m_levels.GetKeyAt(pos);
+        if (*pnLevel < rLevel)
+            return strText;
+        strText = rDesc->FUN_141813a30(strTag);
     }
     return strText;
 }
