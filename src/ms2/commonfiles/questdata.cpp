@@ -4,6 +4,11 @@
 // MS2-RANGE: 0x1400bc1a0-0x1400bc3d0 .text$di
 // MS2-PIN: ??_7QuestDataTable@@6B?$TSingleton@VQuestDataTable@@@@@ 0x142d87198
 // MS2-PIN: ??_7QuestDataTable@@6B?$CValidData@VQuestDataTable@@@@@ 0x142d871a8
+// MS2-PIN: ??$sort@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@std@@UUnk_QuestIdOrder@@@std@@YAXV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@0@0UUnk_QuestIdOrder@@@Z 0x1407575d0
+// MS2-PIN: ??RUnk_QuestIdOrder@@QEBA_NHH@Z 0x1407599a0
+// MS2-PIN: ??$IsSameArray@VNavigationTarget@CQuestData@@@@YA_NAEBV?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@0@Z 0x140752830
+// MS2-PIN: ??$IsSamePtrMap@HVNavigationData@CQuestData@@@@YA_NAEBV?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@0@Z 0x1407526f0
+// MS2-PIN: ?IsSameCondArray@@YA_NAEBV?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@0@Z 0x140752900
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@AEBV0@@Z 0x140747540 ; prop
 // MS2-PIN: ?IsNull@?$Unk_PayloadPtr@VUnk_EventEntry@@@@QEBA_NXZ 0x1407475e0 ; unique
@@ -20,16 +25,10 @@
 // MS2-PIN: ?New@?$Unk_SocketRef@VNavigationData@CQuestData@@@@SAPEAVNavigationData@CQuestData@@PEAX@Z 0x1407529d0 ; unique
 // MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140752aa0 ; unique
 // MS2-PIN: ??$_Buynode@U?$pair@HI@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@HIU?$less@H@std@@V?$allocator@U?$pair@$$CBHI@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHI@std@@PEAX@1@$$QEAU?$pair@HI@1@@Z 0x140752b70 ; unique
-// MS2-PIN: ??$_Guess_median_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI00U?$less@X@0@@Z 0x1407536c0 ; unique
 // MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@@Z 0x140753c40 ; unique
-// MS2-PIN: ??$_Make_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755310 ; unique
 // MS2-PIN: ??$?0U_Exact_args_t@std@@$0A@@?$tuple@$$V@std@@QEAA@U_Exact_args_t@1@@Z 0x1407559a0 ; unique
-// MS2-PIN: ??$_Pop_heap_hole_unchecked@PEAIIU?$less@X@std@@@std@@YAXPEAI00$$QEAIU?$less@X@0@@Z 0x140755b10 ; unique
-// MS2-PIN: ??$_Pop_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755b80 ; unique
 // MS2-PIN: ??$_Ptr_copy_cat@VQuestRewardItem@CQuestData@@V12@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAVQuestRewardItem@CQuestData@@0@Z 0x140755c00 ; prop
 // MS2-PIN: ??$_Ptr_copy_cat@V?$MS2Ptr@VCQuestData@@@@V1@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$MS2Ptr@VCQuestData@@@@0@Z 0x140755c30 ; prop
-// MS2-PIN: ??$_Sort_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755df0 ; unique
-// MS2-PIN: ??$_Sort_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0_JU?$less@X@0@@Z 0x140755e50 ; unique
 // MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x140755fa0 ; unique
 // MS2-PIN: ??$_Uninitialized_copy@PEAV?$MS2Ptr@VCQuestData@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCQuestData@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$MS2Ptr@VCQuestData@@@@@0@@Z 0x140756220 ; unique
 // MS2-PIN: ??$construct@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140756800 ; unique
@@ -43,7 +42,6 @@
 // MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@1@@Z 0x140758040 ; prop
 // MS2-PIN: ??0CPair@?$CAtlMap@HV?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@@3@@ATL@@IEAA@H@Z 0x140758450 ; unique
 // MS2-PIN: ??9?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140759150 ; prop
-// MS2-PIN: ?GetAt@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@QEBAAEBV?$MS2Ptr@VCConditionCommonData@@@@_K@Z 0x140759250 ; unique
 // MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759650 ; unique
 // MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759740 ; prop
 // MS2-PIN: ?Add@?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@Z 0x14075a090 ; prop
@@ -758,6 +756,40 @@ template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlA
     return false;
 }
 
+// Class-body members of the row types (COMDATs, 0x140758550-0x140758db0).
+inline CQuestData::QuestRewardItem::QuestRewardItem()
+    : m_itemId(0), m_count(1), m_job(0)
+{
+}
+inline CQuestData::QuestRewardItem::~QuestRewardItem()
+{
+}
+inline CQuestData::NavigationTarget::~NavigationTarget()
+{
+}
+inline CQuestData::NavigationData::~NavigationData()
+{
+}
+inline CQuestData::GroupPickData::~GroupPickData()
+{
+}
+inline CQuestData::Require::~Require()
+{
+}
+
+// Array of pointers compared by pointee (true = same).
+template <class T> bool IsSameArray(const ATL::CAtlArray<Unk_SocketPtr<T> >& a, const ATL::CAtlArray<Unk_SocketPtr<T> >& b)
+{
+    if (a.GetCount() != b.GetCount())
+        return false;
+    for (unsigned i = 0; i < a.GetCount(); i++)
+    {
+        if (*a.GetAt(i).get() != *b.GetAt(i).get())
+            return false;
+    }
+    return true;
+}
+
 // @0x140747910
 CQuestData::Require::Require()
     : m_level(0), m_maxLevel(0), m_achievement(0), m_achievementGrade(0), m_unreqAchievement(0),
@@ -1080,40 +1112,33 @@ CQuestData::~CQuestData()
 // Array of condition pointers (true = same): every pair compares equal through IsDifferent.
 bool IsSameCondArray(const ATL::CAtlArray<MS2Ptr<CConditionCommonData> >& a, const ATL::CAtlArray<MS2Ptr<CConditionCommonData> >& b)
 {
-    if (a.GetCount() == b.GetCount())
+    if (a.GetCount() != b.GetCount())
+        return false;
+    for (unsigned i = 0; i < a.GetCount(); i++)
     {
-        for (unsigned i = 0; i < a.GetCount(); i++)
-        {
-            if (a.GetAt(i).get()->IsDifferent(b.GetAt(i).get()))
-                return false;
-        }
-        return true;
+        if (a.GetAt(i).get()->IsDifferent(b.GetAt(i).get()))
+            return false;
     }
-    return false;
+    return true;
 }
 
 // Map of pointers compared by pointee (true = same).
 template <class K, class T> bool IsSamePtrMap(const ATL::CAtlMap<K, Unk_SocketPtr<T> >& a, const ATL::CAtlMap<K, Unk_SocketPtr<T> >& b)
 {
-    if (a.GetCount() == b.GetCount())
+    if (a.GetCount() != b.GetCount())
+        return false;
+    POSITION posA = a.GetStartPosition();
+    POSITION posB = b.GetStartPosition();
+    for (unsigned i = 0; i < a.GetCount(); i++, a.GetNext(posA), b.GetNext(posB))
     {
-        POSITION posA = a.GetStartPosition();
-        POSITION posB = b.GetStartPosition();
-        for (unsigned i = 0; i < a.GetCount(); i++)
-        {
-            const K& keyA = a.GetKeyAt(posA);
-            if (keyA != b.GetKeyAt(posB))
-                return false;
-            const Unk_SocketPtr<T>& valueB = b.GetValueAt(posB);
-            const Unk_SocketPtr<T>& valueA = a.GetValueAt(posA);
-            if (*valueA.get() != *valueB.get())
-                return false;
-            a.GetNext(posA);
-            b.GetNext(posB);
-        }
-        return true;
+        const K& keyA = a.GetKeyAt(posA);
+        if (keyA != b.GetKeyAt(posB))
+            return false;
+        const T& valueB = *b.GetValueAt(posB).get();
+        if (*a.GetValueAt(posA).get() != valueB)
+            return false;
     }
-    return false;
+    return true;
 }
 
 // @0x140749090
@@ -2626,18 +2651,38 @@ void QuestDataTable::FUN_1407503f0()
 }
 MS2_REPLACE_METHOD(0x1407503F0, QuestDataTable, FUN_1407503f0, 2429, 0x77FD9E9C);
 
+int FUN_140751650(int nValue);
+
+// Quest id order of the per-npc lists: by quest type, then by level within a type, with the types ranked through FUN_140751650.
+struct Unk_QuestIdOrder : public std::binary_function<int, int, bool>
+{
+    bool operator()(int nA, int nB) const
+    {
+        int nTypeA = FUN_14074bc90(nA);
+        int nTypeB = FUN_14074bc90(nB);
+        if (nTypeA == nTypeB)
+        {
+            unsigned short nLevelA = FUN_14074bd10(nA);
+            unsigned short nLevelB = FUN_14074bd10(nB);
+            return nLevelA < nLevelB;
+        }
+        return FUN_140751650(nTypeA) < FUN_140751650(nTypeB);
+    }
+};
+
 // MS2-FUNCTIONAL: sorts the quest id list of every npc
 // @0x140750d90
 void QuestDataTable::FUN_140750d90()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
+    Unk_QuestIdOrder pred;
     std::map<int, std::vector<unsigned> >& npcs = m_430;
     std::map<int, std::vector<unsigned> >::iterator it = npcs.begin();
     std::map<int, std::vector<unsigned> >::iterator itEnd = npcs.end();
     for (; it != itEnd; ++it)
     {
         std::pair<const int, std::vector<unsigned> >& entry = *it;
-        std::sort(entry.second.begin(), entry.second.end());
+        std::sort(entry.second.begin(), entry.second.end(), pred);
     }
 }
 MS2_REPLACE_METHOD(0x140750D90, QuestDataTable, FUN_140750d90, 252, 0x26A038B0);
