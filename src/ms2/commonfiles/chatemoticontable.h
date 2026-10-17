@@ -1,34 +1,35 @@
 // chatemoticontable.h - the chat emoticon tables (RTTI names ChatEmoticonData, ChatEmoticonCategoryData,
-// ChatEmoticonCachedData, CChatEmoticonTable). Loaded from Table/chatEmoticon.xml (<chatEmoticon id category_id group_id
-// image_path height width vspace/>), chatEmoticonCategory.xml (<chatEmoticonCategory id icon_path/>) and
-// stringChatEmoticon.xml (<key id name command/>), then cross-linked by FUN_1401e6a40 (category -> emoticons).
-// Header name assumed (unit 0x1401e5760-0x1401f7ee0 is commonfiles\chatemoticontable.cpp, not yet recovered); member names
-// are inferred from the xml attributes. Shared by UIChatEmoticonDialog and the chat emoticon client state.
+// ChatEmoticonCachedData, CChatEmoticonTable). Loaded from Table/chatEmoticonCategory.xml (<chatEmoticonCategory id
+// icon_path/>), chatEmoticon.xml (<chatEmoticon id category_id group_id image_path height width vspace/>) and
+// stringChatEmoticon.xml (<key id name command/>), then validated (every emoticon names a known category).
+// Header name assumed (the unit is commonfiles\chatemoticontable.cpp, 0x1401e5760-0x1401f7ee0); method and member names
+// are inferred from the xml attributes and the asserts. Shared by UIChatEmoticonDialog and the chat emoticon client state.
 #pragma once
 #include <afx.h>
 #include <list>
 #include <map>
+#include <typeinfo>
 #include "ms2/ms2layout.h"
+#include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/cvaliddata.h"
-#include "ms2/placeholder/ms2svrptr.h"
 #include "ms2/commonfiles/os.h"
 
-// One emoticon (<chatEmoticon>). RTTI ChatEmoticonData, 0x48 bytes, base CPtred; vftable 0x142cf0...(1 slot: dtor).
+// One emoticon (<chatEmoticon>). RTTI ChatEmoticonData, 0x48 bytes, base CPtred; vftable 0x142cf12e8 (1 slot: dtor).
 class ChatEmoticonData : public CPtred
 {
 public:
     ChatEmoticonData();                     // 0x1401e57f0
     virtual ~ChatEmoticonData();            // 0x1401e58a0
 
-    int m_nId;                              // +0x18 "id"
-    int m_nGroupId;                         // +0x1c "group_id" (the emoticon pack, see CChatEmoticonCli)
+    unsigned int m_nId;                     // +0x18 "id" (the id map's key; logged as unsigned)
+    unsigned int m_nGroupId;                // +0x1c "group_id" (the emoticon pack, see CChatEmoticonCli)
     CStringW m_strImagePath;                // +0x20 "image_path"
     int m_nCategoryId;                      // +0x28 "category_id"
     int m_nHeight;                          // +0x2c "height"
     int m_nWidth;                           // +0x30 "width"
-    int m_nVSpace;                          // +0x34 "vspace" (ctor 0xfffffffd)
+    int m_nVSpace;                          // +0x34 "vspace" (default -3)
     CStringW m_strName;                     // +0x38 stringChatEmoticon "name"
     CStringW m_strCommand;                  // +0x40 stringChatEmoticon "command" (rewritten to ":{0}:")
 };
@@ -37,13 +38,13 @@ MS2_CHECK_OFFSET(ChatEmoticonData, m_strImagePath, 0x20);
 MS2_CHECK_OFFSET(ChatEmoticonData, m_nVSpace, 0x34);
 MS2_CHECK_OFFSET(ChatEmoticonData, m_strCommand, 0x40);
 
-typedef MS2SvrPtr<ChatEmoticonData> ChatEmoticonDataPtr;
+typedef MS2Ptr<ChatEmoticonData> ChatEmoticonDataPtr;
 
 // One category tab (<chatEmoticonCategory>). RTTI ChatEmoticonCategoryData, 0x28 bytes, base CPtred.
 class ChatEmoticonCategoryData : public CPtred
 {
 public:
-    ChatEmoticonCategoryData();             // 0x1401e5760 region (ctor not separately listed)
+    ChatEmoticonCategoryData();             // 0x1401e5760
     virtual ~ChatEmoticonCategoryData();    // 0x1401e57b0
 
     int m_nId;                              // +0x18 "id"
@@ -52,28 +53,39 @@ public:
 MS2_CHECK_SIZE(ChatEmoticonCategoryData, 0x28);
 MS2_CHECK_OFFSET(ChatEmoticonCategoryData, m_strIconPath, 0x20);
 
-typedef MS2SvrPtr<ChatEmoticonCategoryData> ChatEmoticonCategoryDataPtr;
+typedef MS2Ptr<ChatEmoticonCategoryData> ChatEmoticonCategoryDataPtr;
 
-// The loaded set (new'd and zero-filled by FUN_1401e7040). RTTI ChatEmoticonCachedData, 0x68 bytes, base CPtred.
+// The loaded set (value-initialised by CChatEmoticonTable::Load). RTTI ChatEmoticonCachedData, 0x68 bytes, base CPtred;
+// the ctor (0x1401f0420) and dtor (0x1401f0950) are implicit.
 class ChatEmoticonCachedData : public CPtred
 {
 public:
-    ChatEmoticonCachedData();               // 0x1401f0420 (the five containers are default constructed)
-    virtual ~ChatEmoticonCachedData();      // 0x1401f0950 region
+    typedef std::list<ChatEmoticonDataPtr> EmoticonList;
+    typedef std::map<unsigned int, ChatEmoticonDataPtr> EmoticonMap;
+    typedef std::map<int, ChatEmoticonCategoryDataPtr> CategoryMap;
 
-    MS2SvrPtr<CCacheData> m_spCache;                                        // +0x18 remembers chatEmoticonCategory.xml's path / time
-    std::map<int, ChatEmoticonDataPtr> m_emoticons;                         // +0x28 id -> emoticon
-    std::map<int, ChatEmoticonCategoryDataPtr> m_categories;                // +0x38 id -> category
-    std::map<int, std::list<ChatEmoticonDataPtr> > m_byCategory;            // +0x48 category id -> its emoticons
-    std::map<CStringW, ChatEmoticonDataPtr> m_byCommand;                    // +0x58 ":{0}:" command -> emoticon
+    int Load();                                                 // 0x1401e5910 (0 = loaded and valid)
+    int LoadEmoticons();                                        // 0x1401e5980 chatEmoticon.xml
+    int LoadStrings();                                          // 0x1401e5f70 stringChatEmoticon.xml
+    int LoadCategories();                                       // 0x1401e6570 chatEmoticonCategory.xml
+    int Validate();                                             // 0x1401e6a40
+    int ValidateEmoticon(ChatEmoticonDataPtr spEmoticon);       // 0x1401e6d70 its category exists
+    int ValidateCategory(ChatEmoticonCategoryDataPtr spCategory);   // 0x1401e6ee0
+
+    std::list<MS2Ptr<CCacheData> > m_caches;                    // +0x18 one per loaded xml (path, write time)
+    EmoticonMap m_emoticons;                                    // +0x28 id -> emoticon
+    CategoryMap m_categories;                                   // +0x38 id -> category
+    std::map<int, EmoticonList> m_byGroup;                      // +0x48 group id -> its emoticons
+    std::map<CStringW, EmoticonList> m_byCommand;               // +0x58 ":{0}:" command -> emoticons
 };
 MS2_CHECK_SIZE(ChatEmoticonCachedData, 0x68);
 MS2_CHECK_OFFSET(ChatEmoticonCachedData, m_emoticons, 0x28);
 MS2_CHECK_OFFSET(ChatEmoticonCachedData, m_byCommand, 0x58);
 
-typedef MS2SvrPtr<ChatEmoticonCachedData> ChatEmoticonCachedDataPtr;
+typedef MS2Ptr<ChatEmoticonCachedData> ChatEmoticonCachedDataPtr;
 
 class CChatEmoticonTable;
+CString FUN_14016a5c0(const char* psz, int nCodePage);         // narrows a string (the RTTI name in CheckInit)
 
 // This instantiation stores the complete object pointer; DAT_143aac658 (getter FUN_1409eecd0).
 template <> class TSingleton<CChatEmoticonTable>
@@ -84,18 +96,36 @@ public:
     static CChatEmoticonTable* s_instance;
 };
 
-// The table. RTTI CChatEmoticonTable, 0x20 bytes: TSingleton +0 (vftable 0x142cf...), CValidData +8, the loaded data +0x10.
+// The table. RTTI CChatEmoticonTable, 0x20 bytes: TSingleton +0 (vftable 0x142cf1328), CValidData +8 (0x142cf1338),
+// the loaded data +0x10.
 class CChatEmoticonTable : public TSingleton<CChatEmoticonTable>, public CValidData<CChatEmoticonTable>
 {
 public:
     CChatEmoticonTable();                   // 0x1401e6f70
     virtual ~CChatEmoticonTable();          // 0x1401e6fe0
 
-    bool Load();                                                    // 0x1401e7040 (name invented): builds and swaps in a new cached set
-    ChatEmoticonDataPtr FUN_1401e7120(int nEmoticonId);             // emoticon by id (null when missing)
+    int Load();                                                     // 0x1401e7040 builds and swaps in a new cached set
+    ChatEmoticonDataPtr FUN_1401e7120(unsigned int nEmoticonId);    // emoticon by id (null when missing)
     ChatEmoticonCategoryDataPtr FUN_1401e7270(int nCategoryId);     // category by id (null when missing)
-    void FUN_1401e73c0(int nCategoryId, std::list<ChatEmoticonDataPtr>* pOut);   // copy of the emoticons of a category
-    ChatEmoticonCachedDataPtr FUN_1401e76a0();                      // the current cached set
+    void FUN_1401e73c0(unsigned int nGroupId, std::list<ChatEmoticonDataPtr>* pOut);   // copy of the emoticons of a group
+    void FUN_1401e74c0(const CStringW& strCommand, std::list<ChatEmoticonDataPtr>* pOut);   // emoticons of a ":cmd:"
+    int FUN_1401e75b0(unsigned int nGroupId);                       // the group has emoticons
+    ChatEmoticonCachedDataPtr FUN_1401e76a0();                      // the current cached set (reloaded when a file changed)
+
+    // @0x1401f1ef0
+    static void CheckInit()
+    {
+        if (!s_bInit)
+        {
+            CStringA msg;
+            msg.Format("%s is not initialized", (const char*)FUN_14016a5c0(typeid(CChatEmoticonTable).name(), 0));
+            MessageBoxA(0, msg, "Error", 0);
+        }
+    }
+    // @0x1401f1fa0
+    static void SetInit(bool bInit) { s_bInit = bInit; }
+
+    static bool s_bInit;                    // DAT_143aac660
 
     ChatEmoticonCachedDataPtr m_spData;     // +0x10
 };

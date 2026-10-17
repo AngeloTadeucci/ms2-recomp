@@ -17,6 +17,11 @@
 // MS2-PIN: ?max_size@?$list@UUIChatEmoticonTab@@V?$allocator@UUIChatEmoticonTab@@@std@@@std@@QEBA_KXZ 0x140bd7d10 ; unique
 // MS2-PIN: ?max_size@?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@QEBA_KXZ 0x140bd7d30 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??0?$_List_alloc@U?$_List_base_types@UUIChatEmoticonTab@@V?$allocator@UUIChatEmoticonTab@@@std@@@std@@@std@@QEAA@XZ 0x140bd4c70 ; look-alike, name order
+// MS2-PIN: ?_Buyheadnode@?$_List_alloc@U?$_List_base_types@UUIChatEmoticonTab@@V?$allocator@UUIChatEmoticonTab@@@std@@@std@@@std@@QEAAPEAU?$_List_node@UUIChatEmoticonTab@@PEAX@2@XZ 0x140bd5c80 ; look-alike, name order
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_List_node@UUIChatEmoticonTab@@PEAX@std@@@std@@V?$_List_val@U?$_List_simple_types@UUIChatEmoticonTab@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140bd29e0 ; look-alike, name order
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x140bd2b60 ; look-alike, name order
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$list@V?$MS2Ptr@VUIChatEmoticonInfo@@@@V?$allocator@V?$MS2Ptr@VUIChatEmoticonInfo@@@@@std@@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x140bd2a70 ; look-alike, name order
 // MS2-PIN: ??__Fs_unkTab@@YAXXZ 0x142ca1b30
 // MS2-PIN: ??__Fs_unkTab2@@YAXXZ 0x142ca1c20
 //
@@ -582,6 +587,7 @@ void FUN_140bd4d50(Unk_EdIter* pIt, Unk_EdNode* pNode, const Unk_EdListVal* pLis
 Unk_EdMapPair* FUN_140bd57f0(Unk_EdIter* pIt);
 Unk_EdMapPair* FUN_140bd47c0(Unk_EdMapPair* p);
 Unk_EdMapPair* FUN_140bd7d50(Unk_EdMapPair* p);
+void* FUN_140bd69d0(void* p);
 Unk_EdListVal* FUN_140bd6890(Unk_EdListVal* pList);
 Unk_EdListVal* FUN_140bd4780(Unk_EdListVal* pList);
 Unk_EdNode** FUN_140bd6e40(Unk_EdListVal* pList);
@@ -1085,6 +1091,20 @@ void* FUN_140bd6a60(void* p)
 Unk_EdNode** FUN_140bd6dc0(Unk_EdListVal* pList)
 {
     return reinterpret_cast<Unk_EdNode**>(FUN_140bd6850(pList));
+}
+
+// @0x140bd6890
+// MS2-FUNCTIONAL
+Unk_EdListVal* FUN_140bd6890(Unk_EdListVal* pList)
+{
+    return static_cast<Unk_EdListVal*>(FUN_140bd69d0(&pList->m_pHead));
+}
+
+// @0x140bd6e40
+// MS2-FUNCTIONAL
+Unk_EdNode** FUN_140bd6e40(Unk_EdListVal* pList)
+{
+    return &FUN_140bd6890(pList)->m_pHead;
 }
 
 // @0x140bd6e60
