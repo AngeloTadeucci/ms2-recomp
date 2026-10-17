@@ -109,7 +109,7 @@ public:
     CString m_str18;                                            // +0x18
     CString m_strLocale;                                        // +0x20 the server type name, lower case
     ATL::CAtlMap<Unk_FeatureId, int> m_idLevels;                          // +0x28 feature id -> level
-    ATL::CAtlMap<CStringW, int, ATL::CStringElementTraits<CStringW> > m_nameLevels;   // +0x70 feature name -> level
+    ATL::CAtlMap<CStringW, int, ATL::CStringElementTraitsI<CStringW> > m_nameLevels;   // +0x70 feature name -> level
     ATL::CAtlMap<Unk_FeatureId, CStringW> m_idNames;                      // +0xb8 feature id -> name
 };
 MS2_CHECK_SIZE(CFeatureManager, 0x100);
