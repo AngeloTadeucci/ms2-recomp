@@ -270,13 +270,11 @@ CAdventureLevelMissionData::CAdventureLevelMissionData()
 }
 
 // @0x140195b80
-// MS2-FUNCTIONAL: the exe pairs two distinct std::map<uint,?> instantiations at +0x10 / +0x20; both are map<uint,uint> here
 CAdventureLevelTable::CAdventureLevelTable()
 {
 }
 
 // @0x140195c60
-// MS2-FUNCTIONAL: same two map instantiations as the ctor
 CAdventureLevelTable::~CAdventureLevelTable()
 {
 }
@@ -360,7 +358,6 @@ const CAdventureLevelMission* CAdventureLevelTable::GetMission(unsigned nMission
 
 // @0x140195f70
 // The rewards up to nLevel (type 2 excluded) that are not in setClaimed yet.
-// MS2-FUNCTIONAL: bytes identical; the exe calls set<unsigned>::const_iterator::operator!= from additionalactionadditional.cpp
 // (0x140184350), while this obj pairs its copy with the in-unit look-alike 0x14019ca30 (another tree type, see 0x1401a2680)
 int CAdventureLevelTable::CountUnclaimedRewards(unsigned nLevel, const std::set<unsigned>& setClaimed)
 {
@@ -504,7 +501,6 @@ bool CAdventureLevelTable::LoadMission()
 MS2_REPLACE_METHOD(0x1401968B0, CAdventureLevelTable, LoadMission, 689, 0xABCA5713);
 
 // @0x140195910
-// MS2-FUNCTIONAL: the min() argument and the 1/0 temp sit at 0x24/0x28 here, at 0x22/0x24 in the exe
 unsigned short CAdventureLevelAbility::GetCount(unsigned nLevel) const
 {
     if (m_nId == 0)
@@ -513,9 +509,7 @@ unsigned short CAdventureLevelAbility::GetCount(unsigned nLevel) const
         return (nLevel >= m_nRequireLevel) ? 1 : 0;
     if (nLevel < m_nRequireLevel)
         return 0;
-    unsigned short nMax = (unsigned short)m_nMaxCount;
-    unsigned short nCalc = (unsigned short)((nLevel - m_nRequireLevel + m_nInterval) / (unsigned)m_nInterval);
-    return (std::min)(nCalc, nMax);
+    return (std::min)(((unsigned short)((nLevel - m_nRequireLevel + m_nInterval) / (unsigned)m_nInterval)), ((unsigned short)m_nMaxCount));
 }
 MS2_REPLACE_METHOD(0x140195910, CAdventureLevelAbility, GetCount, 175, 0x757B70A5);
 
