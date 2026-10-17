@@ -6274,3 +6274,81 @@ void CubeMapInformationService::FUN_1410cd440()
         }
     }
 }
+
+// ---- w142 batch 16 ----
+struct Unk_CMISCorner { int m_nDiag, m_nSideB, m_nSideC, m_nRetB, m_nRetC, m_nDirB, m_nDirC; };    // neighbours of a diagonal walk direction
+// @0x1410d1820
+// MS2-FUNCTIONAL: exe's switch is compiled to a jump table with per-case temporaries
+int CubeMapInformationService::FUN_1410d1820(void* pArg, int nDir, Unk_StreamPoint pt, Unk_StreamPoint ptCur, void** ppFound)
+{
+    Cube* pBase = static_cast<Cube*>(pArg);
+    static const Unk_CMISCorner s_aCorners[4] = {
+        { 0x1ff, 0xff, 0x100, 3, 7, 8, 2 },
+        { 0x101, 1, 0x100, 1, 5, 4, 2 },
+        { 0xff01, 1, 0xff00, 7, 3, 4, 6 },
+        { 0xffff, 0xff, 0xff00, 5, 1, 8, 6 },
+    };
+    *ppFound = 0;
+    float fDx = FUN_14029d220(pt.x - ptCur.x);
+    float fDy = FUN_14029d220(pt.y - ptCur.y);
+    switch (nDir) {
+    case 2:
+        if (FUN_1410b9080(pBase, 0x100) != 0)
+            nDir = 0;
+        break;
+    case 4:
+        if (FUN_1410b9080(pBase, 1) != 0)
+            nDir = 0;
+        break;
+    case 6:
+        if (FUN_1410b9080(pBase, 0xff00) != 0)
+            nDir = 0;
+        break;
+    case 8:
+        if (FUN_1410b9080(pBase, 0xff) != 0)
+            nDir = 0;
+        break;
+    case 1:
+    case 3:
+    case 5:
+    case 7: {
+        const Unk_CMISCorner& c = s_aCorners[nDir / 2];
+        Cube* pDiag = FUN_1410b9080(pBase, c.m_nDiag);
+        Cube* pSideB = FUN_1410b9080(pBase, c.m_nSideB);
+        bool bNoB = pSideB == 0;
+        Cube* pSideC = FUN_1410b9080(pBase, c.m_nSideC);
+        bool bNoC = pSideC == 0;
+        int nMissing = (pDiag == 0) + bNoB + bNoC;
+        if (nMissing == 0) {
+            nDir = 0;
+            break;
+        }
+        if (nMissing == 1) {
+            if (pDiag != 0) {
+                if (!bNoB) {
+                    *ppFound = pSideB;
+                    return c.m_nRetB;
+                }
+                if (!bNoC) {
+                    *ppFound = pSideC;
+                    return c.m_nRetC;
+                }
+            }
+        } else if (nMissing != 2) {
+            return nDir;
+        }
+        if (fDx <= fDy) {
+            if (bNoC)
+                nDir = c.m_nDirC;
+            else if (bNoB)
+                nDir = c.m_nDirB;
+        } else if (bNoB) {
+            nDir = c.m_nDirB;
+        } else if (bNoC) {
+            nDir = c.m_nDirC;
+        }
+        break;
+    }
+    }
+    return nDir;
+}
