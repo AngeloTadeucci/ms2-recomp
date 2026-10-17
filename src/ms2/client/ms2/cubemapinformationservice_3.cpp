@@ -4895,3 +4895,69 @@ int CubeMapInformationService::FUN_1410d1320(void* pArg, Unk_StreamPoint pt, flo
     }
     return 9;
 }
+
+int FUN_14053f9c0(int nItemId);
+int FUN_1408b5820(int nItemId);
+int FUN_1408b5f70(int nItemId);
+// @0x1410d27c0
+// MS2-FUNCTIONAL: the visited-column set is a std::set<pair>, not the exe's tree helpers
+bool CubeMapInformationService::FUN_1410d27c0(__int64 nOwner, int nMode, int* pCount, int* pLimit)
+{
+    *pLimit = 0;
+    *pCount = 0;
+    if (f218 == 0)
+        return false;
+    if (DAT_143ae0fb4 != 0)
+        return true;
+    Unk_CMISIter<262> it, itEnd;
+    for (FUN_14114df30(&fd8, &it); FUN_1411275c0(&it, FUN_141151c70(&fd8, &itEnd)); FUN_141129bb0(&it)) {
+        int nGroup = *FUN_141128660(&it);
+        Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, f1b0);
+        if (spOwner == 0 || spOwner->ownerID != nOwner)
+            continue;
+        std::map<int, Unk_UGCGroup>::iterator itGroup = f218->groups.find(nGroup);
+        if (itGroup == f218->groups.end())
+            continue;
+        const Unk_UGCGroup& group = itGroup->second;
+        int nHeight = FUN_140885340(&f208)->FUN_140375130() != 0 ? f2fc : group.heightLimit;
+        if (nMode == 0)
+            *pLimit = group.buildingCount;
+        else if (nMode == 1)
+            *pLimit = group.maidCount;
+        else if (nMode == 2)
+            *pLimit = group.triggerCount;
+        else if (nMode == 4)
+            *pLimit = group.installNpcCount;
+        std::set<std::pair<int, int> > seen;
+        Unk_CMISIntList* pList = FUN_141127e10(&fd8, &nGroup);
+        Unk_CMISListIter itCell;
+        Unk_CMISListEnd itCellEnd;
+        for (FUN_14114e630(pList, &itCell); FUN_14035ea60(&itCell, FUN_1411522d0(pList, &itCellEnd)); FUN_14035ebf0(&itCell)) {
+            int nKey = *FUN_1403e8d70(&itCell);
+            Unk_Int3 cell = FUN_1408a0400(nKey);
+            if (!seen.insert(std::make_pair(cell.x, cell.y)).second)
+                continue;
+            for (int h = 1; h <= nHeight; ++h) {
+                Unk_Int3 up = FUN_1408a0400(nKey);
+                up.z = up.z + h;
+                Cube* pCube = FUN_1410b8a60(up);
+                if (pCube == 0)
+                    continue;
+                int nItem = FUN_1408b4f20(pCube);
+                bool bCount = false;
+                if (nMode == 0)
+                    bCount = FUN_14053f9c0(nItem) != 0;
+                else if (nMode == 1)
+                    bCount = FUN_1408b5620(nItem) != 0;
+                else if (nMode == 2)
+                    bCount = FUN_1408b5820(nItem) != 0;
+                else if (nMode == 4)
+                    bCount = FUN_1408b5f70(nItem) != 0;
+                if (bCount)
+                    *pCount = *pCount + 1;
+            }
+        }
+        break;
+    }
+    return *pLimit > 0 && *pCount < *pLimit;
+}

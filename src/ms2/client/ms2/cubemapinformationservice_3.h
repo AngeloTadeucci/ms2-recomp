@@ -227,6 +227,7 @@ public:
     void FUN_1410c6820(int nIdx);
     void GenerateAreaPhysX(int n);                  // 0x1410c6100
     int FUN_1410c6b90(unsigned nMask, int* pOutGroup, int nMode, Unk_CMISEntityRef* pOutEnt);
+    bool FUN_1410d27c0(__int64 nOwner, int nMode, int* pCount, int* pLimit);
     Unk_StreamPoint FUN_1410c54a0(Unk_EntRef spEnt);
     void FUN_1410ce560();
     void FUN_1410c1910(const Unk_Int3& pt, int n);
