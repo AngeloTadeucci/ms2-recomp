@@ -84,8 +84,10 @@ MS2_CHECK_SIZE(Unk_CMISCell, 0x38);
 // cube timer record (node value of f1f8)
 struct Unk_CMISCubeTimer
 {
+    Unk_CMISCubeTimer();                                        // 0x141123160 (out of line: Timer(), id(), reset, flags, id = none)
     Timer m_timer;
-    __int64 m_a, m_b;
+    bool m_bFlagA, m_bFlagB;
+    egf::EntityID m_id;
 };
 MS2_CHECK_SIZE(Unk_CMISCubeTimer, 0x48);
 

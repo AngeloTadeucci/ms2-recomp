@@ -6,6 +6,21 @@
 // MS2-RANGE: 0x1410d6a30-0x1410dbc10 .text$mn
 // MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0AEBU?$less@K@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@K@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBKK@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@K@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9260
+// MS2-PIN: ??$?0AEBU?$less@K@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBKV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$set@HU?$less@H@std@@V?$allocator@H@2@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@K@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d92b0
+// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@V?$MS2Ptr@VCube@@@@@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@V?$MS2Ptr@VCube@@@@@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d94e0
+// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@VUnk_CMISPropPtr@@@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9530
+// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBVEntityID@egf@@_J@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBVEntityID@egf@@_J@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9580
+// MS2-PIN: ??$?0AEBU?$less@VEntityID@egf@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@VEntityID@egf@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@VEntityID@egf@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@VEntityID@egf@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@VEntityID@egf@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d95d0
+// MS2-PIN: ??$?0AEBU?$less@W4Unk_CMISKindA@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@W4Unk_CMISKindA@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@W4Unk_CMISKindA@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9440
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@std@@@std@@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1410d70b0
+// MS2-PIN: ??$?0AEBU?$less@_K@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@_K@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CB_KV?$MS2Ptr@VUnk_CMISUidRecord@@@@@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KV?$MS2Ptr@VUnk_CMISUidRecord@@@@@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@_K@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9620
+// MS2-PIN: ??$?0AEBU?$less@W4Unk_CMISKindB@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@W4Unk_CMISKindB@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@W4Unk_CMISKindB@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d96c0
+// MS2-PIN: ??$?0AEBU?$less@W4Unk_CMISKindB@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@W4Unk_CMISKindB@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@W4Unk_CMISKindB@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9710
+// MS2-PIN: ??$?0AEBU?$less@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@@std@@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1410d9760
+// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHUUnk_CMISCubeTimer@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x1410db090
+// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHU?$Unk_CMISTree@$0BPA@@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x1410daff0
+// MS2-PIN: ??$?0V?$tuple@AEBI@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBIV?$MS2Ptr@VCube@@@@@std@@QEAA@AEAV?$tuple@AEBI@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x1410db380
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\cubemapinformationservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -69,6 +84,30 @@ void Unk_CMISLog4(CLogString* p, int nLevel, int nCat, const wchar_t* pszFmt, co
     p->FUN_1406530d0(nLevel, nCat, pszFmt, fmt::ArgList(fmt::internal::make_type(v0, v1, v2, v3), array));
 }
 
+// A message sink whose slot 0 takes (class id, value): the exe's three tiny forwarders (0x1410db460 / 490 / 4c0)
+struct Unk_CMISSink
+{
+    virtual void FUN_Notify(unsigned int nClassId, int nValue) = 0;
+};
+inline void Unk_CMISNotifyA(Unk_CMISSink* p, int n) { p->FUN_Notify(0x610001a, n); }
+inline void Unk_CMISNotifyB(Unk_CMISSink* p, int n) { p->FUN_Notify(0x7001001, n); }
+inline void Unk_CMISNotifyC(Unk_CMISSink* p, int n) { p->FUN_Notify(0x7000003, n); }
+
+// pair<const K, V> built piecewise with a default-constructed V (the inner constructors the node builders call)
+template <class K, class V> void Unk_CMISPiecewisePair(K k)
+{
+    std::pair<const K, V> pr(std::piecewise_construct, std::tuple<const K&>(k), std::tuple<>());
+    (void)pr;
+}
+
+// comparator + allocator/value pair of a tree (the exe's outer constructor the set/map ctors call)
+template <class K, class V> void Unk_CMISTreePair(const std::less<K>& cmp)
+{
+    typedef std::_Compressed_pair<efd::CustomAllocator<std::_Tree_node<V, void*> >, std::_Tree_val<std::_Tree_simple_types<V> > > Rep;
+    std::_Compressed_pair<std::less<K>, Rep> pr((std::_One_then_variadic_args_t()), cmp, (std::_Zero_then_variadic_args_t()));
+    (void)pr;
+}
+
 void Unk_CMISDriveTail10()
 {
     int nKey = 0;
@@ -109,6 +148,18 @@ void Unk_CMISDriveTail10()
     { Unk_CMISMapKindInt m; Unk_CMISDriveMap(m, Unk_CMISKindB_None); Unk_CMISDriveIndexRv10(m); }
     { Unk_CMISMapKindByte m; Unk_CMISDriveMap(m, Unk_CMISKindB_None); Unk_CMISDriveIndexRv10(m); }
     { Unk_CMISMapIntInt m; Unk_CMISDriveMapOps(m, nKey); }
+    { void (*volatile pfA)(Unk_CMISSink*, int) = Unk_CMISNotifyA; void (*volatile pfB)(Unk_CMISSink*, int) = Unk_CMISNotifyB;
+      void (*volatile pfC)(Unk_CMISSink*, int) = Unk_CMISNotifyC; (void)pfA; (void)pfB; (void)pfC; }
+    { Unk_CMISAutoSet s((std::less<MS2Ptr<AutomaticCreateCubeInfo> >())); }
+    // one more tree outer than the members above account for: the exe's table has a tree whose key/value pair is not
+    // recovered (stand-in value)
+    Unk_CMISTreePair<int, std::pair<const int, Unk_CMISElem52> >(std::less<int>());
+    Unk_CMISPiecewisePair<int, bool>(nKey);
+    Unk_CMISPiecewisePair<int, Unk_CubePoint>(nKey);
+    Unk_CMISPiecewisePair<int, Unk_CMISTree<267> >(nKey);
+    Unk_CMISPiecewisePair<int, Unk_CMISTree<496> >(nKey);
+    Unk_CMISPiecewisePair<int, Unk_CMISCubeTimer>(nKey);
+    Unk_CMISPiecewisePair<unsigned int, MS2Ptr<Cube> >(uKey);
     { Unk_CubeOwners m; }                                                                       // ugcmapdata's owner table
     { Unk_CMISIntSet s; Unk_CMISDriveSet(s, nKey); { int n = nKey; s.insert(std::move(n)); } (void)s.equal_range(nKey); s.erase(nKey); (void)s.key_comp(); }
     { Unk_CMISPairSet s; Unk_CMISDriveSet(s, std::pair<int, int>(0, 0)); }
