@@ -27,6 +27,7 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/client/ms2/uihomeinfodialog.h"
 #include <float.h>
+#include "ms2/client/ms2/uihousemark.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #if defined(__clang__)
@@ -113,6 +114,7 @@ public:
     int FUN_141bd3060();                                        // the current map id
     int FUN_141bcfd10();                                        // the world state (4 = in field, 6 = loading)
     Unk_PayloadPtr<Unk_CMISObj208> FUN_141bd30a0();             // the current field data
+    void FUN_141bc58d0(struct Unk_CMISNpcList* pOut);           // fills the list of npcs
 };
 Unk_CMISWorld* FUN_1403ed2d0();
 class Unk_CMISActor
@@ -2964,7 +2966,7 @@ Unk_CMISEffSvc* FUN_141b6f910();
 void FUN_1409a1fc0(Unk_CMISEffSvc*, const Unk_CMISEntityRef*, const efd::utf8string*, float fScale, int nFlag);
 struct Unk_CMISLimits { char pad[8]; };
 struct Unk_CMISLimitF { float m_f; };
-struct Unk_CMISRules { char pad[0xfd8]; Unk_CMISLimitF m_fNear; char pad2[0xa288 - 0xfd8 - sizeof(Unk_CMISLimitF)]; Unk_CMISLimits m_limits; };                        // game-wide rules (the effect-limit table at 0xa288)
+struct Unk_CMISRules { char pad[0xfd8]; Unk_CMISLimitF m_fNear; char pad2[0x1348 - 0xfd8 - sizeof(Unk_CMISLimitF)]; Unk_CMISLimits m_limits1348; char pad3[0xa288 - 0x1348 - sizeof(Unk_CMISLimits)]; Unk_CMISLimits m_limits; };                        // game-wide rules (the effect-limit table at 0xa288)
 Unk_CMISRules* FUN_1401d3200();
 int* FUN_1402056b0(Unk_CMISLimits* pTable);
 Unk_CMISIter<279>* FUN_141151a90(Unk_CMISTree<279>*, Unk_CMISIter<279>*);
@@ -3283,6 +3285,8 @@ public:
     virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
     virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15(); virtual void vfunc_16(); virtual void vfunc_17();
     virtual Unk_StreamPoint vfunc_18();
+    virtual Unk_StreamPoint vfunc_19();
+    virtual Unk_StreamPoint vfunc_20();
 };
 float* FUN_140298f40(Unk_CMISLimitF* pLimit);
 // @0x1410cb1b0
@@ -3570,4 +3574,139 @@ void CubeMapInformationService::FUN_1410d0000(void* pCtx, MS2Ptr<Cube> spCube)
             }
         }
     }
+}
+
+// ---- w138 batch 15 ----
+struct Unk_CMISRefList { Unk_CMISRefList(); ~Unk_CMISRefList(); char m_buf[0x20]; };        // ctor 1408a84d0, dtor 1408a88a0
+bool FUN_1411517a0(Unk_CMISRefList*);                                                       // empty
+Unk_CMISEntityRef* FUN_1408a9050(Unk_CMISRefList*, int nIdx);
+void FUN_1408a2020(egf::Entity*, unsigned, int*);                                           // SetProperty(int)
+float FUN_140966ea0(Unk_StreamPoint ptA, Unk_StreamPoint ptB);                              // distance
+
+// @0x1410c93c0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410c93c0()
+{
+    Unk_CMISPawn* pPawn = reinterpret_cast<Unk_CMISPawn*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    UIHouseMark* pMark;
+    if (pPawn != 0 && (pMark = reinterpret_cast<UIHouseMark*>(FUN_1410dc020())) != 0) {
+        if (!f158.FUN_1408b70b0(0)) {
+            if (f158.FUN_1408a9090() != 0) {
+                Unk_StreamPoint ptEnt = DAT_143b01a60;
+                FUN_1409618c0(reinterpret_cast<egf::Entity*>(f158.FUN_1408a9280()), 0xfd95ca52, &ptEnt);
+                Unk_StreamPoint ptPawn = pPawn->vfunc_18();
+                float fDist = FUN_140966ea0(ptEnt, ptPawn);
+                if ((float)*FUN_1402056b0(&FUN_1401d3200()->m_limits1348) <= fDist) {
+                    int nVal = 0;
+                    FUN_1408a2020(reinterpret_cast<egf::Entity*>(f158.FUN_1408a9280()), 0x85ef19e7, &nVal);
+                    MS2Ptr<UIHouseMarkEntity> spMark = pMark->FUN_14198ce50(nVal);
+                    if (spMark.get() != 0)
+                        spMark->FUN_14198b320();
+                    f158.FUN_1408b6ec0(0);
+                    f160 = false;
+                }
+            }
+        } else {
+            Unk_CMISRefList list;
+            FUN_1410bb610(5, pPawn, (float)*FUN_1402056b0(&FUN_1401d3200()->m_limits1348), &list);
+            if (!FUN_1411517a0(&list)) {
+                egf::EntityPtr spEnt = FUN_1408a7ed0(FUN_1408a9050(&list, 0));
+                int nVal = 0;
+                FUN_1408a2020(FUN_1408a9280(&spEnt), 0x85ef19e7, &nVal);
+                MS2Ptr<UIHouseMarkEntity> spMark = pMark->FUN_14198ce50(nVal);
+                if (spMark.get() != 0)
+                    spMark->FUN_14198b2f0();
+                f160 = true;
+                FUN_140964eb0(reinterpret_cast<Unk_CMISEntityRef*>(&f158), &spEnt);
+            }
+        }
+    }
+}
+
+// ---- w138 batch 16 ----
+struct Unk_CMISNpcElem;
+struct Unk_CMISNpcList { Unk_CMISNpcList(); ~Unk_CMISNpcList(); void* m_buf[4]; };           // ctor 140964560, dtor 140964ca0
+struct Unk_CMISNpcIter { void* m_p; };
+struct Unk_CMISNpcRef { Unk_CMISNpcRef(Unk_CMISNpcElem* p); ~Unk_CMISNpcRef(); void* m_p; };  // ctor 140963ff0, dtor 1409649e0
+class Unk_CMISNpc { public: int FUN_141447340(); Unk_StreamPoint FUN_141447c80(); CString FUN_1414472a0(); };
+void* FUN_14096b140(Unk_CMISNpcList*);
+Unk_CMISNpcIter* FUN_14096adc0(Unk_CMISNpcList*, Unk_CMISNpcIter*);                            // end
+Unk_CMISNpcIter* FUN_14096aab0(Unk_CMISNpcList*, Unk_CMISNpcIter*);                            // begin
+bool FUN_140965510(Unk_CMISNpcIter*, Unk_CMISNpcIter*);                                        // operator!=
+Unk_CMISNpcElem* FUN_140965a50(Unk_CMISNpcIter*);                                              // operator*
+void FUN_140965b10(Unk_CMISNpcIter*);                                                          // operator++
+Unk_CMISNpc* FUN_140965930(Unk_CMISNpcRef*);                                                   // operator->
+bool FUN_1402a5b40(CString* pStr, const char* psz);
+float FUN_140a17940(float fVal, float fMin, float fMax);                                       // clamp
+
+// @0x1410c7110
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+int CubeMapInformationService::FUN_1410c7110(int* pCell)
+{
+    Unk_CMISPawn* pPawn = reinterpret_cast<Unk_CMISPawn*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    if (pPawn == 0)
+        return 0;
+    Unk_StreamPoint kForward, kRight;
+    FUN_140a01250(pPawn->vfunc_20(), &kForward, &kRight);
+    Unk_StreamPoint ptHit;
+    FUN_1410b7ad0(reinterpret_cast<PCBase*>(pPawn), 0.0f, &ptHit, 1);
+    Unk_Int3 cell = FUN_1408a1430(ptHit);
+    if (!FUN_1410b7f90(cell))
+        return 0;
+    MS2Ptr<Cube> spCube(FUN_1410b8a60(cell));
+    if (FUN_1408b4f20(spCube.operator->()) == 0 || FUN_1408b4f20(spCube.operator->()) == 8)
+        return 0;
+    if (spCube->field44 != 2)
+        return 0;
+    if (spCube->field58 == 1)
+        return 0;
+    egf::EntityPtr spEnt(reinterpret_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(*reinterpret_cast<const egf::EntityID*>(FUN_1408b76f0(FUN_1408a9280(&spCube->entity)))));
+    if (FUN_1408b70b0(&spEnt, 0))
+        return 0;
+    Unk_StreamPoint ptDir;
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0x68c7c29d, &ptDir);
+    Unk_StreamPoint kForward2, kRight2;
+    FUN_140a01250(ptDir, &kForward2, &kRight2);
+    float fDot = FUN_140a17940(kForward.FUN_140a00f20(kForward2), -1.0f, 1.0f);
+    if (fDot <= 0.7f)
+        return 0;
+    *pCell = FUN_1408a03c0(*(Unk_Int3*)&spCube->position);
+    return 1;
+}
+
+// @0x1410c7500
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+bool CubeMapInformationService::FUN_1410c7500(CString* pOut)
+{
+    Unk_CMISPawn* pPawn = reinterpret_cast<Unk_CMISPawn*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    if (pPawn != 0) {
+        Unk_CMISNpcList list;
+        FUN_1403ed2d0()->FUN_141bc58d0(&list);
+        if (FUN_14096b140(&list) == 0)
+            return false;
+        Unk_StreamPoint kForward, kRight;
+        FUN_140a01250(pPawn->vfunc_20(), &kForward, &kRight);
+        Unk_StreamPoint ptHit;
+        FUN_1410b7ad0(reinterpret_cast<PCBase*>(pPawn), 0.0f, &ptHit, 1);
+        Unk_Int3 cellHit = FUN_1408a1430(ptHit);
+        Unk_CMISNpcIter itEnd, itCur, itTmp;
+        itEnd = *FUN_14096adc0(&list, &itTmp);
+        itCur = *FUN_14096aab0(&list, &itTmp);
+        while (FUN_140965510(&itCur, &itEnd)) {
+            Unk_CMISNpcRef spNpc(FUN_140965a50(&itCur));
+            if (FUN_140965930(&spNpc)->FUN_141447340() != 0) {
+                Unk_StreamPoint ptNpc = FUN_140965930(&spNpc)->FUN_141447c80();
+                Unk_Int3 cellNpc = FUN_1408a1430(ptNpc);
+                Unk_StreamPoint ptDelta = ptNpc.FUN_140965c40(pPawn->vfunc_18());
+                float fLen = ptDelta.FUN_140968990();
+                if (fLen <= 150.0f) {
+                    float fDot = FUN_140a17940(ptDelta.FUN_140a00f20(kForward), -1.0f, 1.0f);
+                    if (0.5f < fDot && -0x7fffffff - 1 < cellNpc.z)
+                        *pOut = FUN_140965930(&spNpc)->FUN_1414472a0();
+                }
+            }
+            FUN_140965b10(&itCur);
+        }
+    }
+    return FUN_1402a5b40(pOut, "");
 }

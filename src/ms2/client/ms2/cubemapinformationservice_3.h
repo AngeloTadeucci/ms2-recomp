@@ -280,6 +280,9 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    int FUN_1410c7110(int* pCell);
+    bool FUN_1410c7500(CString* pOut);
+    void FUN_1410c93c0();
     void FUN_1410d0000(void* pCtx, MS2Ptr<Cube> spCube);
     void FUN_1410bb610(unsigned nMask, struct Unk_CMISPawn* pPawn, float fDist, struct Unk_CMISRefList* pOut);
     void FUN_1410caf20(Cube* pCube, int nTime);
