@@ -34,18 +34,25 @@
 // MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x1416e32f0 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$Unk_PayloadPtr@VCQuest@@@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1416d4530
-// MS2-PIN: ??$_Insert_at@_JU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@1@_NPEAU?$_Tree_node@_JPEAX@1@$$QEA_JU_Not_a_node_tag@1@@Z 0x1416d6b40
-// MS2-PIN: ??$_Insert_nohint@_JU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@_N@1@_N$$QEA_JU_Not_a_node_tag@1@@Z 0x1416d7ef0
-// MS2-PIN: ?_Swap_all@?$_Tree_comp_alloc@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAXAEAV12@@Z 0x1416e18d0
+// MS2-PIN: ??$_Insert_at@_KU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@1@_NPEAU?$_Tree_node@_KPEAX@1@$$QEA_KU_Not_a_node_tag@1@@Z 0x1416d6b40
+// MS2-PIN: ??$_Insert_nohint@_KU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@std@@_N@1@_N$$QEA_KU_Not_a_node_tag@1@@Z 0x1416d7ef0
+// MS2-PIN: ?_Swap_all@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAXAEAV12@@Z 0x1416e18d0
 // MS2-PIN: ?FUN_1416d40a0@CQuestManager@@QEAAHHIIAEAV?$list@IV?$allocator@I@std@@@std@@AEAV?$list@V?$list@IV?$allocator@I@std@@@std@@V?$allocator@V?$list@IV?$allocator@I@std@@@std@@@2@@3@PEAV43@@Z 0x1416d40a0
 // MS2-PIN: ??$_Insert_range@V?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@std@@@?$list@IV?$allocator@I@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@1@V?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@1@1Uforward_iterator_tag@1@@Z 0x1416d8300
 // MS2-PIN: ??$_Insert_range@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@std@@@?$list@IV?$allocator@I@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@1@V?$_List_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@@1@1Uforward_iterator_tag@1@@Z 0x1416d83c0
 // MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@PEAVCQuest@@@Z 0x1416db050
 // MS2-PIN: ?SetStartTime@CQuest@@QEAAX_J@Z 0x1416ded20
 // MS2-PIN: ?Set68@CQuest@@QEAAXH@Z 0x1416dedb0
-// MS2-PIN: ?_Assign_rv@?$_Tree@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAX$$QEAV12@U?$integral_constant@_N$00@2@@Z 0x1416df0c0
-// MS2-PIN: ?_Move_alloc@?$_Tree_comp_alloc@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAXAEAV?$allocator@U?$_Tree_node@_JPEAX@std@@@2@@Z 0x1416e1250
-// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_J@std@@@std@@@0@AEAV10@@Z 0x1416da5c0
+// MS2-PIN: ?_Assign_rv@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAX$$QEAV12@U?$integral_constant@_N$00@2@@Z 0x1416df0c0
+// MS2-PIN: ?_Move_alloc@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAXAEAV?$allocator@U?$_Tree_node@_KPEAX@std@@@2@@Z 0x1416e1250
+// MS2-PIN: ??$?0AEBIAEB_K$0A@@?$pair@I_J@std@@QEAA@AEBIAEB_K@Z 0x1416d46a0
+// MS2-PIN: ??$_Buy_if_not_node@_K@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@_KPEAX@1@U_Not_a_node_tag@1@$$QEA_K@Z 0x1416d5040
+// MS2-PIN: ??$_Buynode@AEB_K@?$_List_buy@_KV?$allocator@_K@std@@@std@@QEAAPEAU?$_List_node@_KPEAX@1@PEAU21@0AEB_K@Z 0x1416d5260
+// MS2-PIN: ??$_Buynode@_K@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@_KPEAX@1@$$QEA_K@Z 0x1416d52f0
+// MS2-PIN: ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@std@@_N@1@$$QEA_K@Z 0x1416da690
+// MS2-PIN: ??4?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAAEAV01@$$QEAV01@@Z 0x1416dc100
+// MS2-PIN: ?_Freenode@?$_List_buy@_KV?$allocator@_K@std@@@std@@QEAAXPEAU?$_List_node@_KPEAX@2@@Z 0x1416e0810
+// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@0@AEAV10@@Z 0x1416da5c0
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1416daf60
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCQuestManager@@P81@EAAXAEAVCInPacket@@@Z@std@@@?$Delegate@$$A6AXAEAVCInPacket@@@Z@@QEAA@AEBV01@@Z 0x1416daec0
 // MS2-PIN: ??F?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1416dc9f0
@@ -2101,7 +2108,7 @@ void CQuestManager::FUN_1416d1a30(unsigned questId)
     if (quest->IsActive() == 0) return;
     if (quest->IsComplete() == 1) return;
     if (m_targets250.end() == m_targets250.find(questId))
-        m_targets250[questId] = std::set<__int64>();
+        m_targets250[questId] = std::set<unsigned __int64>();
     ATL::CRBMap<unsigned, Unk_WsV118>* users = world->FUN_141bd36b0();
     for (POSITION pos = users->GetHeadPosition(); pos != 0; users->GetNext(pos)) {
         PCBase* pc = FUN_140aac420(&users->GetValueAt(pos));
@@ -2117,7 +2124,7 @@ MS2_REPLACE_METHOD(0x1416d1a30, CQuestManager, FUN_1416d1a30, 699, 0x9270EB9B);
 void CQuestManager::FUN_1416d1d00(PCBase* pc)
 {
     if (pc != 0) {
-        for (std::map<unsigned, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+        for (std::map<unsigned, std::set<unsigned __int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
             unsigned questId = it->first;
             Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
             if (!quest.IsNull()) {
@@ -2142,7 +2149,7 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
     float bestDistance = FLT_MAX;
     const NiPoint3& playerPos = player->vfunc_18();
     std::list<unsigned> stale;
-    for (std::map<unsigned, std::set<__int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
+    for (std::map<unsigned, std::set<unsigned __int64>>::iterator it = m_targets250.begin(); it != m_targets250.end(); ++it) {
         const unsigned questId = it->first;
         Unk_PayloadPtr<CQuest> quest = vfunc_o10_3(questId);
         if (quest.IsNull()) {
@@ -2157,10 +2164,10 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
             stale.push_back(questId);
             continue;
         }
-        std::list<__int64> gone;
-        std::set<__int64>& users = it->second;
-        for (std::set<__int64>::iterator user = users.begin(); user != users.end(); ++user) {
-            const __int64 userId = *user;
+        std::list<unsigned __int64> gone;
+        std::set<unsigned __int64>& users = it->second;
+        for (std::set<unsigned __int64>::iterator user = users.begin(); user != users.end(); ++user) {
+            const unsigned __int64 userId = *user;
             if (userId == player->FUN_141656a80()) {
                 gone.push_back(questId);
                 continue;
@@ -2182,7 +2189,7 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
                 best = std::pair<unsigned, __int64>(questId, userId);
             }
         }
-        MS2_FOR_EACH(__int64 id, gone) users.erase(id);
+        MS2_FOR_EACH(unsigned __int64 id, gone) users.erase(id);
     }
     MS2_FOR_EACH(unsigned id, stale) m_targets250.erase(id);
     return best;
@@ -2190,9 +2197,9 @@ std::pair<unsigned, __int64> CQuestManager::FUN_1416d1e90()
 MS2_REPLACE_METHOD(0x1416d1e90, CQuestManager, FUN_1416d1e90, 1657, 0x68DA91B1);
 
 // @0x1416d2510
-const std::set<__int64>& CQuestManager::FUN_1416d2510(unsigned questId)
+const std::set<unsigned __int64>& CQuestManager::FUN_1416d2510(unsigned questId)
 {
-    static std::set<__int64> s_empty;
+    static std::set<unsigned __int64> s_empty;
     if (m_targets250.find(questId) == m_targets250.end()) return s_empty;
     return m_targets250[questId];
 }

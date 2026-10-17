@@ -152,7 +152,7 @@ public:
     void FUN_1416d1800(int group, Unk_QmNpcQuestState* best);
     void FUN_1416d1a30(unsigned questId);
     std::pair<unsigned, __int64> FUN_1416d1e90();   // nearest live user of a tracked quest (quest id, user id)
-    const std::set<__int64>& FUN_1416d2510(unsigned questId);   // users found for the quest (empty set if none)
+    const std::set<unsigned __int64>& FUN_1416d2510(unsigned questId);   // users found for the quest (empty set if none)
     unsigned FUN_1416d2600(int questId, int checkAccept);   // first available follow-up quest
     int FUN_1416d26c0(int questId, std::list<unsigned>& out, int checkAccept);
     int FUN_1416d2910(unsigned toQuestId, std::list<std::list<unsigned>>& paths, int verbose);
@@ -198,7 +198,7 @@ public:
     ATL::CAtlArray<unsigned> m_pinnedQuests; // +1a0
     ATL::CAtlMap<int, int> m_dailyCounts; // +1c0
     ATL::CAtlMap<int, int> m_weeklyCounts; // +208
-    std::map<unsigned, std::set<__int64>> m_targets250;   // key unsigned: the exe tree calls less<unsigned>
+    std::map<unsigned, std::set<unsigned __int64>> m_targets250;   // key unsigned: the exe tree calls less<unsigned>
     // +260: only the ctor and dtor reach it. Its tree nodes are 0x38 bytes and the element dtor releases an
     // Unk_PayloadPtr<CQuest> at +8 (0x1416dbfa0), so the element is pair<const int, Unk_PayloadPtr<CQuest>>; the
     // mangled-name order of its deallocate COMDATs (0x1416e2840 before the map<int, set> one at 0x1416e2870) fixes
