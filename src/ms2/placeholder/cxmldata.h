@@ -14,6 +14,7 @@ class CXmlData : public CPtred
 {
 public:
     CXmlData();                         // 0x14092c230
+    CXmlData(const CStringW& strValues);    // 0x14092c2e0 parses "key=value" text (gameeventvalue.cpp)
     virtual ~CXmlData();                // 0x14092c2a0
     bool FUN_14092c370(CXmlData* pOther);           // differs from pOther (additionalactionadditional.cpp)
     void FUN_14092c590();                           // clears the parsed values

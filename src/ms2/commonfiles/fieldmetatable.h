@@ -106,6 +106,8 @@ typedef ATL::CAtlMap<unsigned int, Unk_FieldIdListPtr> Unk_FieldIdListMap;
 struct Unk_FieldTimeSpan
 {
     Unk_FieldTimeSpan();                                    // 0x1402a54a0
+    // 0x1404437b0 (gameeventvalue.cpp: the dungeon open period map value)
+    Unk_FieldTimeSpan(__int64 nStart, __int64 nEnd) : m_nStart(nStart), m_nEnd(nEnd) {}
     void Set(__int64 nStart, __int64 nEnd);                 // 0x1402a6bd0
     bool Contains(__int64 nTime) const;                     // 0x1402a6f60
     __int64 m_nStart;
