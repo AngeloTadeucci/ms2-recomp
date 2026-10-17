@@ -25,15 +25,6 @@
 
 // ---- unit-local views of unrecovered callees ------------------------------------------------------------------------
 
-// The ridee's record string getter: the animation prefix of the fall (a CString built in place).
-class Unk_FallRec { public: CString FUN_1411eabd0(); };
-Unk_FallRec* FUN_1416561a0(PCBase* p);                                     // 0x1416561a0
-CString FUN_14038f6d0(const CString& str, const char* psz);                // 0x14038f6d0 concatenation
-
-// The animation service: resolves an animation name to a sequence id (-2 when the model has none).
-class Unk_FallAnimSvc { public: int FUN_140999490(const egf::EntityID& kId, const efd::utf8string& strName); };
-Unk_FallAnimSvc* FUN_141b6f910();
-
 // The physics body of the actor: sets the velocity.
 void FUN_141240700(Unk_PCBaseBody* pBody, efd::Point3 kVel);               // 0x141240700
 
