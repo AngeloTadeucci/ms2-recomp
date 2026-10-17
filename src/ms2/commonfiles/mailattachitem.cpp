@@ -512,7 +512,6 @@ int CMailInfo::FUN_140691220()
 }
 
 // @0x1406922d0
-// MS2-FUNCTIONAL: call-argument temporaries order differs
 CStringW CMailInfo::FUN_1406922d0() const
 {
     CMsTime tm(m_n118);
