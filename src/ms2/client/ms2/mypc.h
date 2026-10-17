@@ -164,7 +164,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_a68> vfunc_81();          // 81 0x141523480
     virtual MS2Ptr<Unk_PCBaseComp_a88> vfunc_83();          // 83 0x141523570
     virtual MS2Ptr<Unk_PCBaseComp_ab8> vfunc_86();          // 86 0x141523630
-    virtual int vfunc_88();                                 // 88 0x141523670
+    virtual UISwfEntity* vfunc_88();                        // 88 0x141523670
     virtual int vfunc_137();                                // 137 0x141523720
     virtual void vfunc_135(int a, int b, void* p);          // 135 0x1415238d0
     virtual CStringW vfunc_134();                           // 134 0x141523ae0

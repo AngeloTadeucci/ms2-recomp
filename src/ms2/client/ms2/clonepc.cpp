@@ -288,7 +288,7 @@ Unk_GoAttachment* ClonePC::vfunc_26()
 MS2_REPLACE_METHOD(0x141086e60, ClonePC, vfunc_26, 8, 0x7F371472);
 
 // @0x141086e70
-int ClonePC::vfunc_88()
+UISwfEntity* ClonePC::vfunc_88()
 {
     return 0;
 }

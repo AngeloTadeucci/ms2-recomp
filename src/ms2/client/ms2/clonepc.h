@@ -59,7 +59,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_aa8> vfunc_85();          // 85 0x141086da0
     virtual MS2Ptr<Unk_PCBaseComp_ab8> vfunc_86();          // 86 0x141086de0
     virtual MS2Ptr<Unk_PCBaseComp_ac8> vfunc_87();          // 87 0x141086e20
-    virtual int vfunc_88();                                 // 88 0x141086e70
+    virtual UISwfEntity* vfunc_88();                        // 88 0x141086e70
     virtual void vfunc_93(bool b);                          // 93 0x141087290
     virtual void vfunc_9(void* p);                          // 9 0x141086b70
     virtual int vfunc_133(CItem* pItem, bool b);            // 133 0x141086e80

@@ -1334,6 +1334,38 @@ MS2Ptr<Unk_PCBaseComp_ab8> MyPC::vfunc_86()
 }
 MS2_REPLACE_METHOD(0x141523630, MyPC, vfunc_86, 55, 0x8756C0FC);
 
+// The owner-bound HUD gauge base of UIEpProgress (ctor 0x141a7caf0 takes the owning PC; UIObject + slots 52-54).
+class Unk_MyPCOwnerGauge : public UIObject
+{
+public:
+    Unk_MyPCOwnerGauge(PCBase* pOwner);     // 0x141a7caf0
+    virtual void vfunc_52();
+    virtual void vfunc_53();
+    virtual void vfunc_54(int bShow);
+};
+
+// The EP (stamina) progress bar shown above MyPC (0xe8 bytes, vftable 0x142fa38d8).
+class UIEpProgress : public Unk_MyPCOwnerGauge
+{
+public:
+    UIEpProgress(PCBase* pOwner);           // 0x141931550
+    virtual ~UIEpProgress();
+    virtual int vfunc_48();
+    char m_pad68[0xe8 - 0x68];
+};
+
+// @0x141523670
+UISwfEntity* MyPC::vfunc_88()
+{
+    if (m_unk_ad8 == 0)
+    {
+        m_unk_ad8 = new UIEpProgress(this);
+        static_cast<UIEpProgress*>(m_unk_ad8)->vfunc_54(1);
+    }
+    return m_unk_ad8;
+}
+MS2_REPLACE_METHOD(0x141523670, MyPC, vfunc_88, 169, 0x6E74ABEE);
+
 // @0x141523720
 int MyPC::vfunc_137()
 {

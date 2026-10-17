@@ -1865,7 +1865,7 @@ MS2Ptr<Unk_PCBaseComp_ac8> PCBase::vfunc_87()
 MS2_REPLACE_METHOD(0x14166ffa0, PCBase, vfunc_87, 55, 0xEA2BBE0A);
 
 // @0x14166ffe0
-int PCBase::vfunc_88()
+UISwfEntity* PCBase::vfunc_88()
 {
     return 0;
 }

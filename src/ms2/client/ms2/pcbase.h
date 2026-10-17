@@ -205,7 +205,7 @@ public:
     virtual MS2Ptr<Unk_PCBaseComp_aa8> vfunc_85();          // 85  0x14166ff20
     virtual MS2Ptr<Unk_PCBaseComp_ab8> vfunc_86();          // 86  0x14166ff60
     virtual MS2Ptr<Unk_PCBaseComp_ac8> vfunc_87();          // 87  0x14166ffa0
-    virtual int vfunc_88();                                 // 88  0x14166ffe0
+    virtual UISwfEntity* vfunc_88();                        // 88  0x14166ffe0 (base: null; MyPC: its EP progress UI, m_unk_ad8)
     virtual float vfunc_89();                               // 89  0x141670450
     virtual void vfunc_90(void* p);                         // 90  0x141670a90
     virtual void vfunc_91(void* p);                         // 91  0x141670cd0
