@@ -148,6 +148,7 @@ long DungeonRecordCli::Get5c()
 }
 
 // @0x140b20840
+// MS2-FUNCTIONAL: return value is widened to int in the exe (xor eax,eax); the uchar ternary differs
 unsigned char DungeonRecordCli::GetBonusCountNow()
 {
     return IsExpired() ? 0 : m_bonusCount;
@@ -172,6 +173,7 @@ unsigned short DungeonRecordCli::Get68(__int64 tNow)
 }
 
 // @0x140b208f0
+// MS2-FUNCTIONAL: compare operand order / temp slots of the sub-reward test differ
 bool DungeonRecordCli::HasCountLeft()
 {
     if (IsExtraExhausted())
@@ -228,6 +230,7 @@ void DungeonRecordManagerCli::Clear()
 }
 
 // @0x140b20be0
+// MS2-FUNCTIONAL: exe keeps the stream sub-object pointer in an extra temp (12 bytes longer)
 void DungeonRecordManagerCli::OnPacket(CInPacket& packet)
 {
     CInputStream& in = packet;
@@ -289,6 +292,7 @@ void DungeonRecordManagerCli::OnAddRecord(CInPacket& packet)
 }
 
 // @0x140b20e80
+// MS2-FUNCTIONAL: CStringW temp slots / branch layout of the notice chain not matched
 void DungeonRecordManagerCli::OnRewardNotice(CInPacket& packet)
 {
     CInputStream& in = packet;
@@ -331,6 +335,7 @@ void DungeonRecordManagerCli::OnOpenDialog(CInPacket& packet)
 }
 
 // @0x140b211c0
+// MS2-FUNCTIONAL: temp slot order of the new record / MS2Ptr not matched
 void DungeonRecordManagerCli::OnAddRecordExtra(CInPacket& packet)
 {
     DungeonRecordCliPtr spRecord(new DungeonRecordCli);
@@ -342,6 +347,7 @@ void DungeonRecordManagerCli::OnAddRecordExtra(CInPacket& packet)
 }
 
 // @0x140b21310
+// MS2-FUNCTIONAL: CStringW literal temps and message-box temp slots of the 33-way switch not matched
 void DungeonRecordManagerCli::OnError(CInPacket& packet)
 {
     CInputStream& in = packet;
@@ -495,6 +501,7 @@ void DungeonRecordManagerCli::OnRates(CInPacket& packet)
 }
 
 // @0x140b22160
+// MS2-FUNCTIONAL: MS2Ptr return-copy temp order not matched
 DungeonRecordCliPtr DungeonRecordManagerCli::GetRecord(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord;
@@ -517,6 +524,7 @@ bool DungeonRecordManagerCli::CanEnter(unsigned nRoomID)
 }
 
 // @0x140b22320
+// MS2-FUNCTIONAL: branch layout around the MS2Ptr dtor not matched
 bool DungeonRecordManagerCli::HasProgress(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord = GetRecord(nRoomID);
@@ -531,6 +539,7 @@ bool DungeonRecordManagerCli::HasProgress(unsigned nRoomID)
 }
 
 // @0x140b223d0
+// MS2-FUNCTIONAL: branch layout around the MS2Ptr dtors not matched
 bool DungeonRecordManagerCli::CanClaimHelperReward(unsigned nRoomID)
 {
     if (WorldService::GetInstance()->FUN_141bd0cc0())
@@ -562,6 +571,7 @@ bool DungeonRecordManagerCli::IsBoostActive()
 }
 
 // @0x140b225a0
+// MS2-FUNCTIONAL: exe returns without a temp after the MS2Ptr dtor (return slot layout)
 bool DungeonRecordManagerCli::IsSeasonRoom(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord = GetRecord(nRoomID);
@@ -592,6 +602,7 @@ short DungeonRecordManagerCli::GetRoomScore60(unsigned nRoomID)
 }
 
 // @0x140b226f0
+// MS2-FUNCTIONAL: branch layout / tNow temp order not matched
 unsigned short DungeonRecordManagerCli::GetRoomScore68(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord = GetRecord(nRoomID);
@@ -601,6 +612,7 @@ unsigned short DungeonRecordManagerCli::GetRoomScore68(unsigned nRoomID)
 }
 
 // @0x140b22780
+// MS2-FUNCTIONAL: loop temp slots not matched
 int DungeonRecordManagerCli::GetTotalScore()
 {
     int nTotal = 0;
@@ -619,6 +631,7 @@ int DungeonRecordManagerCli::GetTotalScore()
 }
 
 // @0x140b22890
+// MS2-FUNCTIONAL: exe returns without a temp after the MS2Ptr dtor (return slot layout)
 long DungeonRecordManagerCli::GetRoomValue5c(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord = GetRecord(nRoomID);
@@ -640,6 +653,7 @@ int DungeonRecordManagerCli::GetRankRewardCount(unsigned nRank)
 }
 
 // @0x140b229c0
+// MS2-FUNCTIONAL: loop temp slots not matched
 void DungeonRecordManagerCli::GetScoredRecords(std::vector<DungeonRecordCliPtr>& out)
 {
     __int64 tNow = FUN_140869440();
@@ -652,6 +666,7 @@ void DungeonRecordManagerCli::GetScoredRecords(std::vector<DungeonRecordCliPtr>&
 }
 
 // @0x140b22aa0
+// MS2-FUNCTIONAL: by-value MS2Ptr param / return temp layout not matched
 unsigned DungeonRecordManagerCli::GetExtraTicketCost(DungeonRoomPtr pRoom)
 {
     if (pRoom == 0)
@@ -660,6 +675,7 @@ unsigned DungeonRecordManagerCli::GetExtraTicketCost(DungeonRoomPtr pRoom)
 }
 
 // @0x140b22b40
+// MS2-FUNCTIONAL: exe returns without a temp after the MS2Ptr dtor (return slot layout)
 unsigned char DungeonRecordManagerCli::GetRoomBonusCount(unsigned nRoomID)
 {
     DungeonRecordCliPtr spRecord = GetRecord(nRoomID);
@@ -680,6 +696,7 @@ void DungeonRecordManagerCli::GetSeasonRooms(std::vector<DungeonRoomPtr>& out)
 }
 
 // @0x140b22cb0
+// MS2-FUNCTIONAL: CStringW temp slots not matched
 void DungeonRecordManagerCli::ShowLackExtraTicket(unsigned nRoomID)
 {
     DungeonRoomPtr spRoom = FUN_1403206b0(DungeonRoomTable::GetInstance(), nRoomID);
@@ -744,6 +761,7 @@ CInputStream& FUN_140b23070(CInputStream& in, DungeonRecordCliPtr& spRecord)
 }
 
 // @0x140b240b0
+// MS2-FUNCTIONAL: hidden-return Delegate init differs
 Unk_MsgBoxCallback FUN_140b240b0()
 {
     return Unk_MsgBoxCallback();
