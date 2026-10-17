@@ -231,26 +231,31 @@ public:
     int FUN_140c1cdc0() const;
     char m_pad[0x8];
 };
-class Unk_GmAction { public: void FUN_14098d150(); bool FUN_14098d930(); char m_pad[0x10]; };
+class Unk_GmAction { public: void FUN_14098d150(); bool FUN_14098d930(); char m_pad[0x8]; };
 
 // A menu table row (the guide dialog sees only the name and the id).
 struct Unk_GmMenuEntry
 {
-    CString m_strName;                          // +0x00
-    char m_pad_08[0x10];
+    char m_pad_00[0x18];                        // +0x00 CPtred header (vtable, reference count)
     int m_18;                                   // +0x18 the menu id
     char m_pad_1c[0x20 - 0x1c];
-    CString m_strName20;                        // +0x20
+    CString m_strName;                          // +0x20 the menu name (also the flash layer name)
     int m_28;                                   // +0x28 big flag
     char m_pad_2c[0x30 - 0x2c];
     Unk_GmAction m_action;                      // +0x30
-    Unk_GmMenuRange m_period;                   // +0x40 the event period
+    Unk_GmMenuRange m_eventPeriod;              // +0x38 active: the name gets the "_event" suffix (0x14193ae90)
+    Unk_GmMenuRange m_period;                   // +0x40 the event period (0x14193a7b0)
     CStringW m_strTip;                          // +0x48
     CStringW m_strTipOff;                       // +0x50
     int m_58;                                   // +0x58 tooltip id
     char m_pad_5c[0x68 - 0x5c];
     int m_nOpenUi;                              // +0x68 dialog opened by the entry
 };
+MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_strName, 0x20);
+MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_eventPeriod, 0x38);
+MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_period, 0x40);
+MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_strTip, 0x48);
+MS2_CHECK_OFFSET(Unk_GmMenuEntry, m_nOpenUi, 0x68);
 class Unk_GmMenuRef                             // = Unk_GuideMenuRef
 {
 public:
@@ -1763,7 +1768,7 @@ CString UIGameMenuDialog::FUN_14193ae90(int nId)
     if (ref.FUN_140c1cd90() == 0)
         return "";
     CString strName(ref.FUN_140c1cda0()->m_strName);
-    if (!ref.FUN_140c1cda0()->m_period.FUN_140c1d130() && ref.FUN_140c1cda0()->m_period.FUN_140c1cdc0() != 0)
+    if (!ref.FUN_140c1cda0()->m_eventPeriod.FUN_140c1d130() && ref.FUN_140c1cda0()->m_eventPeriod.FUN_140c1cdc0() != 0)
         strName += "_event";
     return strName;
 }
@@ -1775,7 +1780,7 @@ CString UIGameMenuDialog::FUN_14193afc0(int nId)
     if (ref.FUN_140c1cd90() == 0)
         return "";
     CString strName(ref.FUN_140c1cda0()->m_strName);
-    if (!ref.FUN_140c1cda0()->m_period.FUN_140c1d130() && ref.FUN_140c1cda0()->m_period.FUN_140c1cdc0() != 0)
+    if (!ref.FUN_140c1cda0()->m_eventPeriod.FUN_140c1d130() && ref.FUN_140c1cda0()->m_eventPeriod.FUN_140c1cdc0() != 0)
         strName += "_event";
     return strName;
 }
@@ -2395,7 +2400,7 @@ void UIGameMenuDialog::FUN_14193daf0(bool bEvent)
     if (spItem.get() == 0) {
         Unk_GmMenuRef ref = FUN_140c1d2f0()->FUN_140cf7690(nId);
         if (!FUN_14193fc00(&ref, 0)) {
-            CString strLayer(ref.FUN_140c1cda0()->m_strName20);
+            CString strLayer(ref.FUN_140c1cda0()->m_strName);
             if (bEvent)
                 strLayer += "_event";
             spItem->FUN_140bc0530()->FUN_1407cba60("layerName", CString(strLayer));
