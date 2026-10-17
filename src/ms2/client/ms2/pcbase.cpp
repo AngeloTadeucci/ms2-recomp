@@ -927,7 +927,6 @@ PCBase::PCBase()
     m_mapB28.RemoveAll();
 }
 
-// MS2-FUNCTIONAL: the comp MS2Ptr instantiations are the UI entity types in the exe (see the ctor).
 // @0x14166af20
 PCBase::~PCBase()
 {
