@@ -134,12 +134,15 @@ public:
     int FUN_1407e9bd0();                                    // the skill type (0x1e: blocked by a buff state)
     bool FUN_1407e9d30();                                   // limited uses
     bool FUN_1407e9d70();                                   // cast from an item only
+    int FUN_1407e9b30();                                    // cast on the key press
     bool FUN_1407e9e20();                                   // dismounts to cast
     bool FUN_1407e9ef0();                                   // blocked while the content flag 0x36 is set
     MS2Ptr<class Unk_InventorySkillLevel> FUN_1407e90a0(unsigned short nLevel);   // the level row
     char m_pad_18[0x34 - 0x18];
     bool m_bLoop;                                           // +0x34 the motion loops (loopstart/loopend keys)
-    char m_pad_35[0x3d - 0x35];
+    char m_pad_35[0x38 - 0x35];
+    int m_n38;                                              // +0x38 cast on the key press
+    char m_pad_3c[0x3d - 0x3c];
     bool m_bNoSwim;                                         // +0x3d not while swimming
     char m_pad_3e[0x7d - 0x3e];
     bool m_bHeld;                                           // +0x7d cast while the key is held
@@ -1597,12 +1600,17 @@ Unk_MyPCComp1618* MyPC::FUN_141523c50()
 }
 MS2_REPLACE_METHOD(0x141523C50, MyPC, FUN_141523c50, 33, 0x3FD3C56B);
 
+// A quick slot key id (FUN_14142c5d0).
+enum Unk_MyPCKeyId { MYPC_KEY_NONE = 0 };
+
 // The quick slots (FUN_1409331f0): the item or the skill a slot holds.
 class Unk_MyPCQuickSlots
 {
 public:
     __int64 FUN_14142ded0(unsigned nSlot);                  // the item uid of the slot
     int FUN_14142dad0(unsigned nSlot);                      // the skill id of the slot
+    void FUN_14142c5d0(ATL::CAtlArray<Unk_MyPCKeyId>& aOut);   // the quick slot keys
+    int FUN_14142e6f0(Unk_MyPCLapenSlot eSlot);             // the key is not a quick slot key
 };
 Unk_MyPCQuickSlots* FUN_1409331f0();
 
@@ -1703,6 +1711,107 @@ int MyPC::FUN_1415248d0(int nSide, int nType)
     return 0;
 }
 MS2_REPLACE_METHOD(0x1415248d0, MyPC, FUN_1415248d0, 413, 0x38A60820);
+
+// The input service (FUN_140a58540).
+class Unk_MyPCInput { public: bool FUN_140d8b370() const; };   // a key is held or a gamepad is present
+Unk_MyPCInput* FUN_140a58540();
+bool FUN_1416830b0(void* pQueue, int nId);                  // the key of nId went down this frame
+
+// @0x141526730
+// Pick the quick slot key to cast: track since when each held key is down, take a key just pressed, else
+// (bAuto) the held key down the longest.
+bool MyPC::FUN_141526730(int bAuto, unsigned* pSlot)
+{
+    ATL::CAtlArray<Unk_MyPCKeyId> aSlots;
+    FUN_1409331f0()->FUN_14142c5d0(aSlots);
+    if (FUN_140a58540()->FUN_140d8b370())
+    {
+        for (unsigned i = 0; i < aSlots.GetCount(); i++)
+        {
+            Unk_MyPCLapenSlot eSlot = static_cast<Unk_MyPCLapenSlot>(aSlots[i]);
+            if (FUN_1409331f0()->FUN_14142e6f0(eSlot) != 0)
+                continue;
+            if (FUN_141682f80(FUN_14166d240(), eSlot))
+            {
+                if (m_map17c0.Lookup(eSlot) == 0)
+                    m_map17c0.SetAt(eSlot, GetTickCount());
+            }
+            else
+            {
+                if (m_map17c0.IsEmpty())
+                    continue;
+                m_map17c0.RemoveKey(eSlot);
+            }
+        }
+    }
+    else
+        m_map17c0.RemoveAll();
+    for (unsigned i = 0; i < aSlots.GetCount(); i++)
+    {
+        Unk_MyPCLapenSlot eSlot = static_cast<Unk_MyPCLapenSlot>(aSlots[i]);
+        if (FUN_1409331f0()->FUN_14142e6f0(eSlot) != 0)
+            continue;
+        if (FUN_1416830b0(FUN_14166d240(), eSlot))
+        {
+            int nSkillId = FUN_1409331f0()->FUN_14142dad0(eSlot);
+            if (nSkillId == 0)
+                continue;
+            MS2Ptr<Unk_MyPCSkillRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(nSkillId);
+            if (spRow == 0)
+                continue;
+            *pSlot = eSlot;
+            return true;
+        }
+    }
+    if (bAuto != 0)
+    {
+        DWORD nLongest = 0;
+        for (unsigned i = 0; i < aSlots.GetCount(); i++)
+        {
+            Unk_MyPCLapenSlot eSlot = static_cast<Unk_MyPCLapenSlot>(aSlots[i]);
+            if (FUN_1409331f0()->FUN_14142e6f0(eSlot) != 0)
+                continue;
+            int nSkillId = FUN_1409331f0()->FUN_14142dad0(eSlot);
+            if (nSkillId == 0)
+                continue;
+            if (FUN_140166410()->FUN_14036d570(0xca))
+            {
+                unsigned short nLevel = FUN_141528b80(nSkillId);
+                FUN_141526c80(nSkillId, nLevel);
+            }
+            MS2Ptr<Unk_MyPCSkillRow> spRow = FUN_1401958b0()->FUN_1407ee1d0(nSkillId);
+            if (spRow == 0)
+                continue;
+            int bDown = 0;
+            int bPress = 0;
+            if (spRow->FUN_1407e9d70())
+                bPress = 1;
+            else if (spRow->FUN_1407e9b30() != 0)
+                bPress = 1;
+            else if (spRow->m_n38 != 0)
+                bPress = 1;
+            if (bPress != 0 && !spRow->m_bHeld)
+                bDown = FUN_1416830b0(FUN_14166d240(), eSlot);
+            else
+                bDown = FUN_141682f80(FUN_14166d240(), eSlot);
+            if (bDown != 0)
+            {
+                DWORD nSince = 0;
+                if (m_map17c0.Lookup(eSlot, nSince) && nSince > nLongest)
+                {
+                    *pSlot = eSlot;
+                    nLongest = nSince;
+                }
+                if (*pSlot == 0)
+                    *pSlot = eSlot;
+            }
+        }
+        if (*pSlot != 0)
+            return true;
+    }
+    return false;
+}
+MS2_REPLACE_METHOD(0x141526730, MyPC, FUN_141526730, 1351, 0x04FEDA5A);
 
 // @0x141527120
 int MyPC::FUN_141527120()
