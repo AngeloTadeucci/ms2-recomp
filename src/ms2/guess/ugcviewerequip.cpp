@@ -6,15 +6,6 @@
 // MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x14189eae0-0x1418a7310 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$?0$$BY0BG@D@ArgType@internal@fmt@@QEAA@AEAY0BG@$$CBD@Z 0x1418a4900 ; prop
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0BA@DH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BA@$$CBDAEBH@Z 0x1418a4a60 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0BD@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BD@$$CBDAEB_JAEBV01@@Z 0x1418a5080 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0BG@D_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BG@$$CBDAEB_JAEBV01@@Z 0x1418a5400 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0BI@D_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0BI@$$CBDAEB_J@Z 0x1418a5780 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0O@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0O@$$CBDAEBV01@AEB_J@Z 0x1418a5a90 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0P@DV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HH@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEBV01@AEBH3@Z 0x1418a5e10 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@$$BY0P@D_J@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEAY0P@$$CBDAEB_J@Z 0x1418a61d0 ; unique
-// MS2-PIN: ??$Unk_SocketFormat@_J_JW4Unk_VwDialogId@@_JV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V23@@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEB_J1AEBW4Unk_VwDialogId@@1AEBV01@3@Z 0x1418a64e0 ; unique
 // MS2-PINS-END tplpin
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ugcviewerequip.cpp"
