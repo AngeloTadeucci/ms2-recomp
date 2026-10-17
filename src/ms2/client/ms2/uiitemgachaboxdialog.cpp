@@ -134,7 +134,7 @@ public:
     Unk_GachaText(const Scaleform::GFx::Value& v, int nMovieId);        // 0x1422e4900
     void FUN_1422e4b80(const CStringW&);
 private:
-    unsigned char m_unrecovered[0x48];
+    void* m_unrecovered_80;
 };
 MS2_CHECK_SIZE(Unk_GachaText, 0x88);
 extern Unk_Inventory DAT_143ab2a90;

@@ -27,8 +27,9 @@ public:
     void FUN_1409b5b60(int nBuffId);
     void FUN_1409b5c20();                                       // clear the icons
 private:
-    unsigned char m_unrecovered_40[0xe0];
+    unsigned char m_unrecovered_80[0xa0];
 };
+MS2_CHECK_SIZE(ASEffectManager, 0x120);
 
 struct Unk_NdNpcRow;
 // The actor (player or npc): only the virtual slots the dialog reads.
