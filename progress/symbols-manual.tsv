@@ -2548,3 +2548,8 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?s_bInit@DungeonRoomTable@@2_NA	143aad200	data
 ?DAT_142f67fe8@@3IB	142f67fe8	data
 ?s_bInit@SoundPropertyMgr@@2_NA	143aea270	data
+??0Unk_CriticalSectionLock@@QEAA@AEAVCLockCriticalSection@@H@Z	1401b4ec0	func
+??1Unk_CriticalSectionLock@@QEAA@XZ	1401b5120	func
+?NextSiblingElement@Unk_140165cf0@@QEBAPEBV1@XZ	14086e770	func
+?s_instance@?$TSingleton@VCShopEventManager@@@@2PEAV1@EA	143aaedf0	data
+?s_instance@?$TSingleton@VGameEventUserValueNameTable@@@@2PEAV1@EA	143aaedf8	data
