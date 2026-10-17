@@ -431,7 +431,7 @@ public:
     class Unk_WsC_GameObj* FUN_141bd2170(int type, float range, int useFront, int addBonus);
     class Unk_WsC_GameObj* FUN_141bd2690(const Unk_StreamPoint& pos, float maxDist, int up, int down, int needHp, int includeDead);
     class Unk_WsC_GameObj* FUN_141bd28d0(const Unk_StreamPoint& pos, float maxDist, int up, int down, int needHp, class Unk_WsC_GameObj* exclude, int includeDead);
-    class Unk_WsC_GameObj* FUN_141bd2bf0(int id);
+    class Unk_WsC_GameObj* FUN_141bd2bf0(const Unk_StreamPoint& pos, int id);   // pos unused (exe caller 0x14176b489)
     efd::SmartPointer<egf::Entity> FUN_141bd2cd0(CString name);
     void FUN_141bd2db0(ATL::CAtlList<efd::SmartPointer<class Unk_WsC_GameObj> >* out, int (*filter)(class Unk_WsC_GameObj*));
     void FUN_141bd2ea0(void* ctx, ATL::CAtlList<efd::SmartPointer<class Unk_WsC_GameObj> >* out, int a, int b, int (*filter)(void*, class Unk_WsC_GameObj*, int, int));

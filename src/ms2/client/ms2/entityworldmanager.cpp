@@ -146,7 +146,7 @@ void FUN_1401ce2b0(Unk_EntityDebugLog*, const char*);
 void FUN_1401ce2f0(Unk_EntityDebugLog*, const char*, int);
 void FUN_1414f1240(ecr::SceneGraphService*, egf::Entity*);
 void FUN_141503ef0(egfPhysX::SceneService*);
-void FUN_1414b3f50(MS2EntityLoaderService*, const egf::BlockIdentification&, unsigned*, int*);
+bool FUN_1414b3f50(MS2EntityLoaderService*, const egf::BlockIdentification&, unsigned*, int*);
 struct Unk_EntityAppFramework;
 extern Unk_EntityAppFramework DAT_143b059e8;
 efd::ServiceManager* FUN_1401cd040(Unk_EntityAppFramework*);
@@ -382,8 +382,8 @@ void EntityWorldManager::FUN_1411cf980(int map, const egf::BlockIdentification& 
     loader->RequestEntitySetUnload(request);
 }
 // @0x1411cfb80
-void EntityWorldManager::FUN_1411cfb80(unsigned* a, int* b) {
-    FUN_1414b3f50(loader, currentBlock, a, b);
+bool EntityWorldManager::FUN_1411cfb80(unsigned* a, int* b) {
+    return FUN_1414b3f50(loader, currentBlock, a, b);
 }
 // @0x1411cfbe0
 int EntityWorldManager::FUN_1411cfbe0() {

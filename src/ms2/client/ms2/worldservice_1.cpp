@@ -1532,7 +1532,7 @@ public:
 class Unk_WsC_Liftable : public CPtred                              // CLiftableObject (0x120), ctor 0x141447080
 {
 public:
-    int FUN_141447390(egf::Entity* e, int flag);                    // load from the entity
+    int FUN_141447390(egf::Entity* e, bool flag, unsigned kind);    // load from the entity (kind -> +0x20)
     CString FUN_1414472a0();                                        // name key
 };
 class Unk_WsC_TargetBox : public CPtred                             // CLiftableTargetBox (0x48), ctor 0x141bf35a0
@@ -6618,7 +6618,7 @@ MS2_REPLACE_METHOD(0x141BD28D0, WorldService, FUN_141bd28d0, 767, 0x4AE4497E);
 
 // MS2-FUNCTIONAL: codegen differs (call/temporary ordering of out-of-line COMDATs)
 // @0x141bd2bf0
-Unk_WsC_GameObj* WorldService::FUN_141bd2bf0(int id)
+Unk_WsC_GameObj* WorldService::FUN_141bd2bf0(const Unk_StreamPoint& /*pos*/, int id)
 {
     for (void* p = FUN_140a7b840(&m_148); p; FUN_140a7b860(&m_148, &p))
     {
@@ -6869,7 +6869,7 @@ void WorldService::FUN_141bcda90()
                 MS2Ptr<Unk_WsC_Liftable> obj(mem ? FUN_141447080(mem) : 0);
                 int liftType = 0;
                 FUN_1408a2020(ent, 0x3773e9e0, &liftType);
-                if (obj->FUN_141447390(ent, 0) != 0)
+                if (obj->FUN_141447390(ent, false, liftType) != 0)
                 {
                     CString key = obj->FUN_1414472a0();
                     FUN_141c1b960(&m_510, key, obj);
@@ -9769,7 +9769,7 @@ Unk_WsF_EntRef* FUN_141c00920_F(void* map, void* pos);                          
 CString* FUN_141bfed20(void* map, void* pos);                                   // m_5e8.GetKeyAt
 void FUN_141bff1b0(void* map, void** pos);                                      // m_5e8.GetNext
 // m_420 / m_468 (CAtlMap<u64, ...>)
-bool FUN_141c06df0(void* map, unsigned __int64 key);                            // m_420.Lookup
+bool FUN_141c06df0(void* map, unsigned __int64 key, Unk_WsF_Weak* value);      // m_420.Lookup
 bool FUN_141c06ed0(void* map, unsigned __int64 key, Unk_WsF_PcRef* value);      // m_468.Lookup
 void* FUN_141c00260(void* map);                                                 // m_468.GetStartPosition
 Unk_WsF_PcRef* FUN_141bff2f0(void* map, void** pos);                            // m_468.GetNextValue
@@ -9947,7 +9947,7 @@ void WorldService::FUN_141bc3560()
             Unk_WsF_Weak range;
             FUN_141bf12e0(&range);
             unsigned __int64 entityKey = FUN_140affe40(FUN_1408a9280(&entity));
-            if (!FUN_141c06df0(&m_420, entityKey))
+            if (!FUN_141c06df0(&m_420, entityKey, &range))
                 continue;
 
             Unk_WsF_PcRef pc;
@@ -10978,7 +10978,7 @@ extern char DAT_143afa4d8;                                      // NiNode RTTI
 
 // ---- callees ----
 void* FUN_1409670f0();                                          // entity world manager singleton
-bool FUN_1411cfb80(void* entityWorldMgr, int* pCount);
+bool FUN_1411cfb80(void* entityWorldMgr, unsigned* pLoaded, int* pTotal);   // loaded / total entities of the block
 void* FUN_1403ed2b0();                                          // UI service singleton
 void FUN_141adb9c0(void* uiService, const CStringW& title, int count, int zero);
 void* FUN_1409478c0();                                          // camera singleton
@@ -11092,8 +11092,9 @@ void WorldService::FUN_141bbd640(const egf::EntityChangeMessage* pMsg, efd::Cate
     // loading progress for the title screen
     if (m_state == 2)
     {
-        int count = 0;
-        if (FUN_1411cfb80(FUN_1409670f0(), &count))
+        unsigned count = 0;
+        int total = 0;
+        if (FUN_1411cfb80(FUN_1409670f0(), &count, &total))
         {
             ++count;
             CStringW title(*FUN_141bd3080());

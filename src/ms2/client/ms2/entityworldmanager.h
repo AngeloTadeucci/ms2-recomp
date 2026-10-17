@@ -98,7 +98,7 @@ public:
     void FUN_1411cf5a0(const egf::EntityID&, egf::Entity*);
     bool FUN_1411cf630(int, const egf::BlockIdentification&);
     void FUN_1411cf980(int, const egf::BlockIdentification&);
-    void FUN_1411cfb80(unsigned*, int*);
+    bool FUN_1411cfb80(unsigned*, int*);
     int FUN_1411cfbe0();
     void FUN_1411cfce0();
     void FUN_1411cfd40(const egf::EntityChangeMessage*, efd::Category);
