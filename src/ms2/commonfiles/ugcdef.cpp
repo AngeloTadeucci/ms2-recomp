@@ -1755,15 +1755,17 @@ void CUgcItemMusicNote::Read(CInputStream& stream)
     m_info.m_str18 = stream.vfunc_o8_8();
 }
 
-// MS2-FUNCTIONAL: MS2Ptr dtor unwind offsets differ
 // @0x140894060
 CStringA CUgcItemMusicNote::FUN_140894060() const
 {
     MS2Ptr<Unk_MusicBookInfo> spInfo = FUN_14052d1d0()->FUN_14072cc10(m_n24);
-    if ((Unk_MusicBookInfo*)spInfo == 0)
-        return CStringA("");
-    return CStringA(spInfo->m_str28);
+    if ((Unk_MusicBookInfo*)spInfo != 0)
+    {
+        return CStringA(spInfo->m_str28);
+    }
+    return CStringA("");
 }
+#line 1767
 
 // @0x140894120
 CUgcMarketSchCond::CUgcMarketSchCond()
@@ -1942,7 +1944,6 @@ int CUgcMarketSchCond::FUN_140894990() const
     return nResult;
 }
 
-// MS2-FUNCTIONAL: compare operand load order differs
 // @0x140894a10
 int CUgcMarketSchCond::FUN_140894a10(const CUgcMarketSchCond* pOther) const
 {
@@ -1956,11 +1957,11 @@ int CUgcMarketSchCond::FUN_140894a10(const CUgcMarketSchCond* pOther) const
         return 0;
     if (FUN_140164830(pOther->m_str28, m_str28))
         return 0;
-    int nFirst = pOther->FUN_140894840();
-    if (nFirst > pOther->FUN_140894840())
+    if (pOther->FUN_140894840() > pOther->FUN_140894840())
         return 0;
     return 1;
 }
+#line 1966
 
 // @0x140894ad0
 CUgcMarketProduct::CUgcMarketProduct()
