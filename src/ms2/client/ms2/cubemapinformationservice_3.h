@@ -280,6 +280,8 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410caf20(Cube* pCube, int nTime);
+    void FUN_1410bbf20(int nGroup, const egf::EntityID& id);
     void FUN_1410bf470();
     void FUN_1410ce600(int nItemId, Unk_Int3 pt, int nZ);
     Unk_CMISEntityRef FUN_1410cb1b0();

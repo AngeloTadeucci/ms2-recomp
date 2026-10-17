@@ -259,7 +259,14 @@ Unk_CMISListEnd* FUN_1411522d0(Unk_CMISIntList*, Unk_CMISListEnd*);         // e
 bool FUN_14035ea60(Unk_CMISListIter*, Unk_CMISListEnd*);                   // operator!=
 int* FUN_1403e8d70(Unk_CMISListIter*);                                      // operator*
 void FUN_14035ebf0(Unk_CMISListIter*);                                      // operator++
-struct Unk_CMISHouseInfo;
+struct Unk_CMISHouseInfo : public CPtred                                    // a house marker record (0x38)
+{
+    int m_nGroup;                                                           // +0x18
+    Unk_StreamPoint m_pt;                                                   // +0x1c
+    CStringW m_strOwner;                                                    // +0x28
+    bool m_bNoSalable;                                                      // +0x30
+    int m_nValue;                                                           // +0x34
+};
 struct Unk_CMISHousePtr { void* m_p; };                                     // MS2Ptr<house info>
 struct Unk_CMISHouseNode { int first; Unk_CMISHousePtr second; };
 class Unk_CMISHouseMark { public: void FUN_14198cb00(const Unk_CMISHouseInfo& info); void FUN_14198cf50(); };
@@ -272,7 +279,7 @@ Unk_CMISHouseNode* FUN_1411285a0(Unk_CMISIter<274>*);                       // o
 void FUN_141129ac0(Unk_CMISIter<274>*);                                     // operator++
 Unk_CMISIter<274>* FUN_1411573c0(Unk_CMISTree<274>*, Unk_CMISIter<274>*, const int*);   // find
 Unk_CMISHousePtr* FUN_141127c50(Unk_CMISTree<274>*, const int*);             // operator[]
-char* FUN_141128470(Unk_CMISHousePtr*);                                      // the house info bytes
+Unk_CMISHouseInfo* FUN_141128470(Unk_CMISHousePtr*);                         // operator->
 int FUN_1408b5620(int);
 bool FUN_141151760(Unk_CMISTree<259>*);
 bool FUN_141126b10(Unk_CMISHousePtr*, int);                                 // operator==(0)
@@ -1379,7 +1386,7 @@ int CubeMapInformationService::FUN_1410d33a0(int nKey, Unk_StreamPoint* pOut)
 {
     Unk_CMISIter<274> itEnd, itFind;
     if (FUN_141127440(FUN_1411573c0(&f238, &itFind, &nKey), FUN_141151a30(&f238, &itEnd))) {
-        *pOut = *reinterpret_cast<Unk_StreamPoint*>(FUN_141128470(FUN_141127c50(&f238, &nKey)) + 0x1c);
+        *pOut = FUN_141128470(FUN_141127c50(&f238, &nKey))->m_pt;
         return 1;
     }
     return 0;
@@ -1487,7 +1494,7 @@ void CubeMapInformationService::FUN_1410c3630(int v) { f330 = v; }
 int CubeMapInformationService::FUN_1410c3650() { return f330; }
 
 // ---- w138 callees (unit-local, names invented) ----
-class Unk_CMISLog { public: unsigned __int64 FUN_1403d7960(int nLevel, int nCategory, const wchar_t* pFormat, const int* pA, const int* pB); unsigned __int64 FUN_1410db4f0(int nLevel, int nCategory, const wchar_t* pFormat, const int& a, const int& b, const int& c); unsigned __int64 FUN_1401859c0(int nLevel, int nCategory, const wchar_t* pMsg); };
+class Unk_CMISLog { public: unsigned __int64 FUN_140353fc0(int nLevel, int nCategory, const wchar_t* pFormat, const int* pA); unsigned __int64 FUN_1403d7960(int nLevel, int nCategory, const wchar_t* pFormat, const int* pA, const int* pB); unsigned __int64 FUN_1410db4f0(int nLevel, int nCategory, const wchar_t* pFormat, const int& a, const int& b, const int& c); unsigned __int64 FUN_1401859c0(int nLevel, int nCategory, const wchar_t* pMsg); };
 Unk_CMISLog* FUN_140166440();
 struct Unk_CMISEntId { Unk_CMISEntId(const Unk_CMISEntId&); __int64 m_id; };
 void FUN_14115b260(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId, float fFrom, float fTo, unsigned nMs);   // AddRotate
@@ -1884,7 +1891,7 @@ struct Unk_CMISPartyRef                                                         
     void* FUN_140fa9d30();                                                                  // operator bool
     Unk_CMISParty* FUN_14050dee0();                                                         // operator->
 };
-struct Unk_CMISSalable { Unk_CMISSalable(); ~Unk_CMISSalable(); void* m[25]; };               // ctor 0x1408ad110, dtor 0x14050de70
+struct Unk_CMISSalable { Unk_CMISSalable(); ~Unk_CMISSalable(); void* m_pad0[4]; int m_nField20; int m_pad24; void* m_pad28[15]; void* m_pField0xa0; void* m_pad1[4]; };               // ctor 0x1408ad110, dtor 0x14050de70
 int FUN_1408a0d30(int, Unk_CMISSalable*, int);
 // @0x1410c80d0
 // MS2-FUNCTIONAL: unwind-state locals of the exe's result temporaries differ
@@ -2640,7 +2647,7 @@ void CubeMapInformationService::FUN_1410c44b0(int nGroup, int nBlock, int bFlag)
 struct Unk_CMISBlock { Unk_CMISBlock(const Unk_CMISBlock&); ~Unk_CMISBlock(); void* m_a; void* m_b; };   // copy 14111e680, dtor 141123760
 struct Unk_CMISObjHandle { void* m_a; void* m_b; };
 struct Unk_CMISObjRec { char pad[0x40]; int nKind; };
-class Unk_CMISWorldMgr { public: egf::EntityPtr FUN_1411ce7c0(efd::utf8string, efd::utf8string, NiPoint3, NiPoint3, float, int, int); };
+class Unk_CMISWorldMgr { public: egf::Entity* FUN_1411cf440(const egf::EntityID&); egf::EntityPtr FUN_1411ce7c0(efd::utf8string, efd::utf8string, NiPoint3, NiPoint3, float, int, int); };
 void* FUN_1409670f0();
 int FUN_140707660(int);
 Unk_CMISIter<266>* FUN_1411519d0(Unk_CMISTree<266>*, Unk_CMISIter<266>*);
@@ -3300,4 +3307,99 @@ Unk_CMISEntityRef CubeMapInformationService::FUN_1410cb1b0()
         }
     }
     return Unk_CMISEntityRef(reinterpret_cast<const Unk_CMISEntityRef&>(best));
+}
+// ---- w138 batch 11 ----
+struct Unk_CMISCubeTimer { Timer m_timer; bool m_bFlagA; bool m_bFlagB; };                 // f1f8 value: the placement timer (flags at 0x38/0x39)
+class Unk_CMISClock;
+Unk_CMISClock* FUN_14086d260();
+int FUN_141473390(Unk_CMISClock*);                                                          // the current time
+Unk_CMISCubeTimer* FUN_141127f10(Unk_CMISTree<272>*, const int*);                           // operator[]
+bool FUN_1413d6e60(HardwareInstancingService*, egf::Entity*, int);
+void FUN_141689ec0(CPhysXHelper*, egf::Entity*, int nAnim, int nA, int nB);
+// @0x1410caf20
+// MS2-FUNCTIONAL: service-pointer truth test is an inlined bool conversion in the exe; frame differs
+void CubeMapInformationService::FUN_1410caf20(Cube* pCube, int nTime)
+{
+    int nCell = FUN_1408a03c0(pCube->position);
+    Unk_CMISIter<272> itEnd, itFind;
+    if (FUN_141127680(FUN_141157ba0(&f1f8, &itFind, &nCell), FUN_141151d90(&f1f8, &itEnd)) == 0) {
+        bool bInstanced = false;
+        FUN_1408a20a0(FUN_1408a9280(&pCube->entity), 0x23f9860e, &bInstanced);
+        if (bInstanced) {
+            Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+            if (spInst.FUN_14098d090() != 0)
+                FUN_1413d6e60(spInst.FUN_14098d0e0(), FUN_1408a9090(&pCube->entity), 0);
+        }
+        bool bOff = false;
+        FUN_14098c6e0(FUN_1408a9280(&pCube->entity), 0xa0b6b179, &bOff);
+        Unk_CMISCubeTimer* pTimer = FUN_141127f10(&f1f8, &nCell);
+        pTimer->m_timer.FUN_140868750(nTime - FUN_141473390(FUN_14086d260()));
+        FUN_1408a20a0(FUN_1408a9280(&pCube->entity), 0x2a7fd9f4, &pTimer->m_bFlagA);
+        FUN_1408a20a0(FUN_1408a9280(&pCube->entity), 0x9004569a, &pTimer->m_bFlagB);
+        if (pCube->field44 != 1)
+            FUN_141689ec0(FUN_1409f7ca0(), FUN_1408a9090(&pCube->entity), 5, 0, 1);
+    }
+}
+egf::EntityPtr FUN_1408a7ed0(const Unk_CMISEntityRef* pRef);
+void FUN_140998250(egf::Entity*, unsigned, efd::AssetID*);
+void FUN_140de8bd0(egf::Entity*, unsigned, efd::AssetID*);
+// @0x1410bbcd0
+// MS2-FUNCTIONAL: entity-ptr and AssetID temporaries / unwind states are laid out differently from the exe
+void CubeMapInformationService::FUN_1410bbcd0(int nGroup, int nIsOne)
+{
+    int nFlag = 0;
+    FUN_1408a0890(FUN_1403ed2d0()->FUN_141bd3060(), nGroup, &nFlag);
+    Unk_CMISIter<264> itEnd, itFind;
+    if (FUN_141126c90(FUN_141157200(&ff8, &itFind, &nGroup), FUN_141151970(&ff8, &itEnd)) == 0) {
+        egf::EntityPtr spEnt = FUN_1408a7ed0(FUN_141127b90(&ff8, &nGroup));
+        if (FUN_1408a9090(&spEnt) != 0) {
+            int nState = 2;
+            Unk_CMISHouseRef spHouse(FUN_1410c7c20(nGroup, nIsOne));
+            if (spHouse.FUN_141128410() != 0)
+                nState = spHouse.FUN_1411284b0()->m_state;
+            efd::AssetID asset;
+            if (nState == 2)
+                FUN_140998250(FUN_1408a9280(&spEnt), 0x2472f50d, &asset);
+            else if (nState == 1)
+                FUN_140998250(FUN_1408a9280(&spEnt), 0x811e9044, &asset);
+            else if (nState == 4)
+                FUN_140998250(FUN_1408a9280(&spEnt), 0x46fed193, &asset);
+            FUN_140de8bd0(FUN_1408a9280(&spEnt), 0x770e5fc6, &asset);
+        }
+    } else {
+        FUN_140166440()->FUN_140353fc0(0xc, 0x13, L"Not exist salable group : {0}", &nGroup);
+    }
+}
+void FUN_140964eb0(Unk_CMISEntityRef* pDst, egf::EntityPtr* pSrc);
+CStringW FUN_140979570(int nMap);
+void FUN_14111e6e0(Unk_CMISHousePtr*);                                                      // ctor: allocates a fresh record
+void FUN_141126140(Unk_CMISHousePtr* pDst, Unk_CMISHousePtr* pSrc);                         // assign
+void FUN_141123790(Unk_CMISHousePtr*);                                                      // dtor
+// @0x1410bbf20
+// MS2-FUNCTIONAL: entity-ptr and CString temporaries / unwind states are laid out differently from the exe
+void CubeMapInformationService::FUN_1410bbf20(int nGroup, const egf::EntityID& id)
+{
+    egf::EntityPtr spEnt(static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(id));
+    FUN_140964eb0(FUN_141127b90(&ff8, &nGroup), &spEnt);
+    Unk_StreamPoint pt = DAT_143b01a60;
+    FUN_1409618c0(FUN_1408a9280(&spEnt), 0xfd95ca52, &pt);
+    CStringW strKey;
+    strKey.Format(L"%d", nGroup);
+    int nMap = FUN_1403ed2d0()->FUN_141bd3060();
+    CStringW strOwner;
+    Unk_CMISSalable salable;
+    if (FUN_1408a0d30(nGroup, &salable, nMap) != 0)
+        strOwner = FUN_140979570(nMap);
+    Unk_CMISHousePtr spInfo;
+    FUN_14111e6e0(&spInfo);
+    FUN_141128470(&spInfo)->m_nGroup = nGroup;
+    FUN_141128470(&spInfo)->m_pt = pt;
+    FUN_141128470(&spInfo)->m_strOwner = strOwner;
+    FUN_141128470(&spInfo)->m_bNoSalable = salable.m_pField0xa0 == 0;
+    FUN_141128470(&spInfo)->m_nValue = salable.m_nField20;
+    FUN_141126140(FUN_141127c50(&f238, &nGroup), &spInfo);
+    Unk_CMISHouseMark* pMark = FUN_1410dc020();
+    if (pMark != 0)
+        pMark->FUN_14198cb00(*FUN_141128800(&spInfo));
+    FUN_141123790(&spInfo);
 }
