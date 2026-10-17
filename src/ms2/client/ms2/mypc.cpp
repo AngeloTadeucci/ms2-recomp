@@ -115,6 +115,8 @@ struct Unk_MyPCSkillSwap
     int FUN_140803040();                                    // nTo, or 0 without a pair
     int m_nFrom;                                            // +0x0
     int m_nTo;                                              // +0x4
+    bool m_bCombo;                                          // +0x8 the cooldown runs from the combo key
+    bool m_bNoSwap;                                         // +0x9
 };
 // The skill row a casting skill was built from (MS2Ptr at Unk_PCBaseComp_b18+0x30, -> 0x14063ed50).
 class Unk_MyPCSkillRow : public CPtred
@@ -127,24 +129,27 @@ public:
     bool FUN_1407e9d70();                                   // cast from an item only
     bool FUN_1407e9e20();                                   // dismounts to cast
     bool FUN_1407e9ef0();                                   // blocked while the content flag 0x36 is set
-    char m_pad_18[0x3d - 0x18];
+    char m_pad_18[0x34 - 0x18];
+    bool m_bLoop;                                           // +0x34 the motion loops (loopstart/loopend keys)
+    char m_pad_35[0x3d - 0x35];
     bool m_bNoSwim;                                         // +0x3d not while swimming
     char m_pad_3e[0xa4 - 0x3e];
     Unk_MyPCSkillSwap m_kSwap;                              // +0xa4
-    unsigned char m_bAC;                                    // +0xac
-    bool m_bNoSwap;                                         // +0xad
-    char m_pad_ae[0x1b8 - 0xae];
+    char m_pad_b0[0x17c - 0xb0];
+    int m_n17c;                                             // +0x17c (0: the cast time is scaled by the attack speed)
+    char m_pad_180[0x1b8 - 0x180];
     ATL::CAtlArray<unsigned int> m_aNeedBuffs;              // +0x1b8 the buffs the cast needs
 };
 MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_aNeedBuffs, 0x1b8);
 MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_kSwap, 0xa4);
-MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_bNoSwap, 0xad);
+MS2_CHECK_OFFSET(Unk_MyPCSkillRow, m_n17c, 0x17c);
 
 // The casting skill record behind PCBase slots 103/104 (completed per unit; see statemanager.cpp).
 class Unk_PCBaseComp_b18 : public CPtred
 {
 public:
-    char m_pad_18[0x20 - 0x18];
+    int m_nSkillId;                                         // +0x18
+    char m_pad_1c[0x20 - 0x1c];
     __int64 m_nItemUid;                                     // +0x20 the item of an item cast (ride-on)
     char m_pad_28[0x30 - 0x28];
     MS2Ptr<Unk_MyPCSkillRow> m_spRow;                       // +0x30
@@ -495,9 +500,12 @@ public:
     struct Unk_MyPCSkillMotion* FUN_141759830();            // the motion row
     int FUN_141759960();                                    // the skill id
     MS2Ptr<Unk_InventorySkillLevel> m_spLevel;              // +0x40
-    char m_pad_50[0x90 - 0x50];
+    char m_pad_50[0x8c - 0x50];
+    int m_n8c;                                              // +0x8c (set: no cooldown is sent)
     int m_n90;                                              // +0x90
-    char m_pad_94[0xa4 - 0x94];
+    char m_pad_94[0x98 - 0x94];
+    int m_n98;                                              // +0x98 the charge was released
+    char m_pad_9c[0xa4 - 0x9c];
     int m_nA4;                                              // +0xa4
     char m_pad_a8[0xac - 0xa8];
     bool m_bNoBindCheck;                                    // +0xac
@@ -1835,7 +1843,17 @@ int MyPC::FUN_141525480(int nSkillId, bool bRemap)
 }
 MS2_REPLACE_METHOD(0x141525480, MyPC, FUN_141525480, 250, 0xBAAB98AC);
 
-struct Unk_MyPCSkillMotion { char m_pad_00[0xb8]; float m_fB8; };   // +0xb8 the cast move distance
+// The motion row of a skill (the animation sequence and its loop count).
+struct Unk_MyPCSkillMotion
+{
+    char m_pad_00[0x18];
+    CStringA m_strSeq;                                      // +0x18 the sequence name
+    char m_pad_20[0xb8 - 0x20];
+    float m_fB8;                                            // +0xb8 the cast move distance
+    char m_pad_bc[0xc8 - 0xbc];
+    int m_nLoops;                                           // +0xc8
+};
+MS2_CHECK_OFFSET(Unk_MyPCSkillMotion, m_nLoops, 0xc8);
 bool FUN_14028d470(float a, float b);                       // a == b (within epsilon)
 unsigned int FUN_140803dc0(Unk_InventorySkillLevel* pLevel); // the row's skill id
 int FUN_14053dc90(Unk_ItemEquipData* pData);               // the skill of the item
@@ -1967,6 +1985,112 @@ bool MyPC::FUN_141525580(MS2Ptr<CSkillRecord> spRecord)
 }
 MS2_REPLACE_METHOD(0x141525580, MyPC, FUN_141525580, 2653, 0xF67D1297);
 
+float FUN_140804660(Unk_InventorySkillLevel* pLevel);       // the cast time (s)
+float FUN_1417ec0d0(PCBase* pCaster, MS2Ptr<CSkillRecord> spRecord);   // stateskill.cpp: the attack speed
+class Unk_MyPCActorRegistry
+{
+public:
+    NiActorManager* FUN_140999440(const egf::EntityID& kId); // NULL when not loaded
+};
+Unk_MyPCActorRegistry* FUN_141b6f910();
+NiSequenceData* FUN_140999740(NiActorManager* pMgr, unsigned int nSeq);
+float FUN_141b6fee0(NiSequenceData* pSeqData, const NiFixedString& kKey, float fDivisor);   // a text key's time
+
+// Send the skill's cooldown: the cast time scaled by the attack speed, or the times of the motion's text keys
+// (combo, charging_combo, the loop span times the loop count) less the time already elapsed.
+// @0x141525ff0
+void MyPC::FUN_141525ff0(MS2Ptr<CSkillRecord> spRecord, float fElapsed)
+{
+    if (spRecord->m_n8c != 0)
+        return;
+    if (DAT_143ae0fbc != 0)
+        return;
+    int bCombo = 0;
+    float fCool = FUN_140804660(spRecord->m_spLevel.operator->());
+    float fComboTime = 0.0f;
+    if (!FUN_14028d470(fCool, 0.0f) && spRecord->m_spRow->m_n17c == 0)
+    {
+        fCool = fCool / FUN_1417ec0d0(this, spRecord);
+        bCombo = 1;
+    }
+    else
+    {
+        do
+        {
+            Unk_MyPCSkillMotion* pMotion = spRecord->FUN_141759830();
+            NiActorManager* pMgr = FUN_141b6f910()->FUN_140999440(FUN_14123c460());
+            if (pMotion == 0 || pMgr == 0)
+                break;
+            unsigned int nSeq = pMgr->FindSequenceID(pMotion->m_strSeq);
+            NiSequenceData* pSeq = FUN_140999740(pMgr, nSeq);
+            if (pSeq == 0)
+                break;
+            float fSpeed = FUN_1417ec0d0(this, spRecord);
+            {
+                NiFixedString kKey("combo");
+                fComboTime = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+            }
+            Unk_MyPCSkillSwap& kSwap = spRecord->m_spRow->m_kSwap;
+            int nSwapTo = kSwap.FUN_140803040();
+            if (nSwapTo != 0 || kSwap.m_bCombo)
+            {
+                float fSwapCool;
+                {
+                    NiFixedString kKey("combo");
+                    fSwapCool = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+                }
+                if (kSwap.m_bNoSwap && !spRecord->m_spRow->m_bLoop)
+                {
+                    {
+                        NiFixedString kKey("charging_combo");
+                        fSwapCool = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+                    }
+                }
+                else if (kSwap.m_bNoSwap && spRecord->m_spRow->m_bLoop)
+                {
+                    if (spRecord->m_n98 != 0)
+                        return;
+                    float fStart;
+                    {
+                        NiFixedString kKey("loopstart");
+                        fStart = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+                    }
+                    float fEnd;
+                    {
+                        NiFixedString kKey("loopend");
+                        fEnd = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+                    }
+                    fSwapCool = fEnd - fStart;
+                    fSwapCool = fSwapCool * pMotion->m_nLoops;
+                }
+                fSwapCool = fSwapCool - fElapsed < 0.0f ? 0.0f : fSwapCool - fElapsed;
+                int bSelf = 0;
+                m_kSkillSystem.FUN_1417664e0(spRecord->m_nSkillId, nSwapTo, fSwapCool, 0.0f, 1);
+                if (nSwapTo == FUN_140803dc0(spRecord->m_spLevel.operator->()))
+                    bSelf = 1;
+                if (bSelf)
+                    return;
+            }
+            else if (spRecord->m_spRow->m_bLoop && spRecord->m_n98 == 0 && FUN_14028d470(fCool, 0.0f))
+            {
+                {
+                    NiFixedString kKey("loopend");
+                    fCool = FUN_141b6fee0(pSeq, kKey, 1.0f) / fSpeed;
+                }
+                bCombo = 1;
+            }
+        } while (0);
+    }
+    if (FUN_14028d470(fCool, 0.0f) && fComboTime > 0.0f)
+    {
+        fCool = fComboTime;
+        bCombo = 1;
+    }
+    fCool = fCool - fElapsed < 0.0f ? 0.0f : fCool - fElapsed;
+    m_kSkillSystem.FUN_1417664e0(spRecord->m_nSkillId, spRecord->m_spRow->FUN_1407e9a40(), fCool, fComboTime, bCombo);
+}
+MS2_REPLACE_METHOD(0x141525ff0, MyPC, FUN_141525ff0, 1835, 0x213C2411);
+
 // Switch the skill to the one its level data names for the casting skill or an active buff.
 // @0x141526c80
 void MyPC::FUN_141526c80(int& nSkillId, unsigned short& nLevel)
@@ -1985,7 +2109,7 @@ void MyPC::FUN_141526c80(int& nSkillId, unsigned short& nLevel)
         MS2Ptr<Unk_PCBaseComp_b18> spCast = vfunc_103();
         if (FUN_140166410()->FUN_14036d570(0xca))
         {
-            if (spCast.get() != 0 && !spCast->m_spRow->m_bNoSwap && spCast->m_spRow->m_kSwap.FUN_140803040() != 0)
+            if (spCast.get() != 0 && !spCast->m_spRow->m_kSwap.m_bNoSwap && spCast->m_spRow->m_kSwap.FUN_140803040() != 0)
             {
                 for (unsigned int i = 0; i < aBuffIds.GetCount(); i++)
                 {
