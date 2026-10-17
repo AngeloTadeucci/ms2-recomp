@@ -5,6 +5,7 @@
 #pragma once
 
 #include "ms2/ms2layout.h"
+#include <set>
 #include "ms2/commonfiles/os.h"
 
 template <class T> class MS2Ptr;
@@ -13,6 +14,7 @@ struct MesoRevivalEventContext;
 struct OntimeEventContext;
 class DungeonBonusRewardCtx;
 class EventQuestContext;
+class DungeonRoomShutdownContext;
 
 class CGameRule : public TSingleton<CGameRule>
 {
@@ -49,6 +51,15 @@ public:
     void FUN_140478fd0(CStringW tag, MS2Ptr<EventQuestContext> spContext);  // GameEventQuestTag
     void FUN_140479070(CStringW tag);
     void FUN_140479510(int rate, __int64 beginTime, __int64 endTime);       // GameEventBlackMarketFeeDiscount
+    void FUN_1404795c0(int value);                                          // GameEventEventFieldPopup
+    void FUN_140479600(int value);                                          // GameEventUGCMapSaleCoupon
+    void FUN_1404798e0(int value);                                          // GameEventSaleAutoFishing
+    void FUN_140479920(CStringW str);
+    void FUN_140479a00(int value);                                          // GameEventSaleAutoPlayInstrument
+    void FUN_140479a40(CStringW str);
+    void FUN_140479c80(MS2Ptr<DungeonRoomShutdownContext> spContext);       // GameEventDungeonRoomShutdown
+    void FUN_14047a360(std::set<unsigned> ids);                            // GameEventFieldShutdown on
+    void FUN_14047a3d0();                                                   // ... off
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

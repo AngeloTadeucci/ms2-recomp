@@ -13,6 +13,7 @@
 #include "ms2/commonfiles/itemgift.h"
 #include "ms2/commonfiles/timeutil.h"
 #include "ms2/placeholder/mstime.h"
+#include "ms2/placeholder/dungeonroomshutdowncontext.h"
 class Unk_140165cf0;
 class CInPacket;
 class CInputStream;
@@ -27,7 +28,7 @@ class Unk_GEOut {
 public:
     virtual void WriteBool(bool value);             // slot 0
     virtual void WriteByte(unsigned char value);    // slot 1
-    virtual void WriteShort(short value);           // slot 2
+    virtual void WriteShort(unsigned short value);  // slot 2
     virtual void WriteInt(int value);               // slot 3
     virtual void WriteInt64(__int64 value);         // slot 4
     virtual void WriteFloat(float value);           // slot 5
@@ -39,7 +40,7 @@ class Unk_GEReader {
 public:
     virtual bool ReadBool();            // slot 0
     virtual unsigned char ReadByte();   // slot 1
-    virtual short ReadShort();          // slot 2
+    virtual unsigned short ReadShort(); // slot 2
     virtual int ReadInt();              // slot 3
     virtual __int64 ReadInt64();        // slot 4
     virtual float ReadFloat();          // slot 5
@@ -402,8 +403,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c0460
     virtual void vfunc_5();                     // 0x1403c04e0
     virtual void vfunc_6();                     // 0x1403c0600
-private:
-    char m_pad_d0[0x8];
+    GameEventDungeonOpenPeriod();
+    CStringW m_d0;                              // the dungeon tag id; emptied if already registered
 };  // vftable 0x142d3f848, ??_G 0x1403e9f10, dtor 0x1403e5f20
 MS2_CHECK_SIZE(GameEventDungeonOpenPeriod, 0xd8);
 class GameEventDungeonRoomShutdown : public GameEvent {
@@ -413,8 +414,8 @@ public:
     virtual void vfunc_5();                     // 0x1403c01a0
     virtual void vfunc_6();                     // 0x1403c0210
     virtual bool vfunc_9(void* other);          // 0x1403c0270
-private:
-    char m_pad_d0[0x10];
+    GameEventDungeonRoomShutdown();
+    MS2Ptr<DungeonRoomShutdownContext> m_d0;    // NULL if the XML values name no room / group
 };  // vftable 0x142d3f7f0, ??_G 0x1403e9f50, dtor 0x1403e5f50
 MS2_CHECK_SIZE(GameEventDungeonRoomShutdown, 0xe0);
 class GameEventEnchantRate : public GameEvent {
@@ -449,8 +450,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403bf630
     virtual void vfunc_5();                     // 0x1403bf690
     virtual void vfunc_6();                     // 0x1403bf6c0
-private:
-    char m_pad_d0[0x8];
+    GameEventEventFieldPopup();
+    int m_d0;
+    int m_pad_d4;
 };  // vftable 0x142d3f690, ??_G 0x1403ea010, dtor 0x1403e6010
 MS2_CHECK_SIZE(GameEventEventFieldPopup, 0xd8);
 class GameEventExchangeScrollSale : public GameEvent {
@@ -496,8 +498,8 @@ public:
     virtual void vfunc_5();                     // 0x1403c08d0
     virtual void vfunc_6();                     // 0x1403c0940
     virtual bool vfunc_9(void* other);          // 0x1403c0970
-private:
-    char m_pad_d0[0x10];
+    GameEventFieldShutdown();
+    std::set<unsigned> m_d0;                    // the <field id=..> ids of m_68
 };  // vftable 0x142d3f8a0, ??_G 0x1403ea110, dtor 0x1403e60c0
 MS2_CHECK_SIZE(GameEventFieldShutdown, 0xe0);
 class GameEventFindDungeonHelperBonus : public GameEvent {
@@ -551,8 +553,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403bf3c0
     virtual void vfunc_5();                     // 0x1403bf480
     virtual void vfunc_6();                     // 0x1403bf490
-private:
-    char m_pad_d0[0x10];
+    GameEventGameMenuPopup();
+    int m_d0;                                   // streamed as a 16-bit value
+    int m_pad_d4;
+    CStringW m_d8;
 };  // vftable 0x142d3f638, ??_G 0x1403ea250, dtor 0x1403e6180
 MS2_CHECK_SIZE(GameEventGameMenuPopup, 0xe0);
 class GameEventGuildChampionship : public GameEvent {
@@ -910,8 +914,12 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403beee0
     virtual void vfunc_5();                     // 0x1403bf000
     virtual void vfunc_6();                     // 0x1403bf1a0
-private:
-    char m_pad_d0[0x20];
+    GameEventPremiumMarketSale();
+    int m_d0;
+    int m_pad_d4;
+    std::set<int> m_d8;                         // from the comma separated m_70
+    int m_e8;
+    int m_pad_ec;
 };  // vftable 0x142d3f5e0, ??_G 0x1403ea9d0, dtor 0x1403e6630
 MS2_CHECK_SIZE(GameEventPremiumMarketSale, 0xf0);
 class GameEventPublicTest : public GameEvent {
@@ -1001,8 +1009,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403bf8d0
     virtual void vfunc_5();                     // 0x1403bf990
     virtual void vfunc_6();                     // 0x1403bfa10
-private:
-    char m_pad_d0[0x10];
+    GameEventSaleAutoFishing();
+    int m_d0;
+    int m_pad_d4;
+    CStringW m_d8;
 };  // vftable 0x142d3f6e8, ??_G 0x1403eac10, dtor 0x1403e67d0
 MS2_CHECK_SIZE(GameEventSaleAutoFishing, 0xe0);
 class GameEventSaleAutoPlayInstrument : public GameEvent {
@@ -1013,8 +1023,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403bfc60
     virtual void vfunc_5();                     // 0x1403bfd20
     virtual void vfunc_6();                     // 0x1403bfda0
-private:
-    char m_pad_d0[0x10];
+    GameEventSaleAutoPlayInstrument();
+    int m_d0;
+    int m_pad_d4;
+    CStringW m_d8;
 };  // vftable 0x142d3f740, ??_G 0x1403eac50, dtor 0x1403e6800
 MS2_CHECK_SIZE(GameEventSaleAutoPlayInstrument, 0xe0);
 class GameEventSaleBeautyShop : public GameEvent {
@@ -1277,6 +1289,7 @@ public:
     virtual void vfunc_5();                     // 0x1403bff30
     virtual void vfunc_6();                     // 0x1403bff40
     virtual bool vfunc_9(void* other);          // 0x1403bff50
+    GameEventTrafficOptimizer();
 };  // vftable 0x142d3f798, ??_G 0x1403eb250, dtor 0x1403e6c00
 MS2_CHECK_SIZE(GameEventTrafficOptimizer, 0xd0);
 class GameEventTransferItemBound : public GameEvent {
@@ -1336,8 +1349,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403beb60
     virtual void vfunc_5();                     // 0x1403bebc0
     virtual void vfunc_6();                     // 0x1403bebf0
-private:
-    char m_pad_d0[0x8];
+    GameEventUGCMapSaleCoupon();
+    int m_d0;
+    int m_pad_d4;
 };  // vftable 0x142d3f588, ??_G 0x1403eb390, dtor 0x1403e6cc0
 MS2_CHECK_SIZE(GameEventUGCMapSaleCoupon, 0xd8);
 class GameEventUgcMapCommendationGM : public GameEvent {
@@ -1426,7 +1440,13 @@ struct OntimeEventContext : public CPtred {
 MS2_CHECK_SIZE(OntimeEventContext, 0x60);
 MS2_CHECK_OFFSET(OntimeEventContext, m_40, 0x40);
 struct PreminmMarketSaleEventContext : public CPtred {
-    char m_pad_18[0x20];
+    // @0x1403e4240
+    PreminmMarketSaleEventContext() : m_18(0), m_30(0) {}
+    int m_18;                                   // GameEventPremiumMarketSale::m_d0
+    int m_pad_1c;
+    std::set<int> m_20;                         // GameEventPremiumMarketSale::m_d8
+    int m_30;                                   // GameEventPremiumMarketSale::m_e8
+    int m_pad_34;
 };  // vftable 0x142d41620, ??_G 0x1403eb5d0, dtor 0x1403e6e50
 MS2_CHECK_SIZE(PreminmMarketSaleEventContext, 0x38);
 struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors below
