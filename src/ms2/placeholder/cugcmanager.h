@@ -218,6 +218,7 @@ public:
     void FUN_1418889d0(int nBannerId, unsigned __int64 key, const ReserveBannerInfo& info);   // add a reservation
     void FUN_141888af0(int nBannerId, unsigned __int64 key, int nState);  // the state of a reservation
     void FUN_141888bf0(int nBannerId, int nDate, CRBMap<int, ReserveBannerInfo>& hours);   // the reservations of a day
+    void FUN_141888de0(int nBannerId, const Unk_BannerDay& day, CRBMap<int, int>& selected, ASArray* pArray);   // the AS rows of a day
     void FUN_141888d30(int nBannerId);                      // drop the reservations of a banner
     void FUN_141888da0(bool bChanged);
     bool FUN_141888dc0();                                   // the reservations changed
@@ -268,7 +269,14 @@ public:
     void FUN_14188d380(int nType, CAtlArray<MS2Ptr<CUploadFile> >& files);   // list the image files of an upload kind
     int FUN_14188d8c0(ASObj& obj, CUploadFile* pFile);      // the AS row of a local file
     void FUN_14188cab0();
+    int FUN_14188c250(ASObj& obj, int nState, CStringW strName, int bSelected);   // the AS row of an upload slot
+    MS2Ptr<CUgcBannerRollingImage> FUN_14188c430();         // a random default rolling image
+    void FUN_14188c5b0(const CString& strUrl, const std::vector<unsigned int>& banners);   // show (or download) a rolling image
+    void FUN_14188cb10(int nType);                          // extract the bundled images of an upload kind
+    void FUN_14188d1e0(CAtlArray<MS2Ptr<CUploadFile> >& files);   // re-create the thumbnails
     int FUN_14188fdb0(int nDialog);                         // open one upload dialog, close the others
+    void FUN_14188feb0();                                   // request a blueprint upload
+    void FUN_14188ff10(CInPacket& packet);                  // the blueprint upload was accepted
 
 private:
     MS2_LAYOUT_FRIEND;
@@ -282,9 +290,9 @@ private:
     CAtlArray<CStringW> m_extensions;                       // +0x78 the file types an upload may use
     CCtrlMap m_mapDownload;                                 // +0x98
     std::set<CString> m_setC8;                              // +0xc8
-    CRBMap<int, MS2Ptr<CUgcRegistBanner> > m_mapBanner;     // +0xd8 banner id -> registration
-    CRBMap<int, Unk_UgcBoxPtr<CReserveMap> > m_mapReserve;  // +0x108 banner id -> reservations
-    CRBMap<int, efd::SmartPointer<NiTexture> > m_mapTexture;   // +0x138 object id -> image
+    CRBMap<unsigned int, MS2Ptr<CUgcRegistBanner> > m_mapBanner;    // +0xd8 banner id -> registration
+    CRBMap<unsigned int, Unk_UgcBoxPtr<CReserveMap> > m_mapReserve; // +0x108 banner id -> reservations
+    CRBMap<unsigned int, efd::SmartPointer<NiTexture> > m_mapTexture; // +0x138 object id -> image
     efd::SmartPointer<NiTexture> m_spDefaultTexture;        // +0x168
     CAtlArray<MS2Ptr<CUgcBannerRollingImage> > m_rollingImages;   // +0x170
     std::map<CStringW, CStringW> m_map190;                  // +0x190

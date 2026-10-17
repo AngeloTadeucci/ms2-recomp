@@ -124,6 +124,20 @@ public:
 MS2_CHECK_SIZE(CUgcViewerBanner, 0x88);
 MS2_CHECK_OFFSET(CUgcViewerBanner, m_nBannerId, 0x30);
 
+// The blueprint image viewer: the blueprint data, the item and its CItem::FUN_1405276c0 value of the upload.
+class CUgcViewerBlueprintImage : public IUgcViewer
+{
+public:
+    char m_pad_18[0x30 - 0x18];
+    __int64 m_n30;                                          // +0x30 CBlueprintItemData::m_n18
+    __int64 m_itemUid;                                      // +0x38
+    int m_n40;                                              // +0x40 CItem::FUN_1405276c0
+    char m_pad_44[0xf0 - 0x44];
+};
+MS2_CHECK_SIZE(CUgcViewerBlueprintImage, 0xf0);
+MS2_CHECK_OFFSET(CUgcViewerBlueprintImage, m_n30, 0x30);
+MS2_CHECK_OFFSET(CUgcViewerBlueprintImage, m_n40, 0x40);
+
 class CUgcUploadCtrl : public CUgcUpload
 {
 public:
