@@ -156,7 +156,7 @@ public:
     void FUN_1413d7040(bool bVisible);
     Unk_InstanceIdList FUN_1413d7160(egf::Entity* pEntity);         // the nearby entities the entity's bound reaches
     bool FUN_1413d7360();
-    void FUN_1413d73a0(int nMap);                                   // unload a map
+    void FUN_1413d73a0(unsigned nMap);                              // unload a map
     void FUN_1413d7570(const ecr::SceneGraphAddedMessage* pMsg, efd::Category targetChannel);
     void FUN_1413d7710(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8254 removed
     void FUN_1413d7800(const egf::EntityChangeMessage* pMsg, efd::Category targetChannel);   // 8196 updated
@@ -175,9 +175,9 @@ public:
     bool m_bEnabled;                                                // +0x34
     bool m_bReady;                                                  // +0x35
     bool m_bVisible;                                                // +0x36
-    int m_nMap;                                                     // +0x38
+    unsigned m_nMap;                                                // +0x38
     ATL::CAtlMap<efd::UInt64, efd::SmartPointer<egf::Entity> > m_mapQueued;     // +0x40
-    std::map<int, Unk_HwiMapData> m_maps;                           // +0x88
+    std::map<unsigned, Unk_HwiMapData> m_maps;                      // +0x88 keyed by map id (less<unsigned> in the exe)
     int m_nNextId;                                                  // +0x98
     std::list<Unk_HwiPending> m_listPending;                        // +0xa0
 };
