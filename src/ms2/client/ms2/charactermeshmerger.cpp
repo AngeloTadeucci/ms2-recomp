@@ -517,6 +517,9 @@
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@E@efd@@V?$CustomAllocator@V?$vector@E@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@E@efd@@@efd@@XZ 0x141073220 ; prop
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@efd@@XZ 0x141073260 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ?CreateInstance@CCustomizedTextureManager@@SAPEAV1@XZ 0x14106b3d0 ; w200 hand
+// MS2-PIN: ?GetMaterial@NiPropertyState@@QEBAPEAVNiMaterialProperty@@XZ 0x14106bd60 ; w200 hand
+// MS2-PIN: ?IsEqualFast@NiMaterialProperty@@QEBA_NAEBV1@@Z 0x14106c850 ; w200 hand
 // MS2-PIN: ??A?$vector@EV?$CustomAllocator@E@efd@@@std@@QEBAAEBE_K@Z 0x141068f10 ; w200 hand
 // MS2-PIN: ??A?$vector@PEAVNiMesh@@V?$CustomAllocator@PEAVNiMesh@@@efd@@@std@@QEAAAEAPEAVNiMesh@@_K@Z 0x141068f40 ; w200 hand
 // MS2-PIN: ??A?$vector@PEAVNiMesh@@V?$CustomAllocator@PEAVNiMesh@@@efd@@@std@@QEBAAEBQEAVNiMesh@@_K@Z 0x141068f70 ; w200 hand
@@ -630,7 +633,7 @@ MS2_CHECK_SIZE(Unk_StreamElementDesc, 0x10);
 // UV placement of one mesh's texture inside the atlas: offset then scale.
 struct Unk_UVRect
 {
-    Unk_UVRect();
+    Unk_UVRect() {}
 
     NiPoint2 m_kOffset;
     NiPoint2 m_kScale;
@@ -640,8 +643,8 @@ MS2_CHECK_SIZE(Unk_UVRect, 0x10);
 // Atlas of one group: the texturing property and where every mesh's texture went (ctor 0x141066e30, dtor 0x141068240).
 struct Unk_AtlasResult
 {
-    Unk_AtlasResult();
-    ~Unk_AtlasResult();
+    Unk_AtlasResult() {}
+    ~Unk_AtlasResult() {}
 
     efd::SmartPointer<NiTexturingProperty> m_spTexturing;                           // +0
     efd::map<NiAVObject*, Unk_UVRect> m_kPlacement;                                 // +8
@@ -671,7 +674,20 @@ void CopyPixelRect(NiPixelData* pSource, const NiRect<unsigned int>& kSourceRect
 void BlitTexturePixels(NiSourceTexture* pTexture, NiPixelData* pDest, const NiRect<unsigned int>& kRect, float fAlpha);
 void FillPixelRect(const unsigned char* pColor, NiPixelData* pDest, const NiRect<unsigned int>& kRect);
 int SaveTextureToFileA(ATL::CSimpleStringT<char, 1>* pPath, D3DXIMAGE_FILEFORMAT eFormat, NiTexture* pTexture);
-void FUN_141054fe0(unsigned int uiWidth, unsigned int uiHeight, unsigned int* puiShort, unsigned int* puiLong);
+// The smaller and the larger of two values (template instance 0x141054fe0, named after its place in the COMDAT order).
+template<class T> inline void Unk_SortPair(T a, T b, T* pMin, T* pMax)
+{
+    if (a < b)
+    {
+        *pMin = a;
+        *pMax = b;
+    }
+    else
+    {
+        *pMin = b;
+        *pMax = a;
+    }
+}
 CString FUN_140db9aa0(const NiColorA& kColor);
 
 // Compositing manager of the customised (dyed) character textures.
@@ -694,7 +710,6 @@ class CCustomizedTextureManager : public TSingleton<CCustomizedTextureManager>
 {
 public:
     CCustomizedTextureManager() {}
-    virtual ~CCustomizedTextureManager() {}
     static CCustomizedTextureManager* CreateInstance() { return GetInstance() != 0 ? GetInstance() : new CCustomizedTextureManager; }
 };
 MS2_CHECK_SIZE(CCustomizedTextureManager, 0x8);
@@ -717,8 +732,8 @@ NiTexturingProperty* FUN_141050fd0(NiPixelData* pAlbedo, NiPixelData* pShader);
 // Skinning merge state of one group (ctor 0x141067020, dtor 0x1410682d0; 0x50 bytes).
 struct MergeInfo
 {
-    MergeInfo();
-    ~MergeInfo();
+    MergeInfo() {}
+    ~MergeInfo() {}
 
     efd::SmartPointer<NiSkinningMeshModifier> m_spSkin;                             // +0 the merged modifier
     efd::map<NiMesh*, efd::map<unsigned char, unsigned char> > m_kBoneRemap;        // +8 per mesh: old bone index -> merged index
@@ -2001,7 +2016,7 @@ bool FUN_1410513b0(NiDataStreamRef* pA, NiDataStreamRef* pB)
 }
 
 
-// The base texture of the mesh, or the composited customised texture when the texturing property has decal maps (0x141051560).
+// The base texture of the mesh, or the composited customised texture when the texturing property has shader maps (0x141051560).
 // @0x141051560
 efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh)
 {
@@ -2009,7 +2024,7 @@ efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh)
     NiTexturingProperty* pTexturing = NiDynamicCast(NiTexturingProperty, pMesh->GetProperty(8));
     if (pTexturing == 0)
         return spResult;
-    if (pTexturing->GetDecalMapCount() == 0)
+    if (pTexturing->GetShaderMapCount() == 0)
     {
         spResult = NiDynamicCast(NiSourceTexture, pTexturing->GetBaseTexture());
         return spResult;
@@ -2017,9 +2032,9 @@ efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh)
 
     efd::SmartPointer<CCustomizedTexInfo> spInfoA = NiNew CCustomizedTexInfo;
     spInfoA->m_spBase = pTexturing->GetBaseTexture();
-    if (pTexturing->GetDecalMap(0) != 0)
+    if (pTexturing->GetShaderMap(0) != 0)
     {
-        spInfoA->m_spDecal = pTexturing->GetDecalMap(0)->GetTexture();
+        spInfoA->m_spDecal = pTexturing->GetShaderMap(0)->GetTexture();
         NiColorExtraData* pColor = NiDynamicCast(NiColorExtraData, pMesh->GetExtraData(DAT_143ae50c8));
         spInfoA->m_kColor0 = pColor == 0 ? NiColorA(1.0f, 1.0f, 1.0f, 1.0f) : pColor->GetValue();
         pColor = NiDynamicCast(NiColorExtraData, pMesh->GetExtraData(DAT_143ae50d0));
@@ -2029,8 +2044,8 @@ efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh)
     }
 
     efd::SmartPointer<CCustomizedTexInfo> spInfoB = NiNew CCustomizedTexInfo;
-    NiTexture* pTextureB = pTexturing->GetDecalMap(1) == 0 ? 0 : pTexturing->GetDecalMap(1)->GetTexture();
-    NiTexture* pTextureC = pTexturing->GetDecalMap(2) == 0 ? 0 : pTexturing->GetDecalMap(2)->GetTexture();
+    NiTexture* pTextureB = pTexturing->GetShaderMap(1) == 0 ? 0 : pTexturing->GetShaderMap(1)->GetTexture();
+    NiTexture* pTextureC = pTexturing->GetShaderMap(2) == 0 ? 0 : pTexturing->GetShaderMap(2)->GetTexture();
     spInfoB->m_spBase = pTextureB;
     NiFloatsExtraData* pParams = NiDynamicCast(NiFloatsExtraData, pMesh->GetExtraData(DAT_143ae50f8));
     if (pParams != 0)
@@ -2073,7 +2088,7 @@ void FUN_141051f90(NiAVObject* pMesh, NiPixelData* pShaderMap, const NiRect<unsi
         fParam1 = pData->GetValue();
     bool bMaterial = FUN_140a17cd0((NiMesh*)pMesh)->GetName() == DAT_143ae5200;
     NiTexturingProperty* pTexturing = NiDynamicCast(NiTexturingProperty, pMesh->GetProperty(8));
-    if (pTexturing != 0 && pTexturing->GetDecalMap(0) != 0)
+    if (pTexturing != 0 && pTexturing->GetShaderMap(0) != 0)
         bDecal = true;
     int iRed = bMaterial ? 0xff : 0;
     int iAlpha = bDecal ? 0xff : 0;
@@ -2097,7 +2112,7 @@ CString FUN_1410521a0(NiAVObject* pMesh)
             CString strBase;
             strBase.Format("%s;", (const char*)kBaseFile);
             strKey += strBase;
-            NiSourceTexture* pDecal = pTexturing->GetDecalMap(0) == 0 ? 0 : NiDynamicCast(NiSourceTexture, pTexturing->GetDecalMap(0)->GetTexture());
+            NiSourceTexture* pDecal = pTexturing->GetShaderMap(0) == 0 ? 0 : NiDynamicCast(NiSourceTexture, pTexturing->GetShaderMap(0)->GetTexture());
             if (pDecal != 0)
             {
                 NiFixedString kDecalFile = pDecal == 0 ? NiFixedString("") : pDecal->GetFilename();
@@ -2126,19 +2141,19 @@ bool FUN_141052ff0(NiAVObject* pA, NiAVObject* pB)
     unsigned int uiLongA;
     unsigned int uiShortB;
     unsigned int uiLongB;
-    FUN_141054fe0(pBaseA->GetWidth(), pBaseA->GetHeight(), &uiShortA, &uiLongA);
-    FUN_141054fe0(pBaseB->GetWidth(), pBaseB->GetHeight(), &uiShortB, &uiLongB);
-    if (pTexturingA->GetDecalMap(0) != 0)
+    Unk_SortPair(pBaseA->GetWidth(), pBaseA->GetHeight(), &uiShortA, &uiLongA);
+    Unk_SortPair(pBaseB->GetWidth(), pBaseB->GetHeight(), &uiShortB, &uiLongB);
+    if (pTexturingA->GetShaderMap(0) != 0)
     {
-        NiTexture* pDecal = pTexturingA->GetDecalMap(0)->GetTexture();
+        NiTexture* pDecal = pTexturingA->GetShaderMap(0)->GetTexture();
         if (!(pDecal->GetWidth() <= uiLongA && pDecal->GetHeight() <= uiLongA))
-            FUN_141054fe0(pDecal->GetWidth(), pDecal->GetHeight(), &uiShortA, &uiLongA);
+            Unk_SortPair(pDecal->GetWidth(), pDecal->GetHeight(), &uiShortA, &uiLongA);
     }
-    if (pTexturingB->GetDecalMap(0) != 0)
+    if (pTexturingB->GetShaderMap(0) != 0)
     {
-        NiTexture* pDecal = pTexturingB->GetDecalMap(0)->GetTexture();
+        NiTexture* pDecal = pTexturingB->GetShaderMap(0)->GetTexture();
         if (!(pDecal->GetWidth() <= uiLongB && pDecal->GetHeight() <= uiLongB))
-            FUN_141054fe0(pDecal->GetWidth(), pDecal->GetHeight(), &uiShortB, &uiLongB);
+            Unk_SortPair(pDecal->GetWidth(), pDecal->GetHeight(), &uiShortB, &uiLongB);
     }
     if (uiLongB < uiLongA)
         return true;
