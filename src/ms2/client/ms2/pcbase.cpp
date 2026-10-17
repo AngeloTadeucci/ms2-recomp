@@ -7,7 +7,6 @@
 // MS2-RANGE: 0x142cb4000-0x142cb40e0 .text$yd
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14167a570 ; unique
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@I@std@@V?$_Vector_val@U?$_Simple_types@I@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14167a5a0 ; prop
 // MS2-PIN: ??$?0AEBH$$Z$$V@?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@AEBH@1@V?$tuple@$$V@1@@Z 0x14167a760 ; unique
 // MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x14167a8b0 ; unique
 // MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@?$_Tree@V?$_Tmap_traits@HV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@1@@Z 0x14167a9c0 ; unique
@@ -24,7 +23,6 @@
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@QEAA@XZ 0x14167e2a0 ; prop
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@QEAA@XZ 0x14167e400 ; prop
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@std@@QEAA@XZ 0x14167e460 ; prop
-// MS2-PIN: ??0?$allocator@I@std@@QEAA@XZ 0x14167e470 ; prop
 // MS2-PIN: ??1CNode@?$CAtlList@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@ATL@@@ATL@@QEAA@XZ 0x14167e7e0 ; unique
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14167eec0 ; unique
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14167f1c0 ; prop
@@ -45,6 +43,29 @@
 // MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@std@@@2@@Z 0x141682d90 ; unique
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x141682e70 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??_GPCBase@@UEAAPEAXI@Z 0x14167f670
+// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@2@@Z 0x141681a30
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14167a620
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x14167a800
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14167dda0
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14167ddc0
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14167f320
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@H@2@XZ 0x141681b40
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14167a6c0
+// MS2-PIN: ?GetClassDesc@PCBase@@UEBAPEBVClassInfo@efd@@XZ 0x14167f940
+// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$vector@IV?$allocator@I@std@@@std@@@std@@@4@@std@@@std@@@std@@@std@@QEAA@XZ 0x14167e430
+// MS2-PIN: ??__EkENTITY_INVALID@egf@@YAXXZ 0x1400fb6f0
+// MS2-PIN: ??0PCBase@@QEAA@XZ 0x14166a650
+// MS2-PIN: ?GetTail@?$CAtlList@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VUnk_PCBaseComp_b18@@@@XZ 0x14167fa30
+// MS2-PIN: ??$PCBaseDialog@VUIDPSDialog@@@@YAPEAVUIDPSDialog@@H@Z 0x14167a900
+// MS2-PIN: ??_7PCBase@@6BIBase@efd@@@ 0x142f4c6f0
+// MS2-PIN: ?TypeCast@PCBase@@UEBA_NIPEAPEAX@Z 0x141680720
+// MS2-PIN: ?TypeCast@PCBase@@UEBA_NIPEAPEBX@Z 0x141680770
+// MS2-PIN: ??_7PCBase@@6BCallbackObject@NiActorManager@@@ 0x142f4cad8
+// MS2-PIN: ??0?$MS2Ptr@VCStateManager@@@@QEAA@XZ 0x14167dfe0
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseEmoPlayer@@@@QEAA@XZ 0x14167e030
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseComp_ac8@@@@QEAA@XZ 0x14167e090
+// MS2-PIN: ??0?$MS2Ptr@VUnk_PCBaseComp_a68@@@@QEAA@XZ 0x14167e0b0
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\pcbase.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -65,6 +86,8 @@
 #include "ms2/client/ms2/effectdummy.h"
 #include "ms2/client/ms2/effectservice.h"           // EffectNode
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/uiswfentitymanager.h"
+#include "ms2/placeholder/uidialog.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include <efd/Matrix3.h>
@@ -197,6 +220,8 @@ public:
 Unk_PCBaseBattleRecord* FUN_140e09140();
 
 // MS2Ptr members instantiated by other objs.
+template <> MS2Ptr<UISwfEntity>::MS2Ptr(UISwfEntity* p);                                 // 0x140f9c100
+template <> MS2Ptr<UISwfEntity>::~MS2Ptr();                                             // 0x140b62af0
 template <> MS2Ptr<CSkillRecord>::~MS2Ptr();                                            // 0x140975740
 template <> MS2Ptr<Unk_RideeData>::~MS2Ptr();                                           // 0x140788ed0
 template <> Unk_RideeData* MS2Ptr<Unk_RideeData>::operator->() const;                   // 0x1407895d0
@@ -591,13 +616,30 @@ public:
     void FUN_141911e90(PCBase* pActor, __int64 nValue, int nType, int nTargetId, void* pPos);
 };
 Unk_PCBaseDamageUI* FUN_140b624b0(int nId);
-class Unk_PCBaseDamageLog
+// The DPS meter (RTTI UIDPSDialog, UI id 0x4e44).
+class UIDPSDialog : public UIDialog
 {
 public:
-    int FUN_1419299e0();
-    void FUN_141929a00(__int64 nValue, int nType);
+    int FUN_1419299e0();                                            // open
+    void FUN_141929a00(__int64 nValue, int nType);                  // add a hit
 };
-Unk_PCBaseDamageLog* FUN_14167a900(int nId);
+class Unk_PCBaseUIMgr
+{
+public:
+    MS2Ptr<UIObject> FUN_141adcea0(int nId);                        // CUIService: object by UI class id
+};
+Unk_PCBaseUIMgr* FUN_1403ed2b0();
+
+// A dialog by UI id (0x14167a900 for UIDPSDialog).
+template <class T> T* PCBaseDialog(int nId)
+{
+    if (FUN_1403ed2b0()) {
+        MS2Ptr<UIObject> p = FUN_1403ed2b0()->FUN_141adcea0(nId);
+        if (p.get())
+            return dynamic_cast<T*>((UIObject*)p);
+    }
+    return 0;
+}
 class Unk_PCBaseTargetUI
 {
 public:
@@ -692,11 +734,65 @@ float FUN_140966f00(NiPoint3 kA, NiPoint3 kB);                      // distance
 bool FUN_140a33ff0(const efd::Point3& kPt);                         // a usable (non-sentinel) point
 float FUN_141224f30(float fX, float fY);                            // atan2-style heading                         // "<part>NN" dummy names (unit_1416bc380)
 static CString s_partNames[] = {"Head", "Body", "Back", "RHand", "LHand", "RFoot", "LFoot", "Tail", "Hold_Point"};
-static egf::EntityID s_kNoEntity(0ull);
 static ATL::CAtlMap<unsigned int, CString> s_conditions(17, .75f, .25f, 2.25f, 10);
 static CString s_strNotice("system_notice_error_warningNotThisPlace");
 
 // ---- PCBase ----
+
+// MS2-FUNCTIONAL: +0x180/+0x190/+0x1a0 are Unk_Vec4/Unk_Vec7 members in the exe (ctors 0x140266620/0x1402666f0; the
+// layout-neutral float unions here keep the names dependents use), and the comp MS2Ptr instantiations are the UI
+// entity types (UIHpBar::Entity ...), not the Unk_PCBaseComp_ stand-ins. 0x14166a650 (pinned: the line table starts
+// at the brace, below the initializer list).
+PCBase::PCBase()
+    : m_unk_150(0), m_unk_158(0), m_unk_15c(0), m_unk_160(0), m_unk_1bc(0), m_unk_620(25.0f, 105.0f),
+      m_unk_748(this), m_unk_8e8(10), m_pos920(NiPoint3::ZERO), m_f92c(1.0f), m_f930(1.0f), m_f934(0.0f),
+      m_f938(1.0f), m_str940(""), m_str948(""), m_str958(""), m_str960(""), m_unk_968(0), m_unk_9a8(0),
+      m_pos9ac(efd::Point3::ZERO), m_unk_9c4(0), m_f9c8(0.0f), m_b9d0(true), m_b9d1(true), m_unk_a50(1), m_spA58(0),
+      m_spA78(0), m_spA88(0), m_spA98(0), m_spAA8(0), m_spAB8(0), m_unk_ad8(0), m_unk_af4(0x7fffffff), m_unk_af8(0),
+      m_spB00(0), m_spB10(0), m_spB18(0), m_mapB28(17, .75f, .25f, 2.25f, 10), m_unk_b70(0), m_nUidB78(0),
+      m_unk_b80(0), m_unk_b88(10), m_unk_bb8(10), m_spBE8(0), m_fBF0(0.0f), m_posBF4(NiPoint3::ZERO), m_unk_c00(0),
+      m_unk_c04(1), m_unk_c0c(0), m_posC10(efd::Point3::ZERO), m_spC38(0), m_spC40(0), m_unk_c48(5), m_unk_c50(0),
+      m_unk_c60(0), m_unk_c64(0), m_unk_c68(0), m_mapCA8(17, .75f, .25f, 2.25f, 10), m_unk_d20(0)
+{
+    m_str88 = "GameObject";
+    m_str9d8 = "default";
+    for (int i = 0; i < 3; i++)
+        memset(m_unk_1c0[i], 0, sizeof(m_unk_1c0[i]));
+    memset(m_unk_508, 0, sizeof(m_unk_508));
+    m_f1a0 = 50.0f;
+    m_f180 = 1800.0f;
+    m_fTurnSpeed = 1800.0f;
+    m_f9cc = 0.0f;
+    m_unk_ae0 = egf::kENTITY_INVALID;
+    m_posAE8 = NiPoint3::ZERO;
+    m_timerC70.FUN_140868750(1000);
+    m_spBE8 = 0;
+    m_mapB28.RemoveAll();
+}
+
+// MS2-FUNCTIONAL: the comp MS2Ptr instantiations are the UI entity types in the exe (see the ctor).
+// @0x14166af20
+PCBase::~PCBase()
+{
+    FUN_140b632f0()->FUN_1422d0dc0(MS2Ptr<UISwfEntity>(m_unk_ad8));
+    m_spA58 = 0;
+    m_spA68 = 0;
+    m_spA78 = 0;
+    m_spA88 = 0;
+    m_spA98 = 0;
+    m_spAA8 = 0;
+    m_spAB8 = 0;
+    m_spAC8 = 0;
+    m_spStateMgr = 0;
+    m_unk_ad8 = 0;
+    m_spB18 = 0;
+    if (m_unk_150) {
+        delete m_unk_150;
+        m_unk_150 = 0;
+    }
+    FUN_141679e00();
+    FUN_141679e90();
+}
 
 // @0x14166b470
 // MS2-FUNCTIONAL: the exe keeps two extra pointer temporaries around the utf8string argument (frame 0x88).
@@ -1172,7 +1268,7 @@ Unk_PCBaseBody* PCBase::FUN_14166d220()
 // @0x14166d240
 void* PCBase::FUN_14166d240()
 {
-    return m_unk_6d8;
+    return &m_unk_6d8;
 }
 
 // @0x14166cf40
@@ -2324,7 +2420,7 @@ MS2Ptr<Unk_PCBaseComp_b18> PCBase::vfunc_103()
 {
     if (m_unk_8e8.IsEmpty())
         return MS2Ptr<Unk_PCBaseComp_b18>(0);
-    MS2Ptr<Unk_PCBaseComp_b18> spItem = m_unk_8e8.GetHead();
+    MS2Ptr<Unk_PCBaseComp_b18> spItem = m_unk_8e8.GetTail();
     if (spItem->FUN_141759e40() != 0)
         return MS2Ptr<Unk_PCBaseComp_b18>(0);
     else
@@ -2476,7 +2572,7 @@ void PCBase::vfunc_111(void* p, int a, int b, void* q)
     PCBase* pLocal = FUN_1403ed2d0()->FUN_141bd0cc0();
     if (pLocal != 0) {
         if (nOwnerId == pLocal->FUN_14123c580()) {
-            Unk_PCBaseDamageLog* pLog = FUN_14167a900(0x4e44);
+            UIDPSDialog* pLog = PCBaseDialog<UIDPSDialog>(0x4e44);
             if (pLog != 0) {
                 if (pLog->FUN_1419299e0() != 0)
                     pLog->FUN_141929a00(nValue, a);

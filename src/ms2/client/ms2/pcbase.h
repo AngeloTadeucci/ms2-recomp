@@ -56,6 +56,7 @@ class CSplashDamageRecord;   // ?\skillrecord.cpp (view in pcbase.cpp)
 class Unk_PCBaseFxLib;       // vfunc_70 result: the effect-source library (FUN_1411bde10 by id), pcbase.cpp
 class Unk_PCBaseFxSource;    // +0xd10, hands out Unk_PCBaseFxSet by key (slot 2), pcbase.cpp
 class Unk_PCBaseEmoPlayer;   // +0x638 (FUN_141848650 stop, FUN_141848740 busy at a time), pcbase.cpp
+class UISwfEntity;          // uiswfentity.h (+0xad8, unregistered by the dtor)
 class Unk_PCBaseBody;       // +0x150 physics/controller body (0xf8; ctor 0x14123f2d0, dtor 0x14123f460), pcbase.cpp
 
 // +0xc08: an 11-bit set (commonfiles\bitset.inl instance, the same as unit_140d73aa0's Unk_BitSet11): the reasons the
@@ -65,11 +66,31 @@ class CColorBoostData;
 class Unk_PCBaseColorBoostMgr
 {
 public:
+    Unk_PCBaseColorBoostMgr();                              // 0x14109bd60
+    ~Unk_PCBaseColorBoostMgr();                             // 0x14109bdc0
     void FUN_14109be00(const CColorBoostData& kData);
     void FUN_14109be30(const egf::EntityID& kId);          // per-frame update
 private:
     void* m_unk[9];
 };
+
+// +0x6d8: the buff tracker of the next unit (0x70; ctor 0x141682e90, dtor 0x141682f30; FUN_141682f60(p, owner) binds
+// it, FUN_141682fe0(p, id) tests a buff, FUN_141683a90(p) flushes it).
+class Unk_PCBaseBuffTracker
+{
+public:
+    Unk_PCBaseBuffTracker();                                // 0x141682e90
+    ~Unk_PCBaseBuffTracker();                               // 0x141682f30
+private:
+    void* m_p00;                                            // = 0
+    Timer m_timer08;
+    efd::Point3 m_pos40;                                    // = ZERO
+    int m_n4c;
+    int m_n50;                                              // = 0
+    efd::Point3 m_pos54;
+    efd::Point3 m_pos60;
+};
+MS2_CHECK_SIZE(Unk_PCBaseBuffTracker, 0x70);
 
 // +0x748: the actor's buffs (0x1a0; ctor 0x14096ef20(p, owner); unit 0x14096ef20..). FUN_1416749a0 returns it as the
 // Unk_PCBaseBuffs view that ridee.cpp / pcbase.cpp declare.
@@ -466,7 +487,7 @@ public:
     MS2Ptr<Unk_PCBaseEmoPlayer> m_sp638; // +0x638 (init 0x14167e030)
     Unk_PCBaseColorBoostMgr m_colorBoost;   // +0x648 CColorBoostManager (0x48)
     CPushControl m_pushControl;         // +0x690 (0x48)
-    void* m_unk_6d8[14];                // +0x6d8 (init 0x141682e90)
+    Unk_PCBaseBuffTracker m_unk_6d8;    // +0x6d8
     Unk_PCBaseBuffList m_unk_748;       // +0x748 buffs
     CAtlList<MS2Ptr<Unk_PCBaseComp_b18> > m_unk_8e8;   // +0x8e8 (init 0x14167de50(p,10)); head probed by vfunc_103
     CStringW m_strW918;                 // +0x918
@@ -487,7 +508,7 @@ public:
     NiPoint3 m_pos9b8;                  // +0x9b8 (init 0x1402bd040)
     unsigned short m_unk_9c4;           // +0x9c4 ground material kind
     float m_f9c8;                       // +0x9c8 (FLT_MAX / 0; shadow argument)
-    int m_unk_9cc;                      // +0x9cc
+    float m_f9cc;                       // +0x9cc = 0
     bool m_b9d0;                        // +0x9d0 = 1
     bool m_b9d1;                        // +0x9d1 = 1
     CString m_str9d8;                   // +0x9d8 = "default"
@@ -504,7 +525,7 @@ public:
     MS2Ptr<Unk_PCBaseComp_aa8> m_spAA8; // +0xaa8
     MS2Ptr<Unk_PCBaseComp_ab8> m_spAB8; // +0xab8
     MS2Ptr<Unk_PCBaseComp_ac8> m_spAC8; // +0xac8 (init 0x14167e090)
-    void* m_unk_ad8;                    // +0xad8 = 0
+    UISwfEntity* m_unk_ad8;             // +0xad8 = 0 (the dtor unregisters it from the UISwfEntityManager)
     egf::EntityID m_unk_ae0;            // +0xae0 (init 0x1408995b0, then 0x140899bd0(p, 0x143ae3278)); EntityID per Ridee
     NiPoint3 m_posAE8;                  // +0xae8 (= ZERO)
     int m_unk_af4;                      // +0xaf4 = 0x7fffffff

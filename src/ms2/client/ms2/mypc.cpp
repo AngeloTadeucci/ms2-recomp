@@ -1935,7 +1935,7 @@ void MyPC::vfunc_53(float fDelta)
 {
     efd::SmartPointer<Ridee> spRidee(FUN_1416764a0());
     if (spRidee == 0)
-        FUN_141683a90(m_unk_6d8);
+        FUN_141683a90(&m_unk_6d8);
     PC::vfunc_53(fDelta);
     if (spRidee && spRidee->FUN_14123bea0())
         ::FUN_141676140(spRidee);
