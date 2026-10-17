@@ -242,6 +242,7 @@ int UIAdPushDialog::vfunc_65()
 }
 
 // @0x140e3f450
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::vfunc_72()
 {
     UIDialog::vfunc_72();
@@ -265,6 +266,7 @@ void UIAdPushDialog::vfunc_72()
 }
 
 // @0x140e3f590
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 int UIAdPushDialog::vfunc_4()
 {
     bool bSaved = false;
@@ -312,6 +314,7 @@ int UIAdPushDialog::vfunc_4()
 }
 
 // @0x140e3f9b0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 int UIAdPushDialog::vfunc_5()
 {
     FUN_14086ddc0(&m_xmlLoaded);
@@ -352,6 +355,7 @@ int UIAdPushDialog::vfunc_5()
 }
 
 // @0x140e3ff00
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::OnLoadComplete()
 {
     m_limitedBundle = m_30->FUN_140e159f0<ASDialog>("m_limitedBundle");
@@ -410,6 +414,7 @@ void UIAdPushDialog::vfunc_43()
 }
 
 // @0x140e40550
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::vfunc_44(int a1, int a2, int a3, int* pWidth, int* pHeight)
 {
     if (FUN_1422dc430() != 0 && !(m_limitedBundle == 0))
@@ -431,6 +436,7 @@ void UIAdPushDialog::vfunc_67()
 }
 
 // @0x140e406c0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool UIAdPushDialog::AddBundle(MS2Ptr<Unk_AdMarketItem> item, int n4c, int n50, bool bMinimized)
 {
     if (item == 0 || item->m_nB8 != 3)
@@ -480,6 +486,7 @@ bool UIAdPushDialog::RemoveBundle(MS2Ptr<AdPushEntityLimitedBundle> bundle)
 }
 
 // @0x140e40b20
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool UIAdPushDialog::Refresh(unsigned nFlags)
 {
     m_nFlags |= nFlags;
@@ -516,6 +523,7 @@ bool UIAdPushDialog::Refresh(unsigned nFlags)
 }
 
 // @0x140e40de0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::UpdateBundles(MS2Ptr<Unk_AdMarketItem> item)
 {
     if (!(m_30 == 0) && !m_entities.IsEmpty() && !(item == 0))
@@ -536,6 +544,7 @@ void UIAdPushDialog::UpdateBundles(MS2Ptr<Unk_AdMarketItem> item)
 }
 
 // @0x140e41000
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::OnNotifyGameEventChanged(NotifyObject* pNotify)
 {
     if (m_limitedBundle == 0)
@@ -559,33 +568,31 @@ bool UIAdPushDialog::IsAnyAnimating()
 {
     if (m_entities.IsEmpty())
         return false;
-    POSITION pos = m_entities.GetHeadPosition();
-    while (pos)
+    for (POSITION pos = m_entities.GetHeadPosition(); pos; m_entities.GetNext(pos))
     {
         AdPushEntityBase* p = m_entities.GetValueAt(pos).get();
         if (p && p->vfunc_10())
             return true;
-        m_entities.GetNext(pos);
     }
     return false;
 }
 
 // @0x140e411d0
-void UIAdPushDialog::MaximizeAll()
+bool UIAdPushDialog::MaximizeAll()
 {
     if (m_entities.IsEmpty())
-        return;
-    POSITION pos = m_entities.GetHeadPosition();
-    while (pos)
+        return false;
+    for (POSITION pos = m_entities.GetHeadPosition(); pos; m_entities.GetNext(pos))
     {
         AdPushEntityBase* p = m_entities.GetValueAt(pos).get();
         if (p)
             p->vfunc_11();
-        m_entities.GetNext(pos);
     }
+    return false;
 }
 
 // @0x140e41280
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 Unk_AdXmlNode* UIAdPushDialog::FindLoadedEntry(const CStringA& strName, bool bAccount)
 {
     if (strName.IsEmpty())
@@ -600,11 +607,10 @@ Unk_AdXmlNode* UIAdPushDialog::FindLoadedEntry(const CStringA& strName, bool bAc
 }
 
 // @0x140e41350
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 Unk_AdXmlNode* UIAdPushDialog::GetLoadedRoot(bool bAccount)
 {
-    if (!bAccount)
-        return FUN_14081b310(&m_xmlLoaded);
-    return FUN_14081b310(&m_xmlAccountLoaded);
+    return bAccount ? FUN_14081b310(&m_xmlAccountLoaded) : FUN_14081b310(&m_xmlLoaded);
 }
 
 // @0x140e413c0
@@ -619,23 +625,21 @@ Unk_AdXmlNode* UIAdPushDialog::FindSaveEntry(const CStringA& strName, bool bAcco
 }
 
 // @0x140e41430
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 Unk_AdXmlNode* UIAdPushDialog::GetSaveRoot(bool bAccount)
 {
-    if (!bAccount)
-        return FUN_14081b310(&m_xmlSave);
-    return FUN_14081b310(&m_xmlAccountSave);
+    return bAccount ? FUN_14081b310(&m_xmlAccountSave) : FUN_14081b310(&m_xmlSave);
 }
 
 // @0x140e414a0
 Unk_AdXmlNode* UIAdPushDialog::FindByName(Unk_AdXmlNode* pRoot, const CStringA& strName)
 {
-    if (pRoot)
+    if (!pRoot)
+        return 0;
+    for (Unk_AdXmlNode* pNode = FUN_140345b40(pRoot); pNode; pNode = FUN_1403f0510(pNode))
     {
-        for (Unk_AdXmlNode* pNode = FUN_140345b40(pRoot); pNode; pNode = FUN_1403f0510(pNode))
-        {
-            if (strName.CompareNoCase(FUN_140189180(pNode)) == 0)
-                return pNode;
-        }
+        if (strName.CompareNoCase(FUN_140189180(pNode)) == 0)
+            return pNode;
     }
     return 0;
 }
@@ -647,6 +651,7 @@ CStringA UIAdPushDialog::GetStatePath()
 }
 
 // @0x140e41610
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 CStringA UIAdPushDialog::GetAccountStatePath()
 {
     CStringA strFile;
@@ -661,6 +666,7 @@ void UIAdPushDialog::OnNotifyCompleteMyPC(NotifyObject*)
 }
 
 // @0x140e41720
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 MS2Ptr<ASMovieClip> UIAdPushDialog::AddBadge(MS2Ptr<AScript> value)
 {
     if (m_30 == 0 || value == 0)
@@ -682,6 +688,7 @@ bool UIAdPushDialog::RemoveBadge(MS2Ptr<ASMovieClip> badge)
 }
 
 // @0x140e41a50
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool UIAdPushDialog::RemoveEntityById(const int& nId)
 {
     MS2Ptr<AdPushEntityBase> entity(0);
@@ -731,6 +738,7 @@ void UIAdPushDialog::CloseAll()
 }
 
 // @0x140e41d80
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::FindDirtyPos(float* pX, float* pY)
 {
     UIObject* pObj = FUN_140c9b540(0x4e29);
@@ -751,6 +759,7 @@ void UIAdPushDialog::FindDirtyPos(float* pX, float* pY)
 }
 
 // @0x140e41f30
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool UIAdPushDialog::FindMinimizePos(float* pX)
 {
     if (m_limitedBundle == 0)
@@ -794,6 +803,7 @@ void UIAdPushDialog::OnDirtyPos(const Scaleform::GFx::FunctionHandler::Params&)
 }
 
 // @0x140e42250
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void UIAdPushDialog::FixPosition()
 {
     if (m_limitedBundle == 0)
@@ -840,6 +850,7 @@ AdPushEntityLimitedBundle::AdPushEntityLimitedBundle(const int& nId)
 }
 
 // @0x140e42670
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::Reset()
 {
     m_bMinimized = false;
@@ -857,6 +868,7 @@ void AdPushEntityLimitedBundle::Reset()
 }
 
 // @0x140e42740
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::Update(MS2Ptr<Unk_AdMarketItem> item)
 {
     if (item == 0)
@@ -876,6 +888,7 @@ void AdPushEntityLimitedBundle::OnMaximize(const Scaleform::GFx::FunctionHandler
 }
 
 // @0x140e42860
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::SetBadge(MS2Ptr<ASMovieClip> badge)
 {
     m_badge = badge;
@@ -894,6 +907,7 @@ void AdPushEntityLimitedBundle::SetMinimized(bool b)
 }
 
 // @0x140e42a60
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool AdPushEntityLimitedBundle::UpdateRemainTime()
 {
     if (m_remain == 0 || m_item == 0)
@@ -929,6 +943,7 @@ void AdPushEntityLimitedBundle::SetMarketItem(MS2Ptr<Unk_AdMarketItem> p)
 }
 
 // @0x140e42d40
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool AdPushEntityLimitedBundle::vfunc_1()
 {
     int nRemain = m_item->m_nRemain;
@@ -1025,6 +1040,7 @@ void AdPushEntityLimitedBundle::vfunc_3()
 }
 
 // @0x140e43590
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::vfunc_4(Unk_AdXmlNode* pRoot, Unk_AdXmlNode* pNode)
 {
     if (pNode)
@@ -1048,6 +1064,7 @@ void AdPushEntityLimitedBundle::vfunc_4(Unk_AdXmlNode* pRoot, Unk_AdXmlNode* pNo
 }
 
 // @0x140e437f0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::vfunc_5(Unk_AdXmlNode* pNode)
 {
     if (pNode)
@@ -1072,12 +1089,14 @@ CStringA AdPushEntityLimitedBundle::vfunc_6()
 }
 
 // @0x140e439a0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool AdPushEntityLimitedBundle::vfunc_7()
 {
     return m_item.get() && m_item->m_nB8 == 1;
 }
 
 // @0x140e43a00
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::vfunc_8(Scaleform::GFx::Value* pValue, ASData* pData)
 {
     if (!(m_item == 0))
@@ -1089,6 +1108,7 @@ void AdPushEntityLimitedBundle::vfunc_8(Scaleform::GFx::Value* pValue, ASData* p
 }
 
 // @0x140e43ad0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 void AdPushEntityLimitedBundle::vfunc_9()
 {
     if (m_bMinimized && !(m_remain == 0) && m_badge.get())
@@ -1096,6 +1116,7 @@ void AdPushEntityLimitedBundle::vfunc_9()
 }
 
 // @0x140e43b30
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool AdPushEntityLimitedBundle::vfunc_10()
 {
     if (!m_bMinimized && m_dlg.get())
@@ -1119,6 +1140,7 @@ NiPoint2* AdPushEntityLimitedBundle::GetMaximizePos()
 }
 
 // @0x140e45240
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 bool FUN_140e45240(const CStringW& s, const char* c)
 {
     CStringW t(c, s.GetManager());
@@ -1132,11 +1154,13 @@ Unk_140e45740* FUN_140e45740()
 }
 
 // @0x140e44fb0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 AdPushEntityBase::~AdPushEntityBase()
 {
 }
 
 // @0x140e44fd0
+// MS2-FUNCTIONAL: behaviour-equivalent; branch/temporary layout differs from the exe
 AdPushEntityLimitedBundle::~AdPushEntityLimitedBundle()
 {
 }

@@ -79,6 +79,7 @@ class Unk_AdMarketItem : public CPtred {
 public:
     MS2_LAYOUT_FRIEND;
     Unk_AdSn m_id;                              // +0x18 the 16-byte market serial (copied into the lookup key)
+    char m_pad_28[8];
     Unk_AdItemInfo m_info;                      // +0x30 (0x18 bytes, up to m_nSn)
     int m_nSn;                                  // +0x48
     char m_pad_4c[0xb8 - 0x4c];
@@ -88,6 +89,11 @@ public:
     char m_pad_128[0x134 - 0x128];
     int m_nRemain;                              // +0x134 seconds the offer lasts
 };
+MS2_CHECK_OFFSET(Unk_AdMarketItem, m_info, 0x30);
+MS2_CHECK_OFFSET(Unk_AdMarketItem, m_nSn, 0x48);
+MS2_CHECK_OFFSET(Unk_AdMarketItem, m_nB8, 0xb8);
+MS2_CHECK_OFFSET(Unk_AdMarketItem, m_n124, 0x124);
+MS2_CHECK_OFFSET(Unk_AdMarketItem, m_nRemain, 0x134);
 
 class AdPushEntityLimitedBundle : public AdPushEntityBase {
     friend class UIAdPushDialog;
@@ -157,7 +163,7 @@ public:
     void UpdateBundles(MS2Ptr<Unk_AdMarketItem> item);          // 0x140e40de0
     void OnNotifyGameEventChanged(NotifyObject* pNotify);       // 0x140e41000
     bool IsAnyAnimating();                                      // 0x140e41110
-    void MaximizeAll();                                         // 0x140e411d0
+    bool MaximizeAll();                                         // 0x140e411d0
     Unk_AdXmlNode* FindLoadedEntry(const CStringA& strName, bool bAccount);   // 0x140e41280
     Unk_AdXmlNode* GetLoadedRoot(bool bAccount);                   // 0x140e41350
     Unk_AdXmlNode* FindSaveEntry(const CStringA& strName, bool bAccount);   // 0x140e413c0
