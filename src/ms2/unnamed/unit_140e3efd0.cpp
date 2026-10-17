@@ -245,7 +245,7 @@ int UIAdPushDialog::vfunc_65()
 void UIAdPushDialog::vfunc_72()
 {
     UIDialog::vfunc_72();
-    if (m_30 == 0 && !m_entities.IsEmpty())
+    if (!(m_30 == 0) && !m_entities.IsEmpty())
     {
         if (FUN_1418ffe80(m_nShowState, 1))
             FixPosition();
@@ -397,7 +397,10 @@ void UIAdPushDialog::vfunc_49(Scaleform::GFx::Value* pValue, ASData* pData)
 // @0x140e404c0
 void UIAdPushDialog::vfunc_43()
 {
-    if (!(m_90 == 0))
+    if (m_90 == 0)
+    {
+    }
+    else
     {
         m_90->vfunc_2(5, 0, 0);
         if (m_60 != 0)
@@ -515,7 +518,7 @@ bool UIAdPushDialog::Refresh(unsigned nFlags)
 // @0x140e40de0
 void UIAdPushDialog::UpdateBundles(MS2Ptr<Unk_AdMarketItem> item)
 {
-    if (m_30 == 0 && !m_entities.IsEmpty() && !item.IsNull())
+    if (!(m_30 == 0) && !m_entities.IsEmpty() && !item.IsNull())
     {
         POSITION pos = m_entities.GetHeadPosition();
         while (pos)
@@ -704,10 +707,10 @@ bool UIAdPushDialog::LoadEntity(MS2Ptr<AdPushEntityBase> entity)
 // @0x140e41c60
 void UIAdPushDialog::ShowOrRetry()
 {
-    if (FUN_140e45740()->FUN_1422e6bf0(this, 0) == 0)
-        FUN_1418ffec0(&m_nShowState, 1);
-    else
+    if (FUN_140e45740()->FUN_1422e6bf0(this, 0))
         FUN_140e45740()->FUN_1422e6d00(0);
+    else
+        FUN_1418ffec0(&m_nShowState, 1);
 }
 
 // @0x140e41cc0
@@ -721,8 +724,9 @@ void UIAdPushDialog::CloseAll()
         POSITION cur = pos;
         m_entities.GetNext(pos);
         AdPushEntityBase* p = m_entities.GetValueAt(cur).get();
-        if (p)
-            p->vfunc_2(true);
+        if (!p)
+            continue;
+        p->vfunc_2(true);
     }
 }
 
@@ -783,6 +787,9 @@ bool UIAdPushDialog::FindMinimizePos(float* pX)
 void UIAdPushDialog::OnDirtyPos(const Scaleform::GFx::FunctionHandler::Params&)
 {
     if (m_30 == 0)
+    {
+    }
+    else
         ShowOrRetry();
 }
 
@@ -1101,8 +1108,9 @@ bool AdPushEntityLimitedBundle::vfunc_10()
 // @0x140e43bc0
 bool AdPushEntityLimitedBundle::vfunc_11()
 {
-    if (!m_bMinimized)
-        SetMinimized(true);
+    if (m_bMinimized)
+        return true;
+    SetMinimized(true);
     return true;
 }
 
