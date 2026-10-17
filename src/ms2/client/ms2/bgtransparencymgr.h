@@ -4,7 +4,8 @@
 // Also holds TransparencyElement (the per-entity fade state, 0x60 bytes). The containers are the efd ones
 // (efd::CustomAllocator: the node/array allocations go through efd::_Malloc/_Free): efd::map for the fading entities
 // (ctor 0x140a15d30 wraps the std::map ctor 0x140a15d50), efd::set for the hit set of the scan (0x140a15d80),
-// efd::vector for the pick and sort lists (allocate 0x140a1d300 takes a MemHint).
+// efd::vector for the pick and sort lists (allocate 0x140a1d300 takes a MemHint). TransparencyElement::m_materials is a plain std::list (std::allocator:
+// _Deallocate of 0x18-byte nodes, max_size SIZE_MAX/24).
 #pragma once
 #include <list>
 #include <map>
@@ -36,7 +37,7 @@ public:
     TransparencyElement();                                          // 0x140a15fe0
     virtual ~TransparencyElement();                                 // 0x140a166f0 (deleting 0x140a17880)
 
-    std::list<TransparencyStandardMaterial*, efd::CustomAllocator<TransparencyStandardMaterial*> > m_materials;   // 0x10
+    std::list<TransparencyStandardMaterial*> m_materials;   // 0x10
     Timer m_timer;                                                  // 0x20
     float m_fAlpha;                                                 // 0x58
 };

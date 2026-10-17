@@ -9,11 +9,13 @@
 // MS2-PIN: ??$?0AEBU?$less@_K@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@_K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@_K@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140a0f950 ; unique
 // MS2-PIN: ??$?0AEBU?$less@UUnk_BGTRegion@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@UUnk_BGTRegion@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@UUnk_BGTRegion@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140a0f9a0 ; prop
 // MS2-PIN: ??$_Buynode@AEBQEAVEntity@egf@@@?$_Tree_comp_alloc@V?$_Tset_traits@PEAVEntity@egf@@U?$less@PEAVEntity@egf@@@std@@V?$CustomAllocator@PEAVEntity@egf@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@1@AEBQEAVEntity@egf@@@Z 0x140a0fef0 ; unique
-// MS2-PIN: ??$_Buynode@AEBQEAVTransparencyStandardMaterial@@@?$_List_buy@PEAVTransparencyStandardMaterial@@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@QEAAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@1@PEAU21@0AEBQEAVTransparencyStandardMaterial@@@Z 0x140a0ff80 ; unique
-// MS2-PIN: ??$_Destroy1@PEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@efd@@PEAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@1@U?$integral_constant@_N$00@1@@Z 0x140a10580 ; prop
+// MS2-PIN: ??$_Buynode@AEBQEAVTransparencyStandardMaterial@@@?$_List_buy@PEAVTransparencyStandardMaterial@@V?$allocator@PEAVTransparencyStandardMaterial@@@std@@@std@@QEAAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@1@PEAU21@0AEBQEAVTransparencyStandardMaterial@@@Z 0x140a0ff80 ; unique
+// MS2-PIN: ??$_Destroy1@PEAU?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@1@U?$integral_constant@_N$00@1@@Z 0x140a10580 ; order
+// MS2-PIN: ??$_Destroy1@PEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@1@U?$integral_constant@_N$00@1@@Z 0x140a10590 ; order
 // MS2-PIN: ??$_Freenode0@V?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@@?$_Tree_node@PEAVEntity@egf@@PEAX@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@PEAU01@@Z 0x140a10a20 ; unique
 // MS2-PIN: ??$_Freenode0@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@@?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@PEAU01@@Z 0x140a10ad0 ; unique
-// MS2-PIN: ??$_Insert@AEBQEAVTransparencyStandardMaterial@@@?$list@PEAVTransparencyStandardMaterial@@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@PEAVTransparencyStandardMaterial@@@std@@@std@@U_Iterator_base0@2@@1@AEBQEAVTransparencyStandardMaterial@@@Z 0x140a10f90 ; unique
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@std@@@?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@SAXAEAV?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@1@PEAU01@@Z 0x140a10b80 ; unique
+// MS2-PIN: ??$_Insert@AEBQEAVTransparencyStandardMaterial@@@?$list@PEAVTransparencyStandardMaterial@@V?$allocator@PEAVTransparencyStandardMaterial@@@std@@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@PEAVTransparencyStandardMaterial@@@std@@@std@@U_Iterator_base0@2@@1@AEBQEAVTransparencyStandardMaterial@@@Z 0x140a10f90 ; unique
 // MS2-PIN: ??$addressof@UUnk_BGTRegion@@@std@@YAPEAUUnk_BGTRegion@@AEAU1@@Z 0x140a14450 ; prop
 // MS2-PIN: ??$forward@AEAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@std@@YAAEAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@0@AEAPEAU10@@Z 0x140a14460 ; prop
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@0@AEAPEAU10@@Z 0x140a14470 ; prop
@@ -21,15 +23,21 @@
 // MS2-PIN: ??$addressof@PEAU?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@0@AEAPEAU10@@Z 0x140a144a0 ; prop
 // MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@0@AEAV10@@Z 0x140a14540 ; prop
 // MS2-PIN: ??$addressof@PEAVEntity@egf@@@std@@YAPEAPEAVEntity@egf@@AEAPEAV12@@Z 0x140a14570 ; prop
+// MS2-PIN: ??$construct@PEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@1@QEAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@1@AEAPEAU31@@Z 0x140a14580 ; prop
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@1@QEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@1@AEAPEAU31@@Z 0x140a146a0 ; prop
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@_KPEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@_KPEAX@std@@@1@QEAPEAU?$_Tree_node@_KPEAX@1@AEAPEAU31@@Z 0x140a146f0 ; prop
-// MS2-PIN: ??$destroy@PEAVTransparencyStandardMaterial@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@efd@@PEAPEAVTransparencyStandardMaterial@@@Z 0x140a149e0 ; prop
+// MS2-PIN: ??$construct@PEAVTransparencyStandardMaterial@@AEBQEAV1@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@std@@@1@QEAPEAVTransparencyStandardMaterial@@AEBQEAV3@@Z 0x140a14800 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@1@@Z 0x140a149b0 ; order
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@PEAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@1@@Z 0x140a149e0 ; order
 // MS2-PIN: ??$destroy@PEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@1@QEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@1@@Z 0x140a14a20 ; prop
+// MS2-PIN: ?__empty_global_delete@@YAXPEAX_K@Z 0x140a14b10 ; order
+// MS2-PIN: ??$forward@AEBUpiecewise_construct_t@std@@@std@@YAAEBUpiecewise_construct_t@0@AEBU10@@Z 0x140a14d40 ; probe
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@0@AEAPEAU10@@Z 0x140a14d70 ; prop
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@_KPEAX@std@@@std@@YAAEAPEAU?$_Tree_node@_KPEAX@0@AEAPEAU10@@Z 0x140a14d80 ; prop
+// MS2-PIN: ??$forward@AEBQEAVTransparencyStandardMaterial@@@std@@YAAEBQEAVTransparencyStandardMaterial@@AEBQEAV1@@Z 0x140a14de0 ; prop
 // MS2-PIN: ??$forward@AEBU?$less@_K@std@@@std@@YAAEBU?$less@_K@0@AEBU10@@Z 0x140a14e20 ; prop
 // MS2-PIN: ??$forward@AEBU?$less@UUnk_BGTRegion@@@std@@@std@@YAAEBU?$less@UUnk_BGTRegion@@@0@AEBU10@@Z 0x140a14e30 ; prop
-// MS2-PIN: ??0?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA@AEBU?$less@_K@1@@Z 0x140a155f0 ; prop
+// MS2-PIN: ??0?$_Tree@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAA@AEBU?$less@UUnk_BGTRegion@@@1@@Z 0x140a15620 ; prop
 // MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAA@AEBU?$less@UUnk_BGTRegion@@@1@@Z 0x140a15770 ; unique
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@_KPEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@_K@std@@@1@@Z 0x140a15890 ; prop
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@1@@Z 0x140a158d0 ; prop
@@ -40,6 +48,7 @@
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@QEAA@XZ 0x140a15d00 ; prop
 // MS2-PIN: ??0?$set@_KU?$less@_K@std@@V?$allocator@_K@2@@std@@QEAA@XZ 0x140a15e00 ; prop
 // MS2-PIN: ??0?$set@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@@std@@QEAA@XZ 0x140a15e30 ; prop
+// MS2-PIN: ??1?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@QEAA@XZ 0x140a16100 ; unique
 // MS2-PIN: ??1?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA@XZ 0x140a16370 ; prop
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAA@XZ 0x140a16480 ; prop
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA@XZ 0x140a164b0 ; prop
@@ -50,6 +59,8 @@
 // MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140a16990 ; prop
 // MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140a16ad0 ; prop
 // MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140a16b10 ; prop
+// MS2-PIN: ??B?$SmartPointer@VGameObject@@@efd@@QEBAPEAVGameObject@@XZ 0x140a16c10 ; order
+// MS2-PIN: ??C?$SmartPointer@VSceneGraphService@ecr@@@efd@@QEBAPEAVSceneGraphService@ecr@@XZ 0x140a16c50 ; order
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x140a16fc0 ; unique
 // MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x140a172e0 ; unique
 // MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@PEAVEntity@egf@@@ATL@@SAHAEBQEAVEntity@egf@@0@Z 0x140a179f0 ; unique
@@ -62,13 +73,16 @@
 // MS2-PIN: ?GetSize@Results@NiPick@@QEBAIXZ 0x140a17ea0 ; unique
 // MS2-PIN: ?vfunc_0@IWorldServiceCallback@@UEAAXH@Z 0x140a184c0 ; unique
 // MS2-PIN: ?vfunc_1@IWorldServiceCallback@@UEAAXH@Z 0x140a184d0 ; unique
-// MS2-PIN: ?vfunc_5@IWorldServiceCallback@@UEAAXH@Z 0x140a184e0 ; unique
 // MS2-PIN: ?vfunc_2@IWorldServiceCallback@@UEAAXHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@Z 0x140a184f0 ; unique
 // MS2-PIN: ?vfunc_7@IWorldServiceCallback@@UEAAXH@Z 0x140a18520 ; unique
+// MS2-PIN: ?vfunc_3@IWorldServiceCallback@@UEAAXH@Z 0x140a18530 ; unique
 // MS2-PIN: ?vfunc_4@IWorldServiceCallback@@UEAAXH@Z 0x140a18540 ; unique
 // MS2-PIN: ?vfunc_6@IWorldServiceCallback@@UEAAXH@Z 0x140a18550 ; unique
 // MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@V?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@U?$less@V?$SmartPointer@VEntity@egf@@@efd@@@std@@V?$CustomAllocator@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@2@XZ 0x140a18bc0 ; unique
 // MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@PEAVEntity@egf@@U?$less@PEAVEntity@egf@@@std@@V?$CustomAllocator@PEAVEntity@egf@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@2@XZ 0x140a18c80 ; unique
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@XZ 0x140a18e00 ; prop
+// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@_KPEAX@2@XZ 0x140a18ec0 ; prop
+// MS2-PIN: ?_Buynode0@?$_List_alloc@U?$_List_base_types@PEAVTransparencyStandardMaterial@@V?$allocator@PEAVTransparencyStandardMaterial@@@std@@@std@@@std@@QEAAPEAU?$_List_node@PEAVTransparencyStandardMaterial@@PEAX@2@PEAU32@0@Z 0x140a18f80 ; unique
 // MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@V?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@U?$less@V?$SmartPointer@VEntity@egf@@@efd@@@std@@V?$CustomAllocator@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@2@XZ 0x140a19040 ; unique
 // MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tset_traits@PEAVEntity@egf@@U?$less@PEAVEntity@egf@@@std@@V?$CustomAllocator@PEAVEntity@egf@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@PEAVEntity@egf@@PEAX@2@XZ 0x140a19120 ; prop
 // MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAXXZ 0x140a195d0 ; unique
@@ -85,8 +99,10 @@
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@V?$SmartPointer@VGameObject@@@efd@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@V?$SmartPointer@VGameObject@@@efd@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@V?$SmartPointer@VGameObject@@@efd@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@V?$SmartPointer@VGameObject@@@efd@@@2@XZ 0x140a1baa0 ; unique
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@2@XZ 0x140a1bb50 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@UUnk_BGTRegion@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@2@XZ 0x140a1bbd0 ; prop
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@_K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@2@XZ 0x140a1bbe0 ; order
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@PEAVEntity@egf@@@std@@@std@@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@PEAVEntity@egf@@@std@@@2@XZ 0x140a1bc10 ; unique
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@PEAVEntity@egf@@PEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@PEAVEntity@egf@@@std@@@std@@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@PEAVEntity@egf@@@std@@@2@XZ 0x140a1bc20 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@2@XZ 0x140a1bc90 ; order
 // MS2-PIN: ?_Kfn@?$_Tset_traits@V?$SmartPointer@VGameObject@@@efd@@U?$less@V?$SmartPointer@VGameObject@@@efd@@@std@@V?$allocator@V?$SmartPointer@VGameObject@@@efd@@@4@$0A@@std@@SAAEBV?$SmartPointer@VGameObject@@@efd@@AEBV34@@Z 0x140a1c130 ; unique
 // MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@QEBAAEAPEAU?$_Tree_node@_KPEAX@2@XZ 0x140a1c170 ; prop
 // MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@XZ 0x140a1c180 ; prop
@@ -97,13 +113,15 @@
 // MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@XZ 0x140a1caa0 ; unique
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@QEAAXPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@@Z 0x140a1ce40 ; unique
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@IEAAXXZ 0x140a1d070 ; unique
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@_K@Z 0x140a1d450 ; prop
+// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@_K@Z 0x140a1d450 ; unique
 // MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@2@XZ 0x140a1d600 ; unique
 // MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@2@XZ 0x140a1d670 ; prop
 // MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAXXZ 0x140a1d9c0 ; prop
 // MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAAXXZ 0x140a1da60 ; prop
 // MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@UUnk_BGTRegion@@PEAX@std@@@2@QEAU?$_Tree_node@UUnk_BGTRegion@@PEAX@2@_K@Z 0x140a1dd70 ; unique
-// MS2-PIN: ?deallocate@?$_Normal_allocator_traits@V?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@@std@@SAXAEAV?$CustomAllocator@U?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@std@@@efd@@PEAU?$_Tree_node@U?$pair@$$CBV?$SmartPointer@VEntity@egf@@@efd@@PEAVTransparencyElement@@@std@@PEAX@2@_K@Z 0x140a1de00 ; prop
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@_KPEAX@std@@@2@QEAU?$_Tree_node@_KPEAX@2@_K@Z 0x140a1dda0 ; order
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@V?$SmartPointer@VGameObject@@@efd@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@V?$SmartPointer@VGameObject@@@efd@@PEAX@2@_K@Z 0x140a1de60 ; order
+// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@QEAAXQEAU?$_Tree_node@_KPEAX@2@_K@Z 0x140a1dec0 ; order
 // MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@2@XZ 0x140a1e0e0 ; unique
 // MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@UUnk_BGTRegion@@U?$less@UUnk_BGTRegion@@@std@@V?$allocator@UUnk_BGTRegion@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_BGTRegion@@@std@@@std@@@2@XZ 0x140a1e140 ; prop
 // MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@PEAVEntity@egf@@U?$less@PEAVEntity@egf@@@std@@V?$CustomAllocator@PEAVEntity@egf@@@efd@@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@PEAVEntity@egf@@@std@@@std@@@2@V32@@Z 0x140a1e4f0 ; unique
@@ -130,6 +148,7 @@
 #include <NiFloatExtraData.h>
 #include <NiRenderObject.h>
 #include <NiMaterial.h>
+#include <efd/EEMath.h>
 #include "ms2/client/ms2/camera.h"
 #include "ms2/client/ms2/worldservice.h"
 #include "ms2/client/ms2/entityworldmanager.h"
@@ -400,92 +419,86 @@ void BGTransparencyMgr::vfunc_1()
         FUN_1403ed2d0()->FUN_141bc7920(reinterpret_cast<std::set<void*>&>(kVisible));
         for (std::set<efd::SmartPointer<GameObject> >::iterator it = m_set20.begin(); it != m_set20.end(); ++it)
         {
-            GameObject* pObject = *it;
-            if (pObject->FUN_14123c660() == 0 || pObject->GetClassID() == 0x6200004)
+            if ((*it)->FUN_14123c660() == 0 || (*it)->GetClassID() == 0x6200004)
             {
-                efd::Point3 ptPos = pObject->vfunc_18();
-                efd::Point3 ptDirA = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17da0());
+                efd::Point3 ptPos = (*it)->vfunc_18();
+                efd::Point3 ptDirA = ptCamera - (ptPos + efd::Point3::UNIT_Z * (*it)->FUN_140a17da0());
                 ptDirA.Unitize();
-                efd::Point3 ptDirB = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17dc0());
+                efd::Point3 ptDirB = ptCamera - (ptPos + efd::Point3::UNIT_Z * (*it)->FUN_140a17dc0());
                 ptDirB.Unitize();
                 egf::Entity* pEntityA = 0;
                 egf::Entity* pEntityB = 0;
                 for (std::set<Unk_BGTRegion>::iterator itRegion = kVisible.begin(); itRegion != kVisible.end();
                     ++itRegion)
                 {
-                    const Unk_BGTRegion* pRegion = &*itRegion;
-                    efd::Point3 ptDir = ptDirA;
-                    efd::Point3 ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17da0();
-                    if (RayHits(ptOrigin, ptDir, pRegion->m_pNode))
+                if (RayHits(ptPos + efd::Point3::UNIT_Z * (*it)->FUN_140a17da0(), ptDirA, itRegion->m_pNode))
+                {
+                    pEntityA = FUN_1409670f0()->FUN_1411cf440(itRegion->m_id);
+                    if (pEntityA != 0)
                     {
-                        pEntityA = FUN_1409670f0()->FUN_1411cf440(pRegion->m_id);
-                        if (pEntityA != 0)
+                        bool bAdded = false;
+                        int nKind = itRegion->m_nKind;
+                        if (nKind == 0)
                         {
-                            bool bAdded = false;
-                            int nKind = pRegion->m_nKind;
-                            if (nKind == 0)
+                            kHit.insert(pEntityA);
+                            bAdded = true;
+                        }
+                        else if (nKind == 1 && m_nWorldFlags != 0)
+                        {
+                            kHit.insert(pEntityA);
+                            bAdded = true;
+                        }
+                        if (bAdded && itRegion->m_nGroup > 0)
+                        {
+                            std::set<unsigned __int64> kGroup;
+                            FUN_1403ed2d0()->FUN_141bc7aa0(itRegion->m_nGroup, kGroup);
+                            std::set<unsigned __int64>::iterator itEnd = kGroup.end();
+                            std::set<unsigned __int64>::iterator itId = kGroup.begin();
+                            while (itId != itEnd)
                             {
-                                kHit.insert(pEntityA);
-                                bAdded = true;
-                            }
-                            else if (nKind == 1 && m_nWorldFlags != 0)
-                            {
-                                kHit.insert(pEntityA);
-                                bAdded = true;
-                            }
-                            if (bAdded && pRegion->m_nGroup > 0)
-                            {
-                                std::set<unsigned __int64> kGroup;
-                                FUN_1403ed2d0()->FUN_141bc7aa0(pRegion->m_nGroup, kGroup);
-                                std::set<unsigned __int64>::iterator itEnd = kGroup.end();
-                                std::set<unsigned __int64>::iterator itId = kGroup.begin();
-                                while (itId != itEnd)
-                                {
-                                    egf::EntityID id(*itId);
-                                    pEntityA = FUN_1409670f0()->FUN_1411cf440(id);
-                                    if (pEntityA != 0)
-                                        kHit.insert(pEntityA);
-                                    ++itId;
-                                }
+                                egf::EntityID id(*itId);
+                                pEntityA = FUN_1409670f0()->FUN_1411cf440(id);
+                                if (pEntityA != 0)
+                                    kHit.insert(pEntityA);
+                                ++itId;
                             }
                         }
                     }
-                    ptDir = ptDirB;
-                    ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17dc0();
-                    if (RayHits(ptOrigin, ptDir, pRegion->m_pNode))
+                }
+                if (RayHits(ptPos + efd::Point3::UNIT_Z * (*it)->FUN_140a17dc0(), ptDirB, itRegion->m_pNode))
+                {
+                    pEntityB = FUN_1409670f0()->FUN_1411cf440(itRegion->m_id);
+                    if (pEntityB != 0 && pEntityA != pEntityB)
                     {
-                        pEntityB = FUN_1409670f0()->FUN_1411cf440(pRegion->m_id);
-                        if (pEntityB != 0 && pEntityA != pEntityB)
+                        bool bAdded = false;
+                        int nKind = itRegion->m_nKind;
+                        if (nKind == 0)
                         {
-                            bool bAdded = false;
-                            int nKind = pRegion->m_nKind;
-                            if (nKind == 0)
+                            kHit.insert(pEntityB);
+                            bAdded = true;
+                        }
+                        else if (nKind == 1 && m_nWorldFlags != 0)
+                        {
+                            kHit.insert(pEntityB);
+                            bAdded = true;
+                        }
+                        if (bAdded && itRegion->m_nGroup > 0)
+                        {
+                            std::set<unsigned __int64> kGroup;
+                            FUN_1403ed2d0()->FUN_141bc7aa0(itRegion->m_nGroup, kGroup);
+                            std::set<unsigned __int64>::iterator itEnd = kGroup.end();
+                            std::set<unsigned __int64>::iterator itId = kGroup.begin();
+                            while (itId != itEnd)
                             {
-                                kHit.insert(pEntityB);
-                                bAdded = true;
-                            }
-                            else if (nKind == 1 && m_nWorldFlags != 0)
-                            {
-                                kHit.insert(pEntityB);
-                                bAdded = true;
-                            }
-                            if (bAdded && pRegion->m_nGroup > 0)
-                            {
-                                std::set<unsigned __int64> kGroup;
-                                FUN_1403ed2d0()->FUN_141bc7aa0(pRegion->m_nGroup, kGroup);
-                                std::set<unsigned __int64>::iterator itEnd = kGroup.end();
-                                std::set<unsigned __int64>::iterator itId = kGroup.begin();
-                                while (itId != itEnd)
-                                {
-                                    egf::EntityID id(*itId);
-                                    pEntityB = FUN_1409670f0()->FUN_1411cf440(id);
-                                    if (pEntityB != 0)
-                                        kHit.insert(pEntityB);
-                                    ++itId;
-                                }
+                                egf::EntityID id(*itId);
+                                pEntityB = FUN_1409670f0()->FUN_1411cf440(id);
+                                if (pEntityB != 0)
+                                    kHit.insert(pEntityB);
+                                ++itId;
                             }
                         }
                     }
+                }
                 }
             }
         }
@@ -560,8 +573,8 @@ void BGTransparencyMgr::Apply(Unk_BGTEntitySet& kHit)
 void BGTransparencyMgr::SortEntities()
 {
     Unk_BGTEntityList kList;
-    Unk_BGTElementMap::iterator it = m_map30.begin();
-    Unk_BGTElementMap::iterator itEnd = m_map30.end();
+    Unk_BGTElementMap::const_iterator it = m_map30.begin();
+    Unk_BGTElementMap::const_iterator itEnd = m_map30.end();
     while (it != itEnd)
     {
         kList.push_back(it->first);
@@ -577,9 +590,11 @@ void BGTransparencyMgr::SortEntities()
     if (kList.size() != 0)
     {
         std::sort(kList.begin(), kList.end(), CompareDistance);
-        for (size_t i = 0; i < kList.size(); i++)
+        size_t nCount = kList.size();
+        for (size_t i = 0; i < nCount; i++)
         {
-            NiNode* pRoot = FUN_1413fa030(kList[i]);
+            egf::Entity* pEntity = kList[i];
+            NiNode* pRoot = FUN_1413fa030(pEntity);
             if (pRoot != 0)
             {
                 Unk_CmWalker kWalker(pRoot);
@@ -607,19 +622,18 @@ void BGTransparencyMgr::UpdateFadeOut()
 {
     if (!m_map30.empty())
     {
-        Unk_BGTElementMap::iterator it = m_map30.begin();
-        Unk_BGTElementMap::iterator itEnd = m_map30.end();
+        Unk_BGTElementMap::const_iterator it = m_map30.begin();
+        Unk_BGTElementMap::const_iterator itEnd = m_map30.end();
         while (it != itEnd)
         {
             TransparencyElement* pElement = it->second;
             if (pElement->m_timer.FUN_140868ba0() != 0)
             {
-                for (std::list<TransparencyStandardMaterial*, efd::CustomAllocator<TransparencyStandardMaterial*> >::iterator
+                for (std::list<TransparencyStandardMaterial*>::iterator
                     itMat = pElement->m_materials.begin(); itMat != pElement->m_materials.end(); ++itMat)
                 {
                     float fRatio = pElement->m_timer.FUN_140868940();
-                    TransparencyStandardMaterial* pMaterial = *itMat;
-                    pMaterial->vfunc_4(std::min(std::max(pElement->m_fAlpha, 1.0f - fRatio), 1.0f));
+                    (*itMat)->vfunc_4(efd::Clamp(1.0f - fRatio, pElement->m_fAlpha, 1.0f));
                 }
             }
             ++it;
@@ -655,12 +669,11 @@ void BGTransparencyMgr::UpdateFadeIn()
             }
             else
             {
-                for (std::list<TransparencyStandardMaterial*, efd::CustomAllocator<TransparencyStandardMaterial*> >::iterator
+                for (std::list<TransparencyStandardMaterial*>::iterator
                     itMat = pElement->m_materials.begin(); itMat != pElement->m_materials.end(); ++itMat)
                 {
                     float fRatio = pElement->m_timer.FUN_140868940();
-                    TransparencyStandardMaterial* pMaterial = *itMat;
-                    pMaterial->vfunc_4(std::min(std::max(pElement->m_fAlpha, fRatio), 1.0f));
+                    (*itMat)->vfunc_4(efd::Clamp(fRatio, pElement->m_fAlpha, 1.0f));
                 }
                 ++it;
             }
@@ -671,7 +684,7 @@ void BGTransparencyMgr::UpdateFadeIn()
 // @0x140a0f020
 void BGTransparencyMgr::ReleaseMaterials(egf::Entity* pEntity, TransparencyElement* pElement)
 {
-    for (std::list<TransparencyStandardMaterial*, efd::CustomAllocator<TransparencyStandardMaterial*> >::iterator
+    for (std::list<TransparencyStandardMaterial*>::iterator
         it = pElement->m_materials.begin(); it != pElement->m_materials.end(); ++it)
     {
         (*it)->vfunc_3();
@@ -687,7 +700,7 @@ void BGTransparencyMgr::ReleaseMaterials(egf::Entity* pEntity, TransparencyEleme
 // @0x140a0f140
 void BGTransparencyMgr::DeleteMaterials(TransparencyElement* pElement)
 {
-    for (std::list<TransparencyStandardMaterial*, efd::CustomAllocator<TransparencyStandardMaterial*> >::iterator
+    for (std::list<TransparencyStandardMaterial*>::iterator
         it = pElement->m_materials.begin(); it != pElement->m_materials.end(); ++it)
     {
         TransparencyStandardMaterial* pMaterial = *it;
