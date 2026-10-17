@@ -2,6 +2,7 @@
 // WorldService members, efd message handler / ClassFunHandler scalar deleting dtors, Notify* ??_G).
 // MS2-UNIT: unit_141bf99b8
 // MS2-RANGE: 0x141bf99b8-0x141c00000 .text$mn
+// MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??_GUnk_WsVa18@@QEAAPEAXI@Z 0x141bf99d0 ; probe
 // MS2-PIN: ??_G?$MessageHandlerImpl@VWorldService@@VActorAddedMessage@egmAnimation@@@efd@@UEAAPEAXI@Z 0x141bf9a50 ; prop
@@ -63,13 +64,13 @@
 // MS2-PIN: ?Find@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV4b0@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV4b0@@@2@@ATL@@IEBAPEAVCNode@12@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@@Z 0x141bfc050 ; probe
 // MS2-PIN: ?Find@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV510@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV510@@@2@@ATL@@IEBAPEAVCNode@12@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@@Z 0x141bfc140 ; probe
 // MS2-PIN: ?Find@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV678@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV678@@@2@@ATL@@IEBAPEAVCNode@12@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@@Z 0x141bfc230 ; probe
-// MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_W6V350@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V350@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc5f0 ; prop
+// MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_W6V3a0@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V3a0@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc5f0 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_W6V780@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V780@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc770 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_WsV208@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV208@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc830 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_WsV848@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV848@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc8f0 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@IUUnk_WsV930@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV930@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfc9b0 ; prop
+// MS2-PIN: ?FindNextNode@?$CAtlMap@_KUUnk_W6V2f8@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V2f8@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfca70 ; prop
 // MS2-PIN: ?FindNextNode@?$CAtlMap@_KUUnk_W6V420@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V420@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfcb30 ; prop
-// MS2-PIN: ?FindNextNode@?$CAtlMap@_KUUnk_W6V468@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V468@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141bfcbf0 ; prop
 // MS2-PIN: ?FreeNode@?$CAtlMap@IUUnk_W6V350@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V350@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141bfcd20 ; probe
 // MS2-PIN: ?FreeNode@?$CAtlMap@IUUnk_W6V738@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V738@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141bfce20 ; order
 // MS2-PIN: ?FreeNode@?$CAtlMap@IUUnk_W6V3a0@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V3a0@@@3@@ATL@@AEAAXPEAVCNode@12@@Z 0x141bfcf20 ; probe
@@ -102,23 +103,25 @@
 // MS2-PIN: ?FreePlexes@?$CAtlMap@_KUUnk_W6V420@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V420@@@3@@ATL@@AEAAXXZ 0x141bfe4a0 ; probe
 // MS2-PIN: ?FreePlexes@?$CAtlMap@_KUUnk_W6V5a0@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V5a0@@@3@@ATL@@AEAAXXZ 0x141bfe4f0 ; order
 // MS2-PIN: ?FreePlexes@?$CAtlMap@_KUUnk_W6V468@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V468@@@3@@ATL@@AEAAXXZ 0x141bfe540 ; probe
-// MS2-PIN: ?GetModuleInstance@CAtlBaseModule@ATL@@QEAAPEAUHINSTANCE__@@XZ 0x141bfe680 ; probe
 // MS2-PIN: ?GetHeadPosition@?$CRBTree@IUUnk_WsV0e8@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV0e8@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeaf0 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@IUUnk_WsV148@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV148@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb10 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@IUUnk_WsV1a8@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV1a8@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb30 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@IUUnk_WsV708@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV708@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb50 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV4b0@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV4b0@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb70 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV510@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV510@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb90 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV5e8@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV5e8@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfebb0 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV678@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV678@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfebd0 ; probe
-// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV7c8@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV7c8@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfebf0 ; probe
+// MS2-PIN: ?GetHeadPosition@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV4b0@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV4b0@@@2@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfeb50 ; probe
+// MS2-PIN: ?GetTailPosition@?$CRBTree@HUUnk_WsV540@@V?$CElementTraits@H@ATL@@V?$CElementTraits@UUnk_WsV540@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x141bfebb0 ; probe
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_W6V3a0@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V3a0@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfedb0 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_W6V738@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V738@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfee00 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_W6V780@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V780@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfee50 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_WsV208@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV208@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfeea0 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_WsV848@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV848@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfeef0 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@IUUnk_WsV930@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV930@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfef40 ; prop
+// MS2-PIN: ?GetNext@?$CAtlMap@_KUUnk_W6V420@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V420@@@3@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x141bfefe0 ; prop
+// MS2-PIN: ?GetNextKey@?$CRBTree@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@UUnk_WsV7c8@@V?$CElementTraits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@2@V?$CElementTraits@UUnk_WsV7c8@@@2@@ATL@@QEBAAEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@2@AEAPEAU__POSITION@@@Z 0x141bff170 ; order
 // MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_W6V780@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V780@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141bff570 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_WsV208@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV208@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141bff660 ; prop
-// MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_W6V350@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V350@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141bff750 ; prop
+// MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_W6V3a0@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_W6V3a0@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141bff750 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@IUUnk_WsV848@@V?$CElementTraits@I@ATL@@V?$CElementTraits@UUnk_WsV848@@@3@@ATL@@AEBAPEAVCNode@12@IAEAI0AEAPEAV312@@Z 0x141bff840 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@_KUUnk_W6V2f8@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V2f8@@@3@@ATL@@AEBAPEAVCNode@12@_KAEAI1AEAPEAV312@@Z 0x141bffb10 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@_KUUnk_W6V420@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V420@@@3@@ATL@@AEBAPEAVCNode@12@_KAEAI1AEAPEAV312@@Z 0x141bffc00 ; prop
 // MS2-PIN: ?GetNode@?$CAtlMap@_KUUnk_W6V468@@V?$CElementTraits@_K@ATL@@V?$CElementTraits@UUnk_W6V468@@@3@@ATL@@AEBAPEAVCNode@12@_KAEAI1AEAPEAV312@@Z 0x141bffcf0 ; prop
+// MS2-PIN: ?GetModuleInstance@CAtlBaseModule@ATL@@QEAAPEAUHINSTANCE__@@XZ 0x141bffe10 ; order
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\worldservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -151,6 +154,17 @@ template <class K, class V, class KT, class VT> static void WsDriveAtl(ATL::CAtl
     POSITION pos = m.GetStartPosition();
     while (pos)
         m.GetNextAssoc(pos, k, v);
+    pos = m.GetStartPosition();
+    m.GetNext(pos);
+    m.GetNextKey(pos);
+    m.GetNextValue(pos);
+    m.GetAt(pos);
+    m.GetKeyAt(pos);
+    m.GetValueAt(pos);
+    m.Lookup(k);
+    m.GetCount();
+    m.IsEmpty();
+    m.RemoveAtPos(pos);
 }
 template <class K, class V, class KT, class VT> static void WsDriveRB(ATL::CRBMap<K, V, KT, VT>& m, int n)
 {
@@ -163,6 +177,20 @@ template <class K, class V, class KT, class VT> static void WsDriveRB(ATL::CRBMa
     POSITION pos = m.GetHeadPosition();
     while (pos)
         m.GetNextAssoc(pos, k, v);
+    pos = m.GetHeadPosition();
+    m.GetNext(pos);
+    m.GetPrev(pos);
+    m.GetNextKey(pos);
+    m.GetNextValue(pos);
+    m.GetAt(pos);
+    m.GetKeyAt(pos);
+    m.GetValueAt(pos);
+    m.GetTailPosition();
+    m.Lookup(k);
+    m.GetCount();
+    m.IsEmpty();
+    m.RemoveAt(pos);
+    m.FindFirstKeyAfter(k);
 }
 template <class M> static void WsDriveStd(M& m, typename M::key_type k)
 {
