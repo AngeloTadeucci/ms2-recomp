@@ -1,9 +1,11 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). CGameRule: the client side store of the running game
 // events (rates, sales, contexts by event id); the GameEvent* handlers of gameevent.cpp fill it and the UI asks it.
 // The range starts with the ctor / dtor and the GameReason helpers (the earlier unnamed units 0x140474af0 ..
-// 0x1404776f0 are the same TU) and ends with the template COMDATs of its containers (0x14047fd60 ..).
+// 0x1404776f0 are the same TU) and ends with the template COMDATs of its containers (0x14047fd60 .. 0x1404c11a0:
+// the unnamed units 0x1404979e0, 0x14049bd70, 0x14049c0d0, 0x14049c890, 0x1404aeed0, 0x1404af2b0 and 0x1404af370 are
+// this TU's COMDAT tail; the next TU is ?\gloabalfactor.cpp at 0x1404c11a0).
 // MS2-UNIT: commonfiles\gamerule.cpp
-// MS2-RANGE: 0x140474af0-0x1404979e0 .text$mn
+// MS2-RANGE: 0x140474af0-0x1404c11a0 .text$mn
 // MS2-RANGE: 0x1400b8d40-0x1400b8df1 .text$di
 // MS2-RANGE: 0x142c9a920-0x142c9a950 .text$yd
 // MS2-GUESS-LOOKALIKES
@@ -234,8 +236,8 @@ template <class T> void Unk_AppendVector(const std::vector<T>& src, std::vector<
     std::copy(src.begin(), src.end(), std::back_inserter(dst));
 }
 
-// @0x140474af0
 // MS2-FUNCTIONAL: ctor member-init order/EH states differ (container element types approximated)
+// @0x140474af0
 CGameRule::CGameRule()
     : m_d0(0), m_d4(0), m_368(0), m_36c(0), m_3b0(0), m_690(-1), m_698(0), m_6a0(0), m_6a8(0), m_6f0(0), m_6f4(0),
       m_700(0), m_8d8(0), m_8e8(0), m_910(false), m_9d0(false), m_transferItemBound(false), m_b30(0), m_b40(0),
