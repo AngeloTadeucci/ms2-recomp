@@ -263,7 +263,7 @@ public:
     CUgcUploadCtrl();                                       // 0x1418a3620
     virtual ~CUgcUploadCtrl();                              // 0x1418a3740 (??_G 0x1418a6de0)
     void FUN_1418a3840(int nType);                          // set the content kind
-    int FUN_1418a38a0();                                    // 
+    void FUN_1418a38a0();                                   // refresh the preview of the dialog
     void FUN_1418a3ab0(int nDialog);                        // set the dialog that shows the upload
     int FUN_1418a3ad0();                                    // the dialog that shows the upload
     void FUN_1418a3af0(int nResult);

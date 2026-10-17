@@ -74,7 +74,7 @@ public:
 extern Unk_StreamPoint DAT_143b01a60;                       // the zero point
 void FUN_1409618c0(egf::Entity* pEntity, unsigned nProperty, Unk_StreamPoint* pOut);   // reads a point property
 float FUN_140966f00(NiPoint3 kA, Unk_StreamPoint kB);           // the distance
-void* FUN_1401d31f0();                                      // the client config (+0xd8: the upload directory)
+struct Unk_VwConfig { char m_pad[0xd8]; CStringA m_strUploadDir; };   // the client config
 void* FUN_140166410();                                      // the game settings
 bool FUN_14036e510(void* pSettings);                        // a content switch
 void* FUN_1403ed290();                                      // the guild manager (+8: the own guild)
@@ -192,6 +192,10 @@ UIObject* FUN_1403ed9e0(Unk_CommandUIRef&);
 bool FUN_140534e80(Unk_CommandUIRef&);
 void FUN_140c381b0(UIItemBlueprintCreateDialog* pDialog, MS2Ptr<CUploadFile> spFile);   // show the uploaded image
 void FUN_140c38240(UIItemBlueprintCreateDialog* pDialog);
+CStringW FUN_14016a730(const char* psz, int n);             // narrow -> wide
+extern __int64 DAT_143ab2820;                               // my account id
+extern __int64 DAT_143ab2828;                               // my character id
+CString FUN_14016a600(const wchar_t* psz, int n);          // wide -> narrow
 extern unsigned DAT_143ab2830;                              // my character's type
 
 // ---- CUgcViewerEquip ----------------------------------------------------------------------------------------------
@@ -1363,4 +1367,241 @@ void IUgcViewer::vfunc_5()
 // @0x1418a71e0
 void IUgcViewer::vfunc_1()
 {
+}
+
+// ---- CUgcUploadCtrl -----------------------------------------------------------------------------------------------
+
+// @0x1418a3620
+CUgcUploadCtrl::CUgcUploadCtrl()
+{
+    Clear();
+    m_spViewer = 0;
+    m_spFile = 0;
+    m_itemUid = 0;
+    m_spImage = 0;
+    m_nExtra = 0;
+    m_strResult = "";
+}
+
+// @0x1418a3740
+CUgcUploadCtrl::~CUgcUploadCtrl()
+{
+    Clear();
+    m_spViewer = 0;
+    m_spFile = 0;
+    m_itemUid = 0;
+    m_spImage = 0;
+    m_nDialog = 0;
+}
+
+// @0x1418a3840
+void CUgcUploadCtrl::FUN_1418a3840(int nType)
+{
+    Clear();
+    m_nKind = nType;
+    m_user.m_nType = DAT_143ab2830;
+    m_user.m_accountId = DAT_143ab2820;
+    m_user.m_characterId = DAT_143ab2828;
+}
+
+// @0x1418a38a0
+void CUgcUploadCtrl::FUN_1418a38a0()
+{
+    Unk_VwDialogUi* pDialog = FUN_140c300a0(m_nDialog);
+    if (pDialog != 0 && pDialog->vfunc_55() != 1 && m_spViewer.get() != 0)
+    {
+        m_spViewer->vfunc_5();
+        m_spViewer->vfunc_1();
+        if (m_spFile.get() != 0)
+        {
+            if (m_spFile->Refresh() != 0)
+            {
+                ConvertIconFile(m_spFile->GetPath());
+                m_spViewer->vfunc_3(m_spFile);
+                FUN_140bc09f0()->vfunc_4(m_nDialog);
+            }
+        }
+    }
+}
+
+// @0x1418a3ab0
+void CUgcUploadCtrl::FUN_1418a3ab0(int nDialog)
+{
+    m_nDialog = nDialog;
+}
+
+// @0x1418a3ad0
+int CUgcUploadCtrl::FUN_1418a3ad0()
+{
+    return m_nDialog;
+}
+
+// @0x1418a3af0
+void CUgcUploadCtrl::FUN_1418a3af0(int nResult)
+{
+    if (m_nDialog == nResult && m_spViewer.get() != 0 && m_upload.m_nType != 3)
+        m_spViewer->vfunc_4();
+}
+
+// @0x1418a3b80
+int CUgcUploadCtrl::FUN_1418a3b80(__int64 uid)
+{
+    int nResult = FUN_1418a3c20(uid, 1);
+    if (nResult == 0)
+    {
+        FUN_1418a3db0();
+        nResult = 0;
+    }
+    return nResult;
+}
+
+// @0x1418a3bd0
+CStringW CUgcUploadCtrl::FUN_1418a3bd0()
+{
+    return m_strResult;
+}
+
+// @0x1418a3c20
+int CUgcUploadCtrl::FUN_1418a3c20(__int64 uid, int bFirst)
+{
+    int nResult;
+    switch (m_nKind)
+    {
+    case 1:
+    case 2:
+    case 3:
+    case 7:
+        nResult = FUN_1418a4470(uid);
+        break;
+    case 5:
+    case 6:
+    case 8:
+    case 10:
+        nResult = FUN_1418a43d0();
+        break;
+    case 9:
+        nResult = FUN_1418a4780();
+        break;
+    case 0xc9:
+    case 0xd1:
+        nResult = FUN_1418a4690();
+    }
+    return nResult;
+}
+
+// @0x1418a3db0
+// MS2-FUNCTIONAL: second upload (the preview image) of an item/cube/mount/blueprint upload
+void CUgcUploadCtrl::FUN_1418a3db0()
+{
+    if (m_nKind == 1 || m_nKind == 2 || m_nKind == 7 || m_nKind == 9)
+    {
+        CStringW strDir = FUN_14016a730(static_cast<Unk_VwConfig*>(FUN_1401d31f0())->m_strUploadDir, 0);
+        if (_waccess(strDir, 0) == 0)
+        {
+            MS2Ptr<CUploadFile> spFile(new CUploadFile());
+            CStringW strName = FUN_14016a730("upload_i.png", 0);
+            spFile->Set(strDir, strName, 0, 0, 0);
+            m_spImage.AssignRaw(new CUgcUploadCtrl());
+            m_spImage->m_nKind = m_nKind == 9 ? 0xd1 : 0xc9;
+            m_spImage->m_user.CopyFrom(&m_user);
+            m_spImage->m_upload.CopyFrom(&m_upload);
+            m_spImage->m_spFile = spFile;
+            m_spImage->m_spViewer = m_spViewer;
+            m_spImage->FUN_1418a3c20(0, 0);
+        }
+    }
+}
+
+// @0x1418a4100
+MS2Ptr<CUgcUploadCtrl> CUgcUploadCtrl::FUN_1418a4100()
+{
+    return m_spImage;
+}
+
+// @0x1418a4150
+void CUgcUploadCtrl::FUN_1418a4150()
+{
+    m_nExtra = m_spViewer->vfunc_10();
+}
+
+// @0x1418a41a0
+__int64 CUgcUploadCtrl::FUN_1418a41a0()
+{
+    if (m_nExtra == 0)
+        FUN_1418a4150();
+    return m_nExtra;
+}
+
+// @0x1418a41e0
+CString CUgcUploadCtrl::FUN_1418a41e0()
+{
+    CString str;
+    CString strViewer;
+    if (m_spViewer.get() != 0)
+        strViewer = m_spViewer->vfunc_11();
+    str = Unk_SocketFormat("[accSN={0}] [charSN={1}] [dialog={2}] [extraParam={3}] [uploadPath={4}] {5}", DAT_143ab2820, DAT_143ab2828, m_nDialog, m_nExtra, FUN_14016a600(m_strResult, 0), strViewer);
+    return str;
+}
+
+// @0x1418a43d0
+int CUgcUploadCtrl::FUN_1418a43d0()
+{
+    if (m_spFile.get() == 0)
+        return 0xb;
+    m_strResult = m_spFile->GetThumbnailDir();
+    return 0;
+}
+
+// @0x1418a4470
+int CUgcUploadCtrl::FUN_1418a4470(__int64 uid)
+{
+    if (m_spFile.get() == 0)
+        return 0xb;
+    int nSize = m_spViewer->vfunc_9();
+    Unk_UgcFileResult result = ChangeFormat(m_nKind, m_spFile, nSize, FUN_14036e510(FUN_140166410()));
+    int nResult = result.m_nResult;
+    if (nResult == 0)
+    {
+        CUgcCompress compress;
+        nResult = compress.Compress(result.m_strPath, (void*)uid);
+        if (nResult == 0)
+        {
+            m_strResult = compress.GetZipFile();
+            if (result.m_bTemporary == 1)
+                DeleteFileW(result.m_strPath);
+            nResult = 0;
+        }
+    }
+    return nResult;
+}
+
+// @0x1418a4690
+int CUgcUploadCtrl::FUN_1418a4690()
+{
+    if (m_spFile.get() == 0)
+        return 0xb;
+    Unk_UgcFileResult result = ChangeFormat(m_nKind, m_spFile, 0x30, 0);
+    int nResult = result.m_nResult;
+    if (nResult == 0)
+    {
+        m_strResult = result.m_strPath;
+        nResult = 0;
+    }
+    return nResult;
+}
+
+// @0x1418a4780
+int CUgcUploadCtrl::FUN_1418a4780()
+{
+    if (m_spFile.get() == 0)
+        return 0xb;
+    int nSize = m_spViewer->vfunc_9();
+    Unk_UgcFileResult result = ChangeFormat(m_nKind, m_spFile, nSize, 0);
+    int nResult = result.m_nResult;
+    if (nResult == 0)
+    {
+        m_strResult = result.m_strPath;
+        nResult = 0;
+    }
+    return nResult;
 }
