@@ -2747,3 +2747,6 @@ inflateInit_	142723ad0	func
 ?s_bInit@LoginBgBgmTable@@2_NA	143ab8310	data
 ?s_instance@?$TSingleton@VCVIPTable@@@@2PEAVCVIPTable@@EA	143ab2628	data
 ?s_bInit@CVIPTable@@2_NA	143ab2630	data
+?Lookup@?$CAtlMap@W4Unk_ItemDefaultKind@@HV?$CElementTraits@W4Unk_ItemDefaultKind@@@ATL@@V?$CElementTraits@H@3@@ATL@@QEBA_NAEBW4Unk_ItemDefaultKind@@AEAH@Z	140537c50	func
+?ms_aMaps@CItemDefaultData@@2PAV?$CAtlMap@W4Unk_ItemDefaultKind@@HV?$CElementTraits@W4Unk_ItemDefaultKind@@@ATL@@V?$CElementTraits@H@3@@ATL@@A	143aafa40	data
+?FUN_140587a50@CItemDefaultData@@SAXXZ	140587a50	func
