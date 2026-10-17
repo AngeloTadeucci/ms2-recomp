@@ -74,6 +74,7 @@
 // MS2-PIN: ?Release@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXXZ 0x1415378d0
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VStateAutoInteractionData@@@@AEAAXPEAX@Z 0x141537c80
 // MS2-PIN: ??0CNode@?$CAtlList@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@V?$CElementTraits@V?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@ATL@@@ATL@@QEAA@AEBV?$MS2Ptr@VUnk_PCBaseComp_b18@@@@@Z 0x141532690
+// MS2-PIN: ??0?$MS2Ptr@VUnk_MyPCCastRecord@@@@QEAA@H@Z 0x141532140
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -1685,6 +1686,12 @@ public:
     int FUN_14142e6f0(Unk_MyPCLapenSlot eSlot);             // the key is not a quick slot key
 };
 Unk_MyPCQuickSlots* FUN_1409331f0();
+
+// vfunc_104's `MS2Ptr<T>(0)` returns use their own copy (0x141532140), apart from the b18 list element's (0x141532470):
+// the exe's slot-104 return type is another MS2Ptr<T>, but the shared slot is typed MS2Ptr<Unk_PCBaseComp_b18>, so
+// the copy is instantiated for a stand-in type (byte-identical).
+class Unk_MyPCCastRecord;
+template MS2Ptr<Unk_MyPCCastRecord>::MS2Ptr(int);
 
 // @0x1415219d0
 // The skill to cast now: the pending skill, else the one of the picked quick slot (its item's skill for an item);
