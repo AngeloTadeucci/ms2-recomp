@@ -108,6 +108,7 @@ struct Unk_DayTimeRange {
     Unk_DayTimeRange(Unk_DayTime start, Unk_DayTime end) : m_start(start), m_end(end) {}
     // the code of Unk_GameEventIntRange::Init (identical, folded)
     void Init(Unk_DayTime start, Unk_DayTime end) { m_start = start; m_end = end; }
+    bool Contains(Unk_DayTime time) const;                // 0x1404a4160 (start <= time < end)
     Unk_DayTime m_start;
     Unk_DayTime m_end;
 };
