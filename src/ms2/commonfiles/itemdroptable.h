@@ -35,10 +35,11 @@ public:
         int index;                                          // insertion order
     };
 
+    ItemDropPicker() : m_total(0) {}
     // Adds value with the given weight (ignored when 0).
     void Register(unsigned weight, T value)
     {
-        if (weight == 0)
+        if (weight < 1)
             return;
         m_total += weight;
         Entry entry;
@@ -61,14 +62,16 @@ public:
     bool Pick(T& out)
     {
         Entry entry;
-        bool bPicked = Pick(entry);
-        if (bPicked == true)
+        if (Pick(entry) == true)
+        {
             out = entry.value;
-        return bPicked == true;
+            return true;
+        }
+        return false;
     }
     bool Query(T value)
     {
-        for (typename std::map<unsigned, Entry>::iterator it = m_entries.begin(); it != m_entries.end(); ++it)
+        for (typename std::map<unsigned, Entry>::const_iterator it = m_entries.begin(); it != m_entries.end(); ++it)
         {
             if (it->second.value == value)
                 return true;
@@ -76,7 +79,12 @@ public:
         return false;
     }
     unsigned GetTotal() { return m_total; }
-    bool Remains() { return m_total != 0; }
+    bool Remains()
+    {
+        if (m_total == 0)
+            return false;
+        return true;
+    }
     // Scales every weight but the one of except by rate; except gets what the others lost (or gave up).
     void Rescale(float rate, T except)
     {
@@ -107,7 +115,7 @@ public:
 private:
     MS2_LAYOUT_FRIEND;
     std::map<unsigned, Entry> m_entries;
-    unsigned m_total = 0;
+    unsigned m_total;
 };
 
 // A count range: min..max picked uniformly.
@@ -121,7 +129,7 @@ struct ItemDropCount
     }
     unsigned GetValue()
     {
-        if (m_min < m_max)
+        if (m_max > m_min)
             return rand() % (m_max - m_min + 1) + m_min;
         return m_min;
     }
@@ -129,8 +137,8 @@ struct ItemDropCount
     {
         unsigned nMin = m_min * fMinRate;
         unsigned nMax = m_max * fMaxRate;
-        if (nMin < nMax)
-            nMin += rand() % (nMax - nMin + 1);
+        if (nMax > nMin)
+            return nMin + rand() % (nMax - nMin + 1);
         return nMin;
     }
     unsigned m_min;
