@@ -250,7 +250,6 @@ template void Unk_GameEventCopy<GameEventBingoEvent>(void*, const GameEventBingo
 template void Unk_GameEventCopy<GameEventBlackMarketFeeDiscount>(void*, const GameEventBlackMarketFeeDiscount&);
 template void Unk_GameEventCopy<GameEventBlueMarble>(void*, const GameEventBlueMarble&);
 template void Unk_GameEventCopy<GameEventBurningLevelup>(void*, const GameEventBurningLevelup&);
-template void Unk_GameEventCopy<GameEventChatFiltering>(void*, const GameEventChatFiltering&);
 template void Unk_GameEventCopy<GameEventCollectItemGroup>(void*, const GameEventCollectItemGroup&);
 template void Unk_GameEventCopy<GameEventCoupleDance>(void*, const GameEventCoupleDance&);
 template void Unk_GameEventCopy<GameEventCustomTriggerString>(void*, const GameEventCustomTriggerString&);
@@ -279,7 +278,6 @@ template void Unk_GameEventCopy<GameEventGuildFund>(void*, const GameEventGuildF
 template void Unk_GameEventCopy<GameEventGuildPersonalSkillSale>(void*, const GameEventGuildPersonalSkillSale&);
 template void Unk_GameEventCopy<GameEventGuildSkillSale>(void*, const GameEventGuildSkillSale&);
 template void Unk_GameEventCopy<GameEventGuildVsGameOpen>(void*, const GameEventGuildVsGameOpen&);
-template void Unk_GameEventCopy<GameEventIgnoreConstructionLockEvent>(void*, const GameEventIgnoreConstructionLockEvent&);
 template void Unk_GameEventCopy<GameEventItemBox>(void*, const GameEventItemBox&);
 template void Unk_GameEventCopy<GameEventItemBuff>(void*, const GameEventItemBuff&);
 template void Unk_GameEventCopy<GameEventItemTradeRestriction>(void*, const GameEventItemTradeRestriction&);
@@ -324,7 +322,6 @@ template void Unk_GameEventCopy<GameEventShutdownFunctionItem>(void*, const Game
 template void Unk_GameEventCopy<GameEventShutdownInteractObjectId>(void*, const GameEventShutdownInteractObjectId&);
 template void Unk_GameEventCopy<GameEventShutdownSkillItem>(void*, const GameEventShutdownSkillItem&);
 template void Unk_GameEventCopy<GameEventShutdownUGCBanner>(void*, const GameEventShutdownUGCBanner&);
-template void Unk_GameEventCopy<GameEventShutdownUGCUpload>(void*, const GameEventShutdownUGCUpload&);
 template void Unk_GameEventCopy<GameEventSnowman>(void*, const GameEventSnowman&);
 template void Unk_GameEventCopy<GameEventStampEvent>(void*, const GameEventStampEvent&);
 template void Unk_GameEventCopy<GameEventStampEventChar>(void*, const GameEventStampEventChar&);
@@ -361,9 +358,6 @@ void Unk_GameEventConstruct(void* p)
 {
     new (p) T;
 }
-template void Unk_GameEventConstruct<GalleryContext>(void*);
-template void Unk_GameEventConstruct<RpsContext>(void*);
-template void Unk_GameEventConstruct<SnowmanContext>(void*);
 // These have the gameevent.cpp ctor only; their header-only tag ctors emit the vftable.
 template <class T>
 void Unk_GameEventConstructTagged(void* p)
@@ -376,6 +370,12 @@ template void Unk_GameEventConstructTagged<StampEventContext>(void*);
 template void Unk_GameEventConstructTagged<GameEventMassiveConstructionEvent>(void*);
 template void Unk_GameEventConstructTagged<GameEventConstructShowItem>(void*);
 template void Unk_GameEventConstructTagged<GameEventSaleItemsRestricted>(void*);
+template void Unk_GameEventConstructTagged<GameEventShutdownUGCUpload>(void*);
+template void Unk_GameEventConstructTagged<GameEventChatFiltering>(void*);
+template void Unk_GameEventConstructTagged<GameEventIgnoreConstructionLockEvent>(void*);
+template void Unk_GameEventConstructTagged<GalleryContext>(void*);
+template void Unk_GameEventConstructTagged<SnowmanContext>(void*);
+template void Unk_GameEventConstructTagged<RpsContext>(void*);
 template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);

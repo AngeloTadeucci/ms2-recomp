@@ -29,6 +29,8 @@ class StampEventContext;
 class TimeRunEventContext;
 class QuestAdditionalRewardContext;
 class ItemBoxEventContext;
+class SnowmanContext;
+class RpsContext;
 enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 enum Unk_DungeonCooldownType {};
@@ -216,10 +218,12 @@ MS2_CHECK_SIZE(EventQuestContext, 0x38);
 class GalleryContext : public CPtred {
 public:
     struct Card : public CPtred {
-        Card();
+        Card() : m_id(0) {}             // 0x1403e3e50
         int m_id;                       // +0x18
         int m_pad_1c;
     };  // vftable 0x142d41528, ??_G 0x1403e99d0, dtor 0x1403e5b00
+    explicit GalleryContext(int nEventId) : m_eventId(nEventId), m_60(0), m_endTime(0) {}  // 0x1403e4040
+    explicit GalleryContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x1403fef10
     void Read(CInPacket& packet);                   // 0x1403ff0a0
     BOOL HasCard(int id);                           // 0x1403ff360
@@ -265,8 +269,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cca30
     virtual void vfunc_5();                     // 0x1403cc840
     virtual void vfunc_6();                     // 0x1403cc900
-private:
-    char m_pad_d0[0x10];
+    GameEventBattlePetSpawn();                  // 0x1403cc770
+    int m_d0;                                   // the spawn type (0 / 1)
+    int m_pad_d4;
+    CStringW m_d8;
 };  // vftable 0x142d409d0, ??_G 0x1403e9b90, dtor 0x1403e5c90
 MS2_CHECK_SIZE(GameEventBattlePetSpawn, 0xe0);
 class GameEventBingoEvent : public GameEvent {
@@ -326,8 +332,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cc4e0
     virtual void vfunc_5();                     // 0x1403cc5b0
     virtual void vfunc_6();                     // 0x1403cc640
-private:
-    char m_pad_d0[0x20];
+    GameEventChatFiltering();
+    explicit GameEventChatFiltering(Unk_VftableEmitTag) {}
+    ATL::CAtlArray<CStringW> m_d0;              // the comma separated banned words of m_68
 };  // vftable 0x142d40978, ??_G 0x1403e9cd0, dtor 0x1403e5d70
 MS2_CHECK_SIZE(GameEventChatFiltering, 0xf0);
 class GameEventCollectItemGroup : public GameEvent {
@@ -555,8 +562,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cc0e0
     virtual void vfunc_5();                     // 0x1403cc020
     virtual void vfunc_6();                     // 0x1403cc060
-private:
-    char m_pad_d0[0x8];
+    GameEventFindDungeonHelperBonus();
+    unsigned m_d0;                              // the bonus rate of m_68
+    char m_pad_d4[4];
 };  // vftable 0x142d408c8, ??_G 0x1403ea150, dtor 0x1403e60f0
 MS2_CHECK_SIZE(GameEventFindDungeonHelperBonus, 0xd8);
 class GameEventFinishPayback : public GameEvent {
@@ -586,8 +594,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cd010
     virtual void vfunc_5();                     // 0x1403cced0
     virtual void vfunc_6();                     // 0x1403ccf40
-private:
-    char m_pad_d0[0x10];
+    GameEventGallery();                         // 0x1403ccba0
+    bool ReadCardData(MS2Ptr<GalleryContext> pContext);     // 0x1403cd0c0
+    bool ReadRewardData(MS2Ptr<GalleryContext> pContext);   // 0x1403cd3b0
+    MS2Ptr<GalleryContext> m_d0;
 };  // vftable 0x142d40a28, ??_G 0x1403ea210, dtor 0x1403e6150
 MS2_CHECK_SIZE(GameEventGallery, 0xe0);
 class GameEventGameMenuPopup : public GameEvent {
@@ -694,6 +704,7 @@ public:
     virtual void vfunc_2();                     // 0x1403cc240
     virtual void vfunc_5();                     // 0x1403cc250
     virtual void vfunc_6();                     // 0x1403cc280
+    GameEventGuildVsGameOpen();
 };  // vftable 0x142d40920, ??_G 0x1403ea450, dtor 0x1403e6290
 MS2_CHECK_SIZE(GameEventGuildVsGameOpen, 0xd0);
 class GameEventIgnoreConstructionLockEvent : public GameEvent {
@@ -704,8 +715,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cd810
     virtual void vfunc_5();                     // 0x1403cd8c0
     virtual void vfunc_6();                     // 0x1403cd940
-private:
-    char m_pad_d0[0x20];
+    GameEventIgnoreConstructionLockEvent();     // 0x1403cd690
+    explicit GameEventIgnoreConstructionLockEvent(Unk_VftableEmitTag) {}
+    ATL::CAtlArray<unsigned __int64> m_d0;      // the comma separated ids of m_68
 };  // vftable 0x142d40a80, ??_G 0x1403ea490, dtor 0x1403e62b0
 MS2_CHECK_SIZE(GameEventIgnoreConstructionLockEvent, 0xf0);
 class GameEventItemBox : public GameEvent {
@@ -1056,8 +1068,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cebe0
     virtual void vfunc_5();                     // 0x1403ceaa0
     virtual void vfunc_6();                     // 0x1403ceb10
-private:
-    char m_pad_d0[0x10];
+    GameEventRps();                             // 0x1403ce870
+    bool ReadRpsData(MS2Ptr<RpsContext> pContext);  // 0x1403cec90
+    MS2Ptr<RpsContext> m_d0;
 };  // vftable 0x142d40b88, ??_G 0x1403eab50, dtor 0x1403e6740
 MS2_CHECK_SIZE(GameEventRps, 0xe0);
 class GameEventSale : public GameEvent {
@@ -1261,8 +1274,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cb4e0
     virtual void vfunc_5();                     // 0x1403cb5b0
     virtual void vfunc_6();                     // 0x1403cb650
-private:
-    char m_pad_d0[0x10];
+    GameEventShutdownFunctionItem();
+    std::set<unsigned> m_d0;                    // the <v itemId> ids of m_68
 };  // vftable 0x142d407c0, ??_G 0x1403eafd0, dtor 0x1403e6a40
 MS2_CHECK_SIZE(GameEventShutdownFunctionItem, 0xe0);
 class GameEventShutdownInteractObjectId : public GameEvent {
@@ -1285,8 +1298,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cba00
     virtual void vfunc_5();                     // 0x1403cbad0
     virtual void vfunc_6();                     // 0x1403cbb60
-private:
-    char m_pad_d0[0x10];
+    GameEventShutdownSkillItem();
+    std::set<unsigned> m_d0;                    // the <v itemId> ids of m_68
 };  // vftable 0x142d40818, ??_G 0x1403eb050, dtor 0x1403e6aa0
 MS2_CHECK_SIZE(GameEventShutdownSkillItem, 0xe0);
 class GameEventShutdownUGCBanner : public GameEvent {
@@ -1303,8 +1316,11 @@ public:
     virtual void vfunc_2();                     // 0x1403cbd20
     virtual void vfunc_5();                     // 0x1403cbdb0
     virtual void vfunc_6();                     // 0x1403cbe90
-private:
-    char m_pad_d0[0x28];
+    GameEventShutdownUGCUpload();
+    explicit GameEventShutdownUGCUpload(Unk_VftableEmitTag) {}
+    ATL::CAtlArray<unsigned> m_d0;              // the comma separated ids of m_68
+    BOOL m_f0;                                  // m_70 as a bool
+    char m_pad_f4[4];
 };  // vftable 0x142d40870, ??_G 0x1403eb0d0, dtor 0x1403e6af0
 MS2_CHECK_SIZE(GameEventShutdownUGCUpload, 0xf8);
 class GameEventSnowman : public GameEvent {
@@ -1315,8 +1331,11 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403ce070
     virtual void vfunc_5();                     // 0x1403cdf10
     virtual void vfunc_6();                     // 0x1403cdf80
-private:
-    char m_pad_d0[0x18];
+    GameEventSnowman();                         // 0x1403cdc90
+    bool ReadSnowmanData(MS2Ptr<SnowmanContext> pContext);                              // 0x1403ce180
+    bool ReadRewardData(Unk_140165cf0* xelReward, ATL::CAtlArray<ItemEntity>& rewards); // 0x1403ce6e0
+    MS2Ptr<SnowmanContext> m_d0;
+    CStringW m_e0;                              // m_70
 };  // vftable 0x142d40b30, ??_G 0x1403eb110, dtor 0x1403e6b20
 MS2_CHECK_SIZE(GameEventSnowman, 0xe8);
 class GameEventStampEvent : public GameEvent {
@@ -1347,8 +1366,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403cdb10
     virtual void vfunc_5();                     // 0x1403cdb70
     virtual void vfunc_6();                     // 0x1403cdbb0
-private:
-    char m_pad_d0[0x8];
+    GameEventStarShop();                        // 0x1403cda20
+    int m_d0;
+    int m_pad_d4;
 };  // vftable 0x142d40ad8, ??_G 0x1403eb1d0, dtor 0x1403e6bb0
 MS2_CHECK_SIZE(GameEventStarShop, 0xd8);
 class GameEventTimeRunEvent : public GameEvent {
@@ -1587,13 +1607,15 @@ MS2_CHECK_SIZE(RpsGameData, 0x110);
 class RpsContext : public CPtred {
 public:
     struct RewardData : public CPtred {
-        RewardData();
+        RewardData() : m_count(0) {}                // 0x1403e4450
         // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
         explicit RewardData(Unk_VftableEmitTag) {}
         int m_count;                                // +0x18
         int m_pad_1c;
         ATL::CAtlArray<ItemEntity> m_items;         // +0x20
     };  // vftable 0x142d41580, ??_G 0x1403eb710, dtor 0x1403e6f50
+    explicit RpsContext(int nEventId) : m_20(0), m_48(nEventId), m_endTime(0) {}  // 0x1403e44a0
+    explicit RpsContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x1404006c0
     void Read(CInPacket& packet);                   // 0x1404008c0
     CStringW m_strTitle;                            // +0x18
@@ -1638,7 +1660,7 @@ MS2_CHECK_SIZE(SkillUpgradeSaleEventContext, 0x28);
 class SnowmanContext : public CPtred {
 public:
     struct Snowman : public CPtred {
-        Snowman();                                  // 0x1403e4650: zeroes the three ints
+        Snowman() : m_18(0), m_1c(0), m_20(0) {}    // 0x1403e4650
         // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
         explicit Snowman(Unk_VftableEmitTag) {}
         bool ReachedGoal(int value);                // 0x1403ff7b0: m_18 <= value
@@ -1652,6 +1674,8 @@ public:
         ATL::CAtlArray<ItemEntity> m_items;         // +0x28
         ATL::CAtlArray<ItemEntity> m_bonusItems;    // +0x48
     };  // vftable 0x142d41548, ??_G 0x1403eb850, dtor 0x1403e7050
+    explicit SnowmanContext(int nEventId) : m_eventId(nEventId), m_strTitle(L"weddingcake"), m_endTime(0) {}  // 0x1403e46d0
+    explicit SnowmanContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x1403ff8f0
     void Read(CInPacket& packet);                   // 0x1403ffc00
     MS2Ptr<Snowman> GetSnowman(int index);          // 0x140400000

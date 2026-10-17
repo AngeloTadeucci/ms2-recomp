@@ -26,6 +26,9 @@ class SaleCube;
 class StampEventContext;
 class TimeRunEventContext;
 class EnchantRateEventContext;
+class GalleryContext;
+class SnowmanContext;
+class RpsContext;
 class QuestAdditionalRewardContext;
 enum Unk_SaleHousingKey : int;
 
@@ -123,6 +126,12 @@ public:
     void FUN_14047f400(int eventId);
     void FUN_14047f590(int eventId, int rate);                                    // GameEventPetComposeSale
     void FUN_14047f600(int eventId);
+    void FUN_14047ec80(bool bOpen);                         // guild vs game open
+    void FUN_14047cef0(MS2Ptr<GalleryContext> spContext);                        // GameEventGallery
+    void FUN_14047cfe0(MS2Ptr<SnowmanContext> spContext);                        // GameEventSnowman
+    void FUN_14047d0d0(MS2Ptr<RpsContext> spContext);                            // GameEventRps
+    void FUN_14047e230(unsigned __int64 nId);                                    // ignore the construction lock of one id
+    void FUN_14047e300();                                                        // ... clear them
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];
