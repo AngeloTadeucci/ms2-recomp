@@ -2554,3 +2554,4 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ?s_instance@?$TSingleton@VCShopEventManager@@@@2PEAV1@EA	143aaedf0	data
 ?s_instance@?$TSingleton@VGameEventUserValueNameTable@@@@2PEAV1@EA	143aaedf8	data
 ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@std@@_N@1@AEBH@Z	14035d1e0	func
+?s_bInit@ItemDropTable@@2_NA	143aad178	data
