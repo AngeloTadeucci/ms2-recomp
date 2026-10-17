@@ -40,7 +40,7 @@ static UICommon::CMyPCKeyInputController s_keyController;
 
 int FUN_141a60d30();                                                        // the name tag mode
 void FUN_141a60f40();                                                       // mark every tag dirty
-const char* FUN_141a61590(int nState, const std::pair<const char*, int>* pTable);   // state name
+const char* FUN_141a61590(int nState, const std::pair<const char*, Unk_RequireState>* pTable);   // state name
 
 // Unit-local declarations; the unidentified names describe uses rather than original class names.
 double FUN_140f17ed0(const Scaleform::GFx::Value* pValue);                  // Value::GetNumber
@@ -851,7 +851,7 @@ UINameTag::Entity* UINameTag::FUN_141a61150(int nActorId)
 }
 
 // @0x141a61590
-const char* FUN_141a61590(int nState, const std::pair<const char*, int>* pTable)
+const char* FUN_141a61590(int nState, const std::pair<const char*, Unk_RequireState>* pTable)
 {
     for (int i = 0; i < 69u + 0 * sizeof(int*) ; i++)
     {

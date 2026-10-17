@@ -16,6 +16,7 @@
 #include "ms2/placeholder/cobjectcount.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/cxmldata.h"
+#include "ms2/placeholder/gostate.h"     // Unk_RequireState (requireStates)
 #include "ms2/placeholder/gosubstate.h"   // Unk_RequireSubState (requireSubStates)
 
 class Unk_140165cf0;    // game TinyXML element (ms2/placeholder/xmlattr.h)
@@ -39,7 +40,6 @@ enum UIShieldType { UIShieldType_None };
 enum Unk_CompareOp { Unk_CompareOp_None };                  // casterHpOp (FUN_140219400)
 enum Unk_DungeonGroupType { Unk_DungeonGroupType_None };    // dungeonGroupType (FUN_140218c20)
 enum SAType { SAType_None };                                // <SpecialAbility><v type=...> (FUN_14081dd80)
-enum Unk_RequireState { Unk_RequireState_None };            // requireStates (name table 0x143aab500)
 enum Unk_SkillMasteryType { Unk_SkillMasteryType_None };              // requireMasteryTypes (FUN_14021c400)
 
 // One <Additional> action: another additional effect started by this one. 0x150 bytes.

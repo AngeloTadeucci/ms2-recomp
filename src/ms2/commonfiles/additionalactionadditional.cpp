@@ -1,30 +1,31 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The additional effect table rows (AdditionalData,
 // AdditionalLevelData and the chained AdditionalActionAdditional / AdditionalActionSkill actions).
 // MS2-UNIT: ?\additionalactionadditional.cpp
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x14016fda0-0x140195470 .text$mn
 // MS2-RANGE: 0x1400b2330-0x1400b4220 .text$di
 // MS2-PIN: ??__Es_gosNames@@YAXXZ 0x1400b2330
 // MS2-PIN: ??__Es_gosSubStateNames@@YAXXZ 0x1400b2cf0
 // name-table rows (make_pair / pair constructor / forward per name length), paired from the initializers' calls
-// MS2-PIN: ??$?0AEAY06$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY06$$CBD$$QEAH@Z 0x140176630
-// MS2-PIN: ??$?0AEAY07$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY07$$CBD$$QEAH@Z 0x140176680
-// MS2-PIN: ??$?0AEAY08$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY08$$CBD$$QEAH@Z 0x1401766d0
-// MS2-PIN: ??$?0AEAY09$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY09$$CBD$$QEAH@Z 0x140176720
-// MS2-PIN: ??$?0AEAY0BA@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BA@$$CBD$$QEAH@Z 0x140176770
+// MS2-PIN: ??$?0AEAY06$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY06$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176630
+// MS2-PIN: ??$?0AEAY07$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY07$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176680
+// MS2-PIN: ??$?0AEAY08$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY08$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401766d0
+// MS2-PIN: ??$?0AEAY09$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY09$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176720
+// MS2-PIN: ??$?0AEAY0BA@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BA@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176770
 // MS2-PIN: ??$?0AEAY0BA@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BA@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401767c0
-// MS2-PIN: ??$?0AEAY0BB@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BB@$$CBD$$QEAH@Z 0x140176810
+// MS2-PIN: ??$?0AEAY0BB@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BB@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176810
 // MS2-PIN: ??$?0AEAY0BB@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BB@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176860
-// MS2-PIN: ??$?0AEAY0BC@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BC@$$CBD$$QEAH@Z 0x1401768b0
+// MS2-PIN: ??$?0AEAY0BC@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BC@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401768b0
 // MS2-PIN: ??$?0AEAY0BC@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BC@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176900
-// MS2-PIN: ??$?0AEAY0BD@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BD@$$CBD$$QEAH@Z 0x140176950
+// MS2-PIN: ??$?0AEAY0BD@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BD@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176950
 // MS2-PIN: ??$?0AEAY0BD@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BD@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401769a0
-// MS2-PIN: ??$?0AEAY0BE@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BE@$$CBD$$QEAH@Z 0x1401769f0
+// MS2-PIN: ??$?0AEAY0BE@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BE@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401769f0
 // MS2-PIN: ??$?0AEAY0BE@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BE@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176a40
-// MS2-PIN: ??$?0AEAY0BF@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BF@$$CBD$$QEAH@Z 0x140176a90
+// MS2-PIN: ??$?0AEAY0BF@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BF@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176a90
 // MS2-PIN: ??$?0AEAY0BF@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BF@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176ae0
 // MS2-PIN: ??$?0AEAY0BG@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BG@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176b30
 // MS2-PIN: ??$?0AEAY0BH@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BH@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176b80
-// MS2-PIN: ??$?0AEAY0BI@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0BI@$$CBD$$QEAH@Z 0x140176bd0
+// MS2-PIN: ??$?0AEAY0BI@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0BI@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140176bd0
 // MS2-PIN: ??$?0AEAY0BI@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BI@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176c20
 // MS2-PIN: ??$?0AEAY0BJ@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BJ@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176c70
 // MS2-PIN: ??$?0AEAY0BK@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0BK@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176cc0
@@ -39,15 +40,15 @@
 // MS2-PIN: ??$?0AEAY0CH@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0CH@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176f90
 // MS2-PIN: ??$?0AEAY0CJ@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0CJ@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140176fe0
 // MS2-PIN: ??$?0AEAY0CL@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0CL@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140177030
-// MS2-PIN: ??$?0AEAY0L@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0L@$$CBD$$QEAH@Z 0x140177080
-// MS2-PIN: ??$?0AEAY0M@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0M@$$CBD$$QEAH@Z 0x1401770d0
-// MS2-PIN: ??$?0AEAY0N@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0N@$$CBD$$QEAH@Z 0x140177120
+// MS2-PIN: ??$?0AEAY0L@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0L@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140177080
+// MS2-PIN: ??$?0AEAY0M@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0M@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401770d0
+// MS2-PIN: ??$?0AEAY0N@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0N@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140177120
 // MS2-PIN: ??$?0AEAY0N@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0N@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140177170
-// MS2-PIN: ??$?0AEAY0O@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0O@$$CBD$$QEAH@Z 0x1401771c0
+// MS2-PIN: ??$?0AEAY0O@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0O@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401771c0
 // MS2-PIN: ??$?0AEAY0O@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0O@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140177210
-// MS2-PIN: ??$?0AEAY0P@$$CBDH$0A@@?$pair@PEBDH@std@@QEAA@AEAY0P@$$CBD$$QEAH@Z 0x140177260
+// MS2-PIN: ??$?0AEAY0P@$$CBDW4Unk_RequireState@@$0A@@?$pair@PEBDW4Unk_RequireState@@@std@@QEAA@AEAY0P@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140177260
 // MS2-PIN: ??$?0AEAY0P@$$CBDW4Unk_RequireSubState@@$0A@@?$pair@PEBDW4Unk_RequireSubState@@@std@@QEAA@AEAY0P@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401772b0
-// MS2-PIN: ??$forward@H@std@@YA$$QEAHAEAH@Z 0x140180ce0
+// MS2-PIN: ??$forward@W4Unk_RequireState@@@std@@YA$$QEAW4Unk_RequireState@@AEAW41@@Z 0x140180ce0
 // MS2-PIN: ??$forward@W4Unk_RequireSubState@@@std@@YA$$QEAW4Unk_RequireSubState@@AEAW41@@Z 0x140180cf0
 // MS2-PIN: ??$forward@AEAY06$$CBD@std@@YAAEAY06$$CBDAEAY06$$CBD@Z 0x1401809b0
 // MS2-PIN: ??$forward@AEAY07$$CBD@std@@YAAEAY07$$CBDAEAY07$$CBD@Z 0x1401809c0
@@ -80,25 +81,25 @@
 // MS2-PIN: ??$forward@AEAY0N@$$CBD@std@@YAAEAY0N@$$CBDAEAY0N@$$CBD@Z 0x140180b70
 // MS2-PIN: ??$forward@AEAY0O@$$CBD@std@@YAAEAY0O@$$CBDAEAY0O@$$CBD@Z 0x140180b80
 // MS2-PIN: ??$forward@AEAY0P@$$CBD@std@@YAAEAY0P@$$CBDAEAY0P@$$CBD@Z 0x140180b90
-// MS2-PIN: ??$make_pair@AEAY06$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY06$$CBD$$QEAH@Z 0x140180e80
-// MS2-PIN: ??$make_pair@AEAY07$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY07$$CBD$$QEAH@Z 0x140180ed0
-// MS2-PIN: ??$make_pair@AEAY08$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY08$$CBD$$QEAH@Z 0x140180f20
-// MS2-PIN: ??$make_pair@AEAY09$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY09$$CBD$$QEAH@Z 0x140180f70
-// MS2-PIN: ??$make_pair@AEAY0BA@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BA@$$CBD$$QEAH@Z 0x140180fc0
+// MS2-PIN: ??$make_pair@AEAY06$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY06$$CBD$$QEAW4Unk_RequireState@@@Z 0x140180e80
+// MS2-PIN: ??$make_pair@AEAY07$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY07$$CBD$$QEAW4Unk_RequireState@@@Z 0x140180ed0
+// MS2-PIN: ??$make_pair@AEAY08$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY08$$CBD$$QEAW4Unk_RequireState@@@Z 0x140180f20
+// MS2-PIN: ??$make_pair@AEAY09$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY09$$CBD$$QEAW4Unk_RequireState@@@Z 0x140180f70
+// MS2-PIN: ??$make_pair@AEAY0BA@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BA@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140180fc0
 // MS2-PIN: ??$make_pair@AEAY0BA@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BA@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181010
-// MS2-PIN: ??$make_pair@AEAY0BB@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BB@$$CBD$$QEAH@Z 0x140181060
+// MS2-PIN: ??$make_pair@AEAY0BB@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BB@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181060
 // MS2-PIN: ??$make_pair@AEAY0BB@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BB@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401810b0
-// MS2-PIN: ??$make_pair@AEAY0BC@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BC@$$CBD$$QEAH@Z 0x140181100
+// MS2-PIN: ??$make_pair@AEAY0BC@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BC@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181100
 // MS2-PIN: ??$make_pair@AEAY0BC@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BC@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181150
-// MS2-PIN: ??$make_pair@AEAY0BD@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BD@$$CBD$$QEAH@Z 0x1401811a0
+// MS2-PIN: ??$make_pair@AEAY0BD@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BD@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401811a0
 // MS2-PIN: ??$make_pair@AEAY0BD@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BD@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401811f0
-// MS2-PIN: ??$make_pair@AEAY0BE@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BE@$$CBD$$QEAH@Z 0x140181240
+// MS2-PIN: ??$make_pair@AEAY0BE@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BE@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181240
 // MS2-PIN: ??$make_pair@AEAY0BE@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BE@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181290
-// MS2-PIN: ??$make_pair@AEAY0BF@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BF@$$CBD$$QEAH@Z 0x1401812e0
+// MS2-PIN: ??$make_pair@AEAY0BF@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BF@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401812e0
 // MS2-PIN: ??$make_pair@AEAY0BF@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BF@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181330
 // MS2-PIN: ??$make_pair@AEAY0BG@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BG@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181380
 // MS2-PIN: ??$make_pair@AEAY0BH@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BH@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401813d0
-// MS2-PIN: ??$make_pair@AEAY0BI@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0BI@$$CBD$$QEAH@Z 0x140181420
+// MS2-PIN: ??$make_pair@AEAY0BI@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0BI@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181420
 // MS2-PIN: ??$make_pair@AEAY0BI@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BI@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181470
 // MS2-PIN: ??$make_pair@AEAY0BJ@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BJ@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401814c0
 // MS2-PIN: ??$make_pair@AEAY0BK@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0BK@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181510
@@ -113,13 +114,13 @@
 // MS2-PIN: ??$make_pair@AEAY0CH@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0CH@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401817e0
 // MS2-PIN: ??$make_pair@AEAY0CJ@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0CJ@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181830
 // MS2-PIN: ??$make_pair@AEAY0CL@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0CL@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181880
-// MS2-PIN: ??$make_pair@AEAY0L@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0L@$$CBD$$QEAH@Z 0x1401818d0
-// MS2-PIN: ??$make_pair@AEAY0M@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0M@$$CBD$$QEAH@Z 0x140181920
-// MS2-PIN: ??$make_pair@AEAY0N@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0N@$$CBD$$QEAH@Z 0x140181970
+// MS2-PIN: ??$make_pair@AEAY0L@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0L@$$CBD$$QEAW4Unk_RequireState@@@Z 0x1401818d0
+// MS2-PIN: ??$make_pair@AEAY0M@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0M@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181920
+// MS2-PIN: ??$make_pair@AEAY0N@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0N@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181970
 // MS2-PIN: ??$make_pair@AEAY0N@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0N@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x1401819c0
-// MS2-PIN: ??$make_pair@AEAY0O@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0O@$$CBD$$QEAH@Z 0x140181a10
+// MS2-PIN: ??$make_pair@AEAY0O@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0O@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181a10
 // MS2-PIN: ??$make_pair@AEAY0O@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0O@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181a60
-// MS2-PIN: ??$make_pair@AEAY0P@$$CBDH@std@@YA?AU?$pair@PEBDH@0@AEAY0P@$$CBD$$QEAH@Z 0x140181ab0
+// MS2-PIN: ??$make_pair@AEAY0P@$$CBDW4Unk_RequireState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireState@@@0@AEAY0P@$$CBD$$QEAW4Unk_RequireState@@@Z 0x140181ab0
 // MS2-PIN: ??$make_pair@AEAY0P@$$CBDW4Unk_RequireSubState@@@std@@YA?AU?$pair@PEBDW4Unk_RequireSubState@@@0@AEAY0P@$$CBD$$QEAW4Unk_RequireSubState@@@Z 0x140181b00
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140177300 ; unique
@@ -289,6 +290,28 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@2@XZ 0x140194ac0 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@4@$0A@@std@@@std@@QEBA_KXZ 0x140195450 ; unique
 // MS2-PINS-END tplpin
+// MS2-PINS-BEGIN w150-callsite
+// MS2-PIN: ?GetCount@?$CAtlMap@IHV?$CElementTraits@I@ATL@@V?$CElementTraits@H@2@@ATL@@QEBA_KXZ 0x1401862d0
+// MS2-PIN: ?GetCount@?$CAtlArray@W4Unk_RequireSubState@@V?$CElementTraits@W4Unk_RequireSubState@@@ATL@@@ATL@@QEBA_KXZ 0x1401862b0
+// MS2-PIN: ?GetCount@?$CAtlArray@W4Unk_SkillMasteryType@@V?$CElementTraits@W4Unk_SkillMasteryType@@@ATL@@@ATL@@QEBA_KXZ 0x1401862c0
+// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140184200
+// MS2-PIN: ?c_str@?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@QEBAPEBDXZ 0x14018efa0
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140184390
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@W4SAType@@HU?$less@W4SAType@@@std@@V?$allocator@U?$pair@$$CBW4SAType@@H@std@@@3@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@XZ 0x14018bd40
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalLevelData@@@@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VAdditionalLevelData@@@@XZ 0x14018d170
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@W4SAType@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4SAType@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@$00@2@$00@std@@QEBAAEBV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4SAType@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@$00@2@XZ 0x14018c170
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4SAType@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4SAType@@H@std@@@std@@@2@XZ 0x14018c220
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VAdditionalLevelData@@@@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@std@@@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018bf50
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@$00@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VAdditionalLevelData@@@@@std@@@2@XZ 0x14018c290
+// MS2-PINS-END w150-callsite
+// byte-identical IsSame* instances, pinned from their (exact) callers' call sites (AdditionalActionAdditional::IsDifferent
+// 0x14017005b, AdditionalLevelData::IsDifferent 0x140172265 / 0x1401720fd / 0x14017292e / 0x140172961 / 0x140172994)
+// MS2-PIN: ??$IsSameArray@I@@YA_NAEBV?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@0@Z 0x140179290
+// MS2-PIN: ??$IsSameMap@IH@@YA_NAEBV?$CAtlMap@IHV?$CElementTraits@I@ATL@@V?$CElementTraits@H@2@@ATL@@0@Z 0x140179340
+// MS2-PIN: ??$IsSameVector@VAdditionalActionAdditional@@@@YA_NAEBV?$vector@V?$MS2Ptr@VAdditionalActionAdditional@@@@V?$allocator@V?$MS2Ptr@VAdditionalActionAdditional@@@@@std@@@std@@0@Z 0x140179580
+// MS2-PIN: ??$IsSameArray@W4Unk_RequireState@@@@YA_NAEBV?$CAtlArray@W4Unk_RequireState@@V?$CElementTraits@W4Unk_RequireState@@@ATL@@@ATL@@0@Z 0x1401796e0
+// MS2-PIN: ??$IsSameArray@W4Unk_RequireSubState@@@@YA_NAEBV?$CAtlArray@W4Unk_RequireSubState@@V?$CElementTraits@W4Unk_RequireSubState@@@ATL@@@ATL@@0@Z 0x140179790
+// MS2-PIN: ??$IsSameArray@W4Unk_SkillMasteryType@@@@YA_NAEBV?$CAtlArray@W4Unk_SkillMasteryType@@V?$CElementTraits@W4Unk_SkillMasteryType@@@ATL@@@ATL@@0@Z 0x140179840
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\additionalactionadditional.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "additionalactionadditional.h"
@@ -333,65 +356,75 @@ template <class E> int XmlValueByName(Unk_140165cf0* pElem, const char* pszName,
 // 0x140178fa0
 template <> inline int XmlValueByName(Unk_140165cf0* pElem, const char* pszName, Unk_CompareOp& eOut)
 {
+    if (!std::is_enum<Unk_CompareOp>::value)
+    {
+        MS2_TINYXMLHELPER_ASSERT(250, FALSE);
+        return 2;
+    }
     CString str;
     int nRet = FUN_1408733e0(pElem, pszName, str);
-    if (nRet == 0)
-        eOut = FUN_140219400(str);
+    if (nRet != 0)
+        return nRet;
+    eOut = FUN_140219400(str);
     return nRet;
 }
 // 0x140179060
 template <> inline int XmlValueByName(Unk_140165cf0* pElem, const char* pszName, Unk_DungeonGroupType& eOut)
 {
+    if (!std::is_enum<Unk_DungeonGroupType>::value)
+    {
+        MS2_TINYXMLHELPER_ASSERT(250, FALSE);
+        return 2;
+    }
     CString str;
     int nRet = FUN_1408733e0(pElem, pszName, str);
-    if (nRet == 0)
-        eOut = FUN_140218c20(str);
+    if (nRet != 0)
+        return nRet;
+    eOut = FUN_140218c20(str);
     return nRet;
 }
 // 0x140179120
 template <> inline int XmlValueByName(Unk_140165cf0* pElem, const char* pszName, SAType& eOut)
 {
+    if (!std::is_enum<SAType>::value)
+    {
+        MS2_TINYXMLHELPER_ASSERT(250, FALSE);
+        return 2;
+    }
     CString str;
     int nRet = FUN_1408733e0(pElem, pszName, str);
-    if (nRet == 0)
-        eOut = FUN_14081dd80(str);
+    if (nRet != 0)
+        return nRet;
+    eOut = FUN_14081dd80(str);
     return nRet;
 }
 
 // Container comparisons (true = same).
 template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlArray<T>& b)
 {
-    if (a.GetCount() == b.GetCount())
+    if (a.GetCount() != b.GetCount())
+        return false;
+    for (unsigned i = 0; i < a.GetCount(); i++)
     {
-        for (unsigned i = 0; i < a.GetCount(); i++)
-        {
-            if (a[i] != b[i])
-                return false;
-        }
-        return true;
+        if (a[i] != b[i])
+            return false;
     }
-    return false;
+    return true;
 }
 template <class K, class V> bool IsSameMap(const ATL::CAtlMap<K, V>& a, const ATL::CAtlMap<K, V>& b)
 {
-    if (a.GetCount() == b.GetCount())
+    if (a.GetCount() != b.GetCount())
+        return false;
+    POSITION posA = a.GetStartPosition();
+    POSITION posB = b.GetStartPosition();
+    for (unsigned i = 0; i < a.GetCount(); i++, a.GetNext(posA), b.GetNext(posB))
     {
-        POSITION posA = a.GetStartPosition();
-        POSITION posB = b.GetStartPosition();
-        for (unsigned i = 0; i < a.GetCount(); i++)
-        {
-            const K& keyA = a.GetKeyAt(posA);
-            if (keyA != b.GetKeyAt(posB))
-                return false;
-            const V& valueA = a.GetValueAt(posA);
-            if (valueA != b.GetValueAt(posB))
-                return false;
-            a.GetNext(posA);
-            b.GetNext(posB);
-        }
-        return true;
+        if (a.GetKeyAt(posA) != b.GetKeyAt(posB))
+            return false;
+        if (a.GetValueAt(posA) != b.GetValueAt(posB))
+            return false;
     }
-    return false;
+    return true;
 }
 template <class T> bool IsSameVector(const std::vector<T>& a, const std::vector<T>& b)
 {
@@ -408,16 +441,14 @@ template <class T> bool IsSameVector(const std::vector<T>& a, const std::vector<
 }
 template <class T> bool IsSameVector(const std::vector<MS2Ptr<T> >& a, const std::vector<MS2Ptr<T> >& b)
 {
-    if (a.size() == b.size())
+    if (a.size() != b.size())
+        return false;
+    for (size_t i = 0; i < a.size(); i++)
     {
-        for (unsigned i = 0; i < a.size(); i++)
-        {
-            if (a[i].get() != b[i].get())
-                return false;
-        }
-        return true;
+        if (a[i].get() != b[i].get())
+            return false;
     }
-    return false;
+    return true;
 }
 
 // @0x14016fda0
@@ -1474,7 +1505,7 @@ void AdditionalLevelData::LoadCondition(Unk_140165cf0* pElem)
     ATL::CAtlArray<CString> arrStates;
     XmlTokenList(pElem, "requireStates", arrStates);
     for (unsigned i = 0; i < arrStates.GetCount(); i++)
-        m_arrRequireStates.Add((Unk_RequireState)NameToValue(FUN_140188f50(arrStates[i], 0), s_gosNames));
+        m_arrRequireStates.Add(NameToValue(FUN_140188f50(arrStates[i], 0), s_gosNames));
     ATL::CAtlArray<CString> arrSubStates;
     XmlTokenList(pElem, "requireSubStates", arrSubStates);
     for (unsigned i = 0; i < arrSubStates.GetCount(); i++)

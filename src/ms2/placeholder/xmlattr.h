@@ -5,10 +5,12 @@
 // ?\additionalactionadditional.cpp (0x140177cf0-0x140179460 and the iterator COMDATs at 0x140183390...).
 #pragma once
 #include <afx.h>
+#include <assert.h>
 #include <atlcoll.h>
 #include <stdlib.h>
 #include <set>
 #include <string>
+#include <type_traits>
 #include <vector>
 #include "ms2/ms2layout.h"
 
@@ -120,12 +122,24 @@ template <> inline int XmlTokenList(Unk_140165cf0* pElem, const char* pszName, A
     return nRet;
 }
 
+// The enum readers come from commonfiles\tinyxmlhelper.h: they start with a compile-time type guard whose failure
+// branch asserts FALSE (with that header's __FILE__) and returns TIXML_WRONG_TYPE (2).
+#define MS2_TINYXMLHELPER_FILE L"e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h"
+#define MS2_TINYXMLHELPER_ASSERT(line, expression)                                                                \
+    (void)((!!(expression)) || (_wassert(_CRT_WIDE(#expression), MS2_TINYXMLHELPER_FILE, (unsigned)(line)), 0))
+
 // Enum attribute stored as a number (0x140178970-0x140178f10, one per enum type).
 template <class E> int XmlValue(Unk_140165cf0* pElem, const char* pszName, E& eOut)
 {
+    if (!std::is_enum<E>::value)
+    {
+        MS2_TINYXMLHELPER_ASSERT(231, FALSE);
+        return 2;
+    }
     int nValue = 0;
     int nRet = FUN_140873890(pElem, pszName, nValue);
-    if (nRet == 0)
-        eOut = (E)nValue;
+    if (nRet != 0)
+        return nRet;
+    eOut = (E)nValue;
     return nRet;
 }
