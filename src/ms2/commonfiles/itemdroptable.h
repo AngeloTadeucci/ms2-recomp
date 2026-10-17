@@ -59,7 +59,7 @@ public:
         out = it->second;
         return true;
     }
-    bool Pick(T& out)
+    bool Pick(T& out) const
     {
         Entry entry;
         if (Pick(entry) == true)
@@ -79,7 +79,7 @@ public:
         return false;
     }
     unsigned GetTotal() { return m_total; }
-    bool Remains()
+    bool Remains() const
     {
         if (m_total == 0)
             return false;
@@ -270,7 +270,7 @@ public:
     ItemDropGlobalBox();
     bool Load(Unk_140165cf0* pElem);
     unsigned GetUnk18();
-    unsigned GetDropCount(float fRate);
+    unsigned GetDropCount(float fRate) const;
     unsigned GetDropGroupId();
     bool IsOwnerDrop();
     bool CheckMap(int nMapId);
@@ -408,6 +408,26 @@ public:
     int m_rank;                                             // +0x68
 };
 MS2_CHECK_SIZE(ItemDropResult, 0x70);
+// ItemDropResult reaches CPtred through its second base (+0x8): the pointer and the reference-count tag go through
+// a CPtred* conversion (null-checked adjust) instead of the zero-offset no-op of the generic bodies.
+template <> inline void MS2Ptr<ItemDropResult>::AddRef() const
+{
+    if (m_p)
+        AddRefImpl(static_cast<CPtred*>((ItemDropResult*)0));
+}
+template <> inline void MS2Ptr<ItemDropResult>::Release()
+{
+    if (m_p)
+    {
+        ReleaseImpl(static_cast<CPtred*>((ItemDropResult*)0));
+        m_p = 0;
+    }
+}
+template <> inline MS2Ptr<ItemDropResult>::MS2Ptr(ItemDropResult* p)
+{
+    m_p = static_cast<ItemDropResult*>(static_cast<CPtred*>(p));
+    AddRef();
+}
 MS2_CHECK_OFFSET(ItemDropResult, m_itemId, 0x20);
 MS2_CHECK_OFFSET(ItemDropResult, m_itemLife, 0x58);
 
@@ -446,7 +466,9 @@ private:
     std::unordered_map<unsigned, MS2Ptr<ItemDropGlobalBoxGroup>> m_globalBoxes;      // +0x50
     std::unordered_map<unsigned, MS2Ptr<ItemDropIndividualBox>> m_individualBoxes;   // +0x90
     CLockCriticalSection m_lock;                                                // +0xd0
-    std::map<unsigned, int> m_unk_100;                                          // +0x100 (never used here)
+    // +0x100, never used here. 0x28-byte nodes (4-byte key, bool), but its tree COMDATs are distinct from the
+    // map<int, bool> / map<unsigned, bool> copies elsewhere: an unsigned long (DWORD) key keeps them apart.
+    std::map<unsigned long, bool> m_unk_100;
 };
 MS2_CHECK_SIZE(ItemDropTable, 0x110);
 MS2_CHECK_OFFSET(ItemDropTable, m_lock, 0xd0);

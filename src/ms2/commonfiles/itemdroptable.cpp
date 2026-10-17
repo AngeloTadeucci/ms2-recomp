@@ -49,8 +49,8 @@
 // MS2-PIN: ??$move@AEAV?$tuple@$$QEAH@std@@@std@@YA$$QEAV?$tuple@$$QEAH@0@AEAV10@@Z 0x1402fbe00 ; prop
 // MS2-PIN: ??0?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@QEAA@XZ 0x1402fcd30 ; unique
 // MS2-PIN: ??0?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@QEAA@XZ 0x1402fcd90 ; unique
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@1@@Z 0x1402fd370 ; prop
-// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@1@@Z 0x1402fd4f0 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@1@@Z 0x1402fd370 ; prop
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@1@@Z 0x1402fd4f0 ; prop
 // MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAA@XZ 0x1402fd820 ; prop
 // MS2-PIN: ??0?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@QEAA@U?$hash@I@1@U?$equal_to@I@1@@Z 0x1402fd850 ; unique
 // MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@V?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@@std@@@std@@@std@@QEAA@XZ 0x1402fdd90 ; prop
@@ -62,8 +62,8 @@
 // MS2-PIN: ??0?$unordered_map@IV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@U?$hash@I@std@@U?$equal_to@I@3@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@3@@std@@QEAA@XZ 0x1402fe260 ; unique
 // MS2-PIN: ??0?$unordered_map@IV?$MS2Ptr@VItemDropGlobalGroup@@@@U?$hash@I@std@@U?$equal_to@I@3@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@3@@std@@QEAA@XZ 0x1402fe2b0 ; unique
 // MS2-PIN: ??0?$unordered_map@IV?$MS2Ptr@VItemDropIndividualBox@@@@U?$hash@I@std@@U?$equal_to@I@3@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@3@@std@@QEAA@XZ 0x1402fe300 ; unique
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x1402ff2f0 ; prop
-// MS2-PIN: ??1?$map@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@@std@@QEAA@XZ 0x1402ff6e0 ; unique
+// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x1402ff2f0 ; prop
+// MS2-PIN: ??1?$map@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@@std@@QEAA@XZ 0x1402ff6e0 ; unique
 // MS2-PIN: ??A?$map@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@@std@@QEAAAEAV?$ItemDropPicker@H@@$$QEAH@Z 0x1403005c0 ; unique
 // MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBHV?$ItemDropPicker@H@@@1@XZ 0x140300810 ; unique
 // MS2-PIN: ??D?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEBAAEBU?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@1@XZ 0x1403009b0 ; prop
@@ -85,11 +85,11 @@
 // MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x140305cd0 ; unique
 // MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@PEAX@2@@Z 0x140306210 ; unique
 // MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@PEAX@2@@Z 0x1403065f0 ; unique
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@@Z 0x140309200 ; prop
+// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@2@@Z 0x140309200 ; prop
 // MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x140309500 ; prop
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@I@std@@V?$_Vector_val@U?$_Simple_types@I@std@@@2@$00@std@@QEBAAEBV?$allocator@I@2@XZ 0x140309970 ; prop
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@2@$00@std@@QEBAAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@PEAX@std@@@2@XZ 0x140309a80 ; unique
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@2@XZ 0x140309b10 ; prop
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@2@XZ 0x140309b10 ; prop
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VItemDropGlobalBox@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VItemDropGlobalBox@@@@@std@@@2@$00@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VItemDropGlobalBox@@@@@2@XZ 0x140309b60 ; unique
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VItemDropGlobalBox@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VItemDropGlobalBox@@@@@std@@@2@$00@std@@QEBAAEBV?$allocator@V?$MS2Ptr@VItemDropGlobalBox@@@@@2@XZ 0x140309b70 ; unique
 // MS2-PIN: ?_Get_max_bucket_size@?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@QEAAAEAMXZ 0x140309c50 ; prop
@@ -97,9 +97,9 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$equal_to@I@std@@M$00@std@@QEAAAEAMXZ 0x140309cb0 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$equal_to@I@std@@M$00@std@@QEBAAEBMXZ 0x140309cc0 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$hash@I@std@@V?$_Compressed_pair@U?$equal_to@I@std@@M$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@U?$equal_to@I@std@@M$00@2@XZ 0x140309cd0 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@2@$00@2@XZ 0x140309d90 ; prop
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@2@$00@2@XZ 0x140309d90 ; prop
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x140309e00 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@2@XZ 0x140309ea0 ; prop
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBK_N@std@@@std@@@2@XZ 0x140309ea0 ; prop
 // MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@PEAX@std@@@2@XZ 0x14030a090 ; unique
 // MS2-PIN: ?_Hashval@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@3@$0A@@std@@@std@@IEBA_KAEBI@Z 0x14030a850 ; unique
 // MS2-PIN: ?_Hashval@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropGlobalGroup@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@3@$0A@@std@@@std@@IEBA_KAEBI@Z 0x14030a880 ; unique
@@ -113,18 +113,17 @@
 // MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@IV?$allocator@I@std@@@std@@@std@@QEAAXXZ 0x14030c6e0 ; prop
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x14030d5a0 ; prop
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x14030ddb0 ; unique
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x14030df90 ; prop
+// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@K_NU?$less@K@std@@V?$allocator@U?$pair@$$CBK_N@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x14030df90 ; prop
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f180 ; prop
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f210 ; prop
 // MS2-PIN: ?_Unchecked_splice@?$list@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@2@@std@@QEAAXV?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@U_Iterator_base0@2@@2@00@Z 0x14030f2a0 ; prop
 // MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXXZ 0x140310e20 ; prop
-// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@_K@Z 0x1403112e0 ; prop
+// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBK_N@std@@PEAX@2@_K@Z 0x1403112e0 ; prop
 // MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1403117e0 ; prop
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@HV?$ItemDropPicker@H@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$ItemDropPicker@H@@@std@@@std@@@std@@@2@@Z 0x140312020 ; unique
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalBoxGroup@@@@@std@@@std@@@std@@@2@AEBI@Z 0x140312ed0 ; unique
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropGlobalGroup@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropGlobalGroup@@@@@std@@@std@@@std@@@2@AEBI@Z 0x140313020 ; unique
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@IV?$MS2Ptr@VItemDropIndividualBox@@@@V?$_Uhash_compare@IU?$hash@I@std@@U?$equal_to@I@2@@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemDropIndividualBox@@@@@std@@@std@@@std@@@2@AEBI@Z 0x140313170 ; unique
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@AEBI@Z 0x1403132c0 ; unique
 // MS2-PINS-END tplpin
 // The unit name is a guess: the queue row commonfiles\dungeonmatch.cpp (0x1402e6c50-0x14031b800) is four TUs, see
 // commonfiles\dungeonmatch.cpp.
@@ -618,17 +617,17 @@ unsigned ItemDropGlobalBox::GetUnk18()
 MS2_REPLACE_METHOD(0x1402E8260, ItemDropGlobalBox, GetUnk18, 14, 0x72E52537);
 
 // @0x1402e8280
-unsigned ItemDropGlobalBox::GetDropCount(float fRate)
+unsigned ItemDropGlobalBox::GetDropCount(float fRate) const
 {
     int nCount = 0;
     if (m_dropCount.size() < 1)
         return 0;
     int nRate = (int)(fRate * 100.0f);
-    std::map<int, ItemDropPicker<int>>::iterator it = m_dropCount.find(nRate);
+    std::map<int, ItemDropPicker<int>>::const_iterator it = m_dropCount.find(nRate);
     if (it == m_dropCount.end())
     {
         int nBaseRate = 100;
-        std::map<int, ItemDropPicker<int>>::iterator itBase = m_dropCount.find(nBaseRate);
+        std::map<int, ItemDropPicker<int>>::const_iterator itBase = m_dropCount.find(nBaseRate);
         if (itBase == m_dropCount.end())
             return 0;
         if (!itBase->second.Remains())
