@@ -48,12 +48,12 @@ public:
         entry.index = (int)m_entries.size();
         m_entries.insert(std::make_pair(m_total, entry));
     }
-    bool Pick(Entry& out)
+    bool Pick(Entry& out) const
     {
         if (m_total == 0)
             return false;
         unsigned roll = FUN_140767ff0() % m_total + 1;
-        typename std::map<unsigned, Entry>::iterator it = m_entries.lower_bound(roll);
+        typename std::map<unsigned, Entry>::const_iterator it = m_entries.lower_bound(roll);
         if (it == m_entries.end())
             return false;
         out = it->second;
