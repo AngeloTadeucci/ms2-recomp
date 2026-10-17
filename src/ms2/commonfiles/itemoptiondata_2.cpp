@@ -24,6 +24,8 @@ bool FUN_14082f1d0(int nStat);
 bool FUN_14081dc50(int nStat);
 int FUN_14081d830(int nStat);                           // the special stat is a special ability
 int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, int& nOut);
+int FUN_14015f500(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+void FUN_14028f5d0(Unk_140165cf0* pParent, const char* pszChild, std::vector<Unk_140165cf0*>& arrOut);
 extern "C" double (__cdecl* __imp_floor)(double);   // the IAT floor (<math.h> declares it static-CRT)
 
 // @0x1405ce250
@@ -1225,4 +1227,210 @@ int ItemOptionValueRandom::FUN_1405d28d0(MS2Ptr<ItemOptionRandomContext> spConte
 bool ItemOptionValueRandom::FUN_1405d29b0()
 {
     return FUN_14081d830(m_nSpecial) ? true : false;
+}
+
+// @0x1405d29f0
+ItemOptionConstant::ItemOptionConstant()
+    : m_n18(0), m_nGrade(0)
+{
+}
+
+// @0x1405d2a50
+void ItemOptionConstant::FUN_1405d2a50(int nValue)
+{
+    m_n18 = nValue;
+}
+
+// @0x1405d2a70
+int ItemOptionConstant::FUN_1405d2a70()
+{
+    return m_nGrade;
+}
+
+// @0x1405d2a90
+bool ItemOptionConstant::FUN_1405d2a90(Unk_140165cf0* pElem)
+{
+    FUN_14015f500(pElem, "grade", &m_nGrade);
+    int nCreateType = 0;
+    FUN_140873220(pElem, "createType", nCreateType);
+    if (nCreateType == 3)
+    {
+        FUN_1405d3490(pElem);
+        return true;
+    }
+    std::vector<Unk_140165cf0*> arrChildren;
+    FUN_14028f5d0(pElem, "v", arrChildren);
+    for (auto& pChild : arrChildren)
+    {
+        CString strName;
+        FUN_1408733e0(pChild, "name", strName);
+        if (strName.IsEmpty())
+            continue;
+        int nStat = FUN_14082ee80(strName);
+        if (nStat != -1)
+        {
+            MS2Ptr<ItemOptionValue> spValue(new ItemOptionValue(nStat));
+            int nValue = 0;
+            FUN_1408731e0(pChild, "value", nValue);
+            spValue->FUN_1405ce550(nValue);
+            if (spValue->FUN_1405ce3b0())
+                m_vValues.push_back(spValue.get());
+            continue;
+        }
+        unsigned nSpecial = FUN_14081d260(strName);
+        if (nSpecial != 0)
+        {
+            MS2Ptr<ItemOptionValue> spValue(new ItemOptionValue(nSpecial));
+            int nValue = 0;
+            FUN_1408731e0(pChild, "value", nValue);
+            spValue->FUN_1405ce550(nValue);
+            if (spValue->FUN_1405ce3b0())
+                m_vValues.push_back(spValue.get());
+        }
+    }
+    return true;
+}
+
+// @0x1405d2e70
+void ItemOptionConstant::FUN_1405d2e70(MS2Ptr<CItemOption> spOption, int nRank)
+{
+    for (auto& spValue : m_vValues)
+    {
+        if (spValue->FUN_1405ce370() != -1)
+        {
+            Unk_EnchantPtr<BaseOption> spBase(new BaseOption);
+            spBase->FUN_140266e90(spValue->vfunc_1(spOption->FUN_1405cb340(), nRank));
+            if (spBase->FUN_140266e30() > 0)
+                spOption->FUN_1405cb200(0, spValue->FUN_1405ce370(), spBase);
+        }
+        else
+        {
+            Unk_EnchantPtr<BaseOption> spBase(new BaseOption);
+            spBase->FUN_140266e90(spValue->vfunc_1(spOption->FUN_1405cb340(), nRank));
+            if (spBase->FUN_140266e30() > 0)
+                spOption->FUN_1405cb2a0(0, spValue->FUN_1405ce390(), spBase);
+        }
+    }
+}
+
+// @0x1405d31f0
+size_t ItemOptionConstant::FUN_1405d31f0()
+{
+    return m_vValues.size();
+}
+
+// @0x1405d3220
+MS2Ptr<ItemOptionValue> ItemOptionConstant::FUN_1405d3220(int nStat)
+{
+    for (size_t i = 0; i < m_vValues.size(); ++i)
+    {
+        if (m_vValues[i]->FUN_1405ce370() == nStat)
+            return m_vValues[i];
+    }
+    return MS2Ptr<ItemOptionValue>(0);
+}
+
+// @0x1405d3300
+MS2Ptr<ItemOptionValue> ItemOptionConstant::FUN_1405d3300(unsigned nSpecial)
+{
+    for (size_t i = 0; i < m_vValues.size(); ++i)
+    {
+        if (m_vValues[i]->FUN_1405ce390() == nSpecial)
+            return m_vValues[i];
+    }
+    return MS2Ptr<ItemOptionValue>(0);
+}
+
+// @0x1405d33e0
+void ItemOptionConstant::FUN_1405d33e0(std::function<void(ItemOptionValue*)> fnVisit)
+{
+    for (auto spValue : m_vValues)
+        fnVisit(spValue);
+}
+
+// @0x1405d3490
+void ItemOptionConstant::FUN_1405d3490(Unk_140165cf0* pElem)
+{
+    std::vector<Unk_140165cf0*> arrChildren;
+    FUN_14028f5d0(pElem, "v", arrChildren);
+    for (auto& pChild : arrChildren)
+    {
+        CString strName;
+        FUN_1408733e0(pChild, "name", strName);
+        int nStat = FUN_14082ee80(strName);
+        if (nStat != -1)
+        {
+            MS2Ptr<ItemOptionValueRef> spValue(new ItemOptionValueRef(nStat));
+            FUN_140873220(pChild, "luaIndex", spValue->m_nLuaIndex);
+            int nValue = 0;
+            FUN_1408731e0(pChild, "value", nValue);
+            spValue->FUN_1405ce550(nValue);
+            m_vValues.push_back(spValue.get());
+            continue;
+        }
+        unsigned nSpecial = FUN_14081d260(strName);
+        if (nSpecial != 0)
+        {
+            MS2Ptr<ItemOptionValue> spValue(new ItemOptionValue(nSpecial));
+            int nValue = 0;
+            FUN_1408731e0(pChild, "value", nValue);
+            spValue->FUN_1405ce550(nValue);
+            if (spValue->FUN_1405ce3b0())
+                m_vValues.push_back(spValue.get());
+        }
+    }
+}
+
+// @0x1405d3bf0
+ItemOptionRandom::ItemOptionRandom()
+    : m_nCode(0), m_nProbVer(1), m_eStatGroup((ItemOptionStatGroup)0), m_nLevelGroupId(0), m_bRarePickOne(false),
+      m_nPickCount(0)
+{
+}
+
+// @0x1405d3c80
+int ItemOptionRandom::FUN_1405d3c80()
+{
+    return m_nCode;
+}
+
+// @0x1405d3ca0
+ItemOptionStatGroup ItemOptionRandom::FUN_1405d3ca0()
+{
+    return m_eStatGroup;
+}
+
+// @0x1405d3cc0
+int ItemOptionRandom::FUN_1405d3cc0()
+{
+    return m_nProbVer;
+}
+
+// @0x1405d3ce0
+int ItemOptionRandom::FUN_1405d3ce0()
+{
+    return m_nLevelGroupId;
+}
+
+// @0x1405d3d00
+bool ItemOptionRandom::FUN_1405d3d00(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "code", m_nCode);
+    if (m_nCode == 0)
+        return false;
+    FUN_140873220(pElem, "probVer", m_nProbVer);
+    XmlValue(pElem, "statGroup", m_eStatGroup);
+    FUN_1408731e0(pElem, "levelGroupID", m_nLevelGroupId);
+    FUN_140873220(pElem, "pickCount", m_nPickCount);
+    FUN_1408730a0(pElem, "isRarePickOne", m_bRarePickOne);
+    std::vector<Unk_140165cf0*> arrChildren;
+    FUN_14028f5d0(pElem, "v", arrChildren);
+    for (auto& pChild : arrChildren)
+    {
+        MS2Ptr<ItemOptionValueRandom> spValue(new ItemOptionValueRandom);
+        if (!spValue->FUN_1405d2590(pChild))
+            continue;
+        m_vValues.push_back(spValue.get());
+    }
+    return true;
 }

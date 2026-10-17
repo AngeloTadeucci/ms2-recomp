@@ -5,6 +5,7 @@
 #pragma once
 #include <vector>
 #include <utility>
+#include <functional>
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/ms2layout.h"
@@ -83,6 +84,7 @@ public:
     double FUN_1405d2250(int nStat);
     double FUN_1405d23b0(double dValue);
     int FUN_1405d2410(MS2Ptr<CItemData> spItem);
+    friend class ItemOptionConstant;           // its createType 3 loader reads "luaIndex" in place
 private:
     unsigned m_nLuaIndex;                       // +0x28 "luaIndex"
 };
@@ -127,3 +129,47 @@ private:
     int m_nWeight;                              // +0x24 "weight"
 };
 MS2_CHECK_SIZE(ItemOptionValueRandom, 0x28);
+
+// The fixed option rows of an item (itemoptionconstant.xml).
+class ItemOptionConstant : public CPtred
+{
+public:
+    ItemOptionConstant();                       // 0x1405d29f0
+    void FUN_1405d2a50(int nValue);
+    int FUN_1405d2a70();                        // "grade"
+    bool FUN_1405d2a90(Unk_140165cf0* pElem);   // xml read
+    void FUN_1405d2e70(MS2Ptr<CItemOption> spOption, int nRank);   // adds the rows to an option
+    size_t FUN_1405d31f0();                     // the row count
+    MS2Ptr<ItemOptionValue> FUN_1405d3220(int nStat);
+    MS2Ptr<ItemOptionValue> FUN_1405d3300(unsigned nSpecial);
+    void FUN_1405d33e0(std::function<void(ItemOptionValue*)> fnVisit);
+    void FUN_1405d3490(Unk_140165cf0* pElem);   // xml read of createType 3 (lua computed) rows
+private:
+    int m_n18;                                  // +0x18
+    int m_nGrade;                               // +0x1c "grade"
+    std::vector<MS2Ptr<ItemOptionValue> > m_vValues;    // +0x20
+};
+MS2_CHECK_SIZE(ItemOptionConstant, 0x38);
+
+enum ItemOptionStatGroup { };                   // "statGroup" (stored as a number; values not recovered)
+
+// A random option row (itemoptionrandom.xml).
+class ItemOptionRandom : public CPtred
+{
+public:
+    ItemOptionRandom();                         // 0x1405d3bf0
+    int FUN_1405d3c80();                        // "code"
+    ItemOptionStatGroup FUN_1405d3ca0();        // "statGroup"
+    int FUN_1405d3cc0();                        // "probVer"
+    int FUN_1405d3ce0();                        // "levelGroupID"
+    bool FUN_1405d3d00(Unk_140165cf0* pElem);   // xml read
+private:
+    int m_nCode;                                // +0x18 "code"
+    int m_nProbVer;                             // +0x1c "probVer"
+    ItemOptionStatGroup m_eStatGroup;           // +0x20 "statGroup"
+    int m_nLevelGroupId;                        // +0x24 "levelGroupID"
+    bool m_bRarePickOne;                        // +0x28 "isRarePickOne"
+    int m_nPickCount;                           // +0x2c "pickCount"
+    std::vector<MS2Ptr<ItemOptionValueRandom> > m_vValues;  // +0x30
+};
+MS2_CHECK_SIZE(ItemOptionRandom, 0x48);
