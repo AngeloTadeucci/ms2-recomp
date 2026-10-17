@@ -147,6 +147,15 @@ Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // e
 unsigned char FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+Unk_CMISIter<257>* FUN_141152030(Unk_CMISTree<257>*, Unk_CMISIter<257>*);
+Unk_CMISIter<257>* FUN_1411580e0(Unk_CMISTree<257>*, Unk_CMISIter<257>*, const int*);
+bool FUN_141127050(Unk_CMISIter<257>*, Unk_CMISIter<257>*);
+void** FUN_141128110(Unk_CMISTree<257>*, const int*);
+bool FUN_140965240(Unk_PayloadPtr<Unk_CMISObj208>*, void*);
+Unk_CMISIter<265>* FUN_14114e010(Unk_CMISTree<265>*, Unk_CMISIter<265>*);       // begin
+struct Unk_CMISRefElem { int m_key, m_pad; Unk_CMISEntityRef m_ref; };
+Unk_CMISRefElem* FUN_1411286a0(Unk_CMISIter<265>*);                           // operator*
+void FUN_141129bd0(Unk_CMISIter<265>*);                                       // operator++
 unsigned FUN_140869420();
 void FUN_1408a06a0(int, int);
 struct Unk_CMISIntPair { int m_key, m_val; };
@@ -1104,6 +1113,45 @@ void CubeMapInformationService::FUN_1410d5930(Unk_CMISTree<286>* pOut)
     Unk_CMISInsRes res;
     for (FUN_140340ff0(&f430, &it); FUN_1403344a0(&it, FUN_140341f40(&f430, &itEnd)); FUN_140334ef0(&it))
         FUN_1404422b0(pOut, &res, FUN_1408f2950(&it));
+}
+// @0x1410c5420
+void* CubeMapInformationService::FUN_1410c5420(const int* pKey)
+{
+    Unk_CMISIter<257> itEnd, itFind;
+    if (FUN_141127050(FUN_1411580e0(&f48, &itFind, pKey), FUN_141152030(&f48, &itEnd)))
+        return 0;
+    return *FUN_141128110(&f48, pKey);
+}
+// @0x1410cb420
+int CubeMapInformationService::FUN_1410cb420(const Unk_CMISEntityRef* pRef)
+{
+    Unk_CMISIter<265> it, itEnd;
+    for (FUN_14114e010(&f108, &it); FUN_141127640(&it, FUN_141151d30(&f108, &itEnd)); FUN_141129bd0(&it)) {
+        if (pRef->FUN_140965410(reinterpret_cast<const Unk_1401cd100&>(FUN_1411286a0(&it)->m_ref)))
+            return 1;
+    }
+    return 0;
+}
+// @0x1410d2730
+int CubeMapInformationService::FUN_1410d2730(const Unk_Int3* pPt)
+{
+    if (FUN_1410c3180() != 0) {
+        if (pPt->x < p300.x || pPt->y < p300.y)
+            return 0;
+        if (pPt->x > p30c.x || pPt->y > p30c.y)
+            return 0;
+    }
+    return 1;
+}
+// @0x1410d4340
+int CubeMapInformationService::FUN_1410d4340(Unk_CubePoint* pOut)
+{
+    if (FUN_140965240(&f208, 0))
+        return 0;
+    if (FUN_140885340(&f208)->FUN_140375130() == 0)
+        return 0;
+    memcpy(pOut, &p300, 12);
+    return 1;
 }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)

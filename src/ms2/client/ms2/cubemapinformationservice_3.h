@@ -188,6 +188,10 @@ public:
     void FUN_1410d5830(unsigned __int64 key);
     bool FUN_1410d58c0(unsigned __int64 key);
     void FUN_1410d5930(Unk_CMISTree<286>* pOut);
+    void* FUN_1410c5420(const int* pKey);
+    int FUN_1410cb420(const Unk_CMISEntityRef* pRef);
+    int FUN_1410d2730(const Unk_Int3* pPt);
+    int FUN_1410d4340(Unk_CubePoint* pOut);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
