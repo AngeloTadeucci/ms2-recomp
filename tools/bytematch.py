@@ -843,6 +843,11 @@ def match_one(obj_or_cod, sym, va, exe, verbose, check_unwind, quiet=False):
     for sname, tgt in targets.items():                      # pairs known by the caller (tools/progress.py)
         want = LOCAL_KNOWN.get(sname)
         if want is not None and want != tgt:
+            # the unit pairs the name with one exe copy but this function calls another, byte-identical COMDAT copy
+            # (e.g. std::less<int>::operator() exists in the global table and again in the unit's own TU): same code
+            if same_code(CUR_EXE, want, tgt):
+                MULTICOPY.append((sname, want, tgt))
+                continue
             rep.bad(f"{sname} is paired with 0x{want:x}, exe calls/uses 0x{tgt:x}")
     LAST_TARGETS.clear()
     if obj is not None and rep.ok:                             # targets are only meaningful if the code matches

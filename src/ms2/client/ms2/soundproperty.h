@@ -109,10 +109,10 @@ struct Unk_SoundPitch
 };
 MS2_CHECK_SIZE(Unk_SoundPitch, 8);
 
-typedef ATL::CAtlMap<CString, MS2Ptr<SystemSoundProperty>, ATL::CStringElementTraits<CString> > Unk_SystemSoundMap;
-typedef ATL::CAtlMap<CString, MS2Ptr<TriggerVoiceProperty>, ATL::CStringElementTraits<CString> > Unk_TriggerVoiceMap;
+typedef ATL::CAtlMap<CString, MS2Ptr<SystemSoundProperty>, ATL::CStringElementTraitsI<CString> > Unk_SystemSoundMap;
+typedef ATL::CAtlMap<CString, MS2Ptr<TriggerVoiceProperty>, ATL::CStringElementTraitsI<CString> > Unk_TriggerVoiceMap;
 typedef std::map<CString, std::set<CString> > Unk_VoiceGroupMap;    // trigger voice -> every sound name
-typedef std::map<unsigned, Unk_EventVoice> Unk_EventByCaster;
+typedef std::map<int, Unk_EventVoice> Unk_EventByCaster;
 typedef std::map<int, Unk_EventByCaster> Unk_EventByJob;
 typedef std::map<int, Unk_EventByJob> Unk_EventByGender;
 typedef std::map<int, Unk_EventByGender> Unk_EventMap;

@@ -1043,7 +1043,7 @@ def main():
         if u.rel in failed or not os.path.exists(u.obj):
             cache[u.rel] = {"key": None, "failed": True, "res": None}
             continue
-        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy4" + ("g" if u.guess else "") + ("f9" if not os.environ.get("MS2_NO_ICF_FOLD") else "") + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
+        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy5" + ("g" if u.guess else "") + ("f9" if not os.environ.get("MS2_NO_ICF_FOLD") else "") + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
         c = cache.get(u.rel)
         if not a.force and c and c.get("key") == json.loads(json.dumps(key)) and not a.verbose:
             continue
