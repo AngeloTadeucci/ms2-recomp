@@ -126,6 +126,10 @@
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HV?$TToolHistory@UParamVaule@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fc80 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@HUUnk_SoundFade@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_SoundFade@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14178fca0 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??$?0AEBH@?$_Tuple_val@AEBH@std@@QEAA@AEBH@Z 0x14177ee20
+// MS2-PIN: ??$?0U_Exact_args_t@std@@AEBH$$V$0A@@?$tuple@AEBH@std@@QEAA@U_Exact_args_t@1@AEBH@Z 0x14177eea0
+// MS2-PIN: ??$format_arg@_WW4FMOD_EVENT_PITCHUNITS@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4FMOD_EVENT_PITCHUNITS@@@Z 0x141785b60 ; hand: FormatCustomArg 0x141785da0 call site
+// MS2-PIN: ??$format_arg@_WW4FMOD_RESULT@@@fmt@@YAXAEAV?$BasicFormatter@_W@0@AEAPEB_WAEBW4FMOD_RESULT@@@Z 0x141785c80 ; hand: FormatCustomArg 0x141785dd0 call site
 // MS2-PIN: ??$construct@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@$$QEAH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAH@1@$$QEAV?$tuple@$$V@1@@Z 0x141785320
 // MS2-PIN: ??$construct@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1417853d0
 // MS2-PIN: ??$?0V?$tuple@$$QEAH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$TToolHistory@UParamVaule@@@@@std@@QEAA@AEAV?$tuple@$$QEAH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x14177f0a0
