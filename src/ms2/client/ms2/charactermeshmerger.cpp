@@ -517,6 +517,19 @@
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@E@efd@@V?$CustomAllocator@V?$vector@E@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@E@efd@@@efd@@XZ 0x141073220 ; prop
 // MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@@std@@QEAAAEAV?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@efd@@XZ 0x141073260 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??A?$vector@EV?$CustomAllocator@E@efd@@@std@@QEBAAEBE_K@Z 0x141068f10 ; w200 hand
+// MS2-PIN: ??A?$vector@PEAVNiMesh@@V?$CustomAllocator@PEAVNiMesh@@@efd@@@std@@QEAAAEAPEAVNiMesh@@_K@Z 0x141068f40 ; w200 hand
+// MS2-PIN: ??A?$vector@PEAVNiMesh@@V?$CustomAllocator@PEAVNiMesh@@@efd@@@std@@QEBAAEBQEAVNiMesh@@_K@Z 0x141068f70 ; w200 hand
+// MS2-PIN: ??A?$vector@UUnk_StreamElementDesc@@V?$allocator@UUnk_StreamElementDesc@@@std@@@std@@QEBAAEBUUnk_StreamElementDesc@@_K@Z 0x141068fa0 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$map@EEU?$less@E@std@@@efd@@V?$CustomAllocator@V?$map@EEU?$less@E@std@@@efd@@@2@@std@@QEAAAEAV?$map@EEU?$less@E@std@@@efd@@_K@Z 0x141068fd0 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$set@EU?$less@E@std@@@efd@@V?$CustomAllocator@V?$set@EU?$less@E@std@@@efd@@@2@@std@@QEAAAEAV?$set@EU?$less@E@std@@@efd@@_K@Z 0x141069000 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$set@PEAVNiAVObject@@U?$less@PEAVNiAVObject@@@std@@@efd@@V?$CustomAllocator@V?$set@PEAVNiAVObject@@U?$less@PEAVNiAVObject@@@std@@@efd@@@2@@std@@QEAAAEAV?$set@PEAVNiAVObject@@U?$less@PEAVNiAVObject@@@std@@@efd@@_K@Z 0x141069030 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$vector@E@efd@@V?$CustomAllocator@V?$vector@E@efd@@@2@@std@@QEAAAEAV?$vector@E@efd@@_K@Z 0x141069060 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@QEAAAEAV?$vector@PEAVNiMesh@@@efd@@_K@Z 0x141069090 ; w200 hand
+// MS2-PIN: ??A?$vector@V?$vector@PEAVNiMesh@@@efd@@V?$CustomAllocator@V?$vector@PEAVNiMesh@@@efd@@@2@@std@@QEBAAEBV?$vector@PEAVNiMesh@@@efd@@_K@Z 0x1410690c0 ; w200 hand
+// MS2-PIN: ??1?$CAtlArray@PEAVNiAVObject@@V?$CElementTraits@PEAVNiAVObject@@@ATL@@@ATL@@QEAA@XZ 0x1410670d0 ; w200 hand
+// MS2-PIN: ??1?$CAtlArray@PEAVNiBound@@V?$CElementTraits@PEAVNiBound@@@ATL@@@ATL@@QEAA@XZ 0x141067110 ; w200 hand
+// MS2-PIN: ??1?$CAtlArray@PEAVNiTransform@@V?$CElementTraits@PEAVNiTransform@@@ATL@@@ATL@@QEAA@XZ 0x141067150 ; w200 hand
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\charactermeshmerger.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "charactermeshmerger.h"
@@ -553,6 +566,7 @@
 #include <d3dx9.h>
 #include <efd/LoggerMacros.h>
 #include "ms2/commonfiles/logstring.h"
+#include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 
 // The header statics (the sort-name table, skill and stun of header_statics_a.h), then the atlas divisor and the condition table.
@@ -674,10 +688,17 @@ public:
     float m_afParams[4];                                    // +0x50
 };
 MS2_CHECK_SIZE(CCustomizedTexInfo, 0x60);
-struct Unk_TexCompositor;
-Unk_TexCompositor* FUN_14106bd20();
-Unk_TexCompositor* FUN_14106b3d0();
-CCustomizedTexInfo* FUN_1411660b0(Unk_TexCompositor* pCompositor, CCustomizedTexInfo* pInfoA, CCustomizedTexInfo* pInfoB);
+// Composes the customized character textures (header-inline singleton, 8 bytes: the vptr only; TSingleton vftable 0x142ea5e00,
+// own vftable 0x142ea5e10, s_instance 0x143acd498). Only its inline members live in this unit.
+class CCustomizedTextureManager : public TSingleton<CCustomizedTextureManager>
+{
+public:
+    CCustomizedTextureManager() {}
+    virtual ~CCustomizedTextureManager() {}
+    static CCustomizedTextureManager* CreateInstance() { return GetInstance() != 0 ? GetInstance() : new CCustomizedTextureManager; }
+};
+MS2_CHECK_SIZE(CCustomizedTextureManager, 0x8);
+CCustomizedTexInfo* FUN_1411660b0(CCustomizedTextureManager* pManager, CCustomizedTexInfo* pInfoA, CCustomizedTexInfo* pInfoB);
 
 // Orders world transforms lexicographically for the per-transform grouping map.
 struct Unk_TransformLess
@@ -1004,7 +1025,7 @@ void FUN_14104a1c0(const MeshList& kGroup, MeshGroups& kBuckets, MergeInfo& kInf
     for (unsigned int i = 0; i < kBucketIndices.size(); i++)
     {
         kInfo.m_kBucketRemap.push_back(efd::map<unsigned char, unsigned char>());
-        efd::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
+        const efd::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
         efd::map<unsigned char, unsigned char>& kBucketRemap = kInfo.m_kBucketRemap[i];
         for (unsigned char uc = 0; uc < kList.size(); uc++)
             kBucketRemap.insert(std::make_pair(kList[uc], uc));
@@ -1112,7 +1133,7 @@ void FUN_14104e800(const MeshList& kGroup, MeshGroups& kBuckets, MergeInfo& kInf
     for (unsigned int i = 0; i < kBucketIndices.size(); i++)
     {
         kInfo.m_kBucketRemap.push_back(efd::map<unsigned char, unsigned char>());
-        efd::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
+        const efd::vector<unsigned char>& kList = kInfo.m_kBoneLists[i];
         efd::map<unsigned char, unsigned char>& kBucketRemap = kInfo.m_kBucketRemap[i];
         for (unsigned char uc = 0; uc < kList.size(); uc++)
             kBucketRemap.insert(std::make_pair(kList[uc], uc));
@@ -2030,9 +2051,9 @@ efd::SmartPointer<NiSourceTexture> FUN_141051560(NiAVObject* pMesh)
         spInfoB->m_kColor2 = pColor == 0 ? NiColorA(1.0f, 1.0f, 1.0f, 1.0f) : pColor->GetValue();
     }
 
-    if (FUN_14106bd20() == 0)
-        FUN_14106b3d0();
-    efd::SmartPointer<CCustomizedTexInfo> spComposed = FUN_1411660b0(FUN_14106bd20(), spInfoA, spInfoB);
+    if (CCustomizedTextureManager::GetInstance() == 0)
+        CCustomizedTextureManager::CreateInstance();
+    efd::SmartPointer<CCustomizedTexInfo> spComposed = FUN_1411660b0(CCustomizedTextureManager::GetInstance(), spInfoA, spInfoB);
     spResult = NiDynamicCast(NiSourceTexture, (NiTexture*)spComposed->m_spBase);
     return spResult;
 }
