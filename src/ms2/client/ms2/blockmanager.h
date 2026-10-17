@@ -4,13 +4,37 @@
 #pragma once
 #include <afx.h>
 #include "ms2/ms2layout.h"
+#include "ms2/placeholder/cptred.h"
 #include "ms2/commonfiles/os.h"
 #include "ms2/commonfiles/blockchecker.h"
+class COutputStream;
+class CInputStream;
 
+#ifdef MS2_ACCOUNTBLOCKINFO_OWN_LAYOUT
+// RTTI AccountBlockInfo as the exe has it: a CPtred with its own fields (unit_140268010 defines the class this way so
+// that no Unk_BlockRecord vftable is emitted; the layout is identical to the Unk_BlockRecord view below).
+class AccountBlockInfo : public CPtred {
+public:
+    AccountBlockInfo();                             // 0x140268600
+    void Write(COutputStream* pOut);                // 0x140268690
+    void Read(CInputStream* pIn);                   // 0x140268750
+
+    __int64 m_n18;                                  // +0x18
+    __int64 m_nId;                                  // +0x20
+    int m_nKind;                                    // +0x28
+    int m_pad_2c;
+    CStringW m_strReason;                           // +0x30
+    __int64 m_nStart;                               // +0x38
+    __int64 m_nExpiry;                              // +0x40
+};
+#else
 class AccountBlockInfo : public Unk_BlockRecord {   // 0x48 bytes, ctor 0x140268600 (unit_140268010), dtor 0x14027e4e0
 public:
-    AccountBlockInfo();
+    AccountBlockInfo();                             // 0x140268600
+    void Write(COutputStream* pOut);                // 0x140268690
+    void Read(CInputStream* pIn);                   // 0x140268750
 };
+#endif
 MS2_CHECK_SIZE(AccountBlockInfo, 0x48);
 
 class CBlockManager : public TSingleton<CBlockManager>
