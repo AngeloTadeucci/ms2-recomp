@@ -891,6 +891,9 @@ def solve_unit(ctx, u, args):
 
 
 
+_INRANGE = {}
+
+
 def unit_score(ctx, u, pins):
     """Run progress.py's pairing with `pins` (obj symbol -> VA) and count the unit: (exact, functional, stubs, set of
     byte-exact exe VAs/vftable names), counted per exe function in the ranges like progress/status.tsv."""
@@ -910,15 +913,18 @@ def unit_score(ctx, u, pins):
         byva[p["va"]] = byva.get(p["va"], False) or p["ok"]
     ex = fu = stub = 0
     okset = set()
-    for va in ctx.starts:
-        if any(a <= va < b for a, b in u.ranges):
-            if va not in byva:
-                stub += 1
-            elif byva[va]:
-                ex += 1
-                okset.add(va)
-            else:
-                fu += 1
+    key = (id(u), tuple(u.ranges))
+    inr = _INRANGE.get(key)
+    if inr is None:
+        inr = _INRANGE[key] = [va for va in ctx.starts if any(a <= va < b for a, b in u.ranges)]
+    for va in inr:
+        if va not in byva:
+            stub += 1
+        elif byva[va]:
+            ex += 1
+            okset.add(va)
+        else:
+            fu += 1
     for n, v in res["vft"].items():
         if v["ok"]:
             okset.add(n)

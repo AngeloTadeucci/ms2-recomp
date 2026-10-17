@@ -666,16 +666,22 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
                 return 1
         return 0
 
+    _rcache = {}
+
     def range_of(va):
-        return next((r for r in u.ranges if r[0] <= va < r[1]), None)
+        if va not in _rcache:
+            _rcache[va] = next((r for r in u.ranges if r[0] <= va < r[1]), None)
+        return _rcache[va]
+
+    _own_n = {n: obj.own(si) for n, si in si_of.items()}
 
     def order_ok(name, va):
-        if obj.own(si_of[name]) or name.startswith(INITS):
+        if _own_n[name] or name.startswith(INITS):
             return True
         r = range_of(va)
         lo = hi = None
         for n2, v2 in known.items():
-            if n2 == name or n2 not in si_of or obj.own(si_of[n2]):
+            if n2 == name or n2 not in _own_n or _own_n[n2]:
                 continue
             if range_of(v2) != r:
                 continue

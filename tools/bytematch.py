@@ -207,14 +207,21 @@ class Obj:
 
         target = in-function offset for ADDR32NB fields that point into the function itself (jump tables:
         the exe must hold function RVA + that offset), else None."""
+        cache = self.__dict__.setdefault("_fcache", {})
+        hit = cache.get(symidx)
+        if hit is not None:
+            return hit
         name, value, secnum, _, _ = self.syms[symidx]
         sec = self.sec(secnum)
         end = None
         unwind = None
-        for fs, fo, fe, us, uo in self.pdata():
-            if fs == secnum and fo == value:
-                end, unwind = fe, (us, uo)
-                break
+        pidx = self.__dict__.get("_pidx")
+        if pidx is None:
+            pidx = self._pidx = {}
+            for fs, fo, fe, us, uo in self.pdata():
+                pidx.setdefault((fs, fo), (fe, (us, uo)))
+        if (secnum, value) in pidx:
+            end, unwind = pidx[(secnum, value)]
         if end is None:                                        # leaf without pdata: up to the next symbol
             nxt = [v for (n, v, s, t, c) in self.syms.values() if s == secnum and v > value and not n.startswith("$")]
             end = min(nxt) if nxt else sec["size"]
@@ -230,7 +237,8 @@ class Obj:
                     if value <= tval + add < end:
                         inner = tval + add - value
                 fields.append((va - value, ln, tname, ty, inner, si))
-        return data, fields, unwind
+        cache[symidx] = (data, fields, unwind)
+        return cache[symidx]
 
     def is_code(self, symidx):
         sn = self.syms[symidx][2]
@@ -239,6 +247,13 @@ class Obj:
     def own(self, symidx):
         """Not a discardable duplicate: plain section or COMDAT NODUPLICATES (the unit's own functions), as opposed
         to selectany/largest COMDATs (inline/template functions, kept once exe-wide in whichever unit came first)."""
+        oc = self.__dict__.setdefault("_owncache", {})
+        r = oc.get(symidx)
+        if r is None:
+            r = oc[symidx] = self._own(symidx)
+        return r
+
+    def _own(self, symidx):
         sec = self.sec(self.syms[symidx][2])
         if not sec["chars"] & 0x1000:                          # IMAGE_SCN_LNK_COMDAT
             return True
