@@ -251,7 +251,6 @@ template void Unk_GameEventCopy<GameEventBlueMarble>(void*, const GameEventBlueM
 template void Unk_GameEventCopy<GameEventBurningLevelup>(void*, const GameEventBurningLevelup&);
 template void Unk_GameEventCopy<GameEventChatFiltering>(void*, const GameEventChatFiltering&);
 template void Unk_GameEventCopy<GameEventCollectItemGroup>(void*, const GameEventCollectItemGroup&);
-template void Unk_GameEventCopy<GameEventConstructShowItem>(void*, const GameEventConstructShowItem&);
 template void Unk_GameEventCopy<GameEventCoupleDance>(void*, const GameEventCoupleDance&);
 template void Unk_GameEventCopy<GameEventCustomTriggerString>(void*, const GameEventCustomTriggerString&);
 template void Unk_GameEventCopy<GameEventDeleteUrlCache>(void*, const GameEventDeleteUrlCache&);
@@ -375,6 +374,7 @@ template void Unk_GameEventConstructTagged<GameEventDungeonExtraReward>(void*);
 template void Unk_GameEventConstructTagged<GameEventSaleHousing>(void*);
 template void Unk_GameEventConstructTagged<StampEventContext>(void*);
 template void Unk_GameEventConstructTagged<GameEventMassiveConstructionEvent>(void*);
+template void Unk_GameEventConstructTagged<GameEventConstructShowItem>(void*);
 template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);

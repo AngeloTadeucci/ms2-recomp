@@ -108,6 +108,10 @@ public:
     void FUN_14047e830(bool bOpen);                                               // GameEventGuildChampionship
     void FUN_14047e8e0(unsigned a, unsigned b, MS2Ptr<QuestAdditionalRewardContext> spContext);   // GameEventQuestAdditionalReward
     void FUN_14047e980(unsigned a, unsigned b);
+    void FUN_140479640(int eventId, int rate);                                    // GameEventUGCMapContractSale
+    void FUN_1404796b0(int eventId);
+    void FUN_140479790(int eventId, int rate);                                    // GameEventUGCMapExtensionSale
+    void FUN_140479800(int eventId);
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

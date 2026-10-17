@@ -349,8 +349,16 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8ea0
     virtual void vfunc_5();                     // 0x1403c9050
     virtual void vfunc_6();                     // 0x1403c9160
-private:
-    char m_pad_d0[0x40];
+    GameEventConstructShowItem();
+    explicit GameEventConstructShowItem(Unk_VftableEmitTag) {}
+    unsigned m_d0;                              // m_68
+    int m_pad_d4;
+    CStringW m_d8;                              // m_70: the box name (else m_d0 names it)
+    unsigned m_e0;                              // m_78 (a short on the wire)
+    int m_pad_e4;
+    ATL::CAtlArray<unsigned> m_e8;              // item ids (m_80)
+    unsigned m_108;                             // the box (vfunc_5)
+    int m_pad_10c;
 };  // vftable 0x142d40450, ??_G 0x1403e9d50, dtor 0x1403e5dd0
 MS2_CHECK_SIZE(GameEventConstructShowItem, 0x110);
 class GameEventCoupleDance : public GameEvent {
@@ -613,8 +621,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c7ac0
     virtual void vfunc_5();                     // 0x1403c7a00
     virtual void vfunc_6();                     // 0x1403c7a40
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildCoin();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d401e8, ??_G 0x1403ea2d0, dtor 0x1403e61d0
 MS2_CHECK_SIZE(GameEventGuildCoin, 0xd8);
 class GameEventGuildEventFund : public GameEvent {
@@ -646,8 +655,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c7850
     virtual void vfunc_5();                     // 0x1403c7790
     virtual void vfunc_6();                     // 0x1403c77d0
-private:
-    char m_pad_d0[0x8];
+    GameEventGuildFund();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d40190, ??_G 0x1403ea390, dtor 0x1403e6230
 MS2_CHECK_SIZE(GameEventGuildFund, 0xd8);
 class GameEventGuildPersonalSkillSale : public GameEvent {
@@ -782,8 +792,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8600
     virtual void vfunc_5();                     // 0x1403c8540
     virtual void vfunc_6();                     // 0x1403c8580
-private:
-    char m_pad_d0[0x8];
+    GameEventMasteryReduce();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d40348, ??_G 0x1403ea650, dtor 0x1403e6410
 MS2_CHECK_SIZE(GameEventMasteryReduce, 0xd8);
 class GameEventMasteryReward : public GameEvent {
@@ -794,8 +805,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c7dc0
     virtual void vfunc_5();                     // 0x1403c7ca0
     virtual void vfunc_6();                     // 0x1403c7d10
-private:
-    char m_pad_d0[0x10];
+    GameEventMasteryReward();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
+    CStringW m_d8;                              // m_70
 };  // vftable 0x142d40240, ??_G 0x1403ea690, dtor 0x1403e6430
 MS2_CHECK_SIZE(GameEventMasteryReward, 0xe0);
 class GameEventMeratMarketNotice : public GameEvent {
@@ -818,8 +831,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8060
     virtual void vfunc_5();                     // 0x1403c80f0
     virtual void vfunc_6();                     // 0x1403c8140
-private:
-    char m_pad_d0[0x8];
+    GameEventMeratMarketOpenTab();
+    CStringW m_d0;                              // the tab (m_68)
 };  // vftable 0x142d40298, ??_G 0x1403ea710, dtor 0x1403e6490
 MS2_CHECK_SIZE(GameEventMeratMarketOpenTab, 0xd8);
 class GameEventMesoRevival : public GameEvent {
@@ -1387,8 +1400,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8800
     virtual void vfunc_5();                     // 0x1403c8860
     virtual void vfunc_6();                     // 0x1403c88a0
-private:
-    char m_pad_d0[0x8];
+    GameEventUGCMapContractSale();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d403a0, ??_G 0x1403eb310, dtor 0x1403e6c80
 MS2_CHECK_SIZE(GameEventUGCMapContractSale, 0xd8);
 class GameEventUGCMapExtensionSale : public GameEvent {
@@ -1399,8 +1413,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8a70
     virtual void vfunc_5();                     // 0x1403c8ad0
     virtual void vfunc_6();                     // 0x1403c8b10
-private:
-    char m_pad_d0[0x8];
+    GameEventUGCMapExtensionSale();
+    int m_d0;                                   // the rate (m_68)
+    int m_pad_d4;
 };  // vftable 0x142d403f8, ??_G 0x1403eb350, dtor 0x1403e6ca0
 MS2_CHECK_SIZE(GameEventUGCMapExtensionSale, 0xd8);
 class GameEventUGCMapSaleCoupon : public GameEvent {
@@ -1462,8 +1477,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c8370
     virtual void vfunc_5();                     // 0x1403c8300
     virtual void vfunc_6();                     // 0x1403c8310
-private:
-    char m_pad_d0[0x8];
+    GameEventWorldmapIcon();
+    CStringW m_d0;                              // m_68
 };  // vftable 0x142d402f0, ??_G 0x1403eb490, dtor 0x1403e6d70
 MS2_CHECK_SIZE(GameEventWorldmapIcon, 0xd8);
 struct MesoRevivalEventContext : public CPtred {
