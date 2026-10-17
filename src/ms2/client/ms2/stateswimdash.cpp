@@ -200,14 +200,15 @@ void StateSwimDash::vfunc_10(float a, float b, float c, float d, int e)
 }
 
 // @0x1417fbe00
-// MS2-FUNCTIONAL: call-site temporaries differ from the exe
 int StateSwimDash::vfunc_36()
 {
     if (FUN_14025e7c0()->FUN_14116dcb0(0x49401, false, 0))
         return 1;
-    if (m_spData.get() == 0)
-        return 0;
-    return FUN_1409331f0()->FUN_14142c0c0(m_spData->m_nSkill);
+    if (m_spData.get() != 0)
+    {
+        return FUN_1409331f0()->FUN_14142c0c0(m_spData->m_nSkill);
+    }
+    return 0;
 }
 
 // @0x1417fbe80
