@@ -121,7 +121,6 @@ void StateLand::vfunc_4(StateData* pData)
 }
 
 // @0x1417da070
-// MS2-FUNCTIONAL: the zero point is copied byte-wise in the exe
 void StateLand::vfunc_3(double fTime)
 {
     State::vfunc_3(fTime);
