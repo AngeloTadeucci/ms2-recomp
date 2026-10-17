@@ -1445,7 +1445,6 @@ int FUN_1402913b0(CString strTab, CString& strTabOut)
 }
 
 // Avatar tab key.
-// MS2-FUNCTIONAL: not yet byte-matched (std::string glue pairing / frame layout)
 // @0x140291550
 std::string FUN_140291550(int nKind)
 {
@@ -2030,7 +2029,6 @@ extern void FUN_140297a20(void** pp);
 extern void* FUN_140297620(void** pp, void* pArg);
 extern void* FUN_140298560(void** pp, void* pArg);
 
-// MS2-FUNCTIONAL: three identical template-instantiation bodies (look-alike siblings), written once per address
 // @0x1402969f0
 void** FUN_1402969f0(void** p, void* pVtbl, void* pArg)
 {
