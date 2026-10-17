@@ -2,6 +2,26 @@
 // MS2-UNIT: unit_140f6c680
 // MS2-RANGE: 0x140f6c680-0x140f7d060 .text$mn
 // MS2-RANGE: 0x1400e04c0-0x1400e09d0 .text$di
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ?get@?$MS2Ptr@VSaleParam@ItemSocketSystemPageBase@@@@QEBAPEAVSaleParam@ItemSocketSystemPageBase@@XZ 0x140f6ed00 ; unique
+// MS2-PIN: ??_G?$MS2Ptr@VCItem@@@@QEAAPEAXI@Z 0x140f739c0 ; unique
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCItem@@@@@Z 0x140f73a40 ; unique
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140f73b70 ; unique
+// MS2-PIN: ?GetAt@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEAAAEAV?$MS2Ptr@VCItem@@@@_K@Z 0x140f73bd0 ; unique
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x140f73c20 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCreateParam@ItemSlotBag@@@@QEAA@AEBV0@@Z 0x140f7af30 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@PEAVCItem@@@Z 0x140f7af70 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@$$QEAV0@@Z 0x140f7afa0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCItem@@@@QEAA@H@Z 0x140f7b010 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VASMovieClip@@@@QEAA@XZ 0x140f7b060 ; unique
+// MS2-PIN: ??1SaleParam@ItemSocketSystemPageBase@@UEAA@XZ 0x140f7b480 ; prop
+// MS2-PIN: ??4?$MS2Ptr@VCItem@@@@QEAAAEAV0@AEBV0@@Z 0x140f7b5e0 ; unique
+// MS2-PIN: ??_GSaleParam@ItemSocketSystemPageBase@@UEAAPEAXI@Z 0x140f7b810 ; prop
+// MS2-PIN: ?IsEmpty@?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@QEBA_NXZ 0x140f7bd40 ; unique
+// MS2-PIN: ?AddRef@?$MS2Ptr@VTSocketGemStoneBind@@@@AEBAXXZ 0x140f7c920 ; prop
+// MS2-PIN: ?Reference@?$MS2Ptr@VTSocketGemStoneInfo@@@@CAXPEAVTSocketGemStoneInfo@@@Z 0x140f7c950 ; prop
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCreateParam@ItemSlotBag@@@@AEBAXPEAX@Z 0x140f7c970 ; prop
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\itemsocketsystempagebase.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/client/ms2/itemsocketsystempagebase.h"
@@ -10,10 +30,14 @@
 #include "ms2/client/ms2/iteminfoslot.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/ms2format.h"
+#include "ms2/commonfiles/itemsocket.h"
+#include "ms2/client/ms2/itemsocketsystempagecontrols.h"
+#include "ms2/commonfiles/commonstruct_wa.h"
+#include "ms2/placeholder/asobj.h"
 
 // The result is formatted through fmt's enum customization, rather than an integer argument.
 enum class Unk_SocketPageResult : int {};
-CStringW FUN_14028dfa0(CStringW key, const fmt::ArgList& args);
+CStringW FUN_14028dfa0(const CStringW& key, const fmt::ArgList& args);
 FMT_VARIADIC_W(CStringW, FUN_14028dfa0, CStringW)
 void FUN_1412751f0(const CStringW&, int, int);
 void FUN_1412752d0(const CStringW&, int);
@@ -43,6 +67,30 @@ ItemInfoSlot* FUN_140c69ab0(NotifyContext::BindData*);
 ItemInfoSlot* FUN_140f6e830(const CString&);
 void FUN_141415af0(ItemInfoSlot*, MS2Ptr<CItem>);
 MS2Ptr<CItem> FUN_141425750(__int64, bool*);
+class Unk_SocketPageInventoryCount;
+extern char DAT_143ab2a90;
+int FUN_140a5f180(Unk_SocketPageInventoryCount*, int, int);
+int FUN_140a5f780(Unk_SocketPageInventoryCount*, int, int);
+int FUN_14053c6f0(Unk_ItemEquipData*);
+int FUN_140627b80(int, int);
+CString FUN_1422cc860(const CString&, int);
+void FUN_141416740(ItemInfoSlot*, int, int);
+void FUN_14141f970(const CString&);
+void FUN_14141f770(const CString&, int, void*, ItemSlotBag::CreateParam::GetItemFn, int, int);
+MS2Ptr<CItem> FUN_141420330(void*, int);
+void FUN_141415600(const CString&);
+void FUN_141415450(const CString&, MS2Ptr<CItem>, int, int, int);
+CStringW FUN_1419021b0(unsigned, unsigned);
+Scaleform::GFx::Value FUN_140f356e0(AScript*, const char*, int, bool);
+void FUN_14141f860(const CString&, int, void*, MS2Ptr<ItemSlotBag::CreateParam>);
+DragSlotBag* FUN_140c54570(const CString&);
+void FUN_1422cc9e0(DragSlotBag*);
+void FUN_14141ff80(ItemSlotBag*, int);
+void FUN_1422cf860(Unk_SocketPageBag*);
+void FUN_1422ccb50(DragSlotBag*, int);
+void FUN_1422cf7e0(Unk_SocketPageBag*, int);
+int FUN_1422dd150(Unk_SocketPageBag*);
+void FUN_1422dcca0(Unk_SocketPageBag*, int);
 
 // @0x140f6c680
 ItemSocketSystemPageBase::ItemSocketSystemPageBase() : m_restoreInventory(false) {}
@@ -161,6 +209,30 @@ MS2Ptr<CItem> ItemSocketSystemPageBase::FUN_140f6ce00(int itemId, int grade, boo
     return MS2Ptr<CItem>(0);
 }
 
+// @0x140f6d050
+// MS2-FUNCTIONAL: typed gemstone binding and lock copies preserve behavior; cleanup layout differs.
+MS2Ptr<CItem> ItemSocketSystemPageBase::FUN_140f6d050(MS2Ptr<TSocketGemStoneInfo> info, int grade, bool bindOwner)
+{
+    if (!(info == 0) && info->m_nGemId != 0) {
+        MS2Ptr<CItem> item = FUN_140f6ce00(info->m_nGemId, grade, bindOwner, MS2Ptr<CItem>(0));
+        if (item.get() != 0) {
+            {
+                MS2Ptr<TSocketGemStoneBind> binding(info->m_spBind);
+                if (binding.get() != 0)
+                    item->FUN_14052b5e0(&binding->m_nCharacterId, &binding->m_strName);
+            }
+            {
+                MS2Ptr<TSocketGemStoneLock> lock(info->m_spLock);
+                if (lock.get() != 0)
+                    item->FUN_14052b710(reinterpret_cast<unsigned*>(&lock->m_nState), &lock->m_nExpireTime);
+            }
+            return item;
+        }
+        return MS2Ptr<CItem>(0);
+    }
+    return MS2Ptr<CItem>(0);
+}
+
 // @0x140f6d300
 // MS2-FUNCTIONAL: equivalent null-slot return control flow.
 ItemInfoSlot* ItemSocketSystemPageBase::FUN_140f6d300(const CString& name)
@@ -192,6 +264,31 @@ ItemInfoSlot* ItemSocketSystemPageBase::FUN_140f6d400(const CString& name)
         return 0;
     slot->vfunc_10();
     return slot;
+}
+
+// @0x140f6d450
+// MS2-FUNCTIONAL: typed callback and container-count temporaries differ.
+void ItemSocketSystemPageBase::FUN_140f6d450(const CString& name, CAtlArray<MS2Ptr<CItem>>& items, int icon, int flags)
+{
+    FUN_14141f970(name);
+    FUN_14141f770(name, static_cast<int>(items.GetCount()), &items, FUN_141420330, icon, flags);
+}
+
+// @0x140f6d4c0
+// MS2-FUNCTIONAL: typed callback and smart-pointer cleanup temporaries differ.
+void ItemSocketSystemPageBase::FUN_140f6d4c0(const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<ItemSlotBag::CreateParam> param)
+{
+    FUN_14141f970(name);
+    if (param.get() != 0 && param->m_pfnGetItem == 0)
+        param->m_pfnGetItem = FUN_141420330;
+    FUN_14141f860(name, static_cast<int>(items.GetCount()), &items, param);
+}
+
+// @0x140f6d590
+void ItemSocketSystemPageBase::FUN_140f6d590(const CString& name, MS2Ptr<CItem> item, int icon, int flags)
+{
+    FUN_141415600(name);
+    FUN_141415450(name, item, 0, icon, flags);
 }
 
 // @0x140f6d620
@@ -247,6 +344,166 @@ void ItemSocketSystemPageBase::FUN_140f6d8f0(CAtlArray<MS2Ptr<CItem>>& items, in
     items.SetAt(first, secondItem);
 }
 
+// @0x140f6d9a0
+// MS2-FUNCTIONAL: typed list erase and bag refresh preserve calls and branches.
+bool ItemSocketSystemPageBase::FUN_140f6d9a0(int index, const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<Unk_SocketPageBag> control)
+{
+    if (index >= 0 && index < static_cast<int>(items.GetCount())) {
+        items.RemoveAt(index, 1);
+        int count = static_cast<int>(items.GetCount());
+        DragSlotBag* bag = FUN_140c54570(name);
+        if (bag == 0)
+            return false;
+        ItemSlotBag* itemBag = dynamic_cast<ItemSlotBag*>(bag);
+        if (itemBag == 0) {
+            FUN_1422cc9e0(bag);
+            bag->vfunc_10(count);
+        } else {
+            FUN_14141ff80(itemBag, count);
+        }
+        if (control.get() != 0)
+            FUN_1422cf860(control.operator->());
+        return true;
+    }
+    return false;
+}
+
+// @0x140f6db00
+// MS2-FUNCTIONAL: typed append and bag refresh; local cleanup layout differs.
+bool ItemSocketSystemPageBase::FUN_140f6db00(MS2Ptr<CItem> item, const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<Unk_SocketPageBag> control)
+{
+    DragSlotBag* bag = FUN_140c54570(name);
+    if (bag != 0) {
+        int index = static_cast<int>(items.GetCount());
+        items.Add(item);
+        FUN_1422ccb50(bag, index);
+        FUN_1422cf7e0(control.operator->(), index);
+        bag->vfunc_14(index);
+    }
+    return bag != 0;
+}
+
+// @0x140f6dbe0
+// MS2-FUNCTIONAL: equivalent selected-index reset; unused result local omitted.
+void ItemSocketSystemPageBase::FUN_140f6dbe0(MS2Ptr<Unk_SocketPageBag> control)
+{
+    if (control.get() != 0) {
+        // The original queries the selected index for its side effects before clearing it.
+        FUN_1422dd150(control.operator->());
+        FUN_1422dcca0(control.operator->(), -1);
+        control->vfunc_24(false);
+    }
+}
+
+// @0x140f6dc70
+// MS2-FUNCTIONAL: typed ingredient list and Scaleform data construction; local/cleanup layout differs.
+void ItemSocketSystemPageBase::FUN_140f6dc70(const CString& name, CIngredientContainer& ingredients, ASObj& data, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<CItem> excluded, __int64* price, MS2Ptr<SaleParam> sale)
+{
+    *price = 0;
+    Unk_IngVec* entries = ingredients.FUN_14026c230();
+    size_t count = entries->FUN_14028b500();
+    for (size_t i = 0; i < count; ++i) {
+        Unk_IngRef ingredient(*entries->FUN_14028a0f0(i));
+        if (!(ingredient == 0)) {
+            if (!ingredient->FUN_14026b350()) {
+                int itemId = ingredient->FUN_14026b500();
+                int grade = FUN_14053feb0(itemId);
+                int amount = ingredient->m_c;
+                MS2Ptr<CItem> item(new CItem);
+                if (item->FUN_14052b2e0(itemId, grade, 0, amount) != 0)
+                    items.Add(item);
+            }
+        }
+    }
+    FUN_14141f770(name, static_cast<int>(count), &items, FUN_141420330, 0x405, FUN_140f6e6e0());
+    int rate = 0;
+    int enabled = 0;
+    if (sale.get() != 0) {
+        rate = sale->rate;
+        enabled = sale->enabled;
+    }
+    ASArray rows(2);
+    for (size_t i = 0; i < items.GetCount(); ++i) {
+        MS2Ptr<CItem> item(items.GetAt(i));
+        if (!(item == 0)) {
+            CString binding = FUN_1422cc860(name, static_cast<int>(i));
+            ASObj row(2);
+            row.FUN_1407cba60("binding", binding);
+            unsigned owned = FUN_140f6e580(item, excluded);
+            unsigned needed = item->FUN_140526c50();
+            if (enabled != 0)
+                needed = FUN_140627b80(needed, rate);
+            row.FUN_1407cbb20("countText", FUN_1419021b0(owned, needed));
+            rows.FUN_1422bc050(row.FUN_1422bb870());
+            if (owned < needed) {
+                if (item->FUN_140526320() != 0)
+                    *price += static_cast<unsigned __int64>((needed - owned) * 1000);
+            }
+        }
+    }
+    data.FUN_1409adbe0("ingredient", rows.FUN_1422bb870());
+}
+
+// @0x140f6e250
+// MS2-FUNCTIONAL: equivalent slot-count and ingredient-price calculation with typed temporaries.
+void ItemSocketSystemPageBase::FUN_140f6e250(const CString& name, const CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<CItem> excluded, __int64* price, MS2Ptr<SaleParam> sale)
+{
+    *price = 0;
+    int rate = 0;
+    int enabled = 0;
+    if (sale.get() != 0) {
+        rate = sale->rate;
+        enabled = sale->enabled;
+    }
+    size_t count = items.GetCount();
+    for (size_t i = 0; i < count; ++i) {
+        MS2Ptr<CItem> item(items.GetAt(i));
+        if (!(item == 0)) {
+            CString slotName = FUN_1422cc860(name, static_cast<int>(i));
+            ItemInfoSlot* slot = FUN_140f6d300(slotName);
+            if (slot == 0)
+                continue;
+            int owned = FUN_140f6e580(item, excluded);
+            int needed = item->FUN_140526c50();
+            if (enabled != 0)
+                needed = FUN_140627b80(needed, rate);
+            FUN_141416740(slot, owned, needed);
+            if (owned < needed) {
+                if (item->FUN_140526320() != 0)
+                    *price += static_cast<__int64>((needed - owned) * 1000);
+            }
+        }
+    }
+}
+
+// @0x140f6e500
+// MS2-FUNCTIONAL: Scaleform return-value temporary layout differs.
+void ItemSocketSystemPageBase::FUN_140f6e500(int index, bool isNew)
+{
+    if (!(m_root == 0))
+        FUN_140f356e0(m_root.operator->(), "setNew", index, isNew);
+}
+
+// @0x140f6e580
+// MS2-FUNCTIONAL: inventory count uses typed external declarations; cleanup layout differs.
+int ItemSocketSystemPageBase::FUN_140f6e580(MS2Ptr<CItem> item, MS2Ptr<CItem> excluded)
+{
+    if (!(item == 0)) {
+        if (item->FUN_140527840() != 0) {
+            if (excluded.get() != 0)
+                excluded->FUN_1405269d0(1);
+            int count = FUN_140a5f180(reinterpret_cast<Unk_SocketPageInventoryCount*>(&DAT_143ab2a90), item->FUN_1405276c0(), item->FUN_140526bd0());
+            int group = FUN_14053c6f0(item->FUN_140527840());
+            if (group != 0)
+                count = FUN_140a5f780(reinterpret_cast<Unk_SocketPageInventoryCount*>(&DAT_143ab2a90), group, 0);
+            if (excluded.get() != 0)
+                excluded->FUN_1405269d0(0);
+            return count;
+        }
+    }
+    return 0;
+}
+
 // @0x140f6e6e0
 int ItemSocketSystemPageBase::FUN_140f6e6e0() { return 0x2020; }
 
@@ -271,3 +528,6 @@ ItemInfoSlot* FUN_140f6e830(const CString& name)
 {
     return FUN_140c69ab0(FUN_1422c8e90(name));
 }
+
+// @0x140f7b1f0
+ItemSocketSystemPageBase::SaleParam::SaleParam() : enabled(0), value1c(0), rate(0), value24(7) {}

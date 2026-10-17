@@ -3,13 +3,27 @@
 #pragma once
 #include "ms2/placeholder/asdisplayobject.h"
 #include <atlcoll.h>
+#include "ms2/client/ms2/iteminfoslot.h"
 class CItem;
 class ItemInfoSlot;
 class CInPacket;
+class TSocketGemStoneInfo;
+class CIngredientContainer;
+class ASObj;
+class Unk_SocketPageBag;
 
 class ItemSocketSystemPageBase : public CPtred
 {
 public:
+    class SaleParam : public CPtred {
+    public:
+        SaleParam();
+        ~SaleParam() = default;
+        int enabled;
+        int value1c;
+        int rate;
+        int value24;
+    };
     ItemSocketSystemPageBase();
     virtual ~ItemSocketSystemPageBase();
     virtual void vfunc_1();
@@ -25,12 +39,23 @@ public:
     int FUN_140f6d670();
     MS2Ptr<CItem> FUN_140f6cce0(int itemId, int grade);
     MS2Ptr<CItem> FUN_140f6ce00(int itemId, int grade, bool bindOwner, MS2Ptr<CItem> source);
+    MS2Ptr<CItem> FUN_140f6d050(MS2Ptr<TSocketGemStoneInfo> info, int grade, bool bindOwner);
     ItemInfoSlot* FUN_140f6d300(const CString& name);
     ItemInfoSlot* FUN_140f6d340(const CString& name, MS2Ptr<CItem> item);
     ItemInfoSlot* FUN_140f6d400(const CString& name);
     MS2Ptr<CItem> FUN_140f6d6b0(__int64 uid, CAtlArray<MS2Ptr<CItem>>& items, int* index);
     MS2Ptr<CItem> FUN_140f6d840(CAtlArray<MS2Ptr<CItem>>& items, unsigned index);
     void FUN_140f6d8f0(CAtlArray<MS2Ptr<CItem>>& items, int first, int second);
+    void FUN_140f6d450(const CString& name, CAtlArray<MS2Ptr<CItem>>& items, int icon, int flags);
+    void FUN_140f6d4c0(const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<ItemSlotBag::CreateParam> param);
+    void FUN_140f6d590(const CString& name, MS2Ptr<CItem> item, int icon, int flags);
+    bool FUN_140f6d9a0(int index, const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<Unk_SocketPageBag> control);
+    bool FUN_140f6db00(MS2Ptr<CItem> item, const CString& name, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<Unk_SocketPageBag> control);
+    void FUN_140f6dbe0(MS2Ptr<Unk_SocketPageBag> control);
+    void FUN_140f6dc70(const CString& name, CIngredientContainer& ingredients, ASObj& data, CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<CItem> excluded, __int64* price, MS2Ptr<SaleParam> sale);
+    void FUN_140f6e500(int index, bool isNew);
+    void FUN_140f6e250(const CString& name, const CAtlArray<MS2Ptr<CItem>>& items, MS2Ptr<CItem> excluded, __int64* price, MS2Ptr<SaleParam> sale);
+    int FUN_140f6e580(MS2Ptr<CItem> item, MS2Ptr<CItem> excluded);
     int FUN_140f6e6e0();
     void FUN_140f6e700(__int64 uid);
     void FUN_140f6e780();
@@ -42,3 +67,4 @@ protected:
 MS2_CHECK_SIZE(ItemSocketSystemPageBase, 0x30);
 MS2_CHECK_OFFSET(ItemSocketSystemPageBase, m_root, 0x18);
 MS2_CHECK_OFFSET(ItemSocketSystemPageBase, m_restoreInventory, 0x28);
+MS2_CHECK_SIZE(ItemSocketSystemPageBase::SaleParam, 0x28);
