@@ -10021,24 +10021,7 @@ void CSceneStateGame::FUN_141733b30(CInPacket& packet)
 MS2_REPLACE_METHOD(0x141733b30, CSceneStateGame, FUN_141733b30, 768, 0x4F3DB91A);
 
 // ---- 0x69: UGC housing (cube placement, house settings, save slots) ---------------------------------------------
-// The house info (RTTI UserUGCMapInfo, CPtred, 0x48 bytes; ctor 0x1408b3f10, dtor 0x1408b3fe0).
-class UserUGCMapInfo : public CPtred
-{
-public:
-    UserUGCMapInfo();
-    ~UserUGCMapInfo();
-    void FUN_1408b4220(CInPacket& packet, int* pResult);    // decode
-    void FUN_1408b40d0(Unk_BmPtr<UserUGCMapInfo> spOther);  // copy from another info
-    int m_n18;                                              // +0x18 the owner's character id
-    int m_n1c;
-    int m_n20;
-    int m_n24;
-    CStringW m_str28;                                       // +0x28
-    __int64 m_n30;                                          // +0x30 compared to detect a changed house
-    __int64 m_n38;
-    unsigned char m_n40;
-};
-MS2_CHECK_SIZE(UserUGCMapInfo, 0x48);
+#include "ms2/placeholder/userugcmapinfo.h"
 // The weapon data of a cube object (RTTI ObjectWeaponInfo, 0x58 bytes; ctor 0x1408b45b0).
 class ObjectWeaponInfo
 {
