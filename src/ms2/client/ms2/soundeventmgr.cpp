@@ -95,6 +95,29 @@ template <class A, class B, class C> inline void Unk_SoundLog(CLogString* log, i
     log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(a, b, c), args));
 }
 
+template <class A, class B, class C, class D> inline void Unk_SoundLog(CLogString* log, int level, int category,
+                                                                         const wchar_t* format, const A& a, const B& b,
+                                                                         const C& c, const D& d)
+{
+    const fmt::internal::ArgArray<4>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(a),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(b),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(c),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(d)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(a, b, c, d), args));
+}
+template <class A, class B, class C, class D, class E> inline void Unk_SoundLog(CLogString* log, int level, int category,
+                                                                                 const wchar_t* format, const A& a,
+                                                                                 const B& b, const C& c, const D& d,
+                                                                                 const E& e)
+{
+    const fmt::internal::ArgArray<5>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(a),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(b),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(c),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(d),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(e)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(a, b, c, d, e), args));
+}
+
 #ifndef MS2_HOOK_DLL
 // File statics of this TU (initialised by the .text$di entries).
 const NiRTTI CSoundEventEffect::ms_RTTI("CSoundEventEffect", &CEffect::ms_RTTI);    // @0x140101560
@@ -664,4 +687,949 @@ CString CSoundEvent::FUN_14177aca0()
 void CSoundEvent::FUN_14177acf0(float fVolume)
 {
     m_pEvent->setVolume(fVolume);
+}
+
+// ---- TToolHistory ----
+template <class T> TToolHistory<T>::TToolHistory() : m_nPos(0)
+{
+}
+
+template <class T> TToolHistory<T>::~TToolHistory()
+{
+}
+
+template <class T> void TToolHistory<T>::Add(const T& rData)
+{
+    if ((unsigned)m_nPos < m_list.size())
+    {
+        typename std::list<T>::iterator it = m_list.begin();
+        std::advance(it, m_nPos);
+        m_list.erase(it, m_list.end());
+    }
+    m_list.push_back(rData);
+    m_nPos = (int)m_list.size();
+}
+
+template <class T> int TToolHistory<T>::GetPos() const
+{
+    return m_nPos - 1;
+}
+
+template <class T> int TToolHistory<T>::Get(int nOffset, T* pOut)
+{
+    if (m_list.empty())
+        return 0;
+    nOffset = m_nPos - 1 + nOffset;
+    int nCount = (int)m_list.size();
+    if (nOffset < 0 || nCount <= nOffset)
+        return 0;
+    typename std::list<T>::iterator it = m_list.begin();
+    std::advance(it, nOffset);
+    m_nPos = nOffset + 1;
+    *pOut = *it;
+    return 1;
+}
+
+template <class T> void TToolHistory<T>::Clear()
+{
+    m_list.clear();
+    m_nPos = 0;
+}
+
+// @0x1417871e0
+ReverbData::ReverbData() : m_nPriority(0x100)
+{
+    memset(&m_props, 0, sizeof(m_props));
+}
+
+// ---- CSoundEventMgr ----
+// FMOD_RESULT to text: the second copy of the SDK's FMOD_ErrorString in this unit.
+// @0x141788f10
+const char* FUN_141788f10(FMOD_RESULT nResult)
+{
+    const char* pszText;
+    switch ((int)nResult)
+    {
+#include "soundservice_errors.inc"
+    }
+    return pszText;
+}
+
+// Out-of-unit callees of the manager.
+std::string& FUN_1401d2950(std::string& str);                       // normalises a group path (lower case, slashes)
+void FUN_1403b0310(std::vector<CString>* pVec, const CString& rItem);   // push_back
+void FUN_1401859c0(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat);
+void FUN_140177a80(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const int& nArg);
+void FUN_1403a1280(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const char* const& pszArg);
+int FUN_1408a2060(egf::Entity* pEntity, unsigned nProperty, efd::utf8string* pOut);         // property: string
+void FUN_1409618c0(egf::Entity* pEntity, unsigned nProperty, Unk_StreamPoint* pOut);        // property: point
+class Unk_SmUiMgr { public: void FUN_141adbf70(unsigned bMute); };
+Unk_SmUiMgr* FUN_1403ed2b0();
+
+// The category names of the designer project (index = event category slot).
+static const char* s_apszCategory[11] = {"effect", "environment", "bgm", "UISound", "npcVoice", "SystemVoice",
+                                         "mobVoice", "EmotionVoice", "SystemAlert", "effectSpecialSkill", "PCVoice"};
+static int s_nParamHistoryOffset = -1;                              // @0x1439f86a8
+FMOD_RESULT F_CALLBACK FUN_14177caf0(FMOD_MUSIC_CALLBACKTYPE type, void* param1, void* param2, void* userdata);
+
+// @0x14177ad20
+CSoundEventMgr::CSoundEventMgr()
+    : m_pEventSystem(0), m_p10(0), m_pMusicSystem(0), m_fMusicVolume(1.0f), m_fNowMusicVolume(1.0f), m_f2c(1.0f),
+      m_b30(true), m_bMusicPlaying(0), m_bReady(0), m_n118(0)
+{
+    for (unsigned i = 0; i < 11; ++i)
+        m_apCategory[i] = 0;
+}
+
+// @0x14177aea0
+CSoundEventMgr::~CSoundEventMgr()
+{
+}
+
+// @0x14177af40
+void CSoundEventMgr::FUN_14177af40(FMOD::EventSystem* pSystem, void* pParam)
+{
+    if (pSystem == 0 || pParam == 0)
+        return;
+    m_pEventSystem = pSystem;
+    m_p10 = pParam;
+    pSystem->getMusicSystem(&m_pMusicSystem);
+    if (m_pMusicSystem == 0)
+        return;
+    m_pMusicSystem->setCallback(FUN_14177caf0, this);
+    m_pMusicSystem->getVolume(&m_fMusicVolume);
+    m_fNowMusicVolume = m_fMusicVolume;
+    for (unsigned i = 0; i < 11; ++i)
+        m_pEventSystem->getCategory(s_apszCategory[i], &m_apCategory[i]);
+
+    ReverbData kReverb;
+    if (m_histReverb.GetPos() == -1)
+    {
+        m_pEventSystem->getReverbPreset("Off", &kReverb.m_props, 0);
+        m_histReverb.Add(kReverb);
+    }
+    m_bReady = 1;
+}
+
+// @0x14177b3d0
+MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177b3d0(FMOD::EventGroup* pGroup, const char* pszName, float fPitch,
+                                                  FMOD_EVENT_PITCHUNITS eUnits)
+{
+    if (m_bReady == 0)
+        return MS2Ptr<CSoundEvent>(0);
+    if (pGroup == 0)
+        return FUN_14177b6a0(pszName);
+
+    FMOD::Event* pEvent = 0;
+    int nResult = pGroup->getEvent(pszName, FMOD_EVENT_DEFAULT, &pEvent);
+    if (nResult == FMOD_OK)
+    {
+        if (eUnits != 0)
+            pEvent->setPitch(fPitch, eUnits);
+        Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID {0} pitch {1} pitchUnit {2}", pszName, fPitch, eUnits);
+        return MS2Ptr<CSoundEvent>(new CSoundEvent(pEvent, CString(pszName)));
+    }
+    if (nResult == 0x53)
+    {
+        const char* pszError = FUN_141788f10((FMOD_RESULT)0x53);
+        Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
+    }
+    else
+    {
+        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, nResult, pszError);
+    }
+    return MS2Ptr<CSoundEvent>(0);
+}
+
+// @0x14177b6a0
+MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177b6a0(const char* pszName)
+{
+    if (m_bReady == 0)
+        return MS2Ptr<CSoundEvent>(0);
+
+    FMOD::Event* pEvent = 0;
+    FMOD_RESULT nResult = m_pEventSystem->getEvent(pszName, FMOD_EVENT_DEFAULT, &pEvent);
+    if (nResult == FMOD_OK)
+    {
+        if (FUN_140166440() != 0)
+            Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID {0}", pszName);
+        return MS2Ptr<CSoundEvent>(new CSoundEvent(pEvent, CString(pszName)));
+    }
+    if (nResult == 0x53)
+    {
+        if (FUN_140166440() != 0)
+        {
+            const char* pszError = FUN_141788f10(nResult);
+            Unk_SoundLog(FUN_140166440(), 0xc, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, (int)nResult, pszError);
+        }
+    }
+    else
+    {
+        const char* pszError = FUN_141788f10(nResult);
+        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"SoundID:{0} Code:{1}({2})", pszName, (int)nResult, pszError);
+    }
+    return MS2Ptr<CSoundEvent>(0);
+}
+
+// @0x14177b900
+void CSoundEventMgr::FUN_14177b900()
+{
+    if (m_bReady)
+    {
+        FUN_14177ddf0(1, 1000);
+        m_b30 = true;
+    }
+}
+
+// @0x14177b940
+void CSoundEventMgr::FUN_14177b940()
+{
+    if (m_bReady)
+    {
+        m_b30 = false;
+        FUN_14177dea0(1, 1000);
+        for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+             it != m_mapEnvSounds.end(); ++it)
+        {
+            if (it->second.get())
+                it->second->FUN_14177a920(0);
+        }
+        m_mapEnvSounds.clear();
+    }
+}
+
+// @0x14177ba30
+void CSoundEventMgr::FUN_14177ba30()
+{
+    if (m_bReady)
+    {
+        FUN_14177d5e0();
+        FUN_14177c8a0();
+        for (std::map<std::string, FMOD::EventGroup*>::iterator it = m_mapGroups.begin(); it != m_mapGroups.end();
+             ++it)
+        {
+            if (it->second)
+                it->second->freeEventData(0, true);
+        }
+        m_mapGroups.clear();
+        for (unsigned i = 0; i < 11; ++i)
+            m_apCategory[i] = 0;
+        m_pEventSystem = 0;
+        m_p10 = 0;
+        m_bReady = 0;
+    }
+}
+
+// @0x14177bb70
+void CSoundEventMgr::FUN_14177bb70()
+{
+    if (m_bReady)
+    {
+        FUN_14177bbc0();
+        if (m_b30)
+            FUN_14177d230();
+    }
+}
+
+// @0x14177bbc0
+void CSoundEventMgr::FUN_14177bbc0()
+{
+    if (m_mapFades.empty())
+        return;
+    std::map<int, Unk_SoundFade>::iterator it = m_mapFades.begin();
+    while (it != m_mapFades.end())
+    {
+        Unk_SoundFade& rFade = it->second;
+        if (rFade.m_timer.FUN_140868ba0() == 0)
+        {
+            // the fade is over: set the final volume
+            if (rFade.m_nMode == 2)
+                FUN_14177da80(rFade.m_nCategory, 0.0f);
+            else if (rFade.m_nMode == 1)
+                FUN_14177da80(rFade.m_nCategory, rFade.m_fVolume);
+            m_mapFades.erase(it++);
+        }
+        else
+        {
+            float fVolume = -1.0f;
+            if (rFade.m_nMode == 2)
+                fVolume = (1.0f - rFade.m_timer.FUN_140868940()) * rFade.m_fVolume;
+            else if (rFade.m_nMode == 1)
+                fVolume = rFade.m_timer.FUN_140868940() * rFade.m_fVolume;
+            if (0.0f <= fVolume)
+                FUN_14177da80(rFade.m_nCategory, fVolume);
+            ++it;
+        }
+    }
+}
+
+// @0x14177bda0
+void CSoundEventMgr::FUN_14177bda0()
+{
+    if (m_bReady == 0)
+        return;
+    FUN_1401859c0(FUN_140166440(), 0xc, 0x12f, L"LostSoundDevice");
+    FUN_14177d380();
+    for (std::map<std::string, FMOD::EventGroup*>::iterator it = m_mapGroups.begin(); it != m_mapGroups.end(); ++it)
+    {
+        if (it->second)
+            it->second->freeEventData(0, true);
+    }
+    m_mapGroups.clear();
+    if (m_pMusicSystem)
+    {
+        m_pMusicSystem->reset();
+        m_pEventSystem = 0;
+    }
+    m_bMusicPlaying = 0;
+    for (unsigned i = 0; i < 11; ++i)
+        m_apCategory[i] = 0;
+    m_p10 = 0;
+    m_bReady = 0;
+}
+
+// @0x14177bf20
+void CSoundEventMgr::FUN_14177bf20()
+{
+    for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+         it != m_mapEnvSounds.end(); ++it)
+    {
+        efd::utf8string strEvent;
+        FUN_1408a2060(it->first, 0xed530c5f, &strEvent);
+        if (!strEvent.empty())
+            it->second = FUN_14177b6a0(strEvent.c_str());
+    }
+    if (*FUN_1409a8b10()->FUN_140d13c70() == 0)
+        FUN_1403ed2d0()->FUN_141bc7b80(1);
+    if (0 < m_histReverb.GetPos())
+    {
+        ReverbData kReverb;
+        m_histReverb.Get(0, &kReverb);
+        m_pEventSystem->setReverbProperties(&kReverb.m_props);
+    }
+    FUN_1401859c0(FUN_140166440(), 0xc, 0x12f, L"RestSoundDevice");
+    m_bReady = 1;
+}
+
+// @0x14177c100
+int CSoundEventMgr::FUN_14177c100(int nMusicId, float fParam, unsigned nPriority, int bForce)
+{
+    if (m_bReady == 0)
+        return 0;
+    MusicData kCurrent;
+    m_histMusic.Get(0, &kCurrent);
+    if (nMusicId == 0)
+    {
+        if (bForce == 0 && kCurrent.m_nPriority < nPriority)
+            return 1;
+        MusicData kPrevious;
+        if (m_histMusic.Get(-1, &kPrevious) != 0)
+        {
+            m_histMusic.Add(kPrevious);
+            int nResult = m_pMusicSystem->promptCue(kPrevious.m_nId);
+            if (nResult == FMOD_OK)
+            {
+                FUN_14177c420(5, fParam, nPriority, 0);
+                FUN_140177a80(FUN_140166440(), 0xc, 0x12f, L"PlayMusic {0}", kPrevious.m_nId);
+                m_bMusicPlaying = 1;
+                return 1;
+            }
+            const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+            Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"PlayMusic SoundID:{0} Code:{1}({2})", kPrevious.m_nId, nResult,
+                         pszError);
+        }
+    }
+    else if ((nPriority <= kCurrent.m_nPriority || bForce != 0) && (kCurrent.m_nId != nMusicId || bForce != 0))
+    {
+        kCurrent.m_nId = nMusicId;
+        kCurrent.m_nPriority = nPriority;
+        m_histMusic.Add(kCurrent);
+        int nResult = m_pMusicSystem->promptCue(nMusicId);
+        if (nResult == FMOD_OK)
+        {
+            FUN_14177c420(5, fParam, nPriority, 0);
+            m_bMusicPlaying = 1;
+            FUN_140177a80(FUN_140166440(), 0xc, 0x12f, L"PlayMusic {0}", nMusicId);
+            return 1;
+        }
+        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"PlayMusic SoundID:{0} Code:{1}({2})", nMusicId, nResult, pszError);
+    }
+    return 0;
+}
+
+// @0x14177c420
+int CSoundEventMgr::FUN_14177c420(int nParamId, float fValue, unsigned nPriority, int bForce)
+{
+    if (nParamId == 0)
+        return 1;
+    if (m_bReady == 0)
+        return 0;
+    ParamVaule kCurrent;
+    m_mapParams[nParamId].Get(0, &kCurrent);
+    if (fValue == -1.0f)
+    {
+        // -1 = fall back to the previous value of the parameter
+        if (kCurrent.m_nPriority < nPriority)
+        {
+            --s_nParamHistoryOffset;
+            return 1;
+        }
+        ParamVaule kPrevious;
+        if (m_mapParams[nParamId].Get(s_nParamHistoryOffset, &kPrevious) != 0)
+        {
+            int nResult = m_pMusicSystem->setParameterValue(nParamId, kPrevious.m_fValue);
+            if (nResult == FMOD_OK)
+            {
+                s_nParamHistoryOffset = -1;
+                return 1;
+            }
+            const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+            int nCue = FUN_14177caa0();
+            Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error {0}: [MusicID:{1}] SetMusicParameter {2} {3} {4}", nResult,
+                         nCue, nParamId, kPrevious.m_fValue, pszError);
+        }
+        s_nParamHistoryOffset = -1;
+    }
+    else if (nPriority <= kCurrent.m_nPriority || bForce != 0)
+    {
+        kCurrent.m_fValue = fValue;
+        kCurrent.m_nPriority = nPriority;
+        m_mapParams[nParamId].Add(kCurrent);
+        int nResult = m_pMusicSystem->setParameterValue(nParamId, fValue);
+        if (nResult == FMOD_OK)
+            return 1;
+        const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+        int nCue = FUN_14177caa0();
+        Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error {0}: [MusicID:{1}] SetMusicParameter {2} {3} {4}", nResult,
+                     nCue, nParamId, fValue, pszError);
+    }
+    return 0;
+}
+
+// @0x14177c710
+int CSoundEventMgr::FUN_14177c710(int nParamId, float* pfValue)
+{
+    if (m_bReady == 0)
+        return 0;
+    int nResult = m_pMusicSystem->getParameterValue(nParamId, pfValue);
+    if (nResult == FMOD_OK)
+        return 1;
+    const char* pszError = FUN_141788f10((FMOD_RESULT)nResult);
+    int nCue = FUN_14177caa0();
+    Unk_SoundLog(FUN_140166440(), 1, 0x12f, L"Error{0} : [cue {1}] getParameterValue:{2} {3}", nResult, nCue, nParamId,
+                 pszError);
+    return 0;
+}
+
+// @0x14177c7e0
+bool CSoundEventMgr::FUN_14177c7e0(bool bPaused)
+{
+    if (m_bReady == 0)
+        return false;
+    return m_pMusicSystem->setPaused(bPaused) == FMOD_OK;
+}
+
+// @0x14177c850
+void CSoundEventMgr::FUN_14177c850()
+{
+    if (m_bReady)
+    {
+        m_pMusicSystem->reset();
+        m_bMusicPlaying = 0;
+    }
+}
+
+// @0x14177c8a0
+void CSoundEventMgr::FUN_14177c8a0()
+{
+    if (m_bReady == 0)
+        return;
+    if (m_pMusicSystem)
+    {
+        m_pMusicSystem->reset();
+        m_pMusicSystem->setVolume(m_fMusicVolume);
+    }
+    m_fNowMusicVolume = m_fMusicVolume;
+    m_bMusicPlaying = 0;
+    m_histMusic.Clear();
+    m_mapParams.clear();
+    m_histReverb.Clear();
+    FUN_1401859c0(FUN_140166440(), 0xc, 0x12f, L"ResetMusic");
+}
+
+// @0x14177c980
+void CSoundEventMgr::FUN_14177c980(unsigned bMute)
+{
+    if (m_bReady)
+        m_pMusicSystem->setMute((bMute & 1) != 0);
+}
+
+// @0x14177c9e0
+float CSoundEventMgr::FUN_14177c9e0()
+{
+    float fVolume;
+    if (m_bReady == 0)
+        fVolume = 0.0f;
+    else
+        m_pMusicSystem->getVolume(&fVolume);
+    return fVolume;
+}
+
+// @0x14177ca30
+void CSoundEventMgr::FUN_14177ca30(float fVolume)
+{
+    if (m_bReady)
+    {
+        m_pMusicSystem->setVolume(fVolume);
+        m_fMusicVolume = fVolume;
+        m_fNowMusicVolume = fVolume;
+    }
+}
+
+// @0x14177caa0
+int CSoundEventMgr::FUN_14177caa0()
+{
+    MusicData kCurrent;
+    if (m_bReady)
+        m_histMusic.Get(0, &kCurrent);
+    return kCurrent.m_nId;
+}
+
+// The music callback: a cue's parameter 5 (the loop switch) toggles between 0 and 10.
+// @0x14177caf0
+FMOD_RESULT F_CALLBACK FUN_14177caf0(FMOD_MUSIC_CALLBACKTYPE type, void* param1, void* param2, void* userdata)
+{
+    float fValue = 0.0f;
+    CSoundEventMgr* pMgr = static_cast<CSoundEventMgr*>(userdata);
+    if (type == 0 && pMgr != 0 && pMgr->FUN_14177c710(5, &fValue) != 0)
+    {
+        if (FUN_14028d470(fValue, 10.0f))
+            pMgr->FUN_14177c420(5, 0.0f, 0x80, 0);
+        else if (FUN_14028d470(fValue, 0.0f))
+            pMgr->FUN_14177c420(5, 10.0f, 0x80, 0);
+    }
+    return FMOD_OK;
+}
+
+// @0x14177cbe0
+MS2Ptr<CSoundEvent> CSoundEventMgr::FUN_14177cbe0(Unk_EntityPtr spEntity, const char* pszEvent)
+{
+    if (m_bReady)
+    {
+        std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.find(spEntity);
+        if (it != m_mapEnvSounds.end())
+            return it->second;
+        MS2Ptr<CSoundEvent> spSound = FUN_14177b6a0(pszEvent);
+        if (spSound.get())
+        {
+            m_mapEnvSounds.insert(std::make_pair(spEntity, spSound));
+            FUN_14015eb90(FUN_140166440(), 0xc, 0x12f, L"CreateEnvironmentSound [{0}]", CString(pszEvent));
+            return spSound;
+        }
+    }
+    return MS2Ptr<CSoundEvent>(0);
+}
+
+// @0x14177ce30
+void CSoundEventMgr::FUN_14177ce30(Unk_EntityPtr spEntity, int bOn)
+{
+    if (m_bReady == 0)
+        return;
+    std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.find(spEntity);
+    if (it != m_mapEnvSounds.end())
+    {
+        efd::utf8string strEvent;
+        FUN_1408a2060(spEntity, 0xed530c5f, &strEvent);
+        if (bOn == 0)
+        {
+            it->second->FUN_14177a920(0);
+        }
+        else if (it->second->FUN_14177aca0() == CString(strEvent.c_str()))
+        {
+            it->second->FUN_14177a920(bOn);
+        }
+        else
+        {
+            // the entity's sound event changed: replace the sound
+            FUN_14177d450(Unk_EntityPtr(spEntity));
+            if (!strEvent.empty())
+            {
+                MS2Ptr<CSoundEvent> spNew = FUN_14177cbe0(Unk_EntityPtr(spEntity), strEvent.c_str());
+            }
+        }
+    }
+    else if (bOn != 0)
+    {
+        Unk_StreamPoint vPos;
+        efd::utf8string strEvent;
+        FUN_1408a2060(spEntity, 0xed530c5f, &strEvent);
+        FUN_1409618c0(spEntity, 0xfd95ca52, &vPos);
+        if (!strEvent.empty())
+        {
+            MS2Ptr<CSoundEvent> spSound = FUN_14177cbe0(Unk_EntityPtr(spEntity), strEvent.c_str());
+            if (spSound.get())
+            {
+                spSound->FUN_14177a990(vPos);
+                spSound->FUN_14177a920(bOn);
+            }
+        }
+    }
+}
+
+// @0x14177d230
+void CSoundEventMgr::FUN_14177d230()
+{
+    if (m_bReady == 0)
+        return;
+    Unk_StreamPoint vPos;
+    for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+         it != m_mapEnvSounds.end(); ++it)
+    {
+        if (it->second.get() && it->second->FUN_14177ac80() == 0)
+        {
+            FUN_1409618c0(it->first, 0xfd95ca52, &vPos);
+            it->second->FUN_14177a990(vPos);
+            it->second->FUN_14177a8d0();
+        }
+    }
+}
+
+// @0x14177d380
+void CSoundEventMgr::FUN_14177d380()
+{
+    if (m_bReady == 0)
+        return;
+    for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+         it != m_mapEnvSounds.end(); ++it)
+    {
+        if (it->second.get())
+        {
+            it->second->FUN_14177a920(0);
+            it->second = 0;
+        }
+    }
+}
+
+// @0x14177d450
+void CSoundEventMgr::FUN_14177d450(Unk_EntityPtr spEntity)
+{
+    if (m_bReady == 0)
+        return;
+    std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.find(spEntity);
+    if (it != m_mapEnvSounds.end())
+    {
+        efd::utf8string strEvent;
+        FUN_1408a2060(it->first, 0xed530c5f, &strEvent);
+        const char* pszEvent = strEvent.c_str();
+        FUN_1403a1280(FUN_140166440(), 0xc, 0x12f, L"Remove Environment Sound [{0}]", pszEvent);
+        if (it->second.get())
+            it->second->FUN_14177a920(0);
+        m_mapEnvSounds.erase(it);
+    }
+}
+
+// @0x14177d5e0
+void CSoundEventMgr::FUN_14177d5e0()
+{
+    if (m_bReady == 0)
+        return;
+    FUN_1401859c0(FUN_140166440(), 0xc, 0x12f, L"Clear Environment Sounds");
+    if (m_bReady)
+    {
+        for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+             it != m_mapEnvSounds.end(); ++it)
+        {
+            if (it->second.get())
+                it->second->FUN_14177a920(0);
+        }
+    }
+    m_mapEnvSounds.clear();
+}
+
+// @0x14177d6e0
+FMOD::EventGroup* CSoundEventMgr::FUN_14177d6e0(const char* pszName, int bLoad)
+{
+    if (m_bReady)
+    {
+        std::string strKey(pszName);
+        std::map<std::string, FMOD::EventGroup*>::iterator it = m_mapGroups.find(FUN_1401d2950(strKey));
+        if (it != m_mapGroups.end())
+            return it->second;
+        FMOD::EventGroup* pGroup;
+        FMOD_RESULT nResult = m_pEventSystem->getGroup(pszName, false, &pGroup);
+        if (nResult == FMOD_OK && pszName)
+        {
+            if (bLoad)
+                pGroup->loadEventData(FMOD_EVENT_RESOURCE_STREAMS_AND_SAMPLES, FMOD_EVENT_DEFAULT);
+            m_mapGroups.insert(std::make_pair(pszName, pGroup));
+            return pGroup;
+        }
+    }
+    return 0;
+}
+
+// @0x14177d860
+void CSoundEventMgr::FUN_14177d860(const char* pszName)
+{
+    if (m_bReady == 0)
+        return;
+    std::string strKey(pszName);
+    std::map<std::string, FMOD::EventGroup*>::iterator it = m_mapGroups.find(FUN_1401d2950(strKey));
+    if (it != m_mapGroups.end())
+    {
+        FMOD::EventGroup* pGroup = it->second;
+        pGroup->freeEventData(0, true);
+        m_mapGroups.erase(it);
+    }
+    else
+    {
+        FMOD::EventGroup* pGroup;
+        if (m_pEventSystem->getGroup(pszName, false, &pGroup) == FMOD_OK)
+            pGroup->freeEventData(0, true);
+    }
+}
+
+// The event names below a group, "group/sub/event".
+// @0x14177e3d0
+static void FUN_14177e3d0(FMOD::EventGroup* pGroup, CString strPrefix, std::vector<CString>& rNames)
+{
+    int nGroups = 0;
+    int nEvents = 0;
+    if (pGroup->getNumEvents(&nEvents) != FMOD_OK)
+    {
+        MS2_ASSERT_AT(0x4e3, 0);
+        return;
+    }
+    if (pGroup->getNumGroups(&nGroups) != FMOD_OK)
+    {
+        MS2_ASSERT_AT(0x4ea, 0);
+        return;
+    }
+    for (int i = 0; i < nGroups; ++i)
+    {
+        FMOD::EventGroup* pSub = 0;
+        pGroup->getGroupByIndex(i, false, &pSub);
+        if (pSub == 0)
+            continue;
+        int nIndex = 0;
+        char* pszName = 0;
+        if (pSub->getInfo(&nIndex, &pszName) == FMOD_OK)
+        {
+            CString strPath(strPrefix);
+            if (!strPath.IsEmpty())
+                strPath = strPath + "/";
+            strPath = strPath + pszName;
+            FUN_14177e3d0(pSub, CString(strPath), rNames);
+        }
+        else
+        {
+            MS2_ASSERT_AT(0x4fa, 0);
+        }
+    }
+    for (int i = 0; i < nEvents; ++i)
+    {
+        FMOD::Event* pEvent = 0;
+        if (pGroup->getEventByIndex(i, FMOD_EVENT_INFOONLY, &pEvent) != FMOD_OK)
+        {
+            MS2_ASSERT_AT(0x50c, 0);
+            return;
+        }
+        if (pEvent == 0)
+        {
+            MS2_ASSERT_AT(0x512, 0);
+            return;
+        }
+        int nIndex = 0;
+        char* pszName = 0;
+        FMOD_EVENT_INFO kInfo;
+        if (pEvent->getInfo(&nIndex, &pszName, &kInfo) != FMOD_OK)
+        {
+            MS2_ASSERT_AT(0x51b, 0);
+            return;
+        }
+        FUN_1403b0310(&rNames, strPrefix + "/" + pszName);
+    }
+}
+
+// @0x14177d9b0
+void CSoundEventMgr::FUN_14177d9b0(const char* pszGroup, std::vector<CString>& rNames)
+{
+    if (pszGroup == 0)
+    {
+        MS2_ASSERT_AT(0x38b, 0);
+        return;
+    }
+    FMOD::EventGroup* pGroup = FUN_140d13c40()->FUN_14177d6e0(pszGroup, 1);
+    if (pGroup == 0)
+    {
+        MS2_ASSERT_AT(0x392, 0);
+        return;
+    }
+    FUN_14177e3d0(pGroup, CString(""), rNames);
+}
+
+// @0x14177da80
+void CSoundEventMgr::FUN_14177da80(int nCategory, float fVolume)
+{
+    if (m_bReady == 0)
+        return;
+    if (nCategory == 2)
+    {
+        m_pMusicSystem->setVolume(fVolume);
+        m_fMusicVolume = fVolume;
+        m_fNowMusicVolume = fVolume;
+    }
+    else if (nCategory == 1)
+    {
+        m_f2c = fVolume;
+    }
+    if (m_apCategory[nCategory])
+        m_apCategory[nCategory]->setVolume(fVolume);
+}
+
+// @0x14177db60
+float CSoundEventMgr::FUN_14177db60(int nCategory)
+{
+    float fVolume;
+    if (m_bReady == 0 || m_apCategory[nCategory] == 0)
+    {
+        fVolume = 0.0f;
+    }
+    else
+    {
+        fVolume = 0.0f;
+        m_apCategory[nCategory]->getVolume(&fVolume);
+    }
+    return fVolume;
+}
+
+// @0x14177dbe0
+void CSoundEventMgr::FUN_14177dbe0(int nCategory, unsigned bMute)
+{
+    if (m_bReady == 0)
+        return;
+    if (nCategory == 2)
+        FUN_14177c980(bMute);
+    if (m_apCategory[nCategory])
+        m_apCategory[nCategory]->setMute((bMute & 1) != 0);
+}
+
+// @0x14177dc80
+void CSoundEventMgr::FUN_14177dc80(unsigned bMute)
+{
+    if (m_bReady == 0)
+        return;
+    FUN_14177c980(bMute);
+    for (unsigned i = 0; i < 11; ++i)
+    {
+        if (m_apCategory[i])
+            m_apCategory[i]->setMute((bMute & 1) != 0);
+    }
+    FUN_1403ed2b0()->FUN_141adbf70(bMute);
+}
+
+// @0x14177dd50
+bool CSoundEventMgr::FUN_14177dd50(int nCategory)
+{
+    bool bMute;
+    if (m_bReady == 0 || m_apCategory[nCategory] == 0)
+    {
+        bMute = false;
+    }
+    else
+    {
+        bMute = false;
+        m_apCategory[nCategory]->getMute(&bMute);
+    }
+    return bMute;
+}
+
+// @0x14177ddd0
+int CSoundEventMgr::FUN_14177ddd0()
+{
+    return 1;
+}
+
+// @0x14177ddf0
+void CSoundEventMgr::FUN_14177ddf0(int nCategory, int nMs)
+{
+    Unk_SoundFade kFade;
+    kFade.m_nCategory = nCategory;
+    kFade.m_nMode = 1;
+    kFade.m_fVolume = FUN_14177db60(nCategory);
+    kFade.m_timer.FUN_140868750(nMs);
+    m_mapFades[nCategory] = kFade;
+}
+
+// @0x14177dea0
+void CSoundEventMgr::FUN_14177dea0(int nCategory, int nMs)
+{
+    Unk_SoundFade kFade;
+    kFade.m_nCategory = nCategory;
+    kFade.m_nMode = 2;
+    kFade.m_fVolume = FUN_14177db60(nCategory);
+    kFade.m_timer.FUN_140868750(nMs);
+    m_mapFades[nCategory] = kFade;
+}
+
+// @0x14177df50
+void CSoundEventMgr::FUN_14177df50(int nCategory, float fVolume)
+{
+    std::map<int, Unk_SoundFade>::iterator it = m_mapFades.find(nCategory);
+    if (it != m_mapFades.end())
+    {
+        FUN_14177da80(nCategory, fVolume);
+        m_mapFades.erase(it);
+    }
+}
+
+// @0x14177e020
+CStringW CSoundEventMgr::FUN_14177e020()
+{
+    CStringW strText;
+    if (m_bReady == 0)
+    {
+        strText.Format(L"Failed to initialize CSoundEventMgr");
+    }
+    else
+    {
+        ParamVaule kParam;
+        m_mapParams[5].Get(0, &kParam);
+        bool bMute = false;
+        m_pMusicSystem->getMute(&bMute);
+        strText.Format(L"Music ID[%d]\nIsPlayMusic[%d]\nMute[%d]\nm_fNowMusicVolume[%f] GetMusicVolume[%f]\ncurrentParam[%f]",
+                       FUN_14177caa0(), m_bMusicPlaying, (unsigned)bMute, (double)m_fNowMusicVolume,
+                       (double)FUN_14177c9e0(), (double)kParam.m_fValue);
+    }
+    return strText;
+}
+
+// @0x14177e1c0
+void CSoundEventMgr::FUN_14177e1c0()
+{
+    if (m_bReady == 0)
+        return;
+    for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+         it != m_mapEnvSounds.end(); ++it)
+    {
+        if (it->second.get() && it->second->FUN_1411b1ba0() && it->second->FUN_14177ab80() != 0)
+            it->second->FUN_1411b1ba0()->vfunc_1();
+    }
+}
+
+// @0x14177e2e0
+void CSoundEventMgr::FUN_14177e2e0(int bFlag)
+{
+    m_n118 = bFlag;
+    if (bFlag != 0)
+    {
+        for (std::map<Unk_EntityPtr, MS2Ptr<CSoundEvent> >::iterator it = m_mapEnvSounds.begin();
+             it != m_mapEnvSounds.end(); ++it)
+        {
+            efd::utf8string strEvent;
+            FUN_1408a2060(it->first, 0xed530c5f, &strEvent);
+        }
+    }
 }
