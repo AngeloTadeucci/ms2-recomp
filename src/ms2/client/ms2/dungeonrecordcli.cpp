@@ -173,19 +173,18 @@ unsigned short DungeonRecordCli::Get68(__int64 tNow)
 }
 
 // @0x140b208f0
-// MS2-FUNCTIONAL: compare operand order / temp slots of the sub-reward test differ
 bool DungeonRecordCli::HasCountLeft()
 {
     if (IsExtraExhausted())
         return true;
     if (FUN_14031ba10(this) > 0)
     {
-        unsigned nClear = FUN_14031b9d0(this, FUN_140869440());
-        if (nClear >= FUN_14031ba10(this))
+        if (FUN_14031b9d0(this, FUN_140869440()) >= FUN_14031ba10(this))
             return false;
     }
     return (unsigned)GetBonusRewardCountNow() < (unsigned)GetMaxCount();
 }
+#line 189
 
 // @0x140b20990
 bool DungeonRecordCli::IsExtraExhausted()
