@@ -6,6 +6,19 @@
 // MS2-RANGE: 0x1410dc570-0x1410e29c0 .text$mn
 // MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HW4Unk_CMISKindA@@U?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHW4Unk_CMISKindA@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAH@1@$$QEAV?$tuple@$$V@1@@Z 0x1410dd640
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAI@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAI@1@$$QEAV?$tuple@$$V@1@@Z 0x1410dd710
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAI@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@IHU?$less@I@std@@V?$CustomAllocator@U?$pair@$$CBIH@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAI@1@$$QEAV?$tuple@$$V@1@@Z 0x1410dd7e0
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBW4Unk_CMISKindB@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindB@@HU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBW4Unk_CMISKindB@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410dda50
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAW4Unk_CMISKindB@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindB@@HU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@H@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAW4Unk_CMISKindB@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410deea0
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBW4Unk_CMISKindB@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindB@@EU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBW4Unk_CMISKindB@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410ddb20
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAW4Unk_CMISKindB@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindB@@EU?$less@W4Unk_CMISKindB@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindB@@E@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAW4Unk_CMISKindB@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410def70
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HIU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHI@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHI@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1410ddbf0
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HUUnk_Int3@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHUUnk_Int3@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHUUnk_Int3@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1410ddd90
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBW4Unk_CMISKindA@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$allocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBW4Unk_CMISKindA@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410ded00
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBW4Unk_CMISKindA@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Unk_CMISKindA@@HU?$less@W4Unk_CMISKindA@@@std@@V?$CustomAllocator@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Unk_CMISKindA@@H@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBW4Unk_CMISKindA@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1410dedd0
+// MS2-PIN: ??$_Buynode@AEBV?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@U?$less@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@std@@V?$CustomAllocator@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@efd@@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$MS2Ptr@VAutomaticCreateCubeInfo@@@@PEAX@1@AEBV?$MS2Ptr@VAutomaticCreateCubeInfo@@@@@Z 0x1410df110
+// MS2-PIN: ??$_Buynode@AEBV?$MS2Ptr@VCFunctionCubeObject@@@@@?$_Tree_comp_alloc@V?$_Tset_traits@V?$MS2Ptr@VCFunctionCubeObject@@@@U?$less@V?$MS2Ptr@VCFunctionCubeObject@@@@@std@@V?$allocator@V?$MS2Ptr@VCFunctionCubeObject@@@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@V?$MS2Ptr@VCFunctionCubeObject@@@@PEAX@1@AEBV?$MS2Ptr@VCFunctionCubeObject@@@@@Z 0x1410df1a0
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\cubemapinformationservice.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -76,7 +89,7 @@ void Unk_CMISDriveTail11()
     unsigned __int64 ullKey = 0;
     egf::EntityID id;
     { Unk_CMISMapIntUInt m; Unk_CMISDriveMapKey(m, nKey); }
-    { Unk_CMISMapMark m; Unk_CMISDriveMapKey(m, nKey); }
+    { Unk_CMISMapMark m; Unk_CMISDriveMapKey(m, nKey); Unk_CMISDriveIndexRv11(m); }
     { Unk_CMISMapNear m; Unk_CMISDriveMapKey(m, nKey); }
     { Unk_CMISMapCell m; Unk_CMISDriveMap(m, nKey); Unk_CMISDriveIndexRv11(m); }
     { Unk_CMISMapEntity m; Unk_CMISDriveMap(m, nKey); }
@@ -91,7 +104,7 @@ void Unk_CMISDriveTail11()
     { Unk_CMISMapColumns m; Unk_CMISDriveMap(m, nKey); }
     { Unk_CMISMapEntVec m; Unk_CMISDriveMap(m, nKey); }
     { Unk_CMISMapEntityId m; Unk_CMISDriveMapKey(m, nKey); Unk_CMISDriveIndexRv11(m); }
-    { Unk_CMISMapCubeTimer m; Unk_CMISDriveMapKey(m, nKey); }
+    { Unk_CMISMapCubeTimer m; Unk_CMISDriveMapKey(m, nKey); Unk_CMISDriveIndexRv11(m); }
     { Unk_CMISMapKind m; Unk_CMISDriveMapRv11(m, nKey); }
     { Unk_CMISMapUIntInt m; Unk_CMISDriveMapRv11(m, uKey); }
     { Unk_CMISStdMapUIntInt m; Unk_CMISDriveIndexRv11(m); }
@@ -127,6 +140,9 @@ void Unk_CMISDriveTail11()
     { Unk_CMISStdPairSet s; s.insert(std::pair<int, int>(0, 0)); }
     { std::vector<int> v; v.push_back(nKey); { int n = nKey; v.push_back(std::move(n)); } }
     { Unk_CMISMapBucket a, b; a = b; }
+    { Unk_CMISPairSet a, b; a = b; }
+    { Unk_CMISAutoSet a, b; a = b; }
+    { Unk_CMISFuncCubeSet a, b; a = b; }
     { Unk_CMISXformVec2 v; NiTransform x; v.push_back(x); v.push_back(NiTransform()); Unk_CMISXformVec2 w; v = w; }
     { Unk_CMISCubePtrVec v; Cube* p = 0; v.push_back(p); v.push_back(static_cast<Cube*>(0)); Unk_CMISCubePtrVec w; v = w; }
     { MS2Ptr<UIHouseMarkEntity> p; }
