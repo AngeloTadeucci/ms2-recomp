@@ -312,7 +312,6 @@ CFameLimitData::~CFameLimitData()
 }
 
 // @0x140358c10
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 int CFameLimitData::Read(Unk_140165cf0* pElem)
 {
     FUN_14035bc20(pElem, "alliance", &m_nAlliance);
@@ -367,7 +366,6 @@ CFamePickMethod::~CFamePickMethod()
 }
 
 // @0x140358ff0
-// MS2-FUNCTIONAL: first-pass source; frame layout and temp order not byte-compared
 int CFamePickMethod::Read(Unk_140165cf0* pElem)
 {
     if (!FUN_14028f710(pElem))
