@@ -2709,3 +2709,18 @@ inflateInit_	142723ad0	func
 ?FUN_1413a5600@CGuideCondition@@QEAAH_N@Z	1413a5600	func
 ?FUN_1413a5820@CGuideCondition@@QEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	1413a5820	func
 ?ms_RTTI@NiStringExtraData@@2VNiRTTI@@B	143afb000	data
+??0Unk_StrRepl@@QEAA@H@Z	14065cfa0	func
+# w191 nxman: exe globals (platform error code/text, stage/ugc/login settings).
+?DAT_143ac2fe0@@3V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@A	143ac2fe0	data
+?DAT_143ae08f4@@3HA	143ae08f4	data
+?DAT_143ae08f8@@3HA	143ae08f8	data
+?DAT_143ae0908@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae0908	data
+?DAT_143ae0910@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae0910	data
+?DAT_143ae0918@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae0918	data
+?DAT_143ae0928@@3V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143ae0928	data
+?DAT_143d691b8@@3VNiRTTI@@B	143d691b8	data
+?DAT_143ae5258@@3VNiFixedString@@A	143ae5258	data
+?DAT_143d69198@@3UUnk_OgMaterialTable@@A	143d69198	data
+?DAT_143afbfd0@@3VNiRTTI@@B	143afbfd0	data
+?DAT_143afa620@@3VNiRTTI@@B	143afa620	data
+?DAT_143aab3b0@@3VCLockCriticalSection@@A	143aab3b0	data
