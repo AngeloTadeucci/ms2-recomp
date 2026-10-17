@@ -11,6 +11,7 @@
 #include <atlcoll.h>
 #include <set>
 #include <map>
+#include <vector>
 
 #include <efd/SmartPointer.h>
 
@@ -18,13 +19,25 @@
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/placeholder/delegate.h"
 #include "ms2/placeholder/tptreddummy.h"
 
-namespace egf { class Entity; }
+namespace egf { class Entity; class EntityID; }
+namespace UgcItemIcon { class CallBackData; }
 
 class CUgcDownloadCtrl;
 struct ReserveBannerInfo;                                  // ugcdef.h (not included: ms2.cpp has other copies of its classes)
 class Unk_CharListEntry;
+struct Unk_BannerDay;
+class IUgcProxy;
+class CUgcUserProxy;
+class CUgcDownloadParam;
+class CItem;
+class CUgcItemLook;
+class CBlueprintItemData;
+class CubeItemInfo;
+class RideeItemInfo;
+class CUgcShopBannerProxy;
 class CUgcItemCube;
 class CUgcItemRidee;
 class CUgcRegistBanner;
@@ -155,7 +168,38 @@ public:
     void FUN_1418826a0(int nResult);                        // show an upload result
     void FUN_1418829b0(int nType);                          // open the upload directory in the explorer
     int FUN_141882a70(int nIndex, int bImageOnly);          // open a file in Paint
-    void FUN_141883170();
+    void FUN_141882d80(MS2Ptr<CUgcUploadCtrl> spCtrl, int nResult, const CString& strPath);   // the file of an upload was sent
+    void FUN_141883170();                                   // send an item upload
+    void FUN_1418832a0();                                   // send the current upload
+    void FUN_141883380(CString strPath);                    // a profile image was uploaded
+    void FUN_141883400(CRBMap<int, int>& hours, const Unk_BannerDay& day);   // reserve banner hours
+    void FUN_141883780(CString strPath);                    // a wedding profile image was uploaded
+    void FUN_141883800();                                   // the upload failed
+    void FUN_141883860(CString strPath);                    // the upload is done: download it for the viewers
+    void FUN_141883df0(MS2Ptr<CItem> spItem, const egf::EntityID& id);  // download the UGC look of an item
+    int FUN_1418841f0(CUgcItemLook* pLook, MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack);   // download the icon of a look
+    void FUN_141884300(MS2Ptr<CItem> spItem, int nObjectId);           // download the look of an equipped item
+    void FUN_1418845a0(CubeItemInfo* pInfo, const egf::EntityID& id);  // download the look of a placed cube
+    void FUN_141884830(MS2Ptr<RideeItemInfo> spInfo, const egf::EntityID& id);   // download the look of a mount
+    void FUN_141884af0(MS2Ptr<CUgcRegistBanner> spBanner);  // download a banner image
+    void FUN_141884d70(CUgcUserProxy* pUser, CString strPath);         // download a profile image
+    void FUN_141884e30(int nType, __int64 accountId, __int64 characterId, CString strPath, CString strObjectName);
+    void FUN_141884f10(CUgcUserProxy* pUser, CString strPath);         // download a wedding profile image
+    void FUN_141884fd0(int nType, __int64 accountId, __int64 characterId, CString strPath);
+    void FUN_141885090(__int64 guildId, CString strUrl, CString strName);   // download a guild mark
+    void FUN_1418851e0(__int64 guildId, CString strUrl, int nIndex, CString strName);   // download a guild poster
+    void FUN_141885340(CString strUrl);                     // download an empty banner image
+    void FUN_141885440(int nKind, CString strKey, CString strUrl);     // download a shop banner
+    void FUN_141885570(MS2Ptr<CUgcShopBannerProxy> spProxy, int nKind, CString strUrl);
+    void FUN_141885670(int nKind, CString strUrl);
+    void FUN_141885770(const CString& strUrl, const std::vector<unsigned int>& images);   // download a rolling banner
+    void FUN_141885880(MS2Ptr<CItem> spItem);               // download the image of a blueprint item
+    bool FUN_1418859f0(const CUgcItemLook* pLook, const CBlueprintItemData* pBlueprint, MS2Ptr<CItem> spItem);
+    int FUN_141885d20(CUgcItemLook* pLook, const int& nObjectId, MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack);
+    int FUN_141885e20(CUgcItemLook* pLook, const int& nKind, const int& nObjectId, Delegate<CString(const CString&)> fnUrl,
+                      MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack);   // download an item icon
+    void FUN_141886150(CUgcDownloadParam* pParam, IUgcProxy* pProxy);  // queue a download
+    MS2Ptr<IUgcProxy> FUN_141886340(int nKind);             // a new proxy of a content kind
     MS2Ptr<CUploadFile> FUN_14188a4b0(int nIndex);          // the local file at nIndex
     int FUN_14188bfd0(const CStringW& strPath, struct _D3DXIMAGE_INFO* pInfo);   // the image size of a file
     void FUN_14188aae0();

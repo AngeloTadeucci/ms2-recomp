@@ -21,10 +21,15 @@
 #include "guildmanager.h"
 #include "uiservice.h"
 #include "uidialog.h"
+#include "ms2/placeholder/citem.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/clientconstants.h"
+#include "statemanager.h"
 #include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/cugcmanager.h"
 #include "ms2/placeholder/cugcuploadctrl.h"
+#include "ms2/placeholder/delegate.h"
 #include "ms2/placeholder/exception.h"
 #include "ms2/unnamed/unit_1401b6d10.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
@@ -150,6 +155,96 @@ public:
     void FUN_141b35480(int nResult);
 };
 UIUGCItemEditDialog* FUN_140eeff60(int nId);                // uiugccubepalettedialog.cpp
+
+CStateService* FUN_140aa6d30();                             // the state service
+CUgcManager* FUN_14052d220();                               // the UGC manager singleton
+
+// The kinds whose upload is answered by the game server (0: the file goes through the web server first).
+int FUN_14088db90(int nType);
+
+// The character select dialog (0x4ef1): a character's new profile image.
+class Unk_CharSelectDialog
+{
+public:
+    void FUN_1418ed4e0(__int64 characterId, CString strPath);
+};
+Unk_CharSelectDialog* FUN_140b72de0(int nId);
+
+// The download paths of the uploaded kinds 0xc9 / 0xd1.
+CString FUN_141027880(const CString& strPath);
+CString FUN_141027a20(const CString& strPath);
+
+// ---- the item records the download requests read ----
+
+class Unk_ItemEquipData : public CItemData { };             // CItem::FUN_140527840's record (item.cpp)
+int FUN_14088dcf0(MS2Ptr<CItemData> spData);                // the UGC kind of an item record (1 equip, 2 cube, 7 mount, 9 blueprint)
+CString FUN_1410280d0(int nKind, CString strUrl);           // the local file of a downloaded UGC url
+
+// A cube item (cubeiteminfo.h; spelled here because that header has its own CUgcItemLook).
+class CubeItemInfo : public CPtred
+{
+public:
+    int FUN_1408b3860();                                    // the cube has a UGC look
+    int itemId;                                             // +0x18
+    __int64 instanceId;                                     // +0x20
+    int count;                                              // +0x28
+    MS2Ptr<CUgcItemLook> look;                              // +0x30
+};
+MS2_CHECK_OFFSET(CubeItemInfo, look, 0x30);
+
+// ---- Delegate<CString(const CString&)>: the url of a download kind ----
+
+// The empty-delegate error.
+class InvalidCallException : public std::exception
+{
+public:
+    InvalidCallException();                                 // 0x14056be40
+};
+
+template <class R>
+R ThrowInvalidCall()
+{
+    throw InvalidCallException();
+}
+
+typedef Delegate<CString(const CString&)> Unk_UgcUrlFn;
+
+template <> inline Unk_UgcUrlFn::DelegateImplBase::DelegateImplBase()
+{
+}
+template <> inline Unk_UgcUrlFn::DelegateImplBase::~DelegateImplBase()
+{
+}
+template <> template <> inline CString Unk_UgcUrlFn::DelegateImpl<CString (*)(const CString&)>::vfunc_2(const CString& a1)
+{
+    return m_f(a1);
+}
+template <> inline Unk_UgcUrlFn::Delegate(const Delegate& o)
+{
+    if (o.m_pImpl == 0)
+        m_pImpl = 0;
+    else
+        m_pImpl = o.m_pImpl->vfunc_1();
+}
+template <> inline Unk_UgcUrlFn::~Delegate()
+{
+    if (m_pImpl)
+        delete m_pImpl;
+}
+template <> inline CString Unk_UgcUrlFn::operator()(const CString& a1) const
+{
+    if (m_pImpl == 0)
+        ThrowInvalidCall<CString>();
+    return m_pImpl->vfunc_2(a1);
+}
+
+// The day picked in the banner dialog.
+struct Unk_BannerDay
+{
+    int m_0;                                                // +0x00
+    int m_4;                                                // +0x04
+    int m_nDate;                                            // +0x08
+};
 
 // The open dialog of a UI id (0 when it is not created).
 template <class T>
@@ -756,7 +851,7 @@ int CUgcManager::FUN_1418810c0(const CStringW& strDir, const wchar_t* szFilter)
     MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
     if (spCtrl == 0)
         return 0;
-    int nType = spCtrl->m_nType;
+    int nType = spCtrl->m_nKind;
     if (nType == 0)
     {
         FUN_140d73aa0(FUN_14028b8e0(L"s_msg_ugc_fail_select_design"), 0, 0, L"");
@@ -800,7 +895,7 @@ int CUgcManager::FUN_141881650(int nType, MS2Ptr<CUploadFile> spFile)
     MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
     if (spCtrl == 0)
         return 0;
-    if (spCtrl->m_nType != nType)
+    if (spCtrl->m_nKind != nType)
         return 0;
     if (spCtrl->m_spViewer == 0)
         return 0;
@@ -860,7 +955,7 @@ int CUgcManager::FUN_141881b90(int nType, int nCount, CStringW strName, __int64 
     MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
     if (spCtrl == 0 || spCtrl->m_spViewer == 0)
         return 0;
-    if (spCtrl->m_nType != nType)
+    if (spCtrl->m_nKind != nType)
         return 0;
     MS2Ptr<IUgcViewer> spViewer = spCtrl->m_spViewer;
     CUgcItemProxy* pItem = 0;
@@ -917,7 +1012,7 @@ int CUgcManager::FUN_141882020()
     int nResult = FUN_141882370();
     if (nResult != 0)
         return nResult;
-    int bDirect = FUN_14088db30(spCtrl->m_nType);
+    int bDirect = FUN_14088db30(spCtrl->m_nKind);
     if (bDirect != 0)
     {
         {
@@ -1114,6 +1209,600 @@ int CUgcManager::FUN_141882a70(int nIndex, int bImageOnly)
         CloseHandle(pi.hThread);
     }
     return 1;
+}
+
+// @0x141882d80
+// The file of an upload was sent (nResult 0: ok): the profile kinds are applied at once, the others are sent to the game
+// server.
+void CUgcManager::FUN_141882d80(MS2Ptr<CUgcUploadCtrl> spCtrl, int nResult, const CString& strPath)
+{
+    MS2Ptr<CUgcUploadCtrl> spCurrent = FUN_141882610();
+    if (spCtrl == 0 || spCtrl.get() != spCurrent.get())
+        return;
+    if (spCtrl->m_spViewer == 0)
+        return;
+    spCtrl->m_upload.m_strPath = strPath;
+    FUN_1418826a0(nResult);
+    if (nResult == 0)
+    {
+        int nKind = spCtrl->m_nKind;
+        if (nKind == 5)
+        {
+            int nState = FUN_140aa6d30()->FUN_1417e2610();
+            if (nState == 0x620000c)
+            {
+                PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+                if (pPlayer != 0)
+                {
+                    FUN_141883380(strPath);
+                    FUN_1418823f0();
+                    FUN_141882450(MS2Ptr<CUgcUploadCtrl>(0));
+                }
+            }
+            else
+            {
+                Unk_CharSelectDialog* pDialog = FUN_140b72de0(0x4ef1);
+                if (pDialog != 0)
+                    pDialog->FUN_1418ed4e0(spCurrent->m_user.m_characterId, strPath);
+                FUN_1418823f0();
+                FUN_141882450(MS2Ptr<CUgcUploadCtrl>(0));
+            }
+        }
+        else if (nKind == 10)
+        {
+            FUN_141883780(strPath);
+            FUN_1418823f0();
+            FUN_141882450(MS2Ptr<CUgcUploadCtrl>(0));
+        }
+        else
+        {
+            int bGameServer = FUN_14088db90(nKind);
+            if (bGameServer != 0)
+                FUN_1418832a0();
+            else
+                FUN_141883860(strPath);
+        }
+    }
+    else
+    {
+        FUN_141883800();
+    }
+    return;
+}
+
+// @0x141883170
+void CUgcManager::FUN_141883170()
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return;
+    if (spCtrl->m_spViewer == 0)
+        return;
+    COutPacket packet(0x38, 0);
+    packet.Encode1(1);
+    packet.Encode8(spCtrl->m_itemUid);
+    spCtrl->Write(packet);
+    spCtrl->m_spViewer->vfunc_6(packet);
+    FUN_140710590(packet);
+}
+
+// @0x1418832a0
+void CUgcManager::FUN_1418832a0()
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return;
+    if (spCtrl->m_spViewer == 0)
+        return;
+    COutPacket packet(0x38, 0);
+    packet.Encode1(3);
+    spCtrl->Write(packet);
+    FUN_140710590(packet);
+}
+
+// @0x141883380
+void CUgcManager::FUN_141883380(CString strPath)
+{
+    COutPacket packet(0x38, 0);
+    packet.Encode1(0xb);
+    packet.vfunc_o10_6(strPath);
+    FUN_140710590(packet);
+}
+
+// @0x141883400
+// Reserves the picked hours of a day for the banner of the current upload.
+void CUgcManager::FUN_141883400(CRBMap<int, int>& hours, const Unk_BannerDay& day)
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_14052d220()->FUN_141882610();
+    if (spCtrl == 0)
+        return;
+    if (spCtrl->m_nKind != 3)
+        return;
+    CUgcViewerBanner* pViewer = (CUgcViewerBanner*)spCtrl->m_spViewer.get();
+    if (pViewer == 0)
+        return;
+    int nBannerId = pViewer->m_nBannerId;
+    Unk_BannerPtr spBanner = CFieldBannerData::GetBanner(nBannerId);
+    if (spBanner == NULL)
+        return;
+    if (spBanner->m_nAd == 0)
+        return;
+    MS2Ptr<CUgcPreReserve> spReserve(new CUgcPreReserve);
+    spReserve->m_nCount = nBannerId;
+    for (POSITION pos = hours.GetHeadPosition(); pos != 0; hours.GetNext(pos))
+    {
+        int nHour = hours.GetKeyAt(pos);
+        CUgcBannerReservePtr spHour(new CUgcBannerReserve);
+        spHour->m_nBannerUid = 0;
+        spHour->m_n20 = DAT_143ab2830;
+        spHour->m_n24 = nBannerId;
+        spHour->m_nDate = day.m_nDate;
+        spHour->m_nHour = nHour;
+        spReserve->m_reserves.SetAt(spHour->GetKey(), spHour);
+    }
+    COutPacket packet(0x38, 0);
+    packet.Encode1(0x13);
+    spReserve->Write(packet);
+    FUN_140710590(packet);
+}
+
+// @0x141883780
+void CUgcManager::FUN_141883780(CString strPath)
+{
+    COutPacket packet(0x38, 0);
+    packet.Encode1(0xc);
+    packet.vfunc_o10_6(strPath);
+    FUN_140710590(packet);
+}
+
+// @0x141883800
+void CUgcManager::FUN_141883800()
+{
+    COutPacket packet(0x38, 0);
+    packet.Encode1(0);
+    FUN_140710590(packet);
+}
+
+// @0x141883860
+// The upload is done: the viewers of the upload (and of its chained upload) download the stored content.
+void CUgcManager::FUN_141883860(CString strPath)
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return;
+    PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPlayer == 0)
+        return;
+    int nKind = spCtrl->m_nKind;
+    if (nKind == 3)
+    {
+        FUN_1418823f0();
+        FUN_141882450(MS2Ptr<CUgcUploadCtrl>(0));
+        return;
+    }
+    if (nKind == 5)
+    {
+        FUN_141884d70(&spCtrl->m_user, strPath);
+    }
+    else
+    {
+        CAtlArray<MS2Ptr<CUgcUploadCtrl> > ctrls;
+        ctrls.Add(spCtrl);
+        CUgcUploadCtrl* pChained = spCtrl->FUN_1418a4100().get();
+        if (pChained != 0)
+            ctrls.Add(spCtrl->FUN_1418a4100());
+        for (size_t i = 0; i < ctrls.GetCount(); i++)
+        {
+            MS2Ptr<CUgcUploadCtrl> spItem = ctrls[i];
+            if (spItem == 0)
+                continue;
+            MS2Ptr<IUgcProxy> spProxy = FUN_141886340(spItem->m_nKind);
+            if (spItem->m_spViewer->vfunc_8(spProxy, spItem->m_nKind) == 0)
+                continue;
+            CUgcDownloadParam param;
+            param.m_nType = spItem->m_nKind;
+            if (spItem->m_nKind == 0xc9)
+                param.m_strUrl = FUN_141027880(strPath);
+            else if (spItem->m_nKind == 0xd1)
+                param.m_strUrl = FUN_141027a20(strPath);
+            else
+                param.m_strUrl = strPath;
+            param.m_user.CopyFrom(&spItem->m_user);
+            param.m_upload.CopyFrom(&spItem->m_upload);
+            FUN_141886150(&param, spProxy.get());
+        }
+    }
+    FUN_1418823f0();
+    FUN_141882450(MS2Ptr<CUgcUploadCtrl>(0));
+}
+
+// @0x141883df0
+// Downloads the UGC look of an item (and its icon) unless the url is empty.
+void CUgcManager::FUN_141883df0(MS2Ptr<CItem> spItem, const egf::EntityID& id)
+{
+    if (spItem == 0)
+        return;
+    int nKind = FUN_14088dcf0(MS2Ptr<CItemData>(((CItem*)spItem)->FUN_140527840()));
+    CUgcItemLook* pLook = ((CItem*)spItem)->FUN_140528380();
+    if (pLook == 0)
+        return;
+    CString strLocal = FUN_1410280d0(nKind, pLook->m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        bLocal = 1;
+    CUgcDownloadParam param;
+    param.m_nType = nKind;
+    param.m_strUrl = pLook->m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.m_nType = DAT_143ab2830;
+    param.m_user.m_characterId = ((CItem*)spItem)->FUN_140526ad0();
+    param.m_upload.m_uid = pLook->m_n18;
+    param.m_upload.m_strName = pLook->m_str20;
+    param.m_upload.m_nType = 3;
+    if (param.m_strUrl.GetLength() == 0)
+        return;
+    if (nKind == 1)
+    {
+        CUgcItemPC item(spItem.get(), ((CItem*)spItem)->FUN_140526b10());
+        FUN_141886150(&param, &item);
+    }
+    else if (nKind == 2)
+    {
+        CUgcItemCube item(spItem.get(), id);
+        FUN_141886150(&param, &item);
+    }
+    else if (nKind == 7)
+    {
+        CUgcItemRidee item(spItem.get(), id);
+        FUN_141886150(&param, &item);
+    }
+    FUN_1418841f0(pLook, spItem, 0);
+}
+
+// @0x1418841f0
+int CUgcManager::FUN_1418841f0(CUgcItemLook* pLook, MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack)
+{
+    Unk_UgcUrlFn fnUrl(FUN_141027880);
+    int nObjectId = 0;
+    return FUN_141885e20(pLook, 0xc9, nObjectId, fnUrl, spItem, pCallBack);
+}
+
+// @0x141884300
+void CUgcManager::FUN_141884300(MS2Ptr<CItem> spItem, int nObjectId)
+{
+    if (spItem == 0)
+        return;
+    int nKind = FUN_14088dcf0(MS2Ptr<CItemData>(((CItem*)spItem)->FUN_140527840()));
+    if (nKind != 1)
+        return;
+    CUgcItemLook* pLook = ((CItem*)spItem)->FUN_140528380();
+    if (pLook == 0)
+        return;
+    CUgcItemPC item(spItem.get(), nObjectId);
+    CString strLocal = FUN_1410280d0(nKind, pLook->m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        bLocal = 1;
+    CUgcDownloadParam param;
+    param.m_nType = nKind;
+    param.m_strUrl = pLook->m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.m_nType = DAT_143ab2830;
+    param.m_user.m_characterId = ((CItem*)spItem)->FUN_140526ad0();
+    param.m_upload.m_uid = pLook->m_n18;
+    param.m_upload.m_strName = pLook->m_str20;
+    param.m_upload.m_nType = 3;
+    if (param.m_strUrl.GetLength() == 0)
+        return;
+    FUN_141886150(&param, &item);
+}
+
+// @0x1418845a0
+void CUgcManager::FUN_1418845a0(CubeItemInfo* pInfo, const egf::EntityID& id)
+{
+    if (pInfo == 0)
+        return;
+    if (pInfo->FUN_1408b3860() == 0)
+        return;
+    CUgcItemCube item;
+    item.m_itemUid = pInfo->instanceId;
+    item.m_nItemId = pInfo->itemId;
+    item.m_nCount = 1;
+    item.m_strName = pInfo->look->m_str28;
+    item.m_nRarity = pInfo->look->m_n30;
+    item.m_entityId = id;
+    CString strLocal = FUN_1410280d0(2, pInfo->look->m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        bLocal = 1;
+    CUgcDownloadParam param;
+    param.m_nType = 2;
+    param.m_strUrl = pInfo->look->m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.m_nType = DAT_143ab2830;
+    param.m_user.m_characterId = 0;
+    param.m_upload.m_uid = pInfo->look->m_n18;
+    param.m_upload.m_strName = pInfo->look->m_str20;
+    param.m_upload.m_nType = 3;
+    if (param.m_strUrl.GetLength() == 0)
+        return;
+    FUN_141886150(&param, &item);
+}
+
+// @0x141884830
+void CUgcManager::FUN_141884830(MS2Ptr<RideeItemInfo> spInfo, const egf::EntityID& id)
+{
+    if (spInfo == 0)
+        return;
+    if (spInfo->IsValid() == 0)
+        return;
+    CUgcItemRidee item;
+    item.m_itemUid = spInfo->m_nUid;
+    item.m_nItemId = spInfo->m_nId;
+    item.m_nCount = 1;
+    item.m_strName = spInfo->m_look.m_str28;
+    item.m_nRarity = spInfo->m_look.m_n30;
+    item.m_entityId = id;
+    CString strLocal = FUN_1410280d0(7, spInfo->m_look.m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        bLocal = 1;
+    CUgcDownloadParam param;
+    param.m_nType = 7;
+    param.m_strUrl = spInfo->m_look.m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.m_nType = DAT_143ab2830;
+    param.m_user.m_characterId = 0;
+    param.m_upload.m_uid = spInfo->m_look.m_n18;
+    param.m_upload.m_strName = spInfo->m_look.m_str20;
+    param.m_upload.m_nType = 3;
+    if (param.m_strUrl.GetLength() == 0)
+        return;
+    FUN_141886150(&param, &item);
+}
+
+// @0x141884af0
+void CUgcManager::FUN_141884af0(MS2Ptr<CUgcRegistBanner> spBanner)
+{
+    if (spBanner == 0)
+        return;
+    CString strLocal = FUN_1410280d0(3, spBanner->m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        bLocal = 1;
+    CUgcDownloadParam param;
+    param.m_nType = spBanner->m_nType;
+    param.m_strUrl = spBanner->m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.CopyFrom(&spBanner->m_user);
+    param.m_upload.CopyFrom(&spBanner->m_upload);
+    if (param.m_strUrl.GetLength() == 0)
+        return;
+    MS2Ptr<CUgcBannerPost> spPost(new CUgcBannerPost);
+    spPost->CopyFrom(&spBanner->m_post);
+    FUN_141886150(&param, spPost.get());
+}
+
+// @0x141884d70
+void CUgcManager::FUN_141884d70(CUgcUserProxy* pUser, CString strPath)
+{
+    if (pUser == 0)
+        return;
+    CUgcDownloadParam param;
+    param.m_nType = 5;
+    param.m_user.CopyFrom(pUser);
+    param.m_strUrl = strPath;
+    FUN_141886150(&param, pUser);
+}
+
+// @0x141884e30
+void CUgcManager::FUN_141884e30(int nType, __int64 accountId, __int64 characterId, CString strPath, CString strObjectName)
+{
+    CUgcUserProxy user;
+    user.m_nType = nType;
+    user.m_accountId = accountId;
+    user.m_characterId = characterId;
+    user.m_strObjectName = strObjectName;
+    FUN_141884d70(&user, strPath);
+}
+
+// @0x141884f10
+void CUgcManager::FUN_141884f10(CUgcUserProxy* pUser, CString strPath)
+{
+    if (pUser == 0)
+        return;
+    CUgcDownloadParam param;
+    param.m_nType = 10;
+    param.m_user.CopyFrom(pUser);
+    param.m_strUrl = strPath;
+    FUN_141886150(&param, pUser);
+}
+
+// @0x141884fd0
+void CUgcManager::FUN_141884fd0(int nType, __int64 accountId, __int64 characterId, CString strPath)
+{
+    CUgcUserProxy user;
+    user.m_nType = nType;
+    user.m_accountId = accountId;
+    user.m_characterId = characterId;
+    FUN_141884f10(&user, strPath);
+}
+
+// @0x141885090
+void CUgcManager::FUN_141885090(__int64 guildId, CString strUrl, CString strName)
+{
+    MS2Ptr<CUgcGuildMarkProxy> spMark(new CUgcGuildMarkProxy);
+    spMark->m_nGuildId = guildId;
+    spMark->m_strName = strName;
+    CUgcDownloadParam param;
+    param.m_nType = 6;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spMark.get());
+}
+
+// @0x1418851e0
+void CUgcManager::FUN_1418851e0(__int64 guildId, CString strUrl, int nIndex, CString strName)
+{
+    MS2Ptr<CUgcGuildPosterProxy> spPoster(new CUgcGuildPosterProxy);
+    spPoster->m_nGuildId = guildId;
+    spPoster->m_strName = strName;
+    spPoster->m_nIndex = nIndex;
+    CUgcDownloadParam param;
+    param.m_nType = 8;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spPoster.get());
+}
+
+// @0x141885340
+void CUgcManager::FUN_141885340(CString strUrl)
+{
+    MS2Ptr<CUgcBannerEmptyProxy> spProxy(new CUgcBannerEmptyProxy);
+    CUgcDownloadParam param;
+    param.m_nType = 0xca;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spProxy.get());
+}
+
+// @0x141885440
+void CUgcManager::FUN_141885440(int nKind, CString strKey, CString strUrl)
+{
+    MS2Ptr<CUgcShopBannerProxy> spProxy(new CUgcShopBannerProxy);
+    spProxy->m_strKey = strKey;
+    FUN_141885570(spProxy, nKind, strUrl);
+}
+
+// @0x141885570
+void CUgcManager::FUN_141885570(MS2Ptr<CUgcShopBannerProxy> spProxy, int nKind, CString strUrl)
+{
+    if (spProxy == 0)
+        return;
+    CUgcDownloadParam param;
+    param.m_nType = nKind;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spProxy.get());
+}
+
+// @0x141885670
+void CUgcManager::FUN_141885670(int nKind, CString strUrl)
+{
+    MS2Ptr<CUgcBannerEmptyProxy> spProxy(new CUgcBannerEmptyProxy);
+    CUgcDownloadParam param;
+    param.m_nType = nKind;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spProxy.get());
+}
+
+// @0x141885770
+void CUgcManager::FUN_141885770(const CString& strUrl, const std::vector<unsigned int>& images)
+{
+    MS2Ptr<CUgcBannerRollingImageProxy> spProxy(new CUgcBannerRollingImageProxy);
+    spProxy->m_images = images;
+    CUgcDownloadParam param;
+    param.m_nType = 0xce;
+    param.m_strUrl = strUrl;
+    param.m_user.Clear();
+    param.m_upload.Clear();
+    FUN_141886150(&param, spProxy.get());
+}
+
+// @0x141885880
+void CUgcManager::FUN_141885880(MS2Ptr<CItem> spItem)
+{
+    if (spItem == 0)
+        return;
+    int nKind = FUN_14088dcf0(MS2Ptr<CItemData>(((CItem*)spItem)->FUN_140527840()));
+    if (nKind != 9)
+        return;
+    CUgcItemLook* pLook = ((CItem*)spItem)->FUN_140528380();
+    if (pLook == 0)
+        return;
+    CBlueprintItemData* pBlueprint = ((CItem*)spItem)->FUN_1405284f0();
+    if (pBlueprint == 0)
+        return;
+    FUN_141885d20(pLook, 0, spItem, 0);
+}
+
+// @0x1418859f0
+// Downloads the image of a blueprint (false: no url, or the file is already there).
+bool CUgcManager::FUN_1418859f0(const CUgcItemLook* pLook, const CBlueprintItemData* pBlueprint, MS2Ptr<CItem> spItem)
+{
+    if (pBlueprint == 0)
+        return false;
+    int nKind = 9;
+    CUgcBlueprintImageProxy image;
+    image.m_n18 = pBlueprint->m_n18;
+    image.m_n20 = spItem.get() != 0 ? ((CItem*)spItem)->FUN_140526a50() : 0;
+    image.m_n28 = spItem.get() != 0 ? ((CItem*)spItem)->FUN_1405276c0() : 0;
+    image.m_strName = pLook->m_str28;
+    CString strLocal = FUN_1410280d0(nKind, pLook->m_strUrl);
+    int bLocal = 0;
+    if (_access(strLocal, 0) == 0)
+        return false;
+    if (pLook->m_strUrl.GetLength() == 0)
+        return false;
+    CUgcDownloadParam param;
+    param.m_nType = nKind;
+    param.m_strUrl = pLook->m_strUrl;
+    param.m_bLocal = bLocal;
+    param.m_user.m_nType = DAT_143ab2830;
+    param.m_user.m_characterId = spItem.get() != 0 ? ((CItem*)spItem)->FUN_140526ad0() : 0;
+    param.m_upload.m_uid = pLook->m_n18;
+    param.m_upload.m_strName = pLook->m_str20;
+    param.m_upload.m_nType = 3;
+    FUN_141886150(&param, &image);
+    return true;
+}
+
+// @0x141885d20
+int CUgcManager::FUN_141885d20(CUgcItemLook* pLook, const int& nObjectId, MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack)
+{
+    Unk_UgcUrlFn fnUrl(FUN_141027a20);
+    return FUN_141885e20(pLook, 0xd1, nObjectId, fnUrl, spItem, pCallBack);
+}
+
+// @0x141885e20
+// Downloads the icon of a look (fnUrl maps the look's url to the icon url); 0 when it is on disk already.
+int CUgcManager::FUN_141885e20(CUgcItemLook* pLook, const int& nKind, const int& nObjectId, Unk_UgcUrlFn fnUrl,
+                               MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack)
+{
+    if (pLook->m_n30 == 1)
+    {
+        CString strLocal = FUN_1410280d0(nKind, pLook->m_strUrl);
+        int bLocal = 0;
+        if (_access(strLocal, 0) == 0)
+            return 0;
+        CString strUrl = fnUrl(pLook->m_strUrl);
+        if (!strUrl.IsEmpty())
+        {
+            CUgcDownloadParam param;
+            param.m_nType = nKind;
+            param.m_strUrl = strUrl;
+            param.m_bLocal = bLocal;
+            param.m_user.m_nType = DAT_143ab2830;
+            param.m_user.m_characterId = spItem.get() != 0 ? ((CItem*)spItem)->FUN_140526ad0() : 0;
+            param.m_upload.m_uid = pLook->m_n18;
+            param.m_upload.m_strName = pLook->m_str20;
+            param.m_upload.m_nType = 3;
+            CUgcItemIconPC icon(spItem.get(), spItem.get() != 0 ? ((CItem*)spItem)->FUN_140526b10() : 0);
+            if (pCallBack != 0)
+                icon.FUN_14088f960(*pCallBack);
+            if (nObjectId != 0)
+                icon.m_nKind = nObjectId;
+            FUN_141886150(&param, &icon);
+            return 1;
+        }
+    }
+    return 0;
 }
 
 // @0x14188bfd0

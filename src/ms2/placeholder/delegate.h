@@ -116,6 +116,12 @@ public:
         : m_pImpl(new DelegateImpl<std::pair<C*, R (C::*)(A1)> >(std::make_pair(obj, f)))
     {
     }
+    // A free function (appended by the ugcmanager.cpp#4 agent: Delegate<CString(const CString&)>, 0x141892540). The
+    // generic DelegateImpl::vfunc_2 only calls bound members; the unit that uses this specializes it.
+    explicit Delegate(R (*f)(A1))
+        : m_pImpl(new DelegateImpl<R (*)(A1)>(f))
+    {
+    }
     Delegate(const Delegate& o);        // declared (appended by the uiobject.cpp agent): a user copy ctor makes a by-value
                                         // Delegate argument go by reference to a caller temp that the callee destroys
                                         // (UIObject::OnLoadComplete 0x14131ec00); without it the ABI passes it in a register

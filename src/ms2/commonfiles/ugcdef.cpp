@@ -590,7 +590,7 @@ CUgcItemCube::CUgcItemCube()
 }
 
 // @0x14088fb30
-CUgcItemCube::CUgcItemCube(CItem* pItem, const egf::EntityID& id)
+CUgcItemCube::CUgcItemCube(CItem* pItem, egf::EntityID id)
     : CUgcItemProxy(pItem)
 {
     m_entityId = id;
@@ -641,7 +641,7 @@ CUgcItemRidee::CUgcItemRidee()
 }
 
 // @0x14088fd60
-CUgcItemRidee::CUgcItemRidee(CItem* pItem, const egf::EntityID& id)
+CUgcItemRidee::CUgcItemRidee(CItem* pItem, egf::EntityID id)
     : CUgcItemProxy(pItem)
 {
     m_entityId = id;

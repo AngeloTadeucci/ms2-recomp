@@ -162,7 +162,7 @@ class CUgcItemCube : public CUgcItemProxy
 {
 public:
     CUgcItemCube();                                         // 0x14088fad0
-    CUgcItemCube(CItem* pItem, const egf::EntityID& id);    // 0x14088fb30
+    CUgcItemCube(CItem* pItem, egf::EntityID id);           // 0x14088fb30
     virtual ~CUgcItemCube();
     virtual void Clear();                                   // 0x14088fc40
     virtual int CopyFrom(const IUgcProxy* pOther);          // 0x14088fc80
@@ -178,7 +178,7 @@ class CUgcItemRidee : public CUgcItemProxy
 {
 public:
     CUgcItemRidee();                                        // 0x14088fd00
-    CUgcItemRidee(CItem* pItem, const egf::EntityID& id);   // 0x14088fd60
+    CUgcItemRidee(CItem* pItem, egf::EntityID id);          // 0x14088fd60
     virtual ~CUgcItemRidee();
     virtual void Clear();                                   // 0x14088fe70
     virtual int CopyFrom(const IUgcProxy* pOther);          // 0x14088feb0

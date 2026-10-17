@@ -15,6 +15,7 @@
 #include "ms2/commonfiles/ugcdef.h"
 
 class CUploadFile;
+class COutPacket;
 
 // The preview of an upload kind (equip, cube, banner, profile, guild mark, ...).
 class IUgcViewer : public CPtred
@@ -27,9 +28,9 @@ public:
     virtual int vfunc_3(MS2Ptr<CUploadFile> spFile) = 0;    // 3 preview a local file
     virtual void vfunc_4() = 0;                             // 4 the upload finished
     virtual void vfunc_5();                                 // 5
-    virtual void vfunc_6(int nResult);                      // 6 the upload failed
+    virtual void vfunc_6(COutPacket& packet);               // 6 write the preview data of an item upload
     virtual void vfunc_7();                                 // 7
-    virtual int vfunc_8(CStringW strPath);                  // 8
+    virtual int vfunc_8(MS2Ptr<IUgcProxy> spProxy, int nKind);   // 8 the uploaded content to download (0: none)
     virtual void vfunc_9();                                 // 9
     virtual void vfunc_10();                                // 10
     virtual void vfunc_11() = 0;                            // 11
@@ -116,11 +117,14 @@ public:
     virtual void vfunc_4();
     virtual void vfunc_11();
     void FUN_1418a0f90(int nBannerId);                      // the banner to preview
-    char m_pad_18[0x88 - 0x18];
+    char m_pad_18[0x30 - 0x18];
+    int m_nBannerId;                                        // +0x30
+    char m_pad_34[0x88 - 0x34];
 };
 MS2_CHECK_SIZE(CUgcViewerBanner, 0x88);
+MS2_CHECK_OFFSET(CUgcViewerBanner, m_nBannerId, 0x30);
 
-class CUgcUploadCtrl : public CPtred
+class CUgcUploadCtrl : public CUgcUpload
 {
 public:
     CUgcUploadCtrl();
@@ -133,9 +137,6 @@ public:
     int FUN_1418a38a0();
     MS2Ptr<CUgcUploadCtrl> FUN_1418a4100();
 
-    int m_nType;                                            // +0x18 the content kind
-    CUgcUserProxy m_user;                                   // +0x20
-    CUgcUploadProxy m_upload;                               // +0x60
     MS2Ptr<IUgcViewer> m_spViewer;                          // +0x98
     MS2Ptr<CUploadFile> m_spFile;                           // +0xa8
     __int64 m_itemUid;                                      // +0xb8
