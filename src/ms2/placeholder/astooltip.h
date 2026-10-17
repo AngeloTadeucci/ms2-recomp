@@ -20,6 +20,7 @@ public:
     explicit ASTooltip(int nMovieId);                // 0x1409c62e0 (aseffect.cpp)
     ASTooltip(int a1, int a2);
     ASTooltip(void* pOwner, int a1, int a2);
+    ASTooltip(class Unk_TooltipOwner* pOwner, int a1, int a2);       // 0x1409c64c0 (same body as the void* form; the owner's real type is unknown)
     ASTooltip(const Scaleform::GFx::Value& root, int nMovieId);     // 0x1409c6350 (uiadventureleveldialog.cpp)
     virtual ~ASTooltip();
     void FUN_1409c7b10(CItem* pItem);                                    // itemDamage (sum of the damage lines)
@@ -78,6 +79,8 @@ public:
     void FUN_1409db870(Unk_GalleryPtr<Unk_GalleryItem> item);
     void FUN_1409c69b0(const CStringW& strTitle);                        // set the tooltip title line
     void FUN_1409c65f0(const CStringW& strText);                         // set the tooltip text line
+    void FUN_1409c6640(const CStringW& strLhs, const CStringW& strRhs);   // enableUseDbClick on both comparison tooltips
+    void FUN_1409c6ef0(const CStringW& strText);                        // append to textBgArr
     void FUN_1409e13a0(CItem* pCompare, CItem* pItem);                  // item tooltip with the default flags
     bool FUN_1409e25e0(CItem* pItem, unsigned n);
     void FUN_1409cf010(CItem* pItem, unsigned n);

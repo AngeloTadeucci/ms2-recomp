@@ -510,3 +510,121 @@ bool FUN_1409e5450(int n)
 {
     return n == 4;
 }
+
+// ---- chunk 1: the tooltip text pairs (w152) ----
+unsigned char FUN_1409b0350(Scaleform::GFx::Value* pValue);
+unsigned char FUN_1409b0390(Scaleform::GFx::Value* pValue);
+
+// @0x1409c64c0
+ASTooltip::ASTooltip(Unk_TooltipOwner* pOwner, int a1, int a2)
+    : ASObj(a2), m_40((__int64)pOwner), m_48(a1)
+{
+}
+
+// Sets the same member of the left and right comparison tooltips.
+// @0x1409c6640
+void ASTooltip::FUN_1409c6640(const CStringW& strLhs, const CStringW& strRhs)
+{
+    Scaleform::GFx::Value lhs = FUN_1422baa20("lhsTooltip");
+    if (FUN_1409b0390(&lhs) == 0)
+    {
+        ASObj obj(lhs, 2);
+        {
+            CStringW strCopy(strLhs);
+            obj.FUN_1407cbb20("enableUseDbClick", strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20("enableUseDbClick", strLhs);
+    Scaleform::GFx::Value rhs = FUN_1422baa20("rhsTooltip");
+    if (FUN_1409b0390(&rhs) == 0)
+    {
+        ASObj obj(rhs, 2);
+        {
+            CStringW strCopy(strRhs);
+            obj.FUN_1407cbb20("enableUseDbClick", strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20("enableUseDbClick", strRhs);
+}
+MS2_REPLACE_METHOD(0x1409C6640, ASTooltip, FUN_1409c6640, 564, 0x5FB63B17);
+
+// @0x1409c6a20
+void ASTooltip::FUN_1409c6a20(const CStringW& strLhs, const CStringW& strRhs)
+{
+    if (m_48 & 0x100)
+        return;
+    Scaleform::GFx::Value lhs = FUN_1422baa20("lhsTooltip");
+    if (FUN_1409b0390(&lhs) == 0)
+    {
+        ASObj obj(lhs, 2);
+        {
+            CStringW strCopy(strLhs);
+            obj.FUN_1407cbb20("enablePuton", strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20("enablePuton", strLhs);
+    Scaleform::GFx::Value rhs = FUN_1422baa20("rhsTooltip");
+    if (FUN_1409b0390(&rhs) == 0)
+    {
+        ASObj obj(rhs, 2);
+        {
+            CStringW strCopy(strRhs);
+            obj.FUN_1407cbb20("enablePuton", strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20("enablePuton", strRhs);
+}
+MS2_REPLACE_METHOD(0x1409C6A20, ASTooltip, FUN_1409c6a20, 589, 0x573459D7);
+
+// Appends a text to the textBgArr array (created when missing).
+// @0x1409c6ef0
+void ASTooltip::FUN_1409c6ef0(const CStringW& strText)
+{
+    CString strHolder("textBgArr");
+    CString& strName = strHolder;
+    Scaleform::GFx::Value v = FUN_1422baa20(strName);
+    if (FUN_1409b0390(&v) != 0 || FUN_1409b0350(&v) != 0)
+    {
+        ASArray arr(2);
+        arr.FUN_1422bbfe0(strText);
+        FUN_1409adbe0(strName, Scaleform::GFx::Value(arr.FUN_1422bb870()));
+    }
+    else
+    {
+        ASArray arr(v, 2);
+        arr.FUN_1422bbfe0(strText);
+    }
+}
+MS2_REPLACE_METHOD(0x1409C6EF0, ASTooltip, FUN_1409c6ef0, 355, 0xB1F3433B);
+
+// @0x1409c7060
+void ASTooltip::FUN_1409c7060(const CStringW& strLhs, const CStringW& strRhs)
+{
+    Scaleform::GFx::Value lhs = FUN_1422baa20("lhsTooltip");
+    if (FUN_1409b0390(&lhs) == 0)
+    {
+        ASObj obj(lhs, 2);
+        {
+            CStringW strCopy(strLhs);
+            obj.FUN_1407cbb20(s_strItemEquip, strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20(s_strItemEquip, strLhs);
+    Scaleform::GFx::Value rhs = FUN_1422baa20("rhsTooltip");
+    if (FUN_1409b0390(&rhs) == 0)
+    {
+        ASObj obj(rhs, 2);
+        {
+            CStringW strCopy(strRhs);
+            obj.FUN_1407cbb20(s_strItemEquip, strCopy);
+        }
+    }
+    else
+        FUN_1407cbb20(s_strItemEquip, strRhs);
+}
+MS2_REPLACE_METHOD(0x1409C7060, ASTooltip, FUN_1409c7060, 600, 0x33E89F47);

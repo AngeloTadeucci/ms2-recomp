@@ -52,6 +52,7 @@ class ASArray : public ASObj
 {
 public:
     ASArray(int nType);
+    ASArray(const Scaleform::GFx::Value& v, int nMovieId);               // 0x1422bbbe0 (wraps an existing AS array value)
     ASArray(const ASArray& o);                                           // 0x140bbf770 (copy; passed by value to Invoke(.., int, AScript, ASArray))
     virtual ~ASArray();
     bool FUN_1422bc050(Scaleform::GFx::Value v);                         // push
