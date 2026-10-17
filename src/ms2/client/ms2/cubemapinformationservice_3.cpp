@@ -2572,7 +2572,7 @@ struct Unk_CMISEffReq                                                           
 MS2_CHECK_SIZE(Unk_CMISEffReq, 0x78);
 void FUN_140a52ef0(Unk_CMISEffReq* p);
 void FUN_1405a89e0(Unk_CMISEffReq* p);
-struct Unk_CMISConsts { char m_pad_00[0x300]; CString m_strSaleEffect; };                   // game-wide constants (the sale-post effect name at +0x300)
+struct Unk_CMISConsts { char m_pad_00[0x128]; CString m_strCubeFlash[5]; char m_pad_150[0x300 - 0x150]; CString m_strSaleEffect; CString m_strCubeEffect; };   // game-wide constants (the sale-post effect name at +0x300)
 Unk_CMISConsts* FUN_1401d31f0();
 class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); int FUN_1411a49c0(Unk_CMISEffReq* pRequest); void FUN_1411a6060(int nEffect); };
 Unk_CMISEffMgr* FUN_1403ed280();
@@ -3862,4 +3862,103 @@ unsigned __int64 CubeMapInformationService::FUN_1410d4940()
         }
     }
     return nTotal;
+}
+
+// ---- w138 batch 18 ----
+Unk_CMISListIter* FUN_141158620(Unk_CMISTree<267>*, Unk_CMISListIter*, const int*);         // find
+void FUN_141156520(Unk_CMISTree<267>*, const int*);                                         // erase
+bool FUN_141126cd0(Unk_CMISIter<266>*, Unk_CMISIter<266>*);                                 // operator==
+void FUN_141126100(Unk_CMISBlock* pDst, const Unk_CMISBlock* pSrc);                         // operator=
+Unk_CMISBlock* FUN_141127c10(Unk_CMISTree<266>*, const int*);                               // operator[]
+void FUN_14111c730(Unk_CMISTree<259>*, Unk_CMISIter<259>*, Unk_CMISIter<259>);              // erase
+void FUN_140965020(MS2Ptr<Cube>* pDst, MS2Ptr<Cube>* pSrc);                                 // operator=
+
+// @0x1410cb4c0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cb4c0(Unk_CMISBlock rec)
+{
+    int nKey = FUN_1408a13d0(((Unk_CMISDollRec*)&rec)->m_ptPos);
+    Unk_CMISListIter itFindSet;
+    Unk_CMISListEnd itEndSet;
+    if (FUN_14035ea60(FUN_141158620(&f128, &itFindSet, &nKey), FUN_1411522d0(reinterpret_cast<Unk_CMISIntList*>(&f128), &itEndSet)) == 0) {
+        Unk_CMISIter<266> itEnd, itFind;
+        if (FUN_141126cd0(FUN_1411572e0(&f118, &itFind, &nKey), FUN_1411519d0(&f118, &itEnd)))
+            FUN_141126100(FUN_141127c10(&f118, &nKey), &rec);
+    } else {
+        Unk_CMISIter<260> itEnd, itFind;
+        if (FUN_1411274c0(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd)) == 0) {
+            FUN_141126100(FUN_141127c10(&f118, &nKey), &rec);
+        } else {
+            MS2Ptr<Cube> spCube(*FUN_141127cd0(&f98, &nKey));
+            const Unk_CMISEntityRef* pId;
+            if (FUN_1408a9090(&spCube->entity) == 0)
+                pId = reinterpret_cast<const Unk_CMISEntityRef*>(&s_cubeMapNone);
+            else
+                pId = FUN_1408b76f0(FUN_1408a9280(&spCube->entity));
+            Unk_CMISEntityRef idOld(*pId);
+            egf::EntityPtr spNew = FUN_1410bc3d0(Unk_CMISBlock(rec));
+            FUN_140964eb0(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity), &spNew);
+            Unk_CMISIter<259> itFindE, itEndE;
+            FUN_1411581c0(&fa8, &itFindE, &idOld);
+            if (FUN_141127800(&itFindE, FUN_1411520f0(&fa8, &itEndE)))
+                FUN_14111c730(&fa8, &itEndE, itFindE);
+            if (FUN_1408a9090(&spCube->entity) != 0)
+                FUN_140965020(FUN_141128190(&fa8, FUN_1408b76f0(FUN_1408a9280(&spCube->entity))), &spCube);
+            FUN_141156520(&f128, &nKey);
+        }
+    }
+}
+
+// ---- w138 batch 19 ----
+struct Unk_CMISCubeNode { int m_key; int m_pad; Unk_CMISCubeTimer m_val; };
+void FUN_14114e080(Unk_CMISTree<272>*, Unk_CMISIter<272>*);                                 // begin
+Unk_CMISCubeNode* FUN_1411286c0(Unk_CMISIter<272>*);                                        // operator*
+void FUN_141129bf0(Unk_CMISIter<272>*);                                                     // operator++
+void FUN_1411549b0(Unk_CMISTree<272>*, const int*);                                         // erase
+void FUN_140ae1160(egf::Entity*, unsigned, int*);                                           // SetProperty(int)
+
+// @0x1410c9db0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410c9db0()
+{
+    Unk_CMISIntList setDone;
+    Unk_CMISIter<272> it, itEnd;
+    for (FUN_14114e080(&f1f8, &it); FUN_141127680(&it, FUN_141151d90(&f1f8, &itEnd)); FUN_141129bf0(&it)) {
+        int nKey = FUN_1411286c0(&it)->m_key;
+        Unk_CMISCubeTimer* pTimer = &FUN_1411286c0(&it)->m_val;
+        if (pTimer->m_timer.FUN_140868c00() != 0) {
+            Unk_CMISIter<267> itIns;
+            FUN_14111d290(reinterpret_cast<Unk_CMISTree<267>*>(&setDone), &itIns, &nKey);
+            Cube* pCube = FUN_141127cd0(&f98, &nKey)->get();
+            FUN_14098c6e0(FUN_1408a9280(&pCube->entity), 0x9004569a, &pTimer->m_bFlagB);
+            FUN_14098c6e0(FUN_1408a9280(&pCube->entity), 0x2a7fd9f4, &pTimer->m_bFlagA);
+            bool bFlag = false;
+            FUN_1408a20a0(FUN_1408a9280(&pCube->entity), 0x23f9860e, &bFlag);
+            if (pCube->field44 == 1) {
+                Unk_CMISEffReq request;
+                FUN_140a52ef0(&request);
+                request.m_strName = FUN_1401d31f0()->m_strCubeEffect;
+                request.m_nOwnerId = 7;
+                FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(&pCube->entity))));
+                FUN_1403ed280()->FUN_1411a4a00(&request);
+                FUN_1405a89e0(&request);
+            }
+            if (bFlag) {
+                Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                if (spInst.FUN_14098d090() != 0)
+                    FUN_1413d6e60(spInst.FUN_14098d0e0(), FUN_1408a9090(&pCube->entity), 1);
+            }
+            bool bOn = true;
+            FUN_14098c6e0(FUN_1408a9280(&pCube->entity), 0xa0b6b179, &bOn);
+            if (pCube->field44 != 1) {
+                int nEffect = 9;
+                FUN_140ae1160(FUN_1408a9280(&pCube->entity), 0xada5c5d2, &nEffect);
+                FUN_141689ec0(FUN_1409f7ca0(), FUN_1408a9090(&pCube->entity), nEffect, 0, 1);
+            }
+        }
+    }
+    Unk_CMISListIter itList;
+    Unk_CMISListEnd itListEnd;
+    for (FUN_14114e630(&setDone, &itList); FUN_14035ea60(&itList, FUN_1411522d0(&setDone, &itListEnd)); FUN_14035ebf0(&itList))
+        FUN_1411549b0(&f1f8, FUN_1403e8d70(&itList));
 }

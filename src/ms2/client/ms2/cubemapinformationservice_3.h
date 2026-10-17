@@ -280,6 +280,8 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410c9db0();
+    void FUN_1410cb4c0(struct Unk_CMISBlock rec);
     void FUN_1410c8a90();
     bool FUN_1410d2fb0(__int64 nOwnerId, int nCategory, int* pnCount);
     unsigned __int64 FUN_1410d4940();
