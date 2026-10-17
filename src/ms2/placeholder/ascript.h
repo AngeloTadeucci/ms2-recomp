@@ -31,6 +31,8 @@ public:
     MS2Ptr(int nNull);                  // `MS2Ptr<T> p(0)`: m_p = NULL (0x140c74e10 for T = AScript)
     MS2Ptr(T* p);                       // m_p = p; AddRef() (0x140f9c100 for T = UISwfEntity)
     MS2Ptr(const MS2Ptr& o);            // 0x1409b9940 for T = AScript
+    // Converting copy (U derives from T): m_p = o.m_p; AddRef() (0x1405ace70 for T = CGemDataBase, U = CGemTombStoneData).
+    template <class U> MS2Ptr(const MS2Ptr<U>& o) { m_p = o.m_p; AddRef(); }
     ~MS2Ptr();                          // 0x1409b9a00 for T = AScript
     // Converting assignment (U derives from T). Inline: its COMDAT is in the first unit that assigns (0x1422dca80 for
     // T = AScript, U = ASDisplayObject, in uiswfentity.cpp).

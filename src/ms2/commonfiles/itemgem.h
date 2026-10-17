@@ -14,6 +14,7 @@
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/cptred.h"
+#include <efd/Point3.h>
 
 class CItem;
 class COutputStream;
@@ -21,55 +22,103 @@ class CInputStream;
 class PC;
 class ClonePC;
 
-// The gem tables' rows (other units: ?\itemgempropertytable.cpp / ?\itemgemstonedata.cpp). Only the RTTI base and the
-// members the gems touch are declared here; the layouts behind the pads are not recovered.
+// The gem tables' rows (the table itself is ?\itemgempropertytable.cpp, placeholder/citemgempropertytable.h). The rows
+// are read from Table/ItemGemProperty_*.xml by vfunc_1; the ctors / dtors / vftables are in that unit.
+class Unk_140165cf0;    // game TinyXML element (xmlattr.h)
+
+// RTTI CGemDataBase, 0x20 bytes, base CPtred: abstract, the row's gem id and an unread dword.
 class CGemDataBase : public CPtred
 {
 public:
-    virtual ~CGemDataBase();                                        //  0 0x1405af840 (??_G)
-    char m_pad_18[8];
+    CGemDataBase();                                                 // 0x1405af210
+    virtual ~CGemDataBase();                                        //  0 0x1405af570 (??_G 0x1405af840)
+    virtual bool vfunc_1(Unk_140165cf0* pElem) = 0;                 //  1 reads the row's attributes (pure)
+    int m_nGemId;                                                   // +0x18
+    int m_nUnused;                                                  // +0x1c
 };
 MS2_CHECK_SIZE(CGemDataBase, 0x20);
 
-// A sub-record of the tomb stone data (RTTI CGemTombStoneData::TModelAttr): reset by FUN_1405ac670.
-struct Unk_GemModelAttr
-{
-    void FUN_1405ac670();                                           // 0x1405ac670
-    char m_pad[0x40];
-};
-
+// One <tomb> row. The model attributes of the tomb stone, in the normal and the "dark_" variant.
 class CGemTombStoneData : public CGemDataBase
 {
 public:
-    char m_pad_20[0x10];
-    Unk_GemModelAttr m_attrA;                                       // +0x30
-    Unk_GemModelAttr m_attrB;                                       // +0x70
-};
+    // RTTI CGemTombStoneData::TModelAttr, 0x40 bytes, base CPtred: the model (kfm) and the effect names.
+    class TModelAttr : public CPtred
+    {
+    public:
+        TModelAttr();                                               // 0x1405af3f0
+        virtual ~TModelAttr();                                      //  0 0x1405af6b0 (??_G 0x1405af9c0)
+        void FUN_1405ac3b0(Unk_140165cf0* pElem, const CString& strPrefix);   // 0x1405ac3b0 reads "<prefix>kfm" ...
+        void FUN_1405ac670();                                       // 0x1405ac670 preloads the effects
+        CString m_strKfm;                                           // +0x18
+        CString m_strRegenEffect;                                   // +0x20
+        CString m_strIdleEffect;                                    // +0x28
+        CString m_strDmgEffect;                                     // +0x30
+        CString m_strReviveEffect;                                  // +0x38
+    };
 
+    CGemTombStoneData();                                            // 0x1405af300
+    virtual ~CGemTombStoneData();                                   //  0 0x1405af630 (??_G 0x1405af900)
+    virtual bool vfunc_1(Unk_140165cf0* pElem);                     //  1 0x1405ac760
+
+    efd::Point3 m_ptRotation;                                       // +0x20 "rotation"
+    TModelAttr m_attrA;                                             // +0x30
+    TModelAttr m_attrB;                                             // +0x70 the "dark_" variant
+};
+MS2_CHECK_SIZE(CGemTombStoneData::TModelAttr, 0x40);
+MS2_CHECK_SIZE(CGemTombStoneData, 0xb0);
+typedef CGemTombStoneData::TModelAttr Unk_GemModelAttr;
+
+// One <swim> row: the swim effects and the animation name suffix ("kf").
 class CGemSwimData : public CGemDataBase
 {
 public:
-    void FUN_1405ac9e0();                                           // 0x1405ac9e0
-};
+    CGemSwimData();                                                 // 0x1405af280
+    virtual ~CGemSwimData();                                        //  0 0x1405af5d0 (??_G 0x1405af8c0)
+    virtual bool vfunc_1(Unk_140165cf0* pElem);                     //  1 0x1405ac860
+    CString FUN_1405ac8f0();                                        // 0x1405ac8f0 "SwimIdle_<kf>"
+    CString FUN_1405ac940();                                        // 0x1405ac940 "SwimRun_<kf>"
+    CString FUN_1405ac990();                                        // 0x1405ac990 "SwimDash_<kf>"
+    void FUN_1405ac9e0();                                           // 0x1405ac9e0 preloads the effects
 
+    CString m_strIdleEffect;                                        // +0x20 "idleEffect"
+    CString m_strRunEffect;                                         // +0x28 "runEffect"
+    CString m_strDashEffect;                                        // +0x30 "dashEffect"
+    CString m_strKf;                                                // +0x38 "kf"
+};
+MS2_CHECK_SIZE(CGemSwimData, 0x40);
+
+// One <charEffect> row: the effect of the gem for the wearer's gender / couple.
 class CGemCharEffectData : public CGemDataBase
 {
 public:
+    CGemCharEffectData();                                           // 0x1405aca90
+    virtual ~CGemCharEffectData();                                  //  0 0x1405af4f0 (??_G 0x1405af800)
+    virtual bool vfunc_1(Unk_140165cf0* pElem);                     //  1 0x1405acb20
     CString FUN_1405acbd0(int nPartnerGem);                         // 0x1405acbd0 the effect name of the partner gem
-};
+    CString FUN_1405acc80(int nOwnerGem, int nPartnerGem);          // 0x1405acc80 the couple effect name
 
+    CString m_strMale;                                              // +0x20 "EffectMale"
+    CString m_strFemale;                                            // +0x28 "EffectFemale"
+    CString m_strCoupleDiff;                                        // +0x30 "EffectCouple_Diff"
+    CString m_strCoupleSameM;                                       // +0x38 "EffectCouple_Same_M"
+    CString m_strCoupleSameF;                                       // +0x40 "EffectCouple_Same_F"
+};
+MS2_CHECK_SIZE(CGemCharEffectData, 0x48);
+
+// One <effect> row.
 class CGemEffectData : public CGemDataBase
 {
 public:
+    CGemEffectData();                                               // 0x1405af240
+    virtual ~CGemEffectData();                                      //  0 0x1405af5a0 (??_G 0x1405af880)
+    virtual bool vfunc_1(Unk_140165cf0* pElem);                     //  1 0x1405acd40
     CString m_strEffect;                                            // +0x20 the equip effect name
 };
+MS2_CHECK_SIZE(CGemEffectData, 0x28);
 
-// The gem table: FUN_1405ac160 looks a gem row up by id.
-class Unk_GemTable
-{
-public:
-    MS2Ptr<CGemDataBase> FUN_1405ac160(int nGemId);                 // 0x1405ac160
-};
+#include "ms2/placeholder/citemgempropertytable.h"
+typedef CItemGemPropertyTable Unk_GemTable;                        // the gem table (placeholder/citemgempropertytable.h)
 Unk_GemTable* FUN_1405a96f0();                                      // 0x1405a96f0 the table singleton (DAT_143aafd08)
 
 enum GemType
