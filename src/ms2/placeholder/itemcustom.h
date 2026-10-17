@@ -15,7 +15,8 @@ class ItemCustom : public CPtred
 public:
     ItemCustom();                                   // 0x140266a10
     virtual ~ItemCustom();                          // 0x14027e890
-    int FUN_140266aa0(Unk_140165cf0* pElem);        // XML read
+    void FUN_140266aa0(Unk_140165cf0* pElem);        // XML read
+    void FUN_140266b10(void* pElem) const;          // XML write
     efd::Point3 unknown18;          // +0x18
     efd::Point3 unknown24;          // +0x24
     CString name;                   // +0x30
