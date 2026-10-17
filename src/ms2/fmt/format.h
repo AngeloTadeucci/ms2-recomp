@@ -20,6 +20,7 @@ extern "C" size_t (__cdecl* __imp_wcslen)(const wchar_t*);
 
 #include <cstddef>
 #include <memory>
+#include <string>
 #include <type_traits>
 
 namespace fmt {
@@ -29,6 +30,8 @@ typedef unsigned __int64 ULongLong;
 
 template <typename Char>
 class BasicFormatter;
+template <typename Char>
+class BasicStringRef;
 template<class Char, class T>
 void format_arg(BasicFormatter<Char>&, const Char*&, const T&);
 
@@ -163,6 +166,16 @@ public:
     FMT_MAKE_STR_VALUE(const CString&, STRING)
     FMT_MAKE_STR_VALUE(const CStringW&, WSTRING)    // MS2: type 11, 0x1401d0e90 (uiworldchampionrewarddialog.cpp)
 
+    // MS2: std::wstring arguments (the ostream path of format_arg, additionalactionadditional.cpp): MakeValue
+    // 0x140182090 builds a WStringRef temporary and calls set_string(WStringRef) 0x140190fe0.
+    void set_string(BasicStringRef<wchar_t> str)
+    {
+        Convert(0);
+        wstring.value = str.c_str();
+        wstring.size = str.size();
+    }
+    MakeValue(const std::basic_string<wchar_t>& value) { set_string(value); }
+
     FMT_MAKE_VALUE(void*, pointer, POINTER)
     FMT_MAKE_VALUE(const void*, pointer, POINTER)
 
@@ -204,8 +217,17 @@ class BasicStringRef
 {
 public:
     BasicStringRef(const Char* s, std::size_t size = 0) : data_(s), size_(size) {}   // 0x1401cfc90 (wide)
+    BasicStringRef(const std::basic_string<Char>& s) : data_(s.c_str()), size_(s.size()) {}   // 0x140181c70 (wide)
+    const Char* c_str() const { return data_; }
+    // The size is computed on first use (0x140191020, wide).
+    std::size_t size() const
+    {
+        if (size_ == 0 && data_)
+            size_ = std::char_traits<Char>::length(data_);
+        return size_;
+    }
     const Char* data_;
-    std::size_t size_;
+    mutable std::size_t size_;
 };
 typedef BasicStringRef<wchar_t> WStringRef;
 

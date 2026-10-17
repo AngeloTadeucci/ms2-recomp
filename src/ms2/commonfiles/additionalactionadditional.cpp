@@ -314,7 +314,9 @@
 // MS2-PIN: ??$IsSameArray@W4Unk_SkillMasteryType@@@@YA_NAEBV?$CAtlArray@W4Unk_SkillMasteryType@@V?$CElementTraits@W4Unk_SkillMasteryType@@@ATL@@@ATL@@0@Z 0x140179840
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\additionalactionadditional.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
+#include <sstream>
 #include "additionalactionadditional.h"
+#include "ms2/commonfiles/logstring.h"
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/client/ms2/uinametag_gos.h"
 #include "ms2/placeholder/gosubstatenames.h"
@@ -325,12 +327,9 @@
 #include "hook/ms2hook.h"
 
 // Unrecovered helpers.
-void* FUN_140166440();                                                      // the log singleton
-void FUN_1401859c0(void* pLog, int nLevel, int nCategory, const wchar_t* pszFormat);
-void FUN_140177a80(void* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const unsigned& arg);
-void FUN_140177b10(void* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const SAType& arg);
+CLogString* FUN_140166440();                                                // the log singleton
 class Unk_AdditionalFlags { public: bool FUN_140829c80(unsigned nID); bool FUN_140829cf0(unsigned nID); };
-Unk_AdditionalFlags* FUN_140186320();                                      // its singleton
+extern Unk_AdditionalFlags* DAT_143aac270;
 bool FUN_14028f650(Unk_140165cf0* pElem);                                   // the element is usable
 Unk_CompareOp FUN_140219400(const CString& str);
 Unk_DungeonGroupType FUN_140218c20(const CString& str);
@@ -339,7 +338,59 @@ Unk_SkillMasteryType FUN_14021c400(const CString& str);
 // Per SA type flags (0x20 bytes each); +8 = the type may be set by an additional effect.
 struct Unk_SATypeInfo { void* m_0; int m_bAllowAdditional; int m_c; void* m_10; void* m_18; };
 extern std::vector<Unk_SATypeInfo> DAT_143ab1a40;
-CString FUN_140188f50(const char* psz, int nCodePage);                     // multibyte copy (0 = default code page)
+CString FUN_14016a5c0(const char* psz, int nCodePage);                     // multibyte copy
+extern int DAT_1439f4840;                                                   // the default code page
+
+// @0x140188f50
+inline CString FUN_140188f50(const char* psz, int nCodePage)
+{
+    return FUN_14016a5c0(psz, nCodePage == 0 ? DAT_1439f4840 : nCodePage);
+}
+
+// @0x140186320
+inline Unk_AdditionalFlags* FUN_140186320()
+{
+    return DAT_143aac270;
+}
+
+// fmt's ostream formatting of a custom argument (cppformat's format(BasicFormatter&, const Char*&, const T&)) with
+// the MS2 enum shortcut in front: enums are formatted as int, so the stream path is dead code that still instantiates
+// basic_ostringstream<wchar_t> (0x140182b70 ...). The shared generic in fmt/format.h is the MS2-FUNCTIONAL short form.
+// @0x140180790
+template <> inline void fmt::format_arg(BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const SAType& value)
+{
+    internal::Arg arg;
+    internal::Value& arg_value = arg;
+    if (std::is_enum<SAType>::value)
+    {
+        arg.int_value = value;
+        arg.type = internal::Arg::INT;
+    }
+    else
+    {
+        std::basic_ostringstream<wchar_t> os;
+        os << value;
+        std::basic_string<wchar_t> str = os.str();
+        arg_value = internal::MakeValue<BasicFormatter<wchar_t> >(str);
+        arg.type = internal::Arg::STRING;
+    }
+    format_str = f.format(format_str, arg);
+}
+
+// The unit's log calls (FMT_VARIADIC wrappers over CLogString::FUN_1406530d0).
+// @0x1401859c0
+inline void Unk_AdditionalLog(CLogString* log, int level, int category, const wchar_t* format)
+{
+    log->FUN_1406530d0(level, category, format, fmt::ArgList());
+}
+
+// 0x140177a80 (unsigned) / 0x140177b10 (SAType)
+template <class T> inline void Unk_AdditionalLog(CLogString* log, int level, int category, const wchar_t* format,
+                                                 const T& first)
+{
+    const fmt::internal::ArgArray<1>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(first)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first), args));
+}
 // 0x1401798f0 / 0x140179960
 template <class T, size_t N> T NameToValue(const CString& str, std::pair<const char*, T> (&table)[N])
 {
@@ -1051,7 +1102,7 @@ bool AdditionalLevelData::Load(Unk_140165cf0* pElem)
             bool bValues = arrCodes.GetCount() == arrValues.GetCount();
             if (!bFactors && !bValues)
             {
-                FUN_1401859c0(FUN_140166440(), 1, 0x13, L"EffectDuration different count factor or value");
+                Unk_AdditionalLog(FUN_140166440(), 1, 0x13, L"EffectDuration different count factor or value");
                 return false;
             }
             else if (bFactors == true && bValues == false)
@@ -1090,7 +1141,7 @@ bool AdditionalLevelData::Load(Unk_140165cf0* pElem)
         XmlTokenList(pCooldown, "values", arrValues);
         if (arrSkillIDs.GetCount() != arrValues.GetCount())
         {
-            FUN_1401859c0(FUN_140166440(), 1, 0x13, L"ModifySkillCooldown different count value");
+            Unk_AdditionalLog(FUN_140166440(), 1, 0x13, L"ModifySkillCooldown different count value");
             return false;
         }
         for (unsigned i = 0; i < arrSkillIDs.GetCount(); i++)
@@ -1105,7 +1156,7 @@ bool AdditionalLevelData::Load(Unk_140165cf0* pElem)
         XmlTokenList(pOverlap, "offsetCounts", arrOffsets);
         if (arrCodes.GetCount() != arrOffsets.GetCount())
         {
-            FUN_1401859c0(FUN_140166440(), 1, 0x13, L"Count Diff effectCodes, offsetCounts");
+            Unk_AdditionalLog(FUN_140166440(), 1, 0x13, L"Count Diff effectCodes, offsetCounts");
             return false;
         }
         for (unsigned i = 0; i < arrCodes.GetCount(); i++)
@@ -1137,12 +1188,12 @@ bool AdditionalLevelData::Load(Unk_140165cf0* pElem)
             if (eType == SAType_None)
             {
                 unsigned nID = GetID();
-                FUN_140177a80(FUN_140166440(), 1, 0x13, L"Unknown SA Type String ID:{0}", nID);
+                Unk_AdditionalLog(FUN_140166440(), 1, 0x13, L"Unknown SA Type String ID:{0}", nID);
                 continue;
             }
             if (DAT_143ab1a40[eType].m_bAllowAdditional == 0)
             {
-                FUN_140177b10(FUN_140166440(), 1, 0x13, L"Not Allow SA Type:{0}", eType);
+                Unk_AdditionalLog(FUN_140166440(), 1, 0x13, L"Not Allow SA Type:{0}", eType);
                 continue;
             }
             int nValue = 0;
