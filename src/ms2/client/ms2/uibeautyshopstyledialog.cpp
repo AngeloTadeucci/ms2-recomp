@@ -438,11 +438,9 @@ __int64 FUN_140f01180()
 }
 
 // @0x140f011b0
-// MS2-FUNCTIONAL: code generation differs (register allocation / block layout)
 unsigned FUN_140f011b0()
 {
-    int n = FUN_140f011f0();
-    return n + *FUN_1401d7c10(&FUN_1401d3200()->m_maxExtend);
+    return FUN_140f011f0() + *FUN_1401d7c10(&FUN_1401d3200()->m_maxExtend);
 }
 
 // @0x140f011f0
@@ -866,15 +864,16 @@ void UIBeautyShopStyleDialog::vfunc_67()
 }
 
 // @0x140f039c0
-// MS2-FUNCTIONAL: code generation differs (register allocation / block layout)
 int UIBeautyShopStyleDialog::vfunc_13()
 {
     if (UIDialog::vfunc_13())
         return 1;
-    if (!FUN_14025e7c0()->FUN_14116d840())
-        return 0;
-    FUN_140f082d0();
-    return 1;
+    if (FUN_14025e7c0()->FUN_14116d840())
+    {
+        FUN_140f082d0();
+        return 1;
+    }
+    return 0;
 }
 
 // @0x140f03a10
@@ -1708,13 +1707,12 @@ void UIBeautyShopStyleDialog::FUN_140f08a30(int bPreview)
 }
 
 // @0x140f08aa0
-// MS2-FUNCTIONAL: code generation differs (register allocation / block layout)
 void UIBeautyShopStyleDialog::FUN_140f08aa0(int bPreview)
 {
-    if (bPreview == 0)
-        FUN_140f079a0();
-    else
+    if (bPreview != 0)
         FUN_140f07a00();
+    else
+        FUN_140f079a0();
 }
 
 // @0x140f08ae0
