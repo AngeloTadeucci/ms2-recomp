@@ -97,8 +97,8 @@ public:
     void LoadLight();                                       // 0x140b68810 ugcHousingLight.xml
     void LoadCamera();                                      // 0x140b68b20 ugcHousingCamera.xml
 
-    ATL::CRBMap<int, MS2Ptr<UgcHomeBgData> > m_mapBg;       // +0x08
-    ATL::CRBMap<int, MS2Ptr<UgcHomeLightData> > m_mapLight; // +0x38
-    ATL::CRBMap<int, MS2Ptr<UgcHomeCameraData> > m_mapCamera;   // +0x68
+    ATL::CRBMap<unsigned, MS2Ptr<UgcHomeBgData> > m_mapBg;       // +0x08
+    ATL::CRBMap<unsigned, MS2Ptr<UgcHomeLightData> > m_mapLight; // +0x38
+    ATL::CRBMap<unsigned, MS2Ptr<UgcHomeCameraData> > m_mapCamera;   // +0x68
 };
 MS2_CHECK_SIZE(UgcHomeOptionData, 0x98);

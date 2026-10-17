@@ -2,6 +2,8 @@
 // camera tables and the selection that is applied to the home map (plus the CRBMap<int, MS2Ptr<..>> template glue).
 // MS2-UNIT: unit_140b67d70
 // MS2-RANGE: 0x140b67d70-0x140b6c7a0 .text$mn
+// MS2-PINS-BEGIN tplpin
+// MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\ugchomebgdata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ugchomebgdata.h"
@@ -10,6 +12,9 @@
 #include "ms2/placeholder/cstringtable.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include <errno.h>
+#include <string.h>
+#include <stdlib.h>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -101,6 +106,26 @@ UgcHomeCameraData::UgcHomeCameraData(CStringW strName)
 // @0x140b67f20
 UgcHomeOptionData::UgcHomeOptionData()
     : m_mapBg(10), m_mapLight(10), m_mapCamera(10)
+{
+}
+
+// @0x140b69780
+UgcHomeBgData::~UgcHomeBgData()
+{
+}
+
+// @0x140b697c0
+UgcHomeCameraData::~UgcHomeCameraData()
+{
+}
+
+// @0x140b697f0
+UgcHomeLightData::~UgcHomeLightData()
+{
+}
+
+// @0x140b69820
+UgcHomeOptionData::~UgcHomeOptionData()
 {
 }
 
@@ -197,7 +222,7 @@ void UgcHomeOptionData::LoadBg()
         CString strPath;
         FUN_1408733e0(pNode, "path", strPath);
         MS2Ptr<UgcHomeBgData> spData(new UgcHomeBgData(FUN_1401a9d70()->FUN_141811980(0x33, nId), strPath));
-        m_mapBg.SetAt((int)m_mapBg.GetCount(), spData);
+        m_mapBg.SetAt((unsigned)m_mapBg.GetCount(), spData);
     }
 }
 
@@ -220,7 +245,7 @@ void UgcHomeOptionData::LoadLight()
         FUN_1408746f0(pNode, "ambientcolor", color);
         color.FUN_140ae9270(255.0f);
         MS2Ptr<UgcHomeLightData> spData(new UgcHomeLightData(FUN_1401a9d70()->FUN_141811980(0x33, nId), color));
-        m_mapLight.SetAt((int)m_mapLight.GetCount(), spData);
+        m_mapLight.SetAt((unsigned)m_mapLight.GetCount(), spData);
     }
 }
 
@@ -246,7 +271,7 @@ void UgcHomeOptionData::LoadCamera()
         MS2Ptr<UgcHomeCameraData> spData(new UgcHomeCameraData(FUN_1401a9d70()->FUN_141811980(0x33, nId)));
         spData->m_offset = offset;
         spData->m_upAxis = upAxis;
-        m_mapCamera.SetAt((int)m_mapCamera.GetCount(), spData);
+        m_mapCamera.SetAt((unsigned)m_mapCamera.GetCount(), spData);
     }
 }
 
@@ -287,4 +312,21 @@ void FUN_140b6bd30(void* pCamera)
 {
     if (reinterpret_cast<Unk_UhCameraView*>(pCamera)->m_mode.FUN_1409f2180() != 0)
         reinterpret_cast<Unk_UhCameraView*>(pCamera)->m_mode.FUN_1409f21a0()->vfunc_10();
+}
+
+// @0x140b6c680
+// MS2-FUNCTIONAL: CRT memcpy_s copy (library lane); same checks and errno values as the CRT
+unsigned __int64 FUN_140b6c680(void* pDst, unsigned __int64 nDstSize, const void* pSrc, unsigned __int64 nCount)
+{
+    if (nCount == 0)
+        return 0;
+    if (pDst == 0 || pSrc == 0 || nDstSize < nCount)
+    {
+        int nErr = (pDst == 0 || pSrc == 0) ? 22 : 34;
+        *_errno() = nErr;
+        _invalid_parameter_noinfo();
+        return nErr;
+    }
+    memmove(pDst, pSrc, nCount);
+    return 0;
 }
