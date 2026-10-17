@@ -93,7 +93,7 @@ MS2_CHECK_SIZE(Unk_CMISCubeTimer, 0x48);
 class Unk_CMISPropPtr
 {
 public:
-    Unk_CMISPropPtr();
+    Unk_CMISPropPtr(int nNull = 0);                             // = Unk_InteractPropPtr(int) 0x140ae1340
     Unk_CMISPropPtr(const Unk_CMISPropPtr&);
     ~Unk_CMISPropPtr();
 private:
