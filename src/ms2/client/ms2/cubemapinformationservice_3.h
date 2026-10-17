@@ -19,6 +19,7 @@
 #include "ms2/commonfiles/ugcbuildvalidator.h"
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
 #include "ms2/commonfiles/ugcmapdata.h"
+#include "ms2/commonfiles/fielddata.h"
 #include "ms2/placeholder/nipoint3.h"
 #include "ms2/client/ms2/cubespawnobject.h"
 
@@ -174,6 +175,19 @@ public:
     void FUN_1410d5ab0();
     void FUN_1410d5ae0(int v);
     int FUN_1410d5b00();
+    void FUN_1410cb8b0(bool b);
+    bool FUN_1410cb920(int n);
+    int FUN_1410d2ee0();
+    int FUN_1410d2f10();
+    void FUN_1410d54f0(bool b);
+    int FUN_1410d5550(int nKey);
+    void FUN_1410d55d0(int a, int b);
+    bool FUN_1410d5640();
+    bool FUN_1410d56a0();
+    void FUN_1410d57a0(unsigned __int64 key);
+    void FUN_1410d5830(unsigned __int64 key);
+    bool FUN_1410d58c0(unsigned __int64 key);
+    void FUN_1410d5930(Unk_CMISTree<286>* pOut);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();

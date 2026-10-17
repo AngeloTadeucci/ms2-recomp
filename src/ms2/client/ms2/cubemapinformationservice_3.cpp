@@ -144,9 +144,31 @@ int FUN_1408a03c0(Unk_Int3 pt);                                 // the cell key 
 Unk_Int3 FUN_1408a0400(int nKey);                               // the cube point of a cell key
 Unk_CMISIter<278>* FUN_14114db40(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // begin
 Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // end
-bool FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
+unsigned char FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+unsigned FUN_140869420();
+void FUN_1408a06a0(int, int);
+struct Unk_CMISIntPair { int m_key, m_val; };
+struct Unk_CMISInsRes { void* m_it; bool m_ok; };
+Unk_CMISIter<286>* FUN_140340ff0(Unk_CMISTree<286>*, Unk_CMISIter<286>*);                    // begin
+Unk_CMISIter<286>* FUN_140341f40(Unk_CMISTree<286>*, Unk_CMISIter<286>*);                    // end
+Unk_CMISIter<286>* FUN_1404c0270(Unk_CMISTree<286>*, Unk_CMISIter<286>*, const unsigned __int64*);   // find
+unsigned char FUN_1403344a0(Unk_CMISIter<286>*, Unk_CMISIter<286>*);
+unsigned char FUN_140334210(Unk_CMISIter<286>*, Unk_CMISIter<286>*);
+Unk_CMISInsRes* FUN_1404422b0(Unk_CMISTree<286>*, Unk_CMISInsRes*, const unsigned __int64*);   // insert
+void FUN_1404bfb40(Unk_CMISTree<286>*, const unsigned __int64*);                               // erase
+unsigned __int64* FUN_1408f2950(Unk_CMISIter<286>*);                                           // operator*
+void FUN_140334ef0(Unk_CMISIter<286>*);                                                        // operator++
+Unk_CMISIter<282>* FUN_1411582a0(Unk_CMISTree<282>*, Unk_CMISIter<282>*, const int*);
+Unk_CMISIter<282>* FUN_141152150(Unk_CMISTree<282>*, Unk_CMISIter<282>*);
+bool FUN_141127110(Unk_CMISIter<282>*, Unk_CMISIter<282>*);
+Unk_CMISIntPair* FUN_1411284e0(Unk_CMISIter<282>*);
+bool FUN_141151720(Unk_CMISTree<260>*);
+CFieldData* FUN_140885340(Unk_PayloadPtr<Unk_CMISObj208>*);
+bool FUN_140374410(int);
+unsigned FUN_141bd3060(Unk_CMISWorld*);
+Unk_CMISIter<278>* FUN_141157040(Unk_CMISTree<278>*, Unk_CMISIter<278>*, const int*);
 const Unk_CMISEntityRef* FUN_1408b76f0(egf::Entity*);                   // &entity id
 egf::Entity* FUN_1408a9280(const void* pSp);
 void FUN_1409618c0(egf::Entity*, unsigned, Unk_StreamPoint*);   // GetProperty(Point3)
@@ -976,6 +998,113 @@ void CubeMapInformationService::FUN_1410d5ab0() { FUN_14115ab30(&f98); }
 void CubeMapInformationService::FUN_1410d5ae0(int v) { f450 = v; }
 // @0x1410d5b00
 int CubeMapInformationService::FUN_1410d5b00() { return f450; }
+// @0x1410cb8b0
+void CubeMapInformationService::FUN_1410cb8b0(bool b)
+{
+    f248 = b;
+    if (f248)
+        f24c = FUN_140869420();
+}
+// @0x1410cb920
+bool CubeMapInformationService::FUN_1410cb920(int n)
+{
+    if (!f248)
+        return false;
+    return FUN_140869420() > (unsigned)(f24c + n);
+}
+// @0x1410d2ee0
+int CubeMapInformationService::FUN_1410d2ee0() { return FUN_141151720(&fb8); }
+// @0x1410d2f10
+int CubeMapInformationService::FUN_1410d2f10() { return FUN_140374410(FUN_141bd3060(FUN_1403ed2d0())); }
+// @0x1410d2f40
+int CubeMapInformationService::FUN_1410d2f40(int nKey)
+{
+    Unk_CMISIter<278> itEnd, itFind;
+    if (FUN_141127380(FUN_141157040(&f2b8, &itFind, &nKey), FUN_141151910(&f2b8, &itEnd)))
+        return 1;
+    return 0;
+}
+// @0x1410d54f0
+void CubeMapInformationService::FUN_1410d54f0(bool b)
+{
+    if (DAT_143ab2820 != FUN_1410c3180())
+        return;
+    f3dc = b;
+}
+// @0x1410d5550
+int CubeMapInformationService::FUN_1410d5550(int nKey)
+{
+    Unk_CMISIter<282> itTmp, itEnd;
+    Unk_CMISIter<282> it = *FUN_1411582a0(&f3c8, &itTmp, &nKey);
+    if (FUN_141127110(&it, FUN_141152150(&f3c8, &itEnd)))
+        return 0;
+    return FUN_1411284e0(&it)->m_val;
+}
+// @0x1410d55d0
+void CubeMapInformationService::FUN_1410d55d0(int a, int b)
+{
+    if (FUN_140885340(&f208)->FUN_140375130()) {
+        FUN_1408a06a0(f1b8, f1b4);
+        return;
+    } else {
+        FUN_1408a06a0(a, b);
+    }
+}
+// @0x1410d5640
+bool CubeMapInformationService::FUN_1410d5640()
+{
+    if (FUN_1410d2f10() == 0)
+        return false;
+    if (FUN_1410c35c0())
+        return false;
+    if (FUN_1410c3180() != DAT_143ab2820)
+        return false;
+    return true;
+}
+// @0x1410d56a0
+bool CubeMapInformationService::FUN_1410d56a0()
+{
+    if (FUN_1410d2f10() == 0)
+        return false;
+    if (!FUN_1410c35c0())
+        return false;
+    if (FUN_1410c3180() != DAT_143ab2820)
+        return false;
+    return true;
+}
+// @0x1410d57a0
+void CubeMapInformationService::FUN_1410d57a0(unsigned __int64 key)
+{
+    Unk_CMISIter<286> itEnd, itFind;
+    Unk_CMISInsRes res;
+    if (FUN_1403344a0(FUN_1404c0270(&f430, &itFind, &key), FUN_140341f40(&f430, &itEnd)))
+        return;
+    FUN_1404422b0(&f430, &res, &key);
+}
+// @0x1410d5830
+void CubeMapInformationService::FUN_1410d5830(unsigned __int64 key)
+{
+    Unk_CMISIter<286> itEnd, itFind;
+    if (FUN_140334210(FUN_1404c0270(&f430, &itFind, &key), FUN_140341f40(&f430, &itEnd)))
+        return;
+    FUN_1404bfb40(&f430, &key);
+}
+// @0x1410d58c0
+bool CubeMapInformationService::FUN_1410d58c0(unsigned __int64 key)
+{
+    Unk_CMISIter<286> itEnd, itFind;
+    if (FUN_1403344a0(FUN_1404c0270(&f430, &itFind, &key), FUN_140341f40(&f430, &itEnd)))
+        return true;
+    return false;
+}
+// @0x1410d5930
+void CubeMapInformationService::FUN_1410d5930(Unk_CMISTree<286>* pOut)
+{
+    Unk_CMISIter<286> it, itEnd;
+    Unk_CMISInsRes res;
+    for (FUN_140340ff0(&f430, &it); FUN_1403344a0(&it, FUN_140341f40(&f430, &itEnd)); FUN_140334ef0(&it))
+        FUN_1404422b0(pOut, &res, FUN_1408f2950(&it));
+}
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
 {
