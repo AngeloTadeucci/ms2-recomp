@@ -517,7 +517,6 @@ void StatePcGuideObjectController::FUN_1417b7720()
 MS2_REPLACE_METHOD(0x1417b7720, StatePcGuideObjectController, FUN_1417b7720, 308, 0x8185DDFC);
 
 // @0x1417b7860
-// MS2-FUNCTIONAL: the base slot works on the PcGuide view of the records
 void StateLocalController::vfunc_0()
 {
     // the records live on the PcGuide layout (StateLocalController declares no members)
@@ -572,7 +571,6 @@ void StatePcGuideObjectController::FUN_1417b7b50(int nKind)
 MS2_REPLACE_METHOD(0x1417b7b50, StatePcGuideObjectController, FUN_1417b7b50, 22, 0x55CC0123);
 
 // @0x1417b7b70
-// MS2-FUNCTIONAL: works on the PcGuide view of the records (StateRideeController declares them as padding)
 void StateRideeController::vfunc_0()
 {
     typedef StatePcGuideObjectController View;
@@ -670,7 +668,6 @@ void State::vfunc_7(int n)
 MS2_REPLACE_METHOD(0x1417b7fa0, State, vfunc_7, 10, 0x96F6F902);
 
 // @0x1417b7fb0
-// MS2-FUNCTIONAL: slot 104 returns the idle skill typed as Unk_PCBaseComp_b18; slot 102 takes it as CSkillRecord
 void State::vfunc_8(double fTime)
 {
     MS2Ptr<Unk_PCBaseComp_b18> spSkill = m_pOwner->vfunc_104(false, false, false);
@@ -968,7 +965,6 @@ int FUN_1417b90f0(CString strName)
 }
 
 // @0x1417b92a0
-// MS2-FUNCTIONAL: the effect id list is the state's std::list<unsigned> (the manager's view type is unit-local)
 void State::FUN_1417b92a0()
 {
     FUN_1417b9310();
@@ -1019,7 +1015,6 @@ StateData* State::vfunc_35()
 MS2_REPLACE_METHOD(0x1417b9430, State, vfunc_35, 31, 0x6B5D2CCA);
 
 // @0x1417b9460
-// MS2-FUNCTIONAL: slot 104 returns the idle skill typed as Unk_PCBaseComp_b18; slot 102 takes it as CSkillRecord
 bool State::FUN_1417b9460()
 {
     MS2Ptr<Unk_PCBaseComp_b18> spSkill = m_pOwner->vfunc_104(true, false, false);
