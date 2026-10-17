@@ -957,34 +957,28 @@ bool CMeratMarketPremiumProduct::IsBuyLimitReached()
 MS2_REPLACE_METHOD(0x1406A0A60, CMeratMarketPremiumProduct, IsBuyLimitReached, 97, 0x258A820F);
 
 // @0x1406a0ad0
-// MS2-FUNCTIONAL: branch layout differs
 bool CMeratMarketPremiumProduct::IsLimitSoldOut()
 {
     if (!HasLimit())
         return false;
-    if (m_nType == 3)
-    {
-        if (m_nLimitCount == 0)
-            return false;
-        return m_nSoldCount >= m_nLimitCount;
-    }
-    return false;
+    if (m_nType != 3)
+        return false;
+    if (m_nLimitCount == 0)
+        return false;
+    return m_nSoldCount >= m_nLimitCount;
 }
 MS2_REPLACE_METHOD(0x1406A0AD0, CMeratMarketPremiumProduct, IsLimitSoldOut, 112, 0x7FDBB94B);
 
 // @0x1406a0b50
-// MS2-FUNCTIONAL: branch layout differs
 bool CMeratMarketPremiumProduct::IsHomeSoldOut()
 {
     if (!HasLimit())
         return false;
-    if (m_nType == 6)
-    {
-        if (m_nLimitCount == 0)
-            return false;
-        return m_nHomeSoldCount >= m_nLimitCount;
-    }
-    return false;
+    if (m_nType != 6)
+        return false;
+    if (m_nLimitCount == 0)
+        return false;
+    return m_nHomeSoldCount >= m_nLimitCount;
 }
 MS2_REPLACE_METHOD(0x1406A0B50, CMeratMarketPremiumProduct, IsHomeSoldOut, 112, 0x271C8904);
 
