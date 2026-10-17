@@ -743,7 +743,7 @@ struct Unk_CMISCubeTimer
 };
 MS2_CHECK_SIZE(Unk_CMISCubeTimer, 0x48);
 
-// 8-byte smart pointer to a PhysX prop object (dtor 0x140ae16b0; node value of f58)
+// 8-byte smart pointer to a PhysX prop object (node value of f58; its dtor wraps ~Unk_InteractPropPtr)
 class Unk_CMISPropPtr
 {
 public:
@@ -810,10 +810,8 @@ typedef efd::vector<Unk_CMISElem52> Unk_CMISElem52Vec;
 typedef std::vector<Unk_CMISKindC> Unk_CMISKindVec;
 
 // ---- drivers: the container operations the CU's code instantiates -----------------------------------------------------
-template <class M> void Unk_CMISDriveMap(M& m, const typename M::key_type& k)
+template <class M> void Unk_CMISDriveMapOps(M& m, const typename M::key_type& k)
 {
-    M tmp;
-    tmp[k];
     (void)m.begin();
     (void)m.end();
     (void)m.empty();
@@ -823,6 +821,12 @@ template <class M> void Unk_CMISDriveMap(M& m, const typename M::key_type& k)
     m.erase(m.begin());
     m.erase(m.begin(), m.end());
     m.clear();
+}
+template <class M> void Unk_CMISDriveMap(M& m, const typename M::key_type& k)
+{
+    M tmp;
+    tmp[k];
+    Unk_CMISDriveMapOps(m, k);
 }
 template <class M> void Unk_CMISDriveMapKey(M& m, const typename M::key_type& k)
 {
@@ -886,7 +890,7 @@ void Unk_CMISDriveTail()
     { Unk_CMISMapSaleState m; Unk_CMISDriveMapKey(m, std::pair<int, int>(0, 0)); }
     { Unk_CMISMapName m; Unk_CMISDriveMapKey(m, CStringA()); }
     { Unk_CMISMapEntityVal m; Unk_CMISDriveMapKey(m, id); }
-    { Unk_CMISMapProp m; Unk_CMISDriveMapKey(m, id); }
+    { Unk_CMISMapProp m; Unk_CMISDriveMapOps(m, id); (void)m.equal_range(id); m.erase(id); }   // no operator[] in the exe
     { Unk_CMISMapEntityCube m; Unk_CMISDriveMap(m, id); }
     { Unk_CMISMapKindCount m; Unk_CMISDriveMap(m, Unk_CMISKindA_None); }
     { Unk_CMISStdMapKindCount m; Unk_CMISDriveMap(m, Unk_CMISKindA_None); }
