@@ -100,8 +100,34 @@ class Unk_CharBookMarkOwner : public CPtred
 {
 };
 
+// A node of the merat market basket tree: a comma separated list of items with a count, and the child nodes.
+class Unk_BasketNode : public CPtred
+{
+public:
+    char m_pad_18[0x30 - 0x18];
+    CStringA m_strItems;                                    // +0x30
+    int m_pad_38;
+    int m_nCount;                                           // +0x3c
+    ATL::CAtlList<MS2Ptr<Unk_BasketNode> > m_children;      // +0x40
+};
+// The receiver of the basket items.
+class Unk_BasketSink
+{
+public:
+    void FUN_1406ad840(const char* pszItem, int nCount);
+};
+void FUN_14028c700(const CStringA& strText, ATL::CAtlArray<CStringA>& arrOut, const char* pszSep);
+
 // The names of the market order kinds (CUgcMarketSchCond::m_n20 indexes them).
 static CStringA s_orderNames[7] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+
+// Header statics of the unit: the property names of the UGC market search and a map (none is used by this unit's code).
+static CStringA s_strSkill = "skill";
+static CStringA s_strStun = "stun";
+static ATL::CAtlMap<unsigned int, CStringA> s_mapNames;
+static CStringA s_strJobCode = "jobCode";
+static CStringA s_strSortValue = "sortValue";
+static CStringA s_strTabIndex = "tabIndex";
 
 // The scoped lock of a CLockCriticalSection (ctor 0x140203610, dtor 0x1401b5120).
 struct Unk_PetLock { Unk_PetLock(CLockCriticalSection& cs, int n); ~Unk_PetLock(); void* p; };
@@ -2383,6 +2409,30 @@ void RideeItemInfo::Read(CInPacket& packet)
     m_look.Read(packet);
 }
 
+
+// A string with a one byte flag (no RTTI).
+struct Unk_StrFlag
+{
+    void Write(COutputStream& stream) const;
+    void Read(CInputStream& stream);
+    CStringW m_str;                                         // +0x00
+    int m_nFlag;                                            // +0x08
+};
+
+// @0x1408974e0
+void Unk_StrFlag::Write(COutputStream& stream) const
+{
+    stream.vfunc_o10_8(m_str);
+    stream.vfunc_o10_1((unsigned char)m_nFlag);
+}
+
+// @0x140897540
+void Unk_StrFlag::Read(CInputStream& stream)
+{
+    m_str = stream.vfunc_o8_8();
+    m_nFlag = stream.vfunc_o8_1();
+}
+
 void FUN_140274fc0(CStringW& str, ATL::CAtlArray<unsigned>& out, const wchar_t* pszSep);
 
 // @0x1408975c0
@@ -2741,4 +2791,66 @@ MS2Ptr<Unk_MeratEquipEntry> CUgcCharBookMark::FUN_140896f00(__int64 nId)
             return spEntry;
     }
     return MS2Ptr<Unk_MeratEquipEntry>(0);
+}
+
+// A zeroed 64-bit value and an int (no RTTI; the constructor only calls the initializer).
+struct Unk_QuadInt
+{
+    Unk_QuadInt();
+    void FUN_140898890();
+    __int64 m_n00;
+    int m_n08;
+};
+
+// @0x140898860
+Unk_QuadInt::Unk_QuadInt()
+{
+    FUN_140898890();
+}
+
+// @0x140898890
+void Unk_QuadInt::FUN_140898890()
+{
+    m_n00 = 0;
+    m_n08 = 0;
+}
+
+// @0x1408988c0
+void FUN_1408988c0(MS2Ptr<Unk_BasketNode> spNode, Unk_BasketSink& sink)
+{
+    if (spNode == 0)
+        return;
+    ATL::CAtlArray<CStringA> items;
+    FUN_14028c700(spNode->m_strItems, items, ",");
+    size_t nItems = items.GetCount();
+    for (size_t i = 0; i < nItems; i++)
+    {
+        sink.FUN_1406ad840(items[i], spNode->m_nCount);
+    }
+}
+
+// @0x1408989c0
+void FUN_1408989c0(ATL::CAtlList<MS2Ptr<Unk_BasketNode> >& nodes, Unk_BasketSink& sink)
+{
+    for (POSITION pos = nodes.GetHeadPosition(); pos != NULL; nodes.GetNext(pos))
+    {
+        MS2Ptr<Unk_BasketNode> spNode = nodes.GetAt(pos);
+        if (spNode == 0)
+            continue;
+        if (spNode->m_children.IsEmpty())
+        {
+            FUN_1408988c0(MS2Ptr<Unk_BasketNode>(spNode), sink);
+        }
+        else
+        {
+            ATL::CAtlList<MS2Ptr<Unk_BasketNode> >& children = spNode->m_children;
+            for (POSITION posChild = children.GetHeadPosition(); posChild != NULL; children.GetNext(posChild))
+            {
+                MS2Ptr<Unk_BasketNode> spChild = children.GetAt(posChild);
+                if (spChild == 0)
+                    continue;
+                FUN_1408988c0(MS2Ptr<Unk_BasketNode>(spChild), sink);
+            }
+        }
+    }
 }
