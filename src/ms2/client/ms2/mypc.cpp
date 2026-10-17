@@ -50,6 +50,8 @@
 // MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetTransfer@@@@QEAA@XZ 0x141532a80
 // MS2-PIN: ??B?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x141533120
 // MS2-PIN: ?FUN_141533e80@Unk_MyPCCameraCtl@@QEAA?AUUnk_StreamPoint@@XZ 0x141533e80
+// MS2-PIN: ?GetNode@?$CAtlMap@W4Unk_MyPCLapenSlot@@KV?$CElementTraits@W4Unk_MyPCLapenSlot@@@ATL@@V?$CElementTraits@K@3@@ATL@@AEBAPEAVCNode@12@AEBW4Unk_MyPCLapenSlot@@AEAI1AEAPEAV312@@Z 0x141534120
+// MS2-PIN: ?FUN_141534300@CObjectShadow@@QEAA_NXZ 0x141534300
 // The first obj of the units.tsv range (0x14151f150-0x141520680) is the message box queue (?\messageboxqueue.cpp).
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\mypc.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -413,9 +415,12 @@ class CObjectShadow : public NiRefObject
 {
 public:
     CObjectShadow(void* pOwner, int nLodHi, int nLodLo);    // 0x14160fb10
-    bool FUN_141534300();                                   // visible
+    // 0x141534300 (inline)
+    bool FUN_141534300() { return m_bVisible; }             // visible
 private:
-    char m_pad[0x58 - sizeof(NiRefObject)];
+    char m_pad[0x34 - sizeof(NiRefObject)];
+    bool m_bVisible;                                        // +0x34
+    char m_pad_35[0x58 - 0x35];
 };
 
 // The graphics quality table: shadow LOD levels per actor kind.
