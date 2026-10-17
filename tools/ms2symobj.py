@@ -316,6 +316,10 @@ def main():
     ap.add_argument("--objs", nargs="+", metavar="OBJ", help="game objects: undefined FUN_<va> externals are auto-bound")
     ap.add_argument("--rebind", action="store_true", help="with --objs: rebind unit-defined mutable data to the exe (hook DLL)")
     ap.add_argument("--rebind-log", metavar="FILE")
+    ap.add_argument("--prune", action="store_true",
+                    help="with --objs: emit only the symbols the objects reference (same DLL after /OPT:REF, much smaller "
+                         "ms2sym.obj and a faster link; for per-unit checks). A symbol referenced by a non-game object "
+                         "would fail to link: then do not prune")
     ap.add_argument("--check", metavar="DLL", help="post-link check of the DLL (base, no ADDR64 to exe globals)")
     a = ap.parse_args()
     if a.check:
@@ -329,6 +333,9 @@ def main():
     if a.objs:
         nauto = autobind_fun(syms, a.objs)
         print(f"auto-bound {nauto} FUN_<va> externals")
+    if a.objs and a.prune:
+        want = undefined_externals(a.objs)
+        syms = {n: v for n, v in syms.items() if n in want}
     data, nf, nd, ns = build(syms)
     os.makedirs(os.path.dirname(os.path.abspath(a.output)), exist_ok=True)
     tmp = a.output + ".tmp"

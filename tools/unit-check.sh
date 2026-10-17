@@ -67,12 +67,18 @@ syms="$R/build/progress-$AGENT/symbols.tsv"
 
 build() {   # build <dir> <toolchain> <ninja wrapper>
     local dir=$1 tc=$2 nj=$3
-    if [ ! -f "$dir/build.ninja" ] || [ "$(grep -m1 '^MS2_GAME_FILTER:' "$dir/CMakeCache.txt" 2>/dev/null)" != "MS2_GAME_FILTER:STRING=$filter" ]; then
+    # MS2_SYMOBJ_PRUNE: ms2sym.obj only holds the symbols this unit references (far fewer /alternatename directives: the link takes seconds instead of 45)
+    if [ ! -f "$dir/build.ninja" ] || [ "$(grep -m1 '^MS2_GAME_FILTER:' "$dir/CMakeCache.txt" 2>/dev/null)" != "MS2_GAME_FILTER:STRING=$filter" ] ||
+       ! grep -q '^MS2_SYMOBJ_PRUNE:BOOL=ON' "$dir/CMakeCache.txt" 2>/dev/null; then
         cmake -G Ninja -S "$R/src" -B "$dir" -DCMAKE_TOOLCHAIN_FILE="$tc" \
-            "-DMS2_GAME_FILTER=$filter" "-DMS2_SYMBOL_TSV=$syms" >"$dir.configure.log" 2>&1 ||
+            "-DMS2_GAME_FILTER=$filter" "-DMS2_SYMBOL_TSV=$syms" -DMS2_SYMOBJ_PRUNE=ON >"$dir.configure.log" 2>&1 ||
             { cat "$dir.configure.log"; return 1; }
     fi
-    nice $nj -C "$dir" -j2
+    nice $nj -C "$dir" -j2 && return 0
+    # a pruned ms2sym.obj only binds what the unit's objects reference; a failing link is re-run with the full table so that
+    # references from library members (CRT/MFC) resolve exactly like the shared build before the check is called failed
+    echo "== link failed with the pruned symbol table: retrying with the full one"
+    cmake -DMS2_SYMOBJ_PRUNE=OFF "$dir" >>"$dir.configure.log" 2>&1 && nice $nj -C "$dir" -j2
 }
 dst=0
 echo "== build/hook-msvc-$AGENT (cl 19.16)"

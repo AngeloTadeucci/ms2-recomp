@@ -18,6 +18,7 @@ option(MS2HOOK_WITH_COMPAT "Link the client compatibility fixes (src/hook/compat
 # whose path contains one of these substrings, and link against another symbol table (the agent's
 # build/progress-<agent>/symbols.tsv = committed progress/symbols.tsv + the agent's own harvest). Empty = everything.
 set(MS2_GAME_FILTER "" CACHE STRING "Only game sources/difftests whose path contains one of these substrings (;-list)")
+option(MS2_SYMOBJ_PRUNE "ms2sym.obj holds only the symbols the game objects reference (faster per-unit link checks)" OFF)
 set(MS2_SYMBOL_TSV "" CACHE FILEPATH "Symbol table for ms2sym.obj instead of progress/symbols.tsv")
 
 add_compile_definitions(WIN32_LEAN_AND_MEAN NOMINMAX _CRT_SECURE_NO_WARNINGS)
@@ -84,9 +85,13 @@ if(MS2HOOK_WITH_GAME)
     if(EXISTS "${MS2_ROOT}/progress/symbols-manual.tsv")
         list(APPEND MS2_SYMBOL_TABLES "${MS2_ROOT}/progress/symbols-manual.tsv")
     endif()
+    set(MS2_SYMOBJ_PRUNE_ARG "")
+    if(MS2_SYMOBJ_PRUNE)
+        set(MS2_SYMOBJ_PRUNE_ARG --prune)
+    endif()
     set(MS2_SYMOBJ "${CMAKE_CURRENT_BINARY_DIR}/ms2sym.obj")
     add_custom_command(OUTPUT "${MS2_SYMOBJ}"
-        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES} --rebind --rebind-log "${CMAKE_CURRENT_BINARY_DIR}/rebound.txt" --objs $<TARGET_OBJECTS:ms2game>
+        COMMAND "${MS2_PYTHON}" "${MS2_ROOT}/tools/ms2symobj.py" -o "${MS2_SYMOBJ}" ${MS2_SYMBOL_TABLES} --rebind --rebind-log "${CMAKE_CURRENT_BINARY_DIR}/rebound.txt" ${MS2_SYMOBJ_PRUNE_ARG} --objs $<TARGET_OBJECTS:ms2game>
         DEPENDS "${MS2_ROOT}/tools/ms2symobj.py" ${MS2_SYMBOL_TABLES} $<TARGET_OBJECTS:ms2game>
         COMMAND_EXPAND_LISTS
         COMMENT "Generating ms2sym.obj (exe symbol map)")
