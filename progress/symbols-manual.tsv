@@ -2780,3 +2780,5 @@ inflateInit_	142723ad0	func
 ??0Unk_RefT@@QEAA@XZ	14027cb10	func
 ??0Unk_RefA@@QEAA@AEBU0@@Z	14027caa0	func
 ??1Unk_RefA@@QEAA@XZ	14027dfd0	func
+??0Unk_HoServicePtr@@QEAA@PEAVUnk_HoService@@@Z	1401cd0b0	func
+??1Unk_HoServicePtr@@QEAA@XZ	1401cd150	func
