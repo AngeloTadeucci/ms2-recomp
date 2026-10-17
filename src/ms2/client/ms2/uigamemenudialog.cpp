@@ -284,12 +284,13 @@ struct Unk_GmNodeBody
 {
     char m_pad_0[0x18];
     int m_18;
-    char m_pad_1c[0x40 - 0x1c];
+    char m_pad_1c[0x20 - 0x1c];
+    Unk_GmNodeArr m_children;                   // +0x20 (FUN_14193a140: add rax, 0x20 before size / at)
     struct { int m_0; int m_4; } m_range;      // +0x40 position of the entry in the strip
-    char m_pad_48[0x70 - 0x48];
-    Unk_GmNodeArr m_children;
     bool FUN_140cf0bf0();
 };
+MS2_CHECK_OFFSET(Unk_GmNodeBody, m_children, 0x20);
+MS2_CHECK_OFFSET(Unk_GmNodeBody, m_range, 0x40);
 class Unk_GmNodeRef                             // 16 bytes: a counted pointer to a menu node
 {
 public:
