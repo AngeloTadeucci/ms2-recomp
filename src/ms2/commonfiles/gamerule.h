@@ -27,12 +27,24 @@ class CInPacket;
 class Unk_AttendTable;
 
 // The hash of the term tag map (std::hash has no CStringT specialization; the exe hashes the UTF-16 bytes).
+// The FNV-1a byte hash is the older STL's _Hash_seq (14.16 has no such function; the exe has its own copy).
 namespace std {
+inline size_t _Hash_seq(const unsigned char* _First, size_t _Count)
+{
+    const size_t _FNV_offset_basis = 14695981039346656037ULL;
+    const size_t _FNV_prime = 1099511628211ULL;
+    size_t _Val = _FNV_offset_basis;
+    for (size_t _Next = 0; _Next < _Count; ++_Next) {
+        _Val ^= (size_t)_First[_Next];
+        _Val *= _FNV_prime;
+    }
+    return _Val;
+}
 template <> struct hash<ATL::CStringT<wchar_t, StrTraitMFC_DLL<wchar_t> > >
 {
     size_t operator()(const ATL::CStringT<wchar_t, StrTraitMFC_DLL<wchar_t> >& str) const
     {
-        return _Hash_array_representation(static_cast<const wchar_t*>(str), (size_t)str.GetLength());
+        return _Hash_seq((const unsigned char*)static_cast<const wchar_t*>(str), str.GetLength() * sizeof(wchar_t));
     }
 };
 }
@@ -54,19 +66,21 @@ public:
 
 template <class K> void Unk_GameRuleRateMap<K>::Set(unsigned long eventId, K key, unsigned long rate)
 {
-    m_10[key][eventId] = rate;
+    std::map<unsigned long, unsigned long>& rates = m_10[key];
+    rates[eventId] = rate;
     Recompute(key);
 }
 template <class K> void Unk_GameRuleRateMap<K>::Remove(unsigned long eventId, K key)
 {
-    m_10[key].erase(eventId);
+    std::map<unsigned long, unsigned long>& rates = m_10[key];
+    rates.erase(eventId);
     Recompute(key);
 }
 template <class K> unsigned long Unk_GameRuleRateMap<K>::Get(K key, unsigned long nDefault)
 {
-    if (m_0.find(key) != m_0.end())
-        nDefault = m_0[key];
-    return nDefault;
+    if (m_0.find(key) == m_0.end())
+        return nDefault;
+    return m_0[key];
 }
 template <class K> void Unk_GameRuleRateMap<K>::Recompute(K key)
 {
@@ -78,14 +92,21 @@ template <class K> void Unk_GameRuleRateMap<K>::Recompute(K key)
     if (rates.empty()) {
         m_10.erase(key);
         m_0.erase(key);
+        return;
     }
-    else {
-        unsigned long nMax = rates.begin()->second;
-        for (std::map<unsigned long, unsigned long>::iterator it = rates.begin(); it != rates.end(); ++it)
-            nMax = (std::max)(nMax, it->second);
-        m_0[key] = nMax;
-    }
+    unsigned long nMax = rates.begin()->second;
+    for (std::map<unsigned long, unsigned long>::const_iterator it = rates.begin(), itEnd = rates.end(); it != itEnd; ++it)
+        nMax = (std::max)(nMax, it->second);
+    m_0[key] = nMax;
 }
+
+// The item kind of the remake (option change) sale, 0 = every item (CGameRule::FUN_140478cd0 picks 1..3 from three
+// CItemData kind tests). An enum, not int: the exe's map<K, ...> instances of m_568 compare through their own
+// less<K> copy (0x14049ef20), not less<int> (0x1401f1b70). Name invented.
+enum Unk_RemakeSaleItemType { Unk_RemakeSaleItemType_All = 0 };
+// The key of the stamp event map m_b68 (StampEventContext::m_98; 10001/10002 are tested first). An enum, not int:
+// the exe's CAtlMap passes it by reference (CDefaultElementTraits) and its NewNode sorts after the CStringT-keyed one.
+enum Unk_StampKey { Unk_StampKey_Default = 0 };
 
 // One (lo, hi) range of GameEventEpicRestart (operator new 0x80 in 0x14047c020). Name invented.
 struct Unk_EpicRestartRange {
@@ -108,7 +129,7 @@ MS2_CHECK_SIZE(EpicRestartContext, 0x80);
 
 class UgcMapCommendationGMEvent : public CPtred {
 public:
-    UgcMapCommendationGMEvent(int id, __int64 time, CStringW str) : m_18(id), m_20(time) { m_28 = str; }  // 0x14049a690
+    UgcMapCommendationGMEvent(int id, __int64 time, CStringW str) { m_18 = id; m_20 = time; m_28 = str; }  // 0x14049a690
     int m_18;
     __int64 m_20;
     CStringW m_28;
@@ -128,9 +149,12 @@ MS2_CHECK_SIZE(Unk_ItemTagRewardContext, 0x40);
 // The key of the massive construction set (0xca0). Name invented.
 struct Unk_ConstructionKey {
     Unk_ConstructionKey(unsigned id, int value) : m_id(id), m_value(value) {}   // 0x14049a660
-    bool operator<(const Unk_ConstructionKey& o) const                         // 0x140481ff0
+    bool operator<(const Unk_ConstructionKey& o) const                         // 0x14049ecd0
     {
-        return (int)m_id < (int)o.m_id || (!((int)o.m_id < (int)m_id) && m_value < o.m_value);
+        if (m_id != o.m_id)
+            return m_id < o.m_id;
+        else
+            return m_value < o.m_value;
     }
     unsigned m_id;
     int m_value;
@@ -339,14 +363,14 @@ public:
     void FUN_14047dba0(unsigned id, int value);                                   // GameEventMassiveConstructionEvent
     void FUN_14047dc80(unsigned id, int value);
     void FUN_14047dd60();
-    bool FUN_14047ddd0(unsigned id, int value, __int64 objectId);
-    void FUN_14047df50(__int64 id);
-    void FUN_14047e020(__int64 id);
+    bool FUN_14047ddd0(unsigned id, int value, unsigned __int64 objectId);
+    void FUN_14047df50(unsigned __int64 id);
+    void FUN_14047e020(unsigned __int64 id);
     void FUN_14047e0e0();
-    bool FUN_14047e150(__int64 nId);
-    void FUN_14047e230(__int64 nId);                                             // ignore the construction lock of one id
+    bool FUN_14047e150(unsigned __int64 nId);
+    void FUN_14047e230(unsigned __int64 nId);                                            // ignore the construction lock of one id
     void FUN_14047e300();                                                        // ... clear them
-    unsigned FUN_14047e370(int key);
+    unsigned FUN_14047e370(unsigned key);
     void FUN_14047e530(MS2Ptr<EnchantRateEventContext> spContext);                // GameEventEnchantRate
     void FUN_14047e630(int eventId);
     void FUN_14047e740(bool bOpen);                                               // GameEventRankDuel
@@ -413,17 +437,17 @@ private:
     std::set<unsigned> m_3a0;                               // free air taxi
     int m_3b0;
     std::map<Unk_DungeonGroupType, std::set<MS2Ptr<DungeonBonusRewardCtx> > > m_3b8;
-    std::map<unsigned, std::set<MS2Ptr<DungeonBonusRewardCtx> > > m_3c8;
+    std::map<unsigned long, std::set<MS2Ptr<DungeonBonusRewardCtx> > > m_3c8;
     CLockCriticalSection m_3d8;
-    std::map<unsigned, std::set<MS2Ptr<DungeonBonusRewardCtx> > > m_408;
+    std::map<unsigned long, std::set<MS2Ptr<DungeonBonusRewardCtx> > > m_408;
     CLockCriticalSection m_418;
-    std::map<unsigned, MS2Ptr<NpcEventDropEventContext> > m_448;
+    std::map<int, MS2Ptr<NpcEventDropEventContext> > m_448;
     CLockCriticalSection m_458;
     ATL::CAtlMap<int, CStringW> m_488;                      // user conditions
     CLockCriticalSection m_4d0;
     ATL::CAtlMap<int, MS2Ptr<OntimeEventContext> > m_500;
     Unk_GameRuleRateMap<unsigned long> m_548;               // enchant sale
-    Unk_GameRuleRateMap<int> m_568;                         // remake sale per item type
+    Unk_GameRuleRateMap<Unk_RemakeSaleItemType> m_568;      // remake sale per item type
     Unk_GameRuleRateMap<unsigned long> m_588;               // gem stone upgrade sale
     CLockCriticalSection m_5a8;
     ATL::CAtlMap<CStringW, MS2Ptr<EventQuestContext>, ATL::CStringElementTraits<CStringW> > m_5d8;
@@ -458,7 +482,7 @@ private:
     bool m_910;
     CMsTime m_918;
     CLockCriticalSection m_928;
-    std::multimap<int, MS2Ptr<EnchantRateEventContext> > m_958;
+    std::multimap<unsigned, MS2Ptr<EnchantRateEventContext> > m_958;
     CLockCriticalSection m_968;
     bool m_998;
     CLockCriticalSection m_9a0;
@@ -470,12 +494,12 @@ private:
     int m_a98;
     bool m_transferItemBound;                               // +0xa9c
     CLockCriticalSection m_aa0;
-    ATL::CRBMap<int, SaleCubeBox> m_ad0;
+    ATL::CRBMap<unsigned, SaleCubeBox> m_ad0;
     CLockCriticalSection m_b00;
     MS2Ptr<EpicRestartContext> m_b30;
     int m_b40;
     ATL::CAtlArray<unsigned> m_b48;
-    ATL::CAtlMap<int, MS2Ptr<StampEventContext> > m_b68;
+    ATL::CAtlMap<Unk_StampKey, MS2Ptr<StampEventContext> > m_b68;
     MS2Ptr<GalleryContext> m_bb0;
     MS2Ptr<SnowmanContext> m_bc0;
     MS2Ptr<RpsContext> m_bd0;
@@ -489,13 +513,13 @@ private:
     CStringW m_c68;
     CLockCriticalSection m_c70;
     std::set<Unk_ConstructionKey> m_ca0;
-    std::set<__int64> m_cb0;
+    std::set<unsigned __int64> m_cb0;
     CLockCriticalSection m_cc0;
-    std::set<__int64> m_cf0;
+    std::set<unsigned __int64> m_cf0;
     std::map<std::pair<int, int>, MS2Ptr<QuestAdditionalRewardContext> > m_d00;
     bool m_d10;
     CLockCriticalSection m_d18;
-    std::multimap<int, MS2Ptr<Unk_ItemTagRewardContext> > m_d48;
+    std::multimap<unsigned, MS2Ptr<Unk_ItemTagRewardContext> > m_d48;
     CLockCriticalSection m_d58;
     Unk_GameRuleRateMap<unsigned long> m_d88;
     CLockCriticalSection m_da8;

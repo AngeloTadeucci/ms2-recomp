@@ -331,6 +331,8 @@ public:
     Unk_GEBoxPtr(const Unk_GEBoxPtr& o);
     ~Unk_GEBoxPtr();
     Unk_GEBoxPtr& operator=(const Unk_GEBoxPtr& o);
+    Unk_GEBoxPtr& operator=(const Unk_BingoNewTag&);           // `box = Unk_BingoNewTag(0)`: a fresh box
+    bool operator==(T* p) const;                               // `box == 0`
     T* get() const;
     T* operator->() const;
     T& operator*() const;
@@ -361,6 +363,8 @@ template <class T> Unk_GEBoxPtr<T>& Unk_GEBoxPtr<T>::operator=(const Unk_GEBoxPt
     m_p = o.m_p;
     return *this;
 }
+template <class T> Unk_GEBoxPtr<T>& Unk_GEBoxPtr<T>::operator=(const Unk_BingoNewTag&) { Make(); return *this; }
+template <class T> bool Unk_GEBoxPtr<T>::operator==(T* p) const { return m_p == p; }
 template <class T> T* Unk_GEBoxPtr<T>::get() const { return m_p; }
 template <class T> T* Unk_GEBoxPtr<T>::operator->() const { return m_p; }
 template <class T> T& Unk_GEBoxPtr<T>::operator*() const { return *m_p; }
