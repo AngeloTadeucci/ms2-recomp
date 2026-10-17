@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CSoundDlg, CDialog)
 
 // The UCRT's header-inline memcpy_s / memmove_s of this TU (0x1417755a0 / 0x1417756f0), kept alive through ATL::Checked.
 // @0x1417755a0
-// MS2-FUNCTIONAL: UCRT memcpy_s copy; source spelling differs (frame/unwind)
+#pragma function(memset, memcpy)
 static __inline errno_t ms2_sd_memcpy_s(void* const d, size_t const dsz, void const* const s, size_t const ssz)
 {
     if (ssz == 0) { return 0; }
