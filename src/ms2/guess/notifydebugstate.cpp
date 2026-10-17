@@ -159,7 +159,7 @@ void CMyCharacter::FUN_140d9f0c0()
 void CMyCharacter::FUN_140d9f140()
 {
     if (m_spRecord != 0)
-        m_spRecord->FUN_140b20ba0();
+        m_spRecord->Clear();
     m_nExpire = 0;
     m_times.RemoveAll();
     m_states.clear();
