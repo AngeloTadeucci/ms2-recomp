@@ -173,6 +173,8 @@ public:
     int FUN_14123dc30(unsigned int nKey);                   // 0x14123dc30 m_map120 lookup (0 when absent)
     void FUN_14123dcb0(unsigned int nKey, int nValue);      // 0x14123dcb0
     void FUN_14123e020(NiAVObject* pNode);                  // 0x14123e020 tag meshes with the alpha extra data
+    float FUN_140a17da0();                                  // 0x140a17da0 m_fUnk110 (header inline; body in ?\bgtransparencymgr.cpp)
+    float FUN_140a17dc0();                                  // 0x140a17dc0 m_fUnk114 (header inline; body in ?\bgtransparencymgr.cpp)
     void FUN_14123e350();                                   // 0x14123e350 push m_pos28 to the entity
     void FUN_14123e3a0();                                   // 0x14123e3a0 push m_pos34 to the entity
     float FUN_14123ee40() { return m_unk_c4; }              // 0x14123ee40 (COMDAT)

@@ -1,8 +1,10 @@
 // bgtransparencymgr.h - BGTransparencyMgr: fades background objects (props / walls between camera and player) by
 // toggling their transparency. A TSingleton that is also an IWorldServiceCallback (slot 3 clears the tracked
 // objects). Layout proved by the constructor 0x140a0cd30 and the allocation (0x98) in FUN_141498f10.
-// Also holds TransparencyElement (the per-entity fade state, 0x60 bytes) and the TransparencyStandardMaterial
-// declaration the unit's code needs (its definition belongs to ?\transparencymaterial.cpp).
+// Also holds TransparencyElement (the per-entity fade state, 0x60 bytes). The containers are the efd ones
+// (efd::CustomAllocator: the node/array allocations go through efd::_Malloc/_Free): efd::map for the fading entities
+// (ctor 0x140a15d30 wraps the std::map ctor 0x140a15d50), efd::set for the hit set of the scan (0x140a15d80),
+// efd::vector for the pick and sort lists (allocate 0x140a1d300 takes a MemHint).
 #pragma once
 #include <list>
 #include <map>
@@ -11,6 +13,7 @@
 #include <efd/SmartPointer.h>
 #include <efd/IBase.h>
 #include <efd/customalloc.h>
+#include <efd/StdContainers.h>
 #include <egf/Entity.h>
 #include <egf/EntityID.h>
 #include <ecr/PickService.h>
@@ -20,25 +23,10 @@
 #include "ms2/commonfiles/timer.h"
 #include "ms2/placeholder/iworldservicecallback.h"
 #include "ms2/client/ms2/gameobject.h"
+#include "ms2/placeholder/transparencymaterial.h"
 
 class NiAVObject;
 class NiNode;
-
-// Transparency material attached to a mesh (0x38 bytes); slots 2, 3 and 4 are used here.
-class TransparencyStandardMaterial
-{
-public:
-    static void* operator new(size_t nSize, unsigned nCat);     // 0x14208a860
-    static void operator delete(void* p, unsigned nCat);        // 0x14097f700
-    static void operator delete(void* p);                       // the deleting dtor frees through the heap
-    TransparencyStandardMaterial(void* pGeometry);              // 0x140a16050
-    virtual ~TransparencyStandardMaterial();
-    virtual void vfunc_1();
-    virtual void vfunc_2(const void* pBound);                   // MS2: slot 2 (0x10), takes the 16-byte world bound
-    virtual void vfunc_3();                                     // MS2: slot 3 (0x18) restore the mesh
-    virtual void vfunc_4(float fAlpha);                         // MS2: slot 4 (0x20) set alpha
-    char m_pad_08[0x38 - 8];
-};
 
 // Per-entity fade state (vftable 0x142dc3ac0, ctor 0x140a15fe0, dtor 0x140a166f0). m_fAlpha is the entity's
 // target alpha (property 0x188f01c1, default 0.3).
@@ -71,7 +59,9 @@ struct Unk_BGTRegion
 MS2_CHECK_SIZE(Unk_BGTRegion, 0x20);
 
 typedef efd::SmartPointer<egf::Entity> Unk_BGTEntityPtr;
-typedef std::map<Unk_BGTEntityPtr, TransparencyElement*> Unk_BGTElementMap;
+typedef efd::map<Unk_BGTEntityPtr, TransparencyElement*> Unk_BGTElementMap;
+typedef efd::set<egf::Entity*> Unk_BGTEntitySet;
+typedef efd::vector<egf::Entity*> Unk_BGTEntityList;
 
 class BGTransparencyMgr;
 template <class T> class TSingleton;
@@ -100,14 +90,14 @@ public:
     void EraseEntity(egf::Entity* pEntity);         // 0x140a0d450 forget a destroyed entity
     bool IsTarget(egf::Entity* pEntity);            // 0x140a0d670 may this entity be faded
     bool RayHits(efd::Point3 ptOrigin, efd::Point3 ptDir, NiAVObject* pNode);   // 0x140a0d7a0
-    bool PickEntities(efd::Point3 ptOrigin, efd::Point3 ptDir, std::vector<egf::Entity*>& kOut, egf::Entity* pSkip);   // 0x140a0d880
-    void Apply(std::set<egf::Entity*>& kHit);       // 0x140a0e330 start fading the entities in kHit
+    bool PickEntities(efd::Point3 ptOrigin, efd::Point3 ptDir, Unk_BGTEntityList& kOut, egf::Entity* pSkip);   // 0x140a0d880
+    void Apply(Unk_BGTEntitySet& kHit);       // 0x140a0e330 start fading the entities in kHit
     void SortEntities();                            // 0x140a0e860 tag the faded meshes with their camera-distance rank
     void UpdateFadeOut();                           // 0x140a0ebf0
     void UpdateFadeIn();                            // 0x140a0ed80
     void ReleaseMaterials(egf::Entity* pEntity, TransparencyElement* pElement);   // 0x140a0f020
     void MoveAllToFadeIn();                         // 0x140a0f200
-    void MoveMissingToFadeIn(std::set<egf::Entity*>& kHit);   // 0x140a0f2d0
+    void MoveMissingToFadeIn(Unk_BGTEntitySet& kHit);   // 0x140a0f2d0
     static void DeleteMaterials(TransparencyElement* pElement);   // 0x140a0f140
     static bool CompareDistance(egf::Entity* pA, egf::Entity* pB);   // 0x140a0f460 farther first
 

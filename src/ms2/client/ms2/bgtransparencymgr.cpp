@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13).
 // MS2-UNIT: ?\bgtransparencymgr.cpp
 // MS2-RANGE: 0x140a0cd30-0x140a1f250 .text$mn
+// MS2-GUESS-LOOKALIKES
 // MS2-PIN: ??_7BGTransparencyMgr@@6B?$TSingleton@VBGTransparencyMgr@@@@@ 0x142dc3ae8
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@_KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140a0f6c0 ; prop
@@ -112,6 +113,8 @@
 #include <NiNode.h>
 #include <NiPick.h>
 #include <NiFloatExtraData.h>
+#include <NiRenderObject.h>
+#include <NiMaterial.h>
 #include "ms2/client/ms2/camera.h"
 #include "ms2/client/ms2/worldservice.h"
 #include "ms2/client/ms2/entityworldmanager.h"
@@ -122,9 +125,7 @@ BGTransparencyMgr* TSingleton<BGTransparencyMgr>::s_instance;
 
 // ---- out-of-unit callees (names are exe addresses) ----------------------------------------------------------------
 extern char DAT_143b059e8;                                      // service lookup cell (HardwareInstancingService)
-extern char DAT_143afa7d0;                                      // NiRTTI of the mesh type
 extern NiFixedString DAT_143ae5188;                             // render group (float extra data) key
-int* FUN_140876480(int* pOut, int nCat);
 CameraMgr* FUN_1409478c0();                                     // camera manager singleton
 WorldService* FUN_1403ed2d0();                                  // world service singleton
 EntityWorldManager* FUN_1409670f0();                            // entity world manager singleton
@@ -139,10 +140,8 @@ void FUN_140961880(egf::Entity* pEntity, unsigned nHash, float* pOut);       // 
 void FUN_14098c6e0(egf::Entity* pEntity, unsigned nHash, const bool* pValue);// set a bool property
 void FUN_14098f4d0(NiAVObject* pNode, bool b);
 const NiBound* FUN_140994490(NiAVObject* pNode);                // world bound
-NiObject* FUN_14098d8d0(const void* pRTTI, NiObject* pObject);  // dynamic cast through an NiRTTI
-void* FUN_140a17cd0(void* pMesh);                               // the mesh's active material
-void* FUN_140a17af0(void* pTable, void* pMaterial);             // table lookup
-extern char DAT_143d69198;                                      // material table
+extern char DAT_143d69198;                                      // NiRTTI of the material class the fade supports
+extern Unk_StreamPoint DAT_143b01a60;                           // zero point
 
 // A scene-graph walk over a model: the exe's iterator helpers (construct 0x14098cb80, next 0x14098e0d0, destroy 0x14098cf00).
 struct Unk_CmWalker
@@ -155,6 +154,25 @@ struct Unk_CmWalker
 
 // @0x140a15390
 TSingleton<BGTransparencyMgr>::TSingleton() { s_instance = static_cast<BGTransparencyMgr*>(this); }
+
+// Header inlines of other classes whose COMDATs this unit instantiates first (camera.h / gameobject.h declare them).
+// @0x140a17da0
+inline float GameObject::FUN_140a17da0() { return m_fUnk110; }
+
+// @0x140a17dc0
+inline float GameObject::FUN_140a17dc0() { return m_fUnk114; }
+
+// @0x140a17e10
+inline Unk_StreamPoint CameraMgr::FUN_140a17e10()
+{
+    if (m_spMode.get() != 0)
+        return m_spMode->FUN_1409f2540();
+    else
+        return DAT_143b01a60;
+}
+
+// @0x140a18070
+inline int CameraMgr::FUN_140a18070() { return m_1b0; }
 
 // @0x140a0cd30
 // MS2-FUNCTIONAL: first-pass source; instruction order / temporaries differ from the exe, behaviour follows the decompile
@@ -319,7 +337,7 @@ bool BGTransparencyMgr::RayHits(efd::Point3 ptOrigin, efd::Point3 ptDir, NiAVObj
 
 // @0x140a0d880
 // MS2-FUNCTIONAL: first-pass source; instruction order / temporaries differ from the exe, behaviour follows the decompile
-bool BGTransparencyMgr::PickEntities(efd::Point3 ptOrigin, efd::Point3 ptDir, std::vector<egf::Entity*>& kOut,
+bool BGTransparencyMgr::PickEntities(efd::Point3 ptOrigin, efd::Point3 ptDir, Unk_BGTEntityList& kOut,
     egf::Entity* pSkip)
 {
     if (m_spService != 0)
@@ -331,7 +349,7 @@ bool BGTransparencyMgr::PickEntities(efd::Point3 ptOrigin, efd::Point3 ptDir, st
             if (spRecord != 0)
             {
                 egf::Entity* pEntity = 0;
-                ATL::CAtlMap<egf::Entity*, NiAVObject*> kSeen(10);
+                ATL::CRBMap<egf::Entity*, NiAVObject*> kSeen(10);
                 const NiPick::Results* pResults = spRecord->GetPickResult();
                 unsigned nCount = pResults->GetSize();
                 for (unsigned i = 0; i < nCount; i++)
@@ -361,7 +379,7 @@ void BGTransparencyMgr::vfunc_1()
     if (pCamera->FUN_140a18070() != 0 && m_nFlags != 0 && !m_set20.empty())
     {
         std::set<Unk_BGTRegion> kVisible;
-        std::set<egf::Entity*> kHit;
+        Unk_BGTEntitySet kHit;
         Unk_StreamPoint pc = pCamera->FUN_140a17e10();
     efd::Point3 ptCamera(pc.x, pc.y, pc.z);
         FUN_1403ed2d0()->FUN_141bc7920(reinterpret_cast<std::set<void*>&>(kVisible));
@@ -371,9 +389,9 @@ void BGTransparencyMgr::vfunc_1()
             if (pObject->FUN_14123c660() == 0 || pObject->GetClassID() == 0x6200004)
             {
                 efd::Point3 ptPos = pObject->vfunc_18();
-                efd::Point3 ptDirA = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->m_fUnk110);
+                efd::Point3 ptDirA = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17da0());
                 ptDirA.Unitize();
-                efd::Point3 ptDirB = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->m_fUnk114);
+                efd::Point3 ptDirB = ptCamera - (ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17dc0());
                 ptDirB.Unitize();
                 egf::Entity* pEntityA = 0;
                 egf::Entity* pEntityB = 0;
@@ -382,7 +400,7 @@ void BGTransparencyMgr::vfunc_1()
                 {
                     const Unk_BGTRegion* pRegion = &*itRegion;
                     efd::Point3 ptDir = ptDirA;
-                    efd::Point3 ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->m_fUnk110;
+                    efd::Point3 ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17da0();
                     if (RayHits(ptOrigin, ptDir, pRegion->m_pNode))
                     {
                         pEntityA = FUN_1409670f0()->FUN_1411cf440(pRegion->m_id);
@@ -418,7 +436,7 @@ void BGTransparencyMgr::vfunc_1()
                         }
                     }
                     ptDir = ptDirB;
-                    ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->m_fUnk114;
+                    ptOrigin = ptPos + efd::Point3::UNIT_Z * pObject->FUN_140a17dc0();
                     if (RayHits(ptOrigin, ptDir, pRegion->m_pNode))
                     {
                         pEntityB = FUN_1409670f0()->FUN_1411cf440(pRegion->m_id);
@@ -462,7 +480,7 @@ void BGTransparencyMgr::vfunc_1()
 
 // @0x140a0e330
 // MS2-FUNCTIONAL: first-pass source; frame layout and temporary order not byte-compared
-void BGTransparencyMgr::Apply(std::set<egf::Entity*>& kHit)
+void BGTransparencyMgr::Apply(Unk_BGTEntitySet& kHit)
 {
     if (kHit.empty())
     {
@@ -470,7 +488,7 @@ void BGTransparencyMgr::Apply(std::set<egf::Entity*>& kHit)
         return;
     }
     MoveMissingToFadeIn(kHit);
-    for (std::set<egf::Entity*>::iterator it = kHit.begin(); it != kHit.end(); ++it)
+    for (Unk_BGTEntitySet::iterator it = kHit.begin(); it != kHit.end(); ++it)
     {
         egf::Entity* pEntity = *it;
         if (pEntity == 0)
@@ -496,16 +514,13 @@ void BGTransparencyMgr::Apply(std::set<egf::Entity*>& kHit)
         Unk_CmWalker kWalker(pRoot);
         while (NiAVObject* pObject = kWalker.FUN_14098e0d0(1))
         {
-            NiObject* pMesh = FUN_14098d8d0(&DAT_143afa7d0, pObject);
+            NiRenderObject* pMesh = NiDynamicCast(NiRenderObject, pObject);
             if (pMesh == 0)
                 continue;
             TransparencyStandardMaterial* pMaterial = 0;
-            void* pActive = FUN_140a17cd0(pMesh);
-            if (pActive != 0 && FUN_140a17af0(&DAT_143d69198, pActive) != 0)
-                {
-                int nCat[2];
-                pMaterial = new (*FUN_140876480(nCat, 0)) TransparencyStandardMaterial(pMesh);
-            }
+            const NiMaterial* pActive = pMesh->GetActiveMaterial();
+            if (pActive != 0 && NiMaterial::DynamicCast((const NiRTTI*)&DAT_143d69198, pActive) != 0)
+                pMaterial = new (efd::MemHint(efd::MemHint::NONE)) TransparencyStandardMaterial(pMesh);
             if (pMaterial == 0)
                 continue;
             efd::SmartPointer<HardwareInstancingService> spInstancing(FUN_14098c5b0(&DAT_143b059e8));
@@ -517,7 +532,7 @@ void BGTransparencyMgr::Apply(std::set<egf::Entity*>& kHit)
                     FUN_14098c6e0(pEntity, 0xa0b6b179, &bTrue);
                 }
             }
-            pMaterial->vfunc_2(&kBound);
+            pMaterial->vfunc_2(kBound);
             pElement->m_materials.push_back(pMaterial);
             pElement->m_timer.FUN_140868750(300);
         }
@@ -529,7 +544,7 @@ void BGTransparencyMgr::Apply(std::set<egf::Entity*>& kHit)
 // MS2-FUNCTIONAL: first-pass source; frame layout and temporary order not byte-compared
 void BGTransparencyMgr::SortEntities()
 {
-    std::vector<egf::Entity*> kList;
+    Unk_BGTEntityList kList;
     Unk_BGTElementMap::iterator it = m_map30.begin();
     Unk_BGTElementMap::iterator itEnd = m_map30.end();
     while (it != itEnd)
@@ -555,7 +570,7 @@ void BGTransparencyMgr::SortEntities()
                 Unk_CmWalker kWalker(pRoot);
                 while (NiAVObject* pObject = kWalker.FUN_14098e0d0(1))
                 {
-                    NiObjectNET* pNet = (NiObjectNET*)FUN_14098d8d0(&DAT_143afa7d0, pObject);
+                    NiRenderObject* pNet = NiDynamicCast(NiRenderObject, pObject);
                     if (pNet != 0)
                     {
                         NiFloatExtraData* pData = NiDynamicCast(NiFloatExtraData, pNet->GetExtraData(DAT_143ae5188));
@@ -679,7 +694,7 @@ void BGTransparencyMgr::MoveAllToFadeIn()
 MS2_REPLACE_METHOD(0x140A0F200, BGTransparencyMgr, MoveAllToFadeIn, 197, 0xE7C475AD);
 
 // @0x140a0f2d0
-void BGTransparencyMgr::MoveMissingToFadeIn(std::set<egf::Entity*>& kHit)
+void BGTransparencyMgr::MoveMissingToFadeIn(Unk_BGTEntitySet& kHit)
 {
     if (!m_map30.empty())
     {
