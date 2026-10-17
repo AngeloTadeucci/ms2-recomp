@@ -342,7 +342,6 @@
 ??3NiMeshCullingProcess@@SAXPEAX_K@Z	14208a8f0	func
 ?IsActive@NiFrustumPlanes@@QEBA_NI@Z	140af8670	func
 ?GetPlane@NiFrustumPlanes@@QEBAPEBVNiPlane@@I@Z	140af81f0	func
-?DAT_143afa4d8@@3DA	143afa4d8	data
 ?DAT_143afb348@@3DA	143afb348	data
 ?DAT_143ae5190@@3DA	143ae5190	data
 ?DAT_143afa7d0@@3DA	143afa7d0	data
@@ -506,7 +505,6 @@
 ??4Unk_GVec3@@QEAAAEAU0@U0@@Z	14097faa0	func
 ??0Unk_Rect4@@QEAA@MMMM@Z	14097eac0	func
 ??0Unk_Frustum@@QEAA@H@Z	141d2fba0	func
-?DAT_143b01a60@@3DA	143b01a60	data
 ?DAT_143ab77c8@@3DA	143ab77c8	data
 ?DAT_143ab77d0@@3DA	143ab77d0	data
 ?DAT_143ab77d8@@3DA	143ab77d8	data
@@ -2469,7 +2467,6 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??0Unk_CMISSetEffect@@QEAA@XZ	1411233c0	func
 ??0Unk_CMISSetRef@@QEAA@AEBU0@@Z	140ba0950	func
 ??1Unk_CMISSetRef@@QEAA@XZ	1409ed950	func
-?DAT_143b01a60@@3UUnk_StreamPoint@@A	143b01a60	data
 ??0Unk_CMISSlot@@QEAA@PEAX@Z	14111e890	func
 ??0Unk_CMISSlot@@QEAA@AEBU0@@Z	14111e850	func
 ??1Unk_CMISSlot@@QEAA@XZ	1409648f0	func
@@ -2646,3 +2643,5 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??1Unk_W6V468@@QEAA@XZ	1410b4290	func
 ??0CChatEmoticonCli@@QEAA@XZ	140da1df0	func
 ??1CChatEmoticonCli@@UEAA@XZ	140da2120	func
+??0Unk_NpcPoint3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
+??1Unk_BossNotifyHandle@@QEAA@XZ	1403b87a0	func
