@@ -227,7 +227,6 @@ template void Unk_GameEventCopy<GalleryContext::Card>(void*, const GalleryContex
 template void Unk_GameEventCopy<CoupleDanceContext>(void*, const CoupleDanceContext&);
 template void Unk_GameEventCopy<EnchantRateEventContext>(void*, const EnchantRateEventContext&);
 template void Unk_GameEventCopy<EventQuestContext>(void*, const EventQuestContext&);
-template void Unk_GameEventCopy<GalleryContext>(void*, const GalleryContext&);
 template void Unk_GameEventCopy<GameEventAdventureLevelBonusExpRate>(void*, const GameEventAdventureLevelBonusExpRate&);
 template void Unk_GameEventCopy<GameEventArcadeOpen>(void*, const GameEventArcadeOpen&);
 template void Unk_GameEventCopy<GameEventBattlePetSpawn>(void*, const GameEventBattlePetSpawn&);
@@ -343,8 +342,6 @@ template void Unk_GameEventCopy<RpsContext>(void*, const RpsContext&);
 template void Unk_GameEventCopy<SAHotTimeEventContext>(void*, const SAHotTimeEventContext&);
 template void Unk_GameEventCopy<SaleCube>(void*, const SaleCube&);
 template void Unk_GameEventCopy<SkillUpgradeSaleEventContext>(void*, const SkillUpgradeSaleEventContext&);
-template void Unk_GameEventCopy<SnowmanContext::Snowman>(void*, const SnowmanContext::Snowman&);
-template void Unk_GameEventCopy<SnowmanContext>(void*, const SnowmanContext&);
 template void Unk_GameEventCopy<StampEventContext::Stamp>(void*, const StampEventContext::Stamp&);
 template void Unk_GameEventCopy<TreeWateringContext>(void*, const TreeWateringContext&);
 template void Unk_GameEventCopy<TreeWatering_EmotionDay>(void*, const TreeWatering_EmotionDay&);
@@ -357,7 +354,14 @@ void Unk_GameEventConstruct(void* p)
 {
     new (p) T;
 }
+template void Unk_GameEventConstruct<GalleryContext>(void*);
+template void Unk_GameEventConstruct<SnowmanContext>(void*);
 template void Unk_GameEventConstruct<StampEventContext>(void*);
+// SnowmanContext::Snowman has the gameevent.cpp ctor only; its header-only tag ctor emits the vftable.
+void Unk_GameEventConstructSnowman(void* p)
+{
+    new (p) SnowmanContext::Snowman(Unk_VftableEmitTag());
+}
 
 enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 

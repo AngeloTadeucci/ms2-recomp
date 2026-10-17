@@ -153,3 +153,41 @@ public:
     int m_3c;
 };  // vftable 0x142d44180
 MS2_CHECK_SIZE(ItemBoxEventContext, 0x40);
+
+// The quest reward rates of GameEventQuestAdditionalReward: the event value is either one rate for every kind or an
+// xml document with one attribute per kind plus <item id rate> rows.
+class QuestAdditionalRewardContext : public CPtred {
+public:
+    QuestAdditionalRewardContext();                         // 0x1403fe980
+    void Load(CStringW* pValue);                            // 0x1403fea10
+    void Write(COutputStream& out);                         // 0x1403fecc0
+    void Read(CInPacket& packet);                           // 0x1403fedf0
+    unsigned m_rates[8];        // +0x18 exp, meso, guild_fund, guild_exp, guild_coin, lu, karma, menteeCoin
+    ATL::CAtlMap<unsigned, unsigned> m_itemRates;           // +0x38 item id -> rate
+};  // vftable 0x142d441a0
+MS2_CHECK_SIZE(QuestAdditionalRewardContext, 0x80);
+
+// GameEventReturnUser's context (the event holds it as an MS2Ptr; the ctor 0x14041cf20 is in the next unit).
+class MentoringContext : public CPtred {
+public:
+    MentoringContext();
+    void Write(COutputStream& out);                         // 0x1403ff4a0
+    void Read(CInPacket& packet);                           // 0x1403ff5a0
+    int m_18;
+    int m_pad_1c;
+    __int64 m_20;
+    __int64 m_28;
+    ATL::CAtlArray<unsigned> m_ids;                         // +0x30
+};  // vftable 0x142d44a70
+MS2_CHECK_SIZE(MentoringContext, 0x50);
+
+class DungeonBuffEventCtx : public CPtred {
+public:
+    DungeonBuffEventCtx();                                  // 0x1403ff6c0
+    bool Load(Unk_140165cf0* pElem);                        // 0x1403ff720: false without effect GUIDs
+    unsigned m_dungeonID;                                   // +0x18 "dungeonID"
+    int m_pad_1c;
+    std::vector<unsigned __int64> m_addEffectGUIDs;         // +0x20 "addifectGUIDs"
+    bool m_isBeginner;                                      // +0x38 "isBeginner"
+};  // vftable 0x142d441b0
+MS2_CHECK_SIZE(DungeonBuffEventCtx, 0x40);

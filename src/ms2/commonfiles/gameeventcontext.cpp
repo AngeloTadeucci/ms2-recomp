@@ -17,6 +17,8 @@
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/commonfiles/stream.h"
+#include "ms2/commonfiles/filesystem.h"
+#include "ms2/placeholder/tixmldocument.h"
 #include "gameeventcontext.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -51,7 +53,8 @@ CInputStream& FUN_14070f440(CInputStream& in, long& value);
 CInputStream& FUN_14070f480(CInputStream& in, int& value);
 CInputStream& FUN_14070f480(CInputStream& in, unsigned& value);
 CInputStream& FUN_14070f540(CInputStream& in, float& value);
-int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);   // tinyxmlhelper int attribute, long overload
+int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, long& nOut);
+Unk_140165cf0* FUN_140345b40(TiXmlDocument* pDoc);   // the document's first child element   // tinyxmlhelper int attribute, long overload
 // Enum name parsers (commonenum.cpp).
 Unk_BlueMarbleSlotType FUN_140218100(const CStringA& name);
 Unk_DungeonCooldownType FUN_1402199e0(const CStringA& name);
@@ -611,4 +614,262 @@ unsigned TimeRunEventContext::GetNextRewardKey(unsigned value)
             return key;
     }
     return 0;
+}
+
+// @0x1403fe980
+QuestAdditionalRewardContext::QuestAdditionalRewardContext() : m_itemRates(17, 0.75f, 0.25f, 2.25f, 10)
+{
+    memset(m_rates, 0, sizeof(m_rates));
+}
+
+// @0x1403fea10
+void QuestAdditionalRewardContext::Load(CStringW* pValue)
+{
+    unsigned rate = FUN_140718200(pValue);
+    if (rate != 0) {
+        for (size_t i = 0; i < _countof(m_rates); i++)
+            m_rates[i] = rate;
+    } else {
+        TiXmlDocument doc;
+        Unk_140165cf0* pRoot;
+        if (FUN_140166420()->FUN_140397ab0(&doc, *pValue) != 0 && (pRoot = FUN_140345b40(&doc)) != NULL) {
+            FUN_140873220(pRoot, "exp", m_rates[0]);
+            FUN_140873220(pRoot, "meso", m_rates[1]);
+            FUN_140873220(pRoot, "guild_fund", m_rates[2]);
+            FUN_140873220(pRoot, "guild_exp", m_rates[3]);
+            FUN_140873220(pRoot, "guild_coin", m_rates[4]);
+            FUN_140873220(pRoot, "lu", m_rates[5]);
+            FUN_140873220(pRoot, "karma", m_rates[6]);
+            FUN_140873220(pRoot, "menteeCoin", m_rates[7]);
+            for (Unk_140165cf0* pItem = pRoot->FUN_140165cf0("item"); pItem != NULL;
+                 pItem = pItem->FUN_140168650("item")) {
+                unsigned id = 0;
+                unsigned itemRate = 0;
+                FUN_140873220(pItem, "id", id);
+                FUN_140873220(pItem, "rate", itemRate);
+                m_itemRates.SetAt(id, itemRate);
+            }
+        }
+    }
+}
+
+// @0x1403fecc0
+void QuestAdditionalRewardContext::Write(COutputStream& out)
+{
+    for (size_t i = 0; i < _countof(m_rates); i++)
+        out.vfunc_o10_3(m_rates[i]);
+    unsigned count = (unsigned)m_itemRates.GetCount();
+    out.vfunc_o10_3(count);
+    for (POSITION pos = m_itemRates.GetStartPosition(); pos != NULL; m_itemRates.GetNext(pos)) {
+        out.vfunc_o10_3(m_itemRates.GetKeyAt(pos));
+        out.vfunc_o10_3(m_itemRates.GetValueAt(pos));
+    }
+}
+
+// @0x1403fedf0
+void QuestAdditionalRewardContext::Read(CInPacket& packet)
+{
+    for (size_t i = 0; i < _countof(m_rates); i++)
+        m_rates[i] = packet.vfunc_o8_3();
+    unsigned count = packet.vfunc_o8_3();
+    for (size_t i = 0; i < count; i++) {
+        unsigned id = packet.vfunc_o8_3();
+        unsigned itemRate = packet.vfunc_o8_3();
+        m_itemRates.SetAt(id, itemRate);
+    }
+}
+
+// @0x1403fef10
+void GalleryContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_2(m_cards.GetCount());
+    for (size_t i = 0; i < m_cards.GetCount(); i++)
+        out.vfunc_o10_3(m_cards[i]->m_id);
+    out.vfunc_o10_2(m_items.GetCount());
+    for (size_t i = 0; i < m_items.GetCount(); i++)
+        m_items[i].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    out.vfunc_o10_3(m_60);
+    out.vfunc_o10_8(m_strTitle);
+    out.vfunc_o10_4(m_endTime);
+}
+
+// @0x1403ff0a0
+void GalleryContext::Read(CInPacket& packet)
+{
+    int cardCount = (unsigned short)packet.vfunc_o8_2();
+    for (int i = 0; i < cardCount; i++) {
+        MS2Ptr<Card> spCard(new Card);
+        spCard->m_id = packet.vfunc_o8_3();
+        m_cards.Add(spCard);
+    }
+    int itemCount = (unsigned short)packet.vfunc_o8_2();
+    for (int i = 0; i < itemCount; i++) {
+        ItemEntity item;
+        item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+        m_items.Add(item);
+    }
+    m_60 = packet.vfunc_o8_3();
+    m_strTitle = packet.vfunc_o8_8();
+    m_endTime = packet.vfunc_o8_4();
+}
+
+// @0x1403ff360
+BOOL GalleryContext::HasCard(int id)
+{
+    for (size_t i = 0; i < m_cards.GetCount(); i++) {
+        if (m_cards[i]->m_id == id)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// @0x1403ff3e0
+MS2Ptr<GalleryContext::Card> GalleryContext::GetCard(int index)
+{
+    int count = (int)m_cards.GetCount();
+    if (index < 0 || index >= count) {
+        MS2_ASSERT_AT(0x228, 0);
+        return 0;
+    }
+    return m_cards[index];
+}
+
+// @0x1403ff4a0
+void MentoringContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_18);
+    out.vfunc_o10_4(m_20);
+    out.vfunc_o10_4(m_28);
+    out.vfunc_o10_3(m_ids.GetCount());
+    for (size_t i = 0; i < m_ids.GetCount(); i++)
+        out.vfunc_o10_3(m_ids[i]);
+}
+
+// @0x1403ff5a0
+void MentoringContext::Read(CInPacket& packet)
+{
+    m_18 = packet.vfunc_o8_3();
+    m_20 = packet.vfunc_o8_4();
+    m_28 = packet.vfunc_o8_4();
+    unsigned count = packet.vfunc_o8_3();
+    for (unsigned i = 0; i < count; i++)
+        m_ids.Add(packet.vfunc_o8_3());
+}
+
+// @0x1403ff6c0
+DungeonBuffEventCtx::DungeonBuffEventCtx() : m_dungeonID(0), m_isBeginner(false)
+{
+}
+
+// The GUID list is parsed as unsigned 64-bit decimals (0x1404082e0).
+template <> inline unsigned __int64 XmlConvert<unsigned __int64>(const CString& str)
+{
+    return _strtoui64(str, NULL, 10);
+}
+
+// @0x1403ff720
+bool DungeonBuffEventCtx::Load(Unk_140165cf0* pElem)
+{
+    FUN_140873220(pElem, "dungeonID", m_dungeonID);
+    XmlTokenList(pElem, "addifectGUIDs", m_addEffectGUIDs);
+    FUN_1408730a0(pElem, "isBeginner", m_isBeginner);
+    if (m_addEffectGUIDs.empty())
+        return false;
+    return true;
+}
+
+// @0x1403ff7b0
+bool SnowmanContext::Snowman::ReachedGoal(int value)
+{
+    return value >= m_18;
+}
+
+// @0x1403ff7f0
+bool SnowmanContext::Snowman::BelowLimit(int value)
+{
+    return value < m_1c;
+}
+
+// @0x1403ff830
+bool SnowmanContext::Snowman::ReachedBonus(int value)
+{
+    return value >= m_20;
+}
+
+// @0x1403ff870
+bool SnowmanContext::Snowman::CanProceed(int goalValue, int limitValue)
+{
+    bool bReached = ReachedGoal(goalValue);
+    if (bReached)
+        return false;
+    bool bOver = !BelowLimit(limitValue) ? true : false;
+    if (bOver)
+        return false;
+    return true;
+}
+
+// @0x1403ff8f0
+void SnowmanContext::Write(COutputStream& out)
+{
+    out.vfunc_o10_3(m_eventId);
+    out.vfunc_o10_8(m_strTitle);
+    out.vfunc_o10_2(m_snowmen.GetCount());
+    for (size_t i = 0; i < m_snowmen.GetCount(); i++) {
+        MS2Ptr<Snowman>& spSnowman = m_snowmen[i];
+        if (!spSnowman) {
+            MS2_ASSERT_AT(0x282, "snowman" && 0);
+            return;
+        }
+        out.vfunc_o10_3(spSnowman->m_18);
+        out.vfunc_o10_3(spSnowman->m_1c);
+        out.vfunc_o10_3(spSnowman->m_20);
+        ATL::CAtlArray<ItemEntity>& items = spSnowman->m_items;
+        out.vfunc_o10_2(items.GetCount());
+        for (size_t j = 0; j < items.GetCount(); j++)
+            items[j].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+        ATL::CAtlArray<ItemEntity>& bonusItems = spSnowman->m_bonusItems;
+        out.vfunc_o10_2(bonusItems.GetCount());
+        for (size_t j = 0; j < bonusItems.GetCount(); j++)
+            bonusItems[j].FUN_14026b030(reinterpret_cast<Unk_GiftOutput&>(out));
+    }
+    out.vfunc_o10_4(m_endTime);
+}
+
+// @0x1403ffc00
+void SnowmanContext::Read(CInPacket& packet)
+{
+    m_eventId = packet.vfunc_o8_3();
+    m_strTitle = packet.vfunc_o8_8();
+    int snowmanCount = (unsigned short)packet.vfunc_o8_2();
+    for (int i = 0; i < snowmanCount; i++) {
+        MS2Ptr<Snowman> spSnowman(new Snowman);
+        spSnowman->m_18 = packet.vfunc_o8_3();
+        spSnowman->m_1c = packet.vfunc_o8_3();
+        spSnowman->m_20 = packet.vfunc_o8_3();
+        int itemCount = (unsigned short)packet.vfunc_o8_2();
+        for (int j = 0; j < itemCount; j++) {
+            ItemEntity item;
+            item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+            spSnowman->m_items.Add(item);
+        }
+        int bonusCount = (unsigned short)packet.vfunc_o8_2();
+        for (int j = 0; j < bonusCount; j++) {
+            ItemEntity item;
+            item.FUN_14026b100(reinterpret_cast<Unk_GiftInput&>(static_cast<CInputStream&>(packet)));
+            spSnowman->m_bonusItems.Add(item);
+        }
+        m_snowmen.Add(spSnowman);
+    }
+    m_endTime = packet.vfunc_o8_4();
+}
+
+// @0x140400000
+MS2Ptr<SnowmanContext::Snowman> SnowmanContext::GetSnowman(int index)
+{
+    int count = (int)m_snowmen.GetCount();
+    if (index < 0 || index >= count) {
+        MS2_ASSERT_AT(0x2cc, 0);
+        return 0;
+    }
+    return m_snowmen[index];
 }

@@ -100,13 +100,26 @@ class EventQuestContext : public CPtred {
     char m_pad_18[0x20];
 };  // vftable 0x142d414c8, ??_G 0x1403e9a90, dtor 0x1403e5bc0
 MS2_CHECK_SIZE(EventQuestContext, 0x38);
+// Members recovered by gameeventcontext.cpp (stream Write 0x1403fef10 / Read 0x1403ff0a0); the Card ctor is in
+// gameevent.cpp.
 class GalleryContext : public CPtred {
 public:
     struct Card : public CPtred {
-        char m_pad_18[0x8];
+        Card();
+        int m_id;                       // +0x18
+        int m_pad_1c;
     };  // vftable 0x142d41528, ??_G 0x1403e99d0, dtor 0x1403e5b00
-private:
-    char m_pad_18[0x60];
+    void Write(COutputStream& out);                 // 0x1403fef10
+    void Read(CInPacket& packet);                   // 0x1403ff0a0
+    BOOL HasCard(int id);                           // 0x1403ff360
+    MS2Ptr<Card> GetCard(int index);                // 0x1403ff3e0
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    ATL::CAtlArray<MS2Ptr<Card> > m_cards;          // +0x20
+    ATL::CAtlArray<ItemEntity> m_items;             // +0x40
+    int m_60;
+    __int64 m_endTime;                              // +0x68
+    CStringW m_strTitle;                            // +0x70
 };  // vftable 0x142d41538, ??_G 0x1403e9ad0, dtor 0x1403e5bf0
 MS2_CHECK_SIZE(GalleryContext, 0x78);
 class GameEventAdventureLevelBonusExpRate : public GameEvent {
@@ -1320,13 +1333,34 @@ struct SkillUpgradeSaleEventContext : public CPtred {
     char m_pad_18[0x10];
 };  // vftable 0x142d414a8, ??_G 0x1403eb810, dtor 0x1403e7030
 MS2_CHECK_SIZE(SkillUpgradeSaleEventContext, 0x28);
+// Members recovered by gameeventcontext.cpp (stream Write 0x1403ff8f0 / Read 0x1403ffc00); the Snowman ctor
+// 0x1403e4650 is in gameevent.cpp.
+struct Unk_VftableEmitTag {};   // not exe code: selects the inline ctors below
 class SnowmanContext : public CPtred {
 public:
     struct Snowman : public CPtred {
-        char m_pad_18[0x50];
+        Snowman();                                  // 0x1403e4650: zeroes the three ints
+        // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
+        explicit Snowman(Unk_VftableEmitTag) {}
+        bool ReachedGoal(int value);                // 0x1403ff7b0: m_18 <= value
+        bool BelowLimit(int value);                 // 0x1403ff7f0: value < m_1c
+        bool ReachedBonus(int value);               // 0x1403ff830: m_20 <= value
+        bool CanProceed(int goalValue, int limitValue);     // 0x1403ff870
+        int m_18;
+        int m_1c;
+        int m_20;
+        int m_pad_24;
+        ATL::CAtlArray<ItemEntity> m_items;         // +0x28
+        ATL::CAtlArray<ItemEntity> m_bonusItems;    // +0x48
     };  // vftable 0x142d41548, ??_G 0x1403eb850, dtor 0x1403e7050
-private:
-    char m_pad_18[0x38];
+    void Write(COutputStream& out);                 // 0x1403ff8f0
+    void Read(CInPacket& packet);                   // 0x1403ffc00
+    MS2Ptr<Snowman> GetSnowman(int index);          // 0x140400000
+    int m_eventId;                                  // +0x18
+    int m_pad_1c;
+    ATL::CAtlArray<MS2Ptr<Snowman> > m_snowmen;     // +0x20
+    CStringW m_strTitle;                            // +0x40
+    __int64 m_endTime;                              // +0x48
 };  // vftable 0x142d41558, ??_G 0x1403eb890, dtor 0x1403e7090
 MS2_CHECK_SIZE(SnowmanContext, 0x50);
 // Members recovered by gameeventcontext.cpp (stream Write 0x1403fcc90 / Read 0x1403fd060). The ctors are in
