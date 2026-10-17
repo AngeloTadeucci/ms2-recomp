@@ -54,6 +54,6 @@ public:
     int m_40;                                                   // +0x40
     int m_44;                                                   // +0x44
     int m_48;                                                   // +0x48
-    int m_pad_4c;                                               // +0x4c
+                                                                // +0x4c tail padding (operator= 0x1406a8e50 does not copy it)
 };
 MS2_CHECK_SIZE(CMeratMarketSchCond, 0x50);

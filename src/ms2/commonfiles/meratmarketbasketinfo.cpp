@@ -3,6 +3,10 @@
 // MS2-UNIT: ?\meratmarketbasketinfo.cpp
 // MS2-RANGE: 0x14069c3e0-0x1406ae9c0 .text$mn
 // MS2-PIN: ??_7CMeratMarketPremium@@6B?$TSingleton@VCMeratMarketPremium@@@@@ 0x142d782c8
+// MS2-PIN: ?Copy@?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@QEAAXAEBV12@@Z 0x1406a98d0
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$MS2Ptr@VCMeratMarketPremiumProduct@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCMeratMarketPremiumProduct@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1406aa630
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@UPreminmMarketSaleEventContext@@@@AEAAXPEAX@Z 0x1406ae740
+// MS2-PIN: ??8?$MS2Ptr@UPreminmMarketSaleEventContext@@@@QEBA_NPEAUPreminmMarketSaleEventContext@@@Z 0x1406a8f50
 // MS2-RANGE: 0x1400bb3f0-0x1400bb6a0 .text$di
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\meratmarketbasketinfo.cpp"   // no asserts of its own
 #include "ms2/placeholder/ms2stdafx.h"
@@ -17,14 +21,27 @@ extern "C" _ACRTIMP void __cdecl _wassert(wchar_t const* _Message, wchar_t const
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/cshopeventmanager.h"
+#include "ms2/placeholder/cstringtable.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/tixmlprinter.h"
+#include "ms2/placeholder/cfeaturemanager.h"
+#include "ms2/placeholder/cgameeventvaluemanager.h"
+#include "ms2/placeholder/clientconstants.h"
+#include "ms2/placeholder/citem.h"
+#include "ms2/commonfiles/itemdatatable.h"
+#include "ms2/commonfiles/npcdata.h"
+#include "ms2/commonfiles/ugcdesigntable.h"
+#include <atlfile.h>
+#include <algorithm>
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "hook/ms2hook.h"
 
 // Unrecovered helpers.
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);
 CStringW FUN_141425950(int nItemId);                                        // item name
+CStringTable* FUN_1401a9d70();                                              // the string table singleton
+CStringW FUN_141277a90(CUgcItemLook* pLook, const CStringW& strFallback);   // the UGC item name
 CStringA FUN_140540050(const char* pszFormat, const CStringA& strArg);       // StringFormat with one string
 CStringW FUN_14028b8e0(const CStringW& strKey);                             // string table text
 int FUN_14028e280(CMsTime& out, const CStringA& strFormat, const CStringA& str); // parses a date string
@@ -36,11 +53,104 @@ void FUN_1407ce380(CShopEventManager* pManager, CAtlArray<MS2Ptr<PreminmMarketSa
 bool FUN_1407cde30(PreminmMarketSaleEventContext* pContext, unsigned nId, int nCurrency);  // the event covers the id
 int FUN_1407ce100(PreminmMarketSaleEventContext* pContext, int nPrice);    // the discounted price
 bool FUN_1406a5840();
-__int64 FUN_1406a61c0(__int64 nPrice, int nRate);
-__int64 FUN_1406a6150(__int64 nPrice, int nRate);
+__int64 FUN_1406a61c0(__int64 nPrice, unsigned nRate);
+__int64 FUN_1406a6150(__int64 nPrice, unsigned nRate);
 CStringA FUN_14071a5b0(const CStringA& strDir, const CStringA& strFile);    // Table/<dir>/<file>
 bool FUN_1406a4fe0(int nId);
 bool FUN_1406a5010(int nId);
+int FUN_140718170(const CString& strValue);                                 // a number or an enum name
+HRESULT FUN_140299dc0(ATL::CAtlFile* pFile, const void* pData, DWORD nSize, DWORD* pWritten);  // writes the data
+CFeatureManager* FUN_140166410();                                           // the CFeatureManager singleton
+CGameEventValueManager* FUN_140302b00();                                    // TSingleton<CGameEventValueManager>::GetInstance
+int FUN_140427050(Unk_GameEventLockedValue<0x38>* pValue);                 // the star shop npc
+MS2Ptr<CNpcData> FUN_1406cd330(int nNpcId);
+unsigned FUN_1402227e0(int nJob, int n);                                    // job -> job flag
+bool FUN_140633d50(MS2Ptr<CItem> spItem);                                   // the item can be traded
+// CItemDataTable::GetMusicScore / CUGCDesignTable::GetData are not in the link set; reached by VA.
+class Unk_MeratItemTable { public: MS2Ptr<ItemMusicScore> FUN_1405565f0(unsigned nId); };
+class Unk_MeratDesignTable { public: CUGCDesignDataPtr FUN_14089e9f0(unsigned nItemId); };
+Unk_MeratItemTable* FUN_140281980();
+__int64 FUN_1406a6d50(Common::Constants::Value<int>& value);
+
+// The UGC sell fees per server (FUN_1401c0db0()).
+class Unk_MeratPriceTable
+{
+public:
+    __int64 FUN_140674bb0(int nItemId, const CString& strServer);
+    void FUN_140674d70(const CString& strServer, __int64* pMin, __int64* pMax);
+};
+Unk_MeratPriceTable* FUN_1401c0db0();
+
+// The blocked-action flags of the client config (FUN_14025e7b0()).
+class Unk_MeratFlagSet { public: int FUN_1402c4c90(int nFlag); };
+struct Unk_MeratConfig
+{
+    void* m_p00;
+    Unk_MeratFlagSet m_flags;                                               // +0x08
+};
+Unk_MeratConfig* FUN_14025e7b0();
+
+// The owner a UGC market listing is checked against.
+struct Unk_MeratItemOwner
+{
+    __int64 m_nId;                                                          // +0x00
+    int m_nType;                                                            // +0x08
+};
+bool FUN_14026d4d0(const Unk_MeratItemOwner* pOwner, int nType, __int64 nId);   // the owner matches
+
+// CItemUgc (item.h, which clashes with ugcdef.h): the UGC info of an inventory item.
+class Unk_MeratItemUgc : public CPtred
+{
+public:
+    int FUN_1406321a0();
+    int FUN_1406321d0();
+
+    CUgcItemLook m_look;                                                    // +0x18
+    CBlueprintItemData m_blueprint;                                         // +0x80
+};
+MS2_CHECK_OFFSET(Unk_MeratItemUgc, m_blueprint, 0x80);
+
+// CItemCustomMusicScore (item.h): the custom music score of an inventory item.
+class Unk_MeratMusicScore : public CPtred
+{
+public:
+    int m_n18;                                                              // +0x18
+    int m_n1c;                                                              // +0x1c a music book id
+    CStringW m_str20;                                                       // +0x20
+    CStringW m_str28;                                                       // +0x28
+    CString m_str30;                                                        // +0x30
+    int m_n38;                                                              // +0x38
+    __int64 m_n40;                                                          // +0x40
+    __int64 m_n48;                                                          // +0x48
+    int m_nNoteType;                                                        // +0x50
+    __int64 m_nNoteId;                                                      // +0x58
+};
+MS2_CHECK_OFFSET(Unk_MeratMusicScore, m_nNoteId, 0x58);
+
+// The job limit of a market entry (only the job flags are read).
+struct Unk_MeratJobLimit
+{
+    char m_pad[0x98];
+    unsigned m_nJobFlags;                                                   // +0x98
+};
+MS2_CHECK_OFFSET(Unk_MeratJobLimit, m_nJobFlags, 0x98);
+
+// The merat market home layouts (Table/Server/*HomeLayout.xml) and their product ids.
+class Unk_MeratHomeLayout
+{
+public:
+    void Load();
+
+    TiXmlDocument m_meratDoc;                                               // +0x00
+    CAtlList<int> m_meratItems;                                             // +0x70
+    TiXmlDocument m_premiumDoc;                                             // +0xa0
+    CAtlList<int> m_premiumItems;                                           // +0x110
+    TiXmlDocument m_designersDoc;                                           // +0x140
+};
+MS2_CHECK_OFFSET(Unk_MeratHomeLayout, m_premiumDoc, 0xa0);
+MS2_CHECK_OFFSET(Unk_MeratHomeLayout, m_designersDoc, 0x140);
+
+typedef CRBMap<Unk_MeratProductKey, MS2Ptr<CMeratMarketProduct> > Unk_MeratProductMap;
 
 // The common log (FUN_140166440()).
 class Unk_MeratLog : public CLogString
@@ -1897,6 +2007,181 @@ bool CMeratMarketSchCond::IsValidPageSize()
 }
 MS2_REPLACE_METHOD(0x1406A41E0, CMeratMarketSchCond, IsValidPageSize, 51, 0x107DCEFD);
 
+// ---- CMeratMarketProduct -------------------------------------------------------------------------------------------
+
+// @0x1406a4220
+CMeratMarketProduct::CMeratMarketProduct(CInPacket& packet)
+{
+    Read(packet);
+}
+
+// @0x1406a42b0
+CMeratMarketProduct::~CMeratMarketProduct()
+{
+}
+
+// @0x1406a4310
+void CMeratMarketProduct::UpdateKey()
+{
+    if (m_nKind == 0)
+        m_key.Set(m_premium.m_nId, 0);
+    else
+        m_key.Set(0, m_ugc.m_n20);
+}
+MS2_REPLACE_METHOD(0x1406A4310, CMeratMarketProduct, UpdateKey, 86, 0x7C13D87C);
+
+// @0x1406a4370
+BOOL CMeratMarketProduct::HasLimit()
+{
+    if (m_nKind == 1)
+        return FALSE;
+    return m_premium.HasLimit();
+}
+MS2_REPLACE_METHOD(0x1406A4370, CMeratMarketProduct, HasLimit, 46, 0x100EE29E);
+
+// @0x1406a43b0
+void CMeratMarketProduct::Write(COutputStream& stream)
+{
+    stream.vfunc_o10_1((unsigned char)m_nKind);
+    m_key.Write(stream);
+    if (m_nKind == 0)
+        (&m_premium)->Write(stream);
+    else
+        m_ugc.Write(stream);
+}
+MS2_REPLACE_METHOD(0x1406A43B0, CMeratMarketProduct, Write, 142, 0x240DFE2C);
+
+// @0x1406a4450
+void CMeratMarketProduct::Read(CInPacket& packet)
+{
+    m_nKind = packet.vfunc_o8_1();
+    m_key.Read(packet);
+    if (m_nKind == 0)
+        (&m_premium)->Read(packet);
+    else
+        m_ugc.Read(packet);
+}
+MS2_REPLACE_METHOD(0x1406A4450, CMeratMarketProduct, Read, 162, 0x42CA035C);
+
+// @0x1406a4500
+__int64 CMeratMarketProduct::GetSalePrice()
+{
+    __int64 nPrice = 0;
+    if (m_nKind == 0)
+        nPrice = m_premium.GetSalePriceOf(0);
+    else
+        nPrice = m_ugc.m_n50;
+    return nPrice;
+}
+MS2_REPLACE_METHOD(0x1406A4500, CMeratMarketProduct, GetSalePrice, 82, 0x959BDF18);
+
+// @0x1406a4560
+__int64 CMeratMarketProduct::GetStartTime()
+{
+    __int64 nTime = 0;
+    if (m_nKind == 0)
+        nTime = m_premium.m_startDate.Get();
+    else
+        nTime = m_ugc.m_n78;
+    return nTime;
+}
+MS2_REPLACE_METHOD(0x1406A4560, CMeratMarketProduct, GetStartTime, 82, 0x3BF4BDA9);
+
+// @0x1406a45c0
+int CMeratMarketProduct::GetChartOrder()
+{
+    int nOrder = 0;
+    if (m_nKind == 0)
+        nOrder = m_premium.m_nChartOrder;
+    return nOrder;
+}
+MS2_REPLACE_METHOD(0x1406A45C0, CMeratMarketProduct, GetChartOrder, 46, 0x745B9C6E);
+
+// @0x1406a4600
+int CMeratMarketProduct::GetCategoryId()
+{
+    if (IsUgc())
+        return m_ugc.m_n30;
+    return m_premium.m_nCategoryId;
+}
+MS2_REPLACE_METHOD(0x1406A4600, CMeratMarketProduct, GetCategoryId, 52, 0x3015BABE);
+
+// @0x1406a4640
+int CMeratMarketProduct::GetItemId()
+{
+    int nItemId = 0;
+    if (IsPremium())
+        nItemId = m_premium.m_nItemId;
+    else if (IsUgc())
+        nItemId = m_ugc.m_n2c;
+    return nItemId;
+}
+MS2_REPLACE_METHOD(0x1406A4640, CMeratMarketProduct, GetItemId, 86, 0xDE5C2764);
+
+// @0x1406a46a0
+int CMeratMarketProduct::GetCurrency()
+{
+    if (IsPremium())
+        return m_premium.GetCurrency();
+    return 1;
+}
+MS2_REPLACE_METHOD(0x1406A46A0, CMeratMarketProduct, GetCurrency, 52, 0x087080CA);
+
+// @0x1406a46e0
+int CMeratMarketProduct::GetType()
+{
+    if (IsPremium())
+        return m_premium.m_nType;
+    return 0;
+}
+MS2_REPLACE_METHOD(0x1406A46E0, CMeratMarketProduct, GetType, 40, 0x08C2D062);
+
+// @0x1406a4710
+__int64 CMeratMarketProduct::GetPoint()
+{
+    __int64 nPoint = 0;
+    if (m_nKind == 0)
+        nPoint = (&m_premium)->GetPoint();
+    return nPoint;
+}
+MS2_REPLACE_METHOD(0x1406A4710, CMeratMarketProduct, GetPoint, 78, 0x1E5FACA7);
+
+// @0x1406a4770
+CStringW CMeratMarketProduct::GetName()
+{
+    if (IsPremium())
+        return m_premium.GetName();
+    int nItemId = GetItemId();
+    CStringW strName = FUN_1401a9d70()->FUN_141811980(1, nItemId);
+    if (IsUgc())
+    {
+        if (m_ugc.FUN_140896310())
+            return m_ugc.m_music.m_str30;
+        return FUN_141277a90(&m_ugc.m_look, strName);
+    }
+    return FUN_141425950(nItemId);
+}
+MS2_REPLACE_METHOD(0x1406A4770, CMeratMarketProduct, GetName, 331, 0x34470B07);
+
+// @0x1406a48d0
+int CMeratMarketProduct::GetPayCurrency()
+{
+    int nCurrency = GetCurrency();
+    if (nCurrency == 3)
+        return 1;
+    return nCurrency;
+}
+MS2_REPLACE_METHOD(0x1406A48D0, CMeratMarketProduct, GetPayCurrency, 46, 0x4A4B9288);
+
+// @0x1406a4910
+__int64 CMeratMarketProduct::GetUgcId()
+{
+    if (m_nKind != 1)
+        return 0;
+    return m_ugc.m_n20;
+}
+MS2_REPLACE_METHOD(0x1406A4910, CMeratMarketProduct, GetUgcId, 33, 0x73020D06);
+
 // ---- free helpers --------------------------------------------------------------------------------------------------
 
 // @0x1406a4940
@@ -1941,6 +2226,64 @@ CStringA FUN_1406a4ae0()
 }
 MS2_REPLACE(0x1406A4AE0, FUN_1406a4ae0, 99, 0x1C0A91EE);
 
+// The product ids of a home layout file: <ms2><item sn="..."/>...</ms2>.
+// @0x1406a4b50
+int FUN_1406a4b50(TiXmlDocument* pDoc, CAtlList<int>* pList)
+{
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(pDoc)->FUN_140165cf0("ms2");
+    if (pRoot == NULL)
+        return 0;
+    for (Unk_140165cf0* pItem = pRoot->FUN_140165cf0("item"); pItem != NULL; pItem = pItem->FUN_140168650("item"))
+    {
+        CStringA strSn;
+        FUN_1408733e0(pItem, "sn", strSn);
+        pList->AddTail(FUN_140718170(strSn));
+    }
+    return 1;
+}
+MS2_REPLACE(0x1406A4B50, FUN_1406a4b50, 194, 0xA9FC5A5F);
+
+// Writes a layout document as the upsert of a dbo.tb_game_variable row.
+// MS2-FUNCTIONAL: the CString / printer temporaries are laid out differently (1 byte longer)
+// @0x1406a4c20
+int FUN_1406a4c20(TiXmlDocument* pDoc, const CStringA& strName, const CStringA& strDesc, ATL::CAtlFile* pFile)
+{
+    CStringA strFormat("IF EXISTS (SELECT * FROM dbo.tb_game_variable WHERE s_name = '{0}')\nBEGIN\nUPDATE dbo.tb_game_variable\nSET s_group = {1}, s_name = '{2}', s_value = '{3}', s_desc = '{4}', s_use = {5}\nWHERE s_name = '{6}'\nEND\nELSE\nBEGIN\nINSERT INTO dbo.tb_game_variable(s_group, s_name, s_value, s_desc, s_use) VALUES({7}, '{8}', '{9}', '{10}', {11});\nEND\n\n\n");
+    TiXmlPrinter printer;
+    pDoc->Accept(&printer);
+    int nGroup = 1;
+    CStringA strValue(printer.CStr());
+    int nUse = 1;
+    CStringA strQuery = StringFormat((const char*)strFormat, strName, nGroup, strName, strValue, strDesc, nUse,
+                                     strName, nGroup, strName, strValue, strDesc, nUse);
+    FUN_140299dc0(pFile, (const char*)strQuery, strQuery.GetLength(), 0);
+    return 1;
+}
+MS2_REPLACE(0x1406A4C20, FUN_1406a4c20, 455, 0x916239EE);
+
+// MS2-FUNCTIONAL: the document pointer temporaries are not recovered
+// @0x1406a4df0
+void Unk_MeratHomeLayout::Load()
+{
+    CStringA strPath = FUN_1406a4a00();
+    FUN_140166420()->FUN_1403974b0(&m_meratDoc, strPath, 0, true, false);
+    FUN_1406a4b50(&m_meratDoc, &m_meratItems);
+    strPath = FUN_1406a4a70();
+    FUN_140166420()->FUN_1403974b0(&m_premiumDoc, strPath, 0, true, false);
+    FUN_1406a4b50(&m_premiumDoc, &m_premiumItems);
+    strPath = FUN_1406a4ae0();
+    FUN_140166420()->FUN_1403974b0(&m_designersDoc, strPath, 0, true, false);
+}
+MS2_REPLACE_METHOD(0x1406A4DF0, Unk_MeratHomeLayout, Load, 447, 0xAA9F2445);
+
+// The list loader of a layout without a product list (the parameters are unused).
+// @0x1406a4fc0
+int FUN_1406a4fc0(TiXmlDocument* pDoc, CAtlList<int>* pList)
+{
+    return 0;
+}
+MS2_REPLACE(0x1406A4FC0, FUN_1406a4fc0, 13, 0x370AB719);
+
 // @0x1406a4fe0
 bool FUN_1406a4fe0(int nId)
 {
@@ -1976,3 +2319,496 @@ bool FUN_1406a5060(int nId)
     return false;
 }
 MS2_REPLACE(0x1406A5060, FUN_1406a5060, 67, 0x0E89B702);
+
+// The UGC products of a product list that are on sale (the 4xx kinds are not counted).
+// @0x1406a50b0
+int FUN_1406a50b0(Unk_MeratProductMap& map)
+{
+    if (map.IsEmpty())
+        return 0;
+    int nCount = 0;
+    for (POSITION pos = map.GetHeadPosition(); pos != NULL; map.GetNext(pos))
+    {
+        MS2Ptr<CMeratMarketProduct> spProduct = map.GetValueAt(pos);
+        if (spProduct == NULL || !spProduct->IsUgc())
+            continue;
+        if (spProduct->m_ugc.FUN_140896310())
+            continue;
+        if (FUN_140166410()->FUN_14036e510())
+        {
+            if (spProduct->m_ugc.m_n28 == 2 || spProduct->m_ugc.m_n28 == 1)
+                ++nCount;
+        }
+        else
+        {
+            if (spProduct->m_ugc.m_n28 == 2)
+                ++nCount;
+        }
+    }
+    return nCount;
+}
+MS2_REPLACE(0x1406A50B0, FUN_1406a50b0, 342, 0xAA1BDA17);
+
+// @0x1406a5210
+__int64 FUN_1406a5210()
+{
+    return *FUN_1401d3200()->UGCShopAdFeeMerat.Get();
+}
+MS2_REPLACE(0x1406A5210, FUN_1406a5210, 31, 0x68635521);
+
+// The UGC sell fee of an item on this server.
+// MS2-FUNCTIONAL: the CString temporary / result locals are laid out differently
+// @0x1406a5240
+__int64 FUN_1406a5240(int nItemId)
+{
+    CString strServer = FUN_140166410()->FUN_14036d8e0();
+    __int64 nFee = FUN_1401c0db0()->FUN_140674bb0(nItemId, strServer);
+    return nFee;
+}
+MS2_REPLACE(0x1406A5240, FUN_1406a5240, 104, 0x2A6490A4);
+
+// @0x1406a52b0
+__int64 FUN_1406a52b0(int nItemId, bool bAd)
+{
+    __int64 nFee = FUN_1406a5240(nItemId);
+    if (bAd)
+        nFee += FUN_1406a5210();
+    return nFee;
+}
+MS2_REPLACE(0x1406A52B0, FUN_1406a52b0, 66, 0x92C790EB);
+
+// The UGC sell minimum price of a design.
+// MS2-FUNCTIONAL: the exe frame is 0x10 smaller (the price local is not recovered)
+// @0x1406a5300
+__int64 FUN_1406a5300(unsigned nItemId)
+{
+    __int64 nPrice = FUN_1406a6d50(FUN_1401d3200()->UGCShopSellMinPrice);
+    CUGCDesignDataPtr spData = reinterpret_cast<Unk_MeratDesignTable*>(CUGCDesignTable::GetInstance())->FUN_14089e9f0(nItemId);
+    if (spData.get() != 0)
+    {
+        if (spData->m_nMarketMinPrice > 0)
+            nPrice = spData->m_nMarketMinPrice;
+    }
+    return nPrice;
+}
+MS2_REPLACE(0x1406A5300, FUN_1406a5300, 136, 0x694D4729);
+
+// The UGC grade of an item.
+// MS2-FUNCTIONAL: the return-path branch layout differs (exe 2 bytes longer)
+// @0x1406a5390
+int FUN_1406a5390(int nItemId)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem.get() != 0)
+    {
+        if (spItem->FUN_14053cd10())
+            return 2;
+        CUGCDesignDataPtr spData = reinterpret_cast<Unk_MeratDesignTable*>(CUGCDesignTable::GetInstance())->FUN_14089e9f0(nItemId);
+        if (spData.get() != 0)
+            return spData->m_nItemGrade;
+    }
+    return 1;
+}
+MS2_REPLACE(0x1406A5390, FUN_1406a5390, 220, 0x81D4D25E);
+
+// The UGC sell price range of an item.
+// MS2-FUNCTIONAL: the price clamp temporaries and branch layout differ
+// @0x1406a5480
+void FUN_1406a5480(MS2Ptr<CItemData> spItem, __int64* pMin, __int64* pMax)
+{
+    if (spItem == NULL)
+        return;
+    int nId = spItem->FUN_14053c510();
+    __int64 nMin = FUN_1406a6d50(FUN_1401d3200()->UGCShopSellMinPrice);
+    __int64 nMax = FUN_1406a6d50(FUN_1401d3200()->UGCShopSellMaxPrice);
+    if (spItem->FUN_14053d6f0() || spItem->FUN_14053d900())
+    {
+        CUGCDesignDataPtr spData = reinterpret_cast<Unk_MeratDesignTable*>(CUGCDesignTable::GetInstance())->FUN_14089e9f0(nId);
+        if (spData.get() != 0)
+        {
+            if (spData->m_nMarketMinPrice > 0)
+                nMin = spData->m_nMarketMinPrice;
+            if (spData->m_nMarketMaxPrice > 0)
+                nMax = spData->m_nMarketMaxPrice;
+        }
+    }
+    else if (spItem->FUN_14053cd10())
+    {
+        const CString& strServer = FUN_140166410()->FUN_14036d8e0();
+        __int64 nServerMin = 0;
+        __int64 nServerMax = 0;
+        FUN_1401c0db0()->FUN_140674d70(strServer, &nServerMin, &nServerMax);
+        if (nServerMin > 0)
+            nMin = nServerMin;
+        if (nServerMax > 0)
+            nMax = nServerMax;
+    }
+    *pMin = nMin < 0 ? 0 : nMin;
+    *pMax = nMax < *pMin ? *pMin : nMax;
+}
+MS2_REPLACE(0x1406A5480, FUN_1406a5480, 604, 0x8AF4D4F1);
+
+// @0x1406a56f0
+bool FUN_1406a56f0()
+{
+    return FUN_140166410()->FUN_14036d570(0x49);
+}
+MS2_REPLACE(0x1406A56F0, FUN_1406a56f0, 27, 0xD7E69A76);
+
+// @0x1406a5720
+bool FUN_1406a5720()
+{
+    return FUN_140166410()->FUN_14036d650();
+}
+MS2_REPLACE(0x1406A5720, FUN_1406a5720, 22, 0xCF0C1D8A);
+
+// @0x1406a5740
+bool FUN_1406a5740()
+{
+    return FUN_140166410()->FUN_14036d690(0x44);
+}
+MS2_REPLACE(0x1406A5740, FUN_1406a5740, 27, 0xEECC0297);
+
+// @0x1406a5770
+bool FUN_1406a5770()
+{
+    return FUN_140166410()->FUN_14036d570(0x45);
+}
+MS2_REPLACE(0x1406A5770, FUN_1406a5770, 27, 0x1C72616A);
+
+// @0x1406a57a0
+bool FUN_1406a57a0()
+{
+    if (FUN_14025e7b0()->m_flags.FUN_1402c4c90(0x34) == 1)
+        return true;
+    return false;
+}
+MS2_REPLACE(0x1406A57A0, FUN_1406a57a0, 42, 0x6D0F554E);
+
+// @0x1406a57d0
+bool FUN_1406a57d0()
+{
+    if (FUN_14025e7b0()->m_flags.FUN_1402c4c90(0x35) == 1)
+        return true;
+    return false;
+}
+MS2_REPLACE(0x1406A57D0, FUN_1406a57d0, 42, 0x06BD45DC);
+
+// @0x1406a5800
+bool FUN_1406a5800()
+{
+    if (FUN_1406a57d0() == true || !FUN_1406a5770())
+        return false;
+    return FUN_140166410()->FUN_14036d570(0x46);
+}
+MS2_REPLACE(0x1406A5800, FUN_1406a5800, 56, 0xE77E0C92);
+
+// @0x1406a5840
+bool FUN_1406a5840()
+{
+    if (FUN_1406a57a0() == true || !FUN_1406a5770())
+        return false;
+    return FUN_140166410()->FUN_14036d570(0x47);
+}
+MS2_REPLACE(0x1406A5840, FUN_1406a5840, 56, 0x6AF70C30);
+
+// @0x1406a5880
+bool FUN_1406a5880()
+{
+    return FUN_140166410()->FUN_14036d570(0x48);
+}
+MS2_REPLACE(0x1406A5880, FUN_1406a5880, 27, 0x125998D9);
+
+// @0x1406a58b0
+bool FUN_1406a58b0()
+{
+    if (!FUN_1406a5880())
+        return false;
+    return FUN_140166410()->FUN_14036d570(0xec);
+}
+MS2_REPLACE(0x1406A58B0, FUN_1406a58b0, 43, 0x19A075F1);
+
+// @0x1406a58f0
+bool FUN_1406a58f0()
+{
+    if (!FUN_1406a5880())
+        return false;
+    return FUN_140166410()->FUN_14036d570(0xa9);
+}
+MS2_REPLACE(0x1406A58F0, FUN_1406a58f0, 43, 0x5B820E5A);
+
+// The star shop event has an npc.
+// @0x1406a5930
+bool FUN_1406a5930()
+{
+    int nNpcId = FUN_140427050(FUN_140302b00()->GetStarShop());
+    if (nNpcId == 0 || FUN_1406cd330(nNpcId) == NULL)
+        return false;
+    return true;
+}
+MS2_REPLACE(0x1406A5930, FUN_1406a5930, 185, 0x1098843A);
+
+// @0x1406a59f0
+int FUN_1406a59f0(Unk_MeratJobLimit* pLimit, int nJob)
+{
+    if (pLimit == NULL)
+        return 0x6a;
+    unsigned nJobFlag = FUN_1402227e0(nJob, 0);
+    if ((pLimit->m_nJobFlags & nJobFlag) == 0)
+        return 0xb5;
+    return 0;
+}
+MS2_REPLACE(0x1406A59F0, FUN_1406a59f0, 78, 0x21B65BE1);
+
+// The inventory item can be listed on the UGC market by this owner.
+// MS2-FUNCTIONAL: the early-return / destructor layout of the 0x5da-byte filter differs
+// @0x1406a5a50
+bool FUN_1406a5a50(MS2Ptr<CItem> spItem, const Unk_MeratItemOwner* pOwner)
+{
+    if (spItem == NULL)
+        return false;
+    if (spItem->FUN_140527840() == NULL)
+        return false;
+    if (spItem->FUN_140526010())
+    {
+        if (!FUN_140166410()->FUN_14036d570(0xec))
+            return false;
+        Unk_MeratItemUgc* pUgc = reinterpret_cast<Unk_MeratItemUgc*>(spItem->FUN_1405278d0());
+        if (pUgc == NULL)
+            return false;
+        if (pUgc->m_blueprint.m_n18 == 0)
+            return false;
+        if (pUgc->FUN_1406321a0() || pUgc->FUN_1406321d0())
+            return false;
+        if (!FUN_140633d50(spItem))
+            return false;
+        if (pUgc->m_blueprint.m_n40 == pOwner->m_nId && pUgc->m_blueprint.m_n38 == pOwner->m_nType)
+            return true;
+        return false;
+    }
+    if (spItem->FUN_140525f60() == 0)
+    {
+        if (FUN_140166410()->FUN_14036d570(0xa9) && spItem->FUN_140525790())
+        {
+            Unk_MeratMusicScore* pScore = reinterpret_cast<Unk_MeratMusicScore*>(spItem->FUN_140527990());
+            if (pScore != NULL)
+            {
+                if (pScore->m_n38 != 0)
+                    return false;
+                if (!FUN_14026d4d0(pOwner, pScore->m_nNoteType, pScore->m_nNoteId))
+                    return false;
+                MS2Ptr<ItemMusicScore> spScore =
+                    FUN_140281980()->FUN_1405565f0(reinterpret_cast<CItemData*>(spItem->FUN_140527840())->FUN_14053c510());
+                if (spScore == NULL)
+                    return false;
+                if (spScore->FUN_14054ad00() != spItem->FUN_140527340())
+                    return false;
+                if (spItem->FUN_140526bd0() != 2)
+                    return false;
+                if (!FUN_140633d50(spItem))
+                    return false;
+                return true;
+            }
+        }
+        return false;
+    }
+    Unk_MeratItemUgc* pUgc = reinterpret_cast<Unk_MeratItemUgc*>(spItem->FUN_1405278d0());
+    if (pUgc == NULL)
+        return false;
+    if (pUgc->FUN_1406321a0() || pUgc->FUN_1406321d0())
+        return false;
+    if (!spItem->FUN_140526060(const_cast<Unk_MeratItemOwner*>(pOwner)))
+        return false;
+    if (!FUN_140633d50(spItem))
+        return false;
+    return true;
+}
+MS2_REPLACE(0x1406A5A50, FUN_1406a5a50, 1498, 0x440A186E);
+
+// The item can be sold on the UGC market.
+// @0x1406a6030
+bool FUN_1406a6030(MS2Ptr<CItemData> spItem)
+{
+    if (spItem == NULL)
+        return false;
+    if (spItem->FUN_14053d6f0())
+        return true;
+    if (spItem->FUN_14053d900())
+        return FUN_140166410()->FUN_14036d570(0xec);
+    if (spItem->FUN_14053cd10())
+        return FUN_140166410()->FUN_14036d570(0xa9);
+    return false;
+}
+MS2_REPLACE(0x1406A6030, FUN_1406a6030, 265, 0x74B7DAFD);
+
+// @0x1406a6140
+int FUN_1406a6140()
+{
+    return 7;
+}
+MS2_REPLACE(0x1406A6140, FUN_1406a6140, 6, 0xDBB5A9B9);
+
+// The rate percent of a price.
+// @0x1406a6150
+__int64 FUN_1406a6150(__int64 nPrice, unsigned nRate)
+{
+    if (nPrice <= 0 || nRate == 0)
+        return 0;
+    unsigned nPercent = std::min<unsigned>(nRate, 100);
+    __int64 nResult = nPrice * nPercent / 100;
+    return nResult;
+}
+MS2_REPLACE(0x1406A6150, FUN_1406a6150, 102, 0xEA22620A);
+
+// A price less the rate percent.
+// @0x1406a61c0
+__int64 FUN_1406a61c0(__int64 nPrice, unsigned nRate)
+{
+    if (nPrice == 0 || nRate == 0)
+        return 0;
+    unsigned nPercent = 100 - std::min<unsigned>(nRate, 100);
+    return nPrice * nPercent / 100;
+}
+MS2_REPLACE(0x1406A61C0, FUN_1406a61c0, 99, 0x5705D44E);
+
+// ---- CMeratMarketPacket::BuyPacket ---------------------------------------------------------------------------------
+
+// @0x1406a6230
+CMeratMarketPacket::BuyPacket::BuyPacket()
+{
+    Reset();
+}
+
+// @0x1406a62b0
+void CMeratMarketPacket::BuyPacket::Reset()
+{
+    m_nKind = 0;
+    m_key.Reset();
+    m_n30 = 0;
+    m_n34 = 0;
+    m_n38 = 0;
+    m_n40 = 0;
+    m_n44 = 0;
+    m_n48 = 0;
+    m_n4c = 0;
+    m_str50.Empty();
+    m_str58.Empty();
+    m_n60 = 0;
+    m_b68 = false;
+    m_n6c = 0x11;
+    m_n70 = 0;
+    m_n74 = 0;
+    m_n78 = 0;
+    m_n80 = 0;
+    m_n88 = 0;
+}
+MS2_REPLACE_METHOD(0x1406A62B0, CMeratMarketPacket::BuyPacket, Reset, 265, 0x9545D22B);
+
+// @0x1406a63c0
+void CMeratMarketPacket::BuyPacket::CopyFrom(const BuyPacket& other)
+{
+    *this = other;
+}
+MS2_REPLACE_METHOD(0x1406A63C0, CMeratMarketPacket::BuyPacket, CopyFrom, 34, 0x5B7DFB1F);
+
+// @0x1406a63f0
+void CMeratMarketPacket::BuyPacket::Write(COutputStream& stream)
+{
+    stream.vfunc_o10_1((unsigned char)m_nKind);
+    m_key.Write(stream);
+    stream.vfunc_o10_3(m_n34);
+    stream.vfunc_o10_3(m_n30);
+    stream.vfunc_o10_4(m_n38);
+    stream.vfunc_o10_3(m_n40);
+    stream.vfunc_o10_3(m_n44);
+    stream.vfunc_o10_3(m_n48);
+    stream.vfunc_o10_1((unsigned char)m_n4c);
+    stream.vfunc_o10_8(m_str50);
+    stream.vfunc_o10_8(m_str58);
+    stream.vfunc_o10_4(m_n60);
+    stream.vfunc_o10_0(m_b68);
+    stream.vfunc_o10_1((unsigned char)m_n6c);
+    stream.vfunc_o10_3(m_n70);
+    stream.vfunc_o10_3(m_n74);
+    stream.vfunc_o10_3(m_n78);
+    stream.vfunc_o10_3(m_n88);
+}
+MS2_REPLACE_METHOD(0x1406A63F0, CMeratMarketPacket::BuyPacket, Write, 485, 0xEEF87292);
+
+// @0x1406a65e0
+void CMeratMarketPacket::BuyPacket::Read(CInPacket& packet)
+{
+    m_nKind = packet.vfunc_o8_1();
+    m_key.Read(packet);
+    m_n34 = packet.vfunc_o8_3();
+    m_n30 = packet.vfunc_o8_3();
+    m_n38 = packet.vfunc_o8_4();
+    m_n40 = packet.vfunc_o8_3();
+    m_n44 = packet.vfunc_o8_3();
+    m_n48 = packet.vfunc_o8_3();
+    m_n4c = packet.vfunc_o8_1();
+    m_str50 = packet.vfunc_o8_8();
+    m_str58 = packet.vfunc_o8_8();
+    m_n60 = packet.vfunc_o8_4();
+    m_b68 = packet.vfunc_o8_0();
+    m_n6c = packet.vfunc_o8_1();
+    m_n70 = packet.vfunc_o8_3();
+    m_n74 = packet.vfunc_o8_3();
+    m_n78 = packet.vfunc_o8_3();
+    m_n88 = packet.vfunc_o8_3();
+}
+MS2_REPLACE_METHOD(0x1406A65E0, CMeratMarketPacket::BuyPacket, Read, 1105, 0xAA1E76E3);
+
+// ---- CMeratMarketPacket::ErrorPacket -------------------------------------------------------------------------------
+
+// @0x1406a6a40
+CMeratMarketPacket::ErrorPacket::ErrorPacket() : m_nKind(0), m_key(0, 0), m_n30(0), m_nValue(0)
+{
+}
+
+// @0x1406a6ac0
+CMeratMarketPacket::ErrorPacket::ErrorPacket(int nKind, int nError, const Unk_MeratProductKey& key, __int64 nValue)
+    : m_nKind(nKind), m_nError(nError), m_key(key.m_nPremiumId, key.m_nUgcId), m_n30(0), m_nValue(nValue)
+{
+}
+
+// @0x1406a6b60
+void CMeratMarketPacket::ErrorPacket::Write(COutputStream& stream)
+{
+    stream.vfunc_o10_1((unsigned char)m_nKind);
+    stream.vfunc_o10_3(m_nError);
+    m_key.Write(stream);
+    stream.vfunc_o10_4(m_nValue);
+    stream.vfunc_o10_1((unsigned char)m_n30);
+}
+MS2_REPLACE_METHOD(0x1406A6B60, CMeratMarketPacket::ErrorPacket, Write, 140, 0xBC3B2559);
+
+// @0x1406a6c00
+void CMeratMarketPacket::ErrorPacket::Read(CInPacket& packet)
+{
+    m_nKind = packet.vfunc_o8_1();
+    m_nError = packet.vfunc_o8_3();
+    m_key.Read(packet);
+    m_nValue = packet.vfunc_o8_4();
+    m_n30 = packet.vfunc_o8_1();
+}
+MS2_REPLACE_METHOD(0x1406A6C00, CMeratMarketPacket::ErrorPacket, Read, 216, 0xA5721865);
+
+// ---- CMeratMarketRandomSaleData ------------------------------------------------------------------------------------
+
+// @0x1406a6ce0
+CMeratMarketRandomSaleData::CMeratMarketRandomSaleData()
+{
+    m_n18 = 0;
+    m_n1c = 0;
+    m_n20 = 0;
+    m_n24 = 0;
+    m_n28 = 1;
+}
+
+// @0x1406a6d50
+__int64 FUN_1406a6d50(Common::Constants::Value<int>& value)
+{
+    return *value.Get();
+}
+MS2_REPLACE(0x1406A6D50, FUN_1406a6d50, 27, 0x4C6042D7);

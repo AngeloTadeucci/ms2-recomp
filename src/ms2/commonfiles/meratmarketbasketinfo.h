@@ -17,6 +17,7 @@
 #include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/clockcriticalsection.h"
+#include "ms2/placeholder/cmeratmarketpacket.h"
 #include "ms2/placeholder/cshopcategorytable.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/mstime.h"
@@ -276,3 +277,100 @@ MS2_CHECK_SIZE(CMeratMarketPremium, 0x130);
 MS2_CHECK_OFFSET(CMeratMarketPremium, m_nShopType, 0x30);
 MS2_CHECK_OFFSET(CMeratMarketPremium, m_categoryMap, 0xa0);
 MS2_CHECK_OFFSET(CMeratMarketPremium, m_ugcMap, 0xe8);
+
+// A market product: a premium (merat) product or a UGC product, as the client lists them.
+class CMeratMarketProduct : public CPtred
+{
+public:
+    CMeratMarketProduct(CInPacket& packet);                 // 0x1406a4220
+    virtual ~CMeratMarketProduct();                         // 0x1406a42b0
+
+    void UpdateKey();                                       // 0x1406a4310
+    BOOL HasLimit();                                        // 0x1406a4370
+    void Write(COutputStream& stream);                      // 0x1406a43b0
+    void Read(CInPacket& packet);                           // 0x1406a4450
+    __int64 GetSalePrice();                                 // 0x1406a4500
+    __int64 GetStartTime();                                 // 0x1406a4560
+    int GetChartOrder();                                    // 0x1406a45c0
+    int GetCategoryId();                                    // 0x1406a4600
+    int GetItemId();                                        // 0x1406a4640
+    int GetCurrency();                                      // 0x1406a46a0
+    int GetType();                                          // 0x1406a46e0
+    __int64 GetPoint();                                     // 0x1406a4710
+    CStringW GetName();                                     // 0x1406a4770
+    int GetPayCurrency();                                   // 0x1406a48d0
+    __int64 GetUgcId();                                     // 0x1406a4910
+    // @0x1406ab1a0
+    BOOL IsPremium() { return m_nKind == 0; }
+    // @0x1406ab1d0
+    BOOL IsUgc() { return m_nKind == 1; }
+
+    Unk_MeratProductKey m_key;                              // +0x18
+    int m_nKind;                                            // +0x28 0 premium, 1 UGC
+    CMeratMarketPremiumProduct m_premium;                   // +0x30
+    CUgcMarketProduct m_ugc;                                // +0x268
+};
+MS2_CHECK_SIZE(CMeratMarketProduct, 0x4b0);
+MS2_CHECK_OFFSET(CMeratMarketProduct, m_ugc, 0x268);
+
+// The buy request / result of a market product.
+struct CMeratMarketPacket::BuyPacket : public CPtred
+{
+    BuyPacket();                                            // 0x1406a6230
+    void Reset();                                           // 0x1406a62b0
+    void CopyFrom(const BuyPacket& other);                  // 0x1406a63c0
+    void Write(COutputStream& stream);                      // 0x1406a63f0
+    void Read(CInPacket& packet);                           // 0x1406a65e0
+
+    int m_nKind;                                            // +0x18 (byte)
+    Unk_MeratProductKey m_key;                              // +0x20
+    int m_n30;                                              // +0x30
+    int m_n34;                                              // +0x34
+    __int64 m_n38;                                          // +0x38
+    int m_n40;                                              // +0x40
+    int m_n44;                                              // +0x44
+    int m_n48;                                              // +0x48
+    int m_n4c;                                              // +0x4c (byte)
+    CStringW m_str50;                                       // +0x50
+    CStringW m_str58;                                       // +0x58
+    __int64 m_n60;                                          // +0x60
+    bool m_b68;                                             // +0x68
+    int m_n6c;                                              // +0x6c (byte, 0x11)
+    int m_n70;                                              // +0x70
+    int m_n74;                                              // +0x74
+    int m_n78;                                              // +0x78
+    __int64 m_n80;                                          // +0x80
+    int m_n88;                                              // +0x88
+};
+MS2_CHECK_SIZE(CMeratMarketPacket::BuyPacket, 0x90);
+MS2_CHECK_OFFSET(CMeratMarketPacket::BuyPacket, m_n88, 0x88);
+
+// A market error reply.
+struct CMeratMarketPacket::ErrorPacket : public CPtred
+{
+    ErrorPacket();                                          // 0x1406a6a40
+    ErrorPacket(int nKind, int nError, const Unk_MeratProductKey& key, __int64 nValue);    // 0x1406a6ac0
+    void Write(COutputStream& stream);                      // 0x1406a6b60
+    void Read(CInPacket& packet);                           // 0x1406a6c00
+
+    int m_nKind;                                            // +0x18 (byte)
+    int m_nError;                                           // +0x1c
+    Unk_MeratProductKey m_key;                              // +0x20
+    int m_n30;                                              // +0x30 (byte)
+    __int64 m_nValue;                                       // +0x38
+};
+MS2_CHECK_SIZE(CMeratMarketPacket::ErrorPacket, 0x40);
+
+// The random sale state of a premium product.
+class CMeratMarketRandomSaleData : public CPtred
+{
+public:
+    CMeratMarketRandomSaleData();                           // 0x1406a6ce0
+
+    int m_n18;                                              // +0x18
+    int m_n1c;                                              // +0x1c
+    int m_n20;                                              // +0x20
+    int m_n24;                                              // +0x24
+    int m_n28;                                              // +0x28 (1)
+};
+MS2_CHECK_SIZE(CMeratMarketRandomSaleData, 0x30);

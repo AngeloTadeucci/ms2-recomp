@@ -4,6 +4,8 @@
 #include "ms2/commonfiles/stream.h"
 class CMeratMarketPacket {
 public:
+    struct BuyPacket;       // meratmarketbasketinfo.h
+    struct ErrorPacket;     // meratmarketbasketinfo.h
     class UgcAddProductBase:public CPtred {
     public:
         virtual ~UgcAddProductBase();

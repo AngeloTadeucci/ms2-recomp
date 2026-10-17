@@ -16,6 +16,10 @@ public:
     bool FUN_14036ccb0();                                    // loads the feature file; false when missing
     int FUN_14036d8b0();                                     // the server number of the window title
     CString FUN_14036d8e0();                                 // the server name of the window title
+    bool FUN_14036d570(int nFeature);                        // the feature is switched on
+    bool FUN_14036d650();                                    // red merat in use
+    bool FUN_14036d690(int nFeature);
+    bool FUN_14036e510();                                    // a content switch
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_10[0x100 - 0x10];
