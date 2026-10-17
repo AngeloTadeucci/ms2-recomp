@@ -11,6 +11,9 @@ class MS2MemFile : public efd::FileCommon
 {
 public:
     MS2MemFile(const void* pData, int nSize);               // 0x141626f30
+    MS2MemFile(const char* pszPath);                        // 0x141626e40: loads the file's bytes
+    virtual ~MS2MemFile();                                  // 0x141627050
+    unsigned int FUN_141627270(void* pDest, unsigned int nBytes);   // read (non-virtual here); returns the bytes copied
     virtual bool Flush();
     virtual bool Seek(int iOffset, SeekOrigin eSeekFrom);
     virtual unsigned int GetFileSize() const;
