@@ -113,6 +113,7 @@ public:
     Unk_CMISRoster* FUN_141bd0cc0();                            // the party/roster manager
     int FUN_141bd3060();                                        // the current map id
     int FUN_141bcfd10();                                        // the world state (4 = in field, 6 = loading)
+    void* FUN_141bd0fa0(Unk_CMISEntityRef ref);                 // the magic-cube object of an entity
     int FUN_141bcfbd0();                                        // in a field with a home (state 4 and a map)
     Unk_PayloadPtr<Unk_CMISObj208> FUN_141bd30a0();             // the current field data
     void FUN_141bc58d0(struct Unk_CMISNpcList* pOut);           // fills the list of npcs
@@ -1503,7 +1504,7 @@ struct Unk_CMISEntId { Unk_CMISEntId(const Unk_CMISEntId&); __int64 m_id; };
 void FUN_14115b260(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId, float fFrom, float fTo, unsigned nMs);   // AddRotate
 CCubeMotionManager* FUN_1410af790();
 struct Unk_CMISSlot;
-class Unk_CMISMagicCube { public: void FUN_141232330(int nKey, float fRot); Unk_CMISSlot FUN_141230f60(Unk_StreamPoint ptPos, float fRange, int nPc); };
+class Unk_CMISMagicCube { public: void FUN_141230df0(CString strKey); void FUN_141232330(int nKey, float fRot); Unk_CMISSlot FUN_141230f60(Unk_StreamPoint ptPos, float fRange, int nPc); };
 Unk_CMISMagicCube* FUN_1409670b0();
 bool FUN_14034eee0(const CStringW& s, const wchar_t* pSz);                 // operator==
 CStringW* FUN_141bd3080(Unk_CMISWorld*);                                   // the current map name
@@ -2586,7 +2587,7 @@ struct Unk_CMISEffReq                                                           
 MS2_CHECK_SIZE(Unk_CMISEffReq, 0x78);
 void FUN_140a52ef0(Unk_CMISEffReq* p);
 void FUN_1405a89e0(Unk_CMISEffReq* p);
-struct Unk_CMISConsts { char m_pad_00[0x128]; CString m_strCubeFlash[5]; char m_pad_150[0x2a8 - 0x150]; CString m_strHouseEffect; char m_pad_2b0[0x300 - 0x2b0]; CString m_strSaleEffect; CString m_strCubeEffect; };   // game-wide constants (the sale-post effect name at +0x300)
+struct Unk_CMISConsts { char m_pad_00[0x128]; CString m_strCubeFlash[5]; char m_pad_150[0x2a0 - 0x150]; CString m_strRemoveEffect; CString m_strHouseEffect; char m_pad_2b0[0x300 - 0x2b0]; CString m_strSaleEffect; CString m_strCubeEffect; };   // game-wide constants (the sale-post effect name at +0x300)
 Unk_CMISConsts* FUN_1401d31f0();
 class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); int FUN_1411a49c0(Unk_CMISEffReq* pRequest); void FUN_1411a6060(int nEffect); };
 Unk_CMISEffMgr* FUN_1403ed280();
@@ -2664,7 +2665,7 @@ void CubeMapInformationService::FUN_1410c44b0(int nGroup, int nBlock, int bFlag)
 struct Unk_CMISBlock { Unk_CMISBlock(const Unk_CMISBlock&); ~Unk_CMISBlock(); void* m_a; void* m_b; };   // copy 14111e680, dtor 141123760
 struct Unk_CMISObjHandle { void* m_a; void* m_b; };
 struct Unk_CMISObjRec { char pad[0x40]; int nKind; };
-class Unk_CMISWorldMgr { public: egf::Entity* FUN_1411cf440(const egf::EntityID&); egf::EntityPtr FUN_1411ce7c0(efd::utf8string, efd::utf8string, NiPoint3, NiPoint3, float, int, int); };
+class Unk_CMISWorldMgr { public: egf::Entity* FUN_1411cf440(const egf::EntityID&); void FUN_1411cf570(egf::Entity*); egf::EntityPtr FUN_1411ce7c0(efd::utf8string, efd::utf8string, NiPoint3, NiPoint3, float, int, int); };
 void* FUN_1409670f0();
 int FUN_140707660(int);
 Unk_CMISIter<266>* FUN_1411519d0(Unk_CMISTree<266>*, Unk_CMISIter<266>*);
@@ -5522,5 +5523,117 @@ bool CubeMapInformationService::FUN_1410c06b0(MS2Ptr<Cube> spCube)
             }
         }
     }
+    return true;
+}
+
+// ---- w142 batch 10 ----
+void FUN_141153d00(Unk_CMISTree<260>*, const int*);                                         // erase
+void FUN_141152dd0(Unk_CMISTree<285>*, const int*);                                         // erase
+Unk_CMISIter<259>* FUN_14114e400(Unk_CMISTree<259>*, Unk_CMISIter<259>*);                   // begin
+void FUN_141129cb0(Unk_CMISIter<259>*);                                                     // operator++
+Unk_CMISIter<256>* FUN_14111d3f0(Unk_CMISTree<256>*, Unk_CMISIter<256>*, const Unk_CMISEntityRef*);   // insert
+bool FUN_141127580(Unk_CMISIter<261>*, Unk_CMISIter<261>*);                                 // operator!=
+struct Unk_CMISColEntry { int m_key; int m_pad; MS2Ptr<Cube> m_value; };                    // node value of a house's cubes
+Unk_CMISIter<287>* FUN_140885bd0(Unk_CMISTree<287>*, Unk_CMISIter<287>*);                   // begin
+bool FUN_1408852d0(Unk_CMISIter<287>*, Unk_CMISIter<287>*);                                 // operator!=
+Unk_CMISColEntry* FUN_140885360(Unk_CMISIter<287>*);                                        // operator*
+void FUN_1408853e0(Unk_CMISIter<287>*);                                                     // operator++
+void FUN_141156100(Unk_CMISTree<287>*, const int*);                                         // erase
+void FUN_141bbb7f0(Unk_CMISWorld*, void* pObj, int nFlag);                                  // remove an object from the world
+void FUN_1410b25a0(Unk_CMISTree<277>* pTree, int x, int y, int z);                          // remove a cell
+// @0x1410c1910
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently; the magic-cube object is held raw
+bool CubeMapInformationService::FUN_1410c1910(const Unk_Int3& pt, int bDefer)
+{
+    int nKey = FUN_1408a03c0(pt);
+    Unk_CMISIter<273> itHeadEnd, itHead;
+    if (FUN_141127500(FUN_141157660(&f228, &itHead, &nKey), FUN_141151b50(&f228, &itHeadEnd))) {
+        FUN_141906680(FUN_1411284c0(FUN_141127d10(&f228, &nKey)));
+        FUN_141153f10(&f228, &nKey);
+    }
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_1411274c0(FUN_141157580(&f88, &itFind, &nKey), FUN_141151af0(&f88, &itEnd)))
+        FUN_141153d00(&f88, &nKey);
+    if (FUN_141126d90(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd))) {
+        Unk_CMISIter<259> it, itAllEnd;
+        for (FUN_14114e400(&f78, &it); ; FUN_141129cb0(&it)) {
+            if (!FUN_141127800(&it, FUN_1411520f0(&f78, &itAllEnd))) {
+                FUN_140166440()->FUN_1410db4f0(1, 0x13, L"[ERROR] No cube on that position = {0}, {1}, {2}", pt.x, pt.y, pt.z);
+                return false;
+            }
+            MS2Ptr<Cube> spIter(FUN_141128780(&it)->second);
+            if (FUN_1408a03c0(spIter->position) == nKey) {
+                Unk_CMISIter<256> itIns;
+                FUN_14111d3f0(&f68, &itIns, &FUN_141128780(&it)->key);
+                return false;
+            }
+        }
+    }
+    MS2Ptr<Cube> spCube(*FUN_141127cd0(&f98, &nKey));
+    if (spCube->fieldD8 != 0) {
+        Unk_CMISIter<261> itHouseEnd, itHouse;
+        if (FUN_141127580(FUN_141157820(&fc8, &itHouse, &spCube->fieldD8), FUN_141151c10(&fc8, &itHouseEnd))) {
+            Unk_CMISTree<287>* pCubes = FUN_141127dd0(&fc8, &spCube->fieldD8);
+            Unk_CMISIter<287> itCube, itCubesEnd;
+            for (FUN_140885bd0(pCubes, &itCube); FUN_1408852d0(&itCube, FUN_140885c40(pCubes, &itCubesEnd)); FUN_1408853e0(&itCube)) {
+                Unk_CMISColEntry* pEntry = FUN_140885360(&itCube);
+                if (pEntry->m_value.get() == spCube.get())
+                    FUN_141156100(pCubes, &pEntry->m_key);
+            }
+        }
+    }
+    Unk_CMISIter<285> itEffEnd, itEff;
+    if (FUN_14063ec30(FUN_141156da0(&f338, &itEff, &nKey), FUN_1411517f0(&f338, &itEffEnd))) {
+        FUN_1403ed280()->FUN_1411a6060(*FUN_141127a50(&f338, &nKey));
+        FUN_141152dd0(&f338, &nKey);
+    }
+    Unk_CMISEffReq request;
+    FUN_140a52ef0(&request);
+    request.m_strName = FUN_1401d31f0()->m_strRemoveEffect;
+    request.m_nOwnerId = 7;
+    FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(&spCube->entity))));
+    FUN_1403ed280()->FUN_1411a4a00(&request);
+    FUN_141153d00(&f98, &nKey);
+    FUN_141153d00(&fb8, &nKey);
+    Unk_CMISIter<259> itById, itByIdEnd;
+    FUN_1411581c0(&fa8, &itById, FUN_1408b76f0(FUN_1408a9280(&spCube->entity)));
+    if (FUN_141127800(&itById, FUN_1411520f0(&fa8, &itByIdEnd))) {
+        Unk_CMISIter<259> itErased;
+        FUN_14111c730(&fa8, &itErased, itById);
+    }
+    if (FUN_1407071e0(spCube->fieldB4) != 0) {
+        CString strKey;
+        strKey.Format("%d_%d", spCube->field44, FUN_1408a03c0(spCube->position));
+        FUN_1409670b0()->FUN_141230df0(strKey);
+        if (FUN_1407072e0(spCube->fieldB4) != 0) {
+            Unk_CMISIter<265> itMagicEnd, itMagic;
+            if (FUN_141127640(FUN_141157ac0(&f108, &itMagic, &nKey), FUN_141151d30(&f108, &itMagicEnd))) {
+                void* pMagic = FUN_1403ed2d0()->FUN_141bd0fa0(Unk_CMISEntityRef(*FUN_141127ed0(&f108, &nKey)));
+                if (pMagic != 0)
+                    FUN_141bbb7f0(FUN_1403ed2d0(), pMagic, 0);
+                FUN_1411547a0(&f108, &nKey);
+            }
+        }
+    }
+    Unk_CMISIter<265> itDeferEnd, itDefer;
+    if (bDefer != 0 && FUN_141126f10(FUN_141157ac0(&f2c8, &itDefer, &nKey), FUN_141151d30(&f2c8, &itDeferEnd)))
+        FUN_140899bd0(FUN_141127ed0(&f2c8, &nKey), *FUN_1408b76f0(FUN_1408a9280(&spCube->entity)));
+    else
+        FUN_1410c5340(Unk_CMISEntityRef(*FUN_1408b76f0(FUN_1408a9280(&spCube->entity))));
+    static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf570(FUN_1408a9090(&spCube->entity));
+    FUN_1410b25a0(&f2a8, pt.x, pt.y, pt.z);
+    FUN_1410ce020(spCube);
+    if (FUN_14112f0b0() == 0) {
+        if (spCube->field48 != 0 || spCube->fieldA8 == 8) {
+            Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+            if (spInst.FUN_14098d090() != 0 && FUN_1413d6890(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity)) == 0)
+                FUN_1413d6f40(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity));
+        }
+    } else if (spCube->field48 != 0) {
+        Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+        if (spInst.FUN_14098d090() != 0 && FUN_1413d6890(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity)) == 0)
+            FUN_1413d6f40(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity));
+    }
+    FUN_1405a89e0(&request);
     return true;
 }
