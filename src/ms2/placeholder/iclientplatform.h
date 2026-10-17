@@ -27,7 +27,7 @@ public:
     virtual void vfunc_14();
     virtual void vfunc_15();
     virtual void vfunc_16();
-    virtual void vfunc_17();
+    virtual int vfunc_17();                                 // 0x88: the platform is ready (ms2clientplatform.cpp)
     virtual void vfunc_18();
     virtual void vfunc_19();
     virtual void vfunc_20();
