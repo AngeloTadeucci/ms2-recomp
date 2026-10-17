@@ -227,7 +227,7 @@ public:
     ATL::CAtlArray<unsigned> m_fieldIds;            // +0x18
     ATL::CAtlArray<unsigned> m_objectIds;           // +0x38
     ATL::CAtlArray<unsigned> m_itemIds;             // +0x58
-    int m_percent;                                  // +0x78
+    unsigned m_percent;                             // +0x78
 };
 class Unk_FieldObjectDropListContext : public CPtred {
 public:
