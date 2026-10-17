@@ -121,6 +121,7 @@ class Unk_RNItemData { public: unsigned char FUN_14053d990(); CString FUN_14053f
 class Unk_RNItem { public: int FUN_1405276c0(); int FUN_140526bd0(); Unk_RNItemData* FUN_140527840(); CStringW FUN_140527b10(); CString FUN_140528590(); };
 class Unk_RNItemRef {
 public:
+    Unk_RNItemRef(const Unk_RNItemRef& o) : m_0(o.m_0), m_8(o.m_8) { if (m_8) CPtred::AddRefPtred(static_cast<CPtred*>(m_8)); }   // 0x1402034d0
     ~Unk_RNItemRef();                           // 0x1401bfde0
     Unk_RNItem* FUN_1401c0180() const;
     void* FUN_14052cd70() const;

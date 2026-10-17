@@ -12,6 +12,13 @@ struct Unk_NodePtr
     ~Unk_NodePtr();                     // 0x1409f74b0  drops the reference
     bool FUN_1409f77a0(int nNull);      // 0x1409f77a0  m_p == (void*)nNull
     // Inline members (COMDATs emitted by the first unit that uses them: 0x140aac240 / 0x140aac3e0 in randomtargeteffect).
+    // Copy (the exe's is 0x1409f7130): the implicit memberwise copy would skip the reference, so returning a local by
+    // value (no NRVO at /Od) left the result dangling once the local's destructor dropped the only reference.
+    Unk_NodePtr(const Unk_NodePtr& o) : m_p(o.m_p)
+    {
+        if (m_p)
+            FUN_140980460(m_p);
+    }
     Unk_NodePtr& operator=(const Unk_NodePtr& o)
     {
         if (m_p != o.m_p)

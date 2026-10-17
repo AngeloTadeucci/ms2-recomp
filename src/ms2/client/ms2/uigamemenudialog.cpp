@@ -283,6 +283,7 @@ class Unk_GmNodeRef                             // 16 bytes: a counted pointer t
 {
 public:
     Unk_GmNodeRef() {}
+    Unk_GmNodeRef(const Unk_GmNodeRef& o) : m_0(o.m_0), m_8(o.m_8) { if (m_8) CPtred::AddRefPtred(static_cast<CPtred*>(m_8)); }   // copy: adds a reference
     ~Unk_GmNodeRef();                           // 0x140c1cd20
     bool FUN_140c1cd90() const;
     Unk_GmNodeBody* FUN_140c1cdb0() const;

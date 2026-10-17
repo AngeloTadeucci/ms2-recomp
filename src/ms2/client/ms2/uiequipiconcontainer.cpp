@@ -36,6 +36,7 @@ public:
 class Unk_EquipItemPtr
 {
 public:
+    Unk_EquipItemPtr(const Unk_EquipItemPtr& o) : m_00(o.m_00), m_08(o.m_08) { if (m_08) CPtred::AddRefPtred(static_cast<CPtred*>(m_08)); }   // 0x1403bb3b0
     ~Unk_EquipItemPtr();                                                    // 0x1401b50d0
     Unk_ItemEquipData* FUN_1401b52a0() const;
     void* m_00; void* m_08;

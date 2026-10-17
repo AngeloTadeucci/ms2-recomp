@@ -27,6 +27,9 @@ public:
     // Copying a value creates fresh reference bookkeeping, as proved by the copy ctor body.
     // @0x1401d27b0
     CPtred(const CPtred&) : m_nRef(0), m_pad_10(0) {}
+    // Assigning a value keeps this object's own reference bookkeeping (the implicit operator= copied the count).
+    // @0x1404efd80
+    CPtred& operator=(const CPtred&) { return *this; }
     virtual ~CPtred();                  // slot 0 (??_G 0x140159b30), dtor 0x140159840
     friend CPtred* FUN_1401ba820(CPtred*);   // w30: sets the count to 1 (fieldbanner unit, 0x1401ba820)
 
