@@ -204,6 +204,40 @@ struct ItemEffect                   // <effect ...>
 };
 MS2_CHECK_SIZE(ItemEffect, 0x30);
 
+enum ItemHousingFilter { ItemHousingFilterDefault = 100 };          // <housing> "filter" (enumerators not recovered)
+enum ItemHousingCategory { ItemHousingCategoryDefault = 10000 };    // <housing> "categoryIndex"
+
+// <housing> block (RTTI .?AVItemHousing@@, vftable 0x142d5c058 holds only the destructor). Its constructor, XML
+// reader/writer and comparison are in commonfiles\itemdatastruct.cpp; the price fields come from the price table
+// (commonfiles\pricetable.cpp) for the item id.
+class ItemHousing : public CPtred
+{
+public:
+    ItemHousing();                                          // 0x140548d90
+    int FUN_140548e50(Unk_140165cf0* pElem, int nItemId);   // XML read (the <housing> child of pElem)
+    void FUN_140548fe0(Unk_140165cf0* pElem, int nItemId);  // XML read (the attributes of pElem)
+    int FUN_140549160(void* pParent);                       // XML write (nothing when equal to the default)
+    bool FUN_140549380(const ItemHousing* pOther);          // operator!=
+    int FUN_140549470(int nItemId, __int64 nUid, __int64 nUgc);     // the item can be placed
+    int FUN_1405494e0();                                    // item id
+    __int64 price;                      // +0x18 price table
+    std::vector<unsigned> categoryTag;  // +0x20 "categoryTag"
+    ItemHousingFilter filter;           // +0x38 "filter" (default 100)
+    ItemHousingCategory categoryIndex;  // +0x3c "categoryIndex" (default 10000)
+    int priceCount;                     // +0x40 price table (default 1)
+    unsigned trophyID;                  // +0x44 "trophyID"
+    unsigned trophyLevel;               // +0x48 "trophyLevel" (default 1)
+    unsigned short interiorLevel;       // +0x4c "interiorLevel" (default 1)
+    bool hasPrice;                      // +0x4e the price table has the item
+    unsigned setItemID;                 // +0x50 "setItemID"
+    bool doNotInstallBlueprint;         // +0x54 "doNotInstallBlueprint"
+    int itemId;                         // +0x58
+};
+MS2_CHECK_SIZE(ItemHousing, 0x60);
+MS2_CHECK_OFFSET(ItemHousing, categoryTag, 0x20);
+MS2_CHECK_OFFSET(ItemHousing, interiorLevel, 0x4c);
+MS2_CHECK_OFFSET(ItemHousing, itemId, 0x58);
+
 struct ItemFusion                   // <fusion fusionable>
 {
     ItemFusion();                   // 0x140549500

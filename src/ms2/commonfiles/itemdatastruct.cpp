@@ -39,6 +39,23 @@ void FUN_1408746f0(Unk_140165cf0* pElem, const char* pszName, efd::Point3& kOut)
 __int64 ParseInt64(const CString& str);                                    // 0x1402a4fe0
 CString FUN_140188f50(const char* psz, int nCodePage);                     // string from an attribute value
 efd::Point3 FUN_14028f060(CString str);                                    // "x, y, z" -> point (ZERO when malformed)
+int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);  // bool attribute (TinyXML query)
+void FUN_140873c60(void* pElem, const char* pszName, unsigned short nValue);   // SetAttribute(name, unsigned short)
+int FUN_14053fa40(int nItemId);            // itemdata.cpp (written there as bool; the callers test eax)
+unsigned FUN_141901d20(int nItemId, __int64 nUid, __int64 nUgc);           // uicommon.cpp
+
+// The item price table (commonfiles\pricetable.cpp).
+class Unk_PriceTable
+{
+public:
+    void FUN_140738d40(int nItemId, bool* pbFound, __int64* pnPrice, int* pnCount);
+};
+extern Unk_PriceTable* DAT_143aaf5e8;
+// @0x140552df0
+inline Unk_PriceTable* FUN_140552df0()
+{
+    return DAT_143aaf5e8;
+}
 
 #define MS2_ASSERT_MSG_AT(line, msg, cond) (void)((!!(cond)) || (_wassert(msg, _CRT_WIDE(MS2_THIS_FILE), (unsigned)(line)), 0))
 
@@ -1319,4 +1336,135 @@ bool ItemInstallData::FUN_140548d50()
     if ((stackable & 1) != 0 && (stackable & 2) != 0 && (stackable & 4) != 0)
         return true;
     return false;
+}
+
+// @0x140548d90
+ItemHousing::ItemHousing()
+    : price(0), filter(ItemHousingFilterDefault), categoryIndex(ItemHousingCategoryDefault), priceCount(1),
+      trophyID(0), trophyLevel(1), interiorLevel(1), hasPrice(false), setItemID(0), doNotInstallBlueprint(false)
+{
+}
+
+// @0x140548e50
+int ItemHousing::FUN_140548e50(Unk_140165cf0* pElem, int nItemId)
+{
+    Unk_140165cf0* pHousing = pElem->FUN_140165cf0("housing");
+    if (pHousing != 0)
+    {
+        XmlValue(pHousing, "filter", filter);
+        XmlValue(pHousing, "categoryIndex", categoryIndex);
+        XmlTokenList(pHousing, "categoryTag", categoryTag);
+        FUN_140873220(pHousing, "trophyID", trophyID);
+        FUN_140873220(pHousing, "trophyLevel", trophyLevel);
+        FUN_1408731a0(pHousing, "interiorLevel", interiorLevel);
+        FUN_140552df0()->FUN_140738d40(nItemId, &hasPrice, &price, &priceCount);
+        FUN_140873220(pHousing, "setItemID", setItemID);
+        FUN_1408736d0(pHousing, "doNotInstallBlueprint", doNotInstallBlueprint);
+    }
+    return 1;
+}
+
+// @0x140548fe0
+void ItemHousing::FUN_140548fe0(Unk_140165cf0* pElem, int nItemId)
+{
+    itemId = nItemId;
+    XmlValue(pElem, "filter", filter);
+    XmlValue(pElem, "categoryIndex", categoryIndex);
+    XmlTokenList(pElem, "categoryTag", categoryTag);
+    FUN_140873220(pElem, "trophyID", trophyID);
+    FUN_140873220(pElem, "trophyLevel", trophyLevel);
+    FUN_1408731a0(pElem, "interiorLevel", interiorLevel);
+    if (FUN_140552df0() != 0)
+        FUN_140552df0()->FUN_140738d40(nItemId, &hasPrice, &price, &priceCount);
+    FUN_140873220(pElem, "setItemID", setItemID);
+    FUN_1408736d0(pElem, "doNotInstallBlueprint", doNotInstallBlueprint);
+}
+
+// @0x140549160
+int ItemHousing::FUN_140549160(void* pParent)
+{
+    static ItemHousing s_default;
+    if (FUN_140549380(&s_default))
+    {
+        Unk_TiXmlElement elem("housing");
+        if (filter != ItemHousingFilterDefault)
+            FUN_140873ca0(&elem, "filter", filter);
+        if (categoryIndex != ItemHousingCategoryDefault)
+            FUN_140873ca0(&elem, "categoryIndex", categoryIndex);
+        if (trophyID != 0)
+            FUN_140873ce0(&elem, "trophyID", trophyID);
+        if (trophyLevel != 1)
+            FUN_140873ce0(&elem, "trophyLevel", trophyLevel);
+        if (interiorLevel != 1)
+            FUN_140873c60(&elem, "interiorLevel", interiorLevel);
+        if (setItemID != 0)
+            FUN_140873ce0(&elem, "setItemID", setItemID);
+        if (doNotInstallBlueprint)
+            FUN_140873bc0(&elem, "doNotInstallBlueprint", doNotInstallBlueprint);
+        FUN_14086e000(pParent, &elem);
+    }
+    return 1;
+}
+
+// @0x140549380
+bool ItemHousing::FUN_140549380(const ItemHousing* pOther)
+{
+    if (filter != pOther->filter)
+        return true;
+    if (categoryIndex != pOther->categoryIndex)
+        return true;
+    if (categoryTag != pOther->categoryTag)
+        return true;
+    if (trophyID != pOther->trophyID)
+        return true;
+    if (trophyLevel != pOther->trophyLevel)
+        return true;
+    if (interiorLevel != pOther->interiorLevel)
+        return true;
+    if (setItemID != pOther->setItemID)
+        return true;
+    if (doNotInstallBlueprint != pOther->doNotInstallBlueprint)
+        return true;
+    return false;
+}
+
+// @0x140549470
+int ItemHousing::FUN_140549470(int nItemId, __int64 nUid, __int64 nUgc)
+{
+    if (!hasPrice)
+        return 0;
+    if (FUN_14053fa40(nItemId))
+    {
+        unsigned nCount = FUN_141901d20(nItemId, nUid, nUgc);
+        if (nCount > 0)
+            return 0;
+    }
+    return 1;
+}
+
+// @0x1405494e0
+int ItemHousing::FUN_1405494e0()
+{
+    return itemId;
+}
+
+// @0x140549500
+ItemFusion::ItemFusion()
+{
+    fusionable = 0;
+}
+
+// @0x140549520
+int ItemFusion::FUN_140549520(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pFusion = pElem->FUN_140165cf0("fusion");
+    if (pFusion != 0)
+        FUN_1408731e0(pFusion, "fusionable", fusionable);
+    return 1;
+}
+
+// @0x140549580
+int ItemFusion::FUN_140549580(void* pParent)
+{
+    return 1;
 }
