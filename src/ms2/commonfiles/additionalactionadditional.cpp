@@ -317,7 +317,16 @@
 // (+0x4e8) owns 0x140183610 / 0x140188830
 // MS2-PIN: ??1?$CAtlMap@IMV?$CElementTraits@I@ATL@@V?$CElementTraits@M@2@@ATL@@QEAA@XZ 0x1401835e0
 // MS2-PIN: ?RemoveAll@?$CAtlMap@IMV?$CElementTraits@I@ATL@@V?$CElementTraits@M@2@@ATL@@QEAAXXZ 0x140188720
+// CRT wrappers of this unit (other byte-identical copies exist in later objs): wmemcpy is called by _WChar_traits::copy
+// 0x14018f3d0, _WChar_traits::length by BasicStringRef<wchar_t>::size 0x140191020
+// MS2-PIN: wmemcpy 0x140191540
+// MS2-PIN: ?length@?$_WChar_traits@_W@std@@SA_KPEB_W@Z 0x140190180
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\additionalactionadditional.cpp"
+#include <vcruntime_string.h>
+#include <corecrt_wstring.h>
+// wmemcpy 0x140191540 and _WChar_traits<wchar_t>::length 0x140190180 call the CRT (the pragma needs the declarations
+// first). The exe's length is `call [__imp_wcslen]`: the static-CRT headers here have no dllimport (functional).
+#pragma function(memcpy, wcslen)
 #include "ms2/placeholder/ms2stdafx.h"
 #include <sstream>
 #include "additionalactionadditional.h"
