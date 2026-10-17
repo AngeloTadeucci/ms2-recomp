@@ -5024,3 +5024,73 @@ void CubeMapInformationService::FUN_1410cbb40(Unk_CMISXformVec* pOut, int nMode,
             pTimer->FUN_140868750(nMs);
     }
 }
+
+int FUN_1416595d0(Unk_CMISRoster*);
+// @0x1410c3670
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410c3670()
+{
+    Unk_Int3 cellMin, cellMax;
+    cellMin.x = cellMin.y = cellMin.z = 0;
+    cellMax = cellMin;
+    FUN_1410b85f0(&cellMin, &cellMax);
+    p300 = reinterpret_cast<const Unk_CubePoint&>(cellMin);
+    p30c = reinterpret_cast<const Unk_CubePoint&>(cellMax);
+    p300.x = (p30c.x - f2f8) + 1;
+    p300.y = (p30c.y - f2f8) + 1;
+    Unk_CMISIter<278> it, itEnd;
+    for (FUN_14114db40(&f2b8, &it); FUN_141127380(&it, FUN_141151910(&f2b8, &itEnd)); FUN_141129a60(&it)) {
+        int nKey = *FUN_141128540(&it);
+        Unk_Int3 cell = FUN_1408a0400(nKey);
+        MS2Ptr<Cube> spCube(FUN_1410b8b00(FUN_1408a03c0(cell)));
+        if (spCube.get() == 0)
+            continue;
+        bool bInstanced = false;
+        FUN_1408a20a0(FUN_1408a9280(&spCube->entity), 0x23f9860e, &bInstanced);
+        if (cell.x < p300.x || p30c.x < cell.x || cell.y < p300.y || p30c.y < cell.y) {
+            if (bInstanced) {
+                Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                if (spInst.FUN_14098d090() != 0)
+                    FUN_1413d6e60(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity), 0);
+            }
+            bool bDone = false;
+            FUN_1408a20a0(FUN_1408a9280(&spCube->entity), 0x7e5f4195, &bDone);
+            if (!bDone) {
+                FUN_141689ec0(FUN_1409f7ca0(), FUN_1408a9090(&spCube->entity), 5, 0, 0);
+                bool bSet = true;
+                FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0x7e5f4195, &bSet);
+            }
+            bool bOff = false;
+            FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0xa0b6b179, &bOff);
+        } else {
+            if (bInstanced) {
+                Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                if (spInst.FUN_14098d090() != 0)
+                    FUN_1413d6e60(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity), 1);
+            }
+            bool bDone = false;
+            FUN_1408a20a0(FUN_1408a9280(&spCube->entity), 0x7e5f4195, &bDone);
+            if (bDone) {
+                int nEffect = 9;
+                FUN_140ae1160(FUN_1408a9280(&spCube->entity), 0xada5c5d2, &nEffect);
+                FUN_141689ec0(FUN_1409f7ca0(), FUN_1408a9090(&spCube->entity), nEffect, 0, 0);
+                bool bClear = false;
+                FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0x7e5f4195, &bClear);
+            }
+            bool bOn = true;
+            FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0xa0b6b179, &bOn);
+        }
+    }
+    GenerateAreaPhysX(1);
+    GenerateAreaPhysX(0);
+    GenerateAreaPhysX(2);
+    if (FUN_1410c3180() == DAT_143ab2820 || FUN_140930c90(FUN_1410c3180()) || FUN_140930d20(FUN_1410c3180())) {
+        Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+        if (pRoster != 0 && FUN_1416595d0(pRoster) != 0 && FUN_1410a8a90(pRoster->FUN_141530290()) != 2) {
+            FUN_1410cd440();
+            FUN_1410cc160(0);
+            FUN_1410cc160(1);
+        }
+    }
+    FUN_141bc8e00(FUN_1403ed2d0());
+}

@@ -205,6 +205,8 @@ public:
     void FUN_1410c44b0(int nGroup, int nBlock, int bFlag);
     void FUN_1410ccc00(int nGroup, int nA, int nB);
     void FUN_1410cd440();
+    void FUN_1410c3670();
+    void FUN_1410cc160(int nKind);
     int FUN_1410c8670(int nGroup, int* pnFlag);
     CStringW FUN_1410c7ce0(int nA, int nB);
     void FUN_1410ce020(MS2Ptr<Cube> spCube);
