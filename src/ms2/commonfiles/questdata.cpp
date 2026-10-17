@@ -1789,11 +1789,8 @@ void QuestDataTable::FUN_14074c320()
     FUN_140750120();
 
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itQuestEnd = quests.end();
-    for (; it != itQuestEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (!spData->GetKind())
             continue;
@@ -1846,11 +1843,8 @@ void QuestDataTable::FUN_14074cad0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (nType != 11 && FUN_14074b050(spData.operator->()) != nType)
             continue;
@@ -1874,11 +1868,8 @@ void QuestDataTable::FUN_14074cca0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (FUN_14074b050(spData.operator->()) != 3)
             continue;
@@ -1894,11 +1885,8 @@ void QuestDataTable::FUN_14074cde0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (FUN_14074b050(spData.operator->()) != 5)
             continue;
@@ -2269,11 +2257,8 @@ bool QuestDataTable::FUN_14074e560(unsigned nFirst, unsigned nLast)
 {
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if ((unsigned)FUN_14074b030(spData.operator->()) >= nFirst)
         {
@@ -2331,11 +2316,8 @@ void QuestDataTable::FUN_14074ee30()
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData == 0)
             break;
@@ -2553,11 +2535,8 @@ void QuestDataTable::FUN_1407503f0()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         for (size_t i = 0; i < spData->m_require.m_quest.GetCount(); i++)
         {
@@ -2675,11 +2654,8 @@ void QuestDataTable::FUN_140750d90()
     Unk_1401b4ec0 guard(m_lock, 1);
     Unk_QuestIdOrder pred;
     std::map<int, std::vector<unsigned> >& npcs = m_430;
-    std::map<int, std::vector<unsigned> >::iterator it = npcs.begin();
-    std::map<int, std::vector<unsigned> >::iterator itEnd = npcs.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, std::vector<unsigned> >& entry : npcs)
     {
-        std::pair<const int, std::vector<unsigned> >& entry = *it;
         std::sort(entry.second.begin(), entry.second.end(), pred);
     }
 }
@@ -2702,20 +2678,14 @@ void QuestDataTable::FUN_140750f30()
 {
     Unk_1401b4ec0 guard(m_lock, 1);
     std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
-    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
-    for (; it != itEnd; ++it)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData->m_30 != 0)
             FUN_14074eac0(FUN_14074b030(spData.operator->()), m_2d0);
     }
-    std::map<int, MS2Ptr<CQuestData> >::iterator it2 = quests.begin();
-    std::map<int, MS2Ptr<CQuestData> >::iterator it2End = quests.end();
-    for (; it2 != it2End; ++it2)
+    for (std::pair<const int, MS2Ptr<CQuestData> >& entry : quests)
     {
-        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it2;
         MS2Ptr<CQuestData> spData = entry.second;
         if (spData->m_require.m_selectableQuest.GetCount() != 0)
         {
