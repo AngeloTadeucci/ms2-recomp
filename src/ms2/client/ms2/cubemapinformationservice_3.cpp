@@ -4961,3 +4961,66 @@ bool CubeMapInformationService::FUN_1410d27c0(__int64 nOwner, int nMode, int* pC
     }
     return *pLimit > 0 && *pCount < *pLimit;
 }
+
+// ---- w142 batch 5 ----
+struct Unk_CMISXformVec;                                                    // vector<NiTransform>
+void FUN_14115a9c0(Unk_CMISXformVec* pVec, const NiTransform* pXform);     // push_back
+struct Unk_CMISMarkRec { char m_b[0x50]; };                                 // Timer (0x38) + list of the mark entities (0x18); node value of f288
+void FUN_141122f30(Unk_CMISMarkRec*);                                       // ctor
+void FUN_141125e70(Unk_CMISMarkRec*);                                       // dtor
+void FUN_141126920(Unk_CMISMarkRec* pDst, Unk_CMISMarkRec* pSrc);           // assign
+void FUN_14115a930(void* pList, egf::EntityPtr* pEnt);                      // push_back
+Unk_CMISIter<275>* FUN_141151850(Unk_CMISTree<275>*, Unk_CMISIter<275>*);                           // end
+Unk_CMISIter<275>* FUN_141156e80(Unk_CMISTree<275>*, Unk_CMISIter<275>*, const int*);               // find
+bool FUN_141126bd0(Unk_CMISIter<275>*, Unk_CMISIter<275>*);                                         // operator==
+Unk_CMISMarkRec* FUN_141127a90(Unk_CMISTree<275>*, const int*);                                     // operator[]
+// @0x1410cbb40
+// MS2-FUNCTIONAL: the exe's NiTransform temporary / security cookie frame is not reproduced
+void CubeMapInformationService::FUN_1410cbb40(Unk_CMISXformVec* pOut, int nMode, int nGroup, Unk_StreamPoint ptPlayer, Unk_Int3 cell, bool bRot, int nMs)
+{
+    Unk_StreamPoint ptCell = DAT_143b01a60;
+    FUN_1408a15b0(cell, ptCell);
+    Unk_StreamPoint ptDir = ptPlayer.FUN_140965c40(ptCell);
+    ptDir.FUN_140968990();
+    ptCell = ptCell.FUN_14097fd50(ptDir.FUN_14097fc90(75.0f));
+    ptCell.z = ptCell.z + 150.0f;
+    Unk_StreamPoint ptRot = DAT_143b01a60;
+    if (bRot)
+        ptRot = Unk_StreamPoint(0.0f, 0.0f, 90.0f);
+    if (nMode == 0) {
+        int nHeight = 0;
+        if (FUN_140885340(&f208)->FUN_140375130() == 0) {
+            if (f218 != 0) {
+                std::map<int, Unk_UGCGroup>::iterator itGroup = f218->groups.find(nGroup);
+                if (itGroup != f218->groups.end())
+                    nHeight = itGroup->second.heightLimit;
+            }
+        } else {
+            nHeight = f2fc;
+        }
+        for (int i = 0; i < nHeight; ++i) {
+            NiTransform xform;
+            xform.MakeIdentity();
+            xform.m_Translate = NiPoint3(ptCell.x, ptCell.y, ptCell.z + (float)i * 150.0f + 75.0f);
+            xform.m_Rotate.FromEulerAnglesXYZ((-ptRot.x * 3.1415927f) / 180.0f, (-ptRot.y * 3.1415927f) / 180.0f, (-ptRot.z * 3.1415927f) / 180.0f);
+            FUN_14115a9c0(pOut, &xform);
+        }
+    } else if (nMode == 1) {
+        egf::EntityPtr spMark = static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411ce7c0(efd::utf8string("MS2PhysXProp"),
+            efd::utf8string("urn:gamebryo-scenegraph:Eff_Own_Ground_Mark_01"), NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, 1, 0);
+        Unk_CMISIter<275> itEnd, itFind;
+        if (FUN_141126bd0(FUN_141156e80(&f288, &itFind, &nGroup), FUN_141151850(&f288, &itEnd))) {
+            Unk_CMISMarkRec rec;
+            FUN_141122f30(&rec);
+            FUN_141126920(FUN_141127a90(&f288, &nGroup), &rec);
+            FUN_141125e70(&rec);
+        }
+        Unk_CMISMarkRec* pRec = FUN_141127a90(&f288, &nGroup);
+        FUN_14115a930(pRec->m_b + 0x38, &spMark);
+        Timer* pTimer = reinterpret_cast<Timer*>(pRec);
+        if (nMs == 0)
+            pTimer->FUN_1408687c0();
+        else
+            pTimer->FUN_140868750(nMs);
+    }
+}
