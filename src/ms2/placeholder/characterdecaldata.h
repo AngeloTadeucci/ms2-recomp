@@ -16,12 +16,13 @@ class CharacterDecalData : public CPtred
 {
 public:
     CharacterDecalData();                           // 0x1401e4000
-    virtual ~CharacterDecalData();                  // 0x1401e4e40
+    virtual ~CharacterDecalData() = default;        // 0x1401e4e40 (implicit: no vptr store; pinned)
     void FUN_1401e4090(Unk_140165cf0* pElem);       // XML read
+    std::vector<MS2Ptr<ItemCustom> >* FUN_1401e41c0();      // &customs
     CString unknown18;              // +0x18
-    int unknown20;                  // +0x20
-    int unknown24;                  // +0x24
-    int unknown28;                  // +0x28
+    float unknown20;                // +0x20
+    float unknown24;                // +0x24
+    float unknown28;                // +0x28
     float unknown2c;                // +0x2c (default 1.0)
     std::vector<MS2Ptr<ItemCustom> > customs;   // +0x30 <custom> children
 };
