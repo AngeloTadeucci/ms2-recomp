@@ -3,127 +3,34 @@
 // MS2-RANGE: 0x140195470-0x1401a2e40 .text$mn
 // MS2-GUESS-LOOKALIKES
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??_G?$TSingleton@VCAdventureLevelTableHelper@@@@UEAAPEAXI@Z 0x1401957e0 ; unique
-// MS2-PIN: ??_GCAdventureLevelMissionData@@UEAAPEAXI@Z 0x140195820 ; unique
-// MS2-PIN: ??_GCAdventureLevelTableHelper@@UEAAPEAXI@Z 0x140195860 ; unique
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140196ce0 ; prop
-// MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140197060 ; prop
-// MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1401970b0 ; prop
-// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBI@?$vector@IV?$allocator@I@std@@@std@@AEAAXAEBI@Z 0x1401976e0 ; unique
-// MS2-PIN: ??$_Emplace_reallocate@AEBI@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIQEAIAEBI@Z 0x1401977a0 ; unique
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@PEAU01@@Z 0x140197b90 ; prop
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@?$_Tree_node@IPEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@PEAU01@@Z 0x140197c20 ; prop
-// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@1@AEAU?$pair@$$CBIUCAdventureLevelAbility@@@1@1@Z 0x140198020 ; unique
-// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBIUCAdventureLevelAbility@@@1@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@1@@Z 0x140198a40 ; unique
-// MS2-PIN: ??$addressof@$$CBU?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@YAPEBU?$pair@$$CBIUCAdventureLevelMission@@@0@AEBU10@@Z 0x14019b120 ; prop
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@0@AEAV10@@Z 0x14019b130 ; prop
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@0@AEAPEAU10@@Z 0x14019b190 ; prop
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@IPEAX@std@@@std@@YAPEAPEAU?$_Tree_node@IPEAX@0@AEAPEAU10@@Z 0x14019b1a0 ; prop
-// MS2-PIN: ??$forward@AEBV?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@@std@@YAAEBV?$set@IU?$less@I@std@@V?$allocator@I@2@@0@AEBV10@@Z 0x14019b1f0 ; prop
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@0@AEAV10@@Z 0x14019b230 ; prop
-// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@AEAPEAU31@@Z 0x14019b390 ; prop
-// MS2-PIN: ??$construct@PEAU?$_Tree_node@IPEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@QEAPEAU?$_Tree_node@IPEAX@1@AEAPEAU31@@Z 0x14019b3e0 ; prop
-// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@@Z 0x14019b550 ; prop
-// MS2-PIN: ??$destroy@U?$pair@$$CBII@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAU?$pair@$$CBII@1@@Z 0x14019b5a0 ; prop
-// MS2-PIN: ??$emplace_back@AEBI@?$vector@IV?$allocator@I@std@@@std@@QEAAXAEBI@Z 0x14019b710 ; unique
-// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@0@AEAPEAU10@@Z 0x14019b7d0 ; prop
-// MS2-PIN: ??$forward@AEBU?$less@I@std@@@std@@YAAEBU?$less@I@0@AEBU10@@Z 0x14019b880 ; prop
-// MS2-PIN: ??0?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bd60 ; prop
-// MS2-PIN: ??0?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bd90 ; prop
-// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019be80 ; prop
-// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bec0 ; prop
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019bfc0 ; prop
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@IPEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@1@@Z 0x14019c000 ; prop
-// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019c100 ; prop
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019c240 ; prop
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAA@XZ 0x14019c350 ; prop
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEAA@XZ 0x14019c380 ; prop
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAA@XZ 0x14019c420 ; prop
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAA@XZ 0x14019c430 ; prop
-// MS2-PIN: ??0?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAA@XZ 0x14019c4d0 ; unique
-// MS2-PIN: ??0?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@QEAA@XZ 0x14019c500 ; unique
-// MS2-PIN: ??1?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@XZ 0x14019c630 ; prop
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x14019c6f0 ; prop
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@XZ 0x14019c720 ; prop
-// MS2-PIN: ??1?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAA@XZ 0x14019c7b0 ; unique
-// MS2-PIN: ??1?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@QEAA@XZ 0x14019c7d0 ; unique
-// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c8b0 ; prop
-// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c8f0 ; prop
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c9f0 ; prop
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019ca30 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cb30 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cb80 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cc10 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cc60 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cc80 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019ccf0 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cd40 ; prop
-// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019ce80 ; prop
-// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019cfa0 ; prop
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@XZ 0x14019d6c0 ; prop
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@XZ 0x14019d780 ; prop
-// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x14019dc70 ; prop
-// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXXZ 0x14019dca0 ; prop
-// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@@Z 0x14019ec40 ; prop
-// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@@Z 0x14019f7a0 ; prop
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x14019fde0 ; prop
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x14019fe10 ; prop
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@XZ 0x14019fff0 ; prop
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1401a0020 ; prop
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@XZ 0x1401a0120 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@XZ 0x1401a01a0 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@XZ 0x1401a0220 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1401a0230 ; prop
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@XZ 0x1401a0360 ; prop
-// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@I@2@XZ 0x1401a0400 ; unique
-// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x1401a0420 ; unique
-// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@I@2@XZ 0x1401a0440 ; unique
-// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a05c0 ; prop
-// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a05d0 ; prop
-// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x1401a0880 ; prop
-// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1401a0960 ; prop
-// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@PEAU32@@Z 0x1401a0ad0 ; prop
-// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1401a0b00 ; prop
-// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@PEAU32@@Z 0x1401a0b90 ; prop
-// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1401a0bf0 ; prop
-// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a0c80 ; prop
-// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a0ca0 ; prop
-// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a0d20 ; prop
-// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a0d40 ; prop
-// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x1401a1000 ; prop
-// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1401a10e0 ; prop
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x1401a11c0 ; unique
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x1401a1220 ; unique
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x1401a1280 ; unique
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x1401a12e0 ; prop
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1440 ; prop
-// MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@XZ 0x1401a1660 ; prop
-// MS2-PIN: ?begin@?$vector@IV?$allocator@I@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@2@XZ 0x1401a1740 ; unique
-// MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1401a1980 ; prop
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@XZ 0x1401a1d00 ; unique
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@XZ 0x1401a1d60 ; prop
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@XZ 0x1401a1e80 ; unique
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@XZ 0x1401a1ee0 ; prop
-// MS2-PIN: ?end@?$vector@IV?$allocator@I@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@2@XZ 0x1401a1fa0 ; unique
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@0@Z 0x1401a21a0 ; prop
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@0@Z 0x1401a2340 ; prop
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@@Z 0x1401a2430 ; prop
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@0@Z 0x1401a24e0 ; prop
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2900 ; unique
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a29e0 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x140196e80 ; unique
+// MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x140196f20 ; unique
+// MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x140197220 ; unique
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@0@AEAPEAU10@@Z 0x14019b180 ; unique
+// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@0@AEBV10@@Z 0x14019b200 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@@Z 0x14019b540 ; unique
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14019b840 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14019b8f0 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@0@AEAV10@@Z 0x14019b910 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@1@@Z 0x14019c040 ; prop
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019d090 ; unique
+// MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x14019ddc0 ; unique
+// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@@Z 0x14019e0e0 ; unique
+// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUUnk_ALValue@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUUnk_ALValue@@@std@@PEAX@2@@Z 0x1401a05e0 ; unique
+// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUUnk_ALValue@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUUnk_ALValue@@@std@@PEAX@2@XZ 0x1401a0c20 ; unique
+// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUUnk_ALValue@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUUnk_ALValue@@@std@@PEAX@2@XZ 0x1401a0cc0 ; unique
+// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUUnk_ALValue@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUUnk_ALValue@@@std@@PEAX@2@@Z 0x1401a0d60 ; unique
+// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@UUnk_ALSetKey@@U?$less@UUnk_ALSetKey@@@std@@V?$allocator@UUnk_ALSetKey@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_ALSetKey@@@std@@@std@@@2@XZ 0x1401a16d0 ; unique
+// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@XZ 0x1401a1ca0 ; prop
+// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@@Z 0x1401a20f0 ; unique
+// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@UUnk_ALSetKey@@U?$less@UUnk_ALSetKey@@@std@@V?$allocator@UUnk_ALSetKey@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_ALSetKey@@@std@@@std@@@2@V32@0@Z 0x1401a2680 ; unique
+// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@UUnk_ALSetKey@@U?$less@UUnk_ALSetKey@@@std@@V?$allocator@UUnk_ALSetKey@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_ALSetKey@@@std@@@std@@@2@V32@@Z 0x1401a2770 ; unique
 // MS2-PIN: ?find@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@AEBI@Z 0x1401a2ac0 ; unique
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2ba0 ; unique
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2c00 ; prop
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2c60 ; prop
-// MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@SAPEAU?$pair@$$CBIUCAdventureLevelAbility@@@2@AEAU32@@Z 0x1401a2db0 ; unique
-// MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@SAPEAU?$pair@$$CBIUCAdventureLevelMission@@@2@AEAU32@@Z 0x1401a2dd0 ; unique
 // MS2-PINS-END tplpin
 // hand pins from tplpin --simulate (w143)
 // MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@AEAU?$pair@$$CBIUCAdventureLevelReward@@@1@1@Z 0x1401986e0
-// MS2-PIN: ??$destroy@PEAU?$_Tree_node@IPEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@QEAPEAU?$_Tree_node@IPEAX@1@@Z 0x14019b560
 // MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@std@@QEAA@XZ 0x14019c3f0
 // MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c9b0
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@XZ 0x1401a01b0
 // MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@XZ 0x1401a05b0
 // MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@@Z 0x1401a07a0
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@XZ 0x1401a0c60
@@ -133,63 +40,28 @@
 // MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@XZ 0x1401a15f0
 // MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x1401a18e0
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@0@Z 0x1401a2000
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@AEBI@Z 0x1401a2cc0
 // MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x1401a17a0
-// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@V32@0@Z 0x1401a2680
-// MS2-PIN: ??$_Lbound@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@IPEAX@1@AEBI@Z 0x140199b10
 // MS2-PIN: ??$destroy@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBIUCAdventureLevelAbility@@@1@@Z 0x14019b580
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140196ce0
-// MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1401970b0
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@PEAU01@@Z 0x140197b90
 // MS2-PIN: ??$addressof@$$CBU?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@YAPEBU?$pair@$$CBIUCAdventureLevelMission@@@0@AEBU10@@Z 0x14019b120
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@0@AEAPEAU10@@Z 0x14019b190
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@0@AEAPEAU10@@Z 0x14019b1e0
-// MS2-PIN: ??$forward@AEBV?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@@std@@YAAEBV?$set@IU?$less@I@std@@V?$allocator@I@2@@0@AEBV10@@Z 0x14019b1f0
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@0@AEAV10@@Z 0x14019b230
-// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@AEAPEAU31@@Z 0x14019b390
-// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@@Z 0x14019b550
 // MS2-PIN: ??$forward@AEAU?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@YAAEAU?$pair@$$CBIUCAdventureLevelReward@@@0@AEAU10@@Z 0x14019b7b0
 // MS2-PIN: ??$forward@AEAV?$vector@IV?$allocator@I@std@@@std@@@std@@YAAEAV?$vector@IV?$allocator@I@std@@@0@AEAV10@@Z 0x14019b7c0
-// MS2-PIN: ??0?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bd60
-// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019be80
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019bfc0
-// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019c100
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@1@@Z 0x14019c240
-// MS2-PIN: ??1?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x14019c600
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x14019c6f0
-// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c8b0
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cb30
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cb80
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cc10
 // MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cc60
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019cc80
 // MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019cd60
 // MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019ce80
-// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019cf10
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@XZ 0x14019d6c0
-// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x14019dc70
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x14019fde0
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@XZ 0x14019fff0
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@XZ 0x1401a0120
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@I@2@XZ 0x1401a0180
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@2@XZ 0x1401a01a0
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@2@XZ 0x1401a01c0
 // MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@2@XZ 0x1401a0200
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@2@XZ 0x1401a0220
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@XZ 0x1401a0360
 // MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a05c0
 // MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x1401a0880
-// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@PEAU32@@Z 0x1401a0ad0
 // MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@PEAU32@@Z 0x1401a0b30
 // MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@PEAU32@@Z 0x1401a0b90
-// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@PEAU32@@Z 0x1401a0bc0
 // MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a0c80
 // MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x1401a0d20
 // MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x1401a1000
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x1401a12e0
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1440
-// MS2-PIN: ?clear@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x1401a1980
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@0@Z 0x1401a24e0
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140196c20
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140196c80
 // MS2-PIN: ??$_Buynode@U?$pair@IUCAdventureLevelAbility@@@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@1@$$QEAU?$pair@IUCAdventureLevelAbility@@@1@@Z 0x1401974c0
@@ -199,11 +71,8 @@
 // MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBIUCAdventureLevelReward@@@1@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@@Z 0x140199260
 // MS2-PIN: ??$emplace_back@AEBI@?$vector@IV?$allocator@I@std@@@std@@QEAAXAEBI@Z 0x14019b710
 // MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@1@@Z 0x14019bf80
-// MS2-PIN: ??0?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAA@XZ 0x14019c4d0
-// MS2-PIN: ??0?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@QEAA@XZ 0x14019c500
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA@XZ 0x14019c660
 // MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA@XZ 0x14019c6c0
-// MS2-PIN: ??1?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAA@XZ 0x14019c7b0
 // MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@XZ 0x14019da00
 // MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x14019dbe0
 // MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAXXZ 0x14019dc40
@@ -218,23 +87,13 @@
 // MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@@Z 0x1401a2290
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2900
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a29e0
-// MS2-PIN: ?find@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@AEBI@Z 0x1401a2ac0
 // MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@1@AEAU?$pair@$$CBIUCAdventureLevelAbility@@@1@1@Z 0x140198020
 // MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@0@AEAV10@@Z 0x14019b130
-// MS2-PIN: ??$destroy@U?$pair@$$CBII@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@1@QEAU?$pair@$$CBII@1@@Z 0x14019b5a0
-// MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@0@AEAPEAU10@@Z 0x14019b7d0
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@QEAA@XZ 0x14019c380
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAA@XZ 0x14019c430
-// MS2-PIN: ??1?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@XZ 0x14019c630
-// MS2-PIN: ??1?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@QEAA@XZ 0x14019c7d0
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019cd40
 // MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@@Z 0x14019ec40
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1401a0230
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@I@2@XZ 0x1401a0400
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x1401a0420
 // MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAAEAU?$less@I@2@XZ 0x1401a0440
 // MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@IEAAXXZ 0x1401a1220
-// MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@XZ 0x1401a1660
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@@std@@@2@XZ 0x1401a1d00
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@XZ 0x1401a1d60
 // MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@XZ 0x1401a1e80
@@ -245,69 +104,21 @@
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2c60
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBIUCAdventureLevelAbility@@@std@@@std@@SAPEAU?$pair@$$CBIUCAdventureLevelAbility@@@2@AEAU32@@Z 0x1401a2db0
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@SAPEAU?$pair@$$CBIUCAdventureLevelMission@@@2@AEAU32@@Z 0x1401a2dd0
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@IPEAX@std@@@std@@YAPEAPEAU?$_Tree_node@IPEAX@0@AEAPEAU10@@Z 0x14019b1a0
-// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@0@AEBV10@@Z 0x14019b220
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@0@AEAV10@@Z 0x14019b240
-// MS2-PIN: ??$construct@PEAU?$_Tree_node@IPEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@QEAPEAU?$_Tree_node@IPEAX@1@AEAPEAU31@@Z 0x14019b3e0
-// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bec0
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@IPEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@1@@Z 0x14019c140
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAA@XZ 0x14019c420
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x14019ccd0
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1401a0020
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAAAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@2@XZ 0x1401a0130
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@2@XZ 0x1401a0390
-// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a05d0
-// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1401a0960
-// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1401a0b00
-// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1401a0bf0
-// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a0ca0
-// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1401a0d40
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140196cb0
-// MS2-PIN: ??$?0AEBU?$less@I@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@I@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x140197060
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@?$_Tree_node@IPEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@PEAU01@@Z 0x140197c20
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@1@AEAPEAU31@@Z 0x14019b340
-// MS2-PIN: ??0?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@AEBU?$less@I@1@@Z 0x14019bd90
-// MS2-PIN: ??1?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA@XZ 0x14019c720
-// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c8f0
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019ca30
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAA?AV01@H@Z 0x14019ccf0
 // MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelReward@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelReward@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@XZ 0x14019d600
 // MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@XZ 0x14019d840
-// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXXZ 0x14019dca0
 // MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelAbility@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@@3@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelAbility@@@std@@PEAX@2@@Z 0x14019dcd0
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x14019fe10
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x14019ff90
-// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x1401a10e0
-// MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1401a1e20
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x14019c9f0
-// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x14019cfa0
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@XZ 0x14019d780
-// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@@Z 0x14019f7a0
-// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1401a16d0
-// MS2-PIN: ?clear@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAAXXZ 0x1401a1a20
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@XZ 0x1401a1ee0
-// MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@XZ 0x1401a1f40
 // MS2-PIN: ??_G?$TSingleton@VCAdventureLevelTableHelper@@@@UEAAPEAXI@Z 0x1401957e0
 // MS2-PIN: ??_GCAdventureLevelMissionData@@UEAAPEAXI@Z 0x140195820
 // MS2-PIN: ??_GCAdventureLevelTableHelper@@UEAAPEAXI@Z 0x140195860
 // MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBI@?$vector@IV?$allocator@I@std@@@std@@AEAAXAEBI@Z 0x1401976e0
 // MS2-PIN: ??$_Emplace_reallocate@AEBI@?$vector@IV?$allocator@I@std@@@std@@QEAAPEAIQEAIAEBI@Z 0x1401977a0
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEAA@XZ 0x14019c350
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IUCAdventureLevelMission@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIUCAdventureLevelMission@@@std@@@std@@@std@@@2@AEBI@Z 0x1401a2c00
 // MS2-PIN: ??_7CAdventureLevelTable@@6B?$TSingleton@VCAdventureLevelTable@@@@@ 0x142ceb9d8
 // MS2-PIN: ??_7CAdventureLevelTable@@6B?$CValidData@VCAdventureLevelTable@@@@@ 0x142ceb9e8
 // hand pins (w145): set<unsigned> / map<unsigned,unsigned> copies the loaders never call
-// MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@@Z 0x14019dfa0
-// MS2-PIN: ?_Erase@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@IPEAX@2@@Z 0x14019e040
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXXZ 0x1401a1340
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAAPEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1470
-// MS2-PIN: ?erase@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@2@V32@@Z 0x1401a2770
-// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1b50
-// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@IPEAX@std@@@2@QEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1b80
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIUCAdventureLevelReward@@@std@@PEAX@2@_K@Z 0x1401a1c10
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBII@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBII@std@@PEAX@2@_K@Z 0x1401a1c40
-// MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@IPEAX@std@@@std@@QEAAXQEAU?$_Tree_node@IPEAX@2@_K@Z 0x1401a1c70
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@2@@Z 0x1401a25d0
+// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tset_traits@UUnk_ALSetKey@@U?$less@UUnk_ALSetKey@@@std@@V?$allocator@UUnk_ALSetKey@@@3@$0A@@std@@@std@@IEAAXXZ 0x1401a1340
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\adventureleveltablehelper.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "adventureleveltablehelper.h"
@@ -760,11 +571,11 @@ MS2_EMIT_CRT_MEMMOVE_S();
 template class std::map<unsigned, CAdventureLevelAbility>;
 template class std::map<unsigned, CAdventureLevelMission>;
 template class std::map<unsigned, CAdventureLevelReward>;
-template class std::map<unsigned, unsigned>;
-template class std::set<unsigned>;
+template class std::map<unsigned, Unk_ALValue>;
+template class std::set<Unk_ALSetKey>;
 
 // The unused set / map members are cleared and erased by code the exe keeps but nothing here calls.
-void Unk_ALTreeAnchor(std::set<unsigned>& s, std::map<unsigned, unsigned>& m)
+void Unk_ALTreeAnchor(std::set<Unk_ALSetKey>& s, std::map<unsigned, Unk_ALValue>& m)
 {
     s.clear();
     m.clear();
