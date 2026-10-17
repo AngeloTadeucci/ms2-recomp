@@ -2,7 +2,72 @@
 // MS2-UNIT: commonfiles\questdata.cpp
 // MS2-RANGE: 0x140744670-0x140761a40 .text$mn
 // MS2-RANGE: 0x1400bc1a0-0x1400bc3d0 .text$di
+// MS2-PIN: ??_7QuestDataTable@@6B?$TSingleton@VQuestDataTable@@@@@ 0x142d87198
+// MS2-PIN: ??_7QuestDataTable@@6B?$CValidData@VQuestDataTable@@@@@ 0x142d871a8
 // MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??0?$Unk_PayloadPtr@VCQuest@@@@QEAA@AEBV0@@Z 0x140747540 ; prop
+// MS2-PIN: ?IsNull@?$Unk_PayloadPtr@VUnk_EventEntry@@@@QEBA_NXZ 0x1407475e0 ; unique
+// MS2-PIN: ?get@?$Unk_PayloadPtr@VCQuest@@@@QEBAPEAVCQuest@@XZ 0x140747690 ; unique
+// MS2-PIN: ?get@?$MS2Ptr@VCQuestData@@@@QEBAPEAVCQuestData@@XZ 0x1407476a0 ; unique
+// MS2-PIN: ?AddRef@?$Unk_PayloadPtr@VCQuest@@@@AEBAXXZ 0x1407476e0 ; prop
+// MS2-PIN: ?AddRefImpl@?$Unk_PayloadPtr@VCQuest@@@@AEBAXPEAX@Z 0x140747730 ; prop
+// MS2-PIN: memmove_s 0x1407477f0 ; unique
+// MS2-PIN: ??$?0AEAHAEAI$0A@@?$pair@HI@std@@QEAA@AEAHAEAI@Z 0x140751870 ; unique
+// MS2-PIN: ??$?0HAEAV?$MS2Ptr@VCQuestData@@@@$0A@@?$pair@HV?$MS2Ptr@VCQuestData@@@@@std@@QEAA@$$QEAHAEAV?$MS2Ptr@VCQuestData@@@@@Z 0x140751a00 ; unique
+// MS2-PIN: ??$?0HV?$MS2Ptr@VCQuestData@@@@$0A@@?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@QEAA@$$QEAU?$pair@HV?$MS2Ptr@VCQuestData@@@@@1@@Z 0x140751a50 ; unique
+// MS2-PIN: ??$?0V?$tuple@AEBH@std@@V?$tuple@$$V@1@$0A@$$Z$S@?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@QEAA@AEAV?$tuple@AEBH@1@AEAV?$tuple@$$V@1@U?$integer_sequence@_K$0A@@1@U?$integer_sequence@_K$S@1@@Z 0x140751af0 ; unique
+// MS2-PIN: ??$StringFormat@H_K@@YA?AV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@PEBDAEBHAEB_K@Z 0x140751b40 ; unique
+// MS2-PIN: ?New@?$Unk_SocketRef@VNavigationData@CQuestData@@@@SAPEAVNavigationData@CQuestData@@PEAX@Z 0x1407529d0 ; unique
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140752aa0 ; unique
+// MS2-PIN: ??$_Buynode@U?$pair@HI@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@HIU?$less@H@std@@V?$allocator@U?$pair@$$CBHI@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHI@std@@PEAX@1@$$QEAU?$pair@HI@1@@Z 0x140752b70 ; unique
+// MS2-PIN: ??$_Guess_median_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI00U?$less@X@0@@Z 0x1407536c0 ; unique
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@AEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@@Z 0x140753c40 ; unique
+// MS2-PIN: ??$_Make_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755310 ; unique
+// MS2-PIN: ??$?0U_Exact_args_t@std@@$0A@@?$tuple@$$V@std@@QEAA@U_Exact_args_t@1@@Z 0x1407559a0 ; unique
+// MS2-PIN: ??$_Pop_heap_hole_unchecked@PEAIIU?$less@X@std@@@std@@YAXPEAI00$$QEAIU?$less@X@0@@Z 0x140755b10 ; unique
+// MS2-PIN: ??$_Pop_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755b80 ; unique
+// MS2-PIN: ??$_Ptr_copy_cat@VQuestRewardItem@CQuestData@@V12@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAVQuestRewardItem@CQuestData@@0@Z 0x140755c00 ; prop
+// MS2-PIN: ??$_Ptr_copy_cat@V?$MS2Ptr@VCQuestData@@@@V1@@std@@YA?AU_General_ptr_iterator_tag@0@AEBQEAV?$MS2Ptr@VCQuestData@@@@0@Z 0x140755c30 ; prop
+// MS2-PIN: ??$_Sort_heap_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0U?$less@X@0@@Z 0x140755df0 ; unique
+// MS2-PIN: ??$_Sort_unchecked@PEAIU?$less@X@std@@@std@@YAXPEAI0_JU?$less@X@0@@Z 0x140755e50 ; unique
+// MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x140755fa0 ; unique
+// MS2-PIN: ??$_Uninitialized_copy@PEAV?$MS2Ptr@VCQuestData@@@@PEAV1@V?$allocator@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@YAPEAV?$MS2Ptr@VCQuestData@@@@QEAV1@0PEAV1@AEAV?$allocator@V?$MS2Ptr@VCQuestData@@@@@0@@Z 0x140756220 ; unique
+// MS2-PIN: ??$construct@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@AEBUpiecewise_construct_t@2@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@std@@@1@QEAU?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140756800 ; unique
+// MS2-PIN: ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@HV?$vector@IV?$allocator@I@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x140756ec0 ; unique
+// MS2-PIN: ??$find_if@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@UUnk_QuestIdIs@@@std@@YA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@0@V10@V10@UUnk_QuestIdIs@@@Z 0x140757020 ; prop
+// MS2-PIN: ??$find_if@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@UUnk_QuestPrevIs@@@std@@YA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@0@V10@V10@UUnk_QuestPrevIs@@@Z 0x140757260 ; prop
+// MS2-PIN: ??$forward@AEAU?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@YAAEAU?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@0@AEAU10@@Z 0x140757330 ; prop
+// MS2-PIN: ??$make_pair@AEAHAEAI@std@@YA?AU?$pair@HI@0@AEAHAEAI@Z 0x140757500 ; unique
+// MS2-PIN: ??$make_pair@HAEAV?$MS2Ptr@VCQuestData@@@@@std@@YA?AU?$pair@HV?$MS2Ptr@VCQuestData@@@@@0@$$QEAHAEAV?$MS2Ptr@VCQuestData@@@@@Z 0x140757550 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCConditionCommonData@@@@QEAA@AEBV0@@Z 0x140757d40 ; prop
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@IV?$allocator@I@std@@@std@@@std@@@std@@@1@@Z 0x140758040 ; prop
+// MS2-PIN: ??0CPair@?$CAtlMap@HV?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@@3@@ATL@@IEAA@H@Z 0x140758450 ; unique
+// MS2-PIN: ??9?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140759150 ; prop
+// MS2-PIN: ?GetAt@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@QEBAAEBV?$MS2Ptr@VCConditionCommonData@@@@_K@Z 0x140759250 ; unique
+// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759650 ; unique
+// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$MS2Ptr@VCQuestData@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140759740 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@Z 0x14075a090 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCConditionCommonData@@@@@Z 0x14075a140 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCQuestData@@@@V?$CElementTraits@V?$MS2Ptr@VCQuestData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCQuestData@@@@@Z 0x14075a1f0 ; unique
+// MS2-PIN: ?FindNextNode@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x14075a7a0 ; unique
+// MS2-PIN: ?GetKeyAt@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAAEBHPEAU__POSITION@@@Z 0x14075aef0 ; unique
+// MS2-PIN: ?GetNext@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAPEBVCPair@12@AEAPEAU__POSITION@@@Z 0x14075afd0 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VGroupPickData@CQuestData@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14075b070 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x14075b250 ; unique
+// MS2-PIN: ?GetStartPosition@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAPEAU__POSITION@@XZ 0x14075b440 ; unique
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationData@CQuestData@@@@@3@@ATL@@QEBAAEBV?$Unk_SocketPtr@VNavigationData@CQuestData@@@@PEAU__POSITION@@@Z 0x14075b520 ; prop
+// MS2-PIN: ?GetValueAt@?$CAtlMap@HV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@@3@@ATL@@QEAAAEAV?$Unk_BmBoxPtr@V?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@@@PEAU__POSITION@@@Z 0x14075b590 ; unique
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@V?$CElementTraits@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075b7a0 ; prop
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCConditionCommonData@@@@V?$CElementTraits@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075b940 ; prop
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCQuestData@@@@V?$CElementTraits@V?$MS2Ptr@VCQuestData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x14075bae0 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@@ATL@@SAXPEAV?$Unk_SocketPtr@VNavigationTarget@CQuestData@@@@0_K@Z 0x14075d910 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCConditionCommonData@@@@@ATL@@SAXPEAV?$MS2Ptr@VCConditionCommonData@@@@0_K@Z 0x14075d950 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCQuestData@@@@@ATL@@SAXPEAV?$MS2Ptr@VCQuestData@@@@0_K@Z 0x14075d990 ; prop
+// MS2-PIN: ?RemoveAt@?$CAtlArray@IV?$CElementTraits@I@ATL@@@ATL@@QEAAX_K0@Z 0x14075de10 ; unique
+// MS2-PIN: ?SetInit@QuestDataTable@@SAX_N@Z 0x14075ebe0 ; unique
+// MS2-PIN: ?Reference@?$MS2Ptr@VCConditionCommonData@@@@CAXPEAVCConditionCommonData@@@Z 0x14075f070 ; prop
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCConditionCommonData@@@@AEBAXPEAX@Z 0x14075f0f0 ; prop
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCConditionCommonData@@@@AEAAXPEAX@Z 0x140760820 ; prop
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questdata.cpp"
 #include <algorithm>
@@ -23,6 +88,7 @@
 #include "ms2/commonfiles/fieldmetatable.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
+#include "ms2/ms2format.h"
 #include "hook/ms2hook.h"
 
 // Header statics (the same list as header_statics_a.h, twice: the sort names of two enums).
@@ -1662,8 +1728,6 @@ QuestDataTable::~QuestDataTable()
 }
 
 
-CString FUN_140751b40(const char* pszFormat, const int& nArg0, const unsigned __int64& nArg1);
-
 // MS2-FUNCTIONAL: the exe builds the literal CString temps and the path with a different EH state layout (precedent banktable)
 // @0x14074c320
 void QuestDataTable::FUN_14074c320()
@@ -1733,7 +1797,7 @@ void QuestDataTable::FUN_14074c320()
                 {
                     int nQuestId = FUN_14074b030(spData.operator->());
                     unsigned __int64 nIndex = i;
-                    CString strMsg = FUN_140751b40("Quest ConditionData dependency error. id:{0} index:{1}", nQuestId, nIndex);
+                    CString strMsg = StringFormat("Quest ConditionData dependency error. id:{0} index:{1}", nQuestId, nIndex);
                     MessageBoxA(0, strMsg, "Error", 0);
                 }
             }
