@@ -170,26 +170,16 @@ bool Unk_PortalBox::FUN_14169b080(egf::Entity* pEntity)
 }
 
 // @0x14169b2e0
-bool Unk_PortalBox::FUN_14169b2e0(const Unk_StreamPoint* pPoint)
+int Unk_PortalBox::FUN_14169b2e0(const Unk_StreamPoint* pPoint)
 {
     return FUN_140adc610(&m_obb, Unk_CtbVec3(pPoint->x, pPoint->y, pPoint->z)) != 0;
 }
 
 // @0x14169b350
 CPortal::CPortal()
-    : m_idEntity(s_idPortalNone), m_questMask(), m_tooltip(0)
+    : m_idEntity(s_idPortalNone), m_questMask(), m_unk_148(0), m_unk_14c(0), m_unk_150(0), m_unk_154(0), m_unk_158(0),
+      m_nType(0), m_nEndTime(0), m_nEventTime(0), m_unk_188(0), m_b18c(false), m_tooltip(0), m_bFlash(0)
 {
-    m_unk_148 = 0;
-    m_unk_14c = 0;
-    m_unk_150 = 0;
-    m_unk_154 = 0;
-    m_unk_158 = 0;
-    m_nType = 0;
-    m_nEndTime = 0;
-    m_nEventTime = 0;
-    m_unk_188 = 0;
-    m_unk_18c = 0;
-    m_bFlash = 0;
 }
 
 // @0x14169b520
@@ -367,7 +357,7 @@ void CPortal::FUN_14169c280()
 }
 
 // @0x14169c330
-bool CPortal::FUN_14169c330()
+int CPortal::FUN_14169c330()
 {
     if (!FUN_140166410()->FUN_14036d4b0(m_strFeature))
         return false;
@@ -458,83 +448,68 @@ int CPortal::FUN_14169cc40()
 void CPortal::FUN_14169cc70(const Unk_StreamPoint& pos, const Unk_StreamPoint& rot)
 {
     efd::SmartPointer<egf::Entity> spEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (!(spEntity == 0))
-    {
-        FUN_140a38a50((egf::Entity*)spEntity, 0xfd95ca52, pos);
-        FUN_140a38a50((egf::Entity*)spEntity, 0x68c7c29d, rot);
-        m_box.FUN_14169b080((egf::Entity*)spEntity);
-    }
+    if (spEntity == 0)
+        return;
+    FUN_140a38a50((egf::Entity*)spEntity, 0xfd95ca52, pos);
+    FUN_140a38a50((egf::Entity*)spEntity, 0x68c7c29d, rot);
+    m_box.FUN_14169b080((egf::Entity*)spEntity);
 }
 
 // @0x14169cd50
 void CPortal::FUN_14169cd50(int bShown, int bGlow)
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (pEntity != 0)
+    if (pEntity == 0)
+        return;
+    if (!FUN_14169c330())
     {
-        if (FUN_14169c330() == 0)
-        {
-            bShown = 0;
-            bGlow = 0;
-        }
-        bool bShownProp = bShown != 0;
-        pEntity->SetPropertyValue(0xa0b6b179, bShownProp);
-        bool bHiddenProp = bShown == 0;
-        pEntity->SetPropertyValue(0x2a7fd9f4, bHiddenProp);
-        bool bGlowProp = bGlow != 0;
-        pEntity->SetPropertyValue(0x14969c28, bGlowProp);
+        bShown = 0;
+        bGlow = 0;
     }
+    pEntity->SetPropertyValue(0xa0b6b179, bShown != 0);
+    pEntity->SetPropertyValue(0x2a7fd9f4, bShown == 0);
+    pEntity->SetPropertyValue(0x14969c28, bGlow != 0);
 }
 
 // @0x14169ce50
 void CPortal::FUN_14169ce50(int bShown, int bGlow, int bExtra)
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (pEntity != 0)
+    if (pEntity == 0)
+        return;
+    if (!FUN_14169c330())
     {
-        if (FUN_14169c330() == 0)
-        {
-            bShown = 0;
-            bGlow = 0;
-            bExtra = 0;
-        }
-        bool bShownProp = bShown != 0;
-        pEntity->SetPropertyValue(0xa0b6b179, bShownProp);
-        bool bHiddenProp = bShown == 0;
-        pEntity->SetPropertyValue(0x2a7fd9f4, bHiddenProp);
-        bool bGlowProp = bGlow != 0;
-        pEntity->SetPropertyValue(0x14969c28, bGlowProp);
-        bool bExtraProp = bExtra != 0;
-        pEntity->SetPropertyValue(0xe084c8de, bExtraProp);
+        bShown = 0;
+        bGlow = 0;
+        bExtra = 0;
     }
+    pEntity->SetPropertyValue(0xa0b6b179, bShown != 0);
+    pEntity->SetPropertyValue(0x2a7fd9f4, bShown == 0);
+    pEntity->SetPropertyValue(0x14969c28, bGlow != 0);
+    pEntity->SetPropertyValue(0xe084c8de, bExtra != 0);
 }
 
 // @0x14169cf90
 void CPortal::FUN_14169cf90(int bShown)
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (pEntity != 0)
-    {
-        if (FUN_14169c330() == 0)
-            bShown = 0;
-        bool bShownProp = bShown != 0;
-        pEntity->SetPropertyValue(0xa0b6b179, bShownProp);
-        bool bHiddenProp = bShown == 0;
-        pEntity->SetPropertyValue(0x2a7fd9f4, bHiddenProp);
-    }
+    if (pEntity == 0)
+        return;
+    if (!FUN_14169c330())
+        bShown = 0;
+    pEntity->SetPropertyValue(0xa0b6b179, bShown != 0);
+    pEntity->SetPropertyValue(0x2a7fd9f4, bShown == 0);
 }
 
 // @0x14169d050
 void CPortal::FUN_14169d050(int bGlow)
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (pEntity != 0)
-    {
-        if (FUN_14169c330() == 0)
-            bGlow = 0;
-        bool bGlowProp = bGlow != 0;
-        pEntity->SetPropertyValue(0x14969c28, bGlowProp);
-    }
+    if (pEntity == 0)
+        return;
+    if (!FUN_14169c330())
+        bGlow = 0;
+    pEntity->SetPropertyValue(0x14969c28, bGlow != 0);
 }
 
 // @0x14169d0e0
@@ -553,9 +528,10 @@ void CPortal::FUN_14169d0e0()
 bool CPortal::FUN_14169d160()
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
+    if (pEntity == 0)
+        return false;
     bool bShown = false;
-    if (pEntity != 0)
-        pEntity->GetPropertyValue(0xa0b6b179, bShown);
+    pEntity->GetPropertyValue(0xa0b6b179, bShown);
     return bShown;
 }
 
@@ -569,18 +545,17 @@ bool CPortal::FUN_14169d1d0()
     bool bOverridden = pEntity->IsPropertyOverridden(0xe084c8de);
     if (bOverridden)
         pEntity->GetPropertyValue(0xe084c8de, bExtra);
-    if (bExtra == false || FUN_14169d160() == false)
-        return false;
-    return true;
+    return (bExtra && FUN_14169d160()) ? 1 : 0;
 }
 
 // @0x14169d280
 int CPortal::FUN_14169d280()
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
+    if (pEntity == 0)
+        return 0;
     int nValue = 0;
-    if (pEntity != 0)
-        pEntity->GetPropertyValue(0xa162d321, nValue);
+    pEntity->GetPropertyValue(0xa162d321, nValue);
     return nValue;
 }
 
@@ -599,7 +574,9 @@ Unk_StreamPoint CPortal::FUN_14169d2f0()
 void CPortal::FUN_14169d3a0()
 {
     egf::Entity* pEntity = FUN_1411cf440(FUN_1409670f0(), m_idEntity);
-    if (pEntity != 0 && m_nType == 0x10)
+    if (pEntity == 0)
+        return;
+    if (m_nType == 0x10)
     {
         float fScale = 1.5f;
         pEntity->SetPropertyValue(0x2d7cad2d, fScale);

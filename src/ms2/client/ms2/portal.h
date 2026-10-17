@@ -25,7 +25,7 @@ struct Unk_PortalBox
     Unk_PortalBox();                                                    // 0x14169afb0
     ~Unk_PortalBox();                                                   // 0x14169b020
     bool FUN_14169b080(egf::Entity* pEntity);                           // read size / position / rotation from the entity
-    bool FUN_14169b2e0(const Unk_StreamPoint* pPoint);                  // is the point inside the box
+    int FUN_14169b2e0(const Unk_StreamPoint* pPoint);                  // is the point inside the box
 
     Unk_CtbBounds3 m_bounds;                                            // +0x00 local box
     Unk_CtbObb m_obb;                                                   // +0x18 the box in world space
@@ -49,7 +49,7 @@ public:
     bool FUN_14169ba90();                                               // load the theme image onto Theme_Image_Plane
     void FUN_14169bd40();                                               // per-frame: countdown text and event timer
     void FUN_14169c280();                                               // refresh the tooltip and the image by type
-    bool FUN_14169c330();                                               // both content switches enabled
+    int FUN_14169c330();                                                // both content switches enabled
     CStringW FUN_14169c3b0();                                           // action string of the portal type
     CString FUN_14169c5f0();                                            // portal kind name ("portal", "dungeon", ...)
     CStringW FUN_14169cae0();                                           // display name
@@ -87,7 +87,7 @@ public:
     CStringW m_strTip;                                                  // +0x178 tooltip format argument
     CString m_strImage;                                                 // +0x180 theme image path
     int m_unk_188;
-    int m_unk_18c;
+    bool m_b18c;
     CStringW m_strFeature;                                              // +0x190 content switch names
     CStringW m_strLocale;                                               // +0x198
     MS2Ptr<UIDebugTooltip> m_tooltip;                                   // +0x1a0
