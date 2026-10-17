@@ -84,6 +84,8 @@ public:
     Unk_GameEventLockedValue<0x40>* GetArcadeOpen() { return &m_arcadeOpen; }
     // @0x1403ed060
     Unk_GameEventLockedValue<0x40>* GetBingoEvent() { return &m_bingoEvent; }
+    // @0x140303530
+    CShutdownEventDropBox* ShutdownDropBox() { return &m_shutdownDropBox; }
     // @0x1403f3230
     CShutdownEventInteractObject* ShutdownInteractObjectId() { return &m_shutdownInteractObjectId; }
     // @0x1403f3210
@@ -143,7 +145,7 @@ private:
     Unk_GameEventLockedValue<0x40> m_bingoEvent;       // +0xd78
     Unk_GameEventLockedValue<0x50> m_db8;              // +0xdb8
     Unk_GameEventLockedValue<0x50> m_e08;              // +0xe08
-    char m_pad_e58[0x58];                              // +0xe58
+    CShutdownEventDropBox m_shutdownDropBox;           // +0xe58
     CShutdownEventInteractObject m_shutdownInteractObjectId; // +0xeb0
     char m_pad_f08[0xd8];                              // +0xf08
     char m_pad_fe0[0x90];                              // +0xfe0

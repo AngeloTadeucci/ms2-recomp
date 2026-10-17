@@ -111,6 +111,7 @@ struct ItemLimit                    // <limit ...>
     int FUN_140545510(void* pParent);
     bool FUN_140545ad0(const ItemLimit* pOther);
     bool FUN_140545c80(int nJob);                   // job allowed
+    bool FUN_140545da0(int nJob);
     bool FUN_140545f30();
     unsigned levelLimit;            // +0x00
     int genderLimit;                // +0x04
@@ -283,7 +284,7 @@ public:
     bool FUN_14053c870();    // 0x14053c870
     bool FUN_14053c8b0();    // 0x14053c8b0
     bool FUN_14053c8e0(int nJob);    // 0x14053c8e0
-    bool FUN_14053c940(int nGender);    // 0x14053c940
+    int FUN_14053c940(int nGender);     // 0x14053c940 wearable by the gender
     bool FUN_14053c9a0(unsigned short nLevel);    // 0x14053c9a0
     bool FUN_14053c9e0(int nGender, int nB);    // 0x14053c9e0
     bool FUN_14053cae0(int nGender, int nCategory);    // 0x14053cae0

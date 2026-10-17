@@ -46,6 +46,19 @@ private:
 typedef CShutdownEventKeyCountMap<unsigned int, int> CShutdownEventKeyCountMapUInt;
 MS2_CHECK_SIZE(CShutdownEventKeyCountMapUInt, 0x58);
 
+// Shut down drop box ids (CGameEventValueManager +0xe58; dtor 0x14046e300).
+class CShutdownEventDropBox : public CPtred
+{
+public:
+    CShutdownEventDropBox();                                // 0x1407d00f0
+    bool IsShutdown(unsigned nBoxId);                       // 0x1407d02e0
+private:
+    MS2_LAYOUT_FRIEND;
+    CLockCriticalSection m_lock;                            // +0x18
+    std::map<unsigned, int> m_ids;                          // +0x48
+};
+MS2_CHECK_SIZE(CShutdownEventDropBox, 0x58);
+
 // Shut down interact object ids (vftable written by 0x1407d03c0). Container at +0x48 not recovered.
 class CShutdownEventInteractObject : public CPtred
 {

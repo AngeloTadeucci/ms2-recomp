@@ -560,7 +560,7 @@ __int64 NpcShopItemLife::FUN_14026f170() {
 // @0x14026f220
 ItemDropItemLife::ItemDropItemLife() : m_type(0), m_value(0), m_time() {}
 // @0x14026f290
-char ItemDropItemLife::FUN_14026f290(void* xml) {
+bool ItemDropItemLife::FUN_14026f290(void* xml) {
     FUN_1402767f0(xml, "itemLifeType", m_type);
     if (m_type == 0) return 0;
     switch (m_type) {

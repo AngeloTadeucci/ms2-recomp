@@ -251,7 +251,7 @@ class ItemDropItemLife : public CPtred {
 public:
     ItemDropItemLife();                    // 0x14026f220
     virtual ~ItemDropItemLife();           // 0x14027e8c0
-    char FUN_14026f290(void* xml);
+    bool FUN_14026f290(void* xml);
     __int64 FUN_14026f520();
     bool FUN_14026f5d0();
     int m_type, m_value;

@@ -13,6 +13,7 @@ class CGloabalFactor : public TSingleton<CGloabalFactor>, public CValidData<CGlo
 public:
     CGloabalFactor();                                       // 0x1404c11a0
     virtual ~CGloabalFactor();
+    float FUN_1404c1810(int nType, int nGroupId);           // drop count rate of a group (1.0: none)
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_10[0x1608 - 0x10];
