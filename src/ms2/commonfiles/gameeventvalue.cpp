@@ -1551,7 +1551,7 @@ MS2_REPLACE_METHOD(0x140428300, CGameEventValueBurningLevelup, GetAll, 212, 0xA5
 void CGameEventValueBurningLevelup::Add(MS2Ptr<BurningLevelupContext> spContext)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    m_contexts.insert(std::pair<const unsigned, MS2Ptr<BurningLevelupContext> >(spContext->m_eventId, spContext));
+    m_contexts.insert(std::make_pair(spContext->m_eventId, spContext));
 }
 MS2_REPLACE_METHOD(0x1404283E0, CGameEventValueBurningLevelup, Add, 175, 0x55727A72);
 // @0x1404284a0
@@ -1828,7 +1828,7 @@ MS2_REPLACE_METHOD(0x140429690, CGameEventValueCollectItemGroup, GetAll, 212, 0x
 void CGameEventValueCollectItemGroup::Add(MS2Ptr<CollectItemGroupContext> spContext)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    m_contexts.insert(std::pair<const int, MS2Ptr<CollectItemGroupContext> >(spContext->m_eventId, spContext));
+    m_contexts.insert(std::make_pair(spContext->m_eventId, spContext));
 }
 MS2_REPLACE_METHOD(0x140429770, CGameEventValueCollectItemGroup, Add, 175, 0xB05B38C0);
 // @0x140429830
@@ -1859,7 +1859,7 @@ bool CGameEventValueArcadeOpen::Add(MS2Ptr<ArcadeOpenContext> spContext)
     Unk_CriticalSectionLock lock(m_lock, 1);
     if (m_contexts.find(spContext->m_arcadeId) != m_contexts.end())
         return false;
-    m_contexts.insert(std::pair<const int, MS2Ptr<ArcadeOpenContext> >(spContext->m_arcadeId, spContext));
+    m_contexts.insert(std::make_pair(spContext->m_arcadeId, spContext));
     return true;
 }
 MS2_REPLACE_METHOD(0x140429A30, CGameEventValueArcadeOpen, Add, 324, 0xB6CA9603);
@@ -1963,7 +1963,7 @@ void CGameEventValueEventShopNpc::Add(MS2Ptr<EventShopNpcContext> pContext)
     if (it == m_groups.end()) {
         Contexts contexts;
         contexts.push_back(pContext);
-        m_groups.insert(std::pair<const unsigned long, Contexts>(pContext->Get20(), contexts));
+        m_groups.insert(std::make_pair(pContext->Get20(), contexts));
     } else {
         it->second.push_back(pContext);
     }
