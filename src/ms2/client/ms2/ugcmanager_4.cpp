@@ -31,6 +31,8 @@
 #include "itemugcmesh.h"
 #include "ms2/placeholder/cequipitem.h"
 #include "ms2/placeholder/cugcdownloaddown.h"
+#include "ms2/placeholder/cugcgetcosttable.h"
+#include "ms2/placeholder/cinpacket.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/cugcmanager.h"
@@ -144,7 +146,8 @@ int FUN_14088db30(int nType);
 class Unk_UgcSoap
 {
 public:
-    void FUN_14176feb0();                                   // send the upload request
+    int FUN_14176feb0();                                    // send the upload request
+    void FUN_14176fcf0(CString strUrl, int nResult);        // an upload answer of the web server
 };
 Unk_UgcSoap* FUN_140b2e990();
 
@@ -158,11 +161,14 @@ class UIUGCItemEditDialog : public UIDialog
 {
 public:
     void FUN_141b450d0(int nResult);
+    void FUN_141b45020();                                   // drop the edited item
+    void FUN_141b45180(MS2Ptr<CItem> spItem);               // the look of the edited item changed
 };
 class UIUGCBannerDialog : public UIDialog
 {
 public:
     void FUN_141b35480(int nResult);
+    int FUN_141b35540(MS2Ptr<CUgcPreReserve> spReserve);    // the reservations of the banner (0 = ok)
 };
 UIUGCItemEditDialog* FUN_140eeff60(int nId);                // uiugccubepalettedialog.cpp
 
@@ -177,6 +183,7 @@ class Unk_CharSelectDialog
 {
 public:
     void FUN_1418ed4e0(__int64 characterId, CString strPath);
+    void FUN_1418ed5a0(__int64 characterId, CString strUrl);
 };
 Unk_CharSelectDialog* FUN_140b72de0(int nId);
 
@@ -265,7 +272,7 @@ public:
 };
 Unk_UgcTextureCache* FUN_140a0afd0();
 // A player in the field (Unk_UgcWorld::FUN_141bd1290 finds it by object id).
-class Unk_UgcWearer
+class Unk_UgcWearer : public PCBase
 {
 public:
     MS2Ptr<CEquipItem> FUN_141655c30(__int64 itemUid);      // a worn item by uid
@@ -291,6 +298,66 @@ public:
 Unk_UgcBlindManager* FUN_1409c1730();
 
 unsigned __int64 FUN_14088dbf0(int nDate, int nHour);       // the reservation key of an hour
+// The platform services: vfunc_54 sets a character's profile image (1 = changed).
+class Unk_UgcPlatform
+{
+public:
+    virtual void vfunc_0(); virtual void vfunc_1(); virtual void vfunc_2(); virtual void vfunc_3();
+    virtual void vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7();
+    virtual void vfunc_8(); virtual void vfunc_9(); virtual void vfunc_10(); virtual void vfunc_11();
+    virtual void vfunc_12(); virtual void vfunc_13(); virtual void vfunc_14(); virtual void vfunc_15();
+    virtual void vfunc_16(); virtual void vfunc_17(); virtual void vfunc_18(); virtual void vfunc_19();
+    virtual void vfunc_20(); virtual void vfunc_21(); virtual void vfunc_22(); virtual void vfunc_23();
+    virtual void vfunc_24(); virtual void vfunc_25(); virtual void vfunc_26(); virtual void vfunc_27();
+    virtual void vfunc_28(); virtual void vfunc_29(); virtual void vfunc_30(); virtual void vfunc_31();
+    virtual void vfunc_32(); virtual void vfunc_33(); virtual void vfunc_34(); virtual void vfunc_35();
+    virtual void vfunc_36(); virtual void vfunc_37(); virtual void vfunc_38(); virtual void vfunc_39();
+    virtual void vfunc_40(); virtual void vfunc_41(); virtual void vfunc_42(); virtual void vfunc_43();
+    virtual void vfunc_44(); virtual void vfunc_45(); virtual void vfunc_46(); virtual void vfunc_47();
+    virtual void vfunc_48(); virtual void vfunc_49(); virtual void vfunc_50(); virtual void vfunc_51();
+    virtual void vfunc_52(); virtual void vfunc_53();
+    virtual int vfunc_54(CStringW strPath, CStringW strArg, int nKind, CStringW strUrl);
+};
+Unk_UgcPlatform* FUN_140d86260();
+
+void FUN_1410268a0(CString strA, CString strB);
+
+// The item containers: the bag and the cube fallback inventory (unit_14092f420.cpp / uicommon.cpp).
+class Unk_UgcBagInventory
+{
+public:
+    MS2Ptr<CItem> FUN_140a5d680(__int64 itemUid);
+};
+extern Unk_UgcBagInventory DAT_143ab2a90;
+class Unk_UgcCubeInventory
+{
+public:
+    MS2Ptr<CItem> FUN_1408fbf90(__int64 itemUid);
+};
+extern Unk_UgcCubeInventory DAT_143ab2e20;
+
+// The blueprint create dialog (0x4f7b; uiitemblueprintcreatedialog.cpp).
+class Unk_UgcBlueprintDialog : public UIDialog
+{
+public:
+    void FUN_140c36b40(CItem* pItem);
+};
+Unk_UgcBlueprintDialog* FUN_140d27260(int nId);
+
+// The UGC events (vfunc_1: a character's profile image changed).
+class Unk_UgcEventHub
+{
+public:
+    virtual void vfunc_0();
+    virtual void vfunc_1(__int64 characterId, CString strUrl);
+};
+Unk_UgcEventHub* FUN_140bc09f0();
+
+CString FUN_141028be0(__int64 characterId, const CString& strUrl, int nSize, CString strExt);   // the profile image file
+CStringW FUN_1409eec40(int nId);
+CStringW FUN_140a228f0(int nId, const int& nArg, const CStringW& strArg);
+void FUN_1412751f0(const CStringW& strText, int nA, int nB);
+
 // The open dialog of a UI id (0 when it is not created).
 template <class T>
 T* UgcFindDialog(eUIClassID nId)
@@ -2459,6 +2526,85 @@ NiTexturePtr CUgcManager::FUN_1418897a0()
     return m_spDefaultTexture;
 }
 
+// @0x1418897f0
+void CUgcManager::FUN_1418897f0(CInPacket& packet)
+{
+    int nType = packet.vfunc_o8_1();
+    if (nType == 2)
+    {
+        int nResult = FUN_14188dd70(packet);
+        if (nResult != 0)
+            FUN_1418826a0(nResult);
+        else
+            FUN_14188fbd0();
+    }
+    else if (nType == 4)
+    {
+        int nResult = FUN_14188e0d0(packet);
+        CString strPath = packet.vfunc_o8_6();
+        if (nResult != 0)
+            FUN_1418826a0(nResult);
+        else
+            FUN_141883860(strPath);
+    }
+    else if (nType == 0x14)
+    {
+        int nResult = FUN_14188da70(packet);
+        if (nResult != 0)
+            FUN_1418826a0(nResult);
+    }
+    else if (nType == 0xb)
+    {
+        FUN_14188e200(packet);
+    }
+    else if (nType == 0xd || nType == 0xe || nType == 0xf)
+    {
+        FUN_14188e5b0(packet, nType);
+    }
+    else if (nType == 0x10)
+    {
+        FUN_14188e930(packet);
+    }
+    else if (nType == 0x11)
+    {
+        CString strUrl = packet.vfunc_o8_6();
+        CString strA = packet.vfunc_o8_6();
+        CString strB = packet.vfunc_o8_6();
+        int nResult = packet.vfunc_o8_1();
+        FUN_140b2e990()->FUN_14176fcf0(strUrl, nResult);
+        FUN_1410268a0(strA, strB);
+    }
+    else if (nType == 0x12)
+    {
+        FUN_14188eb30(packet);
+    }
+    else if (nType == 7)
+    {
+        FUN_14188f0e0(packet);
+    }
+    else if (nType == 8)
+    {
+        FUN_14188f220(packet);
+    }
+    else if (nType == 6)
+    {
+        FUN_14188f350(packet);
+    }
+    else if (nType == 0x15)
+    {
+        CUgcGetCostTable::GetInstance()->Read(packet);
+    }
+    else if (nType == 0x16)
+    {
+        int nMode = packet.vfunc_o8_3();
+        FUN_14187f380(nMode);
+    }
+    else if (nType == 0)
+    {
+        FUN_14188f450(packet);
+    }
+}
+
 // @0x14188bfd0
 int CUgcManager::FUN_14188bfd0(const CStringW& strPath, D3DXIMAGE_INFO* pInfo)
 {
@@ -2466,6 +2612,361 @@ int CUgcManager::FUN_14188bfd0(const CStringW& strPath, D3DXIMAGE_INFO* pInfo)
     if (FAILED(hr))
         return 0;
     return 1;
+}
+
+// @0x14188da70
+// The reservations of the banner being uploaded.
+int CUgcManager::FUN_14188da70(CInPacket& packet)
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return 0xd;
+    int nResult = 1;
+    try
+    {
+        MS2Ptr<CUgcPreReserve> spReserve(new CUgcPreReserve);
+        spReserve->Read(packet);
+        if (spCtrl->m_nKind != 3)
+            throw Exception(CString("invaild ugcType"), 0x5b);
+        UIUGCBannerDialog* pDialog = UgcFindDialog<UIUGCBannerDialog>(eUI_4e70);
+        if (pDialog == 0 || pDialog->vfunc_55() == 1)
+            throw Exception(CString("error dialog"), 0x29);
+        nResult = pDialog->FUN_141b35540(spReserve);
+        if (nResult != 0)
+            throw Exception(CString("error reserve result"), nResult);
+    }
+    catch (Exception& e)
+    {
+        nResult = e.GetCode();
+    }
+    return nResult;
+}
+
+// @0x14188dd70
+// The upload was accepted by the game server: register it and send the file to the web server.
+int CUgcManager::FUN_14188dd70(CInPacket& packet)
+{
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return 0xd;
+    int nResult = 1;
+    try
+    {
+        int nKind = packet.vfunc_o8_1();
+        if (spCtrl->m_nKind != nKind)
+            throw Exception(CString("invaild ugcType"), 0x5b);
+        __int64 uid = packet.vfunc_o8_4();
+        spCtrl->m_upload.m_uid = uid;
+        spCtrl->m_upload.m_strName = packet.vfunc_o8_6();
+        spCtrl->m_upload.m_nType = 1;
+        nResult = spCtrl->FUN_1418a3b80(uid);
+        if (nResult != 0)
+            throw Exception(CString("error PreUpload"), nResult);
+        nResult = FUN_140b2e990()->FUN_14176feb0();
+        if (nResult != 0)
+            throw Exception(CString("error soap upload"), nResult);
+    }
+    catch (Exception& e)
+    {
+        nResult = e.GetCode();
+    }
+    return nResult;
+}
+
+// @0x14188e0d0
+int CUgcManager::FUN_14188e0d0(CInPacket& packet)
+{
+    int nKind = packet.vfunc_o8_1();
+    __int64 uid = packet.vfunc_o8_4();
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl == 0)
+        return 0xd;
+    if (spCtrl->m_nKind != nKind)
+        return 0x5b;
+    if (spCtrl->m_upload.m_uid != uid)
+        return 0x5c;
+    return 0;
+}
+
+// @0x14188e200
+// A character's profile image: the character select dialog or the player in the field shows it.
+void CUgcManager::FUN_14188e200(CInPacket& packet)
+{
+    int nObjectId = packet.vfunc_o8_3();
+    __int64 characterId = packet.vfunc_o8_4();
+    CString strUrl = packet.vfunc_o8_6();
+    if (FUN_14187f3b0() == 1)
+        strUrl = "";
+    if (nObjectId == 0)
+    {
+        int nState = FUN_140aa6d30()->FUN_1417e2610();
+        if (nState == 0x620000d)
+        {
+            Unk_CharSelectDialog* pDialog = FUN_140b72de0(0x4ef1);
+            if (pDialog != 0)
+            {
+                pDialog->FUN_1418ed5a0(characterId, strUrl);
+                CString strPath = FUN_1410280d0(5, strUrl);
+                if (_access(strPath, 0) != 0)
+                    FUN_141884e30(DAT_143ab2830, 0, characterId, strUrl, "");
+            }
+        }
+    }
+    else
+    {
+        Unk_UgcWearer* pPlayer = FUN_1403ed2d0()->FUN_141bd1290(nObjectId);
+        if (pPlayer == 0)
+            return;
+        CString strPath = FUN_141028be0(FUN_141656a80(pPlayer), strUrl, 0, "");
+        if (!strPath.IsEmpty())
+        {
+            FUN_140bc09f0()->vfunc_1(FUN_141656a80(pPlayer), strUrl);
+        }
+    }
+}
+
+// @0x14188e5b0
+// The look of one of my items was changed (0xe: an item of the cube inventory).
+// MS2-FUNCTIONAL: same calls and flow; the exe materializes both viewer checks as bool temporaries (frame 0x10 larger)
+void CUgcManager::FUN_14188e5b0(CInPacket& packet, int nType)
+{
+    int nObjectId = packet.vfunc_o8_3();
+    CUgcItemProxy proxy;
+    proxy.Read(packet);
+    CUgcItemLook look;
+    look.Read(packet);
+    Unk_UgcWearer* pWearer = FUN_1403ed2d0()->FUN_141bd1290(nObjectId);
+    if (pWearer == 0)
+        return;
+    PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPlayer != pWearer)
+        return;
+    __int64 itemUid = proxy.m_itemUid;
+    MS2Ptr<CItem> spItem(0);
+    if (nType == 0xe)
+        spItem = DAT_143ab2e20.FUN_1408fbf90(itemUid);
+    else
+        spItem = DAT_143ab2a90.FUN_140a5d680(itemUid);
+    if (spItem == 0)
+        return;
+    spItem->FUN_140528300(&look);
+    MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+    if (spCtrl.get() != 0 && spCtrl->m_spViewer.get() != 0)
+        spCtrl->m_spViewer->vfunc_12(itemUid);
+    UIUGCItemEditDialog* pDialog = FUN_140eeff60(0x4e69);
+    if (pDialog != 0 && pDialog->vfunc_55() == 0)
+        pDialog->FUN_141b45180(spItem);
+}
+
+// @0x14188e930
+// The look of one of my blueprints was changed.
+void CUgcManager::FUN_14188e930(CInPacket& packet)
+{
+    int nObjectId = packet.vfunc_o8_3();
+    CUgcBlueprintImageProxy proxy;
+    proxy.Read(packet);
+    CUgcItemLook look;
+    look.Read(packet);
+    __int64 itemUid = proxy.m_n20;
+    Unk_UgcWearer* pWearer = FUN_1403ed2d0()->FUN_141bd1290(nObjectId);
+    if (pWearer == 0)
+        return;
+    PCBase* pPlayer = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pPlayer != pWearer)
+        return;
+    CItem* pItem = DAT_143ab2a90.FUN_140a5d680(itemUid).get();
+    if (pItem == 0)
+        return;
+    pItem->FUN_140528300(&look);
+    Unk_UgcBlueprintDialog* pDialog = FUN_140d27260(0x4f7b);
+    if (pDialog != 0 && pDialog->vfunc_55() == 0)
+        pDialog->FUN_140c36b40(pItem);
+}
+
+// @0x14188eb30
+// The banners of the field: the rolling images, the registrations and the reservations.
+void CUgcManager::FUN_14188eb30(CInPacket& packet)
+{
+    CAtlArray<MS2Ptr<CUgcBannerRollingImage> > images;
+    int nImages = packet.vfunc_o8_3();
+    for (int i = 0; i < nImages; i++)
+    {
+        int bHas = packet.vfunc_o8_1();
+        if (bHas != 0)
+        {
+            MS2Ptr<CUgcBannerRollingImage> spImage(new CUgcBannerRollingImage);
+            spImage->Read(packet);
+            spImage->FUN_140897740();
+            images.Add(spImage);
+        }
+    }
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_rollingImages.RemoveAll();
+        m_rollingImages.Copy(images);
+    }
+    int nBanners = packet.vfunc_o8_3();
+    for (int i = 0; i < nBanners; i++)
+    {
+        int nBannerId = packet.vfunc_o8_4();
+        int bRegistered = packet.vfunc_o8_1();
+        MS2Ptr<CUgcRegistBanner> spBanner(0);
+        if (bRegistered != 0)
+        {
+            spBanner.AssignRaw(new CUgcRegistBanner);
+            spBanner->Read(packet);
+        }
+        if (FUN_141887ce0(nBannerId).get() != spBanner.get())
+            FUN_141887dc0(nBannerId, spBanner);
+    }
+    int nReserves = packet.vfunc_o8_3();
+    for (int i = 0; i < nReserves; i++)
+    {
+        int nBannerId = packet.vfunc_o8_4();
+        int nHours = packet.vfunc_o8_3();
+        FUN_141888d30(nBannerId);
+        for (int j = 0; j < nHours; j++)
+        {
+            ReserveBannerInfo info;
+            unsigned __int64 key = packet.vfunc_o8_4();
+            info.Read(packet);
+            FUN_1418889d0(nBannerId, key, info);
+        }
+    }
+    FUN_14188c6f0();
+}
+
+// @0x14188f0e0
+// The registration of one banner changed.
+void CUgcManager::FUN_14188f0e0(CInPacket& packet)
+{
+    int nBannerId = packet.vfunc_o8_4();
+    int bRegistered = packet.vfunc_o8_1();
+    MS2Ptr<CUgcRegistBanner> spBanner(0);
+    if (bRegistered == 1)
+    {
+        spBanner.AssignRaw(new CUgcRegistBanner);
+        spBanner->Read(packet);
+    }
+    FUN_141887dc0(nBannerId, spBanner);
+}
+
+// @0x14188f220
+// The reservations of one banner.
+void CUgcManager::FUN_14188f220(CInPacket& packet)
+{
+    int nBannerId = packet.vfunc_o8_4();
+    int nHours = packet.vfunc_o8_3();
+    FUN_141888d30(nBannerId);
+    for (int i = 0; i < nHours; i++)
+    {
+        ReserveBannerInfo info;
+        unsigned __int64 key = packet.vfunc_o8_4();
+        info.Read(packet);
+        FUN_1418889d0(nBannerId, key, info);
+    }
+}
+
+// @0x14188f350
+// Reservations of a banner were confirmed.
+void CUgcManager::FUN_14188f350(CInPacket& packet)
+{
+    int nBannerId = packet.vfunc_o8_4();
+    int nHours = packet.vfunc_o8_3();
+    for (int i = 0; i < nHours; i++)
+    {
+        ReserveBannerInfo info;
+        unsigned __int64 key = packet.vfunc_o8_4();
+        FUN_141888af0(nBannerId, key, 1);
+    }
+}
+
+// @0x14188f450
+// An upload error of the game server; the manager is unlocked.
+void CUgcManager::FUN_14188f450(CInPacket& packet)
+{
+    int nType = packet.vfunc_o8_1();
+    int nError = packet.vfunc_o8_1();
+    switch (nError)
+    {
+    case 0x13:
+        FUN_140d73bc0(0x34, 0, 0, L"");
+        break;
+    case 0x79:
+        FUN_140d73bc0(0x443, 0, 0, L"");
+        break;
+    case 0x7a:
+        FUN_140d73bc0(0x446, 0, 0, L"");
+        break;
+    case 0x7b:
+        FUN_140d73bc0(0x8b5, 0, 0, L"");
+        break;
+    case 0x7c:
+    {
+        UIUGCItemEditDialog* pDialog = FUN_140eeff60(0x4e69);
+        if (pDialog != 0)
+            pDialog->FUN_141b45020();
+        FUN_140d73bc0(0x8ba, 0, 0, L"");
+        break;
+    }
+    case 0x7d:
+        FUN_140d73bc0(0x8b7, 0, 0, L"");
+        break;
+    case 0x81:
+        FUN_140d73bc0(0x43, 0, 0, L"");
+        break;
+    case 0x82:
+        FUN_140d73aa0(FUN_14028b8e0(L"s_err_lack_price"), 0, 0, L"");
+        break;
+    case 0x83:
+        FUN_1403ed2b0()->FUN_141add1f0();
+        break;
+    case 0x84:
+        FUN_140d73aa0(FUN_14028b8e0(L"s_err_warehouse"), 0, 0, L"");
+        break;
+    case 0x85:
+        FUN_140d73aa0(FUN_14028b8e0(L"s_ugc_itemedit_error_change_price"), 0, 0, L"");
+        break;
+    case 0x87:
+        FUN_1412751f0(FUN_140a228f0(0x688, *TSingleton<Client::Constants>::GetInstance()->PropertyProtectionTime.Get(), FUN_1409eec40(0x5a8)), 1, 1);
+        break;
+    case 0x8a:
+        break;
+    case 0x8b:
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4e69);
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4e70);
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4f7b);
+        break;
+    case 0x8e:
+        FUN_140d73aa0(FUN_14028b8e0(L"s_ugc_uic_error"), 0, 0, L"");
+        break;
+    default:
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4e69);
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4e70);
+        FUN_1403ed2b0()->FUN_141adc5d0(eUI_4f7b);
+        FUN_141275260(0x6d7, 1, 1);
+        break;
+    }
+    FUN_1418823f0();
+}
+
+// @0x14188fbd0
+// The upload went through the game server: a profile image is set on the platform too.
+void CUgcManager::FUN_14188fbd0()
+{
+    {
+        MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+        if (spCtrl.get() != 0 && !m_str1b0.IsEmpty() && !m_str1b8.IsEmpty())
+        {
+            if (FUN_140d86260()->vfunc_54(m_str1b0, L"", spCtrl->m_nKind, m_str1b8) == 1)
+                FUN_141275260(0x465, 1, 1);
+        }
+    }
+    m_str1b0 = "";
+    m_str1b8 = "";
 }
 
 // @0x14188fdb0

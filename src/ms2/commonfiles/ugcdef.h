@@ -647,7 +647,7 @@ struct ReserveBannerInfo
     ReserveBannerInfo() : m_nState(0xff) {}
 
     void Write(COutputStream& stream) const;                // 0x1408974e0
-    void Read(CInPacket& packet);                           // 0x140897540
+    void Read(CInputStream& stream);                        // 0x140897540
 
     CStringW m_strName;                                     // +0x00
     int m_nState;                                           // +0x08 written as a byte

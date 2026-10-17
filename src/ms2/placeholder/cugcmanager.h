@@ -39,6 +39,7 @@ class CubeItemInfo;
 class RideeItemInfo;
 class Unk_PCBaseComp_b18;                                  // ridee.h: the mount's RideeItemInfo
 class Cube;
+class CInPacket;
 class Ridee;
 class CUgcShopBannerProxy;
 class CUgcItemPC;
@@ -222,6 +223,20 @@ public:
     void FUN_1418894d0();                                   // drop the images of the banner objects
     void FUN_1418895d0(int nObjectId, efd::SmartPointer<NiTexture> spTexture);
     void FUN_141889670(int nObjectId);
+    void FUN_1418897f0(CInPacket& packet);                  // the UGC packet (opcode byte first)
+    int FUN_14188da70(CInPacket& packet);                   // a banner reservation answer
+    int FUN_14188dd70(CInPacket& packet);                   // the upload was accepted: send the file
+    int FUN_14188e0d0(CInPacket& packet);                   // the upload was registered
+    void FUN_14188e200(CInPacket& packet);                  // a character profile image
+    void FUN_14188e5b0(CInPacket& packet, int nType);       // an item look was changed (0xd / 0xe / 0xf)
+    void FUN_14188e930(CInPacket& packet);
+    void FUN_14188eb30(CInPacket& packet);
+    void FUN_14188f0e0(CInPacket& packet);
+    void FUN_14188f220(CInPacket& packet);
+    void FUN_14188f350(CInPacket& packet);
+    void FUN_14188f450(CInPacket& packet);
+    void FUN_14188fbd0();                                   // the upload went through the game server
+    void FUN_14188c6f0();                                   // refresh the rolling images of the banners in the field
     void FUN_141886270(CString strName, int nResult);       // the result of a running download
     int FUN_141886980(CUgcItemPC* pItem, CString strPath);  // an equip image (0: not worn)
     int FUN_141886a90(CUgcItemPC* pItem, NiTexture* pTexture);
