@@ -2492,3 +2492,9 @@ __imp_CrashReporter_SetStrInfoW	142cce1b8	data
 ??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	1413db5e0	func
 ?equal_range@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@2@AEBI@Z	1413f7760	func
 ?count@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBA_KAEBI@Z	1413f6b30	func
+??0UIEpProgress@@QEAA@PEAVPCBase@@@Z	141931550	func
+??0Unk_CMISEntityRef@@QEAA@AEBU0@@Z	1408b6b20	func
+??0Unk_CMISPt3@@QEAA@AEBUUnk_StreamPoint@@@Z	14027dcf0	func
+?vfunc_1@NotifyUseSKill@@UEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	140db4670	func
+?s_bInit@QuestDataTable@@2_NA	143ab0c78	data
+?s_instance@?$TSingleton@VQuestDataTable@@@@2PEAV1@EA	143ab0c70	data
