@@ -1065,7 +1065,6 @@ CStringW FUN_1406cd420(int nNpcType)
 }
 
 // @0x1406cd750
-// MS2-FUNCTIONAL: the map<unsigned,bool> ctor binds to the other unit's ICF copy (symbol table disagreement)
 CNpcDataTable::CNpcDataTable()
 {
     LoadNpcCache();
