@@ -29,7 +29,9 @@ public:
     int FUN_14074e450(int nGroupId);                        // how many quests a group hands out (1 when unknown)
 
     static bool s_bInit;
-    static void CheckInit();                                // 0x14075a3f0 (message box when the table was never created)
+    static void CheckInit();
+    static void SetInit(bool bInit) { s_bInit = bInit; }       // 0x14075ebe0
+    void FUN_14074c320();                                   // loads QuestData.xml and builds the indices                                // 0x14075a3f0 (message box when the table was never created)
     void FUN_1407511e0();                                   // drops every row and index
     MS2Ptr<CQuestData> FUN_14074c9d0(int nQuestId);                         // by id (null when missing)
     void FUN_14074cad0(ATL::CAtlArray<MS2Ptr<CQuestData> >& out, int nType);       // rows of the type (11 = all)
@@ -46,7 +48,7 @@ public:
     IdsPtr FUN_14074df70(unsigned nKey, int nIndex);
     bool FUN_14074e030(int nNpcId);
     std::vector<unsigned>& FUN_14074e0d0();
-    std::set<unsigned>* FUN_14074e0f0(int nNpcId);
+    std::vector<unsigned>* FUN_14074e0f0(int nNpcId);
     unsigned FUN_14074e1c0(int nKey);
     unsigned FUN_14074e240(int nKey);
     unsigned FUN_14074e2c0(int nKey);
@@ -55,6 +57,12 @@ public:
     void FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& visited);
     void FUN_14074ebc0(int nChain, IdsPtr spIds, MS2Ptr<CQuestData> spData, int nDepth);   // collects the chain of following quests
     void FUN_14074d480();                                   // sorts m_378 by level
+    void FUN_14074fee0();                                   // chapter -> field values
+    void FUN_140750120();                                   // loads QuestGroupTable.xml
+    void FUN_1407503f0();                                   // reverse require links and chapter order
+    void FUN_140750d90();                                   // sorts the npc quest lists
+    void FUN_140750ea0();                                   // sorts m_1d8
+    void FUN_140750f30();
     void FUN_14074f160();                                   // builds every index from m_quests
     void FUN_14074ee30();                                   // scales every reward by the level rate   // the quest and every quest that requires it
 
@@ -69,13 +77,13 @@ public:
     ATL::CAtlMap<unsigned, IdsPtr> m_1f8;                                   // +0x1f8
     ATL::CAtlMap<unsigned, IdsPtr> m_240;                                   // +0x240
     ATL::CAtlMap<unsigned, unsigned> m_288;                                 // +0x288
-    ATL::CAtlMap<int, int> m_2d0;                                           // +0x2d0 quest id -> 0/1 (finished-dependency cache)
+    ATL::CAtlMap<unsigned, int> m_2d0;                                          // +0x2d0 quest id -> 0/1 (finished-dependency cache)
     ATL::CAtlMap<Unk_FameAlliance, IdsPtr> m_318;                           // +0x318 alliance -> quest ids
     std::vector<unsigned> m_360;                                            // +0x360
     std::vector<MS2Ptr<CQuestData> > m_378;                                 // +0x378 sorted by level
     ATL::CAtlMap<int, IdsPtr> m_390;                                        // +0x390 group id -> quest ids
     ATL::CAtlMap<int, Unk_SocketPtr<CQuestData::GroupPickData> > m_3d8;     // +0x3d8 group id -> pick data
     std::map<int, unsigned> m_420;                                              // +0x420
-    std::map<int, std::set<unsigned> > m_430;                               // +0x430 npc id -> quest ids
+    std::map<int, std::vector<unsigned> > m_430;                              // +0x430 npc id -> quest ids
 };
 MS2_CHECK_SIZE(QuestDataTable, 0x440);

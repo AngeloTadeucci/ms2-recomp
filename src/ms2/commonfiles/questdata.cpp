@@ -15,6 +15,8 @@
 #include "ms2/unnamed/payloadptr_1401f9eb0.h"
 #include "ms2/placeholder/questdata.h"
 #include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/tixmldocument.h"
+#include "ms2/commonfiles/filesystem.h"
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/commonfiles/fielddata.h"
@@ -38,6 +40,10 @@ int FUN_140869470(int nDays);                               // DaysToSeconds
 __int64 FUN_14086b590(int nYear, int nMonth, int nDay);
 const __int64& FUN_1402e49a0(const __int64& a, const __int64& b);   // the smaller of the two
 CFieldMetaTable* FUN_140700390();
+CString FUN_14071a5b0(const CString& strDir, const CString& strFile);
+void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
+void* FUN_140166440();
+int ConditionHasTarget(int nType);                          // 0x14029f330
 CGuildXmlData* FUN_1404f4530();
 
 // The game random generator (0x40 bytes; defined in randomeffectparam.h of the client unit). Seeded ctor 0x140768210.
@@ -1656,6 +1662,86 @@ QuestDataTable::~QuestDataTable()
 }
 
 
+CString FUN_140751b40(const char* pszFormat, const int& nArg0, const unsigned __int64& nArg1);
+
+// MS2-FUNCTIONAL: the exe builds the literal CString temps and the path with a different EH state layout (precedent banktable)
+// @0x14074c320
+void QuestDataTable::FUN_14074c320()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    CString strPath = FUN_14071a5b0(CString("QuestData"), CString("QuestData.xml"));
+    TiXmlDocument doc;
+    const char* pszPath = strPath;
+    if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
+        return;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return;
+    }
+    Unk_140165cf0* pFirst = pRoot->FUN_140165cf0("quest");
+    Unk_XmlElementIterator itNode = begin(pFirst);
+    Unk_XmlElementIterator itEnd = end(pFirst);
+    for (; itNode != itEnd; ++itNode)
+    {
+        Unk_140165cf0* pNode = *itNode;
+        if (FUN_14028f650(pNode))
+        {
+            MS2Ptr<CQuestData> spData(new CQuestData);
+            if (spData->FUN_1407495d0(pNode))
+                m_quests.insert(std::make_pair(FUN_14074b030(spData.operator->()), spData));
+        }
+    }
+    FUN_14074f160();
+    SetInit(true);
+    FUN_1407503f0();
+    FUN_14074fee0();
+    FUN_140750d90();
+    FUN_140750f30();
+    FUN_140750120();
+
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itQuestEnd = quests.end();
+    for (; it != itQuestEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (!spData->GetKind())
+            continue;
+        for (size_t i = 0; i < spData->m_conditions.GetCount(); i++)
+        {
+            MS2Ptr<CConditionCommonData> spCond = spData->m_conditions[i];
+            if (ConditionHasTarget(spCond->m_nType) != 0)
+            {
+                bool bBad = true;
+                if (spCond->m_nType == 0x30)
+                {
+                    bBad = false;
+                    for (size_t k = 0; k < spCond->m_code.m_ids.GetCount(); k++)
+                    {
+                        MS2Ptr<CQuestData> spOther = FUN_14074c9d0((int)spCond->m_code.m_ids[k]);
+                        if (spOther.operator->() != 0 && !spOther->GetKind())
+                        {
+                            bBad = true;
+                            break;
+                        }
+                    }
+                }
+                if (bBad)
+                {
+                    int nQuestId = FUN_14074b030(spData.operator->());
+                    unsigned __int64 nIndex = i;
+                    CString strMsg = FUN_140751b40("Quest ConditionData dependency error. id:{0} index:{1}", nQuestId, nIndex);
+                    MessageBoxA(0, strMsg, "Error", 0);
+                }
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14074C320, QuestDataTable, FUN_14074c320, 1691, 0xED84B5B4);
+
 // @0x14074c9d0
 MS2Ptr<CQuestData> QuestDataTable::FUN_14074c9d0(int nQuestId)
 {
@@ -1965,11 +2051,11 @@ std::vector<unsigned>& QuestDataTable::FUN_14074e0d0()
 }
 
 // @0x14074e0f0
-std::set<unsigned>* QuestDataTable::FUN_14074e0f0(int nNpcId)
+std::vector<unsigned>* QuestDataTable::FUN_14074e0f0(int nNpcId)
 {
     CheckInit();
     Unk_1401b4ec0 guard(m_lock, 1);
-    std::map<int, std::set<unsigned> >::iterator it = m_430.find(nNpcId);
+    std::map<int, std::vector<unsigned> >::iterator it = m_430.find(nNpcId);
     if (it == m_430.end())
         return 0;
     return &it->second;
@@ -2258,9 +2344,9 @@ void QuestDataTable::FUN_14074f160()
 
         int nKeyA = spData->m_2e8;
         int nKeyB = spData->m_2ec;
-        m_430[nKeyA].insert(nId);
+        m_430[nKeyA].push_back(nId);
         if (nKeyA != nKeyB)
-            m_430[nKeyB].insert(nId);
+            m_430[nKeyB].push_back(nId);
 
         if (FUN_14074b050(spData.operator->()) == 4)
         {
@@ -2310,6 +2396,234 @@ void QuestDataTable::FUN_14074f160()
     FUN_14074d480();
 }
 MS2_REPLACE_METHOD(0x14074F160, QuestDataTable, FUN_14074f160, 3448, 0xCBA25530);
+
+// MS2-FUNCTIONAL: shared id-list pointer copies of the exe differ.
+// @0x14074fee0
+void QuestDataTable::FUN_14074fee0()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    for (POSITION pos = m_chapter.GetStartPosition(); pos != 0; m_chapter.GetNext(pos))
+    {
+        int nChapter = m_chapter.GetKeyAt(pos);
+        IdsPtr spIds = m_chapter.GetValueAt(pos);
+        if (spIds->GetCount() == 0)
+            continue;
+        MS2Ptr<CQuestData> spData = FUN_14074bc40(spIds->GetAt(0));
+        if (!spData)
+            continue;
+        unsigned nFieldId;
+        if (FUN_140700390()->FUN_1406fb700(spData->m_2e8, &nFieldId) != 0)
+        {
+            MS2Ptr<CFieldData> spField = CFieldData::FUN_140374140(nFieldId);
+            if (!spField)
+                continue;
+            m_98.SetAt(nChapter, spField->FUN_140375370());
+            m_e0.SetAt(nChapter, spField->FUN_140375350());
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14074FEE0, QuestDataTable, FUN_14074fee0, 557, 0xD7488436);
+
+void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
+CString FUN_14071a5b0(const CString& strDir, const CString& strFile);
+bool FUN_14028f710(Unk_140165cf0* pElem);
+int FUN_140752030(Unk_140165cf0* pElem, const char* pszName, int* pOut);
+// MS2-FUNCTIONAL: the exe builds the literal CString temps and the path with a different EH state layout (precedent banktable)
+// @0x140750120
+void QuestDataTable::FUN_140750120()
+{
+    CString strPath = FUN_14071a5b0(CString("Table"), CString("QuestGroupTable.xml"));
+    TiXmlDocument doc;
+    const char* pszPath = strPath;
+    if (FUN_140166420()->FUN_1403974b0(&doc, pszPath, 0, true, false) == 0)
+        return;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return;
+    }
+    Unk_1401b4ec0 guard(m_lock, 1);
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("group"); pNode != 0; pNode = pNode->FUN_140168650("group"))
+    {
+        if (FUN_14028f710(pNode))
+        {
+            Unk_SocketPtr<CQuestData::GroupPickData> spPick(new CQuestData::GroupPickData);
+            FUN_1408731e0(pNode, "id", spPick->m_18);
+            FUN_1408731e0(pNode, "pickCount", spPick->m_count);
+            FUN_140752030(pNode, "dependency", &spPick->m_kind);
+            m_3d8.SetAt(spPick->m_18, spPick);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140750120, QuestDataTable, FUN_140750120, 713, 0x932C35CB);
+
+void FUN_140353fc0(void* pLog, int a, int nFlags, const wchar_t* pszFormat, const int& arg0);
+
+// MS2-FUNCTIONAL: links the quests (reverse require lists) and rebuilds each chapter's id list in chain order
+// @0x1407503f0
+void QuestDataTable::FUN_1407503f0()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        for (size_t i = 0; i < spData->m_require.m_quest.GetCount(); i++)
+        {
+            std::map<int, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_quest[i]);
+            if (itOther != quests.end())
+            {
+                MS2Ptr<CQuestData> spOther = itOther->second;
+                unsigned nId = FUN_14074b030(spData.operator->());
+                if (FUN_140408410(&spOther->m_require.m_requiredBy, &nId) == -1)
+                {
+                    spOther->m_require.m_requiredBy.Add(FUN_14074b030(spData.operator->()));
+                    spOther->m_require.m_followingQuests.Add(FUN_14074b030(spData.operator->()));
+                }
+            }
+        }
+        for (size_t i = 0; i < spData->m_require.m_selectableQuest.GetCount(); i++)
+        {
+            std::map<int, MS2Ptr<CQuestData> >::iterator itOther = quests.find(spData->m_require.m_selectableQuest[i]);
+            if (itOther != quests.end())
+            {
+                MS2Ptr<CQuestData> spOther = itOther->second;
+                unsigned nId = FUN_14074b030(spData.operator->());
+                if (FUN_140408410(&spOther->m_require.m_selectableBy, &nId) == -1)
+                {
+                    spOther->m_require.m_selectableBy.Add(FUN_14074b030(spData.operator->()));
+                    spOther->m_require.m_followingQuests.Add(FUN_14074b030(spData.operator->()));
+                }
+            }
+        }
+    }
+
+    for (POSITION pos = m_chapter.GetStartPosition(); pos != 0; m_chapter.GetNext(pos))
+    {
+        int nChain = m_chapter.GetKeyAt(pos);
+        IdsPtr spIds = m_chapter.GetValueAt(pos);
+        bool bInvalid = false;
+        if (spIds->GetCount() < 2)
+            continue;
+        MS2Ptr<CQuestData> spHead(0);
+        for (size_t i = 0; i < spIds->GetCount(); i++)
+        {
+            MS2Ptr<CQuestData> spQuest = FUN_14074c9d0(spIds->GetAt(i));
+            if (!spQuest)
+                continue;
+            if (FUN_14074b070(spQuest.operator->()) == 0 && FUN_14074b050(spQuest.operator->()) != 2 &&
+                FUN_14074b050(spQuest.operator->()) != 3)
+            {
+                ATL::CAtlArray<unsigned> prev;
+                prev.Append(spQuest->m_require.m_quest);
+                prev.Append(spQuest->m_require.m_selectableQuest);
+                if (prev.GetCount() == 0)
+                {
+                    spHead = spQuest;
+                    break;
+                }
+                for (size_t j = 0; j < prev.GetCount(); j++)
+                {
+                    MS2Ptr<CQuestData> spPrev = FUN_14074c9d0(prev[j]);
+                    if (!spPrev)
+                        continue;
+                    if (spPrev->m_28 != nChain)
+                        spHead = spQuest;
+                    break;
+                }
+                if (spHead.operator->() != 0)
+                    break;
+            }
+            else
+            {
+                bInvalid = true;
+                break;
+            }
+        }
+        if (!bInvalid)
+        {
+            if (!spHead)
+            {
+                FUN_140353fc0(FUN_140166440(), 2, 0x13, L"ChapterID:{0} 챕터 연계 퀘스트 오류. Require Quest 확인해 주세요.", nChain);
+            }
+            else
+            {
+                IdsPtr spOrdered((Unk_BmNewTag(0)));
+                FUN_14074ebc0(nChain, spOrdered, spHead, 0);
+                if (spOrdered->GetCount() == spIds->GetCount())
+                    m_chapter.SetAt(nChain, spOrdered);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x1407503F0, QuestDataTable, FUN_1407503f0, 2429, 0x77FD9E9C);
+
+// MS2-FUNCTIONAL: sorts the quest id list of every npc
+// @0x140750d90
+void QuestDataTable::FUN_140750d90()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, std::vector<unsigned> >& npcs = m_430;
+    std::map<int, std::vector<unsigned> >::iterator it = npcs.begin();
+    std::map<int, std::vector<unsigned> >::iterator itEnd = npcs.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, std::vector<unsigned> >& entry = *it;
+        std::sort(entry.second.begin(), entry.second.end());
+    }
+}
+MS2_REPLACE_METHOD(0x140750D90, QuestDataTable, FUN_140750d90, 252, 0x26A038B0);
+
+int __cdecl FUN_140751770(const void* pA, const void* pB);
+
+// MS2-FUNCTIONAL: sorts m_1d8 by quest level
+// @0x140750ea0
+void QuestDataTable::FUN_140750ea0()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    qsort(m_1d8.GetData(), m_1d8.GetCount(), 4, FUN_140751770);
+}
+MS2_REPLACE_METHOD(0x140750EA0, QuestDataTable, FUN_140750ea0, 123, 0x5118FC0F);
+
+// MS2-FUNCTIONAL: marks the quests that must be finished before others unlock (m_2d0 cache)
+// @0x140750f30
+void QuestDataTable::FUN_140750f30()
+{
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (spData->m_30 != 0)
+            FUN_14074eac0(FUN_14074b030(spData.operator->()), m_2d0);
+    }
+    std::map<int, MS2Ptr<CQuestData> >::iterator it2 = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator it2End = quests.end();
+    for (; it2 != it2End; ++it2)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it2;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (spData->m_require.m_selectableQuest.GetCount() != 0)
+        {
+            bool bAll = true;
+            for (size_t i = 0; i < spData->m_require.m_selectableQuest.GetCount(); i++)
+            {
+                if (FUN_14074e510(spData->m_require.m_selectableQuest[i]) == 0)
+                    bAll = false;
+            }
+            if (bAll)
+                FUN_14074eac0(FUN_14074b030(spData.operator->()), m_2d0);
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x140750F30, QuestDataTable, FUN_140750f30, 681, 0xCC1801CB);
 
 // @0x14075a3f0
 CString FUN_14016a5c0(const char* psz, int n);
