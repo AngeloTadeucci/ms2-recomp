@@ -2579,12 +2579,14 @@ struct Unk_CMISEffReq                                                           
     int m_nOwnerId;                                                                         // +8
     int m_pad_0c;
     void* m_pSlot10;                                                                        // +0x10 (the attach node)
-    char m_pad_18[0x60];
+    char m_pad_18[0x1a];
+    bool m_bFlag32;                                                                         // +0x32
+    char m_pad_33[0x45];
 };
 MS2_CHECK_SIZE(Unk_CMISEffReq, 0x78);
 void FUN_140a52ef0(Unk_CMISEffReq* p);
 void FUN_1405a89e0(Unk_CMISEffReq* p);
-struct Unk_CMISConsts { char m_pad_00[0x128]; CString m_strCubeFlash[5]; char m_pad_150[0x300 - 0x150]; CString m_strSaleEffect; CString m_strCubeEffect; };   // game-wide constants (the sale-post effect name at +0x300)
+struct Unk_CMISConsts { char m_pad_00[0x128]; CString m_strCubeFlash[5]; char m_pad_150[0x2a8 - 0x150]; CString m_strHouseEffect; char m_pad_2b0[0x300 - 0x2b0]; CString m_strSaleEffect; CString m_strCubeEffect; };   // game-wide constants (the sale-post effect name at +0x300)
 Unk_CMISConsts* FUN_1401d31f0();
 class Unk_CMISEffMgr { public: void FUN_1411a4a00(Unk_CMISEffReq* pRequest); int FUN_1411a49c0(Unk_CMISEffReq* pRequest); void FUN_1411a6060(int nEffect); };
 Unk_CMISEffMgr* FUN_1403ed280();
@@ -5394,4 +5396,131 @@ void CubeMapInformationService::FUN_1410ca170()
     }
     FUN_1411252d0(&mapInner);
     FUN_1411252d0(&mapOuter);
+}
+
+// ---- w142 batch 9 ----
+#include "ms2/placeholder/meshinstancing.h"
+#include "ms2/client/ms2/entityinstancing.h"
+Unk_CMISIter<260>* FUN_141151af0(Unk_CMISTree<260>*, Unk_CMISIter<260>*);                   // end
+Unk_CMISIter<260>* FUN_141157580(Unk_CMISTree<260>*, Unk_CMISIter<260>*, const int*);       // find
+bool FUN_1411274c0(Unk_CMISIter<260>*, Unk_CMISIter<260>*);                                 // operator!=
+Unk_CMISIter<261>* FUN_141151c10(Unk_CMISTree<261>*, Unk_CMISIter<261>*);                   // end
+Unk_CMISIter<261>* FUN_141157820(Unk_CMISTree<261>*, Unk_CMISIter<261>*, const int*);       // find
+bool FUN_141126e50(Unk_CMISIter<261>*, Unk_CMISIter<261>*);                                 // operator==
+Unk_CMISTree<287>* FUN_1411228d0(Unk_CMISTree<287>*);                                       // ctor
+void FUN_1411258b0(Unk_CMISTree<287>*);                                                     // dtor
+void FUN_1411266a0(Unk_CMISTree<287>* pDst, Unk_CMISTree<287>* pSrc);                       // assign
+Unk_CMISIter<285>* FUN_1411517f0(Unk_CMISTree<285>*, Unk_CMISIter<285>*);                   // end
+Unk_CMISIter<285>* FUN_141156da0(Unk_CMISTree<285>*, Unk_CMISIter<285>*, const int*);       // find
+bool FUN_14063ec30(Unk_CMISIter<285>*, Unk_CMISIter<285>*);                                 // operator!=
+int* FUN_141127a50(Unk_CMISTree<285>*, const int*);                                         // operator[]: the effect of a cube
+int FUN_14112f0b0();                                                                        // the client is in a map that needs no instancing refresh
+CubeItemInfo* FUN_1408b7290(Unk_PayloadPtr<CubeItemInfo>*);                                 // operator->
+int FUN_1408b3860(CubeItemInfo*);                                                           // the item has a model
+MeshInstancing* FUN_1413d6770(HardwareInstancingService*, const Unk_MeshInstancingConfig*); // find the instancing of a config
+MeshInstancing* FUN_1413d4b40(HardwareInstancingService*, egf::Entity*, int nCellZ, unsigned nCapacity);   // create an EntityInstancing
+int FUN_1413d4fe0(HardwareInstancingService*, EntityInstancing*, egf::Entity*);             // add an entity to an instancing
+// @0x1410c06b0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+bool CubeMapInformationService::FUN_1410c06b0(MS2Ptr<Cube> spCube)
+{
+    Unk_Int3 cell = spCube->position;
+    int nKey = FUN_1408a03c0(cell);
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_1411274c0(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd)))
+        return false;
+    FUN_140965020(FUN_141127cd0(&f98, &nKey), &spCube);
+    FUN_140965020(FUN_141128190(&fa8, FUN_1408b76f0(FUN_1408a9280(&spCube->entity))), &spCube);
+    if (spCube->field48 != 0)
+        FUN_140965020(FUN_141127cd0(&fb8, &nKey), &spCube);
+    if (spCube->field70 != 0 && spCube->field6c != 0)
+        FUN_1410b2510(&f2a8, spCube->position.x, spCube->position.y, spCube->position.z);
+    if (spCube->fieldD8 != 0) {
+        int nHouse = spCube->fieldD8;
+        Unk_StreamPoint ptDir;
+        FUN_1402bd040(&ptDir);
+        FUN_1409618c0(FUN_1408a9280(&spCube->entity), 0x68c7c29d, &ptDir);
+        int nDir = FUN_1410ba4a0(ptDir);
+        Unk_CMISIter<261> itHouseEnd, itHouse;
+        if (FUN_141126e50(FUN_141157820(&fc8, &itHouse, &nHouse), FUN_141151c10(&fc8, &itHouseEnd))) {
+            Unk_CMISTree<287> empty;
+            FUN_1411228d0(&empty);
+            FUN_1411266a0(FUN_141127dd0(&fc8, &nHouse), &empty);
+            FUN_1411258b0(&empty);
+        }
+        Unk_CMISTree<287>* pCubes = FUN_141127dd0(&fc8, &nHouse);
+        Unk_CMISIter<287> itCubesEnd, itCube;
+        if (FUN_140885290(FUN_140885ca0(pCubes, &itCube, &nDir), FUN_140885c40(pCubes, &itCubesEnd)))
+            FUN_140965020(FUN_141128350(pCubes, &nDir), &spCube);
+    }
+    if (f218 != 0) {
+        if (spCube->field48 != 0 && FUN_1408b4f20(spCube.get()) != 0 && spCube->fieldB4 != 0) {
+            bool bMine = false;
+            if (FUN_140885340(&f208)->FUN_140375130() == 0) {
+                Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), spCube->field50, spCube->field54);
+                if (spOwner.get() != 0 && spOwner->ownerID == DAT_143ab2820)
+                    bMine = true;
+                FUN_1408a8790(&spOwner);
+            } else if (FUN_1410c3180() == DAT_143ab2820) {
+                bMine = true;
+            }
+            if (bMine && FUN_14053fc10(FUN_1408b4f20(spCube.get())) == 0xd) {
+                Unk_CMISEffReq request;
+                FUN_140a52ef0(&request);
+                request.m_strName = FUN_1401d31f0()->m_strHouseEffect;
+                request.m_nOwnerId = 0;
+                FUN_1409fabf0(&request.m_pSlot10, FUN_14098d8d0(&DAT_143afa4d8, FUN_141b6efc0(FUN_1408a9090(&spCube->entity))));
+                request.m_bFlag32 = true;
+                bool bDrawn = false;
+                FUN_14098c6e0(FUN_1408a9280(&spCube->entity), 0x2a7fd9f4, &bDrawn);
+                int nEffect = FUN_1403ed280()->FUN_1411a49c0(&request);
+                if (nEffect != 0) {
+                    Unk_CMISIter<285> itEffEnd, itEff;
+                    if (FUN_14063ec30(FUN_141156da0(&f338, &itEff, &nKey), FUN_1411517f0(&f338, &itEffEnd)))
+                        FUN_1403ed280()->FUN_1411a6060(*FUN_141127a50(&f338, &nKey));
+                    *FUN_141127a50(&f338, &nKey) = nEffect;
+                }
+                FUN_1405a89e0(&request);
+            }
+        }
+        if (FUN_14112f0b0() == 0) {
+            if (spCube->field48 != 0 && spCube->fieldA8 == 8) {
+                Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                if (spInst.FUN_14098d090() != 0) {
+                    egf::Entity* pEnt = FUN_1408a9090(&spCube->entity);
+                    if (FUN_1413d6890(spInst.FUN_14098d0e0(), pEnt) == 0) {
+                        Unk_MeshInstancingConfig kConfig(FUN_1408a9090(&spCube->entity), 0, 0);
+                        kConfig.unknown48.z = -spCube->field50;
+                        EntityInstancing* pInst = dynamic_cast<EntityInstancing*>(FUN_1413d6770(spInst.FUN_14098d0e0(), &kConfig));
+                        if (pInst == 0) {
+                            int nW, nH, nD;
+                            if (FUN_1410c81c0(spCube->field50, &nW, &nH, &nD) != 0)
+                                pInst = static_cast<EntityInstancing*>(FUN_1413d4b40(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity), -spCube->field50, nW * nH * nD));
+                        }
+                        if (pInst != 0)
+                            FUN_1413d4fe0(spInst.FUN_14098d0e0(), pInst, FUN_1408a9090(&spCube->entity));
+                    }
+                }
+            }
+        } else if (spCube->field48 != 0 && FUN_140374410(FUN_141bd3060(FUN_1403ed2d0()))) {
+            int nHasModel = 0;
+            if (FUN_1408b7270(&spCube->item) != 0)
+                nHasModel = FUN_1408b3860(FUN_1408b7290(&spCube->item));
+            if (nHasModel == 0 && spCube->fieldB4 == 0) {
+                Unk_CMISSvcPtr spInst(FUN_14098c5b0(&DAT_143b059e8));
+                if (spInst.FUN_14098d090() != 0) {
+                    if (FUN_1413d6890(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity)) == 0) {
+                        Unk_MeshInstancingConfig kConfig(FUN_1408a9090(&spCube->entity), 0, 0);
+                        kConfig.unknown48.z = -spCube->field50;
+                        EntityInstancing* pInst = dynamic_cast<EntityInstancing*>(FUN_1413d6770(spInst.FUN_14098d0e0(), &kConfig));
+                        if (pInst == 0)
+                            pInst = static_cast<EntityInstancing*>(FUN_1413d4b40(spInst.FUN_14098d0e0(), FUN_1408a9090(&spCube->entity), -spCube->field50, 10));
+                        if (pInst != 0)
+                            FUN_1413d4fe0(spInst.FUN_14098d0e0(), pInst, FUN_1408a9090(&spCube->entity));
+                    }
+                }
+            }
+        }
+    }
+    return true;
 }

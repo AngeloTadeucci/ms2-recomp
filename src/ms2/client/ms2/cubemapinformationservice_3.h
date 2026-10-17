@@ -236,6 +236,7 @@ public:
     Unk_StreamPoint FUN_1410c54a0(Unk_EntRef spEnt);
     void FUN_1410ce560();
     void FUN_1410c1910(const Unk_Int3& pt, int n);
+    bool FUN_1410c06b0(MS2Ptr<Cube> spCube);
     bool FUN_1410c2610(Unk_Int3 pt);
     void FUN_1410c2a90(int nGroup);
     void FUN_1410c3fc0(PCBase* pActor, float* pOutLo, float* pOutHi);
