@@ -207,7 +207,10 @@ class Obj:
 
         target = in-function offset for ADDR32NB fields that point into the function itself (jump tables:
         the exe must hold function RVA + that offset), else None."""
-        cache = self.__dict__.setdefault("_fcache", {})
+        try:
+            cache = self._fcache
+        except AttributeError:
+            cache = self._fcache = {}
         hit = cache.get(symidx)
         if hit is not None:
             return hit
@@ -247,7 +250,10 @@ class Obj:
     def own(self, symidx):
         """Not a discardable duplicate: plain section or COMDAT NODUPLICATES (the unit's own functions), as opposed
         to selectany/largest COMDATs (inline/template functions, kept once exe-wide in whichever unit came first)."""
-        oc = self.__dict__.setdefault("_owncache", {})
+        try:
+            oc = self._owncache
+        except AttributeError:
+            oc = self._owncache = {}
         r = oc.get(symidx)
         if r is None:
             r = oc[symidx] = self._own(symidx)

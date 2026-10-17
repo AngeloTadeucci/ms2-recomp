@@ -151,6 +151,8 @@ class Unit:
         self.guess = bool(os.environ.get("MS2_GUESS_LOOKALIKES"))   # `// MS2-GUESS-LOOKALIKES`: pair leftover identical groups (functional)
         self.pins = {}       # `// MS2-PIN: <mangled> 0x<va>`: obj symbol -> exe VA (must lie in a MS2-RANGE)
         for line in open(path, encoding="latin1"):
+            if "MS2-" not in line:                    # every directive below contains it (find_units reads ~470 files)
+                continue
             m = re.match(r"\s*//\s*MS2-PIN:\s*(\S+)\s+0x([0-9a-fA-F]+)", line)
             if m:
                 self.pins[m.group(1)] = int(m.group(2), 16)
