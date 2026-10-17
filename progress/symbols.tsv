@@ -5156,7 +5156,7 @@ HRESULT_FROM_WIN32	14015b330	func
 ?CompareElementsOrdered@?$CDefaultCompareTraits@J@ATL@@SAHAEBJ0@Z	140212de0	func
 ?CompareElementsOrdered@Unk_BuffKeyTraits@CClubDataTable@@SAHAEBI0@Z	140212de0	func
 ?CompareElementsOrdered@Unk_SMSceneTraits@@SAHAEBI0@Z	140212de0	func
-?CompareElementsOrdered@?$CDefaultCompareTraits@_J@ATL@@SAHAEB_J0@Z	140212e20	func
+?CompareElementsOrdered@?$CDefaultCompareTraits@_J@ATL@@SAHAEB_J0@Z	1406651c0	func
 ?CompareElementsOrdered@?$CDefaultCompareTraits@_K@ATL@@SAHAEB_K0@Z	140212e20	func
 ?CompareElementsOrdered@?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@ATL@@SAHPEB_W0@Z	14051b270	func
 ?CompareElementsOrdered@?$CStringElementTraitsI@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@V?$CDefaultCharTraits@_W@2@@ATL@@SAHPEB_W0@Z	140212e70	func
