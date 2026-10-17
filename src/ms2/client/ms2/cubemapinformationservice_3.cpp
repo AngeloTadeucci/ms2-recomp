@@ -4054,3 +4054,169 @@ void CubeMapInformationService::FUN_1410d0e30(egf::Entity* pEntity, MS2Ptr<Cube>
         }
     }
 }
+
+// ---- w138 batch 22 ----
+void FUN_1412314e0(Unk_CMISMagicCube*, Unk_StreamPoint ptPos, ATL::CAtlArray<void*>* pOut);   // the objects around a point
+int FUN_14112e290(Unk_CMISObj498*);                                                         // the object kind (1 = cube)
+bool FUN_141126b90(Unk_PayloadPtr<NoticeCubeInfo>*, int);                                   // operator==
+void* FUN_1411284a0(Unk_PayloadPtr<NoticeCubeInfo>*);                                       // operator->
+int FUN_1408b49e0(void* pNotice);                                                           // the notice size
+void FUN_141122b40(Unk_CMISTree<284>*);                                                     // ctor
+void FUN_141125c50(Unk_CMISTree<284>*);                                                     // dtor
+void FUN_14111d3b0(Unk_CMISTree<284>*, Unk_CMISIter<284>*, Unk_CMISSlot*);                  // insert
+Unk_CMISIter<284>* FUN_1411588c0(Unk_CMISTree<284>*, Unk_CMISIter<284>*, void* pKey);       // find
+bool FUN_1411271d0(Unk_CMISIter<284>*, Unk_CMISIter<284>*);                                 // operator==
+__int64 FUN_14115adf0(Unk_CMISTree<284>*);                                                  // the element count
+void FUN_141126790(Unk_CMISTree<284>*, Unk_CMISTree<284>*);                                 // operator=
+void FUN_1412273b0(Unk_CMISObj498*);                                                        // link the object
+
+// @0x1410c8e40
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410c8e40()
+{
+    Unk_CMISPawn* pPawn = reinterpret_cast<Unk_CMISPawn*>(FUN_1403ed2d0()->FUN_141bd0cc0());
+    if (pPawn == 0)
+        return;
+    Unk_StreamPoint ptPawn = pPawn->FUN_1416767d0();
+    ATL::CAtlArray<void*> aNear;
+    FUN_1412314e0(FUN_1409670b0(), ptPawn, &aNear);
+    Unk_CMISTree<284> found;
+    for (unsigned __int64 i = 0; i < aNear.GetCount(); i++) {
+        Unk_CMISSlot slot(*reinterpret_cast<Unk_CMISSlot*>(&aNear.GetAt(i)));
+        if (FUN_14112e290(FUN_1409658e0(&slot)) == 1) {
+            MS2Ptr<Cube> spCube(FUN_1410b8b00(FUN_14112e110(FUN_1409658e0(&slot))));
+            if (!spCube.IsNull()) {
+                if (FUN_141126b90(&spCube->notice, 0) == 0) {
+                    float fLen = ptPawn.FUN_140965c40(spCube->FUN_1408b5370()).FUN_140967ac0();
+                    float fRad = ((float)FUN_1408b49e0(FUN_1411284a0(&spCube->notice)) - 0.5f) * 150.0f;
+                    if (fLen <= fRad) {
+                        Unk_CMISIter<284> itIns;
+                        FUN_14111d3b0(&found, &itIns, &slot);
+                    }
+                }
+            }
+        }
+    }
+    Unk_CMISIter<284> itCur, itTmp, itTmp2, itEnd, itFind, itOld;
+    FUN_141120750(&itCur);
+    itCur = *FUN_14114e7f0(&f498, &itTmp);
+    while (FUN_141127900(&itCur, FUN_141152450(&f498, &itTmp2))) {
+        itEnd = *FUN_141152450(&found, &itTmp);
+        if (FUN_1411271d0(FUN_1411588c0(&found, &itFind, FUN_141128b30(&itCur)), &itEnd))
+            FUN_141227780(FUN_1409658e0(FUN_141128b30(&itCur)));
+        FUN_141129990(&itCur, &itOld, 0);
+    }
+    if (FUN_14115adf0(&found) != 0) {
+        itCur = *FUN_14114e7f0(&found, &itTmp);
+        while (FUN_141127900(&itCur, FUN_141152450(&found, &itTmp2))) {
+            itEnd = *FUN_141152450(&f498, &itTmp);
+            if (FUN_1411271d0(FUN_1411588c0(&f498, &itFind, FUN_141128b30(&itCur)), &itEnd))
+                FUN_1412273b0(FUN_1409658e0(FUN_141128b30(&itCur)));
+            FUN_141129990(&itCur, &itOld, 0);
+        }
+    }
+    FUN_141126790(&f498, &found);
+}
+
+// ---- w138 batch 23 ----
+struct Unk_CMISNearMap;                                                                     // map: group -> nearest cell of the group
+struct Unk_CMISNearIter { void* m_p; };
+Unk_CMISNearIter* FUN_1411518b0(Unk_CMISNearMap*, Unk_CMISNearIter*);                       // end
+Unk_CMISNearIter* FUN_141156f60(Unk_CMISNearMap*, Unk_CMISNearIter*, const int*);           // find
+bool FUN_141127340(Unk_CMISNearIter*, Unk_CMISNearIter*);                                   // operator!=
+Unk_Int3* FUN_141127ad0(Unk_CMISNearMap*, const int*);                                      // operator[]
+
+// @0x1410bb170
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410bb170(Unk_CMISPawn* pPawn, int nDx, int nDy, int nDz, Unk_CMISNearMap* pMap)
+{
+    Unk_StreamPoint ptA;
+    FUN_1410b7ad0(reinterpret_cast<PCBase*>(pPawn), -150.0f, &ptA, 0);
+    Unk_StreamPoint ptB;
+    FUN_1410b7a20(ptA, &ptB);
+    Cube* pBase = FUN_1410b8ab0(ptB);
+    if (pBase == 0) {
+        ptB.z = ptB.z + 150.0f;
+        pBase = FUN_1410b8ab0(ptB);
+        if (pBase == 0)
+            return;
+    }
+    for (int x = pBase->position.x - nDx; x <= pBase->position.x + nDx; x++) {
+        for (int y = pBase->position.y - nDy; y <= pBase->position.y + nDy; y++) {
+            for (int z = pBase->position.z - nDz; z <= pBase->position.z + nDz; z++) {
+                Cube* pCube = FUN_1410b8a60(Unk_Int3(x, y, z));
+                if (pCube != 0 && pCube->field50 != 0) {
+                    Unk_CMISNearIter itEnd, itFind;
+                    if (FUN_141127340(FUN_141156f60(pMap, &itFind, &pCube->field50), FUN_1411518b0(pMap, &itEnd)) == 0) {
+                        *FUN_141127ad0(pMap, &pCube->field50) = pCube->position;
+                    } else {
+                        Unk_StreamPoint ptNear;
+                        FUN_1408a15b0(*(Unk_StreamPoint*)FUN_141127ad0(pMap, &pCube->field50), ptNear);
+                        Unk_StreamPoint ptThis;
+                        FUN_1408a15b0(*(Unk_StreamPoint*)&pCube->position, ptThis);
+                        float fThis = FUN_140966f00(pPawn->vfunc_18(), ptThis);
+                        float fNear = FUN_140966f00(pPawn->vfunc_18(), ptNear);
+                        if (fThis < fNear)
+                            *FUN_141127ad0(pMap, &pCube->field50) = pCube->position;
+                    }
+                }
+            }
+        }
+    }
+}
+
+// ---- w138 batch 24 ----
+Unk_CMISIter<265>* FUN_141151d30(Unk_CMISTree<265>*, Unk_CMISIter<265>*);                   // end
+Unk_CMISIter<265>* FUN_141157ac0(Unk_CMISTree<265>*, Unk_CMISIter<265>*, const int*);       // find
+bool FUN_141126f10(Unk_CMISIter<265>*, Unk_CMISIter<265>*);                                 // operator==
+void FUN_1408a2060(egf::Entity*, unsigned, Unk_CMISStr*);                                   // GetProperty(string)
+const char* FUN_1408ac310(Unk_CMISStr*);
+int FUN_1408a01e0(CString strType);                                                         // the cube kind of a name
+
+// @0x1410bca70
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+bool CubeMapInformationService::FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nField50, int nField54, __int64 nUnused, int nFieldD8)
+{
+    int nCell = FUN_1408a03c0(pt);
+    Unk_CMISIter<265> itEnd, itFind;
+    if (FUN_141126f10(FUN_141157ac0(&f2e0, &itFind, &nCell), FUN_141151d30(&f2e0, &itEnd)))
+        return false;
+    Unk_CMISEntityRef idOld(*FUN_141127ed0(&f2e0, &nCell));
+    egf::EntityPtr spOld(static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(*reinterpret_cast<const egf::EntityID*>(&idOld)));
+    if (FUN_1408b70b0(&spOld, 0))
+        return false;
+    Unk_StreamPoint ptCell = DAT_143b01a60;
+    FUN_1408a15b0(*(Unk_StreamPoint*)&pt, ptCell);
+    Unk_StreamPoint ptRot = DAT_143b01a60;
+    *(int*)&ptRot.z = nZ;
+    Unk_CMISStr strKind;
+    FUN_1409989e0(&strKind, "None");
+    FUN_1408a2060(FUN_1408a9280(&spOld), 0x15014205, &strKind);
+    int nKind = FUN_1408a01e0(CString(FUN_1408ac310(&strKind)));
+    egf::EntityPtr spNew = static_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411ce7c0(efd::utf8string("MS2CubeProp"),
+        efd::utf8string("urn:gamebryo-scenegraph:Empty"), NiPoint3(ptCell.x, ptCell.y, ptCell.z), NiPoint3(ptRot.x, ptRot.y, ptRot.z), 1.0f, 0, 0);
+    bool bResult = false;
+    if (!FUN_1408b70b0(&spNew, 0)) {
+        int nFlag = 0;
+        if (((Unk_CMISFlatModel*)FUN_1408a9bd0(FUN_1408a9280(&spOld)))->FUN_14211e240(0xd8dea70d))
+            nFlag = 1;
+        CubeItemInfo info;
+        MS2Ptr<Cube> spCube(new Cube);
+        spCube->field18 = nOwner;
+        spCube->position = pt;
+        spCube->item->FUN_1408b3700(&info);
+        spCube->entity = spNew;
+        spCube->field44 = nKind;
+        spCube->field50 = nField50;
+        spCube->field54 = nField54;
+        spCube->field48 = 1;
+        spCube->field4c = 0;
+        spCube->field70 = nFlag;
+        spCube->fieldD8 = nFieldD8;
+        spCube->fieldD4 = nZ;
+        FUN_140965020(FUN_141128190(&f78, FUN_1408b76f0(FUN_1408a9280(&spNew))), &spCube);
+        bResult = true;
+    }
+    FUN_1408a8900(&strKind);
+    return bResult;
+}

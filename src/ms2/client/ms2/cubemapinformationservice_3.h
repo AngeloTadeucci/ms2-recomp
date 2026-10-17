@@ -280,6 +280,8 @@ public:
     void FUN_1410c3580(bool v);
     void FUN_1410c35a0(bool v);
     bool FUN_1410c35c0();
+    void FUN_1410bb170(struct Unk_CMISPawn* pPawn, int nDx, int nDy, int nDz, struct Unk_CMISNearMap* pMap);
+    void FUN_1410c8e40();
     void FUN_1410d0e30(egf::Entity* pEntity, MS2Ptr<Cube> spCube);
     Cube* FUN_1410badf0(int nGroup, struct Unk_CMISPawn* pPawn);
     void FUN_1410c9db0();
@@ -302,7 +304,7 @@ public:
         unsigned char bField4c, int nUnused, int nFieldD8, Unk_PayloadPtr<class NoticeCubeInfo> spNotice);
     void FUN_1410c4b50(Unk_Int3 pt, bool bKeep);
     void FUN_1410c4e20(__int64 nOwner, Unk_Int3 pt, class CubeItemInfo* pInfo, int nZ, unsigned char bField4c, int nUnused, int nFieldD8);
-    bool FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nA, int nB, int nC, int nD);
+    bool FUN_1410bca70(__int64 nOwner, Unk_Int3 pt, int nZ, int nField50, int nField54, __int64 nUnused, int nFieldD8);
     void FUN_1410bec60(MS2Ptr<Cube> spCube);
     void FUN_1410d4cb0(int nItemId, bool bFlag);
     bool FUN_1410bd080(__int64 nOwner, Unk_Int3 pt, int nZ, class CubeItemInfo* pInfo, const efd::utf8string& strName,
