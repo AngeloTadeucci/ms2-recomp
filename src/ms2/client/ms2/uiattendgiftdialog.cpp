@@ -210,7 +210,6 @@ CString FUN_141029ca0(const CString&);
 class Unk_140acd130 { public: Scaleform::GFx::Value FUN_140acd130(const char*,CStringW); };
 
 // @0x14102f840
-// MS2-FUNCTIONAL: the original is an unrecovered template member (COMDAT between the delegate templates and FUN_14102f870); a plain function with the same body.
 void FUN_14102f840(ATL::CAtlArray<Unk_14102fe10<Unk_140ce3510> >& dst,const ATL::CAtlArray<Unk_14102fe10<Unk_140ce3510> >& src) { dst.Copy(src); }
 // @0x14102f870
 // MS2-FUNCTIONAL: exe frame is 0x58 with the return-flag sharing the stack-arg slot; ours allocates a separate flag and a 0x68 frame. Logic identical.
