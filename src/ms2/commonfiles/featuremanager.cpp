@@ -129,7 +129,6 @@ CFeatureTable::CFeatureTable()
 }
 
 // @0x1403687f0
-// MS2-FUNCTIONAL: 12 KB table init; stack/temp layout differs in map glue
 bool CFeatureTable::Init()
 {
     Unk_FeatureId n1 = (Unk_FeatureId)1;
@@ -690,11 +689,14 @@ bool CFeatureTable::Init()
     m_map.SetAt(L"ProbabilityLogReportForTest", n278);
     Unk_FeatureId n279 = (Unk_FeatureId)279;
     m_map.SetAt(L"PersonalInfoAgreement", n279);
-    if (m_map.GetCount() == 0x117)
-        return true;
-    FUN_1401859c0(CLogString::GetInstance(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4" L"CFeatureTable::Init : can't find featureName.");
-    return false;
+    if (m_map.GetCount() != 0x117)
+    {
+        FUN_1401859c0(CLogString::GetInstance(), 1, 0x13, L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4" L"CFeatureTable::Init : can't find featureName.");
+        return false;
+    }
+    return true;
 }
+#line 698
 
 // @0x14036b9e0
 void CFeatureTable::FUN_14036b9e0()
@@ -840,7 +842,6 @@ bool CFeatureManager::FUN_14036d3d0()
 }
 
 // @0x14036d4b0
-// MS2-FUNCTIONAL: map lookup glue shape differs
 bool CFeatureManager::FUN_14036d4b0(const CStringW& strName)
 {
     CheckInit();
