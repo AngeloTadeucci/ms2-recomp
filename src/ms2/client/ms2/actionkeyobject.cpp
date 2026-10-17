@@ -38,7 +38,6 @@
 // MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730
 // MS2-PIN: ??0?$MS2Ptr@VCHomemadeCubeObject@@@@QEAA@AEBV0@@Z 0x140963ec0
 // MS2-PIN: ??1?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@XZ 0x1409648f0
-// MS2-PIN: ??1?$Unk_PayloadPtr@VCubeOwner@@@@QEAA@XZ 0x140964aa0
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@XZ 0x140964b60
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCube@@@@QEAAAEAV1@PEAVCube@@@Z 0x140965090
 // MS2-PIN: ??8?$MS2Ptr@VCFieldDataCli@@@@QEBA_NPEAVCFieldDataCli@@@Z 0x140965240
@@ -91,6 +90,22 @@
 // MS2-PIN: ??$emplace_back@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@QEAAXAEBVPoint3@efd@@@Z 0x140963790
 // MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@AEAAXAEBVPoint3@efd@@@Z 0x140961c20
 // MS2-PIN: ??$_Emplace_reallocate@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@QEAAPEAVPoint3@efd@@QEAV23@AEBV23@@Z 0x140961ce0
+// More look-alike smart-pointer glue, pinned by call site (NurturingCubeAction, InteractNpcAction, the cube data
+// getters, the house owner map, the reactor data copy):
+// MS2-PIN: ??1?$MS2Ptr@VCNurturingCubeObject@@@@QEAA@XZ 0x140964a40
+// MS2-PIN: ??_G?$MS2Ptr@VCNurturingCubeObject@@@@QEAAPEAXI@Z 0x140965e40
+// MS2-PIN: ??C?$MS2Ptr@VUnk_PCInteractMode@@@@QEBAPEAVUnk_PCInteractMode@@XZ 0x140965970
+// MS2-PIN: ??C?$MS2Ptr@VFunctionCubeData@@@@QEBAPEAVFunctionCubeData@@XZ 0x1409658d0
+// MS2-PIN: ??1?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@QEAA@XZ 0x140964c80
+// MS2-PIN: ??0?$MS2Ptr@VReactorData@@@@QEAA@AEBV0@@Z 0x140963e40
+// MS2-PIN: ?Release@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXXZ 0x140969c60
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXPEAX@Z 0x14096a120
+// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCFieldDataCli@@@@AEAAXPEAX@Z 0x14096a300
+// MS2-PIN: memmove_s 0x140954e40
+// MS2-FUNCTIONAL: <cmath> sqrt(float): the exe imports sqrtf from the CRT DLL (indirect call); this build links it statically
+// MS2-PIN: ?sqrt@@YAMM@Z 0x14096b1c0
+// MS2-PIN: ??1?$MS2Ptr@VUnk_PCInteractMode@@@@QEAA@XZ 0x140964aa0
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a80
 // TaxiStationAction / FishingAction have byte-identical implicit destructors (two exe copies each):
 // MS2-PIN: ??1TaxiStationAction@@UEAA@XZ 0x140953ba0
 // MS2-PIN: ??1FishingAction@@UEAA@XZ 0x140953b80
@@ -104,6 +119,7 @@
 // MS2-PIN: ??$Unk_GetUI@VUIWorldMapDialog@@@@YAPEAVUIWorldMapDialog@@H@Z 0x140961730
 // MS2-PIN: ??$Unk_GetUI@VUIGuildFlagTooltip@@@@YAPEAVUIGuildFlagTooltip@@H@Z 0x1409615f0
 // MS2-PIN: ??$Unk_GetUI@VUIRealEstateDialog@@@@YAPEAVUIRealEstateDialog@@H@Z 0x140961690
+// MS2-PIN: ??$Unk_GetUI@VUIBanner@@@@YAPEAVUIBanner@@H@Z 0x1409614b0
 #define NOMINMAX
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\actionkeyobject.cpp"    // assumed
 #include "ms2/placeholder/ms2stdafx.h"
@@ -146,6 +162,8 @@ static CString s_stun("stun");
 #include "ms2/commonfiles/gameevent.h"
 #include "ms2/placeholder/mstime.h"
 #include "inventory.h"
+#include "questmanager_2.h"
+#include <efd/EEMath.h>
 
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -211,9 +229,16 @@ Unk_Service6100017* FUN_1401cd040(Unk_EntityAppFramework* pFramework);
 class Unk_PCBaseComp_b18 : public CPtred
 {
 };
-FittingDollPC* FUN_140961380(Unk_WsC_GameObj* pObj);       // efd::DynamicCast<FittingDollPC> (class id 0x6200046)
-int FUN_140967160(FittingDollPC* pDoll);                    // +0x12e8 the doll's item id
-extern __int64 DAT_143af25f0;                               // the actor id of the house owner
+// The house's fitting doll as efd::DynamicCast sees it (class id 0x06200046; fittingdollpc.h's FittingDollPC has no
+// CLASS_ID).
+class Unk_AkoFittingDoll : public FittingDollPC
+{
+public:
+    enum { CLASS_ID = 0x06200046 };
+    // @0x140967160
+    int FUN_140967160() { return unknown12e8; }             // the doll's item id
+};
+extern __int64 DAT_143af25f0;                              // the actor id of the house owner
 CStringW FUN_14061ad70(const CStringW& str, const wchar_t* psz);   // str + psz
 CStringW FUN_1401d0160(const wchar_t* psz, const CStringW& str);   // psz + str (the exe's out-of-line operator+; clang-cl
                                                             // would need the unresolvable MFC CopyChars import)
@@ -348,7 +373,7 @@ public:
     virtual void DecRefCount() const;
     virtual void vfunc_3();
     virtual void vfunc_4();
-    virtual void vfunc_5();
+    virtual bool TypeCast(const efd::ClassID id, void** ppValue) const;   // 5: efd::IBase::TypeCast
     virtual void vfunc_6();
     virtual void vfunc_7();
     virtual void vfunc_8();
@@ -401,10 +426,13 @@ Unk_AkoSceneMgr* FUN_1408e57f0();
 int FUN_141276980();                                        // npc talk is allowed
 
 // The world service's portal / current field lookups with their true return types (worldservice.h spells them with
-// stand-in types); the world service is viewed through this class.
+// stand-in types), and the object-of-entity lookup with its by-value id (the exe copies the id into a temporary,
+// EntityID copy ctor 0x1408b6b20; worldservice.h says const&, the same callee ABI); the world service is viewed
+// through this class.
 class Unk_AkoWorldView
 {
 public:
+    Unk_WsC_GameObj* FUN_141bd0fa0(egf::EntityID id);       // the game object of an entity
     MS2Ptr<Unk_AkoPortal> FUN_141bc2800(int nPortalId);     // the portal by id
     MS2Ptr<CFieldDataCli> FUN_141bd30a0();                  // the current field
 };
@@ -413,7 +441,7 @@ class Unk_AkoQuestState { public: int FUN_140745590(int nQuestId); };   // the q
 class Unk_AkoQuestGlobal
 {
 public:
-    void FUN_1416d12d0(int nNpcId, Unk_ProxyValue88* pState, int nMode);   // the npc's quest state
+    void FUN_1416d12d0(int nNpcId, Unk_QmNpcQuestState* pState, int nMode);   // the npc's quest state
     int FUN_1416cebf0(int nNpcId);                          // the npc has a quest talk
     std::pair<int, __int64> FUN_1416d1e90();                // the user the quest asks to find (quest id, character id)
     void* m_0;
@@ -446,20 +474,26 @@ class Unk_PCBaseComp_ac8 : public CPtred                    // PCBase slot 87 (U
 public:
     int FUN_140ba8700();                                    // the banner type
 };
-UIBanner* FUN_1409614b0(int nUiId);                         // the ui object of that id
 int FUN_141274b10(Unk_WsC_GameObj* pObj);                   // object list filter: player characters
-PCBase* FUN_140961420(const efd::SmartPointer<Unk_WsC_GameObj>& spObj);   // the object as a player character
-void* FUN_1409613d0(PCBase* pPC);                           // the pc's ride (null: on foot)
-float FUN_140966ea0(NiPoint3 ptA, NiPoint3 ptB);            // planar distance
-float FUN_140966f00(Unk_StreamPoint ptA, Unk_StreamPoint ptB);   // distance
+// The local player as efd::DynamicCast sees it (class id 0x06200004; mypc.h's MyPC has no CLASS_ID).
+class Unk_AkoMyPC : public MyPC
+{
+public:
+    enum { CLASS_ID = 0x06200004 };
+};
+float FUN_140966ea0(NiPoint3 ptA, NiPoint3 ptB);            // planar distance (nipoint3.h's, called with NiPoint3s)
 void FUN_1412751f0(const CStringW& strText, int nA, int nB);   // a center notice
 MS2Ptr<CMsgBoxData> FUN_140d73f20(CStringW strText, int nType);   // a new message box
 void FUN_140d73c60(MS2Ptr<CMsgBoxData> box);                // show a message box
 
-// The interact object's required items (the vector at CInteractObjectData +0x228): the first item's id and rarity.
-unsigned FUN_140966f40(const std::vector<Unk_InteractReqItem>& v);
-unsigned short FUN_140966f80(const std::vector<Unk_InteractReqItem>& v);
-CPartyManager* FUN_1409670d0();
+// The interact object's required items (CInteractObjectData::m_aReqItem) as its accessors see them: the vector is the
+// first member of a list object (the exe takes the list and reads the vector at +0). The first item's id and rarity.
+struct Unk_AkoReqItemList
+{
+    std::vector<Unk_InteractReqItem> m_v;
+};
+unsigned FUN_140966f40(const Unk_AkoReqItemList& list);
+unsigned short FUN_140966f80(const Unk_AkoReqItemList& list);
 // The mastery data singleton (global 0x143ab02e0).
 class Unk_MData
 {
@@ -467,7 +501,9 @@ public:
     CStringW FUN_14066bdd0(int nType);                      // the mastery name
     CStringW FUN_14066c690(int nType, int nGrade);          // the mastery grade name
 };
-Unk_MData* FUN_1409670c0();
+extern Unk_MData* DAT_143ab02e0;
+// @0x1409670c0
+inline Unk_MData* FUN_1409670c0() { return DAT_143ab02e0; }
 void FUN_141275260(int nStringId, int nA, int nB);          // a center notice by string id
 void FUN_141275460(int nStringId, int nA, int nB, const fmt::ArgList& args);
 // fmt center notices with one / two arguments (the originals are templates over the argument types).
@@ -483,12 +519,12 @@ template <class A, class B> void Unk_AkoMessage(int nStringId, int nA, int nB, c
     FUN_141275460(nStringId, nA, nB, fmt::ArgList(fmt::internal::make_type(x, y), values));
 }
 
-CFunctionCubeService* FUN_1409670b0();                       // the function cube service singleton
+// @0x1409670b0 the function cube service singleton
+inline CFunctionCubeService* FUN_1409670b0() { return TSingleton<CFunctionCubeService>::s_instance; }
 int FUN_140b60d90(egf::Entity* pEntity);
 float FUN_140966f00(Unk_StreamPoint a, Unk_StreamPoint b);  // the distance of two points
 int FUN_1408a1360(Unk_StreamPoint a, Unk_StreamPoint b);   // the points are on the same level
 int FUN_1408a2060(egf::Entity* pEntity, unsigned nProperty, efd::utf8string* pOut);   // read a string property (0 = ok)
-bool FUN_14096ad40(const efd::utf8string& str);             // the string is not empty
 int FUN_1408a03c0(Unk_Int3 pt);                             // the packed key of a cube cell                    // the banner id of a ugc banner entity
 
 // @0x140960c30 an action caption: the string with the argument, cut at '-' when the argument is empty
@@ -1444,9 +1480,9 @@ int TalkAction::vfunc_1()
         if (pNpc->FUN_14123c660())
             return 0;
         int bTalk = 0;
-        Unk_ProxyValue88 state;
+        Unk_QmNpcQuestState state;
         FUN_140764020()->FUN_1416d12d0(pNpc->FUN_141092fa0(), &state, 1);
-        if (state.m_pad_00 != 0xb)
+        if (state.m_icon != 0xb)
             bTalk = 1;
         if (pNpc->FUN_141093270()->FUN_1406cd020() != 0)
             bTalk = 1;
@@ -1610,13 +1646,15 @@ void InteractAction::vfunc_2()
     {
         if (spData->m_aReqItem.size() == 1)
             FUN_1412751f0(FUN_1405c2690(L"s_interact_err_additional_effect",
-                FUN_1401a9d70()->FUN_141812290(FUN_140966f40(spData->m_aReqItem), FUN_140966f80(spData->m_aReqItem),
+                FUN_1401a9d70()->FUN_141812290(
+                    FUN_140966f40(reinterpret_cast<const Unk_AkoReqItemList&>(spData->m_aReqItem)),
+                    FUN_140966f80(reinterpret_cast<const Unk_AkoReqItemList&>(spData->m_aReqItem)),
                     CString("name"))), 1, 1);
         else
             FUN_1412751f0(FUN_14028b8e0(L"s_interact_err_additional_effect_multi"), 1, 1);
         return;
     }
-    if (*(spData->m_pad_240 + 18) != 0 && !FUN_1409670d0()->FUN_14162ab60())   // +0x288 (in the pad): needs a party
+    if (*(spData->m_pad_240 + 18) != 0 && !TSingleton<CPartyManager>::GetInstance()->FUN_14162ab60())   // +0x288 (in the pad): needs a party
     {
         FUN_141275260(0x893, 1, 1);
         return;
@@ -1988,7 +2026,7 @@ void PullObjectWeaponAction::vfunc_2()
     {
         efd::utf8string strOwner;
         int nResult = FUN_1408a2060(m_spCube->entity, 0xe52a2848, &strOwner);
-        if (nResult == 0 || !FUN_14096ad40(strOwner))
+        if (nResult == 0 || !strOwner.empty())
         {
             if (pPlayer->FUN_1416764a0() && !pPlayer->FUN_14152c280(0))
                 return;
@@ -2215,7 +2253,7 @@ void FittingDollAction::vfunc_2()
         FUN_141275260(99, 1, 1);
         return;
     }
-    FittingDollPC* pDoll = FUN_140961380(FUN_1403ed2d0()->FUN_141bd0fa0(id));
+    Unk_AkoFittingDoll* pDoll = efd::DynamicCast<Unk_AkoFittingDoll>(reinterpret_cast<Unk_AkoWorldView*>(FUN_1403ed2d0())->FUN_141bd0fa0(id));
     if (pDoll)
     {
         DAT_143af25f0 = pDoll->FUN_141656a80();
@@ -2227,9 +2265,9 @@ MS2_REPLACE_METHOD(0x14095B940, FittingDollAction, vfunc_2, 249, 0xB3E2B065);
 CStringW FittingDollAction::vfunc_6()
 {
     CStringW strName;
-    FittingDollPC* pDoll = FUN_140961380(FUN_1403ed2d0()->FUN_141bd0fa0(m_id));
+    Unk_AkoFittingDoll* pDoll = efd::DynamicCast<Unk_AkoFittingDoll>(reinterpret_cast<Unk_AkoWorldView*>(FUN_1403ed2d0())->FUN_141bd0fa0(m_id));
     if (pDoll)
-        strName = FUN_1401a9d70()->FUN_141811980(1, FUN_140967160(pDoll));
+        strName = FUN_1401a9d70()->FUN_141811980(1, pDoll->FUN_140967160());
     return FUN_1401d0080(FUN_14061ad70(FUN_14028de60(0x646), L" - "), strName);
 }
 MS2_REPLACE_METHOD(0x14095BA60, FittingDollAction, vfunc_6, 386, 0x7FA9427E);
@@ -2836,7 +2874,7 @@ void BannerAction::vfunc_2()
     PCBase* pTarget = FUN_14095edf0();
     if (!pTarget)
         return;
-    UIBanner* pBanner = FUN_1409614b0(0x4e30);
+    UIBanner* pBanner = Unk_GetUI<UIBanner>(0x4e30);
     if (!pBanner)
         return;
     unsigned nNow = FUN_140869420();
@@ -2879,10 +2917,10 @@ PCBase* BannerAction::FUN_14095edf0()
     POSITION pos = objects.GetHeadPosition();
     while (pos != 0)
     {
-        PCBase* pPC = FUN_140961420(objects.GetNext(pos));
+        PCBase* pPC = efd::DynamicCast<PC>(objects.GetNext(pos));
         if (!pPC)
             continue;
-        if (FUN_1409613d0(pPC) != 0)
+        if (efd::DynamicCast<Unk_AkoMyPC>(pPC) != 0)
             continue;
         if (pPC->GetClassID() == 0x6200016)
             continue;
@@ -3021,10 +3059,11 @@ MS2_REPLACE_METHOD(0x14095FAF0, ReactorAction, vfunc_3, 123, 0xF4FA6951);
 // @0x14095fb80
 Unk_AkoTarget ReactorAction::vfunc_12()
 {
-    efd::SmartPointer<Unk_WsC_GameObj> spReactor = FUN_1403ed2d0()->FUN_141bd1180(m_nReactorId);
+    efd::SmartPointer<CReactor> spReactor = reinterpret_cast<CReactor*>(FUN_1403ed2d0()->FUN_141bd1180(m_nReactorId));
     if (spReactor == 0)
         return ActionKeyObject::vfunc_12();
-    return Unk_AkoTarget(spReactor->vfunc_18());
+    // GameObject slot 18 (the position) through the world-object view: reactor.h only has NiPoint3 for it
+    return Unk_AkoTarget(reinterpret_cast<Unk_WsC_GameObj*>(spReactor.operator->())->vfunc_18());
 }
 MS2_REPLACE_METHOD(0x14095FB80, ReactorAction, vfunc_12, 183, 0x59BCCBEC);
 // MS2-FUNCTIONAL: exe passes the point to WorldService::FUN_141bc6c60 by value (rep movsb copy); shared header declares const&
@@ -3128,15 +3167,75 @@ Unk_1401c0d90* FUN_1401c0d90();
 template <> MS2Ptr<TreeWateringContext>::~MS2Ptr();
 template <> bool MS2Ptr<TreeWateringContext>::operator==(TreeWateringContext* p) const;
 template <> TreeWateringContext* MS2Ptr<TreeWateringContext>::operator->() const;
-// The attend table (global 0x143ab2fc0): the day's counters by row id and event id.
+// The attend table (global 0x143ab2fc0): the day's counters by row id and event id (the table template of
+// uilongtermattendgiftdialog.cpp; key (row, id), map at +0x18, entry text at +0x20, expiry at +0x28).
+struct Unk_AttendKey
+{
+    Unk_AttendKey(int nRow, int nId);                       // 0x14041eee0
+    int m_nRow;
+    int m_nId;
+};
+class Unk_AttendValue;
+class Unk_AttendIter                                        // 24 bytes; ctor 0x140420170, dtor 0x140420290
+{
+public:
+    Unk_AttendIter();
+    ~Unk_AttendIter();
+    Unk_AttendValue* FUN_140420460();                       // the entry
+private:
+    void* m_pad_00;
+    void* m_pad_08;
+    void* m_pad_10;
+};
+MS2_CHECK_SIZE(Unk_AttendIter, 0x18);
+class Unk_AttendMap { public: bool FUN_140420bb0(const Unk_AttendKey& key, Unk_AttendIter& it); };
+int FUN_1407181a0(const CStringW& strValue);                // _wtoi
+__int64 FUN_140869440();                                    // the server time
+class Unk_AttendValue
+{
+public:
+    int FUN_140961970(const int& nDefault) const;
+    void* m_pad_00;
+    void* m_pad_08;
+    void* m_pad_10;
+    void* m_pad_18;
+    CStringW m_strValue;                                    // +0x20 the stored text
+    CMsTime m_expire;                                       // +0x28 the expiry
+};
+MS2_CHECK_OFFSET(Unk_AttendValue, m_strValue, 0x20);
+MS2_CHECK_OFFSET(Unk_AttendValue, m_expire, 0x28);
 class Unk_AttendTable
 {
 public:
     int FUN_1409617d0(int nRow, unsigned nEventId, const int& nDefault);
+private:
+    void* m_pad_00;
+    void* m_pad_08;
+    void* m_pad_10;
+    Unk_AttendMap m_map;                                    // +0x18
 };
 extern Unk_AttendTable g_attendTable;
+
+// @0x140961970 the value while it has not expired, else the default
+inline int Unk_AttendValue::FUN_140961970(const int& nDefault) const
+{
+    CMsTime now(FUN_140869440());
+    if (m_expire <= now)
+        return nDefault;
+    return FUN_1407181a0(m_strValue);
+}
+
+// @0x1409617d0
+inline int Unk_AttendTable::FUN_1409617d0(int nRow, unsigned nEventId, const int& nDefault)
+{
+    Unk_AttendKey key(nRow, nEventId);
+    Unk_AttendIter it;
+    if (m_map.FUN_140420bb0(key, it))
+        return it.FUN_140420460()->FUN_140961970(nDefault);
+    return nDefault;
+}
+
 extern Unk_Inventory DAT_143ab2a90;
-__int64 FUN_140869440();                                    // the server time
 
 // @0x140960250
 TreeWateringAction::TreeWateringAction() {}
@@ -3234,6 +3333,153 @@ MS2_REPLACE_METHOD(0x140960A10, TreeWateringAction, vfunc_6, 529, 0x58A43792);
 int TreeWateringAction::vfunc_5() { return 0x1c; }
 MS2_REPLACE_METHOD(0x1409609F0, TreeWateringAction, vfunc_5, 11, 0x25A49707);
 
+// ---- inline members of other headers (COMDATs of this obj) ------------------------------------------------------------
+
+// @0x140965c40
+Unk_StreamPoint Unk_StreamPoint::FUN_140965c40(const Unk_StreamPoint& pt) const
+{
+    return Unk_StreamPoint(x - pt.x, y - pt.y, z - pt.z);
+}
+
+// @0x140967ac0
+float Unk_StreamPoint::FUN_140967ac0() const
+{
+    return efd::Sqrt(x * x + y * y + z * z);
+}
+
+// @0x140968990
+float Unk_StreamPoint::FUN_140968990()
+{
+    float fLength = FUN_140967ac0();
+    if (fLength > 1e-06f)
+    {
+        float fRecip = 1.0f / fLength;
+        x *= fRecip;
+        y *= fRecip;
+        z *= fRecip;
+    }
+    else
+    {
+        x = 0.0f;
+        y = 0.0f;
+        z = 0.0f;
+        fLength = 0.0f;
+    }
+    return fLength;
+}
+
+// @0x140966ea0 the distance in the xy plane
+float FUN_140966ea0(Unk_StreamPoint a, Unk_StreamPoint b)
+{
+    a.z = 0.0f;
+    b.z = 0.0f;
+    a = b.FUN_140965c40(a);
+    return a.FUN_140967ac0();
+}
+
+// @0x140966f00
+float FUN_140966f00(Unk_StreamPoint a, Unk_StreamPoint b)
+{
+    a = b.FUN_140965c40(a);
+    return a.FUN_140967ac0();
+}
+
+// @0x140966f40 the first required item's id (0 without one)
+unsigned FUN_140966f40(const Unk_AkoReqItemList& list)
+{
+    if (list.m_v.empty())
+        return 0;
+    return list.m_v[0].m_nItemId;
+}
+
+// @0x140966f80 the first required item's rarity (0 without one)
+unsigned short FUN_140966f80(const Unk_AkoReqItemList& list)
+{
+    if (list.m_v.empty())
+        return 0;
+    return list.m_v[0].m_nRarity;
+}
+
+// @0x140966db0
+MS2Ptr<ReactorStateData> CReactor::FUN_140966db0()
+{
+    return FUN_140b78c00(m_nStateIdx);
+}
+
+// @0x140966e50
+MS2Ptr<ReactorData> CReactor::FUN_140966e50()
+{
+    return m_spData;
+}
+
+// @0x140966e00
+MS2Ptr<CInteractObjectData> CInteractObject::FUN_140966e00()
+{
+    return m_spRow;
+}
+
+// @0x140967060
+CString CInteractObject::FUN_140967060()
+{
+    return m_strName;
+}
+
+// @0x140967110
+int CInteractObject::FUN_140967110()
+{
+    return m_nRowId;
+}
+
+// @0x1409673c0
+Unk_StreamPoint CInteractObject::FUN_1409673c0()
+{
+    return m_vPos;
+}
+
+// @0x140966fc0
+int CFunctionCubeObject::FUN_140966fc0()
+{
+    return m_spData->m_nKind;
+}
+
+// @0x1409674f0
+int CFunctionCubeObject::FUN_1409674f0()
+{
+    return m_spData->m_nSubKind;
+}
+
+// @0x140964630
+Unk_QmNpcQuestState::Unk_QmNpcQuestState()
+{
+    m_wantText = 0;
+    FUN_1409669c0();
+}
+
+// @0x140964e40
+Unk_QmNpcQuestState::~Unk_QmNpcQuestState()
+{
+}
+
+// @0x1409669c0
+void Unk_QmNpcQuestState::FUN_1409669c0()
+{
+    m_icon = 0xb;
+    m_state = 4;
+    m_questId = 0;
+    m_text = "";
+    m_npcId = 0;
+}
+
+// @0x140967520 (T = float)
+template <class T> const T& Common::Constants::Value<T>::Get(const T& kDefault)
+{
+    if (m_loaded)
+        return m_value;
+    if (!HasKey())
+        Error("constants has no key");
+    return kDefault;
+}
+
 // ---- CMsgBoxData (helper instantiated here) ---------------------------------------------------------------------------
 int FUN_140718200(const CStringW& strValue);                // _wtoi
 // @0x140961900
@@ -3245,3 +3491,8 @@ bool CMsgBoxData::FUN_140961900(unsigned int nIndex, int& nOut) const
     return true;
 }
 MS2_REPLACE_METHOD(0x140961900, CMsgBoxData, FUN_140961900, 103, 0x99208798);
+
+// The range's last bytes are a second TU's CRT memmove_s (the UCRT static __inline copy is per TU; this obj's own copy
+// is pinned at the top).
+// @0x14096b1e0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(2);
