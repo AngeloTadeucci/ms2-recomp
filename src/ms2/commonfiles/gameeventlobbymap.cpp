@@ -40,7 +40,7 @@ Unk_GEManagerB* FUN_140302b00();
 struct Unk_GEManagerA { char m_pad[0x8e8]; int m_lobbyMap; };
 Unk_GEManagerA* FUN_1401c0d90();
 void FUN_14047b990(Unk_GEManagerA* mgr, int value);
-void FUN_14047bb20(Unk_GEManagerA* mgr, bool on, Unk_GE16* notice);
+void FUN_14047bb20(Unk_GEManagerA* mgr, bool on, CMsTime* notice);
 
 GameEvent* FUN_14041c1a0();
 GameEvent* FUN_14041c400();
