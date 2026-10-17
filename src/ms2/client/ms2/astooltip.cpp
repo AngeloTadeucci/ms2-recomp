@@ -47,30 +47,30 @@ static CString s_strChartSortNames[] = {"None", "Buy", "PriceLow", "PriceHigh", 
 #include "ms2/placeholder/header_statics_a.h"
 #undef MS2_STATICS_A_BEFORE_CONDITION
 static UICommon::CMyPCKeyInputController s_keyInput;
-static CStringW s_wsDat44a0;
-static CStringW s_wsDat44c0;
-static CStringW s_wsDat4540;
-static CStringW s_wsDat4538;
-static CStringW s_wsDat44d8;
-static CStringW s_wsDat44e8;
-static CStringW s_wsDat44e0;
-static CStringW s_wsDat44d0;
-static CStringW s_wsDat4500;
-static CStringW s_wsDat4508;
-static CStringW s_wsDat4520;
-static CStringW s_wsDat4528;
-static CStringW s_wsDat4510;
-static CStringW s_wsDat4518;
-static CStringW s_wsDat4530;
-static CStringW s_wsDat43c8[5] = {L""};
-static CStringW s_wsDat4438;
-static CStringW s_wsDat4480;
-static CStringW s_wsDat4488;
-static CStringW s_wsDat4490;
-static CStringW s_wsDat4498;
-static CStringW s_wsDat44f0;
-static CStringW s_wsDat44f8;
-static CStringW s_wsDat44c8;
+static CStringW s_wsNewline;
+static CStringW s_wsWhiteFont;
+static CStringW s_wsPetEvolutionPoint;
+static CStringW s_wsPetExp;
+static CStringW s_wsSetNameRow;
+static CStringW s_wsSetName;
+static CStringW s_wsSetStatRow;
+static CStringW s_wsSetTitle;
+static CStringW s_wsSocket;
+static CStringW s_wsSocketByPet;
+static CStringW s_wsSocketRowEmpty;
+static CStringW s_wsSocketRowLock;
+static CStringW s_wsSocketRowStat;
+static CStringW s_wsSocketRowStatByPet;
+static CStringW s_wsSocketTransfer;
+static CStringW s_wsKindLabel[5] = {L""};      // per-kind labels, indexed by the option kind
+static CStringW s_wsMerge;
+static CStringW s_wsText0xbf5;
+static CStringW s_wsText0x48d;
+static CStringW s_wsText0xbf8;
+static CStringW s_wsStatRowBest;
+static CStringW s_wsUgcSetName;
+static CStringW s_wsUgcSetRow;
+static CStringW s_wsUnlimited;
 
 extern CStringW FUN_14028de60(int nId);
 void FUN_1407cd930(Scaleform::GFx::Value* pObject, const char* szName, const Scaleform::GFx::Value& v);
@@ -628,3 +628,46 @@ void ASTooltip::FUN_1409c7060(const CStringW& strLhs, const CStringW& strRhs)
         FUN_1407cbb20(s_strItemEquip, strRhs);
 }
 MS2_REPLACE_METHOD(0x1409C7060, ASTooltip, FUN_1409c7060, 600, 0x33E89F47);
+
+extern CStringW FUN_14028b8e0(const CStringW& strKey);
+static int s_bTextsLoaded;
+
+// @0x1409e5480  loads the tooltip texts once
+// MS2-FUNCTIONAL: frame/unwind layout differs (the exe keeps one temporary per string, 0x348 frame); same loads and stores
+void FUN_1409e5480()
+{
+    if (s_bTextsLoaded == 0)
+    {
+        s_wsKindLabel[0] = FUN_14028de60(0xbf3);
+        s_wsKindLabel[2] = FUN_14028de60(0xbf4);
+        s_wsKindLabel[4] = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_kinds_merge_1step"));
+        s_wsMerge = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_kinds_merge"));
+        s_wsText0xbf5 = FUN_14028de60(0xbf5);
+        s_wsText0x48d = FUN_14028de60(0x48d);
+        s_wsText0xbf8 = FUN_14028de60(0xbf8);
+        s_wsStatRowBest = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_stat_row_best"));
+        s_wsNewline = L"\n";
+        s_wsText0xbf6 = FUN_14028de60(0xbf6);
+        s_wsText0xbf7 = FUN_14028de60(0xbf7);
+        s_wsEnchantExp = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_enchant_exp"));
+        s_wsWhiteFont = L"<font color='#ffffff'>{0}</font>";
+        s_wsUnlimited = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_unlimited"));
+        s_wsSetTitle = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_setitem_set_title"));
+        s_wsSetNameRow = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_setitem_name_row"));
+        s_wsSetStatRow = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_setitem_stat_row"));
+        s_wsSetName = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_setitem_name"));
+        s_wsUgcSetName = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_ugcmap_setitem_name"));
+        s_wsUgcSetRow = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_ugcmap_setitem_row"));
+        s_wsSocket = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket"));
+        s_wsSocketByPet = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_by_pet"));
+        s_wsSocketRowStat = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_stat"));
+        s_wsSocketRowStatByPet = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_stat_by_pet"));
+        s_wsSocketRowEmpty = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_empty"));
+        s_wsSocketRowLock = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_row_lock"));
+        s_wsSocketTransfer = FUN_14028b8e0(CStringW(L"s_tooltip_itemoption_socket_transfer"));
+        s_wsPetEvolutionPoint = FUN_14028b8e0(CStringW(L"s_pet_tooltip_evolution_point"));
+        s_wsPetExp = FUN_14028b8e0(CStringW(L"s_pet_tooltip_exp"));
+        s_bTextsLoaded = 1;
+    }
+}
+MS2_REPLACE(0x1409E5480, FUN_1409e5480, 2943, 0xA85B7D2A);

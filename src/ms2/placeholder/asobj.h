@@ -34,6 +34,7 @@ public:
     void FUN_1409adc90(const char* szName, int n);                       // set an int member (item rank; UISnowmanEventDialog)
     void FUN_140f43b40(const char* szName, int n);                       // set an int member (fishing medal; UIRewardNotify)
     void FUN_1409eb310(const char* szName, int n);                       // set an int member via ASData (astooltip.cpp)
+    void FUN_1409eb3b0(const char* szName, long n);                      // set a long member via ASData (astooltip.cpp)
     void FUN_1409eb270(const char* szName, const ASObj& obj);            // set a member to another AS object
     void FUN_1409eb1d0(const char* szName, const class ASArray& arr);    // set a member to an AS array (UITalkCinematic components)
     void FUN_140e846b0(const char* szName, size_t n);                    // set a size_t member (a Set<unsigned __int64> COMDAT, in uirpseventdialog's range)
