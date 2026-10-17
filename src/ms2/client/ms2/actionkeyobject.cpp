@@ -4,97 +4,39 @@
 // MS2-RANGE: 0x140951c70-0x14096b300 .text$mn
 // MS2-RANGE: 0x1400bf670-0x1400bf7b0 .text$di
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x140953ce0 ; unique
-// MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@H@ATL@@SAHAEBH0@Z 0x140953d30 ; unique
-// MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@IEBAPEAVCNode@12@AEBH@Z 0x140953d70 ; unique
-// MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@AEAAPEAVCNode@12@AEBHAEBV?$MS2Ptr@VActionKeyObject@@@@@Z 0x140954040 ; unique
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_StreamPoint@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140960d10 ; unique
-// MS2-PIN: ??$?0UPortalAction@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAUPortalAction@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140960e50 ; unique
-// MS2-PIN: ??$GetPropertyValue@M@Entity@egf@@QEBA?AW4PropertyResult@1@IAEAM@Z 0x140961880 ; prop
-// MS2-PIN: ??$_Destroy_range@V?$allocator@UUnk_StreamPoint@@@std@@@std@@YAXPEAUUnk_StreamPoint@@0AEAV?$allocator@UUnk_StreamPoint@@@0@@Z 0x140961b80 ; unique
-// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXAEBUUnk_StreamPoint@@@Z 0x140961c20 ; unique
-// MS2-PIN: ??$_Emplace_reallocate@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAPEAUUnk_StreamPoint@@QEAU2@AEBU2@@Z 0x140961ce0 ; unique
-// MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730 ; unique
-// MS2-PIN: ??$emplace_back@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAXAEBUUnk_StreamPoint@@@Z 0x140963790 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VCHomemadeCubeObject@@@@QEAA@AEBV0@@Z 0x140963ec0 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VCube@@@@QEAA@PEAVCube@@@Z 0x1409642b0 ; unique
-// MS2-PIN: ??0?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAA@XZ 0x140964410 ; prop
-// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x1409644c0 ; unique
-// MS2-PIN: ??0?$allocator@UUnk_StreamPoint@@@std@@QEAA@XZ 0x140964540 ; prop
-// MS2-PIN: ??0?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@QEAA@XZ 0x140964550 ; unique
-// MS2-PIN: ??0?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x140964560 ; prop
-// MS2-PIN: ??0?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA@XZ 0x140964590 ; prop
-// MS2-PIN: ??1?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@XZ 0x1409648f0 ; unique
-// MS2-PIN: ??1?$MS2Ptr@VCInteractObjectData@@@@QEAA@XZ 0x140964a10 ; prop
-// MS2-PIN: ??1?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@XZ 0x140964b60 ; unique
-// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCube@@@@QEAAAEAV1@PEAVCube@@@Z 0x140965090 ; unique
-// MS2-PIN: ??8?$MS2Ptr@VCFieldDataCli@@@@QEBA_NPEAVCFieldDataCli@@@Z 0x140965240 ; unique
-// MS2-PIN: ??B?$SmartPointer@VRidee@@@efd@@QEBAPEAVRidee@@XZ 0x140965790 ; prop
-// MS2-PIN: ?get@?$MS2Ptr@VCFieldDataCli@@@@QEBAPEAVCFieldDataCli@@XZ 0x1409657a0 ; unique
-// MS2-PIN: ??B?$MS2Ptr@VCNurturingCubeObject@@@@QEBAPEAVCNurturingCubeObject@@XZ 0x140965800 ; unique
-// MS2-PIN: ??B?$MS2Ptr@VUnk_PCInteractMode@@@@QEBAPEAVUnk_PCInteractMode@@XZ 0x140965810 ; unique
-// MS2-PIN: ??B?$Unk_PayloadPtr@VCubeOwner@@@@QEBAPEAVCubeOwner@@XZ 0x140965820 ; unique
-// MS2-PIN: ?get@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEBAPEAVUnk_PCBaseComp_b18@@XZ 0x140965850 ; unique
-// MS2-PIN: ??C?$MS2Ptr@VUnk_PCInteractMode@@@@QEBAPEAVUnk_PCInteractMode@@XZ 0x1409658a0 ; prop
-// MS2-PIN: ??C?$MS2Ptr@VCNurturingCubeObject@@@@QEBAPEAVCNurturingCubeObject@@XZ 0x140965950 ; unique
-// MS2-PIN: ??D?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140965a50 ; unique
-// MS2-PIN: ??_G?$MS2Ptr@VUnk_WsB_Lift@@@@QEAAPEAXI@Z 0x140965e00 ; unique
-// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCHomemadeCubeObject@@@@@Z 0x140966580 ; unique
-// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@VCNurturingCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@@ATL@@QEBA_KXZ 0x140966d90 ; unique
-// MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HV?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@2@V?$CElementTraits@H@2@@ATL@@AEBAPEAVCNode@12@PEB_WAEAI1AEAPEAV312@@Z 0x1409672c0 ; unique
-// MS2-PIN: ?get@?$MS2Ptr@VCInteractObject@@@@QEBAPEAVCInteractObject@@XZ 0x140967470 ; unique
-// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1409675f0 ; unique
-// MS2-PIN: ?SetCount@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1409685a0 ; unique
-// MS2-PIN: ?AddRef@?$MS2Ptr@VCMsgBoxData@@@@AEBAXXZ 0x140968c00 ; prop
-// MS2-PIN: ?AddRef@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXXZ 0x140968c30 ; unique
-// MS2-PIN: ?Reference@?$MS2Ptr@VCNurturingCubeObject@@@@CAXPEAVCNurturingCubeObject@@@Z 0x140968ef0 ; prop
-// MS2-PIN: ?Reference@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@CAXPEAVUnk_PCBaseComp_b18@@@Z 0x140968fb0 ; prop
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXPEAX@Z 0x140969160 ; prop
-// MS2-PIN: ?_Destroy@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXPEAUUnk_StreamPoint@@0@Z 0x140969470 ; unique
-// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@2@@Z 0x140969540 ; unique
-// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@XZ 0x140969610 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@UUnk_StreamPoint@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@XZ 0x140969710 ; prop
-// MS2-PIN: ?_Has_unused_capacity@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEBA_NXZ 0x140969810 ; unique
+// MS2-PIN: ??$_Destroy_range1@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@YAXPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@0AEAV?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@0@U?$integral_constant@_N$0A@@0@@Z 0x140961ac0 ; unique
+// MS2-PIN: ??$destroy@V?$MS2Ptr@VUnk_WsB_Lift@@@@@?$_Default_allocator_traits@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@SAXAEAV?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@1@QEAV?$MS2Ptr@VUnk_WsB_Lift@@@@@Z 0x140963750 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBV01@@Z 0x140963c30 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VUnk_WsB_Lift@@@@QEAA@AEBV0@@Z 0x140963ff0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCNurturingCubeObject@@@@QEAA@AEBV0@@Z 0x140964070 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCNurturingCubeObject@@@@QEAA@H@Z 0x1409640b0 ; unique
+// MS2-PIN: ??B?$SmartPointer@VUnk_WsB_Spawn@@@efd@@QEBAPEAVUnk_WsB_Spawn@@XZ 0x1409658c0 ; prop
+// MS2-PIN: ??C?$MS2Ptr@VUnk_WsB_Lift@@@@QEBAPEAVUnk_WsB_Lift@@XZ 0x140965930 ; unique
+// MS2-PIN: ??C?$MS2Ptr@VRideOffActionInteract@@@@QEBAPEAVRideOffActionInteract@@XZ 0x1409659a0 ; unique
+// MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCNurturingCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCNurturingCubeObject@@@@_K@Z 0x140966900 ; unique
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXPEAX@Z 0x140969160 ; unique
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@XZ 0x1409695d0 ; prop
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@_J@2@XZ 0x140969650 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@_J@2@XZ 0x140969660 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@XZ 0x1409696f0 ; prop
 // MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a00 ; prop
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969a20 ; prop
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAAAEAPEAUUnk_StreamPoint@@XZ 0x140969a40 ; prop
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969aa0 ; prop
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969ac0 ; unique
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969b20 ; prop
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969b60 ; prop
-// MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAXXZ 0x140969b80 ; prop
-// MS2-PIN: ?_Reallocate_exactly@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAX_K@Z 0x140969bc0 ; unique
-// MS2-PIN: ?Release@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXXZ 0x140969c60 ; prop
-// MS2-PIN: ?Release@?$MS2Ptr@VCInteractObjectData@@@@AEAAXXZ 0x140969de0 ; prop
-// MS2-PIN: ?Release@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEAAXXZ 0x140969fa0 ; prop
-// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXPEAX@Z 0x14096a120 ; prop
-// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEAAXPEAX@Z 0x14096a350 ; unique
-// MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_PCInteractMode@@@@AEAAXPEAX@Z 0x14096a6c0 ; unique
 // MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096aab0 ; unique
-// MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x14096af00 ; unique
-// MS2-PIN: ??$Call@UPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@CA_NAEAU?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@HAEBVCMsgBoxData@@@Z 0x14096af40 ; unique
-// MS2-PIN: ?reserve@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAX_K@Z 0x14096b0b0 ; unique
-// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b180 ; prop
+// MS2-PIN: ?capacity@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096ab10 ; prop
+// MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x14096ab90 ; unique
+// MS2-PIN: ?deallocate@?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@QEAAXQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@_K@Z 0x14096ac50 ; unique
+// MS2-PIN: ?end@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096adc0 ; unique
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@std@@@2@AEB_J@Z 0x14096ae20 ; unique
+// MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x14096af70 ; unique
+// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b140 ; unique
 // MS2-PINS-END tplpin
 // tplpin --simulate accepted pins (hand-pasted)
 // MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x140953ce0
 // MS2-PIN: ?CompareElementsOrdered@?$CDefaultCompareTraits@H@ATL@@SAHAEBH0@Z 0x140953d30
 // MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@IEBAPEAVCNode@12@AEBH@Z 0x140953d70
 // MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@AEAAPEAVCNode@12@AEBHAEBV?$MS2Ptr@VActionKeyObject@@@@@Z 0x140954040
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@UUnk_StreamPoint@@@std@@V?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x140960d10
 // MS2-PIN: ??$?0UPortalAction@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAUPortalAction@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140960e50
-// MS2-PIN: ??$_Destroy_range@V?$allocator@UUnk_StreamPoint@@@std@@@std@@YAXPEAUUnk_StreamPoint@@0AEAV?$allocator@UUnk_StreamPoint@@@0@@Z 0x140961b80
-// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXAEBUUnk_StreamPoint@@@Z 0x140961c20
-// MS2-PIN: ??$_Emplace_reallocate@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAPEAUUnk_StreamPoint@@QEAU2@AEBU2@@Z 0x140961ce0
 // MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730
-// MS2-PIN: ??$emplace_back@AEBUUnk_StreamPoint@@@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAXAEBUUnk_StreamPoint@@@Z 0x140963790
 // MS2-PIN: ??0?$MS2Ptr@VCHomemadeCubeObject@@@@QEAA@AEBV0@@Z 0x140963ec0
-// MS2-PIN: ??0?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAA@XZ 0x1409643e0
-// MS2-PIN: ??0?$_Vector_val@U?$_Simple_types@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x1409644c0
-// MS2-PIN: ??0?$allocator@UUnk_StreamPoint@@@std@@QEAA@XZ 0x140964540
-// MS2-PIN: ??0?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@QEAA@XZ 0x140964550
-// MS2-PIN: ??0?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAA@XZ 0x140964560
-// MS2-PIN: ??0?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA@XZ 0x140964590
 // MS2-PIN: ??1?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@XZ 0x1409648f0
 // MS2-PIN: ??1?$Unk_PayloadPtr@VCubeOwner@@@@QEAA@XZ 0x140964aa0
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@XZ 0x140964b60
@@ -107,48 +49,48 @@
 // MS2-PIN: ??B?$Unk_PayloadPtr@VCubeOwner@@@@QEBAPEAVCubeOwner@@XZ 0x140965820
 // MS2-PIN: ?get@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEBAPEAVUnk_PCBaseComp_b18@@XZ 0x140965850
 // MS2-PIN: ??C?$MS2Ptr@VCNurturingCubeObject@@@@QEBAPEAVCNurturingCubeObject@@XZ 0x140965950
-// MS2-PIN: ??D?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140965a50
-// MS2-PIN: ??_G?$MS2Ptr@VUnk_WsB_Lift@@@@QEAAPEAXI@Z 0x140965e00
 // MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCHomemadeCubeObject@@@@@Z 0x140966580
 // MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@VCNurturingCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@@ATL@@QEBA_KXZ 0x140966d90
 // MS2-PIN: ?GetNode@?$CAtlMap@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@HV?$CStringElementTraits@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@2@V?$CElementTraits@H@2@@ATL@@AEBAPEAVCNode@12@PEB_WAEAI1AEAPEAV312@@Z 0x1409672c0
 // MS2-PIN: ?get@?$MS2Ptr@VCInteractObject@@@@QEBAPEAVCInteractObject@@XZ 0x140967470
 // MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1409675f0
 // MS2-PIN: ?SetCount@?$CAtlArray@V?$MS2Ptr@VCHomemadeCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCHomemadeCubeObject@@@@@ATL@@@ATL@@QEAA_N_KH@Z 0x1409685a0
-// MS2-PIN: ?AddRef@?$MS2Ptr@VUnk_WsB_Lift@@@@AEBAXXZ 0x140968bd0
 // MS2-PIN: ?AddRef@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXXZ 0x140968c30
 // MS2-PIN: ?Reference@?$MS2Ptr@VCNurturingCubeObject@@@@CAXPEAVCNurturingCubeObject@@@Z 0x140968ef0
 // MS2-PIN: ?Reference@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@CAXPEAVUnk_PCBaseComp_b18@@@Z 0x140968fb0
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VUnk_WsB_Lift@@@@AEBAXPEAX@Z 0x140969100
 // MS2-PIN: ?AddRefImpl@?$Unk_PayloadPtr@VCubeOwner@@@@AEBAXPEAX@Z 0x140969130
-// MS2-PIN: ?_Destroy@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAXPEAUUnk_StreamPoint@@0@Z 0x140969470
 // MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@2@@Z 0x140969540
 // MS2-PIN: ?_Get_data@?$_String_alloc@U?$_String_base_types@DV?$CustomAllocator@D@efd@@@std@@@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969610
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@D@efd@@V?$_String_val@U?$_Simple_types@D@std@@@std@@$00@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969710
-// MS2-PIN: ?_Has_unused_capacity@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEBA_NXZ 0x140969810
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a00
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969a20
-// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEAAAEAPEAUUnk_StreamPoint@@XZ 0x140969a40
-// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969aa0
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@@std@@QEBAAEBQEAUUnk_StreamPoint@@XZ 0x140969b20
-// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969b60
-// MS2-PIN: ?_Orphan_all@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAXXZ 0x140969b80
-// MS2-PIN: ?_Reallocate_exactly@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@AEAAX_K@Z 0x140969bc0
 // MS2-PIN: ?Release@?$MS2Ptr@VCFieldDataCli@@@@AEAAXXZ 0x140969de0
 // MS2-PIN: ?Release@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEAAXXZ 0x140969fa0
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEAAXPEAX@Z 0x14096a350
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_PCInteractMode@@@@AEAAXPEAX@Z 0x14096a3f0
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@AEAAXPEAX@Z 0x14096a530
-// MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096aab0
 // MS2-PIN: ?Invoke@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEAA_NHAEBVCMsgBoxData@@@Z 0x14096af00
 // MS2-PIN: ??$Call@UPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@CA_NAEAU?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@HAEBVCMsgBoxData@@@Z 0x14096af40
-// MS2-PIN: ?reserve@?$vector@UUnk_StreamPoint@@V?$allocator@UUnk_StreamPoint@@@std@@@std@@QEAAX_K@Z 0x14096b0b0
-// MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b180
 //
 // The unit has no __FILE__ string; its name comes from the classes and its directory is assumed. Names are Ghidra's
 // (vfunc_<slot> / FUN_<va>) unless the exe has one (RTTI). The COMDAT tail: the action maps (CRBMap<int,
 // MS2Ptr<ActionKeyObject>>), the entity smart pointers, the UI lookups (dynamic_cast to the dialog types), the
 // PortalAction message-box delegate and the singleton accessors.
+// The lift list (std::vector<MS2Ptr<Unk_WsB_Lift>>) and the cell list (std::vector<efd::Point3>): the exe's copies are
+// byte-identical to other instances (by-name pairing would cross them), so they are pinned by call site.
+// MS2-PIN: ??0?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA@XZ 0x140964560
+// MS2-PIN: ??1?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA@XZ 0x140964ca0
+// MS2-PIN: ?_Tidy@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@AEAAXXZ 0x14096a830
+// MS2-PIN: ?_Destroy@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@AEAAXPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@0@Z 0x140969470
+// MS2-PIN: ??$_Destroy_range@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@YAXPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@0AEAV?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@0@@Z 0x140961b80
+// MS2-PIN: ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@2@XZ 0x140969790
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@XZ 0x1409695f0
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a20
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969aa0
+// MS2-PIN: ?_Mylast@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEBAAEBQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969b20
+// MS2-PIN: ??_G?$MS2Ptr@VUnk_WsB_Lift@@@@QEAAPEAXI@Z 0x140965dc0
+// MS2-PIN: ?_Reallocate_exactly@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@AEAAX_K@Z 0x140969bc0
+// MS2-PIN: ??$emplace_back@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@QEAAXAEBVPoint3@efd@@@Z 0x140963790
+// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@AEAAXAEBVPoint3@efd@@@Z 0x140961c20
+// MS2-PIN: ??$_Emplace_reallocate@AEBVPoint3@efd@@@?$vector@VPoint3@efd@@V?$allocator@VPoint3@efd@@@std@@@std@@QEAAPEAVPoint3@efd@@QEAV23@AEBV23@@Z 0x140961ce0
 // TaxiStationAction / FishingAction have byte-identical implicit destructors (two exe copies each):
 // MS2-PIN: ??1TaxiStationAction@@UEAA@XZ 0x140953ba0
 // MS2-PIN: ??1FishingAction@@UEAA@XZ 0x140953b80
@@ -251,6 +193,10 @@ public:
     Unk_StreamPoint FUN_1410b7ad0(PCBase* pActor, float fDist, Unk_StreamPoint* pOut, int bSnap);  // the cell in front of the actor
     Unk_StreamPoint FUN_1410b7a20(Unk_StreamPoint pt, Unk_StreamPoint* pOut);   // the cell position of a point
     Cube* FUN_1410b8ab0(Unk_StreamPoint pt);                // the cube at a cell position
+    // The same three as PullObjectWeaponAction calls them (its cell list is a std::vector<efd::Point3>).
+    efd::Point3 FUN_1410b7ad0(PCBase* pActor, float fDist, efd::Point3* pOut, int bSnap);
+    efd::Point3 FUN_1410b7a20(efd::Point3 pt, efd::Point3* pOut);
+    Cube* FUN_1410b8ab0(efd::Point3 pt);
     bool FUN_1410b7e80(Unk_StreamPoint pt);                 // a cube stands at a cell position
     void FUN_1410ccc00(int nMapId, int nType, int nSize);   // show the map's owner profile
     int FUN_1410c8580(int nGroup);                          // the error code for buying a house group (0 = ok)
@@ -357,7 +303,6 @@ class Unk_WsB_Lift : public CPtred
 {
 public:
     int FUN_141447cc0();                                    // the lift's item id
-    Unk_StreamPoint FUN_1409673f0();                        // the position (+0x1c)
     CString FUN_1414472a0();                                // the lift's name
     int FUN_141447340();                                    // can be lifted
     float FUN_141447ac0();                                  // the lift radius
@@ -365,6 +310,20 @@ public:
     void FUN_141447d50(int bHighlight);                     // highlight the lift
 };
 typedef MS2Ptr<Unk_WsB_Lift> Unk_WsB_LiftPtr;
+// The world service's lift targets (WorldService::FUN_141bc5980, the values of its m_540: CLiftableTarget, the base of
+// CLiftableTargetBox / CLiftableTargetGuide); a distinct pointer type from the lifts (the exe has a second copy of the
+// vector code).
+class Unk_AkoLiftTarget : public CPtred
+{
+public:
+    // @0x1409673f0
+    Unk_StreamPoint FUN_1409673f0() { return m_pos; }
+
+    unsigned char m_unk_18[4];
+    Unk_StreamPoint m_pos;                                  // +0x1c
+};
+MS2_CHECK_OFFSET(Unk_AkoLiftTarget, m_pos, 0x1c);
+typedef MS2Ptr<Unk_AkoLiftTarget> Unk_AkoLiftTargetPtr;
 class Unk_WsB_Prop : public CInteractObject
 {
 };
@@ -1922,32 +1881,32 @@ int PullObjectWeaponAction::FUN_140959eb0()
     if (nState == 0x10 || (nState > 0x1c && (nState <= 0x1e || nState == 0x20 || nState == 0x2f)))
         return 0;
     efd::SmartPointer<Unk_Service6100017> spCubeMap = FUN_1401cd040(&DAT_143b059e8);
-    std::vector<Unk_StreamPoint> aCells;
+    std::vector<efd::Point3> aCells;
     aCells.reserve(3);
     for (int i = 1; i >= -1; --i)
     {
         if (i >= 0)
         {
-            Unk_StreamPoint ptFront;
+            efd::Point3 ptFront;
             efd::SmartPointer<Ridee> spRidee(pPlayer->FUN_1416764a0());
             if (spRidee)
                 spCubeMap->FUN_1410b7ad0(spRidee, 0.0f, &ptFront, i);
             else
                 spCubeMap->FUN_1410b7ad0(pPlayer, 0.0f, &ptFront, i);
-            Unk_StreamPoint ptCell;
+            efd::Point3 ptCell;
             spCubeMap->FUN_1410b7a20(ptFront, &ptCell);
             aCells.push_back(ptCell);
             continue;
         }
         else
         {
-            Unk_StreamPoint ptFront;
+            efd::Point3 ptFront;
             efd::SmartPointer<Ridee> spRidee(pPlayer->FUN_1416764a0());
             if (spRidee)
                 spCubeMap->FUN_1410b7ad0(spRidee, 0.0f, &ptFront, 0);
             else
                 spCubeMap->FUN_1410b7ad0(pPlayer, 0.0f, &ptFront, 0);
-            Unk_StreamPoint ptCell;
+            efd::Point3 ptCell;
             spCubeMap->FUN_1410b7a20(ptFront, &ptCell);
             ptCell.z -= 150.0f;
             aCells.push_back(ptCell);
@@ -2076,14 +2035,14 @@ int PutDownLiftableAction::vfunc_1()
     spCubeMap->FUN_1410b7a20(ptFront, &ptCell);
     if (spCubeMap->FUN_1410b7e80(ptCell))
         return 0;
-    std::vector<Unk_WsB_LiftPtr> aLifts;
-    FUN_1403ed2d0()->FUN_141bc5980(&aLifts);
-    for (size_t i = 0; i < aLifts.size(); ++i)
+    std::vector<Unk_AkoLiftTargetPtr> aTargets;
+    FUN_1403ed2d0()->FUN_141bc5980(&aTargets);
+    for (size_t i = 0; i < aTargets.size(); ++i)
     {
-        Unk_WsB_LiftPtr spLift = aLifts[i];
-        Unk_StreamPoint ptLiftCell = DAT_143b01a60;
-        spCubeMap->FUN_1410b7a20(spLift->FUN_1409673f0(), &ptLiftCell);
-        if (ptCell.FUN_140552690(ptLiftCell))
+        Unk_AkoLiftTargetPtr spTarget = aTargets[i];
+        Unk_StreamPoint ptTargetCell = DAT_143b01a60;
+        spCubeMap->FUN_1410b7a20(spTarget->FUN_1409673f0(), &ptTargetCell);
+        if (ptCell.FUN_140552690(ptTargetCell))
             return 1;
     }
     return 0;
