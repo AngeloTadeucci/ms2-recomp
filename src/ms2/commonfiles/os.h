@@ -4,12 +4,14 @@
 #include "ms2/ms2layout.h"
 template<class T> class TSingleton {
 public:
-    TSingleton() { s_instance=this; }
+    // The exe stores the complete object: for a T whose TSingleton is a secondary base the ctor adjusts back to T and
+    // GetInstance returns s_instance unadjusted.
+    TSingleton() { s_instance=static_cast<T*>(this); }
     virtual ~TSingleton() { s_instance=0; }
-    static TSingleton* s_instance;
-    static T* GetInstance() { return static_cast<T*>(s_instance); }   // w3o1: 0x14015a050 for T = GameEventManagerCli
+    static T* s_instance;
+    static T* GetInstance() { return s_instance; }   // w3o1: 0x14015a050 for T = GameEventManagerCli
 };
-template<class T> TSingleton<T>* TSingleton<T>::s_instance=0;
+template<class T> T* TSingleton<T>::s_instance=0;
 struct Unk_OSData {
     Unk_OSData() : isNT(false),is64(false) {}
     OSVERSIONINFOEXA version;

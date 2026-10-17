@@ -11,11 +11,6 @@
 #include "ms2/placeholder/clockcriticalsection.h"
 
 class CrashManagerCli;
-// The exe's singleton pointer holds the derived object (TSingleton is the secondary base at +0x68), so the base ctor
-// stores the downcast pointer, not os.h's base pointer.
-template <> inline TSingleton<CrashManagerCli>::TSingleton();
-template <> inline CrashManagerCli* TSingleton<CrashManagerCli>::GetInstance();
-
 class CrashManagerCli : public CCrashManager, public TSingleton<CrashManagerCli>
 {
 public:
@@ -31,13 +26,3 @@ private:
 };
 MS2_CHECK_SIZE(CrashManagerCli, 0xd0);
 
-// @0x141495850
-template <> inline TSingleton<CrashManagerCli>::TSingleton()
-{
-    s_instance = reinterpret_cast<TSingleton*>(static_cast<CrashManagerCli*>(this));
-}
-// The exe's copy (unit_140a435a0, 0x140a44830) reads the pointer as is.
-template <> inline CrashManagerCli* TSingleton<CrashManagerCli>::GetInstance()
-{
-    return reinterpret_cast<CrashManagerCli*>(s_instance);
-}

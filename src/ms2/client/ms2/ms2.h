@@ -29,10 +29,6 @@ class CPhysXError;
 class CMS2DefaultSurfaceCreator;
 
 class MS2;
-// The exe's singleton pointer holds the derived object (TSingleton is the secondary base at +0x18), so the base ctor
-// stores the downcast pointer, not os.h's base pointer.
-template <> inline TSingleton<MS2>::TSingleton();
-
 class MS2 : public efd::ISystemService, public TSingleton<MS2>
 {
     EE_DECLARE_CLASS1(MS2, 0x06100001, efd::ISystemService);
@@ -89,12 +85,6 @@ MS2_CHECK_OFFSET(MS2, m_spServiceManager, 0x28);
 MS2_CHECK_OFFSET(MS2, m_strLogFile, 0x60);
 MS2_CHECK_OFFSET(MS2, m_pSurfaceCreator, 0x98);
 MS2_CHECK_OFFSET(MS2, m_bCrashOnShutdown, 0xa4);
-
-// @0x1414958d0
-template <> inline TSingleton<MS2>::TSingleton()
-{
-    s_instance = reinterpret_cast<TSingleton*>(static_cast<MS2*>(this));
-}
 
 // The start-up step profiler of CGameApp ("Loading"): logs the time between named steps. Owning unit unit_1402e1070 /
 // unit_1402e12c0 (not recovered); only the members CGameApp calls are declared.
