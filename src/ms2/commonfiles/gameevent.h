@@ -24,6 +24,10 @@ struct OntimeEventContext;
 class BlueMarbleEventContext;   // gameeventcontext.h
 class EventTimeLimitDungeonContext;
 struct NpcEventDropEventContext;
+class SaleCube;
+class StampEventContext;
+class TimeRunEventContext;
+enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 enum Unk_DungeonCooldownType {};
 class DungeonExtraRewardCountCtx : public CPtred {
@@ -461,8 +465,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c3f30
     virtual void vfunc_5();                     // 0x1403c3d80
     virtual void vfunc_6();                     // 0x1403c3e30
-private:
-    char m_pad_d0[0x18];
+    GameEventEpicRestart();
+    CStringA m_d0;
+    CStringA m_d8;
+    CStringA m_e0;
 };  // vftable 0x142d3fcc0, ??_G 0x1403e9fd0, dtor 0x1403e5fb0
 MS2_CHECK_SIZE(GameEventEpicRestart, 0xe8);
 class GameEventEventFieldPopup : public GameEvent {
@@ -725,8 +731,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c4350
     virtual void vfunc_5();                     // 0x1403c4260
     virtual void vfunc_6();                     // 0x1403c42b0
-private:
-    char m_pad_d0[0x10];
+    GameEventLevelUpPackage();
+    int m_d0;
+    int m_pad_d4;
+    CStringW m_d8;
 };  // vftable 0x142d3fd18, ??_G 0x1403ea590, dtor 0x1403e6370
 MS2_CHECK_SIZE(GameEventLevelUpPackage, 0xe0);
 class GameEventLongTermAttendGift : public GameEvent {
@@ -1112,8 +1120,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c39d0
     virtual void vfunc_5();                     // 0x1403c3800
     virtual void vfunc_6();                     // 0x1403c3850
-private:
-    char m_pad_d0[0x30];
+    GameEventSaleHousing();
+    // Not exe code: lets the COMDAT tail unit emit the vftable (the CRBMultiMap member is not copyable).
+    explicit GameEventSaleHousing(Unk_VftableEmitTag) {}
+    ATL::CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> > m_d0;  // by SaleCube::m_18
 };  // vftable 0x142d3fc68, ??_G 0x1403ead90, dtor 0x1403e68b0
 MS2_CHECK_SIZE(GameEventSaleHousing, 0x100);
 class GameEventSaleItemsRestricted : public GameEvent {
@@ -1279,13 +1289,16 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c5010
     virtual void vfunc_5();                     // 0x1403c4eb0
     virtual void vfunc_6();                     // 0x1403c4f20
-private:
-    char m_pad_d0[0x18];
+    GameEventStampEvent();
+    bool m_d0;                                  // copied to the context (+0x9c); GameEventStampEventChar clears it
+    char m_pad_d1[7];
+    MS2Ptr<StampEventContext> m_d8;
 };  // vftable 0x142d3fdc8, ??_G 0x1403eb150, dtor 0x1403e6b60
 MS2_CHECK_SIZE(GameEventStampEvent, 0xe8);
 class GameEventStampEventChar : public GameEventStampEvent {
 public:
     virtual CStringW vfunc_1();                 // 0x1403c5120
+    GameEventStampEventChar();
 };  // vftable 0x142d3fe20, ??_G 0x1403eb190, dtor 0x1403e6b90
 MS2_CHECK_SIZE(GameEventStampEventChar, 0xe8);
 class GameEventStarShop : public GameEvent {
@@ -1308,8 +1321,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c55c0
     virtual void vfunc_5();                     // 0x1403c5480
     virtual void vfunc_6();                     // 0x1403c54f0
-private:
-    char m_pad_d0[0x10];
+    GameEventTimeRunEvent();
+    int FUN_1403c5670(MS2Ptr<TimeRunEventContext> spContext);  // "quest" rows of m_68
+    int FUN_1403c58e0(MS2Ptr<TimeRunEventContext> spContext);  // "reward" rows + "final" of m_70
+    MS2Ptr<TimeRunEventContext> m_d0;
 };  // vftable 0x142d3fe78, ??_G 0x1403eb210, dtor 0x1403e6bd0
 MS2_CHECK_SIZE(GameEventTimeRunEvent, 0xe0);
 class GameEventTrafficOptimizer : public GameEvent {
@@ -1404,8 +1419,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c45f0
     virtual void vfunc_5();                     // 0x1403c4580
     virtual void vfunc_6();                     // 0x1403c4590
-private:
-    char m_pad_d0[0x8];
+    GameEventUpdateString();
+    CStringW m_d0;
 };  // vftable 0x142d3fd70, ??_G 0x1403eb410, dtor 0x1403e6d10
 MS2_CHECK_SIZE(GameEventUpdateString, 0xd8);
 class GameEventUserCondition : public GameEvent {
@@ -1556,7 +1571,13 @@ struct SAHotTimeEventContext : public CPtred {
 };  // vftable 0x142d41478, ??_G 0x1403eb790, dtor 0x1403e6fd0
 MS2_CHECK_SIZE(SAHotTimeEventContext, 0x38);
 class SaleCube : public CPtred {
-    char m_pad_18[0x10];
+public:
+    // @0x1403e45b0
+    SaleCube() : m_18((Unk_SaleHousingKey)100), m_1c(17), m_20(0) {}
+    Unk_SaleHousingKey m_18;                        // GameEventSaleHousing: the m_68 list (the map key)
+    unsigned m_1c;                                  // the m_70 list
+    int m_20;                                       // the m_78 list
+    int m_pad_24;
 };  // vftable 0x142d3f098, ??_G 0x1403eb7d0, dtor 0x1403e7010
 MS2_CHECK_SIZE(SaleCube, 0x28);
 struct SkillUpgradeSaleEventContext : public CPtred {
@@ -1602,19 +1623,24 @@ MS2_CHECK_SIZE(SnowmanContext, 0x50);
 class StampEventContext : public CPtred {
 public:
     struct Reward : public CPtred {
-        Reward();
+        // @0x1403e43d0
+        Reward() : m_count(0), m_bReceived(0) {}
         int m_count;                    // +0x18 stamps needed
         int m_bReceived;                // +0x1c (a byte on the wire)
         ItemEntity m_item;              // +0x20
         ItemEntity m_item2;             // +0x50
     };  // vftable 0x142d414e8, ??_G 0x1403eb6d0, dtor 0x1403e6f10
     struct Stamp : public CPtred {
-        Stamp();
-        int m_id;                       // +0x18
+        // @0x1403e4750
+        Stamp() : m_id(0), m_bStamped(0), m_20(0), m_24(0) {}
+        unsigned m_id;                  // +0x18 "quest"
         int m_bStamped;                 // +0x1c (a byte on the wire)
-        int m_20;
-        int m_24;
+        int m_20;                       // "x"
+        int m_24;                       // "y"
     };  // vftable 0x142d414d8, ??_G 0x1403eb8d0, dtor 0x1403e70d0
+    // @0x1403e47b0
+    StampEventContext(int eventId) : m_eventId(eventId), m_endTime(0), m_98(0), m_b9c(true) {}
+    explicit StampEventContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x1403fcc90
     void Read(CInPacket& packet);                   // 0x1403fd060
     int GetStampFlag(int id);                       // 0x1403fd5a0: 1/0 stamped, -1 unknown stamp
@@ -1706,10 +1732,11 @@ MS2_CHECK_OFFSET(TreeWateringContext, m_str118, 0x118);
 class TimeRunEventContext : public CPtred {
 public:
     struct QuestContext : public CPtred {
-        QuestContext();
-        unsigned m_questId;             // +0x18
-        int m_1c;
-        int m_20;                       // +0x20 (a short on the wire)
+        // @0x1403e42a0
+        QuestContext() : m_questId(0), m_1c(0), m_20(0) {}
+        unsigned m_questId;             // +0x18 "questID"
+        unsigned m_1c;                  // "distance"
+        int m_20;                       // +0x20 "openingDay" (a short on the wire)
     };  // vftable 0x142d41518, ??_G 0x1403eb610, dtor 0x1403e6e80
     TimeRunEventContext(int eventId);               // 0x1403fe170
     void Write(COutputStream& out);                 // 0x1403fe250

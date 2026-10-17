@@ -6,6 +6,7 @@
 
 #include "ms2/ms2layout.h"
 #include <set>
+#include <atlcoll.h>
 #include <vector>
 #include "ms2/commonfiles/os.h"
 
@@ -21,6 +22,10 @@ struct SkillUpgradeSaleEventContext;
 struct NpcEventDropEventContext;
 class BlueMarbleEventContext;
 class EventTimeLimitDungeonContext;
+class SaleCube;
+class StampEventContext;
+class TimeRunEventContext;
+enum Unk_SaleHousingKey : int;
 
 class CGameRule : public TSingleton<CGameRule>
 {
@@ -82,6 +87,15 @@ public:
     void FUN_14047ba40(int eventId);
     void FUN_140479f30(std::vector<MS2Ptr<EventTimeLimitDungeonContext> >& contexts); // GameEventDungeonEnterTimeLimit
     void FUN_14047a0a0(int eventId);
+    void FUN_14047be80(int eventId, ATL::CRBMultiMap<Unk_SaleHousingKey, MS2Ptr<SaleCube> >& cubes);   // GameEventSaleHousing
+    void FUN_14047bfc0(int eventId);
+    void FUN_14047c020(int eventId, __int64 endTime, const CStringA& a, const CStringA& b, const CStringA& c); // GameEventEpicRestart
+    void FUN_14047c1e0();
+    void FUN_14047c740(int level, const CStringW& str);                            // GameEventLevelUpPackage
+    void FUN_14047c7c0();
+    void FUN_14047c8e0(MS2Ptr<StampEventContext> spContext);                      // GameEventStampEvent
+    void FUN_14047c990(MS2Ptr<StampEventContext> spContext);
+    void FUN_14047d650(MS2Ptr<TimeRunEventContext> spContext);              // GameEventTimeRunEvent start / end (null)
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

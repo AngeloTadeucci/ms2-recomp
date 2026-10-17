@@ -314,7 +314,6 @@ template void Unk_GameEventCopy<GameEventSaleBeautyShop>(void*, const GameEventS
 template void Unk_GameEventCopy<GameEventSaleChat>(void*, const GameEventSaleChat&);
 template void Unk_GameEventCopy<GameEventSaleEnchant>(void*, const GameEventSaleEnchant&);
 template void Unk_GameEventCopy<GameEventSaleGemStoneUpgrade>(void*, const GameEventSaleGemStoneUpgrade&);
-template void Unk_GameEventCopy<GameEventSaleHousing>(void*, const GameEventSaleHousing&);
 template void Unk_GameEventCopy<GameEventSaleItemsRestricted>(void*, const GameEventSaleItemsRestricted&);
 template void Unk_GameEventCopy<GameEventSaleLapenshardUpgradeRGB>(void*, const GameEventSaleLapenshardUpgradeRGB&);
 template void Unk_GameEventCopy<GameEventSalePetCrystal>(void*, const GameEventSalePetCrystal&);
@@ -367,7 +366,6 @@ void Unk_GameEventConstruct(void* p)
 template void Unk_GameEventConstruct<GalleryContext>(void*);
 template void Unk_GameEventConstruct<RpsContext>(void*);
 template void Unk_GameEventConstruct<SnowmanContext>(void*);
-template void Unk_GameEventConstruct<StampEventContext>(void*);
 // These have the gameevent.cpp ctor only; their header-only tag ctors emit the vftable.
 template <class T>
 void Unk_GameEventConstructTagged(void* p)
@@ -375,12 +373,13 @@ void Unk_GameEventConstructTagged(void* p)
     new (p) T(Unk_VftableEmitTag());
 }
 template void Unk_GameEventConstructTagged<GameEventDungeonExtraReward>(void*);
+template void Unk_GameEventConstructTagged<GameEventSaleHousing>(void*);
+template void Unk_GameEventConstructTagged<StampEventContext>(void*);
 template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);
 template void Unk_GameEventConstructTagged<TreeWateringContext>(void*);
 
-enum Unk_SaleHousingKey : int {};             // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
 
 // The non-virtual ??_G of the container elements (allocator<T>::destroy / CAtlMap::FreeNode call `??_G(p, 0)`); the
 // maps are destroyed whole (CNode is private), which emits the ??_GCNode through RemoveAll / FreeNode.
