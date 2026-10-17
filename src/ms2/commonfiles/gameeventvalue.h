@@ -404,7 +404,7 @@ public:
     CGameEventValueBurningLevelup();                // 0x140428170
     ~CGameEventValueBurningLevelup();               // 0x1404281c0
     MS2Ptr<BurningLevelupContext> Get(unsigned eventId);       // 0x140428200
-    void GetAll(std::vector<MS2Ptr<BurningLevelupContext> >& contexts);   // 0x140428300
+    void GetAll(std::list<MS2Ptr<BurningLevelupContext> >& contexts);     // 0x140428300
     void Add(MS2Ptr<BurningLevelupContext> spContext);         // 0x1404283e0
     void Remove(MS2Ptr<BurningLevelupContext> spContext);      // 0x1404284a0
     MS2Ptr<BurningLevelupContext> FindByTarget(int id);        // 0x140428510
@@ -574,7 +574,7 @@ public:
     void Remove(int id);                            // 0x14042a5b0
     MS2Ptr<EventShopNpcContext> Find(unsigned long group, int npcId);  // 0x14042a7d0
     CLockCriticalSection m_lock;
-    std::map<unsigned long, MS2Ptr<EventShopNpcContext> > m_contexts;            // +0x30 Get18 ->
+    std::map<unsigned, MS2Ptr<EventShopNpcContext> > m_contexts;                     // +0x30 Get18 ->
     std::map<unsigned long, Contexts> m_groups;                         // +0x40 Get20 ->
 };
 MS2_CHECK_SIZE(CGameEventValueEventShopNpc, 0x50);
