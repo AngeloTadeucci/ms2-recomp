@@ -9,6 +9,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "npcdata.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/tixmldocument.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -815,4 +816,351 @@ bool CNpcData::HasSkill() const
 int CNpcData::GetRace() const
 {
     return m_nRace;
+}
+
+// --- Table/NpcRegionSpawnData.xml and the NpcData xml cache ---------------------------------------------------------
+
+class Unk_140166420 { public: int FUN_1403974b0(TiXmlDocument* doc, const char* path, int a, bool b, bool c); };
+Unk_140166420* FUN_140166420();
+void* FUN_140166440();
+void FUN_1402804e0(void*, unsigned __int64, unsigned __int64, int, const wchar_t*);
+void FUN_14015eb90(void*, int, int, const wchar_t*, const CString&);
+CString FUN_14071a5b0(const CString& strDir, const CString& strFile);
+int FUN_1408731e0(Unk_140165cf0*, const char*, int&);
+int FUN_1408733e0(Unk_140165cf0*, const char*, CString&);
+int FUN_140873420(Unk_140165cf0*, const char*, CStringW&);
+CStringW FUN_1401bf530(Unk_140165cf0* pElem, const char* pszName, CStringW strDefault);
+void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* pszSep);
+bool FUN_14025cd60(const CStringW&, const CStringW&);
+void FUN_1403992a0(CString pattern, CString directory, std::vector<CString>& output, CString exclude, bool localOnly);
+void* FUN_140166410();
+bool FUN_14036d4b0(void*, const CStringW&);
+CString FUN_14036d8e0(void*);
+bool FUN_1401647e0(const CString&, const CString&);
+float FUN_14028d2e0();
+CStringW FUN_140298ea0(CStringW strKey);
+const char* FUN_14086f4b0(Unk_140165cf0* pElem, const char* pszName);
+
+// The weight table of the black market's rarity roll, reused for the region spawn weights (0x143aac4c8).
+class Unk_NpcWeightMgr { public: int FUN_1406762d0(int nMain, int nSub, int nRare, int nDiff); };
+Unk_NpcWeightMgr* FUN_1401c0db0();
+
+class Unk_NpcTableCli { public: MS2Ptr<CNpcData> FUN_140a7cab0(int nNpcId); };
+static Unk_NpcTableCli* s_pNpcTable;
+
+// How often a query's main / sub tags hit one region spawn row.
+struct Unk_RegionTagHit
+{
+    int m_nMain;
+    int m_nSub;
+};
+
+// @0x1406c8680
+CNpcRegionSpawnData::CNpcRegionSpawnData()
+    : m_nNpcId(0), m_nMaxSpawnCount(0), m_nGroupSpawnCount(0), m_nRareDegree(0), m_nDifficulty(0)
+{
+}
+
+// @0x1406d5570
+CNpcRegionSpawnData::~CNpcRegionSpawnData()
+{
+}
+
+// @0x1406d4fe0
+CRegionSpawnProb::CRegionSpawnProb()
+{
+    m_pSpawn = 0;
+    m_fRate = 0.0f;
+    m_fWeight = 0.0f;
+}
+
+// @0x1406d5620
+CRegionSpawnProb::~CRegionSpawnProb()
+{
+}
+
+// @0x1406d5060
+CRegionSpawnResult::CRegionSpawnResult() : m_nMaxDifficulty(0), m_nMinDifficulty(0), m_nUnused(0)
+{
+}
+
+// @0x1406d5650
+CRegionSpawnResult::~CRegionSpawnResult()
+{
+    m_aProb.RemoveAll();
+}
+
+// @0x1406c8730
+MS2Ptr<CRegionSpawnProb> CRegionSpawnResult::Pick() const
+{
+    if (m_aProb.IsEmpty())
+        return MS2Ptr<CRegionSpawnProb>(0);
+    if (m_aProb.GetCount() == 1)
+        return m_aProb[0];
+    float fRoll = FUN_14028d2e0();
+    float fSum = 0.0f;
+    for (int i = 0; i < (int)m_aProb.GetCount(); i++)
+    {
+        if (fSum <= fRoll && fRoll <= fSum + m_aProb[i]->m_fRate)
+            return m_aProb[i];
+        fSum += m_aProb[i]->m_fRate;
+    }
+    return m_aProb[m_aProb.GetCount() - 1];
+}
+
+// @0x1406cd330
+// MS2-FUNCTIONAL: the exe moves the looked-up pointer into the result (MS2Ptr has no move constructor here)
+MS2Ptr<CNpcData> FUN_1406cd330(int nNpcId)
+{
+    if (nNpcId == 0)
+        return MS2Ptr<CNpcData>(0);
+    return s_pNpcTable->FUN_140a7cab0(nNpcId);
+}
+
+// @0x1406d6e90
+Unk_NpcTableCli* FUN_1406d6e90()
+{
+    return s_pNpcTable;
+}
+
+// @0x1406cd420
+CStringW FUN_1406cd420(int nNpcType)
+{
+    if (nNpcType == 2)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_bank"));
+    if (nNpcType >= 11 && nNpcType <= 29)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_shop"));
+    if (nNpcType >= 31 && nNpcType <= 39)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_beautyshop"));
+    if (nNpcType == 0x50)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_job"));
+    if (nNpcType == 0x51)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_doctor"));
+    if (nNpcType == 0x52)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_transfer"));
+    if (nNpcType == 0x57)
+        return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_enchant"));
+    return FUN_140298ea0(CStringW(L"s_gamedictionary_npc_type_normal"));
+}
+
+// @0x1406cd750
+CNpcDataTable::CNpcDataTable()
+{
+    LoadNpcCache();
+    LoadRegionSpawn();
+}
+
+// @0x1406cd840
+MS2Ptr<CRegionSpawnResult> CNpcDataTable::FindSpawnResult(CStringW strTags, int nMinDifficulty, int nMaxDifficulty)
+{
+    {
+        Unk_CriticalSectionLock lock(m_lock, 1);
+        for (int i = 0; i < (int)m_aResult.GetCount(); i++)
+        {
+            MS2Ptr<CRegionSpawnResult> pResult = m_aResult[i];
+            if (FUN_14025cd60(pResult->m_strTag, strTags) && pResult->m_nMaxDifficulty == nMaxDifficulty &&
+                pResult->m_nMinDifficulty == nMinDifficulty)
+                return pResult;
+        }
+    }
+
+    ATL::CAtlArray<CStringW> aTags;
+    FUN_14025a680(strTags, aTags, L",");
+    for (int i = 0; i < (int)aTags.GetCount(); i++)
+        aTags[i].Trim();
+
+    ATL::CRBMap<unsigned, Unk_RegionTagHit> mapHit(10);
+    for (int nGroup = 0; nGroup < 2; nGroup++)
+    {
+        for (int j = 0; j < (int)aTags.GetCount(); j++)
+        {
+            Unk_BmBoxPtr<ATL::CAtlArray<unsigned> > pIds;
+            {
+                Unk_CriticalSectionLock lock(m_lock, 1);
+                m_mapTag[nGroup].Lookup(aTags[j], pIds);
+            }
+            if (pIds.get() != 0)
+            {
+                for (int k = 0; k < (int)pIds->GetCount(); k++)
+                {
+                    unsigned nNpcId = (*pIds)[k];
+                    MS2Ptr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
+                    if (!(pData == 0))
+                    {
+                        if (nMaxDifficulty < pData->m_nDifficulty)
+                            continue;
+                        if (pData->m_nDifficulty < nMinDifficulty)
+                            continue;
+                        ATL::CRBMap<unsigned, Unk_RegionTagHit>::CPair* pHit = mapHit.Lookup(nNpcId);
+                        if (pHit == 0)
+                        {
+                            Unk_RegionTagHit hit;
+                            hit.m_nMain = nGroup == 0;
+                            hit.m_nSub = nGroup != 0;
+                            mapHit.SetAt(nNpcId, hit);
+                        }
+                        else if (nGroup == 0)
+                            pHit->m_value.m_nMain++;
+                        else
+                            pHit->m_value.m_nSub++;
+                    }
+                }
+            }
+        }
+    }
+
+    MS2Ptr<CRegionSpawnResult> pResult(new CRegionSpawnResult);
+    pResult->m_nMaxDifficulty = nMaxDifficulty;
+    pResult->m_nMinDifficulty = nMinDifficulty;
+    pResult->m_strTag = strTags;
+    float fTotal = 0.0f;
+    for (POSITION pos = mapHit.GetHeadPosition(); pos != 0; mapHit.GetNext(pos))
+    {
+        unsigned nNpcId = mapHit.GetKeyAt(pos);
+        Unk_RegionTagHit hit = mapHit.GetValueAt(pos);
+        MS2Ptr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
+        if (!(pData == 0))
+        {
+            if (hit.m_nMain == 0 && hit.m_nSub == 0)
+                continue;
+            if (hit.m_nMain == (int)pData->m_aTags[0].GetCount())
+            {
+                MS2Ptr<CRegionSpawnProb> pProb(new CRegionSpawnProb);
+                pProb->m_pSpawn = pData;
+                int nDiff = nMaxDifficulty - pData->m_nDifficulty;
+                pProb->m_fWeight = (float)FUN_1401c0db0()->FUN_1406762d0(hit.m_nMain, hit.m_nSub, pData->m_nRareDegree, nDiff);
+                fTotal += pProb->m_fWeight;
+                pResult->m_aProb.Add(pProb);
+            }
+        }
+    }
+    for (int i = 0; i < (int)pResult->m_aProb.GetCount(); i++)
+        pResult->m_aProb[i]->m_fRate = pResult->m_aProb[i]->m_fWeight / fTotal;
+    {
+        Unk_CriticalSectionLock lock(m_lock, 1);
+        m_aResult.Add(pResult);
+    }
+    return pResult;
+}
+
+// @0x1406ce1d0
+MS2Ptr<CNpcRegionSpawnData> CNpcDataTable::GetRegionSpawnData(int nNpcId)
+{
+    Unk_CriticalSectionLock lock(m_lock, 1);
+    MS2Ptr<CNpcRegionSpawnData> pData(0);
+    m_mapSpawn.Lookup(nNpcId, pData);
+    return pData;
+}
+
+// @0x1406ce280
+void CNpcDataTable::IndexRegionSpawn(MS2Ptr<CNpcRegionSpawnData> pData)
+{
+    if (!(pData == 0))
+    {
+        Unk_CriticalSectionLock lock(m_lock, 1);
+        for (int nGroup = 0; nGroup < 2; nGroup++)
+        {
+            for (int i = 0; i < (int)pData->m_aTags[nGroup].GetCount(); i++)
+            {
+                CStringW strTag = pData->m_aTags[nGroup][i];
+                Unk_BmBoxPtr<ATL::CAtlArray<unsigned> > pIds;
+                if (!m_mapTag[nGroup].Lookup(strTag, pIds))
+                {
+                    pIds = Unk_BmNewTag(0);
+                    m_mapTag[nGroup].SetAt(strTag, pIds);
+                }
+                pIds->Add(pData->m_nNpcId);
+            }
+        }
+    }
+}
+
+// @0x1406ce4a0
+void CNpcDataTable::LoadNpcCache()
+{
+    std::vector<CString> aFiles;
+    FUN_140166420();
+    FUN_1403992a0(CString(".xml"), CString("./Data/Xml/NpcData/"), aFiles, CString(""), false);
+    for (std::vector<CString>::iterator it = aFiles.begin(); it != aFiles.end(); ++it)
+    {
+        int nNpcId = GetIdFromPath(*it);
+        m_mapLoaded[nNpcId] = false;
+        CCacheData* pCache = new CCacheData(CString(*it));
+        m_mapCache[nNpcId].AssignRaw(pCache);
+    }
+}
+
+// @0x1406ce6d0
+void CNpcDataTable::LoadRegionSpawn()
+{
+    CString strPath = FUN_14071a5b0(CString("Table"), CString("NpcRegionSpawnData.xml"));
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+    {
+        FUN_1402804e0(FUN_140166440(), 0, 0, 0xc, L"NpcDataTable.cpp:Init : File not found NpcRegionSpawnData.xml");
+        return;
+    }
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return;
+    }
+    for (Unk_140165cf0* pNode = pRoot->FUN_140165cf0("NpcRegionSpawnData"); pNode != 0;
+         pNode = pNode->FUN_140168650("NpcRegionSpawnData"))
+    {
+        CStringW strFeature;
+        CString strLocale;
+        FUN_140873420(pNode, "feature", strFeature);
+        FUN_1408733e0(pNode, "locale", strLocale);
+        bool bSkip = !strLocale.IsEmpty() && FUN_1401647e0(strLocale, FUN_14036d8e0(FUN_140166410()));
+        if (bSkip)
+            continue;
+        if (!FUN_14036d4b0(FUN_140166410(), strFeature))
+            continue;
+        MS2Ptr<CNpcRegionSpawnData> pData(new CNpcRegionSpawnData);
+        pData->m_nNpcId = atoi(FUN_14086f4b0(pNode, "npcID"));
+        CStringW strMain = FUN_1401bf530(pNode, "mainTags", CStringW(L""));
+        FUN_14025a680(strMain, pData->m_aTags[0], L",");
+        CStringW strSub = FUN_1401bf530(pNode, "subTags", CStringW(L""));
+        FUN_14025a680(strSub, pData->m_aTags[1], L",");
+        for (int nGroup = 0; nGroup < 2; nGroup++)
+            for (int i = 0; i < (int)pData->m_aTags[nGroup].GetCount(); i++)
+                pData->m_aTags[nGroup][i].Trim();
+        FUN_1408731e0(pNode, "maxSpawnCount", pData->m_nMaxSpawnCount);
+        FUN_1408731e0(pNode, "groupSpawnCount", pData->m_nGroupSpawnCount);
+        FUN_1408731e0(pNode, "rareDegree", pData->m_nRareDegree);
+        FUN_1408731e0(pNode, "difficulty", pData->m_nDifficulty);
+        {
+            Unk_CriticalSectionLock lock(m_lock, 1);
+            m_mapSpawn.SetAt(pData->m_nNpcId, pData);
+        }
+        IndexRegionSpawn(pData);
+    }
+}
+
+// @0x1406ced30
+int CNpcDataTable::GetIdFromPath(const CStringA& strPath)
+{
+    char szName[256];
+    _splitpath(strPath, 0, 0, szName, 0);
+    return atoi(szName);
+}
+
+// @0x1406cedb0
+bool CNpcDataTable::NeedsLoad(int nNpcId)
+{
+    Unk_CriticalSectionLock lock(m_lock, 1);
+    std::map<int, MS2Ptr<CCacheData> >::iterator it = m_mapCache.find(nNpcId);
+    if (it == m_mapCache.end())
+        return false;
+    MS2Ptr<CCacheData> pCache = it->second;
+    if (pCache == 0)
+        return false;
+    if (FUN_1401d1320(pCache.get()) != 0)
+        return true;
+    std::map<int, bool>::iterator itLoaded = m_mapLoaded.find(nNpcId);
+    if (itLoaded == m_mapLoaded.end())
+        return false;
+    return itLoaded->second != true;
 }

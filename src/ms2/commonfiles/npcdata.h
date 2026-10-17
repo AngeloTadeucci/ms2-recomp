@@ -14,6 +14,9 @@
 #include <vector>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
+#include <map>
+#include "ms2/commonfiles/blackmarketitemoption.h"
+#include "ms2/placeholder/ccachedata.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/cptred.h"
 #include "ms2/placeholder/nipoint3.h"
@@ -324,3 +327,76 @@ public:
     Unk_NpcEffect m_effect;                                 // +0x488
 };
 MS2_CHECK_SIZE(CNpcData, 0x520);
+
+// One row of Table/NpcRegionSpawnData.xml: the npc spawned in a region, selected by its main / sub tags.
+class CNpcRegionSpawnData : public CPtred
+{
+public:
+    CNpcRegionSpawnData();                                  // 0x1406c8680
+    virtual ~CNpcRegionSpawnData();                         // 0x1406d5570
+
+    int m_nNpcId;                                           // +0x18 npcID
+    ATL::CAtlArray<CStringW> m_aTags[2];                    // +0x20 mainTags, +0x40 subTags (trimmed pieces)
+    int m_nMaxSpawnCount;                                   // +0x60
+    int m_nGroupSpawnCount;                                 // +0x64
+    int m_nRareDegree;                                      // +0x68
+    int m_nDifficulty;                                      // +0x6c
+};
+MS2_CHECK_SIZE(CNpcRegionSpawnData, 0x70);
+
+// A candidate of a spawn result: the region spawn row and its chance.
+class CRegionSpawnProb : public CPtred
+{
+public:
+    CRegionSpawnProb();                                     // 0x1406d4fe0
+    virtual ~CRegionSpawnProb();                            // 0x1406d5620
+
+    MS2Ptr<CNpcRegionSpawnData> m_pSpawn;                   // +0x18
+    float m_fRate;                                          // +0x28 share of the total weight
+    float m_fWeight;                                        // +0x2c
+};
+MS2_CHECK_SIZE(CRegionSpawnProb, 0x30);
+
+// The candidates of one (tag, difficulty range) query of the table.
+class CRegionSpawnResult : public CPtred
+{
+public:
+    CRegionSpawnResult();                                   // 0x1406d5060
+    virtual ~CRegionSpawnResult();                          // 0x1406d5650
+
+    MS2Ptr<CRegionSpawnProb> Pick() const;                  // 0x1406c8730 weighted random candidate
+
+    CStringW m_strTag;                                      // +0x18
+    int m_nMaxDifficulty;                                   // +0x20
+    int m_nMinDifficulty;                                   // +0x24
+    ATL::CAtlArray<MS2Ptr<CRegionSpawnProb> > m_aProb;      // +0x28
+    int m_nUnused;                                          // +0x48
+};
+MS2_CHECK_SIZE(CRegionSpawnResult, 0x50);
+
+class Unk_NpcDataTableCli;
+
+// The table behind Table/NpcRegionSpawnData.xml and Xml/NpcData/*.xml (log tag "NpcDataTable.cpp:Init"). The npc rows
+// themselves are kept by the derived client table (npcdatacli.cpp); this class owns the lock, the cache bookkeeping of
+// the loaded xml files and the region spawn rows.
+class CNpcDataTable
+{
+public:
+    CNpcDataTable();                                                    // 0x1406cd750
+
+    MS2Ptr<CRegionSpawnResult> FindSpawnResult(CStringW strTags, int nMinDifficulty, int nMaxDifficulty);    // 0x1406cd840
+    MS2Ptr<CNpcRegionSpawnData> GetRegionSpawnData(int nNpcId);         // 0x1406ce1d0
+    void IndexRegionSpawn(MS2Ptr<CNpcRegionSpawnData> pData);           // 0x1406ce280
+    void LoadNpcCache();                                                // 0x1406ce4a0
+    void LoadRegionSpawn();                                             // 0x1406ce6d0
+    int GetIdFromPath(const CStringA& strPath);                         // 0x1406ced30 (the number in "<id>.xml")
+    bool NeedsLoad(int nNpcId);                                         // 0x1406cedb0
+
+    CLockCriticalSection m_lock;                                        // +0x00
+    std::map<int, MS2Ptr<CCacheData> > m_mapCache;                      // +0x30 per npc xml file
+    std::map<int, bool> m_mapLoaded;                                    // +0x40
+    ATL::CAtlArray<MS2Ptr<CRegionSpawnResult> > m_aResult;              // +0x50 cached FindSpawnResult results
+    ATL::CAtlMap<int, MS2Ptr<CNpcRegionSpawnData> > m_mapSpawn;         // +0x70 by npc id
+    ATL::CRBMap<CStringW, Unk_BmBoxPtr<ATL::CAtlArray<unsigned> > > m_mapTag[2];                   // +0xb8 main / sub tag -> npc ids
+};
+MS2_CHECK_SIZE(CNpcDataTable, 0x118);
