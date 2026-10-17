@@ -3,6 +3,7 @@
 #include <afx.h>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
+#include "ms2/commonfiles/timer.h"
 class GPUManager;
 template <class T> class TSingleton;
 template <> class TSingleton<GPUManager> {
@@ -10,19 +11,9 @@ public:
     TSingleton();
     virtual ~TSingleton() { s_instance = 0; }
     static GPUManager* s_instance;
+    static GPUManager* GetInstance();                   // 0x141245b20
 };
 
-// Poll timer (same class as uidungeonrewarddialog.h's Timer; CPtred-derived, 0x38).
-class Timer {
-public:
-    Timer();
-    ~Timer();
-    int FUN_140868c00();
-    void FUN_140868750(unsigned int ms);
-private:
-    void* m_0; void* m_8; void* m_10; void* m_18; void* m_20; void* m_28; void* m_30;
-};
-MS2_CHECK_SIZE(Timer, 0x38);
 
 // Vendor helper interface (unrecovered base of NvidiaGPU / ATiGPU). Never instantiated here.
 class Unk_GPUBase {

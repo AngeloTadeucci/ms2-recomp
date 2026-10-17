@@ -49,6 +49,7 @@ public:
     TSingleton();                           // 0x1405a1600
     virtual ~TSingleton() { s_instance = 0; }   // 0x1405a1940 (scalar deleting 0x1405a1ed0)
     static ItemGachaBoxTable* s_instance;
+    static ItemGachaBoxTable* GetInstance();     // 0x14052d230
 };
 
 // The table. RTTI ItemGachaBoxTable, 0x18 bytes; vftable 0x142d61e10; the map is cleared and refilled by the loader.

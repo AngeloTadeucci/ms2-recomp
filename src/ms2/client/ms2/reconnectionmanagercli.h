@@ -12,6 +12,7 @@ public:
     TSingleton();
     virtual ~TSingleton() { s_instance = 0; }
     static CReconnectionManagerCli* s_instance;
+    static CReconnectionManagerCli* GetInstance();      // 0x140e800e0
 };
 class UIReconnectTopLayerNotify;
 class CReconnectionManagerCli : public TSingleton<CReconnectionManagerCli> {

@@ -94,6 +94,7 @@ public:
     TSingleton();                           // 0x1401ef7d0
     virtual ~TSingleton() { s_instance = 0; }   // 0x1401f0560
     static CChatEmoticonTable* s_instance;
+    static CChatEmoticonTable* GetInstance();           // 0x1409eecd0
 };
 
 // The table. RTTI CChatEmoticonTable, 0x20 bytes: TSingleton +0 (vftable 0x142cf1328), CValidData +8 (0x142cf1338),

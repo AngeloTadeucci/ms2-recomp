@@ -158,6 +158,7 @@ public:
     TSingleton();                                   // 0x141786300
     virtual ~TSingleton() { s_instance = 0; }
     static CSoundEventMgr* s_instance;              // 0x143ac1928
+    static CSoundEventMgr* GetInstance();               // 0x140d13c40
 };
 
 // The sound designer's tool history: an undo/redo style list with a cursor. Instantiated for MusicData, ReverbData

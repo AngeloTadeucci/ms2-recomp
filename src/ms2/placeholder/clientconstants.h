@@ -34,6 +34,7 @@ public:
     TSingleton();
     virtual ~TSingleton();
     static Client::Constants* s_instance;
+    static Client::Constants* GetInstance();        // 0x1401d3200 (FUN_1401d3200 below)
 };
 
 // @0x1401d3200 TSingleton<Client::Constants>::GetInstance as seen from Common::Constants code.

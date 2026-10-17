@@ -4,6 +4,7 @@
 #include <atlcoll.h>
 #include "ms2/placeholder/cptred.h"
 #include "os.h"
+#include "commonstringtable.h"   // TextFilterUnit
 class Unk_BanReader { public: virtual void vfunc_0(); virtual unsigned char vfunc_1(); virtual unsigned short vfunc_2(); virtual unsigned vfunc_3(); virtual __int64 vfunc_4(); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual CStringW vfunc_8(); };
 class Unk_BanWriter { public: virtual void vfunc_0(); virtual void vfunc_1(unsigned char); virtual void vfunc_2(unsigned short); virtual void vfunc_3(unsigned); virtual void vfunc_4(__int64); virtual void vfunc_5(); virtual void vfunc_6(); virtual void vfunc_7(); virtual void vfunc_8(const CStringW&); };
 class Unk_BanRef { public: void FUN_14015b020(); int FUN_140159bc0(); void FUN_140159ba0(); };
@@ -42,15 +43,6 @@ private:
     void* pad; T* p;
 };
 template<> inline void Unk_BanPtr<BannedWordData>::ReleaseImpl(void*) { BannedWordData* value=p; if(reinterpret_cast<Unk_BanRef*>(value)->FUN_140159bc0()==0) { Reference(value); reinterpret_cast<Unk_BanRef*>(value)->FUN_140159ba0(); } }
-class TextFilterUnit : public CPtred {
-public:
-    TextFilterUnit(); virtual ~TextFilterUnit();
-    bool FUN_140223fe0(const CStringW&,int,bool,int*,int*,CStringW&);
-    void FUN_140224170(); void FUN_140223de0(const CStringW&,int,CStringW);
-private:
-    void* p18; void* p20; void* p28; void* p30; void* p38; void* p40; void* p48; void* p50; void* p58; void* p60; void* p68; void* p70;
-};
-MS2_CHECK_SIZE(TextFilterUnit,0x78);
 class CBannedWordFilter : public CPtred {
 public:
     typedef Unk_BanPtr<BannedWordData> WordPtr;

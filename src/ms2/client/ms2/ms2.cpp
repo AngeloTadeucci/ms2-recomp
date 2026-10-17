@@ -52,6 +52,235 @@
 #include "ms2physxallocator.h"
 #include "ms2shadowclickgenerator.h"
 #include "networkservice.h"
+// the manager singletons CGameApp::InitInstance creates
+#include "ms2/client/ms2/achievemanager.h"
+#include "ms2/client/ms2/animationcallbackmanager.h"
+#include "ms2/client/ms2/autofindtaxistation.h"
+#include "ms2/client/ms2/battlerecordmanager.h"
+#include "ms2/client/ms2/bgtransparencymgr.h"
+#include "ms2/client/ms2/blockmanager.h"
+#include "ms2/client/ms2/buddymanager.h"
+#include "ms2/client/ms2/camera.h"
+#include "ms2/client/ms2/clubcli.h"
+#include "ms2/client/ms2/commoneffectdummy.h"
+#include "ms2/client/ms2/cubemapinformationservice_2.h"
+#include "ms2/client/ms2/effectservice.h"
+#include "ms2/client/ms2/effectskipmgr.h"
+#include "ms2/client/ms2/filepreload_1.h"
+#include "ms2/client/ms2/gpumanager.h"
+#include "ms2/client/ms2/groupchatmanager.h"
+#include "ms2/client/ms2/guildmanager.h"
+#include "ms2/client/ms2/homeblockmanager.h"
+#include "ms2/client/ms2/multisceneupdater.h"
+#include "ms2/client/ms2/nifeffectparam.h"
+#include "ms2/client/ms2/partymanager.h"
+#include "ms2/client/ms2/questmanager_2.h"
+#include "ms2/client/ms2/reconnectionmanagercli.h"
+#include "ms2/client/ms2/serverlisttable.h"
+#include "ms2/client/ms2/soundeventmgr.h"
+#include "ms2/client/ms2/stateeffectmgr.h"
+#include "ms2/client/ms2/trademanagerex.h"
+#include "ms2/client/ms2/uidungeoncategory.h"
+#include "ms2/client/ms2/uiitemenchantdialog.h"
+#include "ms2/client/ms2/uiquesteventlistener.h"
+#include "ms2/commonfiles/adventureleveltablehelper.h"
+#include "ms2/commonfiles/banktable.h"
+#include "ms2/commonfiles/chapterbooktable.h"
+#include "ms2/commonfiles/chatemoticontable.h"
+#include "ms2/commonfiles/clubcommon.h"
+#include "ms2/commonfiles/commonstringtable.h"
+#include "ms2/commonfiles/continentregiontable.h"
+#include "ms2/commonfiles/dynamicbanwordmanager.h"
+#include "ms2/commonfiles/enchantscrolldata.h"
+#include "ms2/commonfiles/famegradedata.h"
+#include "ms2/commonfiles/fieldmetatable.h"
+#include "ms2/commonfiles/filesystem.h"
+#include "ms2/commonfiles/item.h"
+#include "ms2/commonfiles/itembreakmanager.h"
+#include "ms2/commonfiles/itemgachaboxtable.h"
+#include "ms2/commonfiles/itemsocketsystemutil.h"
+#include "ms2/commonfiles/localepath.h"
+#include "ms2/commonfiles/logstring.h"
+#include "ms2/commonfiles/os.h"
+#include "ms2/commonfiles/portaltable.h"
+#include "ms2/commonfiles/questdatatable.h"
+#include "ms2/commonfiles/reactordata.h"
+#include "ms2/commonfiles/sounddatatable.h"
+#include "ms2/commonfiles/specialeffectfunctionmanager.h"
+#include "ms2/commonfiles/taileffectdatatable.h"
+#include "ms2/commonfiles/trafficoptimizer.h"
+#include "ms2/commonfiles/ugccubecategorytable.h"
+#include "ms2/commonfiles/ugcmapsetiteminfo.h"
+#include "ms2/guess/usercommandcli.h"
+#include "ms2/placeholder/applyeffect.h"
+#include "ms2/placeholder/attendgiftdatatable.h"
+#include "ms2/placeholder/blindmanager.h"
+#include "ms2/placeholder/cadbannermanagercli.h"
+#include "ms2/placeholder/carcadedatatable.h"
+#include "ms2/placeholder/casyncimageloader.h"
+#include "ms2/placeholder/cbigdatalogsystem.h"
+#include "ms2/placeholder/cblackmarketman.h"
+#include "ms2/placeholder/ccashcallmanager.h"
+#include "ms2/placeholder/ccashmarketman.h"
+#include "ms2/placeholder/cchangejobtable.h"
+#include "ms2/placeholder/ccharacterabilitymanager.h"
+#include "ms2/placeholder/ccharacterabilitytable.h"
+#include "ms2/placeholder/ccontentshutdownmanager.h"
+#include "ms2/placeholder/ccoupleemotiontable.h"
+#include "ms2/placeholder/cdirwatcher.h"
+#include "ms2/placeholder/cdpsmetersystem.h"
+#include "ms2/placeholder/cexptable.h"
+#include "ms2/placeholder/cfeaturemanager.h"
+#include "ms2/placeholder/cfieldmaidmanager.h"
+#include "ms2/placeholder/cfieldmissiontable.h"
+#include "ms2/placeholder/cfishingtable.h"
+#include "ms2/placeholder/cgameeventvaluemanager.h"
+#include "ms2/placeholder/cgameoption.h"
+#include "ms2/placeholder/cgamerule.h"
+#include "ms2/placeholder/cgfxlanguage.h"
+#include "ms2/placeholder/cgloabalfactor.h"
+#include "ms2/placeholder/cgraphicoptiontable.h"
+#include "ms2/placeholder/cguidemanager.h"
+#include "ms2/placeholder/cguildxmldata.h"
+#include "ms2/placeholder/cignorefile.h"
+#include "ms2/placeholder/cindividualarenadatatable.h"
+#include "ms2/placeholder/cinstrumentdatatable.h"
+#include "ms2/placeholder/citemdatatable.h"
+#include "ms2/placeholder/citemenchantlimittable.h"
+#include "ms2/placeholder/citemenchanttransformtable.h"
+#include "ms2/placeholder/citemenchantutil.h"
+#include "ms2/placeholder/citemexchangescrolltable.h"
+#include "ms2/placeholder/citemextractiontable.h"
+#include "ms2/placeholder/citemgempropertytable.h"
+#include "ms2/placeholder/citemgemstonedata.h"
+#include "ms2/placeholder/citemlapenshardtable.h"
+#include "ms2/placeholder/citemloader.h"
+#include "ms2/placeholder/citemmergeoptiontable.h"
+#include "ms2/placeholder/citemoptiontable.h"
+#include "ms2/placeholder/citemremakescrolltable.h"
+#include "ms2/placeholder/citemrepackingscrolltable.h"
+#include "ms2/placeholder/citemsocketscrolltable.h"
+#include "ms2/placeholder/cjobconditiontable.h"
+#include "ms2/placeholder/ckeytable.h"
+#include "ms2/placeholder/clientconstants.h"
+#include "ms2/placeholder/clientlogmanager.h"
+#include "ms2/placeholder/cloadingdescriptiontable.h"
+#include "ms2/placeholder/cloadingimagetable.h"
+#include "ms2/placeholder/cluaclient.h"
+#include "ms2/placeholder/cmachineidmanager.h"
+#include "ms2/placeholder/cmaiddesctable.h"
+#include "ms2/placeholder/cmaidexptable.h"
+#include "ms2/placeholder/cmaidinfotable.h"
+#include "ms2/placeholder/cmaidmanufacturemsgtable.h"
+#include "ms2/placeholder/cmaidrecipegrouptable.h"
+#include "ms2/placeholder/cmaidrecipetable.h"
+#include "ms2/placeholder/cmanufacturemanager.h"
+#include "ms2/placeholder/cmasteryinteriortable.h"
+#include "ms2/placeholder/cmasterymanager.h"
+#include "ms2/placeholder/cmasterytable.h"
+#include "ms2/placeholder/cmenteesearchmanager.h"
+#include "ms2/placeholder/cmentoringmanager.h"
+#include "ms2/placeholder/cmeratmarketman.h"
+#include "ms2/placeholder/cmesomarketman.h"
+#include "ms2/placeholder/cmicrogamemanagercli.h"
+#include "ms2/placeholder/cnametagsymboltable.h"
+#include "ms2/placeholder/cnpsman.h"
+#include "ms2/placeholder/commonresource.h"
+#include "ms2/placeholder/conlinepatchmanagercli.h"
+#include "ms2/placeholder/cooltimemanager.h"
+#include "ms2/placeholder/costumesettable.h"
+#include "ms2/placeholder/cpceffectdummy.h"
+#include "ms2/placeholder/cpetdatatable.h"
+#include "ms2/placeholder/cpetmanager.h"
+#include "ms2/placeholder/cpopupprofileimageman.h"
+#include "ms2/placeholder/cpricetable.h"
+#include "ms2/placeholder/cpvpmanager.h"
+#include "ms2/placeholder/cquestmasktable.h"
+#include "ms2/placeholder/cquestnavigationmap.h"
+#include "ms2/placeholder/cquestnavigator.h"
+#include "ms2/placeholder/cquesttable.h"
+#include "ms2/placeholder/crankingarenadatatable.h"
+#include "ms2/placeholder/crankviewer.h"
+#include "ms2/placeholder/crashmanagercli.h"
+#include "ms2/placeholder/creservedwordtable.h"
+#include "ms2/placeholder/crewardpreviewtable.h"
+#include "ms2/placeholder/cscripttable.h"
+#include "ms2/placeholder/cseasondatatable.h"
+#include "ms2/placeholder/cserverstring.h"
+#include "ms2/placeholder/cshopeventmanager.h"
+#include "ms2/placeholder/cskillcompactcontroltable.h"
+#include "ms2/placeholder/cskillsettable.h"
+#include "ms2/placeholder/csmartpushmanager.h"
+#include "ms2/placeholder/csmartpushtable.h"
+#include "ms2/placeholder/csmartrecommendshoptable.h"
+#include "ms2/placeholder/csoapclient.h"
+#include "ms2/placeholder/cspecialdungeondatatable.h"
+#include "ms2/placeholder/cstorybooktable.h"
+#include "ms2/placeholder/cstringtable.h"
+#include "ms2/placeholder/ctaximanager.h"
+#include "ms2/placeholder/ctitletable.h"
+#include "ms2/placeholder/cugcdesigntable.h"
+#include "ms2/placeholder/cugcdownloaddown.h"
+#include "ms2/placeholder/cugcdownloadload.h"
+#include "ms2/placeholder/cugcgetcosttable.h"
+#include "ms2/placeholder/cugcmanager.h"
+#include "ms2/placeholder/cusereventmanager.h"
+#include "ms2/placeholder/cusermaidmanager.h"
+#include "ms2/placeholder/cviptable.h"
+#include "ms2/placeholder/dungeonmissiondatatable.h"
+#include "ms2/placeholder/dungeonroomtable.h"
+#include "ms2/placeholder/fieldwardatatable.h"
+#include "ms2/placeholder/fishingmanager.h"
+#include "ms2/placeholder/gamedictionarymanager.h"
+#include "ms2/placeholder/gameeventmanagercli.h"
+#include "ms2/placeholder/gameeventuservaluemanager.h"
+#include "ms2/placeholder/gamerankingcli.h"
+#include "ms2/placeholder/itemdroptable.h"
+#include "ms2/placeholder/itempreviewmgr.h"
+#include "ms2/placeholder/jobtable.h"
+#include "ms2/placeholder/loginbgbgmtable.h"
+#include "ms2/placeholder/mentoringdatatable.h"
+#include "ms2/placeholder/notifysystem.h"
+#include "ms2/placeholder/npcdatatablecli.h"
+#include "ms2/placeholder/oncecallbacktimer.h"
+#include "ms2/placeholder/packethandlermanager.h"
+#include "ms2/placeholder/paybackmanagerclient.h"
+#include "ms2/placeholder/paybacktable.h"
+#include "ms2/placeholder/pcactiondatatable.h"
+#include "ms2/placeholder/recodemgr.h"
+#include "ms2/placeholder/rewardcontentstable.h"
+#include "ms2/placeholder/setitemtable.h"
+#include "ms2/placeholder/skilldatatablecli.h"
+#include "ms2/placeholder/soundpropertymgr.h"
+#include "ms2/placeholder/stancetable.h"
+#include "ms2/placeholder/stringmanager.h"
+#include "ms2/placeholder/termtagmanagercli.h"
+#include "ms2/placeholder/ugchomeoptiondata.h"
+#include "ms2/placeholder/uibottomcenteralignmanager.h"
+#include "ms2/placeholder/uibuddyeventdispatcher.h"
+#include "ms2/placeholder/uidialogeventdispatcher.h"
+#include "ms2/placeholder/uientityeventdispatcher.h"
+#include "ms2/placeholder/uiservereventdispatcher.h"
+#include "ms2/placeholder/uistatuseventdispatcher.h"
+#include "ms2/placeholder/uitalkmanager.h"
+#include "ms2/placeholder/uiugceventdispatcher.h"
+#include "ms2/placeholder/uiworldshareinfoeventdispatcher.h"
+#include "ms2/placeholder/webguidetable.h"
+#include "ms2/placeholder/weddingemotiontable.h"
+#include "ms2/placeholder/weddingmanager.h"
+#include "ms2/placeholder/weddingtable.h"
+#include "ms2/placeholder/worldmapmanager.h"
+#include "ms2/unnamed/unit_1406125d0.h"
+#include "ms2/unnamed/unit_140ad1860.h"
+
+// The create-or-get step InitInstance runs for every manager singleton: the live instance if one exists, else a new
+// one (its ctor registers it). One COMDAT per T (0x141498d90-0x14149fc10, sorted by T); the name is invented.
+template <class T>
+class Unk_SingletonCreator
+{
+public:
+    static T* CreateInstance() { return TSingleton<T>::s_instance ? TSingleton<T>::GetInstance() : new T; }
+};
 
 // The single-instance marker: a named auto-reset event "<base>_<n>" for the first n that does not exist yet. The index
 // numbers the log file ("MapleStory2_<n>.log"). Name invented (inline in the exe; dtor also folded into engine code).
@@ -91,7 +320,6 @@ class Unk_Ms2Window { public: HWND FUN_14209c720(); };                       // 
 Unk_Ms2Window* FUN_140aadf80();
 class Unk_Ms2SceneState { public: void FUN_1417e25a0(int nScene); };
 Unk_Ms2SceneState* FUN_140aa6d30();
-CCrashManager* FUN_140a44830();
 class Unk_Ms2Input
 {
 public:
@@ -108,14 +336,8 @@ void FUN_14161c360(COptimizer* pOptimizer);
 class Unk_Ms2PhysXHelper;
 Unk_Ms2PhysXHelper* FUN_1409f7ca0();
 void FUN_1414a2a10();                                           // TSingleton delete of FUN_1409f7ca0()
-void FUN_1414a3f10();                                           // TSingleton delete of FUN_140a44830()
+void FUN_1414a3f10();                                           // TSingleton delete of CrashManagerCli::GetInstance()
 void FUN_140cca840(int n);                                      // crash on purpose (the /crash command)
-class Unk_Ms2Recoder { public: void FUN_140c9bc00(); void FUN_140c9bb20(); };
-Unk_Ms2Recoder* FUN_140c9cb20();
-class Unk_Ms2ImageLoader { public: void FUN_140a58b90(); void FUN_140a58b10(); };
-Unk_Ms2ImageLoader* FUN_140a5af70();
-class Unk_Ms2GameOption { public: void FUN_141243850(); void FUN_141243860(); void FUN_1412438d0(); void FUN_1412438e0(); };
-Unk_Ms2GameOption* FUN_1409a8b10();
 class Unk_Ms2PrecacheOption;
 Unk_Ms2PrecacheOption* FUN_1406aeee0();
 bool FUN_1406af0a0(Unk_Ms2PrecacheOption* p);
@@ -127,8 +349,6 @@ extern const NiFixedString DAT_143ae5290, DAT_143ae5298, DAT_143ae52a0;   // the
 extern char DAT_143afc8d0, DAT_143afc898, DAT_143afc8e8, DAT_143afc900, DAT_143afcb90, DAT_143afcba8, DAT_143b08a3c;
 extern int DAT_143ab0248;                                       // the service locale
 CString FUN_14028dc80(int nId);                                 // a string table text
-class Unk_Ms2Features { public: int FUN_14036d8b0(); CString FUN_14036d8e0(); };
-Unk_Ms2Features* FUN_140166410();
 int FUN_1414a5a40(CStringW sPath);                              // _wmkdir
 // Clears a ServiceManager flag (+0x119) before the shutdown request: an MS2 engine addition missing from the SDK
 // headers (the exe calls it through SmartPointer::operator->).
@@ -374,8 +594,8 @@ void MS2::Shutdown()
         KillTimer(FUN_140aadf80()->FUN_14209c720(), 1000);
     if (FUN_140aa6d30())
         FUN_140aa6d30()->FUN_1417e25a0(0);
-    if (FUN_140a44830())
-        FUN_140a44830()->FUN_1401ce420();
+    if (CrashManagerCli::GetInstance())
+        CrashManagerCli::GetInstance()->FUN_1401ce420();
     if (m_spServiceManager) {
         FUN_1414a6180(m_spServiceManager);
         m_spServiceManager->Shutdown(false);
@@ -399,13 +619,13 @@ void MS2::Shutdown()
     }
     if (m_bCrashOnShutdown)
         FUN_140cca840(0);
-    if (FUN_140a44830())
+    if (CrashManagerCli::GetInstance())
         FUN_1414a3f10();
 }
 // @0x14148b340
 bool MS2::OnLostDevice(void* pvData)
 {
-    FUN_140c9cb20()->FUN_140c9bc00();
+    RecodeMgr::GetInstance()->FUN_140c9bc00();
     return true;
 }
 MS2_REPLACE(0x14148B340, MS2::OnLostDevice, 29, 0x4B7A9898);
@@ -462,7 +682,7 @@ efd::SyncResult MS2::OnPreInit(efd::IDependencyRegistrar* pDependencyRegistrar)
     pDependencyRegistrar->AddDependency<egf::FlatModelManager>(1);
     pDependencyRegistrar->AddDependency<ecr::RenderService>(1);
     pDependencyRegistrar->AddDependency<ecr::LightService>(1);
-    FUN_1409a8b10()->FUN_141243850();
+    CGameOption::GetInstance()->FUN_141243850();
     return efd::SyncResult_Success;
 }
 MS2_REPLACE_METHOD(0x14148ED60, MS2, OnPreInit, 142, 0xA3212BCD);
@@ -500,7 +720,7 @@ efd::AsyncResult MS2::OnInit()
     efd::SmartPointer<ecr::RenderService> spRenderService = m_spServiceManager->GetSystemServiceAs<ecr::RenderService>();
     if (FUN_1406af0a0(FUN_1406aeee0()))
         Precache();
-    FUN_1409a8b10()->FUN_141243860();
+    CGameOption::GetInstance()->FUN_141243860();
     NiDX9Renderer* pkRenderer = NiDynamicCast(NiDX9Renderer, NiRenderer::GetRenderer());
     if (pkRenderer)
         pkRenderer->AddLostDeviceNotificationFunc(OnLostDevice, this);
@@ -510,21 +730,21 @@ MS2_REPLACE_METHOD(0x14148EE00, MS2, OnInit, 880, 0x26CD498D);
 // @0x14148f180
 efd::AsyncResult MS2::OnTick()
 {
-    FUN_1409a8b10()->FUN_1412438d0();
-    if (FUN_140a5af70())
-        FUN_140a5af70()->FUN_140a58b90();
+    CGameOption::GetInstance()->FUN_1412438d0();
+    if (CAsyncImageLoader::GetInstance())
+        CAsyncImageLoader::GetInstance()->FUN_140a58b90();
     return efd::AsyncResult_Pending;
 }
 MS2_REPLACE_METHOD(0x14148F180, MS2, OnTick, 55, 0xFB1E44E9);
 // @0x14148f1c0
 efd::AsyncResult MS2::OnShutdown()
 {
-    FUN_140c9cb20()->FUN_140c9bc00();
-    FUN_140c9cb20()->FUN_140c9bb20();
-    if (FUN_140a5af70())
-        FUN_140a5af70()->FUN_140a58b10();
+    RecodeMgr::GetInstance()->FUN_140c9bc00();
+    RecodeMgr::GetInstance()->FUN_140c9bb20();
+    if (CAsyncImageLoader::GetInstance())
+        CAsyncImageLoader::GetInstance()->FUN_140a58b10();
     efd::AsyncResult eResult = efd::AsyncResult_Complete;
-    FUN_1409a8b10()->FUN_1412438e0();
+    CGameOption::GetInstance()->FUN_1412438e0();
     m_spDirShadowMaterial = 0;
     m_spPointShadowMaterial = 0;
     m_spSpotShadowMaterial = 0;
@@ -651,7 +871,7 @@ efd::utf8string MakeWindowTitle()
     strPid.Format(" [PID:%u]", GetCurrentProcessId());
     CString strVersion;
     efd::utf8string strTitle(FUN_14028dc80(0xc3b));
-    CString strServer = StringFormat(" - S:{0}, {1}", FUN_140166410()->FUN_14036d8b0(), FUN_140166410()->FUN_14036d8e0());
+    CString strServer = StringFormat(" - S:{0}, {1}", CFeatureManager::GetInstance()->FUN_14036d8b0(), CFeatureManager::GetInstance()->FUN_14036d8e0());
     strTitle += " (x64)";
     strVersion.Format(" (Ver.%X)", 0x9dd);
     if (DAT_143ab0248 == 1 || DAT_143ab0248 == 2 || DAT_143ab0248 == 3)
@@ -684,3 +904,226 @@ inline bool Unk_InstanceEvent::Create(const efd::utf8string& strBase)
     }
     return false;
 }
+
+template class Unk_SingletonCreator<AnimationCallbackManager>;
+template class Unk_SingletonCreator<ApplyEffect>;
+template class Unk_SingletonCreator<AttendGiftDataTable>;
+template class Unk_SingletonCreator<BGTransparencyMgr>;
+template class Unk_SingletonCreator<BlindManager>;
+template class Unk_SingletonCreator<CAchieveManager>;
+template class Unk_SingletonCreator<CAdBannerManagerCli>;
+template class Unk_SingletonCreator<CAdventureLevelTable>;
+template class Unk_SingletonCreator<CAdventureLevelTableHelper>;
+template class Unk_SingletonCreator<CArcadeDataTable>;
+template class Unk_SingletonCreator<CAsyncImageLoader>;
+template class Unk_SingletonCreator<CAutoFindTaxiStation>;
+template class Unk_SingletonCreator<CBankTable>;
+template class Unk_SingletonCreator<CBattleRecordManager>;
+template class Unk_SingletonCreator<CBigDataLogSystem>;
+template class Unk_SingletonCreator<CBlackMarketMan>;
+template class Unk_SingletonCreator<CBlockManager>;
+template class Unk_SingletonCreator<CBuddyManager>;
+template class Unk_SingletonCreator<CCashCallManager>;
+template class Unk_SingletonCreator<CCashMarketMan>;
+template class Unk_SingletonCreator<CChangeJobTable>;
+template class Unk_SingletonCreator<CChapterBookTable>;
+template class Unk_SingletonCreator<CCharacterAbilityManager>;
+template class Unk_SingletonCreator<CCharacterAbilityTable>;
+template class Unk_SingletonCreator<CChatEmoticonTable>;
+template class Unk_SingletonCreator<CClubClientManager>;
+template class Unk_SingletonCreator<CClubDataTable>;
+template class Unk_SingletonCreator<CContentShutdownManager>;
+template class Unk_SingletonCreator<CContinentRegionTable>;
+template class Unk_SingletonCreator<CCoupleEmotionTable>;
+template class Unk_SingletonCreator<CDPSMeterSystem>;
+template class Unk_SingletonCreator<CDirWatcher>;
+template class Unk_SingletonCreator<CDynamicBanWordManager>;
+template class Unk_SingletonCreator<CEnchantScrollTable>;
+template class Unk_SingletonCreator<CExpTable>;
+template class Unk_SingletonCreator<CFameTable>;
+template class Unk_SingletonCreator<CFeatureManager>;
+template class Unk_SingletonCreator<CFieldMaidManager>;
+template class Unk_SingletonCreator<CFieldMetaTable>;
+template class Unk_SingletonCreator<CFieldMissionTable>;
+template class Unk_SingletonCreator<CFilePreload>;
+template class Unk_SingletonCreator<CFileSystem>;
+template class Unk_SingletonCreator<CFishingManager>;
+template class Unk_SingletonCreator<CFishingTable>;
+template class Unk_SingletonCreator<CGFxLanguage>;
+template class Unk_SingletonCreator<CGameEventValueManager>;
+template class Unk_SingletonCreator<CGameOption>;
+template class Unk_SingletonCreator<CGameRankingCli>;
+template class Unk_SingletonCreator<CGameRule>;
+template class Unk_SingletonCreator<CGloabalFactor>;
+template class Unk_SingletonCreator<CGraphicOptionTable>;
+template class Unk_SingletonCreator<CGroupChatManager>;
+template class Unk_SingletonCreator<CGuideManager>;
+template class Unk_SingletonCreator<CGuildManager>;
+template class Unk_SingletonCreator<CGuildXmlData>;
+template class Unk_SingletonCreator<CIgnoreFile>;
+template class Unk_SingletonCreator<CIndividualArenaDataTable>;
+template class Unk_SingletonCreator<CInstrumentDataTable>;
+template class Unk_SingletonCreator<CItemBreakIngredientTable>;
+template class Unk_SingletonCreator<CItemBreakManager>;
+template class Unk_SingletonCreator<CItemDataTable>;
+template class Unk_SingletonCreator<CItemEnchantLimitTable>;
+template class Unk_SingletonCreator<CItemEnchantTransformTable>;
+template class Unk_SingletonCreator<CItemEnchantUtil>;
+template class Unk_SingletonCreator<CItemExchangeScrollTable>;
+template class Unk_SingletonCreator<CItemExtractionTable>;
+template class Unk_SingletonCreator<CItemGemPropertyTable>;
+template class Unk_SingletonCreator<CItemGemStoneUpgradeTable>;
+template class Unk_SingletonCreator<CItemLapenshardTable>;
+template class Unk_SingletonCreator<CItemLoader>;
+template class Unk_SingletonCreator<CItemLockManager>;
+template class Unk_SingletonCreator<CItemMergeOptionTable>;
+template class Unk_SingletonCreator<CItemOptionTable>;
+template class Unk_SingletonCreator<CItemRePackingScrollTable>;
+template class Unk_SingletonCreator<CItemRemakeScrollTable>;
+template class Unk_SingletonCreator<CItemSocketScrollTable>;
+template class Unk_SingletonCreator<CItemSocketTable>;
+template class Unk_SingletonCreator<CJobConditionTable>;
+template class Unk_SingletonCreator<CKeyTable>;
+template class Unk_SingletonCreator<CLoadingDescriptionTable>;
+template class Unk_SingletonCreator<CLoadingImageTable>;
+template class Unk_SingletonCreator<CLocaleLanguage>;
+template class Unk_SingletonCreator<CLogString>;
+template class Unk_SingletonCreator<CLuaClient>;
+template class Unk_SingletonCreator<CMachineIDManager>;
+template class Unk_SingletonCreator<CMaidDescTable>;
+template class Unk_SingletonCreator<CMaidExpTable>;
+template class Unk_SingletonCreator<CMaidInfoTable>;
+template class Unk_SingletonCreator<CMaidManufactureMsgTable>;
+template class Unk_SingletonCreator<CMaidRecipeGroupTable>;
+template class Unk_SingletonCreator<CMaidRecipeTable>;
+template class Unk_SingletonCreator<CManufactureManager>;
+template class Unk_SingletonCreator<CMasteryInteriorTable>;
+template class Unk_SingletonCreator<CMasteryManager>;
+template class Unk_SingletonCreator<CMasteryTable>;
+template class Unk_SingletonCreator<CMenteeSearchManager>;
+template class Unk_SingletonCreator<CMentoringManager>;
+template class Unk_SingletonCreator<CMeratMarketMan>;
+template class Unk_SingletonCreator<CMesoMarketMan>;
+template class Unk_SingletonCreator<CMicroGameManagerCli>;
+template class Unk_SingletonCreator<CMouseController>;
+template class Unk_SingletonCreator<CNPSMan>;
+template class Unk_SingletonCreator<CNametagSymbolTable>;
+template class Unk_SingletonCreator<CNiStreamLoadThread>;
+template class Unk_SingletonCreator<COSInfo>;
+template class Unk_SingletonCreator<COnlinePatchManagerCli>;
+template class Unk_SingletonCreator<COptimizer>;
+template class Unk_SingletonCreator<CPCEffectDummy>;
+template class Unk_SingletonCreator<CPVPManager>;
+template class Unk_SingletonCreator<CPartyManager>;
+template class Unk_SingletonCreator<CPetDataTable>;
+template class Unk_SingletonCreator<CPetManager>;
+template class Unk_SingletonCreator<CPopupProfileImageMan>;
+template class Unk_SingletonCreator<CPortalTable>;
+template class Unk_SingletonCreator<CPriceTable>;
+template class Unk_SingletonCreator<CQuestManager>;
+template class Unk_SingletonCreator<CQuestMaskTable>;
+template class Unk_SingletonCreator<CQuestNavigationMap>;
+template class Unk_SingletonCreator<CQuestNavigator>;
+template class Unk_SingletonCreator<CQuestTable>;
+template class Unk_SingletonCreator<CRankViewer>;
+template class Unk_SingletonCreator<CRankingArenaDataTable>;
+template class Unk_SingletonCreator<CReactorDataTable>;
+template class Unk_SingletonCreator<CReconnectionManagerCli>;
+template class Unk_SingletonCreator<CReservedWordTable>;
+template class Unk_SingletonCreator<CRewardPreviewTable>;
+template class Unk_SingletonCreator<CScriptTable>;
+template class Unk_SingletonCreator<CSeasonDataTable>;
+template class Unk_SingletonCreator<CServerListTable>;
+template class Unk_SingletonCreator<CServerString>;
+template class Unk_SingletonCreator<CShopEventManager>;
+template class Unk_SingletonCreator<CSkillCompactControlTable>;
+template class Unk_SingletonCreator<CSkillSetTable>;
+template class Unk_SingletonCreator<CSmartPushManager>;
+template class Unk_SingletonCreator<CSmartPushTable>;
+template class Unk_SingletonCreator<CSmartRecommendShopTable>;
+template class Unk_SingletonCreator<CSoapClient>;
+template class Unk_SingletonCreator<CSoundDataTable>;
+template class Unk_SingletonCreator<CSoundEventMgr>;
+template class Unk_SingletonCreator<CSpecialDungeonDataTable>;
+template class Unk_SingletonCreator<CSpecialEffectFunctionManager>;
+template class Unk_SingletonCreator<CStoryBookTable>;
+template class Unk_SingletonCreator<CStringTable>;
+template class Unk_SingletonCreator<CTailEffectDataTable>;
+template class Unk_SingletonCreator<CTaxiManager>;
+template class Unk_SingletonCreator<CTitleTable>;
+template class Unk_SingletonCreator<CTradeManagerEx>;
+template class Unk_SingletonCreator<CTrafficOptimizer>;
+template class Unk_SingletonCreator<CUGCDesignTable>;
+template class Unk_SingletonCreator<CUGCMapSetItemTable>;
+template class Unk_SingletonCreator<CUgcDownloadDown>;
+template class Unk_SingletonCreator<CUgcDownloadLoad>;
+template class Unk_SingletonCreator<CUgcGetCostTable>;
+template class Unk_SingletonCreator<CUgcManager>;
+template class Unk_SingletonCreator<CUserCommandCli>;
+template class Unk_SingletonCreator<CUserEventManager>;
+template class Unk_SingletonCreator<CUserMaidManager>;
+template class Unk_SingletonCreator<CVIPTable>;
+template class Unk_SingletonCreator<CameraMgr>;
+template class Unk_SingletonCreator<ClientLogManager>;
+template class Unk_SingletonCreator<CommonEffectDummy>;
+template class Unk_SingletonCreator<CommonResource>;
+template class Unk_SingletonCreator<CommonString>;
+template class Unk_SingletonCreator<Client::Constants>;
+template class Unk_SingletonCreator<CooltimeManager>;
+template class Unk_SingletonCreator<CostumeSetTable>;
+template class Unk_SingletonCreator<CrashManagerCli>;
+template class Unk_SingletonCreator<CubeHolderManager>;
+template class Unk_SingletonCreator<DungeonMissionDataTable>;
+template class Unk_SingletonCreator<DungeonRoomTable>;
+template class Unk_SingletonCreator<EffectDataManager>;
+template class Unk_SingletonCreator<EffectSkipMgr>;
+template class Unk_SingletonCreator<EngineLog>;
+template class Unk_SingletonCreator<FieldWarDataTable>;
+template class Unk_SingletonCreator<GPUManager>;
+template class Unk_SingletonCreator<GameDictionaryManager>;
+template class Unk_SingletonCreator<GameEventManagerCli>;
+template class Unk_SingletonCreator<GameEventUserValueManager>;
+template class Unk_SingletonCreator<HomeBlockManager>;
+template class Unk_SingletonCreator<ItemDropTable>;
+template class Unk_SingletonCreator<ItemGachaBoxTable>;
+template class Unk_SingletonCreator<ItemPreviewMgr>;
+template class Unk_SingletonCreator<JobTable>;
+template class Unk_SingletonCreator<LoginBgBgmTable>;
+template class Unk_SingletonCreator<MentoringDataTable>;
+template class Unk_SingletonCreator<MultiSceneUpdater>;
+template class Unk_SingletonCreator<NotifySystem>;
+template class Unk_SingletonCreator<NpcDataTableCli>;
+template class Unk_SingletonCreator<OnceCallbackTimer>;
+template class Unk_SingletonCreator<PCActionDataTable>;
+template class Unk_SingletonCreator<PacketHandlerManager>;
+template class Unk_SingletonCreator<PaybackManagerClient>;
+template class Unk_SingletonCreator<PaybackTable>;
+template class Unk_SingletonCreator<QuestDataTable>;
+template class Unk_SingletonCreator<RecodeMgr>;
+template class Unk_SingletonCreator<RewardContentsTable>;
+template class Unk_SingletonCreator<SetItemTable>;
+template class Unk_SingletonCreator<SkillDataTableCli>;
+template class Unk_SingletonCreator<SoundPropertyMgr>;
+template class Unk_SingletonCreator<StanceTable>;
+template class Unk_SingletonCreator<StateEffectMgr>;
+template class Unk_SingletonCreator<StringManager>;
+template class Unk_SingletonCreator<TermTagManagerCli>;
+template class Unk_SingletonCreator<UGCCubeCategoryTable>;
+template class Unk_SingletonCreator<UIBottomCenterAlignManager>;
+template class Unk_SingletonCreator<UIBuddyEventDispatcher>;
+template class Unk_SingletonCreator<UIDialogEventDispatcher>;
+template class Unk_SingletonCreator<UIDungeonCategoryTable>;
+template class Unk_SingletonCreator<UIEntityEventDispatcher>;
+template class Unk_SingletonCreator<UIItemEventDispatcher>;
+template class Unk_SingletonCreator<UIQuestEventDispatcher>;
+template class Unk_SingletonCreator<UIServerEventDispatcher>;
+template class Unk_SingletonCreator<UIStatusEventDispatcher>;
+template class Unk_SingletonCreator<UITalkManager>;
+template class Unk_SingletonCreator<UIUGCEventDispatcher>;
+template class Unk_SingletonCreator<UIWorldShareInfoEventDispatcher>;
+template class Unk_SingletonCreator<UgcHomeOptionData>;
+template class Unk_SingletonCreator<WebGuideTable>;
+template class Unk_SingletonCreator<WeddingEmotionTable>;
+template class Unk_SingletonCreator<WeddingManager>;
+template class Unk_SingletonCreator<WeddingTable>;
+template class Unk_SingletonCreator<WorldMapManager>;

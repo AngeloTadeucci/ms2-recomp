@@ -72,6 +72,7 @@ public:
     TSingleton();                                   // 0x140a15390 (inline, below)
     virtual ~TSingleton() { s_instance = 0; }       // 0x140a17780
     static BGTransparencyMgr* s_instance;
+    static BGTransparencyMgr* GetInstance();            // 0x14123ee80
 };
 
 class BGTransparencyMgr : public TSingleton<BGTransparencyMgr>, public IWorldServiceCallback

@@ -148,6 +148,7 @@ public:
     TSingleton();                                                       // 0x140af5dd0 (inline, camera.cpp)
     virtual ~TSingleton() { s_instance = 0; }                           // 0x140af6a20
     static CameraMgr* s_instance;                                       // 0x143ab3700
+    static CameraMgr* GetInstance();                    // 0x1409478c0
 };
 
 typedef ATL::CRBMap<egf::Entity*, Unk_CameraSetup> Unk_EntityCameraSetupMap;

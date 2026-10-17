@@ -222,6 +222,7 @@ public:
     TSingleton();                           // 0x14025bc10
     virtual ~TSingleton() { s_instance = 0; }   // 0x14025c730
     static CommonString* s_instance;
+    static CommonString* GetInstance();                 // 0x14025e7d0
 };
 
 // The localized string table (RTTI CommonString, 0xf8 bytes, one global instance): string id -> text from

@@ -9,6 +9,7 @@
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
+#include "ms2/commonfiles/os.h"
 
 // The 12-byte key of a ranking board: (type, sub category, tab / season, ...).
 struct Unk_RankKey
@@ -154,9 +155,12 @@ struct Unk_RankDataPtr                                      // boxed Unk_RankDat
     Unk_RankData* m_p;
 };
 
-class CGameRankingCli
+// RTTI: TSingleton<CGameRankingCli> is the only base; 0x100 bytes (the operator new size in CGameApp::InitInstance).
+class CGameRankingCli : public TSingleton<CGameRankingCli>
 {
 public:
+    CGameRankingCli();                                      // 0x140b2a790
+    virtual ~CGameRankingCli();
     static CGameRankingCli* FUN_140b2e980();                // the singleton
     int FUN_140b2b440(const Unk_RankKey& key, int nPage, ATL::CAtlArray<Unk_RankDataPtr>& rows, CStringW strSearch, int bForce);
     void FUN_140b2bf30(CGameRankingParam* pParam);          // send the request
@@ -166,4 +170,8 @@ public:
     void FUN_140b2b870(Unk_RankKey* pKey, int nType, int nSub, int nTab, int nSeason);
     void FUN_140b2bbf0(Unk_RankKey* pKey, int nType, int nSub, int nTab, int nSeason);
     void* FUN_140b2c6f0(int nType);
+private:
+    MS2_LAYOUT_FRIEND;
+    char m_pad_8[0x100 - 0x8];
 };
+MS2_CHECK_SIZE(CGameRankingCli, 0x100);

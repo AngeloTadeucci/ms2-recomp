@@ -10,6 +10,7 @@
 class CFishingManager : public TSingleton<CFishingManager>, public ICastingEventListener
 {
 public:
+    CFishingManager();                                      // 0x140cd9400
     void OnCastingFinished() override;                      // 0x140cdab60
     void FUN_140cdb1e0();                                   // leave the fishing spot (packet 0x73 mode 9)
     int FUN_140cdb250();                                    // start fishing at the current spot

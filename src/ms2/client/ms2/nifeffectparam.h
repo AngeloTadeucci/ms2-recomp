@@ -194,6 +194,7 @@ public:
     TSingleton();
     virtual ~TSingleton() { s_instance = 0; }
     static CNiStreamLoadThread* s_instance;         // 0x143ae0788
+    static CNiStreamLoadThread* GetInstance();          // 0x1414a5720
 };
 
 // Background nif reader (RTTI "CNiStreamLoadThread", 0x178 bytes). Paths are queued with Enqueue (the worker loads

@@ -12,6 +12,7 @@ public:
     TSingleton();
     virtual ~TSingleton() { s_instance=0; }
     static CFilePreload* s_instance;
+    static CFilePreload* GetInstance();                 // 0x140ab7a10
 };
 typedef std::pair<unsigned,unsigned short> Unk_PreloadKey;
 struct Unk_PreloadId {

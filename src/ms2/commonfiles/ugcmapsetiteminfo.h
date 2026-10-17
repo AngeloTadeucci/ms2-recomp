@@ -57,6 +57,7 @@ public:
     TSingleton();                           // 0x140ba0a30
     virtual ~TSingleton() { s_instance = 0; }   // 0x140ba0bb0
     static CUGCMapSetItemTable* s_instance;
+    static CUGCMapSetItemTable* GetInstance();          // 0x1409eed50
 };
 
 // The table. RTTI CUGCMapSetItemTable, 0x90 bytes (new'd by the singleton getter FUN_14149d810); CCacheData +0,

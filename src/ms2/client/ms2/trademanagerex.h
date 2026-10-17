@@ -23,6 +23,7 @@ public:
     TSingleton();                                   // 0x14185db70
     virtual ~TSingleton() { s_instance = 0; }       // 0x14185dba0 (scalar deleting 0x14185dbc0)
     static CTradeManagerEx* s_instance;
+    static CTradeManagerEx* GetInstance();              // 0x14140ea30
 };
 
 class CTradeManagerEx : public TSingleton<CTradeManagerEx>

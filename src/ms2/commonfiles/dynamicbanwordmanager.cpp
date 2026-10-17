@@ -58,7 +58,7 @@ MS2_REPLACE_METHOD(0x140349200, CBannedWordFilter, FUN_140349200, 34, 0x6DE6000F
 // @0x140349230
 int CBannedWordFilter::FUN_140349230(const CStringW& input,CStringW& result) {
     int start=0,offset=0,length=0; CStringW text(input); CStringW replacement; bool changed=false;
-    while(filter.FUN_140223fe0(text,start,1,&offset,&length,replacement)) {
+    while(filter.Find(text,start,true,&offset,&length,&replacement)) {
         if(replacement.IsEmpty()) return 2;
         text.Delete(offset,length); text.Insert(offset,replacement); start=offset+replacement.GetLength(); changed=true;
     }
@@ -104,10 +104,10 @@ void CBannedWordFilter::FUN_140349bd0(Unk_BanReader& input) { Words values; unsi
 // @0x140349d00
 void CBannedWordFilter::FUN_140349d00(const Words& input) {
     for(unsigned i=0;i<input.GetCount();++i) { const WordPtr& word=input[i]; words.SetAt(word->id,word); }
-    filter.FUN_140224170();
+    filter.Clear();
     for(unsigned i=0;i<input.GetCount();++i) { const WordPtr& word=input[i]; CStringW text(word->word); CStringW replacement;
         if(word->type==1) { replacement=word->replacement; if(replacement.IsEmpty()) replacement=CStringW(L'*',word->word.GetLength()); }
-        text.MakeLower(); filter.FUN_140223de0(text,0,replacement);
+        text.MakeLower(); filter.Insert(text,0,replacement);
     }
 }
 MS2_REPLACE_METHOD(0x140349D00, CBannedWordFilter, FUN_140349d00, 548, 0x609142CF);

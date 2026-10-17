@@ -18,6 +18,7 @@ public:
     TSingleton();
     virtual ~TSingleton() { s_instance=0; }
     static CLogString* s_instance;
+    static CLogString* GetInstance();                   // 0x140166440
 };
 class Unk_1406583d0Ref { public: void FUN_14015b020(); int FUN_140159bc0(); void FUN_140159ba0(); };
 template<class T> class Unk_1406583d0 {
