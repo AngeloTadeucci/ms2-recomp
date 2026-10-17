@@ -9,6 +9,7 @@
 
 #include <afx.h>
 #include <map>
+#include <unordered_map>
 #include <vector>
 #include "ms2/ms2layout.h"
 #include "ms2/commonfiles/jobtable.h"
@@ -52,7 +53,7 @@ typedef MS2Ptr<JobSkill> JobSkillPtr;
 class JobSystem : public CPtred
 {
 public:
-    typedef std::map<unsigned, JobSkillPtr> SkillMap;
+    typedef std::unordered_map<unsigned, JobSkillPtr> SkillMap;   // 0x40 (ctor 0x14063e440: _Uhash_compare + list + vector)
 
     JobSystem();                                        // 0x1406380e0
     virtual ~JobSystem();                               // 0x140638180
@@ -85,13 +86,14 @@ public:
     void SyncSubSkills(JobSkillPtr spSkill);            // 0x14063a330
 
     CLockCriticalSection m_lock;                        // +0x18
-    std::map<int, int> m_usedPoints;                    // +0x48 by job level
+    std::map<int, long> m_usedPoints;                   // +0x48 by job level (not map<int,int>: the exe has a separate copy of
+                                                        // its COMDATs, operator[] 0x14063ec70 vs 0x1403e8960)
     int m_nTotalPoint;                                  // +0x58
     int m_nRank;                                        // +0x5c
     JobDataPtr m_spJob;                                 // +0x60
     SkillMap m_skills;                                  // +0x70
 };
-MS2_CHECK_SIZE(JobSystem, 0x80);
+MS2_CHECK_SIZE(JobSystem, 0xb0);   // JobSystemCli stores its first member at +0xb0 (0x140a6d890)
 MS2_CHECK_OFFSET(JobSystem, m_usedPoints, 0x48);
 MS2_CHECK_OFFSET(JobSystem, m_spJob, 0x60);
 MS2_CHECK_OFFSET(JobSystem, m_skills, 0x70);
