@@ -16,8 +16,8 @@
 // MS2-PIN: ?CallDestructors@?$CAtlArray@V?$MS2Ptr@VCNurturingCubeObject@@@@V?$CElementTraits@V?$MS2Ptr@VCNurturingCubeObject@@@@@ATL@@@ATL@@CAXPEAV?$MS2Ptr@VCNurturingCubeObject@@@@_K@Z 0x140966900 ; unique
 // MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCNurturingCubeObject@@@@AEBAXPEAX@Z 0x140969160 ; unique
 // MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@XZ 0x1409695d0 ; prop
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@_J@2@XZ 0x140969650 ; unique
-// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_J@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@_J@2@XZ 0x140969660 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@_K@2@XZ 0x140969650 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@_K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@_K@2@XZ 0x140969660 ; unique
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@2@XZ 0x1409696f0 ; prop
 // MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@std@@QEAAAEAPEAV?$MS2Ptr@VUnk_WsB_Lift@@@@XZ 0x140969a00 ; prop
 // MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096aab0 ; unique
@@ -25,7 +25,7 @@
 // MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x14096ab90 ; unique
 // MS2-PIN: ?deallocate@?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@QEAAXQEAV?$MS2Ptr@VUnk_WsB_Lift@@@@_K@Z 0x14096ac50 ; unique
 // MS2-PIN: ?end@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@@2@XZ 0x14096adc0 ; unique
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@std@@@2@AEB_J@Z 0x14096ae20 ; unique
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@_KV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_K@std@@V?$allocator@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@std@@@std@@@2@AEB_K@Z 0x14096ae20 ; unique
 // MS2-PIN: ?vfunc_3@?$DelegateImpl@U?$pair@PEAUPortalAction@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBA_NPEBVDelegateImplBase@2@@Z 0x14096af70 ; unique
 // MS2-PIN: ?size@?$vector@V?$MS2Ptr@VUnk_WsB_Lift@@@@V?$allocator@V?$MS2Ptr@VUnk_WsB_Lift@@@@@std@@@std@@QEBA_KXZ 0x14096b140 ; unique
 // MS2-PINS-END tplpin
@@ -35,7 +35,7 @@
 // MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@IEBAPEAVCNode@12@AEBH@Z 0x140953d70
 // MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VActionKeyObject@@@@V?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VActionKeyObject@@@@@3@@ATL@@AEAAPEAVCNode@12@AEBHAEBV?$MS2Ptr@VActionKeyObject@@@@@Z 0x140954040
 // MS2-PIN: ??$?0UPortalAction@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@QEAA@AEBQEAUPortalAction@@AEBQ81@EAA_NHAEBVCMsgBoxData@@@Z@Z 0x140960e50
-// MS2-PIN: ??$destroy@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730
+// MS2-PIN: ??$destroy@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@std@@@1@QEAU?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@1@@Z 0x140963730
 // MS2-PIN: ??0?$MS2Ptr@VCHomemadeCubeObject@@@@QEAA@AEBV0@@Z 0x140963ec0
 // MS2-PIN: ??1?$MS2Ptr@VCFunctionCubeObject@@@@QEAA@XZ 0x1409648f0
 // MS2-PIN: ??1?$MS2Ptr@VUnk_PCBaseComp_b18@@@@QEAA@XZ 0x140964b60
@@ -58,7 +58,7 @@
 // MS2-PIN: ?Reference@?$MS2Ptr@VCNurturingCubeObject@@@@CAXPEAVCNurturingCubeObject@@@Z 0x140968ef0
 // MS2-PIN: ?Reference@?$MS2Ptr@VUnk_PCBaseComp_b18@@@@CAXPEAVUnk_PCBaseComp_b18@@@Z 0x140968fb0
 // MS2-PIN: ?AddRefImpl@?$Unk_PayloadPtr@VCubeOwner@@@@AEBAXPEAX@Z 0x140969130
-// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@_JV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_J@std@@V?$allocator@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@2@@Z 0x140969540
+// MS2-PIN: ?_Freenode0@?$_Tree_comp_alloc@V?$_Tmap_traits@_KV?$Unk_PayloadPtr@VCubeOwner@@@@U?$less@_K@std@@V?$allocator@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@@3@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@PEAX@2@@Z 0x140969540
 // MS2-PIN: ?_Get_data@?$_String_alloc@U?$_String_base_types@DV?$CustomAllocator@D@efd@@@std@@@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969610
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@D@efd@@V?$_String_val@U?$_Simple_types@D@std@@@std@@$00@std@@QEAAAEAV?$_String_val@U?$_Simple_types@D@std@@@2@XZ 0x140969710
 // MS2-PIN: ?Release@?$MS2Ptr@VCFieldDataCli@@@@AEAAXXZ 0x140969de0
@@ -96,7 +96,7 @@
 // MS2-PIN: ??_G?$MS2Ptr@VCNurturingCubeObject@@@@QEAAPEAXI@Z 0x140965e40
 // MS2-PIN: ??C?$MS2Ptr@VUnk_PCInteractMode@@@@QEBAPEAVUnk_PCInteractMode@@XZ 0x140965970
 // MS2-PIN: ??C?$MS2Ptr@VFunctionCubeData@@@@QEBAPEAVFunctionCubeData@@XZ 0x1409658d0
-// MS2-PIN: ??1?$pair@$$CB_JV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@QEAA@XZ 0x140964c80
+// MS2-PIN: ??1?$pair@$$CB_KV?$Unk_PayloadPtr@VCubeOwner@@@@@std@@QEAA@XZ 0x140964c80
 // MS2-PIN: ??0?$MS2Ptr@VReactorData@@@@QEAA@AEBV0@@Z 0x140963e40
 // MS2-PIN: ?Release@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXXZ 0x140969c60
 // MS2-PIN: ?ReleaseImpl@?$MS2Ptr@VCFunctionCubeObject@@@@AEAAXPEAX@Z 0x14096a120
@@ -189,7 +189,7 @@ public:
     char m_pad_20[0x14c - 0x20];
     int m_nFieldId;                                         // +0x14c the target field
     char m_pad_150[0x158 - 0x150];
-    __int64 m_nOwnerId;                                     // +0x158 the house owner (house portals)
+    unsigned __int64 m_nOwnerId;                            // +0x158 the house owner (house portals)
     int m_nType;                                            // +0x160
     char m_pad_164[0x18c - 0x164];
     bool m_bConfirm;                                        // +0x18c ask before moving
@@ -248,7 +248,7 @@ CStringW FUN_1401d0080(const CStringW& strA, const CStringW& strB); // strA + st
 class Unk_AkoHouseSvc : public TSingleton<Unk_AkoHouseSvc>
 {
 public:
-    std::map<__int64, Unk_CubeOwnerPtr>* FUN_1410d3380();  // the house owners by account
+    std::map<unsigned __int64, Unk_CubeOwnerPtr>* FUN_1410d3380();  // the house owners by account (less<unsigned __int64> 0x14044a540)
     __int64 FUN_1410c3180();                                // the owner account of the current house
     bool FUN_1410c35c0();                                   // the player is in a house
     bool FUN_1410cb920(int nCooldown);                      // the move cooldown is over
@@ -1083,7 +1083,7 @@ CStringW PortalAction::vfunc_6()
     int nMapId = 0;
     if (m_spPortal->m_nOwnerId)
     {
-        std::map<__int64, Unk_CubeOwnerPtr>* pOwners = Unk_AkoHouseSvc::GetInstance()->FUN_1410d3380();
+        std::map<unsigned __int64, Unk_CubeOwnerPtr>* pOwners = Unk_AkoHouseSvc::GetInstance()->FUN_1410d3380();
         if (pOwners->find(m_spPortal->m_nOwnerId) != pOwners->end())
         {
             Unk_CubeOwnerPtr spOwner = (*pOwners)[m_spPortal->m_nOwnerId];
