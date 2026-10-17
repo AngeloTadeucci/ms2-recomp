@@ -8,20 +8,13 @@
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/mstime.h"
 #include "ms2/placeholder/partyvotecli.h"
+#include "ms2/placeholder/partybits.h"
 class CInPacket;
 class PCBase;
 class CMatchPartyRecruitSchCond;
 struct Unk_PartyRecruitRequest;
 struct Unk_PartyRecruitInvite;
 class CMsgBoxData;
-struct Unk_PartyBits {
-    unsigned char bits;
-    Unk_PartyBits(); // 1402e49d0
-    bool FUN_1402e4ee0(int);
-    bool FUN_140b912f0();
-    void FUN_140837500();
-};
-MS2_CHECK_SIZE(Unk_PartyBits, 1);
 class CPartyManager : public TSingleton<CPartyManager> {
 public:
     CPartyManager();
