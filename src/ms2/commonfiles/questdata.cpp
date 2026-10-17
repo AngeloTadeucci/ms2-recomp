@@ -83,6 +83,9 @@ int FUN_14074b330(CQuestData* pData);
 int FUN_14074b030(CQuestData* pData);
 int FUN_14074b050(CQuestData* pData);
 int FUN_14074b070(CQuestData* pData);
+void* FUN_140302b10();                                      // the game constants singleton
+float FUN_1404c17a0(void* pThis, int nLevel, int nKind);    // exp rate
+float FUN_1404c1730(void* pThis, int nLevel, int nKind);    // meso rate
 int FUN_140408410(ATL::CAtlArray<unsigned>* pArr, const unsigned* pValue);
 int FUN_1402bacf0(ATL::CAtlArray<int>& arr, const int& value);
 int FUN_1407474d0(const ATL::CAtlArray<int>* pArr, const int* pValue);
@@ -1999,6 +2002,72 @@ void QuestDataTable::FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& vi
     for (size_t i = 0; i < spData->m_require.m_requiredBy.GetCount(); ++i)
         FUN_14074eac0(spData->m_require.m_requiredBy[i], visited);
 }
+
+// MS2-FUNCTIONAL: by-value smart-pointer argument and stack slot order differ.
+// @0x14074ebc0
+void QuestDataTable::FUN_14074ebc0(int nChain, IdsPtr spIds, MS2Ptr<CQuestData> spData, int nDepth)
+{
+    if (nDepth > 1000)
+        return;
+    if (spData == 0)
+        return;
+    if (spData->m_28 != nChain)
+        return;
+    int nQuestId = FUN_14074b030(spData.operator->());
+    if (FUN_140408410(spIds.operator->(), (const unsigned*)&nQuestId) != -1)
+        return;
+    int nAddId = FUN_14074b030(spData.operator->());
+    spIds.get()->Add(nAddId);
+    for (size_t i = 0; i < spData->m_require.m_followingQuests.GetCount(); ++i)
+    {
+        ++nDepth;
+        FUN_14074ebc0(nChain, spIds, FUN_14074c9d0(spData->m_require.m_followingQuests[i]), nDepth);
+    }
+}
+MS2_REPLACE_METHOD(0x14074EBC0, QuestDataTable, FUN_14074ebc0, 604, 0x6D4ED568);
+
+// MS2-FUNCTIONAL: by-value smart-pointer argument and stack slot order differ.
+// @0x14074ee30
+void QuestDataTable::FUN_14074ee30()
+{
+    CheckInit();
+    Unk_1401b4ec0 guard(m_lock, 1);
+    std::map<int, MS2Ptr<CQuestData> >& quests = m_quests;
+    std::map<int, MS2Ptr<CQuestData> >::iterator it = quests.begin();
+    std::map<int, MS2Ptr<CQuestData> >::iterator itEnd = quests.end();
+    for (; it != itEnd; ++it)
+    {
+        std::pair<const int, MS2Ptr<CQuestData> >& entry = *it;
+        MS2Ptr<CQuestData> spData = entry.second;
+        if (spData == 0)
+            break;
+        float fExp = 1.0f;
+        float fMeso = 1.0f;
+        int nType = FUN_14074b050(spData.operator->());
+        if (nType == 0)
+        {
+            fExp = FUN_1404c17a0(FUN_140302b10(), spData->m_level, 5);
+            fMeso = FUN_1404c1730(FUN_140302b10(), spData->m_level, 0);
+        }
+        else if (nType == 1)
+        {
+            fExp = FUN_1404c17a0(FUN_140302b10(), spData->m_level, 6);
+            fMeso = FUN_1404c1730(FUN_140302b10(), spData->m_level, 1);
+        }
+        else if (nType == 3)
+        {
+            fExp = FUN_1404c17a0(FUN_140302b10(), spData->m_level, 7);
+            fMeso = FUN_1404c1730(FUN_140302b10(), spData->m_level, 2);
+        }
+        int* pExp = &spData->m_complete.m_exp;
+        *pExp = (int)((float)*pExp * fExp);
+        spData->m_complete.m_38 = fExp;
+        int* pMoney = &spData->m_complete.m_money;
+        *pMoney = (int)((float)*pMoney * fMeso);
+        spData->m_complete.m_40 = fMeso;
+    }
+}
+MS2_REPLACE_METHOD(0x14074EE30, QuestDataTable, FUN_14074ee30, 806, 0x83205888);
 
 // @0x14075a3f0
 CString FUN_14016a5c0(const char* psz, int n);

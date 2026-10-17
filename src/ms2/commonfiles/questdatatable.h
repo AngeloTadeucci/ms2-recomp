@@ -52,7 +52,9 @@ public:
     unsigned FUN_14074e2c0(int nKey);
     int FUN_14074e510(int nQuestId);
     bool FUN_14074e560(unsigned nFirst, unsigned nLast);        // a quest with an id in the range and m_30 == 0
-    void FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& visited);   // the quest and every quest that requires it
+    void FUN_14074eac0(int nQuestId, ATL::CAtlMap<unsigned, int>& visited);
+    void FUN_14074ebc0(int nChain, IdsPtr spIds, MS2Ptr<CQuestData> spData, int nDepth);   // collects the chain of following quests
+    void FUN_14074ee30();                                   // scales every reward by the level rate   // the quest and every quest that requires it
 
     CLockCriticalSection m_lock;                                            // +0x10
     std::map<int, MS2Ptr<CQuestData> > m_quests;                            // +0x40 by quest id
