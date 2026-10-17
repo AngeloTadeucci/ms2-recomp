@@ -61,6 +61,45 @@ class Unk_MusicBookInfo : public CPtred { public: char m_pad18[0x10]; CString m_
 class Unk_MusicBookTable { public: MS2Ptr<Unk_MusicBookInfo> FUN_14072cc10(unsigned); };
 Unk_MusicBookTable* FUN_14052d1d0();
 
+// The product id of the merat market (a premium product number and a UGC listing id); the key of the bookmark map.
+struct Unk_MeratOid
+{
+    bool operator<(const Unk_MeratOid& o) const;
+    bool operator==(const Unk_MeratOid& o) const;
+    int m_nPremiumId;                                       // +0x00
+    unsigned __int64 m_nUgcId;                              // +0x08
+};
+MS2_CHECK_SIZE(Unk_MeratOid, 0x10);
+
+// MS2-FUNCTIONAL: the exe compares through a bool temp per branch
+// @0x140899d90
+bool Unk_MeratOid::operator<(const Unk_MeratOid& o) const
+{
+    if (m_nPremiumId == o.m_nPremiumId)
+        return m_nUgcId < o.m_nUgcId;
+    return m_nPremiumId < o.m_nPremiumId;
+}
+
+// @0x140899ce0
+bool Unk_MeratOid::operator==(const Unk_MeratOid& o) const
+{
+    if (m_nPremiumId == o.m_nPremiumId && m_nUgcId == o.m_nUgcId)
+        return true;
+    return false;
+}
+
+// The merat market product record as this unit sees it: the product id at +0x18, the UGC listing id at +0x288.
+class Unk_MeratEquipEntry : public CPtred
+{
+public:
+    Unk_MeratOid m_oid;                                     // +0x18
+    char m_pad_28[0x288 - 0x28];
+    __int64 m_nId;                                          // +0x288
+};
+class Unk_CharBookMarkOwner : public CPtred
+{
+};
+
 // The names of the market order kinds (CUgcMarketSchCond::m_n20 indexes them).
 static CStringA s_orderNames[7] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
 
@@ -2643,4 +2682,63 @@ UGCMapBlueprintInfo::~UGCMapBlueprintInfo()
 // @0x140899a10
 UGCMapDesignInfo::~UGCMapDesignInfo()
 {
+}
+
+// @0x140896c50
+CUgcCharBookMark::CUgcCharBookMark(MS2Ptr<Unk_CharBookMarkOwner> spOwner)
+    : m_map(10)
+{
+    m_spOwner = spOwner;
+    FUN_140896d90();
+}
+
+// @0x140896d00
+CUgcCharBookMark::~CUgcCharBookMark()
+{
+    m_spOwner = 0;
+    FUN_140896d90();
+}
+
+// @0x140896d90
+void CUgcCharBookMark::FUN_140896d90()
+{
+    m_map.RemoveAll();
+    m_list.RemoveAll();
+}
+
+// @0x140896dd0
+void CUgcCharBookMark::FUN_140896dd0(MS2Ptr<Unk_MeratEquipEntry> spEntry)
+{
+    if (spEntry.get() != 0)
+    {
+        m_list.Add(spEntry);
+        m_map.SetAt(spEntry->m_oid, spEntry);
+    }
+}
+
+// @0x140896e50
+void CUgcCharBookMark::FUN_140896e50(ATL::CAtlArray<MS2Ptr<Unk_MeratEquipEntry> >& out)
+{
+    out.Copy(m_list);
+}
+
+// @0x140896e80
+MS2Ptr<Unk_MeratEquipEntry> CUgcCharBookMark::FUN_140896e80(const Unk_MeratOid& oid)
+{
+    MS2Ptr<Unk_MeratEquipEntry> spEntry(0);
+    m_map.Lookup(oid, spEntry);
+    return spEntry;
+}
+
+// @0x140896f00
+MS2Ptr<Unk_MeratEquipEntry> CUgcCharBookMark::FUN_140896f00(__int64 nId)
+{
+    size_t nCount = m_list.GetCount();
+    for (size_t i = 0; i < nCount; i++)
+    {
+        MS2Ptr<Unk_MeratEquipEntry> spEntry = m_list[i];
+        if (spEntry.get() != 0 && spEntry->m_nId == nId)
+            return spEntry;
+    }
+    return MS2Ptr<Unk_MeratEquipEntry>(0);
 }

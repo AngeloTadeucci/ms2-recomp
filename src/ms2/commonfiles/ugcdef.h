@@ -640,6 +640,20 @@ public:
 };
 MS2_CHECK_SIZE(RideeItemInfo, 0x90);
 
+// One reserved hour of a banner (RTTI name from TPtredDummy<CRBMap<unsigned __int64, ReserveBannerInfo>>, the per
+// banner reservation map of CUgcManager; ctor 0x141893130 inline, emitted by client\ms2\ugcmanager.cpp#4).
+struct ReserveBannerInfo
+{
+    ReserveBannerInfo() : m_nState(0xff) {}
+
+    void Write(COutputStream& stream) const;                // 0x1408974e0
+    void Read(CInPacket& packet);                           // 0x140897540
+
+    CStringW m_strName;                                     // +0x00
+    int m_nState;                                           // +0x08 written as a byte
+};
+MS2_CHECK_SIZE(ReserveBannerInfo, 0x10);
+
 // A banner rolling image: the image itself plus the fields (maps) it may be shown on.
 class CUgcBannerRollingImage : public CPtred
 {
@@ -709,3 +723,28 @@ public:
     __int64 m_nTime;                                        // +0x28
 };
 MS2_CHECK_SIZE(UGCMapBlueprintInfo, 0x30);
+
+// The character bookmark of the merat (market) basket: the entries bookmarked by one owner, as a list and as a map by
+// entry key. Unk_MeratEquipEntry is the market product record (see placeholder/asmeratmarketproduct.h); the owner type
+// (the 0x140899880 smart pointer) is not recovered either.
+class Unk_MeratEquipEntry;
+class Unk_CharBookMarkOwner;
+struct Unk_MeratOid;
+
+class CUgcCharBookMark : public CPtred
+{
+public:
+    explicit CUgcCharBookMark(MS2Ptr<Unk_CharBookMarkOwner> spOwner);       // 0x140896c50
+    virtual ~CUgcCharBookMark();                            // 0x140896d00
+
+    void FUN_140896d90();                                   // clear the map and the list
+    void FUN_140896dd0(MS2Ptr<Unk_MeratEquipEntry> spEntry);                // add an entry (list + map)
+    void FUN_140896e50(ATL::CAtlArray<MS2Ptr<Unk_MeratEquipEntry> >& out);  // copy of the list
+    MS2Ptr<Unk_MeratEquipEntry> FUN_140896e80(const Unk_MeratOid& oid);         // the entry of a key
+    MS2Ptr<Unk_MeratEquipEntry> FUN_140896f00(__int64 nId);                 // the entry whose +0x288 is nId
+
+    MS2Ptr<Unk_CharBookMarkOwner> m_spOwner;                // +0x18
+    ATL::CRBMap<Unk_MeratOid, MS2Ptr<Unk_MeratEquipEntry> > m_map;               // +0x28
+    ATL::CAtlArray<MS2Ptr<Unk_MeratEquipEntry> > m_list;    // +0x58
+};
+MS2_CHECK_SIZE(CUgcCharBookMark, 0x78);
