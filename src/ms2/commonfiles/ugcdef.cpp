@@ -3,6 +3,25 @@
 // MS2-UNIT: commonfiles\ugcdef.cpp
 // MS2-RANGE: 0x14088e340-0x14089e270 .text$mn
 // MS2-RANGE: 0x1400bd940-0x1400bdb40 .text$di
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??0CNode@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@QEAA@_JH@Z 0x140899450 ; unique
+// MS2-PIN: ??0CPair@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEAA@_JH@Z 0x140899540 ; unique
+// MS2-PIN: ??1?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@QEAA@XZ 0x140899770 ; unique
+// MS2-PIN: ?Find@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@_J@Z 0x14089ace0 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAPEAVCNode@12@_JH@Z 0x14089b7d0 ; unique
+// MS2-PIN: ?LeftRotate@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x14089bb90 ; unique
+// MS2-PIN: ?Maximum@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14089bec0 ; unique
+// MS2-PIN: ?Minimum@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14089bfa0 ; unique
+// MS2-PIN: ?NewNode@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAPEAVCNode@12@_JH@Z 0x14089c2e0 ; unique
+// MS2-PIN: ?Predecessor@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14089c870 ; unique
+// MS2-PIN: ?RBInsert@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEAAPEAVCNode@12@_JH@Z 0x14089cc90 ; unique
+// MS2-PIN: ?RemoveAll@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@QEAAXXZ 0x14089d2b0 ; unique
+// MS2-PIN: ?RemovePostOrder@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAXPEAVCNode@12@@Z 0x14089d410 ; unique
+// MS2-PIN: ?RightRotate@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAPEAVCNode@12@PEAV312@@Z 0x14089d5e0 ; unique
+// MS2-PIN: ?SetAt@?$CRBMap@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@QEAAPEAU__POSITION@@_JH@Z 0x14089d870 ; unique
+// MS2-PIN: ?SetNil@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@AEAAXPEAPEAVCNode@12@@Z 0x14089db40 ; unique
+// MS2-PIN: ?Successor@?$CRBTree@_JHV?$CElementTraits@_J@ATL@@V?$CElementTraits@H@2@@ATL@@IEBAPEAVCNode@12@PEAV312@@Z 0x14089dc20 ; unique
+// MS2-PINS-END tplpin
 // MS2-PIN: ??1IUgcProxy@@UEAA@XZ 0x1408999a0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\ugcdef.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -2669,6 +2688,32 @@ void CUgcGetCostTable::Read(CInPacket& packet)
 }
 
 // MS2-FUNCTIONAL: stack frame and loop shape differ from the exe
+// Blueprint fee currency selector (unit-local view of the fee object; its owner unit is uiitemblueprintcreatedialog.cpp)
+enum Unk_BpCurrency { Unk_BpCurrency_Default = 1 };
+class Unk_140166410_Opt { public: bool FUN_14036d710(int); };
+Unk_140166410_Opt* FUN_140166410();
+class Unk_BpFee
+{
+public:
+    Unk_BpCurrency FUN_14089e200();     // 0x14089e200
+
+    char m_pad[0x24];
+    int m_currency;                     // +0x24
+};
+
+// @0x14089e200
+Unk_BpCurrency Unk_BpFee::FUN_14089e200()
+{
+    if (!FUN_140166410()->FUN_14036d710(0x62))
+    {
+        if (m_currency == 10 || m_currency == 9)
+            return (Unk_BpCurrency)3;
+    }
+    else if (m_currency == 3)
+        return (Unk_BpCurrency)10;
+    return (Unk_BpCurrency)m_currency;
+}
+
 // @0x1408984b0
 bool CUgcGetCostTable::FUN_1408984b0(__int64 nStart, __int64 nLength, CostList& out)
 {
@@ -2706,7 +2751,7 @@ bool CUgcGetCostTable::FUN_1408984b0(__int64 nStart, __int64 nLength, CostList& 
                 if (spInfo.get() != 0)
                 {
                     spInfo->FUN_140897f30(nPart, nPercent);
-                    out.AddTail(spInfo);
+                    out.Add(spInfo);
                 }
                 nEnd -= nPart;
                 nLeft -= nPart;
@@ -2854,3 +2899,6 @@ void FUN_1408989c0(ATL::CAtlList<MS2Ptr<Unk_BasketNode> >& nodes, Unk_BasketSink
         }
     }
 }
+
+// @0x14089b9d0 (glue: CAtlMap<CStringA,int>::IsEmpty)
+template bool ATL::CAtlMap<CStringA, int, ATL::CStringElementTraits<CStringA>, ATL::CElementTraits<int> >::IsEmpty() const;

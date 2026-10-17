@@ -19,7 +19,7 @@ class CUgcGetCostTable : public TSingleton<CUgcGetCostTable>
 {
 public:
     typedef ATL::CRBMap<__int64, int> CostMap;
-    typedef ATL::CAtlList<MS2Ptr<TUgcGetCostInfo> > CostList;
+    typedef ATL::CAtlArray<MS2Ptr<TUgcGetCostInfo> > CostList;
 
     CUgcGetCostTable();                                     // 0x140898000
     virtual ~CUgcGetCostTable();                            // 0x140898070
