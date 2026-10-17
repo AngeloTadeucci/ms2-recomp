@@ -49,6 +49,8 @@ class CUgcRegistBanner;
 class CUgcBannerRollingImage;
 class CUgcUploadCtrl;
 class CUploadFile;
+class ASObj;
+class ASArray;
 class NiTexture;
 
 CPtred* FUN_1401ba820(CPtred* p);                           // sets the count of a new box to 1
@@ -242,8 +244,17 @@ public:
     int FUN_141886a90(CUgcItemPC* pItem, NiTexture* pTexture);
     int FUN_141886de0(CUgcItemCube* pItem, NiTexture* pTexture);
     int FUN_141887160(CUgcItemRidee* pItem, NiTexture* pTexture);
+    void FUN_141889ce0(int nType);                          // re-read the local files of an upload kind
+    void FUN_141889e20(unsigned int nCount, int nStart, ASArray* pArray);   // AS rows of the local files
+    void FUN_14188a140(unsigned int nCount, unsigned int nStart, ASArray* pArray);
+    int FUN_14188a480();                                    // the number of local files
     MS2Ptr<CUploadFile> FUN_14188a4b0(int nIndex);          // the local file at nIndex
+    int FUN_14188a5b0(const CStringW& strPath);             // the index of a local file (-1: none)
+    void FUN_14188a6f0(const CStringW& strPath);            // clear the read-only attribute
+    void FUN_14188a760(const CStringW& strDir, int bRemoveDir);   // delete a directory tree
+    void FUN_14188a7c0(const CStringW& strDir, int bRemoveDir, std::set<CStringW>& exclude);
     int FUN_14188bfd0(const CStringW& strPath, struct _D3DXIMAGE_INFO* pInfo);   // the image size of a file
+    int FUN_14188aa20(const CString& strName);              // 1: the file was downloaded in this session
     void FUN_14188aae0();
     void FUN_14188aca0();                                   // create the Custom directories
     void FUN_14188b480();
@@ -252,7 +263,10 @@ public:
     void FUN_14188bbb0();
     void FUN_14188bce0();
     MS2Ptr<CUgcBannerRollingImage> FUN_14188c300(int nBannerId);  // the active rolling image of a banner
+    int FUN_14188c020(CAtlArray<MS2Ptr<CUploadFile> >& files);   // 1: the cached files are the same
     void FUN_14188c9e0();                                   // the upload file types
+    void FUN_14188d380(int nType, CAtlArray<MS2Ptr<CUploadFile> >& files);   // list the image files of an upload kind
+    int FUN_14188d8c0(ASObj& obj, CUploadFile* pFile);      // the AS row of a local file
     void FUN_14188cab0();
     int FUN_14188fdb0(int nDialog);                         // open one upload dialog, close the others
 

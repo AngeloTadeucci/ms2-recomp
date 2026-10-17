@@ -11,6 +11,7 @@
 #include "ms2/placeholder/header_statics_a.h"
 
 #include <io.h>
+#include <comutil.h>
 #include <egf/Entity.h>
 #include <NiImageConverter.h>
 #include <NiRect.h>
@@ -38,6 +39,8 @@
 #include "ms2/placeholder/cugcmanager.h"
 #include "ms2/placeholder/cugcuploadctrl.h"
 #include "ms2/placeholder/delegate.h"
+#include "ms2/placeholder/asobj.h"
+#include "ms2/ms2format.h"
 #include "ms2/placeholder/exception.h"
 #include "ms2/unnamed/unit_1401b6d10.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
@@ -135,6 +138,11 @@ void FUN_140d73aa0(CStringW strMessage, int nType, IMessageListener* pListener, 
 void FUN_140d73bc0(int nStringId, int nType, IMessageListener* pListener, CStringW strArg);         // message box
 CStringW FUN_14028b8e0(const CStringW& strKey);             // a string table entry by key
 CStringW FUN_14028de60(int nId);                            // a string table entry
+CStringW FormatStringId(int nId, const fmt::ArgList& args);   // a string table entry with {0} arguments
+FMT_VARIADIC_W(CStringW, FormatStringId, int)
+bool FUN_1403b3c40(const CStringW& str, const wchar_t* psz);   // equal to a literal
+void FUN_140841420(CStringW& str);                         // lower case
+CString FUN_1410272e0(CString strName);                     // the cache key of a downloaded file
 CStringW FUN_140811740(int nId, const int& nArg1, const int& nArg2);   // string table entry with two integer arguments
 CStringW FUN_140a2fcd0(__int64 tFrom, __int64 tTo);         // a remaining time text
 void FUN_1412751b0(const CStringW& strText, int nType);     // chat notice
@@ -2605,12 +2613,487 @@ void CUgcManager::FUN_1418897f0(CInPacket& packet)
     }
 }
 
+// @0x141889ce0
+// Re-read the local files of an upload kind (warns when the directory holds too many); a changed list replaces the cached
+// one and the thumbnails are made again.
+void CUgcManager::FUN_141889ce0(int nType)
+{
+    CAtlArray<MS2Ptr<CUploadFile> > files;
+    FUN_14188d380(nType, files);
+    if (files.GetCount() >= *FUN_1401d3200()->UGCImgFileCountCheck.Get())
+        FUN_140d73bc0(0x2e3, 0, 0, L"");
+    if (FUN_14188c020(files) == 0)
+    {
+        FUN_14188b480();
+        if (Unk_LockGuard guard = m_lock)
+        {
+        }
+        else
+        {
+            m_files.RemoveAll();
+            m_files.Append(files);
+        }
+    }
+}
+
+// @0x141889e20
+// Rows of nCount local files from nStart for the AS list (a missing thumbnail is made first).
+void CUgcManager::FUN_141889e20(unsigned int nCount, int nStart, ASArray* pArray)
+{
+    int nEnd = nCount + nStart;
+    if (nEnd < 0)
+        return;
+    CAtlArray<MS2Ptr<CUploadFile> > files;
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        int nFirst = nStart;
+        unsigned int nNum = nCount;
+        for (unsigned int i = 0; i < nNum; i++)
+        {
+            unsigned int nIndex = nFirst + i;
+            if (m_files.GetCount() > nIndex)
+                files.Add(m_files[nIndex]);
+        }
+    }
+    for (unsigned int i = 0; i < files.GetCount(); i++)
+    {
+        MS2Ptr<CUploadFile> spFile = files[i];
+        if (spFile == NULL)
+        {
+            MS2_ASSERT_AT(0x2b1, 0);
+            continue;
+        }
+        if (_waccess(spFile->GetThumbnailDir(), 0) != 0)
+            ConvertIconFile(spFile->GetPath());
+        ASObj obj(2);
+        if (FUN_14188d8c0(obj, spFile.get()))
+            pArray->FUN_1422bc050(obj.FUN_1422bb870());
+    }
+}
+
+// @0x14188a140
+// Same, for a page of the list (nothing when there are no files).
+void CUgcManager::FUN_14188a140(unsigned int nCount, unsigned int nStart, ASArray* pArray)
+{
+    if (m_files.IsEmpty())
+        return;
+    size_t nTotal = m_files.GetCount();
+    CAtlArray<MS2Ptr<CUploadFile> > files;
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        for (size_t i = 0; i < nCount; i++)
+        {
+            size_t nIndex = nStart + i;
+            if (nTotal > nIndex)
+                files.Add(m_files[nIndex]);
+        }
+    }
+    nCount = min(nCount, files.GetCount());
+    for (size_t i = 0; i < nCount; i++)
+    {
+        MS2Ptr<CUploadFile> spFile = files[i];
+        if (spFile == NULL)
+            continue;
+        if (_waccess(spFile->GetThumbnailDir(), 0) != 0)
+            ConvertIconFile(spFile->GetPath());
+        ASObj obj(2);
+        if (FUN_14188d8c0(obj, spFile.get()))
+            pArray->FUN_1422bc050(obj.FUN_1422bb870());
+    }
+}
+
+// @0x14188a480
+// The number of local files.
+int CUgcManager::FUN_14188a480()
+{
+    return m_files.GetCount();
+}
+
+// @0x14188a4b0
+MS2Ptr<CUploadFile> CUgcManager::FUN_14188a4b0(int nIndex)
+{
+    if (nIndex < 0 || nIndex >= FUN_14188a480())
+        return MS2Ptr<CUploadFile>(0);
+    MS2Ptr<CUploadFile> spFile(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        spFile = m_files[nIndex];
+    }
+    return spFile;
+}
+
+// @0x14188a5b0
+// The index of the local file with this path (-1: none).
+int CUgcManager::FUN_14188a5b0(const CStringW& strPath)
+{
+    int nIndex = -1;
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        for (size_t i = 0; i < m_files.GetCount(); i++)
+        {
+            MS2Ptr<CUploadFile> spFile = m_files[i];
+            if (spFile == NULL)
+                continue;
+            if (spFile->GetPath() == strPath)
+            {
+                nIndex = (int)i;
+                break;
+            }
+        }
+    }
+    return nIndex;
+}
+
+// @0x14188a6f0
+// Clear the read-only attribute of a file.
+void CUgcManager::FUN_14188a6f0(const CStringW& strPath)
+{
+    DWORD dwAttributes = GetFileAttributesW(strPath);
+    if (dwAttributes == INVALID_FILE_ATTRIBUTES)
+        return;
+    if ((dwAttributes & FILE_ATTRIBUTE_READONLY) != 0)
+        SetFileAttributesW(strPath, dwAttributes & ~FILE_ATTRIBUTE_READONLY);
+}
+
+// @0x14188a760
+void CUgcManager::FUN_14188a760(const CStringW& strDir, int bRemoveDir)
+{
+    std::set<CStringW> exclude;
+    FUN_14188a7c0(strDir, bRemoveDir, exclude);
+}
+
+// @0x14188a7c0
+// Delete the files of a directory tree except the excluded directories; bRemoveDir also removes the directory itself.
+void CUgcManager::FUN_14188a7c0(const CStringW& strDir, int bRemoveDir, std::set<CStringW>& exclude)
+{
+    if (exclude.find(strDir) != exclude.end())
+        return;
+    CStringW strFind;
+    strFind.Format(L"%s\\*.*", (const wchar_t*)strDir);
+    WIN32_FIND_DATAW fd;
+    HANDLE hFind = FindFirstFileW(strFind, &fd);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            CStringW strName(fd.cFileName);
+            CStringW strPath = StringFormat(L"{0}\\{1}", strDir, strName);
+            if (FUN_1403b3c40(strName, L".") || FUN_1403b3c40(strName, L".."))
+                continue;
+            BOOL bDir = (fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) ? TRUE : FALSE;
+            if (bDir == TRUE)
+            {
+                FUN_14188a7c0(strPath, 1, exclude);
+            }
+            else
+            {
+                FUN_14188a6f0(strPath);
+                DeleteFileW(strPath);
+            }
+        } while (FindNextFileW(hFind, &fd));
+        FindClose(hFind);
+    }
+    if (bRemoveDir)
+        RemoveDirectoryW(strDir);
+}
+
+// @0x14188aa20
+// 1 when the file was downloaded in this session.
+// MS2-FUNCTIONAL: same calls and flow; the exe has a nop after the guard dtor on the fall-off path (no return value)
+int CUgcManager::FUN_14188aa20(const CString& strName)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        return m_setC8.find(strName) != m_setC8.end();
+    }
+}
+
+// @0x14188aae0
+// Clear the merat market downloads of the market kind that is not in use.
+void CUgcManager::FUN_14188aae0()
+{
+    FUN_14188a760(FUN_14016a730(".\\Custom\\Download\\MeratMarketBanner", 0), 1);
+    if (FUN_140166410()->FUN_14036d570(0x108))
+    {
+        FUN_14188a760(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Banner", 0), 1);
+        FUN_14188a760(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Limited", 0), 1);
+    }
+    else
+    {
+        FUN_14188a760(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\HomeProduct", 0), 0);
+        FUN_14188a760(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Special", 0), 0);
+    }
+}
+
+// @0x14188aca0
+void CUgcManager::FUN_14188aca0()
+{
+    CreateDirectoryW(FUN_14016a730(".\\Custom", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Icon", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Profile", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\WeddingProfile", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Item", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Guild", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Guild\\Poster", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\BannderAd", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\CashshopBanner", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Blueprint", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket", 0), NULL);
+    if (FUN_140166410()->FUN_14036d570(0x108))
+    {
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\HomeProduct", 0), NULL);
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Special", 0), NULL);
+    }
+    else
+    {
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Banner", 0), NULL);
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Limited", 0), NULL);
+    }
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Image", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\WeddingProfile", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Equip", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Image", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Cube", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Guild", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Guild\\Poster", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Ridee", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Image", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Convert", 0), NULL);
+    CStringW hidden[] = { FUN_14016a730(".\\Custom\\Thumbnail", 0) };
+    for (int i = 0; i < _countof(hidden); i++)
+    {
+        CStringW strDir = hidden[i];
+        CreateDirectoryW(strDir, NULL);
+        SetFileAttributesW(strDir, FILE_ATTRIBUTE_HIDDEN);
+    }
+}
+
+// @0x14188b480
+// Delete the thumbnails (they are made again from the files).
+void CUgcManager::FUN_14188b480()
+{
+    FUN_14188a760(FUN_14016a730(".\\Custom\\Thumbnail", 0), 0);
+}
+
+// @0x14188b4e0
+// Clear the download cache (the banner directories are kept), create its directories again and delete the converted
+// images.
+// MS2-FUNCTIONAL: same calls and flow; the exe keeps the _bstr_t("\\") temporary in a low stack slot (frame 0x10 smaller)
+void CUgcManager::FUN_14188b4e0()
+{
+    std::set<CStringW> exclude;
+    exclude.insert(FUN_14016a730(".\\Custom\\Download\\BannderAd", 0));
+    exclude.insert(FUN_14016a730(".\\Custom\\Download\\CashshopBanner", 0));
+    exclude.insert(FUN_14016a730(".\\Custom\\Download\\MeratMarket", 0));
+    FUN_14188a7c0(FUN_14016a730(".\\Custom\\Download", 0), 0, exclude);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Icon", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Profile", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Item", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Guild", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\Guild\\Poster", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\BannderAd", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\CashshopBanner", 0), NULL);
+    CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket", 0), NULL);
+    if (FUN_140166410()->FUN_14036d570(0x108))
+    {
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\HomeProduct", 0), NULL);
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Special", 0), NULL);
+    }
+    else
+    {
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Banner", 0), NULL);
+        CreateDirectoryW(FUN_14016a730(".\\Custom\\Download\\MeratMarket\\Limited", 0), NULL);
+    }
+    CStringW strConvert = FUN_14016a730(".\\Custom\\Convert", 0);
+    CStringW strFind = strConvert + L"\\.dds";
+    WIN32_FIND_DATAW fd;
+    HANDLE hFind = FindFirstFileW(strFind, &fd);
+    do
+    {
+        CString strPath = (const char*)((const wchar_t*)strConvert + _bstr_t("\\"));
+        strPath += fd.cFileName;
+        DeleteFileA(strPath);
+    } while (FindNextFileW(hFind, &fd));
+}
+
+// @0x14188bb20
+// Delete the files of m_map190.
+void CUgcManager::FUN_14188bb20()
+{
+    for (std::map<CStringW, CStringW>::iterator it = m_map190.begin(); it != m_map190.end(); ++it)
+        DeleteFileW(it->first);
+}
+
+// @0x14188bbb0
+// Stop the current upload and close its dialog.
+void CUgcManager::FUN_14188bbb0()
+{
+    m_bInit = 0;
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else if (m_spUpload.get())
+    {
+        m_spUpload->FUN_1418a38a0();
+    }
+    if (m_bInit)
+    {
+        MS2Ptr<CUgcUploadCtrl> spCtrl = FUN_141882610();
+        if (spCtrl == NULL)
+            return;
+        if (FUN_1403ed2b0()->FUN_141adc890((eUIClassID)spCtrl->FUN_1418a3ad0()))
+            FUN_1403ed2b0()->FUN_141adc5d0((eUIClassID)spCtrl->FUN_1418a3ad0());
+    }
+}
+
+// @0x14188bce0
+// Finish the ended downloads: a successful one is remembered and its proxies get the file; ended ones are dropped.
+void CUgcManager::FUN_14188bce0()
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        CAtlArray<CString> done;
+        for (POSITION pos = m_mapDownload.GetHeadPosition(); pos != NULL; m_mapDownload.GetNext(pos))
+        {
+            CString strName = m_mapDownload.GetKeyAt(pos);
+            MS2Ptr<CUgcDownloadCtrl> spCtrl = m_mapDownload.GetValueAt(pos);
+            if (spCtrl == NULL)
+            {
+                done.Add(strName);
+                continue;
+            }
+            if (spCtrl->GetResult() != 1)
+            {
+                if (spCtrl->GetResult() == 0)
+                    m_setC8.insert(FUN_1410272e0(strName));
+                spCtrl->ProcessResult();
+                done.Add(strName);
+                continue;
+            }
+        }
+        for (size_t i = 0; i < done.GetCount(); i++)
+        {
+            CString strName = done[i];
+            m_mapDownload.RemoveKey(strName);
+        }
+        done.RemoveAll();
+    }
+}
+
 // @0x14188bfd0
 int CUgcManager::FUN_14188bfd0(const CStringW& strPath, D3DXIMAGE_INFO* pInfo)
 {
     HRESULT hr = D3DXGetImageInfoFromFileW(strPath, pInfo);
     if (FAILED(hr))
         return 0;
+    return 1;
+}
+
+static int __cdecl FUN_141890240(const void* p1, const void* p2);
+
+// @0x14188c020
+// 1 when the files are the cached ones (same names and write times, in the same order).
+int CUgcManager::FUN_14188c020(CAtlArray<MS2Ptr<CUploadFile> >& files)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        if (m_files.GetCount() != files.GetCount())
+            return 0;
+        for (unsigned int i = 0; i < files.GetCount(); i++)
+        {
+            if (files[i]->GetName() != m_files[i]->GetName())
+                return 0;
+            if (files[i]->GetWriteTime() != m_files[i]->GetWriteTime())
+                return 0;
+        }
+    }
+    return 1;
+}
+
+// @0x14188d380
+// The image files of an upload kind's directory with an allowed extension and size, the newest first.
+void CUgcManager::FUN_14188d380(int nType, CAtlArray<MS2Ptr<CUploadFile> >& files)
+{
+    files.RemoveAll();
+    wchar_t szDir[0x100] = {0};
+    wchar_t szDrive[3] = {0};
+    wchar_t szFname[0x100] = {0};
+    wchar_t szExt[0x100] = {0};
+    CStringW strDir = FUN_141026920(nType);
+    CStringW strFind = StringFormat(L"{0}\\*.*", strDir);
+    WIN32_FIND_DATAW fd;
+    HANDLE hFind = FindFirstFileW(strFind, &fd);
+    if (hFind != INVALID_HANDLE_VALUE)
+    {
+        do
+        {
+            DWORD bDir = fd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY;
+            CStringW strName(fd.cFileName);
+            CStringW strPath = StringFormat(L"{0}\\{1}", strDir, strName);
+            if (FUN_1403b3c40(strName, L".") || FUN_1403b3c40(strName, L".."))
+                continue;
+            if (bDir != 0)
+                continue;
+            _wsplitpath_s(strPath, szDrive, 3, szDir, 0x100, szFname, 0x100, szExt, 0x100);
+            CStringW strExt(szExt);
+            FUN_140841420(strExt);
+            for (size_t i = 0; i < m_extensions.GetCount(); i++)
+            {
+                CStringW strAllowed = m_extensions[i];
+                if (strAllowed == strExt)
+                {
+                    D3DXIMAGE_INFO info;
+                    if (FUN_14188bfd0(strPath, &info) == 0)
+                        continue;
+                    if ((int)info.Width > *FUN_1401d3200()->UGCImgUploadSizeLimit.Get()
+                        || (int)info.Height > *FUN_1401d3200()->UGCImgUploadSizeLimit.Get())
+                        continue;
+                    CFileTime tWrite(fd.ftLastWriteTime);
+                    CFileTime tCreate(fd.ftCreationTime);
+                    MS2Ptr<CUploadFile> spFile(new CUploadFile());
+                    spFile->Set(strPath, strName, tWrite.GetTime(), tCreate.GetTime(), 1);
+                    files.Add(spFile);
+                }
+            }
+        } while (FindNextFileW(hFind, &fd));
+        FindClose(hFind);
+    }
+    qsort(files.GetData(), files.GetCount(), sizeof(MS2Ptr<CUploadFile>), FUN_141890240);
+}
+
+// @0x14188d8c0
+// The AS row of a local file: its name, the tooltip and the thumbnail.
+int CUgcManager::FUN_14188d8c0(ASObj& obj, CUploadFile* pFile)
+{
+    if (pFile == NULL)
+        return 0;
+    obj.FUN_1407cbb20("fileName", pFile->GetName());
+    CStringW strTooltip = FormatStringId(0x2ec, pFile->GetName());
+    obj.FUN_1407cbb20("tooltip", strTooltip);
+    CStringW strImage = FUN_141026c50(pFile->GetTitle());
+    obj.FUN_1407cbb20("imgPath", strImage);
     return 1;
 }
 
@@ -2995,4 +3478,15 @@ int CUgcManager::FUN_14188fdb0(int nDialog)
         FUN_1403ed2b0()->FUN_141adc5d0(eUI_4e69);
     }
     return 1;
+}
+
+// @0x141890240
+// qsort order of the local files: the newest first, the same time by name.
+static int __cdecl FUN_141890240(const void* p1, const void* p2)
+{
+    MS2Ptr<CUploadFile> spFile1 = *static_cast<const MS2Ptr<CUploadFile>*>(p1);
+    MS2Ptr<CUploadFile> spFile2 = *static_cast<const MS2Ptr<CUploadFile>*>(p2);
+    if (spFile1->GetCreateTime() == spFile2->GetCreateTime())
+        return spFile1->GetName().Compare(spFile2->GetName());
+    return (unsigned __int64)spFile1->GetCreateTime() < (unsigned __int64)spFile2->GetCreateTime() ? 1 : -1;
 }
