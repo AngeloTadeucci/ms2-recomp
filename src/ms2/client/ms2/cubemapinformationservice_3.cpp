@@ -147,6 +147,15 @@ Unk_CMISIter<278>* FUN_141151910(Unk_CMISTree<278>*, Unk_CMISIter<278>*);   // e
 unsigned char FUN_141127380(Unk_CMISIter<278>*, Unk_CMISIter<278>*);                 // operator!=
 int* FUN_141128540(Unk_CMISIter<278>*);                                     // operator*
 void FUN_141129a60(Unk_CMISIter<278>*);                                     // operator++
+void FUN_14114f0e0(Unk_CMISTree<260>*);
+void FUN_14114fa40(Unk_CMISTree<259>*);
+void FUN_1410b2760(Unk_CMISTree<277>*);
+void FUN_14114f360(Unk_CMISTree<262>*);
+void FUN_14114f2c0(Unk_CMISTree<261>*);
+void FUN_1402237c0(ATL::CAtlArray<Unk_CMISElem458*>*);
+struct Unk_CMISPt2 { float x, y; };
+struct Unk_CMISRes16 { Unk_CMISRes16(const Unk_CMISRes16&); __int64 m_a, m_b; };
+Unk_CMISRes16 FUN_1408a15b0(Unk_StreamPoint, Unk_StreamPoint);
 Unk_CMISIter<257>* FUN_141152030(Unk_CMISTree<257>*, Unk_CMISIter<257>*);
 Unk_CMISIter<257>* FUN_1411580e0(Unk_CMISTree<257>*, Unk_CMISIter<257>*, const int*);
 bool FUN_141127050(Unk_CMISIter<257>*, Unk_CMISIter<257>*);
@@ -1152,6 +1161,30 @@ int CubeMapInformationService::FUN_1410d4340(Unk_CubePoint* pOut)
         return 0;
     memcpy(pOut, &p300, 12);
     return 1;
+}
+// @0x1410c4d80
+void CubeMapInformationService::FUN_1410c4d80(const Unk_StreamPoint& pt, float fDist)
+{
+    FUN_1408a15b0(pt, DAT_143b01a60);
+    FUN_1410c2840(pt, fDist);
+}
+// @0x1410c68e0
+bool CubeMapInformationService::FUN_1410c68e0()
+{
+    FUN_14114f0e0(&f98);
+    FUN_14114fa40(&fa8);
+    FUN_14114f0e0(&fb8);
+    FUN_1410b2760(&f2a8);
+    FUN_14114f360(&fd8);
+    FUN_14114f2c0(&fc8);
+    FUN_1402237c0(&a458);
+    return true;
+}
+// @0x1410d2340
+// MS2-FUNCTIONAL: the exe materialises both compare results in int temps (locals layout differs)
+bool CubeMapInformationService::FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CMISPt2* b, float fLimX, float fLimY)
+{
+    return FUN_14029d220(a->x - b->x) <= fLimX && FUN_14029d220(a->y - b->y) <= fLimY;
 }
 // @0x1410ce800
 efd::SyncResult CubeMapInformationService::OnPreInit(efd::IDependencyRegistrar* pRegistrar)
