@@ -247,23 +247,22 @@ int UILoadingProgress::FUN_1419e04b0()
 }
 MS2_REPLACE_METHOD(0x1419E04B0, UILoadingProgress, FUN_1419e04b0, 46, 0x6FE3E137);
 
-// MS2-FUNCTIONAL: int/bool flow of the scene-id test differs
 // @0x1419e04f0
 int UILoadingProgress::FUN_1419e04f0()
 {
     if (FUN_1422b9dc0(FUN_1408e57f0()) == 0x620000d)
         return DAT_143ab2874;
-    if (m_74 == 0)
-        return FUN_1403ed2d0()->FUN_141bd3060();
-    return m_74;
+    if (m_74 != 0)
+    {
+        return m_74;
+    }
+    return FUN_1403ed2d0()->FUN_141bd3060();
 }
 
-// MS2-FUNCTIONAL: the converting MS2Ptr assignment is a by-value copy in the exe
 // @0x1419e0550
 void UILoadingProgress::vfunc_41(const Scaleform::GFx::Value& root)
 {
-    MS2Ptr<ASMovieClip> pClip = FUN_1409b40c0(m_28, root);
-    m_30 = pClip;
+    m_30 = FUN_1409b40c0(m_28, root);
 }
 
 // MS2-FUNCTIONAL: branch layout of the scene-id test
@@ -290,14 +289,15 @@ bool UILoadingProgress::FUN_1419e0630()
     return m_74 != 0;
 }
 
-// MS2-FUNCTIONAL: Unk_McMapPtr-style destructor pairing (0x1408850f0) vs MS2Ptr<CFieldDataCli>
 // @0x1419e0650
 CString UILoadingProgress::FUN_1419e0650()
 {
     MS2Ptr<CFieldDataCli> spField = CFieldDataCli::Find(FUN_1419e04b0());
-    if (spField.get() == 0)
-        return "";
-    return CString(spField->m_strBgMask);
+    if (spField.get() != 0)
+    {
+        return CString(spField->m_strBgMask);
+    }
+    return "";
 }
 
 // MS2-FUNCTIONAL: callee pairing of the string getters
