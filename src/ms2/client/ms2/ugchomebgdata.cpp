@@ -23,8 +23,8 @@ public:
 class Unk_UhXmlList
 {
 public:
-    void FUN_140163e20();                                       // ctor
-    void FUN_1401644e0();                                       // dtor
+    Unk_UhXmlList();                                            // 0x140163e20
+    ~Unk_UhXmlList();                                           // 0x1401644e0
     unsigned __int64 FUN_14016d900();                           // size
     Unk_140165cf0*& FUN_140164a30(unsigned __int64 n);          // operator[]
     void *m_a, *m_b, *m_c;
@@ -34,7 +34,8 @@ void FUN_14028faa0(Unk_140165cf0* pParent, const char* pszName, const char* pszA
 int FUN_140873220(Unk_140165cf0* pNode, const char* pszName, unsigned& nOut);    // unsigned attribute
 int FUN_1408733e0(Unk_140165cf0* pNode, const char* pszName, CString& strOut);   // string attribute
 void FUN_1408746f0(Unk_140165cf0* pNode, const char* pszName, Unk_UhPoint3& kOut);   // Point3 attribute
-class Unk_UhFiles { public: int FUN_1403974b0(TiXmlDocument* doc, const char* path, int a, bool b, bool c); };
+class Unk_UhFiles;
+int FUN_1403974b0(Unk_UhFiles* pFiles, TiXmlDocument* doc, const char* path, int a, bool b, bool c);   // member in the exe, called with `this` last
 Unk_UhFiles* FUN_140166420();
 CString FUN_14071a5b0(const CString& strDir, const CString& strFile);
 class Unk_UhStrings { public: CStringW FUN_141811980(int nTable, int nId); };
@@ -47,15 +48,16 @@ extern Unk_StreamPoint DAT_143a08cf8;   // zero up axis
 // The statics of the home apply functions (opaque stand-ins for helpers of other units).
 class Unk_UhUiService { public: void FUN_141ad9980(unsigned char nStage); };
 Unk_UhUiService* FUN_1403ed2b0();
-void* FUN_1403ed2d0();
+struct Unk_UhHandle;
+struct Unk_UhWorld { Unk_UhHandle FUN_141bd0420(unsigned hash); };   // the tagged-entity lookup of the world service
+Unk_UhWorld* FUN_1403ed2d0();
 void* FUN_1409478c0();
 void FUN_140aed750(void* pCamera, int nMode, int nKeep);
 void FUN_14097faa0(void* pDst, const Unk_UhPoint3& pt);     // NiPoint3::operator=
 struct Unk_UhHandle { ~Unk_UhHandle(); void* m_a; void* m_p; void* m_c; };   // 24 byte handle, released at 0x1409f20e0
-long long FUN_1409f2170(Unk_UhHandle* h);
+long long FUN_1409f2170(Unk_UhHandle* h);   // get()
 void* FUN_1409f2190(Unk_UhHandle* h);
-void FUN_141bd0420(void* pWorld, Unk_UhHandle* pOut, unsigned hash);
-void* FUN_140b285a0(void* p);
+unsigned __int64 FUN_140b285a0(void* p);
 void* FUN_140b285b0(void* p);
 struct Unk_UhEntRef { Unk_UhEntRef(void* p); ~Unk_UhEntRef(); void* m_p; };    // 0x1408a7ed0 / 0x1408a8720
 void* FUN_1408a9280(Unk_UhEntRef* r);
@@ -113,37 +115,37 @@ void UgcHomeOptionData::Load()
 // @0x140b67fe0
 CString UgcHomeOptionData::GetBgPath(unsigned char nType)
 {
-    MS2Ptr<UgcHomeBgData> spData;
-    if (!m_mapBg.Lookup(nType, spData))
-        return CString("");
-    return spData->m_strPath;
+    MS2Ptr<UgcHomeBgData> spData(0);
+    if (m_mapBg.Lookup(nType, spData))
+        return spData->m_strPath;
+    return CString("");
 }
 
 // @0x140b680b0
 Unk_UhPoint3 UgcHomeOptionData::GetLightColor(unsigned char nType)
 {
-    MS2Ptr<UgcHomeLightData> spData;
-    if (!m_mapLight.Lookup(nType, spData))
-        return Unk_UhPoint3(DAT_143a08d08);
-    return spData->m_color;
+    MS2Ptr<UgcHomeLightData> spData(0);
+    if (m_mapLight.Lookup(nType, spData))
+        return spData->m_color;
+    return Unk_UhPoint3(DAT_143a08d08);
 }
 
 // @0x140b68160
 Unk_UhPoint3 UgcHomeOptionData::GetCameraOffset(unsigned char nType)
 {
-    MS2Ptr<UgcHomeCameraData> spData;
-    if (!m_mapCamera.Lookup(nType, spData))
-        return Unk_UhPoint3(DAT_143b01a60);
-    return spData->m_offset;
+    MS2Ptr<UgcHomeCameraData> spData(0);
+    if (m_mapCamera.Lookup(nType, spData))
+        return spData->m_offset;
+    return Unk_UhPoint3(DAT_143b01a60);
 }
 
 // @0x140b68210
 Unk_UhPoint3 UgcHomeOptionData::GetCameraUp(unsigned char nType)
 {
-    MS2Ptr<UgcHomeCameraData> spData;
-    if (!m_mapCamera.Lookup(nType, spData))
-        return Unk_UhPoint3(DAT_143a08cf8);
-    return spData->m_upAxis;
+    MS2Ptr<UgcHomeCameraData> spData(0);
+    if (m_mapCamera.Lookup(nType, spData))
+        return spData->m_upAxis;
+    return Unk_UhPoint3(DAT_143a08cf8);
 }
 
 // @0x140b682c0
@@ -156,9 +158,8 @@ void UgcHomeOptionData::ApplyBg(unsigned char nType)
 void UgcHomeOptionData::ApplyLight(unsigned char nType)
 {
     Unk_UhPoint3 color = GetLightColor(nType);
-    Unk_UhHandle hTag;
-    FUN_141bd0420(FUN_1403ed2d0(), &hTag, 0x169ea355);
-    if (FUN_1409f2170(&hTag) != 0 && FUN_140b285a0(FUN_1409f2190(&hTag)) != 0)
+    Unk_UhHandle hTag = FUN_1403ed2d0()->FUN_141bd0420(0x169ea355);
+    if ((FUN_1409f2170(&hTag) != 0 ? true : false) && FUN_140b285a0(FUN_1409f2190(&hTag)) > 0)
     {
         Unk_UhEntRef ent(FUN_140b285b0(FUN_1409f2190(&hTag)));
         Unk_UhVec3f vec(color.x, color.y, color.z);
@@ -179,14 +180,14 @@ void UgcHomeOptionData::ApplyCamera(unsigned char nType)
 void UgcHomeOptionData::LoadBg()
 {
     TiXmlDocument doc;
-    if (FUN_140166420()->FUN_1403974b0(&doc, FUN_14071a5b0(CString("Table"), CString("ugcBackground.xml")), 0, true, false) == 0)
+    bool bFailed = FUN_1403974b0(FUN_140166420(), &doc, FUN_14071a5b0("Table", "ugcBackground.xml"), 0, true, false) == 0;
+    if (bFailed)
         return;
     Unk_140165cf0* pRoot = FUN_140165cf0(&doc, "ms2");
     if (pRoot == 0)
         return;
     m_mapBg.RemoveAll();
     Unk_UhXmlList list;
-    list.FUN_140163e20();
     FUN_14028faa0(pRoot, "list", "id", &list);
     for (unsigned __int64 i = 0; i < list.FUN_14016d900(); ++i)
     {
@@ -195,18 +196,17 @@ void UgcHomeOptionData::LoadBg()
         FUN_140873220(pNode, "id", nId);
         CString strPath;
         FUN_1408733e0(pNode, "path", strPath);
-        UgcHomeBgData* pData = new UgcHomeBgData(FUN_1401a9d70()->FUN_141811980(0x33, nId), strPath);
-        MS2Ptr<UgcHomeBgData> spData(pData);
+        MS2Ptr<UgcHomeBgData> spData(new UgcHomeBgData(FUN_1401a9d70()->FUN_141811980(0x33, nId), strPath));
         m_mapBg.SetAt((int)m_mapBg.GetCount(), spData);
     }
-    list.FUN_1401644e0();
 }
 
 // @0x140b68810
 void UgcHomeOptionData::LoadLight()
 {
     TiXmlDocument doc;
-    if (FUN_140166420()->FUN_1403974b0(&doc, FUN_14071a5b0(CString("Table"), CString("ugcHousingLight.xml")), 0, true, false) == 0)
+    bool bFailed = FUN_1403974b0(FUN_140166420(), &doc, FUN_14071a5b0("Table", "ugcHousingLight.xml"), 0, true, false) == 0;
+    if (bFailed)
         return;
     Unk_140165cf0* pRoot = FUN_140165cf0(&doc, "ms2");
     if (pRoot == 0)
@@ -219,8 +219,7 @@ void UgcHomeOptionData::LoadLight()
         Unk_UhPoint3 color;
         FUN_1408746f0(pNode, "ambientcolor", color);
         color.FUN_140ae9270(255.0f);
-        UgcHomeLightData* pData = new UgcHomeLightData(FUN_1401a9d70()->FUN_141811980(0x33, nId), color);
-        MS2Ptr<UgcHomeLightData> spData(pData);
+        MS2Ptr<UgcHomeLightData> spData(new UgcHomeLightData(FUN_1401a9d70()->FUN_141811980(0x33, nId), color));
         m_mapLight.SetAt((int)m_mapLight.GetCount(), spData);
     }
 }
@@ -229,7 +228,8 @@ void UgcHomeOptionData::LoadLight()
 void UgcHomeOptionData::LoadCamera()
 {
     TiXmlDocument doc;
-    if (FUN_140166420()->FUN_1403974b0(&doc, FUN_14071a5b0(CString("Table"), CString("ugcHousingCamera.xml")), 0, true, false) == 0)
+    bool bFailed = FUN_1403974b0(FUN_140166420(), &doc, FUN_14071a5b0("Table", "ugcHousingCamera.xml"), 0, true, false) == 0;
+    if (bFailed)
         return;
     Unk_140165cf0* pRoot = FUN_140165cf0(&doc, "ms2");
     if (pRoot == 0)
@@ -243,8 +243,7 @@ void UgcHomeOptionData::LoadCamera()
         FUN_1408746f0(pNode, "offset", offset);
         Unk_UhPoint3 upAxis(DAT_143b01a60);
         FUN_1408746f0(pNode, "upAxis", upAxis);
-        UgcHomeCameraData* pData = new UgcHomeCameraData(FUN_1401a9d70()->FUN_141811980(0x33, nId));
-        MS2Ptr<UgcHomeCameraData> spData(pData);
+        MS2Ptr<UgcHomeCameraData> spData(new UgcHomeCameraData(FUN_1401a9d70()->FUN_141811980(0x33, nId)));
         spData->m_offset = offset;
         spData->m_upAxis = upAxis;
         m_mapCamera.SetAt((int)m_mapCamera.GetCount(), spData);
@@ -286,7 +285,6 @@ void Unk_UhSetting::Apply()
 // @0x140b6bd30
 void FUN_140b6bd30(void* pCamera)
 {
-    Unk_UhCameraView* pView = (Unk_UhCameraView*)pCamera;
-    if (pView->m_mode.FUN_1409f2180() != 0)
-        pView->m_mode.FUN_1409f21a0()->vfunc_10();
+    if (reinterpret_cast<Unk_UhCameraView*>(pCamera)->m_mode.FUN_1409f2180() != 0)
+        reinterpret_cast<Unk_UhCameraView*>(pCamera)->m_mode.FUN_1409f21a0()->vfunc_10();
 }
