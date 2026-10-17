@@ -37,7 +37,11 @@ class CUgcItemLook;
 class CBlueprintItemData;
 class CubeItemInfo;
 class RideeItemInfo;
+class Unk_PCBaseComp_b18;                                  // ridee.h: the mount's RideeItemInfo
+class Cube;
+class Ridee;
 class CUgcShopBannerProxy;
+class CUgcItemPC;
 class CUgcItemCube;
 class CUgcItemRidee;
 class CUgcRegistBanner;
@@ -130,8 +134,8 @@ public:
     virtual ~CUgcManager();                                 // 0x14187eff0
 
     void FUN_141886190(CString strName, MS2Ptr<CUgcDownloadCtrl> spCtrl, int nResult);   // a download finished
-    void FUN_141886cc0(CUgcItemCube* pItem, CString strPath, unsigned __int64 uid);        // a cube image not placed yet
-    void FUN_141887040(CUgcItemRidee* pItem, CString strPath, unsigned __int64 uid);       // a mount image not spawned yet
+    int FUN_141886cc0(CUgcItemCube* pItem, CString strPath, unsigned __int64 uid);         // a cube image (0: not placed yet)
+    int FUN_141887040(CUgcItemRidee* pItem, CString strPath, unsigned __int64 uid);        // a mount image (0: not spawned yet)
     void FUN_141887dc0(int nBannerId, MS2Ptr<CUgcRegistBanner> spBanner);                  // a banner image arrived
     int FUN_141888420(int nBannerId, CString strPath);                                     // a rolling banner image arrived
 
@@ -179,8 +183,8 @@ public:
     void FUN_141883df0(MS2Ptr<CItem> spItem, const egf::EntityID& id);  // download the UGC look of an item
     int FUN_1418841f0(CUgcItemLook* pLook, MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack);   // download the icon of a look
     void FUN_141884300(MS2Ptr<CItem> spItem, int nObjectId);           // download the look of an equipped item
-    void FUN_1418845a0(CubeItemInfo* pInfo, const egf::EntityID& id);  // download the look of a placed cube
-    void FUN_141884830(MS2Ptr<RideeItemInfo> spInfo, const egf::EntityID& id);   // download the look of a mount
+    void FUN_1418845a0(CubeItemInfo* pInfo, egf::EntityID id);         // download the look of a placed cube
+    void FUN_141884830(MS2Ptr<Unk_PCBaseComp_b18> spInfo, egf::EntityID id);   // download the look of a mount
     void FUN_141884af0(MS2Ptr<CUgcRegistBanner> spBanner);  // download a banner image
     void FUN_141884d70(CUgcUserProxy* pUser, CString strPath);         // download a profile image
     void FUN_141884e30(int nType, __int64 accountId, __int64 characterId, CString strPath, CString strObjectName);
@@ -200,6 +204,29 @@ public:
                       MS2Ptr<CItem> spItem, const UgcItemIcon::CallBackData* pCallBack);   // download an item icon
     void FUN_141886150(CUgcDownloadParam* pParam, IUgcProxy* pProxy);  // queue a download
     MS2Ptr<IUgcProxy> FUN_141886340(int nKind);             // a new proxy of a content kind
+    int FUN_1418873c0(Cube* pCube);                         // a cube image (0: not downloaded yet)
+    int FUN_141887810(Ridee* pRidee);                       // a mount image (0: not downloaded yet)
+    MS2Ptr<CUgcRegistBanner> FUN_141887ce0(int nBannerId); // the registration of a banner
+    int FUN_1418881e0(int nBannerId, CString strPath, MS2Ptr<CUgcRegistBanner> spBanner);
+    void FUN_1418885b0(int nBannerId);                      // drop the registration, show the default image
+    int FUN_141888770(efd::SmartPointer<egf::Entity> spEntity, NiTexture* pTexture);   // the decal of a banner object
+    efd::SmartPointer<NiTexture> FUN_1418896e0(int nObjectId);   // the image of an object
+    efd::SmartPointer<NiTexture> FUN_1418897a0();           // the default banner image
+    void FUN_1418889d0(int nBannerId, unsigned __int64 key, const ReserveBannerInfo& info);   // add a reservation
+    void FUN_141888af0(int nBannerId, unsigned __int64 key, int nState);  // the state of a reservation
+    void FUN_141888bf0(int nBannerId, int nDate, CRBMap<int, ReserveBannerInfo>& hours);   // the reservations of a day
+    void FUN_141888d30(int nBannerId);                      // drop the reservations of a banner
+    void FUN_141888da0(bool bChanged);
+    bool FUN_141888dc0();                                   // the reservations changed
+    void FUN_141889150();                                   // keep the images of the banner objects
+    void FUN_1418894d0();                                   // drop the images of the banner objects
+    void FUN_1418895d0(int nObjectId, efd::SmartPointer<NiTexture> spTexture);
+    void FUN_141889670(int nObjectId);
+    void FUN_141886270(CString strName, int nResult);       // the result of a running download
+    int FUN_141886980(CUgcItemPC* pItem, CString strPath);  // an equip image (0: not worn)
+    int FUN_141886a90(CUgcItemPC* pItem, NiTexture* pTexture);
+    int FUN_141886de0(CUgcItemCube* pItem, NiTexture* pTexture);
+    int FUN_141887160(CUgcItemRidee* pItem, NiTexture* pTexture);
     MS2Ptr<CUploadFile> FUN_14188a4b0(int nIndex);          // the local file at nIndex
     int FUN_14188bfd0(const CStringW& strPath, struct _D3DXIMAGE_INFO* pInfo);   // the image size of a file
     void FUN_14188aae0();

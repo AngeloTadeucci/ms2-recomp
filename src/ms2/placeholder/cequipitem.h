@@ -8,6 +8,7 @@
 #include "ms2/placeholder/cptred.h"
 
 class CItem;
+class CItemUgcMeshContainer;
 
 class CEquipItem : public CPtred
 {
@@ -16,6 +17,7 @@ public:
     void FUN_1411dd1c0();                                           // 0x1411dd1c0 (scenestategame, w86)
     struct Unk_EquipItemData* FUN_1411dc7f0();                      // 0x1411dc7f0 the item's table data (mypc)
     int FUN_1411dc820();                                            // 0x1411dc820 the item id (mypc)
+    MS2Ptr<CItemUgcMeshContainer> FUN_1411dd950();                  // 0x1411dd950 the UGC meshes of the item (ugcmanager.cpp#4)
 private:
     char m_pad_18[0xb0 - 0x18];                                     // unrecovered members
 };

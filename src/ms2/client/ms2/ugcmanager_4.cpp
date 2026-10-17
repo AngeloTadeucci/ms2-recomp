@@ -15,6 +15,7 @@
 #include <NiImageConverter.h>
 #include <NiRect.h>
 #include <NiSourceTexture.h>
+#include <NiTexturingProperty.h>
 
 #include "ugcmanager.h"
 #include "blockmanager.h"
@@ -25,6 +26,11 @@
 #include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/clientconstants.h"
 #include "statemanager.h"
+#include "ridee.h"
+#include "ms2/placeholder/cube.h"
+#include "itemugcmesh.h"
+#include "ms2/placeholder/cequipitem.h"
+#include "ms2/placeholder/cugcdownloaddown.h"
 #include "ms2/placeholder/clockcriticalsection.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/placeholder/cugcmanager.h"
@@ -63,10 +69,14 @@ CString FUN_14016a600(const wchar_t* psz, int nCodePage);   // wide to multi-byt
 void FUN_1418fe1c0(const CString& strUrl);                  // open a web page
 
 // The world service: the current map.
+class Unk_UgcWearer;
 class Unk_UgcWorld
 {
 public:
     PCBase* FUN_141bd0cc0();                                // the player
+    Unk_UgcWearer* FUN_141bd1290(int nObjectId);            // a player by object id
+    egf::Entity* FUN_141bd04d0(int nObjectId);              // an entity by object id
+    Unk_UgcBoxPtr<CAtlList<efd::SmartPointer<egf::Entity> > > FUN_141bd0420(unsigned nModel);   // the entities of a model
     int FUN_141bd0dd0(efd::Point3& kA, efd::Point3& kB);
     unsigned FUN_141bd3060();
 };
@@ -246,6 +256,41 @@ struct Unk_BannerDay
     int m_nDate;                                            // +0x08
 };
 
+CUgcDownloadDown* FUN_1414a57f0();                          // the download queue
+// The scene-graph texture cache (ugcmanager.cpp#1 keeps the same declaration).
+class Unk_UgcTextureCache
+{
+public:
+    NiTexturePtr FUN_141553eb0(CString strPath, NiTexture* pkSelf);
+};
+Unk_UgcTextureCache* FUN_140a0afd0();
+// A player in the field (Unk_UgcWorld::FUN_141bd1290 finds it by object id).
+class Unk_UgcWearer
+{
+public:
+    MS2Ptr<CEquipItem> FUN_141655c30(__int64 itemUid);      // a worn item by uid
+};
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);               // the table data of an item id
+NiAVObject* FUN_141b6ef70(egf::EntityID id);                // the scene node of an entity
+NiAVObjectPtr FUN_141423480(NiAVObjectPtr spRoot, const CString& strName);
+int FUN_1414232f0(NiAVObjectPtr spMesh, NiTexturePtr spTexture);
+
+NiAVObject* FUN_141b6efc0(egf::Entity* pEntity);            // the scene node of an entity
+// Ridee::FUN_141707440 (ridee.h / pcbase.h) returns the mount's RideeItemInfo under this placeholder name.
+class Unk_PCBaseComp_b18 : public RideeItemInfo
+{
+};
+
+CStringW FUN_14016a730(const char* psz, int nCodePage);      // multi-byte to wide
+// Hidden (reported) content.
+class Unk_UgcBlindManager
+{
+public:
+    bool FUN_140a259b0(int nKind, __int64 uid);             // the content is blinded
+};
+Unk_UgcBlindManager* FUN_1409c1730();
+
+unsigned __int64 FUN_14088dbf0(int nDate, int nHour);       // the reservation key of an hour
 // The open dialog of a UI id (0 when it is not created).
 template <class T>
 T* UgcFindDialog(eUIClassID nId)
@@ -1498,7 +1543,7 @@ void CUgcManager::FUN_141884300(MS2Ptr<CItem> spItem, int nObjectId)
 }
 
 // @0x1418845a0
-void CUgcManager::FUN_1418845a0(CubeItemInfo* pInfo, const egf::EntityID& id)
+void CUgcManager::FUN_1418845a0(CubeItemInfo* pInfo, egf::EntityID id)
 {
     if (pInfo == 0)
         return;
@@ -1530,7 +1575,7 @@ void CUgcManager::FUN_1418845a0(CubeItemInfo* pInfo, const egf::EntityID& id)
 }
 
 // @0x141884830
-void CUgcManager::FUN_141884830(MS2Ptr<RideeItemInfo> spInfo, const egf::EntityID& id)
+void CUgcManager::FUN_141884830(MS2Ptr<Unk_PCBaseComp_b18> spInfo, egf::EntityID id)
 {
     if (spInfo == 0)
         return;
@@ -1803,6 +1848,615 @@ int CUgcManager::FUN_141885e20(CUgcItemLook* pLook, const int& nKind, const int&
         }
     }
     return 0;
+}
+
+// @0x141886150
+void CUgcManager::FUN_141886150(CUgcDownloadParam* pParam, IUgcProxy* pProxy)
+{
+    FUN_1414a57f0()->Push(pParam, pProxy);
+}
+
+// @0x141886190
+// A download finished: keeps its control under its name with the result.
+void CUgcManager::FUN_141886190(CString strName, MS2Ptr<CUgcDownloadCtrl> spCtrl, int nResult)
+{
+    if (spCtrl == 0)
+        return;
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        spCtrl->SetResult(nResult);
+        m_mapDownload.SetAt(strName, spCtrl);
+    }
+}
+
+// @0x141886270
+void CUgcManager::FUN_141886270(CString strName, int nResult)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        MS2Ptr<CUgcDownloadCtrl> spCtrl(0);
+        m_mapDownload.Lookup(strName, spCtrl);
+        if (spCtrl.get() != 0)
+            spCtrl->SetResult(nResult);
+    }
+}
+
+// @0x141886340
+MS2Ptr<IUgcProxy> CUgcManager::FUN_141886340(int nKind)
+{
+    MS2Ptr<IUgcProxy> spProxy(0);
+    switch (nKind)
+    {
+    case 1:
+        spProxy.AssignRaw(new CUgcItemPC);
+        break;
+    case 2:
+        spProxy.AssignRaw(new CUgcItemCube);
+        break;
+    case 0xc9:
+        spProxy.AssignRaw(new CUgcItemIconPC);
+        break;
+    case 3:
+        spProxy.AssignRaw(new CUgcBannerPost);
+        break;
+    case 5:
+        spProxy.AssignRaw(new CUgcUserProxy);
+        break;
+    case 10:
+        spProxy.AssignRaw(new CUgcUserProxy);
+        break;
+    case 6:
+        spProxy.AssignRaw(new CUgcGuildMarkProxy);
+        break;
+    case 8:
+        spProxy.AssignRaw(new CUgcGuildPosterProxy);
+        break;
+    case 7:
+        spProxy.AssignRaw(new CUgcItemRidee);
+        break;
+    case 9:
+        spProxy.AssignRaw(new CUgcBlueprintImageProxy);
+        break;
+    case 0xd1:
+        spProxy.AssignRaw(new CUgcItemIconPC);
+        break;
+    default:
+        spProxy.AssignRaw(new CUgcBannerEmptyProxy);
+        break;
+    }
+    return spProxy;
+}
+
+// @0x141886980
+// Puts a downloaded image on the worn item of a player.
+int CUgcManager::FUN_141886980(CUgcItemPC* pItem, CString strPath)
+{
+    if (pItem == 0)
+        return 0;
+    NiTexturePtr spTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (spTexture == 0)
+        return 0;
+    return FUN_141886a90(pItem, spTexture);
+}
+
+// @0x141886a90
+int CUgcManager::FUN_141886a90(CUgcItemPC* pItem, NiTexture* pTexture)
+{
+    if (pItem == 0)
+        return 0;
+    if (pTexture == 0)
+        return 0;
+    Unk_UgcWearer* pWearer = FUN_1403ed2d0()->FUN_141bd1290(pItem->m_nObjectId);
+    if (pWearer == 0)
+        return 0;
+    MS2Ptr<CItemData> spData = FUN_14053f870(pItem->m_nItemId);
+    if (spData == 0)
+        return 0;
+    CString strMesh = spData->cubeTextureName.mesh;
+    if (strMesh.GetLength() == 0)
+        return 0;
+    MS2Ptr<CEquipItem> spEquip = pWearer->FUN_141655c30(pItem->m_itemUid);
+    if (spEquip == 0)
+        return 0;
+    MS2Ptr<CItemUgcMeshContainer> spMeshes = spEquip->FUN_1411dd950();
+    if (spMeshes == 0)
+        return 0;
+    spMeshes->FUN_141426810(pTexture);
+    return 1;
+}
+
+// @0x141886cc0
+// Puts a downloaded image on a placed cube.
+int CUgcManager::FUN_141886cc0(CUgcItemCube* pItem, CString strPath, unsigned __int64 uid)
+{
+    if (pItem == 0)
+        return 0;
+    NiTexturePtr spTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (spTexture == 0)
+        return 0;
+    return FUN_141886de0(pItem, spTexture);
+}
+
+// @0x141886de0
+int CUgcManager::FUN_141886de0(CUgcItemCube* pItem, NiTexture* pTexture)
+{
+    if (pItem == 0)
+        return 0;
+    if (pTexture == 0)
+        return 0;
+    MS2Ptr<CItemData> spData = FUN_14053f870(pItem->m_nItemId);
+    if (spData == 0)
+        return 0;
+    CString strMesh = spData->cubeTextureName.mesh;
+    if (strMesh.GetLength() == 0)
+        return 0;
+    NiAVObjectPtr spRoot = FUN_141b6ef70(pItem->m_entityId);
+    if (spRoot == 0)
+        return 0;
+    NiAVObjectPtr spMesh = FUN_141423480(spRoot, strMesh);
+    if (spMesh)
+        FUN_1414232f0(spMesh, pTexture);
+    return 1;
+}
+
+// @0x141887040
+// Puts a downloaded image on a mount.
+int CUgcManager::FUN_141887040(CUgcItemRidee* pItem, CString strPath, unsigned __int64 uid)
+{
+    if (pItem == 0)
+        return 0;
+    NiTexturePtr spTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (spTexture == 0)
+        return 0;
+    return FUN_141887160(pItem, spTexture);
+}
+
+// @0x141887160
+int CUgcManager::FUN_141887160(CUgcItemRidee* pItem, NiTexture* pTexture)
+{
+    if (pItem == 0)
+        return 0;
+    if (pTexture == 0)
+        return 0;
+    MS2Ptr<CItemData> spData = FUN_14053f870(pItem->m_nItemId);
+    if (spData == 0)
+        return 0;
+    CString strMesh = spData->cubeTextureName.mesh;
+    if (strMesh.GetLength() == 0)
+        return 0;
+    NiAVObjectPtr spRoot = FUN_141b6ef70(pItem->m_entityId);
+    if (spRoot == 0)
+        return 0;
+    NiAVObjectPtr spMesh = FUN_141423480(spRoot, strMesh);
+    if (spMesh)
+        FUN_1414232f0(spMesh, pTexture);
+    return 1;
+}
+
+// @0x1418873c0
+// Puts the downloaded image on a placed cube, or requests it.
+int CUgcManager::FUN_1418873c0(Cube* pCube)
+{
+    if (pCube == 0)
+        return 0;
+    if (pCube->entity == 0)
+        return 0;
+    MS2Ptr<CItemData> spData = FUN_14053f870(pCube->FUN_1408b4f20());
+    if (spData == 0)
+        return 0;
+    CUgcItemLook* pLook = pCube->FUN_1408b4f80();
+    if (pLook == 0)
+        return 0;
+    CString strPath = FUN_1410280d0(2, pLook->m_strUrl);
+    NiTexture* pTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (pTexture == 0)
+    {
+        FUN_1418845a0(pCube->item, pCube->entity->GetEntityID());
+        return 0;
+    }
+    CString strMesh = spData->cubeTextureName.mesh;
+    if (strMesh.GetLength() == 0)
+        return 0;
+    NiAVObjectPtr spRoot = FUN_141b6efc0(pCube->entity);
+    if (spRoot == 0)
+        return 0;
+    NiAVObjectPtr spMesh = FUN_141423480(spRoot, strMesh);
+    if (spMesh)
+        FUN_1414232f0(spMesh, pTexture);
+    return 1;
+}
+
+// @0x141887810
+// Puts the downloaded image on a mount, or requests it.
+int CUgcManager::FUN_141887810(Ridee* pRidee)
+{
+    if (pRidee == 0)
+        return 0;
+    MS2Ptr<Unk_PCBaseComp_b18> spInfo = pRidee->FUN_141707440();
+    if (spInfo == 0)
+        return 0;
+    if (spInfo->IsValid() == 0)
+        return 0;
+    MS2Ptr<CItemData> spData = FUN_14053f870(spInfo->m_nId);
+    if (spData == 0)
+        return 0;
+    CString strPath = FUN_1410280d0(7, spInfo->m_look.m_strUrl);
+    NiTexturePtr spTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (spTexture == 0)
+    {
+        if (pRidee->FUN_14123c410() != 0)
+            FUN_141884830(spInfo, pRidee->FUN_14123c410()->GetEntityID());
+        return 0;
+    }
+    CString strMesh = spData->cubeTextureName.mesh;
+    if (strMesh.GetLength() == 0)
+        return 0;
+    NiAVObjectPtr spRoot = FUN_141b6efc0(pRidee->FUN_14123c410());
+    if (spRoot == 0)
+        return 0;
+    NiAVObjectPtr spMesh = FUN_141423480(spRoot, strMesh);
+    if (spMesh)
+        FUN_1414232f0(spMesh, spTexture);
+    return 1;
+}
+
+// @0x141887ce0
+MS2Ptr<CUgcRegistBanner> CUgcManager::FUN_141887ce0(int nBannerId)
+{
+    MS2Ptr<CUgcRegistBanner> spBanner(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        CRBMap<int, MS2Ptr<CUgcRegistBanner> >::CPair* pPair = m_mapBanner.Lookup(nBannerId);
+        if (pPair != 0)
+            spBanner = pPair->m_value;
+    }
+    return spBanner;
+}
+
+// @0x141887dc0
+// The registration of a banner arrived: shows its image (or downloads it); none or a blinded one shows the default.
+void CUgcManager::FUN_141887dc0(int nBannerId, MS2Ptr<CUgcRegistBanner> spBanner)
+{
+    if (FUN_141887ce0(nBannerId) == spBanner.get())
+        return;
+    if (spBanner == 0)
+    {
+        if (Unk_LockGuard guard = m_lock)
+        {
+        }
+        else
+        {
+            m_mapBanner.RemoveKey(nBannerId);
+        }
+        efd::SmartPointer<egf::Entity> spEntity = FUN_1403ed2d0()->FUN_141bd04d0(nBannerId);
+        if (spEntity != 0)
+        {
+            NiTexturePtr spTexture = FUN_1418896e0(nBannerId);
+            if (spTexture != 0)
+                FUN_141888770(spEntity, spTexture);
+        }
+    }
+    else if (FUN_1409c1730()->FUN_140a259b0(2, spBanner->m_upload.m_uid))
+    {
+        FUN_1418885b0(nBannerId);
+    }
+    else
+    {
+        CString strPath = FUN_1410280d0(3, spBanner->m_strUrl);
+        if (_access(strPath, 0) == 0)
+        {
+            int bShown = FUN_1418881e0(nBannerId, strPath, spBanner);
+            if (bShown != 0)
+            {
+                if (Unk_LockGuard guard = m_lock)
+                {
+                }
+                else
+                {
+                    m_mapBanner.RemoveKey(nBannerId);
+                    m_mapBanner.SetAt(nBannerId, spBanner);
+                }
+            }
+        }
+        else
+        {
+            FUN_141884af0(spBanner);
+        }
+    }
+}
+
+// @0x1418881e0
+int CUgcManager::FUN_1418881e0(int nBannerId, CString strPath, MS2Ptr<CUgcRegistBanner> spBanner)
+{
+    if (spBanner == 0)
+        return 0;
+    efd::SmartPointer<egf::Entity> spEntity = FUN_1403ed2d0()->FUN_141bd04d0(nBannerId);
+    if (spEntity == 0)
+        return 0;
+    NiTexturePtr spTexture = FUN_140a0afd0()->FUN_141553eb0(strPath, 0);
+    if (spTexture == 0)
+    {
+        FUN_141884af0(spBanner);
+        return 1;
+    }
+    return FUN_141888770(spEntity, spTexture);
+}
+
+// @0x141888420
+int CUgcManager::FUN_141888420(int nBannerId, CString strPath)
+{
+    efd::SmartPointer<egf::Entity> spEntity = FUN_1403ed2d0()->FUN_141bd04d0(nBannerId);
+    if (spEntity == 0)
+        return 0;
+    NiTexture* pTexture = LoadCachedTexture(FUN_14016a730(strPath, 0));
+    if (pTexture == 0)
+        return 0;
+    return FUN_141888770(spEntity, pTexture);
+}
+
+// @0x1418885b0
+void CUgcManager::FUN_1418885b0(int nBannerId)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapBanner.RemoveKey(nBannerId);
+    }
+    efd::SmartPointer<egf::Entity> spEntity = FUN_1403ed2d0()->FUN_141bd04d0(nBannerId);
+    if (spEntity != 0)
+    {
+        if (m_spDefaultTexture != 0)
+        {
+            FUN_141888770(spEntity, m_spDefaultTexture);
+        }
+        else
+        {
+            NiTexturePtr spTexture = FUN_1418896e0(nBannerId);
+            if (spTexture != 0)
+                FUN_141888770(spEntity, spTexture);
+        }
+    }
+}
+
+// @0x141888770
+// Puts pTexture as the decal of the banner object's "Index00MeshName" mesh.
+// MS2-FUNCTIONAL: same calls and flow; the exe frame is 0x20 smaller (stack slots of the temporaries differ)
+int CUgcManager::FUN_141888770(efd::SmartPointer<egf::Entity> spEntity, NiTexture* pTexture)
+{
+    if (spEntity == 0)
+        return 0;
+    NiAVObject* pRoot = FUN_141b6efc0(spEntity);
+    if (pRoot != 0)
+    {
+        efd::utf8string strMeshName;
+        spEntity->GetPropertyValue(efd::utf8string("Index00MeshName"), strMeshName);
+        if (!strMeshName.empty())
+        {
+            NiAVObject* pMesh = pRoot->GetObjectByName(NiFixedString(strMeshName.c_str()));
+            if (pMesh != 0)
+            {
+                NiTexturingProperty* pTexturing = NiDynamicCast(NiTexturingProperty, pMesh->GetProperty(NiProperty::TEXTURING));
+                if (pTexturing != 0)
+                {
+                    NiTexturingProperty::Map* pMap = NiNew NiTexturingProperty::Map();
+                    pMap->SetTexture(pTexture);
+                    pTexturing->SetDecalMap(0, pMap);
+                    pMesh->UpdateProperties();
+                }
+            }
+        }
+    }
+    return 1;
+}
+
+// @0x1418889d0
+void CUgcManager::FUN_1418889d0(int nBannerId, unsigned __int64 key, const ReserveBannerInfo& info)
+{
+    Unk_UgcBoxPtr<CReserveMap> spMap(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapReserve.Lookup(nBannerId, spMap);
+        if (spMap == 0)
+        {
+            spMap = Unk_UgcNewTag(0);
+            m_mapReserve.SetAt(nBannerId, spMap);
+        }
+        if (spMap->Lookup(key) == 0)
+            spMap->SetAt(key, info);
+    }
+}
+
+// @0x141888af0
+void CUgcManager::FUN_141888af0(int nBannerId, unsigned __int64 key, int nState)
+{
+    Unk_UgcBoxPtr<CReserveMap> spMap(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        if (m_mapReserve.Lookup(nBannerId, spMap) == true)
+        {
+            ReserveBannerInfo info;
+            CReserveMap::CPair* pPair = spMap->Lookup(key);
+            if (pPair != 0)
+                pPair->m_value.m_nState = nState;
+            FUN_141888da0(1);
+        }
+    }
+}
+
+// @0x141888bf0
+void CUgcManager::FUN_141888bf0(int nBannerId, int nDate, CRBMap<int, ReserveBannerInfo>& hours)
+{
+    hours.RemoveAll();
+    Unk_UgcBoxPtr<CReserveMap> spMap(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapReserve.Lookup(nBannerId, spMap);
+        if (spMap == 0)
+            return;
+        for (int nHour = 0; nHour < 24; nHour++)
+        {
+            unsigned __int64 key = FUN_14088dbf0(nDate, nHour);
+            CReserveMap::CPair* pPair = spMap->Lookup(key);
+            if (pPair != 0)
+                hours.SetAt(nHour, pPair->m_value);
+        }
+    }
+}
+
+// @0x141888d30
+void CUgcManager::FUN_141888d30(int nBannerId)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapReserve.RemoveKey(nBannerId);
+    }
+}
+
+// @0x141888da0
+void CUgcManager::FUN_141888da0(bool bChanged)
+{
+    m_bReserveChanged = bChanged;
+}
+
+// @0x141888dc0
+bool CUgcManager::FUN_141888dc0()
+{
+    return m_bReserveChanged;
+}
+
+// @0x141889150
+// Keeps the decal image of every banner object that has none in the map yet.
+// MS2-FUNCTIONAL: same calls and flow; the exe frame is 0x20 smaller (stack slots of the temporaries differ)
+void CUgcManager::FUN_141889150()
+{
+    Unk_UgcBoxPtr<CAtlList<efd::SmartPointer<egf::Entity> > > spList = FUN_1403ed2d0()->FUN_141bd0420(0xc7f9dd65);
+    if (spList == 0)
+        return;
+    POSITION pos = spList->GetHeadPosition();
+    while (pos != 0)
+    {
+        efd::SmartPointer<egf::Entity> spEntity = spList->GetNext(pos);
+        if ((egf::Entity*)spEntity != 0)
+        {
+            int nId;
+            spEntity->GetPropertyValue(0x819a96c0, nId);
+            int nObjectId = nId;
+            bool bNone = FUN_1418896e0(nId) == 0;
+            if (bNone)
+            {
+                NiAVObject* pRoot = FUN_141b6efc0(spEntity);
+                if (pRoot != 0)
+                {
+                    efd::utf8string strMeshName;
+                    spEntity->GetPropertyValue(efd::utf8string("Index00MeshName"), strMeshName);
+                    efd::utf8string strTexturePath;
+                    spEntity->GetPropertyValue(efd::utf8string("Index00TexturePath"), strTexturePath);
+                    if (!strMeshName.empty())
+                    {
+                        NiAVObject* pMesh = pRoot->GetObjectByName(NiFixedString(strMeshName.c_str()));
+                        if (pMesh != 0)
+                        {
+                            NiTexturingProperty* pTexturing = NiDynamicCast(NiTexturingProperty, pMesh->GetProperty(NiProperty::TEXTURING));
+                            if (pTexturing != 0)
+                            {
+                                NiTexturingProperty::Map* pMap = pTexturing->GetDecalMap(0);
+                                NiTexturePtr spDecal = pMap->GetTexture();
+                                FUN_1418895d0(nObjectId, spDecal);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// @0x1418894d0
+void CUgcManager::FUN_1418894d0()
+{
+    Unk_UgcBoxPtr<CAtlList<efd::SmartPointer<egf::Entity> > > spList = FUN_1403ed2d0()->FUN_141bd0420(0xc7f9dd65);
+    if (spList == 0)
+        return;
+    POSITION pos = spList->GetHeadPosition();
+    while (pos != 0)
+    {
+        efd::SmartPointer<egf::Entity> spEntity = spList->GetNext(pos);
+        if ((egf::Entity*)spEntity != 0)
+        {
+            int nId;
+            spEntity->GetPropertyValue(0x819a96c0, nId);
+            int nObjectId = nId;
+            FUN_141889670(nObjectId);
+        }
+    }
+}
+
+// @0x1418895d0
+void CUgcManager::FUN_1418895d0(int nObjectId, NiTexturePtr spTexture)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        if (m_mapTexture.Lookup(nObjectId) == 0)
+            m_mapTexture.SetAt(nObjectId, spTexture);
+    }
+}
+
+// @0x141889670
+void CUgcManager::FUN_141889670(int nObjectId)
+{
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapTexture.RemoveKey(nObjectId);
+    }
+}
+
+// @0x1418896e0
+NiTexturePtr CUgcManager::FUN_1418896e0(int nObjectId)
+{
+    NiTexturePtr spTexture(0);
+    if (Unk_LockGuard guard = m_lock)
+    {
+    }
+    else
+    {
+        m_mapTexture.Lookup(nObjectId, spTexture);
+    }
+    return spTexture;
+}
+
+// @0x1418897a0
+NiTexturePtr CUgcManager::FUN_1418897a0()
+{
+    return m_spDefaultTexture;
 }
 
 // @0x14188bfd0
