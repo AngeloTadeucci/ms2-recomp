@@ -17,6 +17,7 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "cubemapinformationservice_3.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/placeholder/citemdata.h"
 #include <efd/MessageService.h>
 #include <efd/ISystemService.h>
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
@@ -1474,3 +1475,233 @@ bool CubeMapInformationService::FUN_1410c3600(int v)
 void CubeMapInformationService::FUN_1410c3630(int v) { f330 = v; }
 // @0x1410c3650
 int CubeMapInformationService::FUN_1410c3650() { return f330; }
+
+// ---- w138 callees (unit-local, names invented) ----
+class Unk_CMISLog { public: unsigned __int64 FUN_1410db4f0(int nLevel, int nCategory, const wchar_t* pFormat, const int& a, const int& b, const int& c); };
+Unk_CMISLog* FUN_140166440();
+struct Unk_CMISEntId { Unk_CMISEntId(const Unk_CMISEntId&); __int64 m_id; };
+void FUN_14115b260(CCubeMotionManager* pMgr, const Unk_CMISEntityRef* pId, float fFrom, float fTo, unsigned nMs);   // AddRotate
+CCubeMotionManager* FUN_1410af790();
+class Unk_CMISMagicCube { public: void FUN_141232330(int nKey, float fRot); };
+Unk_CMISMagicCube* FUN_1409670b0();
+bool FUN_14034eee0(const CStringW& s, const wchar_t* pSz);                 // operator==
+CStringW* FUN_141bd3080(Unk_CMISWorld*);                                   // the current map name
+CStringW* FUN_140efe330(CStringW* pOut, const wchar_t* pSz, int n);
+struct Unk_CMISPairRes { Unk_CMISPairRes(const Unk_CMISPairRes&); int m_a, m_b; };
+Unk_CMISPairRes FUN_14111d460(const int& a, const int& b);                                          // make_pair
+Unk_CMISIter<263>* FUN_141151f70(Unk_CMISTree<263>*, Unk_CMISIter<263>*);                            // end
+Unk_CMISIter<263>* FUN_141157f20(Unk_CMISTree<263>*, Unk_CMISIter<263>*, const Unk_CMISPairRes&);    // find
+bool FUN_141126fd0(Unk_CMISIter<263>*, Unk_CMISIter<263>*);                                          // operator==
+void FUN_1411550a0(Unk_CMISTree<263>*, const Unk_CMISPairRes&);                                      // erase
+void** FUN_141128090(Unk_CMISTree<263>*, const Unk_CMISPairRes&);                                    // operator[]
+void* FUN_141128410(void** pSecond);                                                                 // the raw pointer of the value
+Unk_CMISIter<276>* FUN_141151df0(Unk_CMISTree<276>*, Unk_CMISIter<276>*);                            // end
+Unk_CMISIter<276>* FUN_141157c80(Unk_CMISTree<276>*, Unk_CMISIter<276>*, const int*);                // find
+unsigned char FUN_140d7b400(Unk_CMISIter<276>*, Unk_CMISIter<276>*);                                          // operator!=
+struct Unk_CMISObj498;
+template <> struct Unk_CMISIter<284> { void* node; };
+void FUN_141120750(Unk_CMISIter<284>*);                                                              // default ctor
+Unk_CMISIter<284>* FUN_14114e7f0(Unk_CMISTree<284>*, Unk_CMISIter<284>*);                            // begin
+Unk_CMISIter<284>* FUN_141152450(Unk_CMISTree<284>*, Unk_CMISIter<284>*);                            // end
+bool FUN_141127900(Unk_CMISIter<284>*, Unk_CMISIter<284>*);                                          // operator!=
+void* FUN_141128b30(Unk_CMISIter<284>*);                                                             // operator*
+Unk_CMISObj498* FUN_1409658e0(void* pSlot);                                                          // the object of a slot
+int FUN_14112e110(Unk_CMISObj498*);                                                                  // the object id
+void FUN_141227780(Unk_CMISObj498*);                                                                 // release the object's link
+Unk_CMISIter<284>* FUN_141129990(Unk_CMISIter<284>*, Unk_CMISIter<284>*, int);                       // operator++(int)
+void FUN_141156b50(Unk_CMISTree<284>*, Unk_CMISIter<284>*, Unk_CMISIter<284>);                       // erase
+Unk_CMISEntityRef* FUN_141127e90(Unk_CMISTree<265>*, const int*);                                    // operator[]
+void FUN_140899bd0(Unk_CMISEntityRef* pDst, const Unk_CMISEntityRef& src);                           // operator=
+struct Unk_CMISHandle388 { void* m_a; void* m_p; void* m_c; };
+struct Unk_CMISHandle3a8 { void* m_a; void* m_p; void* m_c; };
+unsigned __int64 FUN_140fac790(ATL::CAtlArray<Unk_CMISHandle3a8>*);                                  // GetCount
+Unk_CMISHandle3a8* FUN_14112dfe0(ATL::CAtlArray<Unk_CMISHandle3a8>*, unsigned __int64);              // operator[]
+void FUN_140fac570(Unk_CMISHandle3a8* pDst, const Unk_CMISHandle3a8* pSrc);                          // copy ctor
+void FUN_14112d9b0(ATL::CAtlArray<Unk_CMISElem3a8*>*, const Unk_CMISHandle3a8*);                    // Add
+void FUN_140fac610(Unk_CMISHandle3a8* p);                                                            // dtor
+unsigned __int64 FUN_140fac7a0(ATL::CAtlArray<Unk_CMISHandle388>*);                                  // GetCount
+Unk_CMISHandle388* FUN_14112e020(ATL::CAtlArray<Unk_CMISHandle388>*, unsigned __int64);              // operator[]
+void FUN_140fac5b0(Unk_CMISHandle388* pDst, const Unk_CMISHandle388* pSrc);                          // copy ctor
+void FUN_14112da60(ATL::CAtlArray<Unk_CMISElem388*>*, const Unk_CMISHandle388*);                    // Add
+void FUN_140fac640(Unk_CMISHandle388* p);                                                            // dtor
+unsigned __int64 FUN_140186260(ATL::CAtlArray<Unk_CMISElem458*>*);                                   // GetCount
+int* FUN_1401844d0(ATL::CAtlArray<Unk_CMISElem458*>*, unsigned __int64);                             // operator[]
+void FUN_14112d900(ATL::CAtlArray<MS2Ptr<Cube>>*, const MS2Ptr<Cube>*);                              // Add
+
+// @0x1410c2840
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+bool CubeMapInformationService::FUN_1410c2840(Unk_StreamPoint pt, float fDist)
+{
+    Unk_Int3 cell;
+    memcpy(&cell, &pt, sizeof(cell));
+    int nKey = FUN_1408a03c0(cell);
+    Unk_CMISIter<260> itEnd, itFind;
+    if (FUN_141126d90(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd)) == 0) {
+        MS2Ptr<Cube> spCube(*FUN_141127cd0(&f98, &nKey));
+        Unk_StreamPoint kRot;
+        FUN_1409618c0(FUN_1408a9280(&spCube->entity), 0x68c7c29d, &kRot);
+        spCube->fieldD4 = (int)fDist;
+        Unk_CMISEntityRef kId(*FUN_1408b76f0(FUN_1408a9280(&spCube->entity)));
+        FUN_14115b260((CCubeMotionManager*)FUN_1410af790(), &kId, kRot.z, fDist, 200);
+        FUN_1409670b0()->FUN_141232330(nKey, fDist);
+        return true;
+    }
+    FUN_140166440()->FUN_1410db4f0(1, 0x13, L"[ERROR] No cube on that position = {0}, {1}, {2}", cell.x, cell.y, cell.z);
+    return false;
+}
+// @0x1410c3330
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410c3330(CStringW* pOut)
+{
+    CStringW s = FUN_1410c31d0();
+    if (!FUN_14034eee0(s, L"")) {
+        CStringW sMap;
+        *pOut = *FUN_140efe330(&sMap, (const wchar_t*)*FUN_141bd3080(FUN_1403ed2d0()), 0);
+    } else {
+        *pOut = s;
+    }
+}
+// @0x1410c79a0
+void CubeMapInformationService::FUN_1410c79a0(int nA, int nB)
+{
+    Unk_CMISIter<263> itEnd, itFind;
+    if (FUN_141126fd0(FUN_141157f20(&fe8, &itFind, FUN_14111d460(nA, nB)), FUN_141151f70(&fe8, &itEnd)) != 0)
+        return;
+    FUN_1411550a0(&fe8, FUN_14111d460(nA, nB));
+}
+// @0x1410c7c20
+void* CubeMapInformationService::FUN_1410c7c20(int nA, int nB)
+{
+    Unk_CMISIter<263> itEnd, itFind;
+    if (FUN_141126fd0(FUN_141157f20(&fe8, &itFind, FUN_14111d460(nA, nB)), FUN_141151f70(&fe8, &itEnd)) != 0)
+        return 0;
+    return FUN_141128410(FUN_141128090(&fe8, FUN_14111d460(nA, nB)));
+}
+// @0x1410cdf60
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+bool CubeMapInformationService::FUN_1410cdf60(Unk_Int3* pA, Unk_Int3* pB)
+{
+    Unk_Int3 kSum;
+    int nKey = FUN_1408a03c0(*FUN_14112ca20(pA, &kSum, pB));
+    Unk_CMISIter<276> itEnd, itFind;
+    return FUN_140d7b400(FUN_141157c80(&f298, &itFind, &nKey), FUN_141151df0(&f298, &itEnd)) != 0;
+}
+// @0x1410c92e0
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410c92e0(int nId)
+{
+    Unk_CMISIter<284> it, itTmp, itOut, itEnd;
+    FUN_141120750(&it);
+    it = *FUN_14114e7f0(&f498, &itTmp);
+    while (FUN_141127900(&it, FUN_141152450(&f498, &itEnd))) {
+        if (FUN_14112e110(FUN_1409658e0(FUN_141128b30(&it))) == nId) {
+            FUN_141227780(FUN_1409658e0(FUN_141128b30(&it)));
+            FUN_141156b50(&f498, &itOut, it);
+            return;
+        }
+        FUN_141129990(&it, &itTmp, 0);
+    }
+}
+// @0x1410cb380
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410cb380(Unk_Int3 pt, const Unk_CMISEntityRef& ref)
+{
+    Unk_CMISEntityRef kRef(ref);
+    if (FUN_1410cb420(&kRef) == 0) {
+        int nKey = FUN_1408a13d0(*reinterpret_cast<Unk_StreamPoint*>(&pt));
+        FUN_140899bd0(FUN_141127e90(&f108, &nKey), ref);
+    }
+}
+// @0x1410d4680
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410d4680(ATL::CAtlArray<Unk_CMISHandle3a8>* pSrc)
+{
+    for (unsigned __int64 i = 0; i < FUN_140fac790(pSrc); i++) {
+        Unk_CMISHandle3a8 h;
+        FUN_140fac570(&h, FUN_14112dfe0(pSrc, i));
+        FUN_14112d9b0(&a3a8, &h);
+        FUN_140fac610(&h);
+    }
+}
+// @0x1410d43c0
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410d43c0(ATL::CAtlArray<Unk_CMISHandle388>* pSrc)
+{
+    for (unsigned __int64 i = 0; i < FUN_140fac7a0(pSrc); i++) {
+        Unk_CMISHandle388 h;
+        FUN_140fac5b0(&h, FUN_14112e020(pSrc, i));
+        FUN_14112da60(&a388, &h);
+        FUN_140fac640(&h);
+    }
+}
+// @0x1410d59c0
+// MS2-FUNCTIONAL: behaviour-equivalent; the exe frame has extra by-value temporaries / a different local order that no source form reproduced
+void CubeMapInformationService::FUN_1410d59c0(ATL::CAtlArray<MS2Ptr<Cube>>* pOut)
+{
+    for (unsigned __int64 i = 0; i < FUN_140186260(&a458); i++) {
+        int nKey = *FUN_1401844d0(&a458, i);
+        Unk_CMISIter<260> itEnd, itFind;
+        if (FUN_1411274c0(FUN_141157580(&f98, &itFind, &nKey), FUN_141151af0(&f98, &itEnd)))
+            FUN_14112d900(pOut, FUN_141127cd0(&f98, &nKey));
+    }
+}
+
+// ---- w138 batch 2 ----
+struct Unk_CMISStr { __int64 m_a, m_b, m_c, m_d; };                                          // efd::utf8string (0x20)
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+int FUN_1407071e0(unsigned nObjCode);                                                        // the object code has a scenegraph
+int FUN_140707260(unsigned nObjCode);                                                        // the object code has an animation
+Unk_CMISStr* FUN_140ae18f0(Unk_CMISStr* pStr, const char* pSz);                              // operator=
+Unk_CMISStr* FUN_14112cdc0(Unk_CMISStr* pStr, const char* pSz);                              // operator+=
+Unk_CMISStr* FUN_14112cd90(Unk_CMISStr* pStr, Unk_CMISStr* pAdd);                            // operator+=
+Unk_CMISStr* FUN_1409989e0(Unk_CMISStr* pStr, const char* pSz);                              // ctor
+unsigned __int64 FUN_141158af0(Unk_CMISStr* pStr, const char* pFind, unsigned __int64 nPos); // rfind
+Unk_CMISStr* FUN_14115afa0(Unk_CMISStr* pStr, Unk_CMISStr* pOut, unsigned __int64 nPos, unsigned __int64 nLen);   // substr
+unsigned __int64 FUN_14208c9b0(Unk_CMISStr* pStr);                                           // length
+void FUN_1408a8900(Unk_CMISStr* pStr);                                                       // dtor
+void FUN_1408a20a0(egf::Entity* pEntity, unsigned nId, bool* pOut);                          // GetProperty(bool)
+
+// @0x1410b77e0
+// MS2-FUNCTIONAL: branch layout of the nested if/else and the MS2Ptr temporaries differ from the exe; same calls
+int CubeMapInformationService::FUN_1410b77e0(int nItemId, Unk_CMISStr* pOut)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem == 0)
+        return 0;
+    if (FUN_1407071e0(spItem->install.objCode) == 0) {
+        FUN_140ae18f0(pOut, "urn:gamebryo-scenegraph:");
+    } else {
+        if (FUN_140707260(spItem->install.objCode) == 0)
+            FUN_140ae18f0(pOut, "urn:gamebryo-scenegraph:");
+        else
+            FUN_140ae18f0(pOut, "urn:gamebryo-animation:");
+    }
+    if (FUN_1410cb980(nItemId) == 0) {
+        if (spItem.get() != 0) {
+            Unk_CMISStr sPath, sName;
+            FUN_1409989e0(&sPath, (const char*)spItem->install.asset);
+            __int64 nSlash = FUN_141158af0(&sPath, "/", (unsigned __int64)-1);
+            __int64 nDot = FUN_141158af0(&sPath, ".", (unsigned __int64)-1);
+            FUN_14115afa0(&sPath, &sName, nSlash + 1, (nDot - nSlash) - 1);
+            if (FUN_14208c9b0(&sName) == 0)
+                FUN_14112cdc0(pOut, "Empty");
+            else
+                FUN_14112cd90(pOut, &sName);
+            FUN_1408a8900(&sName);
+            FUN_1408a8900(&sPath);
+        }
+    } else {
+        FUN_14112cdc0(pOut, "Empty");
+    }
+    return 1;
+}
+// @0x1410c5570
+void CubeMapInformationService::FUN_1410c5570(Unk_EntRef spEnt)
+{
+    bool bFlag = false;
+    FUN_1408a20a0((egf::Entity*)spEnt.FUN_1408a9280(), 0x38141815, &bFlag);
+    if (bFlag == false)
+        return;
+    Unk_StreamPoint pt = FUN_1410c54a0(spEnt);
+    GeneratePhysX(spEnt, pt);
+}

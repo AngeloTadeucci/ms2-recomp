@@ -83,6 +83,7 @@ struct Unk_CMISEntityRef
 struct Unk_CMISObj208; struct Unk_CMISObj480;
 
 struct Unk_CMISElem388;
+struct Unk_CMISHandle388; struct Unk_CMISHandle3a8;
 struct Unk_CMISElem3a8;
 struct Unk_CMISElem458;
 class CubeMapInformationService : public efd::ISystemService, public TSingleton<CubeMapInformationService>
@@ -194,7 +195,7 @@ public:
     int FUN_1410d2730(const Unk_Int3* pPt);
     int FUN_1410d4340(Unk_CubePoint* pOut);
     void FUN_1410c4d80(const Unk_StreamPoint& pt, float fDist);
-    void FUN_1410c2840(Unk_StreamPoint pt, float fDist);
+    bool FUN_1410c2840(Unk_StreamPoint pt, float fDist);
     bool FUN_1410d2340(const Unk_CMISPt2* a, const Unk_CMISPt2* b, float fLimX, float fLimY);
     void FUN_1410caa60(const int* pKey, int v);
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
@@ -244,6 +245,21 @@ public:
     bool FUN_1410c3600(int v);
     void FUN_1410c3630(int v);
     int FUN_1410c3650();
+
+    // w138
+    int FUN_1410b77e0(int nItemId, struct Unk_CMISStr* pOut);
+    int FUN_1410cb980(int nItemId);
+    void GeneratePhysX(Unk_EntRef spEnt, Unk_StreamPoint pt);
+    void FUN_1410c5570(Unk_EntRef spEnt);
+    void FUN_1410c3330(CStringW* pOut);
+    void FUN_1410c79a0(int nA, int nB);
+    void* FUN_1410c7c20(int nA, int nB);
+    bool FUN_1410cdf60(Unk_Int3* pA, Unk_Int3* pB);
+    void FUN_1410c92e0(int nId);
+    void FUN_1410cb380(Unk_Int3 pt, const Unk_CMISEntityRef& ref);
+    void FUN_1410d4680(ATL::CAtlArray<Unk_CMISHandle3a8>* pSrc);
+    void FUN_1410d43c0(ATL::CAtlArray<Unk_CMISHandle388>* pSrc);
+    void FUN_1410d59c0(ATL::CAtlArray<MS2Ptr<Cube>>* pOut);
 
     __int64 f28;                                    // not touched by the ctor
     Unk_CMISTree<256> f30;
