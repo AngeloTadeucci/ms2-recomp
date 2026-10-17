@@ -340,7 +340,6 @@ MS2Ptr<ASTextField> AScript::FUN_1409b4620(const CString& strName)
 }
 
 // @0x1409b46e0
-// MS2-FUNCTIONAL: frame is 0x10 larger (extra Value/CString temporary)
 Scaleform::GFx::Value AScript::Invoke(const char* szMethod, CString a1)
 {
     ASArgList args;
