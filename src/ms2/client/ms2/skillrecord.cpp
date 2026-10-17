@@ -1,16 +1,14 @@
 // skillrecord.cpp - the skill cast records (SkillTargetRecord, CSkillRecord, the damage records).
 // MS2-UNIT: ?\skillrecord.cpp
 // MS2-RANGE: 0x141758d70-0x14175c840 .text$mn
-//
-// Not written yet (blocked): the motion/attack readers of CSkillRecord (0x141759830..0x14175a210), the attack readers
-// of CDamageRecord (0x14175a850..0x14175ab80, 0x14175ac30..0x14175ae80) and the two vfunc_1 bodies. They read
-// SkillMotionData / SkillAttackData fields that commonfiles/skilloverlapcompare.h does not name yet.
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\skillrecord.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "skillrecord.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/placeholder/coutpacket.h"
 #include "ms2/client/ms2/magicdata.h"
+#include "ms2/placeholder/cequipitem.h"
+#include "ms2/placeholder/citem.h"
 
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
@@ -19,13 +17,72 @@ extern Unk_StreamPoint DAT_143b01a60;                       // the zero point
 SkillDataTable* FUN_1401958b0();                            // the skill table
 unsigned FUN_141472bc0();                                   // the tick count
 
-// The own field world (only the time mode of a field object is read).
+bool FUN_14028d470(float fValue, float fTolerance);         // commonutil: nearly equal
+float FUN_14028d3a0(float fPercent);                        // commonutil: percent to rate
+int FUN_1409726e0(int nSuperArmor, ApplyFieldType eApplyField);  // PCBase: the super armor applies on this field
+
+// A field object (FieldObject / Actor / PCBase; only the casts and the members below are used).
+class Unk_SrEntity;
+
+// The own field world (the field objects by object id).
 class Unk_SrWorld
 {
 public:
-    int FUN_141bd19d0(int nObjectId);
+    Unk_SrEntity* FUN_141bd1200(int nObjectId);             // the field object
+    int FUN_141bd19d0(int nObjectId);                       // the time mode of a field object
 };
 Unk_SrWorld* FUN_1403ed2d0();
+
+// The state machine of an actor: the attack state takes the hit records of the own player's casts.
+class Unk_SrState
+{
+public:
+    void FUN_1417ecc10(Unk_MagicTagPtr spRecord);
+};
+
+// The own player (MyPC).
+class Unk_SrMyPC
+{
+public:
+    int FUN_14166c930();                                    // the current state id
+    Unk_SrState* FUN_14166ccb0();                           // the current state
+};
+Unk_SrMyPC* FUN_14096e160(Unk_SrEntity* pEntity);           // as MyPC
+
+// The equipment of a player: the weapon's item gives the attack material of an attack without one.
+class Unk_ItemEquipData
+{
+public:
+    unsigned char m_unk00[0x10c];
+    int m_nAttackMaterial;                                  // +0x10c
+};
+class Unk_SrEquipSet
+{
+public:
+    MS2Ptr<CEquipItem> FUN_1411e1860(int nSlot, int nKind, int nFlags);    // the item of an equip slot
+};
+class Unk_SrPC;
+void* FUN_14096e110(Unk_SrEntity* pEntity);                 // as an npc (0 for a player)
+Unk_SrPC* FUN_140974230(Unk_SrEntity* pEntity);             // as a player
+Unk_SrEquipSet* FUN_1416561a0(Unk_SrPC* pPC);               // the equipment of a player
+
+// The buffs of an actor (AdditionalCli is RTTI CPtred, ?\additionalcli.cpp; only its level data is read).
+struct Unk_SrBuffLevel
+{
+    unsigned char m_unk00[0x298];
+    int m_nDotDamageType;                                   // +0x298
+};
+class AdditionalCli : public CPtred
+{
+public:
+    Unk_SrBuffLevel* FUN_14096d810();                       // the level data
+};
+class Unk_SrBuffs
+{
+public:
+    MS2Ptr<AdditionalCli> FUN_14096fc80(int nBuffId);       // one buff
+};
+Unk_SrBuffs* FUN_1416749a0(Unk_SrEntity* pEntity);          // the buffs of an actor
 
 // ---- SkillTargetRecord ----
 
@@ -74,6 +131,18 @@ int SkillTargetRecord::FUN_141759090()
     return m_spLevel->FUN_1408043f0(m_nMotion, m_nAttack);
 }
 
+// @0x1417590d0
+const CString& SkillTargetRecord::FUN_1417590d0()
+{
+    static CString s_strEmpty;
+    SkillAttackData* pAttack = FUN_141759050();
+    if (pAttack == 0)
+        return s_strEmpty;
+    if (pAttack->FUN_1407e1a10() != 1)
+        return s_strEmpty;
+    return pAttack->FUN_1407e1a30();
+}
+
 // @0x141758fb0
 unsigned SkillTargetRecord::FUN_141758fb0()
 {
@@ -90,6 +159,23 @@ unsigned short SkillTargetRecord::FUN_141758fe0()
 int SkillTargetRecord::FUN_141759190()
 {
     return m_nStartTick;
+}
+
+// @0x1417591b0
+void SkillTargetRecord::FUN_1417591b0()
+{
+    Unk_SrEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_nOwnerId);
+    if (pOwner == 0)
+        return;
+    Unk_SrMyPC* pMe = FUN_14096e160(pOwner);
+    if (pMe != 0) {
+        int nState = pMe->FUN_14166c930();
+        if (nState == 0x10) {
+            Unk_SrState* pState = pMe->FUN_14166ccb0();
+            if (pState != 0)
+                pState->FUN_1417ecc10(Unk_MagicTagPtr(reinterpret_cast<Unk_MagicTag*>(this)));   // Unk_MagicTag is this class
+        }
+    }
 }
 
 // ---- CSkillRecord ----
@@ -136,6 +222,24 @@ SkillMotionData* CSkillRecord::FUN_141759830()
     return m_spLevel ? m_spLevel->FUN_140803f00(m_nMotion) : 0;
 }
 
+// @0x1417598a0
+const CString& CSkillRecord::FUN_1417598a0()
+{
+    return m_spLevel->FUN_140804500(2, m_nMotion);
+}
+
+// @0x1417598e0
+const CString& CSkillRecord::FUN_1417598e0()
+{
+    return m_spLevel->FUN_140804500(3, m_nMotion);
+}
+
+// @0x141759920
+const CString& CSkillRecord::FUN_141759920()
+{
+    return m_spLevel->FUN_140804500(4, m_nMotion);
+}
+
 // @0x141759960
 unsigned CSkillRecord::GetSkillId()
 {
@@ -154,6 +258,118 @@ __int64 CSkillRecord::FUN_1417599c0()
     return m_n1b8;
 }
 
+// @0x1417599e0
+__int64 CSkillRecord::FUN_1417599e0()
+{
+    if (m_spLevel == 0)
+        return 0;
+    return m_spLevel->FUN_140804c90(m_nMotion);
+}
+
+// @0x141759a50
+bool CSkillRecord::FUN_141759a50()
+{
+    if (m_spLevel == 0)
+        return false;
+    SkillMotionData* pMotion = m_spLevel->FUN_140803f00(m_nMotion);
+    if (pMotion == 0)
+        return false;
+    return pMotion->m_bA0;
+}
+
+// @0x141759ad0
+float CSkillRecord::FUN_141759ad0()
+{
+    SkillMotionData* pMotion = FUN_141759830();
+    if (pMotion == 0)
+        return 0;
+    if (pMotion->m_fB8 != 0)
+        return 0;
+    if (m_fCooldown != 0)
+        return 0;
+    if (m_ptDir.FUN_140552690(DAT_143b01a60))
+        return 0;
+    else
+        return pMotion->m_fAC;
+}
+
+// @0x141759b60
+float CSkillRecord::FUN_141759b60(double dDelta)
+{
+    SkillMotionData* pMotion = FUN_141759830();
+    if (pMotion == 0)
+        return 0;
+    float fResult = 0;
+    float fRate = FUN_14028d470(pMotion->m_fB8, 0) ? pMotion->m_fAC : pMotion->m_fB8;
+    fRate = FUN_14028d470(m_fCooldown, 0) ? fRate : m_fCooldown;
+    fRate = FUN_14028d3a0(fRate);
+    if (m_fDuration > 0 && m_fElapsed < m_fDuration) {
+        float fStep = (float)dDelta;
+        if (m_fElapsed + fStep > m_fDuration)
+            fStep = m_fDuration - m_fElapsed;
+        m_fElapsed += fStep;
+        if (m_fElapsed > m_fDuration)
+            m_fElapsed = m_fDuration;
+        fResult = fRate * (fStep / m_fDuration);
+    }
+    return fResult;
+}
+
+// @0x141759d20
+float CSkillRecord::FUN_141759d20(double dDelta, float fRate)
+{
+    float fResult = 0;
+    float fScale = fRate;
+    fScale *= 0.01f;
+    if (m_fDuration > 0 && m_fElapsed < m_fDuration) {
+        float fStep = (float)dDelta;
+        if (m_fElapsed + fStep > m_fDuration)
+            fStep = m_fDuration - m_fElapsed;
+        m_fElapsed += fStep;
+        if (m_fElapsed > m_fDuration)
+            m_fElapsed = m_fDuration;
+        fResult = fScale * (fStep / m_fDuration);
+    }
+    return fResult;
+}
+
+// @0x141759e40
+int CSkillRecord::FUN_141759e40()
+{
+    if (m_bEnd)
+        return 1;
+    if (m_nMotion + m_nAttack >= m_spLevel->FUN_140804270())
+        return 1;
+    else
+        return 0;
+}
+
+// @0x141759eb0
+int CSkillRecord::FUN_141759eb0()
+{
+    if (m_bEnd)
+        return 1;
+    if (m_nMotion + 1 >= m_spLevel->FUN_140804270())
+        return 1;
+    else
+        return 0;
+}
+
+// @0x141759f20
+int CSkillRecord::FUN_141759f20()
+{
+    if (m_nMotion + 1 >= m_spLevel->FUN_140804270())
+        return 1;
+    else
+        return 0;
+}
+
+// @0x141759f70
+int CSkillRecord::FUN_141759f70()
+{
+    return m_spLevel->FUN_1408043f0(m_nMotion, m_nAttackIndex);
+}
+
 // @0x141759fc0
 void CSkillRecord::FUN_141759fc0()
 {
@@ -166,8 +382,62 @@ void CSkillRecord::FUN_141759fe0()
     m_bEnd = true;
 }
 
+// @0x14175a000
+SkillAttackData* CSkillRecord::FUN_14175a000()
+{
+    return m_spLevel->FUN_140803f60(m_nMotion, m_nAttackIndex);
+}
+
+// @0x14175a050
+SkillAttackData* CSkillRecord::FUN_14175a050(int nAttack)
+{
+    return m_spLevel->FUN_140803f60(m_nMotion, nAttack);
+}
+
+// @0x14175a0a0
+SkillAttackData* CSkillRecord::FUN_14175a0a0(CString strName)
+{
+    return m_spLevel->FUN_140803fb0(m_nMotion, strName);
+}
+
+// @0x14175a130
+int CSkillRecord::FUN_14175a130()
+{
+    SkillAttackData* pAttack = FUN_14175a000();
+    if (pAttack == 0)
+        return 0;
+    return pAttack->m_nBrokenOffence;
+}
+
+// @0x14175a170
+float CSkillRecord::FUN_14175a170()
+{
+    SkillAttackData* pAttack = FUN_14175a000();
+    if (pAttack == 0)
+        return 0;
+    return pAttack->m_fBrokenForce;
+}
+
+// @0x14175a1b0
+float CSkillRecord::FUN_14175a1b0()
+{
+    if (FUN_14028d470(m_fDuration, 0))
+        return 0;
+    if (m_fDuration <= m_fElapsed)
+        return 0;
+    return m_fDuration - m_fElapsed;
+}
+
+// @0x14175a210
+int CSkillRecord::FUN_14175a210()
+{
+    if (FUN_1409726e0(m_spSkill->m_nSuperArmor, m_spSkill->m_eSuperArmorApplyFieldType))
+        return m_spSkill->m_nSuperArmor;
+    return 0;
+}
+
 // @0x14175a280
-void CSkillRecord::AddTarget(int nKey, unsigned nTarget)
+void CSkillRecord::AddTarget(unsigned nKey, unsigned nTarget)
 {
     TargetSetPtr spTargets;
     if (m_targets.Lookup(nKey, spTargets)) {
@@ -181,7 +451,7 @@ void CSkillRecord::AddTarget(int nKey, unsigned nTarget)
 }
 
 // @0x14175a360
-int CSkillRecord::HasTarget(int nKey, unsigned nTarget)
+int CSkillRecord::HasTarget(unsigned nKey, unsigned nTarget)
 {
     TargetSetPtr spTargets;
     if (m_targets.Lookup(nKey, spTargets))
@@ -255,6 +525,53 @@ SkillAttackData* CDamageRecord::FUN_14175a8b0()
     return m_spLevel ? m_spLevel->FUN_140803f60(m_nMotion, m_nAttack) : 0;
 }
 
+// @0x14175a920
+int CDamageRecord::FUN_14175a920()
+{
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return 0;
+    return pAttack->m_sensor.m_nType;
+}
+
+// @0x14175a960
+CString CDamageRecord::FUN_14175a960()
+{
+    static CString s_strEmpty;
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return s_strEmpty;
+    return pAttack->m_sensor.m_str;
+}
+
+// @0x14175aa50
+CString CDamageRecord::FUN_14175aa50()
+{
+    static CString s_strEmpty;
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return s_strEmpty;
+    return pAttack->m_sensor.m_strEffectRemain;
+}
+
+// @0x14175ab40
+bool CDamageRecord::FUN_14175ab40()
+{
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return false;
+    return pAttack->m_sensor.m_bIgnoreOptimalHideDamageHitEffect;
+}
+
+// @0x14175ab80
+bool CDamageRecord::FUN_14175ab80()
+{
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return false;
+    return pAttack->m_sensor.m_bIgnoreOptimalHideDamageRemainEffect;
+}
+
 // @0x14175abc0
 void CDamageRecord::FUN_14175abc0(int nType, __int64 nDamage)
 {
@@ -281,6 +598,31 @@ int CDamageRecord::FUN_14175acc0()
     return (static_cast<bool>(m_spLevel) && m_spLevel->FUN_1408043f0(m_nMotion, m_nAttack) != 0) ? 1 : 0;
 }
 
+// @0x14175ad50
+int CDamageRecord::FUN_14175ad50()
+{
+    int nMaterial = 1;
+    Unk_SrEntity* pOwner = FUN_1403ed2d0()->FUN_141bd1200(m_nOwnerId);
+    if (pOwner == 0)
+        return nMaterial;
+    nMaterial = FUN_14175a8b0()->m_sensor.m_nAttackMaterial;
+    void* pNpc = FUN_14096e110(pOwner);
+    if (pNpc != 0) {
+        return nMaterial;
+    }
+    else {
+        Unk_SrPC* pPC = FUN_140974230(pOwner);
+        if (pPC != 0) {
+            if (nMaterial != 0)
+                return nMaterial;
+            MS2Ptr<CEquipItem> spWeapon = FUN_1416561a0(pPC)->FUN_1411e1860(5, 6, 0);
+            if (spWeapon.get() != 0)
+                nMaterial = spWeapon->FUN_1411dc7a0()->FUN_140527840()->m_nAttackMaterial;
+        }
+    }
+    return nMaterial;
+}
+
 // @0x14175aeb0
 unsigned __int64 CDamageRecord::FUN_14175aeb0()
 {
@@ -294,6 +636,15 @@ int CDamageRecord::FUN_14175aee0(int nIndex, int& nType)
         return 0;
     nType = m_types[nIndex];
     return 1;
+}
+
+// @0x14175af50
+int CDamageRecord::vfunc_1()
+{
+    SkillAttackData* pAttack = FUN_14175a8b0();
+    if (pAttack == 0)
+        return 0;
+    return pAttack->m_nHitImmuneBreak;
 }
 
 // ---- CDotDamageRecord ----
@@ -315,6 +666,18 @@ int CDotDamageRecord::Init(int nOwnerId, int nCasterId, int nEffectLevel, int nT
     m_damages.Add(nDamage);
     m_types.Add(nType);
     return 1;
+}
+
+// @0x14175b070
+int CDotDamageRecord::vfunc_1()
+{
+    Unk_SrEntity* pCaster = FUN_1403ed2d0()->FUN_141bd1200(m_nCasterId);
+    if (pCaster == 0)
+        return 0;
+    MS2Ptr<AdditionalCli> spBuff = FUN_1416749a0(pCaster)->FUN_14096fc80(m_nEffectLevel);
+    if (spBuff == 0)
+        return 0;
+    return spBuff->FUN_14096d810()->m_nDotDamageType;
 }
 
 // @0x14175b130

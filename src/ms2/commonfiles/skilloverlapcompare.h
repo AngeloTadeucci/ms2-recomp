@@ -185,22 +185,52 @@ struct Unk_SkillSensor : public Unk_RangeShape
 };
 MS2_CHECK_SIZE(Unk_SkillSensor, 0x60);
 
-// One attack of a motion (?\skillattackdata.cpp); only its sensor is touched here.
+// The tail of the <damage> block of an attack (the block starts at +0x168 of SkillAttackData; v2525 SkillAttackData::Damage
+// +0x18..+0x38). SkillDataTable 0x1407ee9f0 numbers the attacks by the string at +0x08 into m_nType.
+struct Unk_SkillAttackName
+{
+    int m_nType;                                            // +0x00 the index of m_str (v2525 m_nameIndex)
+    CString m_str;                                          // +0x08 the hit effect (v2525 m_effectHit)
+    CString m_strEffectRemain;                              // +0x10
+    int m_nIsConstDamageValue;                              // +0x18
+    bool m_bIgnoreOptimalHideDamageHitEffect;               // +0x1c
+    bool m_bIgnoreOptimalHideDamageRemainEffect;            // +0x1d
+    int m_nAttackMaterial;                                  // +0x20
+};
+MS2_CHECK_OFFSET(Unk_SkillAttackName, m_nAttackMaterial, 0x20);
+
+// One attack of a motion (?\skillattackdata.cpp); only the members read by the client units are named.
 class SkillAttackData : public CPtred
 {
 public:
-    unsigned char m_unk18[0x168];
-    Unk_RangeShape m_sensor;                                // +0x180 (name +0x188)
+    int FUN_1407e1a10() const;                              // the attack method type
+    const CString& FUN_1407e1a30() const;                   // the arrow effect
+
+    unsigned char m_unk18[0x24];
+    int m_nHitImmuneBreak;                                  // +0x3c
+    int m_nBrokenOffence;                                   // +0x40
+    float m_fBrokenForce;                                   // +0x44
+    unsigned char m_unk48[0x138];
+    Unk_SkillAttackName m_sensor;                           // +0x180 (named m_sensor by the 0x1407e5b80 unit)
 };
+MS2_CHECK_OFFSET(SkillAttackData, m_nHitImmuneBreak, 0x3c);
 MS2_CHECK_OFFSET(SkillAttackData, m_sensor, 0x180);
 
 // One motion of a level (the 0x1408011f0 unit).
 class SkillMotionData : public CPtred
 {
 public:
-    unsigned char m_unk18[0xe0];
+    unsigned char m_unk18[0x88];
+    bool m_bA0;                                             // +0xa0
+    unsigned char m_unkA1[0xb];
+    float m_fAC;                                            // +0xac the default cooldown
+    unsigned char m_unkB0[0x8];
+    float m_fB8;                                            // +0xb8 the cooldown (0: m_fAC)
+    unsigned char m_unkBC[0x3c];
     std::vector<MS2Ptr<SkillAttackData> > m_vAttack;        // +0xf8
 };
+MS2_CHECK_OFFSET(SkillMotionData, m_fAC, 0xac);
+MS2_CHECK_OFFSET(SkillMotionData, m_fB8, 0xb8);
 MS2_CHECK_OFFSET(SkillMotionData, m_vAttack, 0xf8);
 
 // One <level> of a skill (RTTI .?AVSkillLevelData@@, 0xc0 bytes; the 0x1408011f0 unit).
@@ -213,7 +243,11 @@ public:
     unsigned short FUN_140803df0();                         // the level
     SkillMotionData* FUN_140803f00(int nMotion);            // one motion (0 if out of range)
     SkillAttackData* FUN_140803f60(int nMotion, int nAttack);   // one attack of a motion (0 if out of range)
+    SkillAttackData* FUN_140803fb0(int nMotion, CString strName);   // one attack of a motion by name
+    int FUN_140804270();                                    // the motion count
     int FUN_1408043f0(int nMotion, int nAttack);            // whether the attack exists
+    const CString& FUN_140804500(int nKind, int nMotion);   // an effect of a motion (kind 2/3/4)
+    __int64 FUN_140804c90(unsigned __int64 nMotion);        // the cooldown key of a motion (0 if out of range)
     int FUN_140804690(Unk_140165cf0* pElem);                // reads a <level>
 
     unsigned char m_unk18[0x68];
