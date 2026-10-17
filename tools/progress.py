@@ -999,6 +999,11 @@ def main():
         a.report = True
     if a.agent and not re.fullmatch(r"[A-Za-z0-9_.-]+", a.agent):
         sys.exit(f"bad agent name {a.agent!r}")
+    if a.filters and not (a.agent or a.report):
+        # a filtered merge rebuilds progress/symbols.tsv from the selected units' harvest only (2026-10-17: a worker's
+        # `progress.py -v <unit>` without MS2_AGENT cut it from 73478 to 2655 rows); merges always run on all units
+        sys.exit("refusing a filtered merge (it would truncate progress/symbols.tsv): "
+                 "set MS2_AGENT=<name> in the same command or pass --agent/--report")
     if a.agent or a.report:
         CACHE = os.path.join(ROOT, "build", "progress-" + (a.agent or "report"))
         OUT = CACHE
