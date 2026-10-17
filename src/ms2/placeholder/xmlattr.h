@@ -66,6 +66,9 @@ inline Unk_XmlElementIterator begin(Unk_140165cf0* p) { return Unk_XmlElementIte
 // @0x14018f960
 inline Unk_XmlElementIterator end(Unk_140165cf0*) { return Unk_XmlElementIterator(); }
 
+// The templates below are untagged (their instantiations pair through symbols.tsv); keep them more than
+// TAG_WINDOW lines below the end() tag, or a TU that never emits end() binds that tag to XmlConvert.
+
 // Token conversion (0x140177cf0 unsigned short, 0x140177d20 int, 0x140177d50 unsigned, 0x140177d80 float).
 template <class T> T XmlConvert(const CString& str) { return (T)atoi(str); }
 template <> inline float XmlConvert<float>(const CString& str) { return (float)atof(str); }

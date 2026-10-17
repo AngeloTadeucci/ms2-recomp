@@ -105,20 +105,7 @@ public:
 MS2_CHECK_SIZE(BlueMarbleEventContext, 0x80);
 MS2_CHECK_OFFSET(BlueMarbleEventContext, m_rewards, 0x38);
 
-enum Unk_DungeonCooldownType {};
-class DungeonExtraRewardCountCtx : public CPtred {
-public:
-    DungeonExtraRewardCountCtx();                           // 0x1403fd6e0
-    void Load(Unk_140165cf0* pElem);                        // 0x1403fd750
-    int m_18;
-    unsigned m_dungeonID;                                   // +0x1c "dungeonID"
-    unsigned m_count;                                       // +0x20 "count"
-    Unk_DungeonCooldownType m_cooldownType;                 // +0x24 "cooldownType"
-    int m_cooldownValue;                                    // +0x28 "cooldownValue"
-};  // vftable 0x142d44160
-MS2_CHECK_SIZE(DungeonExtraRewardCountCtx, 0x30);
-CInputStream& operator>>(CInputStream& in, DungeonExtraRewardCountCtx& ctx);         // 0x1403fd7e0
-COutputStream& operator<<(COutputStream& out, const DungeonExtraRewardCountCtx& ctx); // 0x1403fd840
+// DungeonExtraRewardCountCtx: gameevent.h (GameEventDungeonExtraReward holds a map of them).
 
 enum Unk_DungeonGroupType {};
 class DungeonBonusRewardCtx : public CPtred {

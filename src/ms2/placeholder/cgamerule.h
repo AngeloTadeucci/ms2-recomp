@@ -15,6 +15,8 @@ struct OntimeEventContext;
 class DungeonBonusRewardCtx;
 class EventQuestContext;
 class DungeonRoomShutdownContext;
+class DungeonExtraRewardCountCtx;
+struct SkillUpgradeSaleEventContext;
 
 class CGameRule : public TSingleton<CGameRule>
 {
@@ -60,6 +62,15 @@ public:
     void FUN_140479c80(MS2Ptr<DungeonRoomShutdownContext> spContext);       // GameEventDungeonRoomShutdown
     void FUN_14047a360(std::set<unsigned> ids);                            // GameEventFieldShutdown on
     void FUN_14047a3d0();                                                   // ... off
+    bool FUN_14047a420(unsigned dungeonId, MS2Ptr<DungeonExtraRewardCountCtx> spCount); // GameEventDungeonExtraReward
+    void FUN_14047a4e0(unsigned dungeonId, int eventId);
+    void FUN_140478bd0(int eventId, int type, int rate);                    // GameEventSaleRemake
+    void FUN_140478c50(int eventId, int type);
+    void FUN_140478e80(int eventId, int rate);                              // GameEventSaleGemStoneUpgrade
+    void FUN_140478ef0(int eventId);
+    void FUN_14047b540(MS2Ptr<SkillUpgradeSaleEventContext> spContext);     // GameEventSaleSkillUpgrade
+    void FUN_14047b5c0(unsigned skillId);
+    void FUN_14047b6d0(const CStringW& str);
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0xa9c - 0x8];

@@ -257,7 +257,6 @@ template void Unk_GameEventCopy<GameEventCustomTriggerString>(void*, const GameE
 template void Unk_GameEventCopy<GameEventDeleteUrlCache>(void*, const GameEventDeleteUrlCache&);
 template void Unk_GameEventCopy<GameEventDungeonBonusReward>(void*, const GameEventDungeonBonusReward&);
 template void Unk_GameEventCopy<GameEventDungeonEnterTimeLimit>(void*, const GameEventDungeonEnterTimeLimit&);
-template void Unk_GameEventCopy<GameEventDungeonExtraReward>(void*, const GameEventDungeonExtraReward&);
 template void Unk_GameEventCopy<GameEventDungeonOpenPeriod>(void*, const GameEventDungeonOpenPeriod&);
 template void Unk_GameEventCopy<GameEventDungeonRoomShutdown>(void*, const GameEventDungeonRoomShutdown&);
 template void Unk_GameEventCopy<GameEventEnchantRate>(void*, const GameEventEnchantRate&);
@@ -375,6 +374,7 @@ void Unk_GameEventConstructTagged(void* p)
 {
     new (p) T(Unk_VftableEmitTag());
 }
+template void Unk_GameEventConstructTagged<GameEventDungeonExtraReward>(void*);
 template void Unk_GameEventConstructTagged<ReactorContext>(void*);
 template void Unk_GameEventConstructTagged<RpsContext::RewardData>(void*);
 template void Unk_GameEventConstructTagged<SnowmanContext::Snowman>(void*);

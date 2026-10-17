@@ -19,7 +19,23 @@ class CInPacket;
 class CInputStream;
 class COutputStream;
 class DungeonBonusRewardCtx;   // gameeventcontext.h
+struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors (vftable emission in unit_1403e9650)
 struct OntimeEventContext;
+
+enum Unk_DungeonCooldownType {};
+class DungeonExtraRewardCountCtx : public CPtred {
+public:
+    DungeonExtraRewardCountCtx();                           // 0x1403fd6e0
+    void Load(Unk_140165cf0* pElem);                        // 0x1403fd750
+    int m_18;
+    unsigned m_dungeonID;                                   // +0x1c "dungeonID"
+    unsigned m_count;                                       // +0x20 "count"
+    Unk_DungeonCooldownType m_cooldownType;                 // +0x24 "cooldownType"
+    int m_cooldownValue;                                    // +0x28 "cooldownValue"
+};  // vftable 0x142d44160
+MS2_CHECK_SIZE(DungeonExtraRewardCountCtx, 0x30);
+CInputStream& operator>>(CInputStream& in, DungeonExtraRewardCountCtx& ctx);         // 0x1403fd7e0
+COutputStream& operator<<(COutputStream& out, const DungeonExtraRewardCountCtx& ctx); // 0x1403fd840
 
 // Output / input stream stand-ins: only the virtual slot used by GameEvent subclasses (slot 3) is exact.
 // The slots are those of COutputStream / CInputStream (commonfiles/stream.h): Unk_GEOut is the COutputStream, Unk_GEIn
@@ -391,8 +407,10 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c0ce0
     virtual void vfunc_5();                     // 0x1403c0d30
     virtual void vfunc_6();                     // 0x1403c0ea0
-private:
-    char m_pad_d0[0x48];
+    GameEventDungeonExtraReward();
+    // Not exe code: lets the COMDAT tail unit emit the vftable (the CAtlMap member is not copyable).
+    explicit GameEventDungeonExtraReward(Unk_VftableEmitTag) {}
+    ATL::CAtlMap<unsigned, MS2Ptr<DungeonExtraRewardCountCtx> > m_d0;   // by dungeon id
 };  // vftable 0x142d3f8f8, ??_G 0x1403e9ed0, dtor 0x1403e5ef0
 MS2_CHECK_SIZE(GameEventDungeonExtraReward, 0x118);
 class GameEventDungeonOpenPeriod : public GameEvent {
@@ -997,8 +1015,9 @@ public:
     virtual void vfunc_2();                     // 0x1403c1000
     virtual void vfunc_3(Unk_GEOut* out);       // 0x1403c1030
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c1080
-private:
-    char m_pad_d0[0x8];
+    GameEventSale();
+    int m_d0;
+    int m_pad_d4;
 };  // vftable 0x142d3f950, ??_G 0x1403eabd0, dtor 0x1403e67b0
 MS2_CHECK_SIZE(GameEventSale, 0xd8);
 class GameEventSaleAutoFishing : public GameEvent {
@@ -1077,6 +1096,7 @@ public:
     virtual CStringW vfunc_1();                 // 0x1403c1440
     virtual void vfunc_5();                     // 0x1403c14f0
     virtual void vfunc_6();                     // 0x1403c1530
+    GameEventSaleGemStoneUpgrade();
 };  // vftable 0x142d3fa00, ??_G 0x1403ead50, dtor 0x1403e6890
 MS2_CHECK_SIZE(GameEventSaleGemStoneUpgrade, 0xd8);
 class GameEventSaleHousing : public GameEvent {
@@ -1130,8 +1150,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c12c0
     virtual void vfunc_5();                     // 0x1403c1350
     virtual void vfunc_6();                     // 0x1403c13a0
-private:
-    char m_pad_d0[0x8];
+    GameEventSaleRemake();
+    int m_d0;
+    int m_d4;                                   // streamed as a byte
 };  // vftable 0x142d3f9a8, ??_G 0x1403eae90, dtor 0x1403e6950
 MS2_CHECK_SIZE(GameEventSaleRemake, 0xd8);
 class GameEventSaleSkillUpgrade : public GameEvent {
@@ -1142,8 +1163,11 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403c1840
     virtual void vfunc_5();                     // 0x1403c1a30
     virtual void vfunc_6();                     // 0x1403c1d50
-private:
-    char m_pad_d0[0x20];
+    GameEventSaleSkillUpgrade();
+    CStringA m_d0;                              // comma separated skill ids
+    CStringA m_d8;                              // ... levels
+    CStringA m_e0;                              // ... rates
+    CStringW m_e8;
 };  // vftable 0x142d3fa58, ??_G 0x1403eaed0, dtor 0x1403e6970
 MS2_CHECK_SIZE(GameEventSaleSkillUpgrade, 0xf0);
 class GameEventSaleUGCDesign : public GameEventSale {
@@ -1449,7 +1473,6 @@ struct PreminmMarketSaleEventContext : public CPtred {
     int m_pad_34;
 };  // vftable 0x142d41620, ??_G 0x1403eb5d0, dtor 0x1403e6e50
 MS2_CHECK_SIZE(PreminmMarketSaleEventContext, 0x38);
-struct Unk_VftableEmitTag {};   // not exe code: selects the header-only ctors below
 // Members recovered by gameeventcontext.cpp (stream Write 0x140402560 / Read 0x140402640); the ctor is in
 // gameevent.cpp.
 class ReactorContext : public CPtred {
@@ -1518,7 +1541,12 @@ class SaleCube : public CPtred {
 };  // vftable 0x142d3f098, ??_G 0x1403eb7d0, dtor 0x1403e7010
 MS2_CHECK_SIZE(SaleCube, 0x28);
 struct SkillUpgradeSaleEventContext : public CPtred {
-    char m_pad_18[0x10];
+    // @0x1403e4600
+    SkillUpgradeSaleEventContext() : m_18(0), m_1c(0), m_20(0) {}
+    unsigned m_18;                              // skill id
+    unsigned m_1c;                              // level
+    unsigned m_20;                              // rate
+    int m_pad_24;
 };  // vftable 0x142d414a8, ??_G 0x1403eb810, dtor 0x1403e7030
 MS2_CHECK_SIZE(SkillUpgradeSaleEventContext, 0x28);
 // Members recovered by gameeventcontext.cpp (stream Write 0x1403ff8f0 / Read 0x1403ffc00); the Snowman ctor
