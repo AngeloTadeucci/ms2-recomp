@@ -2704,3 +2704,7 @@ inflateInit_	142723ad0	func
 ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z	1403fa0c0	func
 ??0?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ	1406ed950	func
 ??1?$CAtlArray@V?$MS2Ptr@VCItemData@@@@V?$CElementTraits@V?$MS2Ptr@VCItemData@@@@@ATL@@@ATL@@QEAA@XZ	1406eed00	func
+??0Unk_SpawnNiPoint3@@QEAA@AEBVNiPoint3@@@Z	14027dcf0	func
+?FUN_1413a55a0@CGuideCondition@@QEAAHH@Z	1413a55a0	func
+?FUN_1413a5600@CGuideCondition@@QEAAH_N@Z	1413a5600	func
+?FUN_1413a5820@CGuideCondition@@QEAA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@XZ	1413a5820	func
