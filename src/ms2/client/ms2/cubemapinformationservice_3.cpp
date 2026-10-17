@@ -98,7 +98,9 @@ const char* CubeMapInformationService::GetDisplayName() const { return "CubeMapI
 
 
 // ---- callees outside the unit ----
-class Unk_CMISRoster { public: int FUN_141527920(__int64 nId); };
+struct Unk_CMISPartyPtr { void* m_p; };                                                     // MS2Ptr<party info>
+struct Unk_CMISParty { char m_pad[0x20]; int m_map; int m_key; };
+class Unk_CMISRoster { public: int FUN_141527920(__int64 nId); int FUN_141527e00(); void* FUN_141523c50(); };
 class Unk_CMISWorld
 {
 public:
@@ -1840,4 +1842,92 @@ bool CubeMapInformationService::FUN_1410c3cd0(int nKey)
         }
     }
     return true;
+}
+struct Unk_CMISHouseRec { __int64 m_q0, m_q1, m_q2; int m_state, m_pad; __int64 m_value; };   // the house record (state at 0x18, value at 0x20)
+void FUN_1408a0890(int, int, int*);
+struct Unk_CMISHouseRef                                                                     // MS2Ptr<house record>
+{
+    Unk_CMISHouseRef(void* p);                                                              // 0x14111ea00
+    ~Unk_CMISHouseRef();                                                                    // 0x141123820
+    void* m_p;
+    void* FUN_141128410();                                                                  // operator bool
+    Unk_CMISHouseRec* FUN_1411284b0();                                                      // operator->
+};
+// @0x1410c8470
+// MS2-FUNCTIONAL: unwind-state locals of the exe's result temporaries differ
+bool CubeMapInformationService::FUN_1410c8470(int nA, int nB, int* pState, __int64* pValue)
+{
+    int nFlag = 0;
+    FUN_1408a0890(nB, nA, &nFlag);
+    int nIsOne = 0;
+    if (nFlag == 1)
+        nIsOne = 1;
+    Unk_CMISHouseRef spHouse(FUN_1410c7c20(nA, nIsOne));
+    if (spHouse.FUN_141128410() == 0 || (spHouse.FUN_1411284b0()->m_state != 4 && spHouse.FUN_1411284b0()->m_state != 1))
+        return false;
+    *pState = spHouse.FUN_1411284b0()->m_state;
+    *pValue = spHouse.FUN_1411284b0()->m_value;
+    return true;
+}
+struct Unk_CMISPartyRef                                                                     // MS2Ptr<party info>
+{
+    Unk_CMISPartyRef(void* p);                                                              // 0x14050dd40
+    ~Unk_CMISPartyRef();                                                                    // 0x14050de40
+    void* m_p;
+    void* FUN_140fa9d30();                                                                  // operator bool
+    Unk_CMISParty* FUN_14050dee0();                                                         // operator->
+};
+struct Unk_CMISSalable { Unk_CMISSalable(); ~Unk_CMISSalable(); void* m[25]; };               // ctor 0x1408ad110, dtor 0x14050de70
+int FUN_1408a0d30(int, Unk_CMISSalable*, int);
+// @0x1410c80d0
+// MS2-FUNCTIONAL: unwind-state locals of the exe's result temporaries differ
+bool CubeMapInformationService::FUN_1410c80d0(int nGroup)
+{
+    Unk_CMISSalable salable;
+    if (FUN_1408a0d30(nGroup, &salable, FUN_1403ed2d0()->FUN_141bd3060()) == 0)
+        return false;
+    Unk_CubeOwnerPtr spOwner = FUN_1408a0fa0(reinterpret_cast<Unk_CubeOwners&>(f138), nGroup, 0);
+    if (spOwner == 0)
+        return false;
+    return true;
+}
+// @0x1410c8580
+// MS2-FUNCTIONAL: unwind-state locals of the exe's result temporaries differ
+int CubeMapInformationService::FUN_1410c8580(int nGroup)
+{
+    Unk_CMISRoster* pRoster = FUN_1403ed2d0()->FUN_141bd0cc0();
+    if (pRoster->FUN_141527e00() == 0) {
+        Unk_CMISPartyRef spParty(pRoster->FUN_141523c50());
+        if (spParty.FUN_140fa9d30() != 0) {
+            if (spParty.FUN_14050dee0()->m_map == FUN_1403ed2d0()->FUN_141bd3060() && spParty.FUN_14050dee0()->m_key == nGroup)
+                return 0x31;
+        }
+    }
+    if (FUN_1410c80d0(nGroup) == 0)
+        return 0x2f;
+    return 0;
+}
+// @0x1410c78b0
+// MS2-FUNCTIONAL: unwind-state locals of the exe's result temporaries differ
+Unk_CubeOwnerMap* CubeMapInformationService::FUN_1410c78b0(int nGroup)
+{
+    static Unk_CubeOwnerMap s_empty;
+    Unk_CubeOwners& owners = reinterpret_cast<Unk_CubeOwners&>(f138);
+    Unk_CubeOwners::iterator itEnd = owners.end();
+    if (owners.find(nGroup) != itEnd)
+        return &owners[nGroup];
+    return &s_empty;
+}
+int FUN_1407072e0(int);
+// @0x1410cb980
+int CubeMapInformationService::FUN_1410cb980(int nItemId)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem.IsNull())
+        return 0;
+    if (spItem->install.asset.IsEmpty() && spItem->install.preset.IsEmpty())
+        return 1;
+    if (FUN_1407072e0(spItem->install.objCode) != 0)
+        return 1;
+    return 0;
 }

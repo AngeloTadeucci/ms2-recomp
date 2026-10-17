@@ -5,5 +5,7 @@
 #include <efd/Category.h>
 #include "cubemapinformationservice_3.h"
 
+// @0x1400e6350
 static const efd::Category s_cubeMapCategory = efd::Category(efd::UniversalID::ECU_Any, efd::kNetID_Any, 0x07f00004);
+// @0x1400e6380
 static Unk_1401cd100 s_cubeMapNone(NULL);

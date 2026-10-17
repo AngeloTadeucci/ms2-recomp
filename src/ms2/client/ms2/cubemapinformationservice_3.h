@@ -212,6 +212,10 @@ public:
     void FUN_1410c1910(const Unk_Int3& pt, int n);
     bool FUN_1410c2610(Unk_Int3 pt);
     void FUN_1410c2a90(int nGroup);
+    bool FUN_1410c8470(int nA, int nB, int* pState, __int64* pValue);
+    bool FUN_1410c80d0(int nGroup);
+    int FUN_1410c8580(int nGroup);
+    Unk_CubeOwnerMap* FUN_1410c78b0(int nGroup);
     bool FUN_1410c3cd0(int nKey);
     void FUN_1410c2ce0(egf::Entity* pEntity);
     void FUN_1410be0c0(Unk_Int3 pt, int nGroup, int nFloor, struct Unk_CMISCell56* pVal);
