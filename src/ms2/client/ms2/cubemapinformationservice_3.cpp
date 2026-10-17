@@ -117,6 +117,9 @@ public:
     int FUN_141bcfbd0();                                        // in a field with a home (state 4 and a map)
     Unk_PayloadPtr<Unk_CMISObj208> FUN_141bd30a0();             // the current field data
     void FUN_141bc58d0(struct Unk_CMISNpcList* pOut);           // fills the list of npcs
+    void FUN_141bc5a20(struct Unk_CMISNpcRef* pOut, CString strKey);   // looks an npc up by its "<kind>_<cell>" key
+    int FUN_141bd98d0();                                        // the current character id
+    void FUN_141bdb690();                                       // flushes the cube change batch
 };
 Unk_CMISWorld* FUN_1403ed2d0();
 class Unk_CMISActor
@@ -3648,7 +3651,7 @@ struct Unk_CMISNpcElem;
 struct Unk_CMISNpcList { Unk_CMISNpcList(); ~Unk_CMISNpcList(); void* m_buf[4]; };           // ctor 140964560, dtor 140964ca0
 struct Unk_CMISNpcIter { void* m_p; };
 struct Unk_CMISNpcRef { Unk_CMISNpcRef(Unk_CMISNpcElem* p); ~Unk_CMISNpcRef(); void* m_p; };  // ctor 140963ff0, dtor 1409649e0
-class Unk_CMISNpc { public: int FUN_141447340(); Unk_StreamPoint FUN_141447c80(); CString FUN_1414472a0(); };
+class Unk_CMISNpc { public: void FUN_141447410(egf::Entity* pEntity); int FUN_141447340(); Unk_StreamPoint FUN_141447c80(); CString FUN_1414472a0(); };
 void* FUN_14096b140(Unk_CMISNpcList*);
 Unk_CMISNpcIter* FUN_14096adc0(Unk_CMISNpcList*, Unk_CMISNpcIter*);                            // end
 Unk_CMISNpcIter* FUN_14096aab0(Unk_CMISNpcList*, Unk_CMISNpcIter*);                            // begin
@@ -6114,4 +6117,99 @@ void CubeMapInformationService::FUN_1410cc160(int nKind)
     FUN_1413d49f0(spInst.FUN_14098d0e0(), &idNew, &strProp, &asset, false, pXforms, (int)vecXform.FUN_14115af10(), (int)vecXform.FUN_14115af10());
     FUN_140899bd0(&f2d8, idNew);
     FUN_1408a8900(&strProp);
+}
+
+// ---- w142 batch 14 ----
+bool FUN_1411270d0(Unk_CMISIter<259>*, Unk_CMISIter<259>*);                                 // operator==
+Unk_CMISIter<256>* FUN_1411589a0(Unk_CMISTree<256>*, Unk_CMISIter<256>*, const Unk_CMISEntityRef*);   // find
+void FUN_141156cf0(Unk_CMISTree<256>*, Unk_CMISIter<256>*, Unk_CMISIter<256>);              // erase
+__int64 FUN_1409657f0(Unk_CMISNpcRef*);                                                     // operator bool
+void FUN_141852050(NiAVObject*, int);
+// @0x1410cf5c0
+// MS2-FUNCTIONAL: exe's temporaries and unwind states are laid out differently
+void CubeMapInformationService::FUN_1410cf5c0(egf::Entity* pEntity)
+{
+    Unk_CMISIter<259> itFind, itEnd;
+    FUN_1411581c0(&f78, &itFind, FUN_1408b76f0(pEntity));
+    if (!FUN_1411270d0(&itFind, FUN_1411520f0(&f78, &itEnd))) {
+        MS2Ptr<Cube> spCube(FUN_141128780(&itFind)->second);
+        Unk_CMISIter<259> itErased;
+        FUN_14111c730(&f78, &itErased, itFind);
+        Unk_CMISIter<256> itPending, itPendingEnd;
+        FUN_1411589a0(&f68, &itPending, FUN_1408b76f0(pEntity));
+        if (!FUN_140a16b10(&itPending, FUN_1411524b0(&f68, &itPendingEnd))) {
+            int nKey = FUN_1408a03c0(spCube->position);
+            Unk_CMISIter<265> itMagic, itMagicEnd;
+            if (FUN_141127640(FUN_141157ac0(&f2e0, &itMagic, &nKey), FUN_141151d30(&f2e0, &itMagicEnd))) {
+                egf::EntityPtr spCur(reinterpret_cast<Unk_CMISWorldMgr*>(FUN_1409670f0())->FUN_1411cf440(*reinterpret_cast<const egf::EntityID*>(FUN_141127ed0(&f2e0, &nKey))));
+                if (FUN_1408a9280(&spCur) != 0) {
+                    Unk_CMISIter<256> itIns;
+                    FUN_14111d3f0(&f30, &itIns, FUN_1408b76f0(pEntity));
+                    FUN_140964eb0(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity), &spCur);
+                }
+            }
+            Unk_CMISListIter itFindSet;
+            Unk_CMISListEnd itEndSet;
+            if (FUN_14035ea60(FUN_141158620(&f128, &itFindSet, &nKey), FUN_1411522d0(reinterpret_cast<Unk_CMISIntList*>(&f128), &itEndSet))) {
+                Unk_CMISIter<266> itBlock, itBlockEnd;
+                if (FUN_141127400(FUN_1411572e0(&f118, &itBlock, &nKey), FUN_1411519d0(&f118, &itBlockEnd))) {
+                    Unk_CMISBlock rec(*FUN_141127c10(&f118, &nKey));
+                    egf::EntityPtr spNew = FUN_1410bc3d0(Unk_CMISBlock(rec));
+                    egf::EntityPtr spOld = FUN_1408a7ed0(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity));
+                    FUN_140964eb0(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity), &spNew);
+                    Unk_CMISIter<256> itIns;
+                    FUN_14111d3f0(&f30, &itIns, FUN_1408b76f0(FUN_1408a9280(&spOld)));
+                    FUN_141156520(&f128, &nKey);
+                    FUN_141153740(&f118, &nKey);
+                }
+            }
+            FUN_1410d0e30(FUN_1408a9090(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity)), spCube);
+            FUN_1410c06b0(spCube);
+            FUN_1410c2ce0(FUN_1408a9090(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity)));
+            if (spCube->fieldB0 != 0) {
+                if (FUN_1408a9bd0(FUN_1408a9280(&spCube->entity))->FUN_14211e240(0x48ccc02d)) {
+                    efd::utf8string strOn("On");
+                    FUN_1409a1fc0(FUN_141b6f910(), FUN_1408b76f0(FUN_1408a9280(&spCube->entity)), &strOn, 1.0f, 0);
+                } else {
+                    NiAVObject* pRoot = FUN_141b6efc0(FUN_1408a9090(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity)));
+                    if (pRoot != 0)
+                        FUN_141852050(pRoot, 0);
+                }
+            }
+            if (spCube->field4c == 0) {
+                if (spCube->fieldB4 != 0)
+                    FUN_1410d0000(FUN_1408a9090(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity)), spCube);
+            } else {
+                CString strKey;
+                strKey.Format("%d_%d", spCube->field44, FUN_1408a03c0(spCube->position));
+                Unk_CMISNpcRef spNpc(static_cast<Unk_CMISNpcElem*>(0));
+                FUN_1403ed2d0()->FUN_141bc5a20(&spNpc, strKey);
+                if (FUN_1409657f0(&spNpc) != 0)
+                    FUN_140965930(&spNpc)->FUN_141447410(FUN_1408a9090(reinterpret_cast<Unk_CMISEntityRef*>(&spCube->entity)));
+            }
+            FUN_1410be6e0(spCube);
+            if (!FUN_1410cb900() && FUN_14115ad10(&f78) == 0) {
+                FUN_1410cb8b0(true);
+                COutPacket packet(0x10, 0);
+                packet.vfunc_o10_3(FUN_1403ed2d0()->FUN_141bd98d0());
+                FUN_140710590(packet);
+                FUN_1403ed2d0()->FUN_141bdb690();
+            }
+            if (FUN_1410cb900())
+                FUN_1410bf470();
+            FUN_1410ce020(spCube);
+        } else {
+            Unk_CMISIter<256> itIns;
+            FUN_14111d3f0(&f30, &itIns, FUN_1408b76f0(pEntity));
+            Unk_CMISIter<256> itErasedPending;
+            FUN_141156cf0(&f68, &itErasedPending, itPending);
+        }
+        if (f478 != 0 && FUN_141151760(&f78)) {
+            COutPacket packet(0x37, 0);
+            packet.vfunc_o10_1(0x44);
+            packet.vfunc_o10_4(f478);
+            FUN_140710590(packet);
+            f478 = 0;
+        }
+    }
 }
