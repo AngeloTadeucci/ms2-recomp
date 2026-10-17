@@ -2685,7 +2685,8 @@ MS2_REPLACE_METHOD(0x1407503F0, QuestDataTable, FUN_1407503f0, 2429, 0x77FD9E9C)
 int FUN_140751650(int nValue);
 
 // Quest id order of the per-npc lists: by quest type, then by level within a type, with the types ranked through FUN_140751650.
-struct Unk_QuestIdOrder : public std::binary_function<int, int, bool>
+struct Unk_BinaryFunction {};   // the exe functor derives from std::binary_function (removed from the C++17 library)
+struct Unk_QuestIdOrder : public Unk_BinaryFunction
 {
     bool operator()(int nA, int nB) const
     {
