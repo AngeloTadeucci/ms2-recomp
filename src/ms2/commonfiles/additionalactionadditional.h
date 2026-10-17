@@ -163,14 +163,14 @@ struct Unk_RangeShape
     float m_f38;                        // +0x38
 };
 MS2_CHECK_SIZE(Unk_RangeShape, 0x40);
-class Unk_RangeProperty
+// The shape is a base: ~Unk_RangeProperty 0x140184170 calls ~Unk_RangeShape 0x140184190 on `this` itself.
+class Unk_RangeProperty : public Unk_RangeShape
 {
 public:
     Unk_RangeProperty();                                                // 0x140800860
     bool FUN_140800920(const Unk_RangeProperty& o);                     // is different
     int FUN_140800b50(Unk_140165cf0* pElem, CString strName);           // reads the named child element
 
-    Unk_RangeShape m_shape;             // +0x00
     int m_n40[13];                      // +0x40
 };
 MS2_CHECK_SIZE(Unk_RangeProperty, 0x78);

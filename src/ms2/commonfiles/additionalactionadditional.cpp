@@ -321,6 +321,8 @@
 // 0x14018f3d0, _WChar_traits::length by BasicStringRef<wchar_t>::size 0x140191020
 // MS2-PIN: wmemcpy 0x140191540
 // MS2-PIN: ?length@?$_WChar_traits@_W@std@@SA_KPEB_W@Z 0x140190180
+// ~Unk_RangeShape: ~Unk_RangeProperty 0x140184170 calls it (the 0x1407a4f20 unit's copies call it too)
+// MS2-PIN: ??1Unk_RangeShape@@QEAA@XZ 0x140184190
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\additionalactionadditional.cpp"
 #include <vcruntime_string.h>
 #include <corecrt_wstring.h>
@@ -328,6 +330,7 @@
 // first). The exe's length is `call [__imp_wcslen]`: the static-CRT headers here have no dllimport (functional).
 #pragma function(memcpy, wcslen)
 #include "ms2/placeholder/ms2stdafx.h"
+#pragma intrinsic(memcpy)   // the STL string copies (0x140189340) inline it again
 #include <sstream>
 #include "additionalactionadditional.h"
 #include "ms2/commonfiles/logstring.h"
@@ -493,16 +496,14 @@ template <class K, class V> bool IsSameMap(const ATL::CAtlMap<K, V>& a, const AT
 }
 template <class T> bool IsSameVector(const std::vector<T>& a, const std::vector<T>& b)
 {
-    if (a.size() == b.size())
+    if (a.size() != b.size())
+        return false;
+    for (size_t i = 0; i < a.size(); i++)
     {
-        for (unsigned i = 0; i < a.size(); i++)
-        {
-            if (a[i] != b[i])
-                return false;
-        }
-        return true;
+        if (a[i] != b[i])
+            return false;
     }
-    return false;
+    return true;
 }
 template <class T> bool IsSameVector(const std::vector<MS2Ptr<T> >& a, const std::vector<MS2Ptr<T> >& b)
 {
