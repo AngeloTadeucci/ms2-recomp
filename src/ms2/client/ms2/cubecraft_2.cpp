@@ -138,7 +138,7 @@ public:
     char FUN_1410af770() { return m_bShift; }
 };
 Unk_C2UiMgr* FUN_140b632f0();
-int FUN_14166da40(PC* pPC);
+float FUN_14166da40(PC* pPC);
 
 bool FUN_1415302e0(PC* pPC, int nItemId);
 int FUN_1408b4f20(Cube* pCube);
@@ -992,7 +992,7 @@ void Unk_PCCubeCraft::FUN_1410aa6f0(Unk_StreamPoint kPos, char bNoUpdate)
     }
     MS2Ptr<CItemData> spData = FUN_14053f870(FUN_1410ad610());
     NiPoint3 kAngles = m_pOwner->vfunc_20();
-    float fHeading = (float)FUN_14166da40(m_pOwner);
+    float fHeading = FUN_14166da40(m_pOwner);
     kAngles.z = (float)(int)((fHeading + 89.0f) / 90.0f) * 90.0f + m_fYaw;
     NiMatrix3 kRot;
     FUN_140b86230(kAngles, kRot);
