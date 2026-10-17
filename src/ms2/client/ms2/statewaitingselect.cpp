@@ -194,7 +194,6 @@ void StateWaitingSelect::vfunc_2(int n)
 }
 
 // @0x1417ff2e0
-// MS2-FUNCTIONAL: the zero point is copied byte-wise in the exe
 void StateWaitingSelect::vfunc_4(StateData* pData)
 {
     State::vfunc_4(pData);
@@ -205,7 +204,6 @@ void StateWaitingSelect::vfunc_4(StateData* pData)
 }
 
 // @0x1417ff370
-// MS2-FUNCTIONAL: the zero point is copied byte-wise in the exe
 void StateWaitingSelect::vfunc_5(int n)
 {
     State::vfunc_5(n);
@@ -215,7 +213,6 @@ void StateWaitingSelect::vfunc_5(int n)
 }
 
 // @0x1417ff3f0
-// MS2-FUNCTIONAL: the zero point is copied byte-wise in the exe
 void StateWaitingSelect::vfunc_3(double fTime)
 {
     State::vfunc_3(fTime);
