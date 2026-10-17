@@ -2775,3 +2775,5 @@ inflateInit_	142723ad0	func
 ??0Unk_UlgBucket@@QEAA@PEAX@Z	14027ca80	func
 ??0Unk_UlgBucket@@QEAA@AEBU0@@Z	14027ca40	func
 ??1Unk_UlgBucket@@QEAA@XZ	14027dfa0	func
+??0CKillCount@@QEAA@XZ	14064c590	func
+??1CKillCount@@UEAA@XZ	14064c5d0	func
