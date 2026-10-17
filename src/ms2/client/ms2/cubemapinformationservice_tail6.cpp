@@ -17,6 +17,10 @@
 #include <NiTransform.h>
 #include "ms2/commonfiles/ugcmapsetiteminfo.h"
 
+// ecr::SceneGraphService::kInvalidHandle is referenced by the SceneGraphAddedMessage factory method the
+// handler anchor below instantiates; the engine ships the declaration, the definition is selectany.
+__declspec(selectany) const ecr::SceneGraphService::SceneGraphHandle ecr::SceneGraphService::kInvalidHandle = 0;
+
 typedef std::map<unsigned int, MS2SvrPtr<CUGCMapSetItemInfo> > Unk_CMISMapSetItem;
 typedef efd::vector<NiTransform> Unk_CMISXformVec2;
 typedef efd::vector<Cube*> Unk_CMISCubePtrVec;
@@ -117,4 +121,154 @@ void Unk_CMISDriveTail6()
     { MS2Ptr<UIHouseMarkEntity> p; }
     { efd::utf8string s; (void)s.find_last_of("/", 0); }
     { std::string s; s.append("x"); }
+}
+
+// -----------------------------------------------------------------------------------------------------------
+// The 16 out-of-line members of this slice that the driver's copies do not pair, written as plain functions
+// with an explicit @VA tag each (the exe emits one copy per type; naming the tags removes the look-alike
+// ambiguity the generic MS2Ptr/Unk_PayloadPtr/TSingleton instantiations suffer from).
+// -----------------------------------------------------------------------------------------------------------
+
+void FUN_1411225a0(void* pThis);      // 0x1411225a0: async queue ctor
+void FUN_140ae79e0(void* pThis);      // 0x140ae79e0: async queue aux ctor
+void FUN_14112fe10(void* pThis);      // MS2Ptr<AutomaticCreateCubeInfo> link
+void FUN_14112faf0(void* pThis);      // MS2Ptr<CFunctionCubeObject> link
+void FUN_14112fb20(void* pThis);      // MS2Ptr<Unk_CMISUidRecord> link
+void FUN_140dd7940(void* pThis);      // MS2Ptr<SaleStateData> link
+void FUN_140ba1c80(void* pThis);      // MS2Ptr<SetItemEffectInfo> link
+void FUN_14112fb50(void* pThis);      // MS2Ptr<Unk_CMISHouseRef> link
+void FUN_14112fb80(void* pThis);      // MS2Ptr<Unk_CMISBlueprintPtr>/<Unk_CMISDesignPtr> link
+void FUN_140fac7c0(void* pThis);
+void FUN_140fac7f0(void* pThis);
+void FUN_14112fbb0(void* pThis);
+extern char DAT_142eb3950;            // TSingleton<CubeMapInformationService> vtable
+extern void* DAT_143ab3908;           // TSingleton<CubeMapInformationService>::ms_pInstance
+
+// @0x14111e640
+void* FUN_14111e640(void* pThis)
+{
+    FUN_1411225a0(pThis);
+    FUN_140ae79e0((char*)pThis + 0x10);
+    return pThis;
+}
+
+// @0x14111e6e0
+void* FUN_14111e6e0(void* pThis, void* pUnused)
+{
+    *(void**)((char*)pThis + 8) = 0;
+    FUN_14112fe10(pThis);
+    return pThis;
+}
+
+// @0x14111e770
+void* FUN_14111e770(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_14112faf0(pThis);
+    return pThis;
+}
+
+// @0x14111e800
+void* FUN_14111e800(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_14112fb20(pThis);
+    return pThis;
+}
+
+// @0x14111e850
+void* FUN_14111e850(void* pThis, void* pOther)
+{
+    *(void**)((char*)pThis + 8) = *(void**)((char*)pOther + 8);
+    FUN_140dd7940(pThis);
+    return pThis;
+}
+
+// @0x14111e890
+void* FUN_14111e890(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_140dd7940(pThis);
+    return pThis;
+}
+
+// @0x14111e900
+void* FUN_14111e900(void* pThis, void* pOther)
+{
+    *(void**)((char*)pThis + 8) = *(void**)((char*)pOther + 8);
+    FUN_140ba1c80(pThis);
+    return pThis;
+}
+
+// @0x14111e960
+void* FUN_14111e960(void* pThis, void* pOther)
+{
+    *(void**)((char*)pThis + 8) = *(void**)((char*)pOther + 8);
+    FUN_14112fb50(pThis);
+    return pThis;
+}
+
+// @0x14111e9a0
+void* FUN_14111e9a0(void* pThis, int nUnused)
+{
+    *(void**)((char*)pThis + 8) = 0;
+    return pThis;
+}
+
+// @0x14111e9c0
+void* FUN_14111e9c0(void* pThis, void* pOther)
+{
+    *(void**)((char*)pThis + 8) = *(void**)((char*)pOther + 8);
+    FUN_14112fb80(pThis);
+    return pThis;
+}
+
+// @0x14111ea00
+void* FUN_14111ea00(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_14112fb80(pThis);
+    return pThis;
+}
+
+// @0x14111ea50
+void* FUN_14111ea50(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_140fac7c0(pThis);
+    return pThis;
+}
+
+// @0x14111eaa0
+void* FUN_14111eaa0(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_140fac7f0(pThis);
+    return pThis;
+}
+
+// @0x14111eaf0
+void* FUN_14111eaf0(void* pThis, void* pRaw)
+{
+    *(void**)((char*)pThis + 8) = pRaw;
+    FUN_14112fbb0(pThis);
+    return pThis;
+}
+
+// @0x14111eb20
+void* FUN_14111eb20(void* pThis)
+{
+    *(void**)((char*)pThis + 8) = 0;
+    return pThis;
+}
+
+// @0x14111eb40
+void* FUN_14111eb40(void* pThis)
+{
+    *(void**)pThis = (void*)&DAT_142eb3950;
+    if (pThis != 0)
+        DAT_143ab3908 = (char*)pThis - 0x18;
+    else
+        DAT_143ab3908 = 0;
+    return pThis;
 }
