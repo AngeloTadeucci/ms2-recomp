@@ -232,6 +232,7 @@ public:
     void FUN_14152b800(__int64 nItemUid);                    // request 0x78/1 for an inventory item
     void FUN_14152b8d0(__int64 nItemUid);                    // summon with an inventory item
     void FUN_14152aa90(MS2Ptr<CItem> spItem, int bConfirmed); // summon the pet of an item
+    void FUN_14152ba80(MS2Ptr<CItem> spItem);               // use a mount item
     int FUN_141527b50(PCBase* pOther);                       // nothing blocks the flat line to pOther
     unsigned short FUN_141528b80(int nSkillId);             // the learned level of nSkillId (1 when not learned)
     int FUN_14152e970(int nId);                             // the free skill points of nId

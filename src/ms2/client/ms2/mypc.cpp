@@ -43,6 +43,7 @@
 // MS2-PIN: ?RemoveAtPos@?$CAtlMap@IGV?$CElementTraits@I@ATL@@V?$CElementTraits@G@2@@ATL@@QEAAXPEAU__POSITION@@@Z 0x141535f60
 // MS2-PIN: ??C?$MS2Ptr@VUnk_MyPCPortalLock@@@@QEBAPEAVUnk_MyPCPortalLock@@XZ 0x141533250
 // MS2-PIN: ??C?$MS2Ptr@VRideOffActionHomeConvenient@@@@QEBAPEAVRideOffActionHomeConvenient@@XZ 0x1415331b0
+// MS2-PIN: ??0Unk_MyPCRideAlongReq@@QEAA@XZ 0x141532820
 // MS2-PIN: ??0?$MS2Ptr@VRideOffActionSummonPetOn@@@@QEAA@PEAVRideOffActionSummonPetOn@@@Z 0x141532270
 // MS2-PIN: ??0?$MS2Ptr@VRideOffActionSummonPetTransfer@@@@QEAA@PEAVRideOffActionSummonPetTransfer@@@Z 0x1415322a0
 // MS2-PIN: ??1?$MS2Ptr@VRideOffActionSummonPetOn@@@@QEAA@XZ 0x141532a50
@@ -244,7 +245,7 @@ Unk_MyPCFieldRef FUN_140a55460(int nMapId);
 
 // The world service (FUN_1403ed2d0): the current world id.
 class Unk_RideeFieldObj : public CPtred {};                  // a named field object (Ridee view)
-class Unk_MyPCWorld { public: NiPoint3 FUN_141bd37e0(); int FUN_141bdb660(int nKind); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
+class Unk_MyPCWorld { public: bool FUN_141bcb210(); NiPoint3 FUN_141bd37e0(); int FUN_141bdb660(int nKind); MS2Ptr<Unk_RideeFieldObj> FUN_141bc4e70(CString strName); int FUN_141bdb5a0(int nObserveMode); PCBase* FUN_141bd1200(int nObjectId); PCBase* FUN_141bd2170(int nType, float fRange, int bFrontOnly, int bBonus); int FUN_141bd3060(); PCBase* FUN_141bd1320(int nObjectId); void FUN_141bca240(); PCBase* FUN_141bd0cc0(); efd::IBase* FUN_141bd1530(__int64 nId);
     void FUN_141bd1750(ATL::CAtlList<efd::SmartPointer<GameObject> >& aOut); Unk_MyPCFieldRef FUN_141bd30a0();
     egf::Entity* FUN_141bcfd30(unsigned nModelId, Unk_StreamPoint kPos, float fRange, int bNearest, int nSkip);
     void FUN_141bd1ed0(std::list<class Unk_MyPCDropItem*>* pOut, std::list<class Unk_MyPCDropItem*>* pOutMeso, int bSkipOwned, int a, int b);
@@ -4115,6 +4116,105 @@ void MyPC::FUN_14152dbc0()
     }
 }
 MS2_REPLACE_METHOD(0x14152dbc0, MyPC, FUN_14152dbc0, 779, 0x4A93BF97);
+
+// The ride-along request (packet 0x40 2): the ridee of the item and the item.
+struct Unk_MyPCRideAlongReq
+{
+    // @0x141532820
+    Unk_MyPCRideAlongReq() : m_nRideeId(0), m_nItemUid(0) {}
+    void FUN_1401fcc90(COutputStream& stream);  // encode
+    int m_nRideeId;
+    __int64 m_nItemUid;
+};
+int FUN_141658f30(PCBase* pPC);                             // the item's level condition holds
+int FUN_141662de0(PCBase* pPC);                             // vip
+bool FUN_1406343b0(MS2Ptr<CItem> spItem, const __int64* pCharacterId);
+
+// @0x14152ba80
+// Use a mount item: get off when it is the ride already, mount it (state 0x26) or, riding a multi-seat ridee,
+// ask to switch with packet 0x40 2; otherwise the notice of the failed condition.
+void MyPC::FUN_14152ba80(MS2Ptr<CItem> spItem)
+{
+    if (m_spB00.get() != 0 && m_spB00->m_nType != 1)
+    {
+        FUN_141275260(0x655, 1, 0);
+        return;
+    }
+    int nRideeId = spItem->FUN_140527840()->FUN_14053dd80();
+    Unk_MyPCRideePtr spRidee = FUN_1407844b0(nRideeId);
+    if (spRidee.FUN_1409f78a0() != 0)
+    {
+        if (FUN_141676410() == nRideeId)
+            FUN_14152c280(0);
+        else if (FUN_1416764d0() == 0)
+        {
+            int bOk = 1;
+            if (FUN_141662eb0(spItem.get()) == 0)
+                bOk = 0;
+            if (FUN_1415271e0(this, (Unk_MyPCSkillUse*)spRidee.FUN_1409f78a0()) == 0)
+                bOk = 0;
+            if (FUN_141527160(0x26) == 0)
+                bOk = 0;
+            if (!FUN_1403ed2d0()->FUN_141bcb210())
+                bOk = 0;
+            if (bOk != 0)
+                vfunc_59(0x26, new StateSummonData(reinterpret_cast<void*>(spItem->FUN_140526a50()), 0), 0, 0);
+            else if (spItem->FUN_140528930())
+                FUN_141275260(0xe1, 1, 0);
+            else if (spItem->FUN_140525ca0() != 0 && ::FUN_141658f30(this) == 0)
+                FUN_141275260(0xe2, 1, 0);
+            else if (spItem->FUN_140525db0() != 0 && ::FUN_141662de0(this) == 0)
+                FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_vip"), 1, 0);
+            else if (spItem->FUN_140525e00() != 0 && !vfunc_146())
+                FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_wedding"), 1, 0);
+            else
+            {
+                __int64 nCharId = FUN_141656a80();
+                if (!FUN_1406343b0(spItem, &nCharId))
+                    FUN_141275260(0xfe, 1, 0);
+                else
+                    FUN_141275260(0x655, 1, 0);
+            }
+        }
+        else
+        {
+            efd::SmartPointer<Ridee> spMount(FUN_1416764a0());
+            if (spMount)
+            {
+                int bOk = 1;
+                if (FUN_141662eb0(spItem.get()) == 0)
+                    bOk = 0;
+                if (spMount->FUN_14166c930() != 1)
+                    bOk = 0;
+                if (FUN_1415271e0(spMount, (Unk_MyPCSkillUse*)spRidee.FUN_1409f78a0()) == 0)
+                    bOk = 0;
+                if (!FUN_1403ed2d0()->FUN_141bcb210())
+                    bOk = 0;
+                if (bOk != 0)
+                {
+                    Unk_MyPCRideAlongReq kReq;
+                    kReq.m_nRideeId = nRideeId;
+                    kReq.m_nItemUid = spItem->FUN_140526a50();
+                    COutPacket packet(0x40, 0);
+                    packet.COutPacket::vfunc_o10_1(2);
+                    kReq.FUN_1401fcc90(packet);
+                    FUN_140710590(packet);
+                }
+                else if (spItem->FUN_140528930())
+                    FUN_141275260(0xe1, 1, 0);
+                else if (spItem->FUN_140525ca0() != 0 && ::FUN_141658f30(this) == 0)
+                    FUN_141275260(0xe2, 1, 0);
+                else if (spItem->FUN_140525db0() != 0 && ::FUN_141662de0(this) == 0)
+                    FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_vip"), 1, 0);
+                else if (spItem->FUN_140525e00() != 0 && !vfunc_146())
+                    FUN_1412751f0(FUN_14028b8e0(L"s_item_err_puton_wedding"), 1, 0);
+                else
+                    FUN_141275260(0x655, 1, 0);
+            }
+        }
+    }
+}
+MS2_REPLACE_METHOD(0x14152BA80, MyPC, FUN_14152ba80, 2028, 0x1786F585);
 
 // @0x141530db0
 // Auto loot: flag the drop items the auto loot options take, pick up the mesos, and the pet pickup buff.
