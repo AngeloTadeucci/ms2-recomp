@@ -148,11 +148,14 @@ class Unit:
         self.rel = os.path.relpath(path, GAME).replace("\\", "/")
         self.name = None
         self.ranges = []
+        self.guess = bool(os.environ.get("MS2_GUESS_LOOKALIKES"))   # `// MS2-GUESS-LOOKALIKES`: pair leftover identical groups (functional)
         self.pins = {}       # `// MS2-PIN: <mangled> 0x<va>`: obj symbol -> exe VA (must lie in a MS2-RANGE)
         for line in open(path, encoding="latin1"):
             m = re.match(r"\s*//\s*MS2-PIN:\s*(\S+)\s+0x([0-9a-fA-F]+)", line)
             if m:
                 self.pins[m.group(1)] = int(m.group(2), 16)
+            if re.match(r"\s*//\s*MS2-GUESS-LOOKALIKES\b", line):
+                self.guess = True
             m = re.match(r"\s*//\s*MS2-UNIT:\s*(\S+)", line)
             if m:
                 self.name = m.group(1)
@@ -829,6 +832,77 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
                 break
             for n in drop:
                 del folds[n]
+    # 2c. look-alike GUESS (opt-in: `// MS2-GUESS-LOOKALIKES` in the unit, or MS2_GUESS_LOOKALIKES=1): byte-identical
+    # groups that nothing above could pair (no reloc evidence, M != N, or callee symbols the global table disagrees
+    # about). The bytes AND unwind data are identical and every relocation target is consistent (a pair known from
+    # the unit, a name of the same group set, or an outside symbol the table does not contradict), so the exe body
+    # does what the source says; only WHICH name owns WHICH copy is arbitrary. Such a pair is FUNCTIONAL, never
+    # exact (ok=False, how=auto-guess), is not part of `known` (no caller's check changes) and harvests nothing.
+    guessed = {}
+    if u.guess:
+        taken_g = set(known.values())
+        pool = {n: [v for v in h if v not in taken_g] for n, h in hits0.items() if n not in known and n not in folds}
+        pool = {n: h for n, h in pool.items() if h}
+        saved = (dict(bm.SYMBOLS), dict(bm.HARVEST))
+        # pairs that were themselves chosen by name order carry no evidence about their callers: set them aside
+        # (a tag or pin on an identical look-alike is no better): all pairs are checked below with same_code instead
+        weak = {t: known.pop(t) for t in list(known) if how.get(t) in ("auto-order", "auto-leaf", "auto", "auto-ref", "tag", "pin")}
+        bm.SYMBOLS.clear()
+        bm.HARVEST.clear()
+        snap_conf = len(bm.CONFLICTS)
+        tg_g = {}
+        try:
+            for n, h in pool.items():
+                for v in h:
+                    bm.STRICT_SYMBOLS = False
+                    buf_g = io.StringIO()
+                    with contextlib.redirect_stdout(buf_g):
+                        ok_g = bm.match_one(obj, n, v, exe, verbose=False, check_unwind=True, quiet=True)
+                    if ok_g:
+                        tg_g[(n, v)] = dict(bm.LAST_TARGETS)
+        finally:
+            bm.SYMBOLS.update(saved[0])
+            bm.HARVEST.clear()
+            bm.HARVEST.update(saved[1])
+            del bm.CONFLICTS[snap_conf:]
+            del bm.MULTICOPY[:]
+            known.update(weak)
+        outside = saved[0]
+        cands_g = {}
+        while True:
+            cands_g = {n: [v for v in h if (n, v) in tg_g] for n, h in pool.items()}
+            changed = False
+            for n in list(cands_g):
+                keep = []
+                for v in cands_g[n]:
+                    good = True
+                    for t, tv in tg_g[(n, v)].items():
+                        if t in weak:
+                            good = good and (weak[t] == tv or bm.same_code(exe, weak[t], tv))
+                        elif t in pool:
+                            good = good and any(x == tv or bm.same_code(exe, x, tv) for x in cands_g.get(t, pool[t]))
+                        else:
+                            w = outside.get(t) or bm.HARVEST.get(t)
+                            good = good and (w is None or w == tv or bm.same_code(exe, w, tv))
+                    if good:
+                        keep.append(v)
+                if len(keep) != len(pool[n]) and keep != cands_g[n]:
+                    changed = True
+                cands_g[n] = keep
+            if not changed:
+                break
+            pool = {n: cands_g[n] for n in cands_g if cands_g[n]}
+            tg_g = {k: t for k, t in tg_g.items() if k[0] in pool and k[1] in pool[k[0]]}
+        groups_g = {}
+        for n, h in cands_g.items():
+            if h:
+                pref = [v for v in h if v in implied.get(n, ())] or h
+                groups_g.setdefault(tuple(sorted(pref)), []).append(n)
+        for vas, names in groups_g.items():
+            names = sorted(names, key=order_key)
+            for i, n in enumerate(names):
+                if i < len(vas) or len(names) > len(vas):
+                    guessed[n] = vas[i % len(vas)]
     # 3. match everything paired (harvests the symbol map)
     funclets = {}
     # the symbol map is harvested from FULLY matched functions only (bytes + unwind/EH): a function that differs
@@ -853,6 +927,10 @@ def process_unit(u, exe, starts, finfo, bases, vft, verbose):
             bm.HARVEST.update(snap)
         if ok:                  # a fold that does not match is no evidence: the function stays a stub
             res["pairs"][name] = {"va": va, "how": "auto-fold", "ok": ok, "report": ""}
+    for name, va in sorted(guessed.items(), key=lambda kv: kv[1]):
+        if name not in res["pairs"]:
+            res["pairs"][name] = {"va": va, "how": "auto-guess", "ok": False,
+                                  "report": f"look-alike guess: byte-identical to 0x{va:x}, owner of the copy chosen by name order"}
     # unwind funclets of matched functions (?dtor$N@...: not in the unit ranges, not counted) are matched only to
     # harvest their callees: a destructor reached only on the exception path is otherwise missing from the symbol map
     for name, va in sorted(funclets.items(), key=lambda kv: kv[1]):
@@ -960,7 +1038,7 @@ def main():
         if u.rel in failed or not os.path.exists(u.obj):
             cache[u.rel] = {"key": None, "failed": True, "res": None}
             continue
-        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy4" + ("f9" if not os.environ.get("MS2_NO_ICF_FOLD") else "") + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
+        key = [os.path.getmtime(u.obj), os.path.getsize(u.obj), u.ranges, "multicopy4" + ("g" if u.guess else "") + ("f9" if not os.environ.get("MS2_NO_ICF_FOLD") else "") + ("m" if merge_mode else "") + ("x" if os.environ.get("MS2_NO_MULTICOPY") else "")]
         c = cache.get(u.rel)
         if not a.force and c and c.get("key") == json.loads(json.dumps(key)) and not a.verbose:
             continue
