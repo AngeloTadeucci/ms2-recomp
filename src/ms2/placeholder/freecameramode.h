@@ -14,8 +14,15 @@ class CFreeCameraMode : public CCameraMode
 {
 public:
     CFreeCameraMode(Unk_CameraOwner* pOwner, MS2Ptr<CCameraMode> pPrev);   // 0x1412221e0
-    virtual int vfunc_1();                                              // 0x141222dd0
-    virtual bool vfunc_2();                                             // 0x141222de0
+    virtual ~CFreeCameraMode();                                         // 0x141222290
+    // @0x141222dd0
+    virtual int vfunc_1() { return 1; }
+    // @0x141222de0
+    virtual bool vfunc_2() { return true; }
+    virtual void vfunc_6(int n);                                        // 0x141222d20
+    virtual void vfunc_7();                                             // 0x141222d60
+    virtual void vfunc_8(double fTime);                                 // 0x1412222c0
+    virtual void vfunc_9();                                             // 0x141222b80
 
     Unk_StreamPoint m_78;                                               // +0x78
     int m_pad_84;
@@ -27,8 +34,13 @@ class CEditCameraMode : public CFreeCameraMode
 {
 public:
     CEditCameraMode(Unk_CameraOwner* pOwner, MS2Ptr<CCameraMode> pPrev);   // 0x141198830
-    virtual int vfunc_1();                                              // 0x141199130
-    virtual bool vfunc_2();                                             // 0x141199140
+    virtual ~CEditCameraMode();                                         // 0x1411988b0
+    // @0x141199130
+    virtual int vfunc_1() { return 8; }
+    // @0x141199140
+    virtual bool vfunc_2() { return false; }
+    virtual void vfunc_8(double fTime);                                 // 0x1411988e0
+    virtual void vfunc_9();                                             // 0x141198f00
 };
 MS2_CHECK_SIZE(CEditCameraMode, 0x88);
 
