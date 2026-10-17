@@ -4,6 +4,7 @@
 #pragma once
 
 #include <afx.h>
+#include <atlcoll.h>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
 
@@ -17,7 +18,11 @@ public:
     void FUN_14092c400(const CStringW& strValues);  // parses "key=value" text
     CString FUN_1409e8560(const CStringW& strKey, const CString& strDefault);     // value as an ansi string (scenestategame.cpp)
     CStringW FUN_14042cad0(const CStringW& strKey, const CStringW& strDefault);   // value as a wide string
+    // The value as an int, nDefault when the key is missing. An inline in the exe (COMDAT copy 0x1403d8110 in
+    // gameevent.cpp, which defines it).
+    int GetInt(const CStringW& strKey, const int& nDefault);
+    typedef ATL::CAtlMap<CStringW, CStringW, ATL::CStringElementTraits<CStringW> > Values;
 private:
-    unsigned char m_unknown18[0x48];    // +0x18
+    unsigned char m_unknown18[0x48];    // +0x18 the parsed key/values (a Values, kept as raw storage here)
 };
 MS2_CHECK_SIZE(CXmlData, 0x60);

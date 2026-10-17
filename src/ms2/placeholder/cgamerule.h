@@ -30,6 +30,7 @@ class GalleryContext;
 class SnowmanContext;
 class RpsContext;
 class ReactorContext;
+class TreeWateringContext;
 class QuestAdditionalRewardContext;
 enum Unk_SaleHousingKey : int;
 
@@ -132,6 +133,9 @@ public:
     void FUN_14047cfe0(MS2Ptr<SnowmanContext> spContext);                        // GameEventSnowman
     void FUN_14047d0d0(MS2Ptr<RpsContext> spContext);                            // GameEventRps
     void FUN_14047d1c0(MS2Ptr<ReactorContext> spContext);                        // GameEventReactor
+    void FUN_14047d2b0(MS2Ptr<TreeWateringContext> spContext);                   // GameEventTreeWatering
+    void FUN_140476930(int nEventId, int nRate);                                 // adventure level bonus exp rate
+    void FUN_1404769a0(int nEventId);                                            // ... removed
     void FUN_14047e230(unsigned __int64 nId);                                    // ignore the construction lock of one id
     void FUN_14047e300();                                                        // ... clear them
 private:

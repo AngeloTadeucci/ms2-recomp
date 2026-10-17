@@ -30,6 +30,8 @@ class TimeRunEventContext;
 class QuestAdditionalRewardContext;
 class ItemBoxEventContext;
 class SnowmanContext;
+class TreeWateringContext;
+class TreeWatering_TreeStep;
 class RpsContext;
 class ReactorContext;
 enum Unk_SaleHousingKey : int {};   // GameEventSaleHousing CRBMultiMap key (const& arg, signed compare 0x1403ec530)
@@ -100,7 +102,7 @@ public:
     virtual void vfunc_5() = 0;                 // event start
     virtual void vfunc_6() = 0;                 // event end
     virtual void vfunc_7(void* other);          // 0x1402e2220
-    virtual void vfunc_8();                     // 0x1402e5510 (empty)
+    virtual int vfunc_8();                      // 0x1402e5510 (empty: returns no value; GameEventTreeWatering returns int)
     virtual bool vfunc_9(void* other);          // 0x1402e2580
     void FUN_1402e3480(int kind);               // sets the flag `kind` in the set at +0x8c
     int FUN_1402e1d00();                        // the event id (m_id)
@@ -138,13 +140,17 @@ MS2_CHECK_OFFSET(GameEvent, m_78, 0x78);
 // GameEventBurningLevelup::vfunc_2 XML loader 0x1403d1ad0).
 class BurningLevelupContext : public CPtred {
 public:
-    BurningLevelupContext();                        // 0x1403e39b0 (gameevent.cpp)
+    BurningLevelupContext()                         // 0x1403e39b0
+        : m_eventId(0), m_endTime(0), m_beginLevel(0), m_endLevel(0), m_burningBonus(0), m_additionalEffectId(0),
+          m_equipNametagSymbolId(0), m_tutorialEndFieldId(0), m_8c(0), m_spJumpingItem(0)
+    {
+    }
     void Write(COutputStream& out);                 // 0x140404440
     void Read(CInPacket& packet);                   // 0x140404920
     bool IsBurningLevel(unsigned short level);      // 0x140405130
     int GetBonusLevel(unsigned short level);        // 0x140405190
     bool HasTarget(int id);                         // 0x140405230
-    int m_eventId;                                  // +0x18
+    unsigned m_eventId;                             // +0x18 (unsigned: the jumping item log formats it as one)
     int m_pad_1c;
     __int64 m_endTime;                              // +0x20
     std::set<int> m_28;                             // +0x28 the comma list of the event's m_78
@@ -157,11 +163,11 @@ public:
     CStringW m_setCharacterPopupBottomStringKey;    // +0x50 "setCharacterPopupBottomStringKey"
     CStringW m_descPopupStringKey;                  // +0x58 "descPopupStringKey"
     CStringW m_rewardUiTitleStringKey;              // +0x60 "rewardUiTitleStringKey"
-    short m_equipNametagSymbolId;                   // +0x68 "equipNametagSymbolID"
+    unsigned short m_equipNametagSymbolId;          // +0x68 "equipNametagSymbolID"
     short m_pad_6a[3];
     std::vector<ItemEntity> m_rewardItems;          // +0x70 the items of the m_70 xml
     int m_tutorialEndFieldId;                       // +0x88 jumpingOption "tutorialEndFieldId"
-    unsigned short m_8c;                            // +0x8c set from the jumping item
+    unsigned short m_8c;                            // +0x8c the jumping item's "targetLevel" function parameter
     short m_pad_8e;
     MS2Ptr<ItemEntity> m_spJumpingItem;             // +0x90 the jumpingOption item (a LevelPotion)
     CStringW m_jumpingItemDescPopupStringKey;       // +0xa0 "jumpingItemDescPopupStringKey"
@@ -246,8 +252,9 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403d1890
     virtual void vfunc_5();                     // 0x1403d18f0
     virtual void vfunc_6();                     // 0x1403d1930
-private:
-    char m_pad_d0[0x8];
+    GameEventAdventureLevelBonusExpRate();
+    int m_d0;                                   // m_68: the bonus exp rate
+    int m_pad_d4;
 };  // vftable 0x142d40ef8, ??_G 0x1403e9b10, dtor 0x1403e5c40
 MS2_CHECK_SIZE(GameEventAdventureLevelBonusExpRate, 0xd8);
 class GameEventArcadeOpen : public GameEvent {
@@ -321,8 +328,8 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403d2800
     virtual void vfunc_5();                     // 0x1403d2850
     virtual void vfunc_6();                     // 0x1403d28c0
-private:
-    char m_pad_d0[0x10];
+    GameEventBurningLevelup();
+    MS2Ptr<BurningLevelupContext> m_d0;
 };  // vftable 0x142d40f50, ??_G 0x1403e9c90, dtor 0x1403e5d40
 MS2_CHECK_SIZE(GameEventBurningLevelup, 0xe0);
 class GameEventChatFiltering : public GameEvent {
@@ -1010,6 +1017,7 @@ public:
     virtual void vfunc_2();                     // 0x1403d16a0
     virtual void vfunc_5();                     // 0x1403d16b0
     virtual void vfunc_6();                     // 0x1403d16e0
+    GameEventPublicTest();
 };  // vftable 0x142d40ea0, ??_G 0x1403eaa10, dtor 0x1403e6660
 MS2_CHECK_SIZE(GameEventPublicTest, 0xd0);
 class GameEventQuestAdditionalReward : public GameEvent {
@@ -1257,6 +1265,7 @@ public:
     virtual void vfunc_2();                     // 0x1403d1350
     virtual void vfunc_5();                     // 0x1403d1360
     virtual void vfunc_6();                     // 0x1403d13a0
+    GameEventShutdownBillboard();
 };  // vftable 0x142d40df0, ??_G 0x1403eaf50, dtor 0x1403e6a00
 MS2_CHECK_SIZE(GameEventShutdownBillboard, 0xd0);
 class GameEventShutdownDummy : public GameEvent {
@@ -1315,6 +1324,7 @@ public:
     virtual void vfunc_2();                     // 0x1403d14f0
     virtual void vfunc_5();                     // 0x1403d1500
     virtual void vfunc_6();                     // 0x1403d1540
+    GameEventShutdownUGCBanner();
 };  // vftable 0x142d40e48, ??_G 0x1403eb090, dtor 0x1403e6ad0
 MS2_CHECK_SIZE(GameEventShutdownUGCBanner, 0xd0);
 class GameEventShutdownUGCUpload : public GameEvent {
@@ -1423,9 +1433,13 @@ public:
     virtual void vfunc_4(Unk_GEIn* in);         // 0x1403d0810
     virtual void vfunc_5();                     // 0x1403d06a0
     virtual void vfunc_6();                     // 0x1403d0720
-    virtual void vfunc_8();                     // 0x1403d08c0
-private:
-    char m_pad_d0[0x28];
+    virtual int vfunc_8();                      // 0x1403d08c0 no context loaded
+    GameEventTreeWatering();
+    bool ReadTreeWateringData(MS2Ptr<TreeWateringContext> pContext);   // 0x1403d08f0
+    MS2Ptr<TreeWateringContext> m_d0;
+    MS2Ptr<TreeWatering_TreeStep> m_e0;
+    bool m_f0;
+    char m_pad_f1[7];
 };  // vftable 0x142d40d98, ??_G 0x1403eb2d0, dtor 0x1403e6c40
 MS2_CHECK_SIZE(GameEventTreeWatering, 0xf8);
 class GameEventUGCMapContractSale : public GameEvent {
@@ -1735,14 +1749,14 @@ MS2_CHECK_SIZE(StampEventContext, 0xa8);
 // (0x1403e4990 / 0x1403e49f0 / 0x1403e4a30) are in gameevent.cpp.
 class TreeWatering_EmotionDay : public CPtred {
 public:
-    TreeWatering_EmotionDay();
+    TreeWatering_EmotionDay() {}  // 0x1403e4990
     CMsTime m_beginTime;            // +0x18
     CMsTime m_endTime;              // +0x28
 };  // vftable 0x142d415d0, ??_G 0x1403eb990, dtor 0x1403e71f0
 MS2_CHECK_SIZE(TreeWatering_EmotionDay, 0x38);
 class TreeWatering_TreeResource : public CPtred {
 public:
-    TreeWatering_TreeResource();
+    TreeWatering_TreeResource() {}  // 0x1403e49f0
     int m_id;                       // +0x18 key in TreeWateringContext::m_resources
     int m_pad_1c;
     CString m_20;                   // +0x20
@@ -1750,7 +1764,7 @@ public:
 MS2_CHECK_SIZE(TreeWatering_TreeResource, 0x28);
 class TreeWatering_TreeStep : public CPtred {
 public:
-    TreeWatering_TreeStep();
+    TreeWatering_TreeStep() {}  // 0x1403e4a30
     int m_step;                     // +0x18 key in TreeWateringContext::m_steps
     int m_pad_1c;
     CMsTime m_beginTime;            // +0x20
@@ -1762,7 +1776,7 @@ MS2_CHECK_SIZE(TreeWatering_TreeStep, 0x40);
 // by gameeventcontext.cpp (stream Write 0x140402770 / Read 0x140402d20). The ctor is in gameevent.cpp.
 class TreeWateringContext : public CPtred {
 public:
-    explicit TreeWateringContext(int eventId);
+    explicit TreeWateringContext(int eventId) : m_nEventId(eventId) {}  // 0x1403e4870
     // Not exe code: lets the COMDAT tail unit emit the vftable (and its ??_G) without the gameevent.cpp ctor.
     explicit TreeWateringContext(Unk_VftableEmitTag) {}
     void Write(COutputStream& out);                 // 0x140402770

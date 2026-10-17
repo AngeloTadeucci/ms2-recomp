@@ -7,12 +7,11 @@
 // MS2-RANGE: 0x1400b6380-0x1400b8480 .text$di
 // MS2-RANGE: 0x1403bb510-0x1403e4a90 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@HPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1403d6c90 ; prop
 // MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@$$QEA_N@Z 0x1403d6e70 ; prop
-// MS2-PIN: ??$?0AEBU?$less@K@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@K@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@KPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@K@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@K@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1403d7100 ; unique
 // MS2-PIN: ??$?0V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@std@@QEAA@$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@$$QEA_N@Z 0x1403d71f0 ; prop
 // MS2-PIN: ??$?0V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@IPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@$$QEAV?$allocator@U?$_Tree_node@IPEAX@std@@@1@@Z 0x1403d7290 ; unique
-// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBHH@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBHH@1@@Z 0x1403d8530 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBHH@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBHH@1@@Z 0x1403d8530 ; prop
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBKH@std@@@?$_Tree@V?$_Tmap_traits@KHU?$less@K@std@@V?$allocator@U?$pair@$$CBKH@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBKH@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBKH@1@@Z 0x1403d8550 ; unique
 // MS2-PIN: ??$_Buy_if_not_node@AEBK@?$_Tree@V?$_Tset_traits@KU?$less@K@std@@V?$allocator@K@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@KPEAX@1@U_Not_a_node_tag@1@AEBK@Z 0x1403d8600 ; prop
 // MS2-PIN: ??$_Buynode@AEAU?$pair@$$CBHH@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAU?$pair@$$CBHH@1@@Z 0x1403d86c0 ; unique
 // MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBH@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBH@1@$$QEAV?$tuple@$$V@1@@Z 0x1403d87e0 ; unique
@@ -20,8 +19,6 @@
 // MS2-PIN: ??$_Copy@U_Copy_tag@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXAEBV01@U_Copy_tag@01@@Z 0x1403d8b30 ; prop
 // MS2-PIN: ??$_Copy@U_Copy_tag@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAAXAEBV01@U_Copy_tag@01@@Z 0x1403d8c50 ; unique
 // MS2-PIN: ??$_Copy_nodes@U_Copy_tag@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEAU21@0U_Copy_tag@01@@Z 0x1403d8d70 ; unique
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@KPEAX@std@@@std@@@?$_Tree_node@KPEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@KPEAX@std@@@1@PEAU01@@Z 0x1403d9cc0 ; prop
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@IH@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@1@PEAU01@@Z 0x1403d9de0 ; prop
 // MS2-PIN: ??$_Insert_at@AEAHPEAU?$_Tree_node@HPEAX@std@@@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@1@_NPEAU?$_Tree_node@HPEAX@1@AEAH1@Z 0x1403d9f20 ; prop
 // MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBHH@std@@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAU?$pair@$$CBHH@1@1@Z 0x1403da5e0 ; prop
 // MS2-PIN: ??$_Insert_at@AEBKU_Not_a_node_tag@std@@@?$_Tree@V?$_Tset_traits@KU?$less@K@std@@V?$allocator@K@2@$0A@@std@@@std@@IEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@K@std@@@std@@@1@_NPEAU?$_Tree_node@KPEAX@1@AEBKU_Not_a_node_tag@1@@Z 0x1403db6c0 ; prop
@@ -33,8 +30,7 @@
 // MS2-PIN: ??$_Insert_nohint@U?$pair@IH@std@@U_Not_a_node_tag@2@@?$_Tree@V?$_Tset_traits@U?$pair@IH@std@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@IH@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@_N@1@_N$$QEAU?$pair@IH@1@U_Not_a_node_tag@1@@Z 0x1403df740 ; unique
 // MS2-PIN: ??$_Try_emplace@AEBH$$V@?$map@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@_N@1@AEBH@Z 0x1403e00d0 ; unique
 // MS2-PIN: ??$_Try_emplace@AEBK$$V@?$map@KHU?$less@K@std@@V?$allocator@U?$pair@$$CBKH@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@@std@@_N@1@AEBK@Z 0x1403e0220 ; unique
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBKH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBKH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e06a0 ; prop
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@IH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@IH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e06b0 ; prop
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e0690 ; prop
 // MS2-PIN: ??$addressof@U?$pair@$$CBHH@std@@@std@@YAPEAU?$pair@$$CBHH@0@AEAU10@@Z 0x1403e06c0 ; prop
 // MS2-PIN: ??$addressof@U?$pair@IH@std@@@std@@YAPEAU?$pair@IH@0@AEAU10@@Z 0x1403e06d0 ; prop
 // MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@0@AEAV10@@Z 0x1403e06e0 ; prop
@@ -42,25 +38,20 @@
 // MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@K@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@K@std@@@0@AEAV10@@Z 0x1403e0700 ; prop
 // MS2-PIN: ??$addressof@K@std@@YAPEAKAEAK@Z 0x1403e0720 ; prop
 // MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEAPEAU31@@Z 0x1403e07b0 ; prop
-// MS2-PIN: ??$emplace_back@I@?$vector@IV?$allocator@I@std@@@std@@QEAAX$$QEAI@Z 0x1403e0df0 ; unique
 // MS2-PIN: ??$emplace_hint@AEBH@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEAA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@@1@V21@AEBH@Z 0x1403e0ed0 ; unique
 // MS2-PIN: ??$forward@AEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x1403e1080 ; prop
 // MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@0@AEAV10@@Z 0x1403e1110 ; prop
+// MS2-PIN: ??$forward@AEBU?$less@H@std@@@std@@YAAEBU?$less@H@0@AEBU10@@Z 0x1403e1130 ; prop
 // MS2-PIN: ??$insert@$0A@$0A@@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@_N@1@$$QEAI@Z 0x1403e12b0 ; unique
 // MS2-PIN: ??$move@AEAI@std@@YA$$QEAIAEAI@Z 0x1403e13c0 ; prop
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3230 ; prop
 // MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@XZ 0x1403e3270 ; prop
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@IH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@IH@std@@@std@@@1@@Z 0x1403e32b0 ; prop
+// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@K@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@KPEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@K@std@@@1@@Z 0x1403e32f0 ; prop
 // MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3330 ; prop
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x1403e3370 ; prop
 // MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1403e3390 ; prop
 // MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x1403e33d0 ; prop
 // MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@XZ 0x1403e33f0 ; unique
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@HPEAX@std@@@std@@QEAA@XZ 0x1403e37c0 ; prop
-// MS2-PIN: ??0CNode@?$CAtlMap@IV?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@UQuestContext@TimeRunEventContext@@@@@3@@ATL@@QEAA@II@Z 0x1403e3ba0 ; prop
-// MS2-PIN: ??0CNode@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@QEAA@II@Z 0x1403e3be0 ; prop
-// MS2-PIN: ??0CPair@?$CAtlMap@IV?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VDungeonExtraRewardCountCtx@@@@@3@@ATL@@IEAA@I@Z 0x1403e3d80 ; prop
-// MS2-PIN: ??F?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1403e40d0 ; prop
+// MS2-PIN: ??E?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKH@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1403e40d0 ; prop
 // MS2-PIN: ??0SAHotTimeEventContext@@QEAA@XZ 0x1403e4540 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ??__Es_sortNames7@@YAXXZ 0x1400b8360
@@ -81,6 +72,7 @@
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/xmlattr.h"
 #include "ms2/placeholder/cgamerule.h"
+#include "ms2/placeholder/citemdata.h"
 #include "ms2/placeholder/cgameeventvaluemanager.h"
 #include "ms2/placeholder/cshopeventmanager.h"
 #include "ms2/placeholder/clientconstants.h"
@@ -175,6 +167,19 @@ void FUN_140426380(Unk_GameEventLockedValue<0x140>* pValue, int nEventId, const 
 void FUN_1404266f0(Unk_GameEventLockedValue<0x140>* pValue, int nEventId, const CStringW& str);
 int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, int& rOut);   // int attribute (tinyxmlhelper.cpp)
 int FUN_1408731e0(Unk_140165cf0* pElem, const char* pszName, int& rOut);
+int FUN_140873600(Unk_140165cf0* pElem, const char* pszName, CMsTime& rOut);  // time attribute
+void FUN_1407d1c30(Unk_GameEventLockedValue<0x40>* pValue, int nEventId);       // shutdowneventvalue.cpp: add the id
+void FUN_1407d1ca0(Unk_GameEventLockedValue<0x40>* pValue, int nEventId);       // ... remove it
+void FUN_1407d1d90(Unk_GameEventLockedValue<0x40>* pValue, int nEventId);
+void FUN_1407d1e00(Unk_GameEventLockedValue<0x40>* pValue, int nEventId);
+void FUN_140428810(Unk_GameEventIntValue* pValue, int nValue);                    // gameeventvalue.cpp
+void FUN_1404283e0(Unk_GameEventLockedValue<0x40>* pValue, MS2Ptr<BurningLevelupContext> spContext);
+void FUN_1404284a0(Unk_GameEventLockedValue<0x40>* pValue, MS2Ptr<BurningLevelupContext> spContext);
+int FUN_1408731a0(Unk_140165cf0* pElem, const char* pszName, unsigned short& rOut);
+int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, unsigned& rOut);
+int FUN_1407181a0(const CStringW& str);
+MS2Ptr<CItemData> FUN_14053f870(int nItemId);
+CStringW FUN_1401bf530(Unk_140165cf0* pElem, const char* pszName, CStringW strDefault);  // string attribute or default
 int FUN_140873420(Unk_140165cf0* pElem, const char* pszName, CStringW& rOut);
 void FUN_140426ff0(Unk_GameEventLockedValue<0x38>* pValue, int nRate);   // the star shop value
 int FUN_1404005e0(const void* a, const void* b);   // qsort order of the rps rewards (gameeventcontext.cpp)
@@ -204,6 +209,7 @@ class Unk_CommonLog
 {
 public:
     void Log(unsigned __int64 a, unsigned __int64 b, int flags, const wchar_t* message);
+    void FUN_1406530d0(int level, int category, const wchar_t* format, const fmt::ArgList& args);   // CLogString
 };
 Unk_CommonLog* FUN_140166440();
 Unk_NpcEventTag FUN_14021bc30(const CStringA& name);    // commonenum.cpp
@@ -1425,7 +1431,7 @@ MS2_REPLACE_METHOD(0x1403BF690, GameEventEventFieldPopup, vfunc_5, 38, 0x672A21A
 void GameEventEventFieldPopup::vfunc_6() { FUN_1401c0d90()->FUN_1404795c0(0); }
 MS2_REPLACE_METHOD(0x1403BF6C0, GameEventEventFieldPopup, vfunc_6, 29, 0xB5DD45F9);
 
-// ---- GameEventSaleAutoFishing ----------------------------------------------------------------------------------
+// ---- GameEventSaleAutoFishing ---------------------------------------------------------------------------------------
 #ifndef MS2_HOOK_DLL
 static Unk_GEFactoryRegistry s_regSaleAutoFishing(L"GameEventSaleAutoFishing", FUN_1403bf6f0);
 #endif
@@ -1484,7 +1490,7 @@ void GameEventSaleAutoFishing::vfunc_6()
     FUN_1401c0d90()->FUN_140479920(L"");
 }
 MS2_REPLACE_METHOD(0x1403BFA10, GameEventSaleAutoFishing, vfunc_6, 100, 0x95274BB3);
-// ---- GameEventSaleAutoPlayInstrument ---------------------------------------------------------------------------
+// ---- GameEventSaleAutoPlayInstrument --------------------------------------------------------------------------------
 #ifndef MS2_HOOK_DLL
 static Unk_GEFactoryRegistry s_regSaleAutoPlayInstrument(L"GameEventSaleAutoPlayInstrument", FUN_1403bfa80);
 #endif
@@ -5460,3 +5466,483 @@ void GameEventCustomTriggerString::vfunc_4(Unk_GEIn* in)
     MS2_GE_IN(in) >> m_d0;
 }
 MS2_REPLACE_METHOD(0x1403D03A0, GameEventCustomTriggerString, vfunc_4, 62, 0xA06AFFB7);
+
+// ---- GameEventTreeWatering ------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regTreeWatering(L"GameEventTreeWatering", FUN_1403d03f0);
+#endif
+// @0x1403d03f0
+GameEvent* FUN_1403d03f0() { return new GameEventTreeWatering; }
+
+// @0x1403d0450
+CStringW GameEventTreeWatering::vfunc_1() { return CStringW(L"GameEventTreeWatering"); }
+MS2_REPLACE_METHOD(0x1403D0450, GameEventTreeWatering, vfunc_1, 61, 0x95D2CAA5);
+
+// @0x1403d04a0
+GameEventTreeWatering::GameEventTreeWatering()
+{
+    FUN_1402e3480(3);
+    FUN_1402e3480(1);
+    m_d0 = 0;
+    m_f0 = false;
+}
+
+// @0x1403d0550
+void GameEventTreeWatering::vfunc_2()
+{
+    MS2Ptr<TreeWateringContext> pContext(new TreeWateringContext(FUN_1402e1d00()));
+    if (!pContext)
+    {
+        MS2_ASSERT_AT(MS2_LINE(4671), 0);
+        return;
+    }
+    if (!ReadTreeWateringData(pContext))
+    {
+        MS2_ASSERT_AT(MS2_LINE(4677), 0);
+        return;
+    }
+    m_d0 = pContext;
+}
+MS2_REPLACE_METHOD(0x1403D0550, GameEventTreeWatering, vfunc_2, 318, 0x7DF70203);
+
+// @0x1403d06a0
+void GameEventTreeWatering::vfunc_5()
+{
+    if (m_d0 == 0)
+        return;
+    FUN_1401c0d90()->FUN_14047d2b0(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403D06A0, GameEventTreeWatering, vfunc_5, 121, 0x04F4AC3E);
+
+// @0x1403d0720
+void GameEventTreeWatering::vfunc_6()
+{
+    if (m_d0 == 0)
+        return;
+    FUN_1401c0d90()->FUN_14047d2b0(MS2Ptr<TreeWateringContext>(0));
+}
+MS2_REPLACE_METHOD(0x1403D0720, GameEventTreeWatering, vfunc_6, 109, 0x524ACF6C);
+
+// @0x1403d07a0
+void GameEventTreeWatering::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    if (!m_d0)
+        return;
+    m_d0->Write(MS2_GE_OUT(out));
+}
+MS2_REPLACE_METHOD(0x1403D07A0, GameEventTreeWatering, vfunc_3, 94, 0xC23C5C12);
+
+// @0x1403d0810
+void GameEventTreeWatering::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0.AssignRaw(new TreeWateringContext(FUN_1402e1d00()));
+    m_d0->Read(*reinterpret_cast<CInPacket*>(in));
+}
+MS2_REPLACE_METHOD(0x1403D0810, GameEventTreeWatering, vfunc_4, 170, 0xC30FE115);
+
+// @0x1403d08c0
+int GameEventTreeWatering::vfunc_8() { return m_d0 == 0; }
+MS2_REPLACE_METHOD(0x1403D08C0, GameEventTreeWatering, vfunc_8, 38, 0x2CD6D6FA);
+
+// @0x1403d08f0
+bool GameEventTreeWatering::ReadTreeWateringData(MS2Ptr<TreeWateringContext> pContext)
+{
+    {
+        TiXmlDocument doc;
+        if (FUN_140166420()->FUN_140397ab0(&doc, m_68) == 0)
+            return false;
+        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+        if (pRoot == NULL)
+            return false;
+        Unk_140165cf0* pTreeStep = pRoot->FUN_140165cf0("tree_step");
+        if (pTreeStep)
+        {
+            for (Unk_140165cf0* pStep = pTreeStep->FUN_140165cf0("step"); pStep; pStep = pStep->FUN_140168650("step"))
+            {
+                MS2Ptr<TreeWatering_TreeStep> spStep(new TreeWatering_TreeStep);
+                FUN_1408731e0(pStep, "step", spStep->m_step);
+                FUN_140873600(pStep, "begin", spStep->m_beginTime);
+                FUN_140873600(pStep, "end", spStep->m_endTime);
+                pContext->m_steps.SetAt(spStep->m_step, spStep);
+            }
+        }
+        Unk_140165cf0* pEmotionDay = pRoot->FUN_140165cf0("emotion_day");
+        if (pEmotionDay)
+        {
+            for (Unk_140165cf0* pTime = pEmotionDay->FUN_140165cf0("time"); pTime; pTime = pTime->FUN_140168650("time"))
+            {
+                MS2Ptr<TreeWatering_EmotionDay> spDay(new TreeWatering_EmotionDay);
+                FUN_140873600(pTime, "begin", spDay->m_beginTime);
+                FUN_140873600(pTime, "end", spDay->m_endTime);
+                pContext->m_emotionDays.Add(spDay);
+            }
+        }
+    }
+    {
+        TiXmlDocument doc;
+        if (FUN_140166420()->FUN_140397ab0(&doc, m_70) == 0)
+            return false;
+        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+        if (pRoot == NULL)
+            return false;
+        Unk_140165cf0* pWatering = pRoot->FUN_140165cf0("watering_reward");
+        if (pWatering)
+        {
+            FUN_1408731e0(pWatering, "MaxRewardCountDaily", pContext->m_nDailyLimit);
+            FUN_140873220(pWatering, "itemID", pContext->m_8c);
+            FUN_1408731e0(pWatering, "grade", pContext->m_90);
+            FUN_140873220(pWatering, "count", pContext->m_94);
+        }
+        Unk_140165cf0* pEmotion = pRoot->FUN_140165cf0("emotion_reward");
+        if (pEmotion)
+        {
+            FUN_1408731e0(pEmotion, "MaxRewardCountDaily", pContext->m_nBonusLimit);
+            FUN_140873220(pEmotion, "itemID", pContext->m_9c);
+            FUN_1408731e0(pEmotion, "grade", pContext->m_a0);
+            FUN_140873220(pEmotion, "count", pContext->m_a4);
+        }
+    }
+    {
+        TiXmlDocument doc;
+        if (FUN_140166420()->FUN_140397ab0(&doc, m_78) == 0)
+            return false;
+        Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+        if (pRoot == NULL)
+            return false;
+        Unk_140165cf0* pResource = pRoot->FUN_140165cf0("resource");
+        if (pResource)
+        {
+            FUN_140873220(pResource, "FieldID", pContext->m_f0);
+            FUN_1408733e0(pResource, "TreeNameTag", pContext->m_strTreeName);
+            FUN_140873220(pResource, "WaterPotItemID", pContext->m_nWaterItemId);
+            FUN_1408733e0(pResource, "WateringAnimation", pContext->m_strStateWater);
+            FUN_1408733e0(pResource, "EmotionAnimation", pContext->m_strStateBonus);
+            FUN_1408733e0(pResource, "EmotionDayEffect", pContext->m_str118);
+        }
+        Unk_140165cf0* pTreeResource = pRoot->FUN_140165cf0("tree_resource");
+        if (pTreeResource)
+        {
+            for (Unk_140165cf0* pStep = pTreeResource->FUN_140165cf0("step"); pStep; pStep = pStep->FUN_140168650("step"))
+            {
+                MS2Ptr<TreeWatering_TreeResource> spResource(new TreeWatering_TreeResource);
+                FUN_1408731e0(pStep, "step", spResource->m_id);
+                FUN_1408733e0(pStep, "nif_id", spResource->m_20);
+                pContext->m_resources.SetAt(spResource->m_id, spResource);
+            }
+        }
+    }
+    return true;
+}
+MS2_REPLACE_METHOD(0x1403D08F0, GameEventTreeWatering, ReadTreeWateringData, 2378, 0xF05F1FFC);
+
+// ---- GameEventShutdownBillboard -------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regShutdownBillboard(L"GameEventShutdownBillboard", FUN_1403d1240);
+#endif
+// @0x1403d1240
+GameEvent* FUN_1403d1240() { return new GameEventShutdownBillboard; }
+
+// @0x1403d12a0
+CStringW GameEventShutdownBillboard::vfunc_1() { return CStringW(L"GameEventShutdownBillboard"); }
+MS2_REPLACE_METHOD(0x1403D12A0, GameEventShutdownBillboard, vfunc_1, 61, 0x1CEDC64C);
+
+// @0x1403d12f0
+GameEventShutdownBillboard::GameEventShutdownBillboard()
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403d1350
+void GameEventShutdownBillboard::vfunc_2() {}
+MS2_REPLACE_METHOD(0x1403D1350, GameEventShutdownBillboard, vfunc_2, 6, 0xA9AF6E37);
+
+// @0x1403d1360
+void GameEventShutdownBillboard::vfunc_5() { FUN_1407d1c30(FUN_140302b00()->ShutdownBillboard(), m_id); }
+MS2_REPLACE_METHOD(0x1403D1360, GameEventShutdownBillboard, vfunc_5, 43, 0xBFBF27ED);
+
+// @0x1403d13a0
+void GameEventShutdownBillboard::vfunc_6() { FUN_1407d1ca0(FUN_140302b00()->ShutdownBillboard(), m_id); }
+MS2_REPLACE_METHOD(0x1403D13A0, GameEventShutdownBillboard, vfunc_6, 43, 0xF627A47D);
+
+// ---- GameEventShutdownUGCBanner -------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regShutdownUGCBanner(L"GameEventShutdownUGCBanner", FUN_1403d13e0);
+#endif
+// @0x1403d13e0
+GameEvent* FUN_1403d13e0() { return new GameEventShutdownUGCBanner; }
+
+// @0x1403d1440
+CStringW GameEventShutdownUGCBanner::vfunc_1() { return CStringW(L"GameEventShutdownUGCBanner"); }
+MS2_REPLACE_METHOD(0x1403D1440, GameEventShutdownUGCBanner, vfunc_1, 61, 0x75239B35);
+
+// @0x1403d1490
+GameEventShutdownUGCBanner::GameEventShutdownUGCBanner()
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403d14f0
+void GameEventShutdownUGCBanner::vfunc_2() {}
+MS2_REPLACE_METHOD(0x1403D14F0, GameEventShutdownUGCBanner, vfunc_2, 6, 0xA9AF6E37);
+
+// @0x1403d1500
+void GameEventShutdownUGCBanner::vfunc_5() { FUN_1407d1d90(FUN_140302b00()->ShutdownUGCBanner(), m_id); }
+MS2_REPLACE_METHOD(0x1403D1500, GameEventShutdownUGCBanner, vfunc_5, 43, 0x166029F4);
+
+// @0x1403d1540
+void GameEventShutdownUGCBanner::vfunc_6() { FUN_1407d1e00(FUN_140302b00()->ShutdownUGCBanner(), m_id); }
+MS2_REPLACE_METHOD(0x1403D1540, GameEventShutdownUGCBanner, vfunc_6, 43, 0x2C142084);
+
+// ---- GameEventPublicTest --------------------------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regPublicTest(L"GameEventPublicTest", FUN_1403d1580);
+#endif
+// @0x1403d1580
+GameEvent* FUN_1403d1580() { return new GameEventPublicTest; }
+
+// @0x1403d15e0
+CStringW GameEventPublicTest::vfunc_1() { return CStringW(L"GameEventPublicTest"); }
+MS2_REPLACE_METHOD(0x1403D15E0, GameEventPublicTest, vfunc_1, 61, 0x03DA0F8B);
+
+// @0x1403d1630
+GameEventPublicTest::GameEventPublicTest()
+{
+    FUN_1402e3480(3);
+    FUN_1402e3480(2);
+    FUN_1402e3480(1);
+}
+
+// @0x1403d16a0
+void GameEventPublicTest::vfunc_2() {}
+MS2_REPLACE_METHOD(0x1403D16A0, GameEventPublicTest, vfunc_2, 6, 0xA9AF6E37);
+
+// @0x1403d16b0
+void GameEventPublicTest::vfunc_5() { FUN_140428810(FUN_140302b00()->GetPublicTest(), 1); }
+MS2_REPLACE_METHOD(0x1403D16B0, GameEventPublicTest, vfunc_5, 40, 0xC09BDAC0);
+
+// @0x1403d16e0
+void GameEventPublicTest::vfunc_6() {}
+MS2_REPLACE_METHOD(0x1403D16E0, GameEventPublicTest, vfunc_6, 6, 0xA9AF6E37);
+
+// ---- GameEventAdventureLevelBonusExpRate ----------------------------------------------------------------------------
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regAdventureLevelBonusExpRate(L"GameEventAdventureLevelBonusExpRate", FUN_1403d16f0);
+#endif
+// @0x1403d16f0
+GameEvent* FUN_1403d16f0() { return new GameEventAdventureLevelBonusExpRate; }
+
+// @0x1403d1750
+CStringW GameEventAdventureLevelBonusExpRate::vfunc_1() { return CStringW(L"GameEventAdventureLevelBonusExpRate"); }
+MS2_REPLACE_METHOD(0x1403D1750, GameEventAdventureLevelBonusExpRate, vfunc_1, 61, 0x3D816E6A);
+
+// @0x1403d17a0
+GameEventAdventureLevelBonusExpRate::GameEventAdventureLevelBonusExpRate() : m_d0(0)
+{
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403d1810
+void GameEventAdventureLevelBonusExpRate::vfunc_2() { m_d0 = FUN_140718200(&m_68); }
+MS2_REPLACE_METHOD(0x1403D1810, GameEventAdventureLevelBonusExpRate, vfunc_2, 42, 0xD2DEE1A6);
+
+// @0x1403d1840
+void GameEventAdventureLevelBonusExpRate::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    out->WriteInt(m_d0);
+}
+MS2_REPLACE_METHOD(0x1403D1840, GameEventAdventureLevelBonusExpRate, vfunc_3, 61, 0xCC47F319);
+
+// @0x1403d1890
+void GameEventAdventureLevelBonusExpRate::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0 = MS2_GE_R(in)->ReadInt();
+}
+MS2_REPLACE_METHOD(0x1403D1890, GameEventAdventureLevelBonusExpRate, vfunc_4, 79, 0x36F47E14);
+
+// @0x1403d18f0
+void GameEventAdventureLevelBonusExpRate::vfunc_5() { FUN_1401c0d90()->FUN_140476930(m_id, m_d0); }
+MS2_REPLACE_METHOD(0x1403D18F0, GameEventAdventureLevelBonusExpRate, vfunc_5, 47, 0x54120E91);
+
+// @0x1403d1930
+void GameEventAdventureLevelBonusExpRate::vfunc_6() { FUN_1401c0d90()->FUN_1404769a0(m_id); }
+MS2_REPLACE_METHOD(0x1403D1930, GameEventAdventureLevelBonusExpRate, vfunc_6, 35, 0xA8BB55AA);
+
+// ---- GameEventBurningLevelup ------------------------------------------------------------------------------------------
+// The jumping item's log lines (FMT_VARIADIC wrapper over CLogString::FUN_1406530d0).
+template <class T, class U>
+inline void Unk_BurningLevelupLog(Unk_CommonLog* log, int level, int category, const wchar_t* format, const T& first,
+                                  const U& second)
+{
+    const fmt::internal::ArgArray<2>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(first),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(second)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second), args));
+}
+
+// @0x1403d8110
+int CXmlData::GetInt(const CStringW& strKey, const int& nDefault)
+{
+    CStringW strValue;
+    if (!reinterpret_cast<Values*>(m_unknown18)->Lookup(strKey, strValue))
+        return nDefault;
+    return FUN_1407181a0(strValue);
+}
+MS2_REPLACE_METHOD(0x1403D8110, CXmlData, GetInt, 142, 0xEF9D94D9);
+
+#ifndef MS2_HOOK_DLL
+static Unk_GEFactoryRegistry s_regBurningLevelup(L"GameEventBurningLevelup", FUN_1403d1960);
+#endif
+// @0x1403d1960
+GameEvent* FUN_1403d1960() { return new GameEventBurningLevelup; }
+
+// @0x1403d19c0
+CStringW GameEventBurningLevelup::vfunc_1() { return CStringW(L"GameEventBurningLevelup"); }
+MS2_REPLACE_METHOD(0x1403D19C0, GameEventBurningLevelup, vfunc_1, 61, 0xB1A8D55A);
+
+// @0x1403d1a10
+GameEventBurningLevelup::GameEventBurningLevelup() : m_d0(new BurningLevelupContext)
+{
+    FUN_1402e3480(2);
+    FUN_1402e3480(1);
+    FUN_1402e3480(3);
+}
+
+// @0x1403d1ad0
+void GameEventBurningLevelup::vfunc_2()
+{
+    m_d0->m_eventId = FUN_1402e1d00();
+    m_d0->m_endTime = m_38.Get();
+    {
+        TiXmlDocument doc;
+        if (FUN_140166420()->FUN_140397ab0(&doc, m_68) == 0)
+            return;
+        Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+        if (pRoot == NULL)
+            return;
+        Unk_140165cf0* pNode = FUN_140345b40(pRoot);
+        if (pNode == NULL)
+            return;
+        FUN_1408731a0(pNode, "beginLevel", m_d0->m_beginLevel);
+        FUN_1408731a0(pNode, "endLevel", m_d0->m_endLevel);
+        FUN_140873220(pNode, "burningBonus", m_d0->m_burningBonus);
+        FUN_140873220(pNode, "additionalEffectId", m_d0->m_additionalEffectId);
+        FUN_140873420(pNode, "setCharacterPopupStringKey", m_d0->m_setCharacterPopupStringKey);
+        m_d0->m_setCharacterPopupBottomStringKey =
+            FUN_1401bf530(pNode, "setCharacterPopupBottomStringKey", CStringW(L""));
+        FUN_140873420(pNode, "descPopupStringKey", m_d0->m_descPopupStringKey);
+        FUN_140873420(pNode, "rewardUiTitleStringKey", m_d0->m_rewardUiTitleStringKey);
+        FUN_1408731a0(pNode, "equipNametagSymbolID", m_d0->m_equipNametagSymbolId);
+    }
+    {
+        TiXmlDocument doc;
+        if (FUN_140166420()->FUN_140397ab0(&doc, m_70) == 0)
+            return;
+        Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+        if (pRoot == NULL)
+            return;
+        Unk_140165cf0* pNode = FUN_140345b40(pRoot);
+        if (pNode == NULL)
+            return;
+        for (pNode = pRoot->FUN_140165cf0("v"); pNode; pNode = pNode->FUN_140168650("v"))
+        {
+            ItemEntity item;
+            item.vfunc_2(pNode);
+            m_d0->m_rewardItems.push_back(item);
+        }
+    }
+    {
+        ATL::CAtlArray<int> ids;
+        FUN_1401d9a30(m_78, ids, L",");
+        for (size_t i = 0; i < ids.GetCount(); i++)
+            m_d0->m_28.insert(ids[i]);
+    }
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_140397ab0(&doc, m_80) == 0)
+        return;
+    Unk_140165cf0* pRoot = FUN_140345b40(&doc);
+    if (pRoot == NULL)
+        return;
+    Unk_140165cf0* pJumping = pRoot->FUN_140165cf0("jumpingOption");
+    if (pJumping)
+    {
+        FUN_140873220(pJumping, "tutorialEndFieldId", m_d0->m_tutorialEndFieldId);
+        FUN_140873420(pJumping, "jumpingItemDescPopupStringKey", m_d0->m_jumpingItemDescPopupStringKey);
+        FUN_140873420(pJumping, "jumpingItemNotifyStringKey", m_d0->m_jumpingItemNotifyStringKey);
+        FUN_140873420(pJumping, "jumpingCompleteStringKey", m_d0->m_jumpingCompleteStringKey);
+        Unk_140165cf0* pItem = pJumping->FUN_140165cf0("item");
+        if (pItem == NULL)
+        {
+            MS2_ASSERT_AT(MS2_LINE(5154), 0);
+            return;
+        }
+        MS2Ptr<ItemEntity> spItem(new ItemEntity);
+        spItem->vfunc_2(pItem);
+        MS2Ptr<CItemData> spItemData = FUN_14053f870(spItem->vfunc_o18_0());
+        if (spItemData == 0)
+        {
+            Unk_BurningLevelupLog(FUN_140166440(), 1, 0x13,
+                                  L"Item 정보를 읽을 수 없습니다.burning levelup event({0}) invalid itemID {1}",
+                                  m_d0->m_eventId, spItem->vfunc_o18_0());
+            MS2_ASSERT_AT(MS2_LINE(5164), 0);
+            return;
+        }
+        if (!spItemData->FUN_14053dfd0(L"LevelPotion"))
+        {
+            Unk_BurningLevelupLog(FUN_140166440(), 1, 0x13,
+                                  L"Item 정보를 읽을 수 없습니다.burning levelup event({0}) itemID {1} NOT LEVEL POTION",
+                                  m_d0->m_eventId, spItem->vfunc_o18_0());
+            MS2_ASSERT_AT(MS2_LINE(5170), 0);
+            return;
+        }
+        if (!spItemData->FUN_14053d7c0())
+        {
+            Unk_BurningLevelupLog(FUN_140166440(), 1, 0x13,
+                                  L"Item 정보를 읽을 수 없습니다.burning levelup event({0}) itemID {1} NOT BIND CHARACTER",
+                                  m_d0->m_eventId, spItem->vfunc_o18_0());
+            MS2_ASSERT_AT(MS2_LINE(5176), 0);
+            return;
+        }
+        unsigned short nTargetLevel = (unsigned short)spItemData->function.xml.GetInt(L"targetLevel", 0);
+        if (nTargetLevel == 0)
+        {
+            Unk_BurningLevelupLog(FUN_140166440(), 1, 0x13,
+                                  L"Item 정보를 읽을 수 없습니다.burning levelup event({0}) itemID {1} invalid target level",
+                                  m_d0->m_eventId, spItem->vfunc_o18_0());
+            MS2_ASSERT_AT(MS2_LINE(5183), 0);
+            return;
+        }
+        m_d0->m_spJumpingItem = spItem;
+        m_d0->m_8c = nTargetLevel;
+    }
+}
+MS2_REPLACE_METHOD(0x1403D1AD0, GameEventBurningLevelup, vfunc_2, 3286, 0xA544360B);
+
+// @0x1403d27b0
+void GameEventBurningLevelup::vfunc_3(Unk_GEOut* out)
+{
+    GameEvent::vfunc_3(out);
+    m_d0->Write(MS2_GE_OUT(out));
+}
+MS2_REPLACE_METHOD(0x1403D27B0, GameEventBurningLevelup, vfunc_3, 66, 0xF4F397DE);
+
+// @0x1403d2800
+void GameEventBurningLevelup::vfunc_4(Unk_GEIn* in)
+{
+    GameEvent::vfunc_4(in);
+    m_d0->Read(*reinterpret_cast<CInPacket*>(in));
+}
+MS2_REPLACE_METHOD(0x1403D2800, GameEventBurningLevelup, vfunc_4, 66, 0xF59C940A);
+
+// @0x1403d2850
+void GameEventBurningLevelup::vfunc_5() { FUN_1404283e0(FUN_140302b00()->GetBurningLevelup(), m_d0); }
+MS2_REPLACE_METHOD(0x1403D2850, GameEventBurningLevelup, vfunc_5, 99, 0x57FF77AF);
+
+// @0x1403d28c0
+void GameEventBurningLevelup::vfunc_6() { FUN_1404284a0(FUN_140302b00()->GetBurningLevelup(), m_d0); }
+MS2_REPLACE_METHOD(0x1403D28C0, GameEventBurningLevelup, vfunc_6, 99, 0xF75D4F8C);
