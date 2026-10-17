@@ -1605,7 +1605,8 @@ MS2_CHECK_SIZE(NpcEventDropEventContext, 0x60);
 struct OntimeEventContext : public CPtred {
     // One of the two 7-value comma lists GameEventOntime::vfunc_2 (0x1403bd6c0) reads. Field meanings unknown.
     struct Condition {
-        Condition();                                // 0x1403e40d0: Clear()
+        // @0x1403e40d0
+        Condition() { Clear(); }
         // @0x1403ec470
         void Clear() { m_0 = 0; m_4 = 0; m_8 = 0; m_c = 0; m_10 = false; m_14 = 0; m_18 = 0; }
         int m_0;
@@ -1616,7 +1617,8 @@ struct OntimeEventContext : public CPtred {
         int m_14;
         int m_18;
     };
-    OntimeEventContext();                           // 0x1403e41d0: Clear()
+    // @0x1403e41d0
+    OntimeEventContext() { Clear(); }
     // @0x1403ec4d0
     void Clear() { m_18 = 0; m_1c = false; m_20 = 0; m_24.Clear(); m_40.Clear(); }
     int m_18;
@@ -1890,7 +1892,8 @@ MS2_CHECK_OFFSET(TimeRunEventContext, m_rewards, 0xa8);
 class LongTermAttendGiftContext : public CPtred {
 public:
     struct Reward : public CPtred {
-        Reward();                                   // 0x1403e4360 (gameevent.cpp)
+        // @0x1403e4360
+        Reward() : m_count(0), m_1c(false) {}
         int m_count;                                // +0x18 "count"
         bool m_1c;
         ItemEntity m_item01;                        // +0x20
@@ -1962,7 +1965,8 @@ MS2_CHECK_SIZE(Unk_GameEventStrPair, 0x10);
 // An inclusive int range (name invented): read from an "a,b" pair by 0x1403d8240; GameEventBlackMarketFeeDiscount
 // checks against a static (0, 10000) one.
 struct Unk_GameEventIntRange {
-    Unk_GameEventIntRange(int nMin, int nMax);      // 0x1403e19f0
+    // @0x1403e19f0
+    Unk_GameEventIntRange(int nMin, int nMax) : m_min(nMin), m_max(nMax) {}
     // @0x1403eeaf0
     void Init(int nMin, int nMax) { m_min = nMin; m_max = nMax; }
     // @0x1403ef200
