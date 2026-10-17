@@ -14,11 +14,66 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+#include "ms2/placeholder/cmypckeyinputcontroller.h"
+
+// The statics of this unit, in the exe's initializer order (.text$di).
+static CString s_strDropShadowDisable = "dropShadowDisable";
+static CString s_strIconPath = "iconPath";
+static CString s_strItemCash = "itemCash";
+static CString s_strItemCount = "itemCount";
+static CString s_strItemEquip = "itemEquip";
+static CString s_strItemGrade = "itemGrade";
+static CString s_strItemIconLock = "itemIconLock";
+static CString s_strItemPiece = "itemPiece";
+static CString s_strItemIconUnLock = "itemIconUnLock";
+static CString s_strItemKinds = "itemKinds";
+static CString s_strItemMovie = "itemMovie";
+static CString s_strItemName = "itemName";
+static CString s_strItemPackageList = "itemPackageList";
+static CString s_strItemPcBang = "itemPcBang";
+static CString s_strItemPet = "itemPet";
+static CString s_strItemSkin = "itemSkin";
+static CString s_strItemVIP = "itemVIP";
+static CString s_strItemWedding = "itemWedding";
+static CString s_strItemBreakIngredientList = "itemBreakIngredientList";
+static CString s_strItemPetRank = "itemPetRank";
+static CString s_strItemPetSkin = "itemPetSkin";
+static CString s_strSkillName = "skillName";
+static CString s_strText = "text";
+static CString s_strTooltipAlign = "tooltipAlign";
+static CString s_strUgctag = "ugctag";
+static CString s_strChartSortNames[] = {"None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd"};
+#define MS2_STATICS_A_BEFORE_CONDITION "ms2/client/ms2/astooltip_statics.h"
+#include "ms2/placeholder/header_statics_a.h"
+#undef MS2_STATICS_A_BEFORE_CONDITION
+static UICommon::CMyPCKeyInputController s_keyInput;
+static CStringW s_wsDat44a0;
+static CStringW s_wsDat44c0;
+static CStringW s_wsDat4540;
+static CStringW s_wsDat4538;
+static CStringW s_wsDat44d8;
+static CStringW s_wsDat44e8;
+static CStringW s_wsDat44e0;
+static CStringW s_wsDat44d0;
+static CStringW s_wsDat4500;
+static CStringW s_wsDat4508;
+static CStringW s_wsDat4520;
+static CStringW s_wsDat4528;
+static CStringW s_wsDat4510;
+static CStringW s_wsDat4518;
+static CStringW s_wsDat4530;
+static CStringW s_wsDat43c8[5] = {L""};
+static CStringW s_wsDat4438;
+static CStringW s_wsDat4480;
+static CStringW s_wsDat4488;
+static CStringW s_wsDat4490;
+static CStringW s_wsDat4498;
+static CStringW s_wsDat44f0;
+static CStringW s_wsDat44f8;
+static CStringW s_wsDat44c8;
 
 extern CStringW FUN_14028de60(int nId);
 void FUN_1407cd930(Scaleform::GFx::Value* pObject, const char* szName, const Scaleform::GFx::Value& v);
-extern CString DAT_143ab45a8;
-extern CString DAT_143ab45b0;
 
 // @0x1409c6540
 __int64 ASTooltip::FUN_1409c6540()
@@ -101,14 +156,14 @@ MS2_REPLACE_METHOD(0x1409C6C80, ASTooltip, FUN_1409c6c80, 34, 0x29258324);
 // @0x1409c6cb0
 void ASTooltip::FUN_1409c6cb0(const CStringW& strText)
 {
-    FUN_1407cbb20(DAT_143ab45a8, strText);
+    FUN_1407cbb20(s_strText, strText);
 }
 MS2_REPLACE_METHOD(0x1409C6CB0, ASTooltip, FUN_1409c6cb0, 81, 0x1E6A3D31);
 
 // @0x1409c6d10
 void ASTooltip::FUN_1409c6d10(const CString& str)
 {
-    FUN_1407cba60(DAT_143ab45a8, str);
+    FUN_1407cba60(s_strText, str);
 }
 MS2_REPLACE_METHOD(0x1409C6D10, ASTooltip, FUN_1409c6d10, 81, 0xB4DE3543);
 
@@ -122,7 +177,7 @@ MS2_REPLACE_METHOD(0x1409C6D70, ASTooltip, FUN_1409c6d70, 72, 0xEDA57631);
 // @0x1409c6dc0
 void ASTooltip::FUN_1409c6dc0(int n)
 {
-    FUN_1409eb310(DAT_143ab45b0, n);
+    FUN_1409eb310(s_strTooltipAlign, n);
 }
 MS2_REPLACE_METHOD(0x1409C6DC0, ASTooltip, FUN_1409c6dc0, 49, 0x3D4B1FA2);
 
@@ -170,9 +225,6 @@ void ASObj::FUN_1409eb310(const char* szName, int n)
 }
 MS2_REPLACE_METHOD(0x1409EB310, ASObj, FUN_1409eb310, 152, 0x1164D0E6);
 
-extern CString DAT_143ab4580;
-extern CString DAT_143ab4588;
-extern CString DAT_143ab45c8;
 
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409c62e0
@@ -222,21 +274,21 @@ MS2_REPLACE_METHOD(0x1409C7B10, ASTooltip, FUN_1409c7b10, 249, 0x1E53A7AB);
 // @0x1409c7c10
 void ASTooltip::FUN_1409c7c10(CItem* pItem)
 {
-    FUN_1407cbb20(DAT_143ab4580, pItem->FUN_140527b10());
+    FUN_1407cbb20(s_strItemName, pItem->FUN_140527b10());
 }
 MS2_REPLACE_METHOD(0x1409C7C10, ASTooltip, FUN_1409c7c10, 80, 0x3F6AE606);
 
 // @0x1409c7c70
 void ASTooltip::FUN_1409c7c70(CItem* pItem)
 {
-    FUN_1409adc90(DAT_143ab4588, pItem->FUN_140526bd0());
+    FUN_1409adc90(s_strItemGrade, pItem->FUN_140526bd0());
 }
 MS2_REPLACE_METHOD(0x1409C7C70, ASTooltip, FUN_1409c7c70, 66, 0xFE5BD3AD);
 
 // @0x1409c7f70
 void ASTooltip::FUN_1409c7f70(CItem* pItem)
 {
-    FUN_1407cb9c0(DAT_143ab45c8, pItem->FUN_140528840());
+    FUN_1407cb9c0(s_strUgctag, pItem->FUN_140528840());
 }
 MS2_REPLACE_METHOD(0x1409C7F70, ASTooltip, FUN_1409c7f70, 66, 0xDD1978AD);
 
@@ -284,16 +336,13 @@ MS2_REPLACE_METHOD(0x1409E26B0, ASTooltip, FUN_1409e26b0, 146, 0x067A651D);
 
 struct Unk_CommandStrings { CStringW FUN_141811980(int, int); };
 Unk_CommandStrings* FUN_1401a9d70();
-extern CString DAT_143ab4590;
-extern CString DAT_143ab4550;
-extern CString DAT_143ab4558;
 
 // @0x1409d4350
 void ASTooltip::FUN_1409d4350(CItemData* pData)
 {
     if (pData == 0)
         return;
-    FUN_1407cbbe0(DAT_143ab4590, pData->FUN_14053d990());
+    FUN_1407cbbe0(s_strItemPiece, pData->FUN_14053d990());
 }
 MS2_REPLACE_METHOD(0x1409D4350, ASTooltip, FUN_1409d4350, 78, 0xFE2943FA);
 
@@ -309,8 +358,8 @@ void ASTooltip::FUN_1409d43e0(CItem* pItem)
 {
     if (pItem->FUN_140525640() != 0)
     {
-        FUN_1409adc90(DAT_143ab4550, pItem->FUN_140526bd0());
-        FUN_1407cb9c0(DAT_143ab4558, 1);
+        FUN_1409adc90(s_strItemPetRank, pItem->FUN_140526bd0());
+        FUN_1407cb9c0(s_strDropShadowDisable, 1);
     }
 }
 MS2_REPLACE_METHOD(0x1409D43E0, ASTooltip, FUN_1409d43e0, 112, 0x67EE15C6);
@@ -334,7 +383,7 @@ MS2_REPLACE_METHOD(0x1409D46A0, ASTooltip, FUN_1409d46a0, 51, 0x7A950BD3);
 // @0x1409d5530
 void ASTooltip::FUN_1409d5530(unsigned nId)
 {
-    FUN_1407cbb20(DAT_143ab4580, FUN_1401a9d70()->FUN_141811980(1, nId));
+    FUN_1407cbb20(s_strItemName, FUN_1401a9d70()->FUN_141811980(1, nId));
 }
 MS2_REPLACE_METHOD(0x1409D5530, ASTooltip, FUN_1409d5530, 93, 0xF4A248DA);
 
@@ -342,17 +391,11 @@ MS2_REPLACE_METHOD(0x1409D5530, ASTooltip, FUN_1409d5530, 93, 0xF4A248DA);
 // @0x1409d55a0
 void ASTooltip::FUN_1409d55a0(CItem* pItem, int n)
 {
-    FUN_1409adc90(DAT_143ab4588, n == 0 ? 1 : n);
+    FUN_1409adc90(s_strItemGrade, n == 0 ? 1 : n);
 }
 MS2_REPLACE_METHOD(0x1409D55A0, ASTooltip, FUN_1409d55a0, 95, 0x6202B546);
 
 MS2Ptr<CItemData> FUN_14053f870(unsigned nItemId);
-extern CString DAT_143ab4560;
-extern CString DAT_143ab4568;
-extern CString DAT_143ab4578;
-extern CString DAT_143ab45d0;
-extern CString DAT_143ab45d8;
-extern CString DAT_143ab45e0;
 
 // @0x1409d5160
 void ASTooltip::FUN_1409d5160(unsigned nItemId)
@@ -360,7 +403,7 @@ void ASTooltip::FUN_1409d5160(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cbbe0(DAT_143ab4560, sp->FUN_14053cc40());
+    FUN_1407cbbe0(s_strItemPet, sp->FUN_14053cc40());
 }
 MS2_REPLACE_METHOD(0x1409D5160, ASTooltip, FUN_1409d5160, 139, 0x04E59FDE);
 
@@ -370,7 +413,7 @@ void ASTooltip::FUN_1409d5200(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cbbe0(DAT_143ab4568, sp->FUN_14053e130());
+    FUN_1407cbbe0(s_strItemCash, sp->FUN_14053e130());
 }
 MS2_REPLACE_METHOD(0x1409D5200, ASTooltip, FUN_1409d5200, 139, 0xDAA972D2);
 
@@ -380,7 +423,7 @@ void ASTooltip::FUN_1409d52a0(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cbbe0(DAT_143ab4578, sp->FUN_14053cf90());
+    FUN_1407cbbe0(s_strItemSkin, sp->FUN_14053cf90());
 }
 MS2_REPLACE_METHOD(0x1409D52A0, ASTooltip, FUN_1409d52a0, 139, 0xFD2B7855);
 
@@ -390,7 +433,7 @@ void ASTooltip::FUN_1409d5340(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cb9c0(DAT_143ab45d0, sp->FUN_14053ce20() != 0);
+    FUN_1407cb9c0(s_strItemPcBang, sp->FUN_14053ce20() != 0);
 }
 MS2_REPLACE_METHOD(0x1409D5340, ASTooltip, FUN_1409d5340, 156, 0x2C1CCF54);
 
@@ -400,7 +443,7 @@ void ASTooltip::FUN_1409d53f0(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cbbe0(DAT_143ab45d8, sp->FUN_14053d1f0());
+    FUN_1407cbbe0(s_strItemVIP, sp->FUN_14053d1f0());
 }
 MS2_REPLACE_METHOD(0x1409D53F0, ASTooltip, FUN_1409d53f0, 139, 0x2426DEF4);
 
@@ -410,13 +453,11 @@ void ASTooltip::FUN_1409d5490(unsigned nItemId)
     MS2Ptr<CItemData> sp = FUN_14053f870(nItemId);
     if (sp.IsNull())
         return;
-    FUN_1407cbbe0(DAT_143ab45e0, sp->FUN_14053d210());
+    FUN_1407cbbe0(s_strItemWedding, sp->FUN_14053d210());
 }
 MS2_REPLACE_METHOD(0x1409D5490, ASTooltip, FUN_1409d5490, 139, 0x00739E47);
 
 short FUN_140626f20(int nItemId);
-extern CString DAT_143ab45b8;
-extern CString DAT_143ab4608;
 
 // MS2-FUNCTIONAL: bytes differ from the exe (operand order / temporaries / SEH state layout); behaviour equivalent
 // @0x1409d74a0
@@ -439,7 +480,7 @@ MS2_REPLACE_METHOD(0x1409D74A0, ASTooltip, FUN_1409d74a0, 183, 0xB7CB9094);
 // @0x1409d8c80
 void ASTooltip::FUN_1409d8c80(const CStringW& str)
 {
-    FUN_1407cbb20(DAT_143ab45b8, str);
+    FUN_1407cbb20(s_strItemEquip, str);
 }
 MS2_REPLACE_METHOD(0x1409D8C80, ASTooltip, FUN_1409d8c80, 81, 0xD3C1BF91);
 
@@ -453,7 +494,7 @@ MS2_REPLACE_METHOD(0x1409D8CE0, ASTooltip, FUN_1409d8ce0, 93, 0x134D71AB);
 // @0x1409d8d50
 void ASTooltip::FUN_1409d8d50(bool b)
 {
-    FUN_1407cbbe0(DAT_143ab4608, b);
+    FUN_1407cbbe0(s_strItemPetSkin, b);
 }
 MS2_REPLACE_METHOD(0x1409D8D50, ASTooltip, FUN_1409d8d50, 50, 0x9E275AA4);
 
