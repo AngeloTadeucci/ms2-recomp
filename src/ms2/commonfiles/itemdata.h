@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <efd/Point3.h>
+#include <NiPoint3.h>
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/ccachedata.h"
@@ -75,7 +76,7 @@ MS2_CHECK_OFFSET(CItemChangeBeautyTable, m_data, 0x60);
 struct ModelNameEntry               // <dummy> element of an <asset>, 0x38 bytes (ctor 0x1403142a0 and reader 0x140314350 elsewhere)
 {
     ModelNameEntry();               // 0x1403142a0
-    ~ModelNameEntry();              // 0x140540bc0
+    // implicit dtor (COMDAT 0x140540bc0 in itemdata.cpp) and moves: no user-declared dtor
     void FUN_140314350(Unk_140165cf0* pElem);       // XML read
     int gender;                     // +0x00 "gender": 0, 1 or 2 (both lists; the ctor's default)
     CString sequence;               // +0x08 "sequence"
@@ -91,7 +92,7 @@ MS2_CHECK_SIZE(ModelNameEntry, 0x38);
 struct ModelFloatList               // <scale> element, 0x28 bytes
 {
     ModelFloatList();               // 0x140544b10
-    ~ModelFloatList();              // 0x140541080
+    // implicit dtor (COMDAT 0x140541080 in itemdata.cpp) and moves: no user-declared dtor
     int FUN_140544b70(Unk_140165cf0* pElem);        // XML read
     int FUN_140544c00(void* pParent);            // XML write (nothing)
     float FUN_140544c20() const;    // a random entry of values, 1.0 when empty
@@ -117,7 +118,7 @@ MS2_CHECK_SIZE(ModelNamedColor, 0x18);
 struct ModelPart                    // <asset> element, 0x158 bytes
 {
     ModelPart();                    // 0x140543a90
-    ~ModelPart();                   // 0x140540f60
+    // implicit dtor (COMDAT 0x140540f60 in itemdata.cpp) and moves: no user-declared dtor
     int FUN_140543ca0(Unk_140165cf0* pElem);        // XML read
     int FUN_140544a80(void* pParent);            // XML write (nothing)
     int FUN_140544aa0(int nGender, int nWeapon) const;   // the part is worn by the gender / weapon
@@ -157,7 +158,7 @@ MS2_CHECK_OFFSET(ModelPart, entries, 0x128);
 struct ModelGroup                   // 0x38 bytes (also the unit's third static, 0x143aaf568)
 {
     ModelGroup();                   // 0x140544ca0
-    ~ModelGroup();                  // 0x140540f30
+    // implicit dtor (COMDAT 0x140540f30 in itemdata.cpp) and moves: no user-declared dtor
     void FUN_140544cf0(Unk_140165cf0* pElem);       // XML read
     void FUN_140544f00(void* pParent);           // XML write (nothing)
     const ModelFloatList* FUN_140544f20(size_t nIndex) const;   // the nIndex-th scale list (a static default when out of range)
@@ -181,8 +182,8 @@ public:
     MsTransform();                  // 0x140546860
     void FUN_1405468d0(Unk_140165cf0* pElem);       // XML read
     void FUN_140546940(void* pElem);                // XML write
-    efd::Point3 position;           // +0x18
-    efd::Point3 rotation;           // +0x24
+    NiPoint3 position;              // +0x18 (NiPoint3() COMDAT 0x1405522f0)
+    NiPoint3 rotation;              // +0x24
     float scale;                    // +0x30 (default 1.0)
 };
 MS2_CHECK_SIZE(MsTransform, 0x38);

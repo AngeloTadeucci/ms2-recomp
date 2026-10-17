@@ -2170,10 +2170,7 @@ int FUN_1405402a0(Unk_140165cf0* pElem, const char* pszName, int& rnValue)
     return nResult;
 }
 
-// @0x140540bc0
-ModelNameEntry::~ModelNameEntry()
-{
-}
+// ModelNameEntry::~ModelNameEntry (COMDAT 0x140540bc0) is implicit.
 
 // @0x140540c00
 ItemFunctionArgs::~ItemFunctionArgs()
@@ -2225,25 +2222,16 @@ ItemProperty::~ItemProperty()
 {
 }
 
-// @0x140540f30
-ModelGroup::~ModelGroup()
-{
-}
+// ModelGroup::~ModelGroup (COMDAT 0x140540f30) is implicit.
 
-// @0x140540f60
-ModelPart::~ModelPart()
-{
-}
+// ModelPart::~ModelPart (COMDAT 0x140540f60) is implicit.
 
 // @0x140541060
 ModelNamedColor::~ModelNamedColor()
 {
 }
 
-// @0x140541080
-ModelFloatList::~ModelFloatList()
-{
-}
+// ModelFloatList::~ModelFloatList (COMDAT 0x140541080) is implicit.
 
 // @0x1405410a0
 ItemUccMesh::~ItemUccMesh()

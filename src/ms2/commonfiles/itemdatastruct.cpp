@@ -5,7 +5,27 @@
 // MS2-RANGE: 0x140543a30-0x140555a70 .text$mn
 // MS2-RANGE: 0x1400b9950-0x1400b9a40 .text$di
 // MS2-RANGE: 0x142c9ad60-0x142c9ae90 .text$yd
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$IsSameVector@_J@@YA_NAEBV?$vector@_JV?$allocator@_J@std@@@std@@0@Z 0x14054ca40 ; unique
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@@4@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAX@1@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@1@1@Z 0x14054e630 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@1@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@PEAX@1@@Z 0x14054e990 ; unique
+// MS2-PIN: ??$_Ucopy@PEAV?$MS2Ptr@VItemCustom@@@@@?$vector@V?$MS2Ptr@VItemCustom@@@@V?$allocator@V?$MS2Ptr@VItemCustom@@@@@std@@@std@@AEAAPEAV?$MS2Ptr@VItemCustom@@@@PEAV2@00@Z 0x14054f300 ; prop
+// MS2-PIN: ??0?$vector@V?$MS2Ptr@VItemCustom@@@@V?$allocator@V?$MS2Ptr@VItemCustom@@@@@std@@@std@@QEAA@AEBV01@@Z 0x140551620 ; unique
+// MS2-PIN: ??0ModelPart@@QEAA@AEBU0@@Z 0x140551ee0 ; unique
+// MS2-PIN: ??F?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V12@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x140552930 ; prop
+// MS2-PIN: ?empty@?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@QEBA_NXZ 0x140555350 ; unique
+// MS2-PINS-END tplpin
 // MS2-PIN: ?GetInt@CXmlData@@QEAAHAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEBH@Z 0x14054c530
+// MS2-PIN: ??0ModelPart@@QEAA@$$QEAU0@@Z 0x140551c40
+// MS2-PIN: ??0ModelNamedColor@@QEAA@AEBU0@@Z 0x140552180
+// MS2-PIN: ??$?8V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@std@@YA_NAEBV?$_Tree@V?$_Tset_traits@HU?$less@H@std@@V?$allocator@H@2@$0A@@std@@@0@0@Z 0x14054bf00
+// MS2-PIN: ??$IsSameArray@H@@YA_NAEBV?$CAtlArray@HV?$CElementTraits@H@ATL@@@ATL@@0@Z 0x14054c990
+// MS2-PIN: ?push_back@?$vector@_JV?$allocator@_J@std@@@std@@QEAAX$$QEA_J@Z 0x1405556e0
+// MS2-PIN: ??$emplace_back@_J@?$vector@_JV?$allocator@_J@std@@@std@@QEAAX$$QEA_J@Z 0x140550620
+// MS2-PIN: ??$_Emplace_back_with_unused_capacity@_J@?$vector@_JV?$allocator@_J@std@@@std@@AEAAX$$QEA_J@Z 0x14054d4f0
+// MS2-PIN: ??$_Emplace_reallocate@_J@?$vector@_JV?$allocator@_J@std@@@std@@QEAAPEA_JQEA_J$$QEA_J@Z 0x14054df10
+// MS2-PIN: ??$construct@_J_J@?$_Default_allocator_traits@V?$allocator@_J@std@@@std@@SAXAEAV?$allocator@_J@1@QEA_J$$QEA_J@Z 0x1405503a0
+// MS2-PIN: ?_Umove@?$vector@_JV?$allocator@_J@std@@@std@@AEAAPEA_JPEA_J00@Z 0x140554d30
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemdatastruct.cpp"
 // The _stricmp calls of this unit go through the IAT, so not ms2/placeholder/ms2stdafx.h (its plain redeclaration).
 #include <afx.h>
@@ -149,16 +169,14 @@ MS2_CHECK_SIZE(Unk_TiXmlElement, 0x90);
 // Drops one leading and one trailing comma of a joined list (an inline helper of the XML writers).
 inline void TrimCommas(CString& str)
 {
-    if (!str.IsEmpty())
-    {
-        if (str[0] == ',')
-            str = str.Mid(1);
-        if (!str.IsEmpty())
-        {
-            if (str[str.GetLength() - 1] == ',')
-                str = str.Mid(0, str.GetLength() - 1);
-        }
-    }
+    if (str.IsEmpty())
+        return;
+    if (str[0] == ',')
+        str = str.Mid(1);
+    if (str.IsEmpty())
+        return;
+    if (str[str.GetLength() - 1] == ',')
+        str = str.Mid(0, str.GetLength() - 1);
 }
 
 // The statics of this unit: the item list sort names and the key input controller (both header statics).
