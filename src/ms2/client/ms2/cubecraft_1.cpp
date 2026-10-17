@@ -160,8 +160,7 @@ Unk_AnimSvc* FUN_1410a68f0(void*);
 void FUN_14123c680(GameObject*, int);
 void FUN_14123fbf0(void*, int);
 void FUN_14123fd30(void*, int);
-CStringW FUN_141277910(CItemData*);
-CItemData* FUN_1403bb3b0(MS2Ptr<CItemData>&);
+CStringW FUN_141277910(MS2Ptr<CItemData> spData);              // by value (exe: copy ctor 0x1403bb3b0 into a temporary)
 class Unk_StringTable;
 Unk_StringTable* FUN_1401a9d70();
 CStringW FUN_141811980(Unk_StringTable*, int, int);
@@ -284,7 +283,6 @@ public:
     int m_nac;
 };
 MS2Ptr<Unk_GuideRecord> FUN_140835450(int nType);
-void* FUN_140b8b8e0(Unk_GuideRecord* p);                        // record -> stream view
 
 class Unk_GuideWorld
 {
@@ -493,7 +491,7 @@ void CGuideObject::vfunc_126()
     if (!spOld.IsNull()
         && spOld->m_pos3c == m_pos98
         && spOld->m_nType == ::FUN_14166c930(this)
-        && CallSlot<int>(::FUN_14166ccb0(this), 22, FUN_140b8b8e0(spOld)) == 0)
+        && CallSlot<int>(::FUN_14166ccb0(this), 22, spOld) == 0)   // slot 22 takes the record by value (exe copy ctor 0x140b8b8e0)
         return;
     if (spOld.get() != 0)
         m_ctrl.vfunc_0();
@@ -774,7 +772,7 @@ int CConstructionGuideObject::FUN_1410a2a60(void* pCube)
     }
     if (m_spBirdHead.get() && m_bLocal)
     {
-        CStringW strName = FUN_141277910(FUN_1403bb3b0(spData));
+        CStringW strName = FUN_141277910(spData);
         CStringW strExtra = FUN_141811980(FUN_1401a9d70(), 1, m_spItem->itemId);
         m_spBirdHead->FUN_1418ce8f0(strName, strExtra);
         m_spBirdHead->FUN_1418ce800();

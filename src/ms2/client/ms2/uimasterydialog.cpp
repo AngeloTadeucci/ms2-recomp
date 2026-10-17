@@ -436,7 +436,7 @@ public:
 class Unk_MInvoker : public AScript
 {
 public:
-    void FUN_140bbeaa0(const char* szMethod, const ASArray& page);
+    Scaleform::GFx::Value FUN_140bbeaa0(const char* szMethod, const ASArray& page);   // Invoke(method, array): returns the result
     Scaleform::GFx::Value FUN_140eba200(const char* szMethod, int a1, int a2);
     Scaleform::GFx::Value FUN_140eba2c0(const char* szMethod, int a1, bool a2);
 };

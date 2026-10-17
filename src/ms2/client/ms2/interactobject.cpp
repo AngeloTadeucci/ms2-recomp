@@ -1310,7 +1310,7 @@ struct Unk_IoPosterHolder { char m_pad_00[8]; Unk_IoPosterSvc m_svc; };
 Unk_IoPosterHolder* FUN_1403ed290();
 
 struct Unk_IoTexPtr { void* m_p; };
-void FUN_14097ed60(Unk_IoTexPtr* p);
+void FUN_14097ed60(Unk_IoTexPtr* p, void* pRaw);            // ctor from a raw pointer (AddRef when set)
 void FUN_14097f4a0(Unk_IoTexPtr* p);
 void* FUN_14097fbf0(Unk_IoTexPtr* p);
 void FUN_14186bd30(Unk_IoTexPtr* pOut, const CStringW& strPath, int nFlag, int nZero);
@@ -1483,7 +1483,7 @@ void CInteractDisplayImage::FUN_1414017b0(const CString& strFile)
     if (m_ent.FUN_1408a9090() == 0)
         return;
     Unk_IoTexPtr texA;
-    FUN_14097ed60(&texA);
+    FUN_14097ed60(&texA, 0);
     if (_waccess(strPath, 0) == 0)
     {
         Unk_IoTexPtr texB;
@@ -1900,7 +1900,7 @@ void CInteractGuildPosterObject::FUN_141403180(CStringW strFile)
     if (strFile.GetLength() < 1)
         return;
     Unk_IoTexPtr texA;
-    FUN_14097ed60(&texA);
+    FUN_14097ed60(&texA, 0);
     if (_waccess(strFile, 0) == 0)
     {
         Unk_IoTexPtr texB;

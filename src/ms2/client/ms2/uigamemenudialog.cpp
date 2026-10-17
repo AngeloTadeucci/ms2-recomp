@@ -266,7 +266,7 @@ class Unk_GmNodeArr
 {
 public:
     size_t FUN_140c1d2c0() const;
-    Unk_GmNodeRef FUN_140c1cd50(size_t i) const;
+    const Unk_GmNodeRef& FUN_140c1cd50(size_t i) const;           // operator[] (returns a reference, bounds-checked)
     char m_pad[0x20];
 };
 struct Unk_GmNodeBody
@@ -742,9 +742,10 @@ void* FUN_1416764a0(PCBase*);
 void* FUN_141676a10(PCBase*);
 void FUN_1406395c0(void*, Unk_GmIdList* pOut, int, int);
 int FUN_140637e00(void*);
-void* FUN_14063dd20(Unk_GmIdEntry*);
+struct Unk_GmEntryPtr { void* vt; void* p; };                   // the smart pointer at the head of an id entry
+Unk_GmEntryPtr* FUN_14063dd20(Unk_GmEntryPtr* pDst, Unk_GmIdEntry* pSrc);   // its copy ctor
 void* FUN_14063ed30(Unk_GmIdEntry*);
-bool FUN_140ecf630(void*, int);
+bool FUN_140ecf630(Unk_GmEntryPtr* pByValue, int);           // takes the pointer by value (the callee destroys it)
 Unk_GmPetRow* FUN_14052ceb0(void*);
 void FUN_14052c420(Unk_GmPetInfoRef*);
 MS2Ptr<Unk_GmStatusInfo> FUN_141707750(void*);
@@ -1298,7 +1299,8 @@ void UIGameMenuDialog::FUN_141938700()
         FUN_1406395c0(FUN_1416546d0(pPc), &list, 0, 1);
         for (Unk_GmIdEntry* p = list.begin(); p != list.end(); ++p) {
             int nSlot = FUN_14152e970(pPc, FUN_140637e00(FUN_14063ed30(p)));
-            if (FUN_140ecf630(FUN_14063dd20(p), nSlot)) {
+            Unk_GmEntryPtr tmp;
+            if (FUN_140ecf630(FUN_14063dd20(&tmp, p), nSlot)) {
                 bHas = 1;
                 break;
             }
