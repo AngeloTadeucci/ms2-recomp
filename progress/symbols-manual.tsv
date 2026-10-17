@@ -2759,3 +2759,9 @@ inflateInit_	142723ad0	func
 ??1CAdBannerManager@@QEAA@XZ	14016df30	func
 ??0Unk_AdBannerPtr@@QEAA@AEBU0@@Z	14016e2b0	func
 ??1Unk_AdBannerPtr@@QEAA@XZ	14016e430	func
+??0Unk_XmlPoint@@QEAA@PEBVPoint3@efd@@@Z	14027dcf0	func
+??C?$MS2Ptr@VCItem@@@@QEBAPEAVCItem@@XZ	1401c0180	func
+??1ItemCustom@@UEAA@XZ	14027e890	func
+?DAT_142eb3950@@3DA	142eb3950	data
+?DAT_143ab3908@@3PEAXEA	143ab3908	data
+??1Unk_StateHandle@@QEAA@XZ	1401b50d0	func
