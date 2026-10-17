@@ -177,13 +177,13 @@ MS2_CHECK_OFFSET(ItemInstallData, physXdimension, 0x40);
 MS2_CHECK_OFFSET(ItemInstallData, mapAttribute, 0x50);
 MS2_CHECK_OFFSET(ItemInstallData, useInstancing, 0x5c);
 
-class ItemUccMesh : public CString  // <ucc mesh> block: the mesh name (CNifCubeGuide reads it as a CString)
+struct ItemUccMesh                  // <ucc mesh> block: the mesh name (cubecraft reads it as a CString)
 {
-public:
     ItemUccMesh();                  // 0x1405495a0
     ~ItemUccMesh();                 // 0x1405410a0
     int FUN_1405495d0(Unk_140165cf0* pElem);
     int FUN_140549630(void* pParent);
+    CString mesh;                   // +0x00 "mesh"
 };
 MS2_CHECK_SIZE(ItemUccMesh, 0x8);
 
@@ -193,14 +193,15 @@ struct ItemEffect                   // <effect ...>
     ~ItemEffect();                  // 0x140540cb0
     int FUN_140549740(Unk_140165cf0* pElem);
     int FUN_1405498b0(void* pParent);
-    bool FUN_140549a40(const ItemEffect* pOther);
-    int enchantShape;               // +0x00
-    CString unknown08;              // +0x08
-    CString battleIdle;             // +0x10
-    CString characterIdle;          // +0x18
-    CString characterBattleIdle;    // +0x20
-    bool flag28;                    // +0x28
-    bool flag29;                    // +0x29
+    bool FUN_140549a40(const ItemEffect* pOther);   // operator!=
+    bool FUN_140549b10();           // any field differs from the default
+    int enchantShape;               // +0x00 "enchantShape" (default 1)
+    CString idle;                   // +0x08 "idle"
+    CString battleIdle;             // +0x10 "battleIdle"
+    CString characterIdle;          // +0x18 "characterIdle"
+    CString characterBattleIdle;    // +0x20 "characterBattleIdle"
+    bool sameBattleIdle;            // +0x28 idle == battleIdle (no case)
+    bool sameCharacterBattleIdle;   // +0x29 characterIdle == characterBattleIdle (no case)
 };
 MS2_CHECK_SIZE(ItemEffect, 0x30);
 
@@ -254,10 +255,12 @@ struct ItemAdditionalEffect         // <AdditionalEffect ...>
     ~ItemAdditionalEffect();        // 0x140540c40
     int FUN_140549c00(Unk_140165cf0* pElem);
     int FUN_140549d40(void* pParent);
-    bool FUN_140549d60(const ItemAdditionalEffect* pOther);
-    ATL::CAtlArray<unsigned> ids;           // +0x00
-    ATL::CAtlArray<unsigned short> levels;  // +0x20
-    int dropEffect;                 // +0x40
+    bool FUN_140549d60(const ItemAdditionalEffect* pOther);     // operator!=
+    unsigned FUN_140549de0();       // the first id (0 when none)
+    unsigned short FUN_140549e20(); // the first level (0 when none)
+    ATL::CAtlArray<unsigned> ids;           // +0x00 "id"
+    ATL::CAtlArray<unsigned short> levels;  // +0x20 "level"
+    int dropEffect;                 // +0x40 "dropEffect"
     int unknown44;
 };
 MS2_CHECK_SIZE(ItemAdditionalEffect, 0x48);

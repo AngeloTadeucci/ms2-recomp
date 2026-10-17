@@ -43,6 +43,7 @@ int FUN_1408736d0(Unk_140165cf0* pElem, const char* pszName, bool& bOut);  // bo
 void FUN_140873c60(void* pElem, const char* pszName, unsigned short nValue);   // SetAttribute(name, unsigned short)
 int FUN_14053fa40(int nItemId);            // itemdata.cpp (written there as bool; the callers test eax)
 unsigned FUN_141901d20(int nItemId, __int64 nUid, __int64 nUgc);           // uicommon.cpp
+int FUN_140873710(Unk_140165cf0* pElem, const char* pszName, int* pnOut);  // int attribute (TinyXML query)
 
 // The item price table (commonfiles\pricetable.cpp).
 class Unk_PriceTable
@@ -1467,4 +1468,162 @@ int ItemFusion::FUN_140549520(Unk_140165cf0* pElem)
 int ItemFusion::FUN_140549580(void* pParent)
 {
     return 1;
+}
+
+// @0x1405495a0
+ItemUccMesh::ItemUccMesh()
+{
+}
+
+// @0x1405495d0
+int ItemUccMesh::FUN_1405495d0(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pUcc = pElem->FUN_140165cf0("ucc");
+    if (pUcc != 0)
+        FUN_1408733e0(pUcc, "mesh", mesh);
+    return 1;
+}
+
+// @0x140549630
+int ItemUccMesh::FUN_140549630(void* pParent)
+{
+    if (!mesh.IsEmpty())
+    {
+        Unk_TiXmlElement elem("ucc");
+        FUN_140874050(&elem, "mesh", mesh);
+        FUN_14086e000(pParent, &elem);
+    }
+    return 1;
+}
+
+// @0x1405496c0
+ItemEffect::ItemEffect() : enchantShape(1), sameBattleIdle(false), sameCharacterBattleIdle(false)
+{
+}
+
+// @0x140549740
+int ItemEffect::FUN_140549740(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pEffect = pElem->FUN_140165cf0("effect");
+    if (pEffect != 0)
+    {
+        FUN_1408731e0(pEffect, "enchantShape", enchantShape);
+        FUN_1408733e0(pEffect, "idle", idle);
+        FUN_1408733e0(pEffect, "battleIdle", battleIdle);
+        FUN_1408733e0(pEffect, "characterIdle", characterIdle);
+        FUN_1408733e0(pEffect, "characterBattleIdle", characterBattleIdle);
+        if (!idle.IsEmpty() && idle.CompareNoCase(battleIdle) == 0)
+            sameBattleIdle = true;
+        if (!characterIdle.IsEmpty() && characterIdle.CompareNoCase(characterBattleIdle) == 0)
+            sameCharacterBattleIdle = true;
+    }
+    return 1;
+}
+
+// @0x1405498b0
+int ItemEffect::FUN_1405498b0(void* pParent)
+{
+    if (FUN_140549b10())
+    {
+        Unk_TiXmlElement elem("effect");
+        if (enchantShape != 1)
+            FUN_140873ca0(&elem, "enchantShape", enchantShape);
+        if (!idle.IsEmpty())
+            FUN_140874050(&elem, "idle", idle);
+        if (!battleIdle.IsEmpty())
+            FUN_140874050(&elem, "battleIdle", battleIdle);
+        if (!characterIdle.IsEmpty())
+            FUN_140874050(&elem, "characterIdle", characterIdle);
+        if (!characterBattleIdle.IsEmpty())
+            FUN_140874050(&elem, "characterBattleIdle", characterBattleIdle);
+        FUN_14086e000(pParent, &elem);
+    }
+    return 1;
+}
+
+// @0x140549a40
+bool ItemEffect::FUN_140549a40(const ItemEffect* pOther)
+{
+    if (enchantShape != pOther->enchantShape)
+        return true;
+    if (idle != pOther->idle)
+        return true;
+    if (battleIdle != pOther->battleIdle)
+        return true;
+    if (characterIdle != pOther->characterIdle)
+        return true;
+    if (characterBattleIdle != pOther->characterBattleIdle)
+        return true;
+    return false;
+}
+
+// @0x140549b10
+bool ItemEffect::FUN_140549b10()
+{
+    if (enchantShape != 1)
+        return true;
+    if (!idle.IsEmpty())
+        return true;
+    if (!battleIdle.IsEmpty())
+        return true;
+    if (!characterIdle.IsEmpty())
+        return true;
+    if (!characterBattleIdle.IsEmpty())
+        return true;
+    return false;
+}
+
+// @0x140549bb0
+ItemAdditionalEffect::ItemAdditionalEffect()
+{
+    dropEffect = 0;
+}
+
+// @0x140549c00
+int ItemAdditionalEffect::FUN_140549c00(Unk_140165cf0* pElem)
+{
+    Unk_140165cf0* pEffect = pElem->FUN_140165cf0("AdditionalEffect");
+    if (pEffect != 0)
+    {
+        CString strIds = FUN_14015f710(pEffect, "id", "");
+        XmlSplit(strIds, ids, ",");
+        CString strLevels = FUN_14015f710(pEffect, "level", "");
+        XmlSplit(strLevels, levels, ",");
+        FUN_140873710(pEffect, "dropEffect", &dropEffect);
+    }
+    return 1;
+}
+
+// @0x140549d40
+int ItemAdditionalEffect::FUN_140549d40(void* pParent)
+{
+    return 1;
+}
+
+// @0x140549d60
+bool ItemAdditionalEffect::FUN_140549d60(const ItemAdditionalEffect* pOther)
+{
+    if (!IsSameArray(ids, pOther->ids))
+        return true;
+    if (!IsSameArray(levels, pOther->levels))
+        return true;
+    if (dropEffect != pOther->dropEffect)
+        return true;
+    return false;
+}
+
+// @0x140549de0
+unsigned ItemAdditionalEffect::FUN_140549de0()
+{
+    if (ids.IsEmpty())
+        return 0;
+    return ids.GetAt(0);
+}
+
+// @0x140549e20
+unsigned short ItemAdditionalEffect::FUN_140549e20()
+{
+    if (levels.IsEmpty())
+        return 0;
+    return levels.GetAt(0);
 }

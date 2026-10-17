@@ -246,7 +246,7 @@ int CNifCubeGuide::FUN_1410b0680() {
     if (item->FUN_1408b3860() == 0) return 0;
     MS2Ptr<CItemData> data = FUN_14053f870(item->itemId);
     if (data == NULL) return 0;
-    CString textureName(data->cubeTextureName);
+    CString textureName(data->cubeTextureName.mesh);
     if (textureName.GetLength() == 0) return 0;
     CString path = FUN_1410280d0(2, item->look->resourcePath);
     if (_access(path, 4) == 0) {
