@@ -75,7 +75,7 @@ class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };
 // Entity id handle copied from the none id (copy ctor 0x1408b6b20).
 struct Unk_CMISEntityRef
 {
-    Unk_CMISEntityRef(const Unk_1401cd100&);
+    Unk_CMISEntityRef(const Unk_CMISEntityRef&);                 // 0x1408b6b20
     bool FUN_140965410(const Unk_1401cd100& none) const;     // operator==
     void* m_p;
 };
@@ -189,7 +189,7 @@ public:
     void FUN_1410d5830(unsigned __int64 key);
     bool FUN_1410d58c0(unsigned __int64 key);
     void FUN_1410d5930(Unk_CMISTree<286>* pOut);
-    void* FUN_1410c5420(const int* pKey);
+    void* FUN_1410c5420(Unk_CMISEntityRef key);
     int FUN_1410cb420(const Unk_CMISEntityRef* pRef);
     int FUN_1410d2730(const Unk_Int3* pPt);
     int FUN_1410d4340(Unk_CubePoint* pOut);
@@ -200,6 +200,12 @@ public:
     void FUN_1410c51d0(int nA, int nB, CStringW strName);
     __int64 FUN_1410c8030(int nA, int nB);
     int FUN_1410cba80(int nDir, int nField50, Unk_Int3* pCell, Unk_CMISPt3* pPos);
+    void FUN_1410ce3f0(Unk_CubeOwnerPtr spOwner);
+    void FUN_1410ce4b0(Unk_CubeOwnerPtr spOwner);
+    void FUN_1410c5280(int nKey);
+    void FUN_1410c5340(Unk_CMISEntityRef ref);
+    void FUN_1410c6070();
+    void FUN_1410c6820(int nIdx);
     int FUN_1410c3000();
     void FUN_1410c3020(int v);
     int FUN_1410c3100();
