@@ -35,6 +35,7 @@ class Unk_BmPtr
 public:
     Unk_BmPtr();
     Unk_BmPtr(int);
+    Unk_BmPtr(decltype(nullptr));                           // `Unk_BmPtr p(nullptr)`: the dummy argument is a qword (npcdata.cpp GetRegionSpawnData)
     Unk_BmPtr(T* p);                                        // raw pointer + AddRef
     Unk_BmPtr(const Unk_BmNewTag&);                         // fresh object
     Unk_BmPtr(const Unk_BmPtr& o);                          // copy + AddRef
@@ -65,6 +66,7 @@ private:
 
 template <class T> Unk_BmPtr<T>::Unk_BmPtr() { m_p = 0; }
 template <class T> Unk_BmPtr<T>::Unk_BmPtr(int) { m_p = 0; }
+template <class T> Unk_BmPtr<T>::Unk_BmPtr(decltype(nullptr)) { m_p = 0; }
 template <class T> Unk_BmPtr<T>::Unk_BmPtr(T* p) { m_p = p; AddRef(); }
 template <class T> Unk_BmPtr<T>::Unk_BmPtr(const Unk_BmNewTag&) { m_p = 0; Make(); }
 template <class T> Unk_BmPtr<T>::Unk_BmPtr(const Unk_BmPtr& o) { m_p = o.m_p; AddRef(); }

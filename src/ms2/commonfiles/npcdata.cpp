@@ -2,9 +2,72 @@
 // (model, stats, shapes, drop, ...), the region spawn classes (Table/NpcRegionSpawnData.xml) and the NpcDataTable that
 // loads them, plus the container glue of those members (CAtlArray, std::vector, CAtlMap, std::bitset).
 // MS2-UNIT: commonfiles\npcdata.cpp
+// MS2-GUESS-LOOKALIKES
 // MS2-RANGE: 0x1406c8680-0x1406dc170 .text$mn
 // MS2-RANGE: 0x1400bb810-0x1400bb9a0 .text$di
+// MS2-PINS-BEGIN tplpin
+// MS2-PIN: ??$?0V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H$0A@@?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@$$QEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@$$QEAH@Z 0x1406cf6c0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCNpcData@@@@QEAA@$$QEAV0@@Z 0x1406cf850 ; unique
+// MS2-PIN: ??$?8HH@std@@YA_NAEBU?$pair@HH@0@0@Z 0x1406cf930 ; unique
+// MS2-PIN: ??$IsSameArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@@YA_NAEBV?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@0@Z 0x1406cfc90 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBI_N@std@@@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBI_N@1@@Z 0x1406cff90 ; unique
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@AEBI@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBI@1@$$QEAV?$tuple@$$V@1@@Z 0x1406d0080 ; unique
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBI_N@std@@PEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@AEAU?$pair@$$CBI_N@1@1@Z 0x1406d0820 ; unique
+// MS2-PIN: ??$_Insert_hint@AEAU?$pair@$$CBI_N@std@@PEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@1@AEAU?$pair@$$CBI_N@1@PEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@@Z 0x1406d17c0 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBI_N@std@@PEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBI_N@1@PEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@@Z 0x1406d3440 ; unique
+// MS2-PIN: ??$_Kfn@$$CBI_N@?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@SAAEBIAEBU?$pair@$$CBI_N@1@@Z 0x1406d3860 ; prop
+// MS2-PIN: ??$_Lbound@I@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@1@AEBI@Z 0x1406d3910 ; unique
+// MS2-PIN: ??$_Try_emplace@AEBI$$V@?$map@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@std@@_N@1@AEBI@Z 0x1406d3b50 ; unique
+// MS2-PIN: ??$copy@V?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@std@@V?$insert_iterator@V?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@@2@@std@@YA?AV?$insert_iterator@V?$set@IU?$less@I@std@@V?$allocator@I@2@@std@@@0@V?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@I@std@@@std@@@0@0V10@@Z 0x1406d3e90 ; unique
+// MS2-PIN: ??$forward@AEAU?$pair@$$CBI_N@std@@@std@@YAAEAU?$pair@$$CBI_N@0@AEAU10@@Z 0x1406d41f0 ; prop
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@@std@@@std@@@0@AEAV10@@Z 0x1406d4200 ; unique
+// MS2-PIN: ??$make_pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@YA?AU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@0@$$QEAV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@$$QEAH@Z 0x1406d42d0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCRegionSpawnResult@@@@QEAA@AEBV0@@Z 0x1406d46c0 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCRegionSpawnResult@@@@QEAA@PEAVCRegionSpawnResult@@@Z 0x1406d4700 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCNpcData@@@@QEAA@H@Z 0x1406d4770 ; unique
+// MS2-PIN: ??0?$Unk_BmPtr@VCNpcRegionSpawnData@@@@QEAA@AEBV0@@Z 0x1406d47e0 ; prop
+// MS2-PIN: ??0?$Unk_BmPtr@VCNpcRegionSpawnData@@@@QEAA@AEBUUnk_BmNewTag@@@Z 0x1406d4820 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCCacheData@@@@QEAA@PEAVCCacheData@@@Z 0x1406d4850 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VCRegionSpawnProb@@@@QEAA@AEBV0@@Z 0x1406d48a0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VCRegionSpawnProb@@@@QEAA@PEAVCRegionSpawnProb@@@Z 0x1406d4900 ; prop
+// MS2-PIN: ??0?$MS2Ptr@VNodeCollision@CNpcData@@@@QEAA@PEAVNodeCollision@CNpcData@@@Z 0x1406d49c0 ; prop
+// MS2-PIN: ??0?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@AEBU01@@Z 0x1406d4d50 ; unique
+// MS2-PIN: ??1?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@XZ 0x1406d5460 ; unique
+// MS2-PIN: ?AssignRaw@?$MS2Ptr@VCCacheData@@@@QEAAAEAV1@PEAVCCacheData@@@Z 0x1406d58f0 ; unique
+// MS2-PIN: ??A?$CAtlArray@V?$MS2Ptr@VCRegionSpawnProb@@@@V?$CElementTraits@V?$MS2Ptr@VCRegionSpawnProb@@@@@ATL@@@ATL@@QEBAAEBV?$MS2Ptr@VCRegionSpawnProb@@@@_K@Z 0x1406d5b40 ; unique
+// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@1@XZ 0x1406d5d50 ; unique
+// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBI_N@1@XZ 0x1406d5d70 ; unique
+// MS2-PIN: ??_G?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAAPEAXI@Z 0x1406d61f0 ; unique
+// MS2-PIN: ?Add@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@QEAA_KAEBU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@Z 0x1406d6430 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCRegionSpawnResult@@@@V?$CElementTraits@V?$MS2Ptr@VCRegionSpawnResult@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCRegionSpawnResult@@@@@Z 0x1406d64e0 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VCRegionSpawnProb@@@@V?$CElementTraits@V?$MS2Ptr@VCRegionSpawnProb@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VCRegionSpawnProb@@@@@Z 0x1406d6590 ; prop
+// MS2-PIN: ?Add@?$CAtlArray@V?$MS2Ptr@VNodeCollision@CNpcData@@@@V?$CElementTraits@V?$MS2Ptr@VNodeCollision@CNpcData@@@@@ATL@@@ATL@@QEAA_KAEBV?$MS2Ptr@VNodeCollision@CNpcData@@@@@Z 0x1406d6640 ; prop
+// MS2-PIN: ?CallDestructors@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@CAXPEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@_K@Z 0x1406d6770 ; unique
+// MS2-PIN: ?GetCount@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@QEBA_KXZ 0x1406d6e20 ; prop
+// MS2-PIN: ?GetCount@?$CAtlArray@V?$MS2Ptr@VCRegionSpawnProb@@@@V?$CElementTraits@V?$MS2Ptr@VCRegionSpawnProb@@@@@ATL@@@ATL@@QEBA_KXZ 0x1406d6e40 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HV?$Unk_BmPtr@VCNpcRegionSpawnData@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VCNpcRegionSpawnData@@@@@3@@ATL@@AEBAPEAVCNode@12@HAEAI0AEAPEAV312@@Z 0x1406d6f40 ; unique
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@V?$CElementTraits@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@@ATL@@AEAA_N_K@Z 0x1406d7090 ; prop
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VCRegionSpawnResult@@@@V?$CElementTraits@V?$MS2Ptr@VCRegionSpawnResult@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1406d7230 ; prop
+// MS2-PIN: ?GrowBuffer@?$CAtlArray@V?$MS2Ptr@VNodeCollision@CNpcData@@@@V?$CElementTraits@V?$MS2Ptr@VNodeCollision@CNpcData@@@@@ATL@@@ATL@@AEAA_N_K@Z 0x1406d7570 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@ATL@@SAXPEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@0_K@Z 0x1406d8ff0 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VCRegionSpawnResult@@@@@ATL@@SAXPEAV?$MS2Ptr@VCRegionSpawnResult@@@@0_K@Z 0x1406d9030 ; prop
+// MS2-PIN: ?RelocateElements@?$CElementTraitsBase@V?$MS2Ptr@VNodeCollision@CNpcData@@@@@ATL@@SAXPEAV?$MS2Ptr@VNodeCollision@CNpcData@@@@0_K@Z 0x1406d90b0 ; prop
+// MS2-PIN: ?Reference@?$MS2Ptr@VCCacheData@@@@CAXPEAVCCacheData@@@Z 0x1406d9f40 ; prop
+// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VCRegionSpawnProb@@@@AEBAXPEAX@Z 0x1406d9fc0 ; prop
+// MS2-PIN: ?_Compare@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEBA_NAEBI0@Z 0x1406da330 ; unique
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@@Z 0x1406da3f0 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@@std@@@2@$00@2@$00@std@@QEAAAEAU?$less@I@2@XZ 0x1406dabb0 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCCacheData@@@@@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@I@2@XZ 0x1406dabc0 ; unique
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@2@$00@2@$00@std@@QEBAAEBU?$less@I@2@XZ 0x1406dabe0 ; prop
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x1406dad70 ; prop
+// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@2@AEBI@Z 0x1406dbae0 ; unique
+// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBI_N@std@@@std@@@std@@@2@AEBI@Z 0x1406dbc70 ; unique
+// MS2-PINS-END tplpin
 // MS2-PIN: ??1NodeCollision@CNpcData@@UEAA@XZ 0x1406d5820
+// MS2-PIN: ?_Buynode0@?$_Tree_comp_alloc@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@XZ 0x1406da210 ; manual
+// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@I_NU?$less@I@std@@V?$allocator@U?$pair@$$CBI_N@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBI_N@std@@PEAX@2@@Z 0x1406daaf0 ; manual
+// MS2-PIN: ??1CNpcRegionSpawnData@@UEAA@XZ 0x1406d5570
+// MS2-PIN: ??1CRegionSpawnProb@@UEAA@XZ 0x1406d5620
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\npcdata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "npcdata.h"
@@ -90,7 +153,7 @@ template <class T> bool IsSameArray(const ATL::CAtlArray<T>& a, const ATL::CAtlA
 {
     if (a.GetCount() != b.GetCount())
         return false;
-    for (size_t i = 0; i < a.GetCount(); i++)
+    for (unsigned i = 0; i < a.GetCount(); i++)
     {
         if (a[i] != b[i])
             return false;
@@ -101,7 +164,7 @@ template <class T> bool IsSameArray(const ATL::CAtlArray<MS2Ptr<T> >& a, const A
 {
     if (a.GetCount() != b.GetCount())
         return false;
-    for (size_t i = 0; i < a.GetCount(); i++)
+    for (unsigned i = 0; i < a.GetCount(); i++)
     {
         if (*a[i] != *b[i])
             return false;
@@ -447,6 +510,11 @@ bool Unk_NpcCorpse::operator!=(const Unk_NpcCorpse& o) const
     if (m_fAdded != o.m_fAdded)
         return true;
     return false;
+}
+
+// @0x1406d4dc0
+Unk_NpcEffect::Unk_NpcEffect()
+{
 }
 
 // @0x1406c9ec0
@@ -861,12 +929,7 @@ CNpcRegionSpawnData::CNpcRegionSpawnData()
 {
 }
 
-// @0x1406d5570
-CNpcRegionSpawnData::~CNpcRegionSpawnData()
-{
-}
-
-// @0x1406d4fe0
+// MS2-PIN: ??0CRegionSpawnProb@@QEAA@XZ 0x1406d4fe0
 CRegionSpawnProb::CRegionSpawnProb()
 {
     m_pSpawn = 0;
@@ -874,14 +937,12 @@ CRegionSpawnProb::CRegionSpawnProb()
     m_fWeight = 0.0f;
 }
 
-// @0x1406d5620
-CRegionSpawnProb::~CRegionSpawnProb()
-{
-}
-
 // @0x1406d5060
-CRegionSpawnResult::CRegionSpawnResult() : m_nMaxDifficulty(0), m_nMinDifficulty(0), m_nUnused(0)
+CRegionSpawnResult::CRegionSpawnResult()
 {
+    m_nMaxDifficulty = 0;
+    m_nMinDifficulty = 0;
+    m_nUnused = 0;
 }
 
 // @0x1406d5650
@@ -909,12 +970,12 @@ MS2Ptr<CRegionSpawnProb> CRegionSpawnResult::Pick() const
 }
 
 // @0x1406cd330
-// MS2-FUNCTIONAL: the exe moves the looked-up pointer into the result (MS2Ptr has no move constructor here)
 MS2Ptr<CNpcData> FUN_1406cd330(int nNpcId)
 {
     if (nNpcId == 0)
         return MS2Ptr<CNpcData>(0);
-    return s_pNpcTable->FUN_140a7cab0(nNpcId);
+    MS2Ptr<CNpcData> pData = s_pNpcTable->FUN_140a7cab0(nNpcId);
+    return pData;
 }
 
 // @0x1406d6e90
@@ -984,7 +1045,7 @@ MS2Ptr<CRegionSpawnResult> CNpcDataTable::FindSpawnResult(CStringW strTags, int 
                 for (int k = 0; k < (int)pIds->GetCount(); k++)
                 {
                     unsigned nNpcId = (*pIds)[k];
-                    MS2Ptr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
+                    Unk_BmPtr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
                     if (!(pData == 0))
                     {
                         if (nMaxDifficulty < pData->m_nDifficulty)
@@ -1018,7 +1079,7 @@ MS2Ptr<CRegionSpawnResult> CNpcDataTable::FindSpawnResult(CStringW strTags, int 
     {
         unsigned nNpcId = mapHit.GetKeyAt(pos);
         Unk_RegionTagHit hit = mapHit.GetValueAt(pos);
-        MS2Ptr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
+        Unk_BmPtr<CNpcRegionSpawnData> pData = GetRegionSpawnData(nNpcId);
         if (!(pData == 0))
         {
             if (hit.m_nMain == 0 && hit.m_nSub == 0)
@@ -1044,16 +1105,16 @@ MS2Ptr<CRegionSpawnResult> CNpcDataTable::FindSpawnResult(CStringW strTags, int 
 }
 
 // @0x1406ce1d0
-MS2Ptr<CNpcRegionSpawnData> CNpcDataTable::GetRegionSpawnData(int nNpcId)
+Unk_BmPtr<CNpcRegionSpawnData> CNpcDataTable::GetRegionSpawnData(int nNpcId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    MS2Ptr<CNpcRegionSpawnData> pData(0);
+    Unk_BmPtr<CNpcRegionSpawnData> pData(nullptr);
     m_mapSpawn.Lookup(nNpcId, pData);
     return pData;
 }
 
 // @0x1406ce280
-void CNpcDataTable::IndexRegionSpawn(MS2Ptr<CNpcRegionSpawnData> pData)
+void CNpcDataTable::IndexRegionSpawn(Unk_BmPtr<CNpcRegionSpawnData> pData)
 {
     if (!(pData == 0))
     {
@@ -1118,7 +1179,7 @@ void CNpcDataTable::LoadRegionSpawn()
             continue;
         if (!FUN_14036d4b0(FUN_140166410(), strFeature))
             continue;
-        MS2Ptr<CNpcRegionSpawnData> pData(new CNpcRegionSpawnData);
+        Unk_BmPtr<CNpcRegionSpawnData> pData(Unk_BmNewTag(0));
         pData->m_nNpcId = atoi(FUN_14086f4b0(pNode, "npcID"));
         CStringW strMain = FUN_1401bf530(pNode, "mainTags", CStringW(L""));
         FUN_14025a680(strMain, pData->m_aTags[0], L",");
@@ -1151,7 +1212,7 @@ int CNpcDataTable::GetIdFromPath(const CStringA& strPath)
 bool CNpcDataTable::NeedsLoad(int nNpcId)
 {
     Unk_CriticalSectionLock lock(m_lock, 1);
-    std::map<int, MS2Ptr<CCacheData> >::iterator it = m_mapCache.find(nNpcId);
+    std::map<unsigned, MS2Ptr<CCacheData> >::iterator it = m_mapCache.find(nNpcId);
     if (it == m_mapCache.end())
         return false;
     MS2Ptr<CCacheData> pCache = it->second;
@@ -1159,7 +1220,7 @@ bool CNpcDataTable::NeedsLoad(int nNpcId)
         return false;
     if (FUN_1401d1320(pCache.get()) != 0)
         return true;
-    std::map<int, bool>::iterator itLoaded = m_mapLoaded.find(nNpcId);
+    std::map<unsigned, bool>::iterator itLoaded = m_mapLoaded.find(nNpcId);
     if (itLoaded == m_mapLoaded.end())
         return false;
     return itLoaded->second != true;
@@ -1509,7 +1570,8 @@ bool CNpcData::LoadXml(Unk_140165cf0* pElem)
     pChild = pElem->FUN_140165cf0("normal");
     if (pChild == 0)
     {
-        m_normal.m_aActions.Add(std::make_pair(CStringA("Idle_A"), 1));
+        int nProb = 1;
+        m_normal.m_aActions.Add(std::make_pair("Idle_A", nProb));
         m_normal.m_nMoveArea = 200;
     }
     else

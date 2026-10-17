@@ -333,7 +333,7 @@ class CNpcRegionSpawnData : public CPtred
 {
 public:
     CNpcRegionSpawnData();                                  // 0x1406c8680
-    virtual ~CNpcRegionSpawnData();                         // 0x1406d5570
+    virtual ~CNpcRegionSpawnData() = default;               // 0x1406d5570 (pinned: the exe dtor has no vptr store)
 
     int m_nNpcId;                                           // +0x18 npcID
     ATL::CAtlArray<CStringW> m_aTags[2];                    // +0x20 mainTags, +0x40 subTags (trimmed pieces)
@@ -349,9 +349,9 @@ class CRegionSpawnProb : public CPtred
 {
 public:
     CRegionSpawnProb();                                     // 0x1406d4fe0
-    virtual ~CRegionSpawnProb();                            // 0x1406d5620
+    virtual ~CRegionSpawnProb() = default;                  // 0x1406d5620 (pinned: the exe dtor has no vptr store)
 
-    MS2Ptr<CNpcRegionSpawnData> m_pSpawn;                   // +0x18
+    Unk_BmPtr<CNpcRegionSpawnData> m_pSpawn;                   // +0x18
     float m_fRate;                                          // +0x28 share of the total weight
     float m_fWeight;                                        // +0x2c
 };
@@ -385,18 +385,18 @@ public:
     CNpcDataTable();                                                    // 0x1406cd750
 
     MS2Ptr<CRegionSpawnResult> FindSpawnResult(CStringW strTags, int nMinDifficulty, int nMaxDifficulty);    // 0x1406cd840
-    MS2Ptr<CNpcRegionSpawnData> GetRegionSpawnData(int nNpcId);         // 0x1406ce1d0
-    void IndexRegionSpawn(MS2Ptr<CNpcRegionSpawnData> pData);           // 0x1406ce280
+    Unk_BmPtr<CNpcRegionSpawnData> GetRegionSpawnData(int nNpcId);         // 0x1406ce1d0
+    void IndexRegionSpawn(Unk_BmPtr<CNpcRegionSpawnData> pData);           // 0x1406ce280
     void LoadNpcCache();                                                // 0x1406ce4a0
     void LoadRegionSpawn();                                             // 0x1406ce6d0
     int GetIdFromPath(const CStringA& strPath);                         // 0x1406ced30 (the number in "<id>.xml")
     bool NeedsLoad(int nNpcId);                                         // 0x1406cedb0
 
     CLockCriticalSection m_lock;                                        // +0x00
-    std::map<int, MS2Ptr<CCacheData> > m_mapCache;                      // +0x30 per npc xml file
-    std::map<int, bool> m_mapLoaded;                                    // +0x40
+    std::map<unsigned, MS2Ptr<CCacheData> > m_mapCache;                      // +0x30 per npc xml file
+    std::map<unsigned, bool> m_mapLoaded;                                    // +0x40
     ATL::CAtlArray<MS2Ptr<CRegionSpawnResult> > m_aResult;              // +0x50 cached FindSpawnResult results
-    ATL::CAtlMap<int, MS2Ptr<CNpcRegionSpawnData> > m_mapSpawn;         // +0x70 by npc id
+    ATL::CAtlMap<int, Unk_BmPtr<CNpcRegionSpawnData> > m_mapSpawn;         // +0x70 by npc id
     ATL::CRBMap<CStringW, Unk_BmBoxPtr<ATL::CAtlArray<unsigned> > > m_mapTag[2];                   // +0xb8 main / sub tag -> npc ids
 };
 MS2_CHECK_SIZE(CNpcDataTable, 0x118);
