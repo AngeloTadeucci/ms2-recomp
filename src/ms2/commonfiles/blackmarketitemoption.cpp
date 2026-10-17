@@ -194,7 +194,6 @@ bool CBlackMarketUtil::s_bInit;
 bool CBlackMarketTable::s_bInit;
 
 // @0x1401bcbf0
-// MS2-FUNCTIONAL: smart pointer temporaries placed differently
 long long FUN_1401bcbf0(CItem* pItem, long long nPrice)
 {
     if (pItem == 0)
@@ -910,7 +909,6 @@ int CBlackMarketSchCond::IsEqual(const CBlackMarketSchCond* pOther)
 MS2_REPLACE_METHOD(0x1401BEF60, CBlackMarketSchCond, IsEqual, 611, 0xB2C3605C);
 
 // @0x1401bf1d0
-// MS2-FUNCTIONAL: compaction loop branch layout differs
 int CBlackMarketSchCond::Compact()
 {
     if (m_dw5c == 0)
@@ -925,12 +923,11 @@ int CBlackMarketSchCond::Compact()
     int nUsed = 0;
     for (int j = 0; j < 3; j++)
     {
-        if (m_aMin[j] != 0 || m_aMax[j] != 0)
-        {
-            aMin[nUsed] = m_aMin[j];
-            aMax[nUsed] = m_aMax[j];
-            nUsed++;
-        }
+        if (!(m_aMin[j] != 0 || m_aMax[j] != 0))
+            continue;
+        aMin[nUsed] = m_aMin[j];
+        aMax[nUsed] = m_aMax[j];
+        nUsed++;
     }
     if (nUsed == 0)
         return 0;
@@ -982,13 +979,14 @@ void FUN_1401bf440(CBlackMarketTable::TabList& rList, Unk_BmTabIndex* pIndex)
 }
 
 // @0x1401bf530
-// MS2-FUNCTIONAL: CStringW return temporaries placed differently
 CStringW FUN_1401bf530(Unk_140165cf0* pElem, const char* pszName, CStringW strDefault)
 {
     CStringW strValue;
-    if (FUN_140873420(pElem, pszName, strValue) == 0)
-        return strValue;
-    return strDefault;
+    if (FUN_140873420(pElem, pszName, strValue) != 0)
+    {
+        return strDefault;
+    }
+    return strValue;
 }
 
 // @0x1401bfbd0
