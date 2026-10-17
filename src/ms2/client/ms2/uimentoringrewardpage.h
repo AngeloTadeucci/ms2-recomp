@@ -34,10 +34,11 @@ public:
  virtual CString vfunc_6()=0;virtual CStringW vfunc_7();virtual int vfunc_8();virtual void vfunc_9();
  MS2Ptr<AScript> FUN_140c74d70();UIMentoringDialog* FUN_140c74dc0();
  void FUN_140c6f190();void FUN_140c71ce0();void FUN_140c6f7a0(CString,MS2Ptr<Unk_MentorEntry>);void FUN_140c71ee0(CString,MS2Ptr<Unk_MentorEntry>,int);
-private:friend class UIMentoringMissionPage;MS2Ptr<AScript> m_script;UIMentoringDialog* m_owner;
+private:friend class UIMentoringMissionPage;friend class UIMentoringBuffPage;MS2Ptr<AScript> m_script;UIMentoringDialog* m_owner;
 };
 MS2_CHECK_SIZE(UIMentoringPage,0x30);
-class UIMentoringBuffPage:public UIMentoringPage {public:UIMentoringBuffPage(UIMentoringDialog*);CString vfunc_6();};
+class UIMentoringBuffPage:public UIMentoringPage {public:UIMentoringBuffPage(UIMentoringDialog*);virtual ~UIMentoringBuffPage();virtual int vfunc_1();virtual void vfunc_2();virtual int vfunc_5(const char*,const Scaleform::GFx::Value*,unsigned);virtual CString vfunc_6();virtual CStringW vfunc_7();};
+MS2_CHECK_SIZE(UIMentoringBuffPage,0x30);
 class ASMentoringMenteePage;
 class UIMentoringMenteePage:public UIMentoringPage {
 public:UIMentoringMenteePage(UIMentoringDialog*);virtual ~UIMentoringMenteePage();virtual int vfunc_1();virtual void vfunc_2();virtual int vfunc_5(const char*,const Scaleform::GFx::Value*,unsigned);virtual CString vfunc_6();virtual CStringW vfunc_7();virtual int vfunc_8();virtual void vfunc_9();
