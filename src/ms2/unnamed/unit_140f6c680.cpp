@@ -44,10 +44,34 @@
 #include "ms2/placeholder/uihighlightgamemenu.h"
 #include "ms2/client/ms2/uimessageboxdata.h"
 
+#include "ms2/placeholder/cmypckeyinputcontroller.h"
+#include "ms2/placeholder/unk_1402a9d70.h"
+
+// The header statics of the three original TUs of this range (itemsocketsystempagebase.cpp, the gemstone manage page,
+// the gemstone upgrade page): each TU has the sort-type table, two labels and the condition object, then its own
+// statics.
+static CString s_strSortTypeNames1[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_strSkill1 = "skill";
+static CString s_strStun1 = "stun";
+static Unk_1402a9d70 s_condition1(17, 0.75f, 0.25f, 2.25f, 10);
+static UICommon::CMyPCKeyInputController s_keyInput;                // 0x143acb500
+static CString s_strSortTypeNames2[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_strSkill2 = "skill";
+static CString s_strStun2 = "stun";
+static Unk_1402a9d70 s_condition2(17, 0.75f, 0.25f, 2.25f, 10);
+static CString s_strManageSound = "System_Gemstone_button_01";      // 0x143acb628
+static CString s_strSortTypeNames3[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+static CString s_strSkill3 = "skill";
+static CString s_strStun3 = "stun";
+static Unk_1402a9d70 s_condition3(17, 0.75f, 0.25f, 2.25f, 10);
+static CString s_strUpgradeSound = "System_Gemstone_Upgrade_01";    // 0x143acb718
+static CString s_strUpgradeButtonSound = "System_Gemstone_button_01"; // 0x143acb6c8
+
 class Unk_ItemEquipData : public CItemData {};   // CItem::FUN_140527840's record (as commonfiles\item.cpp)
 
 // The result is formatted through fmt's enum customization, rather than an integer argument.
 enum class Unk_SocketPageResult : int {};
+void format_arg(fmt::BasicFormatter<wchar_t>& formatter, const wchar_t*& cursor, const Unk_SocketPageResult& value);
 CStringW FUN_14028dfa0(const CStringW& key, const fmt::ArgList& args);
 FMT_VARIADIC_W(CStringW, FUN_14028dfa0, CStringW)
 void FUN_1412751f0(const CStringW&, int, int);
@@ -121,7 +145,6 @@ void FUN_1411e1ce0(Unk_SocketPageInventory*, CAtlList<MS2Ptr<CEquipItem>>&, int)
 int FUN_140222ce0(MS2Ptr<CItemData>);
 bool FUN_1406272f0(unsigned, MS2Ptr<CItemGemStoneData>);
 ItemSlotBag* FUN_140c54590(const CString&);
-extern CString DAT_143acb628;
 void FUN_141276180(const CString&, const CString&);
 bool FUN_14062a3d0(MS2Ptr<CItem>, int, MS2Ptr<CItem>, Delegate<bool(int, const CMsgBoxData&)>);
 bool FUN_14062abb0(MS2Ptr<CItem>, const CMsgBoxData&);
@@ -621,6 +644,20 @@ ItemInfoSlot* FUN_140f6e830(const CString& name)
     return FUN_140c69ab0(FUN_1422c8e90(name));
 }
 
+// The enum customization of the formatter for the result code (the exe copy keeps a stack cookie and scratch locals).
+// @0x140f6eb80
+// MS2-FUNCTIONAL: integer conversion and formatter cursor update match the enum path.
+void format_arg(fmt::BasicFormatter<wchar_t>& formatter, const wchar_t*& cursor, const Unk_SocketPageResult& value)
+{
+    fmt::internal::Arg arg;
+    arg.int_value = static_cast<int>(value);
+    arg.type = fmt::internal::Arg::INT;
+    cursor = formatter.format(cursor, arg);
+}
+
+// @0x140f6ee80
+MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
+
 // @0x140f6efa0
 ItemSocketSystemPageGemStoneManage::ItemSocketSystemPageGemStoneManage()
     : m_state(0), m_selectedType(0)
@@ -918,7 +955,7 @@ void ItemSocketSystemPageGemStoneManage::FUN_140f70f90(MS2Ptr<CItem> item)
                 FUN_1412752d0(CStringW(L"s_itemsocketsystem_error_invalid_target"), 1);
                 return;
             }
-            FUN_141276180(DAT_143acb628, CString(""));
+            FUN_141276180(s_strManageSound, CString(""));
             m_selected = item;
             FUN_140f6d340(m_selectedName, m_selected);
             unsigned open = m_selected->FUN_1405279c0()->FUN_140620a20();
@@ -941,7 +978,7 @@ void ItemSocketSystemPageGemStoneManage::FUN_140f70f90(MS2Ptr<CItem> item)
 void ItemSocketSystemPageGemStoneManage::FUN_140f71330(MS2Ptr<CItem> gem)
 {
     if (!(m_root == 0) && !(gem == 0)) {
-        FUN_141276180(DAT_143acb628, CString(""));
+        FUN_141276180(s_strManageSound, CString(""));
         if (!FUN_14062a3d0(m_selected, -1, gem, Delegate<bool(int, const CMsgBoxData&)>(this, &ItemSocketSystemPageGemStoneManage::FUN_140f72bc0)))
             FUN_140f6dbe0(m_gemControl);
     }
@@ -1218,6 +1255,9 @@ UIHighlightGameMenu* FUN_140f73450()
 
 // @0x140f73c10
 int FUN_140f73c10() { return 0x4f75; }
+
+// @0x140f743d0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(2);
 
 // @0x140f7b1f0
 ItemSocketSystemPageBase::SaleParam::SaleParam() : enabled(0), value1c(0), rate(0), value24(7) {}
