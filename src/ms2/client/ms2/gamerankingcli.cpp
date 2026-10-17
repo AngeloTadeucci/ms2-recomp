@@ -32,9 +32,15 @@ class Unk_GrBanFlags { public: int FUN_1402c4c90(int nFlag); };             // b
 struct Unk_GrConfig { char m_pad[8]; Unk_GrBanFlags m_8; };
 Unk_GrConfig* FUN_14025e7b0();                                              // global client config
 void FUN_141b6de20();                                                       // thread start-up
-struct Unk_GrThreadScope { void* m_00; void* m_08; };
-void FUN_141b721f0(Unk_GrThreadScope* p, CString strName);
-void FUN_141b722b0(Unk_GrThreadScope* p);
+class Unk_UtilLogScope
+{
+public:
+    Unk_UtilLogScope(CStringA kTag);                            // 0x141b721f0
+    ~Unk_UtilLogScope();                                        // 0x141b722b0
+private:
+    DWORD m_dwThread;
+    CStringA m_kTag;
+};
 class Unk_GrUIManager { public: MS2Ptr<UIObject> FUN_141adcea0(int nClass); };
 Unk_GrUIManager* FUN_1403ed2b0();                                           // the UI service
 class Unk_GrGuildInfo { public: __int64 FUN_1404ccbd0(); };                // the guild id
@@ -250,7 +256,7 @@ void CGameRankingData::Convert(int nType, MS2Ptr<GameRankingItem::IRankItem> spI
             FUN_141028be0(p->m_id, FUN_14016a600(p->m_30, 0), 1, CString(""));
         }
     }
-    else if (nType > 200 && nType < 0xcd) {
+    else if (nType >= 0xc9 && nType <= 0xcc) {
         if (GameRankingItem::BossColosseum* p = static_cast<GameRankingItem::BossColosseum*>(spItem.get())) {
             m_id = p->m_id;
             m_rank = p->m_rank;
@@ -538,9 +544,11 @@ void CGameRankingCli::BuildKey(Key& key, int nBoard, int nSub, int nMode, int nD
         key.m_sub = nSub;
     }
     else if (nBoard == 0xe) {
-        if (nDate == 0)
+        if (nDate == 0) {
             key.m_type = 0xb7;
-        else if (nMode == 0) {
+            return;
+        }
+        if (nMode == 0) {
             key.m_type = 0xb7;
             key.m_sub = nSub;
         }
@@ -629,21 +637,27 @@ void CGameRankingCli::BuildMyRankKey(Key& key, int nBoard, int nSub, int nMode, 
     else if (nBoard == 0xb) {
         if (nMode == 0)
             key.m_type = 0x6f;
-        else if (nMode != 1 && nMode == 2)
+        else if (nMode == 1) {
+        }
+        else if (nMode == 2)
             key.m_type = 0x83;
         key.m_sub = nSub;
     }
     else if (nBoard == 0xc) {
         if (nMode == 0)
             key.m_type = 0x8d;
-        else if (nMode != 1 && nMode == 2)
+        else if (nMode == 1) {
+        }
+        else if (nMode == 2)
             key.m_type = 0xa1;
         key.m_sub = nSub;
     }
     else if (nBoard == 0xe) {
-        if (nDate == 0)
+        if (nDate == 0) {
             key.m_type = 0xb5;
-        else if (nMode == 0) {
+            return;
+        }
+        if (nMode == 0) {
             key.m_type = 0xb5;
             key.m_sub = nSub;
         }
@@ -692,7 +706,9 @@ void CGameRankingCli::ReceiveWeb(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<CGame
             return;
         if (spResponse->Read(spResult->m_buffer) == 0)
             return;
-        if (spParam->m_search.GetLength() < 1) {
+        if (spParam->m_search.GetLength() > 0)
+            ReceiveSearch(spParam, spResponse);
+        else {
             CGameRankingParam::Key key(spParam.get());
             SetResponse(key, spResponse);
             if (FUN_140b3e700(spParam->m_key.m_type) == 1)
@@ -700,8 +716,6 @@ void CGameRankingCli::ReceiveWeb(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<CGame
             else
                 SetPending(spResponse);
         }
-        else
-            ReceiveSearch(spParam, spResponse);
     }
 }
 
@@ -716,12 +730,12 @@ void CGameRankingCli::ReceiveSearch(MS2Ptr<CGameRankingParam> spParam, MS2Ptr<Ga
     if (Unk_LockGuard guard = m_lock) {}
     else {
         MS2Ptr<GameRanking::IResponse> spPrevious = QueryPrevious(key, 0);
-        if (spPrevious.get() == 0)
-            m_searchPage = spResponse->GetPage(1);
-        else {
+        if (spPrevious.get() != 0) {
             spPrevious->Merge(spParam->m_search, spResponse.get());
             m_searchPage = spPrevious->Search(spParam->m_search);
         }
+        else
+            m_searchPage = spResponse->GetPage(1);
     }
 }
 
@@ -858,13 +872,10 @@ void CGameRankingCli::DeliverPersonal()
 unsigned int __cdecl CGameRankingCli::RequestWeb(void* pParam)
 {
     FUN_141b6de20();
-    Unk_GrThreadScope scope;
-    FUN_141b721f0(&scope, CString("CGameRankingCli::RequestWeb"));
+    Unk_UtilLogScope scope(CString("CGameRankingCli::RequestWeb"));
     MS2Ptr<CGameRankingParam> spParam(static_cast<CGameRankingParam*>(pParam));
-    if (spParam == 0) {
-        FUN_141b722b0(&scope);
+    if (spParam == 0)
         return 1;
-    }
     if (CSoapClient::GetInstance() != 0) {
         MS2Ptr<CGameRankingWebResult> spResult = CSoapClient::GetInstance()->FUN_141770670(spParam);
         if (spResult.get() != 0) {
@@ -872,7 +883,6 @@ unsigned int __cdecl CGameRankingCli::RequestWeb(void* pParam)
                 GetInstance()->ReceiveWeb(spParam, spResult);
         }
     }
-    FUN_141b722b0(&scope);
     return 0;
 }
 
@@ -2828,13 +2838,13 @@ int FUN_140b3e210(CGameRankingParam::Key key)
         if (spRoom.get() != 0) {
             if (spRoom->m_groupType == 2)
                 return 7;
-            if (spRoom->m_groupType == 3)
+            else if (spRoom->m_groupType == 3)
                 return 8;
-            if (spRoom->m_groupType == 4)
+            else if (spRoom->m_groupType == 4)
                 return 9;
-            if (spRoom->m_groupType == 5)
+            else if (spRoom->m_groupType == 5)
                 return 0xf;
-            if (spRoom->m_gearScore == 0xe)
+            else if (spRoom->m_gearScore == 0xe)
                 return 0x11;
         }
         return 7;
