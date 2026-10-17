@@ -352,7 +352,7 @@ void CReactor::FUN_140b79330()
     PCBase* pPc = (PCBase*)pWorld->FUN_141bd0cc0();
     if (pPc == 0)
         return;
-    __int64 nId = FUN_141656a80(pPc);
+    unsigned __int64 nId = FUN_141656a80(pPc);
     bool bFound = m_setPlayers.find(nId) != m_setPlayers.end();
     MS2Ptr<ReactorData> spData = FUN_140966e50();
     if (spData.IsNull())

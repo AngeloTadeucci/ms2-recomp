@@ -54,7 +54,7 @@ public:
     unsigned __int64 m_n158;                                // +0x158
     MS2Ptr<ReactorData> m_spData;                           // +0x160
     ATL::CAtlList<CString> m_listAnims;                     // +0x170 animation queue
-    std::set<__int64> m_setPlayers;                         // +0x1a0 players that already used it
+    std::set<unsigned __int64> m_setPlayers;                      // +0x1a0 players that already used it
     ATL::CRBMap<CString, int> m_mapEffects;                 // +0x1b0 effect name -> effect handle
 };
 MS2_CHECK_SIZE(CReactor, 0x1e0);

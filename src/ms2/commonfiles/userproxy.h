@@ -296,7 +296,7 @@ public:
   Unk_UserProxyColor m_d4;
   Unk_UserProxyLabel m_e0[3];
   int m_140[12];
-  std::set<__int64> m_170;
+  std::set<unsigned __int64> m_170;   // unsigned: erase(key) 0x1404bfb40 / find(key) 0x1404c0270 compare with less<unsigned __int64> 0x14044a540 (jae)
   int m_180;
   bool m_184;
   __int64 m_188;

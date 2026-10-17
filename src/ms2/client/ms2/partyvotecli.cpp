@@ -140,7 +140,7 @@ inline ULongLong wc_make_type(Unk_WcArgType t0 = Unk_WcArgType(), Unk_WcArgType 
     }
 WC_WRAP(3)
 
-CInputStream& FUN_140a8a230(CInputStream& in, std::set<__int64>& ids);
+CInputStream& FUN_140a8a230(CInputStream& in, std::set<unsigned __int64>& ids);
 void* FUN_140a8a680(int nUiId);
 void* FUN_140a8a720();
 
@@ -190,13 +190,13 @@ CStringW PartyVoteCli::vfunc_4() { return CStringW(L""); }
 unsigned char PartyVoteCli::vfunc_5() { return 0; }
 
 // @0x140a894a0
-void PartyVoteCli::vfunc_6(__int64) {}
+void PartyVoteCli::vfunc_6(unsigned __int64) {}
 
 // @0x140a894c0
 int PartyVoteCli::FUN_140a894c0() const { return kind; }
 
 // @0x140a894e0
-void PartyVoteCli::FUN_140a894e0(__int64 member, bool accepted)
+void PartyVoteCli::FUN_140a894e0(unsigned __int64 member, bool accepted)
 {
     if (accepted)
         yes.insert(member);
@@ -214,9 +214,10 @@ size_t PartyVoteCli::FUN_140a89590() { return no.size(); }
 // @0x140a895c0
 bool PartyVoteCli::FUN_140a895c0()
 {
-    if (yes.find(DAT_143ab2828) != yes.end())
+    // the sets are unsigned; the exe passes &DAT_143ab2828 straight to find (no converted temporary)
+    if (yes.find(reinterpret_cast<const unsigned __int64&>(DAT_143ab2828)) != yes.end())
         return true;
-    if (no.find(DAT_143ab2828) != no.end())
+    if (no.find(reinterpret_cast<const unsigned __int64&>(DAT_143ab2828)) != no.end())
         return true;
     return false;
 }
@@ -295,10 +296,10 @@ PartyVoteReadyCli::PartyVoteReadyCli() {}
 // @0x140a89b30
 void PartyVoteReadyCli::vfunc_2()
 {
-    std::set<__int64>& all = participants;
-    for (std::set<__int64>::const_iterator itEnd = all.end(), it = all.begin(); it != itEnd; ++it)
+    std::set<unsigned __int64>& all = participants;
+    for (std::set<unsigned __int64>::const_iterator itEnd = all.end(), it = all.begin(); it != itEnd; ++it)
     {
-        __int64 member = *it;
+        unsigned __int64 member = *it;
         if (yes.find(member) != yes.end())
             FUN_1409670d0()->FUN_14162c580(member, 2);
         else if (no.find(member) != no.end())
@@ -338,7 +339,7 @@ void PartyVoteReadyCli::vfunc_3()
 }
 
 // @0x140a8a040
-void PartyVoteReadyCli::vfunc_6(__int64 member)
+void PartyVoteReadyCli::vfunc_6(unsigned __int64 member)
 {
     PartyVoteCli::vfunc_6(member);
     participants.erase(member);
@@ -369,13 +370,13 @@ void PartyVoteReadyCli::vfunc_7(__int64 member, bool accepted)
 
 // Reads a count followed by that many ids into the set.
 // @0x140a8a230
-CInputStream& FUN_140a8a230(CInputStream& in, std::set<__int64>& ids)
+CInputStream& FUN_140a8a230(CInputStream& in, std::set<unsigned __int64>& ids)
 {
     unsigned count = in.vfunc_o8_3();
     for (unsigned i = 0; i < count; ++i)
     {
-        __int64 member;
-        FUN_14070f4c0(in, member);
+        unsigned __int64 member;
+        FUN_14070f4c0(in, reinterpret_cast<__int64&>(member));
         ids.insert(member);
     }
     return in;

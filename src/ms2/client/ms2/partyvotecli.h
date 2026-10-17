@@ -28,7 +28,7 @@ public:
     virtual ~PartyVoteReadyCli() = default;
     void vfunc_2() override;
     void vfunc_3() override;
-    void vfunc_6(__int64 id) override;
+    void vfunc_6(unsigned __int64 id) override;
     void vfunc_7(__int64 id, bool accepted) override;
     bool FUN_140a8a0b0(int result, const CMsgBoxData& box);
 };

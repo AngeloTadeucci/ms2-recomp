@@ -5,6 +5,8 @@
 // MS2-RANGE: 0x142c9cb10-0x142c9cb90 .text$yd
 // MS2-RANGE: 0x142c9cbb0-0x142c9cc70 .text$yd
 // The intervening 0x142c9cb90 thunk belongs to nxa::DefaultMemoryAllocator (unit_14092cb30).
+// MS2-PIN: ?begin@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@2@XZ 0x1408f48f0 ; cf3: const overload (m_170 read through a const ref); byte-identical to the non-const one, end() 0x140341f40 is the one find() calls
+// MS2-PIN: ?end@?$_Tree@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEBA?AV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@_K@std@@@std@@@2@XZ 0x1408f4960 ; cf3: const overload (m_170 read through a const ref); byte-identical to the non-const one, end() 0x140341f40 is the one find() calls
 // MS2-PIN: ??1CCNPlatformProxy@@UEAA@XZ 0x1408f2420
 // MS2-PIN: ??__Es_proxySortA@@YAXXZ 0x1400be2c0
 // MS2-PIN: ??__Es_proxyKeys@@YAXXZ 0x1400be380
@@ -1714,7 +1716,9 @@ void Unk_UserProxy::FUN_1408f1200() {
 void Unk_UserProxy::FUN_1408f1270(ATL::CAtlArray<unsigned __int64> &out) {
   if (Unk_LockGuard lock = m_290) {
   } else {
-    for (auto it = m_170.begin(); it != m_170.end(); ++it)
+    // const begin/end 0x1408f48f0 / 0x1408f4960 (the non-const end is 0x140341f40, used by find).
+    const std::set<unsigned __int64> &ids = m_170;
+    for (auto it = ids.begin(); it != ids.end(); ++it)
       out.Add(*it);
   }
 }
@@ -1724,9 +1728,10 @@ void Unk_UserProxy::FUN_1408f1270(ATL::CAtlArray<unsigned __int64> &out) {
 __int64 Unk_UserProxy::FUN_1408f1330() {
   if (Unk_LockGuard lock = m_290) {
   } else {
-    if (m_170.empty())
+    const std::set<unsigned __int64> &ids = m_170;
+    if (ids.empty())
       return 0;
-    return *m_170.begin();
+    return *ids.begin();
   }
 }
 
