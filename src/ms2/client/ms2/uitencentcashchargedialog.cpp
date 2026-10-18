@@ -210,7 +210,6 @@ void UITencentCashChargeDialog::vfunc_85()
     }
 }
 
-// MS2-FUNCTIONAL: Value copy temp differs
 // @0x140e9a410
 void UITencentCashChargeDialog::vfunc_86()
 {
@@ -227,7 +226,6 @@ void UITencentCashChargeDialog::vfunc_16()
     vfunc_86();
 }
 
-// MS2-FUNCTIONAL: return-branch layout differs
 // @0x140e9a550
 bool UITencentCashChargeDialog::vfunc_90(POINT* pPos)
 {
@@ -240,15 +238,11 @@ bool UITencentCashChargeDialog::vfunc_90(POINT* pPos)
         return false;
     pPos->x -= static_cast<ASDialog*>(static_cast<ASDisplayObject*>(m_spTarget.operator->()))->FUN_1422c10a0();
     pPos->y -= static_cast<ASDialog*>(static_cast<ASDisplayObject*>(m_spTarget.operator->()))->FUN_1422c1110();
-    if (pPos->x >= 0 && pPos->y >= 0)
+    if (!(pPos->x >= 0 && pPos->y >= 0 && !(pPos->x > *FUN_1402056b0(&FUN_1401d3200()->m_nWidth)) && pPos->y <= *FUN_1402056b0(&FUN_1401d3200()->m_nHeight)))
     {
-        if (pPos->x <= *FUN_1402056b0(&FUN_1401d3200()->m_nWidth))
-        {
-            if (pPos->y <= *FUN_1402056b0(&FUN_1401d3200()->m_nHeight))
-                return true;
-        }
+        return false;
     }
-    return false;
+    return true;
 }
 
 // @0x140e9a6f0
