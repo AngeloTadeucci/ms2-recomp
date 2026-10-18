@@ -2935,3 +2935,5 @@ __imp_AddSurveyParameterA	142cd1480	data
 ??0Unk_DemolishTick@@QEAA@XZ	140517b00	func
 ??1Unk_AasImagePtr@@QEAA@XZ	140d030a0	func
 ?DAT_143ab2a90@@3VUnk_CcInventory@@A	143ab2a90	data
+?DAT_143ab2a90@@3VUnk_SrInventory@@A	143ab2a90	data
+??0Unk_RecommendPtr@@QEAA@XZ	1408162d0	func
