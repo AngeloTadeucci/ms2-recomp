@@ -10,6 +10,9 @@ public:
     virtual ~TSingleton() { s_instance=0; }
     static T* s_instance;
     static T* GetInstance() { return s_instance; }   // w3o1: 0x14015a050 for T = GameEventManagerCli
+    // w261: created on demand / destroyed by CMainSystem::OnInit / OnShutdown (0x141475730.., 0x141475b50..).
+    static T* CreateInstance() { return s_instance != 0 ? GetInstance() : new T; }
+    static void DestroyInstance() { if (s_instance != 0) { delete GetInstance(); s_instance = 0; } }
 };
 template<class T> T* TSingleton<T>::s_instance=0;
 struct Unk_OSData {
