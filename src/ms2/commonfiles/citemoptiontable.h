@@ -57,6 +57,7 @@ public:
     bool FUN_1405f59b0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
     bool FUN_1405f5ba0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
     bool FUN_1405f5d90(int nItemId);                        // the item has constant options
+    int FUN_1405f5e90(int nCode, int nRank, CString strTag, CString strInfo);   // always 1
     MS2Ptr<ItemOptionConstant> FUN_1405f5ee0(unsigned nId, int nGrade);  // the best constant row up to a grade
     MS2Ptr<ItemOptionRandom> FUN_1405f6010(int nId);
     int FUN_1405f6100(unsigned nStatId);
