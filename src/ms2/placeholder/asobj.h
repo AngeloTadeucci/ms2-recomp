@@ -38,6 +38,7 @@ public:
     void FUN_1409eb3b0(const char* szName, long n);                      // set a long member via ASData (astooltip.cpp)
     void FUN_1409eb270(const char* szName, const ASObj& obj);            // set a member to another AS object
     void FUN_1409eb1d0(const char* szName, const class ASArray& arr);    // set a member to an AS array (UITalkCinematic components)
+    void FUN_140c16160(const char* szName, ASArray arr);                 // set a member to an AS array (arr by value: the callee destroys it; uiitemextractionscrolldialog)
     void FUN_140e846b0(const char* szName, size_t n);                    // set a size_t member (a Set<unsigned __int64> COMDAT, in uirpseventdialog's range)
     void FUN_140e35d00(const char* szName, int n);                       // set an int member (inline COMDAT, uigamerankingdialog.cpp)
     void FUN_140e35da0(const char* szName, int n);                       // same body, a second instance (uigamerankingdialog.cpp)
