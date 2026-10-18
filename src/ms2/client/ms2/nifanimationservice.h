@@ -71,11 +71,13 @@ public:
         }
         if (NiIsKindOf(NiDynamicEffect, pkObject))
         {
-            const NiNodeList* pkList = &((NiDynamicEffect*)pkObject)->GetAffectedNodeList();
-            NiTListIterator kPos = pkList->GetHeadPos();
-            while (pkList != 0 && !pkList->IsEmpty() && kPos != 0)
+            const NiTPointerMap<NiNode*, NiNode*>* pkList = &((NiDynamicEffect*)pkObject)->GetAffectedNodeList();
+            NiTMapIterator kPos = pkList->GetFirstPos();
+            while (pkList != 0 && pkList->GetCount() != 0 && kPos != 0)
             {
-                NiNode* pkNode = pkList->GetNext(kPos);
+                NiNode* pkKey = NULL;
+                NiNode* pkNode = NULL;
+                pkList->GetNext(kPos, pkKey, pkNode);
                 if (pkList != 0)
                     CollectKeyTimes(pkNode);
             }

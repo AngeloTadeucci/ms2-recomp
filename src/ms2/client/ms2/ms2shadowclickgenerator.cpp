@@ -741,11 +741,14 @@ bool MS2ShadowClickValidator::ValidateClick(NiRenderClick* pkRenderClick, unsign
 
     bool bRetVal = false;
 
-    const NiNodeList& kReceivers = pkDynEffect->GetAffectedNodeList();
-    NiTListIterator kIter = kReceivers.GetHeadPos();
-    while (kIter)
+    const NiTPointerMap<NiNode*, NiNode*>& kReceivers = pkDynEffect->GetAffectedNodeList();
+    NiTListIterator kIter = 0;
+    NiTMapIterator kMapIter = kReceivers.GetFirstPos();
+    while (kMapIter)
     {
-        NiNode* pkReceiver = kReceivers.GetNext(kIter);
+        NiNode* pkKey = NULL;
+        NiNode* pkReceiver = NULL;
+        kReceivers.GetNext(kMapIter, pkKey, pkReceiver);
         pkReceiver->Cull(*m_spCullingProcess);
         if (m_kVisibleSet.GetCount() > 0)
         {
@@ -795,11 +798,14 @@ void MS2ShadowVisitor::PopulateCasterList(NiShadowGenerator* pkGenerator, NiAVOb
     NiDynamicEffect* pkDynEffect = pkGenerator->GetAssignedDynamicEffect();
     if (pkDynEffect)
     {
-        const NiNodeList& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
-        NiTListIterator kIter = kAffectedNodeList.GetHeadPos();
-        while (kIter)
+        const NiTPointerMap<NiNode*, NiNode*>& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
+        NiTListIterator kIter = 0;
+        NiTMapIterator kMapIter = kAffectedNodeList.GetFirstPos();
+        while (kMapIter)
         {
-            NiNode* pkNode = kAffectedNodeList.GetNext(kIter);
+            NiNode* pkKey = NULL;
+            NiNode* pkNode = NULL;
+            kAffectedNodeList.GetNext(kMapIter, pkKey, pkNode);
             AdditiveListHelper(pkNode, &kCasterList, bIncludeAppCulled);
         }
 
@@ -832,11 +838,14 @@ void MS2ShadowVisitor::PopulateCasterListAtl(NiShadowGenerator* pkGenerator, MS2
     NiDynamicEffect* pkDynEffect = pkGenerator->GetAssignedDynamicEffect();
     if (pkDynEffect)
     {
-        const NiNodeList& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
-        NiTListIterator kIter = kAffectedNodeList.GetHeadPos();
-        while (kIter)
+        const NiTPointerMap<NiNode*, NiNode*>& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
+        NiTListIterator kIter = 0;
+        NiTMapIterator kMapIter = kAffectedNodeList.GetFirstPos();
+        while (kMapIter)
         {
-            NiNode* pkNode = kAffectedNodeList.GetNext(kIter);
+            NiNode* pkKey = NULL;
+            NiNode* pkNode = NULL;
+            kAffectedNodeList.GetNext(kMapIter, pkKey, pkNode);
             AdditiveListHelperAtl(pkNode, &kCasterList, bIncludeAppCulled, true);
         }
 
@@ -859,11 +868,14 @@ void MS2ShadowVisitor::PopulateReceiverListAtl(NiShadowGenerator* pkGenerator, M
     NiDynamicEffect* pkDynEffect = pkGenerator->GetAssignedDynamicEffect();
     if (pkDynEffect)
     {
-        const NiNodeList& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
-        NiTListIterator kIter = kAffectedNodeList.GetHeadPos();
-        while (kIter)
+        const NiTPointerMap<NiNode*, NiNode*>& kAffectedNodeList = pkDynEffect->GetAffectedNodeList();
+        NiTListIterator kIter = 0;
+        NiTMapIterator kMapIter = kAffectedNodeList.GetFirstPos();
+        while (kMapIter)
         {
-            NiNode* pkNode = kAffectedNodeList.GetNext(kIter);
+            NiNode* pkKey = NULL;
+            NiNode* pkNode = NULL;
+            kAffectedNodeList.GetNext(kMapIter, pkKey, pkNode);
             AdditiveListHelperAtl(pkNode, &kReceiverList, bIncludeAppCulled, false);
         }
 
