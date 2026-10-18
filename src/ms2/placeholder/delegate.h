@@ -95,7 +95,7 @@ public:
         DelegateImpl(const DelegateImpl& o) : m_f(o.m_f) {}
         DelegateImpl(const F& f) : m_f(f) {}
         virtual DelegateImplBase* vfunc_1() const { return new DelegateImpl(*this); }
-        virtual R vfunc_2(A1 a1) { Call(m_f, a1); }
+        virtual R vfunc_2(A1 a1) { return Call(m_f, a1); }
         virtual bool vfunc_3(const DelegateImplBase* p) const
         {
             const DelegateImpl* o = dynamic_cast<const DelegateImpl*>(p);
@@ -105,7 +105,7 @@ public:
         }
 
     private:
-        template <class C, class M> static void Call(std::pair<C*, M>& p, A1 a1) { (p.first->*p.second)(a1); }
+        template <class C, class M> static R Call(std::pair<C*, M>& p, A1 a1) { return (p.first->*p.second)(a1); }
 
         F m_f;
     };
