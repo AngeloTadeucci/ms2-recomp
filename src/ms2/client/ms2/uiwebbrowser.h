@@ -39,7 +39,7 @@ public:
     void FUN_141b509b0();                                       // 0x141b509b0 show the min / max size button that applies
     template <class T> MS2Ptr<T> FUN_140bc6d10(const CString& strName, MS2Ptr<T>& out);   // 0x140bc6d10 bind a child
 
-private:
+protected:
     MS2_LAYOUT_FRIEND;
     MS2Ptr<Unk_140acd6e0> m_btnHome;            // +0x198 "m_btnHome"
     MS2Ptr<Unk_140acd6e0> m_btnPrev;            // +0x1a8 "m_btnPrev"
