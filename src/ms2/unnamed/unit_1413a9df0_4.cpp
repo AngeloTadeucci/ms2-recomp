@@ -15,6 +15,7 @@
 #include <new>
 
 #include "ms2/placeholder/cguidecondition.h"
+#include "ms2/ms2recover.h"
 
 // A reference holder with an owner pointer and a value (the guide entry reference the conditions read).
 class Unk_GcSmartRef
