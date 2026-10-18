@@ -10,21 +10,12 @@
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/ascript.h"
 #include "ms2/placeholder/nipoint3.h"
+#include "ms2/placeholder/mctimer.h"
 #include "ms2/client/ms2/mouseinteract.h"
 #include <egf/EntityID.h>
 
 namespace egf { class Entity; }
 
-// 8-byte millisecond poll timer (ctor 0x140517b00, arm 0x140268840, "interval elapsed" test 0x140268870 re-arms).
-struct Unk_McTimer
-{
-    Unk_McTimer();                          // 0x140517b00
-    void FUN_140268840();                   // arm
-    int FUN_140268870(int nInterval);       // true once the interval elapsed
-    unsigned m_nInterval;                   // +0
-    unsigned m_nLastTick;                   // +4
-};
-MS2_CHECK_SIZE(Unk_McTimer, 8);
 
 class Unk_McPc;
 class Unk_McAttach;
