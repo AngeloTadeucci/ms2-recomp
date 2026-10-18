@@ -1,6 +1,7 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). UINameTagSymbolSettingDialog: see
 // uinametagsymbolsettingdialog.h.
 // MS2-UNIT: ?\uinametagsymbolsettingdialog.cpp
+// MS2-RANGE: 0x1400ef050-0x1400ef1c0 .text$di
 // MS2-RANGE: 0x14131d910-0x14131e150 .text$mn
 // MS2-PIN: ??_GUINameTagSymbolSettingDialog@@UEAAPEAXI@Z 0x14131e0e0
 //
@@ -18,6 +19,13 @@
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+
+#include "ms2/placeholder/unk_1402a9d70.h"
+
+static CString s_sortNames[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+static CString s_skill("skill");
+static CString s_stun("stun");
+static Unk_1402a9d70 s_conditionTable(17, 0.75f, 0.25f, 2.25f, 10);
 
 // ---- unit-local views of unrecovered callees ------------------------------------------------------------------------
 
