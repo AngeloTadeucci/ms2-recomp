@@ -34,7 +34,7 @@ public:
     {
     public:
         ProbabilityFromRank(float f18, float f1c, float f20, float f24, float f28);    // 0x140604020
-        virtual ~ProbabilityFromRank() {}                                               // 0x140604b70
+        // implicit dtor 0x140604b70 (no vptr store)
         float m_f18;                    // +0x18
         float m_f1c;                    // +0x1c
         float m_f20;                    // +0x20
