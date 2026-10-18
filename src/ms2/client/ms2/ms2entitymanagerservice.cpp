@@ -62,6 +62,38 @@
 // MS2-PIN: ?lower_bound@?$_Hash@V?$_Umap_traits@VEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@V?$_Uhash_compare@VEntityID@egf@@UEntityIDHashFunctor@2@U?$equal_to@VEntityID@egf@@@std@@@std@@V?$CustomAllocator@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@4@$0A@@std@@@std@@QEBA?AV?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@std@@@2@AEBVEntityID@egf@@@Z 0x1414bc060 ; unique
 // MS2-PIN: ?pointer_to@?$pointer_traits@PEBU?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@SAPEBU?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@2@AEBU32@@Z 0x1414bc2b0 ; unique
 // MS2-PINS-END tplpin
+// cf9: additional call-graph attribution accepted by tplpin --simulate.
+// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@0@AEBV10@@Z 0x1414b73d0
+// MS2-PIN: ??$forward@AEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@@std@@YAAEAV?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@0@AEAV10@@Z 0x1414b7400
+// MS2-PIN: ??$forward@PEAVEntity@egf@@@std@@YA$$QEAPEAVEntity@egf@@AEAPEAV12@@Z 0x1414b7410
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@U?$_List_node@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@PEAX@std@@@efd@@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@std@@$00@std@@QEBAAEBV?$_List_val@U?$_List_simple_types@U?$pair@$$CBVEntityID@egf@@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@@2@XZ 0x1414b7430
+// MS2-PIN: ??1?$SmartPointer@VEntity@egf@@@efd@@QEAA@XZ 0x1414b7f00
+// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEAAAEAV01@XZ 0x1414b8940
+// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x1414b8a40
+// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1414ba600
+// MS2-PIN: ?_Get_first@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@IPEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@$00@2@$00@std@@QEBAAEBU?$less@I@2@XZ 0x1414ba6a0
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@I@std@@V?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@IPEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@$00@2@$00@std@@QEBAAEBV?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@IPEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@$00@2@XZ 0x1414ba720
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@U?$_Tree_node@IPEAX@std@@@efd@@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@$00@std@@QEBAAEBV?$_Tree_val@U?$_Tree_simple_types@I@std@@@2@XZ 0x1414ba7a0
+// MS2-PIN: ?_Getcomp@?$_Tree_comp_alloc@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@QEBAAEBU?$less@I@2@XZ 0x1414ba8c0
+// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@SAPEAU?$_Tree_node@IPEAX@2@PEAU32@@Z 0x1414bade0
+// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@QEBAAEAPEAU?$_Tree_node@IPEAX@2@XZ 0x1414bafd0
+// MS2-PIN: ??0?$CTraceCategoryEx@$0IAAAA@$0A@@ATL@@QEAA@PEBD@Z 0x1414b78a0
+// MS2-PIN: ??1CAtlStringMgr@ATL@@UEAA@XZ 0x1414b7ec0
+// MS2-PIN: ??1Category@efd@@QEAA@XZ 0x1414b7ee0
+// MS2-PIN: ?__empty_global_delete@@YAXPEAX@Z 0x1414b7ef0
+// MS2-PIN: ??B?$SmartPointer@VMessageService@efd@@@efd@@QEBAPEAVMessageService@1@XZ 0x1414ba9d0
+// MS2-PIN: ?GetValue@UniversalID@efd@@QEBA_KXZ 0x1414ba9f0
+// MS2-PIN: ??0?$SmartPointer@VEntity@egf@@@efd@@QEAA@PEAVEntity@egf@@@Z 0x1414b78c0
+// MS2-PIN: ??0UniversalID@efd@@QEAA@XZ 0x1414b7cb0
+// MS2-PIN: ??4?$SmartPointer@VEntity@egf@@@efd@@QEAAAEAV01@AEBV01@@Z 0x1414b8320
+// MS2-PIN: ??4?$SmartPointer@VEntity@egf@@@efd@@QEAAAEAV01@PEAVEntity@egf@@@Z 0x1414b83a0
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@@std@@IEBAAEBIAEBI@Z 0x1414ba9b0
+// MS2-PIN: ??0?$CTraceCategoryEx@$01$0A@@ATL@@QEAA@PEBD@Z 0x1414b7880
+// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1414b8650
+// MS2-PIN: ??8EntityID@egf@@QEBA_NAEBV01@@Z 0x1414b8690
+// MS2-PIN: ??C?$SmartPointer@VMessageService@efd@@@efd@@QEBAPEAVMessageService@1@XZ 0x1414ba9e0
+// MS2-PIN: ?_Kfn@?$_Tset_traits@IU?$less@I@std@@V?$CustomAllocator@I@efd@@$0A@@std@@SAAEBIAEBI@Z 0x1414b71c0
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1414b8750
 // 0x1414b7830 is efd::map<EntityID, PendingEntityCreationData>::try_emplace (operator[] 0x1414b87d0 -> it -> _Try_emplace
 // 0x1414b7280), not set<unsigned>::equal_range (that one is 0x1413f7760, hardwareinstancingservice.cpp's range, under
 // egf::Entity::IsDirty 0x1413ec7a0). Stays unpaired until the #if'd-out CreateEntity body that uses operator[] is recovered.
@@ -171,3 +203,9 @@ bool FUN_1414b91b0(const egf::Entity* entity) {
 }
 
 MS2_CHECK_SIZE(egf::EntityFactoryResponse,0xc0);
+
+// The original TU emits this inline SDK method even though its owning path is not recovered yet.
+unsigned Unk_EmitEntityManagerNonAtomicDecrement(efd::NonAtomicRefCount& refCount)
+{
+    return --refCount;
+}
