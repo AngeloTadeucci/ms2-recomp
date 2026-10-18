@@ -7,19 +7,11 @@
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\wireframemanager.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "ms2/ms2recover.h"
+#include "ms2/client/ms2/wireframemanager.h"
 
 // The TU's registrar ctor lives out of line in the exe at 0x141d16b90 (unnamed there: [this]=pNameRecord, [this+8]=n).
-class Unk_WireframeRegistrar
-{
-public:
-    Unk_WireframeRegistrar(const void* pNameRecord, size_t nReserved);
-
-    const void* m_pNameRecord;          // +0x00
-    size_t      m_nReserved;            // +0x08
-};
-
 // The TU's name/RTTI block; only its address is taken here.
 static const char s_szWireframeManager[] = "CWireframeManager";
 
 // The registration: one global, so the whole thing folds into the file's dynamic initializer.
-static Unk_WireframeRegistrar g_wireframeRegistrar(s_szWireframeManager, 0);
+Unk_WireframeRegistrar g_wireframeRegistrar(s_szWireframeManager, 0);
