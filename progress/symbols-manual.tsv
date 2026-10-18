@@ -3092,3 +3092,6 @@ DAT_143af6ac0	143af6ac0	data
 ??0Unk_GcTime@@QEAA@XZ	1406c4730	func
 ?GetInstance@?$TSingleton@VCFilePreload@@@@SAPEAVCFilePreload@@XZ	140ab7a10	func
 ??1Unk_NcHandle@@QEAA@XZ	1406d5390	func
+?DAT_142f01338@@3DA	142f01338	data
+??1Unk_GcNode@@QEAA@XZ	140614800	func
+??1Unk_GcUIRef@@QEAA@XZ	1403e5630	func
