@@ -14,6 +14,7 @@
 #include "ms2/placeholder/cptred.h"
 
 class CGuideEntity;
+struct Unk_GameEventIntRange;
 
 // 0x40. m_byValue: entities of an event keyed by its sub value; m_all: the entities with sub value 0.
 class GuideOccurContainer : public CPtred
@@ -33,6 +34,12 @@ class GuideTriggerEventGroup : public CPtred
 public:
     GuideTriggerEventGroup();                               // 0x141397c80
     virtual ~GuideTriggerEventGroup();                      // 0 0x141398370 (??_G 0x1413995c0)
+
+    void AddValue(int nValue);                              // 0x14138a2f0
+    bool HasValue(int nValue);                              // 0x14138a330
+    bool HasValueInRange(Unk_GameEventIntRange* pRange);   // 0x14138a390: any value inside the [min, max] range
+    void AddSubValue(int nValue);                           // 0x14138a430
+    bool HasSubValue(int nValue);                           // 0x14138a470
 
     std::set<int> m_values;                                 // +0x18
     std::set<int> m_subValues;                              // +0x28
