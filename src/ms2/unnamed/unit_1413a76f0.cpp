@@ -4,6 +4,7 @@
 // MS2-RANGE: 0x1413a76f0-0x1413a7bc0 .text$mn
 // MS2-RANGE: 0x1400f36a0-0x1400f36f0 .text$di
 // MS2-RANGE: 0x1400f3a10-0x1400f3a60 .text$di
+// MS2-RANGE: 0x1413b4e40-0x1413b4e80 .text$mn
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 

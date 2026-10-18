@@ -2,6 +2,7 @@
 // See ms2/placeholder/cguidecondition.h.
 // MS2-UNIT: unit_1413a6010
 // MS2-RANGE: 0x1413a6010-0x1413a6580 .text$mn
+// MS2-RANGE: 0x1413b4700-0x1413b4740 .text$mn
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 

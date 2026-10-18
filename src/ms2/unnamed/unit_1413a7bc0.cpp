@@ -3,6 +3,7 @@
 // MS2-UNIT: unit_1413a7bc0
 // MS2-RANGE: 0x1413a7bc0-0x1413a8370 .text$mn
 // MS2-RANGE: 0x1400f40a0-0x1400f4190 .text$di
+// MS2-RANGE: 0x1413b4ec0-0x1413b4f00 .text$mn
 #define MS2_THIS_FILE ""
 #include "ms2/placeholder/ms2stdafx.h"
 

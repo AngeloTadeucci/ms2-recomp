@@ -4,6 +4,7 @@
 // MS2-UNIT: unit_1413a8370
 // MS2-RANGE: 0x1413a8370-0x1413a9a50 .text$mn
 // MS2-RANGE: 0x1400f4460-0x1400f47fc .text$di
+// MS2-RANGE: 0x1413b47c0-0x1413b4800 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE ""

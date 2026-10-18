@@ -2,6 +2,11 @@
 // HasMoney .. ChatEmoticon (names, XML loaders, checks, descriptions, factories). See ms2/placeholder/cguidecondition.h.
 // MS2-UNIT: unit_1413a9df0#2
 // MS2-RANGE: 0x1413acea0-0x1413afcb0 .text$mn
+// MS2-RANGE: 0x1413b43c0-0x1413b4400 .text$mn
+// MS2-RANGE: 0x1413b4440-0x1413b4480 .text$mn
+// MS2-RANGE: 0x1413b4580-0x1413b45c0 .text$mn
+// MS2-RANGE: 0x1413b4740-0x1413b4780 .text$mn
+// MS2-RANGE: 0x1413b4ac0-0x1413b4b00 .text$mn
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE ""
