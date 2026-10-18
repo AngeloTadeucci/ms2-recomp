@@ -360,7 +360,7 @@ void UINpcCreateDialog::FUN_141a6b2e0()
     m_files.FUN_141a6dd40();
     Unk_NcStrArray files[8];
     FUN_140163230(files);
-    FUN_140399100(CString(".xml"), CString("./Data/Xml/") + "NpcData/", files, CString(""), false);
+    FUN_140399100(CString(".xml"), CString("./Data/Xml/NpcData/"), files, CString(""), false);
     for (unsigned __int64 i = 0; i < FUN_1401662c0(files); i++) {
         CString strFile = *FUN_140164930(files, i);
         TiXmlDocument doc;
