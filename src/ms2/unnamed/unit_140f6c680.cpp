@@ -312,9 +312,7 @@ NotifySystem* FUN_140939a10();
 int FUN_1422dccd0(Unk_SocketPageBag*);
 // The upgrade row with its ingredient container (0x1405b0b70 builds it at +0x30).
 class Unk_GemStoneUpgradeRow : public CItemGemStoneData {
-public:
-    CIngredientContainer m_ingredients;
-};
+};   // the ingredient container is CItemGemStoneData::m_ingredients (commonfiles/itemgemstonedata.h)
 MS2_CHECK_OFFSET(Unk_GemStoneUpgradeRow, m_ingredients, 0x30);
 // The client-to-server packet records of the page (ctors 0x140f7b100.., vftables 0x142e84cf0..).
 namespace CCItemSocketSystemPacket {
