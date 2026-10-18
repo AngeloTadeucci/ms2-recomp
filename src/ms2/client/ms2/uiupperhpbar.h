@@ -7,7 +7,7 @@
 class Unk_UpperEvt;
 class UIEntityEventListener {
 public:UIEntityEventListener();virtual ~UIEntityEventListener();
- virtual void vfunc_1(void*);virtual void vfunc_o70_2(const Unk_UpperEvt&);virtual void vfunc_3(void*,void*);virtual void vfunc_4(void*,int);virtual void vfunc_5(void*);
+ virtual void vfunc_1(void*);virtual void vfunc_o70_2(const Unk_UpperEvt&);virtual void vfunc_3(void*);virtual void vfunc_4(void*);virtual void vfunc_5(void*,int); // 3..5 get a by-value MS2Ptr<CProxyGameObject> (the callee destroys it)
 };
 MS2_CHECK_SIZE(UIEntityEventListener,8);
 class Unk_UpperActor;class Unk_UpperEvt;class Unk_UpperHpText;class Unk_UpperClip;class Unk_UpperText;class Unk_UpperBuff;
