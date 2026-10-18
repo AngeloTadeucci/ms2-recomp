@@ -28,7 +28,7 @@ class CIngredientContainer;
 class UIItemModifyDialogBase : public UIDialog {
 public:
     UIItemModifyDialogBase();                                   // 0x1419be860
-    virtual ~UIItemModifyDialogBase();                          // 0x1412a3ed0 (another unit)
+    virtual ~UIItemModifyDialogBase();                          // 0x1412a3ed0 (unit_14129cfa0)
     virtual CString vfunc_1();                                  // 0x1419234e0 inherited UIDialog body (redeclared: the symbol table maps UIDialog::vfunc_1 to _purecall)
     virtual void vfunc_43();                                    // 0x1419be8e0 place beside the inventory (0x4e40)
     virtual void OnLoadComplete();                              // 0x1419bea10
@@ -36,7 +36,9 @@ public:
     virtual void vfunc_67();                                    // 0x1419bedd0
     virtual void vfunc_84();                                    // 0x1419bee10 "initData"
     virtual void vfunc_85(int nType);                           // 0x1419bee80 packet 0x22 op 4
-    virtual void vfunc_86();                                    // 0x1412a4070 (another unit)
+    virtual MS2Ptr<ASMovieClip> vfunc_86();                     // 0x1412a4070 returns a copy of m_enchantAni (unit_14129cfa0)
+    bool FUN_1419beef0(unsigned __int64 uid);                   // 0x1419beef0 (really a base member: UIItemRemakeOptionDialog calls it too)
+    MS2Ptr<CItem> FUN_1419bef70(unsigned __int64 uid);          // 0x1419bef70
     MS2Ptr<ASMovieClip> FUN_140ba7930(const CString& strName);  // 0x140ba7930 bind a movie clip child (a UIDialog member: this+0x30)
 protected:
     MS2_LAYOUT_FRIEND;
@@ -61,8 +63,6 @@ public:
     virtual void vfunc_67();                                    // 0x1419bf590
     virtual void vfunc_85(int nType);                           // 0x1419bfca0
     virtual int OnMessage(UISwfEntity* pSender, UIMsg* pMsg);   // 0x1419bfc50
-    bool FUN_1419beef0(unsigned __int64 uid);                                 // 0x1419beef0
-    MS2Ptr<CItem> FUN_1419bef70(unsigned __int64 uid);                                 // 0x1419bef70
     void FUN_1419bfd70();                                 // 0x1419bfd70
     void FUN_1419bff60();                                 // 0x1419bff60
     void FUN_1419c02e0(CString name);                                 // 0x1419c02e0

@@ -218,6 +218,8 @@ public:
     void FUN_141a02810(CStringW strTag);                            // the clicked tag (OnClick)
     const CString& FUN_141a02be0() const;                           // the sound event name
     __int64 FUN_141a02c00() const;                                  // the item uid
+    __int64 FUN_141a02c20() const;                                  // the first __int64 argument (item uid of the remake)
+    bool FUN_141a02e10(int nIndex, bool bDefault) const;            // the nIndex-th argument as a bool
     int FUN_141a02c40() const;                                      // keep the box open after the result
     int FUN_141a02c60() const;                                      // the storage slot
     int FUN_141a02ca0() const;                                      // the box id

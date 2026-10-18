@@ -454,14 +454,14 @@ void UIItemModifyDialogBase::vfunc_85(int nType)
 }
 
 // @0x1419beef0
-bool UIItemEnchantDialog::FUN_1419beef0(unsigned __int64 uid)
+bool UIItemModifyDialogBase::FUN_1419beef0(unsigned __int64 uid)
 {
     MS2Ptr<CItem> item = DAT_143ab2a90.FUN_140a5d680(uid);
     return item.get() != 0;
 }
 
 // @0x1419bef70
-MS2Ptr<CItem> UIItemEnchantDialog::FUN_1419bef70(unsigned __int64 uid)
+MS2Ptr<CItem> UIItemModifyDialogBase::FUN_1419bef70(unsigned __int64 uid)
 {
     return FUN_1419be700(uid);
 }
@@ -2471,8 +2471,8 @@ MS2_REPLACE_METHOD(0x1419BED80, UIItemModifyDialogBase, vfunc_28, 67, 0x436FDE43
 MS2_REPLACE_METHOD(0x1419BEDD0, UIItemModifyDialogBase, vfunc_67, 45, 0x8F4E6D41);
 MS2_REPLACE_METHOD(0x1419BEE10, UIItemModifyDialogBase, vfunc_84, 104, 0x33C46F1A);
 MS2_REPLACE_METHOD(0x1419BEE80, UIItemModifyDialogBase, vfunc_85, 94, 0x7B7F2CAF);
-MS2_REPLACE_METHOD(0x1419BEEF0, UIItemEnchantDialog, FUN_1419beef0, 112, 0xC4943258);
-MS2_REPLACE_METHOD(0x1419BEF70, UIItemEnchantDialog, FUN_1419bef70, 63, 0xD1B148BE);
+MS2_REPLACE_METHOD(0x1419BEEF0, UIItemModifyDialogBase, FUN_1419beef0, 112, 0xC4943258);
+MS2_REPLACE_METHOD(0x1419BEF70, UIItemModifyDialogBase, FUN_1419bef70, 63, 0xD1B148BE);
 MS2_REPLACE_METHOD(0x1419BF2C0, UIItemEnchantDialog, vfunc_1, 61, 0xC6492D8B);
 MS2_REPLACE_METHOD(0x1419BF310, UIItemEnchantDialog, OnLoadInit, 249, 0x237BE92A);
 MS2_REPLACE_METHOD(0x1419BF910, UIItemEnchantDialog, vfunc_28, 740, 0xBFB48C51);
