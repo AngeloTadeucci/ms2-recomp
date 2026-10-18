@@ -37,7 +37,7 @@ MS2_CHECK_SIZE(Unk_GeActRef, 0x10);
 class Unk_GeActList
 {
 public:
-    unsigned FUN_1413886c0();                               // count
+    unsigned __int64 FUN_1413886c0();                             // count
     Unk_GeActRef& FUN_141387b00(unsigned nIdx);             // the nth
     void FUN_1413883b0(const Unk_GeActRef& ref);            // append
     CAtlArray<void*> m_arr;
@@ -55,15 +55,15 @@ public:
     unsigned GetSaveStep() const;                           // 0x1413a2c20
     int GetForce() const;                                   // 0x1413a2c40
     bool IsSaveSkipped() const;                             // 0x1413a2c60: no save id, or saving disabled
-    bool CheckStart(bool* pbOpen, unsigned* pnFailed);      // 0x1413a2ca0: the trigger conditions, then the open conditions
-    bool CheckClose(unsigned* pnFailed);                    // 0x1413a2dd0
-    bool CheckCancel(unsigned* pnFailed);                   // 0x1413a2e70
+    int CheckStart(bool* pbOpen, unsigned* pnFailed);      // 0x1413a2ca0: the trigger conditions, then the open conditions
+    int CheckClose(unsigned* pnFailed);                    // 0x1413a2dd0
+    int CheckCancel(unsigned* pnFailed);                   // 0x1413a2e70
     void GetFailedText(CStringW& strOut, bool bTrigger, unsigned nIdx);   // 0x1413a2f30
     void GetCloseText(CStringW& strOut, unsigned nIdx);     // 0x1413a30a0
     void GetCancelText(CStringW& strOut, unsigned nIdx);    // 0x1413a3150
     void StartActions();                                    // 0x1413a3210
     void StopActions();                                     // 0x1413a32a0
-    bool AreActionsDone();                                  // 0x1413a3330
+    int AreActionsDone();                                  // 0x1413a3330
     bool Load(Unk_140165cf0* pElem);                        // 0x1413a33c0
     void Clear(bool bNotify);                               // 0x1413a35d0
     void SetState(int nState);                              // 0x1413a3670

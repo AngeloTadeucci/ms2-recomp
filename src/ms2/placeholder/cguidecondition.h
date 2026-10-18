@@ -459,7 +459,7 @@ MS2_CHECK_SIZE(Unk_GcCondRef, 0x10);
 class Unk_GcCondList
 {
 public:
-    unsigned FUN_1413886d0();                               // count
+    unsigned __int64 FUN_1413886d0();                             // count
     Unk_GcCondRef& FUN_141387b40(unsigned nIdx);            // the nth
     void FUN_141388460(const Unk_GcCondRef& ref);           // append
     CAtlArray<void*> m_arr;

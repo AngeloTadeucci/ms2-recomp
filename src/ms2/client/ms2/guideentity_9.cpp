@@ -1,7 +1,9 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). The guide-condition base class CGuideCondition and the conditions
 // False / Trigger / Timeout (part 9 of client\ms2\guideentity.cpp, the class tail). See ms2/placeholder/cguidecondition.h.
+// MS2-GUESS-LOOKALIKES
 // MS2-UNIT: client\ms2\guideentity.cpp#9
 // MS2-RANGE: 0x1413a2c00-0x1413a3c60 .text$mn
+// MS2-RANGE: 0x1413a5130-0x1413a54e0 .text$mn
 // MS2-RANGE: 0x1413a54e0-0x1413a6010 .text$mn
 // MS2-RANGE: 0x1413b4200-0x1413b4240 .text$mn
 // MS2-RANGE: 0x1413b5380-0x1413b53c0 .text$mn
@@ -15,6 +17,7 @@
 #include "ms2/placeholder/cguidecondition.h"
 #include "ms2/client/ms2/guideentity.h"
 #include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/classobject.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -42,7 +45,11 @@ Unk_GcOptInt* FUN_140d11940(Unk_GcOptInt* pOpt);                        // Nulla
 
 Unk_140165cf0* FUN_140345b40(Unk_140165cf0* pElem);                     // the first child node
 bool FUN_140184310(const CStringA& str, const char* psz);               // equal (case-sensitive)
-Unk_GcCondRef FUN_1413a52c0(Unk_140165cf0* pElem);                      // builds the condition of a <condition> element
+Unk_GcCondRef FUN_1413a5420(CStringA strTag);                           // the condition class of a tag
+CStringW FUN_1402a5170(const wchar_t* szFormat, const CStringA& strArg);   // StringFormat with one string
+CStringA FUN_140540050(const char* szFormat, const CStringA& strArg);
+void* FUN_1413a4f30(void* pMap);                                        // the node allocator of a map
+void* FUN_141395500(void* pNode);
 Unk_GeActRef FUN_141382b90(Unk_140165cf0* pElem);                       // builds the action of an <action> element
 // The condition / action lists hold 16-byte handles (the shared placeholder declares them as pointer arrays).
 #define GE_REFS(list) reinterpret_cast<ATL::CAtlArray<Unk_GcCondRef>&>((list).m_arr)
@@ -56,6 +63,66 @@ public:
     char FUN_14138c210(int nTrigger, Unk_GeRange range);
 };
 Unk_GeMgr* FUN_1409331e0();
+
+// ---- the glue in front of the base class: allocator limit, checked memmove, the condition factory ------------------------------
+
+// @0x1413a5130
+unsigned __int64 FUN_1413a5130()
+{
+    return 0x666666666666666;
+}
+
+// @0x1413a5140
+unsigned __int64 FUN_1413a5140(void* pMap)
+{
+    FUN_1413a4f30(pMap);
+    return FUN_1413a5130();
+}
+
+// @0x1413a5160
+void* FUN_1413a5160(void* pNode)
+{
+    return FUN_141395500(pNode);
+}
+
+// @0x1413a5180
+errno_t FUN_1413a5180(void* pDst, size_t nDstSize, const void* pSrc, size_t nCount)
+{
+    return memmove_s(pDst, nDstSize, pSrc, nCount);
+}
+
+// @0x1413a52a0
+tm* FUN_1413a52a0(const __time64_t* pTime)
+{
+    return _localtime64(pTime);
+}
+
+// @0x1413a52c0
+Unk_GcCondRef FUN_1413a52c0(Unk_140165cf0* pElem)
+{
+    CStringA strTag(FUN_14086f4b0(pElem, "type"));
+    Unk_GcCondRef ref = FUN_1413a5420(strTag);
+    if (ref.FUN_141387b90())
+    {
+        ref.FUN_141387bb0()->vfunc_2(pElem);
+        Unk_GcCondRef out;
+        out.FUN_1413b2880(ref);
+        ref.FUN_141387660();
+        return out;
+    }
+    throw std::exception(FUN_140540050("Unknown Guide Condition Tag({0})", strTag));
+}
+
+// @0x1413a5420
+Unk_GcCondRef FUN_1413a5420(CStringA strTag)
+{
+    Unk_GcCondRef ref;
+    ref.FUN_1413b28b0(static_cast<CGuideCondition*>(FUN_1401f7f50(FUN_1402a5170(L"CGuideCondition{0}", strTag))));
+    Unk_GcCondRef out;
+    out.FUN_1413b2880(ref);
+    ref.FUN_141387660();
+    return out;
+}
 
 // ---- CGuideCondition ------------------------------------------------------------------------------------------------------
 
@@ -283,7 +350,7 @@ bool CGuideEntity::IsSaveSkipped() const
 }
 
 // @0x1413a2ca0
-bool CGuideEntity::CheckStart(bool* pbOpen, unsigned* pnFailed)
+int CGuideEntity::CheckStart(bool* pbOpen, unsigned* pnFailed)
 {
     for (unsigned i = 0; i < m_condTrigger.FUN_1413886d0(); ++i)
     {
@@ -292,7 +359,7 @@ bool CGuideEntity::CheckStart(bool* pbOpen, unsigned* pnFailed)
             if (pnFailed != 0)
                 *pnFailed = i;
             *pbOpen = true;
-            return false;
+            return 0;
         }
     }
     for (unsigned i = 0; i < m_condOpen.FUN_1413886d0(); ++i)
@@ -302,14 +369,14 @@ bool CGuideEntity::CheckStart(bool* pbOpen, unsigned* pnFailed)
             if (pnFailed != 0)
                 *pnFailed = i;
             *pbOpen = false;
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
 // @0x1413a2dd0
-bool CGuideEntity::CheckClose(unsigned* pnFailed)
+int CGuideEntity::CheckClose(unsigned* pnFailed)
 {
     for (unsigned i = 0; i < m_condClose.FUN_1413886d0(); ++i)
     {
@@ -317,27 +384,27 @@ bool CGuideEntity::CheckClose(unsigned* pnFailed)
         {
             if (pnFailed != 0)
                 *pnFailed = i;
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
 // @0x1413a2e70
-bool CGuideEntity::CheckCancel(unsigned* pnFailed)
+int CGuideEntity::CheckCancel(unsigned* pnFailed)
 {
     if (GE_REFS(m_condCancel).IsEmpty())
-        return false;
+        return 0;
     for (unsigned i = 0; i < m_condCancel.FUN_1413886d0(); ++i)
     {
         if (FUN_1413a5570(m_condCancel.FUN_141387b40(i).FUN_141387bb0()) == 0)
         {
             if (pnFailed != 0)
                 *pnFailed = i;
-            return false;
+            return 0;
         }
     }
-    return true;
+    return 1;
 }
 
 // @0x1413a2f30
@@ -384,14 +451,14 @@ void CGuideEntity::StopActions()
 }
 
 // @0x1413a3330
-bool CGuideEntity::AreActionsDone()
+int CGuideEntity::AreActionsDone()
 {
     for (unsigned i = 0; i < m_actions.FUN_1413886c0(); ++i)
     {
         if (m_actions.FUN_141387b00(i).FUN_141387ba0()->vfunc_5() == 0)
-            return false;
+            return 0;
     }
-    return true;
+    return 1;
 }
 
 // @0x1413a33c0
