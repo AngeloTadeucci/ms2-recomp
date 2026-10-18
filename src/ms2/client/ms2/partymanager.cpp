@@ -6,6 +6,9 @@
 // MS2-PIN: ??__EDAT_143ae2c58@@YAXXZ 0x1400fad30 ; prop
 // MS2-PIN: ??__Es_unk1402a9d70@@YAXXZ 0x1400fae80 ; prop
 // MS2-PIN: ??__Es_nextClassInfo@@YAXXZ 0x1400fafc0 ; prop
+// MS2-PIN: ??__Es_strSkill@@YAXXZ 0x1400fae20 ; prop
+// MS2-PIN: ??__Es_strStun@@YAXXZ 0x1400fae50 ; prop
+// MS2-PIN: ??__Es_capName@@YAXXZ 0x1400fafe0 ; prop
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x141631fe0 ; prop
 // MS2-PIN: ??$?0AEAV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEAVCMsTime@@$0A@@?$pair@V?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@QEAA@AEAV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@AEAVCMsTime@@@Z 0x141632010 ; prop
 // MS2-PIN: ??$?0AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@@std@@@std@@@std@@_N$0A@@?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@@std@@@std@@@std@@_N@std@@QEAA@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@VCMsTime@@@std@@@std@@@std@@@1@$$QEA_N@Z 0x141632070 ; prop

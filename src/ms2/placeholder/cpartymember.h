@@ -3,11 +3,13 @@
 #include "ms2/commonfiles/userproxy.h"
 #include "ms2/placeholder/cptred.h"
 
+enum Unk_LimitValue : int;   // value type of the counter map (an enum in the exe; same layout as int; see unit_140268010.cpp)
+
 struct Unk_PartyCounters {
     Unk_PartyCounters(); // 140268010
     ~Unk_PartyCounters();
     CLockCriticalSection lock;
-    ATL::CAtlMap<int, int> values;
+    ATL::CAtlMap<int, Unk_LimitValue> values;
     int FUN_140268570(int);
 };
 MS2_CHECK_SIZE(Unk_PartyCounters, 0x78);
