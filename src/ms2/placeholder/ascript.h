@@ -90,6 +90,8 @@ public:
     Scaleform::GFx::Value& FUN_1422bb870();                                                  // m_value
     Scaleform::GFx::Value Invoke(const char* szMethod);                                     // 0x1422bb330
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2);                      // 0x140acd070
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, int a3, CStringW a4, int a5);   // 0x140f24720 (inline COMDAT, defined in uibluemarblegamedialog.cpp; a4 by value: the callee destroys it)
+    Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2, int a3, int a4);      // 0x140f24850 (inline COMDAT, defined in uibluemarblegamedialog.cpp; a1/a2 by value)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, int a3);              // 0x140f24650 (not in the unit that owns it yet; added by uihsldialog.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, CString a1);                          // 0x1409b46e0
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2);            // 0x140e78470
