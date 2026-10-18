@@ -464,7 +464,6 @@ CString FUN_141029090(CString strId)
 }
 
 // @0x1410291d0
-// MS2-FUNCTIONAL: exe places the empty-name return block after the shared epilogue (block layout differs by one jmp)
 CString FUN_1410291d0(__int64 nId, const CString& strName)
 {
     if (!strName.IsEmpty())
@@ -482,10 +481,7 @@ CString FUN_1410291d0(__int64 nId, const CString& strName)
         }
         return CString(strResult);
     }
-    else
-    {
-        return CString(FUN_1401d31f0()->m_strNoProfile);
-    }
+    return CString(FUN_1401d31f0()->m_strNoProfile);
 }
 
 // @0x141029440
