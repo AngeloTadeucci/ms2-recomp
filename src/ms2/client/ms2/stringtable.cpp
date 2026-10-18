@@ -66,6 +66,7 @@
 #include "ms2/client/ms2/worldservice.h"
 #include "ms2/commonfiles/chapterbooktable.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+#include "ms2/client/ms2/uialliancequestdialog.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
@@ -128,12 +129,6 @@ class UIChapterBook : public UIDialog
 public:
     void FUN_140e0a850(int nChapter);
     void FUN_140e0a890(int nChapter);
-};
-class UIAllianceQuestDialog : public UIDialog
-{
-public:
-    int FUN_140bf94e0(int nQuestId);
-    int FUN_140bf9530(int nQuestId);
 };
 
 // @0x141810510
