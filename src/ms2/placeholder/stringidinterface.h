@@ -6,8 +6,10 @@
 class CInPacket;
 class StringIdInterfaceBase {
 public:
+    StringIdInterfaceBase();                           // 0x14084ee20 (empty, filled by the packet reader 0x14084f390)
     StringIdInterfaceBase(CStringW text);              // 0x14084f0e0 (formatted = false; the callee destroys `text`)
     StringIdInterfaceBase(int kind, int id);           // 0x14084ee90 (formatted = true)
+    StringIdInterfaceBase(const StringIdInterfaceBase& other);   // 0x14084f170
     virtual ~StringIdInterfaceBase();
     int kind, id;
     ATL::CAtlArray<CStringW> arguments;
@@ -16,6 +18,7 @@ public:
 };
 class StringIdInterface : public StringIdInterfaceBase {
 public:
+    StringIdInterface(const StringIdInterfaceBase& base); // 141024dc0
     explicit StringIdInterface(CInPacket&); // 141024e00
     virtual ~StringIdInterface(); // 1407ab030
     CStringW FUN_141024e60();
