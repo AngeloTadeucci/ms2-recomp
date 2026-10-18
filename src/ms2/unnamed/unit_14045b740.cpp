@@ -309,6 +309,8 @@
 // MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@W4Unk_DungeonGroupType@@U?$pair@HH@std@@U?$less@W4Unk_DungeonGroupType@@@3@V?$allocator@U?$pair@$$CBW4Unk_DungeonGroupType@@U?$pair@HH@std@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14046c180 ; prop
 // MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@_KIU?$less@_K@std@@V?$allocator@U?$pair@$$CB_KI@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x14046c1a0 ; prop
 // MS2-PIN: ?push_front@?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VEventShopNpcContext@@@@@Z 0x14046c430 ; prop
+// MS2-PIN: ?push_back@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z 0x14046c4b0
+// MS2-PIN: ??$emplace_back@AEBV?$MS2Ptr@VCollectItemGroupContext@@@@@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z 0x1404415e0
 // MS2-PIN: ?push_back@?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VEventShopNpcContext@@@@@Z 0x14046c470 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VBurningLevelupContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VBurningLevelupContext@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14046c590 ; prop
 // MS2-PIN: ?size@?$_Tree@V?$_Tmap_traits@KV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@K@std@@V?$allocator@U?$pair@$$CBKV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x14046c5d0 ; prop
