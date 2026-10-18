@@ -10,18 +10,55 @@
 #include <atlcoll.h>
 #include "ms2/client/ms2/uidialog.h"
 #include "ms2/client/ms2/baseoption.h"
+#include "ms2/placeholder/imessagelistener.h"
+#include "ms2/placeholder/ascript.h"
+
+class ASData;
+
+class UIMsg;
+class UISwfEntity;
 
 class UIGameOptionDialog : public UIDialog
 {
 public:
     UIGameOptionDialog();                                           // 0x141941b80
-    virtual ~UIGameOptionDialog();                                  // 0x141942810
+    virtual ~UIGameOptionDialog();                                  //  0 0x141942810 (??_G 0x141944be0)
+    virtual CString vfunc_1();                                      //  1 0x141942880 "GameOptionDialog"
+    virtual void OnLoadComplete();                                  // 22 0x1419428d0 send initData, build the tabs
+    virtual int vfunc_28(const char* szMethod, const Scaleform::GFx::Value* pArgs, unsigned int nArgs);   // 28 0x141942cc0
+    virtual void vfunc_67();                                        // 67 0x141942a10 Close: deactivate every page
+    virtual int vfunc_13();                                         // 13 0x141942b10 escape: ask/save, close
+    virtual void vfunc_15();                                        // 15 0x141942bf0 every page vfunc_13
+    virtual void vfunc_49(Scaleform::GFx::Value* pRetVal, ASData* pArgs);   // 49 0x141943230 getTooltip (hdr, shimmer)
+    virtual int vfunc_48() { return 0x4ef3; }                       // 48 0x1419450b0
+    virtual int OnMessage(UISwfEntity* pSender, UIMsg* pMsg);       // IMessageListener 0 0x141943010 message box answers
+
+    void FUN_141943480();                                           // pick the simple (reduced) mode, enable the pages, setTabComponent
+    void FUN_1419436e0(int nTab);                                   // open a tab: page vfunc_3(1)
+    void FUN_141943790(int nTab);                                   // close a tab: page vfunc_4(1)
+    void FUN_141943820(int n);                                      // "m_apply" button enabled state
+    void FUN_1419438b0();                                           // re-open the current tab
+    void FUN_141943900(bool b);                                     // m_bF1d0, update the red circle
+    void FUN_141943940();                                           // agreement tab red circle
+    void FUN_141943a00();                                           // RemoveAll
+    void FUN_141943a30();                                           // the "init to default" confirm box
+    void FUN_141943d80();                                           // every page vfunc_9
+    void FUN_141943e30();                                           // save (confirm box when not all agreed)
+    void FUN_141943ec0();                                           // apply every page, then the option settings
+    void FUN_141944030(int n);                                      // m_nF1cc = n; page vfunc_12 (all pages when 0)
+    void FUN_141944150();                                           // check and save
+    int FUN_141944250();                                            // 1 when nothing is pending
+    int FUN_141944330();                                            // 1 when no page differs
+    MS2Ptr<class Unk_GoButton> FUN_140bb4b10(const CString& strName);   // 0x140bb4b10 bind a button child
+    MS2Ptr<CBaseOption> FUN_141944460(int nIndex);                  // the nIndex-th page (1-based, map order)
+    void FUN_141944590(int n);                                      // FUN_1419445c0(0x10, n)
+    void FUN_1419445c0(int nKey, int n);                            // n == 0: drop the page nKey
 
     int m_nTab;                                                     // +0x178 current tab id (1 on a fresh dialog)
     ATL::CAtlMap<int, MS2Ptr<CBaseOption>> m_mapPages;              // +0x180 tab id -> page
-    char m_bSimple;                                                 // +0x1c8 simplified (reduced-tab) mode
+    bool m_bSimple;                                                 // +0x1c8 simplified (reduced-tab) mode
     int m_nF1cc;                                                    // +0x1cc
-    char m_bF1d0;                                                   // +0x1d0
+    bool m_bF1d0;                                                   // +0x1d0
 };
 MS2_CHECK_SIZE(UIGameOptionDialog, 0x1d8);
 MS2_CHECK_OFFSET(UIGameOptionDialog, m_nTab, 0x178);
