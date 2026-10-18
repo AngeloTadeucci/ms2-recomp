@@ -15,6 +15,8 @@
 // MS2-PIN: ?NewNode@?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x140766910 ; unique
 // MS2-PIN: ?NewNode@?$CAtlMap@IV?$Unk_BmBoxPtr@V?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x140766b20 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ??0?$TSingleton@VCQuestMaskTable@@@@QEAA@XZ 0x140765950
+// MS2-PIN: ??1?$TSingleton@VCQuestMaskTable@@@@UEAA@XZ 0x140765b70
 // MS2-GUESS-LOOKALIKES
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questmasktable.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -95,6 +97,14 @@ static CString s_sortNames2[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh",
 #endif
 
 template class TSingleton<CQuestMaskTable>;
+
+// The exe keeps these ATL array members out of line.
+template const Unk_Z16i& ATL::CAtlArray<Unk_Z16i>::operator[](size_t) const;
+template Unk_Z16i& ATL::CAtlArray<Unk_Z16i>::operator[](size_t);
+template void ATL::CAtlArray<int>::RemoveAt(size_t, size_t);
+
+// @0x1407641f0
+MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
 
 #define MS2_QM_XML_ERR L"xml \xd615\xc2dd\xc774 \xc798\xbabb \xb418\xc5c8\xc2b5\xb2c8\xb2e4[<ms2> {0}]"
 
@@ -427,3 +437,64 @@ int Unk_Random::Range(unsigned nCount, int nBase)
         nBase += (int)((unsigned long long)FUN_1407684c0() % nCount);
     return nBase;
 }
+
+#ifndef MS2_HOOK_DLL
+// @0x140768010
+int FUN_140768010(int nCount, int nBase)
+{
+    return s_random.Range(nCount, nBase);
+}
+
+// @0x140768040
+bool FUN_140768040(unsigned nChance)
+{
+    bool bHit = (unsigned)FUN_140768010(10000, 0) < nChance;
+    return bHit;
+}
+
+// @0x140768090
+float FUN_140768090()
+{
+    union { unsigned u; float f; } v;
+    v.u = s_random.FUN_1407684c0() & 0x7fffff | 0x3f800000;
+    return v.f - 1.0f;
+}
+#endif
+
+// @0x1407680d0
+float FUN_1407680d0(Unk_Random* pRandom)
+{
+    union { unsigned u; float f; } v;
+    v.u = pRandom->FUN_1407684c0() & 0x7fffff | 0x3f800000;
+    return v.f - 1.0f;
+}
+
+// @0x140768640
+int FUN_140768640(Unk_Random* pRandom, unsigned nCount, int nBase)
+{
+    int nResult;
+    if (nCount != 0)
+        nResult = nBase + pRandom->FUN_1407684c0() % nCount;
+    else
+        nResult = nBase;
+    return nResult;
+}
+
+// @0x140765520
+#undef MS2_THIS_FILE
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\tinyxmlhelper.h"
+int FUN_140765520(Unk_140165cf0* pElem, const char* pszName, int* pnOut)
+{
+    if (FALSE) {
+        MS2_ASSERT_AT(0xe7, FALSE);
+        return 2;
+    }
+    int nValue = 0;
+    int nResult = FUN_140873890(pElem, pszName, &nValue);
+    if (nResult != 0)
+        return nResult;
+    *pnOut = nValue;
+    return nResult;
+}
+#undef MS2_THIS_FILE
+#define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questmasktable.cpp"
