@@ -3064,3 +3064,7 @@ DAT_143af6ac0	143af6ac0	data
 ??1Unk_PnScriptPtr@@QEAA@XZ	14078f140	func
 ?FUN_14085a610@Unk_PnScriptPtr@@QEBAPEAVUnk_PnTalkScript@@XZ	14085a610	func
 ?FUN_140790930@Unk_PnScriptPtr@@QEAAXXZ	140790930	func
+?GetLimit@CFameTable@@QEAA?AV?$MS2Ptr@VCFameLimitData@@@@W4Unk_FameAlliance@@@Z	14035af00	func
+?DAT_143ab2a90@@3VUnk_AqInventory@@A	143ab2a90	data
+?DAT_143abdc30@@3HA	143abdc30	data
+?DAT_143abdd70@@3PEAVUIQuestEventDispatcher@@EA	143abdd70	data
