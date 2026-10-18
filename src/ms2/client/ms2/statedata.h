@@ -379,6 +379,9 @@ class StateHoldData : public StateSkillData
 {
 public:
     StateHoldData();                                            // 0x1417cb9c0 (skill 20000031 level 1)
+    virtual void vfunc_1(Unk_StateDataArg* p);                  // 1 0x1417cba30
+    virtual void vfunc_2(Unk_StateDataArg* p);                  // 2 0x1417cbaf0
+    MS2Ptr<class SkillData> FUN_1417cbb50();                    // the skill table row of m_nSkill
 
     int m_nTargetId;                                            // +0x20
     int m_pad_24;

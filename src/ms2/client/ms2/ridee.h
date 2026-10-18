@@ -24,11 +24,19 @@ public:
     float m_fRotX;                                          // +0x1c seat rotation (degrees)
     float m_fRotY;                                          // +0x20
     float m_fRotZ;                                          // +0x24
-    char m_pad_28[0x38];
+    CString m_str28;                                        // +0x28 seat animations (StateHold::vfunc_9 picks one)
+    CString m_str30;                                        // +0x30
+    CString m_str38;                                        // +0x38
+    CString m_str40;                                        // +0x40
+    CString m_str48;                                        // +0x48
+    CString m_str50;                                        // +0x50
+    CString m_str58;                                        // +0x58
     float m_f60;                                            // +0x60 (vfunc_89)
     float m_f64;                                            // +0x64
 };
 MS2_CHECK_OFFSET(Unk_RideeModel, m_fRotX, 0x1c);
+MS2_CHECK_OFFSET(Unk_RideeModel, m_str28, 0x28);
+MS2_CHECK_OFFSET(Unk_RideeModel, m_str58, 0x58);
 MS2_CHECK_OFFSET(Unk_RideeModel, m_f60, 0x60);
 
 // The seat (model entry) list of a riding row.
