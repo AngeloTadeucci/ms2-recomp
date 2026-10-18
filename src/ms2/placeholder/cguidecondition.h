@@ -58,7 +58,13 @@ MS2_CHECK_SIZE(CGuideConditionFieldId, 0x30);
 class CGuideConditionCountItem : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413a9610
     CGuideConditionCountItem();                             // 0x1413b2b60
+    virtual CStringW vfunc_1();                             // 1 0x1413a9670
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a96c0: itemType / minValue / maxValue
+    virtual int vfunc_3();                                  // 3 0x1413a9770
+    virtual CStringW vfunc_7();                             // 7 0x1413a9820
+    virtual int vfunc_8();                                  // 8 0x1413a98f0: 0
 
     int m_nItemType;                                        // +0x28
     int m_nMin;                                             // +0x2c
@@ -71,6 +77,7 @@ MS2_CHECK_SIZE(CGuideConditionCountItem, 0x38);
 class CGuideConditionCountInDoorInstallItem : public CGuideConditionCountItem
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413a9900
     CGuideConditionCountInDoorInstallItem();                // 0x1413b2b30
     virtual CStringW vfunc_1();                             // 1 0x1413a9960
     virtual int vfunc_3();                                  // 3 0x1413a99b0
@@ -310,3 +317,120 @@ public:
     virtual int vfunc_3();                                  // 3 0x1413a7570
 };
 MS2_CHECK_SIZE(CGuideConditionInteractable, 0x28);
+
+// 0x30. Passes while the skill m_n20 is (isEquip = 1) or is not (0) on a skill slot.
+class CGuideConditionEquipSkill : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8370
+    CGuideConditionEquipSkill();                            // 0x1413a8420
+    virtual CStringW vfunc_1();                             // 1 0x1413a83d0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a8460: "isEquip"
+    virtual int vfunc_3();                                  // 3 0x1413a84b0
+    virtual CStringW vfunc_7();                             // 7 0x1413a8530
+
+    int m_nIsEquip;                                         // +0x28
+    int m_pad_2c;
+};
+MS2_CHECK_SIZE(CGuideConditionEquipSkill, 0x30);
+
+// 0x28. Passes while the local player has the cube-construct permission.
+class CGuideConditionConstructable : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a85f0
+    CGuideConditionConstructable();                         // 0x1413b2ad0
+    virtual CStringW vfunc_1();                             // 1 0x1413a8650
+    virtual int vfunc_3();                                  // 3 0x1413a86a0
+};
+MS2_CHECK_SIZE(CGuideConditionConstructable, 0x28);
+
+// 0x28. Passes while the local player stands in their own home.
+class CGuideConditionIsMyHome : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a86f0
+    CGuideConditionIsMyHome();                              // 0x1413b2f00
+    virtual CStringW vfunc_1();                             // 1 0x1413a8750
+    virtual int vfunc_3();                                  // 3 0x1413a87a0
+};
+MS2_CHECK_SIZE(CGuideConditionIsMyHome, 0x28);
+
+// 0x28. Passes while the achievement dialog (ui 0x4e73) shows the tab m_n20.
+class CGuideConditionAchieveTab : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a87d0
+    CGuideConditionAchieveTab();                            // 0x1413b2930
+    virtual CStringW vfunc_1();                             // 1 0x1413a8830
+    virtual int vfunc_3();                                  // 3 0x1413a8880
+};
+MS2_CHECK_SIZE(CGuideConditionAchieveTab, 0x28);
+
+// 0x48. Passes while the equip slot (m_nSlotType, m_strSlotName) holds an item with the id m_nItemID (0 = any) or an id in
+// [m_nItemRangeBegin, m_nItemRangeLast] (0 = unbounded).
+class CGuideConditionEquipItem : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8900
+    CGuideConditionEquipItem();                             // 0x1413b2c20
+    virtual CStringW vfunc_1();                             // 1 0x1413a8960
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a89b0: slotType / slotName / itemID / itemRangeBeginID / itemRangeLastID
+    virtual int vfunc_3();                                  // 3 0x1413a8aa0
+    virtual CStringW vfunc_7();                             // 7 0x1413a8da0
+
+    unsigned m_nSlotType;                                   // +0x28
+    int m_pad_2c;
+    CStringA m_strSlotName;                                 // +0x30
+    unsigned m_nItemID;                                     // +0x38
+    unsigned m_nItemRangeBegin;                             // +0x3c
+    unsigned m_nItemRangeLast;                              // +0x40
+    int m_pad_44;
+};
+MS2_CHECK_SIZE(CGuideConditionEquipItem, 0x48);
+
+// 0x28. Passes while the ugc management dialog (ui 0x4ec5) is open on its first page.
+class CGuideConditionUgcManagementTab : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8eb0
+    CGuideConditionUgcManagementTab();                      // 0x1413b3520
+    virtual CStringW vfunc_1();                             // 1 0x1413a8f10
+    virtual int vfunc_3();                                  // 3 0x1413a8f60
+};
+MS2_CHECK_SIZE(CGuideConditionUgcManagementTab, 0x28);
+
+// 0x30. Passes while the inventory holds a ugc design item (of the type m_nItemType, 0 = any).
+class CGuideConditionDesignItem : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8fc0
+    CGuideConditionDesignItem();                            // 0x1413b2bf0
+    virtual CStringW vfunc_1();                             // 1 0x1413a9020
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a9070: "itemType"
+    virtual int vfunc_3();                                  // 3 0x1413a90d0
+    virtual CStringW vfunc_7();                             // 7 0x1413a9260
+    virtual int vfunc_8();                                  // 8 0x1413a9310: 0
+
+    int m_nItemType;                                        // +0x28
+    int m_pad_2c;
+};
+MS2_CHECK_SIZE(CGuideConditionDesignItem, 0x30);
+
+// 0x38. Passes while the inventory has the item m_nItemId, an item of the type m_nItemType and one of the icon type m_nIconType.
+class CGuideConditionExistItem : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a9320
+    CGuideConditionExistItem();                             // 0x1413b2c60
+    virtual CStringW vfunc_1();                             // 1 0x1413a9380
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a93d0: itemId / itemType / iconType
+    virtual int vfunc_3();                                  // 3 0x1413a9480
+    virtual CStringW vfunc_7();                             // 7 0x1413a9540
+
+    int m_nItemId;                                          // +0x28
+    int m_nItemType;                                        // +0x2c
+    int m_nIconType;                                        // +0x30
+    int m_pad_34;
+};
+MS2_CHECK_SIZE(CGuideConditionExistItem, 0x38);
