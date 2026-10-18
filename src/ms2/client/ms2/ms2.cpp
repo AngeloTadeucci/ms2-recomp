@@ -41,6 +41,10 @@
 // MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIEntityEventDispatcher@@@@SAPEAVUIEntityEventDispatcher@@XZ 0x14149f590
 // MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIServerEventDispatcher@@@@SAPEAVUIServerEventDispatcher@@XZ 0x14149f710
 // MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIStatusEventDispatcher@@@@SAPEAVUIStatusEventDispatcher@@XZ 0x14149f790
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VCItemRemakeScrollTable@@@@SAPEAVCItemRemakeScrollTable@@XZ 0x14149b290
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VCItemRePackingScrollTable@@@@SAPEAVCItemRePackingScrollTable@@XZ 0x14149b210
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VCQuestMaskTable@@@@SAPEAVCQuestMaskTable@@XZ 0x14149c790
+// MS2-PIN: ?CreateInstance@?$Unk_SingletonCreator@VUIBuddyEventDispatcher@@@@SAPEAVUIBuddyEventDispatcher@@XZ 0x14149f410
 // The secondary-base vftables (no RTTI pairing for these multiple-inheritance subobjects), read from the ctors;
 // CReactorDataTable derives from CValidData<ReactorData> (see reactordata.h).
 // MS2-PIN: ??_7MS2@@6BISystemService@efd@@@ 0x142f1e0a0
