@@ -463,11 +463,29 @@ public:
 MS2_CHECK_SIZE(Unk_GcCondList, 0x20);
 
 // A set-flag + value optional (the flag is the first byte).
-struct Unk_GcOptInt { Unk_GcOptInt() : m_bSet(false) {} bool m_bSet; int m_nValue; };
+struct Unk_GcOptInt
+{
+    Unk_GcOptInt() : m_bSet(false) {}
+    Unk_GcOptInt(const int& nValue);                        // 0x1413b4010 (Nullable<int>(value))
+    bool m_bSet; int m_nValue;
+};
 MS2_CHECK_SIZE(Unk_GcOptInt, 8);
-struct Unk_GcOptVec3 { Unk_GcOptVec3() : m_bSet(false) {} bool m_bSet; float m_x; float m_y; float m_z; };
+struct Unk_GcOptVec3
+{
+    Unk_GcOptVec3() : m_bSet(false) {}
+    Unk_GcOptVec3(const Unk_StreamPoint& pt);               // 0x1413b4040 (Nullable<Point3>(value))
+    Unk_StreamPoint& GetValue();                            // 0x1413b4180 (asserts m_isValueSet)
+    const Unk_StreamPoint& GetValue() const;                // 0x1413b4140
+    bool m_bSet; float m_x; float m_y; float m_z;
+};
 MS2_CHECK_SIZE(Unk_GcOptVec3, 0x10);
-struct Unk_GcOptBool { Unk_GcOptBool() : m_bSet(false) {} bool m_bSet; bool m_bValue; };
+struct Unk_GcOptBool
+{
+    Unk_GcOptBool() : m_bSet(false) {}
+    Unk_GcOptBool(const bool& bValue);                      // 0x1413b4080 (Nullable<bool>(value))
+    bool& GetValue();                                       // 0x1413b41c0 (asserts m_isValueSet)
+    bool m_bSet; bool m_bValue;
+};
 MS2_CHECK_SIZE(Unk_GcOptBool, 2);
 
 // A calendar time (the ServerTime target / now).
@@ -771,18 +789,20 @@ public:
 };
 MS2_CHECK_SIZE(CGuideConditionHasManufacture, 0x28);
 
-// 0x30. Passes while the player holds enough money (layout continues in the next part of the unit).
+// 0x30. Passes while the player holds more money of the type m_nMoneyType (0 meso, 1 merat, 2 karma, 3 honor, 4 lu, ...) than
+// the XML "value".
 class CGuideConditionHasMoney : public CGuideCondition
 {
 public:
     static ClassObject* CreateObject();                     // 0x1413ace40
     CGuideConditionHasMoney();
     virtual CStringW vfunc_1();                             // 1 0x1413acea0
-    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413acef0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413acef0: moneyType
     virtual int vfunc_3();                                  // 3 0x1413ad020
     virtual CStringW vfunc_7();                             // 7 0x1413ad250
 
-    __int64 m_nMoney;                                       // +0x28
+    int m_nMoneyType;                                       // +0x28
+    int m_pad_2c;
 };
 MS2_CHECK_SIZE(CGuideConditionHasMoney, 0x30);
 
@@ -792,6 +812,7 @@ MS2_CHECK_SIZE(CGuideConditionHasMoney, 0x30);
 class CGuideConditionBattleState : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413adb00
     CGuideConditionBattleState();// 0x1413b2a10
     virtual CStringW vfunc_1();                             // 1 0x1413adb60
     virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413adbb0
@@ -804,6 +825,7 @@ MS2_CHECK_SIZE(CGuideConditionBattleState, 0x28);
 class CGuideConditionCubeHolderSelectItem : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae730
     CGuideConditionCubeHolderSelectItem();// 0x1413b2b90
     virtual CStringW vfunc_1();                             // 1 0x1413ae790
     virtual int vfunc_3();                                  // 3 0x1413ae7e0
@@ -824,6 +846,7 @@ MS2_CHECK_SIZE(CGuideConditionFalse, 0x28);
 class CGuideConditionGuildPvpPeriod : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ad3b0
     CGuideConditionGuildPvpPeriod();// 0x1413b2db0
     virtual CStringW vfunc_1();                             // 1 0x1413ad410
     virtual int vfunc_3();                                  // 3 0x1413ad460
@@ -834,6 +857,7 @@ MS2_CHECK_SIZE(CGuideConditionGuildPvpPeriod, 0x28);
 class CGuideConditionHasStatPoint : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae840
     CGuideConditionHasStatPoint();// 0x1413b2e40
     virtual CStringW vfunc_1();                             // 1 0x1413ae8a0
     virtual int vfunc_3();                                  // 3 0x1413ae8f0
@@ -844,6 +868,7 @@ MS2_CHECK_SIZE(CGuideConditionHasStatPoint, 0x28);
 class CGuideConditionJobCode : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ad7e0
     CGuideConditionJobCode();// 0x1413b2f30
     virtual CStringW vfunc_1();                             // 1 0x1413ad840
     virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ad890
@@ -856,6 +881,7 @@ MS2_CHECK_SIZE(CGuideConditionJobCode, 0x28);
 class CGuideConditionJoinGuild : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413add70
     CGuideConditionJoinGuild();// 0x1413b2f60
     virtual CStringW vfunc_1();                             // 1 0x1413addd0
     virtual int vfunc_3();                                  // 3 0x1413ade20
@@ -866,6 +892,7 @@ MS2_CHECK_SIZE(CGuideConditionJoinGuild, 0x28);
 class CGuideConditionMasteryMainTabIndex : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae1d0
     CGuideConditionMasteryMainTabIndex();// 0x1413b2fc0
     virtual CStringW vfunc_1();                             // 1 0x1413ae230
     virtual int vfunc_3();                                  // 3 0x1413ae280
@@ -876,6 +903,7 @@ MS2_CHECK_SIZE(CGuideConditionMasteryMainTabIndex, 0x28);
 class CGuideConditionMasterySubTabIndex : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae2e0
     CGuideConditionMasterySubTabIndex();// 0x1413b2ff0
     virtual CStringW vfunc_1();                             // 1 0x1413ae340
     virtual int vfunc_3();                                  // 3 0x1413ae390
@@ -914,6 +942,7 @@ MS2_CHECK_SIZE(CGuideConditionMenuExpand, 0x30);
 class CGuideConditionPlayingInstrument : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae600
     CGuideConditionPlayingInstrument();// 0x1413b3250
     virtual CStringW vfunc_1();                             // 1 0x1413ae660
     virtual int vfunc_3();                                  // 3 0x1413ae6b0
@@ -924,6 +953,7 @@ MS2_CHECK_SIZE(CGuideConditionPlayingInstrument, 0x28);
 class CGuideConditionPlayInstrumentHasSelectItem : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae500
     CGuideConditionPlayInstrumentHasSelectItem();// 0x1413b31f0
     virtual CStringW vfunc_1();                             // 1 0x1413ae560
     virtual int vfunc_3();                                  // 3 0x1413ae5b0
@@ -934,6 +964,7 @@ MS2_CHECK_SIZE(CGuideConditionPlayInstrumentHasSelectItem, 0x28);
 class CGuideConditionPlayInstrumentTabIndex : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae3f0
     CGuideConditionPlayInstrumentTabIndex();// 0x1413b3220
     virtual CStringW vfunc_1();                             // 1 0x1413ae450
     virtual int vfunc_3();                                  // 3 0x1413ae4a0
@@ -944,6 +975,7 @@ MS2_CHECK_SIZE(CGuideConditionPlayInstrumentTabIndex, 0x28);
 class CGuideConditionRealEstateExpireDays : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ad4c0
     CGuideConditionRealEstateExpireDays();// 0x1413b3340
     virtual CStringW vfunc_1();                             // 1 0x1413ad520
     virtual int vfunc_3();                                  // 3 0x1413ad570
@@ -954,6 +986,7 @@ MS2_CHECK_SIZE(CGuideConditionRealEstateExpireDays, 0x28);
 class CGuideConditionSelectItemEnchant : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ae0c0
     CGuideConditionSelectItemEnchant();// 0x1413b33a0
     virtual CStringW vfunc_1();                             // 1 0x1413ae120
     virtual int vfunc_3();                                  // 3 0x1413ae170
@@ -977,6 +1010,7 @@ MS2_CHECK_SIZE(CGuideConditionSubJobCode, 0x48);
 class CGuideConditionSummonPet : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413adc60
     CGuideConditionSummonPet();// 0x1413b3490
     virtual CStringW vfunc_1();                             // 1 0x1413adcc0
     virtual int vfunc_3();                                  // 3 0x1413add10
@@ -987,8 +1021,117 @@ MS2_CHECK_SIZE(CGuideConditionSummonPet, 0x28);
 class CGuideConditionUgcProductExpireDays : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413ad660
     CGuideConditionUgcProductExpireDays();// 0x1413b3550
     virtual CStringW vfunc_1();                             // 1 0x1413ad6c0
     virtual int vfunc_3();                                  // 3 0x1413ad710
 };
 MS2_CHECK_SIZE(CGuideConditionUgcProductExpireDays, 0x28);
+
+// ---- classes whose constructor is inline in the method range of unit_1413a9df0#2 --------------------------------------------
+
+// 0x50. Passes when the last button of the path m_children inside the dialog m_strDialog is selected.
+class CGuideConditionButtonSelected : public CGuideCondition
+{
+public:
+    CGuideConditionButtonSelected();                        // 0x1413aed50
+    virtual CStringW vfunc_1();                             // 1 0x1413aed00
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413af0c0: dialogName / childName (rejects "not")
+    virtual int vfunc_3();                                  // 3 0x1413aedb0
+    virtual CStringW vfunc_7();                             // 7 0x1413af190
+
+    CStringA m_strDialog;                                   // +0x28
+    CAtlArray<CString> m_children;                          // +0x30
+};
+MS2_CHECK_SIZE(CGuideConditionButtonSelected, 0x50);
+
+// 0x40. Passes while a contract button (dialog id or name, child path) is on screen and the server time is within 7 days of the expiry.
+class CGuideConditionContract : public CGuideCondition
+{
+public:
+    CGuideConditionContract();                              // 0x1413af330
+    virtual CStringW vfunc_1();                             // 1 0x1413af2e0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413af560: dialogID / childName / dialogName
+    virtual int vfunc_3();                                  // 3 0x1413af3b0
+    virtual CStringW vfunc_7();                             // 7 0x1413af5e0
+
+    unsigned m_nDialogId;                                   // +0x28
+    int m_pad_2c;
+    CStringA m_strChild;                                    // +0x30
+    CStringA m_strDialog;                                   // +0x38
+};
+MS2_CHECK_SIZE(CGuideConditionContract, 0x40);
+
+// 0x30. Passes while the home mode equals m_nMode.
+class CGuideConditionHomeMode : public CGuideCondition
+{
+public:
+    CGuideConditionHomeMode();                              // 0x1413af7f0
+    virtual CStringW vfunc_1();                             // 1 0x1413af7a0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413af880
+    virtual int vfunc_3();                                  // 3 0x1413af830
+    virtual CStringW vfunc_7();                             // 7 0x1413af8d0
+
+    int m_nMode;                                            // +0x28
+    int m_pad_2c;
+};
+MS2_CHECK_SIZE(CGuideConditionHomeMode, 0x30);
+
+// 0x28. Passes when the entered dungeon (value) is in the state 0 or 1.
+class CGuideConditionEnterDungeon : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413af980
+    CGuideConditionEnterDungeon();                          // 0x1413afa30
+    virtual CStringW vfunc_1();                             // 1 0x1413af9e0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413afa70
+    virtual int vfunc_3();                                  // 3 0x1413afab0
+    virtual int vfunc_8();                                  // 8 0x1413afb10
+};
+MS2_CHECK_SIZE(CGuideConditionEnterDungeon, 0x28);
+
+// 0x28. Passes when the chat emoticon dialog is open.
+class CGuideConditionChatEmoticon : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413afb20
+    CGuideConditionChatEmoticon();                          // 0x1413afbd0
+    virtual CStringW vfunc_1();                             // 1 0x1413afb80
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413afc10
+    virtual int vfunc_3();                                  // 3 0x1413afc50
+    virtual int vfunc_8();                                  // 8 0x1413afca0
+};
+MS2_CHECK_SIZE(CGuideConditionChatEmoticon, 0x28);
+
+// 0x48. Fires once its trigger condition holds (ctor and methods are in the guide entity unit at 0x1413a5a00).
+class CGuideConditionTrigger : public CGuideCondition
+{
+public:
+    CGuideConditionTrigger();                               // 0x1413a5a50
+    virtual CStringW vfunc_1();                             // 1 0x1413a5a00
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a5ad0
+    virtual int vfunc_3();                                  // 3 0x1413a5bb0
+    virtual CStringW vfunc_7();                             // 7 0x1413a5c80
+
+    int m_n28;                                              // +0x28
+    Unk_GcOptInt m_a;                                       // +0x2c
+    Unk_GcOptInt m_b;                                       // +0x34
+    int m_n3c;                                              // +0x3c
+    int m_n40;                                              // +0x40
+    int m_pad_44;
+};
+MS2_CHECK_SIZE(CGuideConditionTrigger, 0x48);
+
+// 0x30. Passes after m_n28 has elapsed (ctor and methods are in the guide entity unit at 0x1413a5ef0).
+class CGuideConditionTimeout : public CGuideCondition
+{
+public:
+    CGuideConditionTimeout();                               // 0x1413a5f40
+    virtual CStringW vfunc_1();                             // 1 0x1413a5ef0
+    virtual int vfunc_3();                                  // 3 0x1413a5f80
+    virtual void vfunc_4();                                 // 4 0x1413a5fe0
+
+    int m_n28;                                              // +0x28
+    int m_pad_2c;
+};
+MS2_CHECK_SIZE(CGuideConditionTimeout, 0x30);
