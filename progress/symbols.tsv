@@ -61445,7 +61445,7 @@ atan2f	140a4e660	func
 ?vfunc_7@UIItemEventListener@@UEAAXPEAX@Z	140be54e0	func
 ?vfunc_9@UIItemEventListener@@UEAAXPEAX@Z	140be54f0	func
 ?vfunc_il13@UIItemEventListener@@UEAAXXZ	140be5500	func
-?vfunc_11@UIItemEventListener@@UEAAXPEAX@Z	140be5510	func
+?vfunc_il11@UIItemEventListener@@UEAAXPEAX@Z	140be5510	func
 ?vfunc_10@UIItemEventListener@@UEAAXPEAX@Z	140be5520	func
 ?vfunc_12@UIItemEventListener@@UEAAXXZ	140be5530	func
 ?vfunc_18@UIItemEventListener@@UEAAXPEAX@Z	140be5540	func

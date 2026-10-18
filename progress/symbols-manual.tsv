@@ -3050,3 +3050,7 @@ DAT_143af6ac0	143af6ac0	data
 ??0CGameOptionSoundDefault@@QEAA@HH@Z	141256d20	func
 ??0CGameOptionInputDefault@@QEAA@HH@Z	141250a80	func
 ??0CGameOptionLanguage@@QEAA@HH@Z	140cfb450	func
+??0ShopBannerInfo@@QEAA@XZ	141347b10	func
+??0CMeratMarketBuy@@QEAA@XZ	140d602f0	func
+??0ASClickOutData@UIMeratMarketDialogUtil@@QEAA@AEAVValue@GFx@Scaleform@@H@Z	140ec2950	func
+??1ASClickOutData@UIMeratMarketDialogUtil@@UEAA@XZ	140ec2a50	func
