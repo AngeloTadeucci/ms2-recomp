@@ -3,6 +3,8 @@
 // MS2-GUESS-LOOKALIKES
 // MS2-UNIT: client\ms2\guideentity.cpp#9
 // MS2-RANGE: 0x1413a2c00-0x1413a3c60 .text$mn
+// MS2-RANGE: 0x1413a3c60-0x1413a4960 .text$mn
+// MS2-RANGE: 0x1413a49a0-0x1413a5130 .text$mn
 // MS2-RANGE: 0x1413a5130-0x1413a54e0 .text$mn
 // MS2-RANGE: 0x1413a54e0-0x1413a6010 .text$mn
 // MS2-RANGE: 0x1413b4200-0x1413b4240 .text$mn
@@ -31,7 +33,6 @@ int FUN_1413b1d00(Unk_140165cf0* pElem, const char* pszName, Unk_GcOptInt& oOut)
 int FUN_1413b1fc0(Unk_140165cf0* pElem, const char* pszName, int& nOut);
 void FUN_1412751b0(const CStringW& text, int a);                        // the debug log
 unsigned FUN_140869420();                                               // millisecond clock
-bool FUN_1413a4b50();                                                   // false (outside the unit range)
 CStringW FUN_14083dc40(const wchar_t* szFormat, const int& a1, const int& a2);   // StringFormat<int, int>
 
 // The [min, max] pair of the trigger range: valid when max >= min and not both 0.
@@ -63,6 +64,181 @@ public:
     char FUN_14138c210(int nTrigger, Unk_GeRange range);
 };
 Unk_GeMgr* FUN_1409331e0();
+
+// ---- the std::map<int, int> and 16-byte handle array glue (0x1413a3c60..0x1413a5130) ----------------------------------------
+
+struct Unk_GeNode                                                       // a node of the trigger map (0x28)
+{
+    Unk_GeNode* m_pLeft; Unk_GeNode* m_pParent; Unk_GeNode* m_pRight;
+    char m_cColor; char m_bNil; int m_nKey; int m_nValue;
+};
+struct Unk_GeTreeHead { Unk_GeNode* m_pHead; unsigned __int64 m_nSize; };
+struct Unk_GeIter { Unk_GeNode* m_pNode; };
+
+void* FUN_141395550(Unk_GeTreeHead* pHead);                             // the container proxy
+Unk_GeIter* FUN_141397130(Unk_GeIter* pOut, Unk_GeNode* pNode, void* pProxy);
+Unk_GeTreeHead* FUN_14139e490(void* pMap);
+void* FUN_14139e9f0(void* pMap);                                        // the node allocator
+Unk_GeNode** FUN_14139f960(Unk_GeTreeHead* pHead);                      // the root
+Unk_GeNode** FUN_14139eee0(Unk_GeTreeHead* pHead);                      // the leftmost
+Unk_GeNode** FUN_14139f8e0(Unk_GeTreeHead* pHead);                      // the rightmost
+void FUN_14139eff0(Unk_GeTreeHead* pHead, Unk_GeNode* pNode);           // rotate left
+void FUN_14139faa0(Unk_GeTreeHead* pHead, Unk_GeNode* pNode);           // rotate right
+void FUN_1413a4e30(void* pMap, Unk_GeNode* pNode);                      // frees a node
+void* FUN_141398a90(void* pIter);
+void FUN_141389060(Unk_GcCondRef* pRef);
+unsigned __int64 FUN_1413a5140(void* pMap);
+void* FUN_1413a5160(void* pNode);
+
+// @0x1413a3d00
+std::pair<int, int>* FUN_1413a3d00(std::pair<int, int>* pDst, const std::pair<int, int>* pSrc)
+{
+    pDst->first = pSrc->first;
+    pDst->second = pSrc->second;
+    return pDst;
+}
+
+// @0x1413a3e00
+Unk_GeIter* FUN_1413a3e00(void* pMap, Unk_GeIter* pOut, char bLeft, Unk_GeNode* pWhere, const int& rKey, Unk_GeNode* pNode)
+{
+    Unk_GeTreeHead* pHead = FUN_14139e490(pMap);
+    if (pHead->m_nSize < FUN_1413a5140(pMap) - 1)
+    {
+        pHead->m_nSize = pHead->m_nSize + 1;
+        pNode->m_pParent = pWhere;
+        Unk_GeNode* pCur = pNode;
+        if (pWhere == pHead->m_pHead)
+        {
+            *FUN_14139f960(pHead) = pNode;
+            *FUN_14139eee0(pHead) = pNode;
+            *FUN_14139f8e0(pHead) = pNode;
+        }
+        else if (bLeft == 0)
+        {
+            pWhere->m_pRight = pNode;
+            if (pWhere == *FUN_14139f8e0(pHead))
+                *FUN_14139f8e0(pHead) = pNode;
+        }
+        else
+        {
+            pWhere->m_pLeft = pNode;
+            if (pWhere == *FUN_14139eee0(pHead))
+                *FUN_14139eee0(pHead) = pNode;
+        }
+        while (pCur->m_pParent->m_cColor == 0)
+        {
+            if (pCur->m_pParent == pCur->m_pParent->m_pParent->m_pLeft)
+            {
+                Unk_GeNode* pUncle = pCur->m_pParent->m_pParent->m_pRight;
+                if (pUncle->m_cColor == 0)
+                {
+                    pCur->m_pParent->m_cColor = 1;
+                    pUncle->m_cColor = 1;
+                    pCur->m_pParent->m_pParent->m_cColor = 0;
+                    pCur = pCur->m_pParent->m_pParent;
+                }
+                else
+                {
+                    if (pCur == pCur->m_pParent->m_pRight)
+                    {
+                        pCur = pCur->m_pParent;
+                        FUN_14139eff0(pHead, pCur);
+                    }
+                    pCur->m_pParent->m_cColor = 1;
+                    pCur->m_pParent->m_pParent->m_cColor = 0;
+                    FUN_14139faa0(pHead, pCur->m_pParent->m_pParent);
+                }
+            }
+            else
+            {
+                Unk_GeNode* pUncle = pCur->m_pParent->m_pParent->m_pLeft;
+                if (pUncle->m_cColor == 0)
+                {
+                    pCur->m_pParent->m_cColor = 1;
+                    pUncle->m_cColor = 1;
+                    pCur->m_pParent->m_pParent->m_cColor = 0;
+                    pCur = pCur->m_pParent->m_pParent;
+                }
+                else
+                {
+                    if (pCur == pCur->m_pParent->m_pLeft)
+                    {
+                        pCur = pCur->m_pParent;
+                        FUN_14139faa0(pHead, pCur);
+                    }
+                    pCur->m_pParent->m_cColor = 1;
+                    pCur->m_pParent->m_pParent->m_cColor = 0;
+                    FUN_14139eff0(pHead, pCur->m_pParent->m_pParent);
+                }
+            }
+        }
+        (*FUN_14139f960(pHead))->m_cColor = 1;
+        FUN_141397130(pOut, pNode, FUN_141395550(pHead));
+        return pOut;
+    }
+    FUN_1413a4e30(pMap, pNode);
+    std::_Xlength_error("map/set<T> too long");
+}
+
+// @0x1413a4620
+void FUN_1413a4620(void* pAlloc, std::pair<int, int>* pDst, const std::pair<int, int>& rVal)
+{
+    FUN_1413a3d00(static_cast<std::pair<int, int>*>(::operator new(8, pDst)), &rVal);
+}
+
+// @0x1413a4750
+Unk_GcCondRef* FUN_1413a4750(Unk_GcCondRef* pRef)
+{
+    pRef->m_p = 0;
+    return pRef;
+}
+
+// @0x1413a4770
+Unk_GcCondRef* FUN_1413a4770(Unk_GcCondRef* pDst, Unk_GcCondRef* pSrc)
+{
+    pSrc->FUN_141388ed0();
+    FUN_141389060(pDst);
+    pDst->m_p = pSrc->m_p;
+    return pDst;
+}
+
+// @0x1413a47b0
+bool FUN_1413a47b0(const Unk_GeActRef& ref)
+{
+    return ref.m_p == 0;
+}
+
+// @0x1413a47e0
+bool FUN_1413a47e0(const Unk_GcCondRef& ref)
+{
+    return ref.m_p == 0;
+}
+
+// @0x1413a4810
+void* FUN_1413a4810(void* pIter)
+{
+    return FUN_1413a5160(FUN_141398a90(pIter));
+}
+
+// @0x1413a4a30
+void FUN_1413a4a30(Unk_GcCondRef* pRefs, unsigned __int64 nCount)
+{
+    for (unsigned __int64 i = 0; i < nCount; ++i)
+        FUN_1413a4750(new (pRefs + i) Unk_GcCondRef);
+}
+
+// @0x1413a4ab0
+void FUN_1413a4ab0(Unk_GcCondRef* pDst, Unk_GcCondRef* pSrc, unsigned __int64 nCount)
+{
+    for (unsigned __int64 i = 0; i < nCount; ++i)
+        FUN_1413a4770(pDst + i, pSrc + i);
+}
+
+// @0x1413a4b50
+bool FUN_1413a4b50()
+{
+    return false;
+}
 
 // ---- the glue in front of the base class: allocator limit, checked memmove, the condition factory ------------------------------
 
@@ -559,7 +735,8 @@ void CGuideEntity::LoadConditions(Unk_140165cf0* pElem, Unk_GcCondList& list)
     for (Unk_140165cf0* pCond = pElem->FUN_140165cf0("condition"); pCond != 0; pCond = pCond->FUN_140168650("condition"))
     {
         Unk_GcCondRef ref = FUN_1413a52c0(pCond);
-        MS2_ASSERT_AT(200, ref.m_p != 0);
+        if (FUN_1413a47e0(ref))
+            _wassert(L"condition", _CRT_WIDE(MS2_THIS_FILE), 200);
         if (ref.FUN_141387b90())
             list.FUN_141388460(ref);
         ref.FUN_141387660();
@@ -572,7 +749,8 @@ void CGuideEntity::LoadActions(Unk_140165cf0* pElem, Unk_GeActList& list)
     for (Unk_140165cf0* pAct = pElem->FUN_140165cf0("action"); pAct != 0; pAct = pAct->FUN_140168650("action"))
     {
         Unk_GeActRef ref = FUN_141382b90(pAct);
-        MS2_ASSERT_AT(212, ref.m_p != 0);
+        if (FUN_1413a47b0(ref))
+            _wassert(L"action", _CRT_WIDE(MS2_THIS_FILE), 212);
         if (ref.FUN_141387ba0() != 0)
             list.FUN_1413883b0(ref);
         ref.FUN_141387630();
