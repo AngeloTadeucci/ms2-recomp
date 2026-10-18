@@ -17,8 +17,8 @@
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBW4Occurrence@CGuideManager@@H@1@XZ 0x141398a90 ; prop
 // MS2-PIN: ??E?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x141398b40 ; prop
 // MS2-PIN: ??E?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x141398bb0 ; prop
-// MS2-PIN: ?Find@?$CRBTree@HV?$MS2Ptr@VCGuideEntity@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCGuideEntity@@@@@3@@ATL@@IEBAPEAVCNode@12@H@Z 0x141399710 ; unique
-// MS2-PIN: ?InsertImpl@?$CRBTree@HV?$MS2Ptr@VCGuideEntity@@@@V?$CElementTraits@H@ATL@@V?$CElementTraits@V?$MS2Ptr@VCGuideEntity@@@@@3@@ATL@@AEAAPEAVCNode@12@HAEBV?$MS2Ptr@VCGuideEntity@@@@@Z 0x141399d70 ; unique
+// MS2-PIN: ?Find@?$CRBTree@IV?$MS2Ptr@VCGuideEntity@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VCGuideEntity@@@@@3@@ATL@@IEBAPEAVCNode@12@I@Z 0x141399710 ; unique
+// MS2-PIN: ?InsertImpl@?$CRBTree@IV?$MS2Ptr@VCGuideEntity@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2Ptr@VCGuideEntity@@@@@3@@ATL@@AEAAPEAVCNode@12@IAEBV?$MS2Ptr@VCGuideEntity@@@@@Z 0x141399d70 ; unique
 // MS2-PIN: ?Lookup@?$CRBMap@IIV?$CElementTraits@I@ATL@@V12@@ATL@@QEBA_NIAEAI@Z 0x14139a080 ; unique
 // MS2-PIN: ?SetAt@?$CRBMap@IIV?$CElementTraits@I@ATL@@V12@@ATL@@QEAAPEAU__POSITION@@II@Z 0x14139b260 ; unique
 // MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@W4Occurrence@CGuideManager@@HU?$less@W4Occurrence@CGuideManager@@@std@@V?$allocator@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@2@XZ 0x14139b970 ; prop
@@ -120,7 +120,7 @@ typedef std::pair<const int, int> GePairIntInt;
 GE_TREE_CLASSES(CGuideManager::Occurrence) GE_TREE_CLASSES(long) GE_TREE_CLASSES(GePairOcc) GE_TREE_CLASSES(GePairOccInt)
 GE_TREE_CLASSES(GePairSub) GE_TREE_CLASSES(GePairName) GE_TREE_CLASSES(GePairIntInt)
 
-template class ATL::CRBMap<int, MS2Ptr<CGuideEntity> >;
+template class ATL::CRBMap<unsigned, MS2Ptr<CGuideEntity> >;
 template class ATL::CRBMap<unsigned, unsigned>;
 
 typedef std::list<MS2Ptr<CGuideEntity> > GeListEnt;
@@ -145,7 +145,7 @@ template class std::_List_alloc<std::_List_base_types<MS2Ptr<CGuideEntity>, std:
 typedef CGuideManager::Occurrence GeOcc;
 template std::vector<MS2Ptr<CGuideEntity> >& GeMapSub::operator[](const int&);
 template GuideOccurContainer& GeMapOcc::operator[](const GeOcc&);
-template class ATL::CRBTree<int, MS2Ptr<CGuideEntity> >;
+template class ATL::CRBTree<unsigned, MS2Ptr<CGuideEntity> >;
 template class ATL::CRBTree<unsigned, unsigned>;
 
 #define GE_TREE_MORE(C)                                                                                                 \

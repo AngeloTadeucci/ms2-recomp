@@ -102,7 +102,7 @@ public:
     char m_pad_2c;                                          // +0x2c
     Unk_PartyBits m_bits;                                   // +0x2d (a 1-byte bitset, ctor 0x1402e49d0; ReceiveStates reads it)
     char m_pad_2e[2];                                       // +0x2e
-    ATL::CRBMap<int, MS2Ptr<CGuideEntity> > m_entities;     // +0x30 guide id -> entity
+    ATL::CRBMap<unsigned, MS2Ptr<CGuideEntity> > m_entities;     // +0x30 guide id -> entity
     ATL::CRBMap<unsigned, unsigned> m_map60;                          // +0x60
     ATL::CRBMap<unsigned, unsigned> m_map90;                          // +0x90
     ATL::CAtlArray<MS2Ptr<CCacheData> > m_caches;           // +0xc0 the loaded guide xml files
