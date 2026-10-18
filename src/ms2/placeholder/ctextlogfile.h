@@ -6,6 +6,9 @@
 #pragma once
 
 #include <afx.h>
+#include <list>
+#include <utility>
+#include <time.h>
 
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/cptred.h"
@@ -23,11 +26,17 @@ public:
     void FUN_140867180(const CString& strLine);             // as 0x140867020 for a CString
     void FUN_140867220();                                   // clear the second list
     void FUN_140867260(unsigned long long nLimit);                // set the byte limit
+    void FUN_140867330(__int64 nLen);                       // account a line against the budget
     const CStringW& FUN_140867310() const;                  // the file name
 
 private:
     MS2_LAYOUT_FRIEND;
     CStringW m_name;                                        // +0x18
-    char m_pad_20[0x58 - 0x20];
+    std::list<std::pair<__time64_t, CString> > m_lines;     // +0x20 the head lines (time, text)
+    std::list<std::pair<__time64_t, CString> > m_tail;      // +0x30 the body lines
+    unsigned __int64 m_nLimit;                                       // +0x40 the byte limit (-1 = unlimited)
+    unsigned __int64 m_nRemain;                                      // +0x48 bytes left
+    int m_nLineExtra;                                       // +0x50 bytes added to every line (0x18)
+    int m_nPad54;
 };
 MS2_CHECK_SIZE(CTextLogFile, 0x58);
