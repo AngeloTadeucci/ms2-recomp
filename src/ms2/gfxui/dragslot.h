@@ -23,6 +23,7 @@
 #endif
 #include <afx.h>
 #include <atlcoll.h>
+#include <map>
 #include <efd/ClassInfo.h>
 #include <NiRefObject.h>
 
@@ -133,7 +134,8 @@ public:
     virtual DragSlot* vfunc_16(int n);              // 16 0x1422cd1a0 return 0 (creates the slot for index n; TradeSlotBag: new TradeSlot)
 
 public:
-    void* m_slots78[2];                             // +0x78 std::set/map keyed by slot name (init 0x141000090, dtor 0x1410004f0)
+    std::map<int, CString> m_slots;                 // +0x78 slot index -> slot name ("<bag name>.<index>"); FUN_1422ccb50 inserts,
+                                                    // vfunc_11/12 walk it (init 0x141000090, dtor 0x1410004f0, clear 0x1410083f0)
 };
 MS2_CHECK_SIZE(DragSlotBag, 0x88);
-MS2_CHECK_OFFSET(DragSlotBag, m_slots78, 0x78);
+MS2_CHECK_OFFSET(DragSlotBag, m_slots, 0x78);
