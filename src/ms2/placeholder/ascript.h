@@ -147,6 +147,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, CString a2, Scaleform::GFx::Value a3);   // 0x140e2b3d0 (inline COMDAT, defined in uiequipiconcontainer.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, int a2, bool a3);   // 0x140f8f850 (inline COMDAT, defined in uipartysearchdialog.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, CStringW a2, CStringW a3, CStringW a4, CStringW a5, CStringW a6, CStringW a7);   // 0x14198d3c0 (inline COMDAT, defined in uihousemark.cpp; the strings by value: the callee destroys them)
+    Scaleform::GFx::Value Invoke(const char* szMethod, CString a1, CStringW a2, CStringW a3, CStringW a4, int a5, int a6);   // 0x141a730c0 (uiobjectstoredialog.cpp initData; the strings by value: the callee destroys them)
     int FUN_14198f250() { return m_nMovieId; }                                              // 0x14198f250 (inline COMDAT, first emitted in uihousemark.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, AScript a2);                  // 0x140c0df40 (inline COMDAT, defined in uidungeoncategory.cpp; a2 by value: the callee destroys it)
     Scaleform::GFx::Value Invoke(const char* szMethod, __int64 a1, __int64 a2);              // 0x140cb6990 (UIPvPGuildTeamDialog setHpBar)
