@@ -11,6 +11,15 @@ compiled with the same compiler (MSVC 14.16).
 This repository contains only the recompiled code and what is needed to build it. It does not include the game, the
 Gamebryo engine source or any other SDK. You need your own copies of those.
 
+## Progress
+
+![Progress: each block is a group of functions in the original exe, coloured by recompilation status](assets/progress.png)
+
+Each block stands for a group of functions in the original executable, grouped by subsystem. **Matched** functions
+compile to the same bytes as the original. **Equivalent** ones behave the same but differ in code generation.
+**Awaiting match** and **In flight** are written or in progress but not yet merged. The image is regenerated on each
+publish.
+
 ## Layout
 
 | Path | Contents |
