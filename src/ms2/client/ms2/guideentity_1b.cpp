@@ -2,19 +2,77 @@
 // manager CGuideManager (ctor / dtor, the guide.xml loader, the entity state machine, the trigger / occurrence queues, the
 // item / UGC / status listener slots and the notify callbacks) and the template glue its code emits.
 // See ms2/placeholder/cguidemanager.h.
+// MS2-GUESS-LOOKALIKES
 // MS2-UNIT: client\ms2\guideentity.cpp
-// MS2-RANGE: 0x14138a4d0-0x14138fe50 .text$mn
+// MS2-RANGE: 0x14138a4d0-0x141398800 .text$mn
+// MS2-RANGE: 0x141399320-0x141399600 .text$mn
+// MS2-PIN: ??_7CGuideManager@@6B?$TSingleton@VCGuideManager@@@@@ 0x142f00c90
 // MS2-PINS-BEGIN tplpin
 // MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14138ed30 ; prop
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14138ed60 ; prop
-// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14138f110 ; prop
-// MS2-PIN: ??$?0AEBU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14138f160 ; prop
+// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x14138ed90 ; prop
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14138f110 ; unique
+// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@HPEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@H@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x14138f160 ; prop
 // MS2-PIN: ??$?0AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH$0A@@?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@Z 0x14138f2a0 ; unique
 // MS2-PIN: ??$?0V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H$0A@@?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@QEAA@$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x14138f540 ; unique
-// MS2-PIN: ??$?0V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@@?$_Tree@V?$_Tmap_traits@HV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA@AEBV01@$$QEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@1@@Z 0x14138f6c0 ; unique
-// MS2-PIN: ??$?0V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@X@?$_Tree_comp_alloc@V?$_Tmap_traits@HV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@$$QEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@1@@Z 0x14138f740 ; unique
-// MS2-PIN: ??$?0V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@$$V@?$_Compressed_pair@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@$$QEAV?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@1@@Z 0x14138f790 ; unique
-// MS2-PIN: ??$?0V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@X@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAA@$$QEAV?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@1@@Z 0x14138f7d0 ; unique
+// MS2-PIN: ??$_Buy_if_not_node@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@$0A@@std@@@std@@IEAAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@1@PEAU21@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x14138fe10 ; unique
+// MS2-PIN: ??$_Buynode@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@?$_Tree_comp_alloc@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@1@$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x141390260 ; unique
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@JPEAX@std@@@std@@@?$_Tree_node@JPEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@JPEAX@std@@@1@PEAU01@@Z 0x141390ea0 ; prop
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@1@PEAU01@@Z 0x141390f30 ; prop
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@1@PEAU01@@Z 0x141390fc0 ; prop
+// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@1@PEAU01@@Z 0x141391050 ; prop
+// MS2-PIN: ??$_Insert_at@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@$0A@@std@@@std@@IEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@std@@@1@_NPEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@1@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@1@Z 0x141391650 ; unique
+// MS2-PIN: ??$_Insert_nohint@AEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@2@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@std@@@std@@_N@1@_NAEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@PEAU?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@1@@Z 0x141393d00 ; unique
+// MS2-PIN: ??$_Const_cast@$$CBU?$pair@W4Occurrence@CGuideManager@@H@std@@@std@@YAPEAU?$pair@W4Occurrence@CGuideManager@@H@0@PEBU10@@Z 0x141394930 ; probe
+// MS2-PIN: ??$_Kfn@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@?$_Tmap_traits@W4Occurrence@CGuideManager@@VGuideOccurContainer@@U?$less@W4Occurrence@CGuideManager@@@std@@V?$allocator@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@5@$0A@@std@@SAAEBW4Occurrence@CGuideManager@@AEBU?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@1@@Z 0x141394950 ; order
+// MS2-PIN: ??$_Lbound@J@?$_Tree@V?$_Tset_traits@JU?$less@J@std@@V?$allocator@J@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@JPEAX@1@AEBJ@Z 0x141394a00 ; order
+// MS2-PIN: ??$_Lbound@W4Occurrence@CGuideManager@@@?$_Tree@V?$_Tmap_traits@W4Occurrence@CGuideManager@@VGuideOccurContainer@@U?$less@W4Occurrence@CGuideManager@@@std@@V?$allocator@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@5@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@1@AEBW4Occurrence@CGuideManager@@@Z 0x141394aa0 ; order
+// MS2-PIN: ??$_Lbound@W4Occurrence@CGuideManager@@@?$_Tree@V?$_Tset_traits@W4Occurrence@CGuideManager@@U?$less@W4Occurrence@CGuideManager@@@std@@V?$allocator@W4Occurrence@CGuideManager@@@4@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@1@AEBW4Occurrence@CGuideManager@@@Z 0x141394b40 ; order
+// MS2-PIN: ??$addressof@$$CBV?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@YAPEBV?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@0@AEBV10@@Z 0x141395430 ; probe
+// MS2-PIN: ??$addressof@$$CBV?$_Tree_val@U?$_Tree_simple_types@J@std@@@std@@@std@@YAPEBV?$_Tree_val@U?$_Tree_simple_types@J@std@@@0@AEBV10@@Z 0x141395440 ; probe
+// MS2-PIN: ??$addressof@H@std@@YAPEAHAEAH@Z 0x141395450 ; probe
+// MS2-PIN: ??$addressof@J@std@@YAPEAJAEAJ@Z 0x141395460 ; probe
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@HPEAX@std@@@std@@YAPEAPEAU?$_Tree_node@HPEAX@0@AEAPEAU10@@Z 0x141395470 ; probe
+// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@0@AEAPEAU10@@Z 0x141395480 ; probe
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@J@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@J@std@@@0@AEAV10@@Z 0x141395530 ; order
+// MS2-PIN: ??$construct@PEAU?$_List_node@V?$MS2Ptr@VCGuideEntity@@@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_List_node@V?$MS2Ptr@VCGuideEntity@@@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_List_node@V?$MS2Ptr@VCGuideEntity@@@@PEAX@std@@@1@QEAPEAU?$_List_node@V?$MS2Ptr@VCGuideEntity@@@@PEAX@1@AEAPEAU31@@Z 0x1413955a0 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@JPEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@JPEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@JPEAX@std@@@1@QEAPEAU?$_Tree_node@JPEAX@1@AEAPEAU31@@Z 0x1413955f0 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@1@AEAPEAU31@@Z 0x141395640 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@1@AEAPEAU31@@Z 0x1413956e0 ; prop
+// MS2-PIN: ??$construct@PEAU?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@AEAPEAU12@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@@1@QEAPEAU?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@1@AEAPEAU31@@Z 0x141395730 ; prop
+// MS2-PIN: ??$construct@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@2@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@1@QEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x1413958d0 ; unique
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@1@@Z 0x141395c10 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@1@@Z 0x141395c20 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@PEAX@1@@Z 0x141395c30 ; prop
+// MS2-PIN: ??$destroy@PEAU?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@std@@@1@QEAPEAU?$_Tree_node@W4Occurrence@CGuideManager@@PEAX@1@@Z 0x141395c40 ; prop
+// MS2-PIN: ??$destroy@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@PEAX@std@@@1@QEAU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x141395c70 ; unique
+// MS2-PIN: ??$emplace@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x141395d80 ; unique
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141396110 ; unique
+// MS2-PIN: ??$forward@AEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@std@@@std@@@std@@@std@@YAAEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141396120 ; unique
+// MS2-PIN: ??$forward@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@YA$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@0@AEAU10@@Z 0x1413961c0 ; prop
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141396210 ; unique
+// MS2-PIN: ??$forward@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@std@@@std@@@std@@@std@@YA$$QEAV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@std@@@std@@@0@AEAV10@@Z 0x141396220 ; unique
+// MS2-PIN: ??$insert@U?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@X@?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@1@@Z 0x141396360 ; unique
+// MS2-PIN: ??$make_pair@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@std@@YA?AU?$pair@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@0@AEBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@AEAH@Z 0x141396540 ; unique
+// MS2-PIN: ??0?$CRBMap@IIV?$CElementTraits@I@ATL@@V12@@ATL@@QEAA@_K@Z 0x1413968c0 ; unique
+// MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCGuideManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x141396980 ; unique
+// MS2-PIN: ??0?$_List_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAA@PEAU?$_List_node@V?$MS2Ptr@VCGuideEntity@@@@PEAX@1@PEBV?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@1@@Z 0x141396c10 ; prop
+// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@W4Occurrence@CGuideManager@@HU?$less@W4Occurrence@CGuideManager@@@std@@V?$allocator@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@@4@$0A@@std@@@std@@QEAA@AEBU?$less@W4Occurrence@CGuideManager@@@1@@Z 0x141396ef0 ; prop
+// MS2-PIN: ??0?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAA@PEAV?$MS2Ptr@VCGuideEntity@@@@PEBU_Container_base0@1@@Z 0x141397490 ; prop
+// MS2-PIN: ??0?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEAA@PEAV?$MS2Ptr@VCGuideEntity@@@@PEBU_Container_base0@1@@Z 0x141397510 ; prop
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@PEAX@std@@@std@@QEAA@XZ 0x1413975e0 ; prop
+// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@PEAX@std@@@std@@QEAA@XZ 0x141397600 ; prop
+// MS2-PIN: ??0?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@@std@@QEAA@XZ 0x141397720 ; unique
+// MS2-PIN: ??1?$CRBMap@IIV?$CElementTraits@I@ATL@@V12@@ATL@@QEAA@XZ 0x141397d10 ; unique
+// MS2-PIN: ??1?$map@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@HU?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@std@@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@H@std@@@4@@std@@QEAA@XZ 0x141398130 ; unique
+// MS2-PIN: ??4?$MS2Ptr@VCGuideEntity@@@@QEAAAEAV0@AEBV0@@Z 0x1413983b0 ; order
+// MS2-PIN: ??4?$MS2Ptr@VGuideTriggerEventGroup@@@@QEAAAEAV0@AEBV0@@Z 0x1413983f0 ; order
+// MS2-PIN: ??8?$MS2Ptr@VCGuideEntity@@@@QEBA_NPEAVCGuideEntity@@@Z 0x1413984a0 ; unique
+// MS2-PIN: ??8?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@U?$pair@W4Occurrence@CGuideManager@@H@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141398620 ; order
+// MS2-PIN: ??8?$_Vector_const_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141398670 ; order
+// MS2-PIN: ??9?$_List_const_iterator@V?$_List_val@U?$_List_simple_types@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x1413986c0 ; prop
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHV?$vector@V?$MS2Ptr@VCGuideEntity@@@@V?$allocator@V?$MS2Ptr@VCGuideEntity@@@@@std@@@std@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141398700 ; prop
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@H@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141398740 ; prop
+// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Occurrence@CGuideManager@@VGuideOccurContainer@@@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x141398780 ; prop
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\guideentity.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -342,7 +400,7 @@ void CGuideManager::AddTrigger(TriggerType eType, int nValue, int nSubValue)
     MS2Ptr<GuideTriggerEventGroup> spGroup;
     if (!m_triggers.Lookup(eType, spGroup))
     {
-        spGroup = MS2Ptr<GuideTriggerEventGroup>(new GuideTriggerEventGroup);
+        spGroup.AssignRaw(new GuideTriggerEventGroup);
         m_triggers.SetAt(eType, spGroup);
     }
     spGroup->AddValue(nValue);
@@ -819,11 +877,11 @@ void CGuideManager::BuildOccurIndex()
     while (pos != 0)
     {
         MS2Ptr<CGuideEntity> spEntity = m_entities.GetValueAt(pos);
-        std::map<int, int> occurs;
-        spEntity->CollectTriggerValues(occurs);
-        for (std::map<int, int>::iterator it = occurs.begin(); it != occurs.end(); ++it)
+        std::map<Occurrence, int> occurs;
+        spEntity->CollectTriggerValues(reinterpret_cast<std::map<int, int>&>(occurs));   // MS2-FUNCTIONAL: the exe's map is keyed by Occurrence
+        for (std::map<Occurrence, int>::iterator it = occurs.begin(); it != occurs.end(); ++it)
         {
-            Occurrence eKey = static_cast<Occurrence>(it->first);
+            Occurrence eKey = it->first;
             int nSub = it->second;
             if (eKey != 0)
             {
@@ -1070,5 +1128,36 @@ typedef std::vector<MS2Ptr<CGuideEntity> > GeVecEnt;
 #define GE_SET_CTOR(K) template std::_Tree<std::_Tset_traits<K, std::less<K>, std::allocator<K>, false> >::_Tree(const std::less<K>&);
 #define GE_MAP_CTOR(K, V) template std::_Tree<std::_Tmap_traits<K, V, std::less<K>, std::allocator<std::pair<const K, V> >, false> >::_Tree(const std::less<K>&);
 GE_SET_CTOR(CGuideManager::Occurrence) GE_SET_CTOR(long)
-GE_MAP_CTOR(CGuideManager::Occurrence, GuideOccurContainer) GE_MAP_CTOR(CStringA, int) GE_MAP_CTOR(int, int)
+GE_MAP_CTOR(CGuideManager::Occurrence, GuideOccurContainer) GE_MAP_CTOR(CStringA, int) GE_MAP_CTOR(CGuideManager::Occurrence, int)
 GE_MAP_CTOR(int, GeVecEnt)
+
+// @0x141397ba0
+GuideOccurContainer::GuideOccurContainer(const GuideOccurContainer& other)
+    : CPtred(other), m_byValue(other.m_byValue), m_all(other.m_all)
+{
+}
+
+// @0x141397b20
+GuideOccurContainer::GuideOccurContainer(GuideOccurContainer&& other)
+    : CPtred(other), m_byValue(std::move(other.m_byValue)), m_all(std::move(other.m_all))
+{
+}
+
+// @0x141397c80
+GuideTriggerEventGroup::GuideTriggerEventGroup()
+{
+}
+
+// @0x141396750
+unsigned char* FUN_141396750(Unk_Bitset8* pBits, unsigned char nValue)
+{
+    pBits->Fill(false);
+    unsigned char nRest = nValue;
+    for (unsigned nBit = 0; nRest != 0 && nBit < 8; ++nBit)
+    {
+        if ((nRest & 1) != 0)
+            pBits->Set(nBit, true);
+        nRest = nRest >> 1;
+    }
+    return pBits->m_bits;
+}
