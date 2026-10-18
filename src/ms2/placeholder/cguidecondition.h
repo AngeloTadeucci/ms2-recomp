@@ -840,6 +840,7 @@ MS2_CHECK_SIZE(CGuideConditionCubeHolderSelectItem, 0x28);
 class CGuideConditionFalse : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413a58e0
     CGuideConditionFalse();// 0x1413b2cc0
     virtual CStringW vfunc_1();                             // 1 0x1413a5940
     virtual int vfunc_3();                                  // 3 0x1413a5990
@@ -1111,6 +1112,7 @@ MS2_CHECK_SIZE(CGuideConditionChatEmoticon, 0x28);
 class CGuideConditionTrigger : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413a59a0
     CGuideConditionTrigger();                               // 0x1413a5a50
     virtual CStringW vfunc_1();                             // 1 0x1413a5a00
     virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a5ad0
@@ -1130,6 +1132,7 @@ MS2_CHECK_SIZE(CGuideConditionTrigger, 0x48);
 class CGuideConditionTimeout : public CGuideCondition
 {
 public:
+    static ClassObject* CreateObject();                     // 0x1413a5e90
     CGuideConditionTimeout();                               // 0x1413a5f40
     virtual CStringW vfunc_1();                             // 1 0x1413a5ef0
     virtual int vfunc_3();                                  // 3 0x1413a5f80
@@ -1151,6 +1154,7 @@ enum Unk_GcItemType : int {};       // inventory item type
 template <class E> inline const E& GcEnum(const int& n) { return reinterpret_cast<const E&>(n); }
 #define GC_ENUM(E, n) reinterpret_cast<const E&>(n)
 // Out-of-line copies (explicit instantiations in unit_1413a9df0#6).
+extern template CStringW StringFormat<Unk_GcEnum1>(const wchar_t*, const Unk_GcEnum1&);
 extern template CStringW StringFormat<int, unsigned, unsigned>(const wchar_t*, const int&, const unsigned&, const unsigned&);
 extern template CStringW StringFormat<int, float, int>(const wchar_t*, const int&, const float&, const int&);
 extern template CStringW StringFormat<int, bool, bool>(const wchar_t*, const int&, const bool&, const bool&);
