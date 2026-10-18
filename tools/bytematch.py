@@ -572,7 +572,7 @@ def side_by_side(obytes, omask, xbytes, xmask, va):
 # Used (a) to check that a call/reference goes to the right exe address (not just a consistent one) and (b) by
 # tools/ms2symobj.py to resolve references from recovered code to not-yet-recovered exe code/data in the hook DLL.
 
-SYMBOLS_TSV = os.path.join(ROOT, "progress", "symbols.tsv")
+SYMBOLS_TSV = os.environ.get("MS2_SYMBOLS_TSV") or os.path.join(ROOT, "progress", "symbols.tsv")   # override: what-if table (work/cf7)
 SYMBOLS = {}          # name -> va
 HARVEST = {}          # name -> va (this run)
 CONFLICTS = []
