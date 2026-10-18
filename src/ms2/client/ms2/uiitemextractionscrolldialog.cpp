@@ -53,9 +53,7 @@ Unk_ExFeatures* FUN_140166410();
 class Unk_ExtractionRow : public CPtred
 {
 public:
-    int m_10;
-    int m_14;
-    int m_nConsume;                                     // +0x18
+    int m_nConsume;                                     // +0x18 (CPtred is 0x18 bytes)
     int m_1c;
     int m_nScrollId;                                    // +0x20
 };
