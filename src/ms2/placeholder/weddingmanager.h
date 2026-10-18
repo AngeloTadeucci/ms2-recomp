@@ -7,11 +7,14 @@
 #include "ms2/ms2layout.h"
 #include "ms2/commonfiles/os.h"
 
+class WeddingProxy;                                         // weddingproxy.h
+
 class WeddingManager : public TSingleton<WeddingManager>
 {
 public:
     WeddingManager();                                       // 0x141b835d0
     virtual ~WeddingManager();
+    WeddingProxy* FUN_140d295d0();                          // the own wedding record (+0x8)
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_8[0x228 - 0x8];

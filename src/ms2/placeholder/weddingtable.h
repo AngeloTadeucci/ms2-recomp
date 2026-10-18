@@ -8,11 +8,16 @@
 #include "ms2/commonfiles/os.h"
 #include "ms2/placeholder/cvaliddata.h"
 
+template <class T> class MS2Ptr;
+class WeddingPackage;                                       // weddingpackage.h
+
 class WeddingTable : public TSingleton<WeddingTable>, public CValidData<WeddingTable>
 {
 public:
     WeddingTable();                                         // 0x140907bd0
     virtual ~WeddingTable();
+    MS2Ptr<WeddingPackage> FUN_140908b80(int nPackageId);   // the package of an id (null: none)
+    unsigned int FUN_140908d50(int nPackageId, int nHallId, bool bNight);   // the hall's field id (night variant)
 private:
     MS2_LAYOUT_FRIEND;
     char m_pad_10[0x60 - 0x10];
