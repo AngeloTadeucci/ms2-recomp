@@ -15,6 +15,13 @@
 
 #pragma comment(lib, "winmm.lib")
 
+// cl's `for each` (the exe's iteration shape); clang-cl (the hook DLL build) has no such statement: a range-for there.
+#ifdef __clang__
+#define BD_FOR_EACH(decl, container) for (decl : container)
+#else
+#define BD_FOR_EACH(decl, container) for each (decl in container)
+#endif
+
 // ---- exe callees ----
 class Unk_BdFrame { public: float FUN_141473210(); };                   // the frame timer: frame rate
 class Unk_BdMemory { public: unsigned __int64 FUN_14161bdc0(); };       // the memory monitor: bytes in use
@@ -74,7 +81,7 @@ bool CBigDataLogSystem::CSampleList::Calculate(float* pAverage, float* pMin, flo
         *pCount = (int)m_values.size();
         *pMin = m_values[0];
         *pMax = m_values[0];
-        for each (__int64 nValue in m_values)
+        BD_FOR_EACH(__int64 nValue, m_values)
         {
             nTotal += nValue;
             if ((float)nValue < *pMin)
@@ -84,7 +91,7 @@ bool CBigDataLogSystem::CSampleList::Calculate(float* pAverage, float* pMin, flo
         }
         *pAverage = (float)nTotal / (float)*pCount;
         float fVariance = 0.0f;
-        for each (const __int64& nValue in m_values)
+        BD_FOR_EACH(const __int64& nValue, m_values)
             fVariance += ((float)nValue - *pAverage) * ((float)nValue - *pAverage);
         *pDeviation = FUN_14096b1c0(fVariance);
         m_values.clear();
