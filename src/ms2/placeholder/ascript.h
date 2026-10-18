@@ -171,6 +171,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, CStringW a2, bool a3, bool a4);   // 0x140f0a6f0 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, Scaleform::GFx::Value a1, long a2);   // 0x140f0a830 (inline COMDAT, defined in uibeautyshopstyledialog.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, bool a2);                    // 0x140f356e0 (inline COMDAT, defined in uidarkstreamscoredialog.cpp)
+    Scaleform::GFx::Value Invoke(const char* szMethod, int a1, int a2, bool a3);            // 0x140f9d9e0 (inline COMDAT, defined in uishadowexpeditionbossbar.cpp)
     Scaleform::GFx::Value Invoke(const char* szMethod, bool a1, bool a2);                   // 0x140fc1a70 (inline COMDAT, defined in uiwatchagamedialog.cpp)
     Scaleform::GFx::Value FUN_140e6b140(const char* szMethod, int a1, CString a2);          // 0x140e6b140 (a2 by value: the callee destroys it)
     Scaleform::GFx::Value Invoke(const char* szMethod, CStringW a1, int a2);                // 0x140e0a8c0 (inline COMDAT, defined in uichapterbook.cpp; a1 by value: the callee destroys it)
