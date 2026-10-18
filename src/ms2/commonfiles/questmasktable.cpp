@@ -4,7 +4,7 @@
 // MS2-RANGE: 0x1400bc3d0-0x1400bc630 .text$di
 // MS2-RANGE: 0x140761a40-0x140768690 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ?GetInstance@?$TSingleton@VCQuestMaskTable@@@@SAPEAVCQuestMaskTable@@XZ 0x140764010 ; unique
+// MS2-PIN: ?GetInstance@?$TSingleton@VCQuestMaskTable@@@@SAPEAVCQuestMaskTable@@XZ 0x14109a710 ; unique
 // MS2-PIN: ??0?$Unk_BmPtr@VQuestMask@@@@QEAA@PEAVQuestMask@@@Z 0x140765850 ; unique
 // MS2-PIN: ??0CNode@?$CAtlMap@IV?$Unk_BmBoxPtr@V?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmBoxPtr@V?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@@@@3@@ATL@@QEAA@II@Z 0x140765980 ; prop
 // MS2-PIN: ??0CNode@?$CAtlMap@IV?$Unk_BmPtr@VQuestMask@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$Unk_BmPtr@VQuestMask@@@@@3@@ATL@@QEAA@II@Z 0x1407659c0 ; prop
