@@ -6,6 +6,9 @@
 // header; member names invented from their use. Append new subclasses here (layout proven from their ctors / operator new).
 #pragma once
 
+#include <afx.h>
+#include <atlcoll.h>
+
 #include "ms2/ms2layout.h"
 #include "ms2/placeholder/classobject.h"
 #include "ms2/placeholder/nipoint3.h"
@@ -239,3 +242,26 @@ public:
     virtual int vfunc_3();                                  // 3 0x1413a8320
 };
 MS2_CHECK_SIZE(CGuideConditionConstructMode, 0x28);
+
+// 0x60. Passes while the dialog (by id m_nDialogID, else by name m_strDialog) is open (m_nIsOpen = 1) or closed (0), every
+// "control" child is visible and, when m_nSubIndex >= 0, the dialog shows that sub page.
+class CGuideConditionDialog : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a6010
+    CGuideConditionDialog();                                // 0x1413a60c0
+    virtual ~CGuideConditionDialog();                       // 0 0x1413b4700
+    virtual CStringW vfunc_1();                             // 1 0x1413a6070
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a6480: dialogName / dialogID / isOpen / subIndex / control
+    virtual int vfunc_3();                                  // 3 0x1413a6140
+    virtual CStringW vfunc_7();                             // 7 0x1413a6300
+    virtual int vfunc_8();                                  // 8 0x1413a6430
+
+    int m_nIsOpen;                                          // +0x28 "isOpen" (1)
+    unsigned m_nDialogID;                                   // +0x2c "dialogID"
+    CStringA m_strDialog;                                   // +0x30 "dialogName"
+    int m_nSubIndex;                                        // +0x38 "subIndex" (-1)
+    int m_pad_3c;
+    ATL::CAtlArray<CString> m_arrControl;                   // +0x40 "control": the child names that must be visible
+};
+MS2_CHECK_SIZE(CGuideConditionDialog, 0x60);
