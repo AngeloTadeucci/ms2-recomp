@@ -25,9 +25,6 @@
 // MS2-PIN: ?GcFmtId@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH@Z 0x140292a70
 // MS2-PIN: ?GcFmtMinMax@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH@Z 0x1401ceea0
 // MS2-PIN: ?GcFmtIntInt@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH1@Z 0x1406e7810
-// MS2-PIN: ?GcFmtRange@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBHAEBI2@Z 0x1413afe00
-// MS2-PIN: ?GcFmtInteract@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBHAEBM1@Z 0x1413b0180
-// MS2-PIN: ?GcFmtSlot@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBHAEB_N2@Z 0x1413b0500
 // MS2-PIN: ?GcFmtPos@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBM11@Z 0x140719e60
 // MS2-PIN: ?GcFmtBool@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEB_N@Z 0x14136f150
 // MS2-PIN: ?GcFmtSize@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEB_K@Z 0x1406c6bd0
@@ -35,9 +32,6 @@
 __declspec(noinline) CStringW GcFmtId(const wchar_t* f, const int& a) { return StringFormat(f, a); }
 __declspec(noinline) CStringW GcFmtMinMax(const wchar_t* f, const int& a) { return StringFormat(f, a); }
 __declspec(noinline) CStringW GcFmtIntInt(const wchar_t* f, const int& a, const int& b) { return StringFormat(f, a, b); }
-__declspec(noinline) CStringW GcFmtRange(const wchar_t* f, const int& a, const unsigned& b, const unsigned& c) { return StringFormat(f, a, b, c); }
-__declspec(noinline) CStringW GcFmtInteract(const wchar_t* f, const int& a, const float& b, const int& c) { return StringFormat(f, a, b, c); }
-__declspec(noinline) CStringW GcFmtSlot(const wchar_t* f, const int& a, const bool& b, const bool& c) { return StringFormat(f, a, b, c); }
 __declspec(noinline) CStringW GcFmtPos(const wchar_t* f, const float& a, const float& b, const float& c) { return StringFormat(f, a, b, c); }
 __declspec(noinline) CStringW GcFmtBool(const wchar_t* f, const bool& a) { return StringFormat(f, a); }
 __declspec(noinline) CStringW GcFmtSize(const wchar_t* f, const size_t& a) { return StringFormat(f, a); }
@@ -50,7 +44,7 @@ __declspec(noinline) CStringW GcFmtStr(const wchar_t* f, const CStringW& a) { re
 CStringW CGuideConditionFieldId::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(GcFmtRange(L"value({0}), range({1}-{2})", m_n20, unsigned(m_nRangeBeg), unsigned(m_nRangeEnd)));
+    str.Append(StringFormat(L"value({0}), range({1}-{2})", m_n20, unsigned(m_nRangeBeg), unsigned(m_nRangeEnd)));
     return str;
 }
 
@@ -213,7 +207,7 @@ CStringW CGuideConditionAchieveExistTrophy::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
     if (m_type.m_bSet)
-        str.Append(FUN_1413b1510(L"achieveType({0})", &m_type.m_nValue));
+        str.Append(StringFormat(L"achieveType({0})", GcEnum<Unk_GcAchieveType>(m_type.m_nValue)));
     else
         str.Append(StringFormat(L"achieveType"));
     return str;
@@ -631,7 +625,7 @@ int CGuideConditionInteractObject::vfunc_3()
 CStringW CGuideConditionInteractObject::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(GcFmtInteract(L"interactID({0}), interactID({1}), interactID({2})", m_nInteractId, m_fDistance, m_nState));
+    str.Append(StringFormat(L"interactID({0}), interactID({1}), interactID({2})", m_nInteractId, m_fDistance, m_nState));
     return str;
 }
 
@@ -718,7 +712,7 @@ void CGuideConditionConstructSlot::vfunc_5()
 CStringW CGuideConditionConstructSlot::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(GcFmtSlot(L"slotIdx({0}), isIndoor({1}), isOutDoor({2})", m_nSlotIdx, m_bIndoor, m_bOutdoor));
+    str.Append(StringFormat(L"slotIdx({0}), isIndoor({1}), isOutDoor({2})", m_nSlotIdx, m_bIndoor, m_bOutdoor));
     return str;
 }
 
@@ -775,9 +769,10 @@ void CGuideConditionServerTime::vfunc_2(Unk_140165cf0* pElem)
 // @0x1413ac890
 int CGuideConditionServerTime::vfunc_3()
 {
-    Unk_GcTime now;
-    now.FUN_1406c47a0(FUN_140869440());
-    return FUN_1413a5600(m_time.FUN_1406c4cc0(now));
+    // the exe does not run the default constructor here (the epoch setter fills the whole object)
+    struct { void* m_p0; void* m_p1; } rawNow;
+    reinterpret_cast<Unk_GcTime&>(rawNow).FUN_1406c47a0(FUN_140869440());
+    return FUN_1413a5600(m_time.FUN_1406c4cc0(reinterpret_cast<Unk_GcTime&>(rawNow)));
 }
 
 // @0x1413ac8e0

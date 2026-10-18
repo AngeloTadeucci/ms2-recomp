@@ -5,6 +5,7 @@
 // unit_1413a8370 / unit_1413a9a50 / unit_1413a9df0 (ctors 0x1413b2b30.., vftables, deleting dtors). NOT an original
 // header; member names invented from their use. Append new subclasses here (layout proven from their ctors / operator new).
 #pragma once
+#include "ms2/ms2format.h"
 
 #include <afx.h>
 #include <atlcoll.h>
@@ -447,6 +448,9 @@ public:
     CGuideCondition* FUN_141387bb0();                       // the held condition
     bool FUN_141387b90();                                   // holds one
     void FUN_141387660();                                   // release
+    void FUN_141388ed0();                                   // creates the refcount block
+    Unk_GcCondRef* FUN_1413b2880(Unk_GcCondRef& rhs);       // takes the pointer of rhs
+    Unk_GcCondRef* FUN_1413b28b0(CGuideCondition* pCond);   // holds a new pointer
     void* m_pRc;
     CGuideCondition* m_p;
 };
@@ -1135,3 +1139,22 @@ public:
     int m_pad_2c;
 };
 MS2_CHECK_SIZE(CGuideConditionTimeout, 0x30);
+
+// ---- StringFormat instances of the guide-condition TU (defined in unit_1413a9df0#6) ------------------------------------------
+// The enum arguments take the formatter's custom-argument path (fmt::internal::MakeValue<enum> + format_arg<enum>); the
+// conditions keep them in int members, so the wrappers reinterpret the member reference.
+enum Unk_GcEnum1 : int {};          // formatted by 0x1413b13d0 (no caller in this TU)
+enum Unk_GcModeId : int {};         // CGuideConditionHomeMode::m_nMode
+enum Unk_GcAchieveType : int {};    // the trophy achievement type
+enum Unk_GcIconType : int {};       // cube / item icon type
+enum Unk_GcItemType : int {};       // inventory item type
+template <class E> inline const E& GcEnum(const int& n) { return reinterpret_cast<const E&>(n); }
+// Out-of-line copies (explicit instantiations in unit_1413a9df0#6).
+extern template CStringW StringFormat<int, unsigned, unsigned>(const wchar_t*, const int&, const unsigned&, const unsigned&);
+extern template CStringW StringFormat<int, float, int>(const wchar_t*, const int&, const float&, const int&);
+extern template CStringW StringFormat<int, bool, bool>(const wchar_t*, const int&, const bool&, const bool&);
+extern template CStringW StringFormat<Unk_GcModeId>(const wchar_t*, const Unk_GcModeId&);
+extern template CStringW StringFormat<Unk_GcAchieveType>(const wchar_t*, const Unk_GcAchieveType&);
+extern template CStringW StringFormat<Unk_GcItemType>(const wchar_t*, const Unk_GcItemType&);
+extern template CStringW StringFormat<unsigned, Unk_GcItemType, Unk_GcIconType>(const wchar_t*, const unsigned&, const Unk_GcItemType&, const Unk_GcIconType&);
+extern template CStringW StringFormat<Unk_GcItemType, int, int>(const wchar_t*, const Unk_GcItemType&, const int&, const int&);

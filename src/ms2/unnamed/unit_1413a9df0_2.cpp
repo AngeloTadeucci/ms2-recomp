@@ -21,7 +21,6 @@
 CStringW FUN_140275590(const wchar_t* pszFormat, const CStringW& a, const int& b);
 CStringW FUN_1401e8510(const wchar_t* pszFormat, const CStringW& a);
 CStringW FUN_140e06940(const wchar_t* pszFormat, const unsigned& a, const CStringW& b, const CStringW& c);
-CStringW FUN_1413b1470(const wchar_t* pszFormat, const int& a);
 CStringW FUN_14016a730(const char* psz, int nCodePage);
 
 extern __int64 DAT_143ab28b0;
@@ -47,7 +46,6 @@ int FUN_1413b6160(Unk_G9Holder* pHolder);                       // joined a guil
 void FUN_140178570(Unk_140165cf0* pElem, const char* pszName, CAtlArray<int>& arr);
 void* FUN_140938b90(unsigned nUIId);                    // the menu bar
 int FUN_141938a00(void* pMenu, const CStringA& strMenu);
-void* FUN_1413b1bc0(unsigned nUIId);                    // the enchant dialog
 void* FUN_1419c16a0(void* pDialog);
 void* FUN_140faf160(unsigned nUIId);                    // the mastery dialog
 int FUN_140eb5040(void* pDialog);
@@ -147,8 +145,6 @@ char FUN_140e605c0(Unk_G9Iter* pIt);
 Unk_G9Named* FUN_140e60630(Unk_G9Iter* pIt);
 void FUN_140e60460(Unk_G9Iter* pIt);
 
-// A ref-counted value handle of the dialog trees.
-struct Unk_G9Val { void* m_p0; void* m_p1; };
 void* FUN_141386950(const CStringA& strDialog);         // the dialog of a name
 void FUN_1422dba50(void* pDialog, Unk_G9Val* pOut);
 void* FUN_140d031f0(Unk_G9Val* pVal);
@@ -160,18 +156,14 @@ void FUN_140d03070(Unk_G9Val* pVal);
 void* FUN_140acd9e0(Unk_G9Val* pVal);
 char FUN_1422bfca0(void* pInner);
 char FUN_1422ce0e0(void* pInner);
-Unk_G9Val* FUN_1413b19d0(void* pInner, Unk_G9Val* pOut, const CString* pName);
 void FUN_1413b40b0(Unk_G9Val* pDst, Unk_G9Val* pSrc);
 char FUN_140d03130(Unk_G9Val* pVal, int nFlag);
 void* FUN_140c300a0(unsigned nDialogId);
-void FUN_1413b1a90(void* pDialog, Unk_G9Val* pOut, const CString* pChild);
 struct Unk_G9Span { int m_n[7]; int m_nDays; };
 Unk_G9Span* FUN_1413a52a0(__int64* pSpan);
 int FUN_1410c3650(Unk_G9Home* pHome);
-int FUN_1413b1f30(Unk_140165cf0* pElem, const char* pszName, int& nOut);
 void* FUN_140931510();                                  // the dungeon room manager
 int FUN_140d9f880(void* pMgr, int nDungeonId);
-void* FUN_1413b1b20(unsigned nUIId);                    // the chat emoticon dialog
 int FUN_1413b57d0(void* pDialog);
 
 
@@ -925,7 +917,7 @@ void CGuideConditionHomeMode::vfunc_2(Unk_140165cf0* pElem)
 CStringW CGuideConditionHomeMode::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(FUN_1413b1470(L"mode({0})", m_nMode));
+    str.Append(StringFormat(L"mode({0})", GcEnum<Unk_GcModeId>(m_nMode)));
     return str;
 }
 

@@ -177,6 +177,12 @@ __int64 FUN_140d56470(void* pMarket);
 void* FUN_1409eed40();                                  // the manufacture book
 int FUN_140d513c0(void* pBook);
 void* FUN_1413b1c60(const CStringA& strName);           // the dialog of a name
+struct Unk_G9Val { void* m_p0; void* m_p1; };           // a ref-counted value handle of the dialog trees
+Unk_G9Val* FUN_1413b19d0(void* pInner, Unk_G9Val* pOut, const CString* pName);
+void FUN_1413b1a90(void* pDialog, Unk_G9Val* pOut, const CString* pChild);
+void* FUN_1413b1b20(unsigned nUIId);                    // the chat emoticon dialog
+void* FUN_1413b1bc0(unsigned nUIId);                    // the enchant dialog
+int FUN_1413b1f30(Unk_140165cf0* pElem, const char* pszName, int& nOut);
 int FUN_141a75840(void* pDialog);
 void* FUN_14136f3e0(unsigned nUIId);                    // the dialog of a ui id
 int FUN_14195b950(void* pDialog);
@@ -194,10 +200,7 @@ int FUN_140873600(Unk_140165cf0* pElem, const char* pszName, Unk_GcTime& tOut);
 int FUN_1413b1d00(Unk_140165cf0* pElem, const char* pszName, Unk_GcOptInt& oOut);
 int FUN_1413b1e70(Unk_140165cf0* pElem, const char* pszName, Unk_GcOptVec3& oOut);
 int FUN_1413b1ed0(Unk_140165cf0* pElem, const char* pszName, Unk_GcOptBool& oOut);
-CStringW FUN_1413b1510(const wchar_t* pszFormat, const void* pArg);      // StringFormat of a trophy type (own formatter)
 CStringW FUN_14083bdc0(const Unk_GcTime& t, int nFlag, const CStringW& strDateSep, const CStringW& strTimeSep);
 CStringW FUN_140719730(bool b);
 unsigned __int64 FUN_140869440();                       // the server time
 void FUN_1412751b0(const CStringW& text, int a);
-
-
