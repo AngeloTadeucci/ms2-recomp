@@ -26,6 +26,12 @@ Outputs (committed):
   progress/summary.txt   per unit and overall: functions and bytes matched
 Cache: build/progress/ (objs, /showIncludes deps, per-unit results keyed by obj mtime).
 
+Engine stage (tools/gbprogress.py): the Gamebryo TUs of engine/units-gb.json are compiled into <cache>/gb/ (same
+incremental rules) and paired by symbol name / unique masked bytes; every engine-band function they byte-match (or pair)
+becomes a status.tsv row with unit gb:<Lib>/<TU> (state matched | functional, plus stub gap-fills), summarised at the
+end of summary.txt. Engine functions never enter the hook DLL. Runs with every full pass; `--engine` forces it when
+unit filters are given, `--no-engine` reuses the cached engine results.
+
 Parallel agents (docs/RECOVERY.md section 12): `--agent NAME` or MS2_AGENT=NAME selects a private cache
 build/progress-NAME/ and REPORT MODE: progress/* is never written. status.tsv / summary.txt go to the agent dir, and
 build/progress-NAME/symbols.tsv = committed progress/symbols.tsv + the harvest of the units in the agent's cache (the
@@ -49,6 +55,7 @@ from concurrent.futures import ThreadPoolExecutor
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "tools"))
 import bytematch as bm  # noqa: E402
+import gbprogress  # noqa: E402
 
 SRC = os.path.join(ROOT, "src")
 GAME = os.path.join(SRC, "ms2")
@@ -1024,6 +1031,10 @@ def main():
     ap.add_argument("--functional", action="store_true",
                     help="with --check: the functional gate instead of the exact one (no stub functions, all vftables "
                          "paired and matching, no symbol conflict from the unit; functional functions are accepted)")
+    ap.add_argument("--engine", action="store_true",
+                    help="run the Gamebryo engine stage (tools/gbprogress.py) even when unit filters are given")
+    ap.add_argument("--no-engine", action="store_true",
+                    help="skip compiling/matching the engine TUs (their cached rows are still written)")
     ap.add_argument("--check", action="store_true",
                     help="exit 1 unless every selected unit compiles and is 100%% matched with all vftables OK")
     a = ap.parse_args()
@@ -1236,6 +1247,18 @@ def main():
             tot[k] += v
         tot["bm"] += bmt
         tot["bf"] += bft
+    # engine stage: Gamebryo TUs of engine/units-gb.json (tools/gbprogress.py; own cache, no MS2-UNIT/queue rows, no
+    # symbols harvested). Its rows only cover VAs outside the game units; game rows and totals are unaffected.
+    eng_rows = []
+    if os.path.exists(gbprogress.gbtree.UNITS_JSON):
+        if (a.engine or not a.filters) and not a.no_engine:
+            eng_res, _ = gbprogress.run(CACHE, max(1, a.j), log=lambda m: print(m, flush=True))
+        else:
+            eng_res = gbprogress.load_results(CACHE)
+        eng_rows = gbprogress.credit(eng_res, {r[0] for r in rows})
+        edem = demangle_all(sorted({r[1] for r in eng_rows if r[3] != "stub"}))
+        rows += [(va, short_name(edem.get(sym, sym)) if st != "stub" else sym, un, st, sz)
+                 for va, sym, un, st, sz in eng_rows]
     rows.sort()
     with open(os.path.join(OUT, "status.tsv"), "w") as fo:
         fo.write("#va\tname\tunit\tstate\tsize\n")
@@ -1269,6 +1292,8 @@ def main():
                f"{tot['m']} ({100.0 * tot['m'] / game_n:.3f}%) functions, {100.0 * tot['bm'] / game_b:.3f}% of bytes; "
                f"implemented (matched + functional) {tot['m'] + tot['f']} ({100.0 * (tot['m'] + tot['f']) / game_n:.3f}%) "
                f"functions, {100.0 * (tot['bm'] + tot['bf']) / game_b:.3f}% of bytes")
+    if eng_rows:
+        out += gbprogress.summary(eng_rows)
     text = "\n".join(out) + "\n"
     open(os.path.join(OUT, "summary.txt"), "w").write(text)
     print(text, end="")
