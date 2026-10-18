@@ -23,6 +23,8 @@ public:
     CStringW FUN_14042cad0(const CStringW& strKey, const CStringW& strDefault);   // value as a wide string
     bool FUN_14092c5c0();                           // no values parsed
     typedef ATL::CAtlMap<CStringW, CStringW, ATL::CStringElementTraits<CStringW> > Values;
+    CStringW FUN_14092c630() const;                 // serializes to "<v key="value".../>"
+    bool FUN_14092c5f0(const CStringW& strKey) const;   // the key is present
     // The value as an int, nDefault when the key is missing. An inline (COMDAT copies 0x1403d8110 in gameevent.cpp
     // and 0x14054c530 in itemdatastruct.cpp).
     int GetInt(const CStringW& strKey, const int& nDefault)
@@ -33,6 +35,12 @@ public:
         return FUN_1407181a0(strValue);
     }
 private:
-    unsigned char m_unknown18[0x48];    // +0x18 the parsed key/values (a Values, kept as raw storage here)
+    // The parsed key/values. A union so that the units that only need the map can still reach the same storage
+    // through the raw array (xmldata.cpp's ctor/dtor construct/destroy m_values explicitly).
+    union
+    {
+        Values m_values;                // +0x18 the parsed key/values
+        unsigned char m_unknown18[0x48];
+    };
 };
 MS2_CHECK_SIZE(CXmlData, 0x60);
