@@ -1,5 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). See physxhelper.h.
 // MS2-UNIT: client\ms2\physxhelper.cpp
+// MS2-RANGE: 0x1400fb920-0x1400fbab0 .text$di
 // MS2-RANGE: 0x141689180-0x14168b4a0 .text$mn
 // MS2-PIN: ??1NxRay@@QEAA@XZ 0x14168ad10
 // MS2-PIN: ??4NxRaycastHit@@QEAAAEAU0@AEBU0@@Z 0x14168ae50
@@ -26,6 +27,29 @@ extern "C" float (__cdecl* __imp_sqrtf)(float);
 #include <NiPhysXActorDesc.h>
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
+
+
+// Header statics, in the original initialization order. These are private
+// constants and a condition table, with no registration into exe registries.
+#include "ms2/placeholder/unk_1402a9d70.h"
+class Unk_1401cd100 {
+public:
+    Unk_1401cd100(void*);
+private:
+    void* m_p;
+};
+MS2_CHECK_SIZE(Unk_1401cd100, 8);
+
+// @0x1400fb920
+static CString s_physSortNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
+// @0x1400fb9e0
+static CString s_physSkill("skill");
+// @0x1400fba10
+static CString s_physStun("stun");
+// @0x1400fba40
+static Unk_1401cd100 s_physNone(NULL);
+// @0x1400fba60
+static Unk_1402a9d70 s_physCondition(17, 0.75f, 0.25f, 2.25f, 10);
 
 namespace egfPhysX { class SceneService; }
 
