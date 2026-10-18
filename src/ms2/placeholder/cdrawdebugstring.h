@@ -6,6 +6,7 @@
 #pragma once
 
 #include <afx.h>
+#include <string>
 #include <NiVisualTracker.h>
 #include <NiPoint3.h>
 #include <efd/utf8string.h>
@@ -25,12 +26,17 @@ public:
     void FUN_14118bdc0(const NiPoint3& kValue, bool bForce);                // "%.2f %.2f %.2f"
     void FUN_14118bee0(efd::utf8string strValue, bool bForce);                      // by value: the callee destroys it
     void FUN_14118bf80(const char* pszLabel, unsigned x, unsigned y);       // set the label and place the text
+    void FUN_14118c060();                                                   // log the line
+    void FUN_14118c0a0(NiColorA* pColor);                                   // color of the text
+    void FUN_14118c0d0();                                                   // push m_acName into both texts
+    std::string FUN_14118c120(unsigned nValue);                             // 1234567 -> "1,234,567"
+    const char* GetText();                                                  // m_acName
 
 protected:
     NiVisualTrackerBase::ScreenText* m_pText;                       // +0x140
     NiVisualTrackerBase::ScreenText* m_pShadow;                     // +0x148 (drawn one pixel down-right in black)
     CString m_strLabel;                                             // +0x150
-    union { int m_nValue; float m_fValue; char m_cValue; };         // +0x158 last value shown
+    union { int m_nValue; float m_fValue; unsigned char m_cValue; };         // +0x158 last value shown
     NiPoint3 m_kPoint;                                              // +0x15c
 };
 MS2_CHECK_SIZE(CDrawDebugString, 0x168);
