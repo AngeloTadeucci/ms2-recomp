@@ -65,6 +65,13 @@
 // MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@@2@AEBI@Z 0x140266230 ; unique
 // MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@@2@AEBI@Z 0x1402663f0 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@XZ 0x140265320
+// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@XZ 0x140265800
+// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@XZ 0x140265840
+// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@1@@Z 0x14025bdc0
+// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@IHU?$less@I@std@@V?$allocator@U?$pair@$$CBIH@std@@@2@$0A@@std@@@std@@IEBAAEBIAEBU?$pair@$$CBIH@2@@Z 0x1402652d0
+// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@@Z 0x140265340
+// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBIH@std@@PEAX@2@@Z 0x140265880
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\commonstringtable.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "commonstringtable.h"
@@ -76,6 +83,11 @@
 
 // The exe binds a temporary to a non-const reference (MSVC extension); clang-cl needs the cast.
 #define AS_LVALUE(T, expr) const_cast<T&>(static_cast<const T&>(expr))
+
+// The exe keeps these map<unsigned, int> tree accessors out of line.
+template std::_Tree_node<std::pair<const unsigned, int>, void*>*& std::_Tree_val<std::_Tree_simple_types<std::pair<const unsigned, int>>>::_Lmost() const;
+template std::_Tree_node<std::pair<const unsigned, int>, void*>*& std::_Tree_val<std::_Tree_simple_types<std::pair<const unsigned, int>>>::_Rmost() const;
+template std::_Tree_node<std::pair<const unsigned, int>, void*>*& std::_Tree_val<std::_Tree_simple_types<std::pair<const unsigned, int>>>::_Root() const;
 
 CStringW FUN_14028de60(EBanStringId nStringId);
 bool FUN_14028f710(Unk_140165cf0* pNode);   // node is enabled for this client
