@@ -4,25 +4,16 @@
 // MS2-RANGE: 0x1400b9690-0x1400b97a0 .text$di
 // MS2-RANGE: 0x140535bc0-0x140539370 .text$mn
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??__Es_mapSlotType@@YAXXZ 0x1400b9690 ; unique
 // MS2-PIN: ?Read@?$Value@H@Constants@Common@@QEAAHXZ 0x140536a30 ; unique
-// MS2-PIN: ??0?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAA@IMMMI@Z 0x140536be0 ; unique
-// MS2-PIN: ??1?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAA@XZ 0x140536f00 ; unique
-// MS2-PIN: ?DisableAutoRehash@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXXZ 0x1405373f0 ; unique
-// MS2-PIN: ?EnableAutoRehash@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXXZ 0x140537430 ; unique
-// MS2-PIN: ?FreeNode@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEAAXPEAVCNode@12@@Z 0x140537550 ; unique
-// MS2-PIN: ?FreePlexes@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEAAXXZ 0x140537690 ; unique
-// MS2-PIN: ?GetHash@CNode@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEBAIXZ 0x140537700 ; unique
-// MS2-PIN: ?InitHashTable@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAA_NI_N@Z 0x140537a20 ; unique
-// MS2-PIN: ?IsLocked@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEBA_NXZ 0x140537b70 ; unique
-// MS2-PIN: ?PickSize@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEBAI_K@Z 0x1405381c0 ; unique
-// MS2-PIN: ?Rehash@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXI@Z 0x1405384e0 ; unique
-// MS2-PIN: ?RemoveAll@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXXZ 0x140538820 ; unique
-// MS2-PIN: ?RemoveAtPos@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXPEAU__POSITION@@@Z 0x140538a20 ; unique
-// MS2-PIN: ?RemoveNode@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEAAXPEAVCNode@12@0@Z 0x140538bd0 ; unique
-// MS2-PIN: ?SetOptimalLoad@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@QEAAXMMM_N@Z 0x140538e80 ; unique
-// MS2-PIN: ?UpdateRehashThresholds@?$CAtlMap@HHV?$CElementTraits@H@ATL@@V12@@ATL@@AEAAXXZ 0x140539020 ; unique
+// MS2-PIN: ??0CNode@?$CAtlMap@IV?$MS2SvrPtr@VCostumeSet@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCostumeSet@@@@@3@@ATL@@QEAA@II@Z 0x140536df0 ; unique
+// MS2-PIN: ??0CPair@?$CAtlMap@IV?$MS2SvrPtr@VCostumeSet@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCostumeSet@@@@@3@@ATL@@IEAA@I@Z 0x140536e70 ; unique
+// MS2-PIN: ?CreateNode@?$CAtlMap@IV?$MS2SvrPtr@VCostumeSet@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCostumeSet@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x1405372d0 ; unique
+// MS2-PIN: ?GetNode@?$CAtlMap@HHV?$CDefaultElementTraits@H@ATL@@V?$CElementTraits@H@2@@ATL@@AEBAPEAVCNode@12@AEBHAEAI1AEAPEAV312@@Z 0x140537800 ; unique
+// MS2-PIN: ?NewNode@?$CAtlMap@IV?$MS2SvrPtr@VCostumeSet@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCostumeSet@@@@@3@@ATL@@AEAAPEAVCNode@12@III@Z 0x140537cb0 ; unique
+// MS2-PIN: ?SetAt@?$CAtlMap@IV?$MS2SvrPtr@VCostumeSet@@@@V?$CElementTraits@I@ATL@@V?$CElementTraits@V?$MS2SvrPtr@VCostumeSet@@@@@3@@ATL@@QEAAPEAU__POSITION@@IAEBV?$MS2SvrPtr@VCostumeSet@@@@@Z 0x140538c90 ; unique
 // MS2-PINS-END tplpin
+// MS2-PIN: ?CompareElements@?$CDefaultCompareTraits@H@ATL@@SA_NAEBH0@Z 0x140537280
+// MS2-PIN: ?Hash@?$CDefaultHashTraits@H@ATL@@SAKAEBH@Z 0x1405378f0
 // MS2-PIN: ??_7CostumeSetTable@@6B?$TSingleton@VCostumeSetTable@@@@@ 0x142d589d0
 // MS2-PIN: ??_7CostumeSetTable@@6B?$CValidData@VCostumeSetTable@@@@@ 0x142d589e0
 #define MS2_THIS_FILE ""
@@ -40,7 +31,7 @@
 
 // Header statics of this unit: the slot-type -> Transparency constant map (filled by the first CostumeSetTable),
 // constructed before the sort names.
-static ATL::CAtlMap<int, int> s_mapSlotType(17, 0.75f, 0.25f, 2.25f, 10);
+static CostumeSlotMap s_mapSlotType(17, 0.75f, 0.25f, 2.25f, 10);
 static CString s_strSortTypeNames[] = {"None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd"};
 
 // Unrecovered helpers (the xml loader helpers the other table units use).
@@ -85,16 +76,26 @@ CostumeSetTable::CostumeSetTable()
 {
     if (s_mapSlotType.GetCount() == 0)
     {
-        s_mapSlotType.SetAt(6, FUN_1401d3200()->TransparencyCP.Read());
-        s_mapSlotType.SetAt(0xd, FUN_1401d3200()->TransparencyEY.Read());
-        s_mapSlotType.SetAt(8, FUN_1401d3200()->TransparencyCL.Read());
-        s_mapSlotType.SetAt(9, FUN_1401d3200()->TransparencyPA.Read());
-        s_mapSlotType.SetAt(7, FUN_1401d3200()->TransparencyMT.Read());
-        s_mapSlotType.SetAt(0xe, FUN_1401d3200()->TransparencyEA.Read());
-        s_mapSlotType.SetAt(0xc, FUN_1401d3200()->TransparencyFH.Read());
-        s_mapSlotType.SetAt(10, FUN_1401d3200()->TransparencyGL.Read());
-        s_mapSlotType.SetAt(0x10, FUN_1401d3200()->TransparencyRI.Read());
-        s_mapSlotType.SetAt(0xb, FUN_1401d3200()->TransparencySH.Read());
+        int nSlot1 = 6;
+        s_mapSlotType.SetAt(nSlot1, FUN_1401d3200()->TransparencyCP.Read());
+        int nSlot2 = 0xd;
+        s_mapSlotType.SetAt(nSlot2, FUN_1401d3200()->TransparencyEY.Read());
+        int nSlot3 = 8;
+        s_mapSlotType.SetAt(nSlot3, FUN_1401d3200()->TransparencyCL.Read());
+        int nSlot4 = 9;
+        s_mapSlotType.SetAt(nSlot4, FUN_1401d3200()->TransparencyPA.Read());
+        int nSlot5 = 7;
+        s_mapSlotType.SetAt(nSlot5, FUN_1401d3200()->TransparencyMT.Read());
+        int nSlot6 = 0xe;
+        s_mapSlotType.SetAt(nSlot6, FUN_1401d3200()->TransparencyEA.Read());
+        int nSlot7 = 0xc;
+        s_mapSlotType.SetAt(nSlot7, FUN_1401d3200()->TransparencyFH.Read());
+        int nSlot8 = 10;
+        s_mapSlotType.SetAt(nSlot8, FUN_1401d3200()->TransparencyGL.Read());
+        int nSlot9 = 0x10;
+        s_mapSlotType.SetAt(nSlot9, FUN_1401d3200()->TransparencyRI.Read());
+        int nSlot10 = 0xb;
+        s_mapSlotType.SetAt(nSlot10, FUN_1401d3200()->TransparencySH.Read());
     }
     Load();
 }
@@ -120,6 +121,7 @@ int CostumeSetTable::Load()
 }
 
 // @0x1405360b0
+// MS2-FUNCTIONAL: one trailing nop in the lock-held path (the exe returns the unfilled result there)
 CostumeSetPtr CostumeSetTable::GetSet(unsigned nSetId, int nGender)
 {
     if (nGender < 0 && 2 < nGender)
@@ -127,16 +129,19 @@ CostumeSetPtr CostumeSetTable::GetSet(unsigned nSetId, int nGender)
     CheckInit();
     if (Unk_LockGuard guard = m_lock)
     {
-        return CostumeSetPtr(0);
     }
-    if (FUN_1401d1320(m_cache.get()) != 0)
-        Load();
-    CostumeSetPtr spSet(0);
-    m_sets[nGender].Lookup(nSetId, spSet);
-    return spSet;
+    else
+    {
+        if (FUN_1401d1320(m_cache.get()) != 0)
+            Load();
+        CostumeSetPtr spSet(0);
+        m_sets[nGender].Lookup(nSetId, spSet);
+        return spSet;
+    }
 }
 
 // @0x1405361e0
+// MS2-FUNCTIONAL: EH-state/temp-CString layout of the XML loader differs from the exe (precedent vipgoods.cpp, banktable.cpp)
 int CostumeSetTable::LoadXml()
 {
     for (unsigned i = 0; i < 2; i++)
@@ -226,3 +231,6 @@ void CostumeSetTable::CheckInit()
         MessageBoxA(0, msg, "Error", 0);
     }
 }
+
+// @0x140539250
+MS2_EMIT_CRT_MEMMOVE_S();
