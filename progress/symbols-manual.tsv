@@ -2894,3 +2894,5 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?SetActor@NoticeMessage@@QEAAXH@Z	140a53190	func
 ?SetMS2Flags@NiAVObject@@QEAAXI@Z	1414d4c70	func
 ?g_143a09660@@3VColor@efd@@B	143a09660	data
+?DAT_143ab2a90@@3VUnk_MmInventory@@A	143ab2a90	data
+?DAT_143ab31a0@@3VUnk_MmLearned@@A	143ab31a0	data
