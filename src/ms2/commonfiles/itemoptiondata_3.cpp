@@ -4,92 +4,73 @@
 // MS2-RANGE: 0x1405f4120-0x1406125d0 .text$mn
 // MS2-RANGE: 0x1400ba710-0x1400ba7d0 .text$di
 // MS2-RANGE: 0x142c9b250-0x142c9b280 .text$yd
-// MS2-PIN: ??1ProbabilityFromRank@CItemOptionTable@@UEAA@XZ 0x140604b70
 // MS2-PINS-BEGIN tplpin
-// MS2-PIN: ??$?0$$V@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@std@@QEAA@U_Zero_then_variadic_args_t@1@@Z 0x1405f8b70 ; prop
-// MS2-PIN: ??$?0AEBU?$less@H@std@@U_Zero_then_variadic_args_t@1@@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@2@$00@std@@QEAA@U_One_then_variadic_args_t@1@AEBU?$less@H@1@$$QEAU_Zero_then_variadic_args_t@1@@Z 0x1405f9000 ; prop
-// MS2-PIN: ??$_Freenode0@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@PEAU01@@Z 0x1405faa00 ; prop
-// MS2-PIN: ??$_Lbound@H@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@AEBH@Z 0x1405ff3c0 ; prop
-// MS2-PIN: ??$addressof@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@YAPEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@0@AEAPEAU10@@Z 0x140600dd0 ; prop
-// MS2-PIN: ??$addressof@U?$pair@$$CBHH@std@@@std@@YAPEAU?$pair@$$CBHH@0@AEAU10@@Z 0x140600e30 ; prop
-// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@0@AEAV10@@Z 0x140600e80 ; prop
-// MS2-PIN: ??$destroy@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@QEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@@Z 0x1406014f0 ; prop
-// MS2-PIN: ??$destroy@U?$pair@$$CBHH@std@@@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@1@QEAU?$pair@$$CBHH@1@@Z 0x1406015a0 ; prop
-// MS2-PIN: ??$try_emplace@$$V@?$map@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@HH@1@@Z 0x140602600 ; prop
-// MS2-PIN: ??0?$MS2Ptr@VItemOptionConstant@@@@QEAA@AEBV0@@Z 0x1406029f0 ; prop
+// MS2-PIN: time 0x1405f4120 ; unique
+// MS2-PIN: ??$?0AEAHAEAG$0A@@?$pair@HH@std@@QEAA@AEAHAEAG@Z 0x1405f8e60 ; unique
+// MS2-PIN: ??$?0AEAHAEAV?$MS2Ptr@VItemOptionVariationData@@@@$0A@@?$pair@HV?$MS2Ptr@VItemOptionVariationData@@@@@std@@QEAA@AEAHAEAV?$MS2Ptr@VItemOptionVariationData@@@@@Z 0x1405f9290 ; prop
+// MS2-PIN: ??$?0HV?$MS2Ptr@VItemOptionConstant@@@@$0A@@?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@QEAA@$$QEAU?$pair@HV?$MS2Ptr@VItemOptionConstant@@@@@1@@Z 0x1405f9380 ; unique
+// MS2-PIN: ??$_Buynode@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAU?$pair@HH@std@@@2@V?$tuple@$$V@2@@?$_Tree_comp_alloc@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAU?$pair@HH@std@@@1@$$QEAV?$tuple@$$V@1@@Z 0x1405f9e40 ; unique
+// MS2-PIN: ??$_Lbound@U?$pair@HH@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@IEBAPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@1@AEBU?$pair@HH@1@@Z 0x1405ff320 ; unique
+// MS2-PIN: ??$_Parallel_chunk_impl@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_9d3790ebd9352d63a0246aeaf3b7dfa8>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_9d3790ebd9352d63a0246aeaf3b7dfa8>@@AEBVauto_partitioner@2@@Concurrency@@YAXAEBV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JAEB_JAEBV<lambda_9d3790ebd9352d63a0246aeaf3b7dfa8>@@AEBVauto_partitioner@0@@Z 0x1405ffa80 ; unique
+// MS2-PIN: ??$_Parallel_chunk_impl@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@AEBVauto_partitioner@2@@Concurrency@@YAXAEBV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JAEB_JAEBV<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@AEBVauto_partitioner@0@@Z 0x1405ffe80 ; unique
+// MS2-PIN: ??$addressof@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@std@@@std@@YAPEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@0@AEAV10@@Z 0x140600e90 ; prop
+// MS2-PIN: ??$end@V?$vector@EV?$allocator@E@std@@@std@@@std@@YA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@E@std@@@std@@@0@AEAV?$vector@EV?$allocator@E@std@@@0@@Z 0x1406019d0 ; unique
+// MS2-PIN: ??$forward@AEAV?$MS2Ptr@VItemOptionConstant@@@@@std@@YAAEAV?$MS2Ptr@VItemOptionConstant@@@@AEAV1@@Z 0x140601b10 ; prop
+// MS2-PIN: ??$forward@AEAV?$MS2Ptr@VItemOptionVariationData@@@@@std@@YAAEAV?$MS2Ptr@VItemOptionVariationData@@@@AEAV1@@Z 0x140601b20 ; prop
+// MS2-PIN: ??$forward@V?$MS2Ptr@VItemOptionConstant@@@@@std@@YA$$QEAV?$MS2Ptr@VItemOptionConstant@@@@AEAV1@@Z 0x140601c30 ; prop
+// MS2-PIN: ??$make_pair@W4Unk_SocketSpecialStat@@H@std@@YA?AU?$pair@W4Unk_SocketSpecialStat@@H@0@$$QEAW4Unk_SocketSpecialStat@@$$QEAH@Z 0x1406020b0 ; unique
+// MS2-PIN: ??$move@AEAV?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@YA$$QEAV?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@0@AEAV10@@Z 0x140602160 ; unique
+// MS2-PIN: ??$try_emplace@$$V@?$map@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@HH@1@@Z 0x140602600 ; unique
+// MS2-PIN: ??0<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@QEAA@AEAVCLockCriticalSection@@QEAVCItemOptionTable@@@Z 0x1406026b0 ; unique
+// MS2-PIN: ??0?$MS2Ptr@VItemOptionConstant@@@@QEAA@$$QEAV0@@Z 0x1406029c0 ; unique
 // MS2-PIN: ??0?$MS2Ptr@VItemOptionConstant@@@@QEAA@XZ 0x140602a60 ; unique
 // MS2-PIN: ??0?$MS2Ptr@VItemOptionRandom@@@@QEAA@XZ 0x140602aa0 ; unique
-// MS2-PIN: ??0?$MS2Ptr@VCItemOption@@@@QEAA@PEAVCItemOption@@@Z 0x140602b30 ; prop
-// MS2-PIN: ??0?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA@AEBU?$less@H@1@@Z 0x140603470 ; prop
-// MS2-PIN: ??0?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x1406035d0 ; prop
-// MS2-PIN: ??0?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x140603730 ; prop
-// MS2-PIN: ??0?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAA@PEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@1@PEBV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@1@@Z 0x140603890 ; prop
-// MS2-PIN: ??0?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEAA@XZ 0x140603a40 ; prop
-// MS2-PIN: ??0?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAA@XZ 0x140603bf0 ; prop
-// MS2-PIN: ??0?$map@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@@std@@QEAA@XZ 0x140603d10 ; unique
-// MS2-PIN: ??1?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA@XZ 0x140604640 ; prop
-// MS2-PIN: ??1?$map@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@@std@@QEAA@XZ 0x140604830 ; unique
-// MS2-PIN: ??4?$MS2Ptr@VItemOptionConstant@@@@QEAAAEAV0@AEBV0@@Z 0x140604c40 ; unique
-// MS2-PIN: ??8?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140604e40 ; unique
-// MS2-PIN: ??9?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBA_NAEBV01@@Z 0x140605040 ; prop
+// MS2-PIN: ??0?$_Tree@V?$_Tmap_traits@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@$0A@@std@@@std@@QEAA@$$QEAV01@@Z 0x140603240 ; unique
 // MS2-PIN: ??A?$map@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@@std@@QEAAAEAV?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@$$QEAU?$pair@HH@1@@Z 0x140605100 ; unique
-// MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBHH@1@XZ 0x1406052d0 ; unique
-// MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@1@XZ 0x1406052f0 ; prop
-// MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@1@XZ 0x140605310 ; prop
-// MS2-PIN: ??C?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@1@XZ 0x140605330 ; prop
-// MS2-PIN: ??C?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@std@@QEBAPEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@1@XZ 0x140605350 ; prop
-// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@1@XZ 0x1406053f0 ; prop
-// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@1@XZ 0x140605410 ; prop
+// MS2-PIN: ??C?$MS2Ptr@VItemOptionConstant@@@@QEBAPEAVItemOptionConstant@@XZ 0x140605250 ; unique
 // MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@1@XZ 0x140605430 ; prop
-// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@1@XZ 0x140605490 ; prop
-// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@1@XZ 0x1406054b0 ; prop
+// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@1@XZ 0x140605450 ; unique
 // MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@1@XZ 0x1406054d0 ; prop
-// MS2-PIN: ??D?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@1@XZ 0x1406054f0 ; prop
-// MS2-PIN: ??D?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBAAEBU?$pair@$$CBHH@1@XZ 0x140605510 ; prop
-// MS2-PIN: ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBHH@1@XZ 0x140605550 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAA?AV01@H@Z 0x140605790 ; prop
-// MS2-PIN: ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@std@@QEAAAEAV01@XZ 0x1406057e0 ; prop
-// MS2-PIN: ??E?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x140605a20 ; prop
+// MS2-PIN: ??F?$_Tree_unchecked_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ 0x140605f70 ; unique
+// MS2-PIN: ??_G?$_MallocaArrayHolder@V?$task_handle@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@E@std@@@std@@@std@@_JV<lambda_a3d276b0d3059ff01fdec3459e68a655>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@@Concurrency@@@details@Concurrency@@UEAAPEAXI@Z 0x140607cf0 ; prop
+// MS2-PIN: ??C?$MS2Ptr@VItemOptionRandom@@@@QEBAPEAVItemOptionRandom@@XZ 0x1406087a0 ; unique
 // MS2-PIN: ?SetInit@CItemOptionTable@@SAX_N@Z 0x140609530 ; unique
-// MS2-PIN: ?AddRef@?$MS2Ptr@VItemOptionConstant@@@@AEBAXXZ 0x140609830 ; prop
-// MS2-PIN: ?AddRefImpl@?$MS2Ptr@VItemOptionConstant@@@@AEBAXPEAX@Z 0x140609950 ; prop
-// MS2-PIN: ?_Buyheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x140609e80 ; prop
-// MS2-PIN: ?_Construct@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAXXZ 0x14060aa50 ; prop
-// MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x14060b0a0 ; unique
-// MS2-PIN: ?_Extract@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@@Z 0x14060c3b0 ; prop
-// MS2-PIN: ?_Freeheadnode@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x14060d000 ; prop
-// MS2-PIN: ?_Get_data@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@XZ 0x14060d300 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@U?$less@H@std@@V?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@2@$00@std@@QEAAAEAV?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@2@XZ 0x14060d5e0 ; prop
-// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@2@XZ 0x14060d6a0 ; prop
-// MS2-PIN: ?_Getal@?$_Tree_comp_alloc@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@XZ 0x14060d8c0 ; prop
-// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VItemOptionConstant@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@3@$00@std@@@std@@IEBAAEBIAEBU?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@2@@Z 0x14060e080 ; unique
-// MS2-PIN: ?_Kfn@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VItemOptionVariationData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@std@@@3@$0A@@std@@@std@@IEBAAEBIAEBU?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@2@@Z 0x14060e0a0 ; unique
-// MS2-PIN: ??R?$_Conditionally_enabled_hash@H$00@std@@QEBA_KAEBH@Z 0x14060e0e0 ; prop
-// MS2-PIN: ?_Lmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x14060e150 ; prop
-// MS2-PIN: ?_Lrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x14060e410 ; prop
-// MS2-PIN: ?_Max@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@PEAU32@@Z 0x14060e7f0 ; prop
-// MS2-PIN: ?_Min@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@SAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@PEAU32@@Z 0x14060e920 ; prop
-// MS2-PIN: ?_Rmost@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x14060ef00 ; prop
-// MS2-PIN: ?_Root@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEBAAEAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@XZ 0x14060efa0 ; prop
-// MS2-PIN: ?_Rrotate@?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@QEAAXPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@@Z 0x14060f280 ; prop
-// MS2-PIN: ?_Tidy@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@IEAAXXZ 0x14060f5a0 ; prop
-// MS2-PIN: ?allocate@?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@QEAAPEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x14060fee0 ; prop
-// MS2-PIN: ?begin@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140610330 ; prop
-// MS2-PIN: ?deallocate@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@std@@@std@@SAXAEAV?$allocator@U?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@std@@@2@QEAU?$_Tree_node@U?$pair@$$CBHH@std@@PEAX@2@_K@Z 0x140610a10 ; prop
-// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@XZ 0x140610de0 ; unique
-// MS2-PIN: ?end@?$list@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@V?$allocator@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@2@@std@@QEAA?AV?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@2@XZ 0x140610e40 ; unique
-// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@@Z 0x140611740 ; unique
-// MS2-PIN: ?find@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@AEBH@Z 0x140611b40 ; unique
-// MS2-PIN: ?lower_bound@?$_Tree@V?$_Tmap_traits@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBHH@std@@@std@@@std@@@2@AEBH@Z 0x140611f90 ; prop
-// MS2-PIN: ?pointer_to@?$pointer_traits@PEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@SAPEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@2@AEAU32@@Z 0x140612250 ; prop
+// MS2-PIN: ?_AddNode@?$_MallocaListHolder@V?$task_handle@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_9d3790ebd9352d63a0246aeaf3b7dfa8>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@@Concurrency@@@details@Concurrency@@QEAAXPEAV?$task_handle@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_9d3790ebd9352d63a0246aeaf3b7dfa8>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@@3@@Z 0x140609660 ; unique
+// MS2-PIN: ?_AddNode@?$_MallocaListHolder@V?$task_handle@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@@Concurrency@@@details@Concurrency@@QEAAXPEAV?$task_handle@V?$_Parallel_chunk_helper@V?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@PEAVUnk_140165cf0@@@std@@@std@@@std@@_JV<lambda_a61cf988b6cd71bcc7740a12ac1d73e2>@@Vauto_partitioner@Concurrency@@$00@Concurrency@@@3@@Z 0x1406096a0 ; unique
+// MS2-PIN: ?_Destroy_if_node@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@2@@Z 0x14060abf0 ; unique
+// MS2-PIN: ?_Erase@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@IEAAXPEAU?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@2@@Z 0x14060af60 ; unique
+// MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$allocator@U?$_Tree_node@U?$pair@$$CBKK@std@@PEAX@std@@@std@@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@2@$00@std@@QEAAAEAV?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@2@XZ 0x14060d6c0 ; prop
+// MS2-PIN: ?begin@?$vector@V?$MS2Ptr@VLogContext@Probability@@@@V?$allocator@V?$MS2Ptr@VLogContext@Probability@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VLogContext@Probability@@@@@std@@@std@@@2@XZ 0x140610470 ; unique
+// MS2-PIN: ?end@?$_Tree@V?$_Tmap_traits@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKK@std@@@std@@@std@@@2@XZ 0x140610d80 ; unique
+// MS2-PIN: ?end@?$vector@V?$MS2Ptr@VLogContext@Probability@@@@V?$allocator@V?$MS2Ptr@VLogContext@Probability@@@@@std@@@std@@QEAA?AV?$_Vector_iterator@V?$_Vector_val@U?$_Simple_types@V?$MS2Ptr@VLogContext@Probability@@@@@std@@@std@@@2@XZ 0x140610ea0 ; unique
+// MS2-PIN: ?erase@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@2@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@2@@Z 0x140611400 ; unique
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@PEAX@std@@@2@@Z 0x1406120a0 ; prop
+// MS2-PIN: ?max_size@?$_Default_allocator_traits@V?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@PEAX@std@@@std@@@std@@SA_KAEBV?$allocator@U?$_Tree_node@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@PEAX@std@@@2@@Z 0x1406120b0 ; prop
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@2@$0A@@std@@@std@@QEBA_KXZ 0x140612120 ; unique
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@U?$less@V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@@4@V?$allocator@U?$pair@$$CBV?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@V?$map@KKU?$less@K@std@@V?$allocator@U?$pair@$$CBKK@std@@@2@@std@@@std@@@4@$0A@@std@@@std@@QEBA_KXZ 0x140612140 ; unique
+// MS2-PIN: ?max_size@?$_Tree@V?$_Tmap_traits@W4Unk_SocketSpecialStat@@HU?$less@W4Unk_SocketSpecialStat@@@std@@V?$allocator@U?$pair@$$CBW4Unk_SocketSpecialStat@@H@std@@@3@$0A@@std@@@std@@QEBA_KXZ 0x140612160 ; prop
 // MS2-PINS-END tplpin
+// MS2-PIN: ??1ProbabilityFromRank@CItemOptionTable@@UEAA@XZ 0x140604b70
+// MS2-PIN: ?time@@YA_JQEA_J@Z 0x1405f4120
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\itemoptiondata.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <time.h>
+#include <ppl.h>
+#include <cmath>
+#include <algorithm>
 #include "itemoption.h"
 #include "itemoptiondata.h"
 #include "citemoptiontable.h"
 #include "ms2/placeholder/citemdata.h"
+#include "ms2/placeholder/citem.h"
+#include "ms2/placeholder/xmlattr.h"
+#include "ms2/placeholder/tixmldocument.h"
+#include "ms2/placeholder/ms2svrptr.h"
+#include "ms2/commonfiles/commonstruct_wa.h"
+#include "ms2/commonfiles/itemenchantinfo.h"
+#include "ms2/client/ms2/randomeffectparam.h"
+#include "ms2/commonfiles/logstring.h"
+#include "ms2/ms2format.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
 #include "ms2/ms2recover.h"
 
@@ -98,16 +79,57 @@ static CString s_sortNames[]={"None","Buy","Like","PriceLow","PriceHigh","Create
 MS2Ptr<CItemData> FUN_14053f870(int nItemId);          // the item data of an item id
 CItemOptionTable* FUN_140166430();                      // the option table singleton
 CString FUN_14016a5c0(const char* psz, int n);
+CLogString* FUN_140166440();                            // the log
+void FUN_14015eb90(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const CString& strArg);
+void FUN_140177a80(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const unsigned& nArg);
+// The log's two-argument call (FMT_VARIADIC instantiation outside this unit).
+void FUN_1401e0850(CLogString* pLog, int nLevel, int nCategory, const wchar_t* pszFormat, const CString& first,
+                   const unsigned& second);
+class Unk_140166420 { public: int FUN_1403974b0(TiXmlDocument* doc, const char* path, int a, bool b, bool c); };
+Unk_140166420* FUN_140166420();
+CString FUN_14071a5b0(const CString& strDir, const CString& strFile);    // Table/<file>
+void FUN_14028f5d0(Unk_140165cf0* pParent, const char* pszChild, std::vector<Unk_140165cf0*>& arrOut);
+int FUN_140873220(Unk_140165cf0* pElem, const char* pszName, int& nOut);
+const CString& FUN_14082efb0(int nStat);                // the xml name of a stat
+const CString& FUN_14081d380(int nStat);                // the xml name of a special stat
+unsigned FUN_140767ff0();                               // random number
+bool FUN_14053fc90(int nItemId);                        // the item is in the first remake stone class
+bool FUN_14053fd10(int nItemId);
+bool FUN_14053fd50(int nItemId);
+int FUN_14053feb0(int nItemId);                         // the fixed rank of an item (0: none)
+int FUN_1406516b0();                                    // the language / region id
+float FUN_14028aaf0();                                  // FLT_EPSILON-like constant (2^-23)
+float FUN_14028aed0(float f);                           // floorf
+class Unk_GameRule { public: unsigned FUN_14047f720(unsigned nMeso); };   // CGameRule: the meso cost rate
+Unk_GameRule* FUN_1401c0d90();
+class Unk_EnchantRates { public: int FUN_140594810(int nItemId); };    // the remake cost rates (item.cpp)
+Unk_EnchantRates* FUN_14052d1e0();
+
+// RTTI Probability::LogContext (probability.cpp, unrecovered): only held through MS2Ptr here, so just the CPtred base.
+namespace Probability { class LogContext : public CPtred {}; }
+
+// RTTI CItemRemakeOptionIngredient: the cost box of an option remake; only the container is used here.
+class CItemRemakeOptionIngredient : public CPtred
+{
+public:
+    MS2SvrPtr<CIngredientContainer> m_spContainer;      // +0x18
+};
+MS2_CHECK_OFFSET(CItemRemakeOptionIngredient, m_spContainer, 0x18);
+
+// The unit's three-argument log call (FMT_VARIADIC wrapper over CLogString::FUN_1406530d0).
+template <class T, class U, class V>
+inline void Unk_ItemOptionLog(CLogString* log, int level, int category, const wchar_t* format, const T& first,
+                              const U& second, const V& third)
+{
+    const fmt::internal::ArgArray<3>::Type args = {fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(first),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(second),
+                                                   fmt::internal::MakeValue<fmt::BasicFormatter<wchar_t> >(third)};
+    log->FUN_1406530d0(level, category, format, fmt::ArgList(fmt::internal::make_type(first, second, third), args));
+}
 
 #ifndef MS2_HOOK_DLL   // the hook DLL binds the exe's init flag (symbols-manual.tsv)
 bool CItemOptionTable::s_bInit;
 #endif
-
-// @0x1405f4120
-void FUN_1405f4120(__time64_t* pTime)
-{
-    _time64(pTime);
-}
 
 // @0x1405f4140
 CItemOptionTable::CItemOptionTable()
@@ -138,6 +160,255 @@ bool CItemOptionTable::FUN_1405f4720()
     return FUN_1405f8770();
 }
 
+// @0x1405f47a0
+// The remake cost of an item (the stone by slot, meso and the second stone, scaled by item level, remake count and rank).
+void CItemOptionTable::FUN_1405f47a0(int nItemId, int nLevel, int nRank, unsigned short nItemLevel,
+                                     const CItemRemakeOptionIngredient& kIngredient)
+{
+    float fEpsilon = FUN_14028aaf0();
+    int nStat = 0;
+    if (FUN_14053fc90(nItemId))
+        nStat = 0x5d;
+    else if (FUN_14053fd10(nItemId))
+        nStat = 0x5f;
+    else if (FUN_14053fd50(nItemId))
+        nStat = 0x5e;
+    int nRate = FUN_14052d1e0()->FUN_140594810(nItemId);
+    unsigned nStone = FUN_14053fd50(nItemId) ? 5 : 1;
+    unsigned nMeso = 1;
+    unsigned nSecond = 1;
+    float fBase = 1.24f;
+    unsigned nLv = nItemLevel;
+    int nRegion = FUN_1406516b0();
+    if (nRegion == 0)
+        nLv = (std::min)(56u, nLv);
+    else
+        nLv = (std::min)(50u, nLv);
+    nLevel = (std::min)(nLevel, 14);
+    if (nLevel < 10)
+        fBase = 1.25f;
+    nStone = (unsigned)(nStone * ((nLv - 50.0) / 10.0 + 1.0)) * nRate;
+    nMeso = (unsigned)(FUN_14028aed0((pow(fBase, nLevel) + fEpsilon) * 200.0f) * (float)nRate);
+    nSecond = (nLevel + 11 + (std::max)(0u, nLv - 50)) * nRate;
+    if (nRegion == 0)
+    {
+        if (nItemLevel < 60)
+        {
+            if (nRank > 4)
+            {
+                nStone *= 5;
+                nMeso *= 2;
+                nSecond *= 3;
+            }
+        }
+        else if (nRank == 5)
+        {
+            nStone *= 5;
+            nMeso *= 10;
+            nSecond *= 15;
+        }
+        else if (nRank > 5)
+        {
+            nStone *= 5;
+            nMeso *= 12;
+            nSecond *= 15;
+        }
+    }
+    else if (nRank > 4)
+    {
+        nStone *= 5;
+        if (nRank < 6)
+            nMeso *= 10;
+        else
+            nMeso *= 12;
+        nSecond *= 15;
+    }
+    nStone = (std::max)(1u, nStone);
+    nMeso = (std::max)(1u, nMeso);
+    nSecond = (std::max)(1u, nSecond);
+    MS2SvrPtr<CIngredientContainer> spContainer = kIngredient.m_spContainer;
+    if (spContainer == 0)
+        return;
+    spContainer->FUN_14026bd10(nStat, nStone);
+    spContainer->FUN_14026bd10(0x60, nMeso);
+    spContainer->FUN_14026bd10(0x5c, nSecond);
+}
+
+// @0x1405f4bb0
+// The remake cost of a pet / non-equip option (by remake count and rank).
+void CItemOptionTable::FUN_1405f4bb0(int nLevel, int nRank, const CItemRemakeOptionIngredient& kIngredient)
+{
+    double dEpsilon = 1e-05;
+    MS2SvrPtr<CIngredientContainer> spContainer = kIngredient.m_spContainer;
+    if (spContainer == 0)
+        return;
+    nLevel = (std::min)(nLevel, 14);
+    int nStone = 5;
+    double dMeso = pow(1.15, nLevel) * 100.0;
+    int nMeso = (int)(dMeso + dEpsilon);
+    int nSecond = nLevel * 20 + 100;
+    if (nRank > 3)
+    {
+        nStone = 10;
+        nMeso *= 3;
+        nSecond *= 5;
+    }
+    unsigned nFinal = FUN_1401c0d90()->FUN_14047f720(nMeso);
+    spContainer->FUN_14026bd10(0x5d, nStone);
+    spContainer->FUN_14026bd10(0x60, nFinal);
+    spContainer->FUN_14026bd10(0x5c, nSecond);
+}
+
+// @0x1405f4d30
+// A random rank for an item of an option group and level (the item's fixed rank when it has one).
+int CItemOptionTable::FUN_1405f4d30(int nItemId, int nGroup, unsigned short nLevel, int nSeed, bool bSecond)
+{
+    CheckInit();
+    int nFixed = FUN_14053feb0(nItemId);
+    if (nFixed != 0)
+        return nFixed;
+    std::pair<int, int> kKey(nGroup, nLevel);
+    std::map<std::pair<int, int>, MS2Ptr<ProbabilityFromRank> >::iterator it;
+    std::map<std::pair<int, int>, MS2Ptr<ProbabilityFromRank> >::iterator itEnd;
+    if (bSecond)
+    {
+        it = m_rankProbs2.lower_bound(kKey);
+        itEnd = m_rankProbs2.end();
+    }
+    else
+    {
+        it = m_rankProbs.lower_bound(kKey);
+        itEnd = m_rankProbs.end();
+    }
+    if (it != itEnd)
+    {
+        MS2Ptr<ProbabilityFromRank>& spProb = it->second;
+        Unk_Random random(nSeed);
+        unsigned nRoll = random.FUN_1407684c0() % 1000000;
+        float fRoll = (float)nRoll / 10000.0f;
+        float fSum = spProb->m_f28;
+        if (fRoll < fSum)
+            return 5;
+        fSum += spProb->m_f24;
+        if (fRoll < fSum)
+            return 4;
+        fSum += spProb->m_f20;
+        if (fRoll < fSum)
+            return 3;
+        fSum += spProb->m_f1c;
+        if (fRoll < fSum)
+            return 2;
+    }
+    return 1;
+}
+
+// @0x1405f4ff0
+// A new option of an item: its constant rows up to the rank and a random roll.
+MS2Ptr<CItemOption> CItemOptionTable::FUN_1405f4ff0(MS2Ptr<CItemData> spItem, int nRank, Unk_Random* pRandom)
+{
+    if (spItem == 0)
+        return MS2Ptr<CItemOption>(0);
+    MS2Ptr<CItemOption> spOption(new CItemOption(spItem->FUN_14053c510()));
+    MS2Ptr<ItemOptionConstant> spConstant = FUN_1405f5ee0(spItem->FUN_14053efd0(), nRank);
+    if (spConstant.get() != 0)
+        spConstant->FUN_1405d2e70(spOption, nRank);
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(spItem->FUN_14053eff0(nRank));
+    if (spRandom.get() != 0)
+        spRandom->FUN_1405d3f70(spOption, nRank, pRandom);
+    return spOption;
+}
+
+// @0x1405f5290
+// A new option from a preset (the preset's fixed random rows when it has a type).
+MS2Ptr<CItemOption> CItemOptionTable::FUN_1405f5290(MS2Ptr<Unk_ItemOptionPreset> spPreset, Unk_Random* pRandom)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(spPreset->m_nItemId);
+    if (spItem == 0)
+        return MS2Ptr<CItemOption>(0);
+    MS2Ptr<CItemOption> spOption(new CItemOption(spPreset->m_nItemId));
+    MS2Ptr<ItemOptionConstant> spConstant = FUN_1405f5ee0(spItem->FUN_14053efd0(), spPreset->m_nRank);
+    if (spConstant.get() != 0)
+        spConstant->FUN_1405d2e70(spOption, spPreset->m_nRank);
+    if (spPreset->m_nType != 0)
+    {
+        int nRandomId = spItem->FUN_14053eff0(spPreset->m_nRank);
+        if (nRandomId != 0)
+        {
+            MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(nRandomId);
+            if (spRandom.get() != 0)
+                spRandom->FUN_1405d4270(spPreset, spOption, spPreset->m_nRank, pRandom);
+        }
+    }
+    return spOption;
+}
+
+// @0x1405f5620
+// Rerolls the random rows of an option (the constant rows are rebuilt first).
+bool CItemOptionTable::FUN_1405f5620(MS2Ptr<CItemOption> spOption, int nItemId, int nRank)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem == 0)
+        return false;
+    CheckInit();
+    Unk_Random random(time(0));
+    spOption->FUN_1405cb190(0);
+    if (!FUN_1405f5870(spOption, nItemId, nRank))
+        return false;
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(spItem->FUN_14053eff0(nRank));
+    if (spRandom == 0)
+        return false;
+    return spRandom->FUN_1405d6020(spOption, nRank, &random);
+}
+
+// @0x1405f5870
+// Rebuilds the constant rows of an option.
+bool CItemOptionTable::FUN_1405f5870(MS2Ptr<CItemOption> spOption, int nItemId, int nRank)
+{
+    MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
+    if (spItem == 0)
+        return false;
+    MS2Ptr<ItemOptionConstant> spConstant = FUN_1405f5ee0(spItem->FUN_14053efd0(), nRank);
+    if (spConstant.get() != 0)
+        spConstant->FUN_1405d2e70(spOption, nRank);
+    return true;
+}
+
+// @0x1405f59b0
+bool CItemOptionTable::FUN_1405f59b0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom)
+{
+    CheckInit();
+    if (spTarget == 0)
+        return false;
+    MS2Ptr<CItemData> spItem = FUN_14053f870(spTarget->m_nItemId);
+    if (spItem == 0)
+        return false;
+    int nRandomId = spItem->FUN_14053eff0(spTarget->m_nRank);
+    if (nRandomId == 0)
+        return false;
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(nRandomId);
+    if (spRandom == 0)
+        return false;
+    return spRandom->FUN_1405d4bb0(spTarget, pRandom);
+}
+
+// @0x1405f5ba0
+bool CItemOptionTable::FUN_1405f5ba0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom)
+{
+    CheckInit();
+    if (spTarget == 0)
+        return false;
+    MS2Ptr<CItemData> spItem = FUN_14053f870(spTarget->m_nItemId);
+    if (spItem == 0)
+        return false;
+    int nRandomId = spItem->FUN_14053eff0(spTarget->m_nRank);
+    if (nRandomId == 0)
+        return false;
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(nRandomId);
+    if (spRandom == 0)
+        return false;
+    return spRandom->FUN_1405d55e0(spTarget, pRandom);
+}
+
 // @0x1405f5d90
 bool CItemOptionTable::FUN_1405f5d90(int nItemId)
 {
@@ -145,7 +416,7 @@ bool CItemOptionTable::FUN_1405f5d90(int nItemId)
     MS2Ptr<CItemData> spItem = FUN_14053f870(nItemId);
     if (spItem == 0)
         return false;
-    int nId = spItem->FUN_14053efd0();
+    unsigned nId = spItem->FUN_14053efd0();
     auto it = m_constants.lower_bound(nId);
     if (it != m_constants.end() && it->first == nId)
         return true;
@@ -153,7 +424,7 @@ bool CItemOptionTable::FUN_1405f5d90(int nItemId)
 }
 
 // @0x1405f5ee0
-MS2Ptr<ItemOptionConstant> CItemOptionTable::FUN_1405f5ee0(int nId, int nGrade)
+MS2Ptr<ItemOptionConstant> CItemOptionTable::FUN_1405f5ee0(unsigned nId, int nGrade)
 {
     CheckInit();
     int nBest = 0;
@@ -183,7 +454,7 @@ MS2Ptr<ItemOptionRandom> CItemOptionTable::FUN_1405f6010(int nId)
 }
 
 // @0x1405f6100
-int CItemOptionTable::FUN_1405f6100(int nStatId)
+int CItemOptionTable::FUN_1405f6100(unsigned nStatId)
 {
     CheckInit();
     auto it = m_variations.find(nStatId);
@@ -193,7 +464,7 @@ int CItemOptionTable::FUN_1405f6100(int nStatId)
 }
 
 // @0x1405f6190
-int CItemOptionTable::FUN_1405f6190(int nStatId, Unk_Random* pRandom)
+int CItemOptionTable::FUN_1405f6190(unsigned nStatId, Unk_Random* pRandom)
 {
     CheckInit();
     auto it = m_variations.find(nStatId);
@@ -203,7 +474,7 @@ int CItemOptionTable::FUN_1405f6190(int nStatId, Unk_Random* pRandom)
 }
 
 // @0x1405f6230
-int CItemOptionTable::FUN_1405f6230(int nStatId)
+int CItemOptionTable::FUN_1405f6230(unsigned nStatId)
 {
     CheckInit();
     auto it = m_variations.find(nStatId);
@@ -213,7 +484,7 @@ int CItemOptionTable::FUN_1405f6230(int nStatId)
 }
 
 // @0x1405f62c0
-int CItemOptionTable::FUN_1405f62c0(int nStatId)
+int CItemOptionTable::FUN_1405f62c0(unsigned nStatId)
 {
     CheckInit();
     auto it = m_variations.find(nStatId);
@@ -223,7 +494,7 @@ int CItemOptionTable::FUN_1405f62c0(int nStatId)
 }
 
 // @0x1405f6350
-int CItemOptionTable::FUN_1405f6350(int nStatId)
+int CItemOptionTable::FUN_1405f6350(unsigned nStatId)
 {
     CheckInit();
     auto it = m_variations.find(nStatId);
@@ -233,7 +504,7 @@ int CItemOptionTable::FUN_1405f6350(int nStatId)
 }
 
 // @0x1405f63e0
-std::pair<int, int> CItemOptionTable::FUN_1405f63e0(int nStatId)
+std::pair<int, int> CItemOptionTable::FUN_1405f63e0(unsigned nStatId)
 {
     std::pair<int, int> kResult(0, 0);
     CheckInit();
@@ -277,6 +548,60 @@ std::pair<int, int> CItemOptionTable::FUN_1405f6650(int nItemId, int nRank, unsi
     return kResult;
 }
 
+// @0x1405f67e0
+// The stat value is in the top band of its variation row (the item must be level 50+).
+bool CItemOptionTable::FUN_1405f67e0(MS2Ptr<CItem> spItem, int nStat, int nUnused, int nValue)
+{
+    CheckInit();
+    if (spItem->FUN_1405282d0() < 50)
+        return false;
+    MS2Ptr<CItemData> spData = FUN_14053f870(spItem->FUN_1405276c0());
+    if (spData == 0)
+        return false;
+    int nRank = spItem->FUN_140526bd0();
+    int nRandomId = spData->FUN_14053eff0(nRank);
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_140166430()->FUN_1405f6010(nRandomId);
+    if (spRandom == 0)
+        return false;
+    int nId = spRandom->FUN_1405d7680(nStat);
+    int nHigh = FUN_1405f6350(nId);
+    if (nHigh == 0)
+        return false;
+    std::pair<int, int> kRange = FUN_1405f63e0(nId);
+    if (kRange.first == kRange.second)
+        return true;
+    if (kRange.first < nValue)
+        return nHigh <= nValue;
+    return false;
+}
+
+// @0x1405f6a90
+// The special stat value is in the top band of its variation row (the item must be level 50+).
+bool CItemOptionTable::FUN_1405f6a90(MS2Ptr<CItem> spItem, unsigned nSpecial, int nUnused, int nValue)
+{
+    CheckInit();
+    if (spItem->FUN_1405282d0() < 50)
+        return false;
+    MS2Ptr<CItemData> spData = FUN_14053f870(spItem->FUN_1405276c0());
+    if (spData == 0)
+        return false;
+    int nRank = spItem->FUN_140526bd0();
+    int nRandomId = spData->FUN_14053eff0(nRank);
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_140166430()->FUN_1405f6010(nRandomId);
+    if (spRandom == 0)
+        return false;
+    int nId = spRandom->FUN_1405d7710(nSpecial);
+    int nHigh = FUN_1405f6350(nId);
+    if (nHigh == 0)
+        return false;
+    std::pair<int, int> kRange = FUN_1405f63e0(nId);
+    if (kRange.first == kRange.second)
+        return true;
+    if (kRange.first < nValue)
+        return nHigh <= nValue;
+    return false;
+}
+
 // @0x1405f6d40
 int CItemOptionTable::FUN_1405f6d40(MS2Ptr<CItemData> spItem, int nRank, unsigned nSpecial)
 {
@@ -298,7 +623,7 @@ Unk_OptionNameListPtr CItemOptionTable::FUN_1405f6e40(const CString& strName)
 }
 
 // @0x1405f6ed0
-int CItemOptionTable::FUN_1405f6ed0(int nKey)
+int CItemOptionTable::FUN_1405f6ed0(Unk_SocketSpecialStat nKey)
 {
     auto it = m_f8.find(nKey);
     if (it == m_f8.end())
@@ -318,9 +643,282 @@ void CItemOptionTable::FUN_1405f6f50(MS2Ptr<CItemData> spItem, int nRank, unsign
         spRandom->FUN_1405d6560(spOption, nRank, nTrials, vLocked, pOut);
 }
 
+// @0x1405f70f0
+// The roll statistics of nTrials parallel random rolls: how often each stat value came up (all rows, or only the
+// nIndex-th roll), as "name:count" and "name:idx value:count" lines (also logged), with the probability logs.
+void CItemOptionTable::FUN_1405f70f0(MS2Ptr<CItemData> spItem, int nRank, unsigned nTrials,
+                                     const std::vector<std::pair<int, int> >& vLocked, std::vector<CStringW>* pOut,
+                                     unsigned nPickCount, int nIndex, Unk_ProbabilityLog& vLogs)
+{
+    if (spItem == 0)
+        return;
+    MS2Ptr<ItemOptionRandom> spRandom = FUN_1405f6010(spItem->FUN_14053eff0(nRank));
+    if (spRandom == 0)
+        return;
+    vLogs.reserve(vLogs.size() + nTrials * 2);
+    CLockCriticalSection lock;
+    unsigned nTotal = 0;
+    std::map<CString, std::map<unsigned long, unsigned long> > mapCounts;
+    std::vector<unsigned char> vTrials(nTrials);
+    // @0x140606450 (the lambda body)
+    Concurrency::parallel_for_each(std::begin(vTrials), std::end(vTrials),
+        [&spItem, &spRandom, &nRank, &vLocked, &nPickCount, &lock, &vLogs, &nIndex, &mapCounts, &nTotal](unsigned char)
+        {
+            MS2Ptr<CItemOption> spOption(new CItemOption(spItem->FUN_14053c510()));
+            Unk_ProbabilityLog vLocal;
+            Unk_Random random(FUN_140767ff0());
+            spRandom->FUN_1405d48d0(spOption, nRank, &random, vLocked, nPickCount, &vLocal);
+            Unk_EnchantMap& kStats = spOption->FUN_1405cb8a0(2);
+            Unk_SocketSpecialMap& kSpecials = spOption->FUN_1405cb8d0(2);
+            Unk_CriticalSectionLock guard(lock, 1);
+            vLogs.insert(vLogs.end(), vLocal.begin(), vLocal.end());
+            if (nIndex == 0)
+            {
+                POSITION pos = kStats.GetStartPosition();
+                while (pos != NULL)
+                {
+                    int nKey = kStats.GetKeyAt(pos);
+                    int nValue = kStats.GetValueAt(pos)->FUN_140266e30();
+                    CString strName = FUN_14082efb0(nKey);
+                    if (mapCounts.find(strName) == mapCounts.end())
+                        mapCounts.insert(std::pair<CString, std::map<unsigned long, unsigned long> >(
+                            strName, std::map<unsigned long, unsigned long>()));
+                    mapCounts[strName][nValue]++;
+                    nTotal++;
+                    kStats.GetNext(pos);
+                }
+                pos = kSpecials.GetStartPosition();
+                while (pos != NULL)
+                {
+                    int nKey = kSpecials.GetKeyAt(pos);
+                    int nValue = kSpecials.GetValueAt(pos)->FUN_140266e30();
+                    CString strName = FUN_14081d380(nKey);
+                    if (mapCounts.find(strName) == mapCounts.end())
+                        mapCounts.insert(std::pair<CString, std::map<unsigned long, unsigned long> >(
+                            strName, std::map<unsigned long, unsigned long>()));
+                    mapCounts[strName][nValue]++;
+                    nTotal++;
+                    kSpecials.GetNext(pos);
+                }
+            }
+            else
+            {
+                POSITION pos = kStats.GetStartPosition();
+                while (pos != NULL)
+                {
+                    Unk_EnchantPtr<BaseOption> spBase = kStats.GetValueAt(pos);
+                    if (spBase->m_nIndex == nIndex - 1)
+                    {
+                        int nKey = kStats.GetKeyAt(pos);
+                        int nValue = spBase->FUN_140266e30();
+                        CString strName = FUN_14082efb0(nKey);
+                        if (mapCounts.find(strName) == mapCounts.end())
+                            mapCounts.insert(std::pair<CString, std::map<unsigned long, unsigned long> >(
+                                strName, std::map<unsigned long, unsigned long>()));
+                        mapCounts[strName][nValue]++;
+                        nTotal++;
+                    }
+                    kStats.GetNext(pos);
+                }
+                pos = kSpecials.GetStartPosition();
+                while (pos != NULL)
+                {
+                    Unk_EnchantPtr<BaseOption> spBase = kSpecials.GetValueAt(pos);
+                    if (spBase->m_nIndex == nIndex - 1)
+                    {
+                        int nKey = kSpecials.GetKeyAt(pos);
+                        int nValue = spBase->FUN_140266e30();
+                        CString strName = FUN_14081d380(nKey);
+                        if (mapCounts.find(strName) == mapCounts.end())
+                            mapCounts.insert(std::pair<CString, std::map<unsigned long, unsigned long> >(
+                                strName, std::map<unsigned long, unsigned long>()));
+                        mapCounts[strName][nValue]++;
+                        nTotal++;
+                    }
+                    kSpecials.GetNext(pos);
+                }
+            }
+        });
+    if (nPickCount == 0)
+    {
+        MS2Ptr<CItemOption> spOption(new CItemOption(spItem->FUN_14053c510()));
+        Unk_Random random(FUN_140767ff0());
+        spRandom->FUN_1405d48d0(spOption, nRank, &random, vLocked, 0, NULL);
+        nPickCount = spRandom->FUN_1405d5fe0(nRank);
+    }
+    pOut->push_back(StringFormat(L"pickCount {0}", nPickCount));
+    if (FUN_140166440() != 0)
+        FUN_140177a80(FUN_140166440(), 0xb, 0x13, L"pickCount {0}", nPickCount);
+    pOut->push_back(StringFormat(L"TotalCount {0}", nTotal));
+    if (FUN_140166440() != 0)
+        FUN_140177a80(FUN_140166440(), 0xb, 0x13, L"TotalCount {0}", nTotal);
+    for (auto& kCount : mapCounts)
+    {
+        unsigned nSum = 0;
+        for (auto& kValue : kCount.second)
+            nSum += kValue.second;
+        pOut->push_back(StringFormat(L"{0}:{1}", kCount.first, nSum));
+        if (FUN_140166440() != 0)
+            FUN_1401e0850(FUN_140166440(), 0xb, 0x13, L"{0}:{1}", kCount.first, nSum);
+        for (auto& kValue : kCount.second)
+        {
+            unsigned nValue = kValue.first;
+            unsigned nCount = kValue.second;
+            pOut->push_back(StringFormat(L"{0}:idx{1}:{2}", kCount.first, nValue, nCount));
+            if (FUN_140166440() != 0)
+                Unk_ItemOptionLog(FUN_140166440(), 0xb, 0x13, L"{0}:idx{1}:{2}", kCount.first, nValue, nCount);
+        }
+    }
+}
+
+// @0x1405f78f0
+// The exclusive option groups (the attack / defense stats that share one roll) and the display order of the special
+// stats; built once.
+void CItemOptionTable::FUN_1405f78f0()
+{
+    if (m_names.IsEmpty())
+    {
+        Unk_OptionNameListPtr spList;
+        spList = Unk_SocketNew(0);
+        spList->AddTail(FUN_14082efb0(0x17));
+        spList->AddTail(FUN_14082efb0(0x18));
+        spList->AddTail(FUN_14082efb0(0));
+        spList->AddTail(FUN_14082efb0(2));
+        spList->AddTail(FUN_14082efb0(3));
+        spList->AddTail(FUN_14082efb0(1));
+        spList->AddTail(FUN_14082efb0(0xf));
+        spList->AddTail(FUN_14082efb0(0xd));
+        spList->AddTail(FUN_14082efb0(0x1f));
+        spList->AddTail(FUN_14081d380(0x1b));
+        spList->AddTail(FUN_14081d380(0x1a));
+        spList->AddTail(FUN_14081d380(9));
+        spList->AddTail(FUN_14081d380(0xb));
+        spList->AddTail(FUN_14081d380(0xc));
+        spList->AddTail(FUN_14081d380(0x23));
+        m_names.RemoveAll();
+        m_names.SetAt(FUN_14082efb0(0x17), spList);
+        m_names.SetAt(FUN_14082efb0(0x18), spList);
+        m_names.SetAt(FUN_14082efb0(0), spList);
+        m_names.SetAt(FUN_14082efb0(2), spList);
+        m_names.SetAt(FUN_14082efb0(3), spList);
+        m_names.SetAt(FUN_14082efb0(1), spList);
+        m_names.SetAt(FUN_14082efb0(0xf), spList);
+        m_names.SetAt(FUN_14082efb0(0xd), spList);
+        m_names.SetAt(FUN_14082efb0(0x1f), spList);
+        m_names.SetAt(FUN_14081d380(0x1b), spList);
+        m_names.SetAt(FUN_14081d380(0x1a), spList);
+        m_names.SetAt(FUN_14081d380(9), spList);
+        m_names.SetAt(FUN_14081d380(0xb), spList);
+        m_names.SetAt(FUN_14081d380(0xc), spList);
+        m_names.SetAt(FUN_14081d380(0x23), spList);
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xc3, 1));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xc4, 2));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0x18, 3));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0x19, 4));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xb4, 5));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0x1a, 6));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0x1b, 7));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xbc, 8));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xbb, 9));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xba, 10));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xbe, 11));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)0xbf, 12));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)7, 13));
+        m_f8.insert(std::make_pair((Unk_SocketSpecialStat)199, 14));
+    }
+}
+
+// @0x1405f8310
+bool CItemOptionTable::FUN_1405f8310()
+{
+    CString strPath = FUN_14071a5b0("Table", "ItemOptionConstant.xml");
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return false;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return false;
+    }
+    CLockCriticalSection lock;
+    std::vector<Unk_140165cf0*> elems;
+    FUN_14028f5d0(pRoot, "option", elems);
+    // @0x140606110 (the lambda body)
+    Concurrency::parallel_for_each(elems.begin(), elems.end(), [&lock, this](Unk_140165cf0* pElem) {
+        int nCode = 0;
+        FUN_140873220(pElem, "code", nCode);
+        if (nCode != 0)
+        {
+            std::vector<Unk_140165cf0*> children;
+            FUN_14028f5d0(pElem, "rank", children);
+            for (auto& pChild : children)
+            {
+                MS2Ptr<ItemOptionConstant> spConstant(new ItemOptionConstant);
+                spConstant->FUN_1405d2a50(nCode);
+                if (!spConstant->FUN_1405d2a90(pChild))
+                    continue;
+                Unk_CriticalSectionLock guard(lock, 1);
+                m_constants.insert(std::pair<int, MS2Ptr<ItemOptionConstant> >(nCode, spConstant));
+            }
+        }
+    });
+    return true;
+}
+
+// @0x1405f8540
+bool CItemOptionTable::FUN_1405f8540()
+{
+    CString strPath = FUN_14071a5b0("Table", "ItemOptionRandom.xml");
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return false;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return false;
+    }
+    CLockCriticalSection lock;
+    std::vector<Unk_140165cf0*> elems;
+    FUN_14028f5d0(pRoot, "option", elems);
+    // @0x140606320 (the lambda body)
+    Concurrency::parallel_for_each(elems.begin(), elems.end(), [&lock, this](Unk_140165cf0* pElem) {
+        MS2Ptr<ItemOptionRandom> spRandom(new ItemOptionRandom);
+        if (!spRandom->FUN_1405d3d00(pElem))
+            return;
+        Unk_CriticalSectionLock guard(lock, 1);
+        m_randoms.insert(std::make_pair(spRandom->FUN_1405d3c80(), std::move(spRandom)));
+    });
+    return true;
+}
+
 // @0x1405f8770
 bool CItemOptionTable::FUN_1405f8770()
 {
+    return true;
+}
+
+// @0x1405f8780
+bool CItemOptionTable::FUN_1405f8780()
+{
+    CString strPath = FUN_14071a5b0("Table", "itemOptionVariation.xml");
+    TiXmlDocument doc;
+    if (FUN_140166420()->FUN_1403974b0(&doc, strPath, 0, true, false) == 0)
+        return false;
+    Unk_140165cf0* pRoot = reinterpret_cast<Unk_140165cf0*>(&doc)->FUN_140165cf0("ms2");
+    if (pRoot == 0)
+    {
+        FUN_14015eb90(FUN_140166440(), 1, 0x13, L"xml 형식이 잘못 되었습니다[<ms2> {0}]", strPath);
+        return false;
+    }
+    for (Unk_140165cf0* pElem : pRoot->FUN_140165cf0("option"))
+    {
+        MS2Ptr<ItemOptionVariationData> spData(new ItemOptionVariationData);
+        spData->FUN_1405d3870(pElem);
+        int nId = spData->FUN_1405d3a20();
+        m_variations.insert(std::pair<int, MS2Ptr<ItemOptionVariationData> >(nId, spData));
+    }
     return true;
 }
 
