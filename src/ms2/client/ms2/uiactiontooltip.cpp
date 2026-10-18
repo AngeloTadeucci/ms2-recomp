@@ -92,22 +92,18 @@ CString UIActionTooltip::vfunc_1()
     return "ActionTooltip";
 }
 
-// MS2-FUNCTIONAL: codegen/call layout differs (members taking an unused this)
 // @0x1418b1630
 void UIActionTooltip::vfunc_15()
 {
-    if (FUN_1418b2140() == 0)
-    {
-        if (m_pAction == 0)
-        {
-            if (FUN_1418b23a0() != 0x1e)
-                FUN_1418b1ab0();
-        }
-        else
-            FUN_1418b1ef0();
-    }
-    else
+    if (FUN_1418b2140() != 0)
         FUN_1418b1e60();
+    else if (m_pAction != 0)
+        FUN_1418b1ef0();
+    else
+    {
+        if (FUN_1418b23a0() != 0x1e)
+            FUN_1418b1ab0();
+    }
 }
 
 // @0x1418b1690
@@ -227,19 +223,17 @@ void UIActionTooltip::FUN_1418b1ab0()
     }
 }
 
-// MS2-FUNCTIONAL: EH state / temporary layout differs
 // @0x1418b1e60
 void UIActionTooltip::FUN_1418b1e60()
 {
-    if (m_pAction != 0)
+    if (m_pAction == 0)
+        return;
+    if (m_30.get() != 0)
     {
-        if (m_30.get() != 0)
-        {
-            m_pAction = 0;
-            m_30->Invoke("hide");
-        }
-        FUN_140a94350()->vfunc_8(0);
+        m_pAction = 0;
+        m_30->Invoke("hide");
     }
+    FUN_140a94350()->vfunc_8(0);
 }
 
 // MS2-FUNCTIONAL: float temporaries and struct-copy layout differ
