@@ -180,6 +180,7 @@ bool CItemOptionTable::FUN_1405f4720()
 }
 
 // @0x1405f47a0
+// MS2-FUNCTIONAL: exe 18 bytes longer (the (std::max)<unsigned> temporaries are laid out differently)
 // The remake cost of an item (the stone by slot, meso and the second stone, scaled by item level, remake count and rank).
 void CItemOptionTable::FUN_1405f47a0(int nItemId, int nLevel, int nRank, unsigned short nItemLevel,
                                      const CItemRemakeOptionIngredient& kIngredient)
@@ -543,6 +544,7 @@ int CItemOptionTable::FUN_1405f6350(unsigned nStatId)
 }
 
 // @0x1405f63e0
+// MS2-FUNCTIONAL: the exe stores the pair(0, 0) argument temporaries left to right (first at +0x24 before +0x20)
 std::pair<int, int> CItemOptionTable::FUN_1405f63e0(unsigned nStatId)
 {
     std::pair<int, int> kResult(0, 0);
@@ -556,6 +558,7 @@ std::pair<int, int> CItemOptionTable::FUN_1405f63e0(unsigned nStatId)
 }
 
 // @0x1405f64e0
+// MS2-FUNCTIONAL: the exe stores the pair(0, 0) argument temporaries left to right (first at +0x24 before +0x20)
 std::pair<int, int> CItemOptionTable::FUN_1405f64e0(int nItemId, int nRank, int nStat)
 {
     std::pair<int, int> kResult(0, 0);
@@ -571,6 +574,7 @@ std::pair<int, int> CItemOptionTable::FUN_1405f64e0(int nItemId, int nRank, int 
 }
 
 // @0x1405f6650
+// MS2-FUNCTIONAL: the exe stores the pair(0, 0) argument temporaries left to right; 2 bytes longer
 std::pair<int, int> CItemOptionTable::FUN_1405f6650(int nItemId, int nRank, unsigned nSpecial)
 {
     std::pair<int, int> kResult(0, 0);
@@ -587,6 +591,7 @@ std::pair<int, int> CItemOptionTable::FUN_1405f6650(int nItemId, int nRank, unsi
 }
 
 // @0x1405f67e0
+// MS2-FUNCTIONAL: exe 4 bytes longer (one wider stack displacement: a temporary slot not reproduced)
 // The stat value is in the top band of its variation row (the item must be level 50+).
 bool CItemOptionTable::FUN_1405f67e0(MS2Ptr<CItem> spItem, int nStat, int nUnused, int nValue)
 {
@@ -614,6 +619,7 @@ bool CItemOptionTable::FUN_1405f67e0(MS2Ptr<CItem> spItem, int nStat, int nUnuse
 }
 
 // @0x1405f6a90
+// MS2-FUNCTIONAL: exe 4 bytes longer (one wider stack displacement: a temporary slot not reproduced)
 // The special stat value is in the top band of its variation row (the item must be level 50+).
 bool CItemOptionTable::FUN_1405f6a90(MS2Ptr<CItem> spItem, unsigned nSpecial, int nUnused, int nValue)
 {
@@ -700,6 +706,7 @@ void CItemOptionTable::FUN_1405f70f0(MS2Ptr<CItemData> spItem, int nRank, unsign
     std::map<CString, std::map<unsigned long, unsigned long> > mapCounts;
     std::vector<unsigned char> vTrials(nTrials);
     // @0x140606450 (the lambda body)
+    // MS2-FUNCTIONAL: lambda body frame 0x10 smaller in the exe (0x3a8 vs 0x3b8: one temporary fewer), slots shifted
     Concurrency::parallel_for_each(std::begin(vTrials), std::end(vTrials),
         [&spItem, &spRandom, &nRank, &vLocked, &nPickCount, &lock, &vLogs, &nIndex, &mapCounts, &nTotal](unsigned char)
         {
@@ -880,6 +887,7 @@ bool CItemOptionTable::FUN_1405f8310()
     std::vector<Unk_140165cf0*> elems;
     FUN_14028f5d0(pRoot, "option", elems);
     // @0x140606110 (the lambda body)
+    // MS2-FUNCTIONAL: lambda body 1 byte longer in the exe (temporary slot order differs)
     Concurrency::parallel_for_each(std::begin(elems), std::end(elems), [&lock, this](Unk_140165cf0* pElem) {
         int nCode = 0;
         FUN_140873220(pElem, "code", nCode);
@@ -977,3 +985,6 @@ void CItemOptionTable::CheckInit()
         MessageBoxA(0, msg, "Error", 0);
     }
 }
+
+// @0x1406124b0 (the CRT memmove_s tail)
+MS2_EMIT_CRT_MEMMOVE_S();
