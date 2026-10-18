@@ -49,7 +49,7 @@ public:
     void FUN_1405f47a0(int nItemId, int nLevel, int nRank, unsigned short nItemLevel,
                        const CItemRemakeOptionIngredient& kIngredient);    // the remake cost of an item
     void FUN_1405f4bb0(int nLevel, int nRank, const CItemRemakeOptionIngredient& kIngredient);
-    int FUN_1405f4d30(int nItemId, int nGroup, unsigned short nLevel, int nSeed, bool bSecond);   // a random rank
+    int FUN_1405f4d30(int nItemId, int nGroup, unsigned short nLevel, int nSeed, bool bSecond) const;   // a random rank
     MS2Ptr<CItemOption> FUN_1405f4ff0(MS2Ptr<CItemData> spItem, int nRank, Unk_Random* pRandom);
     MS2Ptr<CItemOption> FUN_1405f5290(MS2Ptr<Unk_ItemOptionPreset> spPreset, Unk_Random* pRandom);
     bool FUN_1405f5620(MS2Ptr<CItemOption> spOption, int nItemId, int nRank);
@@ -58,8 +58,8 @@ public:
     bool FUN_1405f5ba0(MS2Ptr<Unk_1405e74c0> spTarget, Unk_Random* pRandom);
     bool FUN_1405f5d90(int nItemId);                        // the item has constant options
     int FUN_1405f5e90(int nCode, int nRank, CString strTag, CString strInfo);   // always 1
-    MS2Ptr<ItemOptionConstant> FUN_1405f5ee0(unsigned nId, int nGrade);  // the best constant row up to a grade
-    MS2Ptr<ItemOptionRandom> FUN_1405f6010(int nId);
+    MS2Ptr<ItemOptionConstant> FUN_1405f5ee0(unsigned nId, int nGrade) const;  // the best constant row up to a grade
+    MS2Ptr<ItemOptionRandom> FUN_1405f6010(int nId) const;
     int FUN_1405f6100(unsigned nStatId);
     int FUN_1405f6190(unsigned nStatId, Unk_Random* pRandom);
     int FUN_1405f6230(unsigned nStatId);
@@ -72,7 +72,7 @@ public:
     bool FUN_1405f6a90(MS2Ptr<CItem> spItem, unsigned nSpecial, int nUnused, int nValue);
     int FUN_1405f6d40(MS2Ptr<CItemData> spItem, int nRank, unsigned nSpecial);
     Unk_OptionNameListPtr FUN_1405f6e40(const CString& strName);    // the exclusive group of a stat name (null: none)
-    int FUN_1405f6ed0(Unk_SocketSpecialStat nKey);
+    int FUN_1405f6ed0(Unk_SocketSpecialStat nKey) const;
     void FUN_1405f6f50(MS2Ptr<CItemData> spItem, int nRank, unsigned nTrials,
                        const std::vector<std::pair<int, int> >& vLocked, std::vector<CStringW>* pOut);
     void FUN_1405f70f0(MS2Ptr<CItemData> spItem, int nRank, unsigned nTrials,
