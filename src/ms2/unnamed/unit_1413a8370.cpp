@@ -20,6 +20,15 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
+// This TU has its own copies of StringFormat<int> / <int,int,int> (the exe does not fold them with the shared ones), so each
+// is a unit-local wrapper pinned to its copy.
+// MS2-PIN: ?GcFmtItemType@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH@Z 0x1413b15b0
+// MS2-PIN: ?GcFmtCountItem@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH11@Z 0x1413b0c80
+// MS2-PIN: ?GcFmtCountRange@@YA?AV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@PEB_WAEBH11@Z 0x1413b1650
+__declspec(noinline) CStringW GcFmtItemType(const wchar_t* f, const int& a) { return StringFormat(f, a); }
+__declspec(noinline) CStringW GcFmtCountItem(const wchar_t* f, const int& a, const int& b, const int& c) { return StringFormat(f, a, b, c); }
+__declspec(noinline) CStringW GcFmtCountRange(const wchar_t* f, const int& a, const int& b, const int& c) { return StringFormat(f, a, b, c); }
+
 // ---- unit-local views of the exe objects and unrecovered callees --------------------------------------------------------
 
 // The world manager (FUN_1403ed2d0): only the local player.
@@ -350,7 +359,7 @@ MS2_REPLACE_METHOD(0x1413A90D0, CGuideConditionDesignItem, vfunc_3, 386, 0xD184D
 CStringW CGuideConditionDesignItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemType({0})", m_nItemType));
+    str.Append(GcFmtItemType(L"itemType({0})", m_nItemType));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9260, CGuideConditionDesignItem, vfunc_7, 167, 0x9A48A0DC);
@@ -408,7 +417,7 @@ MS2_REPLACE_METHOD(0x1413A9480, CGuideConditionExistItem, vfunc_3, 182, 0x3855BA
 CStringW CGuideConditionExistItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemid({0}), itemType({1}), iconType({2})", m_nItemId, m_nItemType, m_nIconType));
+    str.Append(GcFmtCountItem(L"itemid({0}), itemType({1}), iconType({2})", m_nItemId, m_nItemType, m_nIconType));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9540, CGuideConditionExistItem, vfunc_7, 193, 0x3B640C0B);
@@ -469,7 +478,7 @@ MS2_REPLACE_METHOD(0x1413A9770, CGuideConditionCountItem, vfunc_3, 161, 0x332434
 CStringW CGuideConditionCountItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemType({0}), minValue({1}), maxValue({2})", m_nItemType, m_nMin, m_nMax));
+    str.Append(GcFmtCountRange(L"itemType({0}), minValue({1}), maxValue({2})", m_nItemType, m_nMin, m_nMax));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9820, CGuideConditionCountItem, vfunc_7, 193, 0xB3E1E02E);
