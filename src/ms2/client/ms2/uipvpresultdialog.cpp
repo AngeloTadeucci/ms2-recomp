@@ -179,7 +179,6 @@ void UIPvPResultDialog::FUN_141343c10(int nFrom, int nTo)
     }
 }
 
-// MS2-FUNCTIONAL: behaviour-equivalent (frame / temporaries differ)
 // @0x141343da0
 void UIPvPResultDialog::FUN_141343da0(int nRank)
 {
@@ -270,7 +269,6 @@ bool UIPvPResultDialog::FUN_141344210(ASObj* pObj, int nRank, Unk_PrEntry* pEntr
     return true;
 }
 
-// MS2-FUNCTIONAL: behaviour-equivalent (frame / temporaries differ)
 // @0x141344780
 void UIPvPResultDialog::FUN_141344780(int nRank)
 {
