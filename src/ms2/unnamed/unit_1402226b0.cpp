@@ -2,12 +2,17 @@
 // tables (level <-> bitmask, grade and event names), small int enum maps, a shared-memory mapping wrapper and the CAtlArray glue
 // of a 4-byte enum array. File and function names are invented (no __FILE__ string in the range).
 // MS2-UNIT: unit_1402226b0
+// MS2-RANGE: 0x1400b53d0-0x1400b54f0 .text$di
 // MS2-RANGE: 0x1402226b0-0x140223c60 .text$mn
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\unknown_1402226b0.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>
 #include <windows.h>
 #include <errno.h>
+
+static CString s_marketSortNames[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+static CString s_emptyNarrow;
+static CStringW s_emptyWide;
 
 // ---- unit-local placeholders (names invented) --------------------------------------------------------------------------
 // One entry of the level array (an int; its own type so the array instantiations are not shared with CAtlArray<int>).
