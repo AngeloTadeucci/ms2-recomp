@@ -109,6 +109,7 @@ public:
     Scaleform::GFx::Value Invoke(const char* szMethod, MS2Ptr<AScript> a1);                 // 0x141ac34b0 (inline COMDAT, defined in uirewardnotify.cpp; a1 by value: the callee destroys it)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, CStringW a2, CStringW a3);   // 0x140fac340 (inline COMDAT, defined in unit_140fa9eb0.cpp; a2/a3 by value: the callee destroys them)
     Scaleform::GFx::Value FUN_1412e80d0(const char* szMethod, CStringW a1, CStringW a2, CStringW a3);   // 0x1412e80d0 (Invoke with three strings; the args are destroyed by the callee)
+    Scaleform::GFx::Value Invoke(const char* szMethod, unsigned int a1, unsigned int a2, CStringW a3);   // 0x140bfedf0 (inline COMDAT, defined in uirandomcoupon.cpp; a3 by value: the callee destroys)
 
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1, AScript a2, ASArray a3);   // 0x140c1f740 (inline COMDAT, defined in uihideandseekresultdialog.cpp; a2/a3 by value: the callee destroys them)
     Scaleform::GFx::Value Invoke(const char* szMethod, int a1); // 0x1409ba030 (couple dance HUD)
