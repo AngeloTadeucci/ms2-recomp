@@ -3041,3 +3041,12 @@ DAT_143af6ac0	143af6ac0	data
 ?s_instance@?$TSingleton@VWebGuideTable@@@@2PEAVWebGuideTable@@EA	143ae07a8	data
 ?vfunc_124@CNpc@@UEAAHH@Z	141090d60	func
 ?vfunc_53@CNpc@@UEAAXM@Z	1410952f0	func
+??0CGameOptionCamera@@QEAA@HH@Z	141248830	func
+??0CGameOptionInterface@@QEAA@HH@Z	1412558c0	func
+??0CGameOptionStatus@@QEAA@HH@Z	1412589a0	func
+??0CGameOptionBattle@@QEAA@HH@Z	141246d40	func
+??0CGameOptionCommunity@@QEAA@HH@Z	1412492f0	func
+??0CGameOptionGraphicDefault@@QEAA@HH@Z	14124ab30	func
+??0CGameOptionSoundDefault@@QEAA@HH@Z	141256d20	func
+??0CGameOptionInputDefault@@QEAA@HH@Z	141250a80	func
+??0CGameOptionLanguage@@QEAA@HH@Z	140cfb450	func
