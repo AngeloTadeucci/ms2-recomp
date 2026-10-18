@@ -31,11 +31,13 @@ public:
     SalesInfo();
     virtual ~SalesInfo();
 };
-class SetItemEffectInfo : public CPtred                 // ctor 0x1411233c0
+class SetItemEffectInfo : public CPtred                 // 0x28, ctor 0x1411233c0
 {
 public:
     SetItemEffectInfo();
     virtual ~SetItemEffectInfo();
+    int m_nEffect;                                      // +0x18
+    CString m_strName;                                  // +0x20
 };
 class AutomaticCreateCubeInfo : public CPtred           // ctor 0x141122e70
 {
