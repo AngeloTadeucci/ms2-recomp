@@ -1,10 +1,9 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13).
 // MS2-UNIT: ?\worldfadeoutrenderstep.cpp
-// MS2-RANGE: 0x1400fca70-0x1400fcaa0 .text$di
-// MS2-RANGE: 0x1416bad00-0x1416bb2e0 .text$mn
-// NOTE: the units.tsv guess for this unit also lists the 36 NiFixedString name statics' initializers (0x1400fcaa0-0x1400fd100)
-// and the three name-table functions 0x1416bb2e0/0x1416bb5f0/0x1416bc0f0; those belong to a header-defined name table
-// (COMDAT .text$di sorted alphabetically), not to this source file, and are not recovered here.
+// MS2-RANGE: 0x1400fca70-0x1400fcad0 .text$di
+// MS2-RANGE: 0x1416bad00-0x1416bc380 .text$mn
+// MS2-RANGE: 0x1400fcc80-0x1400fcce0 .text$di
+// MS2-RANGE: 0x1400fcf80-0x1400fd100 .text$di
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\postprocessing\\worldfadeoutrenderstep.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include "worldfadeoutrenderstep.h"
@@ -58,6 +57,105 @@ const NiRTTI WorldFadeOutRenderStep::ms_RTTI("WorldFadeOutRenderStep", wfBaseRTT
 #else
 const NiRTTI WorldFadeOutRenderStep::ms_RTTI("WorldFadeOutRenderStep", &NiDefaultClickRenderStep::ms_RTTI);
 #endif
+
+
+// Header-defined property and material names; each is a real NiFixedString.
+extern NiFixedString DAT_143ae50a8;
+extern NiFixedString DAT_143ae50a0;
+extern NiFixedString DAT_143ae50b0;
+extern NiFixedString DAT_143ae50b8;
+extern NiFixedString DAT_143ae50c0;
+extern NiFixedString DAT_143ae50c8;
+extern NiFixedString DAT_143ae50d0;
+extern NiFixedString DAT_143ae50d8;
+extern NiFixedString DAT_143ae50e0;
+extern NiFixedString DAT_143ae50e8;
+extern NiFixedString DAT_143ae50f0;
+extern NiFixedString DAT_143ae50f8;
+extern NiFixedString DAT_143ae5100;
+extern NiFixedString DAT_143ae5108;
+extern NiFixedString DAT_143ae5110;
+extern NiFixedString DAT_143ae5118;
+extern NiFixedString DAT_143ae5120;
+extern NiFixedString DAT_143ae5128;
+extern NiFixedString DAT_143ae5130;
+extern NiFixedString DAT_143ae5138;
+extern NiFixedString DAT_143ae5140;
+extern NiFixedString DAT_143ae5148;
+extern NiFixedString DAT_143ae5150;
+extern NiFixedString DAT_143ae5158;
+extern NiFixedString DAT_143ae5160;
+extern NiFixedString DAT_143ae5168;
+extern NiFixedString DAT_143ae5170;
+extern NiFixedString DAT_143ae5178;
+extern NiFixedString DAT_143ae5180;
+extern NiFixedString DAT_143ae5188;
+extern NiFixedString DAT_143ae5190;
+extern NiFixedString DAT_143ae5198;
+extern NiFixedString DAT_143ae51a0;
+extern NiFixedString DAT_143ae51a8;
+extern NiFixedString DAT_143ae51b0;
+extern NiFixedString DAT_143ae51b8;
+extern NiFixedString DAT_143ae51c0;
+extern NiFixedString DAT_143ae51c8;
+extern NiFixedString DAT_143ae51d0;
+extern NiFixedString DAT_143ae51d8;
+extern NiFixedString DAT_143ae51e0;
+extern NiFixedString DAT_143ae51e8;
+extern NiFixedString DAT_143ae51f8;
+extern NiFixedString DAT_143ae5200;
+extern NiFixedString DAT_143ae5208;
+extern NiFixedString DAT_143ae5210;
+extern NiFixedString DAT_143ae5218;
+extern NiFixedString DAT_143ae5220;
+extern NiFixedString DAT_143ae5228;
+extern NiFixedString DAT_143ae5230;
+extern NiFixedString DAT_143ae5238;
+extern NiFixedString DAT_143ae5240;
+extern NiFixedString DAT_143ae5248;
+extern NiFixedString DAT_143ae5250;
+extern NiFixedString DAT_143ae5258;
+extern NiFixedString DAT_143ae51f0;
+extern NiFixedString DAT_143ae52e0;
+extern NiFixedString DAT_143ae5260;
+extern NiFixedString DAT_143ae5268;
+extern NiFixedString DAT_143ae5270;
+extern NiFixedString DAT_143ae5278;
+extern NiFixedString DAT_143ae5280;
+extern NiFixedString DAT_143ae5288;
+extern NiFixedString DAT_143ae5290;
+extern NiFixedString DAT_143ae5298;
+extern NiFixedString DAT_143ae52a0;
+extern NiFixedString DAT_143ae52a8;
+extern NiFixedString DAT_143ae52b0;
+extern NiFixedString DAT_143ae52b8;
+extern NiFixedString DAT_143ae52c0;
+extern NiFixedString DAT_143ae52c8;
+extern NiFixedString DAT_143ae52d0;
+extern NiFixedString DAT_143ae52d8;
+
+// @0x1400fcaa0
+NiFixedString DAT_143ae5238;
+// @0x1400fcc80
+NiFixedString DAT_143ae5208;
+// @0x1400fccb0
+NiFixedString DAT_143ae51f8;
+// @0x1400fcf80
+NiFixedString DAT_143ae51a0;
+// @0x1400fcfb0
+NiFixedString DAT_143ae51d8;
+// @0x1400fcfe0
+NiFixedString DAT_143ae52c8;
+// @0x1400fd010
+NiFixedString DAT_143ae51d0;
+// @0x1400fd040
+NiFixedString DAT_143ae50f0;
+// @0x1400fd070
+NiFixedString DAT_143ae5210;
+// @0x1400fd0a0
+NiFixedString DAT_143ae5148;
+// @0x1400fd0d0
+NiFixedString DAT_143ae5150;
 
 // @0x1416bad00
 WorldFadeOutRenderStep::WorldFadeOutRenderStep(unsigned __int64 a, unsigned int b) : PostProcessEffect(a, b), m_a0(0)
@@ -137,3 +235,132 @@ bool WorldFadeOutRenderStep::vfunc_14() { return false; }
 
 // @0x1416bb2d0
 bool WorldFadeOutRenderStep::vfunc_13() { return false; }
+
+// Name-table routines operate on mutable exe statics, so are not hooked.
+// @0x1416bb2e0
+void FUN_1416bb2e0()
+{
+    DAT_143ae50a8 = "CI";
+    DAT_143ae50a0 = "AO";
+    DAT_143ae50b0 = "IA";
+    DAT_143ae50b8 = "IM";
+    DAT_143ae50c0 = "IA";
+    DAT_143ae50c8 = "OverrideColor0";
+    DAT_143ae50d0 = "OverrideColor1";
+    DAT_143ae50d8 = "OverrideColor2";
+    DAT_143ae50e0 = "POutlineColor";
+    DAT_143ae50e8 = "noOutline";
+    DAT_143ae50f0 = "ForceForcedColor";
+    DAT_143ae50f8 = "DecalMapTransform";
+    DAT_143ae5100 = "DecalOverrideColor0";
+    DAT_143ae5108 = "DecalOverrideColor1";
+    DAT_143ae5110 = "DecalOverrideColor2";
+    DAT_143ae5118 = "Highlight";
+    DAT_143ae5120 = "OutlineWidth";
+    DAT_143ae5128 = "OutlineColor";
+    DAT_143ae5130 = "SuperModeOrginColorRate";
+    DAT_143ae5138 = "SuperModeWhiteColorRate";
+    DAT_143ae5140 = "ColorBoost";
+    DAT_143ae5148 = "FresnelBoost";
+    DAT_143ae5150 = "FresnelExponent";
+    DAT_143ae5158 = "ChaosFresnelBoost";
+    DAT_143ae5160 = "ChaosFresnelExponent";
+    DAT_143ae5168 = "ChaosDimmer";
+    DAT_143ae5170 = "ChaosLightColor";
+    DAT_143ae5178 = "GlowModifier";
+    DAT_143ae5180 = "SoftDepth";
+    DAT_143ae5188 = "Order";
+    DAT_143ae5190 = "HasMS2MapProperties";
+    DAT_143ae5198 = "Name";
+    DAT_143ae51a0 = "ExNearbox";
+    DAT_143ae51a8 = "CastShadow";
+    DAT_143ae51b0 = "NoDOF";
+    DAT_143ae51b8 = "UserPropBuffer";
+    DAT_143ae51c0 = "RenderView";
+    DAT_143ae51c8 = "_SFN";
+    DAT_143ae51d0 = "FluidMeshFlag";
+    DAT_143ae51d8 = "FA";
+}
+
+// @0x1416bb5f0
+void FUN_1416bb5f0()
+{
+    DAT_143ae50a0 = NiFixedString();
+    DAT_143ae50a8 = NiFixedString();
+    DAT_143ae50b0 = NiFixedString();
+    DAT_143ae50b8 = NiFixedString();
+    DAT_143ae50c0 = NiFixedString();
+    DAT_143ae50c8 = NiFixedString();
+    DAT_143ae50d0 = NiFixedString();
+    DAT_143ae50d8 = NiFixedString();
+    DAT_143ae50e0 = NiFixedString();
+    DAT_143ae50e8 = NiFixedString();
+    DAT_143ae50f0 = NiFixedString();
+    DAT_143ae50f8 = NiFixedString();
+    DAT_143ae5100 = NiFixedString();
+    DAT_143ae5108 = NiFixedString();
+    DAT_143ae5110 = NiFixedString();
+    DAT_143ae5118 = NiFixedString();
+    DAT_143ae5120 = NiFixedString();
+    DAT_143ae5128 = NiFixedString();
+    DAT_143ae5130 = NiFixedString();
+    DAT_143ae5138 = NiFixedString();
+    DAT_143ae5140 = NiFixedString();
+    DAT_143ae5148 = NiFixedString();
+    DAT_143ae5150 = NiFixedString();
+    DAT_143ae5158 = NiFixedString();
+    DAT_143ae5160 = NiFixedString();
+    DAT_143ae5168 = NiFixedString();
+    DAT_143ae5170 = NiFixedString();
+    DAT_143ae5178 = NiFixedString();
+    DAT_143ae5180 = NiFixedString();
+    DAT_143ae5188 = NiFixedString();
+    DAT_143ae5190 = NiFixedString();
+    DAT_143ae5198 = NiFixedString();
+    DAT_143ae51a0 = NiFixedString();
+    DAT_143ae51a8 = NiFixedString();
+    DAT_143ae51b0 = NiFixedString();
+    DAT_143ae51b8 = NiFixedString();
+    DAT_143ae51c0 = NiFixedString();
+    DAT_143ae51c8 = NiFixedString();
+    DAT_143ae51d0 = NiFixedString();
+    DAT_143ae51d8 = NiFixedString();
+}
+
+// @0x1416bc0f0
+void FUN_1416bc0f0()
+{
+    DAT_143ae51e0 = "NiStandardMaterial";
+    DAT_143ae51e8 = "MS2StandardMaterial";
+    DAT_143ae51f8 = "MS2CharacterMaterial";
+    DAT_143ae5200 = "MS2CharacterSkinMaterial";
+    DAT_143ae5208 = "MS2CharacterHairMaterial";
+    DAT_143ae5210 = "MS2ForceColorMaterial";
+    DAT_143ae5218 = "MS2TextureDensityMaterial";
+    DAT_143ae5220 = "MS2DepthMaterial";
+    DAT_143ae5228 = "MS2CharacterDepthMaterial";
+    DAT_143ae5230 = "MS2AlphaBoostMaterial";
+    DAT_143ae5238 = "MS2BlendLightMaterial";
+    DAT_143ae5240 = "MS2ChaosMaterial";
+    DAT_143ae5248 = "MS2ChaosSkinMaterial";
+    DAT_143ae5250 = "MS2ChaosHairMaterial";
+    DAT_143ae5258 = "SoftParticlesMaterial";
+    DAT_143ae51f0 = "MS2GlowMaterial";
+    DAT_143ae52e0 = "MS2UIMaterial";
+    DAT_143ae5260 = "MS2MotionBlurMaterial";
+    DAT_143ae5268 = "MS2OuterGlowCharacterMaterial";
+    DAT_143ae5270 = "MS2CharacterMonochromeMaterial";
+    DAT_143ae5278 = "MS2DecorationMaterial";
+    DAT_143ae5280 = "TexCoordWriteMaterial";
+    DAT_143ae5288 = "MRTShaderPickerMaterial";
+    DAT_143ae5290 = "MS2DirectionalShadowWriteMaterial";
+    DAT_143ae5298 = "MS2PointShadowWriteMaterial";
+    DAT_143ae52a0 = "MS2SpotShadowWriteMaterial";
+    DAT_143ae52a8 = "OutlineMaterial";
+    DAT_143ae52b0 = "MS2DefaultShimmerValueMaterial";
+    DAT_143ae52b8 = "MS2ShimmerMaterial";
+    DAT_143ae52c0 = "MS2IceMaterial";
+    DAT_143ae52c8 = "MS2FireMaterial";
+    DAT_143ae52d0 = "MS2PoisonMaterial";
+    DAT_143ae52d8 = "MS2DarkMaterial";
+}
