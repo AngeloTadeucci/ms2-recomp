@@ -163,3 +163,79 @@ public:
     virtual int vfunc_3();                                  // 3 0x1413a7b80
 };
 MS2_CHECK_SIZE(CGuideConditionGameScene, 0x28);
+
+// 0x30. Passes once m_n20 ms have elapsed since the first check, or when the UI is idle and the key-binding query 0x493e2 holds.
+class CGuideConditionNext : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a7bc0
+    CGuideConditionNext();                                  // 0x1413a7c70
+    virtual CStringW vfunc_1();                             // 1 0x1413a7c20
+    virtual int vfunc_3();                                  // 3 0x1413a7cb0
+    virtual void vfunc_4();                                 // 4 0x1413a7d40
+
+    unsigned m_nStart;                                      // +0x28 the clock at the first check (0 = not started)
+    int m_pad_2c;
+};
+MS2_CHECK_SIZE(CGuideConditionNext, 0x30);
+
+// 0x28. Passes while the quest m_n20 is satisfied (all objectives done).
+class CGuideConditionQuestSatisfied : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a7d70
+    CGuideConditionQuestSatisfied();                        // 0x1413b3310
+    virtual CStringW vfunc_1();                             // 1 0x1413a7dd0
+    virtual int vfunc_3();                                  // 3 0x1413a7e20
+};
+MS2_CHECK_SIZE(CGuideConditionQuestSatisfied, 0x28);
+
+// 0x28. Passes while the quest m_n20 is complete.
+class CGuideConditionQuestComplete : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a7e60
+    CGuideConditionQuestComplete();                         // 0x1413b32b0
+    virtual CStringW vfunc_1();                             // 1 0x1413a7ec0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a7f10
+    virtual int vfunc_3();                                  // 3 0x1413a7f50
+    virtual int vfunc_8();                                  // 8 0x1413a7f90
+};
+MS2_CHECK_SIZE(CGuideConditionQuestComplete, 0x28);
+
+// 0x28. Passes while the quest m_n20 is in progress.
+class CGuideConditionQuestProgress : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a7fc0
+    CGuideConditionQuestProgress();                         // 0x1413b32e0
+    virtual CStringW vfunc_1();                             // 1 0x1413a8020
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a8070
+    virtual int vfunc_3();                                  // 3 0x1413a80b0
+    virtual int vfunc_8();                                  // 8 0x1413a80f0
+};
+MS2_CHECK_SIZE(CGuideConditionQuestProgress, 0x28);
+
+// 0x28. Passes while the local player is dead.
+class CGuideConditionDead : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8120
+    CGuideConditionDead();                                  // 0x1413b2bc0
+    virtual CStringW vfunc_1();                             // 1 0x1413a8180
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a81d0
+    virtual int vfunc_3();                                  // 3 0x1413a8210
+    virtual int vfunc_8();                                  // 8 0x1413a8260
+};
+MS2_CHECK_SIZE(CGuideConditionDead, 0x28);
+
+// 0x28. Passes while the local player is in construct (cube build) mode.
+class CGuideConditionConstructMode : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a8270
+    CGuideConditionConstructMode();                         // 0x1413b2a70
+    virtual CStringW vfunc_1();                             // 1 0x1413a82d0
+    virtual int vfunc_3();                                  // 3 0x1413a8320
+};
+MS2_CHECK_SIZE(CGuideConditionConstructMode, 0x28);
