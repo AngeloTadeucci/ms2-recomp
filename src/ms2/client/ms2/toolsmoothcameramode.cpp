@@ -1,5 +1,6 @@
 // Recovered from MapleStory2.exe KMS2_DEV x64 (2022-04-13). See toolsmoothcameramode.h.
 // MS2-UNIT: ?\toolsmoothcameramode.cpp
+// MS2-RANGE: 0x14010e180-0x14010e4a0 .text$di
 // MS2-RANGE: 0x141856e00-0x1418589b0 .text$mn
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\toolsmoothcameramode.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
@@ -9,6 +10,22 @@
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 #include "ms2/placeholder/ms2ptr_impl.h"
+
+#include "ms2/placeholder/unk_1402a9d70.h"
+
+// The shared eight-byte null-handle wrapper; constructor forwards to its pointer setter.
+class Unk_1401cd100 { public: Unk_1401cd100(void*); private: void* m_p; };
+MS2_CHECK_SIZE(Unk_1401cd100, 8);
+static CString s_skill1("skill");
+static CString s_stun1("stun");
+static Unk_1401cd100 s_pointer1(NULL);
+static Unk_1402a9d70 s_condition1(17, 0.75f, 0.25f, 2.25f, 10);
+static CString s_sortNames1[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+static CString s_skill2("skill");
+static CString s_stun2("stun");
+static Unk_1401cd100 s_pointer2(NULL);
+static Unk_1402a9d70 s_condition2(17, 0.75f, 0.25f, 2.25f, 10);
+static CString s_sortNames2[] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
 
 // ---- unit-local placeholders ----
 
