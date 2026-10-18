@@ -136,6 +136,8 @@ public:
     int m_id;                                                       // +0x18
 };
 MS2_CHECK_OFFSET(Unk_CoupleDanceEvent, m_id, 0x18);
+// @0x140bacf70
+template <> Unk_CoupleDanceEvent* MS2Ptr<Unk_CoupleDanceEvent>::get() const { return m_p; }
 class Unk_CoupleEventHolder { public: MS2Ptr<Unk_CoupleDanceEvent> FUN_140428700(); };
 class Unk_140302b00 { public: Unk_CoupleEventHolder* FUN_1403ed140(); };
 Unk_140302b00* FUN_140302b00();
@@ -338,9 +340,6 @@ bool FUN_140bacda0(int nResult, const Unk_CMsgBoxData& box)
     pPlayer->vfunc_59(1, 0, 0, 0);
     return true;
 }
-
-// @0x140bacf70
-template <> Unk_CoupleDanceEvent* MS2Ptr<Unk_CoupleDanceEvent>::get() const { return m_p; }
 
 // @0x140bacf80
 MS2_EMIT_CRT_MEMMOVE_S_COPY(1);
