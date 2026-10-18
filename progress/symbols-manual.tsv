@@ -2870,3 +2870,10 @@ inflateInit_	142723ad0	func
 ?DAT_143ba9d40@@3PEAUUnk_CriUtfSortTable@@EA	143ba9d40	data
 ?DAT_143ba9d48@@3IA	143ba9d48	data
 ?DAT_1439f9284@@3HA	1439f9284	data
+?get@Unk_BreakItemPtr@@QEBAPEAVUnk_BreakItem@@XZ	14052cd70	func
+??0Unk_BreakItemPtr@@QEAA@H@Z	140203510	func
+??0Unk_BreakItemPtr@@QEAA@$$QEAV0@@Z	1402034a0	func
+??C?$MS2Ptr@VUnk_BreakTemplate@@@@QEBAPEAVUnk_BreakTemplate@@XZ	1401b52a0	func
+??C?$MS2Ptr@VUnk_BreakIngredient@@@@QEBAPEAVUnk_BreakIngredient@@XZ	14027f2c0	func
+??1?$MS2Ptr@VUnk_BreakIngredient@@@@QEAA@XZ	14027df70	func
+??8?$MS2Ptr@VUnk_BreakIngredient@@@@QEBA_NPEAVUnk_BreakIngredient@@@Z	14027ec60	func
