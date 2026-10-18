@@ -3033,3 +3033,5 @@ DAT_143af6ac0	143af6ac0	data
 ?vfunc_7@CNMVirtualUserInfo@@UEAAXXZ	14156c9d0	func
 ??1Unk_MdMemberPtr@@QEAA@XZ	14137c280	func
 ??1Unk_MdRoomPtr@@QEAA@XZ	141381160	func
+?s_bInit@CStoryBookTable@@2_NA	143aeef28	data
+?s_instance@?$TSingleton@VCStoryBookTable@@@@2PEAVCStoryBookTable@@EA	143ae0778	data
