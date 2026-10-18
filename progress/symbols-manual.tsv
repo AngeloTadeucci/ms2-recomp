@@ -3035,3 +3035,7 @@ DAT_143af6ac0	143af6ac0	data
 ??1Unk_MdRoomPtr@@QEAA@XZ	141381160	func
 ?s_bInit@CStoryBookTable@@2_NA	143aeef28	data
 ?s_instance@?$TSingleton@VCStoryBookTable@@@@2PEAVCStoryBookTable@@EA	143ae0778	data
+?s_mapSlotType@@3V?$CAtlMap@HHV?$CDefaultElementTraits@H@ATL@@V12@@ATL@@A	143aaf370	data
+?s_instance@?$TSingleton@VCostumeSetTable@@@@2PEAVCostumeSetTable@@EA	143aaf318	data
+?s_bInit@CostumeSetTable@@2_NA	143aaf320	data
+?s_instance@?$TSingleton@VWebGuideTable@@@@2PEAVWebGuideTable@@EA	143ae07a8	data
