@@ -3054,3 +3054,6 @@ DAT_143af6ac0	143af6ac0	data
 ??0CMeratMarketBuy@@QEAA@XZ	140d602f0	func
 ??0ASClickOutData@UIMeratMarketDialogUtil@@QEAA@AEAVValue@GFx@Scaleform@@H@Z	140ec2950	func
 ??1ASClickOutData@UIMeratMarketDialogUtil@@UEAA@XZ	140ec2a50	func
+?Slot@CStore@@QEAA?AV?$MS2Ptr@VCItem@@@@H@Z	140de1af0	func
+?Append@CStore@@QEAAXAEAV?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@@Z	140de1fd0	func
+?Id@CStore@@QEAA_JXZ	140de27c0	func
