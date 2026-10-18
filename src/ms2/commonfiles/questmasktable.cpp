@@ -24,6 +24,7 @@
 #include "filesystem.h"
 #include "logstring.h"
 #include "ms2/ms2format.h"
+#include "ms2/commonfiles/famegradedata.h"
 #include "ms2/placeholder/tixmldocument.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
 #include "ms2/client/ms2/randomeffectparam.h"
@@ -498,3 +499,89 @@ int FUN_140765520(Unk_140165cf0* pElem, const char* pszName, int* pnOut)
 }
 #undef MS2_THIS_FILE
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\commonfiles\\questmasktable.cpp"
+
+// The fame table's getter (the exe types it Unk_EmoNpcTable).
+class Unk_EmoNpcTable;
+Unk_EmoNpcTable* FUN_140764010();
+static inline CFameTable* FameTable()
+{
+    return reinterpret_cast<CFameTable*>(FUN_140764010());
+}
+class CQuestData;
+int FUN_14074b050(CQuestData* pData);
+int FUN_14074b070(CQuestData* pData);
+int FUN_140931210(int n);
+CStringW FUN_140298ea0(CStringW str);
+CString FUN_14021a6b0(int n);
+CStringW FUN_14028b8e0(const CStringW& str);
+CStringW FUN_140719630(int n);
+CStringW FUN_14083cb20(const CStringW& str);
+
+// @0x140762280
+int FUN_140762280(void* pUnused, int n)
+{
+    return FUN_140931210(n);
+}
+
+// @0x140762de0
+CStringW FUN_140762de0(int nQuestId)
+{
+    return FUN_14028b8e0(StringFormat(L"s_quest_alliance_{0}", FUN_14021a6b0(nQuestId)));
+}
+
+// @0x140762e90
+CString FUN_140762e90(int nAlliance)
+{
+    return FameTable()->GetSymbol((Unk_FameAlliance)nAlliance);
+}
+
+// @0x140762ee0
+CStringW FUN_140762ee0(int nAlliance, int nPoint);
+
+// @0x140762f50
+CStringW FUN_140762f50(int nAlliance, int nGrade)
+{
+    return FUN_140298ea0(StringFormat(L"s_fame_grade_{0}", nGrade));
+}
+
+CStringW FUN_140762ee0(int nAlliance, int nPoint)
+{
+    int nGrade = FameTable()->GetGradeByPoint((Unk_FameAlliance)nAlliance, nPoint);
+    return FUN_140762f50(nAlliance, nGrade);
+}
+
+// @0x1407631e0
+int FUN_1407631e0(int nAlliance)
+{
+    return FameTable()->IsExped((Unk_FameAlliance)nAlliance);
+}
+
+// @0x1407636c0
+int FUN_1407636c0(int nNpcId)
+{
+    return FameTable()->GetAllianceByNpc(nNpcId);
+}
+
+// @0x140763e10
+CStringW FUN_140763e10(int nValue)
+{
+    return FUN_14083cb20(FUN_140719630(nValue));
+}
+
+// @0x140764040
+bool FUN_140764040(CQuestData* pData)
+{
+    return FUN_14074b050(pData) == 0;
+}
+
+// @0x140764080
+bool FUN_140764080(CQuestData* pData)
+{
+    return FUN_14074b050(pData) == 2;
+}
+
+// @0x1407640c0
+bool FUN_1407640c0(CQuestData* pData)
+{
+    return FUN_14074b070(pData) != 0;
+}
