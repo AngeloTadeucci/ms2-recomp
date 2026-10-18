@@ -8,52 +8,11 @@
 #include <atlcoll.h>
 #include "ms2/commonfiles/stream.h"
 #include "ms2/placeholder/xmlattr.h"
+#include "ms2/commonfiles/commonpricerecord.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
 bool FUN_140184310(const CString& str, const char* psz);   // str == psz
-
-// One currency amount: kind 0 = meso, 2 = merat (sub kind 0 = merat_c, 1 = merat/merat_f, 2 = merat_m, 3 = merat_e).
-class Unk_CommonPrice
-{
-public:
-    Unk_CommonPrice() : m_type(0), m_subType(0), m_amount(0) {}                                 // 0x14027d940
-    Unk_CommonPrice(int type, int subType, __int64 amount) : m_type(type), m_subType(subType), m_amount(amount) {}   // 0x14027d900
-    void Write(COutputStream* pOut);                                // 0x140269c30
-    void Read(CInputStream* pIn);                                   // 0x140269ca0
-    void ClearAmount();                                             // 0x140269d10
-    bool LoadXml(Unk_140165cf0* pNode);                             // 0x140269d30
-
-    int m_type;                                                     // +0x00 (one byte on the wire)
-    int m_subType;                                                  // +0x04 (one byte on the wire)
-    __int64 m_amount;                                               // +0x08
-};
-MS2_CHECK_SIZE(Unk_CommonPrice, 0x10);
-
-// The array of prices (the object is the CAtlArray itself).
-class Unk_CommonPriceList
-{
-public:
-    void AddPrice(const Unk_CommonPrice& price);                    // 0x140269f30
-    void AddAmount(int type, int subType, __int64 amount);          // 0x140269f60
-    void Write(COutputStream* pOut);                                // 0x14026a030
-    void Read(CInputStream* pIn);                                   // 0x14026a0c0
-    void Clear();                                                   // 0x14026a140
-
-    ATL::CAtlArray<Unk_CommonPrice> m_prices;
-};
-MS2_CHECK_SIZE(Unk_CommonPriceList, 0x20);
-
-// A price plus the time it was used.
-class Unk_CommonPriceRecord
-{
-public:
-    unsigned char IsUsed();                                               // 0x14026a170
-
-    Unk_CommonPrice m_price;                                        // +0x00
-    __int64 m_usedTime;                                             // +0x10
-};
-MS2_CHECK_SIZE(Unk_CommonPriceRecord, 0x18);
 
 // @0x140269c30
 void Unk_CommonPrice::Write(COutputStream* pOut)
