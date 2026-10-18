@@ -2985,3 +2985,6 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?vfunc_60@UIPopupEntity@@UEAA?AUUnk_PopupPos@@XZ	141a7d260	func
 ?vfunc_61@UIPopupEntity@@UEAAMXZ	141a7d360	func
 ?_Change_array@?$vector@PEAVCube@@V?$allocator@PEAVCube@@@std@@@std@@AEAAXQEAPEAVCube@@_K1@Z	1411340b0	func
+?s_bInit@CSmartRecommendShopTable@@2_NA	143ab1a31	data
+?s_instance@?$TSingleton@VCPopupProfileImageMan@@@@2PEAVCPopupProfileImageMan@@EA	143ae0790	data
+?DAT_143ab2946@@3DA	143ab2946	data
