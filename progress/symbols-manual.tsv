@@ -2957,3 +2957,11 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?vfunc_2@CNpcShopMeratItemBase@@UEAAXPEAVCInPacket@@@Z	1406f1840	func
 ??0Unk_ShopLifeRef@@QEAA@XZ	14052c0d0	func
 ??0Unk_ShopLifeRef@@QEAA@AEBV0@@Z	14052c090	func
+??0ASListEvent@@QEAA@AEBUParams@FunctionHandler@GFx@Scaleform@@@Z	1422e2740	func
+??1ASListEvent@@QEAA@XZ	140f83bb0	func
+?FUN_1422e27d0@ASListEvent@@QEAA?AVValue@GFx@Scaleform@@XZ	1422e27d0	func
+??1Unk_PetButton@@UEAA@XZ	1422cde30	func
+?FUN_1422ce090@Unk_PetButton@@QEAAXH@Z	1422ce090	func
+?FUN_140d1d3d0@@YAXPEAXAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z	140d1d3d0	func
+??0Unk_SibDropParams@@QEAA@XZ	1402e9180	func
+?DAT_143afa4d8@@3HA	143afa4d8	data
