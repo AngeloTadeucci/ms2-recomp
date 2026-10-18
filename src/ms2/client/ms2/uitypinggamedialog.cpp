@@ -35,6 +35,13 @@
 // MS2-PIN: ?size@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@QEBA_KXZ 0x140ee74b0 ; unique
 // MS2-PINS-END tplpin
 // File name assumed (the class name; the exe has no assert path for it).
+// cf9: tplpin accepted pins; identical residual helper groups are functional.
+// MS2-GUESS-LOOKALIKES
+// MS2-PIN: ??$_Get_unwrapped@U?$pair@HH@std@@@std@@YAPEAU?$pair@HH@0@QEAU10@@Z 0x140ee6770
+// MS2-PIN: ?_Get_data@?$_Vector_alloc@U?$_Vec_base_types@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@U?$pair@HH@std@@@std@@@2@XZ 0x140ee6ea0
+// MS2-PIN: ?_Myfirst@?$_Vector_alloc@U?$_Vec_base_types@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@@std@@QEAAAEAPEAU?$pair@HH@2@XZ 0x140ee6ff0
+// MS2-PIN: ?_Umove_if_noexcept1@?$vector@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@AEAAXPEAU?$pair@HH@2@00U?$integral_constant@_N$00@2@@Z 0x140ee7270
+// MS2-PIN: ?_Myend@?$_Vector_alloc@U?$_Vec_base_types@U?$pair@HH@std@@V?$allocator@U?$pair@HH@std@@@2@@std@@@std@@QEBAAEBQEAU?$pair@HH@2@XZ 0x140ee6fd0
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\uitypinggamedialog.cpp"    // assumed
 #include "ms2/placeholder/ms2stdafx.h"
 #include "uitypinggamedialog.h"

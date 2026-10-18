@@ -612,7 +612,7 @@ def _fn_size(exe, va):
     return None
 
 
-def same_code(exe, a, b, depth=8):
+def same_code(exe, a, b, depth=32):
     """Per-unit COMDAT binding (NOTES "per-unit COMDAT binding (pin1)"): are the exe functions at a and b byte-identical
     copies? Same length, same instructions; branch/call/RIP-relative operands must reach the same offset inside the
     function, the same absolute address, or (recursively) identical functions. Conservative: anything else is False."""
@@ -620,13 +620,17 @@ def same_code(exe, a, b, depth=8):
         return True
     if exe is None or os.environ.get("MS2_NO_MULTICOPY"):     # MS2_NO_MULTICOPY=1: old one-name-one-VA behaviour
         return False
+    # Nested STL vector construction/destruction chains can exceed eight calls (e.g.
+    # vector<pair<int, int>>::push_back). Keep a bounded traversal, but do not reject
+    # equivalent copies solely because their allocator glue is deeply nested.
     key = (min(a, b), max(a, b))
     if key in _SAME_MEMO:
         return _SAME_MEMO[key]
     if depth <= 0:
         return False
     na, nb = _fn_size(exe, a), _fn_size(exe, b)
-    if na and nb and na != nb and (_thin_forwarder(exe, a, na, b, depth) or _thin_forwarder(exe, b, nb, a, depth)):
+    if na and nb and na != nb and (_thin_forwarder(exe, a, na, b, depth) or _thin_forwarder(exe, b, nb, a, depth)
+                                  or _ptr_release_variant(exe, a, na, b, nb)):
         _SAME_MEMO[key] = True      # NiPoint3() -> Point3(), NiPoint3::operator= -> Point3::operator=: same effect
         return True
     if not na or na != nb or na > 0x4000:
@@ -636,6 +640,65 @@ def same_code(exe, a, b, depth=8):
     ok = _same_code(exe, a, b, na, depth)
     _SAME_MEMO[key] = ok
     return ok
+
+
+
+def _ptr_release_variant(exe, a, na, b, nb):
+    """Recognize the two verified MS2Ptr::ReleaseImpl forms, not arbitrary frame differences.
+
+    One TU saves m_p in a local; another reloads m_p before each call. ReleasePtred
+    and AddRefPtred only change the pointed-to CPtred count, so they cannot change
+    the owning MS2Ptr's m_p. The branch, pointer offset, and all three operations
+    must agree. In particular, arbitrary calls and writes are never normalized.
+    """
+    if not (na <= 0x60 and nb <= 0x60):
+        return False
+    release = SYMBOLS.get("?ReleasePtred@CPtred@@SAHPEAV1@@Z")
+    addref = SYMBOLS.get("?AddRefPtred@CPtred@@SAXPEAV1@@Z")
+    delete = SYMBOLS.get("?DeletePtred@CPtred@@SAXPEAV1@@Z")
+    if None in (release, addref, delete):
+        return False
+
+    def decode(va, n):
+        ins = list(_MD2.disasm(exe.read(va, n), va))
+        if sum(i.size for i in ins) != n or len(ins) < 2:
+            return None, []
+        code, calls = [], []
+        for i in ins:
+            if i.mnemonic == "call" and i.operands[0].type == x86.X86_OP_IMM:
+                code.append("call")
+                calls.append(i.operands[0].imm)
+            elif i.mnemonic == "jne" and i.operands[0].type == x86.X86_OP_IMM and i.operands[0].imm == ins[-2].address:
+                code.append("jne exit")
+            else:
+                code.append((i.mnemonic + " " + i.op_str).strip())
+        return code, calls
+
+    prefix = ["mov qword ptr [rsp + 0x10], rdx", "mov qword ptr [rsp + 8], rcx"]
+    cached = prefix + [
+        "sub rsp, 0x38", "mov rax, qword ptr [rsp + 0x40]",
+        "mov rax, qword ptr [rax + 8]", "mov qword ptr [rsp + 0x20], rax",
+        "mov rcx, qword ptr [rsp + 0x20]", "call", "test eax, eax", "jne exit",
+        "mov rcx, qword ptr [rsp + 0x20]", "call",
+        "mov rcx, qword ptr [rsp + 0x20]", "call", "add rsp, 0x38", "ret"]
+    load = ["mov rax, qword ptr [rsp + 0x30]", "mov rcx, qword ptr [rax + 8]"]
+    reloaded = prefix + ["sub rsp, 0x28"] + load + ["call", "test eax, eax", "jne exit"] + load + ["call"] + load + ["call", "add rsp, 0x28", "ret"]
+    ca, calls_a = decode(a, na)
+    cb, calls_b = decode(b, nb)
+    if not ((ca == cached and cb == reloaded) or (cb == cached and ca == reloaded)):
+        return False
+    reference = ["mov qword ptr [rsp + 8], rcx", "sub rsp, 0x28",
+                 "mov rcx, qword ptr [rsp + 0x30]", "call", "add rsp, 0x28", "ret"]
+    for calls in (calls_a, calls_b):
+        if len(calls) != 3 or calls[0] != release or calls[2] != delete:
+            return False
+        n = _fn_size(exe, calls[1])
+        if not n or n > 0x30:
+            return False
+        rc, targets = decode(calls[1], n)
+        if rc != reference or targets != [addref]:
+            return False
+    return True
 
 
 def _thin_forwarder(exe, a, n, b, depth):
