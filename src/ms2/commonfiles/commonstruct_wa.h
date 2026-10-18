@@ -203,6 +203,8 @@ class Unk_ShopLifeRef {
 public:
     Unk_ShopLifeRef(NpcShopItemLife*);                 // 0x14027cd20
     Unk_ShopLifeRef(Unk_ShopLifeRef&&);                // 0x14027ccf0
+    Unk_ShopLifeRef();                                 // 0x14052c0d0 (npcshopproductbase.cpp)
+    Unk_ShopLifeRef(const Unk_ShopLifeRef&);           // 0x14052c090 (npcshopproductbase.cpp)
     ~Unk_ShopLifeRef();                                // 0x14027e150
     NpcShopItemLife* operator->() const;               // 0x14027f340
     void* m_unknown; NpcShopItemLife* m_p;
