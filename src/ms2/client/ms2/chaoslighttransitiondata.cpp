@@ -225,7 +225,6 @@ void FUN_141047ac0(NiObjectNET* pObject, const NiFixedString& kKey, float fValue
 }
 
 // @0x1410461b0
-// MS2-FUNCTIONAL: 3-byte codegen difference in the glow-map default texture branch; behavior equivalent
 ChaosLightEffectLayer::ChaosLightEffectLayer(NiMesh* pMesh, void* pTexture, const ChaosLightEffectParam* pParam)
     : Layer(pParam != 0 ? pParam->m_nLayer : 0xffffffff), m_spMesh(0), m_spTexture(0), m_bActive(false)
 {
@@ -253,8 +252,7 @@ ChaosLightEffectLayer::ChaosLightEffectLayer(NiMesh* pMesh, void* pTexture, cons
             if (pMap != 0)
             {
                 ChaosLightEffectLayerManager* pManager = FUN_1403ed2d0()->FUN_141bd3680();
-                __int64 nDefault = (__int64)pManager->FUN_1410469c0();
-                if (nDefault != (__int64)pMap->GetTexture())
+                if (((__int64)pManager->FUN_1410469c0()) != (__int64)pMap->GetTexture())
                     m_spTexture.Assign(pMap->GetTexture());
             }
         }
