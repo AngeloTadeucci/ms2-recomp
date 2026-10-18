@@ -22,7 +22,7 @@ public:
     virtual void vfunc_8(void*) {}                  // 8  0x140be54d0
     virtual void vfunc_9(void*) {}                  // 9  0x140be54f0
     virtual void vfunc_10(void*) {}                 // 10 0x140be5520
-    virtual void vfunc_11(void*) {}                 // 11 0x140be5510
+    virtual void vfunc_il11(void*) {}               // 11 0x140be5510
     virtual void vfunc_12() {}                      // 12 0x140be5530
     virtual void vfunc_il13() {}                     // 13 0x140be5500
     virtual void vfunc_14(void*) {}                 // 14 0x140be5570

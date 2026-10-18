@@ -2225,7 +2225,7 @@ void UIItemEventDispatcher::vfunc_10(void* a0)
     for (size_t i = 0; i < m_listeners.GetCount(); i++) {
         UIItemEventListener* listener = m_listeners.GetAt(i);
         if (listener != 0 && listener->vfunc_il1() != 0)
-            listener->vfunc_11(a0);
+            listener->vfunc_il11(a0);
     }
 }
 
