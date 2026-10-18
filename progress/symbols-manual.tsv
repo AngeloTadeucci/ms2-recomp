@@ -2965,3 +2965,5 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?FUN_140d1d3d0@@YAXPEAXAEBV?$CStringT@_WV?$StrTraitMFC_DLL@_WV?$ChTraitsCRT@_W@ATL@@@@@ATL@@@Z	140d1d3d0	func
 ??0Unk_SibDropParams@@QEAA@XZ	1402e9180	func
 ?DAT_143afa4d8@@3HA	143afa4d8	data
+?s_bInit@CItemRePackingScrollTable@@2_NA	143aaff60	data
+?s_instance@?$TSingleton@VCItemRePackingScrollTable@@@@2PEAVCItemRePackingScrollTable@@EA	143aaff58	data
