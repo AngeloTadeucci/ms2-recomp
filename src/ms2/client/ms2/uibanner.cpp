@@ -371,7 +371,6 @@ UIBanner::Entity* UIBanner::FUN_140ba93d0(int nActorId)
 MS2_REPLACE_METHOD(0x140ba93d0, UIBanner, FUN_140ba93d0, 153, 0x8291A101);
 
 // @0x140ba9470
-// MS2-FUNCTIONAL: frame is 0x10 larger (extra by-value Value/CString temporary, as AScript::Invoke(CString))
 Scaleform::GFx::Value Unk_BannerClip::FUN_140ba9470(const char* szMethod, int nActorId, CString strCache, bool bFlag)
 {
     ASArgList args;
@@ -383,7 +382,6 @@ Scaleform::GFx::Value Unk_BannerClip::FUN_140ba9470(const char* szMethod, int nA
 }
 
 // @0x140ba9570
-// MS2-FUNCTIONAL: frame is 0x10 larger (extra by-value Value/CString temporary, as AScript::Invoke(CString))
 Scaleform::GFx::Value Unk_BannerClip::FUN_140ba9570(const char* szMethod, Scaleform::GFx::Value clip, bool bFlag)
 {
     ASArgList args;

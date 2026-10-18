@@ -1018,7 +1018,6 @@ void FUN_14025a680(CStringW& src, ATL::CAtlArray<CStringW>& out, const wchar_t* 
 }
 
 // @0x1402272c0
-// MS2-FUNCTIONAL: CAtlArray<CStringW>::operator[] resolves to this unit's copy (0x14025e580); the exe calls an identical copy at 0x140159a00
 int CBanTextChecker::LoadWords(CString strPath, TextFilterUnit* pTrie)
 {
     TiXmlDocument doc;

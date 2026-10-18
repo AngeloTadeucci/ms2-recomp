@@ -436,7 +436,6 @@ void CMouseController::FUN_140ad1ef0()
 MS2_REPLACE_METHOD(0x140AD1EF0, CMouseController, FUN_140ad1ef0, 47, 0x65FA4324);
 
 // @0x140ad1f30
-// MS2-FUNCTIONAL: transliterated from the decompile
 void CMouseController::FUN_140ad1f30(int nOldAction, int nNewAction)
 {
     if (m_nMode == 1 || m_nMode == 0)
