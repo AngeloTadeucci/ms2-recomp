@@ -138,6 +138,7 @@
 // MS2-PIN: ??_7?$TToolHistory@UMusicData@@@@6B@ 0x142f679f0
 // MS2-PIN: ??_7?$TToolHistory@UReverbData@@@@6B@ 0x142f67a10
 // MS2-PIN: ??_7?$TToolHistory@UParamVaule@@@@6B@ 0x142f67a40
+// MS2-PIN: ??0?$tuple@AEBH@std@@QEAA@$$QEAV01@@Z 0x141787060
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif

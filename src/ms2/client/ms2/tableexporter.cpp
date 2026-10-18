@@ -51,6 +51,7 @@
 // MS2-PIN: ?GetNext@?$CAtlMap@I_NV?$CElementTraits@I@ATL@@V?$CElementTraits@_N@2@@ATL@@QEAAPEAVCPair@12@AEAPEAU__POSITION@@@Z 0x1418315a0
 // MS2-PIN: ?deallocate@?$allocator@U?$_List_node@UCSoundDataEntry@@PEAX@std@@@std@@QEAAXQEAU?$_List_node@UCSoundDataEntry@@PEAX@2@_K@Z 0x141836760
 // MS2-PIN: ?deallocate@?$allocator@U?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@std@@@std@@QEAAXQEAU?$_Tree_node@U?$pair@$$CBIV?$Unk_FieldPtr@V?$CAtlList@UUnk_NpcInfo@?A0x82dadc2e@@V?$CElementTraits@UUnk_NpcInfo@?A0x82dadc2e@@@ATL@@@ATL@@@@@std@@PEAX@2@_K@Z 0x1418367f0
+// MS2-PIN: ?FindNextNode@?$CAtlMap@I_NV?$CElementTraits@I@ATL@@V?$CElementTraits@_N@2@@ATL@@AEBAPEAVCNode@12@PEAV312@@Z 0x141830f30
 #define MS2_THIS_FILE "e:\\build\\kr\\22_04\\ms2code\\client\\ms2\\tableexporter.cpp"
 #include "ms2/placeholder/ms2stdafx.h"
 #include <atlcoll.h>

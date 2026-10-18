@@ -16,6 +16,11 @@
 // MS2-PIN: ?_Get_second@?$_Compressed_pair@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@V?$_Vector_val@U?$_Simple_types@PEAVTransparencyStandardMaterial@@@std@@@std@@$00@std@@QEAAAEAV?$_Vector_val@U?$_Simple_types@PEAVTransparencyStandardMaterial@@@std@@@2@XZ 0x141165690 ; unique
 // MS2-PINS-END tplpin
 // MS2-PIN: ?__empty_global_delete@@YAXPEAX@Z 0x141165da0
+// MS2-PIN: ??$_Construct1@PEAVTransparencyStandardMaterial@@AEBQEAV1@@?$_Normal_allocator_traits@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@SAXU?$integral_constant@_N$0A@@1@AEAV?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@PEAPEAVTransparencyStandardMaterial@@AEBQEAV5@@Z 0x14115c770
+// MS2-PIN: ??$_Emplace_back_with_unused_capacity@AEBQEAVTransparencyStandardMaterial@@@?$vector@PEAVTransparencyStandardMaterial@@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@AEAAXAEBQEAVTransparencyStandardMaterial@@@Z 0x14115cac0
+// MS2-PIN: ??$_Emplace_reallocate@AEBQEAVTransparencyStandardMaterial@@@?$vector@PEAVTransparencyStandardMaterial@@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@QEAAPEAPEAVTransparencyStandardMaterial@@QEAPEAV2@AEBQEAV2@@Z 0x14115cb80
+// MS2-PIN: ??$construct@PEAVTransparencyStandardMaterial@@AEBQEAV1@@?$_Normal_allocator_traits@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@SAXAEAV?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@PEAPEAVTransparencyStandardMaterial@@AEBQEAV4@@Z 0x14115d2e0
+// MS2-PIN: ??$emplace_back@AEBQEAVTransparencyStandardMaterial@@@?$vector@PEAVTransparencyStandardMaterial@@V?$CustomAllocator@PEAVTransparencyStandardMaterial@@@efd@@@std@@QEAAXAEBQEAVTransparencyStandardMaterial@@@Z 0x14115d3c0
 #ifndef NOMINMAX
 #define NOMINMAX
 #endif
