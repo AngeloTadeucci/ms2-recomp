@@ -5,11 +5,11 @@
 #include "ms2/placeholder/ms2stdafx.h"
 #include "baseoption.h"
 #include "ms2/placeholder/uiobject.h"
+#include "ms2/client/ms2/uigameoptiondialog.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
 
 // ---- unit-local placeholders ----
-class UIGameOptionDialog : public UIObject {};
 void FUN_141943820(UIGameOptionDialog* pDialog, int n);
 
 // The UI manager's reference to a dialog (16 bytes, object at +8; dtor 0x1403e5630).
