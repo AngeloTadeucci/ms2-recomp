@@ -14,6 +14,7 @@
 #include "ms2/placeholder/nipoint3.h"
 
 class Unk_140165cf0;
+class Unk_GcCondList;
 
 // 0x28. m_n18 is the condition kind (the subclass ctor/loader sets it), m_b1c negates the check, m_n20 is the XML "value".
 class CGuideCondition : public ClassObject
@@ -25,7 +26,7 @@ public:
     virtual int vfunc_3();                                  // 3 0x1413a56d0: 0
     virtual void vfunc_4();                                 // 4 0x1413a56e0
     virtual void vfunc_5();                                 // 5 0x1413a56f0: logs "Nothing TestCase"
-    virtual bool vfunc_6();                                 // 6 0x1413a5740: false
+    virtual bool vfunc_6(Unk_GcCondList* pFailed);          // 6 0x1413a5740: false (AllOf collects the failed conditions)
     virtual CStringW vfunc_7();                       // 7 0x1413a5760: description
     virtual int vfunc_8();                                  // 8 0x1413a5810: 0
 
@@ -48,6 +49,8 @@ public:
     virtual CStringW vfunc_1();                             // 1 0x1413a9c20
     virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a9c70
     virtual int vfunc_3();                                  // 3 0x1413a9d40
+    virtual CStringW vfunc_7();                             // 7 0x1413a9df0
+    virtual int vfunc_8();                                  // 8 0x1413a9ec0
 
     int m_nRangeBeg;                                        // +0x28
     int m_nRangeEnd;                                        // +0x2c
@@ -434,3 +437,347 @@ public:
     int m_pad_34;
 };
 MS2_CHECK_SIZE(CGuideConditionExistItem, 0x38);
+
+// ---- helper values of the conditions below (layouts proven from the XML readers and the condition checks) ----------------
+
+// The conditions of a nested condition (AnyOne / AllOf): the smart pointers hold the condition built by 0x1413a52c0.
+class Unk_GcCondRef
+{
+public:
+    CGuideCondition* FUN_141387bb0();                       // the held condition
+    bool FUN_141387b90();                                   // holds one
+    void FUN_141387660();                                   // release
+    void* m_pRc;
+    CGuideCondition* m_p;
+};
+MS2_CHECK_SIZE(Unk_GcCondRef, 0x10);
+
+class Unk_GcCondList
+{
+public:
+    unsigned FUN_1413886d0();                               // count
+    Unk_GcCondRef& FUN_141387b40(unsigned nIdx);            // the nth
+    void FUN_141388460(const Unk_GcCondRef& ref);           // append
+    void* m_p0; void* m_p1; void* m_p2; void* m_p3;
+};
+MS2_CHECK_SIZE(Unk_GcCondList, 0x20);
+
+// A set-flag + value optional (the flag is the first byte).
+struct Unk_GcOptInt { bool m_bSet; int m_nValue; };
+MS2_CHECK_SIZE(Unk_GcOptInt, 8);
+struct Unk_GcOptVec3 { bool m_bSet; float m_x; float m_y; float m_z; };
+MS2_CHECK_SIZE(Unk_GcOptVec3, 0x10);
+struct Unk_GcOptBool { bool m_bSet; bool m_bValue; };
+MS2_CHECK_SIZE(Unk_GcOptBool, 2);
+
+// A calendar time (the ServerTime target / now).
+class Unk_GcTime
+{
+public:
+    Unk_GcTime& FUN_1406c47a0(unsigned __int64 nTime);              // from the epoch seconds
+    Unk_GcTime& FUN_1406c47d0(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec);
+    Unk_GcTime& FUN_1406c4930(const Unk_GcTime& rhs);               // operator=
+    bool FUN_1406c4cc0(const Unk_GcTime& now) const;                // passed
+    unsigned __int64 FUN_140282020() const;                         // the epoch seconds
+    void* m_p0; void* m_p1;
+};
+MS2_CHECK_SIZE(Unk_GcTime, 0x10);
+
+// 0x28. Passes while the local player is on the continent m_n20 (the continent code of the current map).
+class CGuideConditionContinentCode : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a9f10
+    CGuideConditionContinentCode();                         // ctor (out of range)
+    virtual CStringW vfunc_1();                             // 1 0x1413a9f70
+    virtual int vfunc_3();                                  // 3 0x1413a9fc0
+};
+MS2_CHECK_SIZE(CGuideConditionContinentCode, 0x28);
+
+// 0x48. Passes while one of the nested <condition> elements passes.
+class CGuideConditionAnyOne : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aa070
+    CGuideConditionAnyOne();
+    virtual CStringW vfunc_1();                             // 1 0x1413aa0d0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aa120: the nested conditions
+    virtual int vfunc_3();                                  // 3 0x1413aa1d0
+    virtual void vfunc_4();                                 // 4 0x1413aa250
+
+    Unk_GcCondList m_conds;                                 // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionAnyOne, 0x48);
+
+// 0x48. Passes while all of the nested <condition> elements pass.
+class CGuideConditionAllOf : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aa2e0
+    CGuideConditionAllOf();
+    virtual CStringW vfunc_1();                             // 1 0x1413aa340
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aa390
+    virtual int vfunc_3();                                  // 3 0x1413aa500
+    virtual bool vfunc_6(Unk_GcCondList* pFailed);          // 6 0x1413aa440: true; appends the failing conditions
+
+    Unk_GcCondList m_conds;                                 // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionAllOf, 0x48);
+
+// 0x30. Passes while the trophy of the achievement type m_type exists.
+class CGuideConditionAchieveExistTrophy : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aa580
+    CGuideConditionAchieveExistTrophy();
+    virtual CStringW vfunc_1();                             // 1 0x1413aa5e0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aa630: achieveType
+    virtual int vfunc_3();                                  // 3 0x1413aa680
+    virtual CStringW vfunc_7();                             // 7 0x1413aa6c0
+
+    Unk_GcOptInt m_type;                                    // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionAchieveExistTrophy, 0x30);
+
+// 0x30. Passes while the guide m_nGuideId is open.
+class CGuideConditionGuideOpen : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aa7e0
+    CGuideConditionGuideOpen();
+    virtual CStringW vfunc_1();                             // 1 0x1413aa840
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aa890: id (kind 13)
+    virtual int vfunc_3();                                  // 3 0x1413aa8f0
+    virtual CStringW vfunc_7();                             // 7 0x1413aa990
+    virtual int vfunc_8();                                  // 8 0x1413aaa40: 0
+
+    int m_nGuideId;                                         // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionGuideOpen, 0x30);
+
+// 0x30. Passes while the guide m_nGuideId is cleared.
+class CGuideConditionGuideClear : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aaa50
+    CGuideConditionGuideClear();
+    virtual CStringW vfunc_1();                             // 1 0x1413aaab0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aab00: id (kind 2)
+    virtual int vfunc_3();                                  // 3 0x1413aab60
+    virtual CStringW vfunc_7();                             // 7 0x1413aaba0
+    virtual int vfunc_8();                                  // 8 0x1413aac50
+
+    int m_nGuideId;                                         // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionGuideClear, 0x30);
+
+// 0x30. Passes while the key / skill slot m_nSlotIndex holds the skill m_nSkillId.
+class CGuideConditionExistShortcut : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aac80
+    CGuideConditionExistShortcut();
+    virtual CStringW vfunc_1();                             // 1 0x1413aace0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aad30: slotIndex / skillID
+    virtual int vfunc_3();                                  // 3 0x1413aadb0
+    virtual CStringW vfunc_7();                             // 7 0x1413aae10
+
+    int m_nSlotIndex;                                       // +0x28
+    int m_nSkillId;                                         // +0x2c
+};
+MS2_CHECK_SIZE(CGuideConditionExistShortcut, 0x30);
+
+// 0x28. Passes while the ugc market has money to collect.
+class CGuideConditionUgcCollectMoney : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aaed0
+    CGuideConditionUgcCollectMoney();
+    virtual CStringW vfunc_1();                             // 1 0x1413aaf30
+    virtual int vfunc_3();                                  // 3 0x1413aaf80
+};
+MS2_CHECK_SIZE(CGuideConditionUgcCollectMoney, 0x28);
+
+// 0x28. Passes while the party dialog allows the observe mode.
+class CGuideConditionCanObserveMode : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413aafc0
+    CGuideConditionCanObserveMode();
+    virtual CStringW vfunc_1();                             // 1 0x1413ab020
+    virtual int vfunc_3();                                  // 3 0x1413ab070
+};
+MS2_CHECK_SIZE(CGuideConditionCanObserveMode, 0x28);
+
+// 0x28. Passes while the player level is at least m_n20.
+class CGuideConditionMyPlayerLevel : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ab0e0
+    CGuideConditionMyPlayerLevel();
+    virtual CStringW vfunc_1();                             // 1 0x1413ab140
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ab190: kind 4
+    virtual int vfunc_3();                                  // 3 0x1413ab1d0
+    virtual int vfunc_8();                                  // 8 0x1413ab240: 0
+};
+MS2_CHECK_SIZE(CGuideConditionMyPlayerLevel, 0x28);
+
+// 0x28. Passes while the player holds at least m_n20 money.
+class CGuideConditionMoney : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ab250
+    CGuideConditionMoney();
+    virtual CStringW vfunc_1();                             // 1 0x1413ab2b0
+    virtual int vfunc_3();                                  // 3 0x1413ab300
+};
+MS2_CHECK_SIZE(CGuideConditionMoney, 0x28);
+
+// 0x40. Passes while the home holds the cube m_nItemId (0 = any) and its count lies within [m_min, m_max].
+class CGuideConditionPlaceUgcCube : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ab350
+    CGuideConditionPlaceUgcCube();
+    virtual CStringW vfunc_1();                             // 1 0x1413ab3b0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ab400: itemId / minCount / maxCount
+    virtual int vfunc_3();                                  // 3 0x1413ab490
+    virtual CStringW vfunc_7();                             // 7 0x1413ab5b0
+
+    int m_nItemId;                                          // +0x28
+    Unk_GcOptInt m_min;                                     // +0x2c
+    Unk_GcOptInt m_max;                                     // +0x34
+};
+MS2_CHECK_SIZE(CGuideConditionPlaceUgcCube, 0x40);
+
+// 0x40. Passes while a cube stands at m_pos in the home (and its attachable state is m_attachable).
+class CGuideConditionPlaceUgcCubeItem : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ab750
+    CGuideConditionPlaceUgcCubeItem();
+    virtual CStringW vfunc_1();                             // 1 0x1413ab7b0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ab800: pos / isAttachable
+    virtual int vfunc_3();                                  // 3 0x1413ab870
+    virtual CStringW vfunc_7();                             // 7 0x1413ab9e0
+
+    Unk_GcOptVec3 m_pos;                                    // +0x28
+    Unk_GcOptBool m_attachable;                             // +0x38
+};
+MS2_CHECK_SIZE(CGuideConditionPlaceUgcCubeItem, 0x40);
+
+// 0x30. Passes while the home holds a cube of the icon type m_nIconType.
+class CGuideConditionPlaceUgcCubeByIconType : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413abb80
+    CGuideConditionPlaceUgcCubeByIconType();
+    virtual CStringW vfunc_1();                             // 1 0x1413abbe0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413abc30: iconType
+    virtual int vfunc_3();                                  // 3 0x1413abc90
+    virtual CStringW vfunc_7();                             // 7 0x1413abce0
+
+    int m_nIconType;                                        // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionPlaceUgcCubeByIconType, 0x30);
+
+// 0x38. Passes while the interact object m_nInteractId is within m_fDistance of the player and in the state m_nState.
+class CGuideConditionInteractObject : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413abd90
+    CGuideConditionInteractObject();
+    virtual CStringW vfunc_1();                             // 1 0x1413abdf0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413abe40: interactId / distance / state
+    virtual int vfunc_3();                                  // 3 0x1413abec0
+    virtual CStringW vfunc_7();                             // 7 0x1413ac050
+
+    int m_nInteractId;                                      // +0x28
+    float m_fDistance;                                      // +0x2c
+    int m_nState;                                           // +0x30
+};
+MS2_CHECK_SIZE(CGuideConditionInteractObject, 0x38);
+
+// 0x30. Passes while the last closed text tip (ui 0x4e53) is the entity m_nEntityId.
+class CGuideConditionLastClosedTextTip : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ac120
+    CGuideConditionLastClosedTextTip();
+    virtual CStringW vfunc_1();                             // 1 0x1413ac180
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ac1d0: entityId (throws on 0)
+    virtual int vfunc_3();                                  // 3 0x1413ac290
+    virtual CStringW vfunc_7();                             // 7 0x1413ac2f0
+
+    int m_nEntityId;                                        // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionLastClosedTextTip, 0x30);
+
+// 0x30. Always passes (the slot flags only describe which cube slot is meant).
+class CGuideConditionConstructSlot : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ac3a0
+    CGuideConditionConstructSlot();
+    virtual CStringW vfunc_1();                             // 1 0x1413ac400
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ac450: slotIdx / isIndoor / isOutdoor
+    virtual int vfunc_3();                                  // 3 0x1413ac4f0: 1
+    virtual void vfunc_5();                                 // 5 0x1413ac510
+    virtual CStringW vfunc_7();                             // 7 0x1413ac520
+
+    int m_nSlotIdx;                                         // +0x28
+    bool m_bIndoor;                                         // +0x2c
+    bool m_bOutdoor;                                        // +0x2d
+};
+MS2_CHECK_SIZE(CGuideConditionConstructSlot, 0x30);
+
+// 0x28. Passes while the player owns a title.
+class CGuideConditionTitle : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ac5f0
+    CGuideConditionTitle();
+    virtual CStringW vfunc_1();                             // 1 0x1413ac650
+    virtual int vfunc_3();                                  // 3 0x1413ac6a0
+    virtual void vfunc_5();                                 // 5 0x1413ac700: logs the title count
+};
+MS2_CHECK_SIZE(CGuideConditionTitle, 0x28);
+
+// 0x38. Passes once the server time has reached m_time.
+class CGuideConditionServerTime : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ac790
+    CGuideConditionServerTime();
+    virtual CStringW vfunc_1();                             // 1 0x1413ac7f0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ac840: dateTime
+    virtual int vfunc_3();                                  // 3 0x1413ac890
+    virtual void vfunc_5();                                 // 5 0x1413ac8e0: logs the times
+    virtual CStringW vfunc_7();                             // 7 0x1413acbe0
+
+    Unk_GcTime m_time;                                      // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionServerTime, 0x38);
+
+// 0x28. Passes while the player has learned a manufacture recipe.
+class CGuideConditionHasManufacture : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413acd60
+    CGuideConditionHasManufacture();
+    virtual CStringW vfunc_1();                             // 1 0x1413acdc0
+    virtual int vfunc_3();                                  // 3 0x1413ace10
+};
+MS2_CHECK_SIZE(CGuideConditionHasManufacture, 0x28);
+
+// 0x30. Passes while the player holds enough money (layout continues in the next part of the unit).
+class CGuideConditionHasMoney : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413ace40
+    CGuideConditionHasMoney();
+    virtual CStringW vfunc_1();                             // 1 0x1413acea0
+
+    __int64 m_nMoney;                                       // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionHasMoney, 0x30);
