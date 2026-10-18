@@ -35,7 +35,7 @@ class SetItemEffectInfo : public CPtred                 // 0x28, ctor 0x1411233c
 {
 public:
     SetItemEffectInfo();
-    virtual ~SetItemEffectInfo();
+    virtual ~SetItemEffectInfo() = default;
     int m_nEffect;                                      // +0x18
     CString m_strName;                                  // +0x20
 };
@@ -99,6 +99,7 @@ class Unk_CMISPropPtr
 public:
     Unk_CMISPropPtr(int nNull = 0);                             // = Unk_InteractPropPtr(int) 0x140ae1340
     Unk_CMISPropPtr(const Unk_CMISPropPtr&);
+    Unk_CMISPropPtr& operator=(const Unk_CMISPropPtr&);
     ~Unk_CMISPropPtr();
 private:
     void* m_p;
