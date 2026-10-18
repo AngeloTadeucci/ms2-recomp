@@ -47,6 +47,8 @@ public:
     void FUN_140c43830(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uiitemgachaboxdialog.cpp)
     void FUN_141aafcd0(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, uiquesteventlistener.cpp)
     void FUN_1409c4990(const char* szName, unsigned long n);             // set a colour member (uiavatarbase.cpp)
+    void FUN_140cfd0d0(const char* szName, int n);                       // set an int member via ASData (inline COMDAT, gameoptionlanguage.cpp)
+    void FUN_140cfd170(const char* szName, int n);                       // same body, a second instance
 };
 MS2_CHECK_SIZE(ASObj, 0x40);
 
