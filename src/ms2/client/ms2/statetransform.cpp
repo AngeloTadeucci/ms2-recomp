@@ -145,11 +145,9 @@ void StateTransformDoll::vfunc_5(int n)
 }
 
 // @0x1417fe970
-// MS2-FUNCTIONAL: local temporary / compare layout differs from the exe
 void StateTransformDoll::vfunc_3(double fTime)
 {
-    unsigned nNow = FUN_140869420();
-    if (m_nEndTime <= nNow)
+    if (FUN_140869420() >= m_nEndTime)
         m_pOwner->vfunc_59(1, 0, 0, 0);
 }
 
