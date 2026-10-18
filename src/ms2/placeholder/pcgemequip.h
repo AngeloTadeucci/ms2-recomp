@@ -14,15 +14,17 @@ class CItem;
 class PC;
 class CGemBase;
 class CGemTransparency;
+class CInputStream;
 
 class PCGemEquip
 {
 public:
     PCGemEquip();                                           // 0x14126fce0
     ~PCGemEquip();                                          // 0x14126fd70 takes the gems of types 10, 7, 11, 12 off
+    void FUN_14126fea0(CInputStream& stream, int nOwner);   // 0x14126fea0 read the worn gem items of a packet
     void FUN_141270030(int nGemType, MS2Ptr<CItem> spItem); // 0x141270030 store the item at the index of the type
     unsigned FUN_1412700b0();                               // 0x1412700b0 number of slots
-    bool FUN_1412700e0(ATL::CAtlArray<MS2Ptr<CItem> >& out);   // 0x1412700e0 copy of the items; nonempty
+    int FUN_1412700e0(ATL::CAtlArray<MS2Ptr<CItem> >& out);   // 0x1412700e0 copy of the items; nonempty
     MS2Ptr<CItem> FUN_141270140(int nGemType);              // 0x141270140 the item worn for a gem type (checks its type)
     bool FUN_141270290(int nItemId);                        // 0x141270290 an item with this item id is worn
     CGemTransparency* FUN_141270360(unsigned char nIndex);  // 0x141270360 the transparency gem (type 1) of slot nIndex
