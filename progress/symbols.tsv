@@ -13932,7 +13932,7 @@ _freea	140314250	func
 ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@V?$MS2Ptr@VDungeonRoom@@@@UDungeonRoomLess@@V?$allocator@V?$MS2Ptr@VDungeonRoom@@@@@std@@$0A@@std@@@std@@QEBAAEBV?$allocator@U?$_Tree_node@V?$MS2Ptr@VDungeonRoom@@@@PEAX@std@@@2@XZ	14033d200	func
 ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@_JU?$less@_J@std@@V?$allocator@_J@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@_JPEAX@std@@@2@XZ	14033d230	func
 ?_Getal@?$_Tree_comp_alloc@V?$_Tset_traits@_KU?$less@_K@std@@V?$allocator@_K@2@$0A@@std@@@std@@QEAAAEAV?$allocator@U?$_Tree_node@_KPEAX@std@@@2@XZ	14033d230	func
-?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@2@XZ	14033d230	func
+?_Getal@?$_Vector_alloc@U?$_Vec_base_types@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@QEAAAEAV?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@2@XZ	140418320	func
 ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@FV?$allocator@F@std@@@std@@@std@@QEAAAEAV?$allocator@F@2@XZ	14033d260	func
 ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@FV?$allocator@F@std@@@std@@@std@@QEBAAEBV?$allocator@F@2@XZ	14033d280	func
 ?_Getal@?$_Vector_alloc@U?$_Vec_base_types@PEAVUnk_140165cf0@@V?$allocator@PEAVUnk_140165cf0@@@std@@@std@@@std@@QEAAAEAV?$allocator@PEAVUnk_140165cf0@@@2@XZ	14033d2a0	func
@@ -19461,7 +19461,7 @@ sprintf	1403b0860	func
 ??A?$CAtlArray@UUnk_DayTime@@V?$CElementTraits@UUnk_DayTime@@@ATL@@@ATL@@QEAAAEAUUnk_DayTime@@_K@Z	1403e88e0	func
 ??A?$CAtlArray@W4Unk_ItemTradeRestrictionType@@V?$CElementTraits@W4Unk_ItemTradeRestrictionType@@@ATL@@@ATL@@QEAAAEAW4Unk_ItemTradeRestrictionType@@_K@Z	1403e8920	func
 ??A?$map@HHU?$less@H@std@@V?$allocator@U?$pair@$$CBHH@std@@@2@@std@@QEAAAEAHAEBH@Z	1403e8960	func
-??A?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAAAEAIAEBI@Z	1403e89a0	func
+??A?$map@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@@std@@QEAAAEAIAEBI@Z	140447ef0	func
 ??A?$map@KHU?$less@K@std@@V?$allocator@U?$pair@$$CBKH@std@@@2@@std@@QEAAAEAHAEBK@Z	1403e89a0	func
 ?Get@?$Unk_Ptr@$0A@@@QEBAPEAXXZ	1403e89e0	func
 ?get@?$MS2Ptr@UNpcEventDropEventContext@@@@QEBAPEAUNpcEventDropEventContext@@XZ	1403e89e0	func
@@ -22778,7 +22778,7 @@ sprintf	1403b0860	func
 ??$emplace@U?$pair@IV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VCollectItemGroupContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@3@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@IV?$MS2Ptr@VCollectItemGroupContext@@@@@1@@Z	140441500	func
 ??$emplace@U?$pair@KV?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@?$_Tree@V?$_Tmap_traits@KV?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@U?$less@K@2@V?$allocator@U?$pair@$$CBKV?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@QEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@std@@@std@@@std@@_N@1@$$QEAU?$pair@KV?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@1@@Z	140441570	func
 ??$emplace_back@AEBV?$MS2Ptr@VBurningLevelupContext@@@@@?$vector@V?$MS2Ptr@VBurningLevelupContext@@@@V?$allocator@V?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VBurningLevelupContext@@@@@Z	1404415e0	func
-??$emplace_back@AEBV?$MS2Ptr@VCollectItemGroupContext@@@@@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z	140441650	func
+??$emplace_back@AEBV?$MS2Ptr@VCollectItemGroupContext@@@@@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z	1404415e0	func
 ??$emplace_back@AEB_K@?$vector@_KV?$allocator@_K@std@@@std@@QEAAXAEB_K@Z	140441650	func
 ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@$$QEAI@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@IV?$MS2Ptr@VEventShopNpcContext@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@3@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@$$QEAI@1@$$QEAV?$tuple@$$V@1@@Z	1404416c0	func
 ??$emplace_hint@AEBUpiecewise_construct_t@std@@V?$tuple@AEBI@2@V?$tuple@$$V@2@@?$_Tree@V?$_Tmap_traits@IIU?$less@I@std@@V?$allocator@U?$pair@$$CBII@std@@@2@$0A@@std@@@std@@QEAA?AV?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@1@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBII@std@@@std@@@std@@@1@AEBUpiecewise_construct_t@1@$$QEAV?$tuple@AEBI@1@$$QEAV?$tuple@$$V@1@@Z	140441760	func
@@ -23497,7 +23497,7 @@ sprintf	1403b0860	func
 ?FUN_14044a440@@YAPEAXPEAPEAUUnk_TreeNode@@@Z	14044a440	func
 ??R?$less@U?$pair@HK@std@@@std@@QEBA_NAEBU?$pair@HK@1@0@Z	14044a510	func
 ?FUN_14044a510@@YAXPEAX00@Z	14044a510	func
-??R?$less@_J@std@@QEBA_NAEB_J0@Z	14044a540	func
+??R?$less@_J@std@@QEBA_NAEB_J0@Z	1406f0a80	func
 ??R?$less@_K@std@@QEBA_NAEB_K0@Z	14044a540	func
 ?FUN_14044a540@@YA_NPEAXPEA_K1@Z	14044a540	func
 ??_G?$MS2Ptr@VCollectItemGroupContext@@@@QEAAPEAXI@Z	14044a580	func
@@ -24513,7 +24513,7 @@ sprintf	1403b0860	func
 ?push_front@?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VEventShopNpcContext@@@@@Z	14046c430	func
 ?push_back@?$list@V?$MS2Ptr@VEventShopNpcContext@@@@V?$allocator@V?$MS2Ptr@VEventShopNpcContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VEventShopNpcContext@@@@@Z	14046c470	func
 ?push_back@?$vector@V?$MS2Ptr@VBurningLevelupContext@@@@V?$allocator@V?$MS2Ptr@VBurningLevelupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VBurningLevelupContext@@@@@Z	14046c4b0	func
-?push_back@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z	14046c4e0	func
+?push_back@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAXAEBV?$MS2Ptr@VCollectItemGroupContext@@@@@Z	14046c4b0	func
 ?push_back@?$vector@_JV?$allocator@_J@std@@@std@@QEAAXAEB_J@Z	14046c4e0	func
 ?push_back@?$vector@_KV?$allocator@_K@std@@@std@@QEAAXAEB_K@Z	14046c4e0	func
 ?reserve@?$vector@V?$MS2Ptr@VCollectItemGroupContext@@@@V?$allocator@V?$MS2Ptr@VCollectItemGroupContext@@@@@std@@@std@@QEAAX_K@Z	14046c510	func
@@ -24998,9 +24998,9 @@ sprintf	1403b0860	func
 ??$_Eqrange@K@?$_Tree@V?$_Tmap_traits@KV?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@U?$less@K@2@V?$allocator@U?$pair@$$CBKV?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@@std@@@2@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBKV?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@@std@@@std@@@std@@@std@@V12@@1@AEBK@Z	140484d30	func
 ??$_Eqrange@U?$pair@HH@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@@std@@@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBU?$pair@HH@1@@Z	140484f70	func
 ??$_Eqrange@U?$pair@HH@std@@@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@@std@@@2@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VQuestAdditionalRewardContext@@@@@std@@@std@@@std@@@std@@V12@@1@AEBU?$pair@HH@1@@Z	140485000	func
-??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	140485240	func
+??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	14042fbf0	func
 ??$_Eqrange@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@?$_Tree@V?$_Tset_traits@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@@std@@@std@@V12@@1@AEBV?$MS2Ptr@VDungeonBonusRewardCtx@@@@@Z	140485240	func
-??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	1404852d0	func
+??$_Eqrange@I@?$_Tree@V?$_Tset_traits@IU?$less@I@std@@V?$allocator@I@2@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@I@std@@@std@@@std@@V12@@1@AEBI@Z	14042fc80	func
 ??$_Eqrange@UUnk_ConstructionKey@@@?$_Tree@V?$_Tset_traits@UUnk_ConstructionKey@@U?$less@UUnk_ConstructionKey@@@std@@V?$allocator@UUnk_ConstructionKey@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_ConstructionKey@@@std@@@std@@@std@@V12@@1@AEBUUnk_ConstructionKey@@@Z	140485510	func
 ??$_Eqrange@UUnk_ConstructionKey@@@?$_Tree@V?$_Tset_traits@UUnk_ConstructionKey@@U?$less@UUnk_ConstructionKey@@@std@@V?$allocator@UUnk_ConstructionKey@@@3@$0A@@std@@@std@@IEBA?AU?$pair@V?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@UUnk_ConstructionKey@@@std@@@std@@@std@@V12@@1@AEBUUnk_ConstructionKey@@@Z	1404855a0	func
 ??$_Eqrange@W4Unk_DungeonGroupType@@@?$_Tree@V?$_Tmap_traits@W4Unk_DungeonGroupType@@V?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@U?$less@W4Unk_DungeonGroupType@@@3@V?$allocator@U?$pair@$$CBW4Unk_DungeonGroupType@@V?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@@std@@@3@$0A@@std@@@std@@IEAA?AU?$pair@V?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBW4Unk_DungeonGroupType@@V?$set@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@U?$less@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@std@@V?$allocator@V?$MS2Ptr@VDungeonBonusRewardCtx@@@@@3@@std@@@std@@@std@@@std@@@std@@V12@@1@AEBW4Unk_DungeonGroupType@@@Z	1404857e0	func
@@ -28595,13 +28595,13 @@ sprintf	1403b0860	func
 ?Unk_Sdd_2650@@YAPEAXPEAV?$TSingleton@VCGuildXmlData@@@@I@Z	1404f2650	func
 ??_G?$pair@$$CBHV?$Unk_PayloadPtr@UGuildEvent@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2690	func
 ??_G?$pair@$$CBHV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f26d0	func
-??_G?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@QEAAPEAXI@Z	1404f2710	func
-??_G?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2750	func
-??_G?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@QEAAPEAXI@Z	1404f2790	func
-??_G?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f27d0	func
-??_G?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@QEAAPEAXI@Z	1404f2810	func
-??_G?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2850	func
-??_G?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2890	func
+??_G?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@QEAAPEAXI@Z	1404f2750	func
+??_G?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2790	func
+??_G?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@QEAAPEAXI@Z	1404f27d0	func
+??_G?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2810	func
+??_G?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@QEAAPEAXI@Z	1404f2850	func
+??_G?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2890	func
+??_G?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@QEAAPEAXI@Z	1404f2710	func
 ??_G?$pair@$$CBU?$pair@_JH@std@@UItemEntity@@@std@@QEAAPEAXI@Z	1404f28d0	func
 ?Unk_Sdd_2910@@YAPEAXPEAVCGuildCustomEvent@@I@Z	1404f2910	func
 ?Unk_Sdd_2950@@YAPEAXPEAVCGuildGrade@@I@Z	1404f2950	func
@@ -28935,9 +28935,9 @@ sprintf	1403b0860	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildProperty@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBH0@Z	1404fc420	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@U?$less@H@std@@V?$allocator@U?$pair@$$CBHV?$Unk_PayloadPtr@UGuildRaidReward@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBH0@Z	1404fc460	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@HV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@U?$less@H@2@V?$allocator@U?$pair@$$CBHV?$vector@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@V?$allocator@V?$Unk_PayloadPtr@UGuildSkill@CGuildXmlData@@@@@std@@@std@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBH0@Z	1404fc460	func
-?_Compare@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBI0@Z	1404fc4a0	func
+?_Compare@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@UGuildRaid@CGuildXmlData@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBI0@Z	1404fc4e0	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@IV?$Unk_PayloadPtr@VCGuildNpcShop@@@@U?$less@I@std@@V?$allocator@U?$pair@$$CBIV?$Unk_PayloadPtr@VCGuildNpcShop@@@@@std@@@3@$0A@@std@@@std@@IEBA_NAEBI0@Z	1404fc4e0	func
-?_Compare@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBU?$pair@HH@2@0@Z	1404fc520	func
+?_Compare@?$_Tree@V?$_Tmap_traits@U?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@U?$less@U?$pair@HH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@HH@std@@V?$Unk_PayloadPtr@UGuildHouse@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBU?$pair@HH@2@0@Z	1404fc560	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@U?$pair@_JH@std@@UItemEntity@@U?$less@U?$pair@_JH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@_JH@std@@UItemEntity@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBU?$pair@_JH@2@0@Z	1404fc560	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@U?$pair@IH@std@@UItemEntity@@U?$less@U?$pair@IH@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@IH@std@@UItemEntity@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBU?$pair@IH@2@0@Z	1404fc5a0	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@U?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@U?$less@U?$pair@W4Unk_GuildNpcKind@@H@std@@@2@V?$allocator@U?$pair@$$CBU?$pair@W4Unk_GuildNpcKind@@H@std@@V?$Unk_PayloadPtr@UGuildNpc@CGuildXmlData@@@@@std@@@2@$0A@@std@@@std@@IEBA_NAEBU?$pair@W4Unk_GuildNpcKind@@H@2@0@Z	1404fc5e0	func
@@ -34844,7 +34844,7 @@ sprintf	1403b0860	func
 ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@1@XZ	140605490	func
 ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBIV?$MS2Ptr@VItemOptionVariationData@@@@@1@XZ	1406054b0	func
 ??D?$_Tree_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBU?$pair@HH@std@@V?$MS2Ptr@VProbabilityFromRank@CItemOptionTable@@@@@1@XZ	1406054d0	func
-??D?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@1@XZ	1406054f0	func
+??D?$_List_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@std@@QEBAAEAU?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@1@XZ	140605390	func
 ??E?$_List_unchecked_const_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@U_Iterator_base0@2@@std@@QEAAAEAV01@XZ	140605600	func
 ??E?$_List_unchecked_iterator@V?$_List_val@U?$_List_simple_types@U?$pair@$$CBHV?$MS2Ptr@VItemOptionRandom@@@@@std@@@std@@@std@@@std@@QEAAAEAV01@XZ	140605620	func
 ??E?$_Tree_const_iterator@V?$_Tree_val@U?$_Tree_simple_types@U?$pair@$$CBIV?$MS2Ptr@VItemOptionConstant@@@@@std@@@std@@@std@@@std@@QEAA?AV01@H@Z	140605640	func
@@ -40676,7 +40676,7 @@ sprintf	1403b0860	func
 ?GetCount@?$CAtlArray@V?$Unk_QuestDebugPtr@VUnk_QuestDebugData@@@@V?$CElementTraits@V?$Unk_QuestDebugPtr@VUnk_QuestDebugData@@@@@ATL@@@ATL@@QEBA_KXZ	140764000	func
 ?FUN_140764010@@YAPEAVUnk_EmoNpcTable@@XZ	140764010	func
 ?FUN_140764010@@YAPEAXXZ	140764010	func
-?GetInstance@?$TSingleton@VCQuestMaskTable@@@@SAPEAVCQuestMaskTable@@XZ	140764010	func
+?GetInstance@?$TSingleton@VCQuestMaskTable@@@@SAPEAVCQuestMaskTable@@XZ	14109a710	func
 ?FUN_140764020@@YAPEAVCQuestManager@@XZ	140764020	func
 ?FUN_140764020@@YAPEAVUnk_AkoQuestGlobal@@XZ	140764020	func
 ?FUN_140764020@@YAPEAVUnk_CinQuestGlobal@@XZ	140764020	func
@@ -76758,10 +76758,10 @@ atan2f	140a4e660	func
 ?_Calculate_growth@?$vector@UUnk_CMISElem52@@V?$CustomAllocator@UUnk_CMISElem52@@@efd@@@std@@AEBA_K_K@Z	141133e80	func
 ?_Calculate_growth@?$vector@W4Unk_CMISKindC@@V?$allocator@W4Unk_CMISKindC@@@std@@@std@@AEBA_K_K@Z	141133f10	func
 ?_Change_array@?$vector@HV?$CustomAllocator@H@efd@@@std@@AEAAXQEAH_K1@Z	141133fa0	func
-?_Change_array@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEAAXQEAV?$SmartPointer@VEntity@egf@@@efd@@_K1@Z	1411340b0	func
-?_Change_array@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEAAXQEAVEntityID@egf@@_K1@Z	1411341c0	func
+?_Change_array@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$allocator@V?$SmartPointer@VEntity@egf@@@efd@@@std@@@std@@AEAAXQEAV?$SmartPointer@VEntity@egf@@@efd@@_K1@Z	1411342d0	func
+?_Change_array@?$vector@VEntityID@egf@@V?$CustomAllocator@VEntityID@egf@@@efd@@@std@@AEAAXQEAVEntityID@egf@@_K1@Z	1411343e0	func
 ?_Change_array@?$vector@PEAVCube@@V?$CustomAllocator@PEAVCube@@@efd@@@std@@AEAAXQEAPEAVCube@@_K1@Z	1411342d0	func
-?_Change_array@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAXQEAV?$SmartPointer@VEntity@egf@@@efd@@_K1@Z	1411343e0	func
+?_Change_array@?$vector@V?$SmartPointer@VEntity@egf@@@efd@@V?$CustomAllocator@V?$SmartPointer@VEntity@egf@@@efd@@@2@@std@@AEAAXQEAV?$SmartPointer@VEntity@egf@@@efd@@_K1@Z	1411341c0	func
 ?_Change_array@?$vector@VNiTransform@@V?$CustomAllocator@VNiTransform@@@efd@@@std@@AEAAXQEAVNiTransform@@_K1@Z	1411344f0	func
 ?_Change_array@?$vector@W4Unk_CMISKindC@@V?$allocator@W4Unk_CMISKindC@@@std@@@std@@AEAAXQEAW4Unk_CMISKindC@@_K1@Z	141134600	func
 ?_Compare@?$_Tree@V?$_Tmap_traits@HIU?$less@H@std@@V?$CustomAllocator@U?$pair@$$CBHI@std@@@efd@@$0A@@std@@@std@@IEBA_NAEBH0@Z	141134710	func
@@ -116435,7 +116435,7 @@ DAT_1439f8358	1439f8358	data
 ?s_bInit@CExpTable@@2_NA	143aaeb08	data
 ?DAT_143aaeb10@@3PEAXEA	143aaeb10	data
 ?s_instance@?$TSingleton@VCFameTable@@@@2PEAVCFameTable@@EA	143aaeb10	data
-?s_instance@?$TSingleton@VCQuestMaskTable@@@@2PEAVCQuestMaskTable@@EA	143aaeb10	data
+?s_instance@?$TSingleton@VCQuestMaskTable@@@@2PEAVCQuestMaskTable@@EA	143ab0d68	data
 ?s_bInit@CFameTable@@2_NA	143aaeb18	data
 ?s_nServerType@CFeatureManager@@2HA	143aaeb20	data
 ?s_strServerType@CFeatureManager@@2V?$CStringT@DV?$StrTraitMFC_DLL@DV?$ChTraitsCRT@D@ATL@@@@@ATL@@A	143aaeb28	data
@@ -117723,3 +117723,6 @@ DAT_143af6a70	143af6a70	data
 ?ms_kNDLShaderMapName@NiD3DShader@@2VNiFixedString@@A	143d6ee70	data
 ?ms_RTTI@NiDX9FragmentShader@@2VNiRTTI@@B	143d6ee88	data
 ?ms_RTTI@NiDX92DBufferData@@2VNiRTTI@@B	143d6eed8	data
+??$?0$$QEAH$$Z$$V@?$pair@$$CBHW4Unk_CMISByteKind@@@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@$$QEAH@1@V?$tuple@$$V@1@@Z	1410d67c0	func
+??0Unk_GoPacket@@QEAA@XZ	1401ff780	func
+?_Change_array@?$vector@PEAVCube@@V?$allocator@PEAVCube@@@std@@@std@@AEAAXQEAPEAVCube@@_K1@Z	1411340b0	func
