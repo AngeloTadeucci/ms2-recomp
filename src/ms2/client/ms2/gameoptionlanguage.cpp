@@ -243,7 +243,6 @@ void CGameOptionLanguage::vfunc_7()
     }
 }
 
-// MS2-FUNCTIONAL: temp and EH-state layout differ
 // @0x140cfbcd0
 int CGameOptionLanguage::FUN_140cfbcd0(int nVoice)
 {
@@ -254,14 +253,38 @@ int CGameOptionLanguage::FUN_140cfbcd0(int nVoice)
         if (nVoice == 0)
         {
             ATL::CAtlArray<CString> files;
-            { CString s("./Data/Sound/MS2Sound_AttackVoice_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Emotion_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice2_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice3_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice4_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice5_Kor_def.fsb"); FUN_140165270(files, s); }
-            { CString s("./Data/Sound/MS2Sound_Voice6_Kor_def.fsb"); FUN_140165270(files, s); }
+            {
+                CString s("./Data/Sound/MS2Sound_AttackVoice_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Emotion_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice2_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice3_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice4_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice5_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
+            {
+                CString s("./Data/Sound/MS2Sound_Voice6_Kor_def.fsb");
+                FUN_140165270(files, s);
+            }
             for (unsigned __int64 i = 0; i < FUN_1401662c0(files); i++)
             {
                 if (_access((const char*)*(CString*)FUN_140164930(files, i), 0) != 0)
@@ -271,7 +294,10 @@ int CGameOptionLanguage::FUN_140cfbcd0(int nVoice)
         }
         return 0;
     }
-    return 1;
+    else
+    {
+        return 1;
+    }
 }
 
 // MS2-FUNCTIONAL: temp and EH-state layout differ
