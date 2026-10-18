@@ -97,6 +97,7 @@ MS2_CHECK_OFFSET(Unk_AdMarketItem, m_nRemain, 0x134);
 
 class AdPushEntityLimitedBundle : public AdPushEntityBase {
     friend class UIAdPushDialog;
+    friend class UIAdPushLimitedDialog;
 public:
     explicit AdPushEntityLimitedBundle(const int& nId);         // 0x140e425a0
     virtual ~AdPushEntityLimitedBundle();                       // 0x140e44fd0

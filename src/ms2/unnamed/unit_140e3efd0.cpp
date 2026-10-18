@@ -57,6 +57,7 @@
 #include "ms2/client/ms2/pcbase.h"
 #include "ms2/placeholder/cmypckeyinputcontroller.h"
 #include "ms2/placeholder/unk_1402a9d70.h"
+#include "ms2/client/ms2/uiadpushlimiteddialog.h"
 #include "ms2/ms2format.h"
 #include "ms2/ms2recover.h"
 #include "hook/ms2hook.h"
@@ -90,14 +91,6 @@ private:
     void* m_unrecovered_80;
 };
 MS2_CHECK_SIZE(ASDialog, 0x88);
-class UIAdPushLimitedDialog : public UIDialog {
-public:
-    UIAdPushLimitedDialog();
-    void FUN_140e03440(MS2Ptr<AdPushEntityLimitedBundle> owner);
-    bool FUN_140e044b0();
-    int FUN_IsFloating();                  // 0x140e0xxxx
-    virtual int vfunc_48();
-};
 class Unk_AdWorld {
 public:
     void FUN_140d543c0(int n);
