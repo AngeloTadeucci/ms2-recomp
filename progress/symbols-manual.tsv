@@ -2932,3 +2932,6 @@ __imp_AddSurveyParameterA	142cd1480	data
 ??$?0$$QEAW4Unk_CMISKindB@@$$Z$$V@?$pair@$$CBW4Unk_CMISKindB@@H@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@$$QEAW4Unk_CMISKindB@@@1@V?$tuple@$$V@1@@Z	1410d6950	func
 ??$?0$$QEAW4Unk_CMISKindB@@$$Z$$V@?$pair@$$CBW4Unk_CMISKindB@@E@std@@QEAA@Upiecewise_construct_t@1@V?$tuple@$$QEAW4Unk_CMISKindB@@@1@V?$tuple@$$V@1@@Z	1410d69a0	func
 ??0Unk_GoPacket@@QEAA@XZ	1401ff780	func
+??0Unk_DemolishTick@@QEAA@XZ	140517b00	func
+??1Unk_AasImagePtr@@QEAA@XZ	140d030a0	func
+?DAT_143ab2a90@@3VUnk_CcInventory@@A	143ab2a90	data
