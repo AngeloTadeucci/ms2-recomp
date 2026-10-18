@@ -3,6 +3,7 @@
 // (factories, names, loaders and checks). See ms2/placeholder/cguidecondition.h.
 // MS2-UNIT: unit_1413a8370
 // MS2-RANGE: 0x1413a8370-0x1413a9a50 .text$mn
+// MS2-RANGE: 0x1400f4460-0x1400f47fc .text$di
 // MS2-PINS-BEGIN tplpin
 // MS2-PINS-END tplpin
 #define MS2_THIS_FILE ""
@@ -526,3 +527,57 @@ int CGuideConditionCountInDoorInstallItem::vfunc_3()
     return nResult;
 }
 MS2_REPLACE_METHOD(0x1413A99B0, CGuideConditionCountInDoorInstallItem, vfunc_3, 151, 0x15929663);
+
+// ---- dynamic initializers (.text$di) -------------------------------------------------------------------------------------
+
+#ifndef MS2_HOOK_DLL
+ClassObject* FUN_1413a59a0();
+
+ClassObject* FUN_1413aaed0();
+ClassObject* FUN_1413ad660();
+void FUN_140316aa0(void* pSlot, CStringW strName, ClassObject* (*pfnFactory)());
+void FUN_1401cd100(void*, int);
+void FUN_142cb1260();   // the exe's atexit destructor of the map
+void FUN_1402a9d70(void*, int, float, float, float, int);
+struct Unk_RegMarker {};
+
+// @0x1400f4460
+static char s_regTrigger;
+static Unk_RegMarker s_initTrigger =
+    (FUN_140316aa0(&s_regTrigger, CStringW(L"CGuideConditionTrigger"), FUN_1413a59a0), Unk_RegMarker());
+
+// @0x1400f44b0
+static char s_regUgcCollectMoney;
+static Unk_RegMarker s_initUgcCollectMoney =
+    (FUN_140316aa0(&s_regUgcCollectMoney, CStringW(L"CGuideConditionUgcCollectMoney"), FUN_1413aaed0), Unk_RegMarker());
+
+// @0x1400f4500
+static char s_regUgcManagementTab;
+static Unk_RegMarker s_initUgcManagementTab =
+    (FUN_140316aa0(&s_regUgcManagementTab, CStringW(L"CGuideConditionUgcManagementTab"), CGuideConditionUgcManagementTab::CreateObject), Unk_RegMarker());
+
+// @0x1400f4550
+static char s_regUgcProductExpireDays;
+static Unk_RegMarker s_initUgcProductExpireDays =
+    (FUN_140316aa0(&s_regUgcProductExpireDays, CStringW(L"CGuideConditionUgcProductExpireDays"), FUN_1413ad660), Unk_RegMarker());
+
+// @0x1400f45a0
+static CStringA s_EnumNamesA[8] = { "None", "Buy", "PriceLow", "PriceHigh", "Create", "ChartOrder", "BuyTotal", "EnumEnd" };
+
+// @0x1400f4670
+static CStringA s_EnumNamesB[7] = { "None", "Buy", "Like", "PriceLow", "PriceHigh", "Create", "EnumEnd" };
+
+// @0x1400f4730
+static CStringA s_strSkill("skill");
+
+// @0x1400f4760
+static CStringA s_strStun("stun");
+
+// @0x1400f4790
+static char s_8f78[8];
+static Unk_RegMarker s_init8f78 = (FUN_1401cd100(&s_8f78, 0), Unk_RegMarker());
+
+// @0x1400f47b0
+static char s_8f80[0x30];
+static Unk_RegMarker s_init8f80 = (FUN_1402a9d70(&s_8f80, 0x11, 0.75f, 0.25f, 2.25f, 10), atexit(FUN_142cb1260), Unk_RegMarker());
+#endif
