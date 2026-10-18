@@ -265,3 +265,48 @@ public:
     ATL::CAtlArray<CString> m_arrControl;                   // +0x40 "control": the child names that must be visible
 };
 MS2_CHECK_SIZE(CGuideConditionDialog, 0x60);
+
+// 16 bytes. One "cube" child of a Position condition: a point and the radius around it.
+struct Unk_GuideCube : Unk_StreamPoint
+{
+    Unk_GuideCube() : fRange(0) {}                          // 0x1413b3580
+    float fRange;
+};
+MS2_CHECK_SIZE(Unk_GuideCube, 0x10);
+
+// 0x48. Passes while the local player (or its cube-craft position) is within the range of one of the cubes.
+class CGuideConditionPosition : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a6e30
+    CGuideConditionPosition();                              // 0x1413a6ee0
+    virtual CStringW vfunc_1();                             // 1 0x1413a6e90
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413a6f30: the "cube" children (pos="x,y,z" range=75)
+    virtual int vfunc_3();                                  // 3 0x1413a70e0
+    virtual CStringW vfunc_7();                             // 7 0x1413a7220
+
+    ATL::CAtlArray<Unk_GuideCube> m_arrCube;                // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionPosition, 0x48);
+
+// 0x28. Passes while the local player's action id equals m_n20.
+class CGuideConditionState : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a73a0
+    CGuideConditionState();
+    virtual CStringW vfunc_1();                             // 1 0x1413a7400
+    virtual int vfunc_3();                                  // 3 0x1413a7450
+};
+MS2_CHECK_SIZE(CGuideConditionState, 0x28);
+
+// 0x28. Passes while the interactable object next to the local player is usable (all of its use checks hold).
+class CGuideConditionInteractable : public CGuideCondition
+{
+public:
+    static ClassObject* CreateObject();                     // 0x1413a74c0
+    CGuideConditionInteractable();
+    virtual CStringW vfunc_1();                             // 1 0x1413a7520
+    virtual int vfunc_3();                                  // 3 0x1413a7570
+};
+MS2_CHECK_SIZE(CGuideConditionInteractable, 0x28);

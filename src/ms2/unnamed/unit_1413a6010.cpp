@@ -29,9 +29,7 @@ Unk_GdMgr* FUN_1409331e0();
 
 template <> MS2Ptr<ASDisplayObject> UISwfEntity::GetChild<ASDisplayObject>(const CString& strName);    // 0x1413b1a90
 
-#ifndef MS2_HOOK_DLL
-static ClassObjectRegistrar s_regDialog(L"CGuideConditionDialog", CGuideConditionDialog::CreateObject);
-#endif
+// (the CGuideConditionDialog registrar, 0x1400f3420, lives in unit_1413a6e30)
 
 // @0x1413a6010
 ClassObject* CGuideConditionDialog::CreateObject()
