@@ -2937,3 +2937,5 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?DAT_143ab2a90@@3VUnk_CcInventory@@A	143ab2a90	data
 ?DAT_143ab2a90@@3VUnk_SrInventory@@A	143ab2a90	data
 ??0Unk_RecommendPtr@@QEAA@XZ	1408162d0	func
+??0Unk_GridPoint2@@QEAA@XZ	14097f3a0	func
+?vfunc_28@UISceneEntity@@UEAAHPEBDPEBVValue@GFx@Scaleform@@I@Z	1422e8470	func
