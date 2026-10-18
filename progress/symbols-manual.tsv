@@ -2896,3 +2896,7 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?g_143a09660@@3VColor@efd@@B	143a09660	data
 ?DAT_143ab2a90@@3VUnk_MmInventory@@A	143ab2a90	data
 ?DAT_143ab31a0@@3VUnk_MmLearned@@A	143ab31a0	data
+?DAT_143aaf308@@3PEAVUnk_LdLockMgr@@EA	143aaf308	data
+??8Unk_ReactRef@@QEBA_NH@Z	1409651c0	func
+??0Unk_ReactRef@@QEAA@AEBV0@@Z	140963d50	func
+??1Unk_ReactRef@@QEAA@XZ	140964830	func
