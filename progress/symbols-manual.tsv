@@ -3039,3 +3039,5 @@ DAT_143af6ac0	143af6ac0	data
 ?s_instance@?$TSingleton@VCostumeSetTable@@@@2PEAVCostumeSetTable@@EA	143aaf318	data
 ?s_bInit@CostumeSetTable@@2_NA	143aaf320	data
 ?s_instance@?$TSingleton@VWebGuideTable@@@@2PEAVWebGuideTable@@EA	143ae07a8	data
+?vfunc_124@CNpc@@UEAAHH@Z	141090d60	func
+?vfunc_53@CNpc@@UEAAXM@Z	1410952f0	func
