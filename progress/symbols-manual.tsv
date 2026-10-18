@@ -3058,3 +3058,9 @@ DAT_143af6ac0	143af6ac0	data
 ?Append@CStore@@QEAAXAEAV?$CAtlArray@V?$MS2Ptr@VCItem@@@@V?$CElementTraits@V?$MS2Ptr@VCItem@@@@@ATL@@@ATL@@@Z	140de1fd0	func
 ?Id@CStore@@QEAA_JXZ	140de27c0	func
 ?s_nextId@OnceCallbackTimer@@2IA	1439f5468	data
+??4Unk_PnScriptPtr@@QEAAAEAV0@AEBV0@@Z	14085a3b0	func
+?IsNull@Unk_PnScriptPtr@@QEBA_NXZ	14085a420	func
+??0Unk_PnScriptPtr@@QEAA@XZ	140859c50	func
+??1Unk_PnScriptPtr@@QEAA@XZ	14078f140	func
+?FUN_14085a610@Unk_PnScriptPtr@@QEBAPEAVUnk_PnTalkScript@@XZ	14085a610	func
+?FUN_140790930@Unk_PnScriptPtr@@QEAAXXZ	140790930	func
