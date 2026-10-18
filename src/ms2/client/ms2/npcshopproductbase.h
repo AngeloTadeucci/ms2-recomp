@@ -35,12 +35,12 @@ public:
     int FUN_140db5e70();                                            // the product serial id
     MS2Ptr<CItem> FUN_140db5e90();                                  // a copy of the item handle
     int FUN_140db5ee0();                                            // the product type
-    ATL::CAtlArray<void*>* FUN_140db5f00();                         // the category list
-    ATL::CAtlArray<void*>* FUN_140db7040();
+    ATL::CAtlArray<CString>* FUN_140db5f00();                         // the category list
+    ATL::CAtlArray<CString>* FUN_140db7040();
 
     int m_18;                                                       // +0x18 serial id
     int m_1c;                                                       // +0x1c product type
-    ATL::CAtlArray<void*> m_20;                                     // +0x20 categories (split from the tag text)
+    ATL::CAtlArray<CString> m_20;                                     // +0x20 categories (split from the tag text)
     MS2Ptr<CItem> m_40;                                             // +0x40 the item
 };
 MS2_CHECK_SIZE(CNpcShopProductBase, 0x50);

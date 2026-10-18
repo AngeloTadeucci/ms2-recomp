@@ -31,7 +31,7 @@ CStringW FUN_14083bdc0(const CMsTime& t, bool bSeconds, CStringW strSep, CString
 CStringW FUN_14083bab0(CMsTime t, CStringW strSep);             // date text
 CStringW FUN_140b8f230(int nDay);                               // the name of a week day
 CStringW FUN_14086cc00(const wchar_t* pszFormat, const int& a, const int& b, const int& c, const int& d);
-void FUN_14015f050(CString& str, ATL::CAtlArray<void*>& rOut, const char* pszSep);   // split into strings
+void FUN_14015f050(CString& str, ATL::CAtlArray<CString>& rOut, const char* pszSep);   // split into strings
 void FUN_140d73aa0(CStringW text, int nType, void* p, CStringW tag);   // message box
 __int64 FUN_140869440();                                        // the server time
 bool FUN_1406a5930();                                           // the star point event runs
@@ -116,7 +116,7 @@ int CNpcShopProductBase::FUN_140db5ee0()
 }
 
 // @0x140db5f00
-ATL::CAtlArray<void*>* CNpcShopProductBase::FUN_140db5f00()
+ATL::CAtlArray<CString>* CNpcShopProductBase::FUN_140db5f00()
 {
     return &m_20;
 }
@@ -299,7 +299,7 @@ CString CNpcShopProductCli::FUN_140db6ff0()
 }
 
 // @0x140db7040
-ATL::CAtlArray<void*>* CNpcShopProductBase::FUN_140db7040()
+ATL::CAtlArray<CString>* CNpcShopProductBase::FUN_140db7040()
 {
     return &m_20;
 }
