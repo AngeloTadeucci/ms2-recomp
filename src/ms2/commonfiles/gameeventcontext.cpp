@@ -1335,7 +1335,6 @@ void RpsContext::Read(CInPacket& packet)
 }
 MS2_REPLACE_METHOD(0x1404008c0, RpsContext, Read, 813, 0xBB5BDB82);
 
-// MS2-FUNCTIONAL: symbols.tsv binds set<int>::insert to the ICF-shared copy 0x1403455f0, the exe calls 0x14035d1e0
 // @0x140400c00
 bool CoupleDanceContext::LoadReward(Unk_140165cf0* pElem)
 {
@@ -1990,7 +1989,6 @@ Unk_DayItemContext::Period* Unk_DayItemContext::FindPeriod(int id)
 }
 MS2_REPLACE_METHOD(0x1404043b0, Unk_DayItemContext, FindPeriod, 129, 0x280E7C47);
 
-// MS2-FUNCTIONAL: _Vector_iterator<ItemEntity>::operator++ (exe 0x14027f6b0, unrecovered commonstruct #3) auto-pairs with an in-range look-alike
 // @0x140404440
 void BurningLevelupContext::Write(COutputStream& out)
 {
