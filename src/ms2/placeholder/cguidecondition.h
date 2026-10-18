@@ -279,7 +279,7 @@ MS2_CHECK_SIZE(CGuideConditionDialog, 0x60);
 // 16 bytes. One "cube" child of a Position condition: a point and the radius around it.
 struct Unk_GuideCube : Unk_StreamPoint
 {
-    Unk_GuideCube() : fRange(0) {}                          // 0x1413b3580
+    Unk_GuideCube() {}                                      // 0x1413b3580 (the exe leaves fRange unset)
     float fRange;
 };
 MS2_CHECK_SIZE(Unk_GuideCube, 0x10);
@@ -458,22 +458,23 @@ public:
     unsigned FUN_1413886d0();                               // count
     Unk_GcCondRef& FUN_141387b40(unsigned nIdx);            // the nth
     void FUN_141388460(const Unk_GcCondRef& ref);           // append
-    void* m_p0; void* m_p1; void* m_p2; void* m_p3;
+    CAtlArray<void*> m_arr;
 };
 MS2_CHECK_SIZE(Unk_GcCondList, 0x20);
 
 // A set-flag + value optional (the flag is the first byte).
-struct Unk_GcOptInt { bool m_bSet; int m_nValue; };
+struct Unk_GcOptInt { Unk_GcOptInt() : m_bSet(false) {} bool m_bSet; int m_nValue; };
 MS2_CHECK_SIZE(Unk_GcOptInt, 8);
-struct Unk_GcOptVec3 { bool m_bSet; float m_x; float m_y; float m_z; };
+struct Unk_GcOptVec3 { Unk_GcOptVec3() : m_bSet(false) {} bool m_bSet; float m_x; float m_y; float m_z; };
 MS2_CHECK_SIZE(Unk_GcOptVec3, 0x10);
-struct Unk_GcOptBool { bool m_bSet; bool m_bValue; };
+struct Unk_GcOptBool { Unk_GcOptBool() : m_bSet(false) {} bool m_bSet; bool m_bValue; };
 MS2_CHECK_SIZE(Unk_GcOptBool, 2);
 
 // A calendar time (the ServerTime target / now).
 class Unk_GcTime
 {
 public:
+    Unk_GcTime();                                                   // 0x1406c4730 (calls 0x1406c5270(this, 0, 0))
     Unk_GcTime& FUN_1406c47a0(unsigned __int64 nTime);              // from the epoch seconds
     Unk_GcTime& FUN_1406c47d0(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec);
     Unk_GcTime& FUN_1406c4930(const Unk_GcTime& rhs);               // operator=
@@ -777,7 +778,217 @@ public:
     static ClassObject* CreateObject();                     // 0x1413ace40
     CGuideConditionHasMoney();
     virtual CStringW vfunc_1();                             // 1 0x1413acea0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413acef0
+    virtual int vfunc_3();                                  // 3 0x1413ad020
+    virtual CStringW vfunc_7();                             // 7 0x1413ad250
 
     __int64 m_nMoney;                                       // +0x28
 };
 MS2_CHECK_SIZE(CGuideConditionHasMoney, 0x30);
+
+// ---- ctor-only subclasses (the methods are recovered with their own parts of unit_1413a9df0) ---------------------------
+
+// 0x28.
+class CGuideConditionBattleState : public CGuideCondition
+{
+public:
+    CGuideConditionBattleState();// 0x1413b2a10
+    virtual CStringW vfunc_1();                             // 1 0x1413adb60
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413adbb0
+    virtual int vfunc_3();                                  // 3 0x1413adbf0
+    virtual int vfunc_8();                                  // 8 0x1413adc50
+};
+MS2_CHECK_SIZE(CGuideConditionBattleState, 0x28);
+
+// 0x28.
+class CGuideConditionCubeHolderSelectItem : public CGuideCondition
+{
+public:
+    CGuideConditionCubeHolderSelectItem();// 0x1413b2b90
+    virtual CStringW vfunc_1();                             // 1 0x1413ae790
+    virtual int vfunc_3();                                  // 3 0x1413ae7e0
+};
+MS2_CHECK_SIZE(CGuideConditionCubeHolderSelectItem, 0x28);
+
+// 0x28.
+class CGuideConditionFalse : public CGuideCondition
+{
+public:
+    CGuideConditionFalse();// 0x1413b2cc0
+    virtual CStringW vfunc_1();                             // 1 0x1413a5940
+    virtual int vfunc_3();                                  // 3 0x1413a5990
+};
+MS2_CHECK_SIZE(CGuideConditionFalse, 0x28);
+
+// 0x28.
+class CGuideConditionGuildPvpPeriod : public CGuideCondition
+{
+public:
+    CGuideConditionGuildPvpPeriod();// 0x1413b2db0
+    virtual CStringW vfunc_1();                             // 1 0x1413ad410
+    virtual int vfunc_3();                                  // 3 0x1413ad460
+};
+MS2_CHECK_SIZE(CGuideConditionGuildPvpPeriod, 0x28);
+
+// 0x28.
+class CGuideConditionHasStatPoint : public CGuideCondition
+{
+public:
+    CGuideConditionHasStatPoint();// 0x1413b2e40
+    virtual CStringW vfunc_1();                             // 1 0x1413ae8a0
+    virtual int vfunc_3();                                  // 3 0x1413ae8f0
+};
+MS2_CHECK_SIZE(CGuideConditionHasStatPoint, 0x28);
+
+// 0x28.
+class CGuideConditionJobCode : public CGuideCondition
+{
+public:
+    CGuideConditionJobCode();// 0x1413b2f30
+    virtual CStringW vfunc_1();                             // 1 0x1413ad840
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ad890
+    virtual int vfunc_3();                                  // 3 0x1413ad8d0
+    virtual int vfunc_8();                                  // 8 0x1413ad940
+};
+MS2_CHECK_SIZE(CGuideConditionJobCode, 0x28);
+
+// 0x28.
+class CGuideConditionJoinGuild : public CGuideCondition
+{
+public:
+    CGuideConditionJoinGuild();// 0x1413b2f60
+    virtual CStringW vfunc_1();                             // 1 0x1413addd0
+    virtual int vfunc_3();                                  // 3 0x1413ade20
+};
+MS2_CHECK_SIZE(CGuideConditionJoinGuild, 0x28);
+
+// 0x28.
+class CGuideConditionMasteryMainTabIndex : public CGuideCondition
+{
+public:
+    CGuideConditionMasteryMainTabIndex();// 0x1413b2fc0
+    virtual CStringW vfunc_1();                             // 1 0x1413ae230
+    virtual int vfunc_3();                                  // 3 0x1413ae280
+};
+MS2_CHECK_SIZE(CGuideConditionMasteryMainTabIndex, 0x28);
+
+// 0x28.
+class CGuideConditionMasterySubTabIndex : public CGuideCondition
+{
+public:
+    CGuideConditionMasterySubTabIndex();// 0x1413b2ff0
+    virtual CStringW vfunc_1();                             // 1 0x1413ae340
+    virtual int vfunc_3();                                  // 3 0x1413ae390
+};
+MS2_CHECK_SIZE(CGuideConditionMasterySubTabIndex, 0x28);
+
+// 0x30.
+class CGuideConditionMentoringPage : public CGuideCondition
+{
+public:
+    CGuideConditionMentoringPage();// 0x1413b3020
+    virtual CStringW vfunc_1();                             // 1 0x1413ae9f0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413aea40
+    virtual int vfunc_3();                                  // 3 0x1413aea80
+    virtual CStringW vfunc_7();                             // 7 0x1413aebb0
+
+    CStringA m_strPageName;                                 // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionMentoringPage, 0x30);
+
+// 0x30.
+class CGuideConditionMenuExpand : public CGuideCondition
+{
+public:
+    CGuideConditionMenuExpand();// 0x1413b3060
+    virtual CStringW vfunc_1();                             // 1 0x1413adeb0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413adf00
+    virtual int vfunc_3();                                  // 3 0x1413adf50
+    virtual CStringW vfunc_7();                             // 7 0x1413adfd0
+
+    CStringA m_strMenuName;                                 // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionMenuExpand, 0x30);
+
+// 0x28.
+class CGuideConditionPlayingInstrument : public CGuideCondition
+{
+public:
+    CGuideConditionPlayingInstrument();// 0x1413b3250
+    virtual CStringW vfunc_1();                             // 1 0x1413ae660
+    virtual int vfunc_3();                                  // 3 0x1413ae6b0
+};
+MS2_CHECK_SIZE(CGuideConditionPlayingInstrument, 0x28);
+
+// 0x28.
+class CGuideConditionPlayInstrumentHasSelectItem : public CGuideCondition
+{
+public:
+    CGuideConditionPlayInstrumentHasSelectItem();// 0x1413b31f0
+    virtual CStringW vfunc_1();                             // 1 0x1413ae560
+    virtual int vfunc_3();                                  // 3 0x1413ae5b0
+};
+MS2_CHECK_SIZE(CGuideConditionPlayInstrumentHasSelectItem, 0x28);
+
+// 0x28.
+class CGuideConditionPlayInstrumentTabIndex : public CGuideCondition
+{
+public:
+    CGuideConditionPlayInstrumentTabIndex();// 0x1413b3220
+    virtual CStringW vfunc_1();                             // 1 0x1413ae450
+    virtual int vfunc_3();                                  // 3 0x1413ae4a0
+};
+MS2_CHECK_SIZE(CGuideConditionPlayInstrumentTabIndex, 0x28);
+
+// 0x28.
+class CGuideConditionRealEstateExpireDays : public CGuideCondition
+{
+public:
+    CGuideConditionRealEstateExpireDays();// 0x1413b3340
+    virtual CStringW vfunc_1();                             // 1 0x1413ad520
+    virtual int vfunc_3();                                  // 3 0x1413ad570
+};
+MS2_CHECK_SIZE(CGuideConditionRealEstateExpireDays, 0x28);
+
+// 0x28.
+class CGuideConditionSelectItemEnchant : public CGuideCondition
+{
+public:
+    CGuideConditionSelectItemEnchant();// 0x1413b33a0
+    virtual CStringW vfunc_1();                             // 1 0x1413ae120
+    virtual int vfunc_3();                                  // 3 0x1413ae170
+};
+MS2_CHECK_SIZE(CGuideConditionSelectItemEnchant, 0x28);
+
+// 0x48.
+class CGuideConditionSubJobCode : public CGuideCondition
+{
+public:
+    CGuideConditionSubJobCode();// 0x1413b3450
+    virtual CStringW vfunc_1();                             // 1 0x1413ad9b0
+    virtual void vfunc_2(Unk_140165cf0* pElem);             // 2 0x1413ada00
+    virtual int vfunc_3();                                  // 3 0x1413ada50
+
+    CAtlArray<int> m_subJobCodes;                           // +0x28
+};
+MS2_CHECK_SIZE(CGuideConditionSubJobCode, 0x48);
+
+// 0x28.
+class CGuideConditionSummonPet : public CGuideCondition
+{
+public:
+    CGuideConditionSummonPet();// 0x1413b3490
+    virtual CStringW vfunc_1();                             // 1 0x1413adcc0
+    virtual int vfunc_3();                                  // 3 0x1413add10
+};
+MS2_CHECK_SIZE(CGuideConditionSummonPet, 0x28);
+
+// 0x28.
+class CGuideConditionUgcProductExpireDays : public CGuideCondition
+{
+public:
+    CGuideConditionUgcProductExpireDays();// 0x1413b3550
+    virtual CStringW vfunc_1();                             // 1 0x1413ad6c0
+    virtual int vfunc_3();                                  // 3 0x1413ad710
+};
+MS2_CHECK_SIZE(CGuideConditionUgcProductExpireDays, 0x28);
