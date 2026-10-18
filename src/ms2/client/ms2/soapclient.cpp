@@ -12,6 +12,7 @@
 
 #include <atlcomtime.h>
 #include <comutil.h>
+#pragma comment(lib, "comsuppw.lib")   // _com_util::ConvertBSTRToString (FUN_14274bfd0)
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -45,7 +46,6 @@ CUgcManager* FUN_14052d220();
 CString FUN_140188f50(const char* psz, int n);
 CString FUN_14016a5c0(const char* psz, int n);
 void FUN_14015f050(const CString& str, ATL::CAtlArray<CString>& rOut, const char* pszSep);    // split into strings
-char* FUN_14274bfd0(BSTR bstr);                     // the BSTR as a new[]'d ANSI text
 int FUN_1427221f0(z_stream* pStream, int nFlush);   // inflate
 unsigned char* FUN_141771b40(const char* pSource, int nSourceSize, int* pnOut);
 
@@ -352,7 +352,7 @@ CString CSoapClient::FUN_141771600(ATL::CComVariant vValue)
     }
     case VT_BSTR:
     {
-        char* pszText = FUN_14274bfd0(vValue.bstrVal);
+        char* pszText = _com_util::ConvertBSTRToString(vValue.bstrVal);
         strValue = pszText;
         delete[] pszText;
         break;
