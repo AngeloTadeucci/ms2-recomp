@@ -167,7 +167,7 @@ MS2Ptr<ASEquipIcon> UIEquipIconContainer::FUN_140e2a990(int nSlot, MS2Ptr<CItem>
     m_28.SetAt(nSlot, pIcon);
     if (m_18.get() != 0)
     {
-        Scaleform::GFx::Value vInfo = m_18->Invoke("equipItem", nSlot, Scaleform::GFx::Value(pSrc->FUN_1422bb870()));
+        Scaleform::GFx::Value vInfo = m_18->Invoke("equipItem", (unsigned int)nSlot, Scaleform::GFx::Value(pSrc->FUN_1422bb870()));
         MS2Ptr<ASUIComponent> pComp(new ASUIComponent(vInfo, 2));
         pIcon->FUN_1409b91a0(pComp);
     }
