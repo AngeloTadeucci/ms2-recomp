@@ -27,6 +27,7 @@ public:
     int FUN_140e2a7e0(Unk_EquipItemPtr pItem);                          // the hand slot (4 / 5) a weapon goes to
     MS2Ptr<ASEquipIcon> FUN_140e2a990(int nSlot, MS2Ptr<CItem> pItem, MS2Ptr<AScript> pSrc);                         // create the slot's icon
     MS2Ptr<ASEquipIcon> FUN_140e2ad70(MS2Ptr<ASEquipIcon> pIcon, int nSlot, MS2Ptr<CItem> pItem, MS2Ptr<AScript> pSrc);   // change the slot's icon
+    void FUN_1412d6ca0(MS2Ptr<ASMovieClip> pClip);                      // 0x1412d6ca0 inline: m_18 = pClip (defined in uiitempreviewdialog.cpp)
     void FUN_140e2b140(int nSlot);                                      // remove the slot's icon (unEquipItem)
 
 private:
