@@ -9,6 +9,9 @@
 // MS2-PIN: ??$?8PEAVCGuildManager@@P80@EAA_NHAEBVCMsgBoxData@@@Z@std@@YA_NAEBU?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@0@0@Z 0x1413c86b0 ; prop
 // MS2-PIN: ??0?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@QEAA@AEBV01@@Z 0x1413cba30 ; unique
 // MS2-PIN: ?AssignRaw@?$MS2Ptr@VCGuildMember@@@@QEAAAEAV1@PEAVCGuildMember@@@Z 0x1413cc9b0 ; unique
+// MS2-PIN: ??8?$MS2Ptr@VCGuildMember@@@@QEBA_NPEAVCGuildMember@@@Z 0x1413cca70
+// MS2-PIN: ??8?$MS2Ptr@VCGuildSkill@@@@QEBA_NPEAVCGuildSkill@@@Z 0x1413ccab0
+// MS2-PIN: ??8?$MS2Ptr@VCGuildCustomEvent@@@@QEBA_NPEAVCGuildCustomEvent@@@Z 0x1413ccaf0
 // MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1413d1ec0 ; unique
 // MS2-PIN: ?vfunc_1@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAA_NHAEBVCMsgBoxData@@@Z@std@@@?$Delegate@$$A6A_NHAEBVCMsgBoxData@@@Z@@UEBAPEAVDelegateImplBase@2@XZ 0x1413d1f20 ; unique
 // MS2-PIN: ?vfunc_2@?$DelegateImpl@U?$pair@PEAVCGuildManager@@P81@EAAXPEAVNotifyObject@@@Z@std@@@?$Delegate@$$A6AXPEAVNotifyObject@@@Z@@UEAAXPEAVNotifyObject@@@Z 0x1413d25a0 ; unique
