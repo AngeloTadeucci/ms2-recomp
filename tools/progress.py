@@ -1250,6 +1250,10 @@ def main():
     # engine stage: Gamebryo TUs of engine/units-gb.json (tools/gbprogress.py; own cache, no MS2-UNIT/queue rows, no
     # symbols harvested). Its rows only cover VAs outside the game units; game rows and totals are unaffected.
     eng_rows = []
+    if not os.path.exists(gbprogress.gbtree.UNITS_JSON) and not a.filters and not a.no_engine:
+        # merge 12 ran from a snapshot older than engine/units-gb.json and silently wrote a game-only status.tsv
+        sys.exit(f"progress.py: {gbprogress.gbtree.UNITS_JSON} missing: refusing to write a status.tsv without engine rows "
+                 "(snapshot older than the engine stage? pass --no-engine to skip deliberately)")
     if os.path.exists(gbprogress.gbtree.UNITS_JSON):
         if (a.engine or not a.filters) and not a.no_engine:
             eng_res, _ = gbprogress.run(CACHE, max(1, a.j), log=lambda m: print(m, flush=True))
