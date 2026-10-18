@@ -76,6 +76,17 @@ public:
     virtual void vfunc_62();
     virtual void vfunc_63(int,int,int);
     virtual void vfunc_64(int nValue);   // 0x200: usercommandcli's 'hide' command calls it with the parsed int (sb2)
+    virtual void vfunc_65();
+    virtual void vfunc_66();
+    virtual void vfunc_67();
+    virtual void vfunc_68();
+    virtual void vfunc_69();
+    virtual void vfunc_70();
+    virtual void vfunc_71();
+    virtual void vfunc_72();
+    virtual void vfunc_73();
+    virtual void vfunc_74();
+    virtual CStringA vfunc_75();   // 0x258: npsman.cpp reads a survey-url string (hidden-return slot)
 };
 Unk_NetworkCallbacks* FUN_140d86260();
 struct Unk_NetworkLatency {
