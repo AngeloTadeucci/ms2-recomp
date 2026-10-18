@@ -351,7 +351,7 @@ MS2_REPLACE_METHOD(0x1413A90D0, CGuideConditionDesignItem, vfunc_3, 386, 0xD184D
 CStringW CGuideConditionDesignItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemType({0})", GcEnum<Unk_GcItemType>(m_nItemType)));
+    str.Append(StringFormat(L"itemType({0})", GC_ENUM(Unk_GcItemType, m_nItemType)));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9260, CGuideConditionDesignItem, vfunc_7, 167, 0x9A48A0DC);
@@ -409,7 +409,7 @@ MS2_REPLACE_METHOD(0x1413A9480, CGuideConditionExistItem, vfunc_3, 182, 0x3855BA
 CStringW CGuideConditionExistItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemid({0}), itemType({1}), iconType({2})", GcEnum<unsigned>(m_nItemId), GcEnum<Unk_GcItemType>(m_nItemType), GcEnum<Unk_GcIconType>(m_nIconType)));
+    str.Append(StringFormat(L"itemid({0}), itemType({1}), iconType({2})", GC_ENUM(unsigned, m_nItemId), GC_ENUM(Unk_GcItemType, m_nItemType), GC_ENUM(Unk_GcIconType, m_nIconType)));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9540, CGuideConditionExistItem, vfunc_7, 193, 0x3B640C0B);
@@ -470,7 +470,7 @@ MS2_REPLACE_METHOD(0x1413A9770, CGuideConditionCountItem, vfunc_3, 161, 0x332434
 CStringW CGuideConditionCountItem::vfunc_7()
 {
     CStringW str = FUN_1413a5820();
-    str.Append(StringFormat(L"itemType({0}), minValue({1}), maxValue({2})", GcEnum<Unk_GcItemType>(m_nItemType), m_nMin, m_nMax));
+    str.Append(StringFormat(L"itemType({0}), minValue({1}), maxValue({2})", GC_ENUM(Unk_GcItemType, m_nItemType), m_nMin, m_nMax));
     return str;
 }
 MS2_REPLACE_METHOD(0x1413A9820, CGuideConditionCountItem, vfunc_7, 193, 0xB3E1E02E);

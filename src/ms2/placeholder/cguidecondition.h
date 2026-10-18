@@ -1149,6 +1149,7 @@ enum Unk_GcAchieveType : int {};    // the trophy achievement type
 enum Unk_GcIconType : int {};       // cube / item icon type
 enum Unk_GcItemType : int {};       // inventory item type
 template <class E> inline const E& GcEnum(const int& n) { return reinterpret_cast<const E&>(n); }
+#define GC_ENUM(E, n) reinterpret_cast<const E&>(n)
 // Out-of-line copies (explicit instantiations in unit_1413a9df0#6).
 extern template CStringW StringFormat<int, unsigned, unsigned>(const wchar_t*, const int&, const unsigned&, const unsigned&);
 extern template CStringW StringFormat<int, float, int>(const wchar_t*, const int&, const float&, const int&);
