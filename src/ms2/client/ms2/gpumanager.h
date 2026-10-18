@@ -65,16 +65,61 @@ public:
     Unk_ADLMemoryInfo* m_pMemoryInfo;                   // +0x90
 };
 MS2_CHECK_SIZE(ATiGPU, 0x98);
+// One display output of an NVIDIA GPU (0x88 bytes).
+struct Unk_NvDisplay {
+    int m_nHandle;                                      // +0x00
+    int m_nValue;                                       // +0x04
+    char m_szName[0x80];                                // +0x08
+};
+// One physical NVIDIA GPU record (0x230 bytes).
+struct Unk_NvGpu {
+    int m_nHandle;                                      // +0x00
+    int m_nDisplays;                                    // +0x04
+    int m_n8;                                           // +0x08
+    int m_nC;                                           // +0x0c
+    Unk_NvDisplay m_aDisplay[4];                        // +0x10
+};
+MS2_CHECK_SIZE(Unk_NvGpu, 0x230);
+
+typedef void* (__cdecl* Unk_NvQueryInterface)(unsigned int nId);
+typedef int (__cdecl* Unk_NvInit)();
+typedef int (__cdecl* Unk_NvGetName)(int nHandle, void* pOut);
+typedef int (__cdecl* Unk_NvEnumGpu)(int nIndex, int* pHandle);
+typedef int (__cdecl* Unk_NvEnumDisplays)(int nHandle, void* pBuf, int* pCount, void* pA, int nB);
+typedef int (__cdecl* Unk_NvQuery)(int nHandle, void* pInfo);
+
+// NVIDIA (nvapi.dll) GPU helper: the nvapi entry points are fetched by id through nvapi_QueryInterface.
 class NvidiaGPU : public GPUBass {
 public:
     NvidiaGPU();                                        // 0x14160c6d0
-    virtual ~NvidiaGPU();
-    virtual int vfunc_1() override;
-    virtual void vfunc_2() override;
-    virtual int vfunc_3(int* a, int* b) override;
-    virtual unsigned __int64 vfunc_4() override;
-    virtual int vfunc_5(unsigned __int64* a, unsigned __int64* b) override;
-    void* m_pad[21];
+    virtual ~NvidiaGPU();                               // 0x14160c740
+    virtual int vfunc_1() override;                     // 0x14160c770: loads nvapi.dll, enumerates the GPUs
+    virtual void vfunc_2() override;                    // 0x14160ca80
+    virtual int vfunc_3(int* a, int* b) override;       // 0x14160cb10
+    virtual unsigned __int64 vfunc_4() override;        // 0x14160d3f0
+    virtual int vfunc_5(unsigned __int64* a, unsigned __int64* b) override;   // 0x14160cc20
+
+    Unk_NvQueryInterface m_pfnQueryInterface;                          // +0x08 nvapi_QueryInterface
+    Unk_NvInit m_pfn10;                                      // +0x10 initialize
+    Unk_NvGetName m_pfn18;                                      // +0x18
+    void* m_pfn20;                                      // +0x20
+    Unk_NvEnumGpu m_pfn28;                                      // +0x28 enumerate GPU i
+    Unk_NvEnumDisplays m_pfn30;                                      // +0x30
+    void* m_pfn38;                                      // +0x38
+    void* m_pfn40;                                      // +0x40
+    Unk_NvQuery m_pfn48;                                      // +0x48
+    Unk_NvQuery m_pfn50;                                      // +0x50
+    Unk_NvQuery m_pfn58;                                      // +0x58
+    void* m_pfn60;                                      // +0x60
+    void* m_pfn68;                                      // +0x68
+    Unk_NvQuery m_pfn70;                                      // +0x70
+    void* m_pfn78;                                      // +0x78
+    void* m_pfn80;                                      // +0x80
+    void* m_pfn88;                                      // +0x88
+    int m_nGpus;                                        // +0x90
+    Unk_NvGpu* m_pGpus;                                 // +0x98
+    HMODULE m_hModule;                                  // +0xa0
+    int m_nA8;                                          // +0xa8
 };
 MS2_CHECK_SIZE(NvidiaGPU, 0xb0);
 
