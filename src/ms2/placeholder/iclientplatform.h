@@ -30,7 +30,7 @@ public:
     virtual int vfunc_17();                                 // 0x88: the platform is ready (ms2clientplatform.cpp)
     virtual void vfunc_18();
     virtual void vfunc_19();
-    virtual void vfunc_20();
+    virtual void vfunc_20(int a1, int a2);                  // 0xa0: (code, 1) (uilogindialog.cpp)
     virtual void vfunc_21();
     virtual void vfunc_22(int nCode, const char* pszFormat, ...);   // 0xb0: a startup step report ("GameInit", ...)
     virtual void vfunc_23(int nCode, const char* pszFormat, ...);   // 0xb8
@@ -43,7 +43,7 @@ public:
     virtual void vfunc_30();
     virtual void vfunc_31();
     virtual void vfunc_32();
-    virtual void vfunc_33();
+    virtual void vfunc_33(__int64 a1);                      // 0x108: the account id (uilogindialog.cpp)
     virtual void vfunc_34();
     virtual void vfunc_35();
     virtual void vfunc_36();
