@@ -2890,3 +2890,7 @@ __imp_AddSurveyParameterA	142cd1480	data
 ?DAT_1439fb040@@3PADA	1439fb040	data
 ??1Unk_TpValue@@QEAA@XZ	140614800	func
 ?DAT_143ab2a90@@3VUnk_DsInventory@@A	143ab2a90	data
+??0NoticeMessage@@QEAA@XZ	140a52ef0	func
+?SetActor@NoticeMessage@@QEAAXH@Z	140a53190	func
+?SetMS2Flags@NiAVObject@@QEAAXI@Z	1414d4c70	func
+?g_143a09660@@3VColor@efd@@B	143a09660	data
